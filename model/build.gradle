@@ -1,0 +1,18 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 28
+}
+
+dependencies {
+    // Room libs
+    implementation "androidx.room:room-common:$room_version"
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Junit libs
+    testImplementation "androidx.room:room-testing:$room_version"
+    testImplementation 'junit:junit:4.12'
+}

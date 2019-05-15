@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':network', ':database', ':model', ':repository'
 rootProject.name='VGLeadSheets'

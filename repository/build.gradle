@@ -1,0 +1,27 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+}
+
+dependencies {
+    // TODO Really don't want to expose these dependencies up a level; see if we can't turn these back into `implementation
+    // Module deps
+    api project(path: ':database')
+    api project(path: ':network')
+
+    // Logging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // RxJava libs
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+
+    // Junit libs
+    testImplementation "androidx.room:room-testing:$room_version"
+    testImplementation 'junit:junit:4.12'
+}
