@@ -6,8 +6,13 @@ import timber.log.Timber
 
 class VglsApplication : Application() {
 
+    lateinit var appComponent: AppComponent
+
     override fun onCreate() {
         super.onCreate()
+
+        appComponent = DaggerAppComponent.builder()
+            .build()
 
         Timber.plant(Timber.DebugTree())
         Timber.v("Starting Application.")
@@ -16,7 +21,5 @@ class VglsApplication : Application() {
         Timber.v("Android version: %s", Build.VERSION.RELEASE)
         Timber.v("Device manufacturer: %s", Build.MANUFACTURER)
         Timber.v("Device model: %s", Build.MODEL)
-
-        // TODO Dagger DI all this stuff
     }
 }

@@ -10,6 +10,7 @@ buildscript {
         paging_version = "2.1.0"
         rxjava_version = "2.2.6"
         mvrx_version = "1.0.1"
+        dagger_version = "2.16"
     }
 
     repositories {
