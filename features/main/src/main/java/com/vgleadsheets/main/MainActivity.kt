@@ -21,19 +21,9 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_fragment, GameListFragment())
+                .replace(R.id.frame_fragment, GameListFragment.newInstance())
                 .commit()
         }
-
-//        val disposable = repository.getGames()
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(
-//                {
-//                    Timber.i("Received list of ${it.size} items.")
-//                },
-//                {
-//                    Timber.e("Error loading games: ${it.message}")
-//                })
     }
 
     override fun supportFragmentInjector() = dispatchingFragmentInjector
