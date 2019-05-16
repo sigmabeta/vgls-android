@@ -12,10 +12,21 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
 
-        versionCode 1
-        versionName "1.0"
+        versionCode getVersionCode()
+        versionName getVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            String decodedPass = System.getenv("KEYPASS")
+
+            storeFile file("vgls.jks")
+            storePassword decodedPass
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword decodedPass
+        }
     }
 
     buildTypes {
@@ -28,6 +39,10 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/mvrx_release.kotlin_module'
     }
 }
 
@@ -55,4 +70,27 @@ dependencies {
     // Dagger annotation processors
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}
+
+def getVersionCode = { ->
+    def proc = Runtime.getRuntime().exec("git rev-list --all --count")
+
+    def result = proc.waitFor()
+    if (result != 0) {
+        return 1 // no git revisions
+    }
+
+    // Multiply by 10 so LSB can represent build type, if we ever need NDK libs.
+    return (proc.getInputStream().readLines().get(0).toInteger() * 10)
+}
+
+def getVersionName = { ->
+    def proc = Runtime.getRuntime().exec("git describe --tags")
+
+    def result = proc.waitFor()
+    if (result != 0) {
+        return "git-error"
+    }
+
+    return proc.getInputStream().readLines().get(0)
 }
