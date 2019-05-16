@@ -12,6 +12,8 @@ dependencies {
     api project(path: ':database')
     api project(path: ':network')
 
+    implementation project(path: ':di')
+
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
@@ -21,11 +23,11 @@ dependencies {
     // RxJava libs
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
 
-    // Dagger 2 Dependency Injection
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-
     // Junit libs
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation 'junit:junit:4.12'
+
+    // Dagger annotation processors
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

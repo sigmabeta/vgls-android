@@ -1,4 +1,7 @@
-include ':app', ':mvrx', ':games',
+include ':app',
+        ':mvrx',
+        ':games',
+        ':di',
         ':network',
         ':database',
         ':model',

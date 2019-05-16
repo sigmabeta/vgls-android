@@ -1,19 +1,17 @@
 package com.vgleadsheets.main
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.games.GameListFragment
-import com.vgleadsheets.main.R
-import com.vgleadsheets.repository.RealRepository
-import com.vgleadsheets.repository.Repository
 import dagger.android.AndroidInjection
-import dagger.android.support.AndroidSupportInjection
-import io.reactivex.android.schedulers.AndroidSchedulers
-import timber.log.Timber
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class MainActivity : BaseMvRxActivity() {
-    lateinit var repository: Repository
+class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector {
+    lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
         @Inject set
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,14 +25,16 @@ class MainActivity : BaseMvRxActivity() {
                 .commit()
         }
 
-        val disposable = repository.getGames()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    Timber.i("Received list of ${it.size} items.")
-                },
-                {
-                    Timber.e("Error loading games: ${it.message}")
-                })
+//        val disposable = repository.getGames()
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(
+//                {
+//                    Timber.i("Received list of ${it.size} items.")
+//                },
+//                {
+//                    Timber.e("Error loading games: ${it.message}")
+//                })
     }
+
+    override fun supportFragmentInjector() = dispatchingFragmentInjector
 }

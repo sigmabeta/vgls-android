@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.os.Build
 import com.vgleadsheets.android.di.DaggerAppComponent
-import dagger.android.AndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
 import dagger.android.DispatchingAndroidInjector
@@ -30,7 +29,5 @@ class VglsApplication : Application(), HasActivityInjector {
         Timber.v("Device model: %s", Build.MODEL)
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return dispatchingActivityInjector
-    }
+    override fun activityInjector() = dispatchingActivityInjector
 }

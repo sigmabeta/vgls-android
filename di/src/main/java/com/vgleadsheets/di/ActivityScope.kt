@@ -1,4 +1,4 @@
-package com.vgleadsheets.android.di
+package com.vgleadsheets.di
 
 import javax.inject.Scope
 

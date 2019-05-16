@@ -35,18 +35,15 @@ dependencies {
     // Module deps
     implementation project(path: ':repository')
     implementation project(path: ':features:main')
+    implementation project(path: ':features:main:games')
+
+    implementation project(path: ':di')
 
     // Kotlin libs
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
-    
-    // Dagger 2 Dependency Injection
-    implementation "com.google.dagger:dagger:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version" // if you use the support libraries
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
     // Junit libs
     testImplementation 'junit:junit:4.12'
@@ -54,4 +51,8 @@ dependencies {
     // Espresso libs
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    // Dagger annotation processors
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

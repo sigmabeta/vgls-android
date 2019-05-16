@@ -24,7 +24,3 @@ interface AppComponent {
     fun inject(view: VglsApplication)
     fun inject(view: MainActivity)
 }
-
-/*    @ActivityScope
-    @ContributesAndroidInjector
-    internal abstract fun contributeYourActivityInjector(): MainActivity*/
