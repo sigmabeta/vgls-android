@@ -1,2 +1,9 @@
-include ':app', ':network', ':database', ':model', ':repository'
-rootProject.name='VGLeadSheets'
+include ':app', ':mvrx', ':games',
+        ':network',
+        ':database',
+        ':model',
+        ':repository',
+        ':features:main',
+        ':features:main:games'
+
+rootProject.name = 'VGLeadSheets'

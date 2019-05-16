@@ -1,4 +1,4 @@
-package com.vgleadsheets.android
+package com.vgleadsheets.games
 
 import com.airbnb.mvrx.BaseMvRxFragment
 

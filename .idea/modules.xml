@@ -3,9 +3,14 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VGLeadSheets.iml" filepath="$PROJECT_DIR$/VGLeadSheets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/games/VGLeadSheets-games.iml" filepath="$PROJECT_DIR$/games/VGLeadSheets-games.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/database/database.iml" filepath="$PROJECT_DIR$/database/database.iml" />
+      <module fileurl="file://$PROJECT_DIR$/features/features.iml" filepath="$PROJECT_DIR$/features/features.iml" />
+      <module fileurl="file://$PROJECT_DIR$/features/main/features-main.iml" filepath="$PROJECT_DIR$/features/main/features-main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/features/main/games/main-games.iml" filepath="$PROJECT_DIR$/features/main/games/main-games.iml" />
       <module fileurl="file://$PROJECT_DIR$/model/model.iml" filepath="$PROJECT_DIR$/model/model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mvrx/mvrx.iml" filepath="$PROJECT_DIR$/mvrx/mvrx.iml" />
       <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
       <module fileurl="file://$PROJECT_DIR$/repository/repository.iml" filepath="$PROJECT_DIR$/repository/repository.iml" />
     </modules>
