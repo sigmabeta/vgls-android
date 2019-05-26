@@ -12,8 +12,6 @@ dependencies {
     api project(path: ':database')
     api project(path: ':network')
 
-    implementation project(path: ':di')
-
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
@@ -27,7 +25,8 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation 'junit:junit:4.12'
 
-    // Dagger annotation processors
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

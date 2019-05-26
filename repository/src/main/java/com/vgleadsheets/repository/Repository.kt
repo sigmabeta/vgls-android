@@ -5,4 +5,6 @@ import io.reactivex.Observable
 
 interface Repository {
     fun getGames(): Observable<List<Game>>
+
+    fun close()
 }

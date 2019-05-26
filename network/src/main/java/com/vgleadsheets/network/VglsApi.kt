@@ -8,5 +8,5 @@ import retrofit2.http.Path
 
 interface VglsApi {
     @GET("games")
-    fun games(): Observable<List<ApiGame>>
+    fun getAllGames(): Observable<List<ApiGame>>
 }

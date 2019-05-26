@@ -1,7 +1,7 @@
 package com.vgleadsheets.model.song
 
 data class ApiSong(
-    val id: Int,
+    val id: Long,
     val filename: String,
     val name: String,
     val pageCount: Int) {

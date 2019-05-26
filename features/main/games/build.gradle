@@ -11,10 +11,8 @@ dependencies {
     implementation project(path: ':repository')
     api project(path: ':mvrx')
 
-    implementation project(path: ':di')
     implementation project(path: ':recyclerview')
     implementation project(path: ':ui-core')
-
 
     // RxJava2 libs
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
@@ -32,7 +30,8 @@ dependencies {
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    // Dagger annotation processors
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 

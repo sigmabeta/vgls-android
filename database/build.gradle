@@ -16,6 +16,9 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    // RxJava2 libs
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -23,6 +26,8 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation 'junit:junit:4.12'
 
-    // Espresso test libs
-    androidTestImplementation "androidx.room:room-testing:$room_version"
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':di')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

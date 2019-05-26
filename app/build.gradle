@@ -52,8 +52,6 @@ dependencies {
     implementation project(path: ':features:main')
     implementation project(path: ':features:main:games')
 
-    implementation project(path: ':di')
-
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -67,7 +65,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    // Dagger annotation processors
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 

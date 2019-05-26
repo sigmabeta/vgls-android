@@ -1,6 +1,7 @@
 package com.vgleadsheets.android.di
 
 import com.vgleadsheets.android.VglsApplication
+import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.di.NetworkModule
 import com.vgleadsheets.repository.Repository
@@ -12,10 +13,12 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
+        AppModule::class,
         AndroidInjectionModule::class,
         AssistedInjectionModules::class,
         ActivityBindingModule::class,
         RepositoryModule::class,
+        DatabaseModule::class,
         NetworkModule::class]
 )
 interface AppComponent {

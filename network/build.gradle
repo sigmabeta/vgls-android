@@ -10,8 +10,6 @@ dependencies {
     // Module deps
     api project(path: ':model')
 
-    implementation project(path: ':di')
-
     // OkHttp libs
     api "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
@@ -27,7 +25,8 @@ dependencies {
     // Junit libs
     testImplementation 'junit:junit:4.12'
 
-    // Dagger annotation processors
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
