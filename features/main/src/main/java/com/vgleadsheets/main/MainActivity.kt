@@ -11,8 +11,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
 class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector {
-    lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
-        @Inject set
+    @Inject lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

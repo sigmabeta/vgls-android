@@ -10,8 +10,7 @@ import dagger.android.DispatchingAndroidInjector
 import javax.inject.Inject
 
 class VglsApplication : Application(), HasActivityInjector {
-    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
-        @Inject set
+    @Inject lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
         super.onCreate()

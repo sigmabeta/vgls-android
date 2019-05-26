@@ -35,4 +35,8 @@ dependencies {
     // Dagger annotation processors
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    // AssistedInject Annotation Processors
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
 }

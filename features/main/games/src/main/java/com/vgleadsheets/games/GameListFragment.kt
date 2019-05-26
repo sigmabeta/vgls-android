@@ -23,8 +23,8 @@ class GameListFragment : BaseMvRxFragment(), ListView {
         Toast.makeText(context, "Unimplemented.", LENGTH_SHORT).show()
     }
 
-    lateinit var repository: Repository
-        @Inject set
+    @Inject lateinit var repository: Repository
+    @Inject lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
     private val viewModel: GameListViewModel by fragmentViewModel()
 
@@ -44,7 +44,7 @@ class GameListFragment : BaseMvRxFragment(), ListView {
 
     override fun invalidate() = withState(viewModel) { state ->
         when (state.games) {
-            is Uninitialized -> viewModel.fetchGames(repository)
+            is Uninitialized -> Timber.i("No data loaded.mod")
             is Loading -> Timber.i("Loading...")
             is Error -> Timber.e("Error getting games: ${state.games.message}")
             is Success -> adapter.dataset = state.games()

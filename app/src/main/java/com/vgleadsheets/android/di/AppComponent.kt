@@ -3,6 +3,7 @@ package com.vgleadsheets.android.di
 import com.vgleadsheets.android.VglsApplication
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.di.NetworkModule
+import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.repository.di.RepositoryModule
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -12,6 +13,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidInjectionModule::class,
+        AssistedInjectionModules::class,
         ActivityBindingModule::class,
         RepositoryModule::class,
         NetworkModule::class]
@@ -23,4 +25,6 @@ interface AppComponent {
      */
     fun inject(view: VglsApplication)
     fun inject(view: MainActivity)
+
+    fun repository(): Repository
 }
