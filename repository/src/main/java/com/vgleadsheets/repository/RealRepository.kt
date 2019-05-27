@@ -1,7 +1,7 @@
 package com.vgleadsheets.repository
 
 import com.vgleadsheets.database.VglsDatabase
-import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +14,7 @@ class RealRepository constructor(
 
     var lastDbWrite = 0L
 
-    override fun getGames(force: Boolean): Observable<Data<List<Game>>> = Observable
+    override fun getGames(force: Boolean): Observable<Data<List<GameEntity>>> = Observable
         .merge(
             database.gameDao()
                 .getAll()
@@ -26,7 +26,7 @@ class RealRepository constructor(
             refreshGames(force)
         )
 
-    private fun refreshGames(force: Boolean): Observable<Data<List<Game>>> {
+    private fun refreshGames(force: Boolean): Observable<Data<List<GameEntity>>> {
         return Observable.just(System.currentTimeMillis())
             .subscribeOn(Schedulers.io())
             .map { force || isDbOutdated(it) }
@@ -40,7 +40,7 @@ class RealRepository constructor(
                             database.gameDao().nukeTable()
                             database.gameDao().insertAll(dbGames)
                         }
-                        .map<Data<List<Game>>?> { Network() }
+                        .map<Data<List<GameEntity>>?> { Network() }
                         .startWith(Empty())
                 } else {
                     Timber.v("DB is fine! ${System.currentTimeMillis() - lastDbWrite}ms old. Continue on.")

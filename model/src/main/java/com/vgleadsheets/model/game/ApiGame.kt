@@ -5,5 +5,5 @@ import com.vgleadsheets.model.song.ApiSong
 data class ApiGame(
     val game_name: String,
     val songs: List<ApiSong>) {
-    fun toGame() = Game(game_name)
+    fun toGame() = GameEntity(game_name)
 }

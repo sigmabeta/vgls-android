@@ -10,7 +10,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.*
 import com.google.android.material.snackbar.Snackbar
-import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.recyclerview.ListView
 import com.vgleadsheets.repository.*
 import dagger.android.support.AndroidSupportInjection
@@ -53,7 +53,7 @@ class GameListFragment : BaseMvRxFragment(), ListView {
         }
     }
 
-    private fun showData(data: Data<List<Game>>?) {
+    private fun showData(data: Data<List<GameEntity>>?) {
         Timber.i("Showing $data")
         when (data) {
             is Empty -> showLoading()
@@ -74,7 +74,7 @@ class GameListFragment : BaseMvRxFragment(), ListView {
         progress_loading.fadeOutGone()
     }
 
-    private fun showGames(games: List<Game>) {
+    private fun showGames(games: List<GameEntity>) {
         adapter.dataset = games
     }
 
