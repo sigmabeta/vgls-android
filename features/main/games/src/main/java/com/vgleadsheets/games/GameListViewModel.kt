@@ -7,6 +7,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import timber.log.Timber
 
 class GameListViewModel @AssistedInject constructor(
     @Assisted initialState: GameListState,
@@ -18,8 +19,8 @@ class GameListViewModel @AssistedInject constructor(
 
     private fun fetchGames() {
         repository.getGames()
-            .execute { games ->
-                copy(games = games)
+            .execute { data ->
+                copy(data = data)
             }
     }
 

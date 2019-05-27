@@ -1,6 +1,5 @@
 package com.vgleadsheets.games
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,12 +9,13 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.*
+import com.google.android.material.snackbar.Snackbar
+import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ListView
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.*
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_game.*
 import timber.log.Timber
-import java.lang.Error
 import javax.inject.Inject
 
 class GameListFragment : BaseMvRxFragment(), ListView {
@@ -23,8 +23,10 @@ class GameListFragment : BaseMvRxFragment(), ListView {
         Toast.makeText(context, "Unimplemented.", LENGTH_SHORT).show()
     }
 
-    @Inject lateinit var repository: Repository
-    @Inject lateinit var gameListViewModelFactory: GameListViewModel.Factory
+    @Inject
+    lateinit var repository: Repository
+    @Inject
+    lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
     private val viewModel: GameListViewModel by fragmentViewModel()
 
@@ -43,12 +45,52 @@ class GameListFragment : BaseMvRxFragment(), ListView {
     }
 
     override fun invalidate() = withState(viewModel) { state ->
-        when (state.games) {
-            is Uninitialized -> Timber.i("No data loaded.mod")
-            is Loading -> Timber.i("Loading...")
-            is Error -> Timber.e("Error getting games: ${state.games.message}")
-            is Success -> adapter.dataset = state.games()
+        Timber.i("Invalidating state to ${state.data}")
+
+        when (state.data) {
+            is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
+            is Success -> showData(state.data())
         }
+    }
+
+    private fun showData(data: Data<List<Game>>?) {
+        Timber.i("Showing $data")
+        when (data) {
+            is Empty -> showLoading()
+            is Error -> showError(data.error.message ?: "Unknown error.")
+            is Network -> hideLoading()
+            is Storage -> showGames(data())
+        }
+    }
+
+    private fun showLoading() {
+        Timber.i("Loading...")
+        progress_loading.fadeInFromZero()
+        list_games.fadeOutPartially()
+    }
+
+    private fun hideLoading() {
+        list_games.fadeIn()
+        progress_loading.fadeOutGone()
+    }
+
+    private fun showGames(games: List<Game>) {
+        adapter.dataset = games
+    }
+
+    private fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
+        Timber.e("Error getting games: ")
+        showSnackbar(message, action, actionLabel)
+    }
+
+    private fun showSnackbar(message: String, action: View.OnClickListener?, actionLabel: Int) {
+        val snackbar = Snackbar.make(constraint_content, message, Snackbar.LENGTH_LONG)
+
+        if (action != null && actionLabel > 0) {
+            snackbar.setAction(actionLabel, action)
+        }
+
+        snackbar.show()
     }
 
     companion object {

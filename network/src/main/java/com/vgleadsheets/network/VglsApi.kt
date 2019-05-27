@@ -2,8 +2,8 @@ package com.vgleadsheets.network
 
 import com.vgleadsheets.model.game.ApiGame
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
-import retrofit2.http.Path
 
 
 interface VglsApi {

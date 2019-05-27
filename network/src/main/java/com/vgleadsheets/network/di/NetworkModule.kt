@@ -10,15 +10,18 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
 import okhttp3.logging.HttpLoggingInterceptor
+import javax.inject.Singleton
 
 @Module
 class NetworkModule {
 
     @Provides
     @Named("BaseUrl")
+    @Singleton
     internal fun provideBaseUrl() = "https://www.vgleadsheets.com/api/"
 
     @Provides
+    @Singleton
     internal fun provideOkClient(): OkHttpClient {
         return if (BuildConfig.DEBUG) {
             val logger = HttpLoggingInterceptor()
@@ -34,12 +37,15 @@ class NetworkModule {
     }
 
     @Provides
+    @Singleton
     internal fun provideCallAdapterFactory() = RxJava2CallAdapterFactory.createAsync()
 
     @Provides
+    @Singleton
     internal fun provideConverterFactory() = MoshiConverterFactory.create()
 
     @Provides
+    @Singleton
     fun provideVglsApi(
         @Named("BaseUrl") baseUrl: String,
         client: OkHttpClient,
