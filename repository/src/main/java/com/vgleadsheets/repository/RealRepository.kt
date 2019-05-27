@@ -1,7 +1,7 @@
 package com.vgleadsheets.repository
 
 import com.vgleadsheets.database.VglsDatabase
-import com.vgleadsheets.model.game.GameEntity
+import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -12,35 +12,49 @@ class RealRepository constructor(
     private val database: VglsDatabase
 ) : Repository {
 
+    private val gameDao = database.gameDao()
+    private val songDao = database.songDao()
+
     var lastDbWrite = 0L
 
-    override fun getGames(force: Boolean): Observable<Data<List<GameEntity>>> = Observable
-        .merge(
-            database.gameDao()
-                .getAll()
-                .filter { it.isNotEmpty() }
-                .map {
-                    Timber.v("Loaded ${it.size} items from storage")
-                    return@map Storage(it)
-                },
-            refreshGames(force)
-        )
+    override fun getGames(force: Boolean): Observable<Data<List<Game>>> {
 
-    private fun refreshGames(force: Boolean): Observable<Data<List<GameEntity>>> {
+        return Observable
+            .merge(
+                gameDao.getAll()
+                    .filter { it.isNotEmpty() }
+                    .map { gameEntities ->
+                        gameEntities.map { gameEntity ->
+                            val songs = songDao
+                                .getSongsForGameSync(gameEntity.id)
+                                .map { it.toSong() }
+                            gameEntity.toGame(songs)
+                        }
+                    }
+                    .map { Storage(it) },
+                refreshGames(force)
+            )
+    }
+
+    private fun refreshGames(force: Boolean): Observable<Data<List<Game>>> {
         return Observable.just(System.currentTimeMillis())
             .subscribeOn(Schedulers.io())
             .map { force || isDbOutdated(it) }
             .flatMap {
-                return@flatMap if (it) {
+                if (it) {
                     Timber.v("DB outdated; ${System.currentTimeMillis() - lastDbWrite}ms old. Starting network request.")
                     vglsApi.getAllGames()
                         .doOnNext { apiGames ->
-                            val dbGames = apiGames.map { apiGame -> apiGame.toGame() }
                             lastDbWrite = System.currentTimeMillis()
-                            database.gameDao().nukeTable()
-                            database.gameDao().insertAll(dbGames)
+
+                            val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
+                            val songEntities = apiGames.flatMap { game ->
+                                game.songs.map { apiSong -> apiSong.toSongEntity(game.game_id) }
+                            }
+
+                            gameDao.refreshTable(gameEntities, songDao, songEntities)
                         }
-                        .map<Data<List<GameEntity>>?> { Network() }
+                        .map<Data<List<Game>>?> { Network() }
                         .startWith(Empty())
                 } else {
                     Timber.v("DB is fine! ${System.currentTimeMillis() - lastDbWrite}ms old. Continue on.")

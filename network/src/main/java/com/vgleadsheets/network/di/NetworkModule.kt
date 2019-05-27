@@ -1,5 +1,6 @@
 package com.vgleadsheets.network.di
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vgleadsheets.network.BuildConfig
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
@@ -18,19 +19,21 @@ class NetworkModule {
     @Provides
     @Named("BaseUrl")
     @Singleton
-    internal fun provideBaseUrl() = "https://www.vgleadsheets.com/api/"
+    internal fun provideBaseUrl() = "https://super.vgleadsheets.com/api/"
 
     @Provides
     @Singleton
     internal fun provideOkClient(): OkHttpClient {
         return if (BuildConfig.DEBUG) {
+            val debugger = StethoInterceptor()
             val logger = HttpLoggingInterceptor()
 
             logger.level = HttpLoggingInterceptor.Level.BODY
-
             OkHttpClient.Builder()
                 .addInterceptor(logger)
+                .addInterceptor(debugger)
                 .build()
+
         } else {
             OkHttpClient()
         }

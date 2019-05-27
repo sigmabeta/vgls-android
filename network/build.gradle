@@ -22,6 +22,9 @@ dependencies {
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    // Debug Helper
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+
     // Junit libs
     testImplementation 'junit:junit:4.12'
 

@@ -10,7 +10,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.*
 import com.google.android.material.snackbar.Snackbar
-import com.vgleadsheets.model.game.GameEntity
+import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ListView
 import com.vgleadsheets.repository.*
 import dagger.android.support.AndroidSupportInjection
@@ -25,12 +25,14 @@ class GameListFragment : BaseMvRxFragment(), ListView {
 
     @Inject
     lateinit var repository: Repository
+
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
     private val viewModel: GameListViewModel by fragmentViewModel()
 
     private val adapter = GameListAdapter(this)
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
@@ -53,7 +55,7 @@ class GameListFragment : BaseMvRxFragment(), ListView {
         }
     }
 
-    private fun showData(data: Data<List<GameEntity>>?) {
+    private fun showData(data: Data<List<Game>>?) {
         Timber.i("Showing $data")
         when (data) {
             is Empty -> showLoading()
@@ -74,12 +76,12 @@ class GameListFragment : BaseMvRxFragment(), ListView {
         progress_loading.fadeOutGone()
     }
 
-    private fun showGames(games: List<GameEntity>) {
+    private fun showGames(games: List<Game>) {
         adapter.dataset = games
     }
 
     private fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
-        Timber.e("Error getting games: ")
+        Timber.e("Error getting games: $message")
         showSnackbar(message, action, actionLabel)
     }
 

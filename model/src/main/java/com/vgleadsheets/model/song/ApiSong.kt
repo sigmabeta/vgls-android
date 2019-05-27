@@ -5,5 +5,5 @@ data class ApiSong(
     val filename: String,
     val name: String,
     val pageCount: Int) {
-    fun toSong() = Song(id, filename, name, pageCount)
+    fun toSongEntity(gameId: Long) = SongEntity(id, filename, name, pageCount, gameId)
 }

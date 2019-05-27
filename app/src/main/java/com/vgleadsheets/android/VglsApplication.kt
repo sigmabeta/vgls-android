@@ -3,6 +3,7 @@ package com.vgleadsheets.android
 import android.app.Activity
 import android.app.Application
 import android.os.Build
+import com.facebook.stetho.Stetho
 import com.vgleadsheets.android.di.AppModule
 import com.vgleadsheets.android.di.DaggerAppComponent
 import com.vgleadsheets.database.di.DatabaseModule
@@ -32,6 +33,8 @@ class VglsApplication : Application(), HasActivityInjector {
         Timber.v("Android version: %s", Build.VERSION.RELEASE)
         Timber.v("Device manufacturer: %s", Build.MANUFACTURER)
         Timber.v("Device model: %s", Build.MODEL)
+
+        Stetho.initializeWithDefaults(this)
     }
 
     override fun activityInjector() = dispatchingActivityInjector

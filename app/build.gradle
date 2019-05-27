@@ -58,6 +58,9 @@ dependencies {
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    // Debug helper
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+
     // Junit libs
     testImplementation 'junit:junit:4.12'
 
