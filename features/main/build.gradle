@@ -10,18 +10,17 @@ android {
 dependencies {
     // So ListView.kt can be found. TODO Make this not necessary
     api project (path: ':recyclerview')
+    api project (path: ':mvrx')
 
     implementation project(path: ':repository')
-    api project(path: ':mvrx')
     implementation project(path: ':features:main:games')
-
-    implementation project(path: ':di')
     implementation project(path: ':ui-core')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Dagger annotation processors
+    implementation project(path: ':di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
