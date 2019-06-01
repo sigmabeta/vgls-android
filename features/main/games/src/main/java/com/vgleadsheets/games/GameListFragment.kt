@@ -47,8 +47,6 @@ class GameListFragment : BaseMvRxFragment(), ListView {
     }
 
     override fun invalidate() = withState(viewModel) { state ->
-        Timber.i("Invalidating state to ${state.data}")
-
         when (state.data) {
             is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
             is Success -> showData(state.data())
@@ -56,7 +54,6 @@ class GameListFragment : BaseMvRxFragment(), ListView {
     }
 
     private fun showData(data: Data<List<Game>>?) {
-        Timber.i("Showing $data")
         when (data) {
             is Empty -> showLoading()
             is Error -> showError(data.error.message ?: "Unknown error.")

@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import com.vgleadsheets.database.TableName
+import com.vgleadsheets.model.DbStatisticsEntity
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.SongEntity
@@ -24,6 +26,7 @@ interface GameDao {
     fun refreshTable(
         gameEntities: List<GameEntity>,
         songDao: SongDao,
+        dbStatisticsDao: DbStatisticsDao,
         songs: List<SongEntity>
     ) {
         nukeTable()
@@ -31,5 +34,9 @@ interface GameDao {
 
         songDao.nukeTable()
         songDao.insertAll(songs)
+
+        val now = System.currentTimeMillis()
+        dbStatisticsDao.insert(DbStatisticsEntity(TableName.GAME.ordinal.toLong(), now))
+        dbStatisticsDao.insert(DbStatisticsEntity(TableName.SONG.ordinal.toLong(), now))
     }
 }
