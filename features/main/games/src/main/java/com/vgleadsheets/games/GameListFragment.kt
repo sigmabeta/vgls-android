@@ -10,6 +10,10 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.*
 import com.google.android.material.snackbar.Snackbar
+import com.vgleadsheets.animation.fadeIn
+import com.vgleadsheets.animation.fadeInFromZero
+import com.vgleadsheets.animation.fadeOutGone
+import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ListView
 import com.vgleadsheets.repository.*

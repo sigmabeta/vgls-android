@@ -1,4 +1,4 @@
-package com.vgleadsheets.games
+package com.vgleadsheets.animation
 
 import android.util.Pair
 import android.view.View
@@ -7,8 +7,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import timber.log.Timber
 import java.util.ArrayList
 
 val ACCELERATE = AccelerateInterpolator()
