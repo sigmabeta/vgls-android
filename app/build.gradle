@@ -50,7 +50,6 @@ dependencies {
     // Module deps
     implementation project(path: ':repository')
     implementation project(path: ':features:main')
-    implementation project(path: ':features:main:games')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

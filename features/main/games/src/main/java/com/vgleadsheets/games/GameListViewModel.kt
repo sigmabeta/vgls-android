@@ -5,8 +5,10 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.Storage
 import timber.log.Timber
 
 class GameListViewModel @AssistedInject constructor(
@@ -23,6 +25,14 @@ class GameListViewModel @AssistedInject constructor(
                 copy(data = data)
             }
     }
+
+    fun onItemClick(position: Int) = withState { state ->
+        val data = state.data() as Storage<List<Game>>
+
+        setState { copy(clickedGame = data.data[position]) }
+        setState { copy(clickedGame = null) }
+    }
+
 
     @AssistedInject.Factory
     interface Factory {

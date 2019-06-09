@@ -8,6 +8,7 @@ include ':app',
         ':model',
         ':repository',
         ':features:main',
+        ':features:main:sheets',
         ':features:main:games'
 
 rootProject.name = 'VGLeadSheets'

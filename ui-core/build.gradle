@@ -21,3 +21,7 @@ dependencies {
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 }
+
+androidExtensions {
+    experimental = true
+}

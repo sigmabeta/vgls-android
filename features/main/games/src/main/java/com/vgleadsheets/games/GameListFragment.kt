@@ -10,6 +10,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.*
 import com.google.android.material.snackbar.Snackbar
+import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
@@ -23,10 +24,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class GameListFragment : BaseMvRxFragment(), ListView {
-    override fun onItemClick(position: Int) {
-        Toast.makeText(context, "Unimplemented.", LENGTH_SHORT).show()
-    }
-
     @Inject
     lateinit var repository: Repository
 
@@ -50,7 +47,14 @@ class GameListFragment : BaseMvRxFragment(), ListView {
         list_games.layoutManager = LinearLayoutManager(context)
     }
 
+    override fun onItemClick(position: Int) {
+        viewModel.onItemClick(position)
+    }
+
     override fun invalidate() = withState(viewModel) { state ->
+        if (state.clickedGame != null) {
+            showSheetList(state.clickedGame)
+        }
         when (state.data) {
             is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
             is Success -> showData(state.data())
@@ -64,6 +68,10 @@ class GameListFragment : BaseMvRxFragment(), ListView {
             is Network -> hideLoading()
             is Storage -> showGames(data())
         }
+    }
+
+    private fun showSheetList(clickedGame: Game) {
+        (activity as FragmentRouter).showSheetListForGame(clickedGame.id)
     }
 
     private fun showLoading() {
@@ -97,8 +105,6 @@ class GameListFragment : BaseMvRxFragment(), ListView {
     }
 
     companion object {
-        fun newInstance(): GameListFragment {
-            return GameListFragment()
-        }
+        fun newInstance() = GameListFragment()
     }
 }

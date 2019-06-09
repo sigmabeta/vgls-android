@@ -4,6 +4,7 @@ import com.vgleadsheets.di.ActivityScope
 import com.vgleadsheets.di.FragmentScope
 import com.vgleadsheets.games.GameListFragment
 import com.vgleadsheets.main.MainActivity
+import com.vgleadsheets.sheets.SheetListFragment
 import dagger.android.ContributesAndroidInjector
 import dagger.Module
 
@@ -17,5 +18,9 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeGameListFragmentInjector(): GameListFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeSheetListFragmentInjector(): SheetListFragment
 }
 

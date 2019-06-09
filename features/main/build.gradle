@@ -12,9 +12,12 @@ dependencies {
     api project (path: ':recyclerview')
     api project (path: ':mvrx')
 
+    api project(path: ':features:main:games')
+    api project(path: ':features:main:sheets')
+
+    api project(path: ':ui-core')
+
     implementation project(path: ':repository')
-    implementation project(path: ':features:main:games')
-    implementation project(path: ':ui-core')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

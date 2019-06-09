@@ -7,15 +7,16 @@
       <module fileurl="file://$PROJECT_DIR$/database/database.iml" filepath="$PROJECT_DIR$/database/database.iml" />
       <module fileurl="file://$PROJECT_DIR$/di/di.iml" filepath="$PROJECT_DIR$/di/di.iml" />
       <module fileurl="file://$PROJECT_DIR$/features/features.iml" filepath="$PROJECT_DIR$/features/features.iml" />
+      <module fileurl="file://$PROJECT_DIR$/features/main/games/games.iml" filepath="$PROJECT_DIR$/features/main/games/games.iml" />
       <module fileurl="file://$PROJECT_DIR$/features/main/main.iml" filepath="$PROJECT_DIR$/features/main/main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/features/main/games/main-games.iml" filepath="$PROJECT_DIR$/features/main/games/main-games.iml" />
       <module fileurl="file://$PROJECT_DIR$/model/model.iml" filepath="$PROJECT_DIR$/model/model.iml" />
       <module fileurl="file://$PROJECT_DIR$/mvrx/mvrx.iml" filepath="$PROJECT_DIR$/mvrx/mvrx.iml" />
       <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
       <module fileurl="file://$PROJECT_DIR$/recyclerview/recyclerview.iml" filepath="$PROJECT_DIR$/recyclerview/recyclerview.iml" />
       <module fileurl="file://$PROJECT_DIR$/repository/repository.iml" filepath="$PROJECT_DIR$/repository/repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/features/main/sheets/sheets.iml" filepath="$PROJECT_DIR$/features/main/sheets/sheets.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui-core/ui-core.iml" filepath="$PROJECT_DIR$/ui-core/ui-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/vgls-android.iml" filepath="$PROJECT_DIR$/vgls-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/vgls-android.iml" filepath="$PROJECT_DIR$/.idea/vgls-android.iml" />
     </modules>
   </component>
 </project>
