@@ -3,6 +3,7 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 
@@ -45,6 +46,12 @@ class RealRepository constructor(
                 }
             }
     }
+
+    override fun getSheets(gameId: Long): Observable<Data<List<Song>>> = songDao
+        .getSongsForGame(gameId)
+        .filter { it.isNotEmpty() }
+        .map { songEntities -> songEntities.map { it.toSong() }}
+        .map { Storage(it) }
 
     private fun isTableFresh(tableName: TableName, force: Boolean): Observable<Boolean> {
         return dbStatisticsDao.getLastEditDate(tableName.ordinal)

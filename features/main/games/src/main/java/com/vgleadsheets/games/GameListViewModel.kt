@@ -19,20 +19,22 @@ class GameListViewModel @AssistedInject constructor(
         fetchGames()
     }
 
+    fun onItemClick(position: Int) = withState { state ->
+        val data = state.data() as Storage<List<Game>>
+
+        setState { copy(clickedGame = data.data[position]) }
+    }
+
+    fun onSheetScreenLaunch() {
+        setState { copy(clickedGame = null) }
+    }
+
     private fun fetchGames() {
         repository.getGames()
             .execute { data ->
                 copy(data = data)
             }
     }
-
-    fun onItemClick(position: Int) = withState { state ->
-        val data = state.data() as Storage<List<Game>>
-
-        setState { copy(clickedGame = data.data[position]) }
-        setState { copy(clickedGame = null) }
-    }
-
 
     @AssistedInject.Factory
     interface Factory {

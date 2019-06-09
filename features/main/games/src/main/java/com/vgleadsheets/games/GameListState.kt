@@ -8,4 +8,4 @@ import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.repository.Data
 
 data class GameListState(val data: Async<Data<List<Game>>> = Uninitialized,
-                         val clickedGame: Game?) : MvRxState
+                         val clickedGame: Game? = null) : MvRxState

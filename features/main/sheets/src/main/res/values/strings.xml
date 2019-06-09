@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Sheets</string>
+    <string name="sample_text_sheet">Baden National Golf Course</string>
+    <string name="sample_text_page_count">3 pages</string>
 </resources>

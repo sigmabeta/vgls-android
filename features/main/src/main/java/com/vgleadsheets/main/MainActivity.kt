@@ -23,7 +23,7 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
         AndroidInjection.inject(this)
 
         if (savedInstanceState == null) {
-
+            showGameList()
         }
     }
 

@@ -25,9 +25,6 @@ import javax.inject.Inject
 
 class GameListFragment : BaseMvRxFragment(), ListView {
     @Inject
-    lateinit var repository: Repository
-
-    @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
     private val viewModel: GameListViewModel by fragmentViewModel()
@@ -54,7 +51,10 @@ class GameListFragment : BaseMvRxFragment(), ListView {
     override fun invalidate() = withState(viewModel) { state ->
         if (state.clickedGame != null) {
             showSheetList(state.clickedGame)
+            viewModel.onSheetScreenLaunch()
+            return@withState
         }
+
         when (state.data) {
             is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
             is Success -> showData(state.data())
