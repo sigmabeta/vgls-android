@@ -10,7 +10,6 @@ android {
 dependencies {
     // So ListView.kt can be found. TODO Make this not necessary
     api project (path: ':recyclerview')
-    api project (path: ':mvrx')
 
     api project(path: ':features:main:games')
     api project(path: ':features:main:sheets')

@@ -1,16 +1,14 @@
 package com.vgleadsheets.games
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.*
-import com.google.android.material.snackbar.Snackbar
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentRouter
+import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
@@ -18,26 +16,17 @@ import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ListView
 import com.vgleadsheets.repository.*
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_game.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class GameListFragment : BaseMvRxFragment(), ListView {
+class GameListFragment : VglsFragment(), ListView {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
     private val viewModel: GameListViewModel by fragmentViewModel()
 
     private val adapter = GameListAdapter(this)
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = inflater
-        .inflate(R.layout.fragment_game, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         list_games.adapter = adapter
@@ -60,6 +49,8 @@ class GameListFragment : BaseMvRxFragment(), ListView {
             is Success -> showData(state.data())
         }
     }
+
+    override fun getLayoutId() = R.layout.fragment_game
 
     private fun showData(data: Data<List<Game>>?) {
         when (data) {
@@ -87,21 +78,6 @@ class GameListFragment : BaseMvRxFragment(), ListView {
 
     private fun showGames(games: List<Game>) {
         adapter.dataset = games
-    }
-
-    private fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
-        Timber.e("Error getting games: $message")
-        showSnackbar(message, action, actionLabel)
-    }
-
-    private fun showSnackbar(message: String, action: View.OnClickListener?, actionLabel: Int) {
-        val snackbar = Snackbar.make(constraint_content, message, Snackbar.LENGTH_LONG)
-
-        if (action != null && actionLabel > 0) {
-            snackbar.setAction(actionLabel, action)
-        }
-
-        snackbar.show()
     }
 
     companion object {

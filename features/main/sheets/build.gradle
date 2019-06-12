@@ -9,7 +9,6 @@ android {
 
 dependencies {
     implementation project(path: ':repository')
-    api project(path: ':mvrx')
 
     implementation project(path: ':recyclerview')
     implementation project(path: ':ui-core')

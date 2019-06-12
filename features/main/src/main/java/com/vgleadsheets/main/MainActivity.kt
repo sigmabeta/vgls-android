@@ -3,13 +3,11 @@ package com.vgleadsheets.main
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.airbnb.mvrx.BaseMvRxActivity
-import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.IdArgs
 import com.vgleadsheets.games.GameListFragment
 import com.vgleadsheets.sheets.SheetListFragment
 import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -18,9 +16,10 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
     @Inject lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
             showGameList()
