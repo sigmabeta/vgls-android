@@ -4,7 +4,6 @@ import com.vgleadsheets.android.VglsApplication
 import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.di.NetworkModule
-import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.repository.di.RepositoryModule
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -28,6 +27,4 @@ interface AppComponent {
      */
     fun inject(view: VglsApplication)
     fun inject(view: MainActivity)
-
-    fun repository(): Repository
 }

@@ -47,10 +47,16 @@ class RealRepository constructor(
             }
     }
 
-    override fun getSheets(gameId: Long): Observable<Data<List<Song>>> = songDao
+    override fun getSongs(gameId: Long): Observable<Data<List<Song>>> = songDao
         .getSongsForGame(gameId)
         .filter { it.isNotEmpty() }
         .map { songEntities -> songEntities.map { it.toSong() }}
+        .map { Storage(it) }
+
+    override fun getSongImageUrl(songId: Long): Observable<Data<String>> = songDao
+        .getSong(songId)
+        .map { it.toSong() }
+        .map { it.filename }
         .map { Storage(it) }
 
     private fun isTableFresh(tableName: TableName, force: Boolean): Observable<Boolean> {

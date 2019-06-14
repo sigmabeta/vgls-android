@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
-import com.vgleadsheets.IdArgs
+import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.games.GameListFragment
-import com.vgleadsheets.sheets.SheetListFragment
+import com.vgleadsheets.songs.SongListFragment
+import com.vgleadsheets.viewer.ViewerFragment
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -35,8 +37,18 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
             .commit()
     }
 
-    override fun showSheetListForGame(gameId: Long) = showFragmentSimple(SheetListFragment.newInstance(IdArgs(gameId)))
-    
+    override fun showSongListForGame(gameId: Long) = showFragmentSimple(SongListFragment.newInstance(
+        IdArgs(
+            gameId
+        )
+    ))
+
+    override fun showSongViewer(songId: Long) = showFragmentSimple(ViewerFragment.newInstance(
+        SongArgs(
+            songId
+        )
+    ))
+
     private fun showFragmentSimple(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_fragment, fragment)

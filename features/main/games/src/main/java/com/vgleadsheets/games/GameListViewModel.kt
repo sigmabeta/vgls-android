@@ -9,7 +9,6 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.repository.Storage
-import timber.log.Timber
 
 class GameListViewModel @AssistedInject constructor(
     @Assisted initialState: GameListState,
@@ -21,12 +20,11 @@ class GameListViewModel @AssistedInject constructor(
 
     fun onItemClick(position: Int) = withState { state ->
         val data = state.data() as Storage<List<Game>>
-
-        setState { copy(clickedGame = data.data[position]) }
+        setState { copy(clickedGameId = data.data[position].id) }
     }
 
-    fun onSheetScreenLaunch() {
-        setState { copy(clickedGame = null) }
+    fun onSongListLaunch() {
+        setState { copy(clickedGameId = null) }
     }
 
     private fun fetchGames() {

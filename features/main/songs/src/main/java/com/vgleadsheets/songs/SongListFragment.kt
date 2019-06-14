@@ -1,29 +1,29 @@
-package com.vgleadsheets.sheets
+package com.vgleadsheets.songs
 
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.*
-import com.vgleadsheets.IdArgs
+import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ListView
 import com.vgleadsheets.repository.*
 import kotlinx.android.synthetic.main.fragment_sheet.*
-import timber.log.Timber
 import javax.inject.Inject
 
-class SheetListFragment : VglsFragment(), ListView {
+class SongListFragment : VglsFragment(), ListView {
     @Inject
-    lateinit var sheetListViewModelFactory: SheetListViewModel.Factory
+    lateinit var sheetListViewModelFactory: SongListViewModel.Factory
 
-    private val viewModel: SheetListViewModel by fragmentViewModel()
+    private val viewModel: SongListViewModel by fragmentViewModel()
 
-    private val adapter = SheetListAdapter(this)
+    private val adapter = SongListAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         list_sheets.adapter = adapter
@@ -35,6 +35,12 @@ class SheetListFragment : VglsFragment(), ListView {
     }
 
     override fun invalidate() = withState(viewModel) { state ->
+        if (state.clickedSongId != null) {
+            showSongViewer(state.clickedSongId)
+            viewModel.onSongViewerLaunch()
+            return@withState
+        }
+
         when (state.data) {
             is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
             is Success -> showData(state.data())
@@ -48,16 +54,19 @@ class SheetListFragment : VglsFragment(), ListView {
             is Empty -> showLoading()
             is Error -> showError(data.error.message ?: "Unknown error.")
             is Network -> hideLoading()
-            is Storage -> showSheets(data())
+            is Storage -> showSongs(data())
         }
     }
 
-    private fun showSheets(songs: List<Song>) {
+    private fun showSongs(songs: List<Song>) {
         adapter.dataset = songs
     }
 
+    private fun showSongViewer(clickedSongId: Long) {
+        (activity as FragmentRouter).showSongViewer(clickedSongId)
+    }
+
     private fun showLoading() {
-        Timber.i("Loading...")
         progress_loading.fadeInFromZero()
         list_sheets.fadeOutPartially()
     }
@@ -67,10 +76,9 @@ class SheetListFragment : VglsFragment(), ListView {
         progress_loading.fadeOutGone()
     }
 
-
     companion object {
-        fun newInstance(idArgs: IdArgs): SheetListFragment {
-            val fragment = SheetListFragment()
+        fun newInstance(idArgs: IdArgs): SongListFragment {
+            val fragment = SongListFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)

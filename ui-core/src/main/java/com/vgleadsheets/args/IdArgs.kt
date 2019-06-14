@@ -1,4 +1,4 @@
-package com.vgleadsheets
+package com.vgleadsheets.args
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

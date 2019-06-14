@@ -5,7 +5,8 @@ import dagger.Module
 @Module(
     includes = [
         GameListAssistedModule::class,
-        SheetListAssistedModule::class
+        SongListAssistedModule::class,
+        ViewerAssistedModule::class
     ]
 )
 abstract class AssistedInjectionModules

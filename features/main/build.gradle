@@ -12,7 +12,8 @@ dependencies {
     api project (path: ':recyclerview')
 
     api project(path: ':features:main:games')
-    api project(path: ':features:main:sheets')
+    api project(path: ':features:main:songs')
+    api project(path: ':features:main:viewer')
 
     api project(path: ':ui-core')
 

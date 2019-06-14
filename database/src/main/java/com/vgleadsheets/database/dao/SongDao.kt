@@ -14,6 +14,9 @@ interface SongDao {
     @Query("SELECT * FROM song WHERE game_id = :game_id")
     fun getSongsForGameSync(game_id: Long): List<SongEntity>
 
+    @Query("SELECT * FROM song WHERE id = :song_id")
+    fun getSong(song_id: Long): Observable<SongEntity>
+
     @Insert
     fun insertAll(songs: List<SongEntity>)
 

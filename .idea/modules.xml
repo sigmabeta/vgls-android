@@ -14,9 +14,10 @@
       <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
       <module fileurl="file://$PROJECT_DIR$/recyclerview/recyclerview.iml" filepath="$PROJECT_DIR$/recyclerview/recyclerview.iml" />
       <module fileurl="file://$PROJECT_DIR$/repository/repository.iml" filepath="$PROJECT_DIR$/repository/repository.iml" />
-      <module fileurl="file://$PROJECT_DIR$/features/main/sheets/sheets.iml" filepath="$PROJECT_DIR$/features/main/sheets/sheets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/features/main/songs/songs.iml" filepath="$PROJECT_DIR$/features/main/songs/songs.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui-core/ui-core.iml" filepath="$PROJECT_DIR$/ui-core/ui-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/vgls-android.iml" filepath="$PROJECT_DIR$/.idea/vgls-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/features/main/viewer/viewer.iml" filepath="$PROJECT_DIR$/features/main/viewer/viewer.iml" />
     </modules>
   </component>
 </project>

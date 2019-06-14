@@ -17,7 +17,6 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ListView
 import com.vgleadsheets.repository.*
 import kotlinx.android.synthetic.main.fragment_game.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class GameListFragment : VglsFragment(), ListView {
@@ -38,9 +37,9 @@ class GameListFragment : VglsFragment(), ListView {
     }
 
     override fun invalidate() = withState(viewModel) { state ->
-        if (state.clickedGame != null) {
-            showSheetList(state.clickedGame)
-            viewModel.onSheetScreenLaunch()
+        if (state.clickedGameId != null) {
+            showSongList(state.clickedGameId)
+            viewModel.onSongListLaunch()
             return@withState
         }
 
@@ -61,12 +60,11 @@ class GameListFragment : VglsFragment(), ListView {
         }
     }
 
-    private fun showSheetList(clickedGame: Game) {
-        (activity as FragmentRouter).showSheetListForGame(clickedGame.id)
+    private fun showSongList(clickedGameId: Long) {
+        (activity as FragmentRouter).showSongListForGame(clickedGameId)
     }
 
     private fun showLoading() {
-        Timber.i("Loading...")
         progress_loading.fadeInFromZero()
         list_games.fadeOutPartially()
     }
