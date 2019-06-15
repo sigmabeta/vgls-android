@@ -1,4 +1,4 @@
-package com.vgleadsheets.android.di
+package com.vgleadsheets.di
 
 import android.content.Context
 import dagger.Module

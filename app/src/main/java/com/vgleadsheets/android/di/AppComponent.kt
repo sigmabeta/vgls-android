@@ -1,6 +1,6 @@
-package com.vgleadsheets.android.di
+package com.vgleadsheets.di
 
-import com.vgleadsheets.android.VglsApplication
+import com.vgleadsheets.VglsApplication
 import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.di.NetworkModule

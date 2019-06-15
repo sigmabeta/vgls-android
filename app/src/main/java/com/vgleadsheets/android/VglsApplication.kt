@@ -1,17 +1,14 @@
-package com.vgleadsheets.android
+package com.vgleadsheets
 
 import android.app.Activity
 import android.app.Application
 import android.os.Build
 import com.facebook.stetho.Stetho
-import com.vgleadsheets.android.di.AppModule
-import com.vgleadsheets.android.di.DaggerAppComponent
-import com.vgleadsheets.database.di.DatabaseModule
-import com.vgleadsheets.network.di.NetworkModule
-import com.vgleadsheets.repository.di.RepositoryModule
+import com.vgleadsheets.di.AppModule
+import com.vgleadsheets.di.DaggerAppComponent
+import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
-import dagger.android.DispatchingAndroidInjector
 import javax.inject.Inject
 
 class VglsApplication : Application(), HasActivityInjector {

@@ -7,7 +7,7 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        applicationId "com.vgleadsheets.android"
+        applicationId "com.vgleadsheets"
 
         minSdkVersion 21
         targetSdkVersion 28

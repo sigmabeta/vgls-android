@@ -1,4 +1,4 @@
-package com.vgleadsheets.android.di
+package com.vgleadsheets.di
 
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module

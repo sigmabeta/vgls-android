@@ -1,7 +1,5 @@
-package com.vgleadsheets.android.di
+package com.vgleadsheets.di
 
-import com.vgleadsheets.di.ActivityScope
-import com.vgleadsheets.di.FragmentScope
 import com.vgleadsheets.games.GameListFragment
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.songs.SongListFragment
