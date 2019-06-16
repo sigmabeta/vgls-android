@@ -27,6 +27,9 @@ jobs:
         name: Get all Git tags
         command: git fetch --tags
     - run:
+        name: Detekt
+        command: ./gradlew detekt
+    - run:
         name: Android Lint
         command: ./gradlew lint
     - run:

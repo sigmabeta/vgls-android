@@ -31,9 +31,17 @@ buildscript {
 
 plugins {
     id "com.diffplug.gradle.spotless" version "3.23.0"
+    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC15"
 }
 
 allprojects {
+    apply plugin: 'io.gitlab.arturbosch.detekt'
+
+    detekt {
+        config = files("$rootDir/default-detekt-config.yml")
+        filters = ".*build.*,.*/resources/.*,.*/tmp/.*"
+    }
+
     repositories {
         google()
         jcenter()
