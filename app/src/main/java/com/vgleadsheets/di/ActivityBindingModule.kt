@@ -7,6 +7,7 @@ import com.vgleadsheets.viewer.ViewerFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
+
 @Module()
 internal abstract class ActivityBindingModule {
     @ActivityScope
@@ -25,3 +26,4 @@ internal abstract class ActivityBindingModule {
     @ContributesAndroidInjector
     internal abstract fun contributeViewerFragmentInjector(): ViewerFragment
 }
+

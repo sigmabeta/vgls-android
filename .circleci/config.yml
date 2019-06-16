@@ -27,6 +27,9 @@ jobs:
         name: Get all Git tags
         command: git fetch --tags
     - run:
+        name: Spotless / KTLint
+        command: ./gradlew spotlessCheck
+    - run:
         name: Build Release
         command: ./gradlew assembleRelease -PdisablePreDex
     - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
