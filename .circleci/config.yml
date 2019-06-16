@@ -27,6 +27,9 @@ jobs:
         name: Get all Git tags
         command: git fetch --tags
     - run:
+        name: Android Lint
+        command: ./gradlew lint
+    - run:
         name: Spotless / KTLint
         command: ./gradlew spotlessCheck
     - run:
