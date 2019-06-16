@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class ViewerFragment : VglsFragment() {
     @Inject
-    lateinit var ViewerViewModelFactory: ViewerViewModel.Factory
+    lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
 

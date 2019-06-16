@@ -32,7 +32,7 @@ class ViewerViewModel @AssistedInject constructor(
     companion object : MvRxViewModelFactory<ViewerViewModel, ViewerState> {
         override fun create(viewModelContext: ViewModelContext, state: ViewerState): ViewerViewModel? {
             val fragment: ViewerFragment = (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.ViewerViewModelFactory.create(state)
+            return fragment.viewerViewModelFactory.create(state)
         }
     }
 }
