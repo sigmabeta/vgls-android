@@ -50,7 +50,7 @@ class RealRepository constructor(
     override fun getSongs(gameId: Long): Observable<Data<List<Song>>> = songDao
         .getSongsForGame(gameId)
         .filter { it.isNotEmpty() }
-        .map { songEntities -> songEntities.map { it.toSong() }}
+        .map { songEntities -> songEntities.map { it.toSong() } }
         .map { Storage(it) }
 
     override fun getSongImageUrl(songId: Long): Observable<Data<String>> = songDao

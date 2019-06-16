@@ -18,10 +18,10 @@ abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(v
     protected var diffStartTime = 0L
 
     var dataset: List<T>?
-        get () {
+        get() {
             return null
         }
-        set (value) {
+        set(value) {
             diffStartTime = System.currentTimeMillis()
             if (value === datasetInternal) {
                 Timber.i("Received existing list of size %d", value?.size ?: -1)

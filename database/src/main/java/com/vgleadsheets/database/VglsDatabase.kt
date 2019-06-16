@@ -7,7 +7,6 @@ import com.vgleadsheets.database.dao.GameDao
 import com.vgleadsheets.database.dao.SongDao
 import com.vgleadsheets.model.DbStatisticsEntity
 import com.vgleadsheets.model.game.GameEntity
-import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
 
 @Database(

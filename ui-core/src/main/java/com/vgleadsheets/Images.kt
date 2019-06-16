@@ -1,6 +1,5 @@
 package com.vgleadsheets
 
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.widget.ImageView
@@ -8,7 +7,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.Single
 import timber.log.Timber
-
 
 fun loadBitmapLowQuality(context: Context, path: String): Single<Bitmap> {
     return Single.create {
@@ -56,12 +54,14 @@ fun ImageView.loadImageHighQuality(path: String, fade: Boolean, aspectRatio: Flo
     loadImageSetSize(path, bigWidth, bigHeight, fade, callback)
 }
 
-fun ImageView.loadImageSetSize(path: String,
-                               width: Int,
-                               height: Int,
-                               fade: Boolean = true,
-                               callback: Callback? = null) {
-    Timber.v("Loading ${width}x${height} image into ${this.width}x${this.height} view")
+fun ImageView.loadImageSetSize(
+    path: String,
+    width: Int,
+    height: Int,
+    fade: Boolean = true,
+    callback: Callback? = null
+) {
+    Timber.v("Loading ${width}x$height image into ${this.width}x${this.height} view")
 
     val requestCreator = Picasso.with(context)
         .load(path)

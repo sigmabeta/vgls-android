@@ -6,5 +6,7 @@ import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.repository.Data
 
-data class GameListState(val data: Async<Data<List<Game>>> = Uninitialized,
-                         val clickedGameId: Long? = null) : MvRxState
+data class GameListState(
+    val data: Async<Data<List<Game>>> = Uninitialized,
+    val clickedGameId: Long? = null
+) : MvRxState

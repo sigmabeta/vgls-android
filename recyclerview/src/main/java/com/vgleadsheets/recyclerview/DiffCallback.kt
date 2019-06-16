@@ -3,8 +3,10 @@ package com.vgleadsheets.recyclerview
 import androidx.recyclerview.widget.DiffUtil
 import com.vgleadsheets.model.ListItem
 
-class DiffCallback<T : ListItem<T>>(val oldList: List<T>?,
-                                     val newList: List<T>?) : DiffUtil.Callback() {
+class DiffCallback<T : ListItem<T>>(
+    val oldList: List<T>?,
+    val newList: List<T>?
+) : DiffUtil.Callback() {
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldItem = getOldItem(oldItemPosition)
         val newItem = getNewItem(newItemPosition)

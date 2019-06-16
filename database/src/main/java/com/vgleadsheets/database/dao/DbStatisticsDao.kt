@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vgleadsheets.model.DbStatisticsEntity
-import com.vgleadsheets.model.song.SongEntity
 import io.reactivex.Observable
 
 @Dao

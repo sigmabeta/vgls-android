@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 
-abstract class VglsFragment: BaseMvRxFragment() {
+abstract class VglsFragment : BaseMvRxFragment() {
 
     @LayoutRes
     abstract fun getLayoutId(): Int

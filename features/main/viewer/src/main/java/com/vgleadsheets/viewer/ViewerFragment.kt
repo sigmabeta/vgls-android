@@ -3,7 +3,11 @@ package com.vgleadsheets.viewer
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.loadImageHighQuality
@@ -18,7 +22,6 @@ class ViewerFragment : VglsFragment() {
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     }
@@ -54,5 +57,4 @@ class ViewerFragment : VglsFragment() {
             return fragment
         }
     }
-
 }

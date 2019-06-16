@@ -2,7 +2,6 @@ package com.vgleadsheets.model.game
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.vgleadsheets.model.ListItem
 import com.vgleadsheets.model.song.Song
 
 @Entity(tableName = "game")

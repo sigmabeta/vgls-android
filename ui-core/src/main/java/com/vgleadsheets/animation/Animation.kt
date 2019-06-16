@@ -109,7 +109,6 @@ fun TextView.changeText(text: String) = if (getText() != text) {
     null
 }
 
-
 fun View.shrinktoNothing() = animate()
     .withLayer()
     .setInterpolator(ACCELERATE)
@@ -123,7 +122,6 @@ fun View.growFromNothing() = animate()
     .setInterpolator(DECELERATE)
     .scaleX(1.0f)
     .scaleY(1.0f)
-
 
 fun removeNullViewPairs(vararg views: Pair<View, String>?): Array<Pair<View, String>> {
     val viewsList = ArrayList<Pair<View, String>>(views.size)

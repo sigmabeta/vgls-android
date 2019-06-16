@@ -7,7 +7,6 @@ import androidx.room.Transaction
 import com.vgleadsheets.database.TableName
 import com.vgleadsheets.model.DbStatisticsEntity
 import com.vgleadsheets.model.game.GameEntity
-import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.SongEntity
 import io.reactivex.Observable
 

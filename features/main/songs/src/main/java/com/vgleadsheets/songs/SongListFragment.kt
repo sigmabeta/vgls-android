@@ -3,7 +3,11 @@ package com.vgleadsheets.songs
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
@@ -13,7 +17,11 @@ import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ListView
-import com.vgleadsheets.repository.*
+import com.vgleadsheets.repository.Data
+import com.vgleadsheets.repository.Empty
+import com.vgleadsheets.repository.Error
+import com.vgleadsheets.repository.Network
+import com.vgleadsheets.repository.Storage
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
 

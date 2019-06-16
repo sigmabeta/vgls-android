@@ -23,7 +23,6 @@ class ViewerViewModel @AssistedInject constructor(
             }
     }
 
-
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: ViewerState): ViewerViewModel
