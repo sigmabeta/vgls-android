@@ -53,7 +53,7 @@ fun ImageView.loadImageHighQuality(path: String, fade: Boolean, aspectRatio: Flo
         height
     }
 
-    loadImageSetSize(path, bigWidth, bigHeight, callback = callback)
+    loadImageSetSize(path, bigWidth, bigHeight, fade, callback)
 }
 
 fun ImageView.loadImageSetSize(path: String,
