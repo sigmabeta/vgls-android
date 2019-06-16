@@ -9,8 +9,8 @@ import io.reactivex.Observable
 
 @Dao
 interface DbStatisticsDao {
-    @Query("SELECT * FROM db_statistics WHERE table_id = :table_id")
-    fun getLastEditDate(table_id: Int): Observable<DbStatisticsEntity>
+    @Query("SELECT * FROM db_statistics WHERE table_id = :tableId")
+    fun getLastEditDate(tableId: Int): Observable<DbStatisticsEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dbStatisticsEntity: DbStatisticsEntity)

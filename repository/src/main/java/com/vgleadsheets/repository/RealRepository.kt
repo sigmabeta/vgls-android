@@ -23,25 +23,31 @@ class RealRepository constructor(
                     vglsApi.getAllGames()
                         .doOnNext { apiGames ->
                             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
+
                             val songEntities = apiGames.flatMap { game ->
                                 game.songs.map { apiSong -> apiSong.toSongEntity(game.game_id) }
                             }
 
                             gameDao.refreshTable(gameEntities, songDao, dbStatisticsDao, songEntities)
                         }
+
                         .map<Data<List<Game>>?> { Network() }
+
                         .startWith(Empty())
                 } else {
                     gameDao.getAll()
                         .filter { it.isNotEmpty() }
+
                         .map { gameEntities ->
                             gameEntities.map { gameEntity ->
                                 val songs = songDao
                                     .getSongsForGameSync(gameEntity.id)
                                     .map { it.toSong() }
+
                                 gameEntity.toGame(songs)
                             }
                         }
+
                         .map { Storage(it) }
                 }
             }

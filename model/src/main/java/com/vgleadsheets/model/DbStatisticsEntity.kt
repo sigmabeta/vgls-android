@@ -3,6 +3,7 @@ package com.vgleadsheets.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Suppress("ConstructorParameterNaming")
 @Entity(tableName = "db_statistics")
 data class DbStatisticsEntity(
     @PrimaryKey val table_id: Long,

@@ -40,6 +40,7 @@ class DatabaseModule {
                 db.setTransactionSuccessful()
                 db.endTransaction()
             }
-        })
+        }
+)
         .build()
 }

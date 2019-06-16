@@ -6,6 +6,7 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import com.vgleadsheets.model.game.GameEntity
 
+@Suppress("ConstructorParameterNaming")
 @Entity(
     tableName = "song",
     foreignKeys = [

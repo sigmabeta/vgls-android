@@ -43,7 +43,10 @@ class ViewerFragment : VglsFragment() {
     }
 
     private fun showSheet(sheet: String) {
-        image_sheet.loadImageHighQuality("https://vgleadsheets.com/assets/sheets/png/C/" + Uri.encode(sheet) + "-1.png", false, null)
+        image_sheet.loadImageHighQuality(
+            "https://vgleadsheets.com/assets/sheets/png/C/" + Uri.encode(sheet) + "-1.png",
+            false,
+            null)
     }
 
     companion object {

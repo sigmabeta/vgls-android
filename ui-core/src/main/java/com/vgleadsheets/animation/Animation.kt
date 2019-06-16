@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.vgleadsheets.animation
 
 import android.util.Pair
@@ -9,15 +11,29 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import java.util.ArrayList
 
-val ACCELERATE = AccelerateInterpolator()
-val DECELERATE = DecelerateInterpolator()
-val ACC_DECELERATE = AccelerateDecelerateInterpolator()
+private val ACCELERATE = AccelerateInterpolator()
+private val DECELERATE = DecelerateInterpolator()
+private val ACC_DECELERATE = AccelerateDecelerateInterpolator()
+
+private const val DURATION_SLOW = 300L
+private const val DURATION_QUICK = 150L
+private const val DURATION_X_QUICK = 100L
+private const val DURATION_XX_QUICK = 50L
+
+private const val ALPHA_OPAQUE = 1.0f
+private const val ALPHA_SEMI_TRANSPARENT = 0.6f
+private const val ALPHA_TRANSPARENT = 0.0f
+
+private const val SCALE_UNITY = 1.0f
+private const val SCALE_NOTHING = 0.0f
+
+private const val TRANSLATION_CENTER = 0.0f
 
 fun View.slideViewOffscreen(): ViewPropertyAnimator {
     return animate()
         .withLayer()
         .setInterpolator(ACCELERATE)
-        .setDuration(400)
+        .setDuration(DURATION_SLOW)
         .translationY(height.toFloat())
 }
 
@@ -27,16 +43,16 @@ fun View.slideViewOnscreen(): ViewPropertyAnimator {
     return animate()
         .withLayer()
         .setInterpolator(DECELERATE)
-        .setDuration(400)
-        .translationY(0.0f)
+        .setDuration(DURATION_SLOW)
+        .translationY(TRANSLATION_CENTER)
 }
 
 fun View.slideViewToProperLocation(): ViewPropertyAnimator {
     return animate()
         .withLayer()
         .setInterpolator(ACC_DECELERATE)
-        .setDuration(400)
-        .translationY(0.0f)
+        .setDuration(DURATION_SLOW)
+        .translationY(TRANSLATION_CENTER)
 }
 
 fun View.fadeIn(): ViewPropertyAnimator {
@@ -46,8 +62,8 @@ fun View.fadeIn(): ViewPropertyAnimator {
     return animate()
         .withLayer()
         .setInterpolator(DECELERATE)
-        .setDuration(150)
-        .alpha(1.0f)
+        .setDuration(DURATION_QUICK)
+        .alpha(ALPHA_OPAQUE)
 }
 
 fun View.fadeInFromZero(): ViewPropertyAnimator {
@@ -58,8 +74,8 @@ fun View.fadeInFromZero(): ViewPropertyAnimator {
     return animate()
         .withLayer()
         .setInterpolator(DECELERATE)
-        .setDuration(150)
-        .alpha(1.0f)
+        .setDuration(DURATION_QUICK)
+        .alpha(ALPHA_OPAQUE)
 }
 
 fun View.fadeOutGone(): ViewPropertyAnimator {
@@ -67,8 +83,8 @@ fun View.fadeOutGone(): ViewPropertyAnimator {
     return animate()
         .withLayer()
         .setInterpolator(ACCELERATE)
-        .setDuration(150)
-        .alpha(0.0f)
+        .setDuration(DURATION_QUICK)
+        .alpha(ALPHA_TRANSPARENT)
         .withEndAction {
             visibility = View.GONE
         }
@@ -79,8 +95,8 @@ fun View.fadeOut(): ViewPropertyAnimator {
     return animate()
         .withLayer()
         .setInterpolator(ACCELERATE)
-        .setDuration(150)
-        .alpha(0.0f)
+        .setDuration(DURATION_QUICK)
+        .alpha(ALPHA_TRANSPARENT)
 }
 
 fun View.fadeOutPartially(): ViewPropertyAnimator {
@@ -88,22 +104,22 @@ fun View.fadeOutPartially(): ViewPropertyAnimator {
     return animate()
         .withLayer()
         .setInterpolator(ACCELERATE)
-        .setDuration(150)
-        .alpha(0.6f)
+        .setDuration(DURATION_QUICK)
+        .alpha(ALPHA_SEMI_TRANSPARENT)
 }
 
 fun TextView.changeText(text: String) = if (getText() != text) {
     animate().withLayer()
-        .setDuration(50)
+        .setDuration(DURATION_XX_QUICK)
         .setInterpolator(DECELERATE)
-        .alpha(0.0f)
+        .alpha(ALPHA_TRANSPARENT)
         .withEndAction {
             setText(text)
 
             animate().withLayer()
-                .setDuration(100)
+                .setDuration(DURATION_X_QUICK)
                 .setInterpolator(DECELERATE)
-                .alpha(1.0f)
+                .alpha(ALPHA_OPAQUE)
         }
 } else {
     null
@@ -112,16 +128,16 @@ fun TextView.changeText(text: String) = if (getText() != text) {
 fun View.shrinktoNothing() = animate()
     .withLayer()
     .setInterpolator(ACCELERATE)
-    .setDuration(200)
-    .scaleX(0.0f)
-    .scaleY(0.0f)
+    .setDuration(DURATION_QUICK)
+    .scaleX(SCALE_NOTHING)
+    .scaleY(SCALE_NOTHING)
 
 fun View.growFromNothing() = animate()
     .withLayer()
-    .setDuration(75)
+    .setDuration(DURATION_X_QUICK)
     .setInterpolator(DECELERATE)
-    .scaleX(1.0f)
-    .scaleY(1.0f)
+    .scaleX(SCALE_UNITY)
+    .scaleY(SCALE_UNITY)
 
 fun removeNullViewPairs(vararg views: Pair<View, String>?): Array<Pair<View, String>> {
     val viewsList = ArrayList<Pair<View, String>>(views.size)

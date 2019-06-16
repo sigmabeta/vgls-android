@@ -12,7 +12,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(val view: ListView) : RecyclerView.Adapter<VH>() {
+@Suppress("TooManyFunctions")
+abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(val view: ListView) :
+    RecyclerView.Adapter<VH>() {
     protected var datasetInternal: List<T>? = null
 
     protected var diffStartTime = 0L
@@ -21,6 +23,7 @@ abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(v
         get() {
             return null
         }
+
         set(value) {
             diffStartTime = System.currentTimeMillis()
             if (value === datasetInternal) {
@@ -40,7 +43,7 @@ abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(v
         return if (item != null) {
             createViewHolder(item, viewType)
         } else {
-            throw RuntimeException("Unable to inflate view of type: $viewType")
+            throw IllegalArgumentException("Unable to inflate view of type: $viewType")
         }
     }
 
@@ -93,6 +96,7 @@ abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(v
 
             return@defer Observable.just(result)
         }
+
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -103,6 +107,7 @@ abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(v
                         },
                         {
                             Timber.e("Error in DiffUtils")
-                        })
+                        }
+)
     }
 }

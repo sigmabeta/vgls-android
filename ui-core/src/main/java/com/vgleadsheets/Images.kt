@@ -1,25 +1,10 @@
 package com.vgleadsheets
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.widget.ImageView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import io.reactivex.Single
 import timber.log.Timber
-
-fun loadBitmapLowQuality(context: Context, path: String): Single<Bitmap> {
-    return Single.create {
-        val bitmap = Picasso.with(context)
-            .load(path)
-            .config(Bitmap.Config.RGB_565)
-            .resize(400, 400)
-            .centerCrop()
-            .get()
-
-        it.onSuccess(bitmap)
-    }
-}
 
 fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Boolean, callback: Callback? = null) {
     val requestCreator = Picasso.with(context)
