@@ -6,7 +6,6 @@ import android.view.View
 import com.airbnb.mvrx.*
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongArgs
-import com.vgleadsheets.games.R
 import com.vgleadsheets.loadImageHighQuality
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Error
