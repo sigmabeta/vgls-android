@@ -52,6 +52,9 @@ subprojects {
 
     android {
         compileSdkVersion 28
+        defaultConfig {
+            minSdkVersion 21
+        }
     }
 
     spotless {

@@ -6,7 +6,6 @@ android {
     defaultConfig {
         applicationId "com.vgleadsheets"
 
-        minSdkVersion 21
         targetSdkVersion 28
 
         versionCode getVersionCode()
