@@ -1,10 +1,4 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-
-android {
-    compileSdkVersion 28
-}
 
 dependencies {
     // TODO Really don't want to expose these dependencies up a level; see if we can't turn these back into `implementation

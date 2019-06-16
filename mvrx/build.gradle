@@ -1,11 +1,3 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
-android {
-    compileSdkVersion 28
-
-}
-
 dependencies {
     // MvRx - an implementation of MVI using Rx
     api "com.airbnb.android:mvrx:$mvrx_version"
