@@ -1,6 +1,7 @@
 package com.vgleadsheets.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
@@ -12,6 +13,7 @@ import com.vgleadsheets.viewer.ViewerFragment
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRouter {
@@ -22,6 +24,11 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+
+        // Configure app for edge-to-edge
+        toplevel.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
         if (savedInstanceState == null) {
             showGameList()

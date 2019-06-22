@@ -2,6 +2,7 @@ package com.vgleadsheets.games
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
@@ -34,6 +35,15 @@ class GameListFragment : VglsFragment(), ListView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         list_games.adapter = adapter
         list_games.layoutManager = LinearLayoutManager(context)
+        list_games.setOnApplyWindowInsetsListener { v, insets ->
+            v.updatePadding(
+                top = insets.systemWindowInsetTop,
+                left = insets.systemWindowInsetLeft,
+                right = insets.systemWindowInsetRight,
+                bottom = insets.systemWindowInsetBottom
+            )
+            insets
+        }
     }
 
     override fun onItemClick(position: Int) {
