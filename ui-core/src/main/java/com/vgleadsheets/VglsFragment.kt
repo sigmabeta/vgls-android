@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
 import com.airbnb.mvrx.BaseMvRxFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
@@ -24,6 +25,11 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = inflater
         .inflate(getLayoutId(), container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        ViewCompat.requestApplyInsets(view)
+    }
 
     protected fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
         Timber.e("Error getting sheets: $message")

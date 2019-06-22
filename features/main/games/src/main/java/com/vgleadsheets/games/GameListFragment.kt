@@ -2,7 +2,6 @@ package com.vgleadsheets.games
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
@@ -21,6 +20,7 @@ import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
 import com.vgleadsheets.repository.Network
 import com.vgleadsheets.repository.Storage
+import com.vgleadsheets.setSimpleInsetListener
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
 
@@ -33,17 +33,10 @@ class GameListFragment : VglsFragment(), ListView {
     private val adapter = GameListAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         list_games.adapter = adapter
         list_games.layoutManager = LinearLayoutManager(context)
-        list_games.setOnApplyWindowInsetsListener { v, insets ->
-            v.updatePadding(
-                top = insets.systemWindowInsetTop,
-                left = insets.systemWindowInsetLeft,
-                right = insets.systemWindowInsetRight,
-                bottom = insets.systemWindowInsetBottom
-            )
-            insets
-        }
+        list_games.setSimpleInsetListener()
     }
 
     override fun onItemClick(position: Int) {

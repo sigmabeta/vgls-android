@@ -22,6 +22,7 @@ import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
 import com.vgleadsheets.repository.Network
 import com.vgleadsheets.repository.Storage
+import com.vgleadsheets.setSimpleInsetListener
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
 
@@ -34,8 +35,10 @@ class SongListFragment : VglsFragment(), ListView {
     private val adapter = SongListAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         list_sheets.adapter = adapter
         list_sheets.layoutManager = LinearLayoutManager(context)
+        list_sheets.setSimpleInsetListener()
     }
 
     override fun onItemClick(position: Int) {
