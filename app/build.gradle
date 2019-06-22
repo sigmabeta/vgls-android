@@ -40,6 +40,11 @@ android {
     packagingOptions {
         exclude 'META-INF/mvrx_release.kotlin_module'
     }
+
+    lintOptions {
+        checkDependencies true
+        ignoreTestSources true
+    }
 }
 
 dependencies {

@@ -31,7 +31,7 @@ jobs:
         command: ./gradlew detekt
     - run:
         name: Android Lint
-        command: ./gradlew lint
+        command: ./gradlew :app:lintDebug
     - run:
         name: Spotless / KTLint
         command: ./gradlew spotlessCheck
