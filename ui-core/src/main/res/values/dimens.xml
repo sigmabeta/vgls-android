@@ -5,4 +5,6 @@
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">32dp</dimen>
     <dimen name="margin_xlarge">64dp</dimen>
+
+    <dimen name="height_search_bar">56dp</dimen>
 </resources>

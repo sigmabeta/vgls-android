@@ -8,7 +8,6 @@ import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
@@ -22,7 +21,7 @@ import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
 import com.vgleadsheets.repository.Network
 import com.vgleadsheets.repository.Storage
-import com.vgleadsheets.setSimpleInsetListener
+import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
 
@@ -36,27 +35,32 @@ class SongListFragment : VglsFragment(), ListView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
+            resources.getDimension(R.dimen.margin_large).toInt()
         list_sheets.adapter = adapter
         list_sheets.layoutManager = LinearLayoutManager(context)
-        list_sheets.setSimpleInsetListener()
+        list_sheets.setInsetListenerForPadding(topOffset = topOffset)
     }
 
     override fun onItemClick(position: Int) {
         viewModel.onItemClick(position)
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
-        if (state.clickedSongId != null) {
-            showSongViewer(state.clickedSongId)
-            viewModel.onSongViewerLaunch()
-            return@withState
-        }
+    override fun invalidate() {
+        super.invalidate()
+        withState(viewModel) { state ->
+            if (state.clickedSongId != null) {
+                showSongViewer(state.clickedSongId)
+                return@withState
+            }
 
-        when (state.data) {
-            is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
-            is Success -> showData(state.data())
+            when (state.data) {
+                is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
+                is Success -> showData(state.data())
+            }
         }
     }
+
 
     override fun getLayoutId() = R.layout.fragment_sheet
 
@@ -74,7 +78,8 @@ class SongListFragment : VglsFragment(), ListView {
     }
 
     private fun showSongViewer(clickedSongId: Long) {
-        (activity as FragmentRouter).showSongViewer(clickedSongId)
+        getFragmentRouter().showSongViewer(clickedSongId)
+        viewModel.onSongViewerLaunch()
     }
 
     private fun showLoading() {

@@ -7,7 +7,6 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
@@ -20,7 +19,7 @@ import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
 import com.vgleadsheets.repository.Network
 import com.vgleadsheets.repository.Storage
-import com.vgleadsheets.setSimpleInsetListener
+import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
 
@@ -34,25 +33,31 @@ class GameListFragment : VglsFragment(), ListView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
+            resources.getDimension(R.dimen.margin_large).toInt()
+
         list_games.adapter = adapter
         list_games.layoutManager = LinearLayoutManager(context)
-        list_games.setSimpleInsetListener()
+        list_games.setInsetListenerForPadding(topOffset = topOffset)
     }
 
     override fun onItemClick(position: Int) {
         viewModel.onItemClick(position)
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
-        if (state.clickedGameId != null) {
-            showSongList(state.clickedGameId)
-            viewModel.onSongListLaunch()
-            return@withState
-        }
+    override fun invalidate() {
+        super.invalidate()
 
-        when (state.data) {
-            is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
-            is Success -> showData(state.data())
+        withState(viewModel) { state ->
+            if (state.clickedGameId != null) {
+                showSongList(state.clickedGameId)
+                return@withState
+            }
+
+            when (state.data) {
+                is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
+                is Success -> showData(state.data())
+            }
         }
     }
 
@@ -68,7 +73,8 @@ class GameListFragment : VglsFragment(), ListView {
     }
 
     private fun showSongList(clickedGameId: Long) {
-        (activity as FragmentRouter).showSongListForGame(clickedGameId)
+        getFragmentRouter().showSongListForGame(clickedGameId)
+        viewModel.onSongListLaunch()
     }
 
     private fun showLoading() {

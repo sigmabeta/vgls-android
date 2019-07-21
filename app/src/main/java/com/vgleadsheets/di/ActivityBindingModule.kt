@@ -2,6 +2,7 @@ package com.vgleadsheets.di
 
 import com.vgleadsheets.games.GameListFragment
 import com.vgleadsheets.main.MainActivity
+import com.vgleadsheets.search.SearchFragment
 import com.vgleadsheets.songs.SongListFragment
 import com.vgleadsheets.viewer.ViewerFragment
 import dagger.Module
@@ -16,6 +17,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeGameListFragmentInjector(): GameListFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeSearchFragmentInjector(): SearchFragment
 
     @FragmentScope
     @ContributesAndroidInjector

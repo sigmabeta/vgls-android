@@ -1,3 +1,5 @@
+rootProject.name = 'VGLeadSheets'
+
 include ':app',
         ':recyclerview',
         ':ui-core',
@@ -8,8 +10,8 @@ include ':app',
         ':model',
         ':repository',
         ':features:main',
+        ':features:main:main-state',
         ':features:main:games',
+        ':features:main:search',
         ':features:main:songs',
         ':features:main:viewer'
-
-rootProject.name = 'VGLeadSheets'

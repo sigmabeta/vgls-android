@@ -3,6 +3,7 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
@@ -64,6 +65,10 @@ class RealRepository constructor(
         .map { it.toSong() }
         .map { it.filename }
         .map { Storage(it) }
+
+    override fun search(searchQuery: String): Observable<List<SearchResult>> = songDao
+        .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { songEntities -> songEntities.map { it.toSearchResult() } }
 
     private fun isTableFresh(tableName: TableName, force: Boolean): Observable<Boolean> {
         return dbStatisticsDao.getLastEditDate(tableName.ordinal)

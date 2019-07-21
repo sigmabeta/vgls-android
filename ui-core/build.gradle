@@ -1,8 +1,14 @@
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
+    // To allow features to interact with MainActivity's state.
+    api project(path: ":features:main:main-state")
+
     // All UI features should depend on MvRx
     api project(path: ':mvrx')
+
+    // RxJava bindings for Android views
+    api 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
 
     // AndroidX libs
     api 'androidx.core:core-ktx:1.0.2'
