@@ -2,6 +2,7 @@ package com.vgleadsheets.repository
 
 import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
@@ -15,6 +16,8 @@ class RealRepository constructor(
 
     private val gameDao = database.gameDao()
     private val songDao = database.songDao()
+    private val composerDao = database.composerDao()
+    private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
 
     override fun getGames(force: Boolean): Observable<Data<List<Game>>> {
@@ -29,26 +32,45 @@ class RealRepository constructor(
                                 game.songs.map { apiSong -> apiSong.toSongEntity(game.game_id) }
                             }
 
-                            gameDao.refreshTable(gameEntities, songDao, dbStatisticsDao, songEntities)
+                            apiGames.map { game ->
+                                game.songs
+                                    .map { apiSong -> apiSong.tags["composer"] as String? }
+                                    .filterNotNull()
+                                    .map { name -> ComposerEntity(null, name) }
+                            }.map { composerEntities ->
+                                val ids = composerDao.insertAll(composerEntities)
+
+                            }
+
+                            gameDao.refreshTable(
+                                gameEntities,
+                                songDao,
+                                composerDao,
+                                songComposerDao,
+                                dbStatisticsDao,
+                                songEntities
+                            )
                         }
-
                         .map<Data<List<Game>>?> { Network() }
-
                         .startWith(Empty())
                 } else {
                     gameDao.getAll()
                         .filter { it.isNotEmpty() }
-
                         .map { gameEntities ->
                             gameEntities.map { gameEntity ->
                                 val songs = songDao
                                     .getSongsForGameSync(gameEntity.id)
-                                    .map { it.toSong() }
-
+                                    .map { songEntity ->
+                                        val composers =
+                                            songComposerDao.getComposersForSong(songEntity.id)
+                                                .map { composerEntity ->
+                                                    composerEntity.toComposer()
+                                                }
+                                        songEntity.toSong(composers)
+                                    }
                                 gameEntity.toGame(songs)
                             }
                         }
-
                         .map { Storage(it) }
                 }
             }
@@ -62,7 +84,7 @@ class RealRepository constructor(
 
     override fun getSongImageUrl(songId: Long): Observable<Data<String>> = songDao
         .getSong(songId)
-        .map { it.toSong() }
+        .map { it.toSong(null) }
         .map { it.filename }
         .map { Storage(it) }
 

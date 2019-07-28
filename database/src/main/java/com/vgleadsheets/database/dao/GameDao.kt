@@ -25,6 +25,8 @@ interface GameDao {
     fun refreshTable(
         gameEntities: List<GameEntity>,
         songDao: SongDao,
+        composerDao: ComposerDao,
+        songComposerDao: SongComposerDao,
         dbStatisticsDao: DbStatisticsDao,
         songs: List<SongEntity>
     ) {

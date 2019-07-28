@@ -5,6 +5,6 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 
 interface VglsApi {
-    @GET("games")
+    @GET("app/digest")
     fun getAllGames(): Observable<List<ApiGame>>
 }

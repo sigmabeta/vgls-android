@@ -9,6 +9,6 @@ class SongViewHolder(view: View, adapter: SongListAdapter) :
     BaseViewHolder<Song, SongViewHolder, SongListAdapter>(view, adapter) {
     override fun bind(toBind: Song) {
         view.text_sheet_name.text = toBind.name
-        view.text_sheet_count.text = "${toBind.pageCount} pages"
+        view.text_sheet_composer.text = toBind.composer
     }
 }
