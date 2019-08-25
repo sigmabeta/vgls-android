@@ -2,23 +2,26 @@ package com.vgleadsheets.model.joins
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.song.Song
+import androidx.room.ForeignKey.CASCADE
+import com.vgleadsheets.model.composer.ComposerEntity
+import com.vgleadsheets.model.song.SongEntity
 
 @Entity(
     tableName = "song_composer_join",
     primaryKeys = ["songId", "composerId"],
     foreignKeys = [
         ForeignKey(
-            entity = Song::class,
+            entity = SongEntity::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("songId")
+            childColumns = arrayOf("songId"),
+            onDelete = CASCADE
         ),
         ForeignKey(
-            entity = Composer::class,
+            entity = ComposerEntity::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("composerId")
+            childColumns = arrayOf("composerId"),
+            onDelete = CASCADE
         )
     ]
 )
-class SongComposerJoin(val songId: Int, val composerId: Int)
+data class SongComposerJoin(val songId: Long, val composerId: Long)

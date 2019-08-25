@@ -4,14 +4,16 @@ import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 
 class RealRepository constructor(
     private val vglsApi: VglsApi,
-    private val database: VglsDatabase
+    database: VglsDatabase
 ) : Repository {
 
     private val gameDao = database.gameDao()
@@ -28,18 +30,24 @@ class RealRepository constructor(
                         .doOnNext { apiGames ->
                             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 
-                            val songEntities = apiGames.flatMap { game ->
-                                game.songs.map { apiSong -> apiSong.toSongEntity(game.game_id) }
-                            }
+                            val songEntities = ArrayList<SongEntity>(500)
+                            val composerEntities = HashSet<ComposerEntity>(500)
+                            val songComposerJoins = ArrayList<SongComposerJoin>(1000)
 
-                            apiGames.map { game ->
-                                game.songs
-                                    .map { apiSong -> apiSong.tags["composer"] as String? }
-                                    .filterNotNull()
-                                    .map { name -> ComposerEntity(null, name) }
-                            }.map { composerEntities ->
-                                val ids = composerDao.insertAll(composerEntities)
+                            apiGames.forEach { apiGame ->
+                                apiGame.songs.forEach { apiSong ->
+                                    apiSong.composers.forEach { apiComposer ->
+                                        val songComposerJoin =
+                                            SongComposerJoin(apiSong.id, apiComposer.id)
+                                        songComposerJoins.add(songComposerJoin)
 
+                                        val composerEntity = apiComposer.toComposerEntity()
+                                        composerEntities.add(composerEntity)
+                                    }
+
+                                    val songEntity = apiSong.toSongEntity(apiGame.game_id)
+                                    songEntities.add(songEntity)
+                                }
                             }
 
                             gameDao.refreshTable(
@@ -48,7 +56,9 @@ class RealRepository constructor(
                                 composerDao,
                                 songComposerDao,
                                 dbStatisticsDao,
-                                songEntities
+                                songEntities,
+                                composerEntities.toList(),
+                                songComposerJoins
                             )
                         }
                         .map<Data<List<Game>>?> { Network() }
@@ -79,12 +89,18 @@ class RealRepository constructor(
     override fun getSongs(gameId: Long): Observable<Data<List<Song>>> = songDao
         .getSongsForGame(gameId)
         .filter { it.isNotEmpty() }
-        .map { songEntities -> songEntities.map { it.toSong() } }
+        .map { songEntities ->
+            songEntities.map { songEntity ->
+                val composers = songComposerDao
+                    .getComposersForSong(songEntity.id)
+                    .map { composerEntity -> composerEntity.toComposer() }
+                songEntity.toSong(composers)
+            }
+        }
         .map { Storage(it) }
 
     override fun getSongImageUrl(songId: Long): Observable<Data<String>> = songDao
         .getSong(songId)
-        .map { it.toSong(null) }
         .map { it.filename }
         .map { Storage(it) }
 

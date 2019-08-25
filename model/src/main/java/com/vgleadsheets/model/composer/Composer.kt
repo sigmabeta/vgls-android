@@ -4,7 +4,7 @@ import com.vgleadsheets.model.ListItem
 import com.vgleadsheets.model.song.Song
 
 data class Composer(
-    val id: Long?,
+    val id: Long,
     val name: String,
     val songs: List<Song>?
 ) : ListItem<Composer> {

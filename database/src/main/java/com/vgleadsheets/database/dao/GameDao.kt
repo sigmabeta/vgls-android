@@ -6,7 +6,9 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.vgleadsheets.database.TableName
 import com.vgleadsheets.model.DbStatisticsEntity
+import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
+import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.song.SongEntity
 import io.reactivex.Observable
 
@@ -28,13 +30,21 @@ interface GameDao {
         composerDao: ComposerDao,
         songComposerDao: SongComposerDao,
         dbStatisticsDao: DbStatisticsDao,
-        songs: List<SongEntity>
+        songs: List<SongEntity>,
+        composerEntities: List<ComposerEntity>,
+        songComposerJoins: List<SongComposerJoin>
     ) {
         nukeTable()
         insertAll(gameEntities)
 
         songDao.nukeTable()
         songDao.insertAll(songs)
+
+        composerDao.nukeTable()
+        composerDao.insertAll(composerEntities)
+
+        songComposerDao.nukeTable()
+        songComposerDao.insertAll(songComposerJoins)
 
         val now = System.currentTimeMillis()
         dbStatisticsDao.insert(DbStatisticsEntity(TableName.GAME.ordinal.toLong(), now))
