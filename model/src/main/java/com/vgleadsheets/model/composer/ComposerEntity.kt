@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 )
 data class ComposerEntity(
     @PrimaryKey val id: Long,
-    val name: String) {
+    val name: String
+) {
     fun toComposer() = Composer(id, name, null)
 }

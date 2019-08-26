@@ -46,7 +46,7 @@ class SearchFragment : VglsFragment(), ListView {
         list_results.layoutManager = LinearLayoutManager(context)
         list_results.setInsetListenerForPadding(topOffset = topOffset)
     }
-    
+
     override fun getLayoutId() = R.layout.fragment_search
 
     override fun invalidate() {

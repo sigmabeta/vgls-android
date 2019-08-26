@@ -10,8 +10,8 @@ data class Composer(
 ) : ListItem<Composer> {
     override fun isTheSameAs(theOther: Composer?) = id == theOther?.id
 
-    override fun hasSameContentAs(theOther: Composer?) = name == theOther?.name
-        && songs?.size == theOther.songs?.size
+    override fun hasSameContentAs(theOther: Composer?) = name == theOther?.name &&
+            songs?.size == theOther.songs?.size
 
     override fun getChangeType(theOther: Composer?) = ListItem.CHANGE_ERROR
 }

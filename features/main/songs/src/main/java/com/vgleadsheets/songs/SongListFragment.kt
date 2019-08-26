@@ -61,7 +61,6 @@ class SongListFragment : VglsFragment(), ListView {
         }
     }
 
-
     override fun getLayoutId() = R.layout.fragment_sheet
 
     private fun showData(data: Data<List<Song>>?) {

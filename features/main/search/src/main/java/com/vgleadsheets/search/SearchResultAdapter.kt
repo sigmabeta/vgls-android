@@ -12,4 +12,3 @@ class SearchResultAdapter(view: ListView) : BaseArrayAdapter<SearchResult, Searc
 
     override fun getLayoutId(item: SearchResult?) = R.layout.list_item_search_result
 }
-

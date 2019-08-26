@@ -6,7 +6,7 @@ data class SearchResult(
     val id: Long,
     val type: SearchResultType,
     val name: String
-): ListItem<SearchResult> {
+) : ListItem<SearchResult> {
     override fun isTheSameAs(theOther: SearchResult?) = id == theOther?.id
 
     override fun hasSameContentAs(theOther: SearchResult?) = name == theOther?.name && type == theOther.type
