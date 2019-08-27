@@ -11,6 +11,7 @@ import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 
 class RealRepository constructor(
     private val vglsApi: VglsApi,
@@ -109,7 +110,11 @@ class RealRepository constructor(
         Observable.combineLatest(
             searchSongs(searchQuery),
             searchGames(searchQuery),
-            BiFunction<List<SearchResult>, List<SearchResult>, List<SearchResult>> { songs, games -> songs + games })
+            searchComposers(searchQuery),
+            Function3 { songs: List<SearchResult>, games: List<SearchResult>, composers: List<SearchResult> ->
+                songs + games + composers
+            }
+        )
 
     private fun searchSongs(searchQuery: String): Observable<List<SearchResult>> {
         return songDao
@@ -121,6 +126,12 @@ class RealRepository constructor(
         return gameDao
             .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
             .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
+    }
+
+    private fun searchComposers(searchQuery: String): Observable<List<SearchResult>> {
+        return composerDao
+            .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+            .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
     }
 
     private fun isTableFresh(tableName: TableName, force: Boolean): Observable<Boolean> {

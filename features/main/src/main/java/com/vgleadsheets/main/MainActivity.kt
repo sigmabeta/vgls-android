@@ -90,7 +90,7 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
 
     override fun searchEvents() = edit_search_query
         .afterTextChangeEvents()
-        .throttleLast(1000, TimeUnit.MILLISECONDS)
+        .throttleLast(1500, TimeUnit.MILLISECONDS)
         .map { it.editable.toString() }
 
     override fun hideSearch() {

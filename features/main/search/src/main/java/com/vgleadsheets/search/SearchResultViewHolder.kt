@@ -11,7 +11,7 @@ class SearchResultViewHolder(view: View, adapter: SearchResultAdapter) :
     override fun bind(toBind: SearchResult) {
         val stringId = when (toBind.type) {
             SearchResultType.GAME -> R.string.label_type_game
-            SearchResultType.ARTIST -> R.string.label_type_composer
+            SearchResultType.COMPOSER -> R.string.label_type_composer
             SearchResultType.SONG -> R.string.label_type_song
         }
         view.text_result_name.text = toBind.name
