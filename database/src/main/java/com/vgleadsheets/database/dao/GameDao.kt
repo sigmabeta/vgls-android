@@ -17,6 +17,9 @@ interface GameDao {
     @Query("SELECT * FROM game ORDER BY name")
     fun getAll(): Observable<List<GameEntity>>
 
+    @Query("SELECT * FROM game WHERE name LIKE :title")
+    fun searchGamesByTitle(title: String): Observable<List<GameEntity>>
+
     @Insert
     fun insertAll(gameEntities: List<GameEntity>): LongArray
 

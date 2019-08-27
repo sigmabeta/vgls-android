@@ -10,6 +10,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 
 class RealRepository constructor(
     private val vglsApi: VglsApi,
@@ -104,9 +105,23 @@ class RealRepository constructor(
         .map { it.filename }
         .map { Storage(it) }
 
-    override fun search(searchQuery: String): Observable<List<SearchResult>> = songDao
-        .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { songEntities -> songEntities.map { it.toSearchResult() } }
+    override fun search(searchQuery: String): Observable<List<SearchResult>> =
+        Observable.combineLatest(
+            searchSongs(searchQuery),
+            searchGames(searchQuery),
+            BiFunction<List<SearchResult>, List<SearchResult>, List<SearchResult>> { songs, games -> songs + games })
+
+    private fun searchSongs(searchQuery: String): Observable<List<SearchResult>> {
+        return songDao
+            .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+            .map { songEntities -> songEntities.map { it.toSearchResult() } }
+    }
+
+    private fun searchGames(searchQuery: String): Observable<List<SearchResult>> {
+        return gameDao
+            .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+            .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
+    }
 
     private fun isTableFresh(tableName: TableName, force: Boolean): Observable<Boolean> {
         return dbStatisticsDao.getLastEditDate(tableName.ordinal)
