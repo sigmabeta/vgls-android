@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Main</string>
+    <string name="hint_search">Search for a song...</string>
 </resources>

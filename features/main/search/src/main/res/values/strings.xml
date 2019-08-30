@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_type_game">Game</string>
+    <string name="label_type_composer">Composer</string>
+    <string name="label_type_song">Song</string>
+
+    <string name="sample_text_result">Baden National Golf Course</string>
+    <string name="sample_text_result_type">Song</string>
+</resources>

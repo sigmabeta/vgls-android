@@ -4,7 +4,10 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
+import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.GameEntity
+import com.vgleadsheets.model.search.SearchResult
+import com.vgleadsheets.model.search.SearchResultType
 
 @Suppress("ConstructorParameterNaming")
 @Entity(
@@ -24,5 +27,7 @@ data class SongEntity(
     val pageCount: Int,
     val game_id: Long
 ) {
-    fun toSong() = Song(id, filename, name, pageCount)
+    fun toSong(composers: List<Composer>) = Song(id, filename, name, pageCount, composers)
+
+    fun toSearchResult() = SearchResult(id, SearchResultType.SONG, name)
 }

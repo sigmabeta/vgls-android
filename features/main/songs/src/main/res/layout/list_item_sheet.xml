@@ -22,7 +22,7 @@
 
     <TextView
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            android:id="@+id/text_sheet_count"
+            android:id="@+id/text_sheet_composer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +33,6 @@
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
-            tools:text="@string/sample_text_page_count"/>
+            tools:text="@string/sample_text_composer"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,9 @@ interface SongDao {
     @Query("SELECT * FROM song WHERE id = :songId")
     fun getSong(songId: Long): Observable<SongEntity>
 
+    @Query("SELECT * FROM song WHERE name LIKE :title")
+    fun searchSongsByTitle(title: String): Observable<List<SongEntity>>
+
     @Insert
     fun insertAll(songs: List<SongEntity>)
 
