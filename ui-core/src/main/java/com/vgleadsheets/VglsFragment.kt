@@ -13,7 +13,7 @@ import com.airbnb.mvrx.BaseMvRxFragment
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
-import com.vgleadsheets.main.MainActivityViewModel
+import com.vgleadsheets.mainstate.MainActivityViewModel
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 

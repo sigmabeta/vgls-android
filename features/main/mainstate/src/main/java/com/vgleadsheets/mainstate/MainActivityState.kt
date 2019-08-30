@@ -1,4 +1,4 @@
-package com.vgleadsheets.main
+package com.vgleadsheets.mainstate
 
 import com.airbnb.mvrx.MvRxState
 
