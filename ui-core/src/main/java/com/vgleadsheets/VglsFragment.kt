@@ -17,6 +17,7 @@ import com.vgleadsheets.main.MainActivityViewModel
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 
+@Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {
     @LayoutRes
     abstract fun getLayoutId(): Int

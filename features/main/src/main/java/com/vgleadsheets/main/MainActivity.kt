@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRouter {
 
     @Inject lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -42,8 +43,8 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
 
         // Configure app for edge-to-edge
         toplevel.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
         // Configure search bar insets
         card_search.setInsetListenerForMargin(offset = resources.getDimension(R.dimen.margin_medium).toInt())
@@ -86,11 +87,11 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
     }
 
     override fun searchClicks() = card_search.clicks()
-        .throttleFirst(200, TimeUnit.MILLISECONDS)
+        .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)
 
     override fun searchEvents() = edit_search_query
         .afterTextChangeEvents()
-        .throttleLast(1500, TimeUnit.MILLISECONDS)
+        .throttleLast(THRESHOLD_SEARCH_EVENTS, TimeUnit.MILLISECONDS)
         .map { it.editable.toString() }
 
     override fun hideSearch() {
@@ -113,4 +114,9 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
     }
 
     private fun getDisplayedFragment() = supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment
+
+    companion object {
+        const val THRESHOLD_SEARCH_EVENTS = 1500L
+        const val THRESHOLD_SEARCH_CLICKS = 200L
+    }
 }

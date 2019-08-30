@@ -10,7 +10,6 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function3
 
 class RealRepository constructor(
@@ -32,9 +31,9 @@ class RealRepository constructor(
                         .doOnNext { apiGames ->
                             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 
-                            val songEntities = ArrayList<SongEntity>(500)
-                            val composerEntities = HashSet<ComposerEntity>(500)
-                            val songComposerJoins = ArrayList<SongComposerJoin>(1000)
+                            val songEntities = ArrayList<SongEntity>(CAPACITY)
+                            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
+                            val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
 
                             apiGames.forEach { apiGame ->
                                 apiGame.songs.forEach { apiSong ->
@@ -116,18 +115,21 @@ class RealRepository constructor(
             }
         )
 
+    @Suppress("MaxLineLength")
     private fun searchSongs(searchQuery: String): Observable<List<SearchResult>> {
         return songDao
             .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
             .map { songEntities -> songEntities.map { it.toSearchResult() } }
     }
 
+    @Suppress("MaxLineLength")
     private fun searchGames(searchQuery: String): Observable<List<SearchResult>> {
         return gameDao
             .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
             .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
     }
 
+    @Suppress("MaxLineLength")
     private fun searchComposers(searchQuery: String): Observable<List<SearchResult>> {
         return composerDao
             .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
@@ -136,10 +138,13 @@ class RealRepository constructor(
 
     private fun isTableFresh(tableName: TableName, force: Boolean): Observable<Boolean> {
         return dbStatisticsDao.getLastEditDate(tableName.ordinal)
-            .map { lastEdit -> force || System.currentTimeMillis() - lastEdit.last_edit_time_ms < AGE_THRESHOLD }
+            .map { lastEdit ->
+                force || System.currentTimeMillis() - lastEdit.last_edit_time_ms < AGE_THRESHOLD
+            }
     }
 
     companion object {
         const val AGE_THRESHOLD = 60000L
+        const val CAPACITY = 500
     }
 }
