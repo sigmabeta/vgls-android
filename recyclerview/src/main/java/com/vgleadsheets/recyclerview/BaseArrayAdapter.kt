@@ -13,17 +13,14 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
-abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(val view: ListView) :
+abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>() :
     RecyclerView.Adapter<VH>() {
     protected var datasetInternal: List<T>? = null
 
     protected var diffStartTime = 0L
 
     var dataset: List<T>?
-        get() {
-            return null
-        }
-
+        get() = datasetInternal
         set(value) {
             diffStartTime = System.currentTimeMillis()
             if (value === datasetInternal) {
@@ -63,9 +60,7 @@ abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>(v
 
     override fun getItemViewType(position: Int) = getLayoutId(getItem(position)) ?: -1
 
-    fun onItemClick(position: Int) {
-        view.onItemClick(position)
-    }
+    abstract fun onItemClick(position: Int)
 
     abstract fun createViewHolder(view: View, viewType: Int): VH
 

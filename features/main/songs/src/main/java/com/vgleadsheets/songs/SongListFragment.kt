@@ -3,11 +3,7 @@ package com.vgleadsheets.songs
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
@@ -15,23 +11,22 @@ import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.recyclerview.ListView
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
+import com.vgleadsheets.repository.*
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
 
-class SongListFragment : VglsFragment(), ListView {
+class SongListFragment : VglsFragment() {
     @Inject
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
 
     private val viewModel: SongListViewModel by fragmentViewModel()
 
     private val adapter = SongListAdapter(this)
+
+    fun onItemClick(clickedSongId: Long) {
+        showSongViewer(clickedSongId)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,18 +37,8 @@ class SongListFragment : VglsFragment(), ListView {
         list_sheets.setInsetListenerForPadding(topOffset = topOffset)
     }
 
-    override fun onItemClick(position: Int) {
-        viewModel.onItemClick(position)
-    }
-
     override fun invalidate() {
-        super.invalidate()
         withState(viewModel) { state ->
-            if (state.clickedSongId != null) {
-                showSongViewer(state.clickedSongId)
-                return@withState
-            }
-
             when (state.data) {
                 is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
                 is Success -> showData(state.data())
@@ -78,7 +63,6 @@ class SongListFragment : VglsFragment(), ListView {
 
     private fun showSongViewer(clickedSongId: Long) {
         getFragmentRouter().showSongViewer(clickedSongId)
-        viewModel.onSongViewerLaunch()
     }
 
     private fun showLoading() {

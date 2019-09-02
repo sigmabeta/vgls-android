@@ -54,8 +54,6 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
         }
     }
 
-    override fun onBackPressed() = getDisplayedFragment().onBackPressed()
-
     override fun showGameList() {
         // TODO Clear back stack before doing this.
         supportFragmentManager.beginTransaction()
@@ -100,10 +98,6 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
 
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(edit_search_query.windowToken, HIDE_IMPLICIT_ONLY)
-    }
-
-    override fun popBackStack() {
-        super.onBackPressed()
     }
 
     private fun showFragmentSimple(fragment: Fragment) {

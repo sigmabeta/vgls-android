@@ -13,23 +13,22 @@ import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.recyclerview.ListView
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
+import com.vgleadsheets.repository.*
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
 
-class GameListFragment : VglsFragment(), ListView {
+class GameListFragment : VglsFragment() {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
     private val viewModel: GameListViewModel by fragmentViewModel()
 
     private val adapter = GameListAdapter(this)
+
+    fun onItemClick(clickedGameId: Long) {
+        showSongList(clickedGameId)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,19 +40,8 @@ class GameListFragment : VglsFragment(), ListView {
         list_games.setInsetListenerForPadding(topOffset = topOffset)
     }
 
-    override fun onItemClick(position: Int) {
-        viewModel.onItemClick(position)
-    }
-
     override fun invalidate() {
-        super.invalidate()
-
         withState(viewModel) { state ->
-            if (state.clickedGameId != null) {
-                showSongList(state.clickedGameId)
-                return@withState
-            }
-
             when (state.data) {
                 is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
                 is Success -> showData(state.data())
@@ -74,7 +62,6 @@ class GameListFragment : VglsFragment(), ListView {
 
     private fun showSongList(clickedGameId: Long) {
         getFragmentRouter().showSongListForGame(clickedGameId)
-        viewModel.onSongListLaunch()
     }
 
     private fun showLoading() {

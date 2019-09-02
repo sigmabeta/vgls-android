@@ -3,11 +3,7 @@ package com.vgleadsheets.viewer
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.loadImageHighQuality
@@ -29,7 +25,6 @@ class ViewerFragment : VglsFragment() {
     override fun getLayoutId() = R.layout.fragment_viewer
 
     override fun invalidate() = withState(viewModel) { state ->
-        super.invalidate()
         when (state.data) {
             is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
             is Success -> showData(state.data())

@@ -9,8 +9,7 @@ import com.vgleadsheets.repository.Data
 
 data class SongListState(
     val gameId: Long,
-    val data: Async<Data<List<Song>>> = Uninitialized,
-    val clickedSongId: Long? = null
+    val data: Async<Data<List<Song>>> = Uninitialized
 ) : MvRxState {
     constructor(idArgs: IdArgs) : this(idArgs.id)
 }

@@ -5,10 +5,8 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.repository.Storage
 
 class SongListViewModel @AssistedInject constructor(
     @Assisted initialState: SongListState,
@@ -16,15 +14,6 @@ class SongListViewModel @AssistedInject constructor(
 ) : MvRxViewModel<SongListState>(initialState) {
     init {
         fetchSongs()
-    }
-
-    fun onItemClick(position: Int) = withState { state ->
-        val data = state.data() as Storage<List<Song>>
-        setState { copy(clickedSongId = data.data[position].id) }
-    }
-
-    fun onSongViewerLaunch() {
-        setState { copy(clickedSongId = null) }
     }
 
     private fun fetchSongs() = withState { state ->

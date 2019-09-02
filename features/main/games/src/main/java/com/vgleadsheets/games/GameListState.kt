@@ -7,6 +7,5 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.repository.Data
 
 data class GameListState(
-    val data: Async<Data<List<Game>>> = Uninitialized,
-    val clickedGameId: Long? = null
+    val data: Async<Data<List<Game>>> = Uninitialized
 ) : MvRxState
