@@ -24,16 +24,24 @@ class SearchFragment : VglsFragment() {
 
     private val viewModel: SearchViewModel by fragmentViewModel()
 
-    private val adapter = SearchResultAdapter()
+    private val adapter = SearchResultAdapter(this)
+
+    fun onGameClicked(id: Long) {
+        getFragmentRouter().showSongListForGame(id)
+    }
+
+    fun onSongClicked(id: Long) {
+        getFragmentRouter().showSongViewer(id)
+    }
+
+    fun onComposerClicked(id: Long) {
+        showSnackbar("Clicked composer id $id.")
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainViewModel.subscribeToSearchTextEntry(getFragmentRouter())
     }
-
-//    override fun onItemClick(position: Int) {
-//        viewModel.onItemClick(position)
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
