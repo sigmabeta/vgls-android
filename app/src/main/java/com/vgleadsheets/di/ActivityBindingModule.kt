@@ -1,10 +1,10 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.games.GameListFragment
+import com.vgleadsheets.features.main.games.GameListFragment
+import com.vgleadsheets.features.main.search.SearchFragment
+import com.vgleadsheets.features.main.songs.SongListFragment
+import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.main.MainActivity
-import com.vgleadsheets.search.SearchFragment
-import com.vgleadsheets.songs.SongListFragment
-import com.vgleadsheets.viewer.ViewerFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

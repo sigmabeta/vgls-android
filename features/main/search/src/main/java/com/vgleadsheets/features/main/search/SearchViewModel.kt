@@ -1,4 +1,4 @@
-package com.vgleadsheets.search
+package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory

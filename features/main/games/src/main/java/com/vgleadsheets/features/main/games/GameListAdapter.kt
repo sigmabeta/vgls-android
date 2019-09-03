@@ -1,4 +1,4 @@
-package com.vgleadsheets.games
+package com.vgleadsheets.features.main.games
 
 import android.view.View
 import com.vgleadsheets.model.game.Game

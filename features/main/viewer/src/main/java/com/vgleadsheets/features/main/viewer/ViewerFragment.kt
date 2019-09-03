@@ -1,13 +1,9 @@
-package com.vgleadsheets.viewer
+package com.vgleadsheets.features.main.viewer
 
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.loadImageHighQuality

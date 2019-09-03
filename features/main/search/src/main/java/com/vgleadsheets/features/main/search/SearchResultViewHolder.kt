@@ -1,4 +1,4 @@
-package com.vgleadsheets.search
+package com.vgleadsheets.features.main.search
 
 import android.view.View
 import com.vgleadsheets.model.search.SearchResult

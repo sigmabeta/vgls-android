@@ -1,4 +1,4 @@
-package com.vgleadsheets.songs
+package com.vgleadsheets.features.main.songs
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState

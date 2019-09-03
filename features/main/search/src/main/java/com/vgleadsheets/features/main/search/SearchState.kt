@@ -1,4 +1,4 @@
-package com.vgleadsheets.search
+package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState

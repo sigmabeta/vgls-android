@@ -1,4 +1,4 @@
-package com.vgleadsheets.games
+package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState

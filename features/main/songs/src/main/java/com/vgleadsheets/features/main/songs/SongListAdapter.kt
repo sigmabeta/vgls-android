@@ -1,4 +1,4 @@
-package com.vgleadsheets.songs
+package com.vgleadsheets.features.main.songs
 
 import android.view.View
 import com.vgleadsheets.model.song.Song

@@ -1,4 +1,4 @@
-package com.vgleadsheets.games
+package com.vgleadsheets.features.main.games
 
 import android.os.Bundle
 import android.view.View
@@ -13,11 +13,7 @@ import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
+import com.vgleadsheets.repository.*
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
