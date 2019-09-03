@@ -10,5 +10,4 @@ interface FragmentRouter {
     fun searchClicks(): Observable<Unit>
     fun searchEvents(): Observable<String>
     fun hideSearch()
-    fun popBackStack()
 }

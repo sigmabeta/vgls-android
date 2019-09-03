@@ -1,2 +1,1 @@
-<manifest
-        package="com.vgleadsheets.songs"/>
+<manifest package="com.vgleadsheets.features.main.songs" />

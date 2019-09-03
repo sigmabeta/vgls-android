@@ -1,4 +1,4 @@
-package com.vgleadsheets.songs
+package com.vgleadsheets.features.main.songs
 
 import android.os.Bundle
 import android.view.View
@@ -15,7 +15,6 @@ import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.recyclerview.ListView
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
@@ -25,13 +24,17 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
 
-class SongListFragment : VglsFragment(), ListView {
+class SongListFragment : VglsFragment() {
     @Inject
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
 
     private val viewModel: SongListViewModel by fragmentViewModel()
 
     private val adapter = SongListAdapter(this)
+
+    fun onItemClick(clickedSongId: Long) {
+        showSongViewer(clickedSongId)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,18 +45,8 @@ class SongListFragment : VglsFragment(), ListView {
         list_sheets.setInsetListenerForPadding(topOffset = topOffset)
     }
 
-    override fun onItemClick(position: Int) {
-        viewModel.onItemClick(position)
-    }
-
     override fun invalidate() {
-        super.invalidate()
         withState(viewModel) { state ->
-            if (state.clickedSongId != null) {
-                showSongViewer(state.clickedSongId)
-                return@withState
-            }
-
             when (state.data) {
                 is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
                 is Success -> showData(state.data())
@@ -78,7 +71,6 @@ class SongListFragment : VglsFragment(), ListView {
 
     private fun showSongViewer(clickedSongId: Long) {
         getFragmentRouter().showSongViewer(clickedSongId)
-        viewModel.onSongViewerLaunch()
     }
 
     private fun showLoading() {

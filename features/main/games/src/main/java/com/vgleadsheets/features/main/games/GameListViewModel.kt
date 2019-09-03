@@ -1,14 +1,12 @@
-package com.vgleadsheets.games
+package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.repository.Storage
 
 class GameListViewModel @AssistedInject constructor(
     @Assisted initialState: GameListState,
@@ -16,15 +14,6 @@ class GameListViewModel @AssistedInject constructor(
 ) : MvRxViewModel<GameListState>(initialState) {
     init {
         fetchGames()
-    }
-
-    fun onItemClick(position: Int) = withState { state ->
-        val data = state.data() as Storage<List<Game>>
-        setState { copy(clickedGameId = data.data[position].id) }
-    }
-
-    fun onSongListLaunch() {
-        setState { copy(clickedGameId = null) }
     }
 
     private fun fetchGames() {

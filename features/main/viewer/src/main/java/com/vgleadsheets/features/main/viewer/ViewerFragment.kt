@@ -1,4 +1,4 @@
-package com.vgleadsheets.viewer
+package com.vgleadsheets.features.main.viewer
 
 import android.net.Uri
 import android.os.Bundle
@@ -29,7 +29,6 @@ class ViewerFragment : VglsFragment() {
     override fun getLayoutId() = R.layout.fragment_viewer
 
     override fun invalidate() = withState(viewModel) { state ->
-        super.invalidate()
         when (state.data) {
             is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
             is Success -> showData(state.data())
