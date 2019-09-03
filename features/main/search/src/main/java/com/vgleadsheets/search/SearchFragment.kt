@@ -4,7 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
@@ -16,6 +21,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class SearchFragment : VglsFragment() {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
@@ -46,7 +52,7 @@ class SearchFragment : VglsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-            resources.getDimension(R.dimen.margin_large).toInt()
+                resources.getDimension(R.dimen.margin_large).toInt()
 
         list_results.adapter = adapter
         list_results.layoutManager = LinearLayoutManager(context)
@@ -64,8 +70,8 @@ class SearchFragment : VglsFragment() {
 
             when (localState.results) {
                 is Fail -> showError(
-                    localState.results.error.message ?: localState.results.error::class.simpleName
-                    ?: "Unknown Error"
+                        localState.results.error.message ?: localState.results.error::class.simpleName
+                        ?: "Unknown Error"
                 )
                 is Loading -> showLoading()
                 is Success -> showResults(localState.results())

@@ -10,7 +10,7 @@ import com.vgleadsheets.model.ListItem
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
-abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>>() :
+abstract class BaseArrayAdapter<T : ListItem<T>, VH : BaseViewHolder<*, *, *>> :
     ListAdapter<T, VH>(object : DiffUtil.ItemCallback<T>() {
         override fun areItemsTheSame(oldItem: T, newItem: T) = oldItem.isTheSameAs(newItem)
 
