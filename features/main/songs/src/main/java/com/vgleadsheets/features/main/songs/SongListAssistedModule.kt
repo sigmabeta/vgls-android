@@ -1,4 +1,4 @@
-package com.vgleadsheets.di
+package com.vgleadsheets.features.main.songs
 
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module
