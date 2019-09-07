@@ -14,4 +14,5 @@ include ':app',
         ':features:main:games',
         ':features:main:search',
         ':features:main:songs',
-        ':features:main:viewer'
+        ':features:main:viewer',
+        ':features:main:hud'
