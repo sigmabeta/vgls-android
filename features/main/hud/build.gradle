@@ -1,11 +1,8 @@
 // Uncomment whichever of these plugins you need (for a UI feature, probably both)
-// apply plugin: 'kotlin-kapt'
-// apply plugin: 'kotlin-android-extensions'
+ apply plugin: 'kotlin-kapt'
+ apply plugin: 'kotlin-android-extensions'
 
 dependencies {
-	// Add whatever dependencies you need. Examples provided for a UI feature.
-
-	/*
     implementation project(path: ':repository')
     implementation project(path: ':recyclerview')
     implementation project(path: ':ui-core')
@@ -33,5 +30,4 @@ dependencies {
     // AssistedInject Annotation Processors
     compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
     kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
-    */
 }
