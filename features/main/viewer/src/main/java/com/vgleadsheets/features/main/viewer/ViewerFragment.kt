@@ -2,6 +2,7 @@ package com.vgleadsheets.features.main.viewer
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
@@ -29,10 +30,19 @@ class ViewerFragment : VglsFragment() {
 
     private val songArgs: SongArgs by args()
 
-    override fun invalidate() = withState(viewModel) { state ->
-        when (state.data) {
-            is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
-            is Success -> showData(state.data())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        image_sheet.setOnClickListener { hudViewModel.showHud()}
+    }
+
+    override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
+        if (hudState.hudVisible) {
+            hudViewModel.startHudTimer()
+        }
+
+        when (viewerState.data) {
+            is Fail -> showError(viewerState.data.error.message ?: viewerState.data.error::class.simpleName ?: "Unknown Error")
+            is Success -> showData(viewerState.data())
         }
     }
 
@@ -52,7 +62,7 @@ class ViewerFragment : VglsFragment() {
     }
 
     private fun showSheet(sheet: String) {
-        hudViewModel.hideHud()
+//        hudViewModel.hideHud()
         image_sheet.loadImageFull(
             "https://vgleadsheets.com/assets/sheets/png/C/" + Uri.encode(sheet) + "-1.png")
     }

@@ -24,7 +24,7 @@ private const val SCALE_NOTHING = 0.0f
 
 private const val TRANSLATION_CENTER = 0.0f
 
-private const val INTERPOLATOR_FACTOR = 3.0f
+private const val INTERPOLATOR_FACTOR = 2.0f
 
 private val ACCELERATE = AccelerateInterpolator(INTERPOLATOR_FACTOR)
 private val DECELERATE = DecelerateInterpolator(INTERPOLATOR_FACTOR)
