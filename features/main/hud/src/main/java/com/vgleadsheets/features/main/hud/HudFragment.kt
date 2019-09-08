@@ -11,6 +11,8 @@ import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeOutGone
+import com.vgleadsheets.animation.slideViewOnscreen
+import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.setInsetListenerForMargin
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.*
@@ -48,8 +50,14 @@ class HudFragment : VglsFragment() {
         disposables.clear()
     }
 
-    override fun invalidate() = withState(viewModel) {
-        if (it.searchVisible) {
+    override fun invalidate() = withState(viewModel) { state ->
+        if (state.hudVisible) {
+            showHud()
+        } else {
+            hideHud()
+        }
+
+        if (state.searchVisible) {
             showSearch()
         } else {
             hideSearch()
@@ -79,6 +87,18 @@ class HudFragment : VglsFragment() {
 
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
         imm?.hideSoftInputFromWindow(edit_search_query.windowToken, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    }
+
+    private fun showHud() {
+        if (card_search.visibility != View.VISIBLE) {
+            card_search.slideViewOnscreen()
+        }
+    }
+
+    private fun hideHud() {
+        if (card_search.visibility != View.GONE) {
+            card_search.slideViewUpOffscreen()
+        }
     }
 
     private fun searchClicks() = card_search.clicks()

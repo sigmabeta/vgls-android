@@ -20,4 +20,16 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
             setState { copy(searchVisible = false, searchQuery = null) }
         }
     }
+
+    fun hideHud() = withState { state ->
+        if (state.hudVisible) {
+            setState { copy(hudVisible = false) }
+        }
+    }
+
+    fun showHud() = withState { state ->
+        if (!state.hudVisible) {
+            setState { copy(hudVisible = true) }
+        }
+    }
 }

@@ -9,10 +9,10 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
-import java.util.ArrayList
+import java.util.*
 
-private val ACCELERATE = AccelerateInterpolator()
-private val DECELERATE = DecelerateInterpolator()
+private val ACCELERATE = AccelerateInterpolator(3.0f)
+private val DECELERATE = DecelerateInterpolator(3.0f)
 private val ACC_DECELERATE = AccelerateDecelerateInterpolator()
 
 private const val DURATION_SLOW = 300L
@@ -29,12 +29,22 @@ private const val SCALE_NOTHING = 0.0f
 
 private const val TRANSLATION_CENTER = 0.0f
 
-fun View.slideViewOffscreen(): ViewPropertyAnimator {
+fun View.slideViewUpOffscreen(): ViewPropertyAnimator {
     return animate()
         .withLayer()
-        .setInterpolator(ACCELERATE)
+        .setInterpolator(DECELERATE)
         .setDuration(DURATION_SLOW)
-        .translationY(height.toFloat())
+        .translationY(-height.toFloat() * 2)
+        .withEndAction { visibility = View.GONE}
+}
+
+fun View.slideViewDownOffscreen(): ViewPropertyAnimator {
+    return animate()
+        .withLayer()
+        .setInterpolator(DECELERATE)
+        .setDuration(DURATION_SLOW)
+        .translationY(-height.toFloat() * 2)
+        .withEndAction { visibility = View.GONE}
 }
 
 fun View.slideViewOnscreen(): ViewPropertyAnimator {
