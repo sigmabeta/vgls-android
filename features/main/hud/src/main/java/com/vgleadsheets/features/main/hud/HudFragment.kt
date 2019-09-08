@@ -65,6 +65,7 @@ class HudFragment : VglsFragment() {
 
         text_search_hint.fadeOutGone()
         edit_search_query.fadeIn()
+        edit_search_query.requestFocus()
 
         getFragmentRouter().showSearch()
     }
