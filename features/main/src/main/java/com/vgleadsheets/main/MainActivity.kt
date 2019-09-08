@@ -37,7 +37,6 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
-
         if (savedInstanceState == null) {
             addHud()
             showGameList()

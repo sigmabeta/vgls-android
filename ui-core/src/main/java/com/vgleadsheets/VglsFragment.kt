@@ -18,7 +18,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
     @LayoutRes
     abstract fun getLayoutId(): Int
 
-    abstract fun getVglsFragmentTag() : String
+    abstract fun getVglsFragmentTag(): String
 
     open fun onBackPress() = Unit
 

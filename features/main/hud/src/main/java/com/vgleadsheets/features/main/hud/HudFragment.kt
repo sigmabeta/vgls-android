@@ -18,6 +18,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.*
 import java.util.concurrent.TimeUnit
 
+@Suppress("TooManyFunctions")
 class HudFragment : VglsFragment() {
     private val viewModel: HudViewModel by activityViewModel()
 
