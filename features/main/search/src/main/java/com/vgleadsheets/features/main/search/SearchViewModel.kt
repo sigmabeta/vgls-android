@@ -14,9 +14,10 @@ class SearchViewModel @AssistedInject constructor(
     private val repository: Repository
 ) : MvRxViewModel<SearchState>(initialState) {
     fun startQuery(searchQuery: String) {
-        withState {
-            if (it.query != searchQuery) {
+        withState { state ->
+            if (state.query != searchQuery) {
                 setState { copy(query = searchQuery) }
+
                 repository.search(searchQuery)
                     .execute {
                         copy(results = it)

@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.search
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,7 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
-import com.vgleadsheets.mainstate.MainActivityViewModel
+import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -26,7 +25,7 @@ class SearchFragment : VglsFragment() {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
-    private val mainViewModel: MainActivityViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by activityViewModel()
 
     private val viewModel: SearchViewModel by fragmentViewModel()
 
@@ -44,11 +43,6 @@ class SearchFragment : VglsFragment() {
         showSnackbar("Clicked composer id $id.")
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mainViewModel.subscribeToSearchTextEntry(getFragmentRouter())
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
@@ -62,8 +56,8 @@ class SearchFragment : VglsFragment() {
     override fun getLayoutId() = R.layout.fragment_search
 
     override fun invalidate() {
-        withState(mainViewModel, viewModel) { activityState, localState ->
-            val query = activityState.searchQuery
+        withState(hudViewModel, viewModel) { hudState, localState ->
+            val query = hudState.searchQuery
             if (!query.isNullOrEmpty()) {
                 viewModel.startQuery(query)
             }

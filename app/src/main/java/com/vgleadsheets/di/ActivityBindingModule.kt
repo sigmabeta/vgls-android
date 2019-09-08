@@ -1,6 +1,7 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.features.main.games.GameListFragment
+import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
@@ -29,4 +30,8 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeViewerFragmentInjector(): ViewerFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeHudFragmentInjector(): HudFragment
 }
