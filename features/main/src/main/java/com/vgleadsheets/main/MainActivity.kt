@@ -67,11 +67,18 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
         )
     ))
 
-    private fun showFragmentSimple(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_fragment, fragment)
-            .addToBackStack(null)
-            .commit()
+    override fun onBackPressed() {
+        getDisplayedFragment().onBackPress()
+        super.onBackPressed()
+    }
+
+    private fun showFragmentSimple(fragment: VglsFragment) {
+        if (getDisplayedFragment().getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_fragment, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun getDisplayedFragment() = supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment

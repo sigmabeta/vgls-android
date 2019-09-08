@@ -2,13 +2,14 @@ package com.vgleadsheets.features.main.viewer
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.loadImageHighQuality
 import com.vgleadsheets.repository.Data
@@ -23,10 +24,7 @@ class ViewerFragment : VglsFragment() {
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    }
-
-    override fun getLayoutId() = R.layout.fragment_viewer
+    private val idArgs: IdArgs by args()
 
     override fun invalidate() = withState(viewModel) { state ->
         when (state.data) {
@@ -34,6 +32,10 @@ class ViewerFragment : VglsFragment() {
             is Success -> showData(state.data())
         }
     }
+
+    override fun getLayoutId() = R.layout.fragment_viewer
+
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     private fun showData(data: Data<String>?) {
         when (data) {

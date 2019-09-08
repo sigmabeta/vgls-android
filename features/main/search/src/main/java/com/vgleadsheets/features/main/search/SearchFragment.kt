@@ -43,6 +43,10 @@ class SearchFragment : VglsFragment() {
         showSnackbar("Clicked composer id $id.")
     }
 
+    override fun onBackPress() {
+        hudViewModel.onSearchExit()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
@@ -57,21 +61,25 @@ class SearchFragment : VglsFragment() {
 
     override fun invalidate() {
         withState(hudViewModel, viewModel) { hudState, localState ->
-            val query = hudState.searchQuery
-            if (!query.isNullOrEmpty()) {
-                viewModel.startQuery(query)
+            if (hudState.searchVisible) {
+                val query = hudState.searchQuery
+                if (!query.isNullOrEmpty()) {
+                    viewModel.startQuery(query)
+                }
             }
 
             when (localState.results) {
                 is Fail -> showError(
-                        localState.results.error.message ?: localState.results.error::class.simpleName
-                        ?: "Unknown Error"
+                    localState.results.error.message ?: localState.results.error::class.simpleName
+                    ?: "Unknown Error"
                 )
                 is Loading -> showLoading()
                 is Success -> showResults(localState.results())
             }
         }
     }
+
+    override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun showLoading() {
         progress_loading.fadeInFromZero()

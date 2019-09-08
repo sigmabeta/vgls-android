@@ -48,16 +48,17 @@ class HudFragment : VglsFragment() {
         disposables.clear()
     }
 
-    override fun getLayoutId() = R.layout.fragment_hud
-
     override fun invalidate() = withState(viewModel) {
         if (it.searchVisible) {
             showSearch()
         } else {
             hideSearch()
         }
-
     }
+
+    override fun getLayoutId() = R.layout.fragment_hud
+
+    override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun showSearch() {
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
@@ -71,6 +72,8 @@ class HudFragment : VglsFragment() {
     }
 
     private fun hideSearch() {
+        // TODO Delay the text clearing
+        edit_search_query.text.clear()
         edit_search_query.fadeOutGone()
         text_search_hint.fadeIn()
 

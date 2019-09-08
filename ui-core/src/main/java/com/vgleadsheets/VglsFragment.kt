@@ -18,6 +18,10 @@ abstract class VglsFragment : BaseMvRxFragment() {
     @LayoutRes
     abstract fun getLayoutId(): Int
 
+    abstract fun getVglsFragmentTag() : String
+
+    open fun onBackPress() = Unit
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)

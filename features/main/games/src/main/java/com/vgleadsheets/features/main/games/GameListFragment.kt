@@ -55,6 +55,8 @@ class GameListFragment : VglsFragment() {
 
     override fun getLayoutId() = R.layout.fragment_game
 
+    override fun getVglsFragmentTag() = this.javaClass.simpleName
+
     private fun showData(data: Data<List<Game>>?) {
         when (data) {
             is Empty -> showLoading()
