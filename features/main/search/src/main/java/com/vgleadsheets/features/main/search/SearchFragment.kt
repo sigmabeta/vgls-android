@@ -61,10 +61,14 @@ class SearchFragment : VglsFragment() {
 
     override fun invalidate() {
         withState(hudViewModel, viewModel) { hudState, localState ->
+            // Sanity check - while exiting this screen, we might get an update due
+            // to clearing the text box, to which we respond by clearing the text box.
             if (hudState.searchVisible) {
                 val query = hudState.searchQuery
                 if (!query.isNullOrEmpty()) {
                     viewModel.startQuery(query)
+                } else {
+                    viewModel.clearResults()
                 }
             }
 

@@ -2,6 +2,7 @@ package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -24,6 +25,8 @@ class SearchViewModel @AssistedInject constructor(
             }
         }
     }
+
+    fun clearResults() = setState { copy(results = Success(arrayListOf())) }
 
     @AssistedInject.Factory
     interface Factory {
