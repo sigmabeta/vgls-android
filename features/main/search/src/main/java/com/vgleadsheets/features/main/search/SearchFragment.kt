@@ -70,16 +70,7 @@ class SearchFragment : VglsFragment() {
                 is Loading -> showLoading()
                 is Success -> showResults(localState.results())
             }
-
-            if (localState.clickedId != null) {
-                showSong(localState.clickedId)
-            }
         }
-    }
-
-    private fun showSong(clickedId: Long) {
-        getFragmentRouter().showSongViewer(clickedId)
-        viewModel.onSongLaunch()
     }
 
     private fun showLoading() {

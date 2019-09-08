@@ -2,7 +2,6 @@ package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -24,22 +23,6 @@ class SearchViewModel @AssistedInject constructor(
                     }
             }
         }
-    }
-
-    fun onItemClick(position: Int) {
-        withState {
-            if (it.results is Success) {
-                val results = it.results()
-                val clickedResult = results?.get(position)
-                if (clickedResult != null) {
-                    setState { copy(clickedId = clickedResult.id) }
-                }
-            }
-        }
-    }
-
-    fun onSongLaunch() {
-        setState { copy(clickedId = null) }
     }
 
     @AssistedInject.Factory
