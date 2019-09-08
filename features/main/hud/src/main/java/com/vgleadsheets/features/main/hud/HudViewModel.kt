@@ -34,13 +34,13 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
     }
 
     fun showHud() = withState { state ->
+        timer?.dispose()
         if (!state.hudVisible) {
             setState { copy(hudVisible = true) }
         }
     }
 
     fun startHudTimer() {
-        timer?.dispose()
         timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
             .execute { timer ->
                 if (timer is Success) {

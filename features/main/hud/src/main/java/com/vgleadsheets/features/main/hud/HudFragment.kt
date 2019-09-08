@@ -2,6 +2,12 @@ package com.vgleadsheets.features.main.hud
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
+import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import com.airbnb.mvrx.activityViewModel
@@ -93,12 +99,23 @@ class HudFragment : VglsFragment() {
     private fun showHud() {
         if (card_search.visibility != View.VISIBLE) {
             card_search.slideViewOnscreen()
+
+            view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
     }
 
     private fun hideHud() {
         if (card_search.visibility != View.GONE) {
             card_search.slideViewUpOffscreen()
+
+            view?.systemUiVisibility =  SYSTEM_UI_FLAG_IMMERSIVE or
+                    SYSTEM_UI_FLAG_FULLSCREEN or
+                    SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                    SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
     }
 
