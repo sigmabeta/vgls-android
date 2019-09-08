@@ -9,9 +9,8 @@ import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.SongArgs
-import com.vgleadsheets.loadImageHighQuality
+import com.vgleadsheets.loadImageFull
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Error
 import com.vgleadsheets.repository.Storage
@@ -24,7 +23,7 @@ class ViewerFragment : VglsFragment() {
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
 
-    private val idArgs: IdArgs by args()
+    private val songArgs: SongArgs by args()
 
     override fun invalidate() = withState(viewModel) { state ->
         when (state.data) {
@@ -35,7 +34,7 @@ class ViewerFragment : VglsFragment() {
 
     override fun getLayoutId() = R.layout.fragment_viewer
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songArgs.songId}"
 
     private fun showData(data: Data<String>?) {
         when (data) {
@@ -45,10 +44,8 @@ class ViewerFragment : VglsFragment() {
     }
 
     private fun showSheet(sheet: String) {
-        image_sheet.loadImageHighQuality(
-            "https://vgleadsheets.com/assets/sheets/png/C/" + Uri.encode(sheet) + "-1.png",
-            false,
-            null)
+        image_sheet.loadImageFull(
+            "https://vgleadsheets.com/assets/sheets/png/C/" + Uri.encode(sheet) + "-1.png")
     }
 
     companion object {
