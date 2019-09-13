@@ -10,6 +10,7 @@ import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
@@ -19,6 +20,7 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
+import com.vgleadsheets.features.main.hud.parts.PartsAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.*
@@ -30,11 +32,21 @@ class HudFragment : VglsFragment() {
 
     private val disposables = CompositeDisposable()
 
+    private val adapter = PartsAdapter(this)
+
+    fun onItemClick(apiId: String) {
+        viewModel.onPartSelect(apiId)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Configure search bar insets
         card_search.setInsetListenerForMargin(offset = resources.getDimension(R.dimen.margin_medium).toInt())
+
+        list_parts.adapter = adapter
+        list_parts.layoutManager = GridLayoutManager(activity, 7)
+//        list_parts.setInsetListenerForPadding(bottomOffset = 72)
     }
 
     override fun onStart() {
@@ -69,6 +81,8 @@ class HudFragment : VglsFragment() {
         } else {
             hideSearch()
         }
+
+        adapter.dataset = state.parts
     }
 
     override fun getLayoutId() = R.layout.fragment_hud
