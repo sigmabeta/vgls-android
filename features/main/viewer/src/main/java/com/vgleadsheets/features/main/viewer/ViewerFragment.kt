@@ -13,6 +13,7 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.loadImageFull
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Error
@@ -40,9 +41,16 @@ class ViewerFragment : VglsFragment() {
             hudViewModel.startHudTimer()
         }
 
+        val selectedPart = hudState.parts?.first { it.selected }
+
+        if (selectedPart == null) {
+            showError("No part selected.")
+            return@withState
+        }
+
         when (viewerState.data) {
             is Fail -> showError(viewerState.data.error.message ?: viewerState.data.error::class.simpleName ?: "Unknown Error")
-            is Success -> showData(viewerState.data())
+            is Success -> showData(viewerState.data(), selectedPart)
         }
     }
 
@@ -54,17 +62,17 @@ class ViewerFragment : VglsFragment() {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songArgs.songId}"
 
-    private fun showData(data: Data<String>?) {
+    private fun showData(data: Data<String>?, selectedPart: PartSelectorItem) {
         when (data) {
             is Error -> showError(data.error.message ?: "Unknown error.")
-            is Storage -> showSheet(data())
+            is Storage -> showSheet(data(), selectedPart)
         }
     }
 
-    private fun showSheet(sheet: String) {
-//        hudViewModel.hideHud()
+    private fun showSheet(sheet: String, selectedPart: PartSelectorItem) {
         image_sheet.loadImageFull(
-            "https://vgleadsheets.com/assets/sheets/png/C/" + Uri.encode(sheet) + "-1.png")
+            "https://vgleadsheets.com" +
+                    "/assets/sheets/png/${selectedPart.apiId}/${Uri.encode(sheet)}-1.png")
     }
 
     companion object {
