@@ -5,6 +5,7 @@ import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.joins.SongComposerJoin
+import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
@@ -20,6 +21,7 @@ class RealRepository constructor(
     private val gameDao = database.gameDao()
     private val songDao = database.songDao()
     private val composerDao = database.composerDao()
+    private val partDao = database.partDao()
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
 
@@ -32,6 +34,7 @@ class RealRepository constructor(
                             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 
                             val songEntities = ArrayList<SongEntity>(CAPACITY)
+                            val partEntities = ArrayList<PartEntity>(CAPACITY)
                             val composerEntities = HashSet<ComposerEntity>(CAPACITY)
                             val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
 
@@ -46,6 +49,11 @@ class RealRepository constructor(
                                         composerEntities.add(composerEntity)
                                     }
 
+                                    apiSong.files.parts.forEach {
+                                        val partEntity = it.value.toPartEntity(apiSong.id)
+                                        partEntities.add(partEntity)
+                                    }
+
                                     val songEntity = apiSong.toSongEntity(apiGame.game_id)
                                     songEntities.add(songEntity)
                                 }
@@ -57,8 +65,10 @@ class RealRepository constructor(
                                 composerDao,
                                 songComposerDao,
                                 dbStatisticsDao,
+                                partDao,
                                 songEntities,
                                 composerEntities.toList(),
+                                partEntities,
                                 songComposerJoins
                             )
                         }
@@ -72,13 +82,9 @@ class RealRepository constructor(
                                 val songs = songDao
                                     .getSongsForGameSync(gameEntity.id)
                                     .map { songEntity ->
-                                        val composers =
-                                            songComposerDao.getComposersForSong(songEntity.id)
-                                                .map { composerEntity ->
-                                                    composerEntity.toComposer()
-                                                }
-                                        songEntity.toSong(composers)
+                                        songEntity.toSong(null, null)
                                     }
+
                                 gameEntity.toGame(songs)
                             }
                         }
@@ -100,9 +106,14 @@ class RealRepository constructor(
         }
         .map { Storage(it) }
 
-    override fun getSongImageUrl(songId: Long): Observable<Data<String>> = songDao
+    override fun getSong(songId: Long): Observable<Data<Song>> = songDao
         .getSong(songId)
-        .map { it.filename }
+        .map {
+            val parts = partDao
+                .getPartsForSongId(songId)
+                .map { partEntity -> partEntity.toPart() }
+            it.toSong(parts = parts)
+        }
         .map { Storage(it) }
 
     override fun search(searchQuery: String): Observable<List<SearchResult>> =

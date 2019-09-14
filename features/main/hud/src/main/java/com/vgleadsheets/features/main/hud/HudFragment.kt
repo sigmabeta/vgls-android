@@ -18,6 +18,7 @@ import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeOutGone
+import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.features.main.hud.parts.PartsAdapter
@@ -113,6 +114,7 @@ class HudFragment : VglsFragment() {
     private fun showHud() {
         if (card_search.visibility != View.VISIBLE) {
             card_search.slideViewOnscreen()
+            list_parts.slideViewOnscreen()
 
             view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
                     SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
@@ -123,6 +125,7 @@ class HudFragment : VglsFragment() {
     private fun hideHud() {
         if (card_search.visibility != View.GONE) {
             card_search.slideViewUpOffscreen()
+            list_parts.slideViewDownOffscreen()
 
             view?.systemUiVisibility =  SYSTEM_UI_FLAG_IMMERSIVE or
                     SYSTEM_UI_FLAG_FULLSCREEN or

@@ -45,7 +45,7 @@ fun View.slideViewDownOffscreen(): ViewPropertyAnimator {
         .withLayer()
         .setInterpolator(DECELERATE)
         .setDuration(DURATION_SLOW)
-        .translationY(-height.toFloat() * 2)
+        .translationY(height.toFloat() * 2)
         .withEndAction { visibility = View.GONE }
 }
 

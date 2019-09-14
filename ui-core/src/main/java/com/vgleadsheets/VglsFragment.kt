@@ -36,7 +36,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
     }
 
     protected fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
-        Timber.e("Error getting sheets: $message")
+        Timber.e("Displayed error: $message")
         showSnackbar(message, action, actionLabel)
     }
 

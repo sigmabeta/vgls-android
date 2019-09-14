@@ -17,9 +17,9 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun fetchSong() = withState { state ->
-        repository.getSongImageUrl(state.songId)
+        repository.getSong(state.songId)
             .execute { data ->
-                copy(data = data)
+                copy(song = data)
             }
     }
 

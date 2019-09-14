@@ -1,28 +1,42 @@
 package com.vgleadsheets.features.main.hud
 
 import com.airbnb.mvrx.Success
-import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
     init {
-        val parts = generatePartsPickerOptions()
-        setState { copy(parts = parts) }
+        resetAvailableParts()
     }
 
-    fun onPartSelect(apiId: String) {
-        withState { state ->
-            setState {
-                copy(parts = setSelection(apiId, state.parts))
-            }
+    fun setAvailableParts(parts: List<Part>) = withState {
+        Timber.i("Setting available parts: $parts")
+        val selectedId = it.parts?.first { part -> part.selected }?.apiId
+        setState {
+            copy(parts = PartSelectorItem.getAvailablePartPickerItems(parts, selectedId))
         }
     }
+
+    fun resetAvailableParts() = withState {
+        val selectedId = it.parts?.first { part -> part.selected }?.apiId
+        setState {
+            copy(parts = PartSelectorItem.getDefaultPartPickerItems(selectedId))
+        }
+    }
+
+    fun onPartSelect(apiId: String) = withState { state ->
+        setState {
+            copy(parts = setSelection(apiId, state.parts))
+        }
+    }
+
 
     fun searchClick() = withState { state ->
         if (!state.searchVisible) {
@@ -64,21 +78,6 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
                     this
                 }
             }
-    }
-
-    private fun generatePartsPickerOptions(): List<PartSelectorItem>? {
-        val partsEnums = arrayListOf(
-            PartSelectorOption.C,
-            PartSelectorOption.B,
-            PartSelectorOption.E,
-            PartSelectorOption.F,
-            PartSelectorOption.BASS,
-            PartSelectorOption.ALTO,
-            PartSelectorOption.VOCAL
-        )
-
-        val items = partsEnums.map { PartSelectorItem.fromEnum(it) }
-        return setSelection("C", items)
     }
 
     private fun setSelection(selection: String, oldList: List<PartSelectorItem>?) =

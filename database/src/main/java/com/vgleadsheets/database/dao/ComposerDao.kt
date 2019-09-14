@@ -12,7 +12,7 @@ interface ComposerDao {
     fun searchComposersByName(name: String): Observable<List<ComposerEntity>>
 
     @Insert
-    fun insertAll(composerEntities: List<ComposerEntity>): LongArray
+    fun insertAll(composerEntities: List<ComposerEntity>)
 
     @Query("DELETE FROM composer")
     fun nukeTable()

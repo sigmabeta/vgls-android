@@ -6,6 +6,7 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.GameEntity
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.search.SearchResultType
 
@@ -27,7 +28,12 @@ data class SongEntity(
     val pageCount: Int,
     val game_id: Long
 ) {
-    fun toSong(composers: List<Composer>) = Song(id, filename, name, pageCount, composers)
+    fun toSong(composers: List<Composer>? = null, parts: List<Part>? = null) = Song(id,
+        filename,
+        name,
+        pageCount,
+        composers,
+        parts)
 
     fun toSearchResult() = SearchResult(id, SearchResultType.SONG, name)
 }
