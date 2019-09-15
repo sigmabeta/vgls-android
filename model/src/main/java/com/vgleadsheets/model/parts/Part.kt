@@ -10,8 +10,8 @@ data class Part(
 ) : ListItem<Part> {
     override fun isTheSameAs(theOther: Part?) = id == theOther?.id
 
-    override fun hasSameContentAs(theOther: Part?) = name == theOther?.name
-            && pages == theOther.pages
+    override fun hasSameContentAs(theOther: Part?) = name == theOther?.name &&
+            pages == theOther.pages
 
     override fun getChangeType(theOther: Part?) = ListItem.CHANGE_ERROR
 }

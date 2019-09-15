@@ -25,7 +25,6 @@ class NetworkModule {
     @Singleton
     internal fun provideBaseApiUrl(@Named("BaseUrl") baseUrl: String) = baseUrl + "api/"
 
-
     @Provides
     @Named("BaseImageUrl")
     @Singleton

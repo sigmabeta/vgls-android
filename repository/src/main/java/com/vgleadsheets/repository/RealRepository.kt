@@ -32,7 +32,7 @@ class RealRepository constructor(
     private val dbStatisticsDao = database.dbStatisticsDao()
 
     // TODO Split this method
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "ComplexMethod")
     override fun getGames(force: Boolean): Observable<Data<List<Game>>> {
         return isTableFresh(TableName.GAME, force)
             .flatMap { fresh ->
@@ -190,7 +190,6 @@ class RealRepository constructor(
                 force || System.currentTimeMillis() - lastEdit.last_edit_time_ms < AGE_THRESHOLD
             }
     }
-
 
     private fun generateImageUrl(
         partEntity: PartEntity,
