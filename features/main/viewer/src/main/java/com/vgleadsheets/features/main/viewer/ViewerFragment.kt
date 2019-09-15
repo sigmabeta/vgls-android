@@ -39,7 +39,7 @@ class ViewerFragment : VglsFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        image_sheet.setOnClickListener { hudViewModel.showHud()}
+        image_sheet.setOnClickListener { hudViewModel.showHud() }
     }
 
     override fun onDestroy() {
@@ -61,7 +61,8 @@ class ViewerFragment : VglsFragment() {
         }
 
         when (viewerState.song) {
-            is Fail -> showError(viewerState.song.error.message ?: viewerState.song.error::class.simpleName ?: "Unknown Error")
+            is Fail -> showError(viewerState.song.error.message
+                ?: viewerState.song.error::class.simpleName ?: "Unknown Error")
             is Success -> showData(viewerState.song(), selectedPart)
         }
     }

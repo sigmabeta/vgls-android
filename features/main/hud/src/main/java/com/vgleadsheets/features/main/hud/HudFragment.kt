@@ -46,8 +46,7 @@ class HudFragment : VglsFragment() {
         card_search.setInsetListenerForMargin(offset = resources.getDimension(R.dimen.margin_medium).toInt())
 
         list_parts.adapter = adapter
-        list_parts.layoutManager = GridLayoutManager(activity, 7)
-//        list_parts.setInsetListenerForPadding(bottomOffset = 72)
+        list_parts.layoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
     }
 
     override fun onStart() {
@@ -127,7 +126,7 @@ class HudFragment : VglsFragment() {
             card_search.slideViewUpOffscreen()
             list_parts.slideViewDownOffscreen()
 
-            view?.systemUiVisibility =  SYSTEM_UI_FLAG_IMMERSIVE or
+            view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or
                     SYSTEM_UI_FLAG_FULLSCREEN or
                     SYSTEM_UI_FLAG_HIDE_NAVIGATION or
                     SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
@@ -147,6 +146,8 @@ class HudFragment : VglsFragment() {
     companion object {
         const val THRESHOLD_SEARCH_EVENTS = 1500L
         const val THRESHOLD_SEARCH_CLICKS = 200L
+
+        const val SPAN_COUNT_DEFAULT = 7
 
         fun newInstance() = HudFragment()
     }

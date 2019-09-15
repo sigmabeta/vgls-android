@@ -17,7 +17,8 @@ import com.vgleadsheets.model.song.SongEntity
 )
 data class PartEntity(
     @PrimaryKey(autoGenerate = true) val id: Long? = null,
-    val songId: Long, val part: String
+    val songId: Long,
+    val part: String
 ) {
     fun toPart() = Part(id!!, part)
 }

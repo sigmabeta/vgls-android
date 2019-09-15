@@ -25,6 +25,8 @@ class RealRepository constructor(
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
 
+    // TODO Split this method
+    @Suppress("LongMethod")
     override fun getGames(force: Boolean): Observable<Data<List<Game>>> {
         return isTableFresh(TableName.GAME, force)
             .flatMap { fresh ->

@@ -37,7 +37,6 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
         }
     }
 
-
     fun searchClick() = withState { state ->
         if (!state.searchVisible) {
             setState { copy(searchVisible = true) }
