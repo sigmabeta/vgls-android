@@ -43,8 +43,9 @@ class SearchFragment : VglsFragment() {
         showSnackbar("Clicked composer id $id.")
     }
 
-    override fun onBackPress() {
-        hudViewModel.onSearchExit()
+    override fun onBackPress(): Boolean {
+        hudViewModel.exitSearch()
+        return false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -20,7 +20,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     abstract fun getVglsFragmentTag(): String
 
-    open fun onBackPress() = Unit
+    open fun onBackPress() = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
