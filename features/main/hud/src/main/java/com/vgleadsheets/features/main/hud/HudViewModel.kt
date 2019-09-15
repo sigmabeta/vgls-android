@@ -9,6 +9,7 @@ import io.reactivex.disposables.Disposable
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+@Suppress("TooManyFunctions")
 class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
@@ -83,7 +84,7 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
     fun stopHudTimer() {
         stopTimer()
     }
-    
+
     private fun stopTimer() {
         timer?.dispose()
     }
