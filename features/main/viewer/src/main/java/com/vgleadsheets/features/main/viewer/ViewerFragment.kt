@@ -2,6 +2,7 @@ package com.vgleadsheets.features.main.viewer
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
@@ -40,8 +41,16 @@ class ViewerFragment : VglsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pager_sheets.adapter = adapter
-        pager_sheets.setOnClickListener { hudViewModel.showHud() }
+        pager_sheets?.adapter = adapter
+        pager_sheets?.setOnClickListener { hudViewModel.showHud() }
+
+        list_sheets?.adapter = adapter
+        list_sheets?.setOnClickListener { hudViewModel.showHud() }
+        list_sheets?.layoutManager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
     }
 
     override fun onDestroy() {
@@ -64,8 +73,10 @@ class ViewerFragment : VglsFragment() {
         }
 
         when (viewerState.song) {
-            is Fail -> showError(viewerState.song.error.message
-                ?: viewerState.song.error::class.simpleName ?: "Unknown Error")
+            is Fail -> showError(
+                viewerState.song.error.message
+                    ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
+            )
             is Success -> showData(viewerState.song(), selectedPart)
         }
     }
