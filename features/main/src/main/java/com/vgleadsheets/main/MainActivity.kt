@@ -3,6 +3,7 @@ package com.vgleadsheets.main
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRouter {
 
-    @Inject lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
+    @Inject
+    lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     override fun supportFragmentInjector() = dispatchingFragmentInjector
 
@@ -50,41 +52,56 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
     override fun showGameList() {
         // TODO Clear back stack before doing this.
         supportFragmentManager.beginTransaction()
+            .setDefaultAnimations()
             .replace(R.id.frame_fragment, GameListFragment.newInstance())
             .commit()
     }
 
-    override fun showSongListForGame(gameId: Long) = showFragmentSimple(SongListFragment.newInstance(
-        IdArgs(
-            gameId
+    override fun showSongListForGame(gameId: Long) = showFragmentSimple(
+        SongListFragment.newInstance(
+            IdArgs(
+                gameId
+            )
         )
-    ))
+    )
 
-    override fun showSongViewer(songId: Long) = showFragmentSimple(ViewerFragment.newInstance(
-        SongArgs(
-            songId
+    override fun showSongViewer(songId: Long) = showFragmentSimple(
+        ViewerFragment.newInstance(
+            SongArgs(
+                songId
+            )
         )
-    ))
+    )
 
     override fun onBackPressed() {
-        getDisplayedFragment().onBackPress()
-        super.onBackPressed()
+        if (!getDisplayedFragment().onBackPress()) {
+            super.onBackPressed()
+        }
     }
 
     private fun showFragmentSimple(fragment: VglsFragment) {
         if (getDisplayedFragment().getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
             supportFragmentManager.beginTransaction()
+                .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)
                 .addToBackStack(null)
                 .commit()
         }
     }
 
-    private fun getDisplayedFragment() = supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment
+    private fun getDisplayedFragment() =
+        supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment
 
     private fun addHud() {
         supportFragmentManager.beginTransaction()
             .add(R.id.frame_hud, HudFragment.newInstance())
             .commit()
     }
+
+    private fun FragmentTransaction.setDefaultAnimations() = setCustomAnimations(
+        android.R.anim.fade_in,
+        android.R.anim.fade_out,
+        android.R.anim.fade_in,
+        android.R.anim.fade_out
+    )
 }

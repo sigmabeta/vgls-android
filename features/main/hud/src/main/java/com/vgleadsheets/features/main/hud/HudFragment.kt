@@ -107,18 +107,22 @@ class HudFragment : VglsFragment() {
         text_search_hint.fadeIn()
 
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(edit_search_query.windowToken, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        imm?.hideSoftInputFromWindow(
+            edit_search_query.windowToken,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+        )
     }
 
     private fun showHud() {
-        if (card_search.visibility != View.VISIBLE) {
-            card_search.slideViewOnscreen()
-            list_parts.slideViewOnscreen()
+        card_search.animate().cancel()
+        list_parts.animate().cancel()
 
-            view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    SYSTEM_UI_FLAG_LAYOUT_STABLE
-        }
+        card_search.slideViewOnscreen()
+        list_parts.slideViewOnscreen()
+
+        view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
     private fun hideHud() {

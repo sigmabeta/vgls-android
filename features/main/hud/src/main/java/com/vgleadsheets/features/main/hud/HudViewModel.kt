@@ -49,7 +49,7 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
         }
     }
 
-    fun onSearchExit() = withState { state ->
+    fun exitSearch() = withState { state ->
         if (state.searchVisible) {
             setState { copy(searchVisible = false, searchQuery = null) }
         }
@@ -62,13 +62,14 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
     }
 
     fun showHud() = withState { state ->
-        timer?.dispose()
+        stopTimer()
         if (!state.hudVisible) {
             setState { copy(hudVisible = true) }
         }
     }
 
     fun startHudTimer() {
+        stopTimer()
         timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
             .execute { timer ->
                 if (timer is Success) {
@@ -77,6 +78,14 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
                     this
                 }
             }
+    }
+
+    fun stopHudTimer() {
+        stopTimer()
+    }
+    
+    private fun stopTimer() {
+        timer?.dispose()
     }
 
     private fun setSelection(selection: String, oldList: List<PartSelectorItem>?) =

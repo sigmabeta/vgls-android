@@ -45,6 +45,7 @@ class ViewerFragment : VglsFragment() {
     override fun onDestroy() {
         super.onDestroy()
         hudViewModel.showHud()
+        hudViewModel.stopHudTimer()
         hudViewModel.resetAvailableParts()
     }
 
@@ -67,8 +68,13 @@ class ViewerFragment : VglsFragment() {
         }
     }
 
-    override fun onBackPress() {
-        hudViewModel.showHud()
+    override fun onBackPress() = withState(hudViewModel) { hudState ->
+        if (hudState.hudVisible) {
+            return@withState false
+        } else {
+            hudViewModel.showHud()
+            return@withState true
+        }
     }
 
     override fun getLayoutId() = R.layout.fragment_viewer
