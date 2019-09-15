@@ -21,7 +21,7 @@ import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
-import com.vgleadsheets.features.main.hud.parts.PartsAdapter
+import com.vgleadsheets.features.main.hud.parts.PartAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.*
@@ -33,7 +33,7 @@ class HudFragment : VglsFragment() {
 
     private val disposables = CompositeDisposable()
 
-    private val adapter = PartsAdapter(this)
+    private val adapter = PartAdapter(this)
 
     fun onItemClick(apiId: String) {
         viewModel.onPartSelect(apiId)
