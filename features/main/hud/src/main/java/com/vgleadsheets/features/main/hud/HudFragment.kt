@@ -90,6 +90,8 @@ class HudFragment : VglsFragment() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun showSearch() {
+        viewModel.stopHudTimer()
+
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
         imm?.showSoftInput(edit_search_query, InputMethodManager.SHOW_IMPLICIT)
 
@@ -107,10 +109,7 @@ class HudFragment : VglsFragment() {
         text_search_hint.fadeIn()
 
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(
-            edit_search_query.windowToken,
-            InputMethodManager.HIDE_IMPLICIT_ONLY
-        )
+        imm?.hideSoftInputFromWindow(edit_search_query.windowToken, 0)
     }
 
     private fun showHud() {

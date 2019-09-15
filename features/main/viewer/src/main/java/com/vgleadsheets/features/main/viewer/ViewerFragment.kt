@@ -52,7 +52,7 @@ class ViewerFragment : VglsFragment() {
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
-        if (hudState.hudVisible) {
+        if (hudState.hudVisible && !hudState.searchVisible) {
             hudViewModel.startHudTimer()
         }
 
