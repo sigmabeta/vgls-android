@@ -7,6 +7,5 @@ import com.vgleadsheets.model.search.SearchResult
 
 data class SearchState(
     val query: String? = null,
-    val results: Async<List<SearchResult>> = Uninitialized,
-    val clickedId: Long? = null
+    val results: Async<List<SearchResult>> = Uninitialized
 ) : MvRxState

@@ -8,6 +8,6 @@ import io.reactivex.Observable
 interface Repository {
     fun getGames(force: Boolean = false): Observable<Data<List<Game>>>
     fun getSongs(gameId: Long): Observable<Data<List<Song>>>
-    fun getSongImageUrl(songId: Long): Observable<Data<String>>
+    fun getSong(songId: Long): Observable<Data<Song>>
     fun search(searchQuery: String): Observable<List<SearchResult>>
 }

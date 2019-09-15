@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
@@ -29,6 +30,8 @@ class SongListFragment : VglsFragment() {
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
 
     private val viewModel: SongListViewModel by fragmentViewModel()
+
+    private val idArgs: IdArgs by args()
 
     private val adapter = SongListAdapter(this)
 
@@ -55,6 +58,8 @@ class SongListFragment : VglsFragment() {
     }
 
     override fun getLayoutId() = R.layout.fragment_sheet
+
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     private fun showData(data: Data<List<Song>>?) {
         when (data) {

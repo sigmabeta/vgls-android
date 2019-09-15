@@ -14,9 +14,10 @@ class SearchViewModel @AssistedInject constructor(
     private val repository: Repository
 ) : MvRxViewModel<SearchState>(initialState) {
     fun startQuery(searchQuery: String) {
-        withState {
-            if (it.query != searchQuery) {
+        withState { state ->
+            if (state.query != searchQuery) {
                 setState { copy(query = searchQuery) }
+
                 repository.search(searchQuery)
                     .execute {
                         copy(results = it)
@@ -25,21 +26,7 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
-    fun onItemClick(position: Int) {
-        withState {
-            if (it.results is Success) {
-                val results = it.results()
-                val clickedResult = results?.get(position)
-                if (clickedResult != null) {
-                    setState { copy(clickedId = clickedResult.id) }
-                }
-            }
-        }
-    }
-
-    fun onSongLaunch() {
-        setState { copy(clickedId = null) }
-    }
+    fun clearResults() = setState { copy(results = Success(arrayListOf())) }
 
     @AssistedInject.Factory
     interface Factory {

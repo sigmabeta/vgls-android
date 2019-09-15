@@ -9,7 +9,7 @@ import com.vgleadsheets.model.joins.SongComposerJoin
 @Dao
 interface SongComposerDao {
     @Insert
-    fun insertAll(songComposerJoins: List<SongComposerJoin>): LongArray
+    fun insertAll(songComposerJoins: List<SongComposerJoin>)
 
     @Query(
         """ 

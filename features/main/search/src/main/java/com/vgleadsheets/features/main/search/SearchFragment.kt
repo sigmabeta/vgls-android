@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.search
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,7 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
-import com.vgleadsheets.mainstate.MainActivityViewModel
+import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -26,7 +25,7 @@ class SearchFragment : VglsFragment() {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
-    private val mainViewModel: MainActivityViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by activityViewModel()
 
     private val viewModel: SearchViewModel by fragmentViewModel()
 
@@ -44,9 +43,8 @@ class SearchFragment : VglsFragment() {
         showSnackbar("Clicked composer id $id.")
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mainViewModel.subscribeToSearchTextEntry(getFragmentRouter())
+    override fun onBackPress() {
+        hudViewModel.onSearchExit()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,31 +60,30 @@ class SearchFragment : VglsFragment() {
     override fun getLayoutId() = R.layout.fragment_search
 
     override fun invalidate() {
-        withState(mainViewModel, viewModel) { activityState, localState ->
-            val query = activityState.searchQuery
-            if (!query.isNullOrEmpty()) {
-                viewModel.startQuery(query)
+        withState(hudViewModel, viewModel) { hudState, localState ->
+            // Sanity check - while exiting this screen, we might get an update due
+            // to clearing the text box, to which we respond by clearing the text box.
+            if (hudState.searchVisible) {
+                val query = hudState.searchQuery
+                if (!query.isNullOrEmpty()) {
+                    viewModel.startQuery(query)
+                } else {
+                    viewModel.clearResults()
+                }
             }
 
             when (localState.results) {
                 is Fail -> showError(
-                        localState.results.error.message ?: localState.results.error::class.simpleName
-                        ?: "Unknown Error"
+                    localState.results.error.message ?: localState.results.error::class.simpleName
+                    ?: "Unknown Error"
                 )
                 is Loading -> showLoading()
                 is Success -> showResults(localState.results())
             }
-
-            if (localState.clickedId != null) {
-                showSong(localState.clickedId)
-            }
         }
     }
 
-    private fun showSong(clickedId: Long) {
-        getFragmentRouter().showSongViewer(clickedId)
-        viewModel.onSongLaunch()
-    }
+    override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun showLoading() {
         progress_loading.fadeInFromZero()

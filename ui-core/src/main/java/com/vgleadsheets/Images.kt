@@ -28,6 +28,14 @@ fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Bool
     }
 }
 
+fun ImageView.loadImageFull(path: String, callback: Callback? = null) {
+    Picasso.with(context)
+        .load(path)
+//        .centerInside()
+        .noPlaceholder()
+        .into(this, callback)
+}
+
 fun ImageView.loadImageHighQuality(path: String, fade: Boolean, aspectRatio: Float?, callback: Callback? = null) {
     val bigWidth = width
     val bigHeight = if (aspectRatio != null) {

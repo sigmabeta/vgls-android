@@ -9,6 +9,7 @@ import com.vgleadsheets.model.DbStatisticsEntity
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
+import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.SongEntity
 import io.reactivex.Observable
 
@@ -21,7 +22,7 @@ interface GameDao {
     fun searchGamesByTitle(title: String): Observable<List<GameEntity>>
 
     @Insert
-    fun insertAll(gameEntities: List<GameEntity>): LongArray
+    fun insertAll(gameEntities: List<GameEntity>)
 
     @Query("DELETE FROM game")
     fun nukeTable()
@@ -34,8 +35,10 @@ interface GameDao {
         composerDao: ComposerDao,
         songComposerDao: SongComposerDao,
         dbStatisticsDao: DbStatisticsDao,
+        partDao: PartDao,
         songs: List<SongEntity>,
         composerEntities: List<ComposerEntity>,
+        parts: List<PartEntity>,
         songComposerJoins: List<SongComposerJoin>
     ) {
         nukeTable()
@@ -49,6 +52,9 @@ interface GameDao {
 
         songComposerDao.nukeTable()
         songComposerDao.insertAll(songComposerJoins)
+
+        partDao.nukeTable()
+        partDao.insertAll(parts)
 
         val now = System.currentTimeMillis()
         dbStatisticsDao.insert(DbStatisticsEntity(TableName.GAME.ordinal.toLong(), now))

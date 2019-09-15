@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="part_c">C</string>
+    <string name="part_b">Bb</string>
+    <string name="part_e">Eb</string>
+    <string name="part_f">F</string>
+    <string name="part_alto">Alto</string>
+    <string name="part_bass">Bass</string>
+    <string name="part_vocal">Vocals</string>
+</resources>

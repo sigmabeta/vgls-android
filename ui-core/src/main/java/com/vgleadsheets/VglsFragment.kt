@@ -11,29 +11,20 @@ import androidx.core.view.ViewCompat
 import com.airbnb.mvrx.BaseMvRxFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {
-    private val disposables = CompositeDisposable()
-
     @LayoutRes
     abstract fun getLayoutId(): Int
+
+    abstract fun getVglsFragmentTag(): String
+
+    open fun onBackPress() = Unit
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        subscribeToSearchClicks()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        disposables.clear()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = inflater
@@ -45,7 +36,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
     }
 
     protected fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
-        Timber.e("Error getting sheets: $message")
+        Timber.e("Displayed error: $message")
         showSnackbar(message, action, actionLabel)
     }
 
@@ -61,18 +52,4 @@ abstract class VglsFragment : BaseMvRxFragment() {
     }
 
     protected fun getFragmentRouter() = (activity as FragmentRouter)
-
-    private fun subscribeToSearchClicks() {
-        val searchClicks = getFragmentRouter()
-            .searchClicks()
-            .subscribe {
-                showSearch()
-            }
-
-        disposables.add(searchClicks)
-    }
-
-    private fun showSearch() {
-        getFragmentRouter().showSearch()
-    }
 }
