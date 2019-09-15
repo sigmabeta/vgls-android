@@ -28,12 +28,16 @@ data class SongEntity(
     val pageCount: Int,
     val game_id: Long
 ) {
-    fun toSong(composers: List<Composer>? = null, parts: List<Part>? = null) = Song(id,
+    fun toSong(
+        composers: List<Composer>? = null,
+        parts: List<Part>? = null
+    ) = Song(
+        id,
         filename,
         name,
-        pageCount,
         composers,
-        parts)
+        parts
+    )
 
     fun toSearchResult() = SearchResult(id, SearchResultType.SONG, name)
 }

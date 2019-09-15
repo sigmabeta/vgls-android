@@ -1,12 +1,16 @@
 package com.vgleadsheets.repository
 
+import android.net.Uri
+import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.joins.SongComposerJoin
+import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.search.SearchResult
+import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.network.VglsApi
@@ -15,6 +19,7 @@ import io.reactivex.functions.Function3
 
 class RealRepository constructor(
     private val vglsApi: VglsApi,
+    private val baseImageUrl: String,
     database: VglsDatabase
 ) : Repository {
 
@@ -22,6 +27,7 @@ class RealRepository constructor(
     private val songDao = database.songDao()
     private val composerDao = database.composerDao()
     private val partDao = database.partDao()
+    private val pageDao = database.pageDao()
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
 
@@ -37,9 +43,11 @@ class RealRepository constructor(
 
                             val songEntities = ArrayList<SongEntity>(CAPACITY)
                             val partEntities = ArrayList<PartEntity>(CAPACITY)
+                            val pageEntities = ArrayList<PageEntity>(CAPACITY)
                             val composerEntities = HashSet<ComposerEntity>(CAPACITY)
                             val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
 
+                            var partCount = 0L
                             apiGames.forEach { apiGame ->
                                 apiGame.songs.forEach { apiSong ->
                                     apiSong.composers.forEach { apiComposer ->
@@ -52,8 +60,27 @@ class RealRepository constructor(
                                     }
 
                                     apiSong.files.parts.forEach {
-                                        val partEntity = it.value.toPartEntity(apiSong.id)
+                                        partCount++
+                                        val partEntity = it.value.toPartEntity(partCount, apiSong.id)
                                         partEntities.add(partEntity)
+
+                                        val pageCount = if (partEntity.part == PartSelectorOption.VOCAL.apiId) {
+                                            apiSong.lyricsPageCount
+                                        } else {
+                                            apiSong.pageCount
+                                        }
+
+                                        for (pageNumber in 1..pageCount) {
+                                            val imageUrl =
+                                                generateImageUrl(partEntity, apiSong, pageNumber)
+
+                                            val pageEntity = PageEntity(null,
+                                                pageNumber,
+                                                partEntity.id,
+                                                imageUrl)
+
+                                            pageEntities.add(pageEntity)
+                                        }
                                     }
 
                                     val songEntity = apiSong.toSongEntity(apiGame.game_id)
@@ -68,9 +95,11 @@ class RealRepository constructor(
                                 songComposerDao,
                                 dbStatisticsDao,
                                 partDao,
+                                pageDao,
                                 songEntities,
                                 composerEntities.toList(),
                                 partEntities,
+                                pageEntities,
                                 songComposerJoins
                             )
                         }
@@ -113,7 +142,13 @@ class RealRepository constructor(
         .map {
             val parts = partDao
                 .getPartsForSongId(songId)
-                .map { partEntity -> partEntity.toPart() }
+                .map { partEntity ->
+                    val pages = pageDao
+                        .getPagesForPartId(partEntity.id)
+                        .map { pageEntity -> pageEntity.toPage() }
+
+                    partEntity.toPart(pages)
+                }
             it.toSong(parts = parts)
         }
         .map { Storage(it) }
@@ -156,8 +191,24 @@ class RealRepository constructor(
             }
     }
 
+
+    private fun generateImageUrl(
+        partEntity: PartEntity,
+        apiSong: ApiSong,
+        pageNumber: Int
+    ): String {
+        return baseImageUrl +
+                partEntity.part + URL_SEPARATOR_FOLDER +
+                Uri.encode(apiSong.filename) + URL_SEPARATOR_NUMBER +
+                pageNumber + URL_FILE_EXT_PNG
+    }
+
     companion object {
         const val AGE_THRESHOLD = 60000L
         const val CAPACITY = 500
+
+        const val URL_SEPARATOR_FOLDER = "/"
+        const val URL_SEPARATOR_NUMBER = "-"
+        const val URL_FILE_EXT_PNG = ".png"
     }
 }

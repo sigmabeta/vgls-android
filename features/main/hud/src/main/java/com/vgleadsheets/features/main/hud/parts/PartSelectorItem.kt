@@ -47,7 +47,7 @@ data class PartSelectorItem(val apiId: String, val resId: Int, val selected: Boo
             selectedId: String?
         ): List<PartSelectorItem> {
             val partsEnums = getDefaultPartsEnumList()
-            val availablePartIds = availableParts.map { it.part }
+            val availablePartIds = availableParts.map { it.name }
 
             val newSelection = if (selectedId != null && availablePartIds.contains(selectedId))
                 selectedId
