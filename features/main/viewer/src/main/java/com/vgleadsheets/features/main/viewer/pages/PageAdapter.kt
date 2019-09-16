@@ -13,7 +13,7 @@ class PageAdapter(val view: ViewerFragment) : BaseArrayAdapter<Page, PageViewHol
 
     override fun getLayoutId(item: Page?) = R.layout.list_item_page
 
-    override fun onItemClick(position: Int) = Unit
+    override fun onItemClick(position: Int) = view.onPageClick()
 
     fun onError(adapterPosition: Int) {
         view.onPageLoadError(adapterPosition + 1)

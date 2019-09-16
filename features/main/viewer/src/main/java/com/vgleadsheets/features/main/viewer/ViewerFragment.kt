@@ -34,18 +34,22 @@ class ViewerFragment : VglsFragment() {
 
     private val adapter = PageAdapter(this)
 
-    fun onPageLoadError(pageNumber: Int) {
-        showError("Unable to load page $pageNumber")
+    fun onPageClick() = withState(hudViewModel) { state ->
+        if (state.hudVisible) {
+            hudViewModel.hideHud()
+        } else {
+            hudViewModel.showHud()
+        }
     }
+
+    fun onPageLoadError(pageNumber: Int) = showError("Unable to load page $pageNumber")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         pager_sheets?.adapter = adapter
-        pager_sheets?.setOnClickListener { hudViewModel.showHud() }
 
         list_sheets?.adapter = adapter
-        list_sheets?.setOnClickListener { hudViewModel.showHud() }
         list_sheets?.layoutManager = LinearLayoutManager(
             activity,
             LinearLayoutManager.HORIZONTAL,
