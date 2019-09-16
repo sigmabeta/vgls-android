@@ -3,6 +3,7 @@ package com.vgleadsheets.model.parts
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.song.SongEntity
 
 @Entity(
@@ -16,9 +17,9 @@ import com.vgleadsheets.model.song.SongEntity
         )]
 )
 data class PartEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long? = null,
+    @PrimaryKey val id: Long,
     val songId: Long,
     val part: String
 ) {
-    fun toPart() = Part(id!!, part)
+    fun toPart(pages: List<Page>? = null) = Part(id, part, pages)
 }

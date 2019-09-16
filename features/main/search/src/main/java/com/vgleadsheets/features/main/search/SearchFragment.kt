@@ -32,14 +32,17 @@ class SearchFragment : VglsFragment() {
     private val adapter = SearchResultAdapter(this)
 
     fun onGameClicked(id: Long) {
+        hudViewModel.exitSearch()
         getFragmentRouter().showSongListForGame(id)
     }
 
     fun onSongClicked(id: Long) {
+        hudViewModel.exitSearch()
         getFragmentRouter().showSongViewer(id)
     }
 
     fun onComposerClicked(id: Long) {
+        hudViewModel.exitSearch()
         showSnackbar("Clicked composer id $id.")
     }
 

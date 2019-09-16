@@ -9,6 +9,7 @@ import com.vgleadsheets.model.DbStatisticsEntity
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
+import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.SongEntity
 import io.reactivex.Observable
@@ -36,9 +37,11 @@ interface GameDao {
         songComposerDao: SongComposerDao,
         dbStatisticsDao: DbStatisticsDao,
         partDao: PartDao,
+        pageDao: PageDao,
         songs: List<SongEntity>,
         composerEntities: List<ComposerEntity>,
         parts: List<PartEntity>,
+        pages: List<PageEntity>,
         songComposerJoins: List<SongComposerJoin>
     ) {
         nukeTable()
@@ -55,6 +58,9 @@ interface GameDao {
 
         partDao.nukeTable()
         partDao.insertAll(parts)
+
+        pageDao.nukeTable()
+        pageDao.insertAll(pages)
 
         val now = System.currentTimeMillis()
         dbStatisticsDao.insert(DbStatisticsEntity(TableName.GAME.ordinal.toLong(), now))

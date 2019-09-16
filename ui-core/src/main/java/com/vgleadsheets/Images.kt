@@ -31,7 +31,8 @@ fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Bool
 fun ImageView.loadImageFull(path: String, callback: Callback? = null) {
     Picasso.with(context)
         .load(path)
-//        .centerInside()
+        .fit()
+        .centerInside()
         .noPlaceholder()
         .into(this, callback)
 }

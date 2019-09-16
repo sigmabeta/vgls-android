@@ -5,8 +5,8 @@ import androidx.core.content.ContextCompat
 import com.vgleadsheets.recyclerview.BaseViewHolder
 import kotlinx.android.synthetic.main.list_item_part.view.*
 
-class PartViewHolder(view: View, adapter: PartsAdapter) :
-        BaseViewHolder<PartSelectorItem, PartViewHolder, PartsAdapter>(view, adapter) {
+class PartViewHolder(view: View, adapter: PartAdapter) :
+        BaseViewHolder<PartSelectorItem, PartViewHolder, PartAdapter>(view, adapter) {
     override fun bind(toBind: PartSelectorItem) {
         view.text_part_name.setText(toBind.resId)
 

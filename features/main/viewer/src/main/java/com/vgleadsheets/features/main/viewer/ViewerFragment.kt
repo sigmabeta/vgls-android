@@ -1,8 +1,8 @@
 package com.vgleadsheets.features.main.viewer
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
@@ -10,16 +10,11 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.squareup.picasso.Callback
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInFromZero
-import com.vgleadsheets.animation.fadeOutGone
-import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
-import com.vgleadsheets.loadImageFull
+import com.vgleadsheets.features.main.viewer.pages.PageAdapter
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Error
@@ -37,9 +32,29 @@ class ViewerFragment : VglsFragment() {
 
     private val songArgs: SongArgs by args()
 
+    private val adapter = PageAdapter(this)
+
+    fun onPageClick() = withState(hudViewModel) { state ->
+        if (state.hudVisible) {
+            hudViewModel.hideHud()
+        } else {
+            hudViewModel.showHud()
+        }
+    }
+
+    fun onPageLoadError(pageNumber: Int) = showError("Unable to load page $pageNumber")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        image_sheet.setOnClickListener { hudViewModel.showHud() }
+
+        pager_sheets?.adapter = adapter
+
+        list_sheets?.adapter = adapter
+        list_sheets?.layoutManager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
     }
 
     override fun onDestroy() {
@@ -50,7 +65,7 @@ class ViewerFragment : VglsFragment() {
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
-        if (hudState.hudVisible) {
+        if (hudState.hudVisible && !hudState.searchVisible) {
             hudViewModel.startHudTimer()
         }
 
@@ -62,8 +77,10 @@ class ViewerFragment : VglsFragment() {
         }
 
         when (viewerState.song) {
-            is Fail -> showError(viewerState.song.error.message
-                ?: viewerState.song.error::class.simpleName ?: "Unknown Error")
+            is Fail -> showError(
+                viewerState.song.error.message
+                    ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
+            )
             is Success -> showData(viewerState.song(), selectedPart)
         }
     }
@@ -88,38 +105,16 @@ class ViewerFragment : VglsFragment() {
         }
     }
 
-    private fun showSheet(sheet: Song, selectedPart: PartSelectorItem) {
+    private fun showSheet(sheet: Song, partSelection: PartSelectorItem) {
         val parts = sheet.parts
         if (parts != null) {
             hudViewModel.setAvailableParts(parts)
         } else {
-            showError("Unable to determine which parts are available for this sheet.")
+            showError("Unable to determine which parts are available for this sheet: $partSelection.")
         }
 
-        showLoading()
-        image_sheet.loadImageFull(
-            "https://vgleadsheets.com" +
-                    "/assets/sheets/png/${selectedPart.apiId}/${Uri.encode(sheet.filename)}-1.png",
-            object : Callback {
-                override fun onSuccess() {
-                    hideLoading()
-                }
-
-                override fun onError() {
-                    hideLoading()
-                    showError("Unable to load this sheet. Trying again for the C part...")
-                }
-            })
-    }
-
-    private fun showLoading() {
-        progress_loading.fadeInFromZero()
-        image_sheet.fadeOutPartially()
-    }
-
-    private fun hideLoading() {
-        image_sheet.fadeIn()
-        progress_loading.fadeOutGone()
+        val selectedPart = sheet.parts?.first { it.name == partSelection.apiId }
+        adapter.dataset = selectedPart?.pages
     }
 
     companion object {

@@ -9,6 +9,7 @@ data class ApiSong(
     val files: ApiFiles,
     val name: String,
     val pageCount: Int,
+    val lyricsPageCount: Int,
     val composers: List<ApiComposer>,
     val tags: Map<String, List<Any>>
 ) {

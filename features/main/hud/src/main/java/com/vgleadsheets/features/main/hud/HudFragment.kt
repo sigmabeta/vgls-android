@@ -21,7 +21,7 @@ import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
-import com.vgleadsheets.features.main.hud.parts.PartsAdapter
+import com.vgleadsheets.features.main.hud.parts.PartAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.*
@@ -33,7 +33,7 @@ class HudFragment : VglsFragment() {
 
     private val disposables = CompositeDisposable()
 
-    private val adapter = PartsAdapter(this)
+    private val adapter = PartAdapter(this)
 
     fun onItemClick(apiId: String) {
         viewModel.onPartSelect(apiId)
@@ -90,6 +90,8 @@ class HudFragment : VglsFragment() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun showSearch() {
+        viewModel.stopHudTimer()
+
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
         imm?.showSoftInput(edit_search_query, InputMethodManager.SHOW_IMPLICIT)
 
@@ -107,10 +109,7 @@ class HudFragment : VglsFragment() {
         text_search_hint.fadeIn()
 
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(
-            edit_search_query.windowToken,
-            InputMethodManager.HIDE_IMPLICIT_ONLY
-        )
+        imm?.hideSoftInputFromWindow(edit_search_query.windowToken, 0)
     }
 
     private fun showHud() {

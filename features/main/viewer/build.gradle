@@ -8,6 +8,9 @@ dependencies {
     implementation project(path: ':recyclerview')
     implementation project(path: ':ui-core')
 
+    // Viewpager2
+    implementation "androidx.viewpager2:viewpager2:$viewpager_version"
+
     // RxJava2 libs
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"

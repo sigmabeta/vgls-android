@@ -15,11 +15,20 @@ import javax.inject.Singleton
 
 @Module
 class NetworkModule {
-
     @Provides
     @Named("BaseUrl")
     @Singleton
-    internal fun provideBaseUrl() = "https://super.vgleadsheets.com/api/"
+    internal fun provideBaseUrl() = "https://super.vgleadsheets.com/"
+
+    @Provides
+    @Named("BaseApiUrl")
+    @Singleton
+    internal fun provideBaseApiUrl(@Named("BaseUrl") baseUrl: String) = baseUrl + "api/"
+
+    @Provides
+    @Named("BaseImageUrl")
+    @Singleton
+    internal fun provideBaseImageUrl(@Named("BaseUrl") baseUrl: String) = baseUrl + "assets/sheets/png/"
 
     @Provides
     @Singleton
@@ -49,7 +58,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideVglsApi(
-        @Named("BaseUrl") baseUrl: String,
+        @Named("BaseApiUrl") baseUrl: String,
         client: OkHttpClient,
         converterFactory: MoshiConverterFactory,
         callAdapterFactory: RxJava2CallAdapterFactory

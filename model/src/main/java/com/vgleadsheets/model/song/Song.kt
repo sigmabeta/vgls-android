@@ -8,15 +8,14 @@ data class Song(
     val id: Long,
     val filename: String,
     val name: String,
-    val pageCount: Int,
     val composers: List<Composer>?,
     val parts: List<Part>?
 ) : ListItem<Song> {
     override fun isTheSameAs(theOther: Song?) = id == theOther?.id
 
     override fun hasSameContentAs(theOther: Song?) = name == theOther?.name &&
-            pageCount == theOther.pageCount &&
-            composers?.size == theOther.composers?.size
+            composers == theOther.composers &&
+            parts == theOther.parts
 
     override fun getChangeType(theOther: Song?) = ListItem.CHANGE_ERROR
 }
