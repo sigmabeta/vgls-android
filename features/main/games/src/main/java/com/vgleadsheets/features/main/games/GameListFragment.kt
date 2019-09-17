@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
@@ -12,6 +13,8 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Empty
@@ -26,6 +29,8 @@ class GameListFragment : VglsFragment() {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
+    private val hudViewModel: HudViewModel by activityViewModel()
+
     private val viewModel: GameListViewModel by fragmentViewModel()
 
     private val adapter = GameListAdapter(this)
@@ -37,19 +42,26 @@ class GameListFragment : VglsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-            resources.getDimension(R.dimen.margin_large).toInt()
+                resources.getDimension(R.dimen.margin_large).toInt()
 
         list_games.adapter = adapter
         list_games.layoutManager = LinearLayoutManager(context)
         list_games.setInsetListenerForPadding(topOffset = topOffset)
     }
 
-    override fun invalidate() {
-        withState(viewModel) { state ->
-            when (state.data) {
-                is Fail -> showError(state.data.error.message ?: state.data.error::class.simpleName ?: "Unknown Error")
-                is Success -> showData(state.data())
-            }
+    override fun invalidate() = withState(hudViewModel, viewModel) { hudState, gameListState ->
+        val selectedPart = hudState.parts?.first { it.selected }
+
+        if (selectedPart == null) {
+            showError("No part selected.")
+            return@withState
+        }
+
+        when (val data = gameListState.data) {
+            is Fail -> showError(
+                data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
+            )
+            is Success -> showData(gameListState.data(), selectedPart)
         }
     }
 
@@ -57,12 +69,12 @@ class GameListFragment : VglsFragment() {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun showData(data: Data<List<Game>>?) {
+    private fun showData(data: Data<List<Game>>?, selectedPart: PartSelectorItem) {
         when (data) {
             is Empty -> showLoading()
             is Error -> showError(data.error.message ?: "Unknown error.")
             is Network -> hideLoading()
-            is Storage -> showGames(data())
+            is Storage -> showGames(data(), selectedPart)
         }
     }
 
@@ -80,8 +92,18 @@ class GameListFragment : VglsFragment() {
         progress_loading.fadeOutGone()
     }
 
-    private fun showGames(games: List<Game>) {
-        adapter.dataset = games
+    private fun showGames(games: List<Game>, selectedPart: PartSelectorItem) {
+        val availableGames = games.map { game ->
+            val availableSongs = game.songs.filter { song ->
+                song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+            }
+
+            game.copy(songs = availableSongs)
+        }.filter {
+            it.songs.isNotEmpty()
+        }
+
+        adapter.dataset = availableGames
     }
 
     companion object {

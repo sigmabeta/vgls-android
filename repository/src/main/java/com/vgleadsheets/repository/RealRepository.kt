@@ -113,7 +113,11 @@ class RealRepository constructor(
                                 val songs = songDao
                                     .getSongsForGameSync(gameEntity.id)
                                     .map { songEntity ->
-                                        songEntity.toSong(null, null)
+                                        val parts = partDao
+                                            .getPartsForSongId(songEntity.id)
+                                            .map { it.toPart(null) }
+
+                                        songEntity.toSong(null, parts)
                                     }
 
                                 gameEntity.toGame(songs)
