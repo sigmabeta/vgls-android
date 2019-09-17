@@ -115,7 +115,7 @@ class RealRepository constructor(
                                     .map { songEntity ->
                                         val parts = partDao
                                             .getPartsForSongId(songEntity.id)
-                                            .map { it.toPart(null) }
+                                            .map { it.toPart() }
 
                                         songEntity.toSong(null, parts)
                                     }
@@ -136,7 +136,12 @@ class RealRepository constructor(
                 val composers = songComposerDao
                     .getComposersForSong(songEntity.id)
                     .map { composerEntity -> composerEntity.toComposer() }
-                songEntity.toSong(composers)
+
+                val parts = partDao
+                    .getPartsForSongId(songEntity.id)
+                    .map { it.toPart() }
+
+                songEntity.toSong(composers, parts)
             }
         }
         .map { Storage(it) }

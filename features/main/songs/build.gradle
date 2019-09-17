@@ -2,8 +2,9 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
-    implementation project(path: ':repository')
+    implementation project(path: ':features:main:hud')
 
+    implementation project(path: ':repository')
     implementation project(path: ':recyclerview')
     implementation project(path: ':ui-core')
 
@@ -24,7 +25,6 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // Dagger (important: include all 3 of these in modules that use Dagger
-    implementation project(path: ':di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
