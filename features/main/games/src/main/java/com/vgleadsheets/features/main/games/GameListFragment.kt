@@ -94,13 +94,13 @@ class GameListFragment : VglsFragment() {
 
     private fun showGames(games: List<Game>, selectedPart: PartSelectorItem) {
         val availableGames = games.map { game ->
-            val availableSongs = game.songs.filter { song ->
+            val availableSongs = game.songs?.filter { song ->
                 song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
             }
 
             game.copy(songs = availableSongs)
         }.filter {
-            it.songs.isNotEmpty()
+            it.songs?.isNotEmpty() ?: false
         }
 
         adapter.dataset = availableGames

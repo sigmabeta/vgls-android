@@ -2,6 +2,8 @@ package com.vgleadsheets.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
@@ -64,6 +66,10 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
             )
         )
     )
+
+    override fun showSongListForComposer(composerId: Long) {
+        Toast.makeText(this, "Unimplemented.", LENGTH_SHORT).show()
+    }
 
     override fun showSongViewer(songId: Long) = showFragmentSimple(
         ViewerFragment.newInstance(

@@ -22,12 +22,14 @@ class Feature_Name_Fragment : VglsFragment() {
                 resources.getDimension(R.dimen.margin_large).toInt()
     }
 
-    override fun getLayoutId() = R.layout.fragment_feature_name_
-
     override fun invalidate() = withState(viewModel) { state ->
 
     }
-    
+
+    override fun getLayoutId() = R.layout.fragment_feature_name_
+
+    override fun getVglsFragmentTag() = this.javaClass.simpleName
+
     companion object {
         fun newInstance(idArgs: IdArgs): Feature_Name_Fragment {
             val fragment = Feature_Name_Fragment()

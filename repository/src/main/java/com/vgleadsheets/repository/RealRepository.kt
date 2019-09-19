@@ -4,6 +4,7 @@ import android.net.Uri
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.joins.SongComposerJoin
@@ -159,6 +160,20 @@ class RealRepository constructor(
                     partEntity.toPart(pages)
                 }
             it.toSong(parts = parts)
+        }
+        .map { Storage(it) }
+
+    override fun getComposers(): Observable<Data<List<Composer>>> = composerDao
+        .getAll()
+        .filter { it.isNotEmpty() }
+        .map { composerEntities ->
+            composerEntities.map { composerEntity ->
+                val songs = songComposerDao
+                    .getSongsForComposer(composerEntity.id)
+                    .map { songEntity -> songEntity.toSong() }
+
+                composerEntity.toComposer(songs)
+            }
         }
         .map { Storage(it) }
 
