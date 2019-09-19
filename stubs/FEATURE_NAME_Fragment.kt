@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class Feature_Name_Fragment : VglsFragment() {
     @Inject
-    lateinit var feature_name_ViewModelFactory: Feature_Name_ViewModel.Factory
+    lateinit var feature_nameViewModelFactory: Feature_Name_ViewModel.Factory
 
     private val viewModel: Feature_Name_ViewModel by fragmentViewModel()
 
