@@ -13,7 +13,7 @@ include ':app',
         ':common:parts',
 
         ':features:main',
-        ':features:main:mainstate',
+        ':features:main:router',
         ':features:main:games',
         ':features:main:search',
         ':features:main:songs',

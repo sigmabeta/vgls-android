@@ -2,7 +2,7 @@ apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     // To allow features to interact with MainActivity's state.
-    api project(path: ":features:main:mainstate")
+    api project(path: ":features:main:router")
 
     // All UI features should depend on MvRx
     api project(path: ':mvrx')
