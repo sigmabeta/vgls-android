@@ -13,7 +13,7 @@ data class ComposerEntity(
     @PrimaryKey val id: Long,
     val name: String
 ) {
-    fun toComposer(songs: List<Song>? = null) = Composer(id, name, songs)
+    fun toComposer(songs: List<Song>?) = Composer(id, name, songs)
 
     fun toSearchResult() = SearchResult(id, SearchResultType.COMPOSER, name)
 }

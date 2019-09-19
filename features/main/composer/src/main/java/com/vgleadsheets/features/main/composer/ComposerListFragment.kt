@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.fragmentViewModel
@@ -14,7 +13,6 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
-import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.composer.Composer
@@ -98,7 +96,11 @@ class ComposerListFragment : VglsFragment() {
     private fun showComposers(composers: List<Composer>, selectedPart: PartSelectorItem) {
         val availableComposers = composers.map { composer ->
             val availableSongs = composer.songs?.filter { song ->
-                song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+                val parts = song.parts
+                val firstAvailableSong = parts?.firstOrNull { part ->
+                    part.name == selectedPart.apiId
+                }
+                firstAvailableSong != null
             }
 
             composer.copy(songs = availableSongs)
@@ -110,14 +112,6 @@ class ComposerListFragment : VglsFragment() {
     }
 
     companion object {
-        fun newInstance(idArgs: IdArgs): ComposerListFragment {
-            val fragment = ComposerListFragment()
-
-            val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
-            fragment.arguments = args
-
-            return fragment
-        }
+        fun newInstance() = ComposerListFragment()
     }
 }

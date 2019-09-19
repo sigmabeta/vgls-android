@@ -1,5 +1,6 @@
 package com.vgleadsheets.di
 
+import com.vgleadsheets.features.main.composer.ComposerListFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.search.SearchFragment
@@ -22,6 +23,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeSearchFragmentInjector(): SearchFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeComposerListFragmentInjector(): ComposerListFragment
 
     @FragmentScope
     @ContributesAndroidInjector

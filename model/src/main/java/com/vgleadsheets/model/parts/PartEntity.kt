@@ -21,5 +21,5 @@ data class PartEntity(
     val songId: Long,
     val part: String
 ) {
-    fun toPart(pages: List<Page>? = null) = Part(id, part, pages)
+    fun toPart(pages: List<Page>?) = Part(id, part, pages)
 }

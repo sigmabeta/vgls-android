@@ -29,8 +29,8 @@ data class SongEntity(
     val game_id: Long
 ) {
     fun toSong(
-        composers: List<Composer>? = null,
-        parts: List<Part>? = null
+        composers: List<Composer>?,
+        parts: List<Part>?
     ) = Song(
         id,
         filename,
