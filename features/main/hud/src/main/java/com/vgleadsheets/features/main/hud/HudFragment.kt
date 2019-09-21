@@ -47,7 +47,7 @@ class HudFragment : VglsFragment() {
         // Configure search bar insets
         card_search.setInsetListenerForMargin(offset = resources.getDimension(R.dimen.margin_medium).toInt())
 
-        bottom_sheet.setInsetListenerForOnePadding(Side.BOTTOM)
+        constraint_bottom_sheet.setInsetListenerForOnePadding(Side.BOTTOM)
 
         list_parts.adapter = adapter
         list_parts.layoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
