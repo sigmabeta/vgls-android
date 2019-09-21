@@ -43,7 +43,7 @@ class SearchFragment : VglsFragment() {
 
     fun onComposerClicked(id: Long) {
         hudViewModel.exitSearch()
-        showSnackbar("Clicked composer id $id.")
+        getFragmentRouter().showSongListForComposer(id)
     }
 
     override fun onBackPress(): Boolean {

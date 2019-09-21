@@ -129,8 +129,26 @@ class RealRepository constructor(
             }
     }
 
-    override fun getSongs(gameId: Long): Observable<Data<List<Song>>> = songDao
+    override fun getSongsForGame(gameId: Long): Observable<Data<List<Song>>> = songDao
         .getSongsForGame(gameId)
+        .filter { it.isNotEmpty() }
+        .map { songEntities ->
+            songEntities.map { songEntity ->
+                val composers = songComposerDao
+                    .getComposersForSong(songEntity.id)
+                    .map { composerEntity -> composerEntity.toComposer(null) }
+
+                val parts = partDao
+                    .getPartsForSongId(songEntity.id)
+                    .map { it.toPart(null) }
+
+                songEntity.toSong(composers, parts)
+            }
+        }
+        .map { Storage(it) }
+
+    override fun getSongsByComposer(composerId: Long): Observable<Data<List<Song>>> = songComposerDao
+        .getSongsForComposer(composerId)
         .filter { it.isNotEmpty() }
         .map { songEntities ->
             songEntities.map { songEntity ->
@@ -169,7 +187,7 @@ class RealRepository constructor(
         .map { composerEntities ->
             composerEntities.map { composerEntity ->
                 val songs = songComposerDao
-                    .getSongsForComposer(composerEntity.id)
+                    .getSongsForComposerSync(composerEntity.id)
                     .map { songEntity ->
                         val parts = partDao
                             .getPartsForSongId(songEntity.id)

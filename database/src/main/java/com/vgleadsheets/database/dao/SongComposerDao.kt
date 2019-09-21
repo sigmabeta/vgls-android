@@ -6,6 +6,7 @@ import androidx.room.Query
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.song.SongEntity
+import io.reactivex.Observable
 
 @Dao
 interface SongComposerDao {
@@ -28,7 +29,16 @@ interface SongComposerDao {
             WHERE song_composer_join.composerId=:composerId
             """
     )
-    fun getSongsForComposer(composerId: Long): List<SongEntity>
+    fun getSongsForComposerSync(composerId: Long): List<SongEntity>
+
+    @Query(
+        """ 
+            SELECT * FROM song INNER JOIN song_composer_join 
+            ON song.id=song_composer_join.songId
+            WHERE song_composer_join.composerId=:composerId
+            """
+    )
+    fun getSongsForComposer(composerId: Long): Observable<List<SongEntity>>
 
     @Query("DELETE FROM song_composer_join")
     fun nukeTable()

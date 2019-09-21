@@ -2,15 +2,14 @@ package com.vgleadsheets.main
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.SongArgs
+import com.vgleadsheets.args.SongsByComposerArgs
+import com.vgleadsheets.args.SongsByGameArgs
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.search.SearchFragment
@@ -61,15 +60,19 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
 
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(
         SongListFragment.newInstance(
-            IdArgs(
+            SongsByGameArgs(
                 gameId
             )
         )
     )
 
-    override fun showSongListForComposer(composerId: Long) {
-        Toast.makeText(this, "Unimplemented.", LENGTH_SHORT).show()
-    }
+    override fun showSongListForComposer(composerId: Long) = showFragmentSimple(
+        SongListFragment.newInstance(
+            SongsByComposerArgs(
+                composerId
+            )
+        )
+    )
 
     override fun showSongViewer(songId: Long) = showFragmentSimple(
         ViewerFragment.newInstance(

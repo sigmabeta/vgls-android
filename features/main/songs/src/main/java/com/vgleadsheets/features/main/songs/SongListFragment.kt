@@ -15,7 +15,7 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
-import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.args.SongListArgs
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
@@ -36,7 +36,7 @@ class SongListFragment : VglsFragment() {
 
     private val viewModel: SongListViewModel by fragmentViewModel()
 
-    private val idArgs: IdArgs by args()
+    private val args: SongListArgs by args()
 
     private val adapter = SongListAdapter(this)
 
@@ -71,7 +71,7 @@ class SongListFragment : VglsFragment() {
 
     override fun getLayoutId() = R.layout.fragment_sheet
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${args.id}"
 
     private fun showData(data: Data<List<Song>>?, selectedPart: PartSelectorItem) {
         when (data) {
@@ -103,12 +103,12 @@ class SongListFragment : VglsFragment() {
     }
 
     companion object {
-        fun newInstance(idArgs: IdArgs): SongListFragment {
+        fun newInstance(args: SongListArgs): SongListFragment {
             val fragment = SongListFragment()
 
-            val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
-            fragment.arguments = args
+            val argBundle = Bundle()
+            argBundle.putParcelable(MvRx.KEY_ARG, args)
+            fragment.arguments = argBundle
 
             return fragment
         }
