@@ -65,7 +65,6 @@ class ComposerListFragment : VglsFragment() {
         }
     }
 
-
     override fun getLayoutId() = R.layout.fragment_composer_list
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName

@@ -18,6 +18,7 @@ import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
 
+@Suppress("TooManyFunctions")
 class RealRepository constructor(
     private val vglsApi: VglsApi,
     private val baseImageUrl: String,

@@ -36,7 +36,9 @@ class SongListViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<SongListViewModel, SongListState> {
-        override fun create(viewModelContext: ViewModelContext, state: SongListState
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: SongListState
         ): SongListViewModel? {
             val fragment: SongListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
