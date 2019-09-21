@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:textColor="@color/colorPrimary"
         android:id="@+id/text_part_name"
         android:layout_width="48dp"
         android:layout_height="48dp"

@@ -21,6 +21,20 @@ fun View.setInsetListenerForPadding(
         )
         insets
     }
+
+}fun View.setInsetListenerForOnePadding(
+    side: Side,
+    offset: Int = 0
+) {
+    setOnApplyWindowInsetsListener { v, insets ->
+        v.updatePadding(
+            top = if (side == Side.TOP) insets.systemWindowInsetTop + offset else paddingTop,
+            left = if (side == Side.START) insets.systemWindowInsetLeft + offset else paddingStart,
+            right = if (side == Side.END) insets.systemWindowInsetRight + offset else paddingEnd,
+            bottom = if (side == Side.BOTTOM) insets.systemWindowInsetBottom + offset else paddingBottom
+        )
+        insets
+    }
 }
 
 fun View.setInsetListenerForMargin(
@@ -39,4 +53,11 @@ fun View.setInsetListenerForMargin(
         )
         insets
     }
+}
+
+enum class Side {
+    TOP,
+    BOTTOM,
+    START,
+    END
 }

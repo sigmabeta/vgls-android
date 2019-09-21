@@ -8,22 +8,22 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_search"
-        android:layout_height="@dimen/height_search_bar"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/height_search_bar"
         android:layout_gravity="top"
-        android:elevation="16dp"
-        android:layout_margin="@dimen/margin_medium">
+        android:layout_margin="@dimen/margin_medium"
+        android:elevation="16dp">
 
         <TextView
             android:id="@+id/text_search_hint"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/hint_search"
-            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:text="@string/hint_search"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@color/hint_text"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <EditText
             android:id="@+id/edit_search_query"
@@ -32,16 +32,33 @@
             android:layout_gravity="center_vertical"
             android:hint="@string/hint_search"
             android:inputType="textAutoCorrect"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_parts"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@android:color/white"
-        tools:listitem="@layout/list_item_part"
-        />
+        android:background="@android:color/white">
+
+        <ImageButton
+            android:id="@+id/button_menu"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_menu_black_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_parts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/list_item_part" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

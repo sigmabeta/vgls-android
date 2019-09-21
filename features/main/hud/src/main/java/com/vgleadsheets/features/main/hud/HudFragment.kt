@@ -15,6 +15,7 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
+import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeOutGone
@@ -23,6 +24,7 @@ import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.features.main.hud.parts.PartAdapter
 import com.vgleadsheets.setInsetListenerForMargin
+import com.vgleadsheets.setInsetListenerForOnePadding
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.*
 import java.util.concurrent.TimeUnit
@@ -44,6 +46,8 @@ class HudFragment : VglsFragment() {
 
         // Configure search bar insets
         card_search.setInsetListenerForMargin(offset = resources.getDimension(R.dimen.margin_medium).toInt())
+
+        bottom_sheet.setInsetListenerForOnePadding(Side.BOTTOM)
 
         list_parts.adapter = adapter
         list_parts.layoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)

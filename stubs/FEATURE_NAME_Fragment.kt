@@ -20,6 +20,8 @@ class Feature_Name_Fragment : VglsFragment() {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
                 resources.getDimension(R.dimen.margin_large).toInt()
+        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
+                resources.getDimension(R.dimen.margin_medium).toInt()
     }
 
     override fun invalidate() = withState(viewModel) { state ->
