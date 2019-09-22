@@ -27,6 +27,10 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
         }
     }
 
+    fun onMenuAction() {
+        setState { copy(menuExpanded = false) }
+    }
+
     fun setAvailableParts(parts: List<Part>) = withState {
         Timber.i("Setting available parts: $parts")
         val selectedId = it.parts?.first { part -> part.selected }?.apiId
@@ -44,7 +48,7 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
 
     fun onPartSelect(apiId: String) = withState { state ->
         setState {
-            copy(parts = setSelection(apiId, state.parts))
+            copy(parts = setSelection(apiId, state.parts), menuExpanded = false)
         }
     }
 
@@ -79,16 +83,18 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
         }
     }
 
-    fun startHudTimer() {
+    fun startHudTimer() = withState { state ->
         stopTimer()
-        timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
-            .execute { timer ->
-                if (timer is Success) {
-                    copy(hudVisible = false)
-                } else {
-                    this
+        if (!state.menuExpanded) {
+            timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
+                .execute { timer ->
+                    if (timer is Success) {
+                        copy(hudVisible = false)
+                    } else {
+                        this
+                    }
                 }
-            }
+        }
     }
 
     fun stopHudTimer() {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
@@ -68,6 +69,7 @@ class SongListFragment : VglsFragment() {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
+            is Loading -> showLoading()
             is Success -> showData(songListState.data(), selectedPart)
         }
     }
@@ -86,6 +88,7 @@ class SongListFragment : VglsFragment() {
     }
 
     private fun showSongs(songs: List<Song>, selectedPart: PartSelectorItem) {
+        hideLoading()
         adapter.dataset = songs.filter { song ->
             song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
         }

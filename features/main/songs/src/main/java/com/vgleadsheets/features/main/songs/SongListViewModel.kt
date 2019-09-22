@@ -5,6 +5,7 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.vgleadsheets.args.AllSongsArgs
 import com.vgleadsheets.args.SongsByComposerArgs
 import com.vgleadsheets.args.SongsByGameArgs
 import com.vgleadsheets.mvrx.MvRxViewModel
@@ -20,8 +21,9 @@ class SongListViewModel @AssistedInject constructor(
 
     private fun fetchSongs() = withState { state ->
         val loadOperation = when (state.type) {
-            is SongsByComposerArgs -> repository.getSongsByComposer(state.id)
-            is SongsByGameArgs -> repository.getSongsForGame(state.id)
+            is SongsByComposerArgs -> repository.getSongsByComposer(state.id!!)
+            is SongsByGameArgs -> repository.getSongsForGame(state.id!!)
+            is AllSongsArgs -> repository.getAllSongs()
         }
 
         loadOperation

@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.args.AllSongsArgs
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.args.SongsByComposerArgs
 import com.vgleadsheets.args.SongsByGameArgs
@@ -72,7 +73,12 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
     }
 
     override fun showAllSheets() {
-        Toast.makeText(this, "Unimplemented.", LENGTH_SHORT).show()
+        // TODO Clear back stack before doing this.
+        // TODO Move to Navigator Fragment
+        supportFragmentManager.beginTransaction()
+            .setDefaultAnimations()
+            .replace(R.id.frame_fragment, SongListFragment.newInstance(AllSongsArgs()))
+            .commit()
     }
 
     override fun showRandomSheet() {

@@ -9,7 +9,7 @@ import com.vgleadsheets.repository.Data
 
 data class SongListState(
     val type: SongListArgs,
-    val id: Long,
+    val id: Long?,
     val data: Async<Data<List<Song>>> = Uninitialized
 ) : MvRxState {
     constructor(args: SongListArgs) : this(args, args.id)

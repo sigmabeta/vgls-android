@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.fragmentViewModel
@@ -66,6 +67,7 @@ class ComposerListFragment : VglsFragment() {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
+            is Loading -> showLoading()
             is Success -> showData(composerListState.data(), selectedPart)
         }
     }
@@ -98,6 +100,7 @@ class ComposerListFragment : VglsFragment() {
     }
 
     private fun showComposers(composers: List<Composer>, selectedPart: PartSelectorItem) {
+        hideLoading()
         val availableComposers = composers.map { composer ->
             val availableSongs = composer.songs?.filter { song ->
                 val parts = song.parts

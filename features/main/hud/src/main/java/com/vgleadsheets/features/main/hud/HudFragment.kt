@@ -18,6 +18,7 @@ import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
+import com.vgleadsheets.animation.fadeInSlightly
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
@@ -27,6 +28,7 @@ import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.*
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
@@ -53,10 +55,24 @@ class HudFragment : VglsFragment() {
         list_parts.layoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
 
         button_menu.setOnClickListener { viewModel.onMenuClick() }
-        layout_by_game.setOnClickListener { getFragmentRouter().showGameList() }
-        layout_by_composer.setOnClickListener { getFragmentRouter().showComposerList() }
-        layout_all_sheets.setOnClickListener { getFragmentRouter().showAllSheets() }
-        layout_random_select.setOnClickListener { getFragmentRouter().showRandomSheet() }
+        shadow_hud.setOnClickListener { viewModel.onMenuAction() }
+
+        layout_by_game.setOnClickListener {
+            viewModel.onMenuAction()
+            getFragmentRouter().showGameList()
+        }
+        layout_by_composer.setOnClickListener {
+            viewModel.onMenuAction()
+            getFragmentRouter().showComposerList()
+        }
+        layout_all_sheets.setOnClickListener {
+            viewModel.onMenuAction()
+            getFragmentRouter().showAllSheets()
+        }
+        layout_random_select.setOnClickListener {
+            viewModel.onMenuAction()
+            getFragmentRouter().showRandomSheet()
+        }
     }
 
     override fun onStart() {
@@ -129,10 +145,10 @@ class HudFragment : VglsFragment() {
 
     private fun showHud() {
         card_search.animate().cancel()
-        list_parts.animate().cancel()
+        bottom_sheet.animate().cancel()
 
         card_search.slideViewOnscreen()
-        list_parts.slideViewOnscreen()
+        bottom_sheet.slideViewOnscreen()
 
         view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
                 SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
@@ -142,7 +158,7 @@ class HudFragment : VglsFragment() {
     private fun hideHud() {
         if (card_search.visibility != View.GONE) {
             card_search.slideViewUpOffscreen()
-            list_parts.slideViewDownOffscreen()
+            bottom_sheet.slideViewDownOffscreen()
 
             view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or
                     SYSTEM_UI_FLAG_FULLSCREEN or
@@ -154,10 +170,14 @@ class HudFragment : VglsFragment() {
     }
 
     private fun showFullMenu() {
+        Timber.i("Showing full menu.")
+        shadow_hud.fadeInSlightly()
         motion_bottom_sheet.transitionToEnd()
     }
 
     private fun hideFullMenu() {
+        Timber.i("Hiding full menu.")
+        shadow_hud.fadeOutGone()
         motion_bottom_sheet.transitionToStart()
     }
 

@@ -63,23 +63,27 @@ class RealRepository constructor(
 
                                     apiSong.files.parts.forEach {
                                         partCount++
-                                        val partEntity = it.value.toPartEntity(partCount, apiSong.id)
+                                        val partEntity =
+                                            it.value.toPartEntity(partCount, apiSong.id)
                                         partEntities.add(partEntity)
 
-                                        val pageCount = if (partEntity.part == PartSelectorOption.VOCAL.apiId) {
-                                            apiSong.lyricsPageCount
-                                        } else {
-                                            apiSong.pageCount
-                                        }
+                                        val pageCount =
+                                            if (partEntity.part == PartSelectorOption.VOCAL.apiId) {
+                                                apiSong.lyricsPageCount
+                                            } else {
+                                                apiSong.pageCount
+                                            }
 
                                         for (pageNumber in 1..pageCount) {
                                             val imageUrl =
                                                 generateImageUrl(partEntity, apiSong, pageNumber)
 
-                                            val pageEntity = PageEntity(null,
+                                            val pageEntity = PageEntity(
+                                                null,
                                                 pageNumber,
                                                 partEntity.id,
-                                                imageUrl)
+                                                imageUrl
+                                            )
 
                                             pageEntities.add(pageEntity)
                                         }
@@ -148,23 +152,24 @@ class RealRepository constructor(
         }
         .map { Storage(it) }
 
-    override fun getSongsByComposer(composerId: Long): Observable<Data<List<Song>>> = songComposerDao
-        .getSongsForComposer(composerId)
-        .filter { it.isNotEmpty() }
-        .map { songEntities ->
-            songEntities.map { songEntity ->
-                val composers = songComposerDao
-                    .getComposersForSong(songEntity.id)
-                    .map { composerEntity -> composerEntity.toComposer(null) }
+    override fun getSongsByComposer(composerId: Long): Observable<Data<List<Song>>> =
+        songComposerDao
+            .getSongsForComposer(composerId)
+            .filter { it.isNotEmpty() }
+            .map { songEntities ->
+                songEntities.map { songEntity ->
+                    val composers = songComposerDao
+                        .getComposersForSong(songEntity.id)
+                        .map { composerEntity -> composerEntity.toComposer(null) }
 
-                val parts = partDao
-                    .getPartsForSongId(songEntity.id)
-                    .map { it.toPart(null) }
+                    val parts = partDao
+                        .getPartsForSongId(songEntity.id)
+                        .map { it.toPart(null) }
 
-                songEntity.toSong(composers, parts)
+                    songEntity.toSong(composers, parts)
+                }
             }
-        }
-        .map { Storage(it) }
+            .map { Storage(it) }
 
     override fun getSong(songId: Long): Observable<Data<Song>> = songDao
         .getSong(songId)
@@ -179,6 +184,28 @@ class RealRepository constructor(
                     partEntity.toPart(pages)
                 }
             it.toSong(null, parts)
+        }
+        .map { Storage(it) }
+
+    override fun getAllSongs(): Observable<Data<List<Song>>> = songDao
+        .getAll()
+        .map { songEntities ->
+            songEntities.map { songEntity ->
+                val composers = songComposerDao
+                    .getComposersForSong(songEntity.id)
+                    .map { composerEntity -> composerEntity.toComposer(null) }
+
+                val parts = partDao
+                    .getPartsForSongId(songEntity.id)
+                    .map { partEntity ->
+                        val pages = pageDao
+                            .getPagesForPartId(partEntity.id)
+                            .map { pageEntity -> pageEntity.toPage() }
+
+                        partEntity.toPart(pages)
+                    }
+                songEntity.toSong(composers, parts)
+            }
         }
         .map { Storage(it) }
 

@@ -11,6 +11,7 @@ interface Repository {
     fun getSongsForGame(gameId: Long): Observable<Data<List<Song>>>
     fun getSongsByComposer(composerId: Long): Observable<Data<List<Song>>>
     fun getSong(songId: Long): Observable<Data<Song>>
+    fun getAllSongs(): Observable<Data<List<Song>>>
     fun getComposers(): Observable<Data<List<Composer>>>
     fun search(searchQuery: String): Observable<List<SearchResult>>
 }
