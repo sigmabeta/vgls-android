@@ -12,4 +12,4 @@ data class SongsByGameArgs(override val id: Long) : SongListArgs(id)
 data class SongsByComposerArgs(override val id: Long) : SongListArgs(id)
 
 @Parcelize
-data class AllSongsArgs(val ignored: Long? = null): SongListArgs(null)
+data class AllSongsArgs(val ignored: Long? = null) : SongListArgs(null)

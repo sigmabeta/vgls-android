@@ -24,8 +24,9 @@ fun View.setInsetListenerForPadding(
         )
         insets
     }
+}
 
-}fun View.setInsetListenerForOnePadding(
+fun View.setInsetListenerForOnePadding(
     side: Side,
     offset: Int = 0
 ) {
@@ -61,11 +62,7 @@ fun View.setInsetListenerForMargin(
 fun Float.spToPx(metrics: DisplayMetrics) = (this * metrics.scaledDensity).round()
 fun Float.dpToPx(metrics: DisplayMetrics) = (this * metrics.density).round()
 
-private fun Float.round() = (if(this < 0) ceil(this - 0.5f) else floor(this + 0.5f)).toInt()
+private fun Float.round() =
+    (if (this < 0) ceil(this - ROUND_THRESHOLD) else floor(this + ROUND_THRESHOLD)).toInt()
 
-enum class Side {
-    TOP,
-    BOTTOM,
-    START,
-    END
-}
+const val ROUND_THRESHOLD = 0.5f

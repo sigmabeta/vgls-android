@@ -18,7 +18,12 @@ class PartViewHolder(view: View, adapter: PartAdapter) :
             }
         )
 
-        view.scaleX = if (toBind.selected) 1.0f else 0.8f
-        view.scaleY = if (toBind.selected) 1.0f else 0.8f
+        view.scaleX = if (toBind.selected) SCALE_SELECTED else SCALE_UNSELECTED
+        view.scaleY = if (toBind.selected) SCALE_SELECTED else SCALE_UNSELECTED
+    }
+
+    companion object {
+        const val SCALE_UNSELECTED = 0.8f
+        const val SCALE_SELECTED = 1.0f
     }
 }
