@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hint_search">Search for a song…</string>
+
+    <string name="label_by_game">Browse by Game</string>
+    <string name="label_by_composer">Browse by Composer</string>
+    <string name="label_all_sheets">Browse All Sheets</string>
+    <string name="label_random">Random Select</string>
 </resources>

@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class Feature_Name_Fragment : VglsFragment() {
     @Inject
-    lateinit var feature_name_ViewModelFactory: Feature_Name_ViewModel.Factory
+    lateinit var feature_nameViewModelFactory: Feature_Name_ViewModel.Factory
 
     private val viewModel: Feature_Name_ViewModel by fragmentViewModel()
 
@@ -20,14 +20,18 @@ class Feature_Name_Fragment : VglsFragment() {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
                 resources.getDimension(R.dimen.margin_large).toInt()
+        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
+                resources.getDimension(R.dimen.margin_medium).toInt()
     }
-
-    override fun getLayoutId() = R.layout.fragment_feature_name_
 
     override fun invalidate() = withState(viewModel) { state ->
 
     }
-    
+
+    override fun getLayoutId() = R.layout.fragment_feature_name_
+
+    override fun getVglsFragmentTag() = this.javaClass.simpleName
+
     companion object {
         fun newInstance(idArgs: IdArgs): Feature_Name_Fragment {
             val fragment = Feature_Name_Fragment()

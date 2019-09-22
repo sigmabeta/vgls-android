@@ -10,6 +10,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 
+private const val DURATION_XSLOW = 500L
 private const val DURATION_SLOW = 300L
 private const val DURATION_QUICK = 150L
 private const val DURATION_X_QUICK = 100L
@@ -17,6 +18,7 @@ private const val DURATION_XX_QUICK = 50L
 
 private const val ALPHA_OPAQUE = 1.0f
 private const val ALPHA_SEMI_TRANSPARENT = 0.6f
+private const val ALPHA_VERY_TRANSPARENT = 0.4f
 private const val ALPHA_TRANSPARENT = 0.0f
 
 private const val SCALE_UNITY = 1.0f
@@ -65,6 +67,17 @@ fun View.slideViewToProperLocation(): ViewPropertyAnimator {
         .setInterpolator(ACC_DECELERATE)
         .setDuration(DURATION_SLOW)
         .translationY(TRANSLATION_CENTER)
+}
+
+fun View.fadeInSlightly(): ViewPropertyAnimator {
+    visibility = View.VISIBLE
+
+    animate().cancel()
+    return animate()
+        .withLayer()
+        .setInterpolator(DECELERATE)
+        .setDuration(DURATION_XSLOW)
+        .alpha(ALPHA_VERY_TRANSPARENT)
 }
 
 fun View.fadeIn(): ViewPropertyAnimator {

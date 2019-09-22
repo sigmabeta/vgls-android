@@ -43,10 +43,12 @@ class GameListFragment : VglsFragment() {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
                 resources.getDimension(R.dimen.margin_large).toInt()
+        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
+                resources.getDimension(R.dimen.margin_medium).toInt()
 
         list_games.adapter = adapter
         list_games.layoutManager = LinearLayoutManager(context)
-        list_games.setInsetListenerForPadding(topOffset = topOffset)
+        list_games.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, gameListState ->
@@ -94,13 +96,13 @@ class GameListFragment : VglsFragment() {
 
     private fun showGames(games: List<Game>, selectedPart: PartSelectorItem) {
         val availableGames = games.map { game ->
-            val availableSongs = game.songs.filter { song ->
+            val availableSongs = game.songs?.filter { song ->
                 song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
             }
 
             game.copy(songs = availableSongs)
         }.filter {
-            it.songs.isNotEmpty()
+            it.songs?.isNotEmpty() ?: false
         }
 
         adapter.dataset = availableGames

@@ -8,6 +8,9 @@ import io.reactivex.Observable
 
 @Dao
 interface SongDao {
+    @Query("SELECT * FROM song ORDER BY name")
+    fun getAll(): Observable<List<SongEntity>>
+
     @Query("SELECT * FROM song WHERE game_id = :gameId")
     fun getSongsForGame(gameId: Long): Observable<List<SongEntity>>
 

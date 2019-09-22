@@ -9,13 +9,12 @@ include ':app',
         ':database',
         ':model',
         ':repository',
-
         ':common:parts',
-
         ':features:main',
-        ':features:main:mainstate',
+        ':features:main:router',
         ':features:main:games',
         ':features:main:search',
         ':features:main:songs',
         ':features:main:viewer',
-        ':features:main:hud'
+        ':features:main:hud',
+        ':features:main:composer'

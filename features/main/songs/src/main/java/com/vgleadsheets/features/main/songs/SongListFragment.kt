@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
@@ -15,7 +16,7 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
-import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.args.SongListArgs
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
@@ -36,7 +37,7 @@ class SongListFragment : VglsFragment() {
 
     private val viewModel: SongListViewModel by fragmentViewModel()
 
-    private val idArgs: IdArgs by args()
+    private val args: SongListArgs by args()
 
     private val adapter = SongListAdapter(this)
 
@@ -48,9 +49,12 @@ class SongListFragment : VglsFragment() {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
                 resources.getDimension(R.dimen.margin_large).toInt()
+        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
+                resources.getDimension(R.dimen.margin_medium).toInt()
+
         list_sheets.adapter = adapter
         list_sheets.layoutManager = LinearLayoutManager(context)
-        list_sheets.setInsetListenerForPadding(topOffset = topOffset)
+        list_sheets.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, songListState ->
@@ -65,13 +69,14 @@ class SongListFragment : VglsFragment() {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
+            is Loading -> showLoading()
             is Success -> showData(songListState.data(), selectedPart)
         }
     }
 
     override fun getLayoutId() = R.layout.fragment_sheet
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${args.id}"
 
     private fun showData(data: Data<List<Song>>?, selectedPart: PartSelectorItem) {
         when (data) {
@@ -83,6 +88,7 @@ class SongListFragment : VglsFragment() {
     }
 
     private fun showSongs(songs: List<Song>, selectedPart: PartSelectorItem) {
+        hideLoading()
         adapter.dataset = songs.filter { song ->
             song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
         }
@@ -103,12 +109,12 @@ class SongListFragment : VglsFragment() {
     }
 
     companion object {
-        fun newInstance(idArgs: IdArgs): SongListFragment {
+        fun newInstance(args: SongListArgs): SongListFragment {
             val fragment = SongListFragment()
 
-            val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
-            fragment.arguments = args
+            val argBundle = Bundle()
+            argBundle.putParcelable(MvRx.KEY_ARG, args)
+            fragment.arguments = argBundle
 
             return fragment
         }

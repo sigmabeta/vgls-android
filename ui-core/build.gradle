@@ -2,7 +2,7 @@ apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     // To allow features to interact with MainActivity's state.
-    api project(path: ":features:main:mainstate")
+    api project(path: ":features:main:router")
 
     // All UI features should depend on MvRx
     api project(path: ':mvrx')
@@ -13,7 +13,7 @@ dependencies {
     // AndroidX libs
     api 'androidx.core:core-ktx:1.0.2'
     api "androidx.appcompat:appcompat:1.0.2"
-    api "androidx.constraintlayout:constraintlayout:1.1.3"
+    api "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
     api "com.google.android.material:material:1.1.0-alpha06"
 
     // Dagger

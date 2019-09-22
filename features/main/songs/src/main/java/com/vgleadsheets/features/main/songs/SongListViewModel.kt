@@ -5,6 +5,9 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.vgleadsheets.args.AllSongsArgs
+import com.vgleadsheets.args.SongsByComposerArgs
+import com.vgleadsheets.args.SongsByGameArgs
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 
@@ -17,7 +20,13 @@ class SongListViewModel @AssistedInject constructor(
     }
 
     private fun fetchSongs() = withState { state ->
-        repository.getSongs(state.gameId)
+        val loadOperation = when (state.type) {
+            is SongsByComposerArgs -> repository.getSongsByComposer(state.id!!)
+            is SongsByGameArgs -> repository.getSongsForGame(state.id!!)
+            is AllSongsArgs -> repository.getAllSongs()
+        }
+
+        loadOperation
             .execute { data ->
                 copy(data = data)
             }
@@ -29,8 +38,12 @@ class SongListViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<SongListViewModel, SongListState> {
-        override fun create(viewModelContext: ViewModelContext, state: SongListState): SongListViewModel? {
-            val fragment: SongListFragment = (viewModelContext as FragmentViewModelContext).fragment()
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: SongListState
+        ): SongListViewModel? {
+            val fragment: SongListFragment =
+                (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.sheetListViewModelFactory.create(state)
         }
     }
