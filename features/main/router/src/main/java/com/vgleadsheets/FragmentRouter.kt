@@ -6,4 +6,7 @@ interface FragmentRouter {
     fun showSongViewer(songId: Long)
     fun showSearch()
     fun showSongListForComposer(composerId: Long)
+    fun showComposerList()
+    fun showAllSheets()
+    fun showRandomSheet()
 }

@@ -2,6 +2,8 @@ package com.vgleadsheets.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
@@ -10,6 +12,7 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.args.SongsByComposerArgs
 import com.vgleadsheets.args.SongsByGameArgs
+import com.vgleadsheets.features.main.composer.ComposerListFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.search.SearchFragment
@@ -52,10 +55,28 @@ class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector, FragmentRou
 
     override fun showGameList() {
         // TODO Clear back stack before doing this.
+        // TODO Move to Navigator Fragment
         supportFragmentManager.beginTransaction()
             .setDefaultAnimations()
             .replace(R.id.frame_fragment, GameListFragment.newInstance())
             .commit()
+    }
+
+    override fun showComposerList() {
+        // TODO Clear back stack before doing this.
+        // TODO Move to Navigator Fragment
+        supportFragmentManager.beginTransaction()
+            .setDefaultAnimations()
+            .replace(R.id.frame_fragment, ComposerListFragment.newInstance())
+            .commit()
+    }
+
+    override fun showAllSheets() {
+        Toast.makeText(this, "Unimplemented.", LENGTH_SHORT).show()
+    }
+
+    override fun showRandomSheet() {
+        Toast.makeText(this, "Unimplemented.", LENGTH_SHORT).show()
     }
 
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(

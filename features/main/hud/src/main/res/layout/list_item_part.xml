@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/text_part_name"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
         android:layout_gravity="center"
         android:gravity="center"
         tools:text="Alto"

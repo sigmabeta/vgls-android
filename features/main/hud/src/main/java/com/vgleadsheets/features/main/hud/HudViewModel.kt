@@ -17,6 +17,16 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
         resetAvailableParts()
     }
 
+    fun onMenuClick() {
+        setState {
+            return@setState if (menuExpanded) {
+                copy(menuExpanded = false)
+            } else {
+                copy(menuExpanded = true)
+            }
+        }
+    }
+
     fun setAvailableParts(parts: List<Part>) = withState {
         Timber.i("Setting available parts: $parts")
         val selectedId = it.parts?.first { part -> part.selected }?.apiId

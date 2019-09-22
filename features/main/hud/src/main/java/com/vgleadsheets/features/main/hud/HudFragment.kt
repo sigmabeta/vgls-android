@@ -47,10 +47,16 @@ class HudFragment : VglsFragment() {
         // Configure search bar insets
         card_search.setInsetListenerForMargin(offset = resources.getDimension(R.dimen.margin_medium).toInt())
 
-        constraint_bottom_sheet.setInsetListenerForOnePadding(Side.BOTTOM)
+        motion_bottom_sheet.setInsetListenerForOnePadding(Side.BOTTOM)
 
         list_parts.adapter = adapter
         list_parts.layoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
+
+        button_menu.setOnClickListener { viewModel.onMenuClick() }
+        layout_by_game.setOnClickListener { getFragmentRouter().showGameList() }
+        layout_by_composer.setOnClickListener { getFragmentRouter().showComposerList() }
+        layout_all_sheets.setOnClickListener { getFragmentRouter().showAllSheets() }
+        layout_random_select.setOnClickListener { getFragmentRouter().showRandomSheet() }
     }
 
     override fun onStart() {
@@ -86,6 +92,11 @@ class HudFragment : VglsFragment() {
             hideSearch()
         }
 
+        if (state.menuExpanded) {
+            showFullMenu()
+        } else {
+            hideFullMenu()
+        }
         adapter.dataset = state.parts
     }
 
@@ -140,6 +151,14 @@ class HudFragment : VglsFragment() {
                     SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                     SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
+    }
+
+    private fun showFullMenu() {
+        motion_bottom_sheet.transitionToEnd()
+    }
+
+    private fun hideFullMenu() {
+        motion_bottom_sheet.transitionToStart()
     }
 
     private fun searchClicks() = card_search.clicks()
