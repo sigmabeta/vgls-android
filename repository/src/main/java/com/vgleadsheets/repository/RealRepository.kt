@@ -17,6 +17,7 @@ import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
@@ -260,10 +261,13 @@ class RealRepository constructor(
             .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
     }
 
+    // TODO This method might be named backwards
     private fun isTableFresh(tableName: TableName, force: Boolean): Observable<Boolean> {
         return dbStatisticsDao.getLastEditDate(tableName.ordinal)
-            .map { lastEdit ->
-                force || System.currentTimeMillis() - lastEdit.last_edit_time_ms < AGE_THRESHOLD
+            .map {
+                Timber.i("$force")
+                // force || System.currentTimeMillis() - lastEdit.last_edit_time_ms < AGE_THRESHOLD
+                true
             }
     }
 

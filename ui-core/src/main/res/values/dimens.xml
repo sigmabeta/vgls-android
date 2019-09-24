@@ -10,4 +10,6 @@
     <dimen name="height_bottom_sheet_peek">64dp</dimen>
 
     <dimen name="min_clickable_size">48dp</dimen>
+
+    <dimen name="icon_padding">12dp</dimen>
 </resources>
