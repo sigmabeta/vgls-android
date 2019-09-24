@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:showIn="@layout/fragment_hud">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/button_menu"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:src="@drawable/ic_menu_black_24dp"
+            android:padding="@dimen/icon_padding"
+            android:tint="@android:color/tertiary_text_dark" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_parts"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            tools:listitem="@layout/list_item_part" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_by_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.0"
+        tools:alpha="1.0"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_album_black_24dp"
+            android:tint="@android:color/tertiary_text_dark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:paddingStart="@dimen/margin_medium"
+            android:text="@string/label_by_game"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/tertiary_text_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_by_composer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.0"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_person_black_24dp"
+            android:tint="@android:color/tertiary_text_dark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:paddingStart="@dimen/margin_medium"
+            android:text="@string/label_by_composer"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/tertiary_text_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_all_sheets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.0"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_description_black_24dp"
+            android:tint="@android:color/tertiary_text_dark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:paddingStart="@dimen/margin_medium"
+            android:text="@string/label_all_sheets"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/tertiary_text_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_random_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.0"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_shuffle_black_24dp"
+            android:tint="@android:color/tertiary_text_dark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:paddingStart="@dimen/margin_medium"
+            android:text="@string/label_random"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/tertiary_text_dark" />
+    </LinearLayout>
+</LinearLayout>

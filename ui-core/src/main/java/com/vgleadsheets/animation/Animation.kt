@@ -12,7 +12,7 @@ import android.widget.TextView
 
 private const val DURATION_XSLOW = 500L
 private const val DURATION_SLOW = 300L
-private const val DURATION_QUICK = 150L
+private const val DURATION_QUICK = 250L
 private const val DURATION_X_QUICK = 100L
 private const val DURATION_XX_QUICK = 50L
 
@@ -107,7 +107,7 @@ fun View.fadeOutGone(): ViewPropertyAnimator {
     animate().cancel()
     return animate()
         .withLayer()
-        .setInterpolator(ACCELERATE)
+        .setInterpolator(DECELERATE)
         .setDuration(DURATION_QUICK)
         .alpha(ALPHA_TRANSPARENT)
         .withEndAction {
@@ -119,7 +119,7 @@ fun View.fadeOut(): ViewPropertyAnimator {
     animate().cancel()
     return animate()
         .withLayer()
-        .setInterpolator(ACCELERATE)
+        .setInterpolator(DECELERATE)
         .setDuration(DURATION_QUICK)
         .alpha(ALPHA_TRANSPARENT)
 }
