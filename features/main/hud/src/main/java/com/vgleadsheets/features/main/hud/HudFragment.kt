@@ -9,7 +9,6 @@ import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.View.VISIBLE
-import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
@@ -21,6 +20,10 @@ import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.animation.DECELERATE
+import com.vgleadsheets.animation.DURATION_QUICK
+import com.vgleadsheets.animation.DURATION_SLOW
+import com.vgleadsheets.animation.TRANSLATION_CENTER
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInSlightly
 import com.vgleadsheets.animation.fadeOutGone
@@ -34,7 +37,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.*
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.*
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.*
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
@@ -65,7 +67,6 @@ class HudFragment : VglsFragment() {
         list_parts.adapter = adapter
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
-
 
         button_menu.setOnClickListener { viewModel.onMenuClick() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
@@ -184,7 +185,6 @@ class HudFragment : VglsFragment() {
 
     private fun showFullMenu() {
         if (layout_by_game.visibility != VISIBLE) {
-            Timber.i("Showing full menu.")
             shadow_hud.fadeInSlightly()
 
             layout_by_game.fadeIn()
@@ -193,19 +193,19 @@ class HudFragment : VglsFragment() {
             layout_random_select.fadeIn()
 
             val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
+            val options = layout_bottom_sheet.childCount - CHILDREN_ABOVE_FOLD
+            val slideDistance = (itemHeight * options)
 
-            val slideDistance = (itemHeight * 4)
             bottom_sheet.translationY = slideDistance
             bottom_sheet.animate()
-                .translationY(0.0f)
-                .setDuration(300)
-                .setInterpolator(DecelerateInterpolator(3.0f))
+                .translationY(TRANSLATION_CENTER)
+                .setDuration(DURATION_SLOW)
+                .setInterpolator(DECELERATE)
         }
     }
 
     private fun hideFullMenu() {
         if (layout_by_game.visibility == VISIBLE) {
-            Timber.i("Hiding full menu.")
             shadow_hud.fadeOutGone()
 
             layout_by_game.fadeOutGone()
@@ -213,14 +213,16 @@ class HudFragment : VglsFragment() {
             layout_all_sheets.fadeOutGone()
             layout_random_select.fadeOutGone()
 
-            val slideDistance = (layout_by_game.height * 4).toFloat()
+            val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
+            val options = layout_bottom_sheet.childCount - CHILDREN_ABOVE_FOLD
+            val slideDistance = (itemHeight * options)
 
             bottom_sheet.animate()
                 .translationY(slideDistance)
-                .setDuration(250)
-                .setInterpolator(DecelerateInterpolator(3.0f))
+                .setDuration(DURATION_QUICK)
+                .setInterpolator(DECELERATE)
                 .withEndAction {
-                    bottom_sheet.translationY = 0.0f
+                    bottom_sheet.translationY = TRANSLATION_CENTER
                 }
         }
     }
@@ -238,6 +240,8 @@ class HudFragment : VglsFragment() {
         const val THRESHOLD_SEARCH_CLICKS = 200L
 
         const val SPAN_COUNT_DEFAULT = 7
+
+        const val CHILDREN_ABOVE_FOLD = 1
 
         fun newInstance() = HudFragment()
     }
