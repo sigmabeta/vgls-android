@@ -5,4 +5,4 @@ data class NameCaptionListModel(
     val name: String,
     val caption: String,
     override val layoutId: Int = R.layout.list_component_name_caption
-    ): ListModel
+) : ListModel

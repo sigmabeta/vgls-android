@@ -14,9 +14,13 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.recyclerview.ComponentAdapter
+import com.vgleadsheets.recyclerview.ComponentClickListener
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
@@ -26,7 +30,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_composer_list.*
 import javax.inject.Inject
 
-class ComposerListFragment : VglsFragment() {
+class ComposerListFragment : VglsFragment(), ComponentClickListener {
     @Inject
     lateinit var composerListViewModelFactory: ComposerListViewModel.Factory
 
@@ -34,10 +38,10 @@ class ComposerListFragment : VglsFragment() {
 
     private val viewModel: ComposerListViewModel by fragmentViewModel()
 
-    private val adapter = ComposerListAdapter(this)
+    private val adapter = ComponentAdapter(this)
 
-    fun onItemClick(id: Long) {
-        showSongList(id)
+    override fun onComponentClick(clicked: ListModel) {
+        showSongList(clicked.dataId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,7 +119,15 @@ class ComposerListFragment : VglsFragment() {
             it.songs?.isNotEmpty() ?: false
         }
 
-        adapter.dataset = availableComposers
+        val listComponents = availableComposers.map {
+            NameCaptionListModel(
+                it.id,
+                it.name,
+                resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0)
+            )
+        }
+
+        adapter.submitList(listComponents)
     }
 
     companion object {
