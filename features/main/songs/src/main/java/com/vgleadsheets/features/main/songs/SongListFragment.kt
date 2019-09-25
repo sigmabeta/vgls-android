@@ -17,13 +17,11 @@ import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.SongListArgs
-import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.recyclerview.ComponentClickListener
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
@@ -33,7 +31,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
 
-class SongListFragment : VglsFragment(), ComponentClickListener {
+class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
 
@@ -43,9 +41,9 @@ class SongListFragment : VglsFragment(), ComponentClickListener {
 
     private val args: SongListArgs by args()
 
-    private val adapter = ComponentAdapter(this)
+    private val adapter = ComponentAdapter()
 
-    override fun onComponentClick(clicked: ListModel) {
+    override fun onClicked(clicked: NameCaptionListModel) {
         showSongViewer(clicked.dataId)
     }
 
@@ -107,7 +105,8 @@ class SongListFragment : VglsFragment(), ComponentClickListener {
             NameCaptionListModel(
                 it.id,
                 it.name,
-                caption
+                caption,
+                this
             )
         }
 
