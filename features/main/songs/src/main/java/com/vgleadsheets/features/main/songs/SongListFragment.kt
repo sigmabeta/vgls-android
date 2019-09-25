@@ -17,9 +17,13 @@ import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.SongListArgs
+import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.recyclerview.ComponentAdapter
+import com.vgleadsheets.recyclerview.ComponentClickListener
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
@@ -29,7 +33,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
 
-class SongListFragment : VglsFragment() {
+class SongListFragment : VglsFragment(), ComponentClickListener {
     @Inject
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
 
@@ -39,10 +43,10 @@ class SongListFragment : VglsFragment() {
 
     private val args: SongListArgs by args()
 
-    private val adapter = SongListAdapter(this)
+    private val adapter = ComponentAdapter(this)
 
-    fun onItemClick(clickedSongId: Long) {
-        showSongViewer(clickedSongId)
+    override fun onComponentClick(clicked: ListModel) {
+        showSongViewer(clicked.dataId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,9 +93,25 @@ class SongListFragment : VglsFragment() {
 
     private fun showSongs(songs: List<Song>, selectedPart: PartSelectorItem) {
         hideLoading()
-        adapter.dataset = songs.filter { song ->
+        val availableSongs = songs.filter { song ->
             song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
         }
+
+        val listComponents = availableSongs.map {
+            val caption = when (it.composers?.size) {
+                null, 0 -> "Unknown Composer"
+                1 -> it.composers?.get(0)?.name ?: "Unknown Composer"
+                else -> "Various Composers"
+            }
+
+            NameCaptionListModel(
+                it.id,
+                it.name,
+                caption
+            )
+        }
+
+        adapter.submitList(listComponents)
     }
 
     private fun showSongViewer(clickedSongId: Long) {

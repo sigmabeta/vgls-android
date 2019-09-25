@@ -2,7 +2,7 @@ package com.vgleadsheets.components
 
 data class NameCaptionListModel(
     override val dataId: Long,
-    override val layoutId: Int,
     val name: String,
-    val caption: String
-): ListModel
+    val caption: String,
+    override val layoutId: Int = R.layout.list_component_name_caption
+    ): ListModel

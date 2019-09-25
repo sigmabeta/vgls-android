@@ -112,7 +112,6 @@ class GameListFragment : VglsFragment(), ComponentClickListener {
         val listComponents = availableGames.map {
             NameCaptionListModel(
                 it.id,
-                R.layout.list_component_name_caption,
                 it.name,
                 resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0)
             )
