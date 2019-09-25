@@ -10,7 +10,7 @@ dependencies {
     implementation project(path: ':common:parts')
 
     // Logging
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -20,7 +20,7 @@ dependencies {
 
     // Junit libs
     testImplementation "androidx.room:room-testing:$room_version"
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit_version"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
     implementation project(path: ':di')

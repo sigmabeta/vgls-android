@@ -1,18 +1,17 @@
 package com.vgleadsheets
 
-import android.app.Activity
 import android.app.Application
 import android.os.Build
 import com.facebook.stetho.Stetho
 import com.vgleadsheets.di.AppModule
 import com.vgleadsheets.di.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class VglsApplication : Application(), HasActivityInjector {
-    @Inject lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
+class VglsApplication : Application(), HasAndroidInjector {
+    @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate() {
         super.onCreate()
@@ -34,5 +33,5 @@ class VglsApplication : Application(), HasActivityInjector {
         Stetho.initializeWithDefaults(this)
     }
 
-    override fun activityInjector() = dispatchingActivityInjector
+    override fun androidInjector() = dispatchingAndroidInjector
 }

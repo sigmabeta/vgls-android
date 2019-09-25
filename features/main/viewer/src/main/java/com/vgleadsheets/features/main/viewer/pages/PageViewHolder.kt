@@ -8,6 +8,7 @@ import com.vgleadsheets.loadImageFull
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.recyclerview.BaseViewHolder
 import kotlinx.android.synthetic.main.list_item_page.view.*
+import timber.log.Timber
 
 class PageViewHolder(view: View, adapter: PageAdapter) :
     BaseViewHolder<Page, PageViewHolder, PageAdapter>(view, adapter) {
@@ -18,7 +19,8 @@ class PageViewHolder(view: View, adapter: PageAdapter) :
                 hideLoading()
             }
 
-            override fun onError() {
+            override fun onError(e: Exception?) {
+                Timber.e("Failed to load image: ${e?.message}")
                 hideLoading()
                 adapter.onError(adapterPosition)
             }

@@ -18,7 +18,7 @@ dependencies {
 
     // Junit libs
     testImplementation "androidx.room:room-testing:$room_version"
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit_version"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
     implementation project(path: ':di')
