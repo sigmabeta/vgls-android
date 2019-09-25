@@ -7,7 +7,7 @@ import com.squareup.picasso.Picasso
 import timber.log.Timber
 
 fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Boolean, callback: Callback? = null) {
-    val requestCreator = Picasso.with(context)
+    val requestCreator = Picasso.get()
         .load(path)
         .config(Bitmap.Config.RGB_565)
         .centerCrop()
@@ -29,7 +29,7 @@ fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Bool
 }
 
 fun ImageView.loadImageFull(path: String, callback: Callback? = null) {
-    Picasso.with(context)
+    Picasso.get()
         .load(path)
         .fit()
         .centerInside()
@@ -57,7 +57,7 @@ fun ImageView.loadImageSetSize(
 ) {
     Timber.v("Loading ${width}x$height image into ${this.width}x${this.height} view")
 
-    val requestCreator = Picasso.with(context)
+    val requestCreator = Picasso.get()
         .load(path)
         .resize(width, height)
         .centerCrop()

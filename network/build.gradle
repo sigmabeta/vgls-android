@@ -20,7 +20,7 @@ dependencies {
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 
     // Junit libs
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit_version"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
     implementation project(path: ':di')
