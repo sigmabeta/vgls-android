@@ -13,9 +13,13 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.recyclerview.ComponentAdapter
+import com.vgleadsheets.recyclerview.ComponentClickListener
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
@@ -25,7 +29,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
 
-class GameListFragment : VglsFragment() {
+class GameListFragment : VglsFragment(), ComponentClickListener {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
@@ -33,10 +37,10 @@ class GameListFragment : VglsFragment() {
 
     private val viewModel: GameListViewModel by fragmentViewModel()
 
-    private val adapter = GameListAdapter(this)
+    private val adapter = ComponentAdapter(this)
 
-    fun onItemClick(clickedGameId: Long) {
-        showSongList(clickedGameId)
+    override fun onComponentClick(clicked: ListModel) {
+        showSongList(clicked.dataId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,7 +109,16 @@ class GameListFragment : VglsFragment() {
             it.songs?.isNotEmpty() ?: false
         }
 
-        adapter.dataset = availableGames
+        val listComponents = availableGames.map {
+            NameCaptionListModel(
+                it.id,
+                R.layout.list_component_name_caption,
+                it.name,
+                resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0)
+            )
+        }
+
+        adapter.submitList(listComponents)
     }
 
     companion object {

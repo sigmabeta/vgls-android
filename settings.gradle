@@ -3,6 +3,7 @@ rootProject.name = 'VGLeadSheets'
 include ':app',
         ':recyclerview',
         ':ui-core',
+        ':ui-components',
         ':mvrx',
         ':di',
         ':network',
