@@ -14,7 +14,9 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.composer.Composer
@@ -117,14 +119,24 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
             it.songs?.isNotEmpty() ?: false
         }
 
-        val listComponents = availableComposers.map {
-            NameCaptionListModel(
-                it.id,
-                it.name,
-                resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0),
-                this
+        val listComponents = availableComposers
+            .map {
+                NameCaptionListModel(
+                    it.id,
+                    it.name,
+                    resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                    this
+                ) as ListModel
+            }.toMutableList()
+
+        listComponents.add(
+            0,
+            TitleListModel(
+                R.string.subtitle_composer.toLong(),
+                getString(R.string.app_name),
+                getString(R.string.subtitle_composer)
             )
-        }
+        )
 
         adapter.submitList(listComponents)
     }

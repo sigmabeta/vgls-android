@@ -1,5 +1,5 @@
 <resources>
     <string name="label_sheet_count">%1$d Sheets</string>
 
-    <string name="subtitle">By Game</string>
+    <string name="subtitle_game">By Game</string>
 </resources>

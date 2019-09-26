@@ -122,9 +122,9 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         listComponents.add(
             0,
             TitleListModel(
-                R.string.subtitle.toLong(),
+                R.string.subtitle_game.toLong(),
                 getString(R.string.app_name),
-                getString(R.string.subtitle)
+                getString(R.string.subtitle_game)
             )
         )
 
