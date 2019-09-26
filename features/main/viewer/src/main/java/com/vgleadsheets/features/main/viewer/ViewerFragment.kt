@@ -63,6 +63,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun onLoadFailed(imageUrl: String, ex: Exception?) {
         Timber.e("Image load failed: ${ex?.message}")
+        hideLoading()
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
         showErrorState()
     }

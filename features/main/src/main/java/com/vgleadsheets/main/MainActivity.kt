@@ -133,9 +133,9 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter {
     }
 
     private fun FragmentTransaction.setDefaultAnimations() = setCustomAnimations(
-        android.R.anim.fade_in,
-        android.R.anim.fade_out,
-        android.R.anim.fade_in,
-        android.R.anim.fade_out
+        R.anim.enter,
+        R.anim.exit,
+        R.anim.enter_pop,
+        R.anim.exit_pop
     )
 }
