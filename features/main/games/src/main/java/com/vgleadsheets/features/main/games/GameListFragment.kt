@@ -13,7 +13,9 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
@@ -107,14 +109,24 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             it.songs?.isNotEmpty() ?: false
         }
 
-        val listComponents = availableGames.map {
-            NameCaptionListModel(
-                it.id,
-                it.name,
-                resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0),
-                this
+        val listComponents = availableGames
+            .map {
+                NameCaptionListModel(
+                    it.id,
+                    it.name,
+                    resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                    this
+                ) as ListModel
+            }.toMutableList()
+
+        listComponents.add(
+            0,
+            TitleListModel(
+                R.string.subtitle.toLong(),
+                getString(R.string.app_name),
+                getString(R.string.subtitle)
             )
-        }
+        )
 
         adapter.submitList(listComponents)
     }
