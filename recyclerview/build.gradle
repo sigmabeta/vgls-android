@@ -1,8 +1,16 @@
 apply plugin: 'kotlin-android-extensions'
 
+android {
+    dataBinding {
+        enabled = true
+    }
+}
+
 dependencies {
     // So ListItem.kt can be found. TODO Make this not necessary
     implementation project (path: ':model')
+
+    api project (path: ':ui-components')
 
     // AndroidX libs
     api "androidx.recyclerview:recyclerview:$recycler_version"

@@ -30,7 +30,8 @@ import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
-import com.vgleadsheets.features.main.hud.parts.PartAdapter
+import com.vgleadsheets.components.PartListModel
+import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import io.reactivex.disposables.CompositeDisposable
@@ -40,15 +41,15 @@ import kotlinx.android.synthetic.main.view_bottom_sheet_content.*
 import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
-class HudFragment : VglsFragment() {
+class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private val viewModel: HudViewModel by activityViewModel()
 
     private val disposables = CompositeDisposable()
 
-    private val adapter = PartAdapter(this)
+    private val adapter = ComponentAdapter()
 
-    fun onItemClick(apiId: String) {
-        viewModel.onPartSelect(apiId)
+    override fun onClicked(clicked: PartListModel) {
+        viewModel.onPartSelect(clicked.name)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -127,7 +128,17 @@ class HudFragment : VglsFragment() {
         } else {
             hideFullMenu()
         }
-        adapter.dataset = state.parts
+
+        val listComponents = state.parts?.map {
+            PartListModel(
+                it.apiId.hashCode().toLong(),
+                it.apiId,
+                it.selected,
+                this
+            )
+        }
+
+        adapter.submitList(listComponents)
     }
 
     override fun getLayoutId() = R.layout.fragment_hud

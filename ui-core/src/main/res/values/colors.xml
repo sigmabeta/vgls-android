@@ -6,5 +6,7 @@
 
     <color name="hint_text">#55000000</color>
 
+    <color name="text_gray">#eeeeee</color>
+
     <color name="navbarTranslucent">#33000000</color>
 </resources>

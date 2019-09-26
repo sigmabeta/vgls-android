@@ -14,14 +14,17 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.model.search.SearchResult
+import com.vgleadsheets.model.search.SearchResultType
+import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class SearchFragment : VglsFragment() {
+class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
@@ -29,21 +32,14 @@ class SearchFragment : VglsFragment() {
 
     private val viewModel: SearchViewModel by fragmentViewModel()
 
-    private val adapter = SearchResultAdapter(this)
+    private val adapter = ComponentAdapter()
 
-    fun onGameClicked(id: Long) {
-        hudViewModel.exitSearch()
-        getFragmentRouter().showSongListForGame(id)
-    }
-
-    fun onSongClicked(id: Long) {
-        hudViewModel.exitSearch()
-        getFragmentRouter().showSongViewer(id)
-    }
-
-    fun onComposerClicked(id: Long) {
-        hudViewModel.exitSearch()
-        getFragmentRouter().showSongListForComposer(id)
+    override fun onClicked(clicked: NameCaptionListModel) {
+        when (clicked.type) {
+            SearchResultType.GAME.toString() -> onGameClicked(clicked.dataId)
+            SearchResultType.SONG.toString() -> onSongClicked(clicked.dataId)
+            SearchResultType.COMPOSER.toString() -> onComposerClicked(clicked.dataId)
+        }
     }
 
     override fun onBackPress(): Boolean {
@@ -84,7 +80,7 @@ class SearchFragment : VglsFragment() {
                     ?: "Unknown Error"
                 )
                 is Loading -> showLoading()
-                is Success -> showResults(localState.results())
+                is Success -> showResults(localState.results()!!)
             }
         }
     }
@@ -101,9 +97,40 @@ class SearchFragment : VglsFragment() {
         progress_loading.fadeOutGone()
     }
 
-    private fun showResults(results: List<SearchResult>?) {
-        adapter.dataset = results
+    private fun showResults(results: List<SearchResult>) {
+        val listComponents = results.map {
+            val stringId = when (it.type) {
+                SearchResultType.GAME -> R.string.label_type_game
+                SearchResultType.COMPOSER -> R.string.label_type_composer
+                SearchResultType.SONG -> R.string.label_type_song
+            }
+
+            NameCaptionListModel(
+                it.id,
+                it.name,
+                resources.getString(stringId),
+                this,
+                it.type.toString()
+            )
+        }
+
+        adapter.submitList(listComponents)
         hideLoading()
+    }
+
+    private fun onGameClicked(id: Long) {
+        hudViewModel.exitSearch()
+        getFragmentRouter().showSongListForGame(id)
+    }
+
+    private fun onSongClicked(id: Long) {
+        hudViewModel.exitSearch()
+        getFragmentRouter().showSongViewer(id)
+    }
+
+    private fun onComposerClicked(id: Long) {
+        hudViewModel.exitSearch()
+        getFragmentRouter().showSongListForComposer(id)
     }
 
     companion object {

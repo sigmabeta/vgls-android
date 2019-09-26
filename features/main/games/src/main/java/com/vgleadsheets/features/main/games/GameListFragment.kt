@@ -13,9 +13,11 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Empty
 import com.vgleadsheets.repository.Error
@@ -25,7 +27,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
 
-class GameListFragment : VglsFragment() {
+class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
@@ -33,10 +35,10 @@ class GameListFragment : VglsFragment() {
 
     private val viewModel: GameListViewModel by fragmentViewModel()
 
-    private val adapter = GameListAdapter(this)
+    private val adapter = ComponentAdapter()
 
-    fun onItemClick(clickedGameId: Long) {
-        showSongList(clickedGameId)
+    override fun onClicked(clicked: NameCaptionListModel) {
+        showSongList(clicked.dataId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,7 +107,16 @@ class GameListFragment : VglsFragment() {
             it.songs?.isNotEmpty() ?: false
         }
 
-        adapter.dataset = availableGames
+        val listComponents = availableGames.map {
+            NameCaptionListModel(
+                it.id,
+                it.name,
+                resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                this
+            )
+        }
+
+        adapter.submitList(listComponents)
     }
 
     companion object {

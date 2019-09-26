@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="toBind"
+            type="com.vgleadsheets.components.PartListModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{() -> toBind.listener.onClicked(toBind)}">
+
+        <TextView
+            android:id="@+id/text_part_name"
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@{toBind.name}"
+            android:textColor="@{toBind.selected ? @color/colorPrimary : @color/hint_text}"
+            android:scaleX="@{toBind.selected ? 1.0f : 0.8f}"
+            android:scaleY="@{toBind.selected ? 1.0f : 0.8f}"
+            tools:text="Alto" />
+
+    </FrameLayout>
+</layout>

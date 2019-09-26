@@ -11,18 +11,24 @@ import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.animation.fadeIn
+import com.vgleadsheets.animation.fadeInFromZero
+import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.args.SongArgs
+import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
-import com.vgleadsheets.features.main.viewer.pages.PageAdapter
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.repository.Data
 import com.vgleadsheets.repository.Error
 import com.vgleadsheets.repository.Storage
 import kotlinx.android.synthetic.main.fragment_viewer.*
+import timber.log.Timber
 import javax.inject.Inject
 
-class ViewerFragment : VglsFragment() {
+@Suppress("TooManyFunctions")
+class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
@@ -32,17 +38,34 @@ class ViewerFragment : VglsFragment() {
 
     private val songArgs: SongArgs by args()
 
-    private val adapter = PageAdapter(this)
+    private val adapter = ComponentAdapter()
 
-    fun onPageClick() = withState(hudViewModel) { state ->
+    override fun onClicked(clicked: SheetListModel) = withState(hudViewModel) { state ->
         if (state.hudVisible) {
             hudViewModel.hideHud()
         } else {
-            hudViewModel.showHud()
+            if (clicked.status == SheetListModel.Status.ERROR) {
+                setImageStatus(clicked.imageUrl, SheetListModel.Status.NONE)
+            } else {
+                hudViewModel.showHud()
+            }
         }
     }
 
-    fun onPageLoadError(pageNumber: Int) = showError("Unable to load page $pageNumber")
+    override fun onLoadStart(imageUrl: String) {
+        hideErrorState()
+        showLoading()
+    }
+
+    override fun onLoadSuccess(imageUrl: String) {
+        hideLoading()
+    }
+
+    override fun onLoadFailed(imageUrl: String, ex: Exception?) {
+        Timber.e("Image load failed: ${ex?.message}")
+        showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
+        showErrorState()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -114,7 +137,49 @@ class ViewerFragment : VglsFragment() {
         }
 
         val selectedPart = sheet.parts?.first { it.name == partSelection.apiId }
-        adapter.dataset = selectedPart?.pages
+
+        val listComponents = selectedPart?.pages?.map {
+            SheetListModel(
+                it.imageUrl,
+                SheetListModel.Status.NONE,
+                this
+            )
+        }
+
+        if (adapter.currentList != listComponents) {
+            adapter.submitList(listComponents)
+            Timber.w("Lists changed, submitting.")
+        } else {
+            Timber.i("Lists equivalent, not submitting.")
+        }
+    }
+
+    private fun showLoading() {
+        progress_loading.fadeInFromZero()
+    }
+
+    private fun hideLoading() {
+        progress_loading.fadeOutGone()
+    }
+
+    private fun showErrorState() {
+        text_error_state.fadeIn()
+    }
+
+    private fun hideErrorState() {
+        text_error_state.fadeOutGone()
+    }
+
+    private fun setImageStatus(imageUrl: String, status: SheetListModel.Status) {
+        val updatedList = adapter.currentList.map {
+            return@map if (it is SheetListModel && it.imageUrl == imageUrl) {
+                it.copy(status = status)
+            } else {
+                it
+            }
+        }
+
+        adapter.submitList(updatedList)
     }
 
     companion object {
