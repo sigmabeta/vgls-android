@@ -11,4 +11,3 @@ class ComponentViewHolder(
         binding.executePendingBindings()
     }
 }
-

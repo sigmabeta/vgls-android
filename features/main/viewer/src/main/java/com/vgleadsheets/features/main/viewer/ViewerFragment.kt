@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_viewer.*
 import timber.log.Timber
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
