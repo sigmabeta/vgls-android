@@ -17,7 +17,9 @@ import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.SongListArgs
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
@@ -67,12 +69,22 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             return@withState
         }
 
+        val title: String
+        val subtitle: String?
+        if (songListState.title is Success && songListState.title() != null) {
+            title = songListState.title()!!
+            subtitle = null
+        } else {
+            title = getString(R.string.app_name)
+            subtitle = getString(R.string.subtitle_all_sheets)
+        }
+
         when (val data = songListState.data) {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
             is Loading -> showLoading()
-            is Success -> showData(songListState.data(), selectedPart)
+            is Success -> showData(songListState.data(), selectedPart, title, subtitle)
         }
     }
 
@@ -80,16 +92,26 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${args.id}"
 
-    private fun showData(data: Data<List<Song>>?, selectedPart: PartSelectorItem) {
+    private fun showData(
+        data: Data<List<Song>>?,
+        selectedPart: PartSelectorItem,
+        title: String,
+        subtitle: String?
+    ) {
         when (data) {
             is Empty -> showLoading()
             is Error -> showError(data.error.message ?: "Unknown error.")
             is Network -> hideLoading()
-            is Storage -> showSongs(data(), selectedPart)
+            is Storage -> showSongs(data(), selectedPart, title, subtitle)
         }
     }
 
-    private fun showSongs(songs: List<Song>, selectedPart: PartSelectorItem) {
+    private fun showSongs(
+        songs: List<Song>,
+        selectedPart: PartSelectorItem,
+        title: String,
+        subtitle: String?
+    ) {
         hideLoading()
         val availableSongs = songs.filter { song ->
             song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
@@ -107,8 +129,20 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                 it.name,
                 caption,
                 this
+            ) as ListModel
+        }.toMutableList()
+
+        val realSubtitle = subtitle
+            ?: getString(R.string.subtitle_sheets_count, availableSongs.size)
+
+        listComponents.add(
+            0,
+            TitleListModel(
+                R.string.subtitle_all_sheets.toLong(),
+                title,
+                realSubtitle
             )
-        }
+        )
 
         adapter.submitList(listComponents)
     }

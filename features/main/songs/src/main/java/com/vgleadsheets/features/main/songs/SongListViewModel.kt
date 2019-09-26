@@ -16,7 +16,20 @@ class SongListViewModel @AssistedInject constructor(
     private val repository: Repository
 ) : MvRxViewModel<SongListState>(initialState) {
     init {
+        fetchTitle()
         fetchSongs()
+    }
+
+    private fun fetchTitle() = withState { state ->
+        val loadOperation = when (state.type) {
+            is SongsByComposerArgs -> repository.getComposer(state.id!!).map { it.name }
+            is SongsByGameArgs -> repository.getGame(state.id!!).map { it.name }
+            is AllSongsArgs -> return@withState
+        }
+
+        loadOperation.execute { title ->
+            copy(title = title)
+        }
     }
 
     private fun fetchSongs() = withState { state ->

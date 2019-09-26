@@ -240,6 +240,14 @@ class RealRepository constructor(
             }
         )
 
+    override fun getComposer(composerId: Long): Observable<Composer> = composerDao
+        .getComposer(composerId)
+        .map { it.toComposer(null) }
+
+    override fun getGame(gameId: Long): Observable<Game> = gameDao
+        .getGame(gameId)
+        .map { it.toGame(null) }
+
     @Suppress("MaxLineLength")
     private fun searchSongs(searchQuery: String): Observable<List<SearchResult>> {
         return songDao
