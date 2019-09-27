@@ -93,6 +93,7 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         progress_loading.fadeOutGone()
     }
 
+    @Suppress("LongMethod")
     private fun showResults(
         games: List<SearchResult>?,
         songs: List<SearchResult>?,
@@ -119,7 +120,7 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                 )
             )
         }
-        
+
         val songComponents = songs?.map {
             val stringId = R.string.label_type_song
 
@@ -141,7 +142,7 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                 )
             )
         }
-        
+
         val composerComponents = composers?.map {
             val stringId = R.string.label_type_composer
 

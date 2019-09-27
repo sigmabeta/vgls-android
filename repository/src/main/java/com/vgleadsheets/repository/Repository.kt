@@ -6,6 +6,7 @@ import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
 import io.reactivex.Observable
 
+@Suppress("TooManyFunctions")
 interface Repository {
     // Full Lists
     fun getGames(force: Boolean = false): Observable<Data<List<Game>>>

@@ -8,7 +8,7 @@ import io.reactivex.Observable
 
 @Dao
 interface ComposerDao {
-    @Query("SELECT * FROM composer WHERE id = :composerId" )
+    @Query("SELECT * FROM composer WHERE id = :composerId")
     fun getComposer(composerId: Long): Observable<ComposerEntity>
 
     @Query("SELECT * FROM composer ORDER BY name")
