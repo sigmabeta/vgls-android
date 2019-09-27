@@ -6,6 +6,7 @@ import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
+import com.vgleadsheets.model.game.ApiGame
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.pages.PageEntity
@@ -33,108 +34,97 @@ class RealRepository constructor(
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
 
-    // TODO Split this method
-    @Suppress("LongMethod", "ComplexMethod")
-    override fun getGames(force: Boolean): Observable<Data<List<Game>>> {
-        return isTableFresh(TableName.GAME, force)
-            .flatMap { fresh ->
-                if (!fresh) {
-                    vglsApi.getAllGames()
-                        .doOnNext { apiGames ->
-                            val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
+    override fun getDigest(force: Boolean): Observable<List<ApiGame>> = vglsApi.getDigest()
+        .doOnNext { apiGames ->
+            val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 
-                            val songEntities = ArrayList<SongEntity>(CAPACITY)
-                            val partEntities = ArrayList<PartEntity>(CAPACITY)
-                            val pageEntities = ArrayList<PageEntity>(CAPACITY)
-                            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
-                            val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
+            val songEntities = ArrayList<SongEntity>(CAPACITY)
+            val partEntities = ArrayList<PartEntity>(CAPACITY)
+            val pageEntities = ArrayList<PageEntity>(CAPACITY)
+            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
+            val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
 
-                            var partCount = 0L
-                            apiGames.forEach { apiGame ->
-                                apiGame.songs.forEach { apiSong ->
-                                    apiSong.composers.forEach { apiComposer ->
-                                        val songComposerJoin =
-                                            SongComposerJoin(apiSong.id, apiComposer.id)
-                                        songComposerJoins.add(songComposerJoin)
+            var partCount = 0L
+            apiGames.forEach { apiGame ->
+                apiGame.songs.forEach { apiSong ->
+                    apiSong.composers.forEach { apiComposer ->
+                        val songComposerJoin =
+                            SongComposerJoin(apiSong.id, apiComposer.id)
+                        songComposerJoins.add(songComposerJoin)
 
-                                        val composerEntity = apiComposer.toComposerEntity()
-                                        composerEntities.add(composerEntity)
-                                    }
+                        val composerEntity = apiComposer.toComposerEntity()
+                        composerEntities.add(composerEntity)
+                    }
 
-                                    apiSong.files.parts.forEach {
-                                        partCount++
-                                        val partEntity =
-                                            it.value.toPartEntity(partCount, apiSong.id)
-                                        partEntities.add(partEntity)
+                    apiSong.files.parts.forEach {
+                        partCount++
+                        val partEntity =
+                            it.value.toPartEntity(partCount, apiSong.id)
+                        partEntities.add(partEntity)
 
-                                        val pageCount =
-                                            if (partEntity.part == PartSelectorOption.VOCAL.apiId) {
-                                                apiSong.lyricsPageCount
-                                            } else {
-                                                apiSong.pageCount
-                                            }
-
-                                        for (pageNumber in 1..pageCount) {
-                                            val imageUrl =
-                                                generateImageUrl(partEntity, apiSong, pageNumber)
-
-                                            val pageEntity = PageEntity(
-                                                null,
-                                                pageNumber,
-                                                partEntity.id,
-                                                imageUrl
-                                            )
-
-                                            pageEntities.add(pageEntity)
-                                        }
-                                    }
-
-                                    val songEntity = apiSong.toSongEntity(apiGame.game_id)
-                                    songEntities.add(songEntity)
-                                }
+                        val pageCount =
+                            if (partEntity.part == PartSelectorOption.VOCAL.apiId) {
+                                apiSong.lyricsPageCount
+                            } else {
+                                apiSong.pageCount
                             }
 
-                            gameDao.refreshTable(
-                                gameEntities,
-                                songDao,
-                                composerDao,
-                                songComposerDao,
-                                dbStatisticsDao,
-                                partDao,
-                                pageDao,
-                                songEntities,
-                                composerEntities.toList(),
-                                partEntities,
-                                pageEntities,
-                                songComposerJoins
+                        for (pageNumber in 1..pageCount) {
+                            val imageUrl =
+                                generateImageUrl(partEntity, apiSong, pageNumber)
+
+                            val pageEntity = PageEntity(
+                                null,
+                                pageNumber,
+                                partEntity.id,
+                                imageUrl
                             )
-                        }
-                        .map<Data<List<Game>>?> { Network() }
-                        .startWith(Empty())
-                } else {
-                    gameDao.getAll()
-                        .filter { it.isNotEmpty() }
-                        .map { gameEntities ->
-                            gameEntities.map { gameEntity ->
-                                val songs = songDao
-                                    .getSongsForGameSync(gameEntity.id)
-                                    .map { songEntity ->
-                                        val parts = partDao
-                                            .getPartsForSongId(songEntity.id)
-                                            .map { it.toPart(null) }
 
-                                        songEntity.toSong(null, parts)
-                                    }
-
-                                gameEntity.toGame(songs)
-                            }
+                            pageEntities.add(pageEntity)
                         }
-                        .map { Storage(it) }
+                    }
+
+                    val songEntity = apiSong.toSongEntity(apiGame.game_id)
+                    songEntities.add(songEntity)
                 }
             }
-    }
 
-    override fun getSongsForGame(gameId: Long): Observable<Data<List<Song>>> = songDao
+            gameDao.refreshTable(
+                gameEntities,
+                songDao,
+                composerDao,
+                songComposerDao,
+                dbStatisticsDao,
+                partDao,
+                pageDao,
+                songEntities,
+                composerEntities.toList(),
+                partEntities,
+                pageEntities,
+                songComposerJoins
+            )
+        }
+
+    override fun getGames(): Observable<List<Game>> = gameDao.getAll()
+        .filter { it.isNotEmpty() }
+        .map { gameEntities ->
+            gameEntities.map { gameEntity ->
+                val songs = songDao
+                    .getSongsForGameSync(gameEntity.id)
+                    .map { songEntity ->
+                        val parts = partDao
+                            .getPartsForSongId(songEntity.id)
+                            .map { it.toPart(null) }
+
+                        songEntity.toSong(null, parts)
+                    }
+
+                gameEntity.toGame(songs)
+            }
+        }
+
+
+    override fun getSongsForGame(gameId: Long): Observable<List<Song>> = songDao
         .getSongsForGame(gameId)
         .filter { it.isNotEmpty() }
         .map { songEntities ->
@@ -150,9 +140,8 @@ class RealRepository constructor(
                 songEntity.toSong(composers, parts)
             }
         }
-        .map { Storage(it) }
 
-    override fun getSongsByComposer(composerId: Long): Observable<Data<List<Song>>> =
+    override fun getSongsByComposer(composerId: Long): Observable<List<Song>> =
         songComposerDao
             .getSongsForComposer(composerId)
             .filter { it.isNotEmpty() }
@@ -169,9 +158,8 @@ class RealRepository constructor(
                     songEntity.toSong(composers, parts)
                 }
             }
-            .map { Storage(it) }
 
-    override fun getSong(songId: Long): Observable<Data<Song>> = songDao
+    override fun getSong(songId: Long): Observable<Song> = songDao
         .getSong(songId)
         .map {
             val parts = partDao
@@ -185,9 +173,8 @@ class RealRepository constructor(
                 }
             it.toSong(null, parts)
         }
-        .map { Storage(it) }
 
-    override fun getAllSongs(): Observable<Data<List<Song>>> = songDao
+    override fun getAllSongs(): Observable<List<Song>> = songDao
         .getAll()
         .map { songEntities ->
             songEntities.map { songEntity ->
@@ -207,9 +194,8 @@ class RealRepository constructor(
                 songEntity.toSong(composers, parts)
             }
         }
-        .map { Storage(it) }
 
-    override fun getComposers(): Observable<Data<List<Composer>>> = composerDao
+    override fun getComposers(): Observable<List<Composer>> = composerDao
         .getAll()
         .filter { it.isNotEmpty() }
         .map { composerEntities ->
@@ -227,7 +213,6 @@ class RealRepository constructor(
                 composerEntity.toComposer(songs)
             }
         }
-        .map { Storage(it) }
 
     override fun getComposer(composerId: Long): Observable<Composer> = composerDao
         .getComposer(composerId)

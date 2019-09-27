@@ -21,11 +21,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_composer_list.*
 import javax.inject.Inject
@@ -67,12 +62,12 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
             return@withState
         }
 
-        when (val data = composerListState.data) {
+        when (val data = composerListState.composers) {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
             is Loading -> showLoading()
-            is Success -> showData(composerListState.data(), selectedPart)
+            is Success -> showComposers(composerListState.composers(), selectedPart)
         }
     }
 
@@ -94,17 +89,14 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
         progress_loading.fadeOutGone()
     }
 
-    private fun showData(data: Data<List<Composer>>?, selectedPart: PartSelectorItem) {
-        when (data) {
-            is Empty -> showLoading()
-            is Error -> showError(data.error.message ?: "Unknown error.")
-            is Network -> hideLoading()
-            is Storage -> showComposers(data(), selectedPart)
-        }
-    }
-
-    private fun showComposers(composers: List<Composer>, selectedPart: PartSelectorItem) {
+    private fun showComposers(composers: List<Composer>?, selectedPart: PartSelectorItem) {
         hideLoading()
+
+        if (composers?.isEmpty() != false) {
+            showEmptyState()
+            return
+        }
+
         val availableComposers = composers.map { composer ->
             val availableSongs = composer.songs?.filter { song ->
                 val parts = song.parts
@@ -119,8 +111,7 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
             it.songs?.isNotEmpty() ?: false
         }
 
-        val listComponents = availableComposers
-            .map {
+        val listComponents = availableComposers.map {
                 NameCaptionListModel(
                     it.id,
                     it.name,
@@ -139,6 +130,10 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
         )
 
         adapter.submitList(listComponents)
+    }
+
+    private fun showEmptyState() {
+        showError("No data found!")
     }
 
     companion object {

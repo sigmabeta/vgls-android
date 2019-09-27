@@ -19,7 +19,7 @@ class ComposerListViewModel @AssistedInject constructor(
     private fun fetchComposers() {
         repository.getComposers()
             .execute { data ->
-                copy(data = data)
+                copy(composers = data)
             }
     }
 

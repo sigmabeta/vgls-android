@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface VglsApi {
     @GET("app/digest")
-    fun getAllGames(): Observable<List<ApiGame>>
+    fun getDigest(): Observable<List<ApiGame>>
 }

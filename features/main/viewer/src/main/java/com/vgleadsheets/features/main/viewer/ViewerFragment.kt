@@ -20,9 +20,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Storage
 import kotlinx.android.synthetic.main.fragment_viewer.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -105,7 +102,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
                 viewerState.song.error.message
                     ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
             )
-            is Success -> showData(viewerState.song(), selectedPart)
+            is Success -> showSheet(viewerState.song(), selectedPart)
         }
     }
 
@@ -122,14 +119,12 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songArgs.songId}"
 
-    private fun showData(data: Data<Song>?, selectedPart: PartSelectorItem) {
-        when (data) {
-            is Error -> showError(data.error.message ?: "Unknown error.")
-            is Storage -> showSheet(data(), selectedPart)
+    private fun showSheet(sheet: Song?, partSelection: PartSelectorItem) {
+        if (sheet == null) {
+            showEmptyState()
+            return
         }
-    }
 
-    private fun showSheet(sheet: Song, partSelection: PartSelectorItem) {
         val parts = sheet.parts
         if (parts != null) {
             hudViewModel.setAvailableParts(parts)
@@ -153,6 +148,10 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         } else {
             Timber.i("Lists equivalent, not submitting.")
         }
+    }
+
+    private fun showEmptyState() {
+        showError("No sheet found.")
     }
 
     private fun showLoading() {

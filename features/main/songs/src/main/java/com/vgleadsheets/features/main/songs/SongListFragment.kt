@@ -24,11 +24,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
@@ -84,7 +79,7 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
             is Loading -> showLoading()
-            is Success -> showData(songListState.data(), selectedPart, title, subtitle)
+            is Success -> showSongs(songListState.data(), selectedPart, title, subtitle)
         }
     }
 
@@ -92,27 +87,19 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${args.id}"
 
-    private fun showData(
-        data: Data<List<Song>>?,
-        selectedPart: PartSelectorItem,
-        title: String,
-        subtitle: String?
-    ) {
-        when (data) {
-            is Empty -> showLoading()
-            is Error -> showError(data.error.message ?: "Unknown error.")
-            is Network -> hideLoading()
-            is Storage -> showSongs(data(), selectedPart, title, subtitle)
-        }
-    }
-
     private fun showSongs(
-        songs: List<Song>,
+        songs: List<Song>?,
         selectedPart: PartSelectorItem,
         title: String,
         subtitle: String?
     ) {
         hideLoading()
+
+        if (songs?.isEmpty() != false) {
+            showEmptyState()
+            return
+        }
+
         val availableSongs = songs.filter { song ->
             song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
         }
@@ -145,6 +132,10 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         )
 
         adapter.submitList(listComponents)
+    }
+
+    private fun showEmptyState() {
+        showError("No songs found.")
     }
 
     private fun showSongViewer(clickedSongId: Long) {

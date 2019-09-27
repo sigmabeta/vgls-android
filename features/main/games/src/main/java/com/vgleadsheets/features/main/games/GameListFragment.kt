@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.fragmentViewModel
@@ -20,11 +21,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
@@ -67,22 +63,14 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
-            is Success -> showData(gameListState.data(), selectedPart)
+            is Loading -> showLoading()
+            is Success -> showGames(gameListState.data(), selectedPart)
         }
     }
 
     override fun getLayoutId() = R.layout.fragment_game
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
-
-    private fun showData(data: Data<List<Game>>?, selectedPart: PartSelectorItem) {
-        when (data) {
-            is Empty -> showLoading()
-            is Error -> showError(data.error.message ?: "Unknown error.")
-            is Network -> hideLoading()
-            is Storage -> showGames(data(), selectedPart)
-        }
-    }
 
     private fun showSongList(clickedGameId: Long) {
         getFragmentRouter().showSongListForGame(clickedGameId)
@@ -98,7 +86,14 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         progress_loading.fadeOutGone()
     }
 
-    private fun showGames(games: List<Game>, selectedPart: PartSelectorItem) {
+    private fun showGames(games: List<Game>?, selectedPart: PartSelectorItem) {
+        hideLoading()
+
+        if (games?.isEmpty() != false) {
+            showEmptyState()
+            return
+        }
+
         val availableGames = games.map { game ->
             val availableSongs = game.songs?.filter { song ->
                 song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
@@ -129,6 +124,10 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         )
 
         adapter.submitList(listComponents)
+    }
+
+    private fun showEmptyState() {
+        showError("No games found.")
     }
 
     companion object {
