@@ -5,5 +5,4 @@ data class TitleListModel(
     val title: String,
     val subtitle: String,
     override val layoutId: Int = R.layout.list_component_title
-) : ListModel {
-}
+) : ListModel

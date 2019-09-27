@@ -8,5 +8,7 @@
 
     <color name="text_gray">#eeeeee</color>
 
+    <color name="divider">#cccccc</color>
+
     <color name="navbarTranslucent">#33000000</color>
 </resources>

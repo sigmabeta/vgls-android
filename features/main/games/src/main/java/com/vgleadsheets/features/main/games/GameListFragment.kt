@@ -114,7 +114,7 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                 NameCaptionListModel(
                     it.id,
                     it.name,
-                    resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                    getString(R.string.label_sheet_count, it.songs?.size ?: 0),
                     this
                 ) as ListModel
             }.toMutableList()

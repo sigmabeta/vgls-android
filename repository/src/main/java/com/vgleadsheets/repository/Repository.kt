@@ -22,5 +22,7 @@ interface Repository {
     fun getGame(gameId: Long): Observable<Game>
 
     // Etc
-    fun search(searchQuery: String): Observable<List<SearchResult>>
+    fun searchGames(searchQuery: String): Observable<List<SearchResult>>
+    fun searchSongs(searchQuery: String): Observable<List<SearchResult>>
+    fun searchComposers(searchQuery: String): Observable<List<SearchResult>>
 }

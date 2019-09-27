@@ -16,7 +16,6 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
-import io.reactivex.functions.Function3
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
@@ -230,16 +229,6 @@ class RealRepository constructor(
         }
         .map { Storage(it) }
 
-    override fun search(searchQuery: String): Observable<List<SearchResult>> =
-        Observable.combineLatest(
-            searchSongs(searchQuery),
-            searchGames(searchQuery),
-            searchComposers(searchQuery),
-            Function3 { songs: List<SearchResult>, games: List<SearchResult>, composers: List<SearchResult> ->
-                songs + games + composers
-            }
-        )
-
     override fun getComposer(composerId: Long): Observable<Composer> = composerDao
         .getComposer(composerId)
         .map { it.toComposer(null) }
@@ -249,21 +238,21 @@ class RealRepository constructor(
         .map { it.toGame(null) }
 
     @Suppress("MaxLineLength")
-    private fun searchSongs(searchQuery: String): Observable<List<SearchResult>> {
+    override fun searchSongs(searchQuery: String): Observable<List<SearchResult>> {
         return songDao
             .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
             .map { songEntities -> songEntities.map { it.toSearchResult() } }
     }
 
     @Suppress("MaxLineLength")
-    private fun searchGames(searchQuery: String): Observable<List<SearchResult>> {
+    override fun searchGames(searchQuery: String): Observable<List<SearchResult>> {
         return gameDao
             .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
             .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
     }
 
     @Suppress("MaxLineLength")
-    private fun searchComposers(searchQuery: String): Observable<List<SearchResult>> {
+    override fun searchComposers(searchQuery: String): Observable<List<SearchResult>> {
         return composerDao
             .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
             .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
