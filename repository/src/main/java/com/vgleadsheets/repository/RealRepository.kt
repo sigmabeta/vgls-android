@@ -2,7 +2,6 @@ package com.vgleadsheets.repository
 
 import android.net.Uri
 import com.vgleadsheets.common.parts.PartSelectorOption
-import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
@@ -15,9 +14,14 @@ import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
+import com.vgleadsheets.model.time.Time
+import com.vgleadsheets.model.time.TimeEntity
+import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
-import timber.log.Timber
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
@@ -34,76 +38,19 @@ class RealRepository constructor(
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
 
-    override fun getDigest(force: Boolean): Observable<List<ApiGame>> = vglsApi.getDigest()
-        .doOnNext { apiGames ->
-            val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
-
-            val songEntities = ArrayList<SongEntity>(CAPACITY)
-            val partEntities = ArrayList<PartEntity>(CAPACITY)
-            val pageEntities = ArrayList<PageEntity>(CAPACITY)
-            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
-            val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
-
-            var partCount = 0L
-            apiGames.forEach { apiGame ->
-                apiGame.songs.forEach { apiSong ->
-                    apiSong.composers.forEach { apiComposer ->
-                        val songComposerJoin =
-                            SongComposerJoin(apiSong.id, apiComposer.id)
-                        songComposerJoins.add(songComposerJoin)
-
-                        val composerEntity = apiComposer.toComposerEntity()
-                        composerEntities.add(composerEntity)
-                    }
-
-                    apiSong.files.parts.forEach {
-                        partCount++
-                        val partEntity =
-                            it.value.toPartEntity(partCount, apiSong.id)
-                        partEntities.add(partEntity)
-
-                        val pageCount =
-                            if (partEntity.part == PartSelectorOption.VOCAL.apiId) {
-                                apiSong.lyricsPageCount
-                            } else {
-                                apiSong.pageCount
-                            }
-
-                        for (pageNumber in 1..pageCount) {
-                            val imageUrl =
-                                generateImageUrl(partEntity, apiSong, pageNumber)
-
-                            val pageEntity = PageEntity(
-                                null,
-                                pageNumber,
-                                partEntity.id,
-                                imageUrl
-                            )
-
-                            pageEntities.add(pageEntity)
-                        }
-                    }
-
-                    val songEntity = apiSong.toSongEntity(apiGame.game_id)
-                    songEntities.add(songEntity)
-                }
-            }
-
-            gameDao.refreshTable(
-                gameEntities,
-                songDao,
-                composerDao,
-                songComposerDao,
-                dbStatisticsDao,
-                partDao,
-                pageDao,
-                songEntities,
-                composerEntities.toList(),
-                partEntities,
-                pageEntities,
-                songComposerJoins
-            )
+    override fun checkForUpdate(): Single<List<ApiGame>> = getLastCheckTime()
+        .filter { System.currentTimeMillis() - it.time_ms > AGE_THRESHOLD }
+        .flatMapSingle { getLastApiUpdateTime() }
+        .zipWith<Time, Long>(getLastDbUpdateTimeOnce(),
+            BiFunction { apiTime, dbTime ->
+                apiTime.timeMs - dbTime.timeMs
+            })
+        .filter {
+                diff -> diff > 0
         }
+        .flatMapSingle { getDigest() }
+
+    override fun forceRefresh(): Single<List<ApiGame>> = getDigest()
 
     override fun getGames(): Observable<List<Game>> = gameDao.getAll()
         .filter { it.isNotEmpty() }
@@ -122,7 +69,6 @@ class RealRepository constructor(
                 gameEntity.toGame(songs)
             }
         }
-
 
     override fun getSongsForGame(gameId: Long): Observable<List<Song>> = songDao
         .getSongsForGame(gameId)
@@ -243,15 +189,7 @@ class RealRepository constructor(
             .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
     }
 
-    // TODO This method might be named backwards
-    private fun isTableFresh(tableName: TableName, force: Boolean): Observable<Boolean> {
-        return dbStatisticsDao.getLastEditDate(tableName.ordinal)
-            .map {
-                Timber.i("$force")
-                // force || System.currentTimeMillis() - lastEdit.last_edit_time_ms < AGE_THRESHOLD
-                true
-            }
-    }
+    override fun getLastUpdateTime(): Observable<Time> = getLastDbUpdateTime()
 
     private fun generateImageUrl(
         partEntity: PartEntity,
@@ -264,8 +202,105 @@ class RealRepository constructor(
                 pageNumber + URL_FILE_EXT_PNG
     }
 
+    private fun getLastCheckTime(): Single<TimeEntity> = dbStatisticsDao
+        .getTime(TimeType.LAST_CHECKED.ordinal)
+        .subscribeOn(Schedulers.io())
+        .firstOrError()
+
+    private fun getLastDbUpdateTime(): Observable<Time> = dbStatisticsDao
+        .getTime(TimeType.LAST_UPDATED.ordinal)
+        .subscribeOn(Schedulers.io())
+        .map {
+            it.toTime()
+        }
+
+    private fun getLastDbUpdateTimeOnce(): Single<Time> = getLastDbUpdateTime().firstOrError()
+
+    private fun getLastApiUpdateTime() = vglsApi.getLastUpdateTime()
+        .map { it.toTimeEntity().toTime() }
+        .doOnSuccess() {
+            dbStatisticsDao.insert(
+                TimeEntity(TimeType.LAST_UPDATED.ordinal, it.timeMs)
+            )
+        }
+
+    private fun getDigest(): Single<List<ApiGame>> = vglsApi.getDigest()
+        .doOnSuccess { apiGames ->
+            val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
+
+            val songEntities = ArrayList<SongEntity>(CAPACITY)
+            val partEntities = ArrayList<PartEntity>(CAPACITY)
+            val pageEntities = ArrayList<PageEntity>(CAPACITY)
+            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
+            val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
+
+            var partCount = 0L
+            apiGames.forEach { apiGame ->
+                apiGame.songs.forEach { apiSong ->
+                    apiSong.composers.forEach { apiComposer ->
+                        val songComposerJoin =
+                            SongComposerJoin(apiSong.id, apiComposer.id)
+                        songComposerJoins.add(songComposerJoin)
+
+                        val composerEntity = apiComposer.toComposerEntity()
+                        composerEntities.add(composerEntity)
+                    }
+
+                    apiSong.files.parts.forEach {
+                        partCount++
+                        val partEntity =
+                            it.value.toPartEntity(partCount, apiSong.id)
+                        partEntities.add(partEntity)
+
+                        val pageCount =
+                            if (partEntity.part == PartSelectorOption.VOCAL.apiId) {
+                                apiSong.lyricsPageCount
+                            } else {
+                                apiSong.pageCount
+                            }
+
+                        for (pageNumber in 1..pageCount) {
+                            val imageUrl =
+                                generateImageUrl(partEntity, apiSong, pageNumber)
+
+                            val pageEntity = PageEntity(
+                                null,
+                                pageNumber,
+                                partEntity.id,
+                                imageUrl
+                            )
+
+                            pageEntities.add(pageEntity)
+                        }
+                    }
+
+                    val songEntity = apiSong.toSongEntity(apiGame.game_id)
+                    songEntities.add(songEntity)
+                }
+            }
+
+            gameDao.refreshTable(
+                gameEntities,
+                songDao,
+                composerDao,
+                songComposerDao,
+                partDao,
+                pageDao,
+                songEntities,
+                composerEntities.toList(),
+                partEntities,
+                pageEntities,
+                songComposerJoins
+            )
+
+            dbStatisticsDao.insert(
+                TimeEntity(TimeType.LAST_CHECKED.ordinal, System.currentTimeMillis())
+            )
+        }
+
+
     companion object {
-        const val AGE_THRESHOLD = 60000L
+        const val AGE_THRESHOLD = 5000L
         const val CAPACITY = 500
 
         const val URL_SEPARATOR_FOLDER = "/"

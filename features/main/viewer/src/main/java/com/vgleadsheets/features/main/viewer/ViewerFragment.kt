@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.args
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
@@ -29,7 +29,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
-    private val hudViewModel: HudViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
 

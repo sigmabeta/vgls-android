@@ -4,8 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import com.vgleadsheets.database.TableName
-import com.vgleadsheets.model.DbStatisticsEntity
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
@@ -38,7 +36,6 @@ interface GameDao {
         songDao: SongDao,
         composerDao: ComposerDao,
         songComposerDao: SongComposerDao,
-        dbStatisticsDao: DbStatisticsDao,
         partDao: PartDao,
         pageDao: PageDao,
         songs: List<SongEntity>,
@@ -64,9 +61,5 @@ interface GameDao {
 
         pageDao.nukeTable()
         pageDao.insertAll(pages)
-
-        val now = System.currentTimeMillis()
-        dbStatisticsDao.insert(DbStatisticsEntity(TableName.GAME.ordinal.toLong(), now))
-        dbStatisticsDao.insert(DbStatisticsEntity(TableName.SONG.ordinal.toLong(), now))
     }
 }

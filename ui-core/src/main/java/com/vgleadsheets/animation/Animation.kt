@@ -74,7 +74,6 @@ fun View.fadeInSlightly(): ViewPropertyAnimator {
 
     animate().cancel()
     return animate()
-        .withLayer()
         .setInterpolator(DECELERATE)
         .setDuration(DURATION_XSLOW)
         .alpha(ALPHA_VERY_TRANSPARENT)
@@ -85,7 +84,6 @@ fun View.fadeIn(): ViewPropertyAnimator {
 
     animate().cancel()
     return animate()
-        .withLayer()
         .setInterpolator(DECELERATE)
         .setDuration(DURATION_QUICK)
         .alpha(ALPHA_OPAQUE)
@@ -97,7 +95,6 @@ fun View.fadeInFromZero(): ViewPropertyAnimator {
 
     animate().cancel()
     return animate()
-        .withLayer()
         .setInterpolator(DECELERATE)
         .setDuration(DURATION_QUICK)
         .alpha(ALPHA_OPAQUE)
@@ -106,7 +103,6 @@ fun View.fadeInFromZero(): ViewPropertyAnimator {
 fun View.fadeOutGone(): ViewPropertyAnimator {
     animate().cancel()
     return animate()
-        .withLayer()
         .setInterpolator(DECELERATE)
         .setDuration(DURATION_QUICK)
         .alpha(ALPHA_TRANSPARENT)
@@ -118,7 +114,6 @@ fun View.fadeOutGone(): ViewPropertyAnimator {
 fun View.fadeOut(): ViewPropertyAnimator {
     animate().cancel()
     return animate()
-        .withLayer()
         .setInterpolator(DECELERATE)
         .setDuration(DURATION_QUICK)
         .alpha(ALPHA_TRANSPARENT)
@@ -127,7 +122,6 @@ fun View.fadeOut(): ViewPropertyAnimator {
 fun View.fadeOutPartially(): ViewPropertyAnimator {
     animate().cancel()
     return animate()
-        .withLayer()
         .setInterpolator(ACCELERATE)
         .setDuration(DURATION_QUICK)
         .alpha(ALPHA_SEMI_TRANSPARENT)

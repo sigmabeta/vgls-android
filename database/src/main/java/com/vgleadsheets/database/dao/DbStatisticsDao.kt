@@ -4,14 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.vgleadsheets.model.DbStatisticsEntity
+import com.vgleadsheets.model.time.TimeEntity
 import io.reactivex.Observable
 
 @Dao
 interface DbStatisticsDao {
-    @Query("SELECT * FROM db_statistics WHERE table_id = :tableId")
-    fun getLastEditDate(tableId: Int): Observable<DbStatisticsEntity>
+    @Query("SELECT * FROM time WHERE time_id = :tableId")
+    fun getTime(tableId: Int): Observable<TimeEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(dbStatisticsEntity: DbStatisticsEntity)
+    fun insert(dbStatisticsEntity: TimeEntity)
 }

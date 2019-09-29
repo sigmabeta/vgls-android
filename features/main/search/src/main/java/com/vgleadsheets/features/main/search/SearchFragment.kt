@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.search
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
@@ -27,7 +27,7 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
-    private val hudViewModel: HudViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: SearchViewModel by fragmentViewModel()
 

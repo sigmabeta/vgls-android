@@ -9,13 +9,13 @@ import com.vgleadsheets.database.dao.PageDao
 import com.vgleadsheets.database.dao.PartDao
 import com.vgleadsheets.database.dao.SongComposerDao
 import com.vgleadsheets.database.dao.SongDao
-import com.vgleadsheets.model.DbStatisticsEntity
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.SongEntity
+import com.vgleadsheets.model.time.TimeEntity
 
 @Database(
     entities = [GameEntity::class,
@@ -24,7 +24,7 @@ import com.vgleadsheets.model.song.SongEntity
         SongComposerJoin::class,
         PartEntity::class,
         PageEntity::class,
-        DbStatisticsEntity::class],
+        TimeEntity::class],
     version = 1
 )
 abstract class VglsDatabase : RoomDatabase() {

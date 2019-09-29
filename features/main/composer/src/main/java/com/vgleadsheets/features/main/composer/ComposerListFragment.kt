@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
@@ -29,7 +29,7 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
     @Inject
     lateinit var composerListViewModelFactory: ComposerListViewModel.Factory
 
-    private val hudViewModel: HudViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: ComposerListViewModel by fragmentViewModel()
 
