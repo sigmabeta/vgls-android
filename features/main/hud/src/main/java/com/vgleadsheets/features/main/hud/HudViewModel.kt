@@ -132,7 +132,6 @@ class HudViewModel @AssistedInject constructor(
             copy(updateTime = newTime)
         }
 
-
     private fun checkForUpdate() = repository.checkForUpdate()
         .toObservable()
         .execute {

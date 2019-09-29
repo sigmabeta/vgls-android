@@ -97,7 +97,6 @@ fun View.fadeOutGone() {
             .alpha(ALPHA_TRANSPARENT)
             .withEndAction {
                 visibility = View.GONE
-
             }
     }
 }

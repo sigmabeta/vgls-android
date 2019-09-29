@@ -229,6 +229,7 @@ class RealRepository constructor(
             )
         }
 
+    @Suppress("LongMethod")
     private fun getDigest(): Single<List<ApiGame>> = vglsApi.getDigest()
         .doOnSuccess { apiGames ->
             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
@@ -302,7 +303,6 @@ class RealRepository constructor(
                 TimeEntity(TimeType.LAST_CHECKED.ordinal, Instant.now().toEpochMilli())
             )
         }
-
 
     companion object {
         const val CAPACITY = 500

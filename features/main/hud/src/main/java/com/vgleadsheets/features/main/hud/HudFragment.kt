@@ -39,12 +39,26 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_hud.*
-import kotlinx.android.synthetic.main.view_bottom_sheet_card.*
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.*
+import kotlinx.android.synthetic.main.fragment_hud.card_search
+import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
+import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
+import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
+import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.button_menu
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_all_sheets
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_bottom_sheet
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_composer
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_game
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_random_select
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_refresh
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.list_parts
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.progress_hud
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.text_update_time
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
+import java.util.NoSuchElementException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -124,6 +138,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         disposables.clear()
     }
 
+    @Suppress("ComplexMethod")
     override fun invalidate() = withState(viewModel) { state ->
         if (state.hudVisible) {
             showHud()
@@ -181,8 +196,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val date = if (checkedTime > 0L) {
             calendar.timeInMillis = checkedTime
             val time = calendar.time
-            val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.US);
-            dateFormat.format(time);
+            val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.US)
+            dateFormat.format(time)
         } else {
             getString(R.string.date_never)
         }
