@@ -34,10 +34,12 @@
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true"
         android:id="@+id/progress_hud"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="-4dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="-8dp"
         android:alpha="0.0"
         tools:alpha="1.0"
         android:visibility="gone"
