@@ -3,18 +3,16 @@ package com.vgleadsheets.features.main.search
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.search.SearchResultType
@@ -28,7 +26,7 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
-    private val hudViewModel: HudViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: SearchViewModel by fragmentViewModel()
 
@@ -74,21 +72,18 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                 }
             }
 
-            when (localState.results) {
-                is Fail -> showError(
-                    localState.results.error.message ?: localState.results.error::class.simpleName
-                    ?: "Unknown Error"
-                )
-                is Loading -> showLoading()
-                is Success -> showResults(localState.results()!!)
-            }
+            val games = localState.games()
+            val songs = localState.songs()
+            val composers = localState.composers()
+
+            showResults(games, songs, composers)
         }
     }
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun showLoading() {
-        progress_loading.fadeInFromZero()
+        progress_loading.fadeIn()
         list_results.fadeOutPartially()
     }
 
@@ -97,22 +92,79 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         progress_loading.fadeOutGone()
     }
 
-    private fun showResults(results: List<SearchResult>) {
-        val listComponents = results.map {
-            val stringId = when (it.type) {
-                SearchResultType.GAME -> R.string.label_type_game
-                SearchResultType.COMPOSER -> R.string.label_type_composer
-                SearchResultType.SONG -> R.string.label_type_song
-            }
+    @Suppress("LongMethod")
+    private fun showResults(
+        games: List<SearchResult>?,
+        songs: List<SearchResult>?,
+        composers: List<SearchResult>?
+    ) {
+        val gameComponents = games?.map {
+            val stringId = R.string.label_type_game
 
             NameCaptionListModel(
                 it.id,
                 it.name,
-                resources.getString(stringId),
+                getString(stringId),
                 this,
                 it.type.toString()
+            ) as ListModel
+        }.orEmpty().toMutableList()
+
+        if (gameComponents.isNotEmpty()) {
+            gameComponents.add(
+                0,
+                SectionHeaderListModel(
+                    R.string.section_header_games.toLong(),
+                    getString(R.string.section_header_games)
+                )
             )
         }
+
+        val songComponents = songs?.map {
+            val stringId = R.string.label_type_song
+
+            NameCaptionListModel(
+                it.id,
+                it.name,
+                getString(stringId),
+                this,
+                it.type.toString()
+            ) as ListModel
+        }.orEmpty().toMutableList()
+
+        if (songComponents.isNotEmpty()) {
+            songComponents.add(
+                0,
+                SectionHeaderListModel(
+                    R.string.section_header_songs.toLong(),
+                    getString(R.string.section_header_songs)
+                )
+            )
+        }
+
+        val composerComponents = composers?.map {
+            val stringId = R.string.label_type_composer
+
+            NameCaptionListModel(
+                it.id,
+                it.name,
+                getString(stringId),
+                this,
+                it.type.toString()
+            ) as ListModel
+        }.orEmpty().toMutableList()
+
+        if (composerComponents.isNotEmpty()) {
+            composerComponents.add(
+                0,
+                SectionHeaderListModel(
+                    R.string.section_header_composers.toLong(),
+                    getString(R.string.section_header_composers)
+                )
+            )
+        }
+
+        val listComponents = songComponents + gameComponents + composerComponents
 
         adapter.submitList(listComponents)
         hideLoading()

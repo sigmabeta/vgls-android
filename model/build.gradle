@@ -1,4 +1,7 @@
 dependencies {
+    // So we don't have buggy time comparisons
+    implementation "com.jakewharton.threetenabp:threetenabp:$threeten_version"
+
     // Room libs
     implementation "androidx.room:room-common:$room_version"
 

@@ -6,24 +6,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_composer_list.*
 import javax.inject.Inject
@@ -32,7 +28,7 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
     @Inject
     lateinit var composerListViewModelFactory: ComposerListViewModel.Factory
 
-    private val hudViewModel: HudViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: ComposerListViewModel by fragmentViewModel()
 
@@ -65,12 +61,12 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
             return@withState
         }
 
-        when (val data = composerListState.data) {
+        when (val data = composerListState.composers) {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
             is Loading -> showLoading()
-            is Success -> showData(composerListState.data(), selectedPart)
+            is Success -> showComposers(composerListState.composers(), selectedPart)
         }
     }
 
@@ -83,7 +79,7 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
     }
 
     private fun showLoading() {
-        progress_loading.fadeInFromZero()
+        progress_loading.fadeIn()
         list_composers.fadeOutPartially()
     }
 
@@ -92,17 +88,14 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
         progress_loading.fadeOutGone()
     }
 
-    private fun showData(data: Data<List<Composer>>?, selectedPart: PartSelectorItem) {
-        when (data) {
-            is Empty -> showLoading()
-            is Error -> showError(data.error.message ?: "Unknown error.")
-            is Network -> hideLoading()
-            is Storage -> showComposers(data(), selectedPart)
-        }
-    }
-
-    private fun showComposers(composers: List<Composer>, selectedPart: PartSelectorItem) {
+    private fun showComposers(composers: List<Composer>?, selectedPart: PartSelectorItem) {
         hideLoading()
+
+        if (composers?.isEmpty() != false) {
+            showEmptyState()
+            return
+        }
+
         val availableComposers = composers.map { composer ->
             val availableSongs = composer.songs?.filter { song ->
                 val parts = song.parts
@@ -118,15 +111,28 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
         }
 
         val listComponents = availableComposers.map {
-            NameCaptionListModel(
-                it.id,
-                it.name,
-                resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0),
-                this
+                NameCaptionListModel(
+                    it.id,
+                    it.name,
+                    getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                    this
+                ) as ListModel
+            }.toMutableList()
+
+        listComponents.add(
+            0,
+            TitleListModel(
+                R.string.subtitle_composer.toLong(),
+                getString(R.string.app_name),
+                getString(R.string.subtitle_composer)
             )
-        }
+        )
 
         adapter.submitList(listComponents)
+    }
+
+    private fun showEmptyState() {
+        showError("No data found!")
     }
 
     companion object {

@@ -22,6 +22,7 @@ buildscript {
         espresso_core_version = "3.0.2"
         picasso_version = "2.71828"
         constraint_version = "2.0.0-beta2"
+        threeten_version = "1.2.1"
     }
 
     repositories {

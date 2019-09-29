@@ -9,6 +9,8 @@
         android:id="@+id/list_results"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin_side"
+        android:layout_marginEnd="@dimen/margin_side"
         android:clipToPadding="false"
         tools:listitem="@layout/list_item_search_result"
         />

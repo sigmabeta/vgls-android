@@ -4,25 +4,22 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
@@ -31,7 +28,7 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
-    private val hudViewModel: HudViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: GameListViewModel by fragmentViewModel()
 
@@ -65,7 +62,8 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
-            is Success -> showData(gameListState.data(), selectedPart)
+            is Loading -> showLoading()
+            is Success -> showGames(gameListState.data(), selectedPart)
         }
     }
 
@@ -73,21 +71,12 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun showData(data: Data<List<Game>>?, selectedPart: PartSelectorItem) {
-        when (data) {
-            is Empty -> showLoading()
-            is Error -> showError(data.error.message ?: "Unknown error.")
-            is Network -> hideLoading()
-            is Storage -> showGames(data(), selectedPart)
-        }
-    }
-
     private fun showSongList(clickedGameId: Long) {
         getFragmentRouter().showSongListForGame(clickedGameId)
     }
 
     private fun showLoading() {
-        progress_loading.fadeInFromZero()
+        progress_loading.fadeIn()
         list_games.fadeOutPartially()
     }
 
@@ -96,7 +85,14 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         progress_loading.fadeOutGone()
     }
 
-    private fun showGames(games: List<Game>, selectedPart: PartSelectorItem) {
+    private fun showGames(games: List<Game>?, selectedPart: PartSelectorItem) {
+        hideLoading()
+
+        if (games?.isEmpty() != false) {
+            showEmptyState()
+            return
+        }
+
         val availableGames = games.map { game ->
             val availableSongs = game.songs?.filter { song ->
                 song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
@@ -107,16 +103,30 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             it.songs?.isNotEmpty() ?: false
         }
 
-        val listComponents = availableGames.map {
-            NameCaptionListModel(
-                it.id,
-                it.name,
-                resources.getString(R.string.label_sheet_count, it.songs?.size ?: 0),
-                this
+        val listComponents = availableGames
+            .map {
+                NameCaptionListModel(
+                    it.id,
+                    it.name,
+                    getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                    this
+                ) as ListModel
+            }.toMutableList()
+
+        listComponents.add(
+            0,
+            TitleListModel(
+                R.string.subtitle_game.toLong(),
+                getString(R.string.app_name),
+                getString(R.string.subtitle_game)
             )
-        }
+        )
 
         adapter.submitList(listComponents)
+    }
+
+    private fun showEmptyState() {
+        showError("No games found.")
     }
 
     companion object {

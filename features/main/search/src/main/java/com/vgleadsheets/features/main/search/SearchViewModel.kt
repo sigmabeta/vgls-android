@@ -18,15 +18,31 @@ class SearchViewModel @AssistedInject constructor(
             if (state.query != searchQuery) {
                 setState { copy(query = searchQuery) }
 
-                repository.search(searchQuery)
+                repository.searchGames(searchQuery)
                     .execute {
-                        copy(results = it)
+                        copy(games = it)
+                    }
+
+                repository.searchSongs(searchQuery)
+                    .execute {
+                        copy(songs = it)
+                    }
+
+                repository.searchComposers(searchQuery)
+                    .execute {
+                        copy(composers = it)
                     }
             }
         }
     }
 
-    fun clearResults() = setState { copy(results = Success(arrayListOf())) }
+    fun clearResults() = setState {
+        copy(
+            games = Success(arrayListOf()),
+            composers = Success(arrayListOf()),
+            songs = Success(arrayListOf())
+        )
+    }
 
     @AssistedInject.Factory
     interface Factory {
@@ -34,7 +50,10 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
-        override fun create(viewModelContext: ViewModelContext, state: SearchState): SearchViewModel? {
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: SearchState
+        ): SearchViewModel? {
             val fragment: SearchFragment = (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.searchViewModelFactory.create(state)
         }

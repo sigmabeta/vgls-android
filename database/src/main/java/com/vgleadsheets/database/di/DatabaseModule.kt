@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.vgleadsheets.database.TableName
 import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.model.time.TimeType
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -28,13 +28,13 @@ class DatabaseModule {
 
                 db.beginTransaction()
 
-                for (table in TableName.values()) {
+                for (table in TimeType.values()) {
                     val values = ContentValues()
 
-                    values.put("table_id", table.ordinal.toString())
-                    values.put("last_edit_time_ms", 0L)
+                    values.put("time_id", table.ordinal.toString())
+                    values.put("time_ms", 0L)
 
-                    db.insert("db_statistics", SQLiteDatabase.CONFLICT_FAIL, values)
+                    db.insert("time", SQLiteDatabase.CONFLICT_FAIL, values)
                 }
 
                 db.setTransactionSuccessful()

@@ -11,7 +11,7 @@ data class GameEntity(
     @PrimaryKey val id: Long,
     val name: String
 ) {
-    fun toGame(songs: List<Song>) = Game(id, name, songs)
+    fun toGame(songs: List<Song>?) = Game(id, name, songs)
 
     fun toSearchResult() = SearchResult(id, SearchResultType.GAME, name)
 }

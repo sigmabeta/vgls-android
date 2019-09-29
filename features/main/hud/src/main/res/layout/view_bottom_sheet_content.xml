@@ -18,29 +18,43 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="@dimen/min_clickable_size"
             android:layout_height="@dimen/min_clickable_size"
-            android:src="@drawable/ic_menu_black_24dp"
             android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_menu_black_24dp"
             android:tint="@android:color/tertiary_text_dark" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_parts"
             android:layout_width="match_parent"
             android:layout_height="@dimen/min_clickable_size"
-            android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
             tools:listitem="@layout/list_item_part" />
 
     </LinearLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true"
+        android:id="@+id/progress_hud"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="-8dp"
+        android:alpha="0.0"
+        tools:alpha="1.0"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
 
     <LinearLayout
         android:id="@+id/layout_by_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:alpha="0.0"
-        tools:alpha="1.0"
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:visibility="gone"
+        tools:alpha="1.0"
         tools:visibility="visible">
 
         <ImageView
@@ -69,6 +83,7 @@
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:visibility="gone"
+        tools:alpha="1.0"
         tools:visibility="visible">
 
         <ImageView
@@ -97,6 +112,7 @@
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:visibility="gone"
+        tools:alpha="1.0"
         tools:visibility="visible">
 
         <ImageView
@@ -125,6 +141,7 @@
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:visibility="gone"
+        tools:alpha="1.0"
         tools:visibility="visible">
 
         <ImageView
@@ -143,5 +160,46 @@
             android:text="@string/label_random"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.0"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:alpha="1.0"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_refresh_black_24dp"
+            android:tint="@android:color/tertiary_text_dark" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:paddingStart="@dimen/margin_medium"
+            android:text="@string/label_refresh"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/tertiary_text_dark" />
+
+        <TextView
+            android:id="@+id/text_update_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/hint_text"
+            android:textStyle="italic"
+            tools:text="Updated Sept 27, 2019"
+            />
     </LinearLayout>
 </LinearLayout>

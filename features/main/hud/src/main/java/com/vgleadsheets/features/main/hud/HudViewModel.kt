@@ -1,20 +1,34 @@
 package com.vgleadsheets.features.main.hud
 
+import androidx.fragment.app.FragmentActivity
+import com.airbnb.mvrx.ActivityViewModelContext
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.ViewModelContext
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.repository.Repository
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
-class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialState) {
+class HudViewModel @AssistedInject constructor(
+    @Assisted initialState: HudState,
+    private val repository: Repository
+) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
     init {
         resetAvailableParts()
+        checkLastUpdateTime()
+        checkForUpdate()
     }
 
     fun onMenuClick() {
@@ -51,6 +65,17 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
             copy(parts = setSelection(apiId, state.parts), menuExpanded = false)
         }
     }
+
+    fun refresh() = withState {
+        if (it.digest !is Loading) {
+            repository.forceRefresh()
+                .execute { digest ->
+                    copy(digest = digest)
+                }
+        }
+    }
+
+    fun clearDigest() = setState { copy(digest = Uninitialized) }
 
     fun searchClick() = withState { state ->
         if (!state.searchVisible) {
@@ -101,6 +126,18 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
         stopTimer()
     }
 
+    private fun checkLastUpdateTime() = repository.getLastUpdateTime()
+        .map { it.timeMs }
+        .execute { newTime ->
+            copy(updateTime = newTime)
+        }
+
+    private fun checkForUpdate() = repository.checkForUpdate()
+        .toObservable()
+        .execute {
+            copy(digest = it)
+        }
+
     private fun stopTimer() {
         timer?.dispose()
     }
@@ -110,7 +147,24 @@ class HudViewModel(initialState: HudState) : MvRxViewModel<HudState>(initialStat
             item.copy(selected = selection == item.apiId)
         }
 
-    companion object {
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(initialState: HudState): HudViewModel
+    }
+
+    interface HudContainer {
+        fun getHudFragment(): HudFragment
+    }
+
+    companion object : MvRxViewModelFactory<HudViewModel, HudState> {
         const val TIMEOUT_HUD_VISIBLE = 3000L
+
+        override fun create(viewModelContext: ViewModelContext, state: HudState): HudViewModel? {
+            val activity =
+                (viewModelContext as ActivityViewModelContext).activity<FragmentActivity>()
+            val getter = activity as HudContainer
+            val fragment = getter.getHudFragment()
+            return fragment.hudViewModelFactory.create(state)
+        }
     }
 }

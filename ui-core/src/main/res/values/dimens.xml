@@ -12,4 +12,6 @@
     <dimen name="min_clickable_size">48dp</dimen>
 
     <dimen name="icon_padding">12dp</dimen>
+
+    <dimen name="margin_side">@dimen/margin_medium</dimen>
 </resources>

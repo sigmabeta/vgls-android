@@ -14,6 +14,10 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
@@ -35,13 +39,34 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_hud.*
-import kotlinx.android.synthetic.main.view_bottom_sheet_card.*
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.*
+import kotlinx.android.synthetic.main.fragment_hud.card_search
+import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
+import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
+import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
+import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.button_menu
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_all_sheets
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_bottom_sheet
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_composer
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_game
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_random_select
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_refresh
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.list_parts
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.progress_hud
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.text_update_time
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.NoSuchElementException
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class HudFragment : VglsFragment(), PartListModel.ClickListener {
+    @Inject
+    lateinit var hudViewModelFactory: HudViewModel.Factory
+
     private val viewModel: HudViewModel by activityViewModel()
 
     private val disposables = CompositeDisposable()
@@ -88,6 +113,9 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             viewModel.onMenuAction()
             getFragmentRouter().showRandomSheet()
         }
+        layout_refresh.setOnClickListener {
+            viewModel.refresh()
+        }
     }
 
     override fun onStart() {
@@ -110,6 +138,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         disposables.clear()
     }
 
+    @Suppress("ComplexMethod")
     override fun invalidate() = withState(viewModel) { state ->
         if (state.hudVisible) {
             showHud()
@@ -129,6 +158,21 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             hideFullMenu()
         }
 
+        when (state.digest) {
+            is Uninitialized -> hideDigestLoading()
+            is Fail -> handleDigestError(state.digest.error)
+            is Loading -> showDigestLoading()
+            is Success -> {
+                hideDigestLoading()
+                viewModel.clearDigest()
+            }
+        }
+
+        when (state.updateTime) {
+            is Loading -> showUpdateTimeLoading()
+            is Success -> showUpdateTimeSuccess(state.updateTime())
+        }
+
         val listComponents = state.parts?.map {
             PartListModel(
                 it.apiId.hashCode().toLong(),
@@ -144,6 +188,41 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     override fun getLayoutId() = R.layout.fragment_hud
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
+
+    private fun showUpdateTimeSuccess(updateTime: Long?) {
+        val calendar = Calendar.getInstance()
+        val checkedTime = updateTime ?: 0L
+
+        val date = if (checkedTime > 0L) {
+            calendar.timeInMillis = checkedTime
+            val time = calendar.time
+            val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.US)
+            dateFormat.format(time)
+        } else {
+            getString(R.string.date_never)
+        }
+
+        text_update_time.text = getString(R.string.label_refresh_date, date)
+    }
+
+    private fun showUpdateTimeLoading() {
+        Timber.i("Loading update time.")
+    }
+
+    private fun showDigestLoading() {
+        progress_hud.fadeIn()
+    }
+
+    private fun hideDigestLoading() {
+        progress_hud.fadeOutGone()
+    }
+
+    private fun handleDigestError(error: Throwable) {
+        when (error) {
+            is NoSuchElementException -> hideDigestLoading()
+            else -> showError("Couldn't load sheets from server: ${error.message}")
+        }
+    }
 
     private fun showSearch() {
         viewModel.stopHudTimer()
@@ -202,6 +281,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             layout_by_composer.fadeIn()
             layout_all_sheets.fadeIn()
             layout_random_select.fadeIn()
+            layout_refresh.fadeIn()
 
             val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
             val options = layout_bottom_sheet.childCount - CHILDREN_ABOVE_FOLD
@@ -223,6 +303,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             layout_by_composer.fadeOutGone()
             layout_all_sheets.fadeOutGone()
             layout_random_select.fadeOutGone()
+            layout_refresh.fadeOutGone()
 
             val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
             val options = layout_bottom_sheet.childCount - CHILDREN_ABOVE_FOLD
@@ -252,7 +333,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         const val SPAN_COUNT_DEFAULT = 7
 
-        const val CHILDREN_ABOVE_FOLD = 1
+        const val CHILDREN_ABOVE_FOLD = 2
 
         fun newInstance() = HudFragment()
     }

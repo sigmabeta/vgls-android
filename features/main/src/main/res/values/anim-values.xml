@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="duration_slow">300</integer>
+    <integer name="duration_quick">250</integer>
+
+    <item name="scale_large" type="dimen" format="float">1.6</item>
+    <item name="scale_normal" type="dimen" format="float">1.0</item>
+    <item name="scale_small" type="dimen" format="float">0.9</item>
+
+    <item name="pivot_center" type="dimen" format="fraction">50%p</item>
+    <item name="pivot_up" type="dimen" format="fraction">20%p</item>
+    <item name="pivot_down" type="dimen" format="fraction">20%p</item>
+</resources>

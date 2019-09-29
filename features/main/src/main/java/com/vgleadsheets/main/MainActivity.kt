@@ -15,6 +15,7 @@ import com.vgleadsheets.args.SongsByGameArgs
 import com.vgleadsheets.features.main.composer.ComposerListFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
+import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
@@ -25,13 +26,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter {
+class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter, HudViewModel.HudContainer {
 
     @Inject lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     override fun androidInjector() = androidInjector
 
+    override fun getHudFragment() = supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.VglsImmersive)
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
@@ -133,9 +137,9 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter {
     }
 
     private fun FragmentTransaction.setDefaultAnimations() = setCustomAnimations(
-        android.R.anim.fade_in,
-        android.R.anim.fade_out,
-        android.R.anim.fade_in,
-        android.R.anim.fade_out
+        R.anim.enter,
+        R.anim.exit,
+        R.anim.enter_pop,
+        R.anim.exit_pop
     )
 }

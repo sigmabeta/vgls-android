@@ -1,17 +1,36 @@
 package com.vgleadsheets.repository
 
 import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.model.game.ApiGame
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.time.Time
 import io.reactivex.Observable
+import io.reactivex.Single
 
+@Suppress("TooManyFunctions")
 interface Repository {
-    fun getGames(force: Boolean = false): Observable<Data<List<Game>>>
-    fun getSongsForGame(gameId: Long): Observable<Data<List<Song>>>
-    fun getSongsByComposer(composerId: Long): Observable<Data<List<Song>>>
-    fun getSong(songId: Long): Observable<Data<Song>>
-    fun getAllSongs(): Observable<Data<List<Song>>>
-    fun getComposers(): Observable<Data<List<Composer>>>
-    fun search(searchQuery: String): Observable<List<SearchResult>>
+    fun checkForUpdate(): Single<List<ApiGame>>
+    fun forceRefresh(): Single<List<ApiGame>>
+
+    // Full Lists
+    fun getGames(): Observable<List<Game>>
+    fun getAllSongs(): Observable<List<Song>>
+    fun getComposers(): Observable<List<Composer>>
+
+    // Filtered lists
+    fun getSongsForGame(gameId: Long): Observable<List<Song>>
+    fun getSongsByComposer(composerId: Long): Observable<List<Song>>
+
+    // Single items
+    fun getSong(songId: Long): Observable<Song>
+    fun getComposer(composerId: Long): Observable<Composer>
+    fun getGame(gameId: Long): Observable<Game>
+    fun getLastUpdateTime(): Observable<Time>
+
+    // Etc
+    fun searchGames(searchQuery: String): Observable<List<SearchResult>>
+    fun searchSongs(searchQuery: String): Observable<List<SearchResult>>
+    fun searchComposers(searchQuery: String): Observable<List<SearchResult>>
 }

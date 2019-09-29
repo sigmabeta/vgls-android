@@ -6,13 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.args
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.components.SheetListModel
@@ -20,9 +19,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Storage
 import kotlinx.android.synthetic.main.fragment_viewer.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,7 +28,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
-    private val hudViewModel: HudViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
 
@@ -63,6 +59,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun onLoadFailed(imageUrl: String, ex: Exception?) {
         Timber.e("Image load failed: ${ex?.message}")
+        hideLoading()
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
         showErrorState()
     }
@@ -104,7 +101,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
                 viewerState.song.error.message
                     ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
             )
-            is Success -> showData(viewerState.song(), selectedPart)
+            is Success -> showSheet(viewerState.song(), selectedPart)
         }
     }
 
@@ -121,14 +118,12 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songArgs.songId}"
 
-    private fun showData(data: Data<Song>?, selectedPart: PartSelectorItem) {
-        when (data) {
-            is Error -> showError(data.error.message ?: "Unknown error.")
-            is Storage -> showSheet(data(), selectedPart)
+    private fun showSheet(sheet: Song?, partSelection: PartSelectorItem) {
+        if (sheet == null) {
+            showEmptyState()
+            return
         }
-    }
 
-    private fun showSheet(sheet: Song, partSelection: PartSelectorItem) {
         val parts = sheet.parts
         if (parts != null) {
             hudViewModel.setAvailableParts(parts)
@@ -154,8 +149,12 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         }
     }
 
+    private fun showEmptyState() {
+        showError("No sheet found.")
+    }
+
     private fun showLoading() {
-        progress_loading.fadeInFromZero()
+        progress_loading.fadeIn()
     }
 
     private fun hideLoading() {

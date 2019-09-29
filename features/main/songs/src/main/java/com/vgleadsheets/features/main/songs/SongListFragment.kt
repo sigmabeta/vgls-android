@@ -7,26 +7,22 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.args
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.SongListArgs
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.repository.Data
-import com.vgleadsheets.repository.Empty
-import com.vgleadsheets.repository.Error
-import com.vgleadsheets.repository.Network
-import com.vgleadsheets.repository.Storage
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_sheet.*
 import javax.inject.Inject
@@ -35,7 +31,7 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
 
-    private val hudViewModel: HudViewModel by activityViewModel()
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: SongListViewModel by fragmentViewModel()
 
@@ -67,12 +63,22 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             return@withState
         }
 
+        val title: String
+        val subtitle: String?
+        if (songListState.title is Success && songListState.title() != null) {
+            title = songListState.title()!!
+            subtitle = null
+        } else {
+            title = getString(R.string.app_name)
+            subtitle = getString(R.string.subtitle_all_sheets)
+        }
+
         when (val data = songListState.data) {
             is Fail -> showError(
                 data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
             )
             is Loading -> showLoading()
-            is Success -> showData(songListState.data(), selectedPart)
+            is Success -> showSongs(songListState.data(), selectedPart, title, subtitle)
         }
     }
 
@@ -80,17 +86,19 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${args.id}"
 
-    private fun showData(data: Data<List<Song>>?, selectedPart: PartSelectorItem) {
-        when (data) {
-            is Empty -> showLoading()
-            is Error -> showError(data.error.message ?: "Unknown error.")
-            is Network -> hideLoading()
-            is Storage -> showSongs(data(), selectedPart)
-        }
-    }
-
-    private fun showSongs(songs: List<Song>, selectedPart: PartSelectorItem) {
+    private fun showSongs(
+        songs: List<Song>?,
+        selectedPart: PartSelectorItem,
+        title: String,
+        subtitle: String?
+    ) {
         hideLoading()
+
+        if (songs?.isEmpty() != false) {
+            showEmptyState()
+            return
+        }
+
         val availableSongs = songs.filter { song ->
             song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
         }
@@ -107,10 +115,26 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                 it.name,
                 caption,
                 this
+            ) as ListModel
+        }.toMutableList()
+
+        val realSubtitle = subtitle
+            ?: getString(R.string.subtitle_sheets_count, availableSongs.size)
+
+        listComponents.add(
+            0,
+            TitleListModel(
+                R.string.subtitle_all_sheets.toLong(),
+                title,
+                realSubtitle
             )
-        }
+        )
 
         adapter.submitList(listComponents)
+    }
+
+    private fun showEmptyState() {
+        showError("No songs found.")
     }
 
     private fun showSongViewer(clickedSongId: Long) {
@@ -118,7 +142,7 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     }
 
     private fun showLoading() {
-        progress_loading.fadeInFromZero()
+        progress_loading.fadeIn()
         list_sheets.fadeOutPartially()
     }
 
