@@ -13,7 +13,6 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.SongListArgs
@@ -143,7 +142,7 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     }
 
     private fun showLoading() {
-        progress_loading.fadeInFromZero()
+        progress_loading.fadeIn()
         list_sheets.fadeOutPartially()
     }
 

@@ -134,6 +134,7 @@ class HudViewModel @AssistedInject constructor(
 
 
     private fun checkForUpdate() = repository.checkForUpdate()
+        .toObservable()
         .execute {
             copy(digest = it)
         }

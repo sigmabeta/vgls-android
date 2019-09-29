@@ -1,32 +1,26 @@
 package com.vgleadsheets.model.time
 
-import java.util.*
+import org.threeten.bp.format.DateTimeFormatter
 
 @Suppress("ConstructorParameterNaming")
 data class ApiTime(
     val last_updated: String
 ) {
-    fun toTimeEntity(): TimeEntity {
-        val split = last_updated.split("-")
+    fun toTimeEntity(threeTen: ThreeTenTime): TimeEntity {
+        val formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER_PATTERN)
+        val updatedZonedTime = threeTen.parse(
+            last_updated + DATE_SUFFIX,
+            formatter
+        )
 
         return TimeEntity(
             TimeType.LAST_UPDATED.ordinal,
-            Calendar.getInstance().apply {
-                val year = split[POSITION_YEAR].toInt()
-                val month = split[POSITION_MONTH].toInt()
-                val date = split[POSITION_DAY].toInt()
-                set(
-                    year,
-                    month,
-                    date
-                )
-            }.time.time
+            updatedZonedTime.toInstant().toEpochMilli()
         )
     }
 
     companion object {
-        const val POSITION_YEAR = 0
-        const val POSITION_MONTH = 1
-        const val POSITION_DAY = 2
+        const val DATE_FORMATTER_PATTERN = "yyyy-MM-dd hh:mm:ss a VV"
+        const val DATE_SUFFIX = " 10:00:00 PM America/New_York"
     }
 }

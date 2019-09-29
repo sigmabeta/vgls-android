@@ -12,7 +12,6 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInFromZero
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.components.SheetListModel
@@ -155,7 +154,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     }
 
     private fun showLoading() {
-        progress_loading.fadeInFromZero()
+        progress_loading.fadeIn()
     }
 
     private fun hideLoading() {

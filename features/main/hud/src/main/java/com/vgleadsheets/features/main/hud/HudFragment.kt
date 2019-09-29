@@ -14,8 +14,10 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
+import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
@@ -142,12 +144,13 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
 
         when (state.digest) {
+            is Uninitialized -> hideDigestLoading()
+            is Fail -> handleDigestError(state.digest.error)
             is Loading -> showDigestLoading()
             is Success -> {
                 hideDigestLoading()
                 viewModel.clearDigest()
             }
-            else -> hideDigestLoading()
         }
 
         when (state.updateTime) {
@@ -197,6 +200,13 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private fun hideDigestLoading() {
         progress_hud.fadeOutGone()
+    }
+
+    private fun handleDigestError(error: Throwable) {
+        when (error) {
+            is NoSuchElementException -> hideDigestLoading()
+            else -> showError("Couldn't load sheets from server: ${error.message}")
+        }
     }
 
     private fun showSearch() {

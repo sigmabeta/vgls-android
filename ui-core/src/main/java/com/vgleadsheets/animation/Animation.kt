@@ -5,7 +5,6 @@ package com.vgleadsheets.animation
 import android.util.Pair
 import android.view.View
 import android.view.ViewPropertyAnimator
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
@@ -31,8 +30,6 @@ private const val INTERPOLATOR_FACTOR = 2.0f
 val ACCELERATE = AccelerateInterpolator(INTERPOLATOR_FACTOR)
 val DECELERATE = DecelerateInterpolator(INTERPOLATOR_FACTOR)
 
-private val ACC_DECELERATE = AccelerateDecelerateInterpolator()
-
 fun View.slideViewUpOffscreen(): ViewPropertyAnimator {
     return animate()
         .withLayer()
@@ -52,7 +49,9 @@ fun View.slideViewDownOffscreen(): ViewPropertyAnimator {
 }
 
 fun View.slideViewOnscreen(): ViewPropertyAnimator {
-    visibility = View.VISIBLE
+    if (visibility != View.VISIBLE) {
+        visibility = View.VISIBLE
+    }
 
     return animate()
         .withLayer()
@@ -61,87 +60,73 @@ fun View.slideViewOnscreen(): ViewPropertyAnimator {
         .translationY(TRANSLATION_CENTER)
 }
 
-fun View.slideViewToProperLocation(): ViewPropertyAnimator {
-    return animate()
-        .withLayer()
-        .setInterpolator(ACC_DECELERATE)
-        .setDuration(DURATION_SLOW)
-        .translationY(TRANSLATION_CENTER)
+fun View.fadeInSlightly() {
+    if (visibility != View.VISIBLE) {
+        visibility = View.VISIBLE
+    }
+
+    if (alpha != ALPHA_VERY_TRANSPARENT) {
+        animate().cancel()
+        animate()
+            .setInterpolator(DECELERATE)
+            .setDuration(DURATION_XSLOW)
+            .alpha(ALPHA_VERY_TRANSPARENT)
+    }
 }
 
-fun View.fadeInSlightly(): ViewPropertyAnimator {
-    visibility = View.VISIBLE
+fun View.fadeIn() {
+    if (visibility != View.VISIBLE) {
+        visibility = View.VISIBLE
+    }
 
-    animate().cancel()
-    return animate()
-        .setInterpolator(DECELERATE)
-        .setDuration(DURATION_XSLOW)
-        .alpha(ALPHA_VERY_TRANSPARENT)
+    if (alpha != ALPHA_OPAQUE) {
+        animate().cancel()
+        animate()
+            .setInterpolator(DECELERATE)
+            .setDuration(DURATION_QUICK)
+            .alpha(ALPHA_OPAQUE)
+    }
 }
 
-fun View.fadeIn(): ViewPropertyAnimator {
-    visibility = View.VISIBLE
+fun View.fadeOutGone() {
+    if (visibility != View.GONE) {
+        animate().cancel()
+        animate()
+            .setInterpolator(DECELERATE)
+            .setDuration(DURATION_QUICK)
+            .alpha(ALPHA_TRANSPARENT)
+            .withEndAction {
+                visibility = View.GONE
 
-    animate().cancel()
-    return animate()
-        .setInterpolator(DECELERATE)
-        .setDuration(DURATION_QUICK)
-        .alpha(ALPHA_OPAQUE)
+            }
+    }
 }
 
-fun View.fadeInFromZero(): ViewPropertyAnimator {
-    visibility = View.VISIBLE
-    alpha = 0.0f
-
-    animate().cancel()
-    return animate()
-        .setInterpolator(DECELERATE)
-        .setDuration(DURATION_QUICK)
-        .alpha(ALPHA_OPAQUE)
+fun View.fadeOutPartially() {
+    if (alpha != ALPHA_SEMI_TRANSPARENT) {
+        animate().cancel()
+        animate()
+            .setInterpolator(ACCELERATE)
+            .setDuration(DURATION_QUICK)
+            .alpha(ALPHA_SEMI_TRANSPARENT)
+    }
 }
 
-fun View.fadeOutGone(): ViewPropertyAnimator {
-    animate().cancel()
-    return animate()
-        .setInterpolator(DECELERATE)
-        .setDuration(DURATION_QUICK)
-        .alpha(ALPHA_TRANSPARENT)
-        .withEndAction {
-            visibility = View.GONE
-        }
-}
+fun TextView.changeText(text: String) {
+    if (getText() != text) {
+        animate().withLayer()
+            .setDuration(DURATION_XX_QUICK)
+            .setInterpolator(DECELERATE)
+            .alpha(ALPHA_TRANSPARENT)
+            .withEndAction {
+                setText(text)
 
-fun View.fadeOut(): ViewPropertyAnimator {
-    animate().cancel()
-    return animate()
-        .setInterpolator(DECELERATE)
-        .setDuration(DURATION_QUICK)
-        .alpha(ALPHA_TRANSPARENT)
-}
-
-fun View.fadeOutPartially(): ViewPropertyAnimator {
-    animate().cancel()
-    return animate()
-        .setInterpolator(ACCELERATE)
-        .setDuration(DURATION_QUICK)
-        .alpha(ALPHA_SEMI_TRANSPARENT)
-}
-
-fun TextView.changeText(text: String) = if (getText() != text) {
-    animate().withLayer()
-        .setDuration(DURATION_XX_QUICK)
-        .setInterpolator(DECELERATE)
-        .alpha(ALPHA_TRANSPARENT)
-        .withEndAction {
-            setText(text)
-
-            animate().withLayer()
-                .setDuration(DURATION_X_QUICK)
-                .setInterpolator(DECELERATE)
-                .alpha(ALPHA_OPAQUE)
-        }
-} else {
-    null
+                animate().withLayer()
+                    .setDuration(DURATION_X_QUICK)
+                    .setInterpolator(DECELERATE)
+                    .alpha(ALPHA_OPAQUE)
+            }
+    }
 }
 
 fun View.shrinktoNothing() = animate()

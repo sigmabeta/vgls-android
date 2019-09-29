@@ -14,6 +14,7 @@ import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
+import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
@@ -22,11 +23,14 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import org.threeten.bp.Duration
+import org.threeten.bp.Instant
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
     private val vglsApi: VglsApi,
     private val baseImageUrl: String,
+    private val threeTen: ThreeTenTime,
     database: VglsDatabase
 ) : Repository {
 
@@ -38,17 +42,18 @@ class RealRepository constructor(
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
 
-    override fun checkForUpdate(): Single<List<ApiGame>> = getLastCheckTime()
-        .filter { System.currentTimeMillis() - it.time_ms > AGE_THRESHOLD }
-        .flatMapSingle { getLastApiUpdateTime() }
-        .zipWith<Time, Long>(getLastDbUpdateTimeOnce(),
-            BiFunction { apiTime, dbTime ->
+    override fun checkForUpdate(): Single<List<ApiGame>> {
+        return getLastCheckTime()
+            .filter { Instant.now().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
+            .flatMapSingle { getLastApiUpdateTime() }
+            .zipWith<Time, Long>(getLastDbUpdateTimeOnce(), BiFunction { apiTime, dbTime ->
                 apiTime.timeMs - dbTime.timeMs
             })
-        .filter {
-                diff -> diff > 0
-        }
-        .flatMapSingle { getDigest() }
+            .filter { diff ->
+                diff > 0
+            }
+            .flatMapSingle { getDigest() }
+    }
 
     override fun forceRefresh(): Single<List<ApiGame>> = getDigest()
 
@@ -217,7 +222,7 @@ class RealRepository constructor(
     private fun getLastDbUpdateTimeOnce(): Single<Time> = getLastDbUpdateTime().firstOrError()
 
     private fun getLastApiUpdateTime() = vglsApi.getLastUpdateTime()
-        .map { it.toTimeEntity().toTime() }
+        .map { it.toTimeEntity(threeTen).toTime() }
         .doOnSuccess() {
             dbStatisticsDao.insert(
                 TimeEntity(TimeType.LAST_UPDATED.ordinal, it.timeMs)
@@ -294,17 +299,18 @@ class RealRepository constructor(
             )
 
             dbStatisticsDao.insert(
-                TimeEntity(TimeType.LAST_CHECKED.ordinal, System.currentTimeMillis())
+                TimeEntity(TimeType.LAST_CHECKED.ordinal, Instant.now().toEpochMilli())
             )
         }
 
 
     companion object {
-        const val AGE_THRESHOLD = 5000L
         const val CAPACITY = 500
 
         const val URL_SEPARATOR_FOLDER = "/"
         const val URL_SEPARATOR_NUMBER = "-"
         const val URL_FILE_EXT_PNG = ".png"
+
+        val AGE_THRESHOLD = Duration.ofMinutes(60).toMillis()
     }
 }
