@@ -1,14 +1,21 @@
+<!-- <item name="colorPrimaryDark">@android:color/white</item> -->
 <resources>
 
     <style name="VglsBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/background</item>
 
     </style>
 
     <style name="VglsImmersive" parent="VglsBaseTheme">
         <item name="android:navigationBarColor">@color/navbarTranslucent</item>
         <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
+    <style name="VglsImmersive.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 </resources>

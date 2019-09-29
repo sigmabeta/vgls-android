@@ -35,6 +35,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter, Hud
     override fun getHudFragment() = supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.VglsImmersive)
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 

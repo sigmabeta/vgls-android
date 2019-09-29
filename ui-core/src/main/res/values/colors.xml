@@ -11,4 +11,6 @@
     <color name="divider">#cccccc</color>
 
     <color name="navbarTranslucent">#33000000</color>
+
+    <color name="background">#F9F9F9</color>
 </resources>
