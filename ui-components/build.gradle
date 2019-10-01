@@ -9,6 +9,9 @@ android {
 
 dependencies {
     implementation project(path: ':ui-core')
+    
+    // For zoomable sheet images
+    implementation "com.github.chrisbanes:PhotoView:$photoview_version"
 
     // Image Loading
     implementation "com.squareup.picasso:picasso:$picasso_version"

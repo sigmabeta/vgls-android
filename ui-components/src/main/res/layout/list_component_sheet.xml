@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:onClick="@{() -> toBind.listener.onClicked(toBind)}">
 
-        <ImageView
+        <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/image_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
