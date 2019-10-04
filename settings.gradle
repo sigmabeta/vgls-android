@@ -18,4 +18,5 @@ include ':app',
         ':features:main:songs',
         ':features:main:viewer',
         ':features:main:hud',
-        ':features:main:composer'
+        ':features:main:composer',
+        ':vectors'

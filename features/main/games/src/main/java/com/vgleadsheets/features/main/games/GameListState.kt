@@ -6,5 +6,5 @@ import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.model.game.Game
 
 data class GameListState(
-    val data: Async<List<Game>> = Uninitialized
+    val games: Async<List<Game>> = Uninitialized
 ) : MvRxState

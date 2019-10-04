@@ -8,6 +8,7 @@ dependencies {
     implementation project(path: ':repository')
     implementation project(path: ':recyclerview')
     implementation project(path: ':ui-core')
+    implementation project(path: ':vectors')
 
     // RxJava2 libs
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
