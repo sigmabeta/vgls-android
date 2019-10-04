@@ -58,7 +58,6 @@ class RealRepository constructor(
     override fun forceRefresh(): Single<List<ApiGame>> = getDigest()
 
     override fun getGames(): Observable<List<Game>> = gameDao.getAll()
-        .filter { it.isNotEmpty() }
         .map { gameEntities ->
             gameEntities.map { gameEntity ->
                 val songs = songDao
@@ -77,7 +76,6 @@ class RealRepository constructor(
 
     override fun getSongsForGame(gameId: Long): Observable<List<Song>> = songDao
         .getSongsForGame(gameId)
-        .filter { it.isNotEmpty() }
         .map { songEntities ->
             songEntities.map { songEntity ->
                 val composers = songComposerDao
@@ -95,7 +93,6 @@ class RealRepository constructor(
     override fun getSongsByComposer(composerId: Long): Observable<List<Song>> =
         songComposerDao
             .getSongsForComposer(composerId)
-            .filter { it.isNotEmpty() }
             .map { songEntities ->
                 songEntities.map { songEntity ->
                     val composers = songComposerDao
@@ -148,7 +145,6 @@ class RealRepository constructor(
 
     override fun getComposers(): Observable<List<Composer>> = composerDao
         .getAll()
-        .filter { it.isNotEmpty() }
         .map { composerEntities ->
             composerEntities.map { composerEntity ->
                 val songs = songComposerDao

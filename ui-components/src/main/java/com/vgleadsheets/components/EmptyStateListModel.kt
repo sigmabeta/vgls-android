@@ -1,7 +1,9 @@
 package com.vgleadsheets.components
 
+import androidx.annotation.DrawableRes
+
 data class EmptyStateListModel(
-    val iconId: Int,
+    @DrawableRes val iconId: Int,
     val explanation: String
 ) : ListModel {
     override val dataId = explanation.hashCode().toLong()
