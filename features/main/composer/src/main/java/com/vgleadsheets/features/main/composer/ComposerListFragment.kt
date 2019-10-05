@@ -26,6 +26,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_composer_list.list_composers
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var composerListViewModelFactory: ComposerListViewModel.Factory
@@ -77,18 +78,10 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-
     private fun constructList(
         composers: Async<List<Composer>>,
         selectedPart: PartSelectorItem
-    ): List<ListModel> {
-        val listModels = ArrayList<ListModel>(100)
-
-        listModels.add(createTitleListModel())
-        listModels.addAll(createContentListModels(composers, selectedPart))
-
-        return listModels
-    }
+    ) = arrayListOf(createTitleListModel()) + createContentListModels(composers, selectedPart)
 
     private fun createTitleListModel() = TitleListModel(
         R.string.subtitle_composer.toLong(),
@@ -106,9 +99,9 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
     }
 
     private fun createLoadingListModels(): List<ListModel> {
-        val listModels = ArrayList<ListModel>(15)
+        val listModels = ArrayList<ListModel>(LOADING_ITEMS)
 
-        for (index in 0 until 15) {
+        for (index in 0 until LOADING_ITEMS) {
             listModels.add(
                 LoadingNameCaptionListModel(index)
             )
@@ -123,34 +116,22 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
     private fun createSuccessListModels(
         composers: List<Composer>,
         selectedPart: PartSelectorItem
-    ): List<ListModel> {
-        val listModels = ArrayList<ListModel>(100)
-
-        if (composers.isEmpty()) {
-            listModels.add(
-                EmptyStateListModel(
-                    R.drawable.ic_album_black_24dp,
-                    "No composers found at all. Check your internet connection?"
-                )
+    ) = if (composers.isEmpty()) {
+        arrayListOf(
+            EmptyStateListModel(
+                R.drawable.ic_album_black_24dp,
+                "No composers found at all. Check your internet connection?"
             )
-
-            return listModels
-        }
-
+        )
+    } else {
         val availableComposers = filterComposers(composers, selectedPart)
 
-        if (availableComposers.isEmpty()) {
-            listModels.add(
-                EmptyStateListModel(
-                    R.drawable.ic_album_black_24dp,
-                    "No composers found with a ${selectedPart.apiId} part. Try another part?"
-                )
+        if (availableComposers.isEmpty()) arrayListOf(
+            EmptyStateListModel(
+                R.drawable.ic_album_black_24dp,
+                "No composers found with a ${selectedPart.apiId} part. Try another part?"
             )
-
-            return listModels
-        }
-
-        listModels.addAll(availableComposers
+        ) else availableComposers
             .map {
                 NameCaptionListModel(
                     it.id,
@@ -159,24 +140,20 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
                     this
                 )
             }
-        )
-
-        return listModels
     }
+
 
     private fun filterComposers(
         composers: List<Composer>,
         selectedPart: PartSelectorItem
-    ): List<Composer> {
-        return composers.map { composer ->
-            val availableSongs = composer.songs?.filter { song ->
-                song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-            }
-
-            composer.copy(songs = availableSongs)
-        }.filter {
-            it.songs?.isNotEmpty() ?: false
+    ) = composers.map { composer ->
+        val availableSongs = composer.songs?.filter { song ->
+            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
         }
+
+        composer.copy(songs = availableSongs)
+    }.filter {
+        it.songs?.isNotEmpty() ?: false
     }
 
     private fun showSongList(clickedComposerId: Long) {
@@ -184,6 +161,7 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
     }
 
     companion object {
+        const val LOADING_ITEMS = 15
         fun newInstance() = ComposerListFragment()
     }
 }

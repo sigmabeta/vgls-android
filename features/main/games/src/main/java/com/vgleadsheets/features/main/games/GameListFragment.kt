@@ -26,6 +26,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.list_games
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
@@ -49,7 +50,10 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
         list_games.adapter = adapter
         list_games.layoutManager = LinearLayoutManager(context)
-        list_games.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
+        list_games.setInsetListenerForPadding(
+            topOffset = topOffset,
+            bottomOffset = bottomOffset
+        )
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, gameListState ->
@@ -74,18 +78,10 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-
     private fun constructList(
         games: Async<List<Game>>,
         selectedPart: PartSelectorItem
-    ): List<ListModel> {
-        val listModels = ArrayList<ListModel>(100)
-
-        listModels.add(createTitleListModel())
-        listModels.addAll(createContentListModels(games, selectedPart))
-
-        return listModels
-    }
+    ) = arrayListOf(createTitleListModel()) + createContentListModels(games, selectedPart)
 
     private fun createTitleListModel() = TitleListModel(
         R.string.subtitle_game.toLong(),
@@ -103,9 +99,9 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     }
 
     private fun createLoadingListModels(): List<ListModel> {
-        val listModels = ArrayList<ListModel>(15)
+        val listModels = ArrayList<ListModel>(LOADING_ITEMS)
 
-        for (index in 0 until 15) {
+        for (index in 0 until LOADING_ITEMS) {
             listModels.add(
                 LoadingNameCaptionListModel(index)
             )
@@ -120,34 +116,22 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     private fun createSuccessListModels(
         games: List<Game>,
         selectedPart: PartSelectorItem
-    ): List<ListModel> {
-        val listModels = ArrayList<ListModel>(100)
-
-        if (games.isEmpty()) {
-            listModels.add(
-                EmptyStateListModel(
-                    R.drawable.ic_album_black_24dp,
-                    "No games found at all. Check your internet connection?"
-                )
+    ) = if (games.isEmpty()) {
+        arrayListOf(
+            EmptyStateListModel(
+                R.drawable.ic_album_black_24dp,
+                "No games found at all. Check your internet connection?"
             )
-
-            return listModels
-        }
-
+        )
+    } else {
         val availableGames = filterGames(games, selectedPart)
 
-        if (availableGames.isEmpty()) {
-            listModels.add(
-                EmptyStateListModel(
-                    R.drawable.ic_album_black_24dp,
-                    "No games found with a ${selectedPart.apiId} part. Try another part?"
-                )
+        if (availableGames.isEmpty()) arrayListOf(
+            EmptyStateListModel(
+                R.drawable.ic_album_black_24dp,
+                "No games found with a ${selectedPart.apiId} part. Try another part?"
             )
-
-            return listModels
-        }
-
-        listModels.addAll(availableGames
+        ) else availableGames
             .map {
                 NameCaptionListModel(
                     it.id,
@@ -156,24 +140,20 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                     this
                 )
             }
-        )
-
-        return listModels
     }
+
 
     private fun filterGames(
         games: List<Game>,
         selectedPart: PartSelectorItem
-    ): List<Game> {
-        return games.map { game ->
-            val availableSongs = game.songs?.filter { song ->
-                song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-            }
-
-            game.copy(songs = availableSongs)
-        }.filter {
-            it.songs?.isNotEmpty() ?: false
+    ) = games.map { game ->
+        val availableSongs = game.songs?.filter { song ->
+            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
         }
+
+        game.copy(songs = availableSongs)
+    }.filter {
+        it.songs?.isNotEmpty() ?: false
     }
 
     private fun showSongList(clickedGameId: Long) {
@@ -181,6 +161,7 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     }
 
     companion object {
+        const val LOADING_ITEMS = 15
         fun newInstance() = GameListFragment()
     }
 }

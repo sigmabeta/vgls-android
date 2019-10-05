@@ -40,7 +40,6 @@ abstract class VglsFragment : BaseMvRxFragment() {
         showError(message, action, actionLabel)
     }
 
-
     protected fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
         Timber.e("Displayed error: $message")
         showSnackbar(message, action, actionLabel)

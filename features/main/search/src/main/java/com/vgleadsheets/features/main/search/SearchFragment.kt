@@ -128,7 +128,6 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         LoadingNameCaptionListModel(sectionId)
     )
 
-
     private fun createSuccessListModels(
         sectionId: Int,
         resultTypeId: Int,

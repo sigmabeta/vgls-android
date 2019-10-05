@@ -29,6 +29,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_song.list_sheets
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
@@ -90,14 +91,13 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         subtitle: String?,
         selectedPart: PartSelectorItem
     ): List<ListModel> {
-        val listModels = ArrayList<ListModel>(400)
         val songListModels = createContentListModels(songs, selectedPart)
 
         // Pass in `songs` so we know whether to show a sheet counter or not.
-        listModels.add(createTitleListModel(title, subtitle, songs, songListModels.size))
-        listModels.addAll(songListModels)
+        val titleListModel =
+            arrayListOf(createTitleListModel(title, subtitle, songs, songListModels.size))
 
-        return listModels
+        return titleListModel + songListModels
     }
 
     private fun createContentListModels(
@@ -133,9 +133,9 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     ) = if (songs is Success) getString(R.string.subtitle_sheets_count, songCount) else ""
 
     private fun createLoadingListModels(): List<ListModel> {
-        val listModels = ArrayList<ListModel>(15)
+        val listModels = ArrayList<ListModel>(LOADING_ITEMS)
 
-        for (index in 0 until 15) {
+        for (index in 0 until LOADING_ITEMS) {
             listModels.add(
                 LoadingNameCaptionListModel(index)
             )
@@ -150,35 +150,25 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     private fun createSuccessListModels(
         songs: List<Song>,
         selectedPart: PartSelectorItem
-    ): List<ListModel> {
-        val listModels = ArrayList<ListModel>(400)
-
-        if (songs.isEmpty()) {
-            listModels.add(
-                EmptyStateListModel(
-                    R.drawable.ic_album_black_24dp,
-                    "No songs found at all. Check your internet connection?"
-                )
+    ) = if (songs.isEmpty()) {
+        arrayListOf(
+            EmptyStateListModel(
+                R.drawable.ic_album_black_24dp,
+                "No songs found at all. Check your internet connection?"
             )
-
-            return listModels
-        }
-
+        )
+    } else {
         val availableSongs = filterSongs(songs, selectedPart)
 
         if (availableSongs.isEmpty()) {
-            listModels.add(
+            arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_black_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?"
                 )
             )
-
-            return listModels
-        }
-
-        listModels.addAll(availableSongs
-            .map {
+        } else {
+            availableSongs.map {
                 NameCaptionListModel(
                     it.id,
                     it.name,
@@ -186,9 +176,7 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                     this
                 )
             }
-        )
-
-        return listModels
+        }
     }
 
     private fun filterSongs(
@@ -207,6 +195,8 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     }
 
     companion object {
+        const val LOADING_ITEMS = 15
+
         fun newInstance(args: SongListArgs): SongListFragment {
             val fragment = SongListFragment()
 
