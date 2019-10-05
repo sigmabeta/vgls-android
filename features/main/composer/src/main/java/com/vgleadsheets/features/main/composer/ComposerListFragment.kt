@@ -49,7 +49,10 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
 
         list_composers.adapter = adapter
         list_composers.layoutManager = LinearLayoutManager(context)
-        list_composers.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
+        list_composers.setInsetListenerForPadding(
+            topOffset = topOffset,
+            bottomOffset = bottomOffset
+        )
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, composerListState ->
@@ -114,15 +117,8 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
         return listModels
     }
 
-    private fun createErrorStateListModel(error: Throwable): List<ListModel> {
-        val listModels = ArrayList<ListModel>(15)
-
-        listModels.add(
-            ErrorStateListModel(error.message ?: "Unknown Error")
-        )
-
-        return listModels
-    }
+    private fun createErrorStateListModel(error: Throwable) =
+        arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))
 
     private fun createSuccessListModels(
         composers: List<Composer>,

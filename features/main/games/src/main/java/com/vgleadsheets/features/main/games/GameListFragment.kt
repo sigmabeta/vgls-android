@@ -114,15 +114,8 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         return listModels
     }
 
-    private fun createErrorStateListModel(error: Throwable): List<ListModel> {
-        val listModels = ArrayList<ListModel>(15)
-
-        listModels.add(
-            ErrorStateListModel(error.message ?: "Unknown Error")
-        )
-
-        return listModels
-    }
+    private fun createErrorStateListModel(error: Throwable) =
+        arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))
 
     private fun createSuccessListModels(
         games: List<Game>,
