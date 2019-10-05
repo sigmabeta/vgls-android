@@ -3,17 +3,19 @@ package com.vgleadsheets.features.main.composer
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeOutGone
-import com.vgleadsheets.animation.fadeOutPartially
+import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -21,7 +23,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_composer_list.*
+import kotlinx.android.synthetic.main.fragment_composer_list.list_composers
 import javax.inject.Inject
 
 class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
@@ -47,92 +49,142 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
 
         list_composers.adapter = adapter
         list_composers.layoutManager = LinearLayoutManager(context)
-        list_composers.setInsetListenerForPadding(
-            topOffset = topOffset,
-            bottomOffset = bottomOffset
-        )
+        list_composers.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, composerListState ->
         val selectedPart = hudState.parts?.first { it.selected }
 
+        // TODO Let's make this non-null if we can.
         if (selectedPart == null) {
             showError("No part selected.")
             return@withState
         }
 
-        when (val data = composerListState.composers) {
-            is Fail -> showError(
-                data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
-            )
-            is Loading -> showLoading()
-            is Success -> showComposers(composerListState.composers(), selectedPart)
+        val composers = composerListState.composers
+        if (composers is Fail) {
+            showError(composers.error)
         }
+
+        val listModels = constructList(composers, selectedPart)
+        adapter.submitList(listModels)
     }
 
     override fun getLayoutId() = R.layout.fragment_composer_list
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun showSongList(clickedComposerId: Long) {
-        getFragmentRouter().showSongListForComposer(clickedComposerId)
+
+    private fun constructList(
+        composers: Async<List<Composer>>,
+        selectedPart: PartSelectorItem
+    ): List<ListModel> {
+        val listModels = ArrayList<ListModel>(100)
+
+        listModels.add(createTitleListModel())
+        listModels.addAll(createContentListModels(composers, selectedPart))
+
+        return listModels
     }
 
-    private fun showLoading() {
-        progress_loading.fadeIn()
-        list_composers.fadeOutPartially()
+    private fun createTitleListModel() = TitleListModel(
+        R.string.subtitle_composer.toLong(),
+        getString(R.string.app_name),
+        getString(R.string.subtitle_composer)
+    )
+
+    private fun createContentListModels(
+        composers: Async<List<Composer>>,
+        selectedPart: PartSelectorItem
+    ) = when (composers) {
+        is Loading, Uninitialized -> createLoadingListModels()
+        is Fail -> createErrorStateListModel(composers.error)
+        is Success -> createSuccessListModels(composers(), selectedPart)
     }
 
-    private fun hideLoading() {
-        list_composers.fadeIn()
-        progress_loading.fadeOutGone()
-    }
+    private fun createLoadingListModels(): List<ListModel> {
+        val listModels = ArrayList<ListModel>(15)
 
-    private fun showComposers(composers: List<Composer>?, selectedPart: PartSelectorItem) {
-        hideLoading()
-
-        if (composers?.isEmpty() != false) {
-            showEmptyState()
-            return
+        for (index in 0 until 15) {
+            listModels.add(
+                LoadingNameCaptionListModel(index)
+            )
         }
 
-        val availableComposers = composers.map { composer ->
+        return listModels
+    }
+
+    private fun createErrorStateListModel(error: Throwable): List<ListModel> {
+        val listModels = ArrayList<ListModel>(15)
+
+        listModels.add(
+            ErrorStateListModel(error.message ?: "Unknown Error")
+        )
+
+        return listModels
+    }
+
+    private fun createSuccessListModels(
+        composers: List<Composer>,
+        selectedPart: PartSelectorItem
+    ): List<ListModel> {
+        val listModels = ArrayList<ListModel>(100)
+
+        if (composers.isEmpty()) {
+            listModels.add(
+                EmptyStateListModel(
+                    R.drawable.ic_album_black_24dp,
+                    "No composers found at all. Check your internet connection?"
+                )
+            )
+
+            return listModels
+        }
+
+        val availableComposers = filterComposers(composers, selectedPart)
+
+        if (availableComposers.isEmpty()) {
+            listModels.add(
+                EmptyStateListModel(
+                    R.drawable.ic_album_black_24dp,
+                    "No composers found with a ${selectedPart.apiId} part. Try another part?"
+                )
+            )
+
+            return listModels
+        }
+
+        listModels.addAll(availableComposers
+            .map {
+                NameCaptionListModel(
+                    it.id,
+                    it.name,
+                    getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                    this
+                )
+            }
+        )
+
+        return listModels
+    }
+
+    private fun filterComposers(
+        composers: List<Composer>,
+        selectedPart: PartSelectorItem
+    ): List<Composer> {
+        return composers.map { composer ->
             val availableSongs = composer.songs?.filter { song ->
-                val parts = song.parts
-                val firstAvailableSong = parts?.firstOrNull { part ->
-                    part.name == selectedPart.apiId
-                }
-                firstAvailableSong != null
+                song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
             }
 
             composer.copy(songs = availableSongs)
         }.filter {
             it.songs?.isNotEmpty() ?: false
         }
-
-        val listComponents = availableComposers.map {
-                NameCaptionListModel(
-                    it.id,
-                    it.name,
-                    getString(R.string.label_sheet_count, it.songs?.size ?: 0),
-                    this
-                ) as ListModel
-            }.toMutableList()
-
-        listComponents.add(
-            0,
-            TitleListModel(
-                R.string.subtitle_composer.toLong(),
-                getString(R.string.app_name),
-                getString(R.string.subtitle_composer)
-            )
-        )
-
-        adapter.submitList(listComponents)
     }
 
-    private fun showEmptyState() {
-        showError("No data found!")
+    private fun showSongList(clickedComposerId: Long) {
+        getFragmentRouter().showSongListForComposer(clickedComposerId)
     }
 
     companion object {
