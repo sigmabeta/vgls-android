@@ -41,7 +41,7 @@ class SongListViewModel @AssistedInject constructor(
 
         loadOperation
             .execute { data ->
-                copy(data = data)
+                copy(songs = data)
             }
     }
 

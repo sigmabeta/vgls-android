@@ -96,12 +96,10 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     private fun createContentListModels(
         games: Async<List<Game>>,
         selectedPart: PartSelectorItem
-    ): List<ListModel> {
-        return when (games) {
-            is Loading, Uninitialized -> createLoadingListModels()
-            is Fail -> createErrorStateListModel(games.error)
-            is Success -> createSuccessListModels(games(), selectedPart)
-        }
+    ) = when (games) {
+        is Loading, Uninitialized -> createLoadingListModels()
+        is Fail -> createErrorStateListModel(games.error)
+        is Success -> createSuccessListModels(games(), selectedPart)
     }
 
     private fun createLoadingListModels(): List<ListModel> {

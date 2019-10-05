@@ -10,7 +10,7 @@ data class SongListState(
     val type: SongListArgs,
     val id: Long?,
     val title: Async<String> = Uninitialized,
-    val data: Async<List<Song>> = Uninitialized
+    val songs: Async<List<Song>> = Uninitialized
 ) : MvRxState {
     constructor(args: SongListArgs) : this(args, args.id)
 }
