@@ -142,7 +142,6 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             }
     }
 
-
     private fun filterGames(
         games: List<Game>,
         selectedPart: PartSelectorItem

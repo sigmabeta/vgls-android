@@ -142,7 +142,6 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
             }
     }
 
-
     private fun filterComposers(
         composers: List<Composer>,
         selectedPart: PartSelectorItem
