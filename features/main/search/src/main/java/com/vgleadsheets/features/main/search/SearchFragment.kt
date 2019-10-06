@@ -12,10 +12,12 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.model.search.SearchResult
@@ -73,12 +75,17 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                 if (!query.isNullOrEmpty()) {
                     viewModel.startQuery(query)
                 } else {
-                    viewModel.clearResults()
+                    adapter.submitList(
+                        arrayListOf<ListModel>(
+                            SearchEmptyStateListModel()
+                        )
+                    )
+                    return@withState
                 }
-            }
 
-            val listModels = constructList(localState.songs, localState.games, localState.composers)
-            adapter.submitList(listModels)
+                val listModels = constructList(localState.songs, localState.games, localState.composers)
+                adapter.submitList(listModels)
+            }
         }
     }
 
@@ -103,7 +110,15 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             composers
         )
 
-        return songModels + gameModels + composerModels
+        val listModels = songModels + gameModels + composerModels
+        return if (listModels.isEmpty()) {
+            arrayListOf(EmptyStateListModel(
+                R.drawable.ic_description_black_24dp,
+                getString(R.string.empty_search_no_results))
+            )
+        } else {
+            listModels
+        }
     }
 
     private fun createSectionModels(

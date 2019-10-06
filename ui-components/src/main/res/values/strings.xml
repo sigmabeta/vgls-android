@@ -4,4 +4,6 @@
     <string name="sample_text_caption">Some details about the thing</string>
 
     <string name="error_image_load">Could not load image.  Tap to try again.</string>
+
+    <string name="empty_search_no_query">Use the text box to search by title, game, or composer.</string>
 </resources>

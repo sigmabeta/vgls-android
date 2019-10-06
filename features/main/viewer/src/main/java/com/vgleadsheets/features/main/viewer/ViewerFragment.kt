@@ -19,7 +19,10 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import kotlinx.android.synthetic.main.fragment_viewer.*
+import kotlinx.android.synthetic.main.fragment_viewer.list_sheets
+import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
+import kotlinx.android.synthetic.main.fragment_viewer.progress_loading
+import kotlinx.android.synthetic.main.fragment_viewer.text_error_state
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -158,7 +161,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     }
 
     private fun hideLoading() {
-        progress_loading.fadeOutGone()
+        progress_loading?.fadeOutGone()
     }
 
     private fun showErrorState() {
