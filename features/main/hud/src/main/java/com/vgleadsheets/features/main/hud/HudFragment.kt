@@ -220,7 +220,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun handleDigestError(error: Throwable) {
         when (error) {
             is NoSuchElementException -> hideDigestLoading()
-            else -> showError("Couldn't load sheets from server: ${error.message}")
+            else -> {
+                showError("Couldn't load sheets from server: ${error.message}")
+                viewModel.clearDigest()
+            }
         }
     }
 

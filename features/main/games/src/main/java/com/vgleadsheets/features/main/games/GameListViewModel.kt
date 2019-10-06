@@ -19,7 +19,7 @@ class GameListViewModel @AssistedInject constructor(
     private fun fetchGames() {
         repository.getGames()
             .execute { data ->
-                copy(data = data)
+                copy(games = data)
             }
     }
 

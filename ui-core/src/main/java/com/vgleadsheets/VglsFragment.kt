@@ -35,6 +35,11 @@ abstract class VglsFragment : BaseMvRxFragment() {
         ViewCompat.requestApplyInsets(view)
     }
 
+    protected fun showError(error: Throwable, action: View.OnClickListener? = null, actionLabel: Int = 0) {
+        val message = error.message ?: error::class.simpleName ?: "Unknown Error"
+        showError(message, action, actionLabel)
+    }
+
     protected fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
         Timber.e("Displayed error: $message")
         showSnackbar(message, action, actionLabel)

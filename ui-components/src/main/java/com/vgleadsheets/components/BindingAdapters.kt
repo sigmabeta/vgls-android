@@ -27,3 +27,11 @@ fun bindImage(
 
         view.loadImageFull(url, callback)
 }
+
+@BindingAdapter("drawable")
+fun bindDrawable(
+    view: ImageView,
+    drawable: Int
+) {
+    view.setImageResource(drawable)
+}

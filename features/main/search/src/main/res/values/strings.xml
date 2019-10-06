@@ -10,4 +10,5 @@
     <string name="section_header_games">Games</string>
     <string name="section_header_songs">Songs</string>
     <string name="section_header_composers">Composers</string>
+    <string name="empty_search_no_results">No results found. Try a different search term.</string>
 </resources>

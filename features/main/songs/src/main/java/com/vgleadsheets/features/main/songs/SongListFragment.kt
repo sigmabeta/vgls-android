@@ -3,20 +3,22 @@ package com.vgleadsheets.features.main.songs
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeOutGone
-import com.vgleadsheets.animation.fadeOutPartially
 import com.vgleadsheets.args.SongListArgs
+import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -24,9 +26,10 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_sheet.*
+import kotlinx.android.synthetic.main.fragment_song.list_sheets
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     @Inject
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
@@ -73,85 +76,127 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             subtitle = getString(R.string.subtitle_all_sheets)
         }
 
-        when (val data = songListState.data) {
-            is Fail -> showError(
-                data.error.message ?: data.error::class.simpleName ?: "Unknown Error"
-            )
-            is Loading -> showLoading()
-            is Success -> showSongs(songListState.data(), selectedPart, title, subtitle)
+        val songs = songListState.songs
+        if (songs is Fail) {
+            showError(songs.error)
+        }
+
+        val listModels = constructList(songs, title, subtitle, selectedPart)
+        adapter.submitList(listModels)
+    }
+
+    private fun constructList(
+        songs: Async<List<Song>>,
+        title: String,
+        subtitle: String?,
+        selectedPart: PartSelectorItem
+    ): List<ListModel> {
+        val songListModels = createContentListModels(songs, selectedPart)
+
+        // Pass in `songs` so we know whether to show a sheet counter or not.
+        val titleListModel =
+            arrayListOf(createTitleListModel(title, subtitle, songs, songListModels.size))
+
+        return titleListModel + songListModels
+    }
+
+    private fun createContentListModels(
+        songs: Async<List<Song>>,
+        selectedPart: PartSelectorItem
+    ) = when (songs) {
+        is Loading, Uninitialized -> createLoadingListModels()
+        is Fail -> createErrorStateListModel(songs.error)
+        is Success -> createSuccessListModels(songs(), selectedPart)
+    }
+
+    private fun createTitleListModel(
+        title: String,
+        subtitle: String?,
+        songs: Async<List<Song>>,
+        songCount: Int
+    ) = TitleListModel(
+        title.hashCode().toLong(),
+        title,
+        subtitle ?: generateSheetCountText(songs, songCount)
+    )
+
+    private fun generateSheetCaption(song: Song): String {
+        return when (song.composers?.size) {
+            1 -> song.composers?.firstOrNull()?.name ?: "Unknown Composer"
+            else -> "Various Composers"
         }
     }
 
-    override fun getLayoutId() = R.layout.fragment_sheet
+    private fun generateSheetCountText(
+        songs: Async<List<Song>>,
+        songCount: Int
+    ) = if (songs is Success) getString(R.string.subtitle_sheets_count, songCount) else ""
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${args.id}"
+    private fun createLoadingListModels(): List<ListModel> {
+        val listModels = ArrayList<ListModel>(LOADING_ITEMS)
 
-    private fun showSongs(
-        songs: List<Song>?,
-        selectedPart: PartSelectorItem,
-        title: String,
-        subtitle: String?
-    ) {
-        hideLoading()
-
-        if (songs?.isEmpty() != false) {
-            showEmptyState()
-            return
+        for (index in 0 until LOADING_ITEMS) {
+            listModels.add(
+                LoadingNameCaptionListModel(index)
+            )
         }
 
-        val availableSongs = songs.filter { song ->
-            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-        }
+        return listModels
+    }
 
-        val listComponents = availableSongs.map {
-            val caption = when (it.composers?.size) {
-                null, 0 -> "Unknown Composer"
-                1 -> it.composers?.get(0)?.name ?: "Unknown Composer"
-                else -> "Various Composers"
-            }
+    private fun createErrorStateListModel(error: Throwable) =
+        arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))
 
-            NameCaptionListModel(
-                it.id,
-                it.name,
-                caption,
-                this
-            ) as ListModel
-        }.toMutableList()
-
-        val realSubtitle = subtitle
-            ?: getString(R.string.subtitle_sheets_count, availableSongs.size)
-
-        listComponents.add(
-            0,
-            TitleListModel(
-                R.string.subtitle_all_sheets.toLong(),
-                title,
-                realSubtitle
+    private fun createSuccessListModels(
+        songs: List<Song>,
+        selectedPart: PartSelectorItem
+    ) = if (songs.isEmpty()) {
+        arrayListOf(
+            EmptyStateListModel(
+                R.drawable.ic_album_black_24dp,
+                "No songs found at all. Check your internet connection?"
             )
         )
+    } else {
+        val availableSongs = filterSongs(songs, selectedPart)
 
-        adapter.submitList(listComponents)
+        if (availableSongs.isEmpty()) {
+            arrayListOf(
+                EmptyStateListModel(
+                    R.drawable.ic_album_black_24dp,
+                    "No songs found with a ${selectedPart.apiId} part. Try another part?"
+                )
+            )
+        } else {
+            availableSongs.map {
+                NameCaptionListModel(
+                    it.id,
+                    it.name,
+                    generateSheetCaption(it),
+                    this
+                )
+            }
+        }
     }
 
-    private fun showEmptyState() {
-        showError("No songs found.")
+    private fun filterSongs(
+        songs: List<Song>,
+        selectedPart: PartSelectorItem
+    ) = songs.filter { song ->
+        song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
     }
+
+    override fun getLayoutId() = R.layout.fragment_song
+
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${args.id}"
 
     private fun showSongViewer(clickedSongId: Long) {
         getFragmentRouter().showSongViewer(clickedSongId)
     }
 
-    private fun showLoading() {
-        progress_loading.fadeIn()
-        list_sheets.fadeOutPartially()
-    }
-
-    private fun hideLoading() {
-        list_sheets.fadeIn()
-        progress_loading.fadeOutGone()
-    }
-
     companion object {
+        const val LOADING_ITEMS = 15
+
         fun newInstance(args: SongListArgs): SongListFragment {
             val fragment = SongListFragment()
 
