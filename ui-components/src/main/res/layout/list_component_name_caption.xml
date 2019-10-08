@@ -16,7 +16,7 @@
         android:onClick="@{() -> toBind.listener.onClicked(toBind)}">
 
         <TextView
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:id="@+id/text_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             tools:text="@string/sample_text" />
 
         <TextView
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:id="@+id/text_caption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

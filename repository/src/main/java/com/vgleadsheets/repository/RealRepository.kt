@@ -5,8 +5,8 @@ import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
-import com.vgleadsheets.model.game.ApiGame
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
@@ -18,6 +18,7 @@ import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
+import com.vgleadsheets.network.GiantBombApi
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -25,10 +26,12 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
     private val vglsApi: VglsApi,
+    private val giantBombApi: GiantBombApi,
     private val baseImageUrl: String,
     private val threeTen: ThreeTenTime,
     database: VglsDatabase
@@ -42,7 +45,7 @@ class RealRepository constructor(
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
 
-    override fun checkForUpdate(): Single<List<ApiGame>> {
+    override fun checkForUpdate(): Single<List<VglsApiGame>> {
         return getLastCheckTime()
             .filter { Instant.now().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
             .flatMapSingle { getLastApiUpdateTime() }
@@ -55,7 +58,7 @@ class RealRepository constructor(
             .flatMapSingle { getDigest() }
     }
 
-    override fun forceRefresh(): Single<List<ApiGame>> = getDigest()
+    override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
 
     override fun getGames(): Observable<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
@@ -192,6 +195,19 @@ class RealRepository constructor(
 
     override fun getLastUpdateTime(): Observable<Time> = getLastDbUpdateTime()
 
+    override fun searchGiantBombForGame(vglsId: Long, name: String) {
+        giantBombApi
+            .searchForGame(name)
+            .subscribe { response ->
+                if (response.results.isNotEmpty()) {
+                    val game = response.results[0]
+                    Timber.d("Found Giant Bomb game ${game.name} with id ${game.id}")
+                } else {
+                    Timber.e("No game found from Giant Bomb with name $name.")
+                }
+            }
+    }
+
     private fun generateImageUrl(
         partEntity: PartEntity,
         apiSong: ApiSong,
@@ -226,7 +242,7 @@ class RealRepository constructor(
         }
 
     @Suppress("LongMethod")
-    private fun getDigest(): Single<List<ApiGame>> = vglsApi.getDigest()
+    private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
         .doOnSuccess { apiGames ->
             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 

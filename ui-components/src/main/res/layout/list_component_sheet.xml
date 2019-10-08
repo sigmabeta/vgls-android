@@ -19,7 +19,7 @@
             android:id="@+id/image_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:imageUrl="@{toBind.imageUrl}"
+            app:sheetUrl="@{toBind.sheetUrl}"
             app:listener="@{toBind.listener}"/>
 
 <!--        Restore this code when you've figured out how to do finegrained updates with DB. -->

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+    <item android:drawable="@color/background_placeholder_image" />
+
+    <item
+
+        android:drawable="@drawable/ic_album_black_24dp"
+        android:gravity="center" />
+
+</layer-list>

@@ -1,10 +1,10 @@
 package com.vgleadsheets.components
 
 data class SheetListModel(
-    val imageUrl: String,
+    val sheetUrl: String,
     val status: Status,
     val listener: ImageListener,
-    override val dataId: Long = imageUrl.hashCode().toLong(),
+    override val dataId: Long = sheetUrl.hashCode().toLong(),
     override val layoutId: Int = R.layout.list_component_sheet
 ) : ListModel {
     interface ImageListener {

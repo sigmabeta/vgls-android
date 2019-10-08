@@ -4,7 +4,7 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
-import com.vgleadsheets.model.game.ApiGame
+import com.vgleadsheets.model.game.VglsApiGame
 
 data class HudState(
     val menuExpanded: Boolean = false,
@@ -13,5 +13,5 @@ data class HudState(
     val searchQuery: String? = null,
     val parts: List<PartSelectorItem>? = null,
     val updateTime: Async<Long> = Uninitialized,
-    val digest: Async<List<ApiGame>> = Uninitialized
+    val digest: Async<List<VglsApiGame>> = Uninitialized
 ) : MvRxState

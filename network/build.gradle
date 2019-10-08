@@ -27,3 +27,15 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
+
+android {
+    buildTypes {
+        debug {
+            buildConfigField 'String', "GiantBombApiKey", APIKEY_GIANTBOMB
+        }
+
+        release {
+            buildConfigField 'String', "GiantBombApiKey", APIKEY_GIANTBOMB
+        }
+    }
+}
