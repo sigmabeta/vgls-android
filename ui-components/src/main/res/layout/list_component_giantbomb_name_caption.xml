@@ -26,14 +26,13 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_small"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:photoUrl="@{toBind.photoUrl}"
             tools:background="@color/divider"
-            tools:src="@drawable/ic_album_black_24dp"
-            />
+            tools:src="@drawable/ic_album_black_24dp" />
 
         <TextView
             android:id="@+id/text_name"
@@ -42,12 +41,14 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{toBind.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/sample_text" />
+            tools:text="@string/sample_lorem_ipsum" />
 
         <TextView
             android:id="@+id/text_caption"
@@ -57,13 +58,15 @@
             android:layout_marginTop="@dimen/margin_xsmall"
             android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_small"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{toBind.caption}"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintTop_toBottomOf="@id/text_name"
-            tools:text="@string/sample_text_caption" />
+            tools:text="@string/sample_lorem_ipsum" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
