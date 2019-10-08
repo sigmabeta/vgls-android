@@ -6,6 +6,7 @@ import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.game.GiantBombGame
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.pages.PageEntity
@@ -26,7 +27,6 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
-import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
@@ -198,14 +198,22 @@ class RealRepository constructor(
     override fun searchGiantBombForGame(vglsId: Long, name: String) {
         giantBombApi
             .searchForGame(name)
-            .subscribe { response ->
+            .flatMap { response ->
+                val giantBombId: Long
+                val photoUrl: String?
                 if (response.results.isNotEmpty()) {
                     val game = response.results[0]
-                    Timber.d("Found Giant Bomb game ${game.name} with id ${game.id}")
+
+                    giantBombId = game.id
+                    photoUrl = game.image.original_url
                 } else {
-                    Timber.e("No game found from Giant Bomb with name $name.")
+                    giantBombId = GiantBombGame.ID_NOT_FOUND
+                    photoUrl = null
                 }
+
+                return@flatMap gameDao.giantBombifyGame(vglsId, giantBombId, photoUrl)
             }
+            .subscribe()
     }
 
     private fun generateImageUrl(

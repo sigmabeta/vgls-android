@@ -11,6 +11,7 @@ import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.SongEntity
 import io.reactivex.Observable
+import io.reactivex.Single
 
 @Dao
 interface GameDao {
@@ -62,4 +63,7 @@ interface GameDao {
         pageDao.nukeTable()
         pageDao.insertAll(pages)
     }
+
+    @Query("UPDATE game SET giantBombId = :giantBombId, photoUrl = :photoUrl WHERE id = :vglsId;")
+    fun giantBombifyGame(vglsId: Long, giantBombId: Long, photoUrl: String?): Single<Int>
 }
