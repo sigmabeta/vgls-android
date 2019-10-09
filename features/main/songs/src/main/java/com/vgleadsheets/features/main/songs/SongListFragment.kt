@@ -17,9 +17,9 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongListArgs
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.fragment_song.list_sheets
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
+class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler {
     @Inject
     lateinit var sheetListViewModelFactory: SongListViewModel.Factory
 
@@ -42,7 +42,7 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionListModel) {
+    override fun onClicked(clicked: ImageNameCaptionListModel) {
         showSongViewer(clicked.dataId)
     }
 
@@ -169,10 +169,18 @@ class SongListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
             )
         } else {
             availableSongs.map {
-                NameCaptionListModel(
+                val thumbUrl = it
+                    .parts
+                    ?.first { part -> part.name == selectedPart.apiId }
+                    ?.pages
+                    ?.first()
+                    ?.imageUrl
+
+                ImageNameCaptionListModel(
                     it.id,
                     it.name,
                     generateSheetCaption(it),
+                    thumbUrl,
                     this
                 )
             }

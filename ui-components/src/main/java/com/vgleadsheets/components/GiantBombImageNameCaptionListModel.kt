@@ -14,7 +14,7 @@ data class GiantBombImageNameCaptionListModel(
         fun onGbModelNotChecked(vglsId: Long, name: String, type: String)
     }
 
-    override val layoutId: Int = R.layout.list_component_giantbomb_name_caption
+    override val layoutId: Int = R.layout.list_component_gb_image_name_caption
 
     companion object {
         val TYPE_DEFAULT = GiantBombImageNameCaptionListModel::class.java.name

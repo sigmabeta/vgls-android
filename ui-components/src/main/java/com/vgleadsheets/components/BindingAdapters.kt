@@ -42,6 +42,18 @@ fun bindPhoto(
     }
 }
 
+@BindingAdapter("thumbUrl")
+fun bindThumb(
+    view: ImageView,
+    thumbUrl: String?
+) {
+    if (thumbUrl != null) {
+        view.loadImageLowQuality(thumbUrl, true, true)
+    } else {
+        view.setImageResource(R.drawable.placeholder_game)
+    }
+}
+
 @BindingAdapter("drawable")
 fun bindDrawable(
     view: ImageView,
