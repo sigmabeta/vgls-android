@@ -12,15 +12,7 @@
         android:layout_marginStart="@dimen/margin_side"
         android:layout_marginEnd="@dimen/margin_side"
         android:clipToPadding="false"
-        tools:listitem="@layout/list_item_search_result"
-        />
-
-    <ProgressBar
-        android:id="@+id/progress_loading"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+        tools:listitem="@layout/list_component_giantbomb_name_caption"
         />
 
 </FrameLayout>

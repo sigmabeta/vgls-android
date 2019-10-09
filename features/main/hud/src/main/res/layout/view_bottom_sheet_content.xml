@@ -28,7 +28,7 @@
             android:layout_height="@dimen/min_clickable_size"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
-            tools:listitem="@layout/list_item_part" />
+            tools:listitem="@layout/list_component_part" />
 
     </LinearLayout>
 
