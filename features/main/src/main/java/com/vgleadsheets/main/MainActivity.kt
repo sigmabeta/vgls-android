@@ -11,7 +11,7 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.AllSongsArgs
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.SongArgs
-import com.vgleadsheets.args.SongsByComposerArgs
+import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composer.ComposerListFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
@@ -95,10 +95,8 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter, Hud
     )
 
     override fun showSongListForComposer(composerId: Long) = showFragmentSimple(
-        SongListFragment.newInstance(
-            SongsByComposerArgs(
-                composerId
-            )
+        ComposerFragment.newInstance(
+            IdArgs(composerId)
         )
     )
 

@@ -64,7 +64,7 @@ fun bindGiantBombIdList(
     // Just so unused check won't complain.
     if (giantBombId == null) {
         Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
-        events.onGbGameNotChecked(vglsId, name, type)
+        events.onGbModelNotChecked(vglsId, name, type)
     }
 }
 
@@ -81,6 +81,6 @@ fun bindGiantBombIdTitle(
     // Just so unused check won't complain.
     if (giantBombId == null) {
         Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
-        events.onGbGameNotChecked(vglsId, name)
+        events.onGbModelNotChecked(vglsId, name)
     }
 }

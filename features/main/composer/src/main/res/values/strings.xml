@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sample_text_composer">Takushi Hiyamuta</string>
-    <string name="label_sheet_count">%1$d Sheets</string>
-
-    <string name="subtitle_composer">By Composer</string>
+    <string name="subtitle_sheets_count">%1$d Sheets</string>
 </resources>

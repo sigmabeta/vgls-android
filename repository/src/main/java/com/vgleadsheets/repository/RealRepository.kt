@@ -6,8 +6,9 @@ import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.game.GiantBombGame
 import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.model.giantbomb.GiantBombGame
+import com.vgleadsheets.model.giantbomb.GiantBombPerson
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
@@ -212,6 +213,27 @@ class RealRepository constructor(
                 }
 
                 return@flatMap gameDao.giantBombifyGame(vglsId, giantBombId, photoUrl)
+            }
+            .subscribe()
+    }
+
+    override fun searchGiantBombForComposer(vglsId: Long, name: String) {
+        giantBombApi
+            .searchForComposer(name)
+            .flatMap { response ->
+                val giantBombId: Long
+                val photoUrl: String?
+                if (response.results.isNotEmpty()) {
+                    val composer = response.results[0]
+
+                    giantBombId = composer.id
+                    photoUrl = composer.image.original_url
+                } else {
+                    giantBombId = GiantBombPerson.ID_NOT_FOUND
+                    photoUrl = null
+                }
+
+                return@flatMap composerDao.giantBombifyComposer(vglsId, giantBombId, photoUrl)
             }
             .subscribe()
     }

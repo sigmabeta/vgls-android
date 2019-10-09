@@ -1,8 +1,7 @@
-package com.vgleadsheets.model.game
+package com.vgleadsheets.model.giantbomb
 
-import com.vgleadsheets.model.giantbomb.GiantBombImage
 
-data class GiantBombGame(
+data class GiantBombPerson(
     val id: Long,
     val name: String,
     val image: GiantBombImage

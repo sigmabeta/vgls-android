@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.game
+package com.vgleadsheets.features.main.composer
 
 import android.os.Bundle
 import android.view.View
@@ -22,20 +22,20 @@ import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
-import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_game.list_songs
+import kotlinx.android.synthetic.main.fragment_composer.list_songs
 import javax.inject.Inject
 
-class GameFragment : VglsFragment(),
+class ComposerFragment : VglsFragment(),
     GiantBombTitleListModel.EventHandler,
     NameCaptionListModel.ClickListener {
     @Inject
-    lateinit var gameViewModelFactory: GameViewModel.Factory
+    lateinit var composerViewModelFactory: ComposerViewModel.Factory
 
-    private val viewModel: GameViewModel by fragmentViewModel()
+    private val viewModel: ComposerViewModel by fragmentViewModel()
 
     private val hudViewModel: HudViewModel by existingViewModel()
 
@@ -46,7 +46,7 @@ class GameFragment : VglsFragment(),
     }
 
     override fun onGbModelNotChecked(vglsId: Long, name: String) {
-        viewModel.onGbGameNotChecked(vglsId, name)
+        viewModel.onGbComposerNotChecked(vglsId, name)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,7 +61,7 @@ class GameFragment : VglsFragment(),
         list_songs.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }
 
-    override fun invalidate() = withState(hudViewModel, viewModel) { hudState, gameState ->
+    override fun invalidate() = withState(hudViewModel, viewModel) { hudState, composerState ->
         val selectedPart = hudState.parts?.first { it.selected }
 
         if (selectedPart == null) {
@@ -69,29 +69,29 @@ class GameFragment : VglsFragment(),
             return@withState
         }
 
-        val game = gameState.game
-        val songs = gameState.songs
+        val composer = composerState.composer
+        val songs = composerState.songs
 
-        val listModels = constructList(game, songs, selectedPart)
+        val listModels = constructList(composer, songs, selectedPart)
         adapter.submitList(listModels)
     }
 
-    override fun getLayoutId() = R.layout.fragment_game
+    override fun getLayoutId() = R.layout.fragment_composer
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun constructList(
-        game: Async<Game>,
+        composer: Async<Composer>,
         songs: Async<List<Song>>,
         selectedPart: PartSelectorItem
     ): List<ListModel> {
-        if (game !is Success) return emptyList()
+        if (composer !is Success) return emptyList()
 
         val songListModels = createContentListModels(songs, selectedPart)
 
         // Pass in `songs` so we know whether to show a sheet counter or not.
         val titleListModel =
-            arrayListOf(createTitleListModel(game(), songs, songListModels.size))
+            arrayListOf(createTitleListModel(composer(), songs, songListModels.size))
 
         return titleListModel + songListModels
     }
@@ -106,15 +106,15 @@ class GameFragment : VglsFragment(),
     }
 
     private fun createTitleListModel(
-        game: Game,
+        composer: Composer,
         songs: Async<List<Song>>,
         songCount: Int
     ) = GiantBombTitleListModel(
-        game.id,
-        game.giantBombId,
-        game.name,
+        composer.id,
+        composer.giantBombId,
+        composer.name,
         generateSheetCountText(songs, songCount),
-        game.photoUrl,
+        composer.photoUrl,
         this
     )
 
@@ -191,8 +191,8 @@ class GameFragment : VglsFragment(),
     companion object {
         const val LOADING_ITEMS = 15
 
-        fun newInstance(idArgs: IdArgs): GameFragment {
-            val fragment = GameFragment()
+        fun newInstance(idArgs: IdArgs): ComposerFragment {
+            val fragment = ComposerFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)

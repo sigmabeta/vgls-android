@@ -11,7 +11,7 @@ data class GiantBombImageNameCaptionListModel(
 ) : ListModel {
     interface EventHandler {
         fun onClicked(clicked: GiantBombImageNameCaptionListModel)
-        fun onGbGameNotChecked(vglsId: Long, name: String, type: String)
+        fun onGbModelNotChecked(vglsId: Long, name: String, type: String)
     }
 
     override val layoutId: Int = R.layout.list_component_giantbomb_name_caption

@@ -36,4 +36,5 @@ interface Repository {
 
     // Giant Bomb searches
     fun searchGiantBombForGame(vglsId: Long, name: String)
+    fun searchGiantBombForComposer(vglsId: Long, name: String)
 }

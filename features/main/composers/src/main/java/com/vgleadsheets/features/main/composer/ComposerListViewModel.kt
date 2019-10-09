@@ -23,6 +23,10 @@ class ComposerListViewModel @AssistedInject constructor(
             }
     }
 
+    fun onGbComposerNotChecked(vglsId: Long, name: String) {
+        repository.searchGiantBombForComposer(vglsId, name)
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: ComposerListState): ComposerListViewModel

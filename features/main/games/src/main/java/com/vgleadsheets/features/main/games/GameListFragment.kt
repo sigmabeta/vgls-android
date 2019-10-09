@@ -41,7 +41,7 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
         showSongList(clicked.dataId)
     }
 
-    override fun onGbGameNotChecked(vglsId: Long, name: String, type: String) {
+    override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) {
         viewModel.onGbGameNotChecked(vglsId, name)
     }
 

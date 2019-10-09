@@ -14,9 +14,9 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_composer_list.list_composers
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
+class ComposerListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.EventHandler {
     @Inject
     lateinit var composerListViewModelFactory: ComposerListViewModel.Factory
 
@@ -37,8 +37,12 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionListModel) {
+    override fun onClicked(clicked: GiantBombImageNameCaptionListModel) {
         showSongList(clicked.dataId)
+    }
+
+    override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) {
+        viewModel.onGbComposerNotChecked(vglsId, name)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -133,10 +137,12 @@ class ComposerListFragment : VglsFragment(), NameCaptionListModel.ClickListener 
             )
         ) else availableComposers
             .map {
-                NameCaptionListModel(
+                GiantBombImageNameCaptionListModel(
                     it.id,
+                    it.giantBombId,
                     it.name,
                     getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                    it.photoUrl,
                     this
                 )
             }
