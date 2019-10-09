@@ -28,6 +28,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
@@ -214,7 +215,12 @@ class RealRepository constructor(
 
                 return@flatMap gameDao.giantBombifyGame(vglsId, giantBombId, photoUrl)
             }
-            .subscribe()
+            .subscribe(
+                {},
+                {
+                    Timber.e("Failed to retrieve game from GiantBomb: ${it.message}")
+                }
+            )
     }
 
     override fun searchGiantBombForComposer(vglsId: Long, name: String) {
@@ -235,7 +241,12 @@ class RealRepository constructor(
 
                 return@flatMap composerDao.giantBombifyComposer(vglsId, giantBombId, photoUrl)
             }
-            .subscribe()
+            .subscribe(
+                {},
+                {
+                    Timber.e("Failed to retrieve person from GiantBomb: ${it.message}")
+                }
+            )
     }
 
     private fun generateImageUrl(
