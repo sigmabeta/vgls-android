@@ -53,7 +53,7 @@ fun bindDrawable(
 
 @SuppressWarnings("unused")
 @BindingAdapter("vglsId", "giantBombId", "name", "type", "handler")
-fun bindGiantBombId(
+fun bindGiantBombIdList(
     view: View,
     vglsId: Long,
     giantBombId: Long?,
@@ -65,5 +65,22 @@ fun bindGiantBombId(
     if (giantBombId == null) {
         Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
         events.onGbGameNotChecked(vglsId, name, type)
+    }
+}
+
+
+@SuppressWarnings("unused")
+@BindingAdapter("vglsId", "giantBombId", "name", "handler")
+fun bindGiantBombIdTitle(
+    view: View,
+    vglsId: Long,
+    giantBombId: Long?,
+    name: String,
+    events: GiantBombTitleListModel.EventHandler
+) {
+    // Just so unused check won't complain.
+    if (giantBombId == null) {
+        Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
+        events.onGbGameNotChecked(vglsId, name)
     }
 }

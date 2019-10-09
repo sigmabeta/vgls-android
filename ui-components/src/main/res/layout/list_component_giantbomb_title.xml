@@ -17,8 +17,7 @@
         android:orientation="vertical"
         app:giantBombId="@{toBind.giantBombId}"
         app:handler="@{toBind.handler}"
-        app:name="@{toBind.name}"
-        app:type="@{toBind.type}"
+        app:name="@{toBind.title}"
         app:vglsId="@{toBind.dataId}">
 
         <ImageView

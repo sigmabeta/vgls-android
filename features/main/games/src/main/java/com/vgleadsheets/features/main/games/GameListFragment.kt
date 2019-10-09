@@ -23,7 +23,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_game.list_games
+import kotlinx.android.synthetic.main.fragment_games.list_games
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -78,7 +78,7 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
         adapter.submitList(listModels)
     }
 
-    override fun getLayoutId() = R.layout.fragment_game
+    override fun getLayoutId() = R.layout.fragment_games
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 

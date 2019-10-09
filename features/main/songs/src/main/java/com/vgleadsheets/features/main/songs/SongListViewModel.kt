@@ -7,7 +7,6 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.args.AllSongsArgs
 import com.vgleadsheets.args.SongsByComposerArgs
-import com.vgleadsheets.args.SongsByGameArgs
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 
@@ -23,7 +22,6 @@ class SongListViewModel @AssistedInject constructor(
     private fun fetchTitle() = withState { state ->
         val loadOperation = when (state.type) {
             is SongsByComposerArgs -> repository.getComposer(state.id!!).map { it.name }
-            is SongsByGameArgs -> repository.getGame(state.id!!).map { it.name }
             is AllSongsArgs -> return@withState
         }
 
@@ -35,7 +33,6 @@ class SongListViewModel @AssistedInject constructor(
     private fun fetchSongs() = withState { state ->
         val loadOperation = when (state.type) {
             is SongsByComposerArgs -> repository.getSongsByComposer(state.id!!)
-            is SongsByGameArgs -> repository.getSongsForGame(state.id!!)
             is AllSongsArgs -> repository.getAllSongs()
         }
 

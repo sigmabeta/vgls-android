@@ -9,10 +9,11 @@ import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.AllSongsArgs
+import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.args.SongsByComposerArgs
-import com.vgleadsheets.args.SongsByGameArgs
 import com.vgleadsheets.features.main.composer.ComposerListFragment
+import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -22,7 +23,7 @@ import com.vgleadsheets.features.main.viewer.ViewerFragment
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.toplevel
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -88,10 +89,8 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter, Hud
     }
 
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(
-        SongListFragment.newInstance(
-            SongsByGameArgs(
-                gameId
-            )
+        GameFragment.newInstance(
+            IdArgs(gameId)
         )
     )
 
