@@ -6,15 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
-import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.args.SongListArgs
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
@@ -37,8 +34,6 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
     private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: SongListViewModel by fragmentViewModel()
-
-    private val args: SongListArgs by args()
 
     private val adapter = ComponentAdapter()
 
@@ -66,36 +61,21 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
             return@withState
         }
 
-        val title: String
-        val subtitle: String?
-        if (songListState.title is Success && songListState.title() != null) {
-            title = songListState.title()!!
-            subtitle = null
-        } else {
-            title = getString(R.string.app_name)
-            subtitle = getString(R.string.subtitle_all_sheets)
-        }
-
         val songs = songListState.songs
         if (songs is Fail) {
             showError(songs.error)
         }
 
-        val listModels = constructList(songs, title, subtitle, selectedPart)
+        val listModels = constructList(songs, selectedPart)
         adapter.submitList(listModels)
     }
 
     private fun constructList(
         songs: Async<List<Song>>,
-        title: String,
-        subtitle: String?,
         selectedPart: PartSelectorItem
     ): List<ListModel> {
+        val titleListModel = arrayListOf(createTitleListModel())
         val songListModels = createContentListModels(songs, selectedPart)
-
-        // Pass in `songs` so we know whether to show a sheet counter or not.
-        val titleListModel =
-            arrayListOf(createTitleListModel(title, subtitle, songs, songListModels.size))
 
         return titleListModel + songListModels
     }
@@ -109,15 +89,10 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
         is Success -> createSuccessListModels(songs(), selectedPart)
     }
 
-    private fun createTitleListModel(
-        title: String,
-        subtitle: String?,
-        songs: Async<List<Song>>,
-        songCount: Int
-    ) = TitleListModel(
-        title.hashCode().toLong(),
-        title,
-        subtitle ?: generateSheetCountText(songs, songCount)
+    private fun createTitleListModel() = TitleListModel(
+        R.string.subtitle_all_sheets.toLong(),
+        getString(R.string.app_name),
+        getString(R.string.subtitle_all_sheets)
     )
 
     private fun generateSheetCaption(song: Song): String {
@@ -196,7 +171,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
 
     override fun getLayoutId() = R.layout.fragment_song
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${args.id}"
+    override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun showSongViewer(clickedSongId: Long) {
         getFragmentRouter().showSongViewer(clickedSongId)
@@ -204,15 +179,6 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
 
     companion object {
         const val LOADING_ITEMS = 15
-
-        fun newInstance(args: SongListArgs): SongListFragment {
-            val fragment = SongListFragment()
-
-            val argBundle = Bundle()
-            argBundle.putParcelable(MvRx.KEY_ARG, args)
-            fragment.arguments = argBundle
-
-            return fragment
-        }
+        fun newInstance() = SongListFragment()
     }
 }

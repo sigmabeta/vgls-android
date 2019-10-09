@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.args.AllSongsArgs
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.features.main.composer.ComposerFragment
@@ -27,13 +26,16 @@ import kotlinx.android.synthetic.main.activity_main.toplevel
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter, HudViewModel.HudContainer {
+class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
+    HudViewModel.HudContainer {
 
-    @Inject lateinit var androidInjector: DispatchingAndroidInjector<Any>
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     override fun androidInjector() = androidInjector
 
-    override fun getHudFragment() = supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
+    override fun getHudFragment() =
+        supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.VglsImmersive)
@@ -80,7 +82,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter, Hud
         // TODO Move to Navigator Fragment
         supportFragmentManager.beginTransaction()
             .setDefaultAnimations()
-            .replace(R.id.frame_fragment, SongListFragment.newInstance(AllSongsArgs()))
+            .replace(R.id.frame_fragment, SongListFragment.newInstance())
             .commit()
     }
 
