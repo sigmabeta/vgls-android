@@ -17,5 +17,5 @@ data class ComposerEntity(
 ) {
     fun toComposer(songs: List<Song>?) = Composer(id, name, songs, giantBombId, photoUrl)
 
-    fun toSearchResult() = SearchResult(id, SearchResultType.COMPOSER, name)
+    fun toSearchResult() = SearchResult(id, SearchResultType.COMPOSER, name, giantBombId, photoUrl)
 }

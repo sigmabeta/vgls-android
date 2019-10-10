@@ -9,7 +9,7 @@ data class GiantBombTitleListModel(
     val handler: EventHandler
 ) : ListModel {
 
-    override val layoutId: Int = R.layout.list_component_gb_title
+    override val layoutId = R.layout.list_component_gb_title
 
     interface EventHandler {
         fun onGbModelNotChecked(vglsId: Long, name: String)

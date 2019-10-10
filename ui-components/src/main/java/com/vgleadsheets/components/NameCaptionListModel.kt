@@ -4,11 +4,12 @@ data class NameCaptionListModel(
     override val dataId: Long,
     val name: String,
     val caption: String,
-    val listener: ClickListener,
-    val type: String = TYPE_DEFAULT,
-    override val layoutId: Int = R.layout.list_component_name_caption
+    val listener: EventHandler,
+    val type: String = TYPE_DEFAULT
 ) : ListModel {
-    interface ClickListener {
+    override val layoutId = R.layout.list_component_name_caption
+
+    interface EventHandler {
         fun onClicked(clicked: NameCaptionListModel)
     }
 

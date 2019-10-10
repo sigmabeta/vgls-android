@@ -11,5 +11,5 @@ data class ImageNameCaptionListModel(
         fun onClicked(clicked: ImageNameCaptionListModel)
     }
 
-    override val layoutId: Int = R.layout.list_component_image_name_caption
+    override val layoutId = R.layout.list_component_image_name_caption
 }

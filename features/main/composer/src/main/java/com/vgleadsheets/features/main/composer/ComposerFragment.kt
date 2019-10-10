@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 class ComposerFragment : VglsFragment(),
     GiantBombTitleListModel.EventHandler,
-    NameCaptionListModel.ClickListener {
+    NameCaptionListModel.EventHandler {
     @Inject
     lateinit var composerViewModelFactory: ComposerViewModel.Factory
 

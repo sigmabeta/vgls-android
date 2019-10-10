@@ -35,6 +35,14 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
+    fun onGbGameNotChecked(vglsId: Long, name: String) {
+        repository.searchGiantBombForGame(vglsId, name)
+    }
+
+    fun onGbComposerNotChecked(vglsId: Long, name: String) {
+        repository.searchGiantBombForComposer(vglsId, name)
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: SearchState): SearchViewModel
