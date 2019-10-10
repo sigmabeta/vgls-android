@@ -17,9 +17,9 @@ import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.GiantBombTitleListModel
+import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 class GameFragment : VglsFragment(),
     GiantBombTitleListModel.EventHandler,
-    NameCaptionListModel.EventHandler {
+    ImageNameCaptionListModel.EventHandler {
     @Inject
     lateinit var gameViewModelFactory: GameViewModel.Factory
 
@@ -41,7 +41,7 @@ class GameFragment : VglsFragment(),
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionListModel) {
+    override fun onClicked(clicked: ImageNameCaptionListModel) {
         showSongViewer(clicked.dataId)
     }
 
@@ -167,10 +167,18 @@ class GameFragment : VglsFragment(),
             )
         } else {
             availableSongs.map {
-                NameCaptionListModel(
+                val thumbUrl = it
+                    .parts
+                    ?.first { part -> part.name == selectedPart.apiId }
+                    ?.pages
+                    ?.first()
+                    ?.imageUrl
+
+                ImageNameCaptionListModel(
                     it.id,
                     it.name,
                     generateSheetCaption(it),
+                    thumbUrl,
                     this
                 )
             }
