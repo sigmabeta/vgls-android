@@ -15,9 +15,9 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
+import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -31,7 +31,7 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 class SearchFragment : VglsFragment(),
     GiantBombImageNameCaptionListModel.EventHandler,
-    NameCaptionListModel.EventHandler {
+    ImageNameCaptionListModel.EventHandler {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
@@ -55,7 +55,7 @@ class SearchFragment : VglsFragment(),
         }
     }
 
-    override fun onClicked(clicked: NameCaptionListModel) {
+    override fun onClicked(clicked: ImageNameCaptionListModel) {
         onSongClicked(clicked.dataId)
     }
 
@@ -128,7 +128,7 @@ class SearchFragment : VglsFragment(),
         return if (listModels.isEmpty()) {
             arrayListOf(
                 EmptyStateListModel(
-                    R.drawable.ic_description_black_24dp,
+                    R.drawable.ic_description_24dp,
                     getString(R.string.empty_search_no_results)
                 )
             )
@@ -170,10 +170,12 @@ class SearchFragment : VglsFragment(),
             results
                 .map {
                     if (it.type == SearchResultType.SONG) {
-                        NameCaptionListModel(
+                        ImageNameCaptionListModel(
                             it.id,
                             it.name,
                             it.type.name,
+                            null,
+                            getPlaceholderId(it.type),
                             this
                         )
                     } else {
@@ -183,6 +185,7 @@ class SearchFragment : VglsFragment(),
                             it.name,
                             getString(resultTypeId),
                             it.imageUrl,
+                            getPlaceholderId(it.type),
                             this,
                             it.type.name
                         )
@@ -193,6 +196,12 @@ class SearchFragment : VglsFragment(),
                     add(0, SectionHeaderListModel(getString(sectionId)))
                 }
         }
+    }
+
+    private fun getPlaceholderId(type: SearchResultType) = when (type) {
+        SearchResultType.SONG -> R.drawable.placeholder_sheet
+        SearchResultType.GAME -> R.drawable.placeholder_game
+        SearchResultType.COMPOSER -> R.drawable.placeholder_composer
     }
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName

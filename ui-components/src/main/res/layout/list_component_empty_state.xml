@@ -27,7 +27,7 @@
                 android:layout_height="144dp"
                 app:drawable="@{toBind.iconId}"
                 android:tint="@color/divider"
-                tools:src="@drawable/ic_album_black_24dp" />
+                tools:src="@drawable/ic_album_24dp" />
 
             <ImageView
                 android:layout_width="144dp"

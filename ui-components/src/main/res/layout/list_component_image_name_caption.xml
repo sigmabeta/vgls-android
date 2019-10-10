@@ -25,9 +25,10 @@
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:placeholder="@{toBind.imagePlaceholder}"
             app:thumbUrl="@{toBind.imageUrl}"
             tools:background="@color/divider"
-            tools:src="@drawable/ic_album_black_24dp" />
+            tools:src="@drawable/ic_album_24dp" />
 
         <TextView
             android:id="@+id/text_name"

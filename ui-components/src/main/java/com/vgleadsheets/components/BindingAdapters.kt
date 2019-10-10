@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.vgleadsheets.loadImageFull
+import com.vgleadsheets.loadImageHighQuality
 import com.vgleadsheets.loadImageLowQuality
 import timber.log.Timber
 
@@ -30,27 +31,42 @@ fun bindImage(
     view.loadImageFull(sheetUrl, callback)
 }
 
-@BindingAdapter("photoUrl")
+@BindingAdapter("photoUrl", "placeholder")
 fun bindPhoto(
     view: ImageView,
-    photoUrl: String?
+    photoUrl: String?,
+    placeholder: Int
 ) {
     if (photoUrl != null) {
-        view.loadImageLowQuality(photoUrl, true, true)
+        view.loadImageLowQuality(photoUrl, true, placeholder)
     } else {
-        view.setImageResource(R.drawable.placeholder_game)
+        view.setImageResource(placeholder)
     }
 }
 
-@BindingAdapter("thumbUrl")
+@BindingAdapter("bigPhotoUrl", "placeholder")
+fun bindBigPhoto(
+    view: ImageView,
+    photoUrl: String?,
+    placeholder: Int
+) {
+    if (photoUrl != null) {
+        view.loadImageHighQuality(photoUrl, true, placeholder)
+    } else {
+        view.setImageResource(placeholder)
+    }
+}
+
+@BindingAdapter("thumbUrl", "placeholder")
 fun bindThumb(
     view: ImageView,
-    thumbUrl: String?
+    thumbUrl: String?,
+    placeholder: Int
 ) {
     if (thumbUrl != null) {
-        view.loadImageLowQuality(thumbUrl, true, true)
+        view.loadImageLowQuality(thumbUrl, true, placeholder)
     } else {
-        view.setImageResource(R.drawable.placeholder_game)
+        view.setImageResource(placeholder)
     }
 }
 

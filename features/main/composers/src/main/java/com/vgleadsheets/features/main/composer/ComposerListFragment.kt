@@ -123,7 +123,7 @@ class ComposerListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.
     ) = if (composers.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_black_24dp,
+                R.drawable.ic_album_24dp,
                 "No composers found at all. Check your internet connection?"
             )
         )
@@ -132,7 +132,7 @@ class ComposerListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.
 
         if (availableComposers.isEmpty()) arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_black_24dp,
+                R.drawable.ic_album_24dp,
                 "No composers found with a ${selectedPart.apiId} part. Try another part?"
             )
         ) else availableComposers
@@ -143,6 +143,7 @@ class ComposerListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.
                     it.name,
                     getString(R.string.label_sheet_count, it.songs?.size ?: 0),
                     it.photoUrl,
+                    R.drawable.placeholder_composer,
                     this
                 )
             }

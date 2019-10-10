@@ -5,6 +5,7 @@ data class ImageNameCaptionListModel(
     val name: String,
     val caption: String,
     val imageUrl: String?,
+    val imagePlaceholder: Int,
     val handler: EventHandler
 ) : ListModel {
     interface EventHandler {

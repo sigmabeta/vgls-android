@@ -6,6 +6,7 @@ data class GiantBombImageNameCaptionListModel(
     val name: String,
     val caption: String,
     val photoUrl: String?,
+    val imagePlaceholder: Int,
     val handler: EventHandler,
     val type: String = TYPE_DEFAULT
 ) : ListModel {

@@ -115,6 +115,7 @@ class ComposerFragment : VglsFragment(),
         composer.name,
         generateSheetCountText(songs, songCount),
         composer.photoUrl,
+        R.drawable.placeholder_composer,
         this
     )
 
@@ -151,7 +152,7 @@ class ComposerFragment : VglsFragment(),
     ) = if (songs.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_black_24dp,
+                R.drawable.ic_album_24dp,
                 "No songs found at all. Check your internet connection?"
             )
         )
@@ -161,7 +162,7 @@ class ComposerFragment : VglsFragment(),
         if (availableSongs.isEmpty()) {
             arrayListOf(
                 EmptyStateListModel(
-                    R.drawable.ic_album_black_24dp,
+                    R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?"
                 )
             )
@@ -179,6 +180,7 @@ class ComposerFragment : VglsFragment(),
                     it.name,
                     generateSheetCaption(it),
                     thumbUrl,
+                    R.drawable.placeholder_sheet,
                     this
                 )
             }

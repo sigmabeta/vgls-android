@@ -5,7 +5,7 @@
     <item android:drawable="@color/background_placeholder_image" />
 
     <item
-        android:drawable="@drawable/ic_album_24dp"
+        android:drawable="@drawable/ic_person_24dp"
         android:gravity="center" />
 
 </layer-list>

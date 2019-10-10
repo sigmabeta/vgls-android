@@ -128,7 +128,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
     ) = if (songs.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_black_24dp,
+                R.drawable.ic_album_24dp,
                 "No songs found at all. Check your internet connection?"
             )
         )
@@ -138,7 +138,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
         if (availableSongs.isEmpty()) {
             arrayListOf(
                 EmptyStateListModel(
-                    R.drawable.ic_album_black_24dp,
+                    R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?"
                 )
             )
@@ -156,6 +156,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
                     it.name,
                     generateSheetCaption(it),
                     thumbUrl,
+                    R.drawable.placeholder_sheet,
                     this
                 )
             }

@@ -31,8 +31,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:photoUrl="@{toBind.photoUrl}"
+            app:placeholder="@{toBind.imagePlaceholder}"
             tools:background="@color/divider"
-            tools:src="@drawable/ic_album_black_24dp" />
+            tools:src="@drawable/ic_album_24dp" />
 
         <TextView
             android:id="@+id/text_name"

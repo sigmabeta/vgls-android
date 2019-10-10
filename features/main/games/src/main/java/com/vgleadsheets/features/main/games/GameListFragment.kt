@@ -123,7 +123,7 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
     ) = if (games.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_black_24dp,
+                R.drawable.ic_album_24dp,
                 "No games found at all. Check your internet connection?"
             )
         )
@@ -132,7 +132,7 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
 
         if (availableGames.isEmpty()) arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_black_24dp,
+                R.drawable.ic_album_24dp,
                 "No games found with a ${selectedPart.apiId} part. Try another part?"
             )
         ) else availableGames
@@ -143,6 +143,7 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
                     it.name,
                     getString(R.string.label_sheet_count, it.songs?.size ?: 0),
                     it.photoUrl,
+                    R.drawable.placeholder_game,
                     this
                 )
             }
