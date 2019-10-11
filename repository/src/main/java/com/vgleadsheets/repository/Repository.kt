@@ -30,9 +30,9 @@ interface Repository {
     fun getLastUpdateTime(): Observable<Time>
 
     // Etc
-    fun searchGames(searchQuery: String): Observable<List<SearchResult>>
     fun searchSongs(searchQuery: String): Observable<List<SearchResult>>
-    fun searchComposers(searchQuery: String): Observable<List<SearchResult>>
+    fun searchGamesCombined(searchQuery: String): Observable<List<SearchResult>>
+    fun searchComposersCombined(searchQuery: String): Observable<List<SearchResult>>
 
     // Giant Bomb searches
     fun searchGiantBombForGame(vglsId: Long, name: String)

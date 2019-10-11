@@ -11,12 +11,14 @@ interface GiantBombApi {
     @GET("search/")
     fun searchForGame(
         @Query("query") name: String,
-        @Query("resources") resources: String = "game"
-        ): Single<GiantBombSearchResponse<GiantBombGame>>
+        @Query("resources") resources: String = "game",
+        @Query("field_list") field_list: String = "name,aliases,image"
+    ): Single<GiantBombSearchResponse<GiantBombGame>>
 
     @GET("search/")
     fun searchForComposer(
         @Query("query") name: String,
-        @Query("resources") resources: String = "person"
-        ): Single<GiantBombSearchResponse<GiantBombPerson>>
+        @Query("resources") resources: String = "person",
+        @Query("field_list") field_list: String = "name,aliases,image"
+    ): Single<GiantBombSearchResponse<GiantBombPerson>>
 }

@@ -3,6 +3,8 @@ package com.vgleadsheets.repository
 import android.net.Uri
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.model.alias.ComposerAliasEntity
+import com.vgleadsheets.model.alias.GameAliasEntity
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
@@ -46,6 +48,8 @@ class RealRepository constructor(
     private val pageDao = database.pageDao()
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
+    private val gameAliasDao = database.gameAliasDao()
+    private val composerAliasDao = database.composerAliasDao()
 
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
         return getLastCheckTime()
@@ -175,25 +179,54 @@ class RealRepository constructor(
         .map { it.toGame(null) }
 
     @Suppress("MaxLineLength")
-    override fun searchSongs(searchQuery: String): Observable<List<SearchResult>> {
-        return songDao
-            .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-            .map { songEntities -> songEntities.map { it.toSearchResult() } }
+    override fun searchSongs(searchQuery: String) = songDao
+        .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { songEntities -> songEntities.map { it.toSearchResult() } }
+
+
+    override fun searchGamesCombined(searchQuery: String) = Observable.combineLatest(
+        searchGames(searchQuery),
+        searchGameAliases(searchQuery),
+        BiFunction { games: List<SearchResult>, gameAliases: List<SearchResult> ->
+            games + gameAliases
+        }
+    ).map {
+        it.distinctBy { it.id }
+    }
+
+    override fun searchComposersCombined(searchQuery: String) = Observable.combineLatest(
+        searchComposers(searchQuery),
+        searchComposerAliases(searchQuery),
+        BiFunction { composers: List<SearchResult>, composerAliases: List<SearchResult> ->
+            composers + composerAliases
+        }
+    ).map {
+        it.distinctBy { it.id }
     }
 
     @Suppress("MaxLineLength")
-    override fun searchGames(searchQuery: String): Observable<List<SearchResult>> {
-        return gameDao
-            .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-            .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
-    }
+    private fun searchGames(searchQuery: String) = gameDao
+        .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
+
 
     @Suppress("MaxLineLength")
-    override fun searchComposers(searchQuery: String): Observable<List<SearchResult>> {
-        return composerDao
-            .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-            .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
-    }
+    private fun searchComposers(searchQuery: String) = composerDao
+        .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
+
+
+    @Suppress("MaxLineLength")
+    private fun searchGameAliases(searchQuery: String) = gameAliasDao
+        .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { aliasEntities -> aliasEntities.map { it.toSearchResult() } }
+
+
+    @Suppress("MaxLineLength")
+    private fun searchComposerAliases(searchQuery: String) = composerAliasDao
+        .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { aliasEntities -> aliasEntities.map { it.toSearchResult() } }
+
 
     override fun getLastUpdateTime(): Observable<Time> = getLastDbUpdateTime()
 
@@ -208,6 +241,12 @@ class RealRepository constructor(
 
                     giantBombId = game.id
                     photoUrl = game.image.original_url
+
+                    val aliasEntities = game.aliases
+                        .split('\n')
+                        .map { GameAliasEntity(vglsId, it, giantBombId, photoUrl) }
+
+                    gameAliasDao.insertAll(aliasEntities)
                 } else {
                     giantBombId = GiantBombGame.ID_NOT_FOUND
                     photoUrl = null
@@ -234,6 +273,12 @@ class RealRepository constructor(
 
                     giantBombId = composer.id
                     photoUrl = composer.image.original_url
+
+                    val aliasEntities = composer.aliases
+                        .split('\n')
+                        .map { ComposerAliasEntity(vglsId, it, giantBombId, photoUrl) }
+
+                    composerAliasDao.insertAll(aliasEntities)
                 } else {
                     giantBombId = GiantBombPerson.ID_NOT_FOUND
                     photoUrl = null

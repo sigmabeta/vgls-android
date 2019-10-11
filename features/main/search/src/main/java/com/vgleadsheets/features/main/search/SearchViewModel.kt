@@ -17,7 +17,7 @@ class SearchViewModel @AssistedInject constructor(
             if (state.query != searchQuery) {
                 setState { copy(query = searchQuery) }
 
-                repository.searchGames(searchQuery)
+                repository.searchGamesCombined(searchQuery)
                     .execute {
                         copy(games = it)
                     }
@@ -27,7 +27,7 @@ class SearchViewModel @AssistedInject constructor(
                         copy(songs = it)
                     }
 
-                repository.searchComposers(searchQuery)
+                repository.searchComposersCombined(searchQuery)
                     .execute {
                         copy(composers = it)
                     }

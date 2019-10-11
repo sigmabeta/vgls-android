@@ -3,6 +3,7 @@ package com.vgleadsheets.model.giantbomb
 data class GiantBombGame(
     val id: Long,
     val name: String,
+    val aliases: String,
     val image: GiantBombImage
 ) {
     companion object {
