@@ -243,10 +243,12 @@ class RealRepository constructor(
                     photoUrl = game.image.original_url
 
                     val aliasEntities = game.aliases
-                        .split('\n')
-                        .map { GameAliasEntity(vglsId, it, giantBombId, photoUrl) }
+                        ?.split('\n')
+                        ?.map { GameAliasEntity(vglsId, it, giantBombId, photoUrl) }
 
-                    gameAliasDao.insertAll(aliasEntities)
+                    if (aliasEntities != null) {
+                        gameAliasDao.insertAll(aliasEntities)
+                    }
                 } else {
                     giantBombId = GiantBombGame.ID_NOT_FOUND
                     photoUrl = null
@@ -275,10 +277,12 @@ class RealRepository constructor(
                     photoUrl = composer.image.original_url
 
                     val aliasEntities = composer.aliases
-                        .split('\n')
-                        .map { ComposerAliasEntity(vglsId, it, giantBombId, photoUrl) }
+                        ?.split('\n')
+                        ?.map { ComposerAliasEntity(vglsId, it, giantBombId, photoUrl) }
 
-                    composerAliasDao.insertAll(aliasEntities)
+                    if (aliasEntities != null) {
+                        composerAliasDao.insertAll(aliasEntities)
+                    }
                 } else {
                     giantBombId = GiantBombPerson.ID_NOT_FOUND
                     photoUrl = null

@@ -23,15 +23,15 @@
             android:layout_marginTop="@dimen/margin_large">
 
             <ImageView
-                android:layout_width="144dp"
-                android:layout_height="144dp"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
                 app:drawable="@{toBind.iconId}"
                 android:tint="@color/divider"
                 tools:src="@drawable/ic_album_24dp" />
 
             <ImageView
-                android:layout_width="144dp"
-                android:layout_height="144dp"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
                 android:src="@drawable/ic_cross_out_24dp" />
 
         </FrameLayout>

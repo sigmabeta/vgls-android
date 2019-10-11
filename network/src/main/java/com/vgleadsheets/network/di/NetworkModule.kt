@@ -48,8 +48,8 @@ class NetworkModule {
 
         logger.level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient.Builder()
-            .addInterceptor(logger)
-            .addInterceptor(debugger)
+            .addNetworkInterceptor(logger)
+            .addNetworkInterceptor(debugger)
             .build()
     } else {
         OkHttpClient()
@@ -64,8 +64,8 @@ class NetworkModule {
     ) : OkHttpClient {
         val builder = OkHttpClient.Builder()
 
-        builder.addInterceptor(keyInterceptor)
-        builder.addInterceptor(formatInterceptor)
+        builder.addNetworkInterceptor(keyInterceptor)
+        builder.addNetworkInterceptor(formatInterceptor)
 
         return if (BuildConfig.DEBUG) {
             val debugger = StethoInterceptor()
@@ -73,8 +73,8 @@ class NetworkModule {
 
             logger.level = HttpLoggingInterceptor.Level.BODY
             builder
-                .addInterceptor(logger)
-                .addInterceptor(debugger)
+                .addNetworkInterceptor(logger)
+                .addNetworkInterceptor(debugger)
                 .build()
         } else {
             builder.build()
