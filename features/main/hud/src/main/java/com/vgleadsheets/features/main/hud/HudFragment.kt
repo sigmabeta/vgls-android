@@ -117,7 +117,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             getFragmentRouter().showAllSheets()
         }
         layout_refresh.setOnClickListener {
-            viewModel.refresh()
+            withState(viewModel) {
+                if (it.digest !is Loading) {
+                    viewModel.refresh()
+                }
+            }
         }
 
         enableRandomSelector()
