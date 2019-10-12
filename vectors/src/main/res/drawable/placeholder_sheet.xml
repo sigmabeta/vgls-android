@@ -5,6 +5,10 @@
     <item android:drawable="@color/background_placeholder_image" />
 
     <item
+        android:left="@dimen/margin_vector"
+        android:right="@dimen/margin_vector"
+        android:top="@dimen/margin_vector"
+        android:bottom="@dimen/margin_vector"
         android:drawable="@drawable/ic_description_24dp"
         android:gravity="center" />
 
