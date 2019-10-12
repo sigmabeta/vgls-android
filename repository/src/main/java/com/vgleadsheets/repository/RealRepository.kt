@@ -93,7 +93,10 @@ class RealRepository constructor(
 
                 val parts = partDao
                     .getPartsForSongId(songEntity.id)
-                    .map { it.toPart(null) }
+                    .map { part ->
+                        val pages = pageDao.getPagesForPartId(part.id)
+                        part.toPart(pages.map { it.toPage() })
+                    }
 
                 songEntity.toSong(composers, parts)
             }
@@ -110,7 +113,10 @@ class RealRepository constructor(
 
                     val parts = partDao
                         .getPartsForSongId(songEntity.id)
-                        .map { it.toPart(null) }
+                        .map { part ->
+                            val pages = pageDao.getPagesForPartId(part.id)
+                            part.toPart(pages.map { it.toPage() })
+                        }
 
                     songEntity.toSong(composers, parts)
                 }
