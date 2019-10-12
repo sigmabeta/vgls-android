@@ -39,15 +39,15 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: SheetListModel) = withState(hudViewModel) { state ->
+    override fun onClicked() = withState(hudViewModel) { state ->
         if (state.hudVisible) {
             hudViewModel.hideHud()
         } else {
-            if (clicked.status == SheetListModel.Status.ERROR) {
-                setImageStatus(clicked.sheetUrl, SheetListModel.Status.NONE)
-            } else {
+//            if (clicked.status == SheetListModel.Status.ERROR) {
+//                setImageStatus(clicked.sheetUrl, SheetListModel.Status.NONE)
+//            } else {
                 hudViewModel.showHud()
-            }
+//            }
         }
     }
 

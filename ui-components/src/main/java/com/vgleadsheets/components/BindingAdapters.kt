@@ -15,6 +15,7 @@ fun bindImage(
     sheetUrl: String,
     listener: SheetListModel.ImageListener
 ) {
+    view.setOnClickListener { listener.onClicked() }
     Timber.w("Loading image: ${sheetUrl.substringAfterLast("-")}")
     listener.onLoadStart(sheetUrl)
 

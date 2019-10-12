@@ -9,7 +9,7 @@ data class SheetListModel(
     override val layoutId = R.layout.list_component_sheet
 
     interface ImageListener {
-        fun onClicked(clicked: SheetListModel)
+        fun onClicked()
         fun onLoadStart(imageUrl: String)
         fun onLoadSuccess(imageUrl: String)
         fun onLoadFailed(imageUrl: String, ex: Exception?)
