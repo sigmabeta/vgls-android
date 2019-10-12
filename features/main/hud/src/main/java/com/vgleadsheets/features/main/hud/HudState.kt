@@ -13,5 +13,6 @@ data class HudState(
     val searchQuery: String? = null,
     val parts: List<PartSelectorItem>? = null,
     val updateTime: Async<Long> = Uninitialized,
-    val digest: Async<List<VglsApiGame>> = Uninitialized
+    val digest: Async<List<VglsApiGame>> = Uninitialized,
+    val random: Async<Long> = Uninitialized
 ) : MvRxState

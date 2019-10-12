@@ -145,6 +145,7 @@
         tools:visibility="visible">
 
         <ImageView
+            android:id="@+id/icon_random"
             android:layout_width="@dimen/min_clickable_size"
             android:layout_height="@dimen/min_clickable_size"
             android:padding="@dimen/icon_padding"

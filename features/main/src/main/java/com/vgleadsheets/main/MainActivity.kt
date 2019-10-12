@@ -2,8 +2,6 @@ package com.vgleadsheets.main
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
@@ -84,10 +82,6 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
             .setDefaultAnimations()
             .replace(R.id.frame_fragment, SongListFragment.newInstance())
             .commit()
-    }
-
-    override fun showRandomSheet() {
-        Toast.makeText(this, "Unimplemented.", LENGTH_SHORT).show()
     }
 
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(
