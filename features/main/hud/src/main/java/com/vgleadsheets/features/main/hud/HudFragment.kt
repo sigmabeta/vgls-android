@@ -116,12 +116,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             viewModel.onMenuAction()
             getFragmentRouter().showAllSheets()
         }
-        layout_random_select.setOnClickListener {
-            viewModel.onRandomSelectClick()
-        }
         layout_refresh.setOnClickListener {
             viewModel.refresh()
         }
+
+        enableRandomSelector()
     }
 
     override fun onStart() {
@@ -360,12 +359,27 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         randomAnimation?.duration = 300
 
         randomAnimation?.start()
+
+        disableRandomSelector()
     }
 
     private fun stopRandomLoadAnimation() {
         randomAnimation?.cancel()
         randomAnimation = null
         icon_random.scaleY = 1.0f
+
+        enableRandomSelector()
+    }
+
+    private fun enableRandomSelector() {
+        layout_random_select.setOnClickListener {
+            viewModel.onRandomSelectClick()
+        }
+    }
+
+    private fun disableRandomSelector() {
+        layout_random_select.setOnClickListener(null)
+
     }
 
     companion object {
