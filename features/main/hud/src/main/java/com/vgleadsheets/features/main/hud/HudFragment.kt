@@ -360,7 +360,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         randomAnimation?.repeatCount = INFINITE
         randomAnimation?.repeatMode = REVERSE
-        randomAnimation?.duration = 300
 
         randomAnimation?.start()
 
@@ -383,7 +382,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private fun disableRandomSelector() {
         layout_random_select.setOnClickListener(null)
-
     }
 
     companion object {

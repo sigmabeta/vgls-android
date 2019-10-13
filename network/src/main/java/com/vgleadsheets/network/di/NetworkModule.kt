@@ -16,6 +16,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
+@Suppress("TooManyFunctions")
 @Module
 class NetworkModule {
     @Provides
@@ -61,7 +62,7 @@ class NetworkModule {
     internal fun provideGiantBombOkClient(
         @Named("GiantBombApiKeyInterceptor") keyInterceptor: Interceptor,
         @Named("GiantBombJsonInterceptor") formatInterceptor: Interceptor
-    ) : OkHttpClient {
+    ): OkHttpClient {
         val builder = OkHttpClient.Builder()
 
         builder.addNetworkInterceptor(keyInterceptor)
@@ -80,7 +81,6 @@ class NetworkModule {
             builder.build()
         }
     }
-
 
     @Provides
     @Named("GiantBombApiKey")

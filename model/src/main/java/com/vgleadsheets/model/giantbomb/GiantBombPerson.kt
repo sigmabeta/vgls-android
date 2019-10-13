@@ -1,6 +1,5 @@
 package com.vgleadsheets.model.giantbomb
 
-
 data class GiantBombPerson(
     val id: Long,
     val name: String,

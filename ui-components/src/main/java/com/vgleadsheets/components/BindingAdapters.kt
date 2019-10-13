@@ -79,8 +79,7 @@ fun bindDrawable(
     view.setImageResource(drawable)
 }
 
-
-@SuppressWarnings("unused")
+@SuppressWarnings("unused", "LongParameterList")
 @BindingAdapter("vglsId", "giantBombId", "name", "type", "handler")
 fun bindGiantBombIdList(
     view: View,
@@ -92,11 +91,10 @@ fun bindGiantBombIdList(
 ) {
     // Just so unused check won't complain.
     if (giantBombId == null) {
-        Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
+        Timber.w("No GiantBomb ID found for view with VGLS ID $vglsId: $name")
         events.onGbModelNotChecked(vglsId, name, type)
     }
 }
-
 
 @SuppressWarnings("unused")
 @BindingAdapter("vglsId", "giantBombId", "name", "handler")

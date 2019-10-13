@@ -27,4 +27,3 @@ interface ComposerDao {
     @Query("UPDATE composer SET giantBombId = :giantBombId, photoUrl = :photoUrl WHERE id = :vglsId;")
     fun giantBombifyComposer(vglsId: Long, giantBombId: Long, photoUrl: String?): Single<Int>
 }
-

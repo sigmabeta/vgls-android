@@ -29,6 +29,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.list_songs
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class GameFragment : VglsFragment(),
     GiantBombTitleListModel.EventHandler,
     ImageNameCaptionListModel.EventHandler {

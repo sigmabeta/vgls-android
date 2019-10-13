@@ -7,6 +7,7 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+@Suppress("FunctionParameterNaming")
 interface GiantBombApi {
     @GET("search/")
     fun searchForGame(

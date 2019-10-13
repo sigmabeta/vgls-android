@@ -189,7 +189,6 @@ class RealRepository constructor(
         .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .map { songEntities -> songEntities.map { it.toSearchResult() } }
 
-
     override fun searchGamesCombined(searchQuery: String) = Observable.combineLatest(
         searchGames(searchQuery),
         searchGameAliases(searchQuery),
@@ -215,24 +214,20 @@ class RealRepository constructor(
         .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
 
-
     @Suppress("MaxLineLength")
     private fun searchComposers(searchQuery: String) = composerDao
         .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
-
 
     @Suppress("MaxLineLength")
     private fun searchGameAliases(searchQuery: String) = gameAliasDao
         .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .map { aliasEntities -> aliasEntities.map { it.toSearchResult() } }
 
-
     @Suppress("MaxLineLength")
     private fun searchComposerAliases(searchQuery: String) = composerAliasDao
         .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .map { aliasEntities -> aliasEntities.map { it.toSearchResult() } }
-
 
     override fun getLastUpdateTime(): Observable<Time> = getLastDbUpdateTime()
 
