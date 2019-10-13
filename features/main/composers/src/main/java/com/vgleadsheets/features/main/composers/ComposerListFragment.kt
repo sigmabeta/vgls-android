@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.composer
+package com.vgleadsheets.features.main.composers
 
 import android.os.Bundle
 import android.view.View

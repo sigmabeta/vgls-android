@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.features.main.composer.ComposerAssistedModule
-import com.vgleadsheets.features.main.composer.ComposerListAssistedModule
+import com.vgleadsheets.features.main.composers.ComposerListAssistedModule
 import com.vgleadsheets.features.main.game.GameAssistedModule
 import com.vgleadsheets.features.main.games.GameListAssistedModule
 import com.vgleadsheets.features.main.hud.HudAssistedModule

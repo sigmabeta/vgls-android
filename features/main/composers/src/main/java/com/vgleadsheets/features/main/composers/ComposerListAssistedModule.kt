@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.composer
+package com.vgleadsheets.features.main.composers
 
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module

@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.features.main.composer.ComposerFragment
-import com.vgleadsheets.features.main.composer.ComposerListFragment
+import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment

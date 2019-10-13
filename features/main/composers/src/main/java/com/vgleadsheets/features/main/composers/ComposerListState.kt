@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.composer
+package com.vgleadsheets.features.main.composers
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
