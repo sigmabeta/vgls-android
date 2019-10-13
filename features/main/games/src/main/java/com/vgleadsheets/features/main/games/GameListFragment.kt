@@ -14,20 +14,20 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_game.list_games
+import kotlinx.android.synthetic.main.fragment_games.list_games
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
+class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.EventHandler {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
@@ -37,8 +37,12 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionListModel) {
+    override fun onClicked(clicked: GiantBombImageNameCaptionListModel) {
         showSongList(clicked.dataId)
+    }
+
+    override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) {
+        viewModel.onGbGameNotChecked(vglsId, name)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +78,7 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         adapter.submitList(listModels)
     }
 
-    override fun getLayoutId() = R.layout.fragment_game
+    override fun getLayoutId() = R.layout.fragment_games
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
@@ -119,7 +123,7 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     ) = if (games.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_black_24dp,
+                R.drawable.ic_album_24dp,
                 "No games found at all. Check your internet connection?"
             )
         )
@@ -128,15 +132,18 @@ class GameListFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
         if (availableGames.isEmpty()) arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_black_24dp,
+                R.drawable.ic_album_24dp,
                 "No games found with a ${selectedPart.apiId} part. Try another part?"
             )
         ) else availableGames
             .map {
-                NameCaptionListModel(
+                GiantBombImageNameCaptionListModel(
                     it.id,
+                    it.giantBombId,
                     it.name,
                     getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                    it.photoUrl,
+                    R.drawable.placeholder_game,
                     this
                 )
             }

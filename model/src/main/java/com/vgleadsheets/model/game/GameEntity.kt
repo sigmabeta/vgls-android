@@ -9,9 +9,11 @@ import com.vgleadsheets.model.song.Song
 @Entity(tableName = "game")
 data class GameEntity(
     @PrimaryKey val id: Long,
-    val name: String
+    val name: String,
+    val giantBombId: Long? = null,
+    val photoUrl: String? = null
 ) {
-    fun toGame(songs: List<Song>?) = Game(id, name, songs)
+    fun toGame(songs: List<Song>?) = Game(id, name, songs, giantBombId, photoUrl)
 
-    fun toSearchResult() = SearchResult(id, SearchResultType.GAME, name)
+    fun toSearchResult() = SearchResult(id, SearchResultType.GAME, name, giantBombId, photoUrl)
 }

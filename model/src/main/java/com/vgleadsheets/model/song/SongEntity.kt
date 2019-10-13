@@ -39,5 +39,5 @@ data class SongEntity(
         parts
     )
 
-    fun toSearchResult() = SearchResult(id, SearchResultType.SONG, name)
+    fun toSearchResult() = SearchResult(id, SearchResultType.SONG, name, null, null)
 }

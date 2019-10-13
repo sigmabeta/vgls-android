@@ -1,7 +1,11 @@
 package com.vgleadsheets.features.main.hud
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator.INFINITE
+import android.animation.ValueAnimator.REVERSE
 import android.os.Bundle
 import android.view.View
+import android.view.View.SCALE_Y
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -45,6 +49,7 @@ import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
 import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.button_menu
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.icon_random
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_all_sheets
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_bottom_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_composer
@@ -72,6 +77,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private val disposables = CompositeDisposable()
 
     private val adapter = ComponentAdapter()
+
+    private var randomAnimation: ObjectAnimator? = null
 
     override fun onClicked(clicked: PartListModel) {
         viewModel.onPartSelect(clicked.name)
@@ -109,13 +116,15 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             viewModel.onMenuAction()
             getFragmentRouter().showAllSheets()
         }
-        layout_random_select.setOnClickListener {
-            viewModel.onMenuAction()
-            getFragmentRouter().showRandomSheet()
-        }
         layout_refresh.setOnClickListener {
-            viewModel.refresh()
+            withState(viewModel) {
+                if (it.digest !is Loading) {
+                    viewModel.refresh()
+                }
+            }
         }
+
+        enableRandomSelector()
     }
 
     override fun onStart() {
@@ -156,6 +165,22 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             showFullMenu()
         } else {
             hideFullMenu()
+        }
+
+        when (state.random) {
+            is Success -> {
+                getFragmentRouter().showSongViewer(state.random()!!)
+                viewModel.clearRandom()
+                viewModel.onMenuAction()
+            }
+            is Loading -> {
+                startRandomLoadAnimation()
+            }
+            is Fail -> {
+                showError("Failed to load random sheet.")
+                viewModel.clearRandom()
+            }
+            is Uninitialized -> stopRandomLoadAnimation()
         }
 
         when (state.digest) {
@@ -329,6 +354,35 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         .afterTextChangeEvents()
         .throttleLast(THRESHOLD_SEARCH_EVENTS, TimeUnit.MILLISECONDS)
         .map { it.editable.toString() }
+
+    private fun startRandomLoadAnimation() {
+        randomAnimation = ObjectAnimator.ofFloat(icon_random, SCALE_Y, 0.0f)
+
+        randomAnimation?.repeatCount = INFINITE
+        randomAnimation?.repeatMode = REVERSE
+
+        randomAnimation?.start()
+
+        disableRandomSelector()
+    }
+
+    private fun stopRandomLoadAnimation() {
+        randomAnimation?.cancel()
+        randomAnimation = null
+        icon_random.scaleY = 1.0f
+
+        enableRandomSelector()
+    }
+
+    private fun enableRandomSelector() {
+        layout_random_select.setOnClickListener {
+            viewModel.onRandomSelectClick()
+        }
+    }
+
+    private fun disableRandomSelector() {
+        layout_random_select.setOnClickListener(null)
+    }
 
     companion object {
         const val THRESHOLD_SEARCH_EVENTS = 1500L

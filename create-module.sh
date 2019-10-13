@@ -74,61 +74,66 @@ fi
 
 
 echo "Please enter the name of your feature's fragment. So if your fragment will be"
-echo "called 'ThingFragment', enter 'Thing'."
+echo "called 'ThingFragment', enter 'Thing'. Leave it blank to skip fragment setup."
 echo ""
 echo ""
 read NAME_PASCAL
 
-# # sed arguments
-CAMEL_TO_SNAKE="s/\([a-z0-9]\)\([A-Z]\)/\1_\L\2/g"
-FIRST_TO_LOWER="s/./\L&/"
+if [ -z "NAME_PASCAL" ]
+then
+      echo "Skipping fragment setup."
+else
+    # # sed arguments
+    CAMEL_TO_SNAKE="s/\([a-z0-9]\)\([A-Z]\)/\1_\L\2/g"
+    FIRST_TO_LOWER="s/./\L&/"
 
-NAME_SNAKE=$(echo $NAME_PASCAL | sed $CAMEL_TO_SNAKE | sed $FIRST_TO_LOWER)
-NAME_CAMEL=$(echo $NAME_PASCAL | sed $FIRST_TO_LOWER)
+    NAME_SNAKE=$(echo $NAME_PASCAL | sed $CAMEL_TO_SNAKE | sed $FIRST_TO_LOWER)
+    NAME_CAMEL=$(echo $NAME_PASCAL | sed $FIRST_TO_LOWER)
 
-# Copy all the stub files to the source directory for the new module.
-for FILE_NAME in $STUB_KT/*
-do
-    if [ ${FILE_NAME: -3} == ".kt" ]; then
-        # echo "Copying $FILE_NAME to $KT_SRC_PATH..."
-	    cp $FILE_NAME $KT_SRC_PATH
-    fi
+    # Copy all the stub files to the source directory for the new module.
+    for FILE_NAME in $STUB_KT/*
+    do
+        if [ ${FILE_NAME: -3} == ".kt" ]; then
+            # echo "Copying $FILE_NAME to $KT_SRC_PATH..."
+    	    cp $FILE_NAME $KT_SRC_PATH
+        fi
 
-	if [ ${FILE_NAME: -4} == ".xml" ]; then
-        # echo "Copying $FILE_NAME to $LAYOUT_SRC_PATH..."
-	    cp $FILE_NAME $LAYOUT_SRC_PATH/fragment_$NAME_SNAKE.xml
-    fi
-done
+    	if [ ${FILE_NAME: -4} == ".xml" ]; then
+            # echo "Copying $FILE_NAME to $LAYOUT_SRC_PATH..."
+    	    cp $FILE_NAME $LAYOUT_SRC_PATH/fragment_$NAME_SNAKE.xml
+        fi
+    done
 
-# echo ""
+    # echo ""
 
-for OLD_FILE_NAME in $KT_SRC_PATH/*
-do
-	NEW_FILE_NAME="$(echo ${OLD_FILE_NAME} |sed -e 's/FEATURE_NAME_/'$NAME_PASCAL'/g')"
+    for OLD_FILE_NAME in $KT_SRC_PATH/*
+    do
+    	NEW_FILE_NAME="$(echo ${OLD_FILE_NAME} |sed -e 's/FEATURE_NAME_/'$NAME_PASCAL'/g')"
 
-	# echo "Renaming $OLD_FILE_NAME to $NEW_FILE_NAME..."
-	mv $OLD_FILE_NAME $NEW_FILE_NAME
-done
+    	# echo "Renaming $OLD_FILE_NAME to $NEW_FILE_NAME..."
+    	mv $OLD_FILE_NAME $NEW_FILE_NAME
+    done
 
-findreplace () {
-	# First argument is the string to find
-	# Second argument is the string to replace with
+    findreplace () {
+    	# First argument is the string to find
+    	# Second argument is the string to replace with
 
-	# echo "Replacing $1 with $2..."
+    	# echo "Replacing $1 with $2..."
 
-	for FILE_NAME in $KT_SRC_PATH/*
-	do
-		# echo "In $FILE_NAME..."
-		sed -i 's/'$1'/'$2'/g' $FILE_NAME
-	done
+    	for FILE_NAME in $KT_SRC_PATH/*
+    	do
+    		# echo "In $FILE_NAME..."
+    		sed -i 's/'$1'/'$2'/g' $FILE_NAME
+    	done
 
-	# echo "Done!"
-	# echo ""
-}
+    	# echo "Done!"
+    	# echo ""
+    }
 
-findreplace "feature_name_" $NAME_SNAKE
-findreplace "feature_name" $NAME_CAMEL
-findreplace "Feature_Name_" $NAME_PASCAL
+    findreplace "feature_name_" $NAME_SNAKE
+    findreplace "feature_name" $NAME_CAMEL
+    findreplace "Feature_Name_" $NAME_PASCAL
+fi
 
 echo ""
 echo "All done! Happy developing."

@@ -39,15 +39,15 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: SheetListModel) = withState(hudViewModel) { state ->
+    override fun onClicked() = withState(hudViewModel) { state ->
         if (state.hudVisible) {
             hudViewModel.hideHud()
         } else {
-            if (clicked.status == SheetListModel.Status.ERROR) {
-                setImageStatus(clicked.imageUrl, SheetListModel.Status.NONE)
-            } else {
+//            if (clicked.status == SheetListModel.Status.ERROR) {
+//                setImageStatus(clicked.sheetUrl, SheetListModel.Status.NONE)
+//            } else {
                 hudViewModel.showHud()
-            }
+//            }
         }
     }
 
@@ -174,7 +174,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private fun setImageStatus(imageUrl: String, status: SheetListModel.Status) {
         val updatedList = adapter.currentList.map {
-            return@map if (it is SheetListModel && it.imageUrl == imageUrl) {
+            return@map if (it is SheetListModel && it.sheetUrl == imageUrl) {
                 it.copy(status = status)
             } else {
                 it

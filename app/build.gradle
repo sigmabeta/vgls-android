@@ -1,5 +1,30 @@
 apply plugin: 'kotlin-kapt'
 
+// These actually need to be above the Android block.
+// TODO These should be computed outside of Gradle
+def computeVersionCode = { ->
+    def proc = Runtime.getRuntime().exec("git rev-list --all --count")
+
+    def result = proc.waitFor()
+    if (result != 0) {
+        return 1 // no git revisions
+    }
+
+    // Multiply by 10 so LSB can represent build type, if we ever need NDK libs.
+    return (proc.getInputStream().readLines().get(0).toInteger() * 10)
+}
+
+def computeVersionName = { ->
+    def proc = Runtime.getRuntime().exec("git describe --tags")
+
+    def result = proc.waitFor()
+    if (result != 0) {
+        return "git-error"
+    }
+
+    return proc.getInputStream().readLines().get(0)
+}
+
 android {
     buildToolsVersion '28.0.3'
 
@@ -8,8 +33,8 @@ android {
 
         targetSdkVersion 29
 
-        versionCode getVersionCode()
-        versionName getVersionName()
+        versionCode computeVersionCode()
+        versionName computeVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -80,27 +105,4 @@ dependencies {
     // AssistedInject Annotation Processors
     compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
     kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
-}
-
-def getVersionCode = { ->
-    def proc = Runtime.getRuntime().exec("git rev-list --all --count")
-
-    def result = proc.waitFor()
-    if (result != 0) {
-        return 1 // no git revisions
-    }
-
-    // Multiply by 10 so LSB can represent build type, if we ever need NDK libs.
-    return (proc.getInputStream().readLines().get(0).toInteger() * 10)
-}
-
-def getVersionName = { ->
-    def proc = Runtime.getRuntime().exec("git describe --tags")
-
-    def result = proc.waitFor()
-    if (result != 0) {
-        return "git-error"
-    }
-
-    return proc.getInputStream().readLines().get(0)
 }

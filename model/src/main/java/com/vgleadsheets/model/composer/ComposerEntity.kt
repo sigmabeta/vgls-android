@@ -11,9 +11,11 @@ import com.vgleadsheets.model.song.Song
 )
 data class ComposerEntity(
     @PrimaryKey val id: Long,
-    val name: String
+    val name: String,
+    val giantBombId: Long? = null,
+    val photoUrl: String? = null
 ) {
-    fun toComposer(songs: List<Song>?) = Composer(id, name, songs)
+    fun toComposer(songs: List<Song>?) = Composer(id, name, songs, giantBombId, photoUrl)
 
-    fun toSearchResult() = SearchResult(id, SearchResultType.COMPOSER, name)
+    fun toSearchResult() = SearchResult(id, SearchResultType.COMPOSER, name, giantBombId, photoUrl)
 }

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.vgleadsheets.model.composer.ComposerEntity
 import io.reactivex.Observable
+import io.reactivex.Single
 
 @Dao
 interface ComposerDao {
@@ -22,4 +23,7 @@ interface ComposerDao {
 
     @Query("DELETE FROM composer")
     fun nukeTable()
+
+    @Query("UPDATE composer SET giantBombId = :giantBombId, photoUrl = :photoUrl WHERE id = :vglsId;")
+    fun giantBombifyComposer(vglsId: Long, giantBombId: Long, photoUrl: String?): Single<Int>
 }

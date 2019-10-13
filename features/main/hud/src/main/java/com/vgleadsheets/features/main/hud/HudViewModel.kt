@@ -126,6 +126,20 @@ class HudViewModel @AssistedInject constructor(
         stopTimer()
     }
 
+    fun onRandomSelectClick() {
+        repository
+            .getAllSongs()
+            .firstOrError()
+            .map { it.random().id }
+            .execute {
+                copy(random = it)
+            }
+    }
+
+    fun clearRandom() = setState {
+        copy(random = Uninitialized)
+    }
+
     private fun checkLastUpdateTime() = repository.getLastUpdateTime()
         .map { it.timeMs }
         .execute { newTime ->

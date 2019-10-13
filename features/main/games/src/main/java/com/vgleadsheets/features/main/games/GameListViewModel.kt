@@ -23,6 +23,10 @@ class GameListViewModel @AssistedInject constructor(
             }
     }
 
+    fun onGbGameNotChecked(vglsId: Long, name: String) {
+        repository.searchGiantBombForGame(vglsId, name)
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: GameListState): GameListViewModel

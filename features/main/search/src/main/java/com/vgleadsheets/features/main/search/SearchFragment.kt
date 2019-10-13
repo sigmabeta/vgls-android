@@ -14,9 +14,10 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
+import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -28,7 +29,9 @@ import kotlinx.android.synthetic.main.fragment_search.list_results
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
+class SearchFragment : VglsFragment(),
+    GiantBombImageNameCaptionListModel.EventHandler,
+    ImageNameCaptionListModel.EventHandler {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
@@ -38,12 +41,22 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionListModel) {
+    override fun onClicked(clicked: GiantBombImageNameCaptionListModel) {
         when (clicked.type) {
             SearchResultType.GAME.toString() -> onGameClicked(clicked.dataId)
-            SearchResultType.SONG.toString() -> onSongClicked(clicked.dataId)
             SearchResultType.COMPOSER.toString() -> onComposerClicked(clicked.dataId)
         }
+    }
+
+    override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) {
+        when (type) {
+            SearchResultType.GAME.name -> viewModel.onGbGameNotChecked(vglsId, name)
+            SearchResultType.COMPOSER.name -> viewModel.onGbComposerNotChecked(vglsId, name)
+        }
+    }
+
+    override fun onClicked(clicked: ImageNameCaptionListModel) {
+        onSongClicked(clicked.dataId)
     }
 
     override fun onBackPress(): Boolean {
@@ -83,7 +96,8 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
                     return@withState
                 }
 
-                val listModels = constructList(localState.songs, localState.games, localState.composers)
+                val listModels =
+                    constructList(localState.songs, localState.games, localState.composers)
                 adapter.submitList(listModels)
             }
         }
@@ -112,9 +126,11 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
 
         val listModels = songModels + gameModels + composerModels
         return if (listModels.isEmpty()) {
-            arrayListOf(EmptyStateListModel(
-                R.drawable.ic_description_black_24dp,
-                getString(R.string.empty_search_no_results))
+            arrayListOf(
+                EmptyStateListModel(
+                    R.drawable.ic_description_24dp,
+                    getString(R.string.empty_search_no_results)
+                )
             )
         } else {
             listModels
@@ -124,14 +140,14 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
     private fun createSectionModels(
         sectionId: Int,
         labelId: Int,
-        games: Async<List<SearchResult>>
-    ) = when (games) {
+        results: Async<List<SearchResult>>
+    ) = when (results) {
         is Loading, Uninitialized -> createLoadingListModels(sectionId)
-        is Fail -> createErrorStateListModel(games.error)
+        is Fail -> createErrorStateListModel(results.error)
         is Success -> createSuccessListModels(
             sectionId,
             labelId,
-            games()
+            results()
         )
     }
 
@@ -153,19 +169,39 @@ class SearchFragment : VglsFragment(), NameCaptionListModel.ClickListener {
         } else {
             results
                 .map {
-                    NameCaptionListModel(
-                        it.id,
-                        it.name,
-                        getString(resultTypeId),
-                        this,
-                        it.type.toString()
-                    ) as ListModel
+                    if (it.type == SearchResultType.SONG) {
+                        ImageNameCaptionListModel(
+                            it.id,
+                            it.name,
+                            it.type.name,
+                            null,
+                            getPlaceholderId(it.type),
+                            this
+                        )
+                    } else {
+                        GiantBombImageNameCaptionListModel(
+                            it.id,
+                            it.giantBombId,
+                            it.name,
+                            getString(resultTypeId),
+                            it.imageUrl,
+                            getPlaceholderId(it.type),
+                            this,
+                            it.type.name
+                        )
+                    }
                 }
                 .toMutableList()
                 .apply {
                     add(0, SectionHeaderListModel(getString(sectionId)))
                 }
         }
+    }
+
+    private fun getPlaceholderId(type: SearchResultType) = when (type) {
+        SearchResultType.SONG -> R.drawable.placeholder_sheet
+        SearchResultType.GAME -> R.drawable.placeholder_game
+        SearchResultType.COMPOSER -> R.drawable.placeholder_composer
     }
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName

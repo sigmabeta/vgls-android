@@ -3,10 +3,14 @@ package com.vgleadsheets.repository
 import android.net.Uri
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.model.alias.ComposerAliasEntity
+import com.vgleadsheets.model.alias.GameAliasEntity
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
-import com.vgleadsheets.model.game.ApiGame
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.model.giantbomb.GiantBombGame
+import com.vgleadsheets.model.giantbomb.GiantBombPerson
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
@@ -18,6 +22,7 @@ import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
+import com.vgleadsheets.network.GiantBombApi
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -25,10 +30,12 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
     private val vglsApi: VglsApi,
+    private val giantBombApi: GiantBombApi,
     private val baseImageUrl: String,
     private val threeTen: ThreeTenTime,
     database: VglsDatabase
@@ -41,8 +48,10 @@ class RealRepository constructor(
     private val pageDao = database.pageDao()
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
+    private val gameAliasDao = database.gameAliasDao()
+    private val composerAliasDao = database.composerAliasDao()
 
-    override fun checkForUpdate(): Single<List<ApiGame>> {
+    override fun checkForUpdate(): Single<List<VglsApiGame>> {
         return getLastCheckTime()
             .filter { Instant.now().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
             .flatMapSingle { getLastApiUpdateTime() }
@@ -55,7 +64,7 @@ class RealRepository constructor(
             .flatMapSingle { getDigest() }
     }
 
-    override fun forceRefresh(): Single<List<ApiGame>> = getDigest()
+    override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
 
     override fun getGames(): Observable<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
@@ -84,7 +93,10 @@ class RealRepository constructor(
 
                 val parts = partDao
                     .getPartsForSongId(songEntity.id)
-                    .map { it.toPart(null) }
+                    .map { part ->
+                        val pages = pageDao.getPagesForPartId(part.id)
+                        part.toPart(pages.map { it.toPage() })
+                    }
 
                 songEntity.toSong(composers, parts)
             }
@@ -101,7 +113,10 @@ class RealRepository constructor(
 
                     val parts = partDao
                         .getPartsForSongId(songEntity.id)
-                        .map { it.toPart(null) }
+                        .map { part ->
+                            val pages = pageDao.getPagesForPartId(part.id)
+                            part.toPart(pages.map { it.toPage() })
+                        }
 
                     songEntity.toSong(composers, parts)
                 }
@@ -170,27 +185,119 @@ class RealRepository constructor(
         .map { it.toGame(null) }
 
     @Suppress("MaxLineLength")
-    override fun searchSongs(searchQuery: String): Observable<List<SearchResult>> {
-        return songDao
-            .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-            .map { songEntities -> songEntities.map { it.toSearchResult() } }
+    override fun searchSongs(searchQuery: String) = songDao
+        .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { songEntities -> songEntities.map { it.toSearchResult() } }
+
+    override fun searchGamesCombined(searchQuery: String) = Observable.combineLatest(
+        searchGames(searchQuery),
+        searchGameAliases(searchQuery),
+        BiFunction { games: List<SearchResult>, gameAliases: List<SearchResult> ->
+            games + gameAliases
+        }
+    ).map {
+        it.distinctBy { it.id }
+    }
+
+    override fun searchComposersCombined(searchQuery: String) = Observable.combineLatest(
+        searchComposers(searchQuery),
+        searchComposerAliases(searchQuery),
+        BiFunction { composers: List<SearchResult>, composerAliases: List<SearchResult> ->
+            composers + composerAliases
+        }
+    ).map {
+        it.distinctBy { it.id }
     }
 
     @Suppress("MaxLineLength")
-    override fun searchGames(searchQuery: String): Observable<List<SearchResult>> {
-        return gameDao
-            .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-            .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
-    }
+    private fun searchGames(searchQuery: String) = gameDao
+        .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
 
     @Suppress("MaxLineLength")
-    override fun searchComposers(searchQuery: String): Observable<List<SearchResult>> {
-        return composerDao
-            .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-            .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
-    }
+    private fun searchComposers(searchQuery: String) = composerDao
+        .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
+
+    @Suppress("MaxLineLength")
+    private fun searchGameAliases(searchQuery: String) = gameAliasDao
+        .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { aliasEntities -> aliasEntities.map { it.toSearchResult() } }
+
+    @Suppress("MaxLineLength")
+    private fun searchComposerAliases(searchQuery: String) = composerAliasDao
+        .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { aliasEntities -> aliasEntities.map { it.toSearchResult() } }
 
     override fun getLastUpdateTime(): Observable<Time> = getLastDbUpdateTime()
+
+    override fun searchGiantBombForGame(vglsId: Long, name: String) {
+        giantBombApi
+            .searchForGame(name)
+            .flatMap { response ->
+                val giantBombId: Long
+                val photoUrl: String?
+                if (response.results.isNotEmpty()) {
+                    val game = response.results[0]
+
+                    giantBombId = game.id
+                    photoUrl = game.image.original_url
+
+                    val aliasEntities = game.aliases
+                        ?.split('\n')
+                        ?.map { GameAliasEntity(vglsId, it, giantBombId, photoUrl) }
+
+                    if (aliasEntities != null) {
+                        gameAliasDao.insertAll(aliasEntities)
+                    }
+                } else {
+                    giantBombId = GiantBombGame.ID_NOT_FOUND
+                    photoUrl = null
+                }
+
+                return@flatMap gameDao.giantBombifyGame(vglsId, giantBombId, photoUrl)
+            }
+            .subscribe(
+                {},
+                {
+                    Timber.e("Failed to retrieve game from GiantBomb: ${it.message}")
+                }
+            )
+    }
+
+    override fun searchGiantBombForComposer(vglsId: Long, name: String) {
+        giantBombApi
+            .searchForComposer(name)
+            .flatMap { response ->
+                val giantBombId: Long
+                val photoUrl: String?
+                if (response.results.isNotEmpty()) {
+                    val composer = response.results[0]
+
+                    giantBombId = composer.id
+                    photoUrl = composer.image.original_url
+
+                    val aliasEntities = composer.aliases
+                        ?.split('\n')
+                        ?.map { ComposerAliasEntity(vglsId, it, giantBombId, photoUrl) }
+
+                    if (aliasEntities != null) {
+                        composerAliasDao.insertAll(aliasEntities)
+                    }
+                } else {
+                    giantBombId = GiantBombPerson.ID_NOT_FOUND
+                    photoUrl = null
+                }
+
+                return@flatMap composerDao.giantBombifyComposer(vglsId, giantBombId, photoUrl)
+            }
+            .subscribe(
+                {},
+                {
+                    Timber.e("Failed to retrieve person from GiantBomb: ${it.message}")
+                }
+            )
+    }
 
     private fun generateImageUrl(
         partEntity: PartEntity,
@@ -226,7 +333,7 @@ class RealRepository constructor(
         }
 
     @Suppress("LongMethod")
-    private fun getDigest(): Single<List<ApiGame>> = vglsApi.getDigest()
+    private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
         .doOnSuccess { apiGames ->
             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 

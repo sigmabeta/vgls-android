@@ -4,9 +4,10 @@ data class PartListModel(
     override val dataId: Long,
     val name: String,
     val selected: Boolean,
-    val listener: ClickListener,
-    override val layoutId: Int = R.layout.list_component_part
+    val listener: ClickListener
 ) : ListModel {
+    override val layoutId = R.layout.list_component_part
+
     interface ClickListener {
         fun onClicked(clicked: PartListModel)
     }

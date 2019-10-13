@@ -1,8 +1,8 @@
 package com.vgleadsheets.repository
 
 import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.game.ApiGame
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.time.Time
@@ -11,8 +11,8 @@ import io.reactivex.Single
 
 @Suppress("TooManyFunctions")
 interface Repository {
-    fun checkForUpdate(): Single<List<ApiGame>>
-    fun forceRefresh(): Single<List<ApiGame>>
+    fun checkForUpdate(): Single<List<VglsApiGame>>
+    fun forceRefresh(): Single<List<VglsApiGame>>
 
     // Full Lists
     fun getGames(): Observable<List<Game>>
@@ -30,7 +30,11 @@ interface Repository {
     fun getLastUpdateTime(): Observable<Time>
 
     // Etc
-    fun searchGames(searchQuery: String): Observable<List<SearchResult>>
     fun searchSongs(searchQuery: String): Observable<List<SearchResult>>
-    fun searchComposers(searchQuery: String): Observable<List<SearchResult>>
+    fun searchGamesCombined(searchQuery: String): Observable<List<SearchResult>>
+    fun searchComposersCombined(searchQuery: String): Observable<List<SearchResult>>
+
+    // Giant Bomb searches
+    fun searchGiantBombForGame(vglsId: Long, name: String)
+    fun searchGiantBombForComposer(vglsId: Long, name: String)
 }

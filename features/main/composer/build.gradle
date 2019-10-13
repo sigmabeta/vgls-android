@@ -1,3 +1,4 @@
+// Uncomment whichever of these plugins you need (for a UI feature, probably both)
  apply plugin: 'kotlin-kapt'
  apply plugin: 'kotlin-android-extensions'
 
@@ -14,9 +15,6 @@ dependencies {
 
     // AndroidX libs
     implementation "androidx.room:room-runtime:$room_version"
-
-    // Image Loading
-    implementation "com.squareup.picasso:picasso:$picasso_version"
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
