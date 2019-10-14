@@ -90,6 +90,9 @@ dependencies {
     // Debug helper
     implementation "com.facebook.stetho:stetho:$stetho_version"
 
+    // Firebase
+    implementation "com.google.firebase:firebase-analytics:$firebase_version"
+
     // Junit libs
     testImplementation "junit:junit:$junit_version"
 
@@ -106,3 +109,6 @@ dependencies {
     compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
     kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
 }
+
+// Firebase (they said to put it at the bottom)
+apply plugin: 'com.google.gms.google-services'
