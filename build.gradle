@@ -25,11 +25,17 @@ buildscript {
         threeten_version = "1.2.1"
         photoview_version = "2.0.0"
         firebase_version = "17.2.0"
+        crashlytics_version = "2.10.1"
     }
 
     repositories {
         google()
         jcenter()
+
+        // Firebase (Crashlytics)
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
 
     dependencies {
@@ -41,6 +47,7 @@ buildscript {
 
         // Firebase
         classpath 'com.google.gms:google-services:4.3.2'
+        classpath 'io.fabric.tools:gradle:1.31.1'
     }
 }
 

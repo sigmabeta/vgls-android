@@ -1,4 +1,5 @@
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 // These actually need to be above the Android block.
 // TODO These should be computed outside of Gradle
@@ -92,6 +93,7 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-analytics:$firebase_version"
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
 
     // Junit libs
     testImplementation "junit:junit:$junit_version"
