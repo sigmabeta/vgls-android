@@ -101,7 +101,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
 
-        button_menu.setOnClickListener { viewModel.onMenuClick() }
+        button_menu.setOnClickListener { onMenuClick() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
 
         layout_by_game.setOnClickListener {
@@ -117,11 +117,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             getFragmentRouter().showAllSheets()
         }
         layout_refresh.setOnClickListener {
-            withState(viewModel) {
-                if (it.digest !is Loading) {
-                    viewModel.refresh()
-                }
-            }
+            onRefreshClick()
         }
 
         enableRandomSelector()
@@ -214,6 +210,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
+    override fun shouldTrackViews() = false
+
     private fun showUpdateTimeSuccess(updateTime: Long?) {
         val calendar = Calendar.getInstance()
         val checkedTime = updateTime ?: 0L
@@ -229,6 +227,19 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         text_update_time.text = getString(R.string.label_refresh_date, date)
     }
+
+    private fun onMenuClick() {
+        tracker.logMenuShow()
+        viewModel.onMenuClick()
+    }
+
+    private fun onRefreshClick() = withState(viewModel) {
+        if (it.digest !is Loading) {
+            tracker.logForceRefresh()
+            viewModel.refresh()
+        }
+    }
+
 
     private fun showUpdateTimeLoading() {
         Timber.i("Loading update time.")

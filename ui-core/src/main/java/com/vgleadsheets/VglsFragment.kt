@@ -40,6 +40,15 @@ abstract class VglsFragment : BaseMvRxFragment() {
         ViewCompat.requestApplyInsets(view)
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (shouldTrackViews()) {
+            tracker.logScreenView(activity!!, getVglsFragmentTag())
+        }
+    }
+
+    protected open fun shouldTrackViews() = true
+
     protected fun showError(error: Throwable, action: View.OnClickListener? = null, actionLabel: Int = 0) {
         val message = error.message ?: error::class.simpleName ?: "Unknown Error"
         showError(message, action, actionLabel)

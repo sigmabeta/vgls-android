@@ -9,6 +9,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
@@ -39,6 +40,8 @@ class GameFragment : VglsFragment(),
     private val viewModel: GameViewModel by fragmentViewModel()
 
     private val hudViewModel: HudViewModel by existingViewModel()
+
+    private val idArgs: IdArgs by args()
 
     private val adapter = ComponentAdapter()
 
@@ -79,7 +82,7 @@ class GameFragment : VglsFragment(),
 
     override fun getLayoutId() = R.layout.fragment_game
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     private fun constructList(
         game: Async<Game>,

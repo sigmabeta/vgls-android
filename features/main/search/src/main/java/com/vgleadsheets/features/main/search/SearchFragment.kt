@@ -85,9 +85,8 @@ class SearchFragment : VglsFragment(),
             // to clearing the text box, to which we respond by clearing the text box.
             if (hudState.searchVisible) {
                 val query = hudState.searchQuery
-                if (!query.isNullOrEmpty()) {
-                    viewModel.startQuery(query)
-                } else {
+
+                if (query.isNullOrEmpty()) {
                     adapter.submitList(
                         arrayListOf<ListModel>(
                             SearchEmptyStateListModel()
@@ -96,11 +95,20 @@ class SearchFragment : VglsFragment(),
                     return@withState
                 }
 
+                if (query != localState.query) {
+                    onSearchQueryEntered(query)
+                }
+
                 val listModels =
                     constructList(localState.songs, localState.games, localState.composers)
                 adapter.submitList(listModels)
             }
         }
+    }
+
+    private fun onSearchQueryEntered(query: String) {
+        tracker.logSearch(query)
+        viewModel.startQuery(query)
     }
 
     private fun constructList(

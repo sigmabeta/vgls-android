@@ -1,5 +1,10 @@
 package com.vgleadsheets.tracking
 
-interface Tracker {
+import android.app.Activity
 
+interface Tracker {
+    fun logScreenView(activity: Activity, screenName: String)
+    fun logMenuShow()
+    fun logForceRefresh()
+    fun logSearch(query: String)
 }

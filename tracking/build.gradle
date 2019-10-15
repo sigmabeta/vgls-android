@@ -1,5 +1,11 @@
 dependencies {
     // Firebase (Must be here or else we can't log events
     implementation "com.google.firebase:firebase-analytics:$firebase_version"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
