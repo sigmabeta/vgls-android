@@ -81,6 +81,7 @@ dependencies {
     // Module deps
     implementation project(path: ':repository')
     implementation project(path: ':features:main')
+    implementation project(path: ':tracking')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -91,7 +92,7 @@ dependencies {
     // Debug helper
     implementation "com.facebook.stetho:stetho:$stetho_version"
 
-    // Firebase
+    // Firebase (must be in app or else contentprovider init doesn't happen)
     implementation "com.google.firebase:firebase-analytics:$firebase_version"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
 

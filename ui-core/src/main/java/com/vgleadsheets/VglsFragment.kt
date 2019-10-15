@@ -10,11 +10,16 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import com.airbnb.mvrx.BaseMvRxFragment
 import com.google.android.material.snackbar.Snackbar
+import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {
+    @Inject
+    lateinit var tracker: Tracker
+
     @LayoutRes
     abstract fun getLayoutId(): Int
 

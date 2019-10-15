@@ -1,0 +1,5 @@
+dependencies {
+    // Firebase (Must be here or else we can't log events
+    implementation "com.google.firebase:firebase-analytics:$firebase_version"
+}
+

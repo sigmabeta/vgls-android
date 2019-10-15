@@ -21,4 +21,5 @@ include ':app',
         ':features:main:viewer',
         ':features:main:hud',
         ':features:main:composers',
+        ':tracking',
         ':vectors'

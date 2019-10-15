@@ -18,7 +18,8 @@ import javax.inject.Singleton
         ActivityBindingModule::class,
         RepositoryModule::class,
         DatabaseModule::class,
-        NetworkModule::class]
+        NetworkModule::class,
+        TrackerModule::class]
 )
 interface AppComponent {
     /**
