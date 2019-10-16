@@ -81,7 +81,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private var randomAnimation: ObjectAnimator? = null
 
     override fun onClicked(clicked: PartListModel) {
-        viewModel.onPartSelect(clicked.name)
+        onPartSelect(clicked)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -211,6 +211,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun shouldTrackViews() = false
+
+    private fun onPartSelect(clicked: PartListModel) {
+        tracker.logPartClicked(clicked.name)
+        viewModel.onPartSelect(clicked.name)
+    }
 
     private fun showUpdateTimeSuccess(updateTime: Long?) {
         val calendar = Calendar.getInstance()

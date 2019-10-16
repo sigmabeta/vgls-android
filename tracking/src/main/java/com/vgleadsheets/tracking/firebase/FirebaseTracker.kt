@@ -30,4 +30,12 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
         details.putString(FirebaseAnalytics.Param.SEARCH_TERM, query)
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, details)
     }
+
+    override fun logPartClicked(name: String) {
+        Timber.d("Logging part selection: $name")
+
+        val details = Bundle()
+        details.putString("PartName", name)
+        firebaseAnalytics.logEvent("PartSelect", details)
+    }
 }

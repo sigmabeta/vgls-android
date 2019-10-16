@@ -7,4 +7,5 @@ interface Tracker {
     fun logMenuShow()
     fun logForceRefresh()
     fun logSearch(query: String)
+    fun logPartClicked(name: String)
 }
