@@ -1,5 +1,6 @@
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 // These actually need to be above the Android block.
 // TODO These should be computed outside of Gradle
@@ -94,6 +95,7 @@ dependencies {
 
     // Firebase (must be in app or else contentprovider init doesn't happen)
     implementation "com.google.firebase:firebase-analytics:$firebase_version"
+    implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
 
     // Junit libs
