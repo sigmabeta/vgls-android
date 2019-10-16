@@ -240,7 +240,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-
     private fun showUpdateTimeLoading() {
         Timber.i("Loading update time.")
     }

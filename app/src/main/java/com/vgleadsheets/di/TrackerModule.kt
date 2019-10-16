@@ -9,7 +9,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class TrackerModule() {
+class TrackerModule {
     @Provides
     @Singleton
     fun provideFirebaseAnalytics(context: Context) = FirebaseAnalytics.getInstance(context)
