@@ -97,13 +97,9 @@ dependencies {
 
     // Firebase (must be in app or else contentprovider init doesn't happen)
     if (checkShouldIncludeFirebase()) {
-        implementation project(path: ':tracking')
-
         implementation "com.google.firebase:firebase-analytics:$firebase_version"
         implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
         implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
-    } else {
-        implementation project(path: ':tracking-noop')
     }
 
     // Junit libs
