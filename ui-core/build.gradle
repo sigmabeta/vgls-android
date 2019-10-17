@@ -2,7 +2,11 @@ apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     // Firebase Analytics
-    api project(path: ":tracking")
+    if (checkShouldIncludeFirebase()) {
+        api project(path: ':tracking')
+    } else {
+        api project(path: ':tracking-noop')
+    }
 
     // To allow features to interact with MainActivity's state.
     api project(path: ":features:main:router")
@@ -34,4 +38,8 @@ dependencies {
 
 androidExtensions {
     experimental = true
+}
+
+private static boolean checkShouldIncludeFirebase() {
+    return new File("app/google-services.json").exists()
 }

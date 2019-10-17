@@ -22,4 +22,6 @@ include ':app',
         ':features:main:hud',
         ':features:main:composers',
         ':tracking',
+        ':tracking-common',
+        ':tracking-noop',
         ':vectors'

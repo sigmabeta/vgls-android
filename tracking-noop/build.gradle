@@ -4,12 +4,6 @@ dependencies {
     // Contains the Tracker interface
     api project(path: ':tracking-common')
 
-    // Firebase (Must be here or else we can't log events
-    implementation "com.google.firebase:firebase-analytics:$firebase_version"
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -18,4 +12,3 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
-

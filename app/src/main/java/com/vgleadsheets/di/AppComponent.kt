@@ -5,6 +5,7 @@ import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.di.NetworkModule
 import com.vgleadsheets.repository.di.RepositoryModule
+import com.vgleadsheets.tracking.TrackerModule
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton

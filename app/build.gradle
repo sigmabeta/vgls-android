@@ -1,6 +1,9 @@
 apply plugin: 'kotlin-kapt'
-apply plugin: 'io.fabric'
-apply plugin: 'com.google.firebase.firebase-perf'
+
+if (checkShouldIncludeFirebase()) {
+    apply plugin: 'com.google.firebase.firebase-perf'
+    apply plugin: 'io.fabric'
+}
 
 // These actually need to be above the Android block.
 // TODO These should be computed outside of Gradle
@@ -82,7 +85,6 @@ dependencies {
     // Module deps
     implementation project(path: ':repository')
     implementation project(path: ':features:main')
-    implementation project(path: ':tracking')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -94,9 +96,15 @@ dependencies {
     implementation "com.facebook.stetho:stetho:$stetho_version"
 
     // Firebase (must be in app or else contentprovider init doesn't happen)
-    implementation "com.google.firebase:firebase-analytics:$firebase_version"
-    implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
-    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
+    if (checkShouldIncludeFirebase()) {
+        implementation project(path: ':tracking')
+
+        implementation "com.google.firebase:firebase-analytics:$firebase_version"
+        implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
+        implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
+    } else {
+        implementation project(path: ':tracking-noop')
+    }
 
     // Junit libs
     testImplementation "junit:junit:$junit_version"
@@ -116,4 +124,12 @@ dependencies {
 }
 
 // Firebase (they said to put it at the bottom)
-apply plugin: 'com.google.gms.google-services'
+if (checkShouldIncludeFirebase()) {
+    apply plugin: 'com.google.gms.google-services'
+}
+
+// This is duplicated in ui-core/build.gradle.
+// TODO Not duplicate this in ui-core/build.gradle.
+private static boolean checkShouldIncludeFirebase() {
+    return new File("app/google-services.json").exists()
+}

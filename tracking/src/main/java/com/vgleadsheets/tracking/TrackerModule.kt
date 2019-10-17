@@ -1,8 +1,7 @@
-package com.vgleadsheets.di
+package com.vgleadsheets.tracking
 
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.firebase.FirebaseTracker
 import dagger.Module
 import dagger.Provides
