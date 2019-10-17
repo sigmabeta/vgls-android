@@ -33,7 +33,7 @@ class ComponentAdapter :
 
     override fun getItemAtPosition(position: Int): ListModel = getItem(position)
 
-    override fun getItemId(position: Int) = position.toLong()
+    override fun getItemId(position: Int) = getItem(position).dataId
 
     override fun getItemViewType(position: Int) = getItem(position).layoutId
 }
