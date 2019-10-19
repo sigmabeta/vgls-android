@@ -214,20 +214,61 @@ class SearchFragment : VglsFragment(),
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun onGameClicked(id: Long) {
-        hudViewModel.exitSearch()
-        getFragmentRouter().showSongListForGame(id)
-    }
+    private fun onGameClicked(id: Long) =
+        withState(hudViewModel, viewModel) { hudState, state ->
+            val game = state.games()?.first { it.id == id }
 
-    private fun onSongClicked(id: Long) {
-        hudViewModel.exitSearch()
-        getFragmentRouter().showSongViewer(id)
-    }
+            if (game == null) {
+                showError("Failed to show game.")
+                return@withState
+            }
 
-    private fun onComposerClicked(id: Long) {
-        hudViewModel.exitSearch()
-        getFragmentRouter().showSongListForComposer(id)
-    }
+            tracker.logGameView(
+                game.name,
+                hudState.searchQuery
+            )
+
+            hudViewModel.exitSearch()
+            getFragmentRouter().showSongListForGame(id)
+        }
+
+    private fun onSongClicked(id: Long) =
+        withState(hudViewModel, viewModel) { hudState, state ->
+            val song = state.songs()?.first { it.id == id }
+
+            if (song == null) {
+                showError("Failed to show song.")
+                return@withState
+            }
+
+            tracker.logSongView(
+                song.name,
+                "", // TODO Refactor search to use actual models instead of SearchResult
+                hudState.parts?.first { it.selected }?.apiId ?: "C",
+                hudState.searchQuery
+            )
+
+            hudViewModel.exitSearch()
+            getFragmentRouter().showSongViewer(id)
+        }
+
+    private fun onComposerClicked(id: Long) =
+        withState(hudViewModel, viewModel) { hudState, state ->
+            val composer = state.composers()?.first { it.id == id }
+
+            if (composer == null) {
+                showError("Failed to show composer.")
+                return@withState
+            }
+
+            tracker.logComposerView(
+                composer.name,
+                hudState.searchQuery
+            )
+
+            hudViewModel.exitSearch()
+            getFragmentRouter().showSongListForComposer(id)
+        }
 
     companion object {
         fun newInstance() = SearchFragment()

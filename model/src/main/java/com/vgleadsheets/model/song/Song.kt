@@ -7,6 +7,7 @@ data class Song(
     val id: Long,
     val filename: String,
     val name: String,
+    val gameName: String,
     val composers: List<Composer>?,
     val parts: List<Part>?
 )

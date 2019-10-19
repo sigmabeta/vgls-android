@@ -198,9 +198,22 @@ class GameFragment : VglsFragment(),
         song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
     }
 
-    private fun showSongViewer(clickedSongId: Long) {
-        getFragmentRouter().showSongViewer(clickedSongId)
-    }
+    private fun showSongViewer(clickedSongId: Long) =
+        withState(hudViewModel, viewModel) { hudState, state ->
+            val song = state.songs()?.first { it.id == clickedSongId }
+
+            if (song == null) {
+                showError("Failed to show song.")
+                return@withState
+            }
+            tracker.logSongView(
+                song.name,
+                song.gameName,
+                hudState.parts?.first { it.selected }?.apiId ?: "C",
+                null
+            )
+            getFragmentRouter().showSongViewer(clickedSongId)
+        }
 
     companion object {
         const val LOADING_ITEMS = 15

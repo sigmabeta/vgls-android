@@ -39,6 +39,7 @@ import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.components.PartListModel
+import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
@@ -165,9 +166,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         when (state.random) {
             is Success -> {
-                getFragmentRouter().showSongViewer(state.random()!!)
-                viewModel.clearRandom()
-                viewModel.onMenuAction()
+                onRandomSuccess(state, state.random())
             }
             is Loading -> {
                 startRandomLoadAnimation()
@@ -212,8 +211,29 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun shouldTrackViews() = false
 
+    private fun onRandomSuccess(
+        hudState: HudState,
+        song: Song?
+    ) {
+        viewModel.clearRandom()
+        viewModel.onMenuAction()
+
+        if (song == null) {
+            showError("Failed to get a random track.")
+            return
+        }
+
+        tracker.logRandomSongView(
+            song.name,
+            song.gameName,
+            hudState.parts?.first { it.selected }?.apiId ?: "C"
+        )
+
+        getFragmentRouter().showSongViewer(song.id)
+    }
+
     private fun onPartSelect(clicked: PartListModel) {
-        tracker.logPartClicked(clicked.name)
+        tracker.logPartSelect(clicked.name)
         viewModel.onPartSelect(clicked.name)
     }
 

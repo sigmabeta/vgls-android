@@ -5,6 +5,7 @@ import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.model.song.Song
 
 data class HudState(
     val menuExpanded: Boolean = false,
@@ -14,5 +15,5 @@ data class HudState(
     val parts: List<PartSelectorItem>? = null,
     val updateTime: Async<Long> = Uninitialized,
     val digest: Async<List<VglsApiGame>> = Uninitialized,
-    val random: Async<Long> = Uninitialized
+    val random: Async<Song> = Uninitialized
 ) : MvRxState
