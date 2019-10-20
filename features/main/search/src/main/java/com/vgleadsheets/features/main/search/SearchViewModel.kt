@@ -7,6 +7,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import java.util.concurrent.TimeUnit
 
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
@@ -18,16 +19,19 @@ class SearchViewModel @AssistedInject constructor(
                 setState { copy(query = searchQuery) }
 
                 repository.searchGamesCombined(searchQuery)
+                    .debounce(500, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(games = it)
                     }
 
                 repository.searchSongs(searchQuery)
+                    .debounce(500, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(songs = it)
                     }
 
                 repository.searchComposersCombined(searchQuery)
+                    .debounce(500, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(composers = it)
                     }

@@ -15,7 +15,7 @@ interface ComposerDao {
     @Query("SELECT * FROM composer ORDER BY name")
     fun getAll(): Observable<List<ComposerEntity>>
 
-    @Query("SELECT * FROM composer WHERE name LIKE :name")
+    @Query("SELECT * FROM composer WHERE name LIKE :name ORDER BY name")
     fun searchComposersByName(name: String): Observable<List<ComposerEntity>>
 
     @Insert
