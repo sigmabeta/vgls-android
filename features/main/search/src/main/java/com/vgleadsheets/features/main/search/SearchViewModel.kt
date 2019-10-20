@@ -19,19 +19,19 @@ class SearchViewModel @AssistedInject constructor(
                 setState { copy(query = searchQuery) }
 
                 repository.searchGamesCombined(searchQuery)
-                    .debounce(500, TimeUnit.MILLISECONDS)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(games = it)
                     }
 
                 repository.searchSongs(searchQuery)
-                    .debounce(500, TimeUnit.MILLISECONDS)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(songs = it)
                     }
 
                 repository.searchComposersCombined(searchQuery)
-                    .debounce(500, TimeUnit.MILLISECONDS)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(composers = it)
                     }
@@ -53,6 +53,8 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
+        const val RESULT_DEBOUNCE_THRESHOLD = 500L
+
         override fun create(
             viewModelContext: ViewModelContext,
             state: SearchState

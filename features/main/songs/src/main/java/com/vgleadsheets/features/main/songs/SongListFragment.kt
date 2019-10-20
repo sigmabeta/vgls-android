@@ -174,7 +174,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun showSongViewer(clickedSongId: Long)=
+    private fun showSongViewer(clickedSongId: Long) =
         withState(hudViewModel, viewModel) { hudState, state ->
             val song = state.songs()?.first { it.id == clickedSongId }
 

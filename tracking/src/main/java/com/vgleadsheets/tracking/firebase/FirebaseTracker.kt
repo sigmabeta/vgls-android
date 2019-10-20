@@ -6,6 +6,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.vgleadsheets.tracking.Tracker
 import timber.log.Timber
 
+@SuppressWarnings("TooManyFunctions")
 class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
 
     override fun logScreenView(activity: Activity, screenName: String) {
