@@ -14,13 +14,17 @@ interface Repository {
     fun forceRefresh(): Single<List<VglsApiGame>>
 
     // Full Lists
-    fun getGames(): Observable<List<Game>>
-    fun getAllSongs(): Observable<List<Song>>
-    fun getComposers(): Observable<List<Composer>>
+    fun getGames(withSongs: Boolean = true): Observable<List<Game>>
+    fun getAllSongs(withComposers: Boolean = true): Observable<List<Song>>
+    fun getComposers(withSongs: Boolean = true): Observable<List<Composer>>
 
     // Filtered lists
-    fun getSongsForGame(gameId: Long): Observable<List<Song>>
-    fun getSongsByComposer(composerId: Long): Observable<List<Song>>
+    fun getSongsByComposer(composerId: Long, withParts: Boolean = true): Observable<List<Song>>
+    fun getSongsForGame(
+        gameId: Long,
+        withParts: Boolean = true,
+        withComposers: Boolean = true
+    ): Observable<List<Song>>
 
     // Single items
     fun getSong(songId: Long): Observable<Song>

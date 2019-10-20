@@ -21,6 +21,7 @@ import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
@@ -82,6 +83,13 @@ class SearchFragment : VglsFragment(),
 
     override fun invalidate() {
         withState(hudViewModel, viewModel) { hudState, localState ->
+            val selectedPart = hudState.parts?.first { it.selected }
+
+            if (selectedPart == null) {
+                showError("No part selected.")
+                return@withState
+            }
+
             // TODO is this still necessary?
             // Sanity check - while exiting this screen, we might get an update due
             // to clearing the text box, to which we respond by clearing the text box.
@@ -101,8 +109,13 @@ class SearchFragment : VglsFragment(),
                     onSearchQueryEntered(query)
                 }
 
-                val listModels =
-                    constructList(localState.songs, localState.games, localState.composers)
+                val listModels = constructList(
+                    localState.songs,
+                    localState.games,
+                    localState.composers,
+                    selectedPart
+                )
+
                 adapter.submitList(listModels)
             }
         }
@@ -116,22 +129,23 @@ class SearchFragment : VglsFragment(),
     private fun constructList(
         songs: Async<List<Song>>,
         games: Async<List<Game>>,
-        composers: Async<List<Composer>>
+        composers: Async<List<Composer>>,
+        selectedPart: PartSelectorItem
     ): List<ListModel> {
         val songModels = createSectionModels(
             R.string.section_header_songs,
-            R.string.label_type_song,
-            songs
+            songs,
+            selectedPart
         )
         val gameModels = createSectionModels(
             R.string.section_header_games,
-            R.string.label_type_game,
-            games
+            games,
+            selectedPart
         )
         val composerModels = createSectionModels(
             R.string.section_header_composers,
-            R.string.label_type_composer,
-            composers
+            composers,
+            selectedPart
         )
 
         val listModels = songModels + gameModels + composerModels
@@ -149,15 +163,15 @@ class SearchFragment : VglsFragment(),
 
     private fun createSectionModels(
         sectionId: Int,
-        labelId: Int,
-        results: Async<List<Any>>
+        results: Async<List<Any>>,
+        selectedPart: PartSelectorItem
     ) = when (results) {
         is Loading, Uninitialized -> createLoadingListModels(sectionId)
         is Fail -> createErrorStateListModel(results.error)
         is Success -> createSuccessListModels(
             sectionId,
-            labelId,
-            results()
+            results(),
+            selectedPart
         )
     }
 
@@ -171,36 +185,48 @@ class SearchFragment : VglsFragment(),
 
     private fun createSuccessListModels(
         sectionId: Int,
-        resultTypeId: Int,
-        results: List<Any>
+        results: List<Any>,
+        selectedPart: PartSelectorItem
     ): List<ListModel> {
         return if (results.isEmpty()) {
             emptyList()
         } else {
-            createSectionHeaderListModel(sectionId) + createSectionModels(results, resultTypeId)
+            createSectionHeaderListModel(sectionId) + createSectionModels(
+                results,
+                selectedPart
+            )
         }
     }
 
     private fun createSectionModels(
         results: List<Any>,
-        resultTypeId: Int
+        selectedPart: PartSelectorItem
     ): List<ListModel> {
         return results
             .map {
                 when (it) {
-                    is Song -> ImageNameCaptionListModel(
-                        it.id,
-                        it.name,
-                        generateSheetCaption(it),
-                        null,
-                        getPlaceholderId(it),
-                        this
-                    )
+                    is Song -> {
+                        val thumbUrl = it
+                            .parts
+                            ?.first { part -> part.name == selectedPart.apiId }
+                            ?.pages
+                            ?.first()
+                            ?.imageUrl
+
+                        ImageNameCaptionListModel(
+                            it.id,
+                            it.name,
+                            generateSheetCaption(it),
+                            thumbUrl,
+                            getPlaceholderId(it),
+                            this
+                        )
+                    }
                     is Game -> GiantBombImageNameCaptionListModel(
                         it.id,
                         it.giantBombId,
                         it.name,
-                        getString(resultTypeId),
+                        getString(R.string.label_sheet_count, it.songs?.size ?: 0),
                         it.photoUrl,
                         getPlaceholderId(it),
                         gameHandler
@@ -209,7 +235,7 @@ class SearchFragment : VglsFragment(),
                         it.id,
                         it.giantBombId,
                         it.name,
-                        getString(resultTypeId),
+                        getString(R.string.label_sheet_count, it.songs?.size ?: 0),
                         it.photoUrl,
                         getPlaceholderId(it),
                         composerHandler
