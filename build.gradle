@@ -27,6 +27,7 @@ buildscript {
         firebase_version = "17.2.0"
         crashlytics_version = "2.10.1"
         firebase_perf_version = "19.0.0"
+        simplestore_version = "0.0.7"
     }
 
     repositories {

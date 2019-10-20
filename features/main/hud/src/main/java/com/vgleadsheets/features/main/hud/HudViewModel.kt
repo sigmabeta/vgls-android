@@ -13,6 +13,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
@@ -21,12 +22,13 @@ import java.util.concurrent.TimeUnit
 @Suppress("TooManyFunctions")
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
-    private val repository: Repository
+    private val repository: Repository,
+    private val storage: Storage
 ) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
     init {
-        resetAvailableParts()
+        checkSavedPartSelection()
         checkLastUpdateTime()
         checkForUpdate()
     }
@@ -138,6 +140,28 @@ class HudViewModel @AssistedInject constructor(
 
     fun clearRandom() = setState {
         copy(random = Uninitialized)
+    }
+
+    private fun checkSavedPartSelection() = withState {
+        storage.getSavedSelectedPart().subscribe(
+            {
+                val selection = if (it.isNullOrEmpty()) {
+                    "C"
+                } else {
+                    it
+                }
+
+                setState {
+                    copy(parts = PartSelectorItem.getDefaultPartPickerItems(selection))
+                }
+            },
+            {
+                Timber.w("No part selection found, going with default.")
+                setState {
+                    copy(parts = PartSelectorItem.getDefaultPartPickerItems("C"))
+                }
+            }
+        ).disposeOnClear()
     }
 
     private fun checkLastUpdateTime() = repository.getLastUpdateTime()

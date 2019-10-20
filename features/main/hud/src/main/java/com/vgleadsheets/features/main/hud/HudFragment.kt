@@ -43,6 +43,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
+import com.vgleadsheets.storage.Storage
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.card_search
 import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
@@ -73,6 +74,9 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     @Inject
     lateinit var hudViewModelFactory: HudViewModel.Factory
 
+    @Inject
+    lateinit var storage: Storage
+
     private val viewModel: HudViewModel by activityViewModel()
 
     private val disposables = CompositeDisposable()
@@ -83,6 +87,27 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            val screenLoad = storage.getSavedTopLevelScreen().subscribe(
+                {
+                    val selection = if (it.isNullOrEmpty()) {
+                        TOP_LEVEL_SCREEN_ID_DEFAULT
+                    } else {
+                        it
+                    }
+                    showScreen(selection, false)
+                },
+                {
+                    Timber.w("No screen ID found, going with default.")
+                    showScreen(TOP_LEVEL_SCREEN_ID_DEFAULT, false)
+                }
+            )
+            disposables.add(screenLoad)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,21 +130,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         button_menu.setOnClickListener { onMenuClick() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
 
-        layout_by_game.setOnClickListener {
-            viewModel.onMenuAction()
-            getFragmentRouter().showGameList()
-        }
-        layout_by_composer.setOnClickListener {
-            viewModel.onMenuAction()
-            getFragmentRouter().showComposerList()
-        }
-        layout_all_sheets.setOnClickListener {
-            viewModel.onMenuAction()
-            getFragmentRouter().showAllSheets()
-        }
-        layout_refresh.setOnClickListener {
-            onRefreshClick()
-        }
+        layout_by_game.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_GAME) }
+        layout_by_composer.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_COMPOSER) }
+        layout_all_sheets.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_SONG) }
+        layout_refresh.setOnClickListener { onRefreshClick() }
 
         enableRandomSelector()
     }
@@ -211,6 +225,21 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun shouldTrackViews() = false
 
+    private fun showScreen(screenId: String, save: Boolean = true) {
+        viewModel.onMenuAction()
+
+        when (screenId) {
+            TOP_LEVEL_SCREEN_ID_GAME -> getFragmentRouter().showGameList()
+            TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList()
+            TOP_LEVEL_SCREEN_ID_SONG -> getFragmentRouter().showAllSheets()
+            else -> getFragmentRouter().showGameList()
+        }
+
+        if (save) {
+            storage.saveTopLevelScreen(screenId)
+        }
+    }
+
     private fun onRandomSuccess(
         hudState: HudState,
         song: Song?
@@ -235,6 +264,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun onPartSelect(clicked: PartListModel) {
         tracker.logPartSelect(clicked.name)
         viewModel.onPartSelect(clicked.name)
+
+        val save = storage.saveSelectedPart(clicked.name)
+            .subscribe({}, { showError("Failed to save part selection: ${it.message}") })
+        disposables.add(save)
     }
 
     private fun showUpdateTimeSuccess(updateTime: Long?) {
@@ -426,6 +459,12 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         const val SPAN_COUNT_DEFAULT = 7
 
         const val CHILDREN_ABOVE_FOLD = 2
+
+        const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
+        const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"
+        const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"
+
+        const val TOP_LEVEL_SCREEN_ID_DEFAULT = TOP_LEVEL_SCREEN_ID_GAME
 
         fun newInstance() = HudFragment()
     }
