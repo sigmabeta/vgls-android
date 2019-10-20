@@ -49,7 +49,6 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
 
         if (savedInstanceState == null) {
             addHud()
-            showGameList()
         }
     }
 
