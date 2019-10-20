@@ -3,7 +3,6 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.VglsApiGame
-import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.time.Time
 import io.reactivex.Observable
@@ -30,9 +29,9 @@ interface Repository {
     fun getLastUpdateTime(): Observable<Time>
 
     // Etc
-    fun searchSongs(searchQuery: String): Observable<List<SearchResult>>
-    fun searchGamesCombined(searchQuery: String): Observable<List<SearchResult>>
-    fun searchComposersCombined(searchQuery: String): Observable<List<SearchResult>>
+    fun searchSongs(searchQuery: String): Observable<List<Song>>
+    fun searchGamesCombined(searchQuery: String): Observable<List<Game>>
+    fun searchComposersCombined(searchQuery: String): Observable<List<Composer>>
 
     // Giant Bomb searches
     fun searchGiantBombForGame(vglsId: Long, name: String)

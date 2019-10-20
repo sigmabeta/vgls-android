@@ -21,8 +21,9 @@ import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.model.search.SearchResult
-import com.vgleadsheets.model.search.SearchResultType
+import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_search.list_results
@@ -30,7 +31,6 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class SearchFragment : VglsFragment(),
-    GiantBombImageNameCaptionListModel.EventHandler,
     ImageNameCaptionListModel.EventHandler {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
@@ -41,18 +41,20 @@ class SearchFragment : VglsFragment(),
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: GiantBombImageNameCaptionListModel) {
-        when (clicked.type) {
-            SearchResultType.GAME.toString() -> onGameClicked(clicked.dataId)
-            SearchResultType.COMPOSER.toString() -> onComposerClicked(clicked.dataId)
-        }
+    private val gameHandler = object : GiantBombImageNameCaptionListModel.EventHandler {
+        override fun onClicked(clicked: GiantBombImageNameCaptionListModel) =
+            onGameClicked(clicked.dataId)
+
+        override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
+            viewModel.onGbGameNotChecked(vglsId, name)
     }
 
-    override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) {
-        when (type) {
-            SearchResultType.GAME.name -> viewModel.onGbGameNotChecked(vglsId, name)
-            SearchResultType.COMPOSER.name -> viewModel.onGbComposerNotChecked(vglsId, name)
-        }
+    private val composerHandler = object : GiantBombImageNameCaptionListModel.EventHandler {
+        override fun onClicked(clicked: GiantBombImageNameCaptionListModel) =
+            onComposerClicked(clicked.dataId)
+
+        override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
+            viewModel.onGbComposerNotChecked(vglsId, name)
     }
 
     override fun onClicked(clicked: ImageNameCaptionListModel) {
@@ -112,9 +114,9 @@ class SearchFragment : VglsFragment(),
     }
 
     private fun constructList(
-        songs: Async<List<SearchResult>>,
-        games: Async<List<SearchResult>>,
-        composers: Async<List<SearchResult>>
+        songs: Async<List<Song>>,
+        games: Async<List<Game>>,
+        composers: Async<List<Composer>>
     ): List<ListModel> {
         val songModels = createSectionModels(
             R.string.section_header_songs,
@@ -148,7 +150,7 @@ class SearchFragment : VglsFragment(),
     private fun createSectionModels(
         sectionId: Int,
         labelId: Int,
-        results: Async<List<SearchResult>>
+        results: Async<List<Any>>
     ) = when (results) {
         is Loading, Uninitialized -> createLoadingListModels(sectionId)
         is Fail -> createErrorStateListModel(results.error)
@@ -170,46 +172,70 @@ class SearchFragment : VglsFragment(),
     private fun createSuccessListModels(
         sectionId: Int,
         resultTypeId: Int,
-        results: List<SearchResult>
+        results: List<Any>
     ): List<ListModel> {
         return if (results.isEmpty()) {
             emptyList()
         } else {
-            results
-                .map {
-                    if (it.type == SearchResultType.SONG) {
-                        ImageNameCaptionListModel(
-                            it.id,
-                            it.name,
-                            it.type.name,
-                            null,
-                            getPlaceholderId(it.type),
-                            this
-                        )
-                    } else {
-                        GiantBombImageNameCaptionListModel(
-                            it.id,
-                            it.giantBombId,
-                            it.name,
-                            getString(resultTypeId),
-                            it.imageUrl,
-                            getPlaceholderId(it.type),
-                            this,
-                            it.type.name
-                        )
-                    }
-                }
-                .toMutableList()
-                .apply {
-                    add(0, SectionHeaderListModel(getString(sectionId)))
-                }
+            createSectionHeaderListModel(sectionId) + createSectionModels(results, resultTypeId)
         }
     }
 
-    private fun getPlaceholderId(type: SearchResultType) = when (type) {
-        SearchResultType.SONG -> R.drawable.placeholder_sheet
-        SearchResultType.GAME -> R.drawable.placeholder_game
-        SearchResultType.COMPOSER -> R.drawable.placeholder_composer
+    private fun createSectionModels(
+        results: List<Any>,
+        resultTypeId: Int
+    ): List<ListModel> {
+        return results
+            .map {
+                when (it) {
+                    is Song -> ImageNameCaptionListModel(
+                        it.id,
+                        it.name,
+                        generateSheetCaption(it),
+                        null,
+                        getPlaceholderId(it),
+                        this
+                    )
+                    is Game -> GiantBombImageNameCaptionListModel(
+                        it.id,
+                        it.giantBombId,
+                        it.name,
+                        getString(resultTypeId),
+                        it.photoUrl,
+                        getPlaceholderId(it),
+                        gameHandler
+                    )
+                    is Composer -> GiantBombImageNameCaptionListModel(
+                        it.id,
+                        it.giantBombId,
+                        it.name,
+                        getString(resultTypeId),
+                        it.photoUrl,
+                        getPlaceholderId(it),
+                        composerHandler
+                    )
+                    else -> throw IllegalArgumentException(
+                        "Bad model in search result list."
+                    )
+                }
+            }
+    }
+
+    private fun createSectionHeaderListModel(sectionId: Int) =
+        listOf(SectionHeaderListModel(getString(sectionId)))
+
+    private fun getPlaceholderId(model: Any) = when (model) {
+        is Song -> R.drawable.placeholder_sheet
+        is Game -> R.drawable.placeholder_game
+        is Composer -> R.drawable.placeholder_composer
+        else -> R.drawable.ic_error_24dp
+    }
+
+    private fun generateSheetCaption(song: Song): String {
+        return when (song.composers?.size) {
+            1 -> song.composers?.firstOrNull()?.name ?: "Unknown Composer"
+            else -> "Various Composers"
+        }
     }
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
@@ -243,7 +269,7 @@ class SearchFragment : VglsFragment(),
 
             tracker.logSongView(
                 song.name,
-                "", // TODO Refactor search to use actual models instead of SearchResult
+                song.gameName,
                 hudState.parts?.first { it.selected }?.apiId ?: "C",
                 hudState.searchQuery
             )

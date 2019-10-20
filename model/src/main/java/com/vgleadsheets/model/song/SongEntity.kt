@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.search.SearchResult
-import com.vgleadsheets.model.search.SearchResultType
 
 @Suppress("ConstructorParameterNaming")
 @Entity(
@@ -26,6 +24,7 @@ data class SongEntity(
     val filename: String,
     val name: String,
     val pageCount: Int,
+    val gameName: String,
     val game_id: Long
 ) {
     fun toSong(
@@ -35,9 +34,8 @@ data class SongEntity(
         id,
         filename,
         name,
+        gameName,
         composers,
         parts
     )
-
-    fun toSearchResult() = SearchResult(id, SearchResultType.SONG, name, null, null)
 }
