@@ -168,7 +168,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         disposables.clear()
     }
 
-    @Suppress("ComplexMethod")
+    @Suppress("ComplexMethod", "LongMethod")
     override fun invalidate() = withState(viewModel) { state ->
         if (state.hudVisible) {
             showHud()
