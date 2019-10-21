@@ -95,13 +95,6 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
         getString(R.string.subtitle_all_sheets)
     )
 
-    private fun generateSheetCaption(song: Song): String {
-        return when (song.composers?.size) {
-            1 -> song.composers?.firstOrNull()?.name ?: "Unknown Composer"
-            else -> "Various Composers"
-        }
-    }
-
     private fun generateSheetCountText(
         songs: Async<List<Song>>,
         songCount: Int
@@ -154,7 +147,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
                 ImageNameCaptionListModel(
                     it.id,
                     it.name,
-                    generateSheetCaption(it),
+                    it.gameName,
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this
