@@ -57,7 +57,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     }
 
     override fun showGameList() {
-        // TODO Clear back stack before doing this.
+        clearBackStack()
         // TODO Move to Navigator Fragment
         supportFragmentManager.beginTransaction()
             .setDefaultAnimations()
@@ -66,7 +66,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     }
 
     override fun showComposerList() {
-        // TODO Clear back stack before doing this.
+        clearBackStack()
         // TODO Move to Navigator Fragment
         supportFragmentManager.beginTransaction()
             .setDefaultAnimations()
@@ -75,7 +75,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     }
 
     override fun showAllSheets() {
-        // TODO Clear back stack before doing this.
+        clearBackStack()
         // TODO Move to Navigator Fragment
         supportFragmentManager.beginTransaction()
             .setDefaultAnimations()
@@ -106,6 +106,12 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     override fun onBackPressed() {
         if (!getHudFragment().onBackPress() && !getDisplayedFragment().onBackPress()) {
             super.onBackPressed()
+        }
+    }
+
+    private fun clearBackStack() {
+        while (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStackImmediate()
         }
     }
 
