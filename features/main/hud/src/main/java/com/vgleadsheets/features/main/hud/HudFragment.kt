@@ -24,7 +24,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.view.focusChanges
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
@@ -48,7 +48,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.card_search
 import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
 import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
-import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.button_menu
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.icon_random
@@ -148,7 +147,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         val clickEvents = searchClicks()
             .subscribe {
-                viewModel.searchClick()
+                withState(viewModel) {
+                    if (!it.searchVisible) {
+                        viewModel.searchClick()
+                    }
+                }
             }
         disposables.add(clickEvents)
     }
@@ -326,18 +329,13 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
         imm?.showSoftInput(edit_search_query, InputMethodManager.SHOW_IMPLICIT)
 
-        text_search_hint.fadeOutGone()
-        edit_search_query.fadeIn()
-        edit_search_query.requestFocus()
-
         getFragmentRouter().showSearch()
     }
 
     private fun hideSearch() {
         // TODO Delay the text clearing
         edit_search_query.text.clear()
-        edit_search_query.fadeOutGone()
-        text_search_hint.fadeIn()
+        edit_search_query.clearFocus()
 
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
         imm?.hideSoftInputFromWindow(edit_search_query.windowToken, 0)
@@ -415,7 +413,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun searchClicks() = card_search.clicks()
+    private fun searchClicks() = edit_search_query.focusChanges()
+        .filter { it }
         .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)
 
     private fun searchEvents() = edit_search_query

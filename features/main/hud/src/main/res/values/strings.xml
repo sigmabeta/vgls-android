@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hint_search">Search for a song…</string>
+    <string name="hint_search">Search for a song, game, or composer…</string>
 
     <string name="label_by_game">Browse by Game</string>
     <string name="label_by_composer">Browse by Composer</string>
