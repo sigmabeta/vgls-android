@@ -185,7 +185,11 @@ class RealRepository constructor(
                     val game = response.results[0]
 
                     giantBombId = game.id
-                    photoUrl = game.image.original_url
+                    photoUrl = if (game.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
+                        game.image.original_url
+                    } else {
+                        null
+                    }
 
                     val aliasEntities = game.aliases
                         ?.split('\n')
@@ -219,7 +223,11 @@ class RealRepository constructor(
                     val composer = response.results[0]
 
                     giantBombId = composer.id
-                    photoUrl = composer.image.original_url
+                    photoUrl = if (composer.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
+                        composer.image.original_url
+                    } else {
+                        null
+                    }
 
                     val aliasEntities = composer.aliases
                         ?.split('\n')
@@ -449,6 +457,9 @@ class RealRepository constructor(
         const val URL_SEPARATOR_FOLDER = "/"
         const val URL_SEPARATOR_NUMBER = "-"
         const val URL_FILE_EXT_PNG = ".png"
+
+        const val GB_URL_IMAGE_NOT_FOUND = "https://www.giantbomb.com/api/image/original/" +
+                "3026329-gb_default-16_9.png"
 
         val AGE_THRESHOLD = Duration.ofMinutes(60).toMillis()
     }
