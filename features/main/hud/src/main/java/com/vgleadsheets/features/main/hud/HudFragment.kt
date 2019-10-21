@@ -191,6 +191,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             hideFullMenu()
         }
 
+        if (state.alwaysShowBack) {
+            showSearchBackButton()
+        }
+
         if (state.searchQuery.isNullOrEmpty()) {
             hideSearchClearButton()
         } else {

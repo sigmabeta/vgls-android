@@ -66,6 +66,8 @@ class ComposerFragment : VglsFragment(),
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, composerState ->
+        hudViewModel.alwaysShowBack()
+
         val selectedPart = hudState.parts?.first { it.selected }
 
         if (selectedPart == null) {

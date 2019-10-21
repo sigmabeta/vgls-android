@@ -84,6 +84,8 @@ class SearchFragment : VglsFragment(),
 
     override fun invalidate() {
         withState(hudViewModel, viewModel) { hudState, localState ->
+            hudViewModel.alwaysShowBack()
+
             val selectedPart = hudState.parts?.first { it.selected }
 
             if (selectedPart == null) {

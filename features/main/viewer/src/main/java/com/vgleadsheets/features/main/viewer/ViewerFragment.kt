@@ -88,6 +88,8 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
+        hudViewModel.alwaysShowBack()
+
         if (hudState.hudVisible && !hudState.searchVisible) {
             hudViewModel.startHudTimer()
         }

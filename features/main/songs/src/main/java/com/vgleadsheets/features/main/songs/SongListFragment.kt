@@ -54,6 +54,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, songListState ->
+        hudViewModel.dontAlwaysShowBack()
         val selectedPart = hudState.parts?.first { it.selected }
 
         if (selectedPart == null) {

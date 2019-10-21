@@ -66,6 +66,7 @@ class GameFragment : VglsFragment(),
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, gameState ->
+        hudViewModel.alwaysShowBack()
         val selectedPart = hudState.parts?.first { it.selected }
 
         if (selectedPart == null) {

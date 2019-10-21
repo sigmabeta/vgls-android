@@ -61,6 +61,7 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, gameListState ->
+        hudViewModel.dontAlwaysShowBack()
         val selectedPart = hudState.parts?.first { it.selected }
 
         // TODO Let's make this non-null if we can.

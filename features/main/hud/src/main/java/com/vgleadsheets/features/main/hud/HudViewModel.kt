@@ -33,6 +33,10 @@ class HudViewModel @AssistedInject constructor(
         checkForUpdate()
     }
 
+    fun alwaysShowBack() = setState { copy(alwaysShowBack = true) }
+
+    fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }
+
     fun onMenuClick() = withState {
         if (it.menuExpanded) {
             hideMenu()
