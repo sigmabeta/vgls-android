@@ -28,6 +28,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_search.list_results
+import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -103,6 +104,10 @@ class SearchFragment : VglsFragment(),
                         )
                     )
                     return@withState
+                }
+
+                if (query.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
+                    throw IllegalArgumentException()
                 }
 
                 if (query != localState.query) {

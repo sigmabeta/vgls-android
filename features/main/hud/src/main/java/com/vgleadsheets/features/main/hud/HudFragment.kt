@@ -186,6 +186,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         if (state.menuExpanded) {
             showFullMenu()
+            showSearchBackButton()
         } else {
             hideFullMenu()
         }
@@ -235,6 +236,15 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
 
         adapter.submitList(listComponents)
+    }
+
+    override fun onBackPress() = withState(viewModel) {
+        if (it.menuExpanded) {
+            viewModel.onMenuBackPress()
+            return@withState true
+        }
+
+        return@withState false
     }
 
     override fun getLayoutId() = R.layout.fragment_hud

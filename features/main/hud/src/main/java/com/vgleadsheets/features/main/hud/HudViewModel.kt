@@ -33,14 +33,16 @@ class HudViewModel @AssistedInject constructor(
         checkForUpdate()
     }
 
-    fun onMenuClick() {
-        setState {
-            return@setState if (menuExpanded) {
-                copy(menuExpanded = false)
-            } else {
-                copy(menuExpanded = true)
-            }
+    fun onMenuClick() = withState {
+        if (it.menuExpanded) {
+            hideMenu()
+        } else {
+            showMenu()
         }
+    }
+
+    fun onMenuBackPress() {
+        hideMenu()
     }
 
     fun onMenuAction() {
@@ -141,6 +143,10 @@ class HudViewModel @AssistedInject constructor(
     fun clearRandom() = setState {
         copy(random = Uninitialized)
     }
+
+    private fun hideMenu() = setState { copy(menuExpanded = false) }
+
+    private fun showMenu() = setState { copy(menuExpanded = true) }
 
     private fun checkSavedPartSelection() = withState {
         storage.getSavedSelectedPart().subscribe(

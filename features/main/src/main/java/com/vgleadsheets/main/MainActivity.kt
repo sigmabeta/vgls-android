@@ -104,7 +104,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     )
 
     override fun onBackPressed() {
-        if (!getDisplayedFragment().onBackPress()) {
+        if (!getHudFragment().onBackPress() && !getDisplayedFragment().onBackPress()) {
             super.onBackPressed()
         }
     }
