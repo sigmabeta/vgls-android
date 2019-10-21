@@ -8,13 +8,13 @@ import com.vgleadsheets.model.alias.GameAliasEntity
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.giantbomb.GiantBombGame
 import com.vgleadsheets.model.giantbomb.GiantBombPerson
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
-import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
@@ -66,58 +66,38 @@ class RealRepository constructor(
 
     override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
 
-    override fun getGames(): Observable<List<Game>> = gameDao.getAll()
+    override fun getGames(withSongs: Boolean): Observable<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
             gameEntities.map { gameEntity ->
-                val songs = songDao
-                    .getSongsForGameSync(gameEntity.id)
-                    .map { songEntity ->
-                        val parts = partDao
-                            .getPartsForSongId(songEntity.id)
-                            .map { it.toPart(null) }
-
-                        songEntity.toSong(null, parts)
-                    }
-
+                val songs = if (withSongs) getSongsForGameEntity(gameEntity) else null
                 gameEntity.toGame(songs)
             }
         }
 
-    override fun getSongsForGame(gameId: Long): Observable<List<Song>> = songDao
+    override fun getSongsForGame(
+        gameId: Long,
+        withParts: Boolean,
+        withComposers: Boolean
+    ) = songDao
         .getSongsForGame(gameId)
         .map { songEntities ->
             songEntities.map { songEntity ->
-                val composers = songComposerDao
-                    .getComposersForSong(songEntity.id)
-                    .map { composerEntity -> composerEntity.toComposer(null) }
-
-                val parts = partDao
-                    .getPartsForSongId(songEntity.id)
-                    .map { part ->
-                        val pages = pageDao.getPagesForPartId(part.id)
-                        part.toPart(pages.map { it.toPage() })
-                    }
-
+                val parts = if (withParts) getPartsForSong(songEntity) else null
+                val composers = if (withComposers) getComposersForSong(songEntity) else null
                 songEntity.toSong(composers, parts)
             }
         }
 
-    override fun getSongsByComposer(composerId: Long): Observable<List<Song>> =
+    override fun getSongsByComposer(
+        composerId: Long,
+        withParts: Boolean
+    ): Observable<List<Song>> =
         songComposerDao
             .getSongsForComposer(composerId)
             .map { songEntities ->
                 songEntities.map { songEntity ->
-                    val composers = songComposerDao
-                        .getComposersForSong(songEntity.id)
-                        .map { composerEntity -> composerEntity.toComposer(null) }
-
-                    val parts = partDao
-                        .getPartsForSongId(songEntity.id)
-                        .map { part ->
-                            val pages = pageDao.getPagesForPartId(part.id)
-                            part.toPart(pages.map { it.toPage() })
-                        }
-
+                    val composers = null
+                    val parts = if (withParts) getPartsForSong(songEntity) else null
                     songEntity.toSong(composers, parts)
                 }
             }
@@ -128,50 +108,27 @@ class RealRepository constructor(
             val parts = partDao
                 .getPartsForSongId(songId)
                 .map { partEntity ->
-                    val pages = pageDao
-                        .getPagesForPartId(partEntity.id)
-                        .map { pageEntity -> pageEntity.toPage() }
-
+                    val pages = getPagesForPart(partEntity)
                     partEntity.toPart(pages)
                 }
             it.toSong(null, parts)
         }
 
-    override fun getAllSongs(): Observable<List<Song>> = songDao
+    override fun getAllSongs(withComposers: Boolean) = songDao
         .getAll()
         .map { songEntities ->
             songEntities.map { songEntity ->
-                val composers = songComposerDao
-                    .getComposersForSong(songEntity.id)
-                    .map { composerEntity -> composerEntity.toComposer(null) }
-
-                val parts = partDao
-                    .getPartsForSongId(songEntity.id)
-                    .map { partEntity ->
-                        val pages = pageDao
-                            .getPagesForPartId(partEntity.id)
-                            .map { pageEntity -> pageEntity.toPage() }
-
-                        partEntity.toPart(pages)
-                    }
+                val composers = if (withComposers) getComposersForSong(songEntity) else null
+                val parts = getPartsForSong(songEntity)
                 songEntity.toSong(composers, parts)
             }
         }
 
-    override fun getComposers(): Observable<List<Composer>> = composerDao
+    override fun getComposers(withSongs: Boolean): Observable<List<Composer>> = composerDao
         .getAll()
         .map { composerEntities ->
             composerEntities.map { composerEntity ->
-                val songs = songComposerDao
-                    .getSongsForComposerSync(composerEntity.id)
-                    .map { songEntity ->
-                        val parts = partDao
-                            .getPartsForSongId(songEntity.id)
-                            .map { partEntity -> partEntity.toPart(null) }
-
-                        songEntity.toSong(null, parts)
-                    }
-
+                val songs = getSongsForComposer(composerEntity)
                 composerEntity.toComposer(songs)
             }
         }
@@ -187,47 +144,34 @@ class RealRepository constructor(
     @Suppress("MaxLineLength")
     override fun searchSongs(searchQuery: String) = songDao
         .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { songEntities -> songEntities.map { it.toSearchResult() } }
+        .map { songEntities ->
+            songEntities.map {
+                val parts = getPartsForSong(it)
+                val composers = getComposersForSong(it)
+
+                it.toSong(composers, parts)
+            }
+        }
 
     override fun searchGamesCombined(searchQuery: String) = Observable.combineLatest(
         searchGames(searchQuery),
         searchGameAliases(searchQuery),
-        BiFunction { games: List<SearchResult>, gameAliases: List<SearchResult> ->
+        BiFunction { games: List<Game>, gameAliases: List<Game> ->
             games + gameAliases
         }
-    ).map {
-        it.distinctBy { it.id }
+    ).map { games ->
+        games.distinctBy { it.id }
     }
 
     override fun searchComposersCombined(searchQuery: String) = Observable.combineLatest(
         searchComposers(searchQuery),
         searchComposerAliases(searchQuery),
-        BiFunction { composers: List<SearchResult>, composerAliases: List<SearchResult> ->
+        BiFunction { composers: List<Composer>, composerAliases: List<Composer> ->
             composers + composerAliases
         }
-    ).map {
-        it.distinctBy { it.id }
+    ).map { composers ->
+        composers.distinctBy { it.id }
     }
-
-    @Suppress("MaxLineLength")
-    private fun searchGames(searchQuery: String) = gameDao
-        .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { gameEntities -> gameEntities.map { it.toSearchResult() } }
-
-    @Suppress("MaxLineLength")
-    private fun searchComposers(searchQuery: String) = composerDao
-        .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { composerEntities -> composerEntities.map { it.toSearchResult() } }
-
-    @Suppress("MaxLineLength")
-    private fun searchGameAliases(searchQuery: String) = gameAliasDao
-        .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { aliasEntities -> aliasEntities.map { it.toSearchResult() } }
-
-    @Suppress("MaxLineLength")
-    private fun searchComposerAliases(searchQuery: String) = composerAliasDao
-        .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { aliasEntities -> aliasEntities.map { it.toSearchResult() } }
 
     override fun getLastUpdateTime(): Observable<Time> = getLastDbUpdateTime()
 
@@ -298,6 +242,94 @@ class RealRepository constructor(
                 }
             )
     }
+
+    @Suppress("MaxLineLength")
+    private fun searchGames(searchQuery: String) = gameDao
+        .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { gameEntities ->
+            gameEntities.map {
+                val songs = getSongsForGameEntity(it)
+                it.toGame(songs)
+            }
+        }
+
+    @Suppress("MaxLineLength")
+    private fun searchComposers(searchQuery: String) = composerDao
+        .searchComposersByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { composerEntities ->
+            composerEntities.map {
+                val songs = getSongsForComposer(it)
+                it.toComposer(songs)
+            }
+        }
+
+    @Suppress("MaxLineLength")
+    private fun searchGameAliases(searchQuery: String) = gameAliasDao
+        .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { aliasEntities ->
+            aliasEntities.map {
+                val songs = getSongsForGameAlias(it)
+                it.toGame(songs)
+            }
+        }
+
+    @Suppress("MaxLineLength")
+    private fun searchComposerAliases(searchQuery: String) = composerAliasDao
+        .getAliasesByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { aliasEntities ->
+            aliasEntities.map {
+                val songs = getSongsForComposerAlias(it)
+                it.toComposer(
+                    songs
+                )
+            }
+        }
+
+    private fun getComposersForSong(songEntity: SongEntity) =
+        songComposerDao.getComposersForSong(songEntity.id)
+            .map { composerEntity -> composerEntity.toComposer(null) }
+
+    private fun getSongsForGameEntity(gameEntity: GameEntity, withSongs: Boolean = true) =
+        songDao.getSongsForGameSync(gameEntity.id)
+            .map { songEntity ->
+                val parts = if (withSongs) getPartsForSong(songEntity) else null
+                songEntity.toSong(null, parts)
+            }
+
+    private fun getSongsForGameAlias(gameAliasEntity: GameAliasEntity, withSongs: Boolean = true) =
+        songDao.getSongsForGameSync(gameAliasEntity.gameId)
+            .map { songEntity ->
+                val parts = if (withSongs) getPartsForSong(songEntity) else null
+                songEntity.toSong(null, parts)
+            }
+
+    private fun getSongsForComposer(composerEntity: ComposerEntity, withSongs: Boolean = true) =
+        songComposerDao.getSongsForComposerSync(composerEntity.id)
+            .map { songEntity ->
+                val parts = if (withSongs) getPartsForSong(songEntity) else null
+                songEntity.toSong(null, parts)
+            }
+
+    private fun getSongsForComposerAlias(
+        composerAliasEntity: ComposerAliasEntity,
+        withSongs: Boolean = true
+    ) =
+        songComposerDao.getSongsForComposerSync(composerAliasEntity.composerId)
+            .map { songEntity ->
+                val parts = if (withSongs) getPartsForSong(songEntity) else null
+                songEntity.toSong(null, parts)
+            }
+
+    private fun getPartsForSong(songEntity: SongEntity, withPages: Boolean = true) =
+        partDao.getPartsForSongId(songEntity.id)
+            .map { partEntity ->
+                val pages = if (withPages) getPagesForPart(partEntity) else null
+                partEntity.toPart(pages)
+            }
+
+    private fun getPagesForPart(partEntity: PartEntity) =
+        pageDao.getPagesForPartId(partEntity.id)
+            .map { pageEntity -> pageEntity.toPage() }
 
     private fun generateImageUrl(
         partEntity: PartEntity,
@@ -383,7 +415,11 @@ class RealRepository constructor(
                         }
                     }
 
-                    val songEntity = apiSong.toSongEntity(apiGame.game_id)
+                    val songEntity = apiSong.toSongEntity(
+                        apiGame.game_id,
+                        apiGame.game_name
+                    )
+
                     songEntities.add(songEntity)
                 }
             }

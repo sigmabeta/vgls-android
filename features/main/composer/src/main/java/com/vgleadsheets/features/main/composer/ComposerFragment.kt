@@ -9,6 +9,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
@@ -39,6 +40,8 @@ class ComposerFragment : VglsFragment(),
     private val viewModel: ComposerViewModel by fragmentViewModel()
 
     private val hudViewModel: HudViewModel by existingViewModel()
+
+    private val idArgs: IdArgs by args()
 
     private val adapter = ComponentAdapter()
 
@@ -79,7 +82,7 @@ class ComposerFragment : VglsFragment(),
 
     override fun getLayoutId() = R.layout.fragment_composer
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     private fun constructList(
         composer: Async<Composer>,
@@ -195,9 +198,22 @@ class ComposerFragment : VglsFragment(),
         song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
     }
 
-    private fun showSongViewer(clickedSongId: Long) {
-        getFragmentRouter().showSongViewer(clickedSongId)
-    }
+    private fun showSongViewer(clickedSongId: Long) =
+        withState(hudViewModel, viewModel) { hudState, state ->
+            val song = state.songs()?.first { it.id == clickedSongId }
+
+            if (song == null) {
+                showError("Failed to show song.")
+                return@withState
+            }
+            tracker.logSongView(
+                song.name,
+                song.gameName,
+                hudState.parts?.first { it.selected }?.apiId ?: "C",
+                null
+            )
+            getFragmentRouter().showSongViewer(clickedSongId)
+        }
 
     companion object {
         const val LOADING_ITEMS = 15

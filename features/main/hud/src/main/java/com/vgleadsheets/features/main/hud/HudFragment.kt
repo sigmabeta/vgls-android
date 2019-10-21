@@ -39,6 +39,7 @@ import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.components.PartListModel
+import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
@@ -81,7 +82,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private var randomAnimation: ObjectAnimator? = null
 
     override fun onClicked(clicked: PartListModel) {
-        viewModel.onPartSelect(clicked.name)
+        onPartSelect(clicked)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -101,7 +102,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
 
-        button_menu.setOnClickListener { viewModel.onMenuClick() }
+        button_menu.setOnClickListener { onMenuClick() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
 
         layout_by_game.setOnClickListener {
@@ -117,11 +118,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             getFragmentRouter().showAllSheets()
         }
         layout_refresh.setOnClickListener {
-            withState(viewModel) {
-                if (it.digest !is Loading) {
-                    viewModel.refresh()
-                }
-            }
+            onRefreshClick()
         }
 
         enableRandomSelector()
@@ -169,9 +166,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         when (state.random) {
             is Success -> {
-                getFragmentRouter().showSongViewer(state.random()!!)
-                viewModel.clearRandom()
-                viewModel.onMenuAction()
+                onRandomSuccess(state, state.random())
             }
             is Loading -> {
                 startRandomLoadAnimation()
@@ -214,6 +209,34 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
+    override fun shouldTrackViews() = false
+
+    private fun onRandomSuccess(
+        hudState: HudState,
+        song: Song?
+    ) {
+        viewModel.clearRandom()
+        viewModel.onMenuAction()
+
+        if (song == null) {
+            showError("Failed to get a random track.")
+            return
+        }
+
+        tracker.logRandomSongView(
+            song.name,
+            song.gameName,
+            hudState.parts?.first { it.selected }?.apiId ?: "C"
+        )
+
+        getFragmentRouter().showSongViewer(song.id)
+    }
+
+    private fun onPartSelect(clicked: PartListModel) {
+        tracker.logPartSelect(clicked.name)
+        viewModel.onPartSelect(clicked.name)
+    }
+
     private fun showUpdateTimeSuccess(updateTime: Long?) {
         val calendar = Calendar.getInstance()
         val checkedTime = updateTime ?: 0L
@@ -228,6 +251,18 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
 
         text_update_time.text = getString(R.string.label_refresh_date, date)
+    }
+
+    private fun onMenuClick() {
+        tracker.logMenuShow()
+        viewModel.onMenuClick()
+    }
+
+    private fun onRefreshClick() = withState(viewModel) {
+        if (it.digest !is Loading) {
+            tracker.logForceRefresh()
+            viewModel.refresh()
+        }
     }
 
     private fun showUpdateTimeLoading() {

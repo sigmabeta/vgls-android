@@ -7,6 +7,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import java.util.concurrent.TimeUnit
 
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
@@ -18,16 +19,19 @@ class SearchViewModel @AssistedInject constructor(
                 setState { copy(query = searchQuery) }
 
                 repository.searchGamesCombined(searchQuery)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(games = it)
                     }
 
                 repository.searchSongs(searchQuery)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(songs = it)
                     }
 
                 repository.searchComposersCombined(searchQuery)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(composers = it)
                     }
@@ -49,6 +53,8 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
+        const val RESULT_DEBOUNCE_THRESHOLD = 500L
+
         override fun create(
             viewModelContext: ViewModelContext,
             state: SearchState

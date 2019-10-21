@@ -130,7 +130,7 @@ class HudViewModel @AssistedInject constructor(
         repository
             .getAllSongs()
             .firstOrError()
-            .map { it.random().id }
+            .map { it.random() }
             .execute {
                 copy(random = it)
             }

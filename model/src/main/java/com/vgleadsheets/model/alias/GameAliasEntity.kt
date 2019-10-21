@@ -3,9 +3,9 @@ package com.vgleadsheets.model.alias
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.GameEntity
-import com.vgleadsheets.model.search.SearchResult
-import com.vgleadsheets.model.search.SearchResultType
+import com.vgleadsheets.model.song.Song
 
 @Entity(
     tableName = "alias_game",
@@ -25,5 +25,5 @@ data class GameAliasEntity(
     val photoUrl: String? = null,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
 ) {
-    fun toSearchResult() = SearchResult(gameId, SearchResultType.GAME, name, giantBombId, photoUrl)
+    fun toGame(songs: List<Song>?) = Game(gameId, name, songs, giantBombId, photoUrl)
 }

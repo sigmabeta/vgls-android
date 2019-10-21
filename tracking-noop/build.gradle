@@ -1,0 +1,14 @@
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    // Contains the Tracker interface
+    api project(path: ':tracking-common')
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':di')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}

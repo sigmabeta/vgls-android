@@ -1,5 +1,10 @@
 apply plugin: 'kotlin-kapt'
 
+if (checkShouldIncludeFirebase()) {
+    apply plugin: 'com.google.firebase.firebase-perf'
+    apply plugin: 'io.fabric'
+}
+
 // These actually need to be above the Android block.
 // TODO These should be computed outside of Gradle
 def computeVersionCode = { ->
@@ -52,6 +57,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -90,6 +96,13 @@ dependencies {
     // Debug helper
     implementation "com.facebook.stetho:stetho:$stetho_version"
 
+    // Firebase (must be in app or else contentprovider init doesn't happen)
+    if (checkShouldIncludeFirebase()) {
+        implementation "com.google.firebase:firebase-analytics:$firebase_version"
+        implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
+        implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
+    }
+
     // Junit libs
     testImplementation "junit:junit:$junit_version"
 
@@ -105,4 +118,15 @@ dependencies {
     // AssistedInject Annotation Processors
     compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
     kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
+}
+
+// Firebase (they said to put it at the bottom)
+if (checkShouldIncludeFirebase()) {
+    apply plugin: 'com.google.gms.google-services'
+}
+
+// This is duplicated in ui-core/build.gradle.
+// TODO Not duplicate this in ui-core/build.gradle.
+private static boolean checkShouldIncludeFirebase() {
+    return new File("app/google-services.json").exists()
 }

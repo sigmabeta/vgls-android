@@ -3,7 +3,6 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.VglsApiGame
-import com.vgleadsheets.model.search.SearchResult
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.time.Time
 import io.reactivex.Observable
@@ -15,13 +14,17 @@ interface Repository {
     fun forceRefresh(): Single<List<VglsApiGame>>
 
     // Full Lists
-    fun getGames(): Observable<List<Game>>
-    fun getAllSongs(): Observable<List<Song>>
-    fun getComposers(): Observable<List<Composer>>
+    fun getGames(withSongs: Boolean = true): Observable<List<Game>>
+    fun getAllSongs(withComposers: Boolean = true): Observable<List<Song>>
+    fun getComposers(withSongs: Boolean = true): Observable<List<Composer>>
 
     // Filtered lists
-    fun getSongsForGame(gameId: Long): Observable<List<Song>>
-    fun getSongsByComposer(composerId: Long): Observable<List<Song>>
+    fun getSongsByComposer(composerId: Long, withParts: Boolean = true): Observable<List<Song>>
+    fun getSongsForGame(
+        gameId: Long,
+        withParts: Boolean = true,
+        withComposers: Boolean = true
+    ): Observable<List<Song>>
 
     // Single items
     fun getSong(songId: Long): Observable<Song>
@@ -30,9 +33,9 @@ interface Repository {
     fun getLastUpdateTime(): Observable<Time>
 
     // Etc
-    fun searchSongs(searchQuery: String): Observable<List<SearchResult>>
-    fun searchGamesCombined(searchQuery: String): Observable<List<SearchResult>>
-    fun searchComposersCombined(searchQuery: String): Observable<List<SearchResult>>
+    fun searchSongs(searchQuery: String): Observable<List<Song>>
+    fun searchGamesCombined(searchQuery: String): Observable<List<Game>>
+    fun searchComposersCombined(searchQuery: String): Observable<List<Composer>>
 
     // Giant Bomb searches
     fun searchGiantBombForGame(vglsId: Long, name: String)

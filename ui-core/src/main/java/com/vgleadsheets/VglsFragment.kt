@@ -10,11 +10,16 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import com.airbnb.mvrx.BaseMvRxFragment
 import com.google.android.material.snackbar.Snackbar
+import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {
+    @Inject
+    lateinit var tracker: Tracker
+
     @LayoutRes
     abstract fun getLayoutId(): Int
 
@@ -35,6 +40,15 @@ abstract class VglsFragment : BaseMvRxFragment() {
         ViewCompat.requestApplyInsets(view)
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (shouldTrackViews()) {
+            tracker.logScreenView(activity!!, getVglsFragmentTag())
+        }
+    }
+
+    protected open fun shouldTrackViews() = true
+
     protected fun showError(error: Throwable, action: View.OnClickListener? = null, actionLabel: Int = 0) {
         val message = error.message ?: error::class.simpleName ?: "Unknown Error"
         showError(message, action, actionLabel)
@@ -42,6 +56,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     protected fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
         Timber.e("Displayed error: $message")
+        tracker.logError(message)
         showSnackbar(message, action, actionLabel)
     }
 

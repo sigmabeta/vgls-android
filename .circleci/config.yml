@@ -20,6 +20,9 @@ jobs:
         name: Setup GiantBomb API Key
         command: echo APIKEY_GIANTBOMB=\"$APIKEY_GIANTBOMB\" >> gradle.properties
     - run:
+        name: Setup Google Services JSON
+        command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
+    - run:
         name: Download Dependencies
         command: ./gradlew androidDependencies
     - save_cache:
@@ -34,7 +37,7 @@ jobs:
         command: ./gradlew detekt
     - run:
         name: Android Lint
-        command: ./gradlew :app:lintDebug
+        command: ./gradlew :app:lintRelease
     - run:
         name: Spotless / KTLint
         command: ./gradlew spotlessCheck

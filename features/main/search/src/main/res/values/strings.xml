@@ -4,6 +4,8 @@
     <string name="label_type_composer">Composer</string>
     <string name="label_type_song">Song</string>
 
+    <string name="label_sheet_count">%1$d Sheets</string>
+
     <string name="sample_text_result">Baden National Golf Course</string>
     <string name="sample_text_result_type">Song</string>
 
@@ -11,4 +13,5 @@
     <string name="section_header_songs">Songs</string>
     <string name="section_header_composers">Composers</string>
     <string name="empty_search_no_results">No results found. Try a different search term.</string>
+
 </resources>

@@ -3,9 +3,9 @@ package com.vgleadsheets.model.alias
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
-import com.vgleadsheets.model.search.SearchResult
-import com.vgleadsheets.model.search.SearchResultType
+import com.vgleadsheets.model.song.Song
 
 @Entity(
     tableName = "alias_composer",
@@ -25,5 +25,5 @@ data class ComposerAliasEntity(
     val photoUrl: String? = null,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
 ) {
-    fun toSearchResult() = SearchResult(composerId, SearchResultType.COMPOSER, name, giantBombId, photoUrl)
+    fun toComposer(songs: List<Song>?) = Composer(composerId, name, songs, giantBombId, photoUrl)
 }

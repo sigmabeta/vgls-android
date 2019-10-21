@@ -24,25 +24,45 @@ buildscript {
         constraint_version = "2.0.0-beta2"
         threeten_version = "1.2.1"
         photoview_version = "2.0.0"
+        firebase_version = "17.2.0"
+        crashlytics_version = "2.10.1"
+        firebase_perf_version = "19.0.0"
     }
 
     repositories {
         google()
         jcenter()
+
+        // Firebase (Crashlytics)
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
 
     dependencies {
+        // Android, lol
         classpath 'com.android.tools.build:gradle:3.5.1'
+
+        // Kotlin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // Firebase
+        classpath 'com.google.gms:google-services:4.3.2'
+        classpath 'com.google.firebase:perf-plugin:1.3.1'
+        classpath 'io.fabric.tools:gradle:1.31.1'
     }
 }
 
 plugins {
+    // Spotless / KTLint
     id "com.diffplug.gradle.spotless" version "3.24.3"
+
+    // Detekt
     id "io.gitlab.arturbosch.detekt" version "1.0.1"
 }
 
 allprojects {
+    // Detekt
     apply plugin: 'io.gitlab.arturbosch.detekt'
 
     detekt {
