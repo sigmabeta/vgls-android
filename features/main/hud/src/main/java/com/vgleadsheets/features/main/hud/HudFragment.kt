@@ -45,6 +45,8 @@ import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.fragment_hud.button_search_clear
+import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
 import kotlinx.android.synthetic.main.fragment_hud.card_search
 import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
 import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
@@ -81,6 +83,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private val disposables = CompositeDisposable()
 
     private val adapter = ComponentAdapter()
+
+    private val backListener = View.OnClickListener { activity?.onBackPressed() }
+
+    private val menuListener = View.OnClickListener { onMenuClick() }
 
     private var randomAnimation: ObjectAnimator? = null
 
@@ -126,6 +132,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
 
+        button_search_clear.setOnClickListener { edit_search_query.text.clear() }
         button_menu.setOnClickListener { onMenuClick() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
 
@@ -171,14 +178,22 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         if (state.searchVisible) {
             showSearch()
+            showSearchBackButton()
         } else {
             hideSearch()
+            showSearchMenuButton()
         }
 
         if (state.menuExpanded) {
             showFullMenu()
         } else {
             hideFullMenu()
+        }
+
+        if (state.searchQuery.isNullOrEmpty()) {
+            hideSearchClearButton()
+        } else {
+            showSearchClearButton()
         }
 
         when (state.random) {
@@ -311,6 +326,24 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private fun hideDigestLoading() {
         progress_hud.fadeOutGone()
+    }
+
+    private fun showSearchClearButton() {
+        button_search_clear.fadeIn()
+    }
+
+    private fun hideSearchClearButton() {
+        button_search_clear.fadeOutGone()
+    }
+
+    private fun showSearchMenuButton() {
+        button_search_menu_back.setImageResource(R.drawable.ic_menu_24dp)
+        button_search_menu_back.setOnClickListener(menuListener)
+    }
+
+    private fun showSearchBackButton() {
+        button_search_menu_back.setImageResource(R.drawable.ic_arrow_back_black_24dp)
+        button_search_menu_back.setOnClickListener(backListener)
     }
 
     private fun handleDigestError(error: Throwable) {
