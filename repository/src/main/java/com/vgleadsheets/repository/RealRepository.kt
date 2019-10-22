@@ -5,6 +5,7 @@ import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.alias.ComposerAliasEntity
 import com.vgleadsheets.model.alias.GameAliasEntity
+import com.vgleadsheets.model.composer.ApiComposer
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
@@ -387,8 +388,9 @@ class RealRepository constructor(
             apiGames.forEach { apiGame ->
                 apiGame.songs.forEach { apiSong ->
                     apiSong.composers.forEach { apiComposer ->
-                        val songComposerJoin =
-                            SongComposerJoin(apiSong.id, apiComposer.id)
+                        val songComposerJoin = SongComposerJoin(
+                            apiSong.id,
+                            apiComposer.id + ApiComposer.ID_OFFSET)
                         songComposerJoins.add(songComposerJoin)
 
                         val composerEntity = apiComposer.toComposerEntity()
@@ -424,7 +426,7 @@ class RealRepository constructor(
                     }
 
                     val songEntity = apiSong.toSongEntity(
-                        apiGame.game_id,
+                        apiGame.game_id + VglsApiGame.ID_OFFSET,
                         apiGame.game_name
                     )
 

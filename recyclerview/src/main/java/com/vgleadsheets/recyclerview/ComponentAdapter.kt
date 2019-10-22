@@ -22,6 +22,10 @@ class ComponentAdapter :
         override fun areContentsTheSame(oldItem: ListModel, newItem: ListModel) = oldItem == newItem
     }) {
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemBinding = DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
