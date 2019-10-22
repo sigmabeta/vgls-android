@@ -2,6 +2,7 @@ package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -45,6 +46,16 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
+    fun onQueryClear() {
+        setState {
+            copy(
+                games = Uninitialized,
+                songs = Uninitialized,
+                composers = Uninitialized
+            )
+        }
+    }
+
     fun onGbGameNotChecked(vglsId: Long, name: String) {
         repository.searchGiantBombForGame(vglsId, name)
     }
@@ -59,7 +70,7 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
-        const val RESULT_DEBOUNCE_THRESHOLD = 500L
+        const val RESULT_DEBOUNCE_THRESHOLD = 250L
 
         override fun create(
             viewModelContext: ViewModelContext,

@@ -99,8 +99,9 @@ class SearchFragment : VglsFragment(),
             val query = hudState.searchQuery
 
             if (query.isNullOrEmpty()) {
+                viewModel.onQueryClear()
                 adapter.submitList(
-                    arrayListOf<ListModel>(
+                    listOf(
                         SearchEmptyStateListModel()
                     )
                 )
@@ -108,7 +109,12 @@ class SearchFragment : VglsFragment(),
             }
 
             if (query.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
-                throw IllegalArgumentException()
+                adapter.submitList(
+                    listOf(
+                        ErrorStateListModel(getString(R.string.error_search_stickerbrush))
+                    )
+                )
+                return@withState
             }
 
             if (query != localState.query) {
