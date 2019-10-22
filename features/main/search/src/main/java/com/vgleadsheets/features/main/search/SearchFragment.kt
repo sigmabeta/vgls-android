@@ -82,49 +82,47 @@ class SearchFragment : VglsFragment(),
 
     override fun getLayoutId() = R.layout.fragment_search
 
-    override fun invalidate() {
-        withState(hudViewModel, viewModel) { hudState, localState ->
-            hudViewModel.alwaysShowBack()
+    override fun invalidate() = withState(hudViewModel, viewModel) { hudState, localState ->
+        hudViewModel.alwaysShowBack()
 
-            val selectedPart = hudState.parts?.first { it.selected }
+        val selectedPart = hudState.parts?.first { it.selected }
 
-            if (selectedPart == null) {
-                showError("No part selected.")
+        if (selectedPart == null) {
+            showError("No part selected.")
+            return@withState
+        }
+
+        // TODO is this still necessary?
+        // Sanity check - while exiting this screen, we might get an update due
+        // to clearing the text box, to which we respond by clearing the text box.
+        if (hudState.searchVisible) {
+            val query = hudState.searchQuery
+
+            if (query.isNullOrEmpty()) {
+                adapter.submitList(
+                    arrayListOf<ListModel>(
+                        SearchEmptyStateListModel()
+                    )
+                )
                 return@withState
             }
 
-            // TODO is this still necessary?
-            // Sanity check - while exiting this screen, we might get an update due
-            // to clearing the text box, to which we respond by clearing the text box.
-            if (hudState.searchVisible) {
-                val query = hudState.searchQuery
-
-                if (query.isNullOrEmpty()) {
-                    adapter.submitList(
-                        arrayListOf<ListModel>(
-                            SearchEmptyStateListModel()
-                        )
-                    )
-                    return@withState
-                }
-
-                if (query.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
-                    throw IllegalArgumentException()
-                }
-
-                if (query != localState.query) {
-                    onSearchQueryEntered(query)
-                }
-
-                val listModels = constructList(
-                    localState.songs,
-                    localState.games,
-                    localState.composers,
-                    selectedPart
-                )
-
-                adapter.submitList(listModels)
+            if (query.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
+                throw IllegalArgumentException()
             }
+
+            if (query != localState.query) {
+                onSearchQueryEntered(query)
+            }
+
+            val listModels = constructList(
+                localState.songs,
+                localState.games,
+                localState.composers,
+                selectedPart
+            )
+
+            adapter.submitList(listModels)
         }
     }
 
