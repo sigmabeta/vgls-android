@@ -104,6 +104,9 @@ dependencies {
         implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
     }
 
+    // Memory leak detection (Uncomment to enable)
+//    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+
     // Junit libs
     testImplementation "junit:junit:$junit_version"
 
