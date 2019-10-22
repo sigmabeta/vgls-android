@@ -41,7 +41,6 @@ import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.recyclerview.LazyAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
@@ -83,7 +82,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private val disposables = CompositeDisposable()
 
-    private val adapter: ComponentAdapter by LazyAdapter { list_parts }
+    private val adapter = ComponentAdapter()
 
     private val backListener = View.OnClickListener { activity?.onBackPressed() }
 
@@ -129,6 +128,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             bottomMargin = -cornerOffset
         }
 
+        list_parts.adapter = adapter
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
 

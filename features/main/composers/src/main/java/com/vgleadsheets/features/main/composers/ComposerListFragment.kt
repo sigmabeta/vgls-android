@@ -22,7 +22,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.recyclerview.LazyAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_composer_list.list_composers
 import javax.inject.Inject
@@ -36,7 +35,7 @@ class ComposerListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.
 
     private val viewModel: ComposerListViewModel by fragmentViewModel()
 
-    private val adapter: ComponentAdapter by LazyAdapter { list_composers }
+    private val adapter = ComponentAdapter()
 
     override fun onClicked(clicked: GiantBombImageNameCaptionListModel) {
         showSongList(clicked.dataId)
@@ -53,6 +52,7 @@ class ComposerListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
+        list_composers.adapter = adapter
         list_composers.layoutManager = LinearLayoutManager(context)
         list_composers.setInsetListenerForPadding(
             topOffset = topOffset,

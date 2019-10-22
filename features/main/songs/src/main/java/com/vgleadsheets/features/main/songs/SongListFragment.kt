@@ -22,7 +22,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.recyclerview.LazyAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_song.list_sheets
 import javax.inject.Inject
@@ -36,7 +35,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
 
     private val viewModel: SongListViewModel by fragmentViewModel()
 
-    private val adapter: ComponentAdapter by LazyAdapter { list_sheets }
+    private val adapter = ComponentAdapter()
 
     override fun onClicked(clicked: ImageNameCaptionListModel) {
         showSongViewer(clicked.dataId)
@@ -49,6 +48,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
+        list_sheets.adapter = adapter
         list_sheets.layoutManager = LinearLayoutManager(context)
         list_sheets.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }
