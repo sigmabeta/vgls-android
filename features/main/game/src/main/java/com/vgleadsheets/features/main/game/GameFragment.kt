@@ -26,6 +26,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
+import com.vgleadsheets.recyclerview.LazyAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_game.list_songs
 import javax.inject.Inject
@@ -43,7 +44,7 @@ class GameFragment : VglsFragment(),
 
     private val idArgs: IdArgs by args()
 
-    private val adapter = ComponentAdapter()
+    private val adapter: ComponentAdapter by LazyAdapter { list_songs }
 
     override fun onClicked(clicked: ImageNameCaptionListModel) {
         showSongViewer(clicked.dataId)
@@ -60,7 +61,6 @@ class GameFragment : VglsFragment(),
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_songs.adapter = adapter
         list_songs.layoutManager = LinearLayoutManager(context)
         list_songs.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }

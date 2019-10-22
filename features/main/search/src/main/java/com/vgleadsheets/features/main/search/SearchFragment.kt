@@ -26,6 +26,7 @@ import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
+import com.vgleadsheets.recyclerview.LazyAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_search.list_results
 import java.util.Locale
@@ -41,7 +42,7 @@ class SearchFragment : VglsFragment(),
 
     private val viewModel: SearchViewModel by fragmentViewModel()
 
-    private val adapter = ComponentAdapter()
+    private val adapter: ComponentAdapter by LazyAdapter { list_results }
 
     private val gameHandler = object : GiantBombImageNameCaptionListModel.EventHandler {
         override fun onClicked(clicked: GiantBombImageNameCaptionListModel) =
@@ -75,7 +76,6 @@ class SearchFragment : VglsFragment(),
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_results.adapter = adapter
         list_results.layoutManager = LinearLayoutManager(context)
         list_results.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }
