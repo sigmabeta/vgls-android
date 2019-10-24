@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
-import com.vgleadsheets.loadImageFull
+import com.squareup.picasso.Picasso
 import com.vgleadsheets.loadImageHighQuality
 import com.vgleadsheets.loadImageLowQuality
 import timber.log.Timber
@@ -17,19 +17,22 @@ fun bindImage(
 ) {
     view.setOnClickListener { listener.onClicked() }
     Timber.w("Loading image: ${sheetUrl.substringAfterLast("-")}")
-    listener.onLoadStart(sheetUrl)
 
     val callback = object : Callback {
-        override fun onSuccess() {
-            listener.onLoadSuccess(sheetUrl)
-        }
+        override fun onSuccess() {}
 
         override fun onError(e: Exception?) {
             listener.onLoadFailed(sheetUrl, e)
         }
     }
 
-    view.loadImageFull(sheetUrl, callback)
+    Picasso.get()
+        .load(sheetUrl)
+        .fit()
+        .centerInside()
+        .placeholder(R.drawable.ic_description_24dp)
+        .error(R.drawable.ic_error_24dp)
+        .into(view, callback)
 }
 
 @BindingAdapter("photoUrl", "placeholder")

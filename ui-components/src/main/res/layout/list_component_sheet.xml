@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View"/>
+
         <variable
             name="toBind"
             type="com.vgleadsheets.components.SheetListModel" />
@@ -18,29 +18,8 @@
             android:id="@+id/image_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:sheetUrl="@{toBind.sheetUrl}"
-            app:listener="@{toBind.listener}"/>
-
-<!--        Restore this code when you've figured out how to do finegrained updates with DB. -->
-
-<!--        <ProgressBar-->
-<!--            android:id="@+id/progress_loading"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:visibility="@{toBind.status == Status.LOADING ? View.VISIBLE : View.GONE}"-->
-<!--            android:layout_gravity="center" />-->
-
-<!--        <TextView-->
-<!--            android:textAppearance="@style/TextAppearance.AppCompat.Display1"-->
-<!--            android:textColor="@color/text_gray"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="sans-serif-condensed-light"-->
-<!--            android:text="@string/error_image_load"-->
-<!--            android:gravity="center"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:visibility="@{toBind.status == Status.LOADING ? View.VISIBLE : View.GONE}"-->
-<!--            />-->
+            app:listener="@{toBind.listener}"
+            app:sheetUrl="@{toBind.sheetUrl}" />
 
     </FrameLayout>
 </layout>

@@ -11,8 +11,6 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -21,8 +19,6 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import kotlinx.android.synthetic.main.fragment_viewer.list_sheets
 import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
-import kotlinx.android.synthetic.main.fragment_viewer.progress_loading
-import kotlinx.android.synthetic.main.fragment_viewer.text_error_state
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -43,28 +39,12 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         if (state.hudVisible) {
             hudViewModel.hideHud()
         } else {
-//            if (clicked.status == SheetListModel.Status.ERROR) {
-//                setImageStatus(clicked.sheetUrl, SheetListModel.Status.NONE)
-//            } else {
-                hudViewModel.showHud()
-//            }
+            hudViewModel.showHud()
         }
     }
 
-    override fun onLoadStart(imageUrl: String) {
-        hideErrorState()
-        showLoading()
-    }
-
-    override fun onLoadSuccess(imageUrl: String) {
-        hideLoading()
-    }
-
     override fun onLoadFailed(imageUrl: String, ex: Exception?) {
-        Timber.e("Image load failed: ${ex?.message}")
-        hideLoading()
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
-        showErrorState()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -141,7 +121,6 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         val listComponents = selectedPart?.pages?.map {
             SheetListModel(
                 it.imageUrl,
-                SheetListModel.Status.NONE,
                 this
             )
         }
@@ -156,34 +135,6 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private fun showEmptyState() {
         showError("No sheet found.")
-    }
-
-    private fun showLoading() {
-        progress_loading.fadeIn()
-    }
-
-    private fun hideLoading() {
-        progress_loading?.fadeOutGone()
-    }
-
-    private fun showErrorState() {
-        text_error_state.fadeIn()
-    }
-
-    private fun hideErrorState() {
-        text_error_state.fadeOutGone()
-    }
-
-    private fun setImageStatus(imageUrl: String, status: SheetListModel.Status) {
-        val updatedList = adapter.currentList.map {
-            return@map if (it is SheetListModel && it.sheetUrl == imageUrl) {
-                it.copy(status = status)
-            } else {
-                it
-            }
-        }
-
-        adapter.submitList(updatedList)
     }
 
     companion object {

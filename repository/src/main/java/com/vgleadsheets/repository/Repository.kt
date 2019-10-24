@@ -3,6 +3,7 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.time.Time
 import io.reactivex.Observable
@@ -19,6 +20,7 @@ interface Repository {
     fun getComposers(withSongs: Boolean = true): Observable<List<Composer>>
 
     // Filtered lists
+    fun getPartsForSong(songId: Long, withPages: Boolean = true): Observable<List<Part>>
     fun getSongsByComposer(composerId: Long, withParts: Boolean = true): Observable<List<Song>>
     fun getSongsForGame(
         gameId: Long,
@@ -27,7 +29,7 @@ interface Repository {
     ): Observable<List<Song>>
 
     // Single items
-    fun getSong(songId: Long): Observable<Song>
+    fun getSong(songId: Long, withParts: Boolean = true, withComposers: Boolean = true): Observable<Song>
     fun getComposer(composerId: Long): Observable<Composer>
     fun getGame(gameId: Long): Observable<Game>
     fun getLastUpdateTime(): Observable<Time>

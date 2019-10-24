@@ -27,15 +27,6 @@ fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Int,
     }
 }
 
-fun ImageView.loadImageFull(path: String, callback: Callback? = null) {
-    Picasso.get()
-        .load(path)
-        .fit()
-        .centerInside()
-        .noPlaceholder()
-        .into(this, callback)
-}
-
 fun ImageView.loadImageHighQuality(path: String, fade: Boolean, placeholder: Int, callback: Callback? = null) {
     val requestCreator = Picasso.get()
         .load(path)

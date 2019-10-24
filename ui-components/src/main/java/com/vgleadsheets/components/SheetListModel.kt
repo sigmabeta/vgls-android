@@ -2,7 +2,6 @@ package com.vgleadsheets.components
 
 data class SheetListModel(
     val sheetUrl: String,
-    val status: Status,
     val listener: ImageListener,
     override val dataId: Long = sheetUrl.hashCode().toLong()
 ) : ListModel {
@@ -10,15 +9,6 @@ data class SheetListModel(
 
     interface ImageListener {
         fun onClicked()
-        fun onLoadStart(imageUrl: String)
-        fun onLoadSuccess(imageUrl: String)
         fun onLoadFailed(imageUrl: String, ex: Exception?)
-    }
-
-    enum class Status {
-        NONE,
-        LOADING,
-        ERROR,
-        SUCCESS
     }
 }

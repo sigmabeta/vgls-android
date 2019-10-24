@@ -14,6 +14,7 @@ class ViewerViewModel @AssistedInject constructor(
 ) : MvRxViewModel<ViewerState>(initialState) {
     init {
         fetchSong()
+        fetchParts()
     }
 
     private fun fetchSong() = withState { state ->
@@ -23,13 +24,23 @@ class ViewerViewModel @AssistedInject constructor(
             }
     }
 
+    private fun fetchParts() = withState { state ->
+        repository.getPartsForSong(state.songId)
+            .execute {
+                copy(parts = it)
+            }
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: ViewerState): ViewerViewModel
     }
 
     companion object : MvRxViewModelFactory<ViewerViewModel, ViewerState> {
-        override fun create(viewModelContext: ViewModelContext, state: ViewerState): ViewerViewModel? {
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: ViewerState
+        ): ViewerViewModel? {
             val fragment: ViewerFragment = (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewerViewModelFactory.create(state)
         }
