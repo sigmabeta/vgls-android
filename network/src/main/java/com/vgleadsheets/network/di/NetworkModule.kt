@@ -58,6 +58,22 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @Named("PicassoOkHttp")
+    internal fun providePicassoOkClient() = if (BuildConfig.DEBUG) {
+        val debugger = StethoInterceptor()
+        val logger = HttpLoggingInterceptor()
+
+        logger.level = HttpLoggingInterceptor.Level.BODY
+        OkHttpClient.Builder()
+            .addNetworkInterceptor(logger)
+            .addNetworkInterceptor(debugger)
+            .build()
+    } else {
+        OkHttpClient()
+    }
+
+    @Provides
+    @Singleton
     @Named("GiantBombOkHttp")
     internal fun provideGiantBombOkClient(
         @Named("GiantBombApiKeyInterceptor") keyInterceptor: Interceptor,

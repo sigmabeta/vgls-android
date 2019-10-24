@@ -26,9 +26,6 @@ dependencies {
     // Dagger
     api project(path: ':di')
 
-    // Image Loading
-    implementation "com.squareup.picasso:picasso:$picasso_version"
-
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

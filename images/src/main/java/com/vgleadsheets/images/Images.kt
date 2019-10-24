@@ -1,10 +1,9 @@
-package com.vgleadsheets
+package com.vgleadsheets.images
 
 import android.graphics.Bitmap
 import android.widget.ImageView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import timber.log.Timber
 
 fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Int, callback: Callback? = null) {
     val requestCreator = Picasso.get()
@@ -65,8 +64,6 @@ fun ImageView.loadImageSetSize(
     fade: Boolean = true,
     callback: Callback? = null
 ) {
-    Timber.v("Loading ${width}x$height image into ${this.width}x${this.height} view")
-
     val requestCreator = Picasso.get()
         .load(path)
         .resize(width, height)

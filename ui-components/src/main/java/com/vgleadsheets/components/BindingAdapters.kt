@@ -5,8 +5,8 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.vgleadsheets.loadImageHighQuality
-import com.vgleadsheets.loadImageLowQuality
+import com.vgleadsheets.images.loadImageHighQuality
+import com.vgleadsheets.images.loadImageLowQuality
 import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")

@@ -87,6 +87,7 @@ dependencies {
     implementation project(path: ':repository')
     implementation project(path: ':features:main')
     implementation project(path: ':storage')
+    implementation project(path: ':images')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
