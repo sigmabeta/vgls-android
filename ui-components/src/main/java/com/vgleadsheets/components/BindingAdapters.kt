@@ -2,26 +2,36 @@ package com.vgleadsheets.components
 
 import android.view.View
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.vgleadsheets.animation.getEndPulseAnimator
+import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
 import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
-fun bindImage(
+fun bindSheetImage(
     view: ImageView,
     sheetUrl: String,
     listener: SheetListModel.ImageListener
 ) {
     view.setOnClickListener { listener.onClicked() }
-    Timber.w("Loading image: ${sheetUrl.substringAfterLast("-")}")
+
+    val pulseAnimator = view.getPulseAnimator(sheetUrl.hashCode() % 250)
+    pulseAnimator.start()
 
     val callback = object : Callback {
-        override fun onSuccess() {}
+        override fun onSuccess() {
+            pulseAnimator.cancel()
+            view.getEndPulseAnimator().start()
+        }
 
         override fun onError(e: Exception?) {
+            pulseAnimator.cancel()
+            view.getEndPulseAnimator().start()
             listener.onLoadFailed(sheetUrl, e)
         }
     }
@@ -30,8 +40,8 @@ fun bindImage(
         .load(sheetUrl)
         .fit()
         .centerInside()
-        .placeholder(R.drawable.ic_description_24dp)
-        .error(R.drawable.ic_error_24dp)
+        .placeholder(R.drawable.ic_description_white_24dp)
+        .error(R.drawable.ic_error_white_24dp)
         .into(view, callback)
 }
 
@@ -112,4 +122,9 @@ fun bindGiantBombIdTitle(
         Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
         events.onGbModelNotChecked(vglsId, name)
     }
+}
+
+@BindingAdapter("model")
+fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
+    view.getPulseAnimator(model.listPosition * 50).start()
 }

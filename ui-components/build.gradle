@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation project(path: ':images')
+    implementation project(path: ':animation')
     implementation project(path: ':ui-core')
     implementation project(path: ':vectors')
 

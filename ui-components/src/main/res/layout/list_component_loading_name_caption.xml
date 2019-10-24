@@ -12,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground">
+        android:background="?attr/selectableItemBackground"
+        app:model="@{toBind}">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/text_name"
@@ -21,9 +22,9 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
-            app:cardElevation="0dp"
             app:cardBackgroundColor="@color/text_gray"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,9 +37,9 @@
             android:layout_marginTop="@dimen/margin_xsmall"
             android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_small"
-            app:cardElevation="0dp"
             app:cardBackgroundColor="@color/text_gray"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_name" />

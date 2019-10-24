@@ -5,6 +5,7 @@
 dependencies {
     implementation project(path: ':common:parts')
 
+    implementation project(path: ':animation')
     implementation project(path: ':repository')
     implementation project(path: ':recyclerview')
     implementation project(path: ':storage')
