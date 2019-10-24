@@ -19,7 +19,7 @@ class ComponentAdapter :
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: ListModel, newItem: ListModel) = oldItem == newItem
 
-        override fun getChangePayload(oldItem: ListModel, newItem: ListModel)= true
+        override fun getChangePayload(oldItem: ListModel, newItem: ListModel) = true
     }) {
 
     init {

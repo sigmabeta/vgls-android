@@ -20,7 +20,9 @@ fun bindSheetImage(
 ) {
     view.setOnClickListener { listener.onClicked() }
 
-    val pulseAnimator = view.getPulseAnimator(sheetUrl.hashCode() % 250)
+    val pulseAnimator = view.getPulseAnimator(
+        sheetUrl.hashCode() % MAXIMUM_LOAD_OFFSET
+    )
     pulseAnimator.start()
 
     val callback = object : Callback {
@@ -126,5 +128,8 @@ fun bindGiantBombIdTitle(
 
 @BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
-    view.getPulseAnimator(model.listPosition * 50).start()
+    view.getPulseAnimator(model.listPosition * LOADING_LIST_ITEM_MULTIPLIER).start()
 }
+
+const val LOADING_LIST_ITEM_MULTIPLIER = 50
+const val MAXIMUM_LOAD_OFFSET = 250
