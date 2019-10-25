@@ -151,9 +151,7 @@ class RealRepository constructor(
         .map { songEntities ->
             songEntities.map {
                 val parts = getPartsForSongSync(it.id)
-                val composers = getComposersForSong(it)
-
-                it.toSong(composers, parts)
+                it.toSong(null, parts)
             }
         }
 
@@ -332,8 +330,13 @@ class RealRepository constructor(
                 songEntity.toSong(null, parts)
             }
 
-    private fun getPartsForSongSync(songId: Long, withPages: Boolean = true) =
-        getPartsForSongImpl(songId, withPages).blockingFirst()
+    // TODO Merge this and the below method.
+    private fun getPartsForSongSync(songId: Long, withPages: Boolean = true) = partDao
+        .getPartsForSongIdSync(songId)
+        .map { partEntity ->
+            val pages = if (withPages) getPagesForPart(partEntity) else null
+            partEntity.toPart(pages)
+        }
 
     private fun getPartsForSongImpl(songId: Long, withPages: Boolean = true) = partDao
         .getPartsForSongId(songId)

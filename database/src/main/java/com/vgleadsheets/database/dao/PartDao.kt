@@ -11,6 +11,9 @@ interface PartDao {
     @Query("SELECT * FROM part WHERE songId = :songId")
     fun getPartsForSongId(songId: Long): Observable<List<PartEntity>>
 
+    @Query("SELECT * FROM part WHERE songId = :songId")
+    fun getPartsForSongIdSync(songId: Long): List<PartEntity>
+
     @Insert
     fun insertAll(partEntities: List<PartEntity>)
 
