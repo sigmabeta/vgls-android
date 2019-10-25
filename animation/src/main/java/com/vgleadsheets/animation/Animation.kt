@@ -27,7 +27,7 @@ private const val ALPHA_VERY_TRANSPARENT = 0.4f
 private const val ALPHA_TRANSPARENT = 0.0f
 
 private const val SCALE_UNITY = 1.0f
-private const val SCALE_SLIGHTLY_SMALLER = 0.9f
+private const val SCALE_SLIGHTLY_SMALLER = 0.95f
 private const val SCALE_NOTHING = 0.0f
 
 const val TRANSLATION_CENTER = 0.0f

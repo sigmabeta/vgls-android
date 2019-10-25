@@ -128,7 +128,7 @@ fun bindGiantBombIdTitle(
 
 @BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
-    view.getPulseAnimator(model.listPosition % MAXIMUM_LOAD_OFFSET).start()
+    view.getPulseAnimator(model.listPosition * 100 % MAXIMUM_LOAD_OFFSET).start()
 }
 
 const val MAXIMUM_LOAD_OFFSET = 250
