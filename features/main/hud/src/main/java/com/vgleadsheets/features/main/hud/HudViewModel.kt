@@ -140,7 +140,7 @@ class HudViewModel @AssistedInject constructor(
             .firstOrError()
             .map { songs ->
                 songs.filter { song ->
-                    song.parts?.firstOrNull { part -> part.name == selectedPart.apiId} != null
+                    song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
                 }
             }
             .map { it.random() }

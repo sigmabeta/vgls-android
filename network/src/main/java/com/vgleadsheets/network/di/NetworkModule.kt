@@ -68,7 +68,7 @@ class NetworkModule {
         @Named("CacheInterceptor") cacher: Interceptor
     ) = if (BuildConfig.DEBUG) {
         OkHttpClient.Builder()
-            .cache(Cache(File(context.cacheDir.absolutePath, "okhttp"), 100000000))
+            .cache(Cache(File(context.cacheDir.absolutePath, "okhttp"), CACHE_SIZE_BYTES))
             .addNetworkInterceptor(logger)
             .addNetworkInterceptor(debugger)
             .addNetworkInterceptor(cacher)
@@ -123,7 +123,7 @@ class NetworkModule {
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalResponse = chain.proceed(chain.request())
             return originalResponse.newBuilder()
-                .header("Cache-Control", "max-age=" + 60 * 60 * 24 * 365)
+                .header("Cache-Control", "max-age=" + CACHE_MAX_AGE)
                 .build()
         }
     }
@@ -195,4 +195,9 @@ class NetworkModule {
         .addConverterFactory(converterFactory)
         .build()
         .create(GiantBombApi::class.java)
+
+    companion object {
+        const val CACHE_SIZE_BYTES = 100000000L
+        const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
+    }
 }
