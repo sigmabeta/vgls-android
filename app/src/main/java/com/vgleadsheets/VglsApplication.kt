@@ -39,8 +39,8 @@ class VglsApplication : Application(), HasAndroidInjector {
 
         val picasso = Picasso.Builder(this)
             .downloader(okHttp3Downloader)
-            .indicatorsEnabled(true)
-            .loggingEnabled(true)
+            .indicatorsEnabled(BuildConfig.DEBUG)
+            .loggingEnabled(BuildConfig.DEBUG)
             .defaultBitmapConfig(Bitmap.Config.RGB_565)
             .build()
 
