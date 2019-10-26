@@ -134,10 +134,15 @@ class HudViewModel @AssistedInject constructor(
         stopTimer()
     }
 
-    fun onRandomSelectClick() {
+    fun onRandomSelectClick(selectedPart: PartSelectorItem) {
         repository
             .getAllSongs()
             .firstOrError()
+            .map { songs ->
+                songs.filter { song ->
+                    song.parts?.firstOrNull { part -> part.name == selectedPart.apiId} != null
+                }
+            }
             .map { it.random() }
             .execute {
                 copy(random = it)

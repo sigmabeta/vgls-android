@@ -16,7 +16,7 @@ interface Repository {
 
     // Full Lists
     fun getGames(withSongs: Boolean = true): Observable<List<Game>>
-    fun getAllSongs(withComposers: Boolean = true): Observable<List<Song>>
+    fun getAllSongs(withComposers: Boolean = true, withParts: Boolean = true): Observable<List<Song>>
     fun getComposers(withSongs: Boolean = true): Observable<List<Composer>>
 
     // Filtered lists

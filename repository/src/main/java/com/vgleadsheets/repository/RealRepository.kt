@@ -118,12 +118,12 @@ class RealRepository constructor(
             it.toSong(composers, parts)
         }
 
-    override fun getAllSongs(withComposers: Boolean) = songDao
+    override fun getAllSongs(withComposers: Boolean, withParts: Boolean) = songDao
         .getAll()
         .map { songEntities ->
             songEntities.map { songEntity ->
                 val composers = if (withComposers) getComposersForSong(songEntity) else null
-                val parts = getPartsForSongSync(songEntity.id)
+                val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
                 songEntity.toSong(composers, parts)
             }
         }

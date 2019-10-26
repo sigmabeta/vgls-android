@@ -116,9 +116,14 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
             showError("Unable to determine which parts are available for this sheet: $partSelection.")
         }
 
-        val selectedPart = sheet.parts?.first { it.name == partSelection.apiId }
+        val selectedPart = sheet.parts?.firstOrNull { it.name == partSelection.apiId }
 
-        val listComponents = selectedPart?.pages?.map {
+        if (selectedPart == null) {
+            showError("This sheet doesn't include the part you selected. Choose another.")
+            return
+        }
+
+        val listComponents = selectedPart.pages?.map {
             SheetListModel(
                 it.imageUrl,
                 this

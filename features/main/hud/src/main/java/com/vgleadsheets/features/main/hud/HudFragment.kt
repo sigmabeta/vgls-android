@@ -490,7 +490,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private fun enableRandomSelector() {
         layout_random_select.setOnClickListener {
-            viewModel.onRandomSelectClick()
+            withState(viewModel) { state ->
+                val selectedPart = state.parts?.first { it.selected }
+                viewModel.onRandomSelectClick(selectedPart!!)
+            }
         }
     }
 
