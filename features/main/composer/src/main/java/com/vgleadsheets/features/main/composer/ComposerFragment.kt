@@ -66,6 +66,8 @@ class ComposerFragment : VglsFragment(),
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, composerState ->
+        hudViewModel.alwaysShowBack()
+
         val selectedPart = hudState.parts?.first { it.selected }
 
         if (selectedPart == null) {
@@ -123,13 +125,6 @@ class ComposerFragment : VglsFragment(),
         this
     )
 
-    private fun generateSheetCaption(song: Song): String {
-        return when (song.composers?.size) {
-            1 -> song.composers?.firstOrNull()?.name ?: "Unknown Composer"
-            else -> "Various Composers"
-        }
-    }
-
     private fun generateSheetCountText(
         songs: Async<List<Song>>,
         songCount: Int
@@ -182,7 +177,7 @@ class ComposerFragment : VglsFragment(),
                 ImageNameCaptionListModel(
                     it.id,
                     it.name,
-                    generateSheetCaption(it),
+                    it.gameName,
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this

@@ -8,6 +8,7 @@ import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.song.Song
 
 data class HudState(
+    val alwaysShowBack: Boolean = false,
     val menuExpanded: Boolean = false,
     val hudVisible: Boolean = true,
     val searchVisible: Boolean = false,

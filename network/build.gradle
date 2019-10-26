@@ -2,7 +2,7 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     // Module deps
-    api project(path: ':model')
+    implementation project(path: ':model')
 
     // OkHttp libs
     api "com.squareup.okhttp3:okhttp:$okhttp_version"

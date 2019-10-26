@@ -2,34 +2,49 @@ package com.vgleadsheets.components
 
 import android.view.View
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
-import com.vgleadsheets.loadImageFull
-import com.vgleadsheets.loadImageHighQuality
-import com.vgleadsheets.loadImageLowQuality
+import com.squareup.picasso.Picasso
+import com.vgleadsheets.animation.getEndPulseAnimator
+import com.vgleadsheets.animation.getPulseAnimator
+import com.vgleadsheets.images.loadImageHighQuality
+import com.vgleadsheets.images.loadImageLowQuality
 import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
-fun bindImage(
+fun bindSheetImage(
     view: ImageView,
     sheetUrl: String,
     listener: SheetListModel.ImageListener
 ) {
     view.setOnClickListener { listener.onClicked() }
-    Timber.w("Loading image: ${sheetUrl.substringAfterLast("-")}")
-    listener.onLoadStart(sheetUrl)
+
+    val pulseAnimator = view.getPulseAnimator(
+        sheetUrl.hashCode() % MAXIMUM_LOAD_OFFSET
+    )
+    pulseAnimator.start()
 
     val callback = object : Callback {
         override fun onSuccess() {
-            listener.onLoadSuccess(sheetUrl)
+            pulseAnimator.cancel()
+            view.getEndPulseAnimator().start()
         }
 
         override fun onError(e: Exception?) {
+            pulseAnimator.cancel()
+            view.getEndPulseAnimator().start()
             listener.onLoadFailed(sheetUrl, e)
         }
     }
 
-    view.loadImageFull(sheetUrl, callback)
+    Picasso.get()
+        .load(sheetUrl)
+        .fit()
+        .centerInside()
+        .placeholder(R.drawable.ic_description_white_24dp)
+        .error(R.drawable.ic_error_white_24dp)
+        .into(view, callback)
 }
 
 @BindingAdapter("photoUrl", "placeholder")
@@ -110,3 +125,11 @@ fun bindGiantBombIdTitle(
         events.onGbModelNotChecked(vglsId, name)
     }
 }
+
+@BindingAdapter("model")
+fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
+    view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET).start()
+}
+
+const val MULTIPLIER_LIST_POSITION = 100
+const val MAXIMUM_LOAD_OFFSET = 250

@@ -8,5 +8,9 @@ data class VglsApiGame(
     val game_name: String,
     val songs: List<ApiSong>
 ) {
-    fun toGameEntity() = GameEntity(game_id, game_name)
+    fun toGameEntity() = GameEntity(game_id + ID_OFFSET, game_name)
+
+    companion object {
+        const val ID_OFFSET = 100000L
+    }
 }

@@ -86,6 +86,8 @@ dependencies {
     // Module deps
     implementation project(path: ':repository')
     implementation project(path: ':features:main')
+    implementation project(path: ':storage')
+    implementation project(path: ':images')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -102,6 +104,9 @@ dependencies {
         implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
         implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
     }
+
+    // Memory leak detection (Uncomment to enable)
+//    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
     // Junit libs
     testImplementation "junit:junit:$junit_version"

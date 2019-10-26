@@ -1,8 +1,11 @@
 package com.vgleadsheets
 
 import android.app.Application
+import android.graphics.Bitmap
 import android.os.Build
 import com.facebook.stetho.Stetho
+import com.squareup.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
 import com.vgleadsheets.di.AppModule
 import com.vgleadsheets.di.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
@@ -12,6 +15,8 @@ import javax.inject.Inject
 
 class VglsApplication : Application(), HasAndroidInjector {
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    @Inject lateinit var okHttp3Downloader: OkHttp3Downloader
 
     override fun onCreate() {
         super.onCreate()
@@ -31,6 +36,15 @@ class VglsApplication : Application(), HasAndroidInjector {
         Timber.v("Device model: %s", Build.MODEL)
 
         Stetho.initializeWithDefaults(this)
+
+        val picasso = Picasso.Builder(this)
+            .downloader(okHttp3Downloader)
+            .indicatorsEnabled(BuildConfig.DEBUG)
+            .loggingEnabled(BuildConfig.DEBUG)
+            .defaultBitmapConfig(Bitmap.Config.RGB_565)
+            .build()
+
+        Picasso.setSingletonInstance(picasso)
     }
 
     override fun androidInjector() = dispatchingAndroidInjector

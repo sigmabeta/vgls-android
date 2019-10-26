@@ -2,40 +2,57 @@ package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
     private val repository: Repository
 ) : MvRxViewModel<SearchState>(initialState) {
+    private val searchOperations = CompositeDisposable()
+
     fun startQuery(searchQuery: String) {
         withState { state ->
             if (state.query != searchQuery) {
                 setState { copy(query = searchQuery) }
+                searchOperations.clear()
 
-                repository.searchGamesCombined(searchQuery)
+                val gameSearch = repository.searchGamesCombined(searchQuery)
                     .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(games = it)
                     }
 
-                repository.searchSongs(searchQuery)
+                val songSearch = repository.searchSongs(searchQuery)
                     .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(songs = it)
                     }
 
-                repository.searchComposersCombined(searchQuery)
+                val composerSearch = repository.searchComposersCombined(searchQuery)
                     .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute {
                         copy(composers = it)
                     }
+
+                searchOperations.addAll(gameSearch, songSearch, composerSearch)
             }
+        }
+    }
+
+    fun onQueryClear() {
+        setState {
+            copy(
+                games = Uninitialized,
+                songs = Uninitialized,
+                composers = Uninitialized
+            )
         }
     }
 
@@ -53,7 +70,7 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
-        const val RESULT_DEBOUNCE_THRESHOLD = 500L
+        const val RESULT_DEBOUNCE_THRESHOLD = 250L
 
         override fun create(
             viewModelContext: ViewModelContext,

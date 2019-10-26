@@ -24,7 +24,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.view.focusChanges
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
@@ -43,11 +43,13 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
+import com.vgleadsheets.storage.Storage
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.fragment_hud.button_search_clear
+import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
 import kotlinx.android.synthetic.main.fragment_hud.card_search
 import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
 import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
-import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.button_menu
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.icon_random
@@ -73,16 +75,44 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     @Inject
     lateinit var hudViewModelFactory: HudViewModel.Factory
 
+    @Inject
+    lateinit var storage: Storage
+
     private val viewModel: HudViewModel by activityViewModel()
 
     private val disposables = CompositeDisposable()
 
     private val adapter = ComponentAdapter()
 
+    private val backListener = View.OnClickListener { activity?.onBackPressed() }
+
+    private val menuListener = View.OnClickListener { onMenuClick() }
+
     private var randomAnimation: ObjectAnimator? = null
 
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            val screenLoad = storage.getSavedTopLevelScreen().subscribe(
+                {
+                    val selection = if (it.isNullOrEmpty()) {
+                        TOP_LEVEL_SCREEN_ID_DEFAULT
+                    } else {
+                        it
+                    }
+                    showScreen(selection, false)
+                },
+                {
+                    Timber.w("No screen ID found, going with default.")
+                    showScreen(TOP_LEVEL_SCREEN_ID_DEFAULT, false)
+                }
+            )
+            disposables.add(screenLoad)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,24 +132,14 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
 
+        button_search_clear.setOnClickListener { edit_search_query.text.clear() }
         button_menu.setOnClickListener { onMenuClick() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
 
-        layout_by_game.setOnClickListener {
-            viewModel.onMenuAction()
-            getFragmentRouter().showGameList()
-        }
-        layout_by_composer.setOnClickListener {
-            viewModel.onMenuAction()
-            getFragmentRouter().showComposerList()
-        }
-        layout_all_sheets.setOnClickListener {
-            viewModel.onMenuAction()
-            getFragmentRouter().showAllSheets()
-        }
-        layout_refresh.setOnClickListener {
-            onRefreshClick()
-        }
+        layout_by_game.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_GAME) }
+        layout_by_composer.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_COMPOSER) }
+        layout_all_sheets.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_SONG) }
+        layout_refresh.setOnClickListener { onRefreshClick() }
 
         enableRandomSelector()
     }
@@ -134,7 +154,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         val clickEvents = searchClicks()
             .subscribe {
-                viewModel.searchClick()
+                withState(viewModel) {
+                    if (!it.searchVisible) {
+                        viewModel.searchClick()
+                    }
+                }
             }
         disposables.add(clickEvents)
     }
@@ -144,7 +168,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         disposables.clear()
     }
 
-    @Suppress("ComplexMethod")
+    @Suppress("ComplexMethod", "LongMethod")
     override fun invalidate() = withState(viewModel) { state ->
         if (state.hudVisible) {
             showHud()
@@ -154,14 +178,27 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         if (state.searchVisible) {
             showSearch()
+            showSearchBackButton()
         } else {
             hideSearch()
+            showSearchMenuButton()
         }
 
         if (state.menuExpanded) {
             showFullMenu()
+            showSearchBackButton()
         } else {
             hideFullMenu()
+        }
+
+        if (state.alwaysShowBack) {
+            showSearchBackButton()
+        }
+
+        if (state.searchQuery.isNullOrEmpty()) {
+            hideSearchClearButton()
+        } else {
+            showSearchClearButton()
         }
 
         when (state.random) {
@@ -205,11 +242,35 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         adapter.submitList(listComponents)
     }
 
+    override fun onBackPress() = withState(viewModel) {
+        if (it.menuExpanded) {
+            viewModel.onMenuBackPress()
+            return@withState true
+        }
+
+        return@withState false
+    }
+
     override fun getLayoutId() = R.layout.fragment_hud
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun shouldTrackViews() = false
+
+    private fun showScreen(screenId: String, save: Boolean = true) {
+        viewModel.onMenuAction()
+
+        when (screenId) {
+            TOP_LEVEL_SCREEN_ID_GAME -> getFragmentRouter().showGameList()
+            TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList()
+            TOP_LEVEL_SCREEN_ID_SONG -> getFragmentRouter().showAllSheets()
+            else -> getFragmentRouter().showGameList()
+        }
+
+        if (save) {
+            storage.saveTopLevelScreen(screenId)
+        }
+    }
 
     private fun onRandomSuccess(
         hudState: HudState,
@@ -235,6 +296,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun onPartSelect(clicked: PartListModel) {
         tracker.logPartSelect(clicked.name)
         viewModel.onPartSelect(clicked.name)
+
+        val save = storage.saveSelectedPart(clicked.name)
+            .subscribe({}, { showError("Failed to save part selection: ${it.message}") })
+        disposables.add(save)
     }
 
     private fun showUpdateTimeSuccess(updateTime: Long?) {
@@ -277,6 +342,24 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         progress_hud.fadeOutGone()
     }
 
+    private fun showSearchClearButton() {
+        button_search_clear.fadeIn()
+    }
+
+    private fun hideSearchClearButton() {
+        button_search_clear.fadeOutGone()
+    }
+
+    private fun showSearchMenuButton() {
+        button_search_menu_back.setImageResource(R.drawable.ic_menu_24dp)
+        button_search_menu_back.setOnClickListener(menuListener)
+    }
+
+    private fun showSearchBackButton() {
+        button_search_menu_back.setImageResource(R.drawable.ic_arrow_back_black_24dp)
+        button_search_menu_back.setOnClickListener(backListener)
+    }
+
     private fun handleDigestError(error: Throwable) {
         when (error) {
             is NoSuchElementException -> hideDigestLoading()
@@ -293,18 +376,13 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
         imm?.showSoftInput(edit_search_query, InputMethodManager.SHOW_IMPLICIT)
 
-        text_search_hint.fadeOutGone()
-        edit_search_query.fadeIn()
-        edit_search_query.requestFocus()
-
         getFragmentRouter().showSearch()
     }
 
     private fun hideSearch() {
         // TODO Delay the text clearing
         edit_search_query.text.clear()
-        edit_search_query.fadeOutGone()
-        text_search_hint.fadeIn()
+        edit_search_query.clearFocus()
 
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
         imm?.hideSoftInputFromWindow(edit_search_query.windowToken, 0)
@@ -382,7 +460,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun searchClicks() = card_search.clicks()
+    private fun searchClicks() = edit_search_query.focusChanges()
+        .filter { it }
         .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)
 
     private fun searchEvents() = edit_search_query
@@ -411,7 +490,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private fun enableRandomSelector() {
         layout_random_select.setOnClickListener {
-            viewModel.onRandomSelectClick()
+            withState(viewModel) { state ->
+                val selectedPart = state.parts?.first { it.selected }
+                viewModel.onRandomSelectClick(selectedPart!!)
+            }
         }
     }
 
@@ -426,6 +508,12 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         const val SPAN_COUNT_DEFAULT = 7
 
         const val CHILDREN_ABOVE_FOLD = 2
+
+        const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
+        const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"
+        const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"
+
+        const val TOP_LEVEL_SCREEN_ID_DEFAULT = TOP_LEVEL_SCREEN_ID_GAME
 
         fun newInstance() = HudFragment()
     }

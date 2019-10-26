@@ -10,6 +10,8 @@
 
     <color name="divider">#cccccc</color>
 
+    <color name="gray_medium">#aaaaaa</color>
+
     <color name="navbarTranslucent">#33000000</color>
 
 </resources>

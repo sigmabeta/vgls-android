@@ -12,23 +12,4 @@
         android:layout_gravity="center"
         />
 
-    <ProgressBar
-        android:id="@+id/progress_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/text_error_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="sans-serif-condensed-light"
-        android:gravity="center"
-        android:text="@string/error_image_load"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/text_gray"
-        android:visibility="gone" />
-
 </FrameLayout>

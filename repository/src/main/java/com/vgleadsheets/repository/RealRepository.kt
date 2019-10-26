@@ -5,6 +5,7 @@ import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.alias.ComposerAliasEntity
 import com.vgleadsheets.model.alias.GameAliasEntity
+import com.vgleadsheets.model.composer.ApiComposer
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
@@ -82,7 +83,7 @@ class RealRepository constructor(
         .getSongsForGame(gameId)
         .map { songEntities ->
             songEntities.map { songEntity ->
-                val parts = if (withParts) getPartsForSong(songEntity) else null
+                val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
                 val composers = if (withComposers) getComposersForSong(songEntity) else null
                 songEntity.toSong(composers, parts)
             }
@@ -97,29 +98,32 @@ class RealRepository constructor(
             .map { songEntities ->
                 songEntities.map { songEntity ->
                     val composers = null
-                    val parts = if (withParts) getPartsForSong(songEntity) else null
+                    val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
                     songEntity.toSong(composers, parts)
                 }
             }
 
-    override fun getSong(songId: Long): Observable<Song> = songDao
+    override fun getPartsForSong(songId: Long, withPages: Boolean) =
+        getPartsForSongImpl(songId, withPages)
+
+    override fun getSong(
+        songId: Long,
+        withParts: Boolean,
+        withComposers: Boolean
+    ): Observable<Song> = songDao
         .getSong(songId)
         .map {
-            val parts = partDao
-                .getPartsForSongId(songId)
-                .map { partEntity ->
-                    val pages = getPagesForPart(partEntity)
-                    partEntity.toPart(pages)
-                }
-            it.toSong(null, parts)
+            val composers = if (withComposers) getComposersForSong(it) else null
+            val parts = if (withParts) getPartsForSongSync(it.id) else null
+            it.toSong(composers, parts)
         }
 
-    override fun getAllSongs(withComposers: Boolean) = songDao
+    override fun getAllSongs(withComposers: Boolean, withParts: Boolean) = songDao
         .getAll()
         .map { songEntities ->
             songEntities.map { songEntity ->
                 val composers = if (withComposers) getComposersForSong(songEntity) else null
-                val parts = getPartsForSong(songEntity)
+                val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
                 songEntity.toSong(composers, parts)
             }
         }
@@ -146,10 +150,8 @@ class RealRepository constructor(
         .searchSongsByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .map { songEntities ->
             songEntities.map {
-                val parts = getPartsForSong(it)
-                val composers = getComposersForSong(it)
-
-                it.toSong(composers, parts)
+                val parts = getPartsForSongSync(it.id)
+                it.toSong(null, parts)
             }
         }
 
@@ -185,7 +187,11 @@ class RealRepository constructor(
                     val game = response.results[0]
 
                     giantBombId = game.id
-                    photoUrl = game.image.original_url
+                    photoUrl = if (game.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
+                        game.image.original_url
+                    } else {
+                        null
+                    }
 
                     val aliasEntities = game.aliases
                         ?.split('\n')
@@ -219,7 +225,11 @@ class RealRepository constructor(
                     val composer = response.results[0]
 
                     giantBombId = composer.id
-                    photoUrl = composer.image.original_url
+                    photoUrl = if (composer.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
+                        composer.image.original_url
+                    } else {
+                        null
+                    }
 
                     val aliasEntities = composer.aliases
                         ?.split('\n')
@@ -292,21 +302,21 @@ class RealRepository constructor(
     private fun getSongsForGameEntity(gameEntity: GameEntity, withSongs: Boolean = true) =
         songDao.getSongsForGameSync(gameEntity.id)
             .map { songEntity ->
-                val parts = if (withSongs) getPartsForSong(songEntity) else null
+                val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
                 songEntity.toSong(null, parts)
             }
 
     private fun getSongsForGameAlias(gameAliasEntity: GameAliasEntity, withSongs: Boolean = true) =
         songDao.getSongsForGameSync(gameAliasEntity.gameId)
             .map { songEntity ->
-                val parts = if (withSongs) getPartsForSong(songEntity) else null
+                val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
                 songEntity.toSong(null, parts)
             }
 
     private fun getSongsForComposer(composerEntity: ComposerEntity, withSongs: Boolean = true) =
         songComposerDao.getSongsForComposerSync(composerEntity.id)
             .map { songEntity ->
-                val parts = if (withSongs) getPartsForSong(songEntity) else null
+                val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
                 songEntity.toSong(null, parts)
             }
 
@@ -316,16 +326,26 @@ class RealRepository constructor(
     ) =
         songComposerDao.getSongsForComposerSync(composerAliasEntity.composerId)
             .map { songEntity ->
-                val parts = if (withSongs) getPartsForSong(songEntity) else null
+                val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
                 songEntity.toSong(null, parts)
             }
 
-    private fun getPartsForSong(songEntity: SongEntity, withPages: Boolean = true) =
-        partDao.getPartsForSongId(songEntity.id)
-            .map { partEntity ->
+    // TODO Merge this and the below method.
+    private fun getPartsForSongSync(songId: Long, withPages: Boolean = true) = partDao
+        .getPartsForSongIdSync(songId)
+        .map { partEntity ->
+            val pages = if (withPages) getPagesForPart(partEntity) else null
+            partEntity.toPart(pages)
+        }
+
+    private fun getPartsForSongImpl(songId: Long, withPages: Boolean = true) = partDao
+        .getPartsForSongId(songId)
+        .map { partEntities ->
+            partEntities.map { partEntity ->
                 val pages = if (withPages) getPagesForPart(partEntity) else null
                 partEntity.toPart(pages)
             }
+        }
 
     private fun getPagesForPart(partEntity: PartEntity) =
         pageDao.getPagesForPartId(partEntity.id)
@@ -379,8 +399,10 @@ class RealRepository constructor(
             apiGames.forEach { apiGame ->
                 apiGame.songs.forEach { apiSong ->
                     apiSong.composers.forEach { apiComposer ->
-                        val songComposerJoin =
-                            SongComposerJoin(apiSong.id, apiComposer.id)
+                        val songComposerJoin = SongComposerJoin(
+                            apiSong.id,
+                            apiComposer.id + ApiComposer.ID_OFFSET
+                        )
                         songComposerJoins.add(songComposerJoin)
 
                         val composerEntity = apiComposer.toComposerEntity()
@@ -416,7 +438,7 @@ class RealRepository constructor(
                     }
 
                     val songEntity = apiSong.toSongEntity(
-                        apiGame.game_id,
+                        apiGame.game_id + VglsApiGame.ID_OFFSET,
                         apiGame.game_name
                     )
 
@@ -449,6 +471,9 @@ class RealRepository constructor(
         const val URL_SEPARATOR_FOLDER = "/"
         const val URL_SEPARATOR_NUMBER = "-"
         const val URL_FILE_EXT_PNG = ".png"
+
+        const val GB_URL_IMAGE_NOT_FOUND = "https://www.giantbomb.com/api/image/original/" +
+                "3026329-gb_default-16_9.png"
 
         val AGE_THRESHOLD = Duration.ofMinutes(60).toMillis()
     }

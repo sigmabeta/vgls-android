@@ -1,11 +1,13 @@
 package com.vgleadsheets.network.di
 
+import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vgleadsheets.network.BuildConfig
 import com.vgleadsheets.network.GiantBombApi
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides
+import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -13,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -43,11 +46,10 @@ class NetworkModule {
     @Provides
     @Singleton
     @Named("VglsOkHttp")
-    internal fun provideVglsOkClient() = if (BuildConfig.DEBUG) {
-        val debugger = StethoInterceptor()
-        val logger = HttpLoggingInterceptor()
-
-        logger.level = HttpLoggingInterceptor.Level.BODY
+    internal fun provideVglsOkClient(
+        @Named("HttpLoggingInterceptor") logger: Interceptor,
+        @Named("StethoInterceptor") debugger: Interceptor
+    ) = if (BuildConfig.DEBUG) {
         OkHttpClient.Builder()
             .addNetworkInterceptor(logger)
             .addNetworkInterceptor(debugger)
@@ -58,10 +60,31 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @Named("PicassoOkHttp")
+    internal fun providePicassoOkClient(
+        context: Context,
+        @Named("HttpLoggingInterceptor") logger: Interceptor,
+        @Named("StethoInterceptor") debugger: Interceptor,
+        @Named("CacheInterceptor") cacher: Interceptor
+    ) = if (BuildConfig.DEBUG) {
+        OkHttpClient.Builder()
+            .cache(Cache(File(context.cacheDir.absolutePath, "okhttp"), CACHE_SIZE_BYTES))
+            .addNetworkInterceptor(logger)
+            .addNetworkInterceptor(debugger)
+            .addNetworkInterceptor(cacher)
+            .build()
+    } else {
+        OkHttpClient()
+    }
+
+    @Provides
+    @Singleton
     @Named("GiantBombOkHttp")
     internal fun provideGiantBombOkClient(
         @Named("GiantBombApiKeyInterceptor") keyInterceptor: Interceptor,
-        @Named("GiantBombJsonInterceptor") formatInterceptor: Interceptor
+        @Named("GiantBombJsonInterceptor") formatInterceptor: Interceptor,
+        @Named("HttpLoggingInterceptor") logger: Interceptor,
+        @Named("StethoInterceptor") debugger: Interceptor
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
 
@@ -69,10 +92,6 @@ class NetworkModule {
         builder.addNetworkInterceptor(formatInterceptor)
 
         return if (BuildConfig.DEBUG) {
-            val debugger = StethoInterceptor()
-            val logger = HttpLoggingInterceptor()
-
-            logger.level = HttpLoggingInterceptor.Level.BODY
             builder
                 .addNetworkInterceptor(logger)
                 .addNetworkInterceptor(debugger)
@@ -85,6 +104,29 @@ class NetworkModule {
     @Provides
     @Named("GiantBombApiKey")
     internal fun provideGiantBombApiKey() = BuildConfig.GiantBombApiKey
+
+    @Provides
+    @Named("StethoInterceptor")
+    internal fun provideStethoInterceptor(): Interceptor = StethoInterceptor()
+
+    @Provides
+    @Named("HttpLoggingInterceptor")
+    internal fun provideHttpLoggingInterceptor(): Interceptor {
+        val logger = HttpLoggingInterceptor()
+        logger.level = HttpLoggingInterceptor.Level.BODY
+        return logger
+    }
+
+    @Provides
+    @Named("CacheInterceptor")
+    internal fun provideCacheInterceptor() = object : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val originalResponse = chain.proceed(chain.request())
+            return originalResponse.newBuilder()
+                .header("Cache-Control", "max-age=" + CACHE_MAX_AGE)
+                .build()
+        }
+    }
 
     @Provides
     @Named("GiantBombJsonInterceptor")
@@ -153,4 +195,9 @@ class NetworkModule {
         .addConverterFactory(converterFactory)
         .build()
         .create(GiantBombApi::class.java)
+
+    companion object {
+        const val CACHE_SIZE_BYTES = 100000000L
+        const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
+    }
 }

@@ -13,6 +13,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
@@ -21,24 +22,31 @@ import java.util.concurrent.TimeUnit
 @Suppress("TooManyFunctions")
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
-    private val repository: Repository
+    private val repository: Repository,
+    private val storage: Storage
 ) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
     init {
-        resetAvailableParts()
+        checkSavedPartSelection()
         checkLastUpdateTime()
         checkForUpdate()
     }
 
-    fun onMenuClick() {
-        setState {
-            return@setState if (menuExpanded) {
-                copy(menuExpanded = false)
-            } else {
-                copy(menuExpanded = true)
-            }
+    fun alwaysShowBack() = setState { copy(alwaysShowBack = true) }
+
+    fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }
+
+    fun onMenuClick() = withState {
+        if (it.menuExpanded) {
+            hideMenu()
+        } else {
+            showMenu()
         }
+    }
+
+    fun onMenuBackPress() {
+        hideMenu()
     }
 
     fun onMenuAction() {
@@ -126,10 +134,15 @@ class HudViewModel @AssistedInject constructor(
         stopTimer()
     }
 
-    fun onRandomSelectClick() {
+    fun onRandomSelectClick(selectedPart: PartSelectorItem) {
         repository
             .getAllSongs()
             .firstOrError()
+            .map { songs ->
+                songs.filter { song ->
+                    song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+                }
+            }
             .map { it.random() }
             .execute {
                 copy(random = it)
@@ -138,6 +151,32 @@ class HudViewModel @AssistedInject constructor(
 
     fun clearRandom() = setState {
         copy(random = Uninitialized)
+    }
+
+    private fun hideMenu() = setState { copy(menuExpanded = false) }
+
+    private fun showMenu() = setState { copy(menuExpanded = true) }
+
+    private fun checkSavedPartSelection() = withState {
+        storage.getSavedSelectedPart().subscribe(
+            {
+                val selection = if (it.isNullOrEmpty()) {
+                    "C"
+                } else {
+                    it
+                }
+
+                setState {
+                    copy(parts = PartSelectorItem.getDefaultPartPickerItems(selection))
+                }
+            },
+            {
+                Timber.w("No part selection found, going with default.")
+                setState {
+                    copy(parts = PartSelectorItem.getDefaultPartPickerItems("C"))
+                }
+            }
+        ).disposeOnClear()
     }
 
     private fun checkLastUpdateTime() = repository.getLastUpdateTime()

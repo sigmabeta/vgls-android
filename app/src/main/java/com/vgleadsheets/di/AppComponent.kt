@@ -2,9 +2,11 @@ package com.vgleadsheets.di
 
 import com.vgleadsheets.VglsApplication
 import com.vgleadsheets.database.di.DatabaseModule
+import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.di.NetworkModule
 import com.vgleadsheets.repository.di.RepositoryModule
+import com.vgleadsheets.storage.di.StorageModule
 import com.vgleadsheets.tracking.TrackerModule
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -19,7 +21,9 @@ import javax.inject.Singleton
         ActivityBindingModule::class,
         RepositoryModule::class,
         DatabaseModule::class,
+        ImageModule::class,
         NetworkModule::class,
+        StorageModule::class,
         TrackerModule::class]
 )
 interface AppComponent {

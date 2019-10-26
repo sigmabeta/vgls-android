@@ -28,6 +28,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_search.list_results
+import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -81,43 +82,53 @@ class SearchFragment : VglsFragment(),
 
     override fun getLayoutId() = R.layout.fragment_search
 
-    override fun invalidate() {
-        withState(hudViewModel, viewModel) { hudState, localState ->
-            val selectedPart = hudState.parts?.first { it.selected }
+    override fun invalidate() = withState(hudViewModel, viewModel) { hudState, localState ->
+        hudViewModel.alwaysShowBack()
 
-            if (selectedPart == null) {
-                showError("No part selected.")
+        val selectedPart = hudState.parts?.first { it.selected }
+
+        if (selectedPart == null) {
+            showError("No part selected.")
+            return@withState
+        }
+
+        // TODO is this still necessary?
+        // Sanity check - while exiting this screen, we might get an update due
+        // to clearing the text box, to which we respond by clearing the text box.
+        if (hudState.searchVisible) {
+            val query = hudState.searchQuery
+
+            if (query.isNullOrEmpty()) {
+                viewModel.onQueryClear()
+                adapter.submitList(
+                    listOf(
+                        SearchEmptyStateListModel()
+                    )
+                )
                 return@withState
             }
 
-            // TODO is this still necessary?
-            // Sanity check - while exiting this screen, we might get an update due
-            // to clearing the text box, to which we respond by clearing the text box.
-            if (hudState.searchVisible) {
-                val query = hudState.searchQuery
-
-                if (query.isNullOrEmpty()) {
-                    adapter.submitList(
-                        arrayListOf<ListModel>(
-                            SearchEmptyStateListModel()
-                        )
+            if (query.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
+                adapter.submitList(
+                    listOf(
+                        ErrorStateListModel(getString(R.string.error_search_stickerbrush))
                     )
-                    return@withState
-                }
-
-                if (query != localState.query) {
-                    onSearchQueryEntered(query)
-                }
-
-                val listModels = constructList(
-                    localState.songs,
-                    localState.games,
-                    localState.composers,
-                    selectedPart
                 )
-
-                adapter.submitList(listModels)
+                return@withState
             }
+
+            if (query != localState.query) {
+                onSearchQueryEntered(query)
+            }
+
+            val listModels = constructList(
+                localState.songs,
+                localState.games,
+                localState.composers,
+                selectedPart
+            )
+
+            adapter.submitList(listModels)
         }
     }
 

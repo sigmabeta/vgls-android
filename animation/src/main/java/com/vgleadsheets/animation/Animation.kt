@@ -2,9 +2,14 @@
 
 package com.vgleadsheets.animation
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator.INFINITE
+import android.animation.ValueAnimator.REVERSE
 import android.util.Pair
 import android.view.View
 import android.view.ViewPropertyAnimator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
@@ -16,11 +21,13 @@ const val DURATION_X_QUICK = 100L
 const val DURATION_XX_QUICK = 50L
 
 private const val ALPHA_OPAQUE = 1.0f
+private const val ALPHA_SLIGHTLY_TRANSPARENT = 0.8f
 private const val ALPHA_SEMI_TRANSPARENT = 0.6f
 private const val ALPHA_VERY_TRANSPARENT = 0.4f
 private const val ALPHA_TRANSPARENT = 0.0f
 
 private const val SCALE_UNITY = 1.0f
+private const val SCALE_SLIGHTLY_SMALLER = 0.95f
 private const val SCALE_NOTHING = 0.0f
 
 const val TRANSLATION_CENTER = 0.0f
@@ -29,6 +36,7 @@ private const val INTERPOLATOR_FACTOR = 2.0f
 
 val ACCELERATE = AccelerateInterpolator(INTERPOLATOR_FACTOR)
 val DECELERATE = DecelerateInterpolator(INTERPOLATOR_FACTOR)
+val ACCEL_DECEL = AccelerateDecelerateInterpolator()
 
 fun View.slideViewUpOffscreen(): ViewPropertyAnimator {
     return animate()
@@ -152,4 +160,42 @@ fun removeNullViewPairs(vararg views: Pair<View, String>?): Array<Pair<View, Str
     }
 
     return viewsList.toTypedArray()
+}
+
+fun View.getPulseAnimator(seed: Int): AnimatorSet {
+    val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE, ALPHA_SLIGHTLY_TRANSPARENT)
+    val scaleX = ObjectAnimator.ofFloat(this, View.SCALE_X, SCALE_UNITY, SCALE_SLIGHTLY_SMALLER)
+    val scaleY = ObjectAnimator.ofFloat(this, View.SCALE_Y, SCALE_UNITY, SCALE_SLIGHTLY_SMALLER)
+
+    val animatorList = listOf(alpha, scaleX, scaleY)
+
+    animatorList.forEach {
+        it.repeatMode = REVERSE
+        it.repeatCount = INFINITE
+        it.duration = DURATION_XSLOW + seed
+        it.interpolator = ACCEL_DECEL
+    }
+
+    val animatorSet = AnimatorSet()
+    animatorSet.playTogether(animatorList)
+
+    return animatorSet
+}
+
+fun View.getEndPulseAnimator(): AnimatorSet {
+    val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE)
+    val scaleX = ObjectAnimator.ofFloat(this, View.SCALE_X, SCALE_UNITY)
+    val scaleY = ObjectAnimator.ofFloat(this, View.SCALE_Y, SCALE_UNITY)
+
+    val animatorList = listOf(alpha, scaleX, scaleY)
+
+    animatorList.forEach {
+        it.duration = DURATION_X_QUICK
+        it.interpolator = ACCEL_DECEL
+    }
+
+    val animatorSet = AnimatorSet()
+    animatorSet.playTogether(animatorList)
+
+    return animatorSet
 }
