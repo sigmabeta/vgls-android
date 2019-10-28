@@ -1,5 +1,6 @@
 package com.vgleadsheets.main
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentTransaction
@@ -22,6 +23,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.toplevel
 import javax.inject.Inject
+
 
 @Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
@@ -53,7 +55,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     }
 
     override fun showSearch() {
-        showFragmentSimple(SearchFragment.newInstance())
+        showFragmentSimple(SearchFragment.newInstance(), false)
     }
 
     override fun showGameList() {
@@ -115,15 +117,22 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
-    private fun showFragmentSimple(fragment: VglsFragment) {
+    private fun showFragmentSimple(fragment: VglsFragment, blockSearchFocus: Boolean = true) {
         if (getDisplayedFragment().getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
             supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)
                 .addToBackStack(null)
                 .commit()
+
+            // TODO Oofsville, this is a hack for the ages.
+            if (blockSearchFocus && doesDeviceHaveFocusGlitch()) {
+                getHudFragment().onScreenSwitch()
+            }
         }
     }
+
+    private fun doesDeviceHaveFocusGlitch() = Build.VERSION.SDK_INT < Build.VERSION_CODES.P
 
     private fun getDisplayedFragment() =
         supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment

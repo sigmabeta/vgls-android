@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.animation.ValueAnimator.REVERSE
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.view.View.SCALE_Y
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -16,6 +17,7 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.core.os.postDelayed
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.mvrx.Fail
@@ -89,6 +91,15 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private val menuListener = View.OnClickListener { onMenuClick() }
 
     private var randomAnimation: ObjectAnimator? = null
+
+    // TODO Oofsville, this is a hack for the ages.
+    fun onScreenSwitch() {
+        edit_search_query.isFocusable = false
+        Handler().postDelayed(33) {
+            edit_search_query.isFocusableInTouchMode = true
+            edit_search_query.isFocusable = true
+        }
+    }
 
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
