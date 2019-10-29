@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.animation.ValueAnimator.REVERSE
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.view.View.SCALE_Y
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -16,6 +17,7 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.core.os.postDelayed
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.mvrx.Fail
@@ -73,9 +75,6 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 class HudFragment : VglsFragment(), PartListModel.ClickListener {
     @Inject
-    lateinit var hudViewModelFactory: HudViewModel.Factory
-
-    @Inject
     lateinit var storage: Storage
 
     private val viewModel: HudViewModel by activityViewModel()
@@ -89,6 +88,15 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private val menuListener = View.OnClickListener { onMenuClick() }
 
     private var randomAnimation: ObjectAnimator? = null
+
+    // TODO Oofsville, this is a hack for the ages.
+    fun onScreenSwitch() {
+        edit_search_query.isFocusable = false
+        Handler().postDelayed(DELAY_TWO_FRAMES) {
+            edit_search_query.isFocusableInTouchMode = true
+            edit_search_query.isFocusable = true
+        }
+    }
 
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
@@ -508,6 +516,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         const val SPAN_COUNT_DEFAULT = 7
 
         const val CHILDREN_ABOVE_FOLD = 2
+
+        const val DELAY_TWO_FRAMES = 33L
 
         const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
         const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"

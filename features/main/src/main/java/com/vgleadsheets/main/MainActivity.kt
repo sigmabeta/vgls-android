@@ -1,5 +1,6 @@
 package com.vgleadsheets.main
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentTransaction
@@ -25,15 +26,15 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
-    HudViewModel.HudContainer {
+    HudViewModel.HudViewModelFactoryProvider {
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-    override fun androidInjector() = androidInjector
+    @Inject
+    override lateinit var hudViewModelFactory: HudViewModel.Factory
 
-    override fun getHudFragment() =
-        supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
+    override fun androidInjector() = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.VglsImmersive)
@@ -53,7 +54,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     }
 
     override fun showSearch() {
-        showFragmentSimple(SearchFragment.newInstance())
+        showFragmentSimple(SearchFragment.newInstance(), false)
     }
 
     override fun showGameList() {
@@ -115,15 +116,25 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
-    private fun showFragmentSimple(fragment: VglsFragment) {
+    private fun showFragmentSimple(fragment: VglsFragment, blockSearchFocus: Boolean = true) {
         if (getDisplayedFragment().getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
             supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)
                 .addToBackStack(null)
                 .commit()
+
+            // TODO Oofsville, this is a hack for the ages.
+            if (blockSearchFocus && doesDeviceHaveFocusGlitch()) {
+                getHudFragment().onScreenSwitch()
+            }
         }
     }
+
+    private fun doesDeviceHaveFocusGlitch() = Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+
+    private fun getHudFragment() =
+        supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
 
     private fun getDisplayedFragment() =
         supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment
