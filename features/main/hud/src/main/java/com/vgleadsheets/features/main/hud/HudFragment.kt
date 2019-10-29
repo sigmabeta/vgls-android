@@ -92,7 +92,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     // TODO Oofsville, this is a hack for the ages.
     fun onScreenSwitch() {
         edit_search_query.isFocusable = false
-        Handler().postDelayed(33) {
+        Handler().postDelayed(DELAY_TWO_FRAMES) {
             edit_search_query.isFocusableInTouchMode = true
             edit_search_query.isFocusable = true
         }
@@ -516,6 +516,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         const val SPAN_COUNT_DEFAULT = 7
 
         const val CHILDREN_ABOVE_FOLD = 2
+
+        const val DELAY_TWO_FRAMES = 33L
 
         const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
         const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"

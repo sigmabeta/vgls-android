@@ -24,7 +24,6 @@ import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.toplevel
 import javax.inject.Inject
 
-
 @Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     HudViewModel.HudViewModelFactoryProvider {
