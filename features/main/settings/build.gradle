@@ -1,0 +1,28 @@
+// Uncomment whichever of these plugins you need (for a UI feature, probably both)
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+dependencies {
+    implementation project(path: ':repository')
+    implementation project(path: ':recyclerview')
+    implementation project(path: ':ui-core')
+    implementation project(path: ':ui-components')
+
+    // RxJava2 libs
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    // AssistedInject Annotation Processors
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
+}
