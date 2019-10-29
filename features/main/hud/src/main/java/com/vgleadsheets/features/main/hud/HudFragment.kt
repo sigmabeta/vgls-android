@@ -75,9 +75,6 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 class HudFragment : VglsFragment(), PartListModel.ClickListener {
     @Inject
-    lateinit var hudViewModelFactory: HudViewModel.Factory
-
-    @Inject
     lateinit var storage: Storage
 
     private val viewModel: HudViewModel by activityViewModel()

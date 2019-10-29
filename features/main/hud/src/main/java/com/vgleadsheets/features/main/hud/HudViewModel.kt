@@ -205,8 +205,8 @@ class HudViewModel @AssistedInject constructor(
         fun create(initialState: HudState): HudViewModel
     }
 
-    interface HudContainer {
-        fun getHudFragment(): HudFragment
+    interface HudViewModelFactoryProvider {
+        var hudViewModelFactory: Factory
     }
 
     companion object : MvRxViewModelFactory<HudViewModel, HudState> {
@@ -215,9 +215,8 @@ class HudViewModel @AssistedInject constructor(
         override fun create(viewModelContext: ViewModelContext, state: HudState): HudViewModel? {
             val activity =
                 (viewModelContext as ActivityViewModelContext).activity<FragmentActivity>()
-            val getter = activity as HudContainer
-            val fragment = getter.getHudFragment()
-            return fragment.hudViewModelFactory.create(state)
+            val provider = activity as HudViewModelFactoryProvider
+            return provider.hudViewModelFactory.create(state)
         }
     }
 }

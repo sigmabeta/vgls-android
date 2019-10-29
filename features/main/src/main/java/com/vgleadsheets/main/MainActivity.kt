@@ -27,15 +27,15 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
-    HudViewModel.HudContainer {
+    HudViewModel.HudViewModelFactoryProvider {
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-    override fun androidInjector() = androidInjector
+    @Inject
+    override lateinit var hudViewModelFactory: HudViewModel.Factory
 
-    override fun getHudFragment() =
-        supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
+    override fun androidInjector() = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.VglsImmersive)
@@ -133,6 +133,9 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     }
 
     private fun doesDeviceHaveFocusGlitch() = Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+
+    private fun getHudFragment() =
+        supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
 
     private fun getDisplayedFragment() =
         supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment
