@@ -61,6 +61,7 @@ import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_compos
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_game
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_random_select
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_refresh
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_settings
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.list_parts
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.progress_hud
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.text_update_time
@@ -147,6 +148,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         layout_by_game.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_GAME) }
         layout_by_composer.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_COMPOSER) }
         layout_all_sheets.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_SONG) }
+        layout_settings.setOnClickListener { showScreen(MODAL_SCREEN_ID_SETTINGS, false) }
         layout_refresh.setOnClickListener { onRefreshClick() }
 
         enableRandomSelector()
@@ -272,6 +274,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             TOP_LEVEL_SCREEN_ID_GAME -> getFragmentRouter().showGameList()
             TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList()
             TOP_LEVEL_SCREEN_ID_SONG -> getFragmentRouter().showAllSheets()
+            MODAL_SCREEN_ID_SETTINGS -> getFragmentRouter().showSettings()
             else -> getFragmentRouter().showGameList()
         }
 
@@ -430,6 +433,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             layout_by_composer.fadeIn()
             layout_all_sheets.fadeIn()
             layout_random_select.fadeIn()
+            layout_settings.fadeIn()
             layout_refresh.fadeIn()
 
             val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
@@ -452,6 +456,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             layout_by_composer.fadeOutGone()
             layout_all_sheets.fadeOutGone()
             layout_random_select.fadeOutGone()
+            layout_settings.fadeOutGone()
             layout_refresh.fadeOutGone()
 
             val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
@@ -524,6 +529,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"
 
         const val TOP_LEVEL_SCREEN_ID_DEFAULT = TOP_LEVEL_SCREEN_ID_GAME
+
+        const val MODAL_SCREEN_ID_SETTINGS = "SETTINGS"
 
         fun newInstance() = HudFragment()
     }

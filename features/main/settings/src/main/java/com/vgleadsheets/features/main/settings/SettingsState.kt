@@ -1,10 +1,9 @@
 package com.vgleadsheets.features.main.settings
 
+import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
-import com.vgleadsheets.args.IdArgs
+import com.airbnb.mvrx.Uninitialized
 
 data class SettingsState(
-    val settingsId: Long
-) : MvRxState {
-    constructor(idArgs: IdArgs) : this(idArgs.id)
-}
+    val settings: Async<List<String>> = Uninitialized
+) : MvRxState

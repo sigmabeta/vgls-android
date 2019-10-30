@@ -33,18 +33,17 @@
     </LinearLayout>
 
     <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:indeterminate="true"
         android:id="@+id/progress_hud"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="16dp"
         android:layout_marginTop="-8dp"
         android:layout_marginBottom="-8dp"
         android:alpha="0.0"
-        tools:alpha="1.0"
+        android:indeterminate="true"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:alpha="1.0"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/layout_by_game"
@@ -164,6 +163,35 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.0"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:alpha="1.0"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_settings_black_24dp"
+            android:tint="@android:color/tertiary_text_dark" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:paddingStart="@dimen/margin_medium"
+            android:text="@string/label_settings"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/tertiary_text_dark" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/layout_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -200,7 +228,6 @@
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/hint_text"
             android:textStyle="italic"
-            tools:text="Updated Sept 27, 2019"
-            />
+            tools:text="Updated Sept 27, 2019" />
     </LinearLayout>
 </LinearLayout>

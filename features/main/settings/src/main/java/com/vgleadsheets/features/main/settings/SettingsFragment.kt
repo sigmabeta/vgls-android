@@ -3,17 +3,28 @@ package com.vgleadsheets.features.main.settings
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.components.CheckableListModel
+import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_settings.list_settings
 import javax.inject.Inject
 
-class SettingsFragment : VglsFragment() {
+class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
+    SingleTextListModel.Handler {
+    override fun onClicked(clicked: SingleTextListModel) {
+        showError("Unimplemented.")
+    }
+
+    override fun onClicked(clicked: CheckableListModel) {
+        showError("Unimplemented.")
+    }
+
     @Inject
     lateinit var settingsViewModelFactory: SettingsViewModel.Factory
 
@@ -36,23 +47,27 @@ class SettingsFragment : VglsFragment() {
         )
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
-
+    override fun invalidate() = withState(viewModel) { _ ->
+        val listModels = constructList()
+        adapter.submitList(listModels)
     }
 
     override fun getLayoutId() = R.layout.fragment_settings
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
+    private fun constructList(): List<ListModel> {
+        val sheetsOnString = "Sheets keep screen on"
+        val aboutString = "About"
+        return listOf(
+            SectionHeaderListModel("Sheets"),
+            CheckableListModel(sheetsOnString.hashCode().toLong(), sheetsOnString, false, this),
+            SectionHeaderListModel("Misc"),
+            SingleTextListModel(aboutString.hashCode().toLong(), aboutString, this)
+        )
+    }
+
     companion object {
-        fun newInstance(idArgs: IdArgs): SettingsFragment {
-            val fragment = SettingsFragment()
-
-            val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
-            fragment.arguments = args
-
-            return fragment
-        }
+        fun newInstance() = SettingsFragment()
     }
 }
