@@ -3,13 +3,22 @@ package com.vgleadsheets.features.main.settings
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.CheckableListModel
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
+import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_settings.list_settings
@@ -27,6 +36,8 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
 
     @Inject
     lateinit var settingsViewModelFactory: SettingsViewModel.Factory
+
+    private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: SettingsViewModel by fragmentViewModel()
 
@@ -47,8 +58,10 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
         )
     }
 
-    override fun invalidate() = withState(viewModel) { _ ->
-        val listModels = constructList()
+    override fun invalidate() = withState(viewModel) { state ->
+        hudViewModel.alwaysShowBack()
+
+        val listModels = constructList(state.settings)
         adapter.submitList(listModels)
     }
 
@@ -56,10 +69,20 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun constructList(): List<ListModel> {
+    private fun constructList(settings: Async<List<Boolean>>): List<ListModel> {
+        return when (settings) {
+            is Loading, Uninitialized -> createLoadingListModels()
+            is Fail -> createErrorListModels(settings.error)
+            is Success -> createSuccessListModels(settings())
+        }
+    }
+
+    private fun createSuccessListModels(settings: List<Boolean>): List<ListModel> {
+        val sheetsSection = createSection(settings, HEADER_ID_SHEET)
+        val miscSection = createMiscSection()
         val sheetsOnString = "Sheets keep screen on"
         val aboutString = "About"
-        return listOf(
+        listOf(
             SectionHeaderListModel("Sheets"),
             CheckableListModel(sheetsOnString.hashCode().toLong(), sheetsOnString, false, this),
             SectionHeaderListModel("Misc"),
@@ -67,7 +90,36 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
         )
     }
 
+    private fun createMiscSection(): List<ListModel> {
+
+    }
+
+    private fun createSection(
+        settings: List<Boolean>,
+        headerId: String
+    ): List<ListModel> {
+
+    }
+
+    private fun createErrorListModels(error: Throwable) =
+        listOf<>(ErrorStateListModel(error.message ?: "Unknown Error"))
+
+    private fun createLoadingListModels(): ArrayList<ListModel> {
+        val loadingModels = ArrayList<ListModel>(LOADING_ITEMS)
+
+        for (index in 0 until LOADING_ITEMS) {
+            loadingModels.add(
+                LoadingNameCaptionListModel(index)
+            )
+        }
+
+        return loadingModels
+    }
+
     companion object {
+        const val LOADING_ITEMS = 4
+
+        const val HEADER_ID_SHEET = "SHEET"
         fun newInstance() = SettingsFragment()
     }
 }

@@ -131,5 +131,10 @@ fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionList
     view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET).start()
 }
 
+@BindingAdapter("model")
+fun bindCheckableLoading(view: ConstraintLayout, model: LoadingCheckableListModel) {
+    view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET).start()
+}
+
 const val MULTIPLIER_LIST_POSITION = 100
 const val MAXIMUM_LOAD_OFFSET = 250

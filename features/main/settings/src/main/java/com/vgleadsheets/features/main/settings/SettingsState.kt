@@ -5,5 +5,5 @@ import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 
 data class SettingsState(
-    val settings: Async<List<String>> = Uninitialized
+    val settings: Async<List<Boolean>> = Uninitialized
 ) : MvRxState

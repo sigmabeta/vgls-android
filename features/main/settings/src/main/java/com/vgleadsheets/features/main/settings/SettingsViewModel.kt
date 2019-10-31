@@ -6,12 +6,22 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.storage.Storage
 
 class SettingsViewModel @AssistedInject constructor(
     @Assisted initialState: SettingsState,
-    private val repository: Repository
+    private val storage: Storage
 ) : MvRxViewModel<SettingsState>(initialState) {
+    init {
+        fetchSettings()
+    }
+
+    private fun fetchSettings() {
+        storage.getAllSettings()
+            .execute {
+                copy(settings = it)
+            }
+    }
 
     @AssistedInject.Factory
     interface Factory {
