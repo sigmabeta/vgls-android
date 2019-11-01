@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="section_sheets">Sheets</string>
+    <string name="section_misc">Misc</string>
+
+    <string name="label_link_about">About this app</string>
+</resources>

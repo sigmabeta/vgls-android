@@ -21,6 +21,7 @@ import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
+import com.vgleadsheets.storage.Setting
 import kotlinx.android.synthetic.main.fragment_settings.list_settings
 import javax.inject.Inject
 
@@ -31,7 +32,7 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
     }
 
     override fun onClicked(clicked: CheckableListModel) {
-        showError("Unimplemented.")
+        viewModel.setSetting(clicked.settingId, !clicked.checked)
     }
 
     @Inject
@@ -61,6 +62,9 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
     override fun invalidate() = withState(viewModel) { state ->
         hudViewModel.alwaysShowBack()
 
+        // To prevent flashing
+        if (state.settings is Loading) return@withState
+
         val listModels = constructList(state.settings)
         adapter.submitList(listModels)
     }
@@ -69,40 +73,67 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun constructList(settings: Async<List<Boolean>>): List<ListModel> {
+    private fun constructList(settings: Async<List<Setting>>): List<ListModel> {
         return when (settings) {
-            is Loading, Uninitialized -> createLoadingListModels()
+            is Uninitialized -> createLoadingListModels()
             is Fail -> createErrorListModels(settings.error)
             is Success -> createSuccessListModels(settings())
+            else -> throw IllegalStateException()
         }
     }
 
-    private fun createSuccessListModels(settings: List<Boolean>): List<ListModel> {
+    private fun createSuccessListModels(settings: List<Setting>): List<ListModel> {
         val sheetsSection = createSection(settings, HEADER_ID_SHEET)
-        val miscSection = createMiscSection()
-        val sheetsOnString = "Sheets keep screen on"
-        val aboutString = "About"
-        listOf(
-            SectionHeaderListModel("Sheets"),
-            CheckableListModel(sheetsOnString.hashCode().toLong(), sheetsOnString, false, this),
-            SectionHeaderListModel("Misc"),
-            SingleTextListModel(aboutString.hashCode().toLong(), aboutString, this)
-        )
+        val miscSection = createMiscSection(settings)
+
+        return sheetsSection + miscSection
     }
 
-    private fun createMiscSection(): List<ListModel> {
+    private fun createMiscSection(settings: List<Setting>): List<ListModel> {
+        val normalItems = createSection(settings, HEADER_ID_MISC)
+        val customItems = listOf(
+            SingleTextListModel(
+                R.string.label_link_about.toLong(),
+                getString(R.string.label_link_about),
+                this
+            )
+        )
 
+        return normalItems + customItems
     }
 
     private fun createSection(
-        settings: List<Boolean>,
+        settings: List<Setting>,
         headerId: String
     ): List<ListModel> {
+        val headerModels = listOf(
+            SectionHeaderListModel(
+                getSectionHeaderString(headerId)
+            )
+        )
 
+        val settingsModels = settings
+            .filter { it.settingId.startsWith(headerId) }
+            .map {
+                CheckableListModel(
+                    it.settingId,
+                    getString(it.displayStringId),
+                    it.value,
+                    this
+                )
+            }
+
+        return headerModels + settingsModels
+    }
+
+    private fun getSectionHeaderString(headerId: String) = when (headerId) {
+        HEADER_ID_SHEET -> getString(R.string.section_sheets)
+        HEADER_ID_MISC -> getString(R.string.section_misc)
+        else -> throw IllegalArgumentException()
     }
 
     private fun createErrorListModels(error: Throwable) =
-        listOf<>(ErrorStateListModel(error.message ?: "Unknown Error"))
+        listOf(ErrorStateListModel(error.message ?: "Unknown Error"))
 
     private fun createLoadingListModels(): ArrayList<ListModel> {
         val loadingModels = ArrayList<ListModel>(LOADING_ITEMS)
@@ -119,7 +150,9 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
     companion object {
         const val LOADING_ITEMS = 4
 
-        const val HEADER_ID_SHEET = "SHEET"
+        const val HEADER_ID_SHEET = "SETTING_SHEET"
+        const val HEADER_ID_MISC = "SETTING_MISC"
+
         fun newInstance() = SettingsFragment()
     }
 }

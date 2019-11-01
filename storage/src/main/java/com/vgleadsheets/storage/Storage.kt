@@ -11,7 +11,7 @@ interface Storage {
     fun saveSelectedPart(partId: String): Single<String>
 
     // Settings
-    fun getAllSettings(): Single<List<Boolean>>
-    fun getSettingSheetScreenOn(): Single<Boolean>
+    fun getAllSettings(): Single<List<Setting>>
+    fun getSettingSheetScreenOn(): Single<Setting>
     fun saveSettingSheetScreenOn(setting: Boolean): Single<String>
 }

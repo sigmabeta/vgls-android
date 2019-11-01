@@ -2,6 +2,7 @@ package com.vgleadsheets.components
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
@@ -132,7 +133,7 @@ fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionList
 }
 
 @BindingAdapter("model")
-fun bindCheckableLoading(view: ConstraintLayout, model: LoadingCheckableListModel) {
+fun bindCheckableLoading(view: LinearLayout, model: LoadingCheckableListModel) {
     view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET).start()
 }
 

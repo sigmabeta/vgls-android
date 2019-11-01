@@ -20,16 +20,24 @@ internal class SimpleStorage(val simpleStore: SimpleStore) : Storage {
 
     override fun getSettingSheetScreenOn() =
         Single.fromFuture(simpleStore.getString(KEY_SHEETS_KEEP_SCREEN_ON))
-            .map { it.toBoolean() }
+            .map {
+                Setting(
+                    KEY_SHEETS_KEEP_SCREEN_ON,
+                    R.string.label_setting_screen_on,
+                    it.toBoolean()
+                )
+            }
 
     override fun saveSettingSheetScreenOn(setting: Boolean) = Single.fromFuture(
         simpleStore.putString(KEY_SHEETS_KEEP_SCREEN_ON, setting.toString())
     )
 
-    override fun getAllSettings(): Single<List<Boolean>> = Single
+    override fun getAllSettings(): Single<List<Setting>> = Single
         .concat(
-            getSettingSheetScreenOn(),
-            getSettingSheetScreenOn()
+            // TODO Once there's actually more than one of these, we don't need the listOf call
+            listOf(
+                getSettingSheetScreenOn()
+            )
         )
         .toList()
 
