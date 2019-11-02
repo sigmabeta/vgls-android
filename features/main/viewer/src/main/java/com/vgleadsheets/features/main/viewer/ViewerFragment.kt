@@ -82,7 +82,6 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     override fun onStop() {
         super.onStop()
         stopScreenTimer()
-        getFragmentRouter().onScreenSwitch()
     }
 
     override fun onDestroy() {
@@ -125,6 +124,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun onBackPress() = withState(hudViewModel) { hudState ->
         if (hudState.hudVisible) {
+            getFragmentRouter().onScreenSwitch()
             return@withState false
         } else {
             hudViewModel.showHud()

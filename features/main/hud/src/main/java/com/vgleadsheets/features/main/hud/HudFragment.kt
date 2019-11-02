@@ -192,6 +192,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         } else {
             hideSearch()
             showSearchMenuButton()
+            onScreenSwitch()
         }
 
         if (state.menuExpanded) {
