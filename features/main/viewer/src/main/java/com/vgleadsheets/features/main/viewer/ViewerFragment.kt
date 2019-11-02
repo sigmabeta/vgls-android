@@ -74,6 +74,16 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         )
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.checkScreenSetting()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopScreenTimer()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         hudViewModel.showHud()
@@ -127,7 +137,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
-        val screenTimer = Observable.timer(15, TimeUnit.SECONDS)
+        val screenTimer = Observable.timer(10, TimeUnit.MINUTES)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {

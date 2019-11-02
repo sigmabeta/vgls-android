@@ -20,6 +20,13 @@ class ViewerViewModel @AssistedInject constructor(
         checkScreenSetting()
     }
 
+    fun checkScreenSetting() {
+        storage.getSettingSheetScreenOn()
+            .execute {
+                copy(screenOn = it)
+            }
+    }
+
     private fun fetchSong() = withState { state ->
         repository.getSong(state.songId)
             .execute { data ->
@@ -31,13 +38,6 @@ class ViewerViewModel @AssistedInject constructor(
         repository.getPartsForSong(state.songId)
             .execute {
                 copy(parts = it)
-            }
-    }
-
-    private fun checkScreenSetting() {
-        storage.getSettingSheetScreenOn()
-            .execute {
-                copy(screenOn = it)
             }
     }
 
