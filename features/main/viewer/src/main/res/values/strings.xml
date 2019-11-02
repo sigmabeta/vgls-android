@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snack_screen_off">The screen will power down soon.</string>
+    <string name="cta_snack_screen_off">Keep on</string>
+</resources>

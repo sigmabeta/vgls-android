@@ -6,6 +6,7 @@ import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.search.SearchFragment
+import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.main.MainActivity
@@ -33,6 +34,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeSearchFragmentInjector(): SearchFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeSettingsFragmentInjector(): SettingsFragment
 
     @FragmentScope
     @ContributesAndroidInjector

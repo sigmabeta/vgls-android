@@ -8,4 +8,6 @@ interface FragmentRouter {
     fun showSongListForComposer(composerId: Long)
     fun showComposerList()
     fun showAllSheets()
+    fun showSettings()
+    fun onScreenSwitch()
 }

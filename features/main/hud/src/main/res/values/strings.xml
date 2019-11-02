@@ -10,4 +10,5 @@
     <string name="label_refresh_date">Updated %1$s</string>
 
     <string name="date_never">Never</string>
+    <string name="label_settings">Settings</string>
 </resources>

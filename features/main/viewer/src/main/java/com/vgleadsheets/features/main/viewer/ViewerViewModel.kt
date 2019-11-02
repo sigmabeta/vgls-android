@@ -7,14 +7,24 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.storage.Storage
 
 class ViewerViewModel @AssistedInject constructor(
     @Assisted initialState: ViewerState,
-    private val repository: Repository
+    private val repository: Repository,
+    private val storage: Storage
 ) : MvRxViewModel<ViewerState>(initialState) {
     init {
         fetchSong()
         fetchParts()
+        checkScreenSetting()
+    }
+
+    fun checkScreenSetting() {
+        storage.getSettingSheetScreenOn()
+            .execute {
+                copy(screenOn = it)
+            }
     }
 
     private fun fetchSong() = withState { state ->

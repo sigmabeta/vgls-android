@@ -16,6 +16,7 @@ import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.search.SearchFragment
+import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import dagger.android.AndroidInjection
@@ -84,6 +85,10 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
             .commit()
     }
 
+    override fun showSettings() {
+        showFragmentSimple(SettingsFragment.newInstance())
+    }
+
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(
         GameFragment.newInstance(
             IdArgs(gameId)
@@ -108,6 +113,10 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         if (!getHudFragment().onBackPress() && !getDisplayedFragment().onBackPress()) {
             super.onBackPressed()
         }
+    }
+
+    override fun onScreenSwitch() {
+        getHudFragment().onScreenSwitch()
     }
 
     private fun clearBackStack() {

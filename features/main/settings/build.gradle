@@ -1,23 +1,17 @@
+// Uncomment whichever of these plugins you need (for a UI feature, probably both)
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(path: ':features:main:hud')
-
-    implementation project(path: ':repository')
     implementation project(path: ':recyclerview')
     implementation project(path: ':storage')
     implementation project(path: ':ui-core')
-
-    // Viewpager2
-    implementation "androidx.viewpager2:viewpager2:$viewpager_version"
+    implementation project(path: ':ui-components')
 
     // RxJava2 libs
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-
-    // AndroidX libs
-    implementation "androidx.room:room-runtime:$room_version"
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

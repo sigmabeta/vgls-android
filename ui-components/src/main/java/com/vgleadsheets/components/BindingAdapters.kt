@@ -2,6 +2,7 @@ package com.vgleadsheets.components
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
@@ -128,6 +129,11 @@ fun bindGiantBombIdTitle(
 
 @BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
+    view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET).start()
+}
+
+@BindingAdapter("model")
+fun bindCheckableLoading(view: LinearLayout, model: LoadingCheckableListModel) {
     view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET).start()
 }
 

@@ -65,6 +65,7 @@ class SearchFragment : VglsFragment(),
 
     override fun onBackPress(): Boolean {
         hudViewModel.exitSearch()
+        getFragmentRouter().onScreenSwitch()
         return false
     }
 

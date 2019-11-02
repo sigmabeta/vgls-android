@@ -2,6 +2,7 @@ package com.vgleadsheets.features.main.viewer
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
@@ -10,6 +11,7 @@ import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
+import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.components.SheetListModel
@@ -17,9 +19,13 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_viewer.list_sheets
 import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -34,6 +40,14 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     private val songArgs: SongArgs by args()
 
     private val adapter = ComponentAdapter()
+
+    private val timers = CompositeDisposable()
+
+    private var screenOffSnack: Snackbar? = null
+
+    private val onScreenOffSnackClick = View.OnClickListener {
+        postInvalidate()
+    }
 
     override fun onClicked() = withState(hudViewModel) { state ->
         if (state.hudVisible) {
@@ -60,6 +74,17 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         )
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.checkScreenSetting()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopScreenTimer()
+        getFragmentRouter().onScreenSwitch()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         hudViewModel.showHud()
@@ -69,6 +94,14 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
         hudViewModel.alwaysShowBack()
+
+        stopScreenTimer()
+        hideScreenOffSnackbar()
+
+        if (viewerState.screenOn is Success && viewerState.screenOn()?.value == true) {
+            setScreenOnLock()
+            startScreenTimer()
+        }
 
         if (hudState.hudVisible && !hudState.searchVisible) {
             hudViewModel.startHudTimer()
@@ -102,6 +135,52 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     override fun getLayoutId() = R.layout.fragment_viewer
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songArgs.songId}"
+
+    private fun startScreenTimer() {
+        Timber.v("Starting screen timer.")
+        val screenTimer = Observable.timer(TIMEOUT_SCREEN_OFF_MINUTES, TimeUnit.MINUTES)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    Timber.v("Screen timer expired.")
+                    clearScreenOnLock()
+                    screenOffSnack = showSnackbar(
+                        getString(R.string.snack_screen_off),
+                        onScreenOffSnackClick,
+                        R.string.cta_snack_screen_off,
+                        Snackbar.LENGTH_INDEFINITE
+                    )
+                },
+                {
+                    showError(
+                        "There was an error with the screen timer. Literally how" +
+                                "did you make this happen?"
+                    )
+                }
+            )
+
+        timers.add(screenTimer)
+    }
+
+    private fun stopScreenTimer() {
+        Timber.v("Clearing screen timer.")
+        timers.clear()
+    }
+
+    private fun setScreenOnLock() {
+        Timber.v("Setting screen-on lock.")
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    private fun clearScreenOnLock() {
+        Timber.v("Clearing screen-on lock.")
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    private fun hideScreenOffSnackbar() {
+        screenOffSnack?.dismiss()
+        screenOffSnack = null
+    }
 
     private fun showSheet(sheet: Song?, partSelection: PartSelectorItem) {
         if (sheet == null) {
@@ -143,6 +222,8 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     }
 
     companion object {
+        const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
+
         fun newInstance(sheetArgs: SongArgs): ViewerFragment {
             val fragment = ViewerFragment()
 
