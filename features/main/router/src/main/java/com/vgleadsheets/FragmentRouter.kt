@@ -9,4 +9,5 @@ interface FragmentRouter {
     fun showComposerList()
     fun showAllSheets()
     fun showSettings()
+    fun onScreenSwitch()
 }

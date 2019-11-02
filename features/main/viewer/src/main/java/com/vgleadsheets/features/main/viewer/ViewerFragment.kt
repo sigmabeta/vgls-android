@@ -82,6 +82,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     override fun onStop() {
         super.onStop()
         stopScreenTimer()
+        getFragmentRouter().onScreenSwitch()
     }
 
     override fun onDestroy() {

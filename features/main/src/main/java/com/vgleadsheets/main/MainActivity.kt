@@ -115,6 +115,10 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
+    override fun onScreenSwitch() {
+        getHudFragment().onScreenSwitch()
+    }
+
     private fun clearBackStack() {
         while (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
