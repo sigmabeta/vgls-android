@@ -32,7 +32,11 @@ abstract class VglsFragment : BaseMvRxFragment() {
         AndroidSupportInjection.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = inflater
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = inflater
         .inflate(getLayoutId(), container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,26 +53,40 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     protected open fun shouldTrackViews() = true
 
-    protected fun showError(error: Throwable, action: View.OnClickListener? = null, actionLabel: Int = 0) {
+    protected fun showError(
+        error: Throwable,
+        action: View.OnClickListener? = null,
+        actionLabel: Int = 0
+    ) {
         val message = error.message ?: error::class.simpleName ?: "Unknown Error"
         showError(message, action, actionLabel)
     }
 
-    protected fun showError(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
+    protected fun showError(
+        message: String,
+        action: View.OnClickListener? = null,
+        actionLabel: Int = 0
+    ) {
         Timber.e("Displayed error: $message")
         tracker.logError(message)
         showSnackbar(message, action, actionLabel)
     }
 
-    protected fun showSnackbar(message: String, action: View.OnClickListener? = null, actionLabel: Int = 0) {
-        val toplevel = view?.parent as? CoordinatorLayout ?: view ?: return
-        val snackbar = Snackbar.make(toplevel, message, Snackbar.LENGTH_LONG)
+    protected fun showSnackbar(
+        message: String,
+        action: View.OnClickListener? = null,
+        actionLabel: Int = 0,
+        length: Int = Snackbar.LENGTH_LONG
+    ): Snackbar {
+        val toplevel = view?.parent as? CoordinatorLayout ?: view ?: throw IllegalStateException()
+        val snackbar = Snackbar.make(toplevel, message, length)
 
         if (action != null && actionLabel > 0) {
             snackbar.setAction(actionLabel, action)
         }
 
         snackbar.show()
+        return snackbar
     }
 
     protected fun getFragmentRouter() = (activity as FragmentRouter)

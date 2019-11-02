@@ -6,6 +6,7 @@ dependencies {
 
     implementation project(path: ':repository')
     implementation project(path: ':recyclerview')
+    implementation project(path: ':storage')
     implementation project(path: ':ui-core')
 
     // Viewpager2
