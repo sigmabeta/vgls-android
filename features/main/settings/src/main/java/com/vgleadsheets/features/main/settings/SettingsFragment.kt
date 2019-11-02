@@ -25,6 +25,7 @@ import com.vgleadsheets.storage.Setting
 import kotlinx.android.synthetic.main.fragment_settings.list_settings
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
     SingleTextListModel.Handler {
     override fun onClicked(clicked: SingleTextListModel) {

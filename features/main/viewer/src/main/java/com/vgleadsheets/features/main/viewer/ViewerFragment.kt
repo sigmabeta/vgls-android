@@ -137,7 +137,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
-        val screenTimer = Observable.timer(10, TimeUnit.MINUTES)
+        val screenTimer = Observable.timer(TIMEOUT_SCREEN_OFF_MINUTES, TimeUnit.MINUTES)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -221,6 +221,8 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     }
 
     companion object {
+        const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
+
         fun newInstance(sheetArgs: SongArgs): ViewerFragment {
             val fragment = ViewerFragment()
 

@@ -20,7 +20,7 @@ class SettingsViewModel @AssistedInject constructor(
     fun setSetting(settingId: String, newValue: Boolean) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {
-            "SETTING_SHEET_KEEP_SCREEN_ON" ->storage.saveSettingSheetScreenOn(newValue)
+            "SETTING_SHEET_KEEP_SCREEN_ON" -> storage.saveSettingSheetScreenOn(newValue)
             else -> throw IllegalArgumentException()
         }
 
