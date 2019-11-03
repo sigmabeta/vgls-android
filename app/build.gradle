@@ -38,8 +38,8 @@ android {
 
         targetSdkVersion 29
 
-        versionCode computeVersionCode()
-        versionName computeVersionName()
+        versionCode 1
+        versionName "debug"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -65,6 +65,15 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "release") {
+            variant.outputs.each { output ->
+                output.versionCodeOverride = computeVersionCode()
+                output.versionNameOverride = computeVersionName()
+            }
         }
     }
 
