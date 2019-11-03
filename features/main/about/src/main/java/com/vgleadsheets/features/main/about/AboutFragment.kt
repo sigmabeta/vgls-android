@@ -21,7 +21,11 @@ class AboutFragment : VglsFragment(),
     private val hudViewModel: HudViewModel by existingViewModel()
 
     override fun onClicked(clicked: NameCaptionListModel) {
-        showError("Unimplemented.")
+        when (clicked.dataId) {
+            R.string.label_link_giantbomb.toLong() -> getFragmentRouter()
+                .goToWebUrl(getString(R.string.url_giantbomb))
+            else -> showError("Unimplemented.")
+        }
     }
 
     override fun onClicked(clicked: SingleTextListModel) {

@@ -10,5 +10,6 @@ interface FragmentRouter {
     fun showAllSheets()
     fun showSettings()
     fun showAbout()
+    fun goToWebUrl(url: String)
     fun onScreenSwitch()
 }

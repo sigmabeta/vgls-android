@@ -1,5 +1,7 @@
 package com.vgleadsheets.main
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -25,6 +27,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.toplevel
 import javax.inject.Inject
+
 
 @Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
@@ -92,6 +95,12 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
 
     override fun showAbout() {
         showFragmentSimple(AboutFragment.newInstance())
+    }
+
+    override fun goToWebUrl(url: String) {
+        val launcher = Intent(Intent.ACTION_VIEW)
+        launcher.data = Uri.parse(url)
+        startActivity(launcher)
     }
 
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(

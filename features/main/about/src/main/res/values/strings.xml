@@ -5,4 +5,5 @@
     <string name="label_link_licenses">Open-source libraries used</string>
 
     <string name="caption_link_giantbomb">Game and composer metadata provider</string>
+    <string name="url_giantbomb">https://www.giantbomb.com/</string>
 </resources>
