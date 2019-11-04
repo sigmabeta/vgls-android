@@ -1,4 +1,5 @@
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.jaredsburrows.license'
 
 if (checkShouldIncludeFirebase()) {
     apply plugin: 'com.google.firebase.firebase-perf'
