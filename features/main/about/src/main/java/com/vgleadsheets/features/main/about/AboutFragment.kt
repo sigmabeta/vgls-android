@@ -29,7 +29,10 @@ class AboutFragment : VglsFragment(),
     }
 
     override fun onClicked(clicked: SingleTextListModel) {
-        showError("Unimplemented.")
+        when (clicked.dataId) {
+            R.string.label_link_licenses.toLong() -> getFragmentRouter().showLicenseScreen()
+            else -> showError("Unimplemented.")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
