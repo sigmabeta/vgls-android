@@ -151,7 +151,8 @@ class RealRepository constructor(
         .map { songEntities ->
             songEntities.map {
                 val parts = getPartsForSongSync(it.id)
-                it.toSong(null, parts)
+                val composers = getComposersForSong(it)
+                it.toSong(composers, parts)
             }
         }
 
