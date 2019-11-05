@@ -44,7 +44,7 @@ class LicenseFragment : VglsFragment() {
                         return true
                     }
 
-                    return false;
+                    return false
                 }
             })
 
@@ -54,8 +54,7 @@ class LicenseFragment : VglsFragment() {
         }
     }
 
-    override fun invalidate() {
-    }
+    override fun invalidate() = Unit
 
     override fun getLayoutId() = R.layout.fragment_license
 

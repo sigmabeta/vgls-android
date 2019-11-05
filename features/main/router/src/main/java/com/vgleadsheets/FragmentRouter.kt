@@ -1,5 +1,6 @@
 package com.vgleadsheets
 
+@Suppress("TooManyFunctions")
 interface FragmentRouter {
     fun showGameList()
     fun showSongListForGame(gameId: Long)

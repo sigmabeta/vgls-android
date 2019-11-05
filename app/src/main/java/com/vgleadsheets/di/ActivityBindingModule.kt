@@ -15,7 +15,8 @@ import com.vgleadsheets.main.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-@Module()
+@Module
+@Suppress("TooManyFunctions")
 internal abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
