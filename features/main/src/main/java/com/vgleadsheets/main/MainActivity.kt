@@ -18,6 +18,7 @@ import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
@@ -101,6 +102,10 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         val launcher = Intent(Intent.ACTION_VIEW)
         launcher.data = Uri.parse(url)
         startActivity(launcher)
+    }
+
+    override fun showLicenseScreen() {
+        showFragmentSimple(LicenseFragment.newInstance())
     }
 
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(

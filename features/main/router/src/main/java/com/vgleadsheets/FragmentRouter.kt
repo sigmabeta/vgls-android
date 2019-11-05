@@ -11,5 +11,6 @@ interface FragmentRouter {
     fun showSettings()
     fun showAbout()
     fun goToWebUrl(url: String)
+    fun showLicenseScreen()
     fun onScreenSwitch()
 }
