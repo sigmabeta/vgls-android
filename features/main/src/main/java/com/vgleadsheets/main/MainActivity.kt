@@ -1,5 +1,7 @@
 package com.vgleadsheets.main
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -9,12 +11,14 @@ import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.SongArgs
+import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
@@ -87,6 +91,20 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
 
     override fun showSettings() {
         showFragmentSimple(SettingsFragment.newInstance())
+    }
+
+    override fun showAbout() {
+        showFragmentSimple(AboutFragment.newInstance())
+    }
+
+    override fun goToWebUrl(url: String) {
+        val launcher = Intent(Intent.ACTION_VIEW)
+        launcher.data = Uri.parse(url)
+        startActivity(launcher)
+    }
+
+    override fun showLicenseScreen() {
+        showFragmentSimple(LicenseFragment.newInstance())
     }
 
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(

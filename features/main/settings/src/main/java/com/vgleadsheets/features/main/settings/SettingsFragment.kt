@@ -29,7 +29,7 @@ import javax.inject.Inject
 class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
     SingleTextListModel.Handler {
     override fun onClicked(clicked: SingleTextListModel) {
-        showError("Unimplemented.")
+        getFragmentRouter().showAbout()
     }
 
     override fun onClicked(clicked: CheckableListModel) {

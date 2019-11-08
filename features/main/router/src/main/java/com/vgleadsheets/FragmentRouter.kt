@@ -1,5 +1,6 @@
 package com.vgleadsheets
 
+@Suppress("TooManyFunctions")
 interface FragmentRouter {
     fun showGameList()
     fun showSongListForGame(gameId: Long)
@@ -9,5 +10,8 @@ interface FragmentRouter {
     fun showComposerList()
     fun showAllSheets()
     fun showSettings()
+    fun showAbout()
+    fun goToWebUrl(url: String)
+    fun showLicenseScreen()
     fun onScreenSwitch()
 }

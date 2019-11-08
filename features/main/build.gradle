@@ -5,11 +5,13 @@ dependencies {
     // So ListView.kt can be found. TODO Make this not necessary
     api project (path: ':recyclerview')
 
+    api project(path: ':features:main:about')
     api project(path: ':features:main:composer')
     api project(path: ':features:main:composers')
     api project(path: ':features:main:hud')
     api project(path: ':features:main:game')
     api project(path: ':features:main:games')
+    api project(path: ':features:main:license')
     api project(path: ':features:main:search')
     api project(path: ':features:main:settings')
     api project(path: ':features:main:songs')
