@@ -246,7 +246,7 @@ class SearchFragment : VglsFragment(),
                         ImageNameCaptionListModel(
                             it.id,
                             it.name,
-                            generateSheetCaption(it),
+                            it.gameName,
                             thumbUrl,
                             getPlaceholderId(it),
                             this
