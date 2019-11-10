@@ -43,7 +43,7 @@ buildscript {
 
     dependencies {
         // Android, lol
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:3.5.2'
 
         // Kotlin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

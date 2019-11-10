@@ -12,4 +12,6 @@ In order to display metadata from the Giant Bomb API, you'll need to get an API 
 
 ```APIKEY_GIANTBOMB=\"<your-giant-bomb-key-goes-here>\" >> gradle.properties```
 
+If you deploy the app without a key, it should still work, but you'll get an error message instead of metadata. If you add a key afterwards, clear app data to force metadata to download.
+
 Firebase features are also enabled automatically if you supply a `google-services.json` file.

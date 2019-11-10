@@ -4,6 +4,7 @@ import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vgleadsheets.network.BuildConfig
 import com.vgleadsheets.network.GiantBombApi
+import com.vgleadsheets.network.GiantBombNoKeyApi
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides
@@ -184,17 +185,23 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideGiantBombApi(
+        @Named("GiantBombApiKey") apiKey: String,
         @Named("GiantBombUrl") baseUrl: String,
         @Named("GiantBombOkHttp") client: OkHttpClient,
         converterFactory: MoshiConverterFactory,
         callAdapterFactory: RxJava2CallAdapterFactory
-    ) = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .client(client)
-        .addCallAdapterFactory(callAdapterFactory)
-        .addConverterFactory(converterFactory)
-        .build()
-        .create(GiantBombApi::class.java)
+    ) = if (apiKey == "empty") {
+        GiantBombNoKeyApi()
+    } else {
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .addCallAdapterFactory(callAdapterFactory)
+            .addConverterFactory(converterFactory)
+            .build()
+            .create(GiantBombApi::class.java)
+    }
+
 
     companion object {
         const val CACHE_SIZE_BYTES = 100000000L

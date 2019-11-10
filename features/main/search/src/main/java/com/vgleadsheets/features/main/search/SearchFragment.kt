@@ -43,12 +43,19 @@ class SearchFragment : VglsFragment(),
 
     private val adapter = ComponentAdapter()
 
+    private var apiAvailableErrorShown = false
+
     private val gameHandler = object : GiantBombImageNameCaptionListModel.EventHandler {
         override fun onClicked(clicked: GiantBombImageNameCaptionListModel) =
             onGameClicked(clicked.dataId)
 
         override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
             viewModel.onGbGameNotChecked(vglsId, name)
+
+
+        override fun onGbApiNotAvailable() {
+            onGbApiNotAvailableImpl()
+        }
     }
 
     private val composerHandler = object : GiantBombImageNameCaptionListModel.EventHandler {
@@ -57,6 +64,17 @@ class SearchFragment : VglsFragment(),
 
         override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
             viewModel.onGbComposerNotChecked(vglsId, name)
+
+        override fun onGbApiNotAvailable() {
+            onGbApiNotAvailableImpl()
+        }
+    }
+
+    private fun onGbApiNotAvailableImpl() {
+        if (!apiAvailableErrorShown) {
+            apiAvailableErrorShown = true
+            showError(getString(R.string.error_no_gb_api))
+        }
     }
 
     override fun onClicked(clicked: ImageNameCaptionListModel) {

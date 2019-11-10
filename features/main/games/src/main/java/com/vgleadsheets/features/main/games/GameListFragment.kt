@@ -37,12 +37,21 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
 
     private val adapter = ComponentAdapter()
 
+    private var apiAvailableErrorShown = false
+
     override fun onClicked(clicked: GiantBombImageNameCaptionListModel) {
         showSongList(clicked.dataId)
     }
 
     override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) {
         viewModel.onGbGameNotChecked(vglsId, name)
+    }
+
+    override fun onGbApiNotAvailable() {
+        if (!apiAvailableErrorShown) {
+            apiAvailableErrorShown = true
+            showError(getString(R.string.error_no_gb_api))
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

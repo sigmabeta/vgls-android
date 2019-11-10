@@ -1,5 +1,6 @@
 package com.vgleadsheets.components
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -95,6 +96,7 @@ fun bindDrawable(
     view.setImageResource(drawable)
 }
 
+@SuppressLint("BinaryOperationInTimber")
 @SuppressWarnings("LongParameterList")
 @BindingAdapter("vglsId", "giantBombId", "name", "type", "handler")
 fun bindGiantBombIdList(
@@ -109,6 +111,13 @@ fun bindGiantBombIdList(
     if (giantBombId == null) {
         Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
         events.onGbModelNotChecked(vglsId, name, type)
+    }
+
+    if (giantBombId == NO_API_KEY) {
+        Timber.w("Can't get metadata from Giant Bomb without an API key." +
+                "See instructions in README.MD and make sure to clear app data after" +
+                "rebuilding.")
+        events.onGbApiNotAvailable()
     }
 }
 
@@ -139,3 +148,5 @@ fun bindCheckableLoading(view: LinearLayout, model: LoadingCheckableListModel) {
 
 const val MULTIPLIER_LIST_POSITION = 100
 const val MAXIMUM_LOAD_OFFSET = 250
+
+const val NO_API_KEY = -5678L

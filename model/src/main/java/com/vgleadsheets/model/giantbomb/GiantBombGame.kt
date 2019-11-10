@@ -8,5 +8,6 @@ data class GiantBombGame(
 ) {
     companion object {
         const val ID_NOT_FOUND = -1234L
+        const val ID_NO_API = -5678L
     }
 }

@@ -187,19 +187,24 @@ class RealRepository constructor(
                 if (response.results.isNotEmpty()) {
                     val game = response.results[0]
 
-                    giantBombId = game.id
-                    photoUrl = if (game.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
-                        game.image.original_url
+                    if (game.id == GiantBombGame.ID_NO_API) {
+                        giantBombId = GiantBombGame.ID_NO_API
+                        photoUrl = null
                     } else {
-                        null
-                    }
+                        giantBombId = game.id
+                        photoUrl = if (game.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
+                            game.image.original_url
+                        } else {
+                            null
+                        }
 
-                    val aliasEntities = game.aliases
-                        ?.split('\n')
-                        ?.map { GameAliasEntity(vglsId, it, giantBombId, photoUrl) }
+                        val aliasEntities = game.aliases
+                            ?.split('\n')
+                            ?.map { GameAliasEntity(vglsId, it, giantBombId, photoUrl) }
 
-                    if (aliasEntities != null) {
-                        gameAliasDao.insertAll(aliasEntities)
+                        if (aliasEntities != null) {
+                            gameAliasDao.insertAll(aliasEntities)
+                        }
                     }
                 } else {
                     giantBombId = GiantBombGame.ID_NOT_FOUND
@@ -225,19 +230,24 @@ class RealRepository constructor(
                 if (response.results.isNotEmpty()) {
                     val composer = response.results[0]
 
-                    giantBombId = composer.id
-                    photoUrl = if (composer.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
-                        composer.image.original_url
+                    if (composer.id == GiantBombPerson.ID_NO_API) {
+                        giantBombId = GiantBombPerson.ID_NO_API
+                        photoUrl = null
                     } else {
-                        null
-                    }
+                        giantBombId = composer.id
+                        photoUrl = if (composer.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
+                            composer.image.original_url
+                        } else {
+                            null
+                        }
 
-                    val aliasEntities = composer.aliases
-                        ?.split('\n')
-                        ?.map { ComposerAliasEntity(vglsId, it, giantBombId, photoUrl) }
+                        val aliasEntities = composer.aliases
+                            ?.split('\n')
+                            ?.map { ComposerAliasEntity(vglsId, it, giantBombId, photoUrl) }
 
-                    if (aliasEntities != null) {
-                        composerAliasDao.insertAll(aliasEntities)
+                        if (aliasEntities != null) {
+                            composerAliasDao.insertAll(aliasEntities)
+                        }
                     }
                 } else {
                     giantBombId = GiantBombPerson.ID_NOT_FOUND
