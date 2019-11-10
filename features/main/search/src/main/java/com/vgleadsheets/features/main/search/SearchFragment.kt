@@ -52,7 +52,6 @@ class SearchFragment : VglsFragment(),
         override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
             viewModel.onGbGameNotChecked(vglsId, name)
 
-
         override fun onGbApiNotAvailable() {
             onGbApiNotAvailableImpl()
         }
