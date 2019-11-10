@@ -92,10 +92,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     // TODO Oofsville, this is a hack for the ages.
     fun onScreenSwitch() {
-        edit_search_query.isFocusable = false
+        edit_search_query?.isFocusable = false
         Handler().postDelayed(DELAY_TWO_FRAMES) {
-            edit_search_query.isFocusableInTouchMode = true
-            edit_search_query.isFocusable = true
+            edit_search_query?.isFocusableInTouchMode = true
+            edit_search_query?.isFocusable = true
         }
     }
 
