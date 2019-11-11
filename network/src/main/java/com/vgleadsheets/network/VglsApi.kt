@@ -6,7 +6,7 @@ import io.reactivex.Single
 import retrofit2.http.GET
 
 interface VglsApi {
-    @GET("app/digest")
+    @GET("app/digest?optimized=true")
     fun getDigest(): Single<List<VglsApiGame>>
 
     @GET("app/digest/last-updated")

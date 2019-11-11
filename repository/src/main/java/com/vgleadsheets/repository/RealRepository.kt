@@ -420,10 +420,9 @@ class RealRepository constructor(
                         composerEntities.add(composerEntity)
                     }
 
-                    apiSong.files.parts.forEach {
+                    apiSong.parts.forEach { partId ->
                         partCount++
-                        val partEntity =
-                            it.value.toPartEntity(partCount, apiSong.id)
+                        val partEntity = PartEntity(partCount, apiSong.id, partId)
                         partEntities.add(partEntity)
 
                         val pageCount =
