@@ -30,7 +30,6 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
-import org.threeten.bp.Instant
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
@@ -54,7 +53,7 @@ class RealRepository constructor(
 
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
         return getLastCheckTime()
-            .filter { Instant.now().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
+            .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
             .flatMapSingle { getLastApiUpdateTime() }
             .zipWith<Time, Long>(getLastDbUpdateTimeOnce(), BiFunction { apiTime, dbTime ->
                 apiTime.timeMs - dbTime.timeMs
@@ -388,7 +387,7 @@ class RealRepository constructor(
     private fun getLastDbUpdateTimeOnce(): Single<Time> = getLastDbUpdateTime().firstOrError()
 
     private fun getLastApiUpdateTime() = vglsApi.getLastUpdateTime()
-        .map { it.toTimeEntity(threeTen).toTime() }
+        .map { it.toTimeEntity().toTime() }
         .doOnSuccess() {
             dbStatisticsDao.insert(
                 TimeEntity(TimeType.LAST_UPDATED.ordinal, it.timeMs)
@@ -471,7 +470,9 @@ class RealRepository constructor(
             )
 
             dbStatisticsDao.insert(
-                TimeEntity(TimeType.LAST_CHECKED.ordinal, Instant.now().toEpochMilli())
+                TimeEntity(
+                    TimeType.LAST_CHECKED.ordinal,
+                    threeTen.now().toInstant().toEpochMilli())
             )
         }
 
@@ -485,6 +486,6 @@ class RealRepository constructor(
         const val GB_URL_IMAGE_NOT_FOUND = "https://www.giantbomb.com/api/image/original/" +
                 "3026329-gb_default-16_9.png"
 
-        val AGE_THRESHOLD = Duration.ofMinutes(60).toMillis()
+        val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
 }
