@@ -31,11 +31,19 @@ dependencies {
 android {
     buildTypes {
         debug {
-            buildConfigField 'String', "GiantBombApiKey", APIKEY_GIANTBOMB
+            buildConfigField 'String', "GiantBombApiKey", getGbApiKeyIfExists()
         }
 
         release {
-            buildConfigField 'String', "GiantBombApiKey", APIKEY_GIANTBOMB
+            buildConfigField 'String', "GiantBombApiKey", getGbApiKeyIfExists()
         }
+    }
+}
+
+private String getGbApiKeyIfExists() {
+    if (project.hasProperty("APIKEY_GIANTBOMB")) {
+        APIKEY_GIANTBOMB
+    } else {
+        "\"empty\""
     }
 }

@@ -13,6 +13,7 @@ data class GiantBombImageNameCaptionListModel(
     interface EventHandler {
         fun onClicked(clicked: GiantBombImageNameCaptionListModel)
         fun onGbModelNotChecked(vglsId: Long, name: String, type: String)
+        fun onGbApiNotAvailable()
     }
 
     override val layoutId = R.layout.list_component_gb_image_name_caption

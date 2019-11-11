@@ -1,6 +1,4 @@
 <resources>
-    <string name="hint_search">Search for a song...</string>
-
     <string name="alpha_transparent">0.0</string>
     <string name="alpha_opaque">1.0</string>
 
