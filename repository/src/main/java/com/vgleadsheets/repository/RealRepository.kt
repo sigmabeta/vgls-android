@@ -19,6 +19,8 @@ import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
+import com.vgleadsheets.model.tag.TagKeyEntity
+import com.vgleadsheets.model.tag.TagValueEntity
 import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeEntity
@@ -46,6 +48,8 @@ class RealRepository constructor(
     private val composerDao = database.composerDao()
     private val partDao = database.partDao()
     private val pageDao = database.pageDao()
+    private val tagKeyDao = database.tagKeyDao()
+    private val tagValueDao = database.tagValueDao()
     private val songComposerDao = database.songComposerDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
     private val gameAliasDao = database.gameAliasDao()
@@ -402,8 +406,11 @@ class RealRepository constructor(
             val songEntities = ArrayList<SongEntity>(CAPACITY)
             val partEntities = ArrayList<PartEntity>(CAPACITY)
             val pageEntities = ArrayList<PageEntity>(CAPACITY)
-            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
             val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
+
+            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
+            val tagKeyEntities = HashMap<String, TagKeyEntity>(CAPACITY)
+            val tagValueEntities = HashMap<String, TagValueEntity>(CAPACITY)
 
             var partCount = 0L
             apiGames.forEach { apiGame ->
@@ -446,6 +453,40 @@ class RealRepository constructor(
                         }
                     }
 
+                    apiSong.tags.forEach { tagMapEntry ->
+                        val key = tagMapEntry.key
+                        val values = tagMapEntry.value
+
+                        if (key != "song_id") {
+                            val existingKeyEntity = tagKeyEntities.get(key)
+
+                            val keyId = if (existingKeyEntity != null) {
+                                existingKeyEntity.id
+                            } else {
+                                val newKeyId = (tagKeyEntities.size + 1).toLong()
+                                val newEntity = TagKeyEntity(newKeyId, key)
+
+                                Timber.w("Creating TagKeyEntity $newEntity")
+
+                                tagKeyEntities.put(key, newEntity)
+                                newKeyId
+                            }
+
+                            values.forEach { value ->
+                                val existingValueEntity = tagValueEntities.get(value)
+
+                                if (existingValueEntity == null) {
+                                    val newValueId = (tagValueEntities.size + 1).toLong()
+                                    val newEntity = TagValueEntity(newValueId, value, keyId)
+
+                                    Timber.w("Creating TagValueEntity $newEntity")
+
+                                    tagValueEntities.put(value, newEntity)
+                                }
+                            }
+                        }
+                    }
+
                     val songEntity = apiSong.toSongEntity(
                         apiGame.game_id + VglsApiGame.ID_OFFSET,
                         apiGame.game_name
@@ -462,11 +503,15 @@ class RealRepository constructor(
                 songComposerDao,
                 partDao,
                 pageDao,
+                tagKeyDao,
+                tagValueDao,
                 songEntities,
                 composerEntities.toList(),
                 partEntities,
                 pageEntities,
-                songComposerJoins
+                songComposerJoins,
+                tagKeyEntities.values.toList(),
+                tagValueEntities.values.toList()
             )
 
             dbStatisticsDao.insert(

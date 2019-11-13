@@ -10,7 +10,7 @@ data class ApiSong(
     val pageCount: Int,
     val lyricsPageCount: Int,
     val composers: List<ApiComposer>,
-    val tags: Map<String, List<Any>>
+    val tags: Map<String, List<String>>
 ) {
     fun toSongEntity(gameId: Long, gameName: String) = SongEntity(id,
         filename,
