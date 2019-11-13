@@ -11,6 +11,8 @@ import com.vgleadsheets.database.dao.PageDao
 import com.vgleadsheets.database.dao.PartDao
 import com.vgleadsheets.database.dao.SongComposerDao
 import com.vgleadsheets.database.dao.SongDao
+import com.vgleadsheets.database.dao.TagKeyDao
+import com.vgleadsheets.database.dao.TagValueDao
 import com.vgleadsheets.model.alias.ComposerAliasEntity
 import com.vgleadsheets.model.alias.GameAliasEntity
 import com.vgleadsheets.model.composer.ComposerEntity
@@ -19,6 +21,8 @@ import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.SongEntity
+import com.vgleadsheets.model.tag.TagKeyEntity
+import com.vgleadsheets.model.tag.TagValueEntity
 import com.vgleadsheets.model.time.TimeEntity
 
 @Database(
@@ -30,8 +34,10 @@ import com.vgleadsheets.model.time.TimeEntity
         PageEntity::class,
         TimeEntity::class,
         GameAliasEntity::class,
+        TagKeyEntity::class,
+        TagValueEntity::class,
         ComposerAliasEntity::class],
-    version = 1
+    version = 2
 )
 abstract class VglsDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao
@@ -40,6 +46,8 @@ abstract class VglsDatabase : RoomDatabase() {
     abstract fun pageDao(): PageDao
     abstract fun composerDao(): ComposerDao
     abstract fun gameAliasDao(): GameAliasDao
+    abstract fun tagKeyDao(): TagKeyDao
+    abstract fun tagValueDao(): TagValueDao
     abstract fun composerAliasDao(): ComposerAliasDao
     abstract fun songComposerDao(): SongComposerDao
     abstract fun dbStatisticsDao(): DbStatisticsDao
