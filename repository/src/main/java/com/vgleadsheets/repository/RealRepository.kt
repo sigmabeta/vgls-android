@@ -466,22 +466,20 @@ class RealRepository constructor(
                                 val newKeyId = (tagKeyEntities.size + 1).toLong()
                                 val newEntity = TagKeyEntity(newKeyId, key)
 
-                                Timber.w("Creating TagKeyEntity $newEntity")
-
                                 tagKeyEntities.put(key, newEntity)
                                 newKeyId
                             }
 
                             values.forEach { value ->
-                                val existingValueEntity = tagValueEntities.get(value)
+                                val valueEntityMapKey = key + value
+                                val existingValueEntity = tagValueEntities
+                                    .get(valueEntityMapKey)
 
                                 if (existingValueEntity == null) {
                                     val newValueId = (tagValueEntities.size + 1).toLong()
                                     val newEntity = TagValueEntity(newValueId, value, keyId)
 
-                                    Timber.w("Creating TagValueEntity $newEntity")
-
-                                    tagValueEntities.put(value, newEntity)
+                                    tagValueEntities.put(valueEntityMapKey, newEntity)
                                 }
                             }
                         }
