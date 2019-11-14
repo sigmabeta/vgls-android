@@ -59,6 +59,7 @@ import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_all_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_bottom_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_composer
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_game
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_tag
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_random_select
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_refresh
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_settings
@@ -147,6 +148,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         layout_by_game.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_GAME) }
         layout_by_composer.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_COMPOSER) }
+        layout_by_tag.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_TAG) }
         layout_all_sheets.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_SONG) }
         layout_settings.setOnClickListener { showScreen(MODAL_SCREEN_ID_SETTINGS, false) }
         layout_refresh.setOnClickListener { onRefreshClick() }
@@ -274,6 +276,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         when (screenId) {
             TOP_LEVEL_SCREEN_ID_GAME -> getFragmentRouter().showGameList()
             TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList()
+            TOP_LEVEL_SCREEN_ID_TAG -> getFragmentRouter().showTagList()
             TOP_LEVEL_SCREEN_ID_SONG -> getFragmentRouter().showAllSheets()
             MODAL_SCREEN_ID_SETTINGS -> getFragmentRouter().showSettings()
             else -> getFragmentRouter().showGameList()
@@ -432,6 +435,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
             layout_by_game.fadeIn()
             layout_by_composer.fadeIn()
+            layout_by_tag.fadeIn()
             layout_all_sheets.fadeIn()
             layout_random_select.fadeIn()
             layout_settings.fadeIn()
@@ -455,6 +459,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
             layout_by_game.fadeOutGone()
             layout_by_composer.fadeOutGone()
+            layout_by_tag.fadeOutGone()
             layout_all_sheets.fadeOutGone()
             layout_random_select.fadeOutGone()
             layout_settings.fadeOutGone()
@@ -528,6 +533,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
         const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"
         const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"
+        const val TOP_LEVEL_SCREEN_ID_TAG = "TAG"
 
         const val TOP_LEVEL_SCREEN_ID_DEFAULT = TOP_LEVEL_SCREEN_ID_GAME
 

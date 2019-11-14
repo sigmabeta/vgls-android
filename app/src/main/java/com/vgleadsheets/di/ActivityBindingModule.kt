@@ -10,6 +10,7 @@ import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
+import com.vgleadsheets.features.main.tag_key.TagKeyFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.main.MainActivity
 import dagger.Module
@@ -53,6 +54,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeComposerListFragmentInjector(): ComposerListFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeTagKeyFragmentInjector(): TagKeyFragment
 
     @FragmentScope
     @ContributesAndroidInjector

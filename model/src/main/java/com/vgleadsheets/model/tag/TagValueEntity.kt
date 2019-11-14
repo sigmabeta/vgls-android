@@ -3,6 +3,7 @@ package com.vgleadsheets.model.tag
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.vgleadsheets.model.song.Song
 
 @Suppress("ConstructorParameterNaming")
 @Entity(
@@ -19,4 +20,6 @@ data class TagValueEntity(
     @PrimaryKey val id: Long,
     val name: String,
     val tag_key_id: Long
-)
+) {
+    fun toTagValue(songs: List<Song>?) = TagValue(id, name, songs)
+}

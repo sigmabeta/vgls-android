@@ -7,4 +7,6 @@ import androidx.room.PrimaryKey
 data class TagKeyEntity(
     @PrimaryKey val id: Long,
     val name: String
-)
+) {
+    fun toTagKey(values: List<TagValue>?) = TagKey(id, name, values)
+}

@@ -140,6 +140,15 @@ class RealRepository constructor(
             }
         }
 
+    override fun getAllTagKeys(withValues: Boolean) = tagKeyDao
+        .getAll()
+        .map { tagKeyEntities ->
+            tagKeyEntities.map {
+                val values = if (withValues) getTagValuesForTagKey(it, false) else null
+                it.toTagKey(values)
+            }
+        }
+
     override fun getComposer(composerId: Long): Observable<Composer> = composerDao
         .getComposer(composerId)
         .map { it.toComposer(null) }
@@ -334,6 +343,17 @@ class RealRepository constructor(
                 songEntity.toSong(null, parts)
             }
 
+    private fun getTagValuesForTagKey(tagKeyEntity: TagKeyEntity, withSongs: Boolean = true) =
+        tagValueDao.getValuesForTagSync(tagKeyEntity.id)
+            .map { tagValueEntity ->
+                val parts = if (withSongs) getSongsForTagValue(tagValueEntity) else null
+                tagValueEntity.toTagValue(parts)
+            }
+
+    private fun getSongsForTagValue(tagValueEntity: TagValueEntity): List<Song> {
+        TODO("$tagValueEntity but also not implemented")
+    }
+
     private fun getSongsForComposerAlias(
         composerAliasEntity: ComposerAliasEntity,
         withSongs: Boolean = true
@@ -515,7 +535,8 @@ class RealRepository constructor(
             dbStatisticsDao.insert(
                 TimeEntity(
                     TimeType.LAST_CHECKED.ordinal,
-                    threeTen.now().toInstant().toEpochMilli())
+                    threeTen.now().toInstant().toEpochMilli()
+                )
             )
         }
 

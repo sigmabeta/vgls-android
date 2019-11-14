@@ -8,6 +8,7 @@ import com.vgleadsheets.features.main.hud.HudAssistedModule
 import com.vgleadsheets.features.main.search.SearchAssistedModule
 import com.vgleadsheets.features.main.settings.SettingsAssistedModule
 import com.vgleadsheets.features.main.songs.SongListAssistedModule
+import com.vgleadsheets.features.main.tag_key.TagKeyAssistedModule
 import com.vgleadsheets.features.main.viewer.ViewerAssistedModule
 import dagger.Module
 
@@ -20,6 +21,7 @@ import dagger.Module
         SearchAssistedModule::class,
         SettingsAssistedModule::class,
         SongListAssistedModule::class,
+        TagKeyAssistedModule::class,
         ViewerAssistedModule::class,
         HudAssistedModule::class
     ]
