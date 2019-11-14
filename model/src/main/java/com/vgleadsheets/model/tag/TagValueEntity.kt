@@ -19,7 +19,8 @@ import com.vgleadsheets.model.song.Song
 data class TagValueEntity(
     @PrimaryKey val id: Long,
     val name: String,
-    val tag_key_id: Long
+    val tag_key_id: Long,
+    val tag_key_name: String
 ) {
-    fun toTagValue(songs: List<Song>?) = TagValue(id, name, songs)
+    fun toTagValue(songs: List<Song>?) = TagValue(id, name, tag_key_name, songs)
 }

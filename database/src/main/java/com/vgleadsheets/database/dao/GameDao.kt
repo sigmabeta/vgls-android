@@ -7,6 +7,7 @@ import androidx.room.Transaction
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
+import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.SongEntity
@@ -39,6 +40,7 @@ interface GameDao {
         songDao: SongDao,
         composerDao: ComposerDao,
         songComposerDao: SongComposerDao,
+        songTagValueDao: SongTagValueDao,
         partDao: PartDao,
         pageDao: PageDao,
         tagKeyDao: TagKeyDao,
@@ -48,6 +50,7 @@ interface GameDao {
         parts: List<PartEntity>,
         pages: List<PageEntity>,
         songComposerJoins: List<SongComposerJoin>,
+        songTagValueJoins: List<SongTagValueJoin>,
         tagKeys: List<TagKeyEntity>,
         tagValues: List<TagValueEntity>
     ) {
@@ -74,6 +77,9 @@ interface GameDao {
 
         tagValueDao.nukeTable()
         tagValueDao.insertAll(tagValues)
+
+        songTagValueDao.nukeTable()
+        songTagValueDao.insertAll(songTagValueJoins)
     }
 
     @Query("UPDATE game SET giantBombId = :giantBombId, photoUrl = :photoUrl WHERE id = :vglsId;")

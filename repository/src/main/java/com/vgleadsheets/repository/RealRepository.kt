@@ -14,6 +14,7 @@ import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.giantbomb.GiantBombGame
 import com.vgleadsheets.model.giantbomb.GiantBombPerson
 import com.vgleadsheets.model.joins.SongComposerJoin
+import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.ApiSong
@@ -51,6 +52,7 @@ class RealRepository constructor(
     private val tagKeyDao = database.tagKeyDao()
     private val tagValueDao = database.tagValueDao()
     private val songComposerDao = database.songComposerDao()
+    private val songTagValueDao = database.songTagValueDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
     private val gameAliasDao = database.gameAliasDao()
     private val composerAliasDao = database.composerAliasDao()
@@ -427,6 +429,7 @@ class RealRepository constructor(
             val partEntities = ArrayList<PartEntity>(CAPACITY)
             val pageEntities = ArrayList<PageEntity>(CAPACITY)
             val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
+            val songTagValueJoins = ArrayList<SongTagValueJoin>(CAPACITY)
 
             val composerEntities = HashSet<ComposerEntity>(CAPACITY)
             val tagKeyEntities = HashMap<String, TagKeyEntity>(CAPACITY)
@@ -495,12 +498,18 @@ class RealRepository constructor(
                                 val existingValueEntity = tagValueEntities
                                     .get(valueEntityMapKey)
 
-                                if (existingValueEntity == null) {
+                                val valueToJoin = if (existingValueEntity == null) {
                                     val newValueId = (tagValueEntities.size + 1).toLong()
-                                    val newEntity = TagValueEntity(newValueId, value, keyId)
+                                    val newEntity = TagValueEntity(newValueId, value, keyId, key)
 
                                     tagValueEntities.put(valueEntityMapKey, newEntity)
+                                    newEntity
+                                } else {
+                                    existingValueEntity
                                 }
+
+                                val join = SongTagValueJoin(apiSong.id, valueToJoin.id)
+                                songTagValueJoins.add(join)
                             }
                         }
                     }
@@ -519,6 +528,7 @@ class RealRepository constructor(
                 songDao,
                 composerDao,
                 songComposerDao,
+                songTagValueDao,
                 partDao,
                 pageDao,
                 tagKeyDao,
@@ -528,6 +538,7 @@ class RealRepository constructor(
                 partEntities,
                 pageEntities,
                 songComposerJoins,
+                songTagValueJoins,
                 tagKeyEntities.values.toList(),
                 tagValueEntities.values.toList()
             )
