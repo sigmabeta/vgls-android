@@ -42,7 +42,7 @@ class TagValueSongListFragment : VglsFragment(),
     private val adapter = ComponentAdapter()
 
     override fun onClicked(clicked: ImageNameCaptionListModel) {
-        showError("Unimplemented")
+        showSongViewer(clicked.dataId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +95,7 @@ class TagValueSongListFragment : VglsFragment(),
         songs: Async<List<Song>>,
         songCount: Int
     ) = TitleListModel(
-        tagValue.id,
+        R.string.title.toLong(),
         getString(R.string.title_tag_value_songs, tagValue.tagKeyName, tagValue.name),
         generateSheetCountText(songs, songCount)
     )
@@ -175,6 +175,10 @@ class TagValueSongListFragment : VglsFragment(),
         selectedPart: PartSelectorItem
     ) = songs.filter { song ->
         song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+    }
+
+    private fun showSongViewer(songId: Long) {
+        getFragmentRouter().showSongViewer(songId)
     }
 
     override fun getLayoutId() = R.layout.fragment_tag_value_song_list

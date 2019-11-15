@@ -70,6 +70,10 @@ class TagValueListFragment : VglsFragment(),
         }
 
         val listModels = constructList(state.tagKey, state.tagValues, selectedPart)
+
+        listModels.forEach {
+            Timber.i("${it.javaClass.simpleName} with id ${it.dataId}")
+        }
         adapter.submitList(listModels)
     }
 
@@ -94,7 +98,7 @@ class TagValueListFragment : VglsFragment(),
         tagValues: Async<List<TagValue>>/*,
         songCount: Int*/
     ) = TitleListModel(
-        tagKey.id,
+        R.string.title.toLong(),
         tagKey.name,
         generateSubtitleText(tagValues/*, songCount*/)
     )

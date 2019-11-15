@@ -2,4 +2,5 @@
 <resources>
     <string name="title_tag_value_songs">%1$s: %2$s</string>
     <string name="subtitle_sheets_count">%1$d Sheets</string>
+    <string name="title">Empty</string>
 </resources>
