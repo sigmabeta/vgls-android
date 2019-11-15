@@ -11,6 +11,8 @@ import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.tag_key.TagKeyFragment
+import com.vgleadsheets.features.main.tag_songs.TagValueSongListFragment
+import com.vgleadsheets.features.main.tag_value.TagValueListFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.main.MainActivity
 import dagger.Module
@@ -58,6 +60,14 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeTagKeyFragmentInjector(): TagKeyFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeTagValueSongListFragmentInjector(): TagValueSongListFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeTagValueFragmentInjector(): TagValueListFragment
 
     @FragmentScope
     @ContributesAndroidInjector

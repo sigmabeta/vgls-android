@@ -108,6 +108,29 @@ class RealRepository constructor(
                 }
             }
 
+    override fun getTagValuesForTagKey(tagKeyId: Long, withSongs: Boolean) =
+        tagValueDao.getValuesForTag(tagKeyId)
+            .map { tagValueEntities ->
+                tagValueEntities.map { tagValueEntity ->
+                    val songs = if (withSongs) getSongsForTagValueSync(tagValueEntity) else null
+                    tagValueEntity.toTagValue(songs)
+                }
+            }
+
+    override fun getSongsForTagValue(
+        tagValueId: Long,
+        withParts: Boolean
+    ): Observable<List<Song>> =
+        songTagValueDao
+            .getSongsForTagValue(tagValueId)
+            .map { songEntities ->
+                songEntities.map { songEntity ->
+                    val composers = null
+                    val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
+                    songEntity.toSong(composers, parts)
+                }
+            }
+
     override fun getPartsForSong(songId: Long, withPages: Boolean) =
         getPartsForSongImpl(songId, withPages)
 
@@ -146,7 +169,7 @@ class RealRepository constructor(
         .getAll()
         .map { tagKeyEntities ->
             tagKeyEntities.map {
-                val values = if (withValues) getTagValuesForTagKey(it, false) else null
+                val values = if (withValues) getTagValuesForTagKeySync(it, false) else null
                 it.toTagKey(values)
             }
         }
@@ -158,6 +181,14 @@ class RealRepository constructor(
     override fun getGame(gameId: Long): Observable<Game> = gameDao
         .getGame(gameId)
         .map { it.toGame(null) }
+
+    override fun getTagKey(tagKeyId: Long) = tagKeyDao
+        .getTagKey(tagKeyId)
+        .map { it.toTagKey(null) }
+
+    override fun getTagValue(tagValueId: Long) = tagValueDao
+        .getTagValue(tagValueId)
+        .map { it.toTagValue(null) }
 
     @Suppress("MaxLineLength")
     override fun searchSongs(searchQuery: String) = songDao
@@ -345,16 +376,19 @@ class RealRepository constructor(
                 songEntity.toSong(null, parts)
             }
 
-    private fun getTagValuesForTagKey(tagKeyEntity: TagKeyEntity, withSongs: Boolean = true) =
+    private fun getTagValuesForTagKeySync(tagKeyEntity: TagKeyEntity, withSongs: Boolean = true) =
         tagValueDao.getValuesForTagSync(tagKeyEntity.id)
             .map { tagValueEntity ->
-                val parts = if (withSongs) getSongsForTagValue(tagValueEntity) else null
-                tagValueEntity.toTagValue(parts)
+                val songs = if (withSongs) getSongsForTagValueSync(tagValueEntity) else null
+                tagValueEntity.toTagValue(songs)
             }
 
-    private fun getSongsForTagValue(tagValueEntity: TagValueEntity): List<Song> {
-        TODO("$tagValueEntity but also not implemented")
-    }
+    private fun getSongsForTagValueSync(tagValueEntity: TagValueEntity, withParts: Boolean = true) = songTagValueDao
+        .getSongsForTagValueSync(tagValueEntity.id)
+        .map { songEntity ->
+            val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
+            songEntity.toSong(null, parts)
+        }
 
     private fun getSongsForComposerAlias(
         composerAliasEntity: ComposerAliasEntity,

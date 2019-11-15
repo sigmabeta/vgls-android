@@ -36,7 +36,8 @@ class TagKeyFragment : VglsFragment(), NameCaptionListModel.EventHandler {
     private val adapter = ComponentAdapter()
 
     override fun onClicked(clicked: NameCaptionListModel) {
-        showError("Unimplemented.")
+        val clickedTagKeyId = clicked.dataId
+        showTagValueList(clickedTagKeyId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,6 +105,10 @@ class TagKeyFragment : VglsFragment(), NameCaptionListModel.EventHandler {
                 this
             )
         }
+    }
+
+    private fun showTagValueList(clickedTagKeyId: Long) {
+        getFragmentRouter().showValueListForTagKey(clickedTagKeyId)
     }
 
     override fun getLayoutId() = R.layout.fragment_tag_key

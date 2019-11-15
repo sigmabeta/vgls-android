@@ -8,6 +8,9 @@ import io.reactivex.Observable
 
 @Dao
 interface TagValueDao {
+    @Query("SELECT * FROM tag_value WHERE id = :tagValueId")
+    fun getTagValue(tagValueId: Long): Observable<TagValueEntity>
+
     @Query("SELECT * FROM tag_value WHERE tag_key_id = :tagKeyId ORDER BY name")
     fun getValuesForTag(tagKeyId: Long): Observable<List<TagValueEntity>>
 

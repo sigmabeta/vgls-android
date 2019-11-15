@@ -16,6 +16,8 @@ dependencies {
     api project(path: ':features:main:settings')
     api project(path: ':features:main:songs')
     api project(path: ':features:main:tag-key')
+    api project(path: ':features:main:tag-songs')
+    api project(path: ':features:main:tag-value')
     api project(path: ':features:main:viewer')
 
     api project(path: ':ui-core')
