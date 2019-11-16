@@ -460,7 +460,7 @@ class RealRepository constructor(
 
     @UseExperimental(ExperimentalStdlibApi::class)
     @SuppressLint("DefaultLocale")
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "ComplexMethod")
     private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
         .doOnSuccess { apiGames ->
             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }

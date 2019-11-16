@@ -1,11 +1,10 @@
-package com.vgleadsheets.features.main.tag_value_list
+package com.vgleadsheets.features.main.tagvalues
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.features.main.tag_value.TagValueListFragment
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 

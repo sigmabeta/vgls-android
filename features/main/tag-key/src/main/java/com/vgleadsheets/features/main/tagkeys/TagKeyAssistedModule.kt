@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tag_key
+package com.vgleadsheets.features.main.tagkeys
 
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module

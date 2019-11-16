@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tag_value_list
+package com.vgleadsheets.features.main.tagvalues
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState

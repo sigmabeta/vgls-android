@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tag_value_list
+package com.vgleadsheets.features.main.tagvalues
 
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tag_key
+package com.vgleadsheets.features.main.tagkeys
 
 import android.os.Bundle
 import android.view.View
@@ -26,6 +26,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_tag_key.list_tag_key
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class TagKeyFragment : VglsFragment(), NameCaptionListModel.EventHandler {
     @Inject
     lateinit var tagKeyViewModelFactory: TagKeyViewModel.Factory

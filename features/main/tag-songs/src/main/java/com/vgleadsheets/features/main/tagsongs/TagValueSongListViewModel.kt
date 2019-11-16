@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tag_songs
+package com.vgleadsheets.features.main.tagsongs
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
@@ -11,7 +11,7 @@ import com.vgleadsheets.repository.Repository
 class TagValueSongListViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueSongListState,
     private val repository: Repository
-) : MvRxViewModel<TagValueSongListState>(initialState){
+) : MvRxViewModel<TagValueSongListState>(initialState) {
     init {
         fetchTagValue()
         fetchSongs()
@@ -37,8 +37,12 @@ class TagValueSongListViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<TagValueSongListViewModel, TagValueSongListState> {
-        override fun create(viewModelContext: ViewModelContext, state: TagValueSongListState): TagValueSongListViewModel? {
-            val fragment: TagValueSongListFragment = (viewModelContext as FragmentViewModelContext).fragment()
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: TagValueSongListState
+        ): TagValueSongListViewModel? {
+            val fragment: TagValueSongListFragment =
+                (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.tagValueViewModelFactory.create(state)
         }
     }

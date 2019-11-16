@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tag_value
+package com.vgleadsheets.features.main.tagsongs
 
 import android.os.Bundle
 import android.view.View
@@ -16,36 +16,34 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
-import com.vgleadsheets.features.main.tag_value_list.TagValueListViewModel
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_tag_value_list.list_tag_values
-import timber.log.Timber
+import kotlinx.android.synthetic.main.fragment_tag_value_song_list.list_tag_value_songs
 import javax.inject.Inject
 
-class TagValueListFragment : VglsFragment(),
-    NameCaptionListModel.EventHandler {
+@Suppress("TooManyFunctions")
+class TagValueSongListFragment : VglsFragment(),
+    ImageNameCaptionListModel.EventHandler {
 
     @Inject
-    lateinit var tagValueViewModelFactory: TagValueListViewModel.Factory
+    lateinit var tagValueViewModelFactory: TagValueSongListViewModel.Factory
 
-    private val viewModel: TagValueListViewModel by fragmentViewModel()
+    private val viewModel: TagValueSongListViewModel by fragmentViewModel()
 
     private val hudViewModel: HudViewModel by existingViewModel()
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionListModel) {
-        showSongsForTagValue(clicked.dataId)
+    override fun onClicked(clicked: ImageNameCaptionListModel) {
+        showSongViewer(clicked.dataId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,9 +53,12 @@ class TagValueListFragment : VglsFragment(),
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_tag_values.adapter = adapter
-        list_tag_values.layoutManager = LinearLayoutManager(context)
-        list_tag_values.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
+        list_tag_value_songs.adapter = adapter
+        list_tag_value_songs.layoutManager = LinearLayoutManager(context)
+        list_tag_value_songs.setInsetListenerForPadding(
+            topOffset = topOffset,
+            bottomOffset = bottomOffset
+        )
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, state ->
@@ -70,52 +71,48 @@ class TagValueListFragment : VglsFragment(),
             return@withState
         }
 
-        val listModels = constructList(state.tagKey, state.tagValues, selectedPart)
-
-        listModels.forEach {
-            Timber.i("${it.javaClass.simpleName} with id ${it.dataId}")
-        }
+        val listModels = constructList(state.tagValue, state.songs, selectedPart)
         adapter.submitList(listModels)
     }
 
     private fun constructList(
-        tagKey: Async<TagKey>,
-        tagValues: Async<List<TagValue>>,
+        tagValue: Async<TagValue>,
+        songs: Async<List<Song>>,
         selectedPart: PartSelectorItem
     ): List<ListModel> {
-        if (tagKey !is Success) return emptyList()
+        if (tagValue !is Success) return emptyList()
 
-        val songListModels = createContentListModels(tagValues, selectedPart)
+        val songListModels = createContentListModels(songs, selectedPart)
 
         // Pass in `songs` so we know whether to show a sheet counter or not.
         val titleListModel =
-            arrayListOf(createTitleListModel(tagKey(), tagValues/*, songListModels.size*/))
+            arrayListOf(createTitleListModel(tagValue(), songs, songListModels.size))
 
         return titleListModel + songListModels
     }
 
     private fun createTitleListModel(
-        tagKey: TagKey,
-        tagValues: Async<List<TagValue>>/*,
-        songCount: Int*/
+        tagValue: TagValue,
+        songs: Async<List<Song>>,
+        songCount: Int
     ) = TitleListModel(
         R.string.title.toLong(),
-        tagKey.name,
-        generateSubtitleText(tagValues/*, songCount*/)
+        getString(R.string.title_tag_value_songs, tagValue.tagKeyName, tagValue.name),
+        generateSheetCountText(songs, songCount)
     )
 
-    private fun generateSubtitleText(
-        values: Async<List<TagValue>>/*,
-        songCount: Int*/
-    ) = if (values is Success) "Replace me" else ""
+    private fun generateSheetCountText(
+        songs: Async<List<Song>>,
+        songCount: Int
+    ) = if (songs is Success) getString(R.string.subtitle_sheets_count, songCount) else ""
 
     private fun createContentListModels(
-        tagValues: Async<List<TagValue>>,
+        songs: Async<List<Song>>,
         selectedPart: PartSelectorItem
-    ) = when (tagValues) {
+    ) = when (songs) {
         is Loading, Uninitialized -> createLoadingListModels()
-        is Fail -> createErrorStateListModel(tagValues.error)
-        is Success -> createSuccessListModels(tagValues(), selectedPart)
+        is Fail -> createErrorStateListModel(songs.error)
+        is Success -> createSuccessListModels(songs(), selectedPart)
     }
 
     private fun createLoadingListModels(): List<ListModel> {
@@ -134,20 +131,20 @@ class TagValueListFragment : VglsFragment(),
         listOf(ErrorStateListModel(error.message ?: "Unknown Error"))
 
     private fun createSuccessListModels(
-        tagValues: List<TagValue>,
+        songs: List<Song>,
         selectedPart: PartSelectorItem
-    ) = if (tagValues.isEmpty()) {
-        listOf(
+    ) = if (songs.isEmpty()) {
+        arrayListOf(
             EmptyStateListModel(
                 R.drawable.ic_album_24dp,
                 "No songs found at all. Check your internet connection?"
             )
         )
     } else {
-        val availableSongs = filterSongs(tagValues, selectedPart)
+        val availableSongs = filterSongs(songs, selectedPart)
 
         if (availableSongs.isEmpty()) {
-            listOf(
+            arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?"
@@ -155,10 +152,19 @@ class TagValueListFragment : VglsFragment(),
             )
         } else {
             availableSongs.map {
-                NameCaptionListModel(
+                val thumbUrl = it
+                    .parts
+                    ?.first { part -> part.name == selectedPart.apiId }
+                    ?.pages
+                    ?.first()
+                    ?.imageUrl
+
+                ImageNameCaptionListModel(
                     it.id,
                     it.name,
-                    generateSubtitleText(it.songs),
+                    it.gameName,
+                    thumbUrl,
+                    R.drawable.placeholder_sheet,
                     this
                 )
             }
@@ -166,63 +172,24 @@ class TagValueListFragment : VglsFragment(),
     }
 
     private fun filterSongs(
-        tagValues: List<TagValue>,
+        songs: List<Song>,
         selectedPart: PartSelectorItem
-    ) = tagValues.filter { _ ->
-//        tagValue.parts?.firstOrNull { part -> part.name == selectedPart.apiId } == null
-        Timber.i("$selectedPart")
-        true
+    ) = songs.filter { song ->
+        song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
     }
 
-    private fun generateSubtitleText(items: List<Song>?): String {
-        if (items.isNullOrEmpty()) return "Error: no values found."
-
-        val builder = StringBuilder()
-        var numberOfOthers = items.size
-
-        while (builder.length < MAX_LENGTH_SUBTITLE_CHARS) {
-            val index = items.size - numberOfOthers
-
-            if (index >= MAX_LENGTH_SUBTITLE_ITEMS) {
-                break
-            }
-
-            if (numberOfOthers == 0) {
-                break
-            }
-
-            if (index != 0) {
-                builder.append(getString(R.string.subtitle_separator))
-            }
-
-            val stringToAppend = items[index].name
-            builder.append(stringToAppend)
-            numberOfOthers--
-        }
-
-        if (numberOfOthers != 0) {
-            builder.append(getString(R.string.subtitle_suffix_others, numberOfOthers))
-        }
-
-        return builder.toString()
+    private fun showSongViewer(songId: Long) {
+        getFragmentRouter().showSongViewer(songId)
     }
 
-    private fun showSongsForTagValue(clickedTagValueId: Long) {
-        getFragmentRouter().showSongListForTagValue(clickedTagValueId)
-    }
-
-    override fun getLayoutId() = R.layout.fragment_tag_value_list
+    override fun getLayoutId() = R.layout.fragment_tag_value_song_list
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     companion object {
         const val LOADING_ITEMS = 15
-
-        const val MAX_LENGTH_SUBTITLE_CHARS = 20
-        const val MAX_LENGTH_SUBTITLE_ITEMS = 6
-
-        fun newInstance(idArgs: IdArgs): TagValueListFragment {
-            val fragment = TagValueListFragment()
+        fun newInstance(idArgs: IdArgs): TagValueSongListFragment {
+            val fragment = TagValueSongListFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)

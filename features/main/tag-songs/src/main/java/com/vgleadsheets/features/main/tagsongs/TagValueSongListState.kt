@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tag_songs
+package com.vgleadsheets.features.main.tagsongs
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
@@ -14,4 +14,3 @@ data class TagValueSongListState(
 ) : MvRxState {
     constructor(idArgs: IdArgs) : this(idArgs.id)
 }
-
