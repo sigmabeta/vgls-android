@@ -1,5 +1,6 @@
 package com.vgleadsheets.repository
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
@@ -34,6 +35,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
 import timber.log.Timber
+import java.util.Locale
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
@@ -57,6 +59,7 @@ class RealRepository constructor(
     private val gameAliasDao = database.gameAliasDao()
     private val composerAliasDao = database.composerAliasDao()
 
+    @ExperimentalStdlibApi
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
         return getLastCheckTime()
             .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
@@ -70,6 +73,7 @@ class RealRepository constructor(
             .flatMapSingle { getDigest() }
     }
 
+    @ExperimentalStdlibApi
     override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
 
     override fun getGames(withSongs: Boolean): Observable<List<Game>> = gameDao.getAll()
@@ -454,6 +458,8 @@ class RealRepository constructor(
             )
         }
 
+    @UseExperimental(ExperimentalStdlibApi::class)
+    @SuppressLint("DefaultLocale")
     @Suppress("LongMethod")
     private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
         .doOnSuccess { apiGames ->
@@ -512,9 +518,11 @@ class RealRepository constructor(
 
                     apiSong.tags.forEach { tagMapEntry ->
                         val key = tagMapEntry.key
+                            .toTitleCase()
+
                         val values = tagMapEntry.value
 
-                        if (key != "song_id") {
+                        if (tagMapEntry.key != "song_id") {
                             val existingKeyEntity = tagKeyEntities.get(key)
 
                             val keyId = if (existingKeyEntity != null) {
@@ -534,7 +542,12 @@ class RealRepository constructor(
 
                                 val valueToJoin = if (existingValueEntity == null) {
                                     val newValueId = (tagValueEntities.size + 1).toLong()
-                                    val newEntity = TagValueEntity(newValueId, value, keyId, key)
+                                    val newEntity = TagValueEntity(
+                                        newValueId,
+                                        value.capitalize(Locale.getDefault()),
+                                        keyId,
+                                        key
+                                    )
 
                                     tagValueEntities.put(valueEntityMapKey, newEntity)
                                     newEntity
@@ -543,6 +556,9 @@ class RealRepository constructor(
                                 }
 
                                 val join = SongTagValueJoin(apiSong.id, valueToJoin.id)
+
+                                Timber.w("$join ${apiSong.name} ${tagMapEntry.key} / $key: $value")
+
                                 songTagValueJoins.add(join)
                             }
                         }
@@ -598,3 +614,17 @@ class RealRepository constructor(
         val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
 }
+
+@UseExperimental(ExperimentalStdlibApi::class)
+@SuppressLint("DefaultLocale")
+private fun String.toTitleCase() = this
+    .replace("_", " ")
+    .split(" ")
+    .map {
+        if (it != "the") {
+            it.capitalize(Locale.getDefault())
+        } else {
+            it
+        }
+    }
+    .joinToString(" ")

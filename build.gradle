@@ -111,5 +111,6 @@ subprojects {
     // Treat all Kotlin warnings as errors
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions.allWarningsAsErrors = true
+        kotlinOptions.freeCompilerArgs = ["-Xuse-experimental=kotlin.Experimental"]
     }
 }
