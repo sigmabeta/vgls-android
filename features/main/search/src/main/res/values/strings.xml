@@ -17,4 +17,6 @@
 
     <string name="error_search_stickerbrush">Did you know the song is called \"Stickerbush Symphony\"? Yeah. \"Stickerbrush\" isn\'t a word.</string>
 
+    <string name="subtitle_suffix_others">" and %1$d more…"</string>
+    <string name="subtitle_separator">", "</string>
 </resources>

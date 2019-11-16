@@ -11,10 +11,10 @@ interface SongDao {
     @Query("SELECT * FROM song ORDER BY name, gameName")
     fun getAll(): Observable<List<SongEntity>>
 
-    @Query("SELECT * FROM song WHERE game_id = :gameId")
+    @Query("SELECT * FROM song WHERE game_id = :gameId ORDER BY name, gameName")
     fun getSongsForGame(gameId: Long): Observable<List<SongEntity>>
 
-    @Query("SELECT * FROM song WHERE game_id = :gameId")
+    @Query("SELECT * FROM song WHERE game_id = :gameId ORDER BY name, gameName")
     fun getSongsForGameSync(gameId: Long): List<SongEntity>
 
     @Query("SELECT * FROM song WHERE id = :songId")

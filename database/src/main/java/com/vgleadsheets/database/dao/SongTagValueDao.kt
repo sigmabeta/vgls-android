@@ -18,6 +18,7 @@ interface SongTagValueDao {
             SELECT * FROM tag_value INNER JOIN song_tag_value_join 
             ON tag_value.id=song_tag_value_join.tagValueId
             WHERE song_tag_value_join.songId=:songId
+            ORDER BY name
             """
     )
     fun getTagValuesForSong(songId: Long): List<TagValueEntity>
@@ -27,6 +28,7 @@ interface SongTagValueDao {
             SELECT * FROM song INNER JOIN song_tag_value_join 
             ON song.id=song_tag_value_join.songId
             WHERE song_tag_value_join.tagValueId=:tagValueId
+            ORDER BY name, gameName
             """
     )
     fun getSongsForTagValueSync(tagValueId: Long): List<SongEntity>
@@ -36,6 +38,7 @@ interface SongTagValueDao {
             SELECT * FROM song INNER JOIN song_tag_value_join 
             ON song.id=song_tag_value_join.songId
             WHERE song_tag_value_join.tagValueId=:tagValueId
+            ORDER BY name, gameName
             """
     )
     fun getSongsForTagValue(tagValueId: Long): Observable<List<SongEntity>>
