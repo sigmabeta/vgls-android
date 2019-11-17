@@ -3,4 +3,6 @@
     <string name="title">empty</string>
     <string name="subtitle_suffix_others">" and %1$d more…"</string>
     <string name="subtitle_separator">", "</string>
+
+    <string name="subtitle_options_count">%1$d Options</string>
 </resources>
