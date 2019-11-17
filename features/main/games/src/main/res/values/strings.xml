@@ -2,4 +2,7 @@
     <string name="label_sheet_count">%1$d Sheets</string>
 
     <string name="subtitle_game">By Game</string>
+
+    <string name="subtitle_suffix_others">" and %1$d more…"</string>
+    <string name="subtitle_separator">", "</string>
 </resources>

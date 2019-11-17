@@ -7,9 +7,12 @@ import androidx.room.Transaction
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
+import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.SongEntity
+import com.vgleadsheets.model.tag.TagKeyEntity
+import com.vgleadsheets.model.tag.TagValueEntity
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -37,13 +40,19 @@ interface GameDao {
         songDao: SongDao,
         composerDao: ComposerDao,
         songComposerDao: SongComposerDao,
+        songTagValueDao: SongTagValueDao,
         partDao: PartDao,
         pageDao: PageDao,
+        tagKeyDao: TagKeyDao,
+        tagValueDao: TagValueDao,
         songs: List<SongEntity>,
         composerEntities: List<ComposerEntity>,
         parts: List<PartEntity>,
         pages: List<PageEntity>,
-        songComposerJoins: List<SongComposerJoin>
+        songComposerJoins: List<SongComposerJoin>,
+        songTagValueJoins: List<SongTagValueJoin>,
+        tagKeys: List<TagKeyEntity>,
+        tagValues: List<TagValueEntity>
     ) {
         nukeTable()
         insertAll(gameEntities)
@@ -62,6 +71,15 @@ interface GameDao {
 
         pageDao.nukeTable()
         pageDao.insertAll(pages)
+
+        tagKeyDao.nukeTable()
+        tagKeyDao.insertAll(tagKeys)
+
+        tagValueDao.nukeTable()
+        tagValueDao.insertAll(tagValues)
+
+        songTagValueDao.nukeTable()
+        songTagValueDao.insertAll(songTagValueJoins)
     }
 
     @Query("UPDATE game SET giantBombId = :giantBombId, photoUrl = :photoUrl WHERE id = :vglsId;")

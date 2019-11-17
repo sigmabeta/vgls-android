@@ -22,6 +22,7 @@ class DatabaseModule {
             VglsDatabase::class.java,
             "vgls-database"
         )
+        .fallbackToDestructiveMigration()
         .addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)

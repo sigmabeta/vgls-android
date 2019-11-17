@@ -255,7 +255,7 @@ class SearchFragment : VglsFragment(),
                         it.id,
                         it.giantBombId,
                         it.name,
-                        getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                        generateSubtitleText(it.songs),
                         it.photoUrl,
                         getPlaceholderId(it),
                         gameHandler
@@ -264,7 +264,7 @@ class SearchFragment : VglsFragment(),
                         it.id,
                         it.giantBombId,
                         it.name,
-                        getString(R.string.label_sheet_count, it.songs?.size ?: 0),
+                        generateSubtitleText(it.songs),
                         it.photoUrl,
                         getPlaceholderId(it),
                         composerHandler
@@ -351,7 +351,43 @@ class SearchFragment : VglsFragment(),
             getFragmentRouter().showSongListForComposer(id)
         }
 
+    private fun generateSubtitleText(items: List<Song>?): String {
+        if (items.isNullOrEmpty()) return "Error: no values found."
+
+        val builder = StringBuilder()
+        var numberOfOthers = items.size
+
+        while (builder.length < MAX_LENGTH_SUBTITLE_CHARS) {
+            val index = items.size - numberOfOthers
+
+            if (index >= MAX_LENGTH_SUBTITLE_ITEMS) {
+                break
+            }
+
+            if (numberOfOthers == 0) {
+                break
+            }
+
+            if (index != 0) {
+                builder.append(getString(R.string.subtitle_separator))
+            }
+
+            val stringToAppend = items[index].name
+            builder.append(stringToAppend)
+            numberOfOthers--
+        }
+
+        if (numberOfOthers != 0) {
+            builder.append(getString(R.string.subtitle_suffix_others, numberOfOthers))
+        }
+
+        return builder.toString()
+    }
+
     companion object {
+        const val MAX_LENGTH_SUBTITLE_CHARS = 20
+        const val MAX_LENGTH_SUBTITLE_ITEMS = 6
+
         fun newInstance() = SearchFragment()
     }
 }

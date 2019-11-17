@@ -22,6 +22,9 @@ import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
+import com.vgleadsheets.features.main.tagkeys.TagKeyFragment
+import com.vgleadsheets.features.main.tagsongs.TagValueSongListFragment
+import com.vgleadsheets.features.main.tagvalues.TagValueListFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
@@ -80,6 +83,15 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
             .commit()
     }
 
+    override fun showTagList() {
+        clearBackStack()
+        // TODO Move to Navigator Fragment
+        supportFragmentManager.beginTransaction()
+            .setDefaultAnimations()
+            .replace(R.id.frame_fragment, TagKeyFragment.newInstance())
+            .commit()
+    }
+
     override fun showAllSheets() {
         clearBackStack()
         // TODO Move to Navigator Fragment
@@ -116,6 +128,18 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     override fun showSongListForComposer(composerId: Long) = showFragmentSimple(
         ComposerFragment.newInstance(
             IdArgs(composerId)
+        )
+    )
+
+    override fun showValueListForTagKey(tagKeyId: Long) = showFragmentSimple(
+        TagValueListFragment.newInstance(
+            IdArgs(tagKeyId)
+        )
+    )
+
+    override fun showSongListForTagValue(tagValueId: Long) = showFragmentSimple(
+        TagValueSongListFragment.newInstance(
+            IdArgs(tagValueId)
         )
     )
 

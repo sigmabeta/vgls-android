@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title">empty</string>
+    <string name="subtitle_suffix_others">" and %1$d more…"</string>
+    <string name="subtitle_separator">", "</string>
+</resources>

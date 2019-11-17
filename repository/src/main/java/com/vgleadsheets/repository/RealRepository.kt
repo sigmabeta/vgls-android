@@ -1,5 +1,6 @@
 package com.vgleadsheets.repository
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
@@ -14,11 +15,14 @@ import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.giantbomb.GiantBombGame
 import com.vgleadsheets.model.giantbomb.GiantBombPerson
 import com.vgleadsheets.model.joins.SongComposerJoin
+import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.pages.PageEntity
 import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
+import com.vgleadsheets.model.tag.TagKeyEntity
+import com.vgleadsheets.model.tag.TagValueEntity
 import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeEntity
@@ -31,6 +35,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
 import timber.log.Timber
+import java.util.Locale
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
@@ -46,11 +51,15 @@ class RealRepository constructor(
     private val composerDao = database.composerDao()
     private val partDao = database.partDao()
     private val pageDao = database.pageDao()
+    private val tagKeyDao = database.tagKeyDao()
+    private val tagValueDao = database.tagValueDao()
     private val songComposerDao = database.songComposerDao()
+    private val songTagValueDao = database.songTagValueDao()
     private val dbStatisticsDao = database.dbStatisticsDao()
     private val gameAliasDao = database.gameAliasDao()
     private val composerAliasDao = database.composerAliasDao()
 
+    @ExperimentalStdlibApi
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
         return getLastCheckTime()
             .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
@@ -64,6 +73,7 @@ class RealRepository constructor(
             .flatMapSingle { getDigest() }
     }
 
+    @ExperimentalStdlibApi
     override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
 
     override fun getGames(withSongs: Boolean): Observable<List<Game>> = gameDao.getAll()
@@ -94,6 +104,29 @@ class RealRepository constructor(
     ): Observable<List<Song>> =
         songComposerDao
             .getSongsForComposer(composerId)
+            .map { songEntities ->
+                songEntities.map { songEntity ->
+                    val composers = null
+                    val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
+                    songEntity.toSong(composers, parts)
+                }
+            }
+
+    override fun getTagValuesForTagKey(tagKeyId: Long, withSongs: Boolean) =
+        tagValueDao.getValuesForTag(tagKeyId)
+            .map { tagValueEntities ->
+                tagValueEntities.map { tagValueEntity ->
+                    val songs = if (withSongs) getSongsForTagValueSync(tagValueEntity) else null
+                    tagValueEntity.toTagValue(songs)
+                }
+            }
+
+    override fun getSongsForTagValue(
+        tagValueId: Long,
+        withParts: Boolean
+    ): Observable<List<Song>> =
+        songTagValueDao
+            .getSongsForTagValue(tagValueId)
             .map { songEntities ->
                 songEntities.map { songEntity ->
                     val composers = null
@@ -136,6 +169,15 @@ class RealRepository constructor(
             }
         }
 
+    override fun getAllTagKeys(withValues: Boolean) = tagKeyDao
+        .getAll()
+        .map { tagKeyEntities ->
+            tagKeyEntities.map {
+                val values = if (withValues) getTagValuesForTagKeySync(it, false) else null
+                it.toTagKey(values)
+            }
+        }
+
     override fun getComposer(composerId: Long): Observable<Composer> = composerDao
         .getComposer(composerId)
         .map { it.toComposer(null) }
@@ -143,6 +185,14 @@ class RealRepository constructor(
     override fun getGame(gameId: Long): Observable<Game> = gameDao
         .getGame(gameId)
         .map { it.toGame(null) }
+
+    override fun getTagKey(tagKeyId: Long) = tagKeyDao
+        .getTagKey(tagKeyId)
+        .map { it.toTagKey(null) }
+
+    override fun getTagValue(tagValueId: Long) = tagValueDao
+        .getTagValue(tagValueId)
+        .map { it.toTagValue(null) }
 
     @Suppress("MaxLineLength")
     override fun searchSongs(searchQuery: String) = songDao
@@ -330,6 +380,20 @@ class RealRepository constructor(
                 songEntity.toSong(null, parts)
             }
 
+    private fun getTagValuesForTagKeySync(tagKeyEntity: TagKeyEntity, withSongs: Boolean = true) =
+        tagValueDao.getValuesForTagSync(tagKeyEntity.id)
+            .map { tagValueEntity ->
+                val songs = if (withSongs) getSongsForTagValueSync(tagValueEntity) else null
+                tagValueEntity.toTagValue(songs)
+            }
+
+    private fun getSongsForTagValueSync(tagValueEntity: TagValueEntity, withParts: Boolean = true) = songTagValueDao
+        .getSongsForTagValueSync(tagValueEntity.id)
+        .map { songEntity ->
+            val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
+            songEntity.toSong(null, parts)
+        }
+
     private fun getSongsForComposerAlias(
         composerAliasEntity: ComposerAliasEntity,
         withSongs: Boolean = true
@@ -394,7 +458,9 @@ class RealRepository constructor(
             )
         }
 
-    @Suppress("LongMethod")
+    @UseExperimental(ExperimentalStdlibApi::class)
+    @SuppressLint("DefaultLocale")
+    @Suppress("LongMethod", "ComplexMethod")
     private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
         .doOnSuccess { apiGames ->
             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
@@ -402,8 +468,12 @@ class RealRepository constructor(
             val songEntities = ArrayList<SongEntity>(CAPACITY)
             val partEntities = ArrayList<PartEntity>(CAPACITY)
             val pageEntities = ArrayList<PageEntity>(CAPACITY)
-            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
             val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
+            val songTagValueJoins = ArrayList<SongTagValueJoin>(CAPACITY)
+
+            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
+            val tagKeyEntities = HashMap<String, TagKeyEntity>(CAPACITY)
+            val tagValueEntities = HashMap<String, TagValueEntity>(CAPACITY)
 
             var partCount = 0L
             apiGames.forEach { apiGame ->
@@ -446,6 +516,54 @@ class RealRepository constructor(
                         }
                     }
 
+                    apiSong.tags.forEach { tagMapEntry ->
+                        val key = tagMapEntry.key
+                            .toTitleCase()
+
+                        val values = tagMapEntry.value
+
+                        if (tagMapEntry.key != "song_id") {
+                            val existingKeyEntity = tagKeyEntities.get(key)
+
+                            val keyId = if (existingKeyEntity != null) {
+                                existingKeyEntity.id
+                            } else {
+                                val newKeyId = (tagKeyEntities.size + 1).toLong()
+                                val newEntity = TagKeyEntity(newKeyId, key)
+
+                                tagKeyEntities.put(key, newEntity)
+                                newKeyId
+                            }
+
+                            values.forEach { value ->
+                                val valueEntityMapKey = key + value
+                                val existingValueEntity = tagValueEntities
+                                    .get(valueEntityMapKey)
+
+                                val valueToJoin = if (existingValueEntity == null) {
+                                    val newValueId = (tagValueEntities.size + 1).toLong()
+                                    val newEntity = TagValueEntity(
+                                        newValueId,
+                                        value.capitalize(Locale.getDefault()),
+                                        keyId,
+                                        key
+                                    )
+
+                                    tagValueEntities.put(valueEntityMapKey, newEntity)
+                                    newEntity
+                                } else {
+                                    existingValueEntity
+                                }
+
+                                val join = SongTagValueJoin(apiSong.id, valueToJoin.id)
+
+                                Timber.w("$join ${apiSong.name} ${tagMapEntry.key} / $key: $value")
+
+                                songTagValueJoins.add(join)
+                            }
+                        }
+                    }
+
                     val songEntity = apiSong.toSongEntity(
                         apiGame.game_id + VglsApiGame.ID_OFFSET,
                         apiGame.game_name
@@ -460,19 +578,26 @@ class RealRepository constructor(
                 songDao,
                 composerDao,
                 songComposerDao,
+                songTagValueDao,
                 partDao,
                 pageDao,
+                tagKeyDao,
+                tagValueDao,
                 songEntities,
                 composerEntities.toList(),
                 partEntities,
                 pageEntities,
-                songComposerJoins
+                songComposerJoins,
+                songTagValueJoins,
+                tagKeyEntities.values.toList(),
+                tagValueEntities.values.toList()
             )
 
             dbStatisticsDao.insert(
                 TimeEntity(
                     TimeType.LAST_CHECKED.ordinal,
-                    threeTen.now().toInstant().toEpochMilli())
+                    threeTen.now().toInstant().toEpochMilli()
+                )
             )
         }
 
@@ -489,3 +614,17 @@ class RealRepository constructor(
         val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
 }
+
+@UseExperimental(ExperimentalStdlibApi::class)
+@SuppressLint("DefaultLocale")
+private fun String.toTitleCase() = this
+    .replace("_", " ")
+    .split(" ")
+    .map {
+        if (it != "the") {
+            it.capitalize(Locale.getDefault())
+        } else {
+            it
+        }
+    }
+    .joinToString(" ")
