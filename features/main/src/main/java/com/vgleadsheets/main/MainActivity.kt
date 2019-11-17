@@ -62,7 +62,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     }
 
     override fun showSearch() {
-        showFragmentSimple(SearchFragment.newInstance(), false)
+        showFragmentSimple(SearchFragment.newInstance())
     }
 
     override fun showGameList() {
@@ -157,28 +157,19 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
-    override fun onScreenSwitch() {
-        getHudFragment().onScreenSwitch()
-    }
-
     private fun clearBackStack() {
         while (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
         }
     }
 
-    private fun showFragmentSimple(fragment: VglsFragment, blockSearchFocus: Boolean = true) {
+    private fun showFragmentSimple(fragment: VglsFragment) {
         if (getDisplayedFragment().getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
             supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)
                 .addToBackStack(null)
                 .commit()
-
-            // TODO Oofsville, this is a hack for the ages.
-            if (blockSearchFocus && doesDeviceHaveFocusGlitch()) {
-                getHudFragment().onScreenSwitch()
-            }
         }
     }
 

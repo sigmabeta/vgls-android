@@ -124,7 +124,6 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun onBackPress() = withState(hudViewModel) { hudState ->
         if (hudState.hudVisible) {
-            getFragmentRouter().onScreenSwitch()
             return@withState false
         } else {
             hudViewModel.showHud()
