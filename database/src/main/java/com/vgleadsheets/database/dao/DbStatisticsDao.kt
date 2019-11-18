@@ -10,7 +10,7 @@ import io.reactivex.Observable
 @Dao
 interface DbStatisticsDao {
     @Query("SELECT * FROM time WHERE time_id = :tableId")
-    fun getTime(tableId: Int): Observable<TimeEntity>
+    fun getTime(tableId: Int): Observable<List<TimeEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dbStatisticsEntity: TimeEntity)

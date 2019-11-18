@@ -436,14 +436,16 @@ class RealRepository constructor(
                 pageNumber + URL_FILE_EXT_PNG
     }
 
-    private fun getLastCheckTime(): Single<TimeEntity> = dbStatisticsDao
+    private fun getLastCheckTime() = dbStatisticsDao
         .getTime(TimeType.LAST_CHECKED.ordinal)
-        .subscribeOn(Schedulers.io())
+        .map { it.firstOrNull() ?: TimeEntity(TimeType.LAST_CHECKED.ordinal, 0L) }
         .firstOrError()
+        .subscribeOn(Schedulers.io())
 
-    private fun getLastDbUpdateTime(): Observable<Time> = dbStatisticsDao
+    private fun getLastDbUpdateTime() = dbStatisticsDao
         .getTime(TimeType.LAST_UPDATED.ordinal)
         .subscribeOn(Schedulers.io())
+        .map { it.firstOrNull() ?: TimeEntity(TimeType.LAST_UPDATED.ordinal, 0L) }
         .map {
             it.toTime()
         }
