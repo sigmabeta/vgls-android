@@ -17,7 +17,6 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
-import androidx.core.os.postDelayed
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.mvrx.Fail
@@ -26,7 +25,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.jakewharton.rxbinding3.view.focusChanges
+import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
@@ -52,6 +51,7 @@ import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
 import kotlinx.android.synthetic.main.fragment_hud.card_search
 import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
 import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
+import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.button_menu
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.icon_random
@@ -89,16 +89,18 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private val menuListener = View.OnClickListener { onMenuClick() }
 
-    private var randomAnimation: ObjectAnimator? = null
+    private val handler = Handler()
 
-    // TODO Oofsville, this is a hack for the ages.
-    fun onScreenSwitch() {
-        edit_search_query?.isFocusable = false
-        Handler().postDelayed(DELAY_TWO_FRAMES) {
-            edit_search_query?.isFocusableInTouchMode = true
-            edit_search_query?.isFocusable = true
+    private val focusRequester = Runnable {
+        if (edit_search_query?.alpha == 1.0f) {
+            edit_search_query?.requestFocus()
+
+            val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
+            imm?.showSoftInput(edit_search_query, InputMethodManager.SHOW_IMPLICIT)
         }
     }
+
+    private var randomAnimation: ObjectAnimator? = null
 
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
@@ -194,7 +196,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         } else {
             hideSearch()
             showSearchMenuButton()
-            onScreenSwitch()
         }
 
         if (state.menuExpanded) {
@@ -388,8 +389,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun showSearch() {
         viewModel.stopHudTimer()
 
-        val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
-        imm?.showSoftInput(edit_search_query, InputMethodManager.SHOW_IMPLICIT)
+        text_search_hint.fadeOutGone()
+        edit_search_query.fadeIn()
+
+        handler.postDelayed(focusRequester, DELAY_HALF_SECOND)
 
         getFragmentRouter().showSearch()
     }
@@ -397,7 +400,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun hideSearch() {
         // TODO Delay the text clearing
         edit_search_query.text.clear()
-        edit_search_query.clearFocus()
+        edit_search_query.fadeOutGone()
+        text_search_hint.fadeIn()
+
+        handler.removeCallbacks(focusRequester)
 
         val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
         imm?.hideSoftInputFromWindow(edit_search_query.windowToken, 0)
@@ -479,8 +485,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun searchClicks() = edit_search_query.focusChanges()
-        .filter { it }
+    private fun searchClicks() = card_search.clicks()
         .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)
 
     private fun searchEvents() = edit_search_query
@@ -528,7 +533,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         const val CHILDREN_ABOVE_FOLD = 2
 
-        const val DELAY_TWO_FRAMES = 33L
+        const val DELAY_HALF_SECOND = 500L
 
         const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
         const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"

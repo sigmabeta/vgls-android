@@ -85,29 +85,29 @@ class TagValueListFragment : VglsFragment(),
     ): List<ListModel> {
         if (tagKey !is Success) return emptyList()
 
-        val songListModels = createContentListModels(tagValues, selectedPart)
+        val valueModels = createContentListModels(tagValues, selectedPart)
 
         // Pass in `songs` so we know whether to show a sheet counter or not.
         val titleListModel =
-            arrayListOf(createTitleListModel(tagKey(), tagValues/*, songListModels.size*/))
+            arrayListOf(createTitleListModel(tagKey(), tagValues, valueModels.size))
 
-        return titleListModel + songListModels
+        return titleListModel + valueModels
     }
 
     private fun createTitleListModel(
         tagKey: TagKey,
-        tagValues: Async<List<TagValue>>/*,
-        songCount: Int*/
+        tagValues: Async<List<TagValue>>,
+        optionCount: Int
     ) = TitleListModel(
         R.string.title.toLong(),
         tagKey.name,
-        generateSubtitleText(tagValues/*, songCount*/)
+        generateSubtitleText(tagValues, optionCount)
     )
 
     private fun generateSubtitleText(
-        values: Async<List<TagValue>>/*,
-        songCount: Int*/
-    ) = if (values is Success) "Replace me" else ""
+        values: Async<List<TagValue>>,
+        optionCount: Int
+    ) = if (values is Success) getString(R.string.subtitle_options_count, optionCount) else ""
 
     private fun createContentListModels(
         tagValues: Async<List<TagValue>>,
@@ -140,13 +140,13 @@ class TagValueListFragment : VglsFragment(),
         listOf(
             EmptyStateListModel(
                 R.drawable.ic_album_24dp,
-                "No songs found at all. Check your internet connection?"
+                "No tag values found at all. Check your internet connection?"
             )
         )
     } else {
-        val availableSongs = filterSongs(tagValues, selectedPart)
+        val availableTagValues = filterTagValues(tagValues, selectedPart)
 
-        if (availableSongs.isEmpty()) {
+        if (availableTagValues.isEmpty()) {
             listOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
@@ -154,7 +154,7 @@ class TagValueListFragment : VglsFragment(),
                 )
             )
         } else {
-            availableSongs.map {
+            availableTagValues.map {
                 NameCaptionListModel(
                     it.id,
                     it.name,
@@ -165,13 +165,17 @@ class TagValueListFragment : VglsFragment(),
         }
     }
 
-    private fun filterSongs(
+    private fun filterTagValues(
         tagValues: List<TagValue>,
         selectedPart: PartSelectorItem
-    ) = tagValues.filter { _ ->
-//        tagValue.parts?.firstOrNull { part -> part.name == selectedPart.apiId } == null
-        Timber.i("$selectedPart")
-        true
+    ) = tagValues.map { tagValue ->
+        val availableSongs = tagValue.songs?.filter { song ->
+            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+        }
+
+        tagValue.copy(songs = availableSongs)
+    }.filter {
+        it.songs?.isNotEmpty() ?: false
     }
 
     private fun generateSubtitleText(items: List<Song>?): String {
