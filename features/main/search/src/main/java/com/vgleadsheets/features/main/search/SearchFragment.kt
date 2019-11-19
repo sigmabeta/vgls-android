@@ -102,7 +102,7 @@ class SearchFragment : VglsFragment(),
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, localState ->
         hudViewModel.alwaysShowBack()
 
-        val selectedPart = hudState.parts?.first { it.selected }
+        val selectedPart = hudState.parts?.firstOrNull { it.selected }
 
         if (selectedPart == null) {
             showError("No part selected.")
@@ -236,9 +236,9 @@ class SearchFragment : VglsFragment(),
                     is Song -> {
                         val thumbUrl = it
                             .parts
-                            ?.first { part -> part.name == selectedPart.apiId }
+                            ?.firstOrNull() { part -> part.name == selectedPart.apiId }
                             ?.pages
-                            ?.first()
+                            ?.firstOrNull()
                             ?.imageUrl
 
                         ImageNameCaptionListModel(
@@ -296,7 +296,7 @@ class SearchFragment : VglsFragment(),
 
     private fun onGameClicked(id: Long) =
         withState(hudViewModel, viewModel) { hudState, state ->
-            val game = state.games()?.first { it.id == id }
+            val game = state.games()?.firstOrNull { it.id == id }
 
             if (game == null) {
                 showError("Failed to show game.")
@@ -314,7 +314,7 @@ class SearchFragment : VglsFragment(),
 
     private fun onSongClicked(id: Long) =
         withState(hudViewModel, viewModel) { hudState, state ->
-            val song = state.songs()?.first { it.id == id }
+            val song = state.songs()?.firstOrNull { it.id == id }
 
             if (song == null) {
                 showError("Failed to show song.")
@@ -324,7 +324,7 @@ class SearchFragment : VglsFragment(),
             tracker.logSongView(
                 song.name,
                 song.gameName,
-                hudState.parts?.first { it.selected }?.apiId ?: "C",
+                hudState.parts?.firstOrNull { it.selected }?.apiId ?: "C",
                 hudState.searchQuery
             )
 
@@ -334,7 +334,7 @@ class SearchFragment : VglsFragment(),
 
     private fun onComposerClicked(id: Long) =
         withState(hudViewModel, viewModel) { hudState, state ->
-            val composer = state.composers()?.first { it.id == id }
+            val composer = state.composers()?.firstOrNull { it.id == id }
 
             if (composer == null) {
                 showError("Failed to show composer.")
