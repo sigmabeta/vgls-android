@@ -102,7 +102,7 @@ class SearchFragment : VglsFragment(),
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, localState ->
         hudViewModel.alwaysShowBack()
 
-        val selectedPart = hudState.parts?.first { it.selected }
+        val selectedPart = hudState.parts?.firstOrNull { it.selected }
 
         if (selectedPart == null) {
             showError("No part selected.")
@@ -178,7 +178,7 @@ class SearchFragment : VglsFragment(),
 
         val listModels = songModels + gameModels + composerModels
         return if (listModels.isEmpty()) {
-            arrayListOf(
+            listOf(
                 EmptyStateListModel(
                     R.drawable.ic_description_24dp,
                     getString(R.string.empty_search_no_results)
@@ -204,10 +204,9 @@ class SearchFragment : VglsFragment(),
     }
 
     private fun createErrorStateListModel(error: Throwable) =
-        arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))
+        listOf(ErrorStateListModel(error.message ?: "Unknown Error"))
 
-    private fun createLoadingListModels(sectionId: Int) = arrayListOf(
-        SectionHeaderListModel(getString(sectionId)),
+    private fun createLoadingListModels(sectionId: Int) = listOf(
         LoadingNameCaptionListModel(sectionId)
     )
 
@@ -219,12 +218,65 @@ class SearchFragment : VglsFragment(),
         return if (results.isEmpty()) {
             emptyList()
         } else {
-            createSectionHeaderListModel(sectionId) + createSectionModels(
-                results,
-                selectedPart
-            )
+            val filteredResults = filterResults(results, selectedPart)
+
+            if (filteredResults.isEmpty()) {
+                emptyList()
+            } else {
+                createSectionHeaderListModel(sectionId) + createSectionModels(
+                    filteredResults,
+                    selectedPart
+                )
+            }
         }
     }
+
+    private fun filterResults(results: List<Any>, selectedPart: PartSelectorItem) = results
+        .performMappingStep(selectedPart)
+        .performFilteringStep(selectedPart)
+
+    private fun List<Any>.performMappingStep(selectedPart: PartSelectorItem) = map {
+        when (it) {
+            is Song -> it
+            is Game -> it.performMappingStep(selectedPart)
+            is Composer -> it.performMappingStep(selectedPart)
+            else -> throw IllegalArgumentException("ListModel filtering not supported!")
+        }
+    }
+
+    private fun Game.performMappingStep(selectedPart: PartSelectorItem): Game {
+        val availableSongs = songs?.filter { song ->
+            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+        }
+
+        return copy(songs = availableSongs)
+    }
+
+    private fun Composer.performMappingStep(selectedPart: PartSelectorItem): Composer {
+        val availableSongs = songs?.filter { song ->
+            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+        }
+
+        return copy(songs = availableSongs)
+    }
+
+    private fun List<Any>.performFilteringStep(selectedPart: PartSelectorItem) = filter {
+        when (it) {
+            is Song -> it.performFilteringStep(selectedPart)
+            is Game -> it.performFilteringStep()
+            is Composer -> it.performFilteringStep()
+            else -> throw IllegalArgumentException("ListModel filtering not supported!")
+        }
+    }
+
+    private fun Song.performFilteringStep(selectedPart: PartSelectorItem) = parts
+        ?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+
+    private fun Game.performFilteringStep() = songs
+        ?.isNotEmpty() ?: false
+
+    private fun Composer.performFilteringStep() = songs
+        ?.isNotEmpty() ?: false
 
     private fun createSectionModels(
         results: List<Any>,
@@ -236,9 +288,9 @@ class SearchFragment : VglsFragment(),
                     is Song -> {
                         val thumbUrl = it
                             .parts
-                            ?.first { part -> part.name == selectedPart.apiId }
+                            ?.firstOrNull() { part -> part.name == selectedPart.apiId }
                             ?.pages
-                            ?.first()
+                            ?.firstOrNull()
                             ?.imageUrl
 
                         ImageNameCaptionListModel(
@@ -296,7 +348,7 @@ class SearchFragment : VglsFragment(),
 
     private fun onGameClicked(id: Long) =
         withState(hudViewModel, viewModel) { hudState, state ->
-            val game = state.games()?.first { it.id == id }
+            val game = state.games()?.firstOrNull { it.id == id }
 
             if (game == null) {
                 showError("Failed to show game.")
@@ -314,7 +366,7 @@ class SearchFragment : VglsFragment(),
 
     private fun onSongClicked(id: Long) =
         withState(hudViewModel, viewModel) { hudState, state ->
-            val song = state.songs()?.first { it.id == id }
+            val song = state.songs()?.firstOrNull { it.id == id }
 
             if (song == null) {
                 showError("Failed to show song.")
@@ -324,7 +376,7 @@ class SearchFragment : VglsFragment(),
             tracker.logSongView(
                 song.name,
                 song.gameName,
-                hudState.parts?.first { it.selected }?.apiId ?: "C",
+                hudState.parts?.firstOrNull { it.selected }?.apiId ?: "C",
                 hudState.searchQuery
             )
 
@@ -334,7 +386,7 @@ class SearchFragment : VglsFragment(),
 
     private fun onComposerClicked(id: Long) =
         withState(hudViewModel, viewModel) { hudState, state ->
-            val composer = state.composers()?.first { it.id == id }
+            val composer = state.composers()?.firstOrNull { it.id == id }
 
             if (composer == null) {
                 showError("Failed to show composer.")

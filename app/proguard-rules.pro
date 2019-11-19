@@ -153,4 +153,4 @@
 -if interface * { @retrofit2.http.* <methods>; }
 -keep,allowobfuscation interface <1>
 
-#-dontobfuscate
+-dontobfuscate
