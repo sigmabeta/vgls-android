@@ -235,7 +235,6 @@ class SearchFragment : VglsFragment(),
         .performMappingStep(selectedPart)
         .performFilteringStep(selectedPart)
 
-
     private fun List<Any>.performMappingStep(selectedPart: PartSelectorItem) = map {
         when (it) {
             is Song -> it
@@ -259,7 +258,6 @@ class SearchFragment : VglsFragment(),
         }
 
         return copy(songs = availableSongs)
-
     }
 
     private fun List<Any>.performFilteringStep(selectedPart: PartSelectorItem) = filter {
@@ -272,7 +270,7 @@ class SearchFragment : VglsFragment(),
     }
 
     private fun Song.performFilteringStep(selectedPart: PartSelectorItem) = parts
-        ?.firstOrNull{ part -> part.name == selectedPart.apiId } != null
+        ?.firstOrNull { part -> part.name == selectedPart.apiId } != null
 
     private fun Game.performFilteringStep() = songs
         ?.isNotEmpty() ?: false
