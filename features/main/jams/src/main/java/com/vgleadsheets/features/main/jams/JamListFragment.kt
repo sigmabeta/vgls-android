@@ -2,10 +2,8 @@ package com.vgleadsheets.features.main.jams
 
 import android.os.Bundle
 import android.view.View
-import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.args.IdArgs
 import javax.inject.Inject
 
 class JamListFragment : VglsFragment() {
@@ -31,14 +29,6 @@ class JamListFragment : VglsFragment() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     companion object {
-        fun newInstance(idArgs: IdArgs): JamListFragment {
-            val fragment = JamListFragment()
-
-            val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
-            fragment.arguments = args
-
-            return fragment
-        }
+        fun newInstance() = JamListFragment()
     }
 }

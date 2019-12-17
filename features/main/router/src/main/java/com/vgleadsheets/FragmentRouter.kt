@@ -10,6 +10,7 @@ interface FragmentRouter {
     fun showSongListForTagValue(tagValueId: Long)
     fun showComposerList()
     fun showTagList()
+    fun showJams()
     fun showValueListForTagKey(tagKeyId: Long)
     fun showAllSheets()
     fun showSettings()
