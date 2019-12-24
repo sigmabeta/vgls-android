@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_jam">Jam Sessions</string>
+    <string name="caption_jam">\"%1$s\" from %2$s</string>
 </resources>

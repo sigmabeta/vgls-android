@@ -16,16 +16,17 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.NameCaptionCtaListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.model.jam.Jam
+import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_jam_list.list_jams
 import javax.inject.Inject
 
-class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler {
+class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
     @Inject
     lateinit var jamListViewModelFactory: JamListViewModel.Factory
 
@@ -35,8 +36,12 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler {
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionListModel) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onClicked(clicked: NameCaptionCtaListModel) {
+        showError("Main action unimplemented.")
+    }
+
+    override fun onActionClicked(clicked: NameCaptionCtaListModel) {
+        showError("CTA action unimplemented.")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +59,7 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler {
         )
     }
 
-    override fun invalidate() = withState(hudViewModel, viewModel) { _, jamListState ->
+    override fun invalidate() = withState(viewModel) { jamListState ->
         hudViewModel.dontAlwaysShowBack()
 
         val jams = jamListState.jams
@@ -114,14 +119,21 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler {
         )
     } else {
         jams.map {
-            NameCaptionListModel(
+            NameCaptionCtaListModel(
                 it.id,
                 it.name,
-                it.currentSong.name,
+                generateSubtitleText(it.currentSong),
+                R.drawable.ic_shuffle_24dp,
                 this
             )
         }
     }
+
+    private fun generateSubtitleText(currentSong: Song) = getString(
+        R.string.caption_jam,
+        currentSong.name,
+        currentSong.gameName
+    )
 
     companion object {
         const val LOADING_ITEMS = 15
