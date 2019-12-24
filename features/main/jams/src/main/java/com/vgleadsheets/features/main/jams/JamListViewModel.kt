@@ -12,6 +12,16 @@ class JamListViewModel @AssistedInject constructor(
     @Assisted initialState: JamListState,
     private val repository: Repository
 ) : MvRxViewModel<JamListState>(initialState) {
+    init {
+        fetchJams()
+    }
+
+    private fun fetchJams() {
+        repository.getJams()
+            .execute { data ->
+                copy(jams = data)
+            }
+    }
 
     @AssistedInject.Factory
     interface Factory {

@@ -14,6 +14,7 @@ import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.giantbomb.GiantBombGame
 import com.vgleadsheets.model.giantbomb.GiantBombPerson
+import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.pages.PageEntity
@@ -177,6 +178,14 @@ class RealRepository constructor(
                 it.toTagKey(values)
             }
         }
+
+    override fun getJams() = Observable.just(
+        listOf(
+            Jam(1L, "Guile", Song(1L, "Aerobiz - Europe", "Europe", "Aerobiz", null, null)),
+            Jam(2L, "Balrog", Song(47L, "Earthbound - Hotel", "Hotel", "Earthbound", null, null)),
+            Jam(3L, "Vega", Song(216L, "SimCity - Title", "Title", "SimCity", null, null))
+        )
+    )
 
     override fun getComposer(composerId: Long): Observable<Composer> = composerDao
         .getComposer(composerId)

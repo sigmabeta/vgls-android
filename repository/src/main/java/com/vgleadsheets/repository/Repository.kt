@@ -3,6 +3,7 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
@@ -21,6 +22,7 @@ interface Repository {
     fun getAllSongs(withComposers: Boolean = true, withParts: Boolean = true): Observable<List<Song>>
     fun getComposers(withSongs: Boolean = true): Observable<List<Composer>>
     fun getAllTagKeys(withValues: Boolean = true): Observable<List<TagKey>>
+    fun getJams(): Observable<List<Jam>>
 
     // Filtered lists
     fun getTagValuesForTagKey(tagKeyId: Long, withSongs: Boolean = true): Observable<List<TagValue>>
