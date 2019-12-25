@@ -183,7 +183,8 @@ class RealRepository constructor(
         listOf(
             Jam(1L, "Guile", Song(1L, "Aerobiz - Europe", "Europe", "Aerobiz", null, null)),
             Jam(2L, "Balrog", Song(47L, "Earthbound - Hotel", "Hotel", "Earthbound", null, null)),
-            Jam(3L, "Vega", Song(216L, "SimCity - Title", "Title", "SimCity", null, null))
+            Jam(3L, "Vega", Song(216L, "SimCity - Title", "Title", "SimCity", null, null)),
+            Jam(4L, "Ryu", Song(154L, "NieR Automata - Vague Hope - Cold Rain", "Vague Hope - Cold Rain", "NieR Automata", null, null))
         )
     )
 

@@ -33,6 +33,8 @@ class HudViewModel @AssistedInject constructor(
         checkForUpdate()
     }
 
+    fun setActiveJam(jamId: Long) = setState { copy(activeJamId = jamId) }
+
     fun alwaysShowBack() = setState { copy(alwaysShowBack = true) }
 
     fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }

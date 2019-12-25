@@ -36,8 +36,14 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionCtaListModel) {
-        showError("Main action unimplemented.")
+    override fun onClicked(clicked: NameCaptionCtaListModel) = withState(hudViewModel) {
+        val activeJamId = it.activeJamId
+
+        if (clicked.dataId != activeJamId) {
+            hudViewModel.setActiveJam(clicked.dataId)
+        } else {
+            showError("Jam already active.")
+        }
     }
 
     override fun onActionClicked(clicked: NameCaptionCtaListModel) {
@@ -59,7 +65,7 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
         )
     }
 
-    override fun invalidate() = withState(viewModel) { jamListState ->
+    override fun invalidate() = withState(viewModel, hudViewModel) { jamListState, hudState ->
         hudViewModel.dontAlwaysShowBack()
 
         val jams = jamListState.jams
@@ -67,7 +73,9 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
             showError(jams.error)
         }
 
-        val listModels = constructList(jams)
+        val activeJamId = hudState.activeJamId
+
+        val listModels = constructList(jams, activeJamId)
         adapter.submitList(listModels)
     }
 
@@ -76,8 +84,9 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     private fun constructList(
-        jams: Async<List<Jam>>
-    ) = arrayListOf(createTitleListModel()) + createContentListModels(jams)
+        jams: Async<List<Jam>>,
+        activeJam: Long?
+    ) = arrayListOf(createTitleListModel()) + createContentListModels(jams, activeJam)
 
     private fun createTitleListModel() = TitleListModel(
         R.string.title_jam.toLong(),
@@ -86,11 +95,12 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
     )
 
     private fun createContentListModels(
-        jams: Async<List<Jam>>
+        jams: Async<List<Jam>>,
+        activeJam: Long?
     ) = when (jams) {
         is Loading, Uninitialized -> createLoadingListModels()
         is Fail -> createErrorStateListModel(jams.error)
-        is Success -> createSuccessListModels(jams())
+        is Success -> createSuccessListModels(jams(), activeJam)
     }
 
     private fun createLoadingListModels(): List<ListModel> {
@@ -109,7 +119,8 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
         arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))
 
     private fun createSuccessListModels(
-        jams: List<Jam>
+        jams: List<Jam>,
+        activeJam: Long?
     ) = if (jams.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(
@@ -119,11 +130,17 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
         )
     } else {
         jams.map {
+            val iconId = if (it.id == activeJam) {
+                R.drawable.ic_clear_black_24dp
+            } else {
+                R.drawable.ic_delete_black_24dp
+            }
+
             NameCaptionCtaListModel(
                 it.id,
                 it.name,
                 generateSubtitleText(it.currentSong),
-                R.drawable.ic_shuffle_24dp,
+                iconId,
                 this
             )
         }
