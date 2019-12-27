@@ -40,6 +40,7 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
         val activeJamId = it.activeJamId
 
         if (clicked.dataId != activeJamId) {
+            showSnackbar(getString(R.string.snack_now_following, clicked.name))
             hudViewModel.setActiveJam(clicked.dataId)
         } else {
             showError("Jam already active.")
@@ -125,7 +126,7 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
         arrayListOf(
             EmptyStateListModel(
                 R.drawable.ic_album_24dp,
-                "No jams found at all. Check your internet connection?"
+                "You haven't followed any jams. Click above to search for one."
             )
         )
     } else {

@@ -59,6 +59,7 @@ class RealRepository constructor(
     private val dbStatisticsDao = database.dbStatisticsDao()
     private val gameAliasDao = database.gameAliasDao()
     private val composerAliasDao = database.composerAliasDao()
+    private val jamDao = database.jamDao()
 
     @ExperimentalStdlibApi
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
@@ -76,6 +77,15 @@ class RealRepository constructor(
 
     @ExperimentalStdlibApi
     override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
+
+    override fun observeJamState(id: String) = vglsApi
+        .getJamState(id)
+        .map { it.toJamEntity(id) }
+        .doOnNext { jamDao.insert(it) }
+        .map {
+            val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+            it.toJam(currentSong)
+        }
 
     override fun getGames(withSongs: Boolean): Observable<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
@@ -434,6 +444,8 @@ class RealRepository constructor(
     private fun getPagesForPart(partEntity: PartEntity) =
         pageDao.getPagesForPartId(partEntity.id)
             .map { pageEntity -> pageEntity.toPage() }
+
+    private fun getSongSync(songId: Long) = songDao.getSongSync(songId)
 
     private fun generateImageUrl(
         partEntity: PartEntity,

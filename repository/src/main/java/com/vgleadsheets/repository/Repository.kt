@@ -17,6 +17,8 @@ interface Repository {
     fun checkForUpdate(): Single<List<VglsApiGame>>
     fun forceRefresh(): Single<List<VglsApiGame>>
 
+    fun observeJamState(id: String): Observable<Jam>
+
     // Full Lists
     fun getGames(withSongs: Boolean = true): Observable<List<Game>>
     fun getAllSongs(withComposers: Boolean = true, withParts: Boolean = true): Observable<List<Song>>

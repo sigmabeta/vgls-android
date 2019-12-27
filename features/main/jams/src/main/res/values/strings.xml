@@ -2,4 +2,5 @@
 <resources>
     <string name="title_jam">Jam Sessions</string>
     <string name="caption_jam">\"%1$s\" from %2$s</string>
+    <string name="snack_now_following">Now following jam \"%1$s\".</string>
 </resources>
