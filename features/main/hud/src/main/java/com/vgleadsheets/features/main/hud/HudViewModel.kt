@@ -10,11 +10,13 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -27,6 +29,8 @@ class HudViewModel @AssistedInject constructor(
 ) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
+    private var jamDisposables = CompositeDisposable()
+
     init {
         checkSavedPartSelection()
         checkLastUpdateTime()
@@ -34,6 +38,34 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun setActiveJam(jamId: Long) = setState { copy(activeJamId = jamId) }
+
+    fun cancelJam(reason: String) {
+        jamDisposables.clear()
+        setState {
+            copy(
+                jamCancellationReason = reason,
+                activeJamSheetId = null,
+                activeJamId = null
+            )
+        }
+    }
+
+    fun followJam(jamId: Long) {
+        repository.getJam(jamId)
+            .subscribe(
+                {
+                    subscribeToJamNetwork(it)
+                },
+                {
+                    val message = "Failed to get Jam from database: ${it.message}"
+                    Timber.e(message)
+                    cancelJam(message)
+                }
+            )
+            .disposeOnClear()
+
+        subscribeToJamDatabase(jamId)
+    }
 
     fun alwaysShowBack() = setState { copy(alwaysShowBack = true) }
 
@@ -201,6 +233,37 @@ class HudViewModel @AssistedInject constructor(
         oldList?.map { item ->
             item.copy(selected = selection == item.apiId)
         }
+
+    private fun subscribeToJamDatabase(jamId: Long) {
+        val databaseRefresh = repository.observeJamState(jamId)
+            .subscribe(
+                {
+                    setState { copy(activeJamSheetId = it.id) }
+                },
+                {
+                    val message = "Error observing Jam: ${it.message}"
+                    Timber.e(message)
+                    cancelJam(message)
+                }
+            )
+            .disposeOnClear()
+
+        jamDisposables.add(databaseRefresh)
+    }
+
+    private fun subscribeToJamNetwork(it: Jam) {
+        val networkRefresh = repository.refreshJamStateContinuously(it.name)
+            .subscribe({},
+                {
+                    val message = "Error refreshing Jam: ${it.message}"
+                    Timber.e(message)
+                    cancelJam(message)
+                }
+            )
+            .disposeOnClear()
+
+        jamDisposables.add(networkRefresh)
+    }
 
     @AssistedInject.Factory
     interface Factory {

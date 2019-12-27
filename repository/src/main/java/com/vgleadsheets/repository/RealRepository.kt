@@ -14,7 +14,6 @@ import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.giantbomb.GiantBombGame
 import com.vgleadsheets.model.giantbomb.GiantBombPerson
-import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.pages.PageEntity
@@ -37,6 +36,7 @@ import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
 import timber.log.Timber
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
@@ -78,14 +78,20 @@ class RealRepository constructor(
     @ExperimentalStdlibApi
     override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
 
-    override fun observeJamState(id: String) = vglsApi
-        .getJamState(id)
-        .map { it.toJamEntity(id) }
-        .doOnNext { jamDao.insert(it) }
+    override fun observeJamState(id: Long) = jamDao
+        .getJam(id)
         .map {
             val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
             it.toJam(currentSong)
         }
+
+    override fun refreshJamStateContinuously(name: String) = Observable.interval(
+        2000L,
+        TimeUnit.MILLISECONDS
+    ).flatMap { refreshJamStateImpl(name) }
+
+    override fun refreshJamState(name: String) = refreshJamStateImpl(name)
+        .firstOrError()
 
     override fun getGames(withSongs: Boolean): Observable<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
@@ -189,14 +195,21 @@ class RealRepository constructor(
             }
         }
 
-    override fun getJams() = Observable.just(
-        listOf(
-            Jam(1L, "Guile", Song(1L, "Aerobiz - Europe", "Europe", "Aerobiz", null, null)),
-            Jam(2L, "Balrog", Song(47L, "Earthbound - Hotel", "Hotel", "Earthbound", null, null)),
-            Jam(3L, "Vega", Song(216L, "SimCity - Title", "Title", "SimCity", null, null)),
-            Jam(4L, "Ryu", Song(154L, "NieR Automata - Vague Hope - Cold Rain", "Vague Hope - Cold Rain", "NieR Automata", null, null))
-        )
-    )
+    override fun getJam(id: Long) = jamDao
+        .getJam(id)
+        .map {
+            val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+            it.toJam(currentSong)
+        }
+
+    override fun getJams() = jamDao
+        .getAll()
+        .map {
+            it.map {
+                val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+                it.toJam(currentSong)
+            }
+        }
 
     override fun getComposer(composerId: Long): Observable<Composer> = composerDao
         .getComposer(composerId)
@@ -407,18 +420,18 @@ class RealRepository constructor(
                 tagValueEntity.toTagValue(songs)
             }
 
-    private fun getSongsForTagValueSync(tagValueEntity: TagValueEntity, withParts: Boolean = true) = songTagValueDao
-        .getSongsForTagValueSync(tagValueEntity.id)
-        .map { songEntity ->
-            val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
-            songEntity.toSong(null, parts)
-        }
+    private fun getSongsForTagValueSync(tagValueEntity: TagValueEntity, withParts: Boolean = true) =
+        songTagValueDao
+            .getSongsForTagValueSync(tagValueEntity.id)
+            .map { songEntity ->
+                val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
+                songEntity.toSong(null, parts)
+            }
 
     private fun getSongsForComposerAlias(
         composerAliasEntity: ComposerAliasEntity,
         withSongs: Boolean = true
-    ) =
-        songComposerDao.getSongsForComposerSync(composerAliasEntity.composerId)
+    ) = songComposerDao.getSongsForComposerSync(composerAliasEntity.composerId)
             .map { songEntity ->
                 val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
                 songEntity.toSong(null, parts)
@@ -446,6 +459,10 @@ class RealRepository constructor(
             .map { pageEntity -> pageEntity.toPage() }
 
     private fun getSongSync(songId: Long) = songDao.getSongSync(songId)
+
+    private fun refreshJamStateImpl(name: String) = vglsApi.getJamState(name)
+        .map { it.toJamEntity(name) }
+        .doOnNext { jamDao.insert(it) }
 
     private fun generateImageUrl(
         partEntity: PartEntity,

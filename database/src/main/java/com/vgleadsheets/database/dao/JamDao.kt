@@ -14,4 +14,7 @@ interface JamDao {
     @Query("SELECT * FROM jam ORDER BY name")
     fun getAll(): Observable<List<JamEntity>>
 
+    @Query("SELECT * FROM jam WHERE id = :jamId")
+    fun getJam(jamId: Long): Observable<JamEntity>
+
 }

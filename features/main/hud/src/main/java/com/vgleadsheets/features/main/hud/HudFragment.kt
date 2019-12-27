@@ -23,6 +23,7 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
@@ -177,6 +178,32 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                 }
             }
         disposables.add(clickEvents)
+
+        viewModel.selectSubscribe(HudState::activeJamId) {
+            if (it != null) {
+                viewModel.followJam(it)
+            } else {
+                viewModel.cancelJam(getString(R.string.jam_cancelled))
+            }
+        }
+
+        viewModel.selectSubscribe(
+            HudState::activeJamSheetId,
+            deliveryMode = UniqueOnly("sheet")
+        ) {
+            if (it != null) {
+                getFragmentRouter().showSongViewer(it)
+            }
+        }
+
+        viewModel.selectSubscribe(
+            HudState::jamCancellationReason,
+            deliveryMode = UniqueOnly("cancellation")
+        ) {
+            if (it != null) {
+                showError("Jam error. $it")
+            }
+        }
     }
 
     override fun onStop() {

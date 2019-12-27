@@ -15,6 +15,6 @@ interface VglsApi {
     @GET("app/digest/last-updated?rfc3339=true")
     fun getLastUpdateTime(): Single<ApiTime>
 
-    @GET("conductor/{id}?jam_id=true")
-    fun getJamState(@Query("id") id: String): Observable<ApiJam>
+    @GET("conductor/{name}?jam_id=true")
+    fun getJamState(@Query("name") name: String): Observable<ApiJam>
 }
