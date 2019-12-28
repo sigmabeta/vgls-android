@@ -381,7 +381,7 @@ class SearchFragment : VglsFragment(),
             )
 
             hudViewModel.exitSearch()
-            getFragmentRouter().showSongViewer(id)
+            getFragmentRouter().showSongViewer(id, true)
         }
 
     private fun onComposerClicked(id: Long) =

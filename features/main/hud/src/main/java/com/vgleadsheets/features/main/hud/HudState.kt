@@ -18,6 +18,5 @@ data class HudState(
     val digest: Async<List<VglsApiGame>> = Uninitialized,
     val random: Async<Song> = Uninitialized,
     val activeJamId: Long? = null,
-    val activeJamSheetId: Long? = null,
     val jamCancellationReason: String? = null
 ) : MvRxState

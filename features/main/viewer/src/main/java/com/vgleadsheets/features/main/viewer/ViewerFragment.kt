@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
@@ -15,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.SongArgs
 import com.vgleadsheets.components.SheetListModel
+import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
@@ -77,6 +79,25 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     override fun onStart() {
         super.onStart()
         viewModel.checkScreenSetting()
+
+        hudViewModel.selectSubscribe(
+            HudState::activeJamId
+        ) {
+            if (it != null) {
+                viewModel.followJam(it)
+            } else {
+                viewModel.unfollowJam()
+            }
+        }
+
+        viewModel.selectSubscribe(
+            ViewerState::activeJamSheetId,
+            deliveryMode = UniqueOnly("sheet")
+        ) {
+            if (it != null) {
+                getFragmentRouter().showSongViewer(it, false)
+            }
+        }
     }
 
     override fun onStop() {

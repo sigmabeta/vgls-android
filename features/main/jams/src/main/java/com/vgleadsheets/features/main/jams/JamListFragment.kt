@@ -12,6 +12,7 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
@@ -26,7 +27,8 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_jam_list.list_jams
 import javax.inject.Inject
 
-class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
+class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
+    CtaListModel.EventHandler {
     @Inject
     lateinit var jamListViewModelFactory: JamListViewModel.Factory
 
@@ -47,8 +49,18 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
         }
     }
 
-    override fun onActionClicked(clicked: NameCaptionCtaListModel) {
-        showError("CTA action unimplemented.")
+    override fun onActionClicked(clicked: NameCaptionCtaListModel) = withState(hudViewModel) {
+        val activeJamId = it.activeJamId
+
+        if (clicked.dataId != activeJamId) {
+            showError("CTA action unimplemented.")
+        } else {
+            hudViewModel.cancelJam("No longer following Jam.")
+        }
+    }
+
+    override fun onClicked(clicked: CtaListModel) {
+        getFragmentRouter().showFindJamDialog()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,8 +112,8 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
         activeJam: Long?
     ) = when (jams) {
         is Loading, Uninitialized -> createLoadingListModels()
-        is Fail -> createErrorStateListModel(jams.error)
-        is Success -> createSuccessListModels(jams(), activeJam)
+        is Fail -> createCtaListModels() + createErrorStateListModel(jams.error)
+        is Success -> createCtaListModels() + createSuccessListModels(jams(), activeJam)
     }
 
     private fun createLoadingListModels(): List<ListModel> {
@@ -115,6 +127,14 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler {
 
         return listModels
     }
+
+    private fun createCtaListModels() = listOf(
+        CtaListModel(
+            R.drawable.ic_add_black_24dp,
+            getString(R.string.cta_find_jam),
+            this
+        )
+    )
 
     private fun createErrorStateListModel(error: Throwable) =
         arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))

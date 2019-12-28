@@ -18,6 +18,7 @@ import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
@@ -129,6 +130,13 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         showFragmentSimple(LicenseFragment.newInstance())
     }
 
+    override fun showFindJamDialog() {
+        FindJamDialogFragment.newInstance().show(
+            supportFragmentManager,
+            FindJamDialogFragment::class.java.simpleName
+        )
+    }
+
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(
         GameFragment.newInstance(
             IdArgs(gameId)
@@ -153,7 +161,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         )
     )
 
-    override fun showSongViewer(songId: Long) = showFragmentSimple(
+    override fun showSongViewer(songId: Long, addToStack: Boolean) = showFragmentSimple(
         ViewerFragment.newInstance(
             SongArgs(
                 songId
@@ -173,13 +181,18 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
-    private fun showFragmentSimple(fragment: VglsFragment) {
+    private fun showFragmentSimple(fragment: VglsFragment, addToStack: Boolean = true) {
         if (getDisplayedFragment().getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
-            supportFragmentManager.beginTransaction()
+            val transaction = supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)
-                .addToBackStack(null)
-                .commit()
+
+            // TODO This isn't what we want for SongViewer. we want to be able to remove the previous fragment
+            if (addToStack) {
+                transaction.addToBackStack(null)
+            }
+
+            transaction.commit()
         }
     }
 

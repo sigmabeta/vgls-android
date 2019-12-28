@@ -207,7 +207,7 @@ class ComposerFragment : VglsFragment(),
                 hudState.parts?.first { it.selected }?.apiId ?: "C",
                 null
             )
-            getFragmentRouter().showSongViewer(clickedSongId)
+            getFragmentRouter().showSongViewer(clickedSongId, true)
         }
 
     companion object {

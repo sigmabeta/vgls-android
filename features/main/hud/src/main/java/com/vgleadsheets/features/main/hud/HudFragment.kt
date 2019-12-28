@@ -179,23 +179,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             }
         disposables.add(clickEvents)
 
-        viewModel.selectSubscribe(HudState::activeJamId) {
-            if (it != null) {
-                viewModel.followJam(it)
-            } else {
-                viewModel.cancelJam(getString(R.string.jam_cancelled))
-            }
-        }
-
-        viewModel.selectSubscribe(
-            HudState::activeJamSheetId,
-            deliveryMode = UniqueOnly("sheet")
-        ) {
-            if (it != null) {
-                getFragmentRouter().showSongViewer(it)
-            }
-        }
-
         viewModel.selectSubscribe(
             HudState::jamCancellationReason,
             deliveryMode = UniqueOnly("cancellation")
@@ -336,7 +319,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             hudState.parts?.first { it.selected }?.apiId ?: "C"
         )
 
-        getFragmentRouter().showSongViewer(song.id)
+        getFragmentRouter().showSongViewer(song.id, false)
     }
 
     private fun onPartSelect(clicked: PartListModel) {

@@ -6,7 +6,7 @@ import com.vgleadsheets.model.time.ApiTime
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Path
 
 interface VglsApi {
     @GET("app/digest?optimized=true")
@@ -16,5 +16,5 @@ interface VglsApi {
     fun getLastUpdateTime(): Single<ApiTime>
 
     @GET("conductor/{name}?jam_id=true")
-    fun getJamState(@Query("name") name: String): Observable<ApiJam>
+    fun getJamState(@Path("name") name: String): Observable<ApiJam>
 }

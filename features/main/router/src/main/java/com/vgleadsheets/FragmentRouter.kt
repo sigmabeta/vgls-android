@@ -4,7 +4,7 @@ package com.vgleadsheets
 interface FragmentRouter {
     fun showGameList()
     fun showSongListForGame(gameId: Long)
-    fun showSongViewer(songId: Long)
+    fun showSongViewer(songId: Long, addToStack: Boolean)
     fun showSearch()
     fun showSongListForComposer(composerId: Long)
     fun showSongListForTagValue(tagValueId: Long)
@@ -17,4 +17,5 @@ interface FragmentRouter {
     fun showAbout()
     fun goToWebUrl(url: String)
     fun showLicenseScreen()
+    fun showFindJamDialog()
 }

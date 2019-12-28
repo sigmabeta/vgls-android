@@ -10,41 +10,39 @@
             type="com.vgleadsheets.components.CtaListModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
         android:onClick="@{() -> toBind.handler.onClicked(toBind)}">
-
-        <ImageView
-            android:id="@+id/icon_cta"
-            android:layout_width="@dimen/min_clickable_size"
-            android:layout_height="@dimen/min_clickable_size"
-            android:layout_margin="@dimen/margin_small"
-            android:src="@{toBind.iconId}"
-            android:tint="@color/gray_medium"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_add_black_24dp" />
-
 
         <TextView
             android:id="@+id/text_cta"
             android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_small"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/icon_cta"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="center_vertical"
             tools:text="@string/sample_lorem_ipsum" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/icon_cta"
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/gray_medium"
+            app:imageResource="@{toBind.iconId}"
+            tools:src="@drawable/ic_add_black_24dp" />
+
+    </LinearLayout>
 </layout>

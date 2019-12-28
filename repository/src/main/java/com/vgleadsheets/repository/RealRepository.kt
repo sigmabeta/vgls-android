@@ -86,7 +86,7 @@ class RealRepository constructor(
         }
 
     override fun refreshJamStateContinuously(name: String) = Observable.interval(
-        2000L,
+        5000L,
         TimeUnit.MILLISECONDS
     ).flatMap { refreshJamStateImpl(name) }
 
