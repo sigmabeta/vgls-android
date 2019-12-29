@@ -464,7 +464,7 @@ class RealRepository constructor(
     private fun getSongSync(songId: Long) = songDao.getSongSync(songId)
 
     private fun refreshJamStateImpl(name: String) = vglsApi.getJamState(name)
-        .map { it.toJamEntity(name) }
+        .map { it.toJamEntity(name.toTitleCase()) }
         .doOnNext { jamDao.insert(it) }
 
     private fun generateImageUrl(
