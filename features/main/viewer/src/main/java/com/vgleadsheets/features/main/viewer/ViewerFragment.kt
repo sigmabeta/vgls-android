@@ -42,7 +42,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     private val songArgs: SongArgs by args()
 
     // Keep a local copy for the fragment tag.
-    private val songId: Long? = null
+    private var songId: Long? = null
 
     private val adapter = ComponentAdapter()
 
@@ -97,6 +97,13 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
             deliveryMode = UniqueOnly("sheet")
         ) {
             if (it != null) {
+                if (songId != null) {
+                    showSnackbar(
+                        getString(R.string.jam_updating_sheet),
+                        View.OnClickListener { hudViewModel.cancelJam("No longer following jam.") },
+                        R.string.cta_snack_cancel
+                    )
+                }
                 updateSongId(it)
             }
         }
@@ -146,6 +153,8 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
             showError("No part selected.")
             return@withState
         }
+
+        songId = viewerState.songId
 
         when (viewerState.song) {
             is Fail -> showError(
