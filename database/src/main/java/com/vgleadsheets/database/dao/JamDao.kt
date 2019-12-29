@@ -17,4 +17,7 @@ interface JamDao {
 
     @Query("SELECT * FROM jam WHERE id = :jamId")
     fun getJam(jamId: Long): Observable<JamEntity>
+
+    @Query("DELETE FROM jam WHERE Id = :jamId")
+    fun remove(jamId: Long)
 }

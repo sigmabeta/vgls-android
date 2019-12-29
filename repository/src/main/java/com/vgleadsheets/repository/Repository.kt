@@ -10,6 +10,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -57,4 +58,7 @@ interface Repository {
     // Giant Bomb searches
     fun searchGiantBombForGame(vglsId: Long, name: String)
     fun searchGiantBombForComposer(vglsId: Long, name: String)
+
+    // Jam maintenance
+    fun removeJam(id: Long): Completable
 }

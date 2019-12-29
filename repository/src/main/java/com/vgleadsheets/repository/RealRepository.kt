@@ -29,6 +29,7 @@ import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.GiantBombApi
 import com.vgleadsheets.network.VglsApi
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -346,6 +347,8 @@ class RealRepository constructor(
             )
     }
 
+    override fun removeJam(id: Long) = Completable.fromAction { jamDao.remove(id) }
+
     @Suppress("MaxLineLength")
     private fun searchGames(searchQuery: String) = gameDao
         .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
@@ -432,10 +435,10 @@ class RealRepository constructor(
         composerAliasEntity: ComposerAliasEntity,
         withSongs: Boolean = true
     ) = songComposerDao.getSongsForComposerSync(composerAliasEntity.composerId)
-            .map { songEntity ->
-                val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
-                songEntity.toSong(null, parts)
-            }
+        .map { songEntity ->
+            val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
+            songEntity.toSong(null, parts)
+        }
 
     // TODO Merge this and the below method.
     private fun getPartsForSongSync(songId: Long, withPages: Boolean = true) = partDao

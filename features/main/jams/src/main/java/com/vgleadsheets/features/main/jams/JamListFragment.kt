@@ -53,7 +53,7 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
         val activeJamId = it.activeJamId
 
         if (clicked.dataId != activeJamId) {
-            showError("CTA action unimplemented.")
+            viewModel.removeJam(clicked.dataId)
         } else {
             hudViewModel.cancelJam("No longer following Jam.")
         }
