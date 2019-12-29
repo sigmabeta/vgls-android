@@ -22,7 +22,9 @@ import kotlinx.android.synthetic.main.fragment_find_jam.button_cancel
 import kotlinx.android.synthetic.main.fragment_find_jam.button_find
 import kotlinx.android.synthetic.main.fragment_find_jam.edit_jam_name
 import kotlinx.android.synthetic.main.fragment_find_jam.progress_loading
+import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class FindJamDialogFragment : BottomSheetDialogFragment() {
@@ -86,7 +88,17 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
                     progress_loading.visibility = GONE
                     button_find.visibility = VISIBLE
 
-                    showError("Could not find jam: ${it.message}")
+                    if (it is HttpException) {
+                        if (it.code() == 404) {
+                            showError(getString(R.string.error_could_not_find_jam))
+                        } else {
+                            showError(getString(R.string.error_network))
+                        }
+                    } else if (it is UnknownHostException) {
+                        showError(getString(R.string.error_connection))
+                    } else {
+                        showError("Could not find Jam: ${it.message}")
+                    }
                 }
             )
 

@@ -10,7 +10,9 @@ import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.disposables.CompositeDisposable
+import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 
 class ViewerViewModel @AssistedInject constructor(
     @Assisted initialState: ViewerState,
@@ -85,12 +87,25 @@ class ViewerViewModel @AssistedInject constructor(
         jamDisposables.add(databaseRefresh)
     }
 
-    private fun subscribeToJamNetwork(it: Jam) {
-        Timber.i("Subscribing to jam ${it.id} on the network.")
-        val networkRefresh = repository.refreshJamStateContinuously(it.name)
+    private fun subscribeToJamNetwork(jam: Jam) {
+        Timber.i("Subscribing to jam ${jam.id} on the network.")
+        val networkRefresh = repository.refreshJamStateContinuously(jam.name)
             .subscribe({},
                 {
-                    val message = "Error refreshing Jam: ${it.message}"
+                    val message: String
+                    if (it is HttpException) {
+                        if (it.code() == 404) {
+                            message = "Jam has been deleted from server."
+                            repository.removeJam(jam.id)
+                        } else {
+                            message = "Error communicating with Jam server."
+                        }
+                    } else if (it is UnknownHostException) {
+                        message = "Can't reach Jam server. Check connection and try again."
+                    } else {
+                        message = "Error communicating with Jam server."
+                    }
+
                     Timber.e(message)
                     setState { copy(jamCancellationReason = message) }
                 }
