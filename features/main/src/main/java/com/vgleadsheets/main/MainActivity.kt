@@ -165,6 +165,7 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         val previous = supportFragmentManager.findFragmentById(R.id.frame_fragment)
 
         if (previous is ViewerFragment) {
+            previous.cancelJam()
             previous.updateSongId(songId)
         } else {
             showFragmentSimple(

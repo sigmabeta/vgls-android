@@ -26,7 +26,6 @@ class ViewerViewModel @AssistedInject constructor(
 
     init {
         checkScreenSetting()
-        followJam()
     }
 
     fun fetchSong() = withState { state ->
@@ -52,12 +51,24 @@ class ViewerViewModel @AssistedInject constructor(
 
     fun clearCancellationReason() = setState { copy(jamCancellationReason = null) }
 
-    private fun followJam() = withState { state ->
+    fun unfollowJam(reason: String?) {
+        if (jamDisposables.isDisposed) {
+            return
+        }
+
+        jamDisposables.clear()
+
+        if (reason != null) {
+            setState { copy(jamCancellationReason = reason) }
+        }
+    }
+
+    fun followJam() = withState { state ->
         val jamId = state.jamId
 
         if (jamId != null) {
             Timber.i("Following jam.")
-            repository.getJam(jamId)
+            val networkRefresh = repository.getJam(jamId)
                 .firstOrError()
                 .subscribe(
                     {
@@ -70,6 +81,8 @@ class ViewerViewModel @AssistedInject constructor(
                     }
                 )
                 .disposeOnClear()
+
+            jamDisposables.add(networkRefresh)
 
             subscribeToJamDatabase(jamId)
         }

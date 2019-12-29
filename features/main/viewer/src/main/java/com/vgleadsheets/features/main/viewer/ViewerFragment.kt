@@ -56,6 +56,12 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         viewModel.updateSongId(songId)
     }
 
+    fun cancelJam() {
+        if (viewerArgs.jamId != null) {
+            viewModel.unfollowJam("Opened another sheet.")
+        }
+    }
+
     override fun onClicked() = withState(hudViewModel) { state ->
         if (state.hudVisible) {
             hudViewModel.hideHud()
@@ -81,7 +87,8 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         )
 
         viewModel.selectSubscribe(
-            ViewerState::activeJamSheetId
+            ViewerState::activeJamSheetId,
+            deliveryMode = uniqueOnly("sheet")
         ) {
             if (it != null) {
                 if (songId != null) {
@@ -110,11 +117,13 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     override fun onStart() {
         super.onStart()
         viewModel.checkScreenSetting()
+        viewModel.followJam()
     }
 
     override fun onStop() {
         super.onStop()
         stopScreenTimer()
+        viewModel.unfollowJam(null)
     }
 
     override fun onDestroy() {
