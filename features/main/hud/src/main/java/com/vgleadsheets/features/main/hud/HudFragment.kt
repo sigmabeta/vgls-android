@@ -23,7 +23,6 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
-import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
@@ -159,15 +158,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         layout_refresh.setOnClickListener { onRefreshClick() }
 
         enableRandomSelector()
-
-        viewModel.selectSubscribe(
-            HudState::jamCancellationReason,
-            deliveryMode = UniqueOnly("cancellation")
-        ) {
-            if (it != null) {
-                showError("Jam error. $it")
-            }
-        }
     }
 
     override fun onStart() {

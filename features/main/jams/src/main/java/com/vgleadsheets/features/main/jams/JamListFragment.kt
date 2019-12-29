@@ -38,25 +38,12 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionCtaListModel) = withState(hudViewModel) {
-        val activeJamId = it.activeJamId
-
-        if (clicked.dataId != activeJamId) {
-            showSnackbar(getString(R.string.snack_now_following, clicked.name))
-            hudViewModel.setActiveJam(clicked.dataId)
-        }
-
-        getFragmentRouter().showSongViewer(null)
+    override fun onClicked(clicked: NameCaptionCtaListModel) {
+        getFragmentRouter().showJamViewer(clicked.dataId)
     }
 
-    override fun onActionClicked(clicked: NameCaptionCtaListModel) = withState(hudViewModel) {
-        val activeJamId = it.activeJamId
-
-        if (clicked.dataId != activeJamId) {
-            viewModel.removeJam(clicked.dataId)
-        } else {
-            hudViewModel.cancelJam("No longer following Jam.")
-        }
+    override fun onActionClicked(clicked: NameCaptionCtaListModel) {
+        viewModel.removeJam(clicked.dataId)
     }
 
     override fun onClicked(clicked: CtaListModel) {
@@ -78,7 +65,7 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
         )
     }
 
-    override fun invalidate() = withState(viewModel, hudViewModel) { jamListState, hudState ->
+    override fun invalidate() = withState(viewModel) { jamListState ->
         hudViewModel.dontAlwaysShowBack()
 
         val jams = jamListState.jams
@@ -86,9 +73,7 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
             showError(jams.error)
         }
 
-        val activeJamId = hudState.activeJamId
-
-        val listModels = constructList(jams, activeJamId)
+        val listModels = constructList(jams)
         adapter.submitList(listModels)
     }
 
@@ -96,10 +81,8 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun constructList(
-        jams: Async<List<Jam>>,
-        activeJam: Long?
-    ) = arrayListOf(createTitleListModel()) + createContentListModels(jams, activeJam)
+    private fun constructList(jams: Async<List<Jam>>) = arrayListOf(createTitleListModel())+
+            createContentListModels(jams)
 
     private fun createTitleListModel() = TitleListModel(
         R.string.title_jam.toLong(),
@@ -107,13 +90,10 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
         ""
     )
 
-    private fun createContentListModels(
-        jams: Async<List<Jam>>,
-        activeJam: Long?
-    ) = when (jams) {
+    private fun createContentListModels(jams: Async<List<Jam>>) = when (jams) {
         is Loading, Uninitialized -> createLoadingListModels()
         is Fail -> createCtaListModels() + createErrorStateListModel(jams.error)
-        is Success -> createCtaListModels() + createSuccessListModels(jams(), activeJam)
+        is Success -> createCtaListModels() + createSuccessListModels(jams())
     }
 
     private fun createLoadingListModels(): List<ListModel> {
@@ -139,10 +119,7 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
     private fun createErrorStateListModel(error: Throwable) =
         arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))
 
-    private fun createSuccessListModels(
-        jams: List<Jam>,
-        activeJam: Long?
-    ) = if (jams.isEmpty()) {
+    private fun createSuccessListModels(jams: List<Jam>) = if (jams.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(
                 R.drawable.ic_album_24dp,
@@ -151,17 +128,12 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
         )
     } else {
         jams.map {
-            val iconId = if (it.id == activeJam) {
-                R.drawable.ic_clear_black_24dp
-            } else {
-                R.drawable.ic_delete_black_24dp
-            }
 
             NameCaptionCtaListModel(
                 it.id,
                 it.name,
                 generateSubtitleText(it.currentSong),
-                iconId,
+                R.drawable.ic_delete_black_24dp,
                 this
             )
         }

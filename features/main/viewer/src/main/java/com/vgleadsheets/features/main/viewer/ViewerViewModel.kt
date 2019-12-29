@@ -9,7 +9,9 @@ import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.UnknownHostException
@@ -24,11 +26,14 @@ class ViewerViewModel @AssistedInject constructor(
 
     init {
         checkScreenSetting()
+        followJam()
     }
 
     fun fetchSong() = withState { state ->
         val songId = state.songId
+
         if (songId != null) {
+            Timber.i("Fetching song.")
             repository.getSong(songId)
                 .execute { data ->
                     copy(song = data)
@@ -45,28 +50,29 @@ class ViewerViewModel @AssistedInject constructor(
             }
     }
 
-    fun followJam(jamId: Long) {
-        Timber.i("Following jam.")
-        repository.getJam(jamId)
-            .firstOrError()
-            .subscribe(
-                {
-                    subscribeToJamNetwork(it)
-                },
-                {
-                    val message = "Failed to get Jam from database: ${it.message}"
-                    Timber.e(message)
-                    setState { copy(jamCancellationReason = message) }
-                }
-            )
-            .disposeOnClear()
+    fun clearCancellationReason() = setState { copy(jamCancellationReason = null) }
 
-        subscribeToJamDatabase(jamId)
-    }
+    private fun followJam() = withState { state ->
+        val jamId = state.jamId
 
-    fun unfollowJam() {
-        Timber.i("Following jam.")
-        jamDisposables.clear()
+        if (jamId != null) {
+            Timber.i("Following jam.")
+            repository.getJam(jamId)
+                .firstOrError()
+                .subscribe(
+                    {
+                        subscribeToJamNetwork(it)
+                    },
+                    {
+                        val message = "Failed to get Jam from database: ${it.message}"
+                        Timber.e(message)
+                        setState { copy(jamCancellationReason = message) }
+                    }
+                )
+                .disposeOnClear()
+
+            subscribeToJamDatabase(jamId)
+        }
     }
 
     private fun subscribeToJamDatabase(jamId: Long) {
@@ -96,7 +102,7 @@ class ViewerViewModel @AssistedInject constructor(
                     if (it is HttpException) {
                         if (it.code() == 404) {
                             message = "Jam has been deleted from server."
-                            repository.removeJam(jam.id)
+                            removeJam(jam.id)
                         } else {
                             message = "Error communicating with Jam server."
                         }
@@ -113,6 +119,15 @@ class ViewerViewModel @AssistedInject constructor(
             .disposeOnClear()
 
         jamDisposables.add(networkRefresh)
+    }
+
+    private fun removeJam(dataId: Long) {
+        repository
+            .removeJam(dataId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, { Timber.e("Error removing Jam: ${it.message}") })
+            .disposeOnClear()
     }
 
     @AssistedInject.Factory

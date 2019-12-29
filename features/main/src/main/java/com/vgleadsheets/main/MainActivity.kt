@@ -10,7 +10,7 @@ import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.args.SongArgs
+import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
@@ -161,20 +161,30 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         )
     )
 
-    override fun showSongViewer(songId: Long?) {
+    override fun showSongViewer(songId: Long) {
         val previous = supportFragmentManager.findFragmentById(R.id.frame_fragment)
 
-        if (songId != null && previous is ViewerFragment) {
+        if (previous is ViewerFragment) {
             previous.updateSongId(songId)
         } else {
             showFragmentSimple(
                 ViewerFragment.newInstance(
-                    SongArgs(
-                        songId
+                    ViewerArgs(
+                        songId = songId
                     )
                 )
             )
         }
+    }
+
+    override fun showJamViewer(jamId: Long) {
+        showFragmentSimple(
+            ViewerFragment.newInstance(
+                ViewerArgs(
+                    jamId = jamId
+                )
+            )
+        )
     }
 
     override fun onBackPressed() {

@@ -3,11 +3,12 @@ package com.vgleadsheets.features.main.viewer
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.args.SongArgs
+import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.storage.Setting
 
 data class ViewerState(
+    val jamId: Long?,
     val songId: Long?,
     val song: Async<Song> = Uninitialized,
     val screenOn: Async<Setting> = Uninitialized,
@@ -15,5 +16,5 @@ data class ViewerState(
     val activeJamSheetId: Long? = null,
     val jamCancellationReason: String? = null
 ) : MvRxState {
-    constructor(songArgs: SongArgs) : this(songArgs.songId)
+    constructor(viewerArgs: ViewerArgs) : this(viewerArgs.jamId, viewerArgs.songId)
 }

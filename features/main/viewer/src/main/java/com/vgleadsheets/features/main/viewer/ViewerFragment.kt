@@ -7,16 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.args.SongArgs
+import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.song.Song
@@ -39,7 +37,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
 
-    private val songArgs: SongArgs by args()
+    private val viewerArgs: ViewerArgs by args()
 
     // Keep a local copy for the fragment tag.
     private var songId: Long? = null
@@ -82,26 +80,13 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
             false
         )
 
-        hudViewModel.selectSubscribe(
-            HudState::activeJamId
-        ) {
-            if (it != null) {
-                viewModel.followJam(it)
-            } else {
-                viewModel.unfollowJam()
-            }
-        }
-
         viewModel.selectSubscribe(
-            ViewerState::activeJamSheetId,
-            deliveryMode = UniqueOnly("sheet")
+            ViewerState::activeJamSheetId
         ) {
             if (it != null) {
                 if (songId != null) {
                     showSnackbar(
-                        getString(R.string.jam_updating_sheet),
-                        View.OnClickListener { hudViewModel.cancelJam("No longer following jam.") },
-                        R.string.cta_snack_cancel
+                        getString(R.string.jam_updating_sheet)
                     )
                 }
                 updateSongId(it)
@@ -111,6 +96,13 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         viewModel.selectSubscribe(ViewerState::songId) {
             if (it != null) {
                 viewModel.fetchSong()
+            }
+        }
+
+        viewModel.selectSubscribe(ViewerState::jamCancellationReason) {
+            if (it != null) {
+                showError("Jam unfollowed: $it")
+                viewModel.clearCancellationReason()
             }
         }
     }
@@ -176,7 +168,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun getLayoutId() = R.layout.fragment_viewer
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songId ?: songArgs.songId}"
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songId ?: viewerArgs.songId}"
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
@@ -266,7 +258,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     companion object {
         const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
 
-        fun newInstance(sheetArgs: SongArgs): ViewerFragment {
+        fun newInstance(sheetArgs: ViewerArgs): ViewerFragment {
             val fragment = ViewerFragment()
 
             val args = Bundle()
