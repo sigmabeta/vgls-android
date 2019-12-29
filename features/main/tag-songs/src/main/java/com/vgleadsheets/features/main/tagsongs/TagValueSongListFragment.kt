@@ -179,7 +179,7 @@ class TagValueSongListFragment : VglsFragment(),
     }
 
     private fun showSongViewer(songId: Long) {
-        getFragmentRouter().showSongViewer(songId, true)
+        getFragmentRouter().showSongViewer(songId)
     }
 
     override fun getLayoutId() = R.layout.fragment_tag_value_song_list

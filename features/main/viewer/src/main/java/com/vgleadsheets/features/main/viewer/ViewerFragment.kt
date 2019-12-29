@@ -41,6 +41,9 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private val songArgs: SongArgs by args()
 
+    // Keep a local copy for the fragment tag.
+    private val songId: Long? = null
+
     private val adapter = ComponentAdapter()
 
     private val timers = CompositeDisposable()
@@ -49,6 +52,10 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private val onScreenOffSnackClick = View.OnClickListener {
         postInvalidate()
+    }
+
+    fun updateSongId(songId: Long) {
+        viewModel.updateSongId(songId)
     }
 
     override fun onClicked() = withState(hudViewModel) { state ->
@@ -74,11 +81,6 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
             LinearLayoutManager.HORIZONTAL,
             false
         )
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.checkScreenSetting()
 
         hudViewModel.selectSubscribe(
             HudState::activeJamId
@@ -95,9 +97,20 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
             deliveryMode = UniqueOnly("sheet")
         ) {
             if (it != null) {
-                getFragmentRouter().showSongViewer(it, false)
+                updateSongId(it)
             }
         }
+
+        viewModel.selectSubscribe(ViewerState::songId) {
+            if (it != null) {
+                viewModel.fetchSong()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.checkScreenSetting()
     }
 
     override fun onStop() {
@@ -154,7 +167,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun getLayoutId() = R.layout.fragment_viewer
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songArgs.songId}"
+    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songId ?: songArgs.songId}"
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")

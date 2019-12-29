@@ -44,9 +44,9 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
         if (clicked.dataId != activeJamId) {
             showSnackbar(getString(R.string.snack_now_following, clicked.name))
             hudViewModel.setActiveJam(clicked.dataId)
-        } else {
-            showError("Jam already active.")
         }
+
+        getFragmentRouter().showSongViewer(null)
     }
 
     override fun onActionClicked(clicked: NameCaptionCtaListModel) = withState(hudViewModel) {

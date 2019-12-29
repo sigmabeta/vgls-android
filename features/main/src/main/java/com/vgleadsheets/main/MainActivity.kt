@@ -161,13 +161,21 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         )
     )
 
-    override fun showSongViewer(songId: Long, addToStack: Boolean) = showFragmentSimple(
-        ViewerFragment.newInstance(
-            SongArgs(
-                songId
+    override fun showSongViewer(songId: Long?) {
+        val previous = supportFragmentManager.findFragmentById(R.id.frame_fragment)
+
+        if (songId != null && previous is ViewerFragment) {
+            previous.updateSongId(songId)
+        } else {
+            showFragmentSimple(
+                ViewerFragment.newInstance(
+                    SongArgs(
+                        songId
+                    )
+                )
             )
-        )
-    )
+        }
+    }
 
     override fun onBackPressed() {
         if (!getHudFragment().onBackPress() && !getDisplayedFragment().onBackPress()) {
@@ -181,18 +189,13 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
-    private fun showFragmentSimple(fragment: VglsFragment, addToStack: Boolean = true) {
+    private fun showFragmentSimple(fragment: VglsFragment) {
         if (getDisplayedFragment().getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
-            val transaction = supportFragmentManager.beginTransaction()
+            supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)
-
-            // TODO This isn't what we want for SongViewer. we want to be able to remove the previous fragment
-            if (addToStack) {
-                transaction.addToBackStack(null)
-            }
-
-            transaction.commit()
+                .addToBackStack(null)
+                .commit()
         }
     }
 

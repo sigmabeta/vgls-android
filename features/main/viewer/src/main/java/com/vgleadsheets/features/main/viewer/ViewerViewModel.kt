@@ -21,10 +21,20 @@ class ViewerViewModel @AssistedInject constructor(
     private var jamDisposables = CompositeDisposable()
 
     init {
-        fetchSong()
-        fetchParts()
         checkScreenSetting()
     }
+
+    fun fetchSong() = withState { state ->
+        val songId = state.songId
+        if (songId != null) {
+            repository.getSong(songId)
+                .execute { data ->
+                    copy(song = data)
+                }
+        }
+    }
+
+    fun updateSongId(newSheetId: Long) { setState { copy(songId = newSheetId) } }
 
     fun checkScreenSetting() {
         storage.getSettingSheetScreenOn()
@@ -88,20 +98,6 @@ class ViewerViewModel @AssistedInject constructor(
             .disposeOnClear()
 
         jamDisposables.add(networkRefresh)
-    }
-
-    private fun fetchSong() = withState { state ->
-        repository.getSong(state.songId)
-            .execute { data ->
-                copy(song = data)
-            }
-    }
-
-    private fun fetchParts() = withState { state ->
-        repository.getPartsForSong(state.songId)
-            .execute {
-                copy(parts = it)
-            }
     }
 
     @AssistedInject.Factory

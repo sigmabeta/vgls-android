@@ -159,6 +159,15 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         layout_refresh.setOnClickListener { onRefreshClick() }
 
         enableRandomSelector()
+
+        viewModel.selectSubscribe(
+            HudState::jamCancellationReason,
+            deliveryMode = UniqueOnly("cancellation")
+        ) {
+            if (it != null) {
+                showError("Jam error. $it")
+            }
+        }
     }
 
     override fun onStart() {
@@ -178,15 +187,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                 }
             }
         disposables.add(clickEvents)
-
-        viewModel.selectSubscribe(
-            HudState::jamCancellationReason,
-            deliveryMode = UniqueOnly("cancellation")
-        ) {
-            if (it != null) {
-                showError("Jam error. $it")
-            }
-        }
     }
 
     override fun onStop() {
@@ -319,7 +319,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             hudState.parts?.first { it.selected }?.apiId ?: "C"
         )
 
-        getFragmentRouter().showSongViewer(song.id, false)
+        getFragmentRouter().showSongViewer(song.id)
     }
 
     private fun onPartSelect(clicked: PartListModel) {

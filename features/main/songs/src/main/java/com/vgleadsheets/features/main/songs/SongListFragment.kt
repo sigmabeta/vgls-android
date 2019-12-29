@@ -182,7 +182,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
                 hudState.parts?.first { it.selected }?.apiId ?: "C",
                 null
             )
-            getFragmentRouter().showSongViewer(clickedSongId, true)
+            getFragmentRouter().showSongViewer(clickedSongId)
         }
 
     companion object {

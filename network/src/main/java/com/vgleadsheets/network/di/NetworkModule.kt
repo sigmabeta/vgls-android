@@ -31,7 +31,7 @@ class NetworkModule {
     @Provides
     @Named("VglsUrl")
     @Singleton
-    internal fun provideVglsUrl() = "https://www.vgleadsheets.com/"
+    internal fun provideVglsUrl() = "https://super.vgleadsheets.com/"
 
     @Provides
     @Named("VglsApiUrl")

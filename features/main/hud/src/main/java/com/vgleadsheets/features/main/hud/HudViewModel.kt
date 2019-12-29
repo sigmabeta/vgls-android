@@ -69,9 +69,14 @@ class HudViewModel @AssistedInject constructor(
         setState { copy(menuExpanded = false) }
     }
 
-    fun setAvailableParts(parts: List<Part>) = withState {
+    fun setAvailableParts(parts: List<Part>) = withState { state ->
+        if (state.parts == parts) {
+            return@withState
+        }
+
         Timber.i("Setting available parts: $parts")
-        val selectedId = it.parts?.first { part -> part.selected }?.apiId
+
+        val selectedId = state.parts?.first { part -> part.selected }?.apiId
         setState {
             copy(parts = PartSelectorItem.getAvailablePartPickerItems(parts, selectedId))
         }
