@@ -27,6 +27,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_jam_list.list_jams
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
     CtaListModel.EventHandler {
     @Inject
@@ -81,7 +82,7 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    private fun constructList(jams: Async<List<Jam>>) = arrayListOf(createTitleListModel())+
+    private fun constructList(jams: Async<List<Jam>>) = arrayListOf(createTitleListModel()) +
             createContentListModels(jams)
 
     private fun createTitleListModel() = TitleListModel(

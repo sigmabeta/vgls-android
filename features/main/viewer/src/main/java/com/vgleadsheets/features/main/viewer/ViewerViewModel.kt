@@ -14,6 +14,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.HttpURLConnection
 import java.net.UnknownHostException
 
 class ViewerViewModel @AssistedInject constructor(
@@ -113,7 +114,7 @@ class ViewerViewModel @AssistedInject constructor(
                 {
                     val message: String
                     if (it is HttpException) {
-                        if (it.code() == 404) {
+                        if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
                             message = "Jam has been deleted from server."
                             removeJam(jam.id)
                         } else {

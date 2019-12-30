@@ -2,7 +2,6 @@ package com.vgleadsheets.main
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentTransaction
@@ -209,8 +208,6 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
                 .commit()
         }
     }
-
-    private fun doesDeviceHaveFocusGlitch() = Build.VERSION.SDK_INT < Build.VERSION_CODES.P
 
     private fun getHudFragment() =
         supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment

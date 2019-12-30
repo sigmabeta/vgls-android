@@ -24,9 +24,11 @@ import kotlinx.android.synthetic.main.fragment_find_jam.edit_jam_name
 import kotlinx.android.synthetic.main.fragment_find_jam.progress_loading
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.HttpURLConnection
 import java.net.UnknownHostException
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class FindJamDialogFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var tracker: Tracker
@@ -89,7 +91,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
                     button_find.visibility = VISIBLE
 
                     if (it is HttpException) {
-                        if (it.code() == 404) {
+                        if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
                             showError(getString(R.string.error_could_not_find_jam))
                         } else {
                             showError(getString(R.string.error_network))

@@ -87,7 +87,7 @@ class RealRepository constructor(
         }
 
     override fun refreshJamStateContinuously(name: String) = Observable.interval(
-        5000L,
+        INTERVAL_JAM_REFRESH,
         TimeUnit.MILLISECONDS
     ).flatMap { refreshJamStateImpl(name) }
 
@@ -647,6 +647,8 @@ class RealRepository constructor(
 
     companion object {
         const val CAPACITY = 500
+
+        const val INTERVAL_JAM_REFRESH = 5000L
 
         const val URL_SEPARATOR_FOLDER = "/"
         const val URL_SEPARATOR_NUMBER = "-"
