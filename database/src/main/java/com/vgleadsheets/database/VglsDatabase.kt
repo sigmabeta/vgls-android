@@ -7,6 +7,7 @@ import com.vgleadsheets.database.dao.ComposerDao
 import com.vgleadsheets.database.dao.DbStatisticsDao
 import com.vgleadsheets.database.dao.GameAliasDao
 import com.vgleadsheets.database.dao.GameDao
+import com.vgleadsheets.database.dao.JamDao
 import com.vgleadsheets.database.dao.PageDao
 import com.vgleadsheets.database.dao.PartDao
 import com.vgleadsheets.database.dao.SongComposerDao
@@ -18,6 +19,7 @@ import com.vgleadsheets.model.alias.ComposerAliasEntity
 import com.vgleadsheets.model.alias.GameAliasEntity
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
+import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.pages.PageEntity
@@ -39,8 +41,9 @@ import com.vgleadsheets.model.time.TimeEntity
         GameAliasEntity::class,
         TagKeyEntity::class,
         TagValueEntity::class,
+        JamEntity::class,
         ComposerAliasEntity::class],
-    version = 2
+    version = 3
 )
 @Suppress("TooManyFunctions")
 abstract class VglsDatabase : RoomDatabase() {
@@ -55,5 +58,6 @@ abstract class VglsDatabase : RoomDatabase() {
     abstract fun composerAliasDao(): ComposerAliasDao
     abstract fun songComposerDao(): SongComposerDao
     abstract fun songTagValueDao(): SongTagValueDao
+    abstract fun jamDao(): JamDao
     abstract fun dbStatisticsDao(): DbStatisticsDao
 }

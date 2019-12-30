@@ -2,7 +2,6 @@ package com.vgleadsheets.main
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentTransaction
@@ -10,7 +9,7 @@ import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.args.SongArgs
+import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
@@ -18,6 +17,8 @@ import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.jams.FindJamDialogFragment
+import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
@@ -92,6 +93,15 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
             .commit()
     }
 
+    override fun showJams() {
+        clearBackStack()
+        // TODO Move to Navigator Fragment
+        supportFragmentManager.beginTransaction()
+            .setDefaultAnimations()
+            .replace(R.id.frame_fragment, JamListFragment.newInstance())
+            .commit()
+    }
+
     override fun showAllSheets() {
         clearBackStack()
         // TODO Move to Navigator Fragment
@@ -119,6 +129,13 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         showFragmentSimple(LicenseFragment.newInstance())
     }
 
+    override fun showFindJamDialog() {
+        FindJamDialogFragment.newInstance().show(
+            supportFragmentManager,
+            FindJamDialogFragment::class.java.simpleName
+        )
+    }
+
     override fun showSongListForGame(gameId: Long) = showFragmentSimple(
         GameFragment.newInstance(
             IdArgs(gameId)
@@ -143,13 +160,32 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         )
     )
 
-    override fun showSongViewer(songId: Long) = showFragmentSimple(
-        ViewerFragment.newInstance(
-            SongArgs(
-                songId
+    override fun showSongViewer(songId: Long) {
+        val previous = supportFragmentManager.findFragmentById(R.id.frame_fragment)
+
+        if (previous is ViewerFragment) {
+            previous.cancelJam()
+            previous.updateSongId(songId)
+        } else {
+            showFragmentSimple(
+                ViewerFragment.newInstance(
+                    ViewerArgs(
+                        songId = songId
+                    )
+                )
+            )
+        }
+    }
+
+    override fun showJamViewer(jamId: Long) {
+        showFragmentSimple(
+            ViewerFragment.newInstance(
+                ViewerArgs(
+                    jamId = jamId
+                )
             )
         )
-    )
+    }
 
     override fun onBackPressed() {
         if (!getHudFragment().onBackPress() && !getDisplayedFragment().onBackPress()) {
@@ -172,8 +208,6 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
                 .commit()
         }
     }
-
-    private fun doesDeviceHaveFocusGlitch() = Build.VERSION.SDK_INT < Build.VERSION_CODES.P
 
     private fun getHudFragment() =
         supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment

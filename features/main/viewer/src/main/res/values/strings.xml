@@ -2,4 +2,6 @@
 <resources>
     <string name="snack_screen_off">The screen will power down soon.</string>
     <string name="cta_snack_screen_off">Keep on</string>
+    <string name="jam_updating_sheet">Updating sheet because you\'re following a jam.</string>
+    <string name="cta_snack_cancel">Unfollow</string>
 </resources>

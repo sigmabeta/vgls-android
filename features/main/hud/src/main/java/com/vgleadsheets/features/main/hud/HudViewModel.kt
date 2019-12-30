@@ -15,6 +15,7 @@ import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -26,6 +27,8 @@ class HudViewModel @AssistedInject constructor(
     private val storage: Storage
 ) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
+
+    private var jamDisposables = CompositeDisposable()
 
     init {
         checkSavedPartSelection()
@@ -53,9 +56,14 @@ class HudViewModel @AssistedInject constructor(
         setState { copy(menuExpanded = false) }
     }
 
-    fun setAvailableParts(parts: List<Part>) = withState {
+    fun setAvailableParts(parts: List<Part>) = withState { state ->
+        if (state.parts == parts) {
+            return@withState
+        }
+
         Timber.i("Setting available parts: $parts")
-        val selectedId = it.parts?.first { part -> part.selected }?.apiId
+
+        val selectedId = state.parts?.first { part -> part.selected }?.apiId
         setState {
             copy(parts = PartSelectorItem.getAvailablePartPickerItems(parts, selectedId))
         }

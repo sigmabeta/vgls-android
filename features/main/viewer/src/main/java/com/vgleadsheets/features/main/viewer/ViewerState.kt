@@ -3,16 +3,18 @@ package com.vgleadsheets.features.main.viewer
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.args.SongArgs
-import com.vgleadsheets.model.parts.Part
+import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.storage.Setting
 
 data class ViewerState(
-    val songId: Long,
+    val jamId: Long?,
+    val songId: Long?,
     val song: Async<Song> = Uninitialized,
-    val parts: Async<List<Part>> = Uninitialized,
-    val screenOn: Async<Setting> = Uninitialized
+    val screenOn: Async<Setting> = Uninitialized,
+    val activeJamId: Long? = null,
+    val activeJamSheetId: Long? = null,
+    val jamCancellationReason: String? = null
 ) : MvRxState {
-    constructor(songArgs: SongArgs) : this(songArgs.songId)
+    constructor(viewerArgs: ViewerArgs) : this(viewerArgs.jamId, viewerArgs.songId)
 }

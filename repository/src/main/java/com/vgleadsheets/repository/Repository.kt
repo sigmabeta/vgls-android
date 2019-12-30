@@ -3,11 +3,14 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.model.jam.Jam
+import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -16,11 +19,16 @@ interface Repository {
     fun checkForUpdate(): Single<List<VglsApiGame>>
     fun forceRefresh(): Single<List<VglsApiGame>>
 
+    fun refreshJamStateContinuously(name: String): Observable<JamEntity>
+    fun refreshJamState(name: String): Single<JamEntity>
+    fun observeJamState(id: Long): Observable<Jam>
+
     // Full Lists
     fun getGames(withSongs: Boolean = true): Observable<List<Game>>
     fun getAllSongs(withComposers: Boolean = true, withParts: Boolean = true): Observable<List<Song>>
     fun getComposers(withSongs: Boolean = true): Observable<List<Composer>>
     fun getAllTagKeys(withValues: Boolean = true): Observable<List<TagKey>>
+    fun getJams(): Observable<List<Jam>>
 
     // Filtered lists
     fun getTagValuesForTagKey(tagKeyId: Long, withSongs: Boolean = true): Observable<List<TagValue>>
@@ -40,6 +48,7 @@ interface Repository {
     fun getTagKey(tagKeyId: Long): Observable<TagKey>
     fun getTagValue(tagValueId: Long): Observable<TagValue>
     fun getLastUpdateTime(): Observable<Time>
+    fun getJam(id: Long): Observable<Jam>
 
     // Etc
     fun searchSongs(searchQuery: String): Observable<List<Song>>
@@ -49,4 +58,7 @@ interface Repository {
     // Giant Bomb searches
     fun searchGiantBombForGame(vglsId: Long, name: String)
     fun searchGiantBombForComposer(vglsId: Long, name: String)
+
+    // Jam maintenance
+    fun removeJam(id: Long): Completable
 }

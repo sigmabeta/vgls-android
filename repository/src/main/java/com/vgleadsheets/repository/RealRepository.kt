@@ -29,6 +29,7 @@ import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.GiantBombApi
 import com.vgleadsheets.network.VglsApi
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -36,6 +37,7 @@ import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
 import timber.log.Timber
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
@@ -58,6 +60,7 @@ class RealRepository constructor(
     private val dbStatisticsDao = database.dbStatisticsDao()
     private val gameAliasDao = database.gameAliasDao()
     private val composerAliasDao = database.composerAliasDao()
+    private val jamDao = database.jamDao()
 
     @ExperimentalStdlibApi
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
@@ -75,6 +78,21 @@ class RealRepository constructor(
 
     @ExperimentalStdlibApi
     override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
+
+    override fun observeJamState(id: Long) = jamDao
+        .getJam(id)
+        .map {
+            val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+            it.toJam(currentSong)
+        }
+
+    override fun refreshJamStateContinuously(name: String) = Observable.interval(
+        INTERVAL_JAM_REFRESH,
+        TimeUnit.MILLISECONDS
+    ).flatMap { refreshJamStateImpl(name) }
+
+    override fun refreshJamState(name: String) = refreshJamStateImpl(name)
+        .firstOrError()
 
     override fun getGames(withSongs: Boolean): Observable<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
@@ -175,6 +193,22 @@ class RealRepository constructor(
             tagKeyEntities.map {
                 val values = if (withValues) getTagValuesForTagKeySync(it, false) else null
                 it.toTagKey(values)
+            }
+        }
+
+    override fun getJam(id: Long) = jamDao
+        .getJam(id)
+        .map {
+            val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+            it.toJam(currentSong)
+        }
+
+    override fun getJams() = jamDao
+        .getAll()
+        .map {
+            it.map {
+                val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+                it.toJam(currentSong)
             }
         }
 
@@ -313,6 +347,8 @@ class RealRepository constructor(
             )
     }
 
+    override fun removeJam(id: Long) = Completable.fromAction { jamDao.remove(id) }
+
     @Suppress("MaxLineLength")
     private fun searchGames(searchQuery: String) = gameDao
         .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.
@@ -387,22 +423,22 @@ class RealRepository constructor(
                 tagValueEntity.toTagValue(songs)
             }
 
-    private fun getSongsForTagValueSync(tagValueEntity: TagValueEntity, withParts: Boolean = true) = songTagValueDao
-        .getSongsForTagValueSync(tagValueEntity.id)
-        .map { songEntity ->
-            val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
-            songEntity.toSong(null, parts)
-        }
+    private fun getSongsForTagValueSync(tagValueEntity: TagValueEntity, withParts: Boolean = true) =
+        songTagValueDao
+            .getSongsForTagValueSync(tagValueEntity.id)
+            .map { songEntity ->
+                val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
+                songEntity.toSong(null, parts)
+            }
 
     private fun getSongsForComposerAlias(
         composerAliasEntity: ComposerAliasEntity,
         withSongs: Boolean = true
-    ) =
-        songComposerDao.getSongsForComposerSync(composerAliasEntity.composerId)
-            .map { songEntity ->
-                val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
-                songEntity.toSong(null, parts)
-            }
+    ) = songComposerDao.getSongsForComposerSync(composerAliasEntity.composerId)
+        .map { songEntity ->
+            val parts = if (withSongs) getPartsForSongSync(songEntity.id) else null
+            songEntity.toSong(null, parts)
+        }
 
     // TODO Merge this and the below method.
     private fun getPartsForSongSync(songId: Long, withPages: Boolean = true) = partDao
@@ -424,6 +460,12 @@ class RealRepository constructor(
     private fun getPagesForPart(partEntity: PartEntity) =
         pageDao.getPagesForPartId(partEntity.id)
             .map { pageEntity -> pageEntity.toPage() }
+
+    private fun getSongSync(songId: Long) = songDao.getSongSync(songId)
+
+    private fun refreshJamStateImpl(name: String) = vglsApi.getJamState(name)
+        .map { it.toJamEntity(name.toTitleCase()) }
+        .doOnNext { jamDao.insert(it) }
 
     private fun generateImageUrl(
         partEntity: PartEntity,
@@ -605,6 +647,8 @@ class RealRepository constructor(
 
     companion object {
         const val CAPACITY = 500
+
+        const val INTERVAL_JAM_REFRESH = 5000L
 
         const val URL_SEPARATOR_FOLDER = "/"
         const val URL_SEPARATOR_NUMBER = "-"
