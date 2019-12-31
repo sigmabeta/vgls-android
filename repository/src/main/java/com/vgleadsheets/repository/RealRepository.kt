@@ -366,6 +366,7 @@ class RealRepository constructor(
     }
 
     override fun removeJam(id: Long) = Completable.fromAction {
+        songHistoryEntryDao.removeAllForJam(id)
         setlistEntryDao.removeAllForJam(id)
         jamDao.remove(id)
     }
