@@ -119,7 +119,7 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
     private fun createSuccessListModels(jams: List<Jam>) = if (jams.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(
-                R.drawable.ic_album_24dp,
+                R.drawable.ic_list_black_24dp,
                 "You haven't followed any jams. Click above to search for one."
             )
         )

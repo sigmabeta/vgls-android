@@ -15,6 +15,7 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.CtaListModel
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
@@ -216,22 +217,31 @@ class JamFragment : VglsFragment(),
         SectionHeaderListModel(
             getString(R.string.jam_setlist)
         )
-    ) + setlist.map { entry ->
-        val thumbUrl = entry.song
-            ?.parts
-            ?.first { part -> part.name == selectedPart.apiId }
-            ?.pages
-            ?.first()
-            ?.imageUrl
-
-        ImageNameCaptionListModel(
-            entry.id,
-            entry.songName,
-            entry.gameName,
-            thumbUrl,
-            R.drawable.placeholder_sheet,
-            this
+    ) + if (setlist.isEmpty()) {
+        listOf(
+            EmptyStateListModel(
+                R.drawable.ic_list_black_24dp,
+                getString(R.string.empty_setlist)
+            )
         )
+    } else {
+        setlist.map { entry ->
+            val thumbUrl = entry.song
+                ?.parts
+                ?.first { part -> part.name == selectedPart.apiId }
+                ?.pages
+                ?.first()
+                ?.imageUrl
+
+            ImageNameCaptionListModel(
+                entry.id,
+                entry.songName,
+                entry.gameName,
+                thumbUrl,
+                R.drawable.placeholder_sheet,
+                this
+            )
+        }
     }
 
     private fun createLoadingListModels(): List<ListModel> {

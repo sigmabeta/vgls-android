@@ -6,4 +6,5 @@
     <string name="cta_follow_jam">Follow this Jam</string>
     <string name="cta_refresh_jam">Refresh this Jam</string>
     <string name="cta_delete_jam">Forget this Jam</string>
+    <string name="empty_setlist">This Jam\'s setlist is empty.</string>
 </resources>
