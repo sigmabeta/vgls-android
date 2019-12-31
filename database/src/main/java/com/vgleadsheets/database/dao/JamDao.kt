@@ -24,9 +24,11 @@ interface JamDao {
     fun remove(jamId: Long)
 
     @Transaction
-    fun upsertJam(songHistoryEntryDao: SongHistoryEntryDao,
-                  jam: JamEntity,
-                  songHistoryEntries: List<SongHistoryEntryEntity>) {
+    fun upsertJam(
+        songHistoryEntryDao: SongHistoryEntryDao,
+        jam: JamEntity,
+        songHistoryEntries: List<SongHistoryEntryEntity>
+    ) {
         songHistoryEntryDao.removeAllForJam(jam.id!!)
         insert(jam)
         songHistoryEntryDao.insertAll(songHistoryEntries)

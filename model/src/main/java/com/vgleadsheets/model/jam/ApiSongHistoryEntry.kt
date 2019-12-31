@@ -10,4 +10,3 @@ data class ApiSongHistoryEntry(
         sheet_id
     )
 }
-
