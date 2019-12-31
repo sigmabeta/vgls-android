@@ -361,7 +361,10 @@ class RealRepository constructor(
             )
     }
 
-    override fun removeJam(id: Long) = Completable.fromAction { jamDao.remove(id) }
+    override fun removeJam(id: Long) = Completable.fromAction {
+        setlistEntryDao.removeAllForJam(id)
+        jamDao.remove(id)
+    }
 
     @Suppress("MaxLineLength")
     private fun searchGames(searchQuery: String) = gameDao
@@ -488,9 +491,8 @@ class RealRepository constructor(
                 entry.toSetlistEntryEntity(jamId)
             }
         }
-        .doOnSuccess {
-            setlistEntryDao.replaceSetlist(jamId, it)
-        }
+        .doOnSuccess { setlistEntryDao.removeAllForJam(jamId) }
+        .flatMap { setlistEntryDao.insertAll(it) }
 
     private fun generateImageUrl(
         partEntity: PartEntity,

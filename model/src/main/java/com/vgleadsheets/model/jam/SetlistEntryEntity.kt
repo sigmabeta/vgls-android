@@ -12,8 +12,7 @@ import com.vgleadsheets.model.song.Song
         ForeignKey(
             entity = JamEntity::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("jam_id"),
-            onDelete = ForeignKey.CASCADE
+            childColumns = arrayOf("jam_id")
         )]
 )
 data class SetlistEntryEntity(

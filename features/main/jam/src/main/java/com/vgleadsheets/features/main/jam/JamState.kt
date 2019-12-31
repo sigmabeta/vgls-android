@@ -7,14 +7,13 @@ import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.jam.SetlistEntry
-import com.vgleadsheets.model.jam.SetlistEntryEntity
 
 data class JamState(
     val jamId: Long,
     val jam: Async<Jam> = Uninitialized,
     val jamRefresh: Async<JamEntity> = Uninitialized,
     val setlist: Async<List<SetlistEntry>> = Uninitialized,
-    val setlistRefresh: Async<List<SetlistEntryEntity>> = Uninitialized,
+    val setlistRefresh: Async<List<Long>> = Uninitialized,
     val deletion: Async<Unit> = Uninitialized
 ) : MvRxState {
     constructor(idArgs: IdArgs) : this(idArgs.id)

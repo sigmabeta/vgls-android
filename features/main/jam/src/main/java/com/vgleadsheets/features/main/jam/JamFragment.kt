@@ -28,7 +28,6 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.jam.SetlistEntry
-import com.vgleadsheets.model.jam.SetlistEntryEntity
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_jam.list_jam_options
@@ -115,7 +114,7 @@ class JamFragment : VglsFragment(),
         jam: Async<Jam>,
         jamRefresh: Async<JamEntity>,
         setlist: Async<List<SetlistEntry>>,
-        setlistRefresh: Async<List<SetlistEntryEntity>>,
+        setlistRefresh: Async<List<Long>>,
         selectedPart: PartSelectorItem
     ) = createTitleListModel(jam) + createContentListModels(
         jam,
@@ -142,7 +141,7 @@ class JamFragment : VglsFragment(),
         jam: Async<Jam>,
         jamRefresh: Async<JamEntity>,
         setlist: Async<List<SetlistEntry>>,
-        setlistRefresh: Async<List<SetlistEntryEntity>>,
+        setlistRefresh: Async<List<Long>>,
         selectedPart: PartSelectorItem
     ) = createCtaListModels() +
             createJamListModels(jam, jamRefresh, selectedPart) +
@@ -194,7 +193,7 @@ class JamFragment : VglsFragment(),
 
     private fun createSetlistListModels(
         setlist: Async<List<SetlistEntry>>,
-        setlistRefresh: Async<List<SetlistEntryEntity>>,
+        setlistRefresh: Async<List<Long>>,
         selectedPart: PartSelectorItem
     ): List<ListModel> {
         val refreshingListModels = if (setlistRefresh is Loading) {

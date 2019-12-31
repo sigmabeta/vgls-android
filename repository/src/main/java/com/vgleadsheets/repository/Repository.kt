@@ -6,7 +6,6 @@ import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.jam.SetlistEntry
-import com.vgleadsheets.model.jam.SetlistEntryEntity
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
@@ -23,7 +22,7 @@ interface Repository {
 
     fun refreshJamStateContinuously(name: String): Observable<JamEntity>
     fun refreshJamState(name: String): Single<JamEntity>
-    fun refreshSetlist(jamId: Long, name: String): Single<List<SetlistEntryEntity>>
+    fun refreshSetlist(jamId: Long, name: String): Single<List<Long>>
     fun observeJamState(id: Long): Observable<Jam>
 
     // Full Lists
