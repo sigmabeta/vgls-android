@@ -44,7 +44,7 @@ class JamViewModel @AssistedInject constructor(
     private fun fetchJam() = withState { state ->
         val jamId = state.jamId
 
-        repository.getJam(jamId)
+        repository.getJam(jamId, true)
             .execute { newJam ->
                 copy(jam = newJam)
             }

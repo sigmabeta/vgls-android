@@ -83,7 +83,6 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
                     progress_loading.visibility = GONE
                     button_find.visibility = VISIBLE
 
-                    showSnackbar("Added jam ${it.name}")
                     dismiss()
                 },
                 {

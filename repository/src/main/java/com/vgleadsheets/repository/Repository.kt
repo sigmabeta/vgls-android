@@ -3,8 +3,8 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
-import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.jam.SetlistEntry
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
@@ -20,8 +20,8 @@ interface Repository {
     fun checkForUpdate(): Single<List<VglsApiGame>>
     fun forceRefresh(): Single<List<VglsApiGame>>
 
-    fun refreshJamStateContinuously(name: String): Observable<JamEntity>
-    fun refreshJamState(name: String): Single<JamEntity>
+    fun refreshJamStateContinuously(name: String): Observable<ApiJam>
+    fun refreshJamState(name: String): Single<ApiJam>
     fun refreshSetlist(jamId: Long, name: String): Single<List<Long>>
     fun observeJamState(id: Long): Observable<Jam>
 
@@ -51,7 +51,7 @@ interface Repository {
     fun getTagKey(tagKeyId: Long): Observable<TagKey>
     fun getTagValue(tagValueId: Long): Observable<TagValue>
     fun getLastUpdateTime(): Observable<Time>
-    fun getJam(id: Long): Observable<Jam>
+    fun getJam(id: Long, withHistory: Boolean): Observable<Jam>
 
     // Etc
     fun searchSongs(searchQuery: String): Observable<List<Song>>

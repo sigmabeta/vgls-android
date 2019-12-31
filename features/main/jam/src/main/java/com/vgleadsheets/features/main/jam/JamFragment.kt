@@ -26,11 +26,12 @@ import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.parts.getPartMatchingSelection
+import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
-import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.jam.SetlistEntry
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_jam.list_jam_options
 import javax.inject.Inject
 
@@ -46,6 +47,8 @@ class JamFragment : VglsFragment(),
     private val viewModel: JamViewModel by fragmentViewModel()
 
     private val adapter = ComponentAdapter()
+
+    private var refreshLauncher: Disposable? = null
 
     override fun onClicked(clicked: ImageNameCaptionListModel) {
         getFragmentRouter().showSongViewer(clicked.dataId)
@@ -73,11 +76,12 @@ class JamFragment : VglsFragment(),
             bottomOffset = bottomOffset
         )
 
-        viewModel.asyncSubscribe(
+        refreshLauncher = viewModel.asyncSubscribe(
             JamState::jam,
             deliveryMode = uniqueOnly("jam")
         ) {
             viewModel.refreshJam(it.id, it.name)
+            refreshLauncher?.dispose()
         }
 
         viewModel.asyncSubscribe(
@@ -113,7 +117,7 @@ class JamFragment : VglsFragment(),
 
     private fun constructList(
         jam: Async<Jam>,
-        jamRefresh: Async<JamEntity>,
+        jamRefresh: Async<ApiJam>,
         setlist: Async<List<SetlistEntry>>,
         setlistRefresh: Async<List<Long>>,
         selectedPart: PartSelectorItem
@@ -140,7 +144,7 @@ class JamFragment : VglsFragment(),
 
     private fun createContentListModels(
         jam: Async<Jam>,
-        jamRefresh: Async<JamEntity>,
+        jamRefresh: Async<ApiJam>,
         setlist: Async<List<SetlistEntry>>,
         setlistRefresh: Async<List<Long>>,
         selectedPart: PartSelectorItem
@@ -150,7 +154,7 @@ class JamFragment : VglsFragment(),
 
     private fun createJamListModels(
         jam: Async<Jam>,
-        jamRefresh: Async<JamEntity>,
+        jamRefresh: Async<ApiJam>,
         selectedPart: PartSelectorItem
     ): List<ListModel> {
         val refreshingListModels = if (jamRefresh is Loading) {

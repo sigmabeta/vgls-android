@@ -62,6 +62,7 @@ class RealRepository constructor(
     private val composerAliasDao = database.composerAliasDao()
     private val jamDao = database.jamDao()
     private val setlistEntryDao = database.setlistEntryDao()
+    private val songHistoryEntryDao = database.songHistoryEntryDao()
 
     @ExperimentalStdlibApi
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
@@ -84,7 +85,7 @@ class RealRepository constructor(
         .getJam(id)
         .map {
             val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
-            it.toJam(currentSong)
+            it.toJam(currentSong, null)
         }
 
     override fun refreshJamStateContinuously(name: String) = Observable.interval(
@@ -209,12 +210,15 @@ class RealRepository constructor(
             }
         }
 
-    override fun getJam(id: Long) = jamDao
+    override fun getJam(id: Long, withHistory: Boolean) = jamDao
         .getJam(id)
         .map {
             val parts = getPartsForSongSync(it.currentSheetId)
             val currentSong = getSongSync(it.currentSheetId).toSong(null, parts)
-            it.toJam(currentSong)
+
+            val songHistory = if (withHistory) getSongHistoryForJamSync(id) else null
+
+            it.toJam(currentSong, songHistory)
         }
 
     override fun getJams() = jamDao
@@ -222,7 +226,7 @@ class RealRepository constructor(
         .map {
             it.map {
                 val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
-                it.toJam(currentSong)
+                it.toJam(currentSong, null)
             }
         }
 
@@ -478,11 +482,28 @@ class RealRepository constructor(
         pageDao.getPagesForPartId(partEntity.id)
             .map { pageEntity -> pageEntity.toPage() }
 
+    private fun getSongHistoryForJamSync(jamId: Long) = songHistoryEntryDao
+        .getSongHistoryEntriesForJamSync(jamId)
+        .map { songHistoryEntryEntity ->
+            val parts = getPartsForSongSync(songHistoryEntryEntity.song_id)
+            val song = getSongSync(songHistoryEntryEntity.song_id).toSong(null, parts)
+
+            songHistoryEntryEntity.toSongHistoryEntry(song)
+        }
+
     private fun getSongSync(songId: Long) = songDao.getSongSync(songId)
 
     private fun refreshJamStateImpl(name: String) = vglsApi.getJamState(name)
-        .map { it.toJamEntity(name.toTitleCase()) }
-        .doOnNext { jamDao.insert(it) }
+        .doOnNext {
+            val songHistoryEntries = it.song_history.map {
+                    songHistoryEntry -> songHistoryEntry.toSongHistoryEntryEntity(it.jam_id)
+            }
+
+            val jamEntity = it.toJamEntity(name.toTitleCase())
+
+            jamDao.upsertJam(songHistoryEntryDao, jamEntity, songHistoryEntries)
+            return@doOnNext
+        }
 
     private fun refreshSetlistImpl(jamId: Long, name: String) = vglsApi.getSetlistForJam(name)
         .map { it.songs }

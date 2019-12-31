@@ -69,7 +69,7 @@ class ViewerViewModel @AssistedInject constructor(
 
         if (jamId != null) {
             Timber.i("Following jam.")
-            val networkRefresh = repository.getJam(jamId)
+            val jamStateObservation = repository.getJam(jamId, false)
                 .firstOrError()
                 .subscribe(
                     {
@@ -83,7 +83,7 @@ class ViewerViewModel @AssistedInject constructor(
                 )
                 .disposeOnClear()
 
-            jamDisposables.add(networkRefresh)
+            jamDisposables.add(jamStateObservation)
 
             subscribeToJamDatabase(jamId)
         }

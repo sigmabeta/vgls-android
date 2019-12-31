@@ -42,6 +42,5 @@
             android:textColor="@android:color/tertiary_text_dark"
             tools:text="@string/sample_lorem_ipsum" />
 
-
     </LinearLayout>
 </layout>
