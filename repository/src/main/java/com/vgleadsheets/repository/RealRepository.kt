@@ -160,8 +160,8 @@ class RealRepository constructor(
         .getSetlistEntriesForJam(jamId)
         .map { entryEntities ->
             entryEntities.map { entryEntity ->
-                val parts = getPartsForSongSync(entryEntity.id)
-                val song = getSongSync(entryEntity.id).toSong(null, parts)
+                val parts = getPartsForSongSync(entryEntity.song_id)
+                val song = getSongSync(entryEntity.song_id).toSong(null, parts)
                 entryEntity.toSetlistEntry(song)
             }
         }
@@ -488,7 +488,9 @@ class RealRepository constructor(
                 entry.toSetlistEntryEntity(jamId)
             }
         }
-        .doOnSuccess() { setlistEntryDao.insertAll(it) }
+        .doOnSuccess {
+            setlistEntryDao.replaceSetlist(jamId, it)
+        }
 
     private fun generateImageUrl(
         partEntity: PartEntity,

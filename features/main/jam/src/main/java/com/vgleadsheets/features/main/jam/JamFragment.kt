@@ -201,6 +201,10 @@ class JamFragment : VglsFragment(),
             listOf(NetworkRefreshingListModel("setlist"))
         } else emptyList()
 
+        if (setlistRefresh is Fail) {
+            showError(setlistRefresh.error)
+        }
+
         val jamListModels = when (setlist) {
             is Loading, Uninitialized -> createLoadingListModels()
             is Fail -> createErrorStateListModel(setlist.error)

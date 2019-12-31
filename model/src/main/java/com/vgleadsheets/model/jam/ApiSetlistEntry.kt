@@ -7,9 +7,10 @@ data class ApiSetlistEntry(
     val song_name: String
 ) {
     fun toSetlistEntryEntity(jamId: Long) = SetlistEntryEntity(
-        id,
+        null,
         game_name,
         song_name,
-        jamId
+        jamId,
+        id
     )
 }
