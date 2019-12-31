@@ -495,9 +495,11 @@ class RealRepository constructor(
 
     private fun refreshJamStateImpl(name: String) = vglsApi.getJamState(name)
         .doOnNext {
-            val songHistoryEntries = it.song_history.map {
-                    songHistoryEntry -> songHistoryEntry.toSongHistoryEntryEntity(it.jam_id)
-            }
+            val songHistoryEntries = it.song_history
+                .drop(1)
+                .map { songHistoryEntry ->
+                    songHistoryEntry.toSongHistoryEntryEntity(it.jam_id)
+                }
 
             val jamEntity = it.toJamEntity(name.toTitleCase())
 

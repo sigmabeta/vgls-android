@@ -29,6 +29,7 @@ import com.vgleadsheets.features.main.hud.parts.getPartMatchingSelection
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.SetlistEntry
+import com.vgleadsheets.model.jam.SongHistoryEntry
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import io.reactivex.disposables.Disposable
@@ -150,7 +151,8 @@ class JamFragment : VglsFragment(),
         selectedPart: PartSelectorItem
     ) = createCtaListModels() +
             createJamListModels(jam, jamRefresh, selectedPart) +
-            createSetlistListModels(setlist, setlistRefresh, selectedPart)
+            createSetlistListModels(setlist, setlistRefresh, selectedPart) +
+            createSongHistoryListModels(jam, selectedPart)
 
     private fun createJamListModels(
         jam: Async<Jam>,
@@ -245,6 +247,44 @@ class JamFragment : VglsFragment(),
                 entry.id,
                 entry.songName,
                 entry.gameName,
+                thumbUrl,
+                R.drawable.placeholder_sheet,
+                this
+            )
+        }
+    }
+
+    private fun createSongHistoryListModels(
+        jam: Async<Jam>,
+        selectedPart: PartSelectorItem
+    ) = when (jam) {
+        is Loading, Uninitialized -> createLoadingListModels()
+        is Fail -> createErrorStateListModel(jam.error)
+        is Success -> createSuccessListModelsForSongHistory(jam().songHistory!!, selectedPart)
+    }
+
+    private fun createSuccessListModelsForSongHistory(
+        songHistory: List<SongHistoryEntry>,
+        selectedPart: PartSelectorItem
+    ) = if (songHistory.isEmpty()) {
+        emptyList()
+    } else {
+        listOf(
+            SectionHeaderListModel(
+                getString(R.string.jam_song_history)
+            )
+        ) + songHistory.map { entry ->
+            val thumbUrl = entry.song
+                .parts
+                ?.getPartMatchingSelection(selectedPart)
+                ?.pages
+                ?.first()
+                ?.imageUrl
+
+            ImageNameCaptionListModel(
+                entry.id,
+                entry.song.name,
+                entry.song.gameName,
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 this
