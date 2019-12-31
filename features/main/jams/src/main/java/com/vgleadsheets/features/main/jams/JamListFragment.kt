@@ -17,7 +17,7 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionCtaListModel
+import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.model.jam.Jam
@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_jam_list.list_jams
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
+class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
     CtaListModel.EventHandler {
     @Inject
     lateinit var jamListViewModelFactory: JamListViewModel.Factory
@@ -39,12 +39,8 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
 
     private val adapter = ComponentAdapter()
 
-    override fun onClicked(clicked: NameCaptionCtaListModel) {
-        getFragmentRouter().showJamViewer(clicked.dataId)
-    }
-
-    override fun onActionClicked(clicked: NameCaptionCtaListModel) {
-        viewModel.removeJam(clicked.dataId)
+    override fun onClicked(clicked: NameCaptionListModel) {
+        getFragmentRouter().showJamDetailViewer(clicked.dataId)
     }
 
     override fun onClicked(clicked: CtaListModel) {
@@ -130,11 +126,10 @@ class JamListFragment : VglsFragment(), NameCaptionCtaListModel.EventHandler,
     } else {
         jams.map {
 
-            NameCaptionCtaListModel(
+            NameCaptionListModel(
                 it.id,
                 it.name,
                 generateSubtitleText(it.currentSong),
-                R.drawable.ic_delete_black_24dp,
                 this
             )
         }

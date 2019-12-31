@@ -28,7 +28,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/tertiary_text_dark"
             tools:text="@string/sample_lorem_ipsum" />
 
@@ -38,9 +38,7 @@
             android:layout_width="@dimen/min_clickable_size"
             android:layout_height="@dimen/min_clickable_size"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
             android:tint="@color/gray_medium"
             android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
             app:imageResource="@{toBind.iconId}"

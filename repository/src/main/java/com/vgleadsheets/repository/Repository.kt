@@ -5,6 +5,8 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.JamEntity
+import com.vgleadsheets.model.jam.SetlistEntry
+import com.vgleadsheets.model.jam.SetlistEntryEntity
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
@@ -21,6 +23,7 @@ interface Repository {
 
     fun refreshJamStateContinuously(name: String): Observable<JamEntity>
     fun refreshJamState(name: String): Single<JamEntity>
+    fun refreshSetlist(jamId: Long, name: String): Single<List<SetlistEntryEntity>>
     fun observeJamState(id: Long): Observable<Jam>
 
     // Full Lists
@@ -35,6 +38,7 @@ interface Repository {
     fun getPartsForSong(songId: Long, withPages: Boolean = true): Observable<List<Part>>
     fun getSongsByComposer(composerId: Long, withParts: Boolean = true): Observable<List<Song>>
     fun getSongsForTagValue(tagValueId: Long, withParts: Boolean = true): Observable<List<Song>>
+    fun getSetlistForJam(jamId: Long): Observable<List<SetlistEntry>>
     fun getSongsForGame(
         gameId: Long,
         withParts: Boolean = true,

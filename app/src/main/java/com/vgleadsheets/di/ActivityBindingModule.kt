@@ -6,6 +6,7 @@ import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
+import com.vgleadsheets.features.main.jam.JamFragment
 import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
@@ -34,6 +35,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeJamListFragmentInjector(): JamListFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeJamFragmentInjector(): JamFragment
 
     @FragmentScope
     @ContributesAndroidInjector

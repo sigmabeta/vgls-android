@@ -61,6 +61,7 @@ class RealRepository constructor(
     private val gameAliasDao = database.gameAliasDao()
     private val composerAliasDao = database.composerAliasDao()
     private val jamDao = database.jamDao()
+    private val setlistEntryDao = database.setlistEntryDao()
 
     @ExperimentalStdlibApi
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
@@ -93,6 +94,8 @@ class RealRepository constructor(
 
     override fun refreshJamState(name: String) = refreshJamStateImpl(name)
         .firstOrError()
+
+    override fun refreshSetlist(jamId: Long, name: String) = refreshSetlistImpl(jamId, name)
 
     override fun getGames(withSongs: Boolean): Observable<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
@@ -153,6 +156,16 @@ class RealRepository constructor(
                 }
             }
 
+    override fun getSetlistForJam(jamId: Long) = setlistEntryDao
+        .getSetlistEntriesForJam(jamId)
+        .map { entryEntities ->
+            entryEntities.map { entryEntity ->
+                val parts = getPartsForSongSync(entryEntity.id)
+                val song = getSongSync(entryEntity.id).toSong(null, parts)
+                entryEntity.toSetlistEntry(song)
+            }
+        }
+
     override fun getPartsForSong(songId: Long, withPages: Boolean) =
         getPartsForSongImpl(songId, withPages)
 
@@ -199,7 +212,8 @@ class RealRepository constructor(
     override fun getJam(id: Long) = jamDao
         .getJam(id)
         .map {
-            val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+            val parts = getPartsForSongSync(it.currentSheetId)
+            val currentSong = getSongSync(it.currentSheetId).toSong(null, parts)
             it.toJam(currentSong)
         }
 
@@ -467,6 +481,15 @@ class RealRepository constructor(
         .map { it.toJamEntity(name.toTitleCase()) }
         .doOnNext { jamDao.insert(it) }
 
+    private fun refreshSetlistImpl(jamId: Long, name: String) = vglsApi.getSetlistForJam(name)
+        .map { it.songs }
+        .map { setlist ->
+            setlist.map { entry ->
+                entry.toSetlistEntryEntity(jamId)
+            }
+        }
+        .doOnSuccess() { setlistEntryDao.insertAll(it) }
+
     private fun generateImageUrl(
         partEntity: PartEntity,
         apiSong: ApiSong,
@@ -600,9 +623,6 @@ class RealRepository constructor(
                                 }
 
                                 val join = SongTagValueJoin(apiSong.id, valueToJoin.id)
-
-                                Timber.w("$join ${apiSong.name} ${tagMapEntry.key} / $key: $value")
-
                                 songTagValueJoins.add(join)
                             }
                         }

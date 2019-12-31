@@ -5,6 +5,7 @@ import com.vgleadsheets.features.main.composers.ComposerListAssistedModule
 import com.vgleadsheets.features.main.game.GameAssistedModule
 import com.vgleadsheets.features.main.games.GameListAssistedModule
 import com.vgleadsheets.features.main.hud.HudAssistedModule
+import com.vgleadsheets.features.main.jam.JamAssistedModule
 import com.vgleadsheets.features.main.jams.JamListAssistedModule
 import com.vgleadsheets.features.main.search.SearchAssistedModule
 import com.vgleadsheets.features.main.settings.SettingsAssistedModule
@@ -21,6 +22,7 @@ import dagger.Module
         ComposerAssistedModule::class,
         GameAssistedModule::class,
         GameListAssistedModule::class,
+        JamAssistedModule::class,
         JamListAssistedModule::class,
         SearchAssistedModule::class,
         SettingsAssistedModule::class,
