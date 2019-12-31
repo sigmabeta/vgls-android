@@ -3,8 +3,8 @@
     <string name="subtitle_jam">Jam Session</string>
     <string name="jam_current_song">Current Song</string>
     <string name="jam_setlist">Setlist</string>
-    <string name="cta_follow_jam">Follow this Jam</string>
-    <string name="cta_refresh_jam">Refresh this Jam</string>
-    <string name="cta_delete_jam">Forget this Jam</string>
+    <string name="cta_follow_jam">Follow Jam</string>
+    <string name="cta_refresh_jam">Refresh Jam</string>
+    <string name="cta_delete_jam">Forget Jam</string>
     <string name="empty_setlist">This Jam\'s setlist is empty.</string>
 </resources>

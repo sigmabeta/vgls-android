@@ -25,6 +25,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.features.main.hud.parts.getPartMatchingSelection
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.jam.SetlistEntry
@@ -171,7 +172,7 @@ class JamFragment : VglsFragment(),
     ): List<ListModel> {
         val thumbUrl = jam.currentSong
             .parts
-            ?.first { part -> part.name == selectedPart.apiId }
+            ?.getPartMatchingSelection(selectedPart)
             ?.pages
             ?.first()
             ?.imageUrl
@@ -231,7 +232,7 @@ class JamFragment : VglsFragment(),
         setlist.map { entry ->
             val thumbUrl = entry.song
                 ?.parts
-                ?.first { part -> part.name == selectedPart.apiId }
+                ?.getPartMatchingSelection(selectedPart)
                 ?.pages
                 ?.first()
                 ?.imageUrl
