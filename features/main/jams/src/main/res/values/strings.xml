@@ -3,7 +3,7 @@
     <string name="title_jam">Jam Sessions</string>
     <string name="caption_jam">\"%1$s\" from %2$s</string>
     <string name="snack_now_following">Following jam \"%1$s\". The viewer screen will update with whatever sheet the conductor chooses.</string>
-    <string name="hint_jam_name">Name of the Jam</string>
+    <string name="hint_jam_name">Jam name</string>
     <string name="button_find">Find</string>
     <string name="button_cancel">Cancel</string>
     <string name="header_add_jam">Find Jam</string>

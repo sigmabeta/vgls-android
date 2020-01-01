@@ -11,6 +11,7 @@ dependencies {
     api project(path: ':features:main:hud')
     api project(path: ':features:main:game')
     api project(path: ':features:main:games')
+    api project(path: ':features:main:jam')
     api project(path: ':features:main:jams')
     api project(path: ':features:main:license')
     api project(path: ':features:main:search')

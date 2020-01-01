@@ -9,4 +9,5 @@
     <string name="error_no_gb_api">For sheet metadata, build app using a Giant Bomb API key. See README.MD.</string>
 
     <string name="empty_search_no_query">Use the text box to search by title, game, or composer.</string>
+    <string name="label_refreshing">Refreshing…</string>
 </resources>

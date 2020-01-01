@@ -2,6 +2,7 @@ package com.vgleadsheets.network
 
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.ApiJam
+import com.vgleadsheets.model.jam.ApiSetlist
 import com.vgleadsheets.model.time.ApiTime
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -17,4 +18,7 @@ interface VglsApi {
 
     @GET("conductor/{name}?jam_id=true")
     fun getJamState(@Path("name") name: String): Observable<ApiJam>
+
+    @GET("conductor/{name}/setlist")
+    fun getSetlistForJam(@Path("name") name: String): Single<ApiSetlist>
 }

@@ -4,13 +4,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import androidx.room.Transaction
 import com.vgleadsheets.model.jam.JamEntity
+import com.vgleadsheets.model.jam.SongHistoryEntryEntity
 import io.reactivex.Observable
 
 @Dao
 interface JamDao {
     @Insert(onConflict = REPLACE)
-    fun insert(jams: JamEntity)
+    fun insert(jam: JamEntity)
 
     @Query("SELECT * FROM jam ORDER BY name")
     fun getAll(): Observable<List<JamEntity>>
@@ -20,4 +22,15 @@ interface JamDao {
 
     @Query("DELETE FROM jam WHERE Id = :jamId")
     fun remove(jamId: Long)
+
+    @Transaction
+    fun upsertJam(
+        songHistoryEntryDao: SongHistoryEntryDao,
+        jam: JamEntity,
+        songHistoryEntries: List<SongHistoryEntryEntity>
+    ) {
+        songHistoryEntryDao.removeAllForJam(jam.id!!)
+        insert(jam)
+        songHistoryEntryDao.insertAll(songHistoryEntries)
+    }
 }

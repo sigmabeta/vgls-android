@@ -11,15 +11,18 @@
         android:layout_marginStart="@dimen/margin_side"
         android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_side"
+        android:paddingStart="@dimen/margin_xxsmall"
+        android:paddingEnd="@dimen/margin_xxsmall"
         android:text="@string/header_add_jam" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="0dp"
         android:layout_marginStart="@dimen/margin_side"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_side"
-        android:layout_marginBottom="@dimen/margin_small">
+        android:layout_marginBottom="@dimen/margin_medium">
 
         <EditText
             android:id="@+id/edit_jam_name"

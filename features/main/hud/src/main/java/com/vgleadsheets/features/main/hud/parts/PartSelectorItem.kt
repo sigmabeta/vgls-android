@@ -51,3 +51,8 @@ data class PartSelectorItem(val apiId: String, val resId: Int, val selected: Boo
         )
     }
 }
+
+fun List<Part>.getPartMatchingSelection(selection: PartSelectorItem): Part {
+    val matching = this.firstOrNull { part -> part.name == selection.apiId }
+    return matching ?: this.first()
+}
