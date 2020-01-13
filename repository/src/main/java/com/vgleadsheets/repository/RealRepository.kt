@@ -496,10 +496,11 @@ class RealRepository constructor(
 
     private fun refreshJamStateImpl(name: String) = vglsApi.getJamState(name)
         .doOnNext {
+            var songHistoryIndex = 0
             val songHistoryEntries = it.song_history
                 .drop(1)
                 .map { songHistoryEntry ->
-                    songHistoryEntry.toSongHistoryEntryEntity(it.jam_id)
+                    songHistoryEntry.toSongHistoryEntryEntity(it.jam_id, songHistoryIndex++)
                 }
 
             val jamEntity = it.toJamEntity(name.toTitleCase())
@@ -511,8 +512,9 @@ class RealRepository constructor(
     private fun refreshSetlistImpl(jamId: Long, name: String) = vglsApi.getSetlistForJam(name)
         .map { it.songs }
         .map { setlist ->
+            var setlistIndex = 0
             setlist.map { entry ->
-                entry.toSetlistEntryEntity(jamId)
+                entry.toSetlistEntryEntity(jamId, setlistIndex++)
             }
         }
         .doOnSuccess { setlistEntryDao.removeAllForJam(jamId) }

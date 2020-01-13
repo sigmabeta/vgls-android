@@ -16,14 +16,14 @@ import com.vgleadsheets.model.song.Song
         )]
 )
 data class SetlistEntryEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long?,
+    @PrimaryKey val id: Long,
     val game_name: String,
     val song_name: String,
     val jam_id: Long,
     val song_id: Long
 ) {
     fun toSetlistEntry(song: Song) = SetlistEntry(
-        id!!,
+        id,
         game_name,
         song_name,
         song

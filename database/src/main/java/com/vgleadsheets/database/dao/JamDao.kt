@@ -29,7 +29,7 @@ interface JamDao {
         jam: JamEntity,
         songHistoryEntries: List<SongHistoryEntryEntity>
     ) {
-        songHistoryEntryDao.removeAllForJam(jam.id!!)
+        songHistoryEntryDao.removeAllForJam(jam.id)
         insert(jam)
         songHistoryEntryDao.insertAll(songHistoryEntries)
     }

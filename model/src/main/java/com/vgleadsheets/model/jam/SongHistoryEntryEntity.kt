@@ -16,12 +16,12 @@ import com.vgleadsheets.model.song.Song
         )]
 )
 data class SongHistoryEntryEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long?,
+    @PrimaryKey val id: Long,
     val jam_id: Long,
     val song_id: Long
 ) {
     fun toSongHistoryEntry(song: Song) = SongHistoryEntry(
-        id!!,
+        id,
         song
     )
 }

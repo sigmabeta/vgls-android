@@ -6,9 +6,9 @@ import com.vgleadsheets.model.song.Song
 
 @Entity(tableName = "jam")
 data class JamEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long? = null,
+    @PrimaryKey val id: Long,
     val name: String,
     val currentSheetId: Long
 ) {
-    fun toJam(currentSong: Song, songHistory: List<SongHistoryEntry>?) = Jam(id!!, name, currentSong, songHistory)
+    fun toJam(currentSong: Song, songHistory: List<SongHistoryEntry>?) = Jam(id, name, currentSong, songHistory)
 }
