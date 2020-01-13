@@ -8,6 +8,7 @@ import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
@@ -45,11 +46,13 @@ class JamViewModel @AssistedInject constructor(
         val jamId = state.jamId
 
         repository.getJam(jamId, true)
+            .debounce(300, TimeUnit.MILLISECONDS)
             .execute { newJam ->
                 copy(jam = newJam)
             }
 
         repository.getSetlistForJam(jamId)
+            .debounce(300, TimeUnit.MILLISECONDS)
             .execute { newSetlist ->
                 copy(setlist = newSetlist)
             }
