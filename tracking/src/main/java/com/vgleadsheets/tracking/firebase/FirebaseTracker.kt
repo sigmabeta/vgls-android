@@ -38,6 +38,8 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
         val details = Bundle()
         details.putString(PARAM_SONG_NAME, songName)
         details.putString(PARAM_GAME_NAME, gameName)
+        details.putString(PARAM_PAGE_TITLE, "$gameName - $songName")
+        details.putString(PARAM_PAGE_TITLE_TRANSPOSITION, "$gameName - $songName: $transposition")
         details.putString(PARAM_TRANSPOSITION, transposition)
         details.putString(FirebaseAnalytics.Param.SEARCH_TERM, searchTerm)
 
@@ -109,6 +111,8 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
         const val EVENT_APP_ERROR = "error_app"
 
         const val PARAM_GAME_NAME = "game_name"
+        const val PARAM_PAGE_TITLE = "page_title"
+        const val PARAM_PAGE_TITLE_TRANSPOSITION = "page_title_transposition"
         const val PARAM_SONG_NAME = "song_name"
         const val PARAM_COMPOSER_NAME = "composer_name"
         const val PARAM_TRANSPOSITION = "transposition"
