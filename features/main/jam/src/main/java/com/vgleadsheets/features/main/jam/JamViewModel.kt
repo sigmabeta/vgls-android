@@ -46,13 +46,13 @@ class JamViewModel @AssistedInject constructor(
         val jamId = state.jamId
 
         repository.getJam(jamId, true)
-            .debounce(300, TimeUnit.MILLISECONDS)
+            .debounce(DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
             .execute { newJam ->
                 copy(jam = newJam)
             }
 
         repository.getSetlistForJam(jamId)
-            .debounce(300, TimeUnit.MILLISECONDS)
+            .debounce(DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
             .execute { newSetlist ->
                 copy(setlist = newSetlist)
             }
@@ -64,6 +64,8 @@ class JamViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<JamViewModel, JamState> {
+        const val DEBOUNCE_THRESHOLD = 300L
+
         override fun create(viewModelContext: ViewModelContext, state: JamState): JamViewModel? {
             val fragment: JamFragment = (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.jamViewModelFactory.create(state)
