@@ -52,7 +52,13 @@ class JamFragment : VglsFragment(),
     private var refreshLauncher: Disposable? = null
 
     override fun onClicked(clicked: ImageNameCaptionListModel) {
-        getFragmentRouter().showSongViewer(clicked.dataId)
+        val songId = clicked.actionableId
+
+        if (songId != null) {
+            getFragmentRouter().showSongViewer(songId)
+        } else {
+            showError("Unable to show sheet.")
+        }
     }
 
     override fun onClicked(clicked: CtaListModel) {
@@ -188,12 +194,13 @@ class JamFragment : VglsFragment(),
                 getString(R.string.jam_current_song)
             ),
             ImageNameCaptionListModel(
-                jam.currentSong.id,
+                Long.MAX_VALUE,
                 jam.currentSong.name,
                 jam.currentSong.gameName,
                 thumbUrl,
                 R.drawable.placeholder_sheet,
-                this
+                this,
+                jam.currentSong.id
             )
         )
     }
@@ -249,7 +256,8 @@ class JamFragment : VglsFragment(),
                 entry.gameName,
                 thumbUrl,
                 R.drawable.placeholder_sheet,
-                this
+                this,
+                entry.song?.id
             )
         }
     }
@@ -287,7 +295,8 @@ class JamFragment : VglsFragment(),
                 entry.song.gameName,
                 thumbUrl,
                 R.drawable.placeholder_sheet,
-                this
+                this,
+                entry.song.id
             )
         }
     }

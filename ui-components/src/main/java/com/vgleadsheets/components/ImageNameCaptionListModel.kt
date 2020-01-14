@@ -6,7 +6,8 @@ data class ImageNameCaptionListModel(
     val caption: String,
     val imageUrl: String?,
     val imagePlaceholder: Int,
-    val handler: EventHandler
+    val handler: EventHandler,
+    val actionableId: Long? = null
 ) : ListModel {
     interface EventHandler {
         fun onClicked(clicked: ImageNameCaptionListModel)
