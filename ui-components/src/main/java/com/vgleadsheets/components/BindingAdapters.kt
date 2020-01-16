@@ -2,6 +2,8 @@ package com.vgleadsheets.components
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +15,7 @@ import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
 import timber.log.Timber
+
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -114,9 +117,11 @@ fun bindGiantBombIdList(
     }
 
     if (giantBombId == NO_API_KEY) {
-        Timber.w("Can't get metadata from Giant Bomb without an API key." +
-                "See instructions in README.MD and make sure to clear app data after" +
-                "rebuilding.")
+        Timber.w(
+            "Can't get metadata from Giant Bomb without an API key." +
+                    "See instructions in README.MD and make sure to clear app data after" +
+                    "rebuilding."
+        )
         events.onGbApiNotAvailable()
     }
 }
@@ -138,12 +143,41 @@ fun bindGiantBombIdTitle(
 
 @BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
-    view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET).start()
+    view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+        .start()
 }
 
 @BindingAdapter("model")
 fun bindCheckableLoading(view: LinearLayout, model: LoadingCheckableListModel) {
-    view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET).start()
+    view.getPulseAnimator(model.listPosition * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+        .start()
+}
+
+@BindingAdapter("labels")
+fun bindDropdownValues(view: AutoCompleteTextView, labels: List<String>) {
+    val adapter = ArrayAdapter<String>(
+        view.context,
+        R.layout.dropdown_item,
+        labels
+    )
+
+    view.setAdapter(adapter)
+}
+
+@BindingAdapter("settingId", "selectedPosition", "itemSelectListener")
+fun bindDropdownListener(
+    view: AutoCompleteTextView,
+    settingId: String,
+    selectedPosition: Int,
+    itemSelectListener: DropdownSettingListModel.EventHandler
+) {
+    val valueToDisplay = view.adapter.getItem(selectedPosition).toString()
+    view.setText(valueToDisplay, false);
+
+    view.setOnItemClickListener { dropdown, _, position, _ ->
+        val selectedValue = dropdown.adapter.getItem(position) as String
+        itemSelectListener.onNewOptionSelected(settingId, selectedValue)
+    }
 }
 
 const val MULTIPLIER_LIST_POSITION = 100

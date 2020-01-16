@@ -13,6 +13,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.CheckableListModel
+import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
@@ -23,16 +24,21 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.storage.Setting
 import kotlinx.android.synthetic.main.fragment_debug.list_debug
+import timber.log.Timber
 import javax.inject.Inject
 
 class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
-    SingleTextListModel.Handler {
+    SingleTextListModel.Handler, DropdownSettingListModel.EventHandler {
     override fun onClicked(clicked: SingleTextListModel) {
         getFragmentRouter().showAbout()
     }
 
     override fun onClicked(clicked: CheckableListModel) {
         viewModel.setSetting(clicked.settingId, !clicked.checked)
+    }
+
+    override fun onNewOptionSelected(settingId: String, value: String) {
+        Timber.w("$settingId value changed to $value")
     }
 
     @Inject
@@ -108,7 +114,18 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
                 )
             }
 
-        return headerModels + settingsModels
+        val dropdownModels = listOf(
+            DropdownSettingListModel(
+                "testSetting",
+                "Fake Setting",
+                0,
+                listOf("Mock", "Real"),
+                listOf("api_mock", "api_real"),
+                this
+            )
+        )
+
+        return headerModels + settingsModels + dropdownModels
     }
 
     private fun getSectionHeaderString(headerId: String) = when (headerId) {
