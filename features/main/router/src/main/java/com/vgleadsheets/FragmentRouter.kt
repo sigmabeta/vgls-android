@@ -16,6 +16,7 @@ interface FragmentRouter {
     fun showValueListForTagKey(tagKeyId: Long)
     fun showAllSheets()
     fun showSettings()
+    fun showDebug()
     fun showAbout()
     fun goToWebUrl(url: String)
     fun showLicenseScreen()

@@ -13,6 +13,7 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
+import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -114,6 +115,10 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
 
     override fun showSettings() {
         showFragmentSimple(SettingsFragment.newInstance())
+    }
+
+    override fun showDebug() {
+        showFragmentSimple(DebugFragment.newInstance())
     }
 
     override fun showAbout() {

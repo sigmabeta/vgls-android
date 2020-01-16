@@ -41,10 +41,21 @@ internal class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         )
         .toList()
 
+    override fun getAllDebugSettings(): Single<List<Setting>> = Single
+        .concat(
+            // TODO Once there's actually more than one of these, we don't need the listOf call
+            listOf<Single<Setting>>(
+//                getSettingSheetScreenOn()
+            )
+        )
+        .toList()
+
     companion object {
         const val KEY_SELECTED_TOP_LEVEL = "KEY_SELECTED_TOP_LEVEL"
         const val KEY_SELECTED_PART = "KEY_SELECTED_PART"
 
         const val KEY_SHEETS_KEEP_SCREEN_ON = "SETTING_SHEET_KEEP_SCREEN_ON"
+
+        const val KEY_DEBUG_NETWORK_ENDPOINT = "DEBUG_NETWORK_ENDPOINT"
     }
 }

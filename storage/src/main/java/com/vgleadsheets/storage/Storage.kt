@@ -14,4 +14,7 @@ interface Storage {
     fun getAllSettings(): Single<List<Setting>>
     fun getSettingSheetScreenOn(): Single<Setting>
     fun saveSettingSheetScreenOn(setting: Boolean): Single<String>
+
+    // Debug Settings
+    fun getAllDebugSettings(): Single<List<Setting>>
 }
