@@ -46,9 +46,10 @@
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_dropdown"
-                android:layout_width="128dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:gravity="end"
                 android:editable="false"
                 tools:text="Lorem ipsum"
                 app:selectedPosition="@{toBind.selectedPosition}"

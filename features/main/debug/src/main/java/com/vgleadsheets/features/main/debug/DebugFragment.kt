@@ -22,9 +22,10 @@ import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
+import com.vgleadsheets.storage.BooleanSetting
+import com.vgleadsheets.storage.DropdownSetting
 import com.vgleadsheets.storage.Setting
 import kotlinx.android.synthetic.main.fragment_debug.list_debug
-import timber.log.Timber
 import javax.inject.Inject
 
 class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
@@ -34,11 +35,11 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
     }
 
     override fun onClicked(clicked: CheckableListModel) {
-        viewModel.setSetting(clicked.settingId, !clicked.checked)
+        TODO("Implement this!")
     }
 
-    override fun onNewOptionSelected(settingId: String, value: String) {
-        Timber.w("$settingId value changed to $value")
+    override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
+        viewModel.setDropdownSetting(settingId, selectedPosition)
     }
 
     @Inject
@@ -105,27 +106,25 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
 
         val settingsModels = settings
             .filter { it.settingId.startsWith(headerId) }
-            .map {
-                CheckableListModel(
-                    it.settingId,
-                    getString(it.displayStringId),
-                    it.value,
-                    this
-                )
+            .map { setting ->
+                when (setting) {
+                    is BooleanSetting -> CheckableListModel(
+                        setting.settingId,
+                        getString(setting.labelStringId),
+                        setting.value,
+                        this
+                    )
+                    is DropdownSetting -> DropdownSettingListModel(
+                        setting.settingId,
+                        getString(setting.labelStringId),
+                        setting.selectedPosition,
+                        setting.valueStringIds.map { getString(it) },
+                        this
+                    )
+                }
             }
 
-        val dropdownModels = listOf(
-            DropdownSettingListModel(
-                "testSetting",
-                "Fake Setting",
-                0,
-                listOf("Mock", "Real"),
-                listOf("api_mock", "api_real"),
-                this
-            )
-        )
-
-        return headerModels + settingsModels + dropdownModels
+        return headerModels + settingsModels
     }
 
     private fun getSectionHeaderString(headerId: String) = when (headerId) {

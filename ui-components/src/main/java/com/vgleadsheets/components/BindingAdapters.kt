@@ -174,9 +174,8 @@ fun bindDropdownListener(
     val valueToDisplay = view.adapter.getItem(selectedPosition).toString()
     view.setText(valueToDisplay, false);
 
-    view.setOnItemClickListener { dropdown, _, position, _ ->
-        val selectedValue = dropdown.adapter.getItem(position) as String
-        itemSelectListener.onNewOptionSelected(settingId, selectedValue)
+    view.setOnItemClickListener { _, _, clickedPosition, _ ->
+        itemSelectListener.onNewOptionSelected(settingId, clickedPosition)
     }
 }
 

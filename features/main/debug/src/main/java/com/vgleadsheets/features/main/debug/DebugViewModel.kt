@@ -17,10 +17,10 @@ class DebugViewModel @AssistedInject constructor(
         fetchDebugSettings()
     }
 
-    fun setSetting(settingId: String, newValue: Boolean) {
+    fun setDropdownSetting(settingId: String, newValue: Int) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {
-            "SETTING_SHEET_KEEP_SCREEN_ON" -> storage.saveSettingSheetScreenOn(newValue)
+            "DEBUG_NETWORK_ENDPOINT" -> storage.saveSelectedNetworkEndpoint(newValue)
             else -> throw IllegalArgumentException()
         }
 

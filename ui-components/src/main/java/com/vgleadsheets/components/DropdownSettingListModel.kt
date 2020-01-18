@@ -5,17 +5,10 @@ data class DropdownSettingListModel(
     val name: String,
     val selectedPosition: Int,
     val settingsLabels: List<String>,
-    val settingsValues: List<String>,
     val handler: EventHandler
 ): ListModel {
     interface EventHandler {
-        fun onNewOptionSelected(settingId: String, value: String)
-    }
-
-    init {
-        if (settingsLabels.size != settingsValues.size) {
-            throw IllegalArgumentException("Not enough labels or values!")
-        }
+        fun onNewOptionSelected(settingId: String, selectedPosition: Int)
     }
 
     override val dataId: Long = settingId.hashCode().toLong()

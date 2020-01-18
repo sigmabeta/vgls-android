@@ -13,6 +13,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.CheckableListModel
+import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
@@ -21,12 +22,15 @@ import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
+import com.vgleadsheets.storage.BooleanSetting
+import com.vgleadsheets.storage.DropdownSetting
 import com.vgleadsheets.storage.Setting
 import kotlinx.android.synthetic.main.fragment_settings.list_settings
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
+    DropdownSettingListModel.EventHandler,
     SingleTextListModel.Handler {
     override fun onClicked(clicked: SingleTextListModel) {
         getFragmentRouter().showAbout()
@@ -34,6 +38,10 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
 
     override fun onClicked(clicked: CheckableListModel) {
         viewModel.setSetting(clicked.settingId, !clicked.checked)
+    }
+
+    override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
+        TODO("Implement this!")
     }
 
     @Inject
@@ -115,13 +123,22 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
 
         val settingsModels = settings
             .filter { it.settingId.startsWith(headerId) }
-            .map {
-                CheckableListModel(
-                    it.settingId,
-                    getString(it.displayStringId),
-                    it.value,
-                    this
-                )
+            .map { setting ->
+                when (setting) {
+                    is BooleanSetting -> CheckableListModel(
+                        setting.settingId,
+                        getString(setting.labelStringId),
+                        setting.value,
+                        this
+                    )
+                    is DropdownSetting -> DropdownSettingListModel(
+                        setting.settingId,
+                        getString(setting.labelStringId),
+                        setting.selectedPosition,
+                        setting.valueStringIds.map { getString(it) },
+                        this
+                    )
+                }
             }
 
         return headerModels + settingsModels

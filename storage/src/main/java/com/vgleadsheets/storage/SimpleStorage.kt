@@ -1,6 +1,7 @@
 package com.vgleadsheets.storage
 
 import com.uber.simplestore.SimpleStore
+import com.vgleadsheets.common.debug.NetworkEndpoint
 import io.reactivex.Single
 
 internal class SimpleStorage(val simpleStore: SimpleStore) : Storage {
@@ -20,11 +21,28 @@ internal class SimpleStorage(val simpleStore: SimpleStore) : Storage {
 
     override fun getSettingSheetScreenOn() =
         Single.fromFuture(simpleStore.getString(KEY_SHEETS_KEEP_SCREEN_ON))
-            .map {
-                Setting(
+            .map { savedValue ->
+                BooleanSetting(
                     KEY_SHEETS_KEEP_SCREEN_ON,
                     R.string.label_setting_screen_on,
-                    it.toBoolean()
+                    savedValue.toBoolean()
+                )
+            }
+
+    override fun getDebugSettingNetworkEndpoint() =
+        Single.fromFuture(simpleStore.getString(KEY_DEBUG_NETWORK_ENDPOINT))
+            .map { fromStorage ->
+                val savedValue = if (fromStorage.isBlank()) {
+                    0
+                } else {
+                    fromStorage.toInt()
+                }
+
+                DropdownSetting(
+                    KEY_DEBUG_NETWORK_ENDPOINT,
+                    R.string.label_debug_network_endpoint,
+                    savedValue,
+                    NetworkEndpoint.values().map { it.displayStringId }
                 )
             }
 
@@ -32,7 +50,7 @@ internal class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         simpleStore.putString(KEY_SHEETS_KEEP_SCREEN_ON, setting.toString())
     )
 
-    override fun getAllSettings(): Single<List<Setting>> = Single
+    override fun getAllSettings(): Single<List<BooleanSetting>> = Single
         .concat(
             // TODO Once there's actually more than one of these, we don't need the listOf call
             listOf(
@@ -41,14 +59,18 @@ internal class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         )
         .toList()
 
-    override fun getAllDebugSettings(): Single<List<Setting>> = Single
+    override fun getAllDebugSettings(): Single<List<DropdownSetting>> = Single
         .concat(
             // TODO Once there's actually more than one of these, we don't need the listOf call
-            listOf<Single<Setting>>(
-//                getSettingSheetScreenOn()
+            listOf(
+                getDebugSettingNetworkEndpoint()
             )
         )
         .toList()
+
+    override fun saveSelectedNetworkEndpoint(newValue: Int): Single<String> = Single.fromFuture(
+        simpleStore.putString(KEY_DEBUG_NETWORK_ENDPOINT, newValue.toString())
+    )
 
     companion object {
         const val KEY_SELECTED_TOP_LEVEL = "KEY_SELECTED_TOP_LEVEL"
