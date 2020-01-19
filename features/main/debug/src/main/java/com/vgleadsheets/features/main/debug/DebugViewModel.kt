@@ -6,15 +6,31 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import timber.log.Timber
 
 class DebugViewModel @AssistedInject constructor(
     @Assisted initialState: DebugState,
-    private val storage: Storage
+    private val storage: Storage,
+    private val repository: Repository
 ) : MvRxViewModel<DebugState>(initialState) {
     init {
         fetchDebugSettings()
+    }
+
+    fun clearSheets() {
+        repository.clearSheets()
+            .execute {
+                copy(sheetDeletion = it)
+            }
+    }
+
+    fun clearJams() {
+        repository.clearJams()
+            .execute {
+                copy(jamDeletion = it)
+            }
     }
 
     fun setDropdownSetting(settingId: String, newValue: Int) {

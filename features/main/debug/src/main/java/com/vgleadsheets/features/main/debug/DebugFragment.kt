@@ -30,8 +30,20 @@ import javax.inject.Inject
 
 class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
     SingleTextListModel.Handler, DropdownSettingListModel.EventHandler {
+    @Inject
+    lateinit var debugViewModelFactory: DebugViewModel.Factory
+
+    private val hudViewModel: HudViewModel by existingViewModel()
+
+    private val viewModel: DebugViewModel by fragmentViewModel()
+
+    private val adapter = ComponentAdapter()
+
     override fun onClicked(clicked: SingleTextListModel) {
-        getFragmentRouter().showAbout()
+        when (clicked.dataId.toInt()) {
+            R.string.label_database_clear_sheets -> viewModel.clearSheets()
+            R.string.label_database_clear_jams -> viewModel.clearJams()
+        }
     }
 
     override fun onClicked(clicked: CheckableListModel) {
@@ -41,15 +53,6 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         viewModel.setDropdownSetting(settingId, selectedPosition)
     }
-
-    @Inject
-    lateinit var debugViewModelFactory: DebugViewModel.Factory
-
-    private val hudViewModel: HudViewModel by existingViewModel()
-
-    private val viewModel: DebugViewModel by fragmentViewModel()
-
-    private val adapter = ComponentAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,6 +67,20 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
             topOffset = topOffset,
             bottomOffset = bottomOffset
         )
+
+        viewModel.asyncSubscribe(
+            DebugState::jamDeletion,
+            deliveryMode = uniqueOnly("jamDeletion")
+        ) {
+            showSnackbar("Jams cleared.")
+        }
+
+        viewModel.asyncSubscribe(
+            DebugState::sheetDeletion,
+            deliveryMode = uniqueOnly("sheetDeletion")
+        ) {
+            showSnackbar("Sheets cleared.")
+        }
     }
 
     override fun invalidate() = withState(viewModel) { state ->
@@ -91,7 +108,26 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
 
     private fun createSuccessListModels(settings: List<Setting>): List<ListModel> {
         val networkSection = createSection(settings, HEADER_ID_NETWORK)
-        return networkSection
+        val databaseSection = createDatabaseSection(settings)
+        return networkSection + databaseSection
+    }
+
+    private fun createDatabaseSection(settings: List<Setting>): List<ListModel> {
+        val normalItems = createSection(settings, HEADER_ID_DATABASE)
+        val customItems = listOf(
+            SingleTextListModel(
+                R.string.label_database_clear_sheets.toLong(),
+                getString(R.string.label_database_clear_sheets),
+                this
+            ),
+            SingleTextListModel(
+                R.string.label_database_clear_jams.toLong(),
+                getString(R.string.label_database_clear_jams),
+                this
+            )
+        )
+
+        return normalItems + customItems
     }
 
     private fun createSection(

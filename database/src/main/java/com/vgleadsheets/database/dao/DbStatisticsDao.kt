@@ -14,4 +14,7 @@ interface DbStatisticsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dbStatisticsEntity: TimeEntity)
+
+    @Query("DELETE FROM time")
+    fun nukeTable()
 }

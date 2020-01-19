@@ -371,6 +371,27 @@ class RealRepository constructor(
         jamDao.remove(id)
     }
 
+    override fun clearSheets() = Completable.fromAction {
+        gameDao.nukeTable()
+        songDao.nukeTable()
+        composerDao.nukeTable()
+        songComposerDao.nukeTable()
+        partDao.nukeTable()
+        pageDao.nukeTable()
+        tagKeyDao.nukeTable()
+        tagValueDao.nukeTable()
+        songTagValueDao.nukeTable()
+        gameAliasDao.nukeTable()
+        composerAliasDao.nukeTable()
+        dbStatisticsDao.nukeTable()
+    }.subscribeOn(Schedulers.io())
+
+    override fun clearJams() = Completable.fromAction {
+        songHistoryEntryDao.nukeTable()
+        setlistEntryDao.nukeTable()
+        jamDao.nukeTable()
+    }.subscribeOn(Schedulers.io())
+
     @Suppress("MaxLineLength")
     private fun searchGames(searchQuery: String) = gameDao
         .searchGamesByTitle("%$searchQuery%") // Percent characters allow characters before and after the query to match.

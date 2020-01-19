@@ -6,5 +6,7 @@ import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.storage.Setting
 
 data class DebugState(
-    val settings: Async<List<Setting>> = Uninitialized
+    val settings: Async<List<Setting>> = Uninitialized,
+    val sheetDeletion: Async<Unit> = Uninitialized,
+    val jamDeletion: Async<Unit> = Uninitialized
 ) : MvRxState
