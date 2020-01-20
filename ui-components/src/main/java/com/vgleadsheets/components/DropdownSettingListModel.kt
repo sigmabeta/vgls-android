@@ -6,7 +6,7 @@ data class DropdownSettingListModel(
     val selectedPosition: Int,
     val settingsLabels: List<String>,
     val handler: EventHandler
-): ListModel {
+) : ListModel {
     interface EventHandler {
         fun onNewOptionSelected(settingId: String, selectedPosition: Int)
     }

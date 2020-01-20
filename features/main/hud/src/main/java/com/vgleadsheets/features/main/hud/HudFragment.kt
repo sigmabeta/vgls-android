@@ -275,6 +275,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun shouldTrackViews() = false
 
+    @Suppress("ComplexMethod")
     private fun showScreen(screenId: String, save: Boolean = true) {
         viewModel.onMenuAction()
 

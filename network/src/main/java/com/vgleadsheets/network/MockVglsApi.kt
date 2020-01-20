@@ -10,9 +10,9 @@ import io.reactivex.Single
 class MockVglsApi : VglsApi {
     override fun getDigest(): Single<List<VglsApiGame>> = Single.error(NotImplementedError())
 
-    override fun getLastUpdateTime(): Single<ApiTime>  = Single.error(NotImplementedError())
+    override fun getLastUpdateTime(): Single<ApiTime> = Single.error(NotImplementedError())
 
-    override fun getJamState(name: String): Observable<ApiJam>  = Observable.error(NotImplementedError())
+    override fun getJamState(name: String): Observable<ApiJam> = Observable.error(NotImplementedError())
 
-    override fun getSetlistForJam(name: String): Single<ApiSetlist>  = Single.error(NotImplementedError())
+    override fun getSetlistForJam(name: String): Single<ApiSetlist> = Single.error(NotImplementedError())
 }

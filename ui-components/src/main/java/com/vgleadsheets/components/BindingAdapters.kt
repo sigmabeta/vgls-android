@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.vgleadsheets.components
 
 import android.annotation.SuppressLint
@@ -15,7 +17,6 @@ import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
 import timber.log.Timber
-
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -172,7 +173,7 @@ fun bindDropdownListener(
     itemSelectListener: DropdownSettingListModel.EventHandler
 ) {
     val valueToDisplay = view.adapter.getItem(selectedPosition).toString()
-    view.setText(valueToDisplay, false);
+    view.setText(valueToDisplay, false)
 
     view.setOnItemClickListener { _, _, clickedPosition, _ ->
         itemSelectListener.onNewOptionSelected(settingId, clickedPosition)

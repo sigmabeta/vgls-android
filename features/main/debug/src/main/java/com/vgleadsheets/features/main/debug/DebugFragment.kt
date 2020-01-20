@@ -28,6 +28,7 @@ import com.vgleadsheets.storage.Setting
 import kotlinx.android.synthetic.main.fragment_debug.list_debug
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
     SingleTextListModel.Handler, DropdownSettingListModel.EventHandler {
     @Inject
