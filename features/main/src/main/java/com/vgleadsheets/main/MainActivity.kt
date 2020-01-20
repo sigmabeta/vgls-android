@@ -1,6 +1,7 @@
 package com.vgleadsheets.main
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -34,6 +35,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.toplevel
 import javax.inject.Inject
+
 
 @Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
@@ -205,6 +207,15 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         if (!getHudFragment().onBackPress() && !getDisplayedFragment().onBackPress()) {
             super.onBackPressed()
         }
+    }
+
+    override fun restartApp() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+
+        finish()
+        Runtime.getRuntime().exit(0)
     }
 
     private fun clearBackStack() {

@@ -21,4 +21,7 @@ interface FragmentRouter {
     fun goToWebUrl(url: String)
     fun showLicenseScreen()
     fun showFindJamDialog()
+
+    // TODO We should rename this interface.
+    fun restartApp()
 }

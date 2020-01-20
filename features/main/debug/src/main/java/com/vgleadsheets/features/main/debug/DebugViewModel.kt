@@ -8,6 +8,7 @@ import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
+import io.reactivex.Completable
 import timber.log.Timber
 
 class DebugViewModel @AssistedInject constructor(
@@ -44,6 +45,8 @@ class DebugViewModel @AssistedInject constructor(
             .subscribe(
                 {
                     fetchDebugSettings()
+                    clearAll()
+                    setState { copy(changed = true) }
                 },
                 {
                     Timber.e("Failed to update setting: ${it.message}")
@@ -57,6 +60,18 @@ class DebugViewModel @AssistedInject constructor(
             .execute {
                 copy(settings = it)
             }
+    }
+
+    private fun clearAll() {
+        Completable
+            .merge(
+                listOf(
+                    repository.clearSheets(),
+                    repository.clearJams()
+                )
+            )
+            .subscribe()
+            .disposeOnClear()
     }
 
     @AssistedInject.Factory

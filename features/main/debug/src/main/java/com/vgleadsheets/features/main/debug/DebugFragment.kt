@@ -68,6 +68,15 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
             bottomOffset = bottomOffset
         )
 
+        viewModel.selectSubscribe(
+            DebugState::changed,
+            deliveryMode = uniqueOnly("changed")
+        ) { changed ->
+            if (changed) {
+                showSnackbar(getString(R.string.snack_restart_on_exit))
+            }
+        }
+
         viewModel.asyncSubscribe(
             DebugState::jamDeletion,
             deliveryMode = uniqueOnly("jamDeletion")
@@ -81,6 +90,14 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
         ) {
             showSnackbar("Sheets cleared.")
         }
+    }
+
+    override fun onBackPress() = withState(viewModel) {
+        if (it.changed) {
+            getFragmentRouter().restartApp()
+            return@withState false
+        }
+        return@withState true
     }
 
     override fun invalidate() = withState(viewModel) { state ->
