@@ -96,9 +96,9 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
     override fun onBackPress() = withState(viewModel) {
         if (it.changed) {
             getFragmentRouter().restartApp()
-            return@withState false
+            return@withState true
         }
-        return@withState true
+        return@withState false
     }
 
     override fun invalidate() = withState(viewModel) { state ->
