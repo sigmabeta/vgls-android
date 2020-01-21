@@ -18,10 +18,6 @@ interface SetlistEntryDao {
     @Query("DELETE FROM setlist_entry WHERE jam_id = :jamId")
     fun removeAllForJam(jamId: Long)
 
-    // TODO Use this instead if we ever get web-provided DB id's for setlist entries
-    /*@Transaction
-    fun replaceSetlist(jamId: Long, setlistEntries: List<SetlistEntryEntity>) {
-        removeAllForJam(jamId)
-        insertAll(setlistEntries)
-    }*/
+    @Query("DELETE FROM setlist_entry")
+    fun nukeTable()
 }

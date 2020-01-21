@@ -16,10 +16,6 @@ interface SongHistoryEntryDao {
     @Query("DELETE FROM song_history_entry WHERE jam_id = :jamId")
     fun removeAllForJam(jamId: Long)
 
-    // TODO Use this instead if we ever get web-provided DB id's for songHistory entries
-    /*@Transaction
-    fun replaceSongHistory(jamId: Long, songHistoryEntries: List<SongHistoryEntryEntity>) {
-        removeAllForJam(jamId)
-        insertAll(songHistoryEntries)
-    }*/
+    @Query("DELETE FROM song_history_entry")
+    fun nukeTable()
 }

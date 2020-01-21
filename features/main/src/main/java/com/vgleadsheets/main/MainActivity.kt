@@ -1,6 +1,7 @@
 package com.vgleadsheets.main
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
+import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -116,6 +118,10 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         showFragmentSimple(SettingsFragment.newInstance())
     }
 
+    override fun showDebug() {
+        showFragmentSimple(DebugFragment.newInstance())
+    }
+
     override fun showAbout() {
         showFragmentSimple(AboutFragment.newInstance())
     }
@@ -200,6 +206,15 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         if (!getHudFragment().onBackPress() && !getDisplayedFragment().onBackPress()) {
             super.onBackPressed()
         }
+    }
+
+    override fun restartApp() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+
+        finish()
+        Runtime.getRuntime().exit(0)
     }
 
     private fun clearBackStack() {

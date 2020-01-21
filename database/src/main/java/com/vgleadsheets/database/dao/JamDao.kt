@@ -33,4 +33,7 @@ interface JamDao {
         insert(jam)
         songHistoryEntryDao.insertAll(songHistoryEntries)
     }
+
+    @Query("DELETE FROM jam")
+    fun nukeTable()
 }

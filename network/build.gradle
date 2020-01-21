@@ -3,6 +3,8 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     // Module deps
     implementation project(path: ':model')
+    implementation project(path: ':storage')
+    implementation project(path: ':common:debug-common')
 
     // OkHttp libs
     api "com.squareup.okhttp3:okhttp:$okhttp_version"

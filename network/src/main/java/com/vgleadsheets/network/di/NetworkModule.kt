@@ -2,10 +2,13 @@ package com.vgleadsheets.network.di
 
 import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.network.BuildConfig
 import com.vgleadsheets.network.GiantBombApi
 import com.vgleadsheets.network.GiantBombNoKeyApi
+import com.vgleadsheets.network.MockVglsApi
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.storage.Storage
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -29,20 +32,41 @@ class NetworkModule {
     internal fun provideGiantBombUrl() = "https://www.giantbomb.com/api/"
 
     @Provides
+    @Named("NetworkEndpoint")
+    @Singleton
+    internal fun provideNetworkSetting(storage: Storage) = storage
+        .getDebugSettingNetworkEndpoint()
+        .map { it.selectedPosition }
+        .blockingGet()
+
+    @Provides
     @Named("VglsUrl")
     @Singleton
-    internal fun provideVglsUrl() = "https://www.vgleadsheets.com/"
+    internal fun provideVglsUrl(
+        @Named("NetworkEndpoint") selectedNetwork: Int
+    ) = NetworkEndpoint.values()[selectedNetwork].url
 
     @Provides
     @Named("VglsApiUrl")
     @Singleton
-    internal fun provideVglsApiUrl(@Named("VglsUrl") baseUrl: String) = baseUrl + "api/"
+    internal fun provideVglsApiUrl(
+        @Named("VglsUrl") baseUrl: String?
+    ) = if (baseUrl != null) {
+        baseUrl + "api/"
+    } else {
+        null
+    }
 
     @Provides
     @Named("VglsImageUrl")
     @Singleton
-    internal fun provideVglsImageUrl(@Named("VglsUrl") baseUrl: String) =
+    internal fun provideVglsImageUrl(
+        @Named("VglsUrl") baseUrl: String?
+    ) = if (baseUrl != null) {
         baseUrl + "assets/sheets/png/"
+    } else {
+        "file:///android_asset/sheets"
+    }
 
     @Provides
     @Singleton
@@ -170,17 +194,21 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideVglsApi(
-        @Named("VglsApiUrl") baseUrl: String,
+        @Named("VglsApiUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,
         converterFactory: MoshiConverterFactory,
         callAdapterFactory: RxJava2CallAdapterFactory
-    ) = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .client(client)
-        .addCallAdapterFactory(callAdapterFactory)
-        .addConverterFactory(converterFactory)
-        .build()
-        .create(VglsApi::class.java)
+    ) = if (baseUrl != null) {
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .addCallAdapterFactory(callAdapterFactory)
+            .addConverterFactory(converterFactory)
+            .build()
+            .create(VglsApi::class.java)
+    } else {
+        MockVglsApi()
+    }
 
     @Provides
     @Singleton

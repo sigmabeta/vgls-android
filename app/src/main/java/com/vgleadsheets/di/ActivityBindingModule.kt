@@ -3,6 +3,7 @@ package com.vgleadsheets.di
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
+import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -91,6 +92,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeViewerFragmentInjector(): ViewerFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeDebugFragmentInjector(): DebugFragment
 
     @FragmentScope
     @ContributesAndroidInjector

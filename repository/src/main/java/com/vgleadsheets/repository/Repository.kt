@@ -64,4 +64,8 @@ interface Repository {
 
     // Jam maintenance
     fun removeJam(id: Long): Completable
+
+    // Debug options
+    fun clearSheets(): Completable
+    fun clearJams(): Completable
 }
