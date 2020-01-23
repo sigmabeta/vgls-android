@@ -38,6 +38,7 @@ class DebugViewModel @AssistedInject constructor(
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {
             "DEBUG_NETWORK_ENDPOINT" -> storage.saveSelectedNetworkEndpoint(newValue)
+            "DEBUG_NETWORK_GB_ENDPOINT" -> storage.saveSelectedNetworkGiantBombEndpoint(newValue)
             else -> throw IllegalArgumentException()
         }
 

@@ -11,13 +11,13 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.util.EmptyStackException
-import java.util.Locale
 import java.util.Random
 import java.util.Stack
 
-class MockVglsApi : VglsApi {
-    private val random = Random(1234L)
-
+class MockVglsApi(
+    private val random: Random,
+    private val stringGenerator: StringGenerator
+)  : VglsApi {
     private var possibleComposers: List<ApiComposer>? = null
 
     private var remainingSongs: Stack<ApiSong>? = null
@@ -58,23 +58,9 @@ class MockVglsApi : VglsApi {
         val gameId = random.nextLong()
         return VglsApiGame(
             gameId,
-            generateTitle(),
+            stringGenerator.generateTitle(),
             getSongs()
         )
-    }
-
-    private fun generateTitle(): String {
-        val wordCount = random.nextInt(MAX_WORDS_PER_TITLE - 1) + 1
-        val builder = StringBuilder()
-
-        for (wordIndex in 0 until wordCount) {
-            val randomWordIndex = random.nextInt(RANDOM_WORDS.size - 1)
-            val randomWord = RANDOM_WORDS[randomWordIndex]
-            builder.append(randomWord)
-            builder.append(' ')
-        }
-
-        return builder.toString().trim()
     }
 
     private fun getSongs(): List<ApiSong> {
@@ -123,7 +109,7 @@ class MockVglsApi : VglsApi {
         random.nextLong(),
         "goose",
         getParts(),
-        generateTitle(),
+        stringGenerator.generateTitle(),
         random.nextInt(MAX_PAGE_COUNT) + 1,
         random.nextInt(MAX_PAGE_COUNT) + 1,
         getComposers(),
@@ -181,11 +167,8 @@ class MockVglsApi : VglsApi {
 
     private fun generateComposer() = ApiComposer(
         random.nextLong(),
-        generateName()
+        stringGenerator.generateName()
     )
-
-    private fun generateName() = "${FIRST_NAMES[random.nextInt(FIRST_NAMES.size)]} " +
-            LAST_NAMES[random.nextInt(LAST_NAMES.size)]
 
     // TODO fill this in
     private fun getTags(): Map<String, List<String>> = mapOf()
@@ -200,126 +183,5 @@ class MockVglsApi : VglsApi {
 
         val PARTS_NO_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto")
         val PARTS_WITH_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto", "Vocals")
-
-        @UseExperimental(ExperimentalStdlibApi::class)
-        val RANDOM_WORDS = """Lorem ipsum dolor sit amet consectetur adipiscing elit Curabitur 
-                |iaculis neque vel fermentum dictum Pellentesque ac justo ultricies 
-                |hendrerit sem in blandit tellus Nam non congue ante In ultricies 
-                |hendrerit velit at lobortis velit sodales eget Quisque quis pellentesque 
-                |urna Suspendisse consequat ut tellus in sollicitudin Aliquam facilisis a 
-                |justo quis iaculis Donec feugiat pharetra orci in iaculis metus tincidunt 
-                |quis In eget ligula leo Integer finibus metus ut est molestie et finibus 
-                |ligula convallis"""
-            .trimMargin()
-            .split(" ")
-            .map { it.trim() }
-            .map { it.capitalize(Locale.getDefault()) }
-            .toList()
-
-        val FIRST_NAMES = listOf(
-            "Exie",
-            "Euna",
-            "Kimiko",
-            "Robbin",
-            "Maximina",
-            "Elias",
-            "Maryellen",
-            "Marcene",
-            "Phung",
-            "Karoline",
-            "Rosie",
-            "Branden",
-            "Eryn",
-            "Kurt",
-            "Cristopher",
-            "Tien",
-            "Kori",
-            "Eldon",
-            "Jeannetta",
-            "Cinda",
-            "William",
-            "Alona",
-            "Tommy",
-            "Tawana",
-            "Nevada",
-            "Terrell",
-            "Camille",
-            "Albertine",
-            "Tristan",
-            "Joye",
-            "Amber",
-            "Laree",
-            "Kali",
-            "Lacresha",
-            "Dione",
-            "Paul",
-            "Myung",
-            "Trista",
-            "Epifania",
-            "Michell",
-            "Odessa",
-            "Columbus",
-            "Emerita",
-            "Rosann",
-            "Ethelene",
-            "Domitila",
-            "Lawanda",
-            "Jamaal",
-            "Hilario",
-            "Liane"
-        )
-
-        val LAST_NAMES = listOf(
-            "Clayton",
-            "Crane",
-            "Browning",
-            "Conrad",
-            "Joseph",
-            "Hanson",
-            "Donovan",
-            "Rice",
-            "Green",
-            "Nixon",
-            "Hoffman",
-            "Haley",
-            "Kelly",
-            "Powell",
-            "Costa",
-            "Blackburn",
-            "Anthony",
-            "Gutierrez",
-            "Mcintosh",
-            "Bolton",
-            "Maynard",
-            "Pratt",
-            "Conley",
-            "Blackwell",
-            "Mullen",
-            "Simpson",
-            "Collins",
-            "Matthews",
-            "English",
-            "Chapman",
-            "Frederick",
-            "Montoya",
-            "Campos",
-            "Spencer",
-            "Mccullough",
-            "Rivas",
-            "Weeks",
-            "Quinn",
-            "Morrison",
-            "Franco",
-            "Moran",
-            "Allen",
-            "Good",
-            "Benitez",
-            "Haas",
-            "Wyatt",
-            "Dunn",
-            "Davila",
-            "Harrison",
-            "Wallace"
-        )
     }
 }

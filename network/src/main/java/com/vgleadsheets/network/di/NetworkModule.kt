@@ -2,11 +2,14 @@ package com.vgleadsheets.network.di
 
 import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.vgleadsheets.common.debug.GiantBombNetworkEndpoint
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.network.BuildConfig
 import com.vgleadsheets.network.GiantBombApi
 import com.vgleadsheets.network.GiantBombNoKeyApi
+import com.vgleadsheets.network.MockGiantBombApi
 import com.vgleadsheets.network.MockVglsApi
+import com.vgleadsheets.network.StringGenerator
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.storage.Storage
 import dagger.Module
@@ -20,16 +23,32 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
+import java.util.Random
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Suppress("TooManyFunctions")
 @Module
 class NetworkModule {
+
+    @Provides
+    @Singleton
+    internal fun provideRandom() = Random(1234L)
+
     @Provides
     @Named("GiantBombUrl")
     @Singleton
-    internal fun provideGiantBombUrl() = "https://www.giantbomb.com/api/"
+    internal fun provideGiantBombUrl(
+        @Named("GiantBombNetworkEndpoint") selectedNetwork: Int
+    ) = GiantBombNetworkEndpoint.values()[selectedNetwork].url
+
+    @Provides
+    @Named("GiantBombNetworkEndpoint")
+    @Singleton
+    internal fun provideGiantBombNetworkSetting(storage: Storage) = storage
+        .getDebugSettingNetworkGiantBombEndpoint()
+        .map { it.selectedPosition }
+        .blockingGet()
 
     @Provides
     @Named("NetworkEndpoint")
@@ -197,7 +216,9 @@ class NetworkModule {
         @Named("VglsApiUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,
         converterFactory: MoshiConverterFactory,
-        callAdapterFactory: RxJava2CallAdapterFactory
+        callAdapterFactory: RxJava2CallAdapterFactory,
+        random: Random,
+        stringGenerator: StringGenerator
     ) = if (baseUrl != null) {
         Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -207,18 +228,21 @@ class NetworkModule {
             .build()
             .create(VglsApi::class.java)
     } else {
-        MockVglsApi()
+        MockVglsApi(random, stringGenerator)
     }
 
     @Provides
     @Singleton
     fun provideGiantBombApi(
         @Named("GiantBombApiKey") apiKey: String,
-        @Named("GiantBombUrl") baseUrl: String,
+        @Named("GiantBombUrl") baseUrl: String?,
         @Named("GiantBombOkHttp") client: OkHttpClient,
         converterFactory: MoshiConverterFactory,
-        callAdapterFactory: RxJava2CallAdapterFactory
-    ) = if (apiKey == "empty") {
+        callAdapterFactory: RxJava2CallAdapterFactory,
+        random: Random
+    ) = if (baseUrl == null) {
+        MockGiantBombApi(random)
+    } else if (apiKey == "empty") {
         GiantBombNoKeyApi()
     } else {
         Retrofit.Builder()
