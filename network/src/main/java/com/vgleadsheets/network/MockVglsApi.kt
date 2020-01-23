@@ -14,10 +14,11 @@ import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
 
+@Suppress("TooManyFunctions")
 class MockVglsApi(
     private val random: Random,
     private val stringGenerator: StringGenerator
-)  : VglsApi {
+) : VglsApi {
     private var possibleComposers: List<ApiComposer>? = null
 
     private var remainingSongs: Stack<ApiSong>? = null
@@ -116,6 +117,7 @@ class MockVglsApi(
         getTags()
     )
 
+    @Suppress("MagicNumber")
     private fun getParts(): Set<String> {
         val randomNumber = random.nextInt(10)
 
@@ -126,6 +128,7 @@ class MockVglsApi(
         }
     }
 
+    @Suppress("MagicNumber")
     private fun getComposers(): List<ApiComposer> {
         if (possibleComposers == null) {
             generateComposers()

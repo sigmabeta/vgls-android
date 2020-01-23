@@ -33,7 +33,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideRandom() = Random(1234L)
+    internal fun provideRandom() = Random(SEED_RANDOM_NUMBER_GENERATOR)
 
     @Provides
     @Named("GiantBombUrl")
@@ -212,6 +212,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @Suppress("LongParameterList")
     fun provideVglsApi(
         @Named("VglsApiUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,
@@ -233,6 +234,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @Suppress("LongParameterList")
     fun provideGiantBombApi(
         @Named("GiantBombApiKey") apiKey: String,
         @Named("GiantBombUrl") baseUrl: String?,
@@ -257,5 +259,7 @@ class NetworkModule {
     companion object {
         const val CACHE_SIZE_BYTES = 100000000L
         const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
+
+        const val SEED_RANDOM_NUMBER_GENERATOR = 1234L
     }
 }
