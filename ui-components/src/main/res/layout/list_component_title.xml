@@ -22,6 +22,7 @@
             android:src="@drawable/ic_logo" />
 
         <TextView
+            android:id="@+id/text_title_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -34,6 +35,7 @@
             tools:text="VGLeadSheets" />
 
         <TextView
+            android:id="@+id/text_title_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

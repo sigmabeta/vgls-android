@@ -127,8 +127,9 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
 
     // Espresso libs
-    androidTestImplementation "com.android.support.test:runner:$espresso_runner_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+    androidTestImplementation "androidx.test:runner:$espresso_runner_version"
+    androidTestImplementation "androidx.test:rules:$espresso_runner_version"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
     implementation project(path: ':di')
