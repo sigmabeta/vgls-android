@@ -2,5 +2,6 @@
 <resources>
     <string name="label_setting_screen_on">Sheets keep screen on</string>
     <string name="label_debug_network_endpoint">Network Endpoint</string>
+    <string name="label_debug_network_giant_bomb_endpoint">G-Bomb Endpoint</string>
 
 </resources>

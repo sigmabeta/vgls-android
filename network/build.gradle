@@ -18,6 +18,9 @@ dependencies {
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
     // Debug Helper
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 

@@ -2,6 +2,7 @@ package com.vgleadsheets.storage
 
 import io.reactivex.Single
 
+@Suppress("TooManyFunctions")
 interface Storage {
     // Loading Defaults
     fun getSavedTopLevelScreen(): Single<String>
@@ -21,7 +22,9 @@ interface Storage {
     // Loading Debug Settings
     fun getAllDebugSettings(): Single<List<DropdownSetting>>
     fun getDebugSettingNetworkEndpoint(): Single<DropdownSetting>
+    fun getDebugSettingNetworkGiantBombEndpoint(): Single<DropdownSetting>
 
     // Saving Debug Settings
     fun saveSelectedNetworkEndpoint(newValue: Int): Single<String>
+    fun saveSelectedNetworkGiantBombEndpoint(newValue: Int): Single<String>
 }

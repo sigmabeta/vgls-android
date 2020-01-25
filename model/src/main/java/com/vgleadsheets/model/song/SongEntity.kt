@@ -21,7 +21,6 @@ import com.vgleadsheets.model.parts.Part
 )
 data class SongEntity(
     @PrimaryKey val id: Long,
-    val filename: String,
     val name: String,
     val pageCount: Int,
     val gameName: String,
@@ -32,7 +31,6 @@ data class SongEntity(
         parts: List<Part>?
     ) = Song(
         id,
-        filename,
         name,
         gameName,
         composers,

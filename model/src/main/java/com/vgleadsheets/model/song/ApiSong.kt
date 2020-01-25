@@ -13,7 +13,6 @@ data class ApiSong(
     val tags: Map<String, List<String>>
 ) {
     fun toSongEntity(gameId: Long, gameName: String) = SongEntity(id,
-        filename,
         name,
         pageCount,
         gameName,
