@@ -10,7 +10,9 @@ import com.vgleadsheets.storage.di.StorageModule
 import com.vgleadsheets.tracking.TrackerModule
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
 import javax.inject.Singleton
+
 
 @Singleton
 @Component(
@@ -26,11 +28,15 @@ import javax.inject.Singleton
         StorageModule::class,
         TrackerModule::class]
 )
-interface AppComponent {
+interface AppComponent: AndroidInjector<VglsApplication> {
+    @Component.Factory
+    abstract class Factory {
+        abstract fun create(appModule: AppModule): AppComponent
+    }
+
     /**
      * Crucial: injection targets must be the correct type.
      * Passing an interface here will result in a no-op injection.
      */
-    fun inject(view: VglsApplication)
     fun inject(view: MainActivity)
 }
