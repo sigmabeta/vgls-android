@@ -6,14 +6,18 @@ import com.facebook.stetho.Stetho
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import com.vgleadsheets.di.AppModule
-import com.vgleadsheets.di.DaggerAppComponent
+import com.vgleadsheets.di.DaggerUiTestAppComponent
+import com.vgleadsheets.di.UiTestAppComponent
+import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class VglsApplication : DaggerApplication(), HasAndroidInjector {
+class UiTestApplication : DaggerApplication(), HasAndroidInjector {
+    lateinit var testComponent: UiTestAppComponent
+
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
@@ -24,7 +28,7 @@ class VglsApplication : DaggerApplication(), HasAndroidInjector {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
-        Timber.v("Starting Application.")
+        Timber.v("Starting Test Application.")
         Timber.v("Build type: %s", BuildConfig.BUILD_TYPE)
 
         Timber.v("Android version: %s", Build.VERSION.RELEASE)
@@ -43,9 +47,14 @@ class VglsApplication : DaggerApplication(), HasAndroidInjector {
         Picasso.setSingletonInstance(picasso)
     }
 
-    override fun applicationInjector() = DaggerAppComponent
-        .factory()
-        .create(AppModule(this))
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication>? {
+        val component = DaggerUiTestAppComponent
+            .factory()
+            .create(AppModule(this))
+
+        testComponent = component
+        return component
+    }
 
     override fun androidInjector() = dispatchingAndroidInjector
 }

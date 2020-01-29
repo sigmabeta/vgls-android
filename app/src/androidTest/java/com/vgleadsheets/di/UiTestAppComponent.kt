@@ -1,11 +1,11 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.VglsApplication
+import com.vgleadsheets.UiTest
+import com.vgleadsheets.UiTestApplication
 import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.repository.di.RepositoryModule
-import com.vgleadsheets.storage.di.StorageModule
 import com.vgleadsheets.tracking.TrackerModule
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -22,15 +22,15 @@ import javax.inject.Singleton
         RepositoryModule::class,
         DatabaseModule::class,
         ImageModule::class,
-        ApiModule::class,
+        MockApiModule::class,
         NetworkModule::class,
-        StorageModule::class,
+        MockStorageModule::class,
         TrackerModule::class]
 )
-interface AppComponent : AndroidInjector<VglsApplication> {
+interface UiTestAppComponent : AndroidInjector<UiTestApplication> {
     @Component.Factory
     abstract class Factory {
-        abstract fun create(appModule: AppModule): AppComponent
+        abstract fun create(appModule: AppModule): UiTestAppComponent
     }
 
     /**
@@ -38,4 +38,6 @@ interface AppComponent : AndroidInjector<VglsApplication> {
      * Passing an interface here will result in a no-op injection.
      */
     fun inject(view: MainActivity)
+
+    fun inject(test: UiTest)
 }

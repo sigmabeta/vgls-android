@@ -4,7 +4,7 @@ buildscript {
         okhttp_version = '4.2.0'
         retrofit_version = '2.6.1'
         room_version = "2.2.0-rc01"
-        rxjava_version = "2.2.12"
+        rxjava_version = "2.2.13"
         rxandroid_version = "2.1.1"
         rxbinding_version = "3.0.0-alpha2"
         mvrx_version = "1.1.0"

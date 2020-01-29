@@ -113,7 +113,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         if (savedInstanceState == null) {
             val screenLoad = storage.getSavedTopLevelScreen().subscribe(
                 {
-                    val selection = if (it.isNullOrEmpty()) {
+                    val selection = if (it.isEmpty()) {
                         TOP_LEVEL_SCREEN_ID_DEFAULT
                     } else {
                         it

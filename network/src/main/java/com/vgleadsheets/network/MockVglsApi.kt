@@ -23,17 +23,28 @@ class MockVglsApi(
 
     private var remainingSongs: Stack<ApiSong>? = null
 
-    override fun getDigest() = Single
-        .just(
-            generateGames()
-        )
+    var maxSongs = DEFAULT_MAX_SONGS
+    var maxGames = DEFAULT_MAX_GAMES
+    var maxComposers = DEFAULT_MAX_COMPOSERS
+    var maxSongsPerGame = DEFAULT_MAX_SONGS_PER_GAME
+
+    var digestEmitTrigger: Observable<Long> = Single.just(0L).toObservable()
+    var updateTimeEmitTrigger: Observable<Long> = Single.just(0L).toObservable()
+
+    override fun getDigest() = digestEmitTrigger
+        .flatMapSingle { Single.just(generateGames()) }
+        .firstOrError()
         .subscribeOn(Schedulers.io())
 
     // TODO Fill this in
-    override fun getLastUpdateTime() = Single
-        .just(
-            ApiTime("2020-01-21T03:30:06Z")
-        )
+    override fun getLastUpdateTime() = updateTimeEmitTrigger
+        .flatMapSingle {
+            Single
+                .just(
+                    ApiTime("2017-04-01T23:30:06Z")
+                )
+        }
+        .firstOrError()
         .subscribeOn(Schedulers.io())
 
     override fun getJamState(name: String): Observable<ApiJam> =
@@ -43,7 +54,7 @@ class MockVglsApi(
         Single.error(NotImplementedError())
 
     private fun generateGames(): List<VglsApiGame> {
-        val gameCount = random.nextInt(MAX_GAMES)
+        val gameCount = random.nextInt(maxGames)
         Timber.i("Generating $gameCount games...")
         val games = ArrayList<VglsApiGame>(gameCount)
 
@@ -70,7 +81,7 @@ class MockVglsApi(
         }
 
         val availableSongs = remainingSongs!!
-        val songCount = random.nextInt(MAX_SONGS_PER_GAME) + 1
+        val songCount = random.nextInt(maxSongsPerGame) + 1
 
         val songs = ArrayList<ApiSong>(songCount)
 
@@ -87,7 +98,7 @@ class MockVglsApi(
     }
 
     private fun generateSongs() {
-        val songCount = random.nextInt(MAX_SONGS) + 1
+        val songCount = random.nextInt(maxSongs) + 1
         Timber.d("Generating $songCount songs...")
 
         val songs = Stack<ApiSong>()
@@ -156,7 +167,7 @@ class MockVglsApi(
     }
 
     private fun generateComposers() {
-        val composerCount = random.nextInt(MAX_COMPOSERS) + 1
+        val composerCount = random.nextInt(maxComposers) + 1
         Timber.i("Generating $composerCount composers...")
         val composers = ArrayList<ApiComposer>(composerCount)
 
@@ -177,10 +188,11 @@ class MockVglsApi(
     private fun getTags(): Map<String, List<String>> = mapOf()
 
     companion object {
-        const val MAX_SONGS = 1000
-        const val MAX_GAMES = 400
-        const val MAX_COMPOSERS = 200
-        const val MAX_SONGS_PER_GAME = 10
+        const val DEFAULT_MAX_SONGS = 1000
+        const val DEFAULT_MAX_GAMES = 400
+        const val DEFAULT_MAX_COMPOSERS = 200
+        const val DEFAULT_MAX_SONGS_PER_GAME = 10
+
         const val MAX_WORDS_PER_TITLE = 5
         const val MAX_PAGE_COUNT = 2
 

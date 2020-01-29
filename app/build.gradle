@@ -42,7 +42,7 @@ android {
         versionCode 1
         versionName "debug"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.vgleadsheets.VglsTestRunner"
     }
 
     signingConfigs {
@@ -104,6 +104,8 @@ dependencies {
     implementation project(path: ':storage')
     implementation project(path: ':images')
 
+    androidTestImplementation project(path: ':common:debug-common')
+
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -127,14 +129,18 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
 
     // Espresso libs
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_core_version"
     androidTestImplementation "androidx.test:runner:$espresso_runner_version"
     androidTestImplementation "androidx.test:rules:$espresso_runner_version"
+    androidTestImplementation "com.squareup.rx.idler:rx2-idler:0.10.0"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
     implementation project(path: ':di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$dagger_version"
 
     // AssistedInject Annotation Processors
     compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"

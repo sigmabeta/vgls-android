@@ -1,27 +1,62 @@
 package com.vgleadsheets
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
-import com.vgleadsheets.main.MainActivity
-import org.junit.Rule
+import com.vgleadsheets.features.main.hud.HudFragment
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @LargeTest
-class AppSmokeTest {
+@RunWith(AndroidJUnit4::class)
+class AppSmokeTest : UiTest() {
+    @Test
+    fun appLaunchesToGamesAndTitleIsVisible() {
+        (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_GAME
+        launchScreen()
 
-    @get:Rule
-    val activityRule = ActivityTestRule(MainActivity::class.java)
+        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_game)
+    }
 
     @Test
-    fun appLaunchesAndTitleIsVisible() {
-        onView(withId(R.id.text_title_title))
-            .check(matches(withText(R.string.app_name)))
+    fun appLaunchesToComposersAndTitleIsVisible() {
+        (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER
+        launchScreen()
 
-        onView(withId(R.id.text_title_subtitle))
-            .check(matches(withText(R.string.subtitle_game)))
+        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_composer)
+    }
+
+    @Test
+    fun appLaunchesToSongsAndTitleIsVisible() {
+        (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
+        launchScreen()
+
+        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_all_sheets)
+    }
+
+    @Test
+    fun appLaunchesToTagsAndTitleIsVisible() {
+        (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_TAG
+        launchScreen()
+
+        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_tags)
+    }
+
+    @Test
+    fun appLaunchesToJamsAndTitleIsVisible() {
+        (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_JAM
+        launchScreen()
+
+        checkSuccessfulLaunch(R.string.title_jam, null)
+    }
+
+    private fun checkSuccessfulLaunch(titleStringId: Int, subtitleStringId: Int?) {
+        checkViewVisible(R.id.text_title_title)
+        checkViewVisible(R.id.text_title_subtitle)
+
+        checkViewText(R.id.text_title_title, titleStringId)
+
+        if (subtitleStringId != null) {
+            checkViewText(R.id.text_title_subtitle, subtitleStringId)
+        }
     }
 }
