@@ -46,7 +46,7 @@ class AppSmokeTest : UiTest() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_JAM
         launchScreen()
 
-        checkSuccessfulLaunch(R.string.title_jam, null)
+        checkSuccessfulLaunch(R.string.title_jams, null)
     }
 
     private fun checkSuccessfulLaunch(titleStringId: Int, subtitleStringId: Int?) {

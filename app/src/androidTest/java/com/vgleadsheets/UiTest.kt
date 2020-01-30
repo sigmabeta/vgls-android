@@ -12,6 +12,7 @@ import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.MockVglsApi
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.storage.Storage
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import javax.inject.Inject
@@ -54,6 +55,11 @@ abstract class UiTest {
     protected fun checkViewVisible(viewId: Int) {
         onView(withId(viewId))
             .check(matches(isDisplayed()))
+    }
+
+    protected fun checkViewNotVisible(viewId: Int) {
+        onView(withId(viewId))
+            .check(matches(not(isDisplayed())))
     }
 
     protected fun checkViewText(viewId: Int, text: String) {

@@ -25,17 +25,32 @@ class MockStorage : Storage {
     override fun saveSelectedPart(partId: String) =
         Single.error<String>(NotImplementedError("Implement this!"))
 
-    override fun getAllSettings() =
-        Single.error<List<BooleanSetting>>(NotImplementedError("Implement this!"))
+    override fun getAllSettings() = Single
+        .concat(
+            // TODO Once there's actually more than one of these, we don't need the listOf call
+            listOf(
+                getSettingSheetScreenOn()
+            )
+        )
+        .toList()
 
-    override fun getSettingSheetScreenOn() =
-        Single.error<BooleanSetting>(NotImplementedError("Implement this!"))
+    override fun getSettingSheetScreenOn() = Single.just(
+        BooleanSetting(
+            SimpleStorage.KEY_SHEETS_KEEP_SCREEN_ON,
+            R.string.label_setting_screen_on,
+            false
+        )
+    )
 
     override fun saveSettingSheetScreenOn(setting: Boolean) =
         Single.error<String>(NotImplementedError("Implement this!"))
 
-    override fun getAllDebugSettings() =
-        Single.error<List<DropdownSetting>>(NotImplementedError("Implement this!"))
+    override fun getAllDebugSettings() = Single
+        .concat(
+            getDebugSettingNetworkEndpoint(),
+            getDebugSettingNetworkGiantBombEndpoint()
+        )
+        .toList()
 
     override fun getDebugSettingNetworkEndpoint() = Single.just(
         DropdownSetting(
