@@ -48,27 +48,52 @@ abstract class UiTest {
     }
 
     protected fun checkViewText(viewId: Int, textId: Int) {
-        onView(withId(viewId))
-            .check(matches(withText(textId)))
+        onView(
+            withId(viewId)
+        ).check(
+            matches(
+                withText(textId)
+            )
+        )
     }
 
     protected fun checkViewVisible(viewId: Int) {
-        onView(withId(viewId))
-            .check(matches(isDisplayed()))
+        onView(
+            withId(viewId)
+        ).check(
+            matches(
+                isDisplayed()
+            )
+        )
     }
 
     protected fun checkViewNotVisible(viewId: Int) {
-        onView(withId(viewId))
-            .check(matches(not(isDisplayed())))
+        onView(
+            withId(viewId)
+        ).check(
+            matches(
+                not(
+                    isDisplayed()
+                )
+            )
+        )
     }
 
     protected fun checkViewText(viewId: Int, text: String) {
-        onView(withId(viewId))
-            .check(matches(withText(text)))
+        onView(
+            withId(viewId)
+        ).check(
+            matches(
+                withText(text)
+            )
+        )
     }
 
     protected fun clickView(viewId: Int) {
-        onView(withId(viewId))
-            .perform(click())
+        onView(
+            withId(viewId)
+        ).perform(
+            click()
+        )
     }
 }

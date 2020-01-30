@@ -3,7 +3,9 @@ package com.vgleadsheets.features.main.hud
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withResourceName
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.vgleadsheets.R
 import com.vgleadsheets.UiTest
@@ -12,13 +14,13 @@ import org.junit.Test
 
 class HudUiTest: UiTest() {
     @Test
-    fun openAndCloseMenu() {
+    fun openAndCloseMenuFromTopBar() {
         launchScreen()
 
-        clickView(R.id.button_menu)
+        clickView(R.id.button_search_menu_back)
         checkViewVisible(R.id.text_update_time)
 
-        clickView(R.id.button_menu)
+        clickView(R.id.button_search_menu_back)
         checkViewNotVisible(R.id.text_update_time)
     }
 
@@ -67,8 +69,27 @@ class HudUiTest: UiTest() {
     }
 
     @Test
+    fun navigateToJamListThenBackToGameList() {
+        launchScreen()
+
+        checkNavigationButton(
+            R.id.layout_jams,
+            R.string.title_jams,
+            null
+        )
+
+        checkNavigationButton(
+            R.id.layout_by_game,
+            R.string.app_name,
+            R.string.subtitle_game
+        )
+    }
+
+    @Test
     fun navigateToSettings() {
         launchScreen()
+
+        checkSearchButtonIsHamburger()
 
         clickView(R.id.button_menu)
         checkViewVisible(R.id.text_update_time)
@@ -77,11 +98,14 @@ class HudUiTest: UiTest() {
         checkViewNotVisible(R.id.text_update_time)
 
         checkViewVisible(R.id.checkbox_setting)
+        checkSearchButtonIsBackArrow()
     }
 
     @Test
     fun navigateToDebugSettings() {
         launchScreen()
+
+        checkSearchButtonIsHamburger()
 
         clickView(R.id.button_menu)
         checkViewVisible(R.id.text_update_time)
@@ -99,6 +123,8 @@ class HudUiTest: UiTest() {
                 isDisplayed()
             )
         )
+
+        checkSearchButtonIsBackArrow()
     }
 
     private fun checkNavigationButton(
@@ -124,5 +150,25 @@ class HudUiTest: UiTest() {
         if (subtitleStringId != null) {
             checkViewText(R.id.text_title_subtitle, subtitleStringId)
         }
+    }
+
+    private fun checkSearchButtonIsBackArrow() {
+        onView(
+            withId(R.id.button_search_menu_back)
+        ).check(
+            matches(
+                withContentDescription(R.string.cd_search_back)
+            )
+        )
+    }
+
+    private fun checkSearchButtonIsHamburger() {
+        onView(
+            withId(R.id.button_search_menu_back)
+        ).check(
+            matches(
+                withContentDescription(R.string.cd_search_menu)
+            )
+        )
     }
 }

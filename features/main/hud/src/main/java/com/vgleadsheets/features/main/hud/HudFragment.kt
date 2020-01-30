@@ -374,11 +374,13 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     }
 
     private fun showSearchMenuButton() {
+        button_search_menu_back.contentDescription = getString(R.string.cd_search_menu)
         button_search_menu_back.setImageResource(R.drawable.ic_menu_24dp)
         button_search_menu_back.setOnClickListener(menuListener)
     }
 
     private fun showSearchBackButton() {
+        button_search_menu_back.contentDescription = getString(R.string.cd_search_back)
         button_search_menu_back.setImageResource(R.drawable.ic_arrow_back_black_24dp)
         button_search_menu_back.setOnClickListener(backListener)
     }
