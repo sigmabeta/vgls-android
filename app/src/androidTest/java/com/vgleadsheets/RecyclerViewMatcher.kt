@@ -32,13 +32,13 @@ class RecyclerViewMatcher(private val recyclerViewId: Int) {
                 description.appendText("with id: $idDescription")
             }
 
-            override fun matchesSafely(view: View): Boolean {
-                resources = view.resources
+            override fun matchesSafely(view: View?): Boolean {
+                resources = view?.resources
 
-                val recycler = view.rootView.findViewById(recyclerViewId) as RecyclerView
+                val recycler = view?.rootView?.findViewById(recyclerViewId) as RecyclerView?
 
                 val childView =
-                    if (recycler.id == recyclerViewId) {
+                    if (recycler?.id == recyclerViewId) {
                         recycler.findViewHolderForAdapterPosition(position)?.itemView
                     } else {
                         return false

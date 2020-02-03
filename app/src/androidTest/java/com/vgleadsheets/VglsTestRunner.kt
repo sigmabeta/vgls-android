@@ -3,6 +3,8 @@ package com.vgleadsheets
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
+import com.vgleadsheets.idling.FixedRxIdler
+import io.reactivex.plugins.RxJavaPlugins
 
 
 class VglsTestRunner : AndroidJUnitRunner() {
@@ -18,14 +20,13 @@ class VglsTestRunner : AndroidJUnitRunner() {
         )
     }
 
-    @Suppress("DEPRECATION")
     override fun onStart() {
-//        RxJavaPlugins.setInitComputationSchedulerHandler(
-//            Rx2Idler.create("RxJava 2.x Computation Scheduler")
-//        )
-//        RxJavaPlugins.setInitIoSchedulerHandler(
-//            Rx2Idler.create("RxJava 2.x IO Scheduler")
-//        )
+        RxJavaPlugins.setInitComputationSchedulerHandler(
+            FixedRxIdler.create("RxJava 2.x Computation Scheduler")
+        )
+        RxJavaPlugins.setInitIoSchedulerHandler(
+            FixedRxIdler.create("RxJava 2.x IO Scheduler")
+        )
 
         super.onStart()
     }

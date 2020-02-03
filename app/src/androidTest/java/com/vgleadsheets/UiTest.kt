@@ -8,6 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.MockVglsApi
 import com.vgleadsheets.network.VglsApi
@@ -23,6 +24,9 @@ abstract class UiTest {
 
     @Inject
     lateinit var vglsApi: VglsApi
+
+    @Inject
+    lateinit var vglsDatabase: VglsDatabase
 
     @get:Rule
     val activityRule = ActivityTestRule(
