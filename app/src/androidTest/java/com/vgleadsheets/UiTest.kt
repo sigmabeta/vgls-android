@@ -100,4 +100,8 @@ abstract class UiTest {
             click()
         )
     }
+
+    protected fun setApiToReturnBlank() {
+        (vglsApi as MockVglsApi).generateEmptyState = true
+    }
 }

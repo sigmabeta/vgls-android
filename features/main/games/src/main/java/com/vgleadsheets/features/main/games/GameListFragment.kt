@@ -21,6 +21,7 @@ import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
@@ -85,7 +86,12 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
             showError(games.error)
         }
 
-        val listModels = constructList(games, selectedPart)
+        val listModels = constructList(
+            games,
+            hudState.updateTime,
+            hudState.digest,
+            selectedPart
+        )
         adapter.submitList(listModels)
     }
 
@@ -95,8 +101,16 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
 
     private fun constructList(
         games: Async<List<Game>>,
+        updateTime: Async<Long>,
+        digest: Async<List<VglsApiGame>>,
         selectedPart: PartSelectorItem
-    ) = arrayListOf(createTitleListModel()) + createContentListModels(games, selectedPart)
+    ) = arrayListOf(createTitleListModel()) +
+            createContentListModels(
+                games,
+                updateTime,
+                digest,
+                selectedPart
+            )
 
     private fun createTitleListModel() = TitleListModel(
         R.string.subtitle_game.toLong(),
@@ -106,11 +120,18 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
 
     private fun createContentListModels(
         games: Async<List<Game>>,
+        updateTime: Async<Long>,
+        digest: Async<List<VglsApiGame>>,
         selectedPart: PartSelectorItem
     ) = when (games) {
         is Loading, Uninitialized -> createLoadingListModels()
         is Fail -> createErrorStateListModel(games.error)
-        is Success -> createSuccessListModels(games(), selectedPart)
+        is Success -> createSuccessListModels(
+            games(),
+            updateTime,
+            digest,
+            selectedPart
+        )
     }
 
     private fun createLoadingListModels(): List<ListModel> {
@@ -130,14 +151,20 @@ class GameListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.Even
 
     private fun createSuccessListModels(
         games: List<Game>,
+        updateTime: Async<Long>,
+        digest: Async<List<VglsApiGame>>,
         selectedPart: PartSelectorItem
     ) = if (games.isEmpty()) {
-        arrayListOf(
-            EmptyStateListModel(
-                R.drawable.ic_album_24dp,
-                "No games found at all. Check your internet connection?"
+        if (digest is Loading || updateTime is Loading) {
+            createLoadingListModels()
+        } else {
+            arrayListOf(
+                EmptyStateListModel(
+                    R.drawable.ic_album_24dp,
+                    "No games found at all. Check your internet connection?"
+                )
             )
-        )
+        }
     } else {
         val availableGames = filterGames(games, selectedPart)
 

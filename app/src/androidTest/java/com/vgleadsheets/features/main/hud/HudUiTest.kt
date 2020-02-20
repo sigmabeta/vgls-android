@@ -5,8 +5,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withResourceName
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.vgleadsheets.MockStorage
 import com.vgleadsheets.R
 import com.vgleadsheets.UiTest
 import org.hamcrest.Matchers.allOf
@@ -65,6 +65,21 @@ class HudUiTest: UiTest() {
             R.id.layout_jams,
             R.string.title_jams,
             null
+        )
+    }
+
+    @Test
+    fun navigateToGameList() {
+        (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
+
+        launchScreen()
+
+        checkTopLevelScreen(R.string.app_name, R.string.subtitle_all_sheets)
+
+        checkNavigationButton(
+            R.id.layout_by_game,
+            R.string.app_name,
+            R.string.subtitle_game
         )
     }
 

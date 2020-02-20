@@ -2,7 +2,7 @@ package com.vgleadsheets.di
 
 import com.vgleadsheets.UiTest
 import com.vgleadsheets.UiTestApplication
-import com.vgleadsheets.database.di.DatabaseModule
+import com.vgleadsheets.database.di.MockDatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.repository.di.RepositoryModule
@@ -20,7 +20,7 @@ import javax.inject.Singleton
         AssistedInjectionModules::class,
         ActivityBindingModule::class,
         RepositoryModule::class,
-        DatabaseModule::class,
+        MockDatabaseModule::class,
         ImageModule::class,
         MockApiModule::class,
         NetworkModule::class,

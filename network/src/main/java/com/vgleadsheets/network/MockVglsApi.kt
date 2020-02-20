@@ -23,6 +23,8 @@ class MockVglsApi(
 
     private var remainingSongs: Stack<ApiSong>? = null
 
+    var generateEmptyState = false
+
     var maxSongs = DEFAULT_MAX_SONGS
     var maxGames = DEFAULT_MAX_GAMES
     var maxComposers = DEFAULT_MAX_COMPOSERS
@@ -54,6 +56,13 @@ class MockVglsApi(
         Single.error(NotImplementedError())
 
     private fun generateGames(): List<VglsApiGame> {
+        possibleComposers = null
+        remainingSongs = null
+
+        if (generateEmptyState) {
+            return emptyList()
+        }
+
         val gameCount = random.nextInt(maxGames)
         Timber.i("Generating $gameCount games...")
         val games = ArrayList<VglsApiGame>(gameCount)
@@ -63,7 +72,15 @@ class MockVglsApi(
             games.add(game)
         }
 
-        return games.distinctBy { it.game_id }
+        Timber.i("Generated ${games.size} games...")
+
+        val filteredGames = games
+            .distinctBy { it.game_id }
+            .filter { it.songs.isNotEmpty() }
+
+        Timber.i("Returning ${filteredGames.size} games...")
+
+        return filteredGames
     }
 
     private fun generateGame(): VglsApiGame {

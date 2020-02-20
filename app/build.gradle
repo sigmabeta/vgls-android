@@ -95,6 +95,10 @@ android {
     dataBinding {
         enabled = true
     }
+
+    testOptions {
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -128,10 +132,11 @@ dependencies {
     // Junit libs
     testImplementation "junit:junit:$junit_version"
 
-    // Espresso libs
+    // UI Test libs
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_core_version"
+
     androidTestImplementation "androidx.test:runner:$espresso_runner_version"
     androidTestImplementation "androidx.test:rules:$espresso_runner_version"
     androidTestImplementation "com.squareup.rx.idler:rx2-idler:0.10.0"

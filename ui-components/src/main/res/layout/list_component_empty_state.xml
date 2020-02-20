@@ -37,6 +37,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/text_empty_state_reason"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
