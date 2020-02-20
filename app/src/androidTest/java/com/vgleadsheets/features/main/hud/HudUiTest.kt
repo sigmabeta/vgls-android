@@ -13,6 +13,9 @@ import org.hamcrest.Matchers.allOf
 import org.junit.Test
 
 class HudUiTest: UiTest() {
+    override val startingTopLevelScreenTitleId: Int? = null
+    override val startingTopLevelScreenSubtitleId = 0
+
     @Test
     fun openAndCloseMenuFromTopBar() {
         launchScreen()
@@ -154,17 +157,6 @@ class HudUiTest: UiTest() {
         checkViewNotVisible(R.id.text_update_time)
 
         checkTopLevelScreen(titleStringId, subtitleStringId)
-    }
-
-    private fun checkTopLevelScreen(titleStringId: Int, subtitleStringId: Int?) {
-        checkViewVisible(R.id.text_title_title)
-        checkViewVisible(R.id.text_title_subtitle)
-
-        checkViewText(R.id.text_title_title, titleStringId)
-
-        if (subtitleStringId != null) {
-            checkViewText(R.id.text_title_subtitle, subtitleStringId)
-        }
     }
 
     private fun checkSearchButtonIsBackArrow() {

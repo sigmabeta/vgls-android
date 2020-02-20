@@ -9,6 +9,9 @@ import org.junit.runner.RunWith
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class AppSmokeTest : UiTest() {
+    override val startingTopLevelScreenTitleId: Int? = null
+    override val startingTopLevelScreenSubtitleId = 0
+
     @Test
     fun appLaunchesToGamesAndTitleIsVisible() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_GAME

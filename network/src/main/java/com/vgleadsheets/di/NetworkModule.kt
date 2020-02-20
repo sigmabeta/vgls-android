@@ -23,11 +23,14 @@ import javax.inject.Singleton
 @Suppress("TooManyFunctions")
 @Module
 class NetworkModule {
-    /**
-     * Should keep this non-scoped so that tests run deterministically
-     */
     @Provides
-    internal fun provideRandom() = Random(SEED_RANDOM_NUMBER_GENERATOR)
+    @Singleton
+    @Named("RngSeed")
+    internal fun provideSeed() = SEED_RANDOM_NUMBER_GENERATOR
+
+    @Provides
+    @Singleton
+    internal fun provideRandom(@Named("RngSeed") seed: Long) = Random(seed)
 
     @Provides
     @Named("GiantBombUrl")

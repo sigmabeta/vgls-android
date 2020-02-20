@@ -5,6 +5,9 @@ import com.vgleadsheets.R
 import org.junit.Test
 
 class HudAsyncUiTest: AsyncUiTest() {
+    override val startingTopLevelScreenTitleId: Int? = null
+    override val startingTopLevelScreenSubtitleId = 0
+
     @Test
     fun updateDateSuccessfullyUpdates() {
         launchScreen()

@@ -13,10 +13,12 @@ import timber.log.Timber
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
+import javax.inject.Named
 
 @Suppress("TooManyFunctions")
 class MockVglsApi(
     private val random: Random,
+    @Named("RngSeed") private val seed: Long,
     private val stringGenerator: StringGenerator
 ) : VglsApi {
     private var possibleComposers: List<ApiComposer>? = null
@@ -58,6 +60,8 @@ class MockVglsApi(
     private fun generateGames(): List<VglsApiGame> {
         possibleComposers = null
         remainingSongs = null
+
+        random.setSeed(seed)
 
         if (generateEmptyState) {
             return emptyList()

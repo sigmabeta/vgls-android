@@ -47,8 +47,18 @@ abstract class UiTest {
         api.maxSongs = 50
     }
 
+    open val startingTopLevelScreenTitleId: Int? = R.string.app_name
+
+    abstract val startingTopLevelScreenSubtitleId: Int
+
     protected fun launchScreen() {
         activityRule.launchActivity(null)
+
+        val titleId = startingTopLevelScreenTitleId
+
+        if (titleId != null) {
+            checkTopLevelScreen(titleId, startingTopLevelScreenSubtitleId)
+        }
     }
 
     protected fun checkViewText(viewId: Int, textId: Int) {
@@ -103,5 +113,21 @@ abstract class UiTest {
 
     protected fun setApiToReturnBlank() {
         (vglsApi as MockVglsApi).generateEmptyState = true
+    }
+
+    protected fun checkScreenHeader(title: String, subtitle: String) {
+        checkViewText(R.id.text_title_title, title)
+        checkViewText(R.id.text_title_subtitle, subtitle)
+    }
+
+    protected fun checkTopLevelScreen(titleStringId: Int, subtitleStringId: Int?) {
+        checkViewVisible(R.id.text_title_title)
+        checkViewVisible(R.id.text_title_subtitle)
+
+        checkViewText(R.id.text_title_title, titleStringId)
+
+        if (subtitleStringId != null) {
+            checkViewText(R.id.text_title_subtitle, subtitleStringId)
+        }
     }
 }

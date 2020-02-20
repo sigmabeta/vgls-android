@@ -8,6 +8,7 @@ import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides
 import java.util.Random
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -16,8 +17,9 @@ class MockApiModule {
     @Singleton
     fun provideVglsApi(
         random: Random,
+        @Named("RngSeed") seed: Long,
         stringGenerator: StringGenerator
-    ): VglsApi = MockVglsApi(random, stringGenerator)
+    ): VglsApi = MockVglsApi(random, seed, stringGenerator)
 
     @Provides
     @Singleton

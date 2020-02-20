@@ -27,6 +27,7 @@ class ApiModule {
         converterFactory: MoshiConverterFactory,
         callAdapterFactory: RxJava2CallAdapterFactory,
         random: Random,
+        @Named("RngSeed") seed: Long,
         stringGenerator: StringGenerator
     ) = if (baseUrl != null) {
         Retrofit.Builder()
@@ -37,7 +38,7 @@ class ApiModule {
             .build()
             .create(VglsApi::class.java)
     } else {
-        MockVglsApi(random, stringGenerator)
+        MockVglsApi(random, seed, stringGenerator)
     }
 
     @Provides
