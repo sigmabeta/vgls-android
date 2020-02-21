@@ -77,8 +77,8 @@ abstract class VglsFragment : BaseMvRxFragment() {
         action: View.OnClickListener? = null,
         actionLabel: Int = 0,
         length: Int = Snackbar.LENGTH_LONG
-    ): Snackbar {
-        val toplevel = view?.parent as? CoordinatorLayout ?: view ?: throw IllegalStateException()
+    ): Snackbar? {
+        val toplevel = view?.parent as? CoordinatorLayout ?: view ?: return null
         val snackbar = Snackbar.make(toplevel, message, length)
 
         if (action != null && actionLabel > 0) {
