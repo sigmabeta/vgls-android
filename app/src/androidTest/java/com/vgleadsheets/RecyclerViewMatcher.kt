@@ -7,7 +7,6 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 
-
 class RecyclerViewMatcher() {
     fun atPosition(position: Int): Matcher<View?>? {
         return atPositionOnView(position)

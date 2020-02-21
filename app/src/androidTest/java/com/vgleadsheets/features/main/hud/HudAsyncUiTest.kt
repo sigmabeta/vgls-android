@@ -4,7 +4,7 @@ import com.vgleadsheets.AsyncUiTest
 import com.vgleadsheets.R
 import org.junit.Test
 
-class HudAsyncUiTest: AsyncUiTest() {
+class HudAsyncUiTest : AsyncUiTest() {
     override val startingTopLevelScreenTitleId: Int? = null
     override val startingTopLevelScreenSubtitleId = 0
 

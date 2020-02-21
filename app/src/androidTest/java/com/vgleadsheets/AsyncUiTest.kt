@@ -5,7 +5,7 @@ import io.reactivex.subjects.BehaviorSubject
 import org.junit.Before
 import timber.log.Timber
 
-abstract class AsyncUiTest: UiTest() {
+abstract class AsyncUiTest : UiTest() {
     protected val digestEmitTrigger = BehaviorSubject.create<Long>()
 
     protected val updateTimeEmitTrigger = BehaviorSubject.create<Long>()

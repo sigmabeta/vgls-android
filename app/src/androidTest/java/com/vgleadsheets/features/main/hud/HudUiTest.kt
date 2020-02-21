@@ -12,7 +12,7 @@ import com.vgleadsheets.UiTest
 import org.hamcrest.Matchers.allOf
 import org.junit.Test
 
-class HudUiTest: UiTest() {
+class HudUiTest : UiTest() {
     override val startingTopLevelScreenTitleId: Int? = null
     override val startingTopLevelScreenSubtitleId = 0
 

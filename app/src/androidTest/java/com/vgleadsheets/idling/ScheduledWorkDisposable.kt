@@ -15,5 +15,4 @@ internal class ScheduledWorkDisposable(
     override fun isDisposed(): Boolean {
         return work.get() == ScheduledWork.Companion.STATE_DISPOSED
     }
-
 }

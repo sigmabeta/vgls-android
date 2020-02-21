@@ -30,12 +30,12 @@ internal class ScheduledWork(
                             scheduler.stopWork()
                         }
 
-                        return  // CAS success, we're done.
+                        return // CAS success, we're done.
                     }
                 }
                 STATE_RUNNING -> throw IllegalStateException("Already running")
                 STATE_COMPLETED -> throw IllegalStateException("Already completed")
-                STATE_DISPOSED -> return  // Nothing to do.
+                STATE_DISPOSED -> return // Nothing to do.
             }
         }
     }
@@ -44,9 +44,9 @@ internal class ScheduledWork(
         while (true) {
             val state = get()
             if (state == STATE_DISPOSED) {
-                return  // Nothing to do.
+                return // Nothing to do.
             } else if (compareAndSet(state, STATE_DISPOSED)
-            ) { 
+            ) {
                 // If idle, startWork() hasn't been called so we don't need a matching stopWork(). 
                 // If running, startWork() was called but the try/finally ensures a stopWork() call. 
                 // If completed, both startWork() and stopWork() have been called.

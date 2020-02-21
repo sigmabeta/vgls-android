@@ -6,7 +6,6 @@ import androidx.test.runner.AndroidJUnitRunner
 import com.vgleadsheets.idling.FixedRxIdler
 import io.reactivex.plugins.RxJavaPlugins
 
-
 class VglsTestRunner : AndroidJUnitRunner() {
     override fun newApplication(
         loader: ClassLoader?,

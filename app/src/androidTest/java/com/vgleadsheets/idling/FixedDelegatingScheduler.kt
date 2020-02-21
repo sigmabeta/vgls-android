@@ -71,7 +71,9 @@ internal class FixedDelegatingScheduler(
             }
 
             override fun schedulePeriodically(
-                action: Runnable, initialDelay: Long, period: Long,
+                action: Runnable,
+                initialDelay: Long,
+                period: Long,
                 unit: TimeUnit
             ): Disposable {
                 if (disposables.isDisposed) {
@@ -116,16 +118,16 @@ internal class FixedDelegatingScheduler(
         period: Long
     ): ScheduledWork {
         var localAction = action
-        
+
         if (localAction is ScheduledWork) { // Unwrap any re-scheduled work. We want each scheduler to get its own state machine.
             localAction = localAction.delegate
         }
-        
+
         val immediate = delay == 0L
         if (immediate) {
             startWork()
         }
-        
+
         val startingState = if (immediate)
             ScheduledWork.STATE_SCHEDULED
         else

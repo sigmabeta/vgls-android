@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.songs
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.hud.HudFragment
 
-class SongListAsyncUiTest: ListUiTest() {
+class SongListAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
     override val startingTopLevelScreenSubtitleId = R.string.subtitle_all_sheets
     override val emptyStateLabel = "songs"
