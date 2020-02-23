@@ -67,12 +67,7 @@ class GameFragment : VglsFragment(),
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, gameState ->
         hudViewModel.alwaysShowBack()
-        val selectedPart = hudState.parts?.first { it.selected }
-
-        if (selectedPart == null) {
-            showError("No part selected.")
-            return@withState
-        }
+        val selectedPart = hudState.parts.first { it.selected }
 
         val game = gameState.game
         val songs = gameState.songs
@@ -210,7 +205,7 @@ class GameFragment : VglsFragment(),
             tracker.logSongView(
                 song.name,
                 song.gameName,
-                hudState.parts?.first { it.selected }?.apiId ?: "C",
+                hudState.parts.first { it.selected }.apiId,
                 null
             )
             getFragmentRouter().showSongViewer(clickedSongId)

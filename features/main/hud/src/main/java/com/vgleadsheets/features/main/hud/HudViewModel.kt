@@ -15,7 +15,6 @@ import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -27,8 +26,6 @@ class HudViewModel @AssistedInject constructor(
     private val storage: Storage
 ) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
-
-    private var jamDisposables = CompositeDisposable()
 
     init {
         checkSavedPartSelection()
@@ -63,14 +60,14 @@ class HudViewModel @AssistedInject constructor(
 
         Timber.i("Setting available parts: $parts")
 
-        val selectedId = state.parts?.first { part -> part.selected }?.apiId
+        val selectedId = state.parts.first { part -> part.selected }.apiId
         setState {
             copy(parts = PartSelectorItem.getAvailablePartPickerItems(parts, selectedId))
         }
     }
 
     fun resetAvailableParts() = withState {
-        val selectedId = it.parts?.first { part -> part.selected }?.apiId
+        val selectedId = it.parts.first { part -> part.selected }.apiId
         setState {
             copy(parts = PartSelectorItem.getDefaultPartPickerItems(selectedId))
         }
@@ -175,13 +172,19 @@ class HudViewModel @AssistedInject constructor(
                 }
 
                 setState {
-                    copy(parts = PartSelectorItem.getDefaultPartPickerItems(selection))
+                    copy(
+                        parts = PartSelectorItem.getDefaultPartPickerItems(selection),
+                        readyToShowScreens = true
+                    )
                 }
             },
             {
                 Timber.w("No part selection found, going with default.")
                 setState {
-                    copy(parts = PartSelectorItem.getDefaultPartPickerItems("C"))
+                    copy(
+                        parts = PartSelectorItem.getDefaultPartPickerItems("C"),
+                        readyToShowScreens = true
+                    )
                 }
             }
         ).disposeOnClear()
@@ -203,8 +206,8 @@ class HudViewModel @AssistedInject constructor(
         timer?.dispose()
     }
 
-    private fun setSelection(selection: String, oldList: List<PartSelectorItem>?) =
-        oldList?.map { item ->
+    private fun setSelection(selection: String, oldList: List<PartSelectorItem>) =
+        oldList.map { item ->
             item.copy(selected = selection == item.apiId)
         }
 

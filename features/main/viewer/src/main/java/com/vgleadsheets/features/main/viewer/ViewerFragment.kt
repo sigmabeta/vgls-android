@@ -148,12 +148,7 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
             hudViewModel.startHudTimer()
         }
 
-        val selectedPart = hudState.parts?.first { it.selected }
-
-        if (selectedPart == null) {
-            showError("No part selected.")
-            return@withState
-        }
+        val selectedPart = hudState.parts.first { it.selected }
 
         songId = viewerState.songId
 

@@ -55,12 +55,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, songListState ->
         hudViewModel.dontAlwaysShowBack()
-        val selectedPart = hudState.parts?.first { it.selected }
-
-        if (selectedPart == null) {
-            showError("No part selected.")
-            return@withState
-        }
+        val selectedPart = hudState.parts.first { it.selected }
 
         val songs = songListState.songs
         if (songs is Fail) {
@@ -179,7 +174,7 @@ class SongListFragment : VglsFragment(), ImageNameCaptionListModel.EventHandler 
             tracker.logSongView(
                 song.name,
                 song.gameName,
-                hudState.parts?.first { it.selected }?.apiId ?: "C",
+                hudState.parts.first { it.selected }.apiId,
                 null
             )
             getFragmentRouter().showSongViewer(clickedSongId)

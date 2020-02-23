@@ -72,7 +72,7 @@ class ComposerListFragment : VglsFragment(), GiantBombImageNameCaptionListModel.
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, composerListState ->
         hudViewModel.dontAlwaysShowBack()
-        val selectedPart = hudState.parts?.firstOrNull { it.selected }
+        val selectedPart = hudState.parts.firstOrNull { it.selected }
 
         // TODO Let's make this non-null if we can.
         if (selectedPart == null) {
