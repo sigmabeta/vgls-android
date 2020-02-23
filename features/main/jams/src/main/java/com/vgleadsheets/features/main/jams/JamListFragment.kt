@@ -82,8 +82,8 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
             createContentListModels(jams)
 
     private fun createTitleListModel() = TitleListModel(
-        R.string.title_jam.toLong(),
-        getString(R.string.title_jam),
+        R.string.title_jams.toLong(),
+        getString(R.string.title_jams),
         ""
     )
 

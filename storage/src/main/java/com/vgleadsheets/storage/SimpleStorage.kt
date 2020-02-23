@@ -6,7 +6,7 @@ import com.vgleadsheets.common.debug.NetworkEndpoint
 import io.reactivex.Single
 
 @Suppress("TooManyFunctions")
-internal class SimpleStorage(val simpleStore: SimpleStore) : Storage {
+class SimpleStorage(val simpleStore: SimpleStore) : Storage {
     override fun getSavedTopLevelScreen() =
         Single.fromFuture(simpleStore.getString(KEY_SELECTED_TOP_LEVEL))
 

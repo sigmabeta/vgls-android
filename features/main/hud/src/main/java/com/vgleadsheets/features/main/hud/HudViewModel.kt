@@ -168,7 +168,7 @@ class HudViewModel @AssistedInject constructor(
     private fun checkSavedPartSelection() = withState {
         storage.getSavedSelectedPart().subscribe(
             {
-                val selection = if (it.isNullOrEmpty()) {
+                val selection = if (it.isEmpty()) {
                     "C"
                 } else {
                     it

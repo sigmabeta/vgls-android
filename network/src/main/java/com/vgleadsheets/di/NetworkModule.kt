@@ -1,16 +1,10 @@
-package com.vgleadsheets.network.di
+package com.vgleadsheets.di
 
 import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vgleadsheets.common.debug.GiantBombNetworkEndpoint
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.network.BuildConfig
-import com.vgleadsheets.network.GiantBombApi
-import com.vgleadsheets.network.GiantBombNoKeyApi
-import com.vgleadsheets.network.MockGiantBombApi
-import com.vgleadsheets.network.MockVglsApi
-import com.vgleadsheets.network.StringGenerator
-import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.storage.Storage
 import dagger.Module
 import dagger.Provides
@@ -19,7 +13,6 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
@@ -30,10 +23,14 @@ import javax.inject.Singleton
 @Suppress("TooManyFunctions")
 @Module
 class NetworkModule {
+    @Provides
+    @Singleton
+    @Named("RngSeed")
+    internal fun provideSeed() = SEED_RANDOM_NUMBER_GENERATOR
 
     @Provides
     @Singleton
-    internal fun provideRandom() = Random(SEED_RANDOM_NUMBER_GENERATOR)
+    internal fun provideRandom(@Named("RngSeed") seed: Long) = Random(seed)
 
     @Provides
     @Named("GiantBombUrl")
@@ -209,53 +206,6 @@ class NetworkModule {
     @Provides
     @Singleton
     internal fun provideConverterFactory() = MoshiConverterFactory.create()
-
-    @Provides
-    @Singleton
-    @Suppress("LongParameterList")
-    fun provideVglsApi(
-        @Named("VglsApiUrl") baseUrl: String?,
-        @Named("VglsOkHttp") client: OkHttpClient,
-        converterFactory: MoshiConverterFactory,
-        callAdapterFactory: RxJava2CallAdapterFactory,
-        random: Random,
-        stringGenerator: StringGenerator
-    ) = if (baseUrl != null) {
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(client)
-            .addCallAdapterFactory(callAdapterFactory)
-            .addConverterFactory(converterFactory)
-            .build()
-            .create(VglsApi::class.java)
-    } else {
-        MockVglsApi(random, stringGenerator)
-    }
-
-    @Provides
-    @Singleton
-    @Suppress("LongParameterList")
-    fun provideGiantBombApi(
-        @Named("GiantBombApiKey") apiKey: String,
-        @Named("GiantBombUrl") baseUrl: String?,
-        @Named("GiantBombOkHttp") client: OkHttpClient,
-        converterFactory: MoshiConverterFactory,
-        callAdapterFactory: RxJava2CallAdapterFactory,
-        random: Random
-    ) = if (baseUrl == null) {
-        MockGiantBombApi(random)
-    } else if (apiKey == "empty") {
-        GiantBombNoKeyApi()
-    } else {
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(client)
-            .addCallAdapterFactory(callAdapterFactory)
-            .addConverterFactory(converterFactory)
-            .build()
-            .create(GiantBombApi::class.java)
-    }
-
     companion object {
         const val CACHE_SIZE_BYTES = 100000000L
         const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
