@@ -14,7 +14,7 @@ data class HudState(
     val searchVisible: Boolean = false,
     val readyToShowScreens: Boolean = false,
     val searchQuery: String? = null,
-    val parts: List<PartSelectorItem> = emptyList(),
+    val parts: List<PartSelectorItem> = PartSelectorItem.getDefaultPartPickerItems(null),
     val updateTime: Async<Long> = Uninitialized,
     val digest: Async<List<VglsApiGame>> = Uninitialized,
     val random: Async<Song> = Uninitialized

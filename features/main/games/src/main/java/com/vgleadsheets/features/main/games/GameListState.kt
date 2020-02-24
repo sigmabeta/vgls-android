@@ -12,7 +12,7 @@ data class GameListState(
     val games: Async<List<Game>> = Uninitialized,
     val updateTime: Async<*> = Uninitialized,
     val digest: Async<*> = Uninitialized,
-    val selectedPart: PartSelectorItem? = null,
+    val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     val clickedGbListModel: GiantBombImageNameCaptionListModel? = null,
     val gbApiNotAvailable: Boolean? = null,
     val listModels: List<ListModel> = emptyList()
