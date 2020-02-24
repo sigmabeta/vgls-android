@@ -103,6 +103,7 @@ android {
 
 dependencies {
     // Module deps
+    implementation project(path: ':resources')
     implementation project(path: ':repository')
     implementation project(path: ':features:main')
     implementation project(path: ':storage')
