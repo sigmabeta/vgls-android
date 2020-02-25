@@ -1,35 +1,27 @@
 package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
-import timber.log.Timber
 
 class GameListViewModel @AssistedInject constructor(
     @Assisted initialState: GameListState,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider
-) : MvRxViewModel<GameListState>(initialState),
+) : ListViewModel<Game, GameListState>(initialState, resourceProvider),
     GiantBombImageNameCaptionListModel.EventHandler {
     init {
         fetchGames()
@@ -51,146 +43,28 @@ class GameListViewModel @AssistedInject constructor(
         repository.searchGiantBombForGame(vglsId, name)
     }
 
-    fun onSelectedPartUpdate(part: PartSelectorItem?) {
-        setState {
-            copy(
-                selectedPart = part,
-                listModels = constructList(
-                    games,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
-            )
-        }
-    }
-
-    fun onDigestUpdate(digest: Async<List<VglsApiGame>>) {
-        setState {
-            copy(
-                digest = digest,
-                listModels = constructList(
-                    games,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
-            )
-        }
-    }
-
-    fun onTimeUpdate(time: Async<Long>) {
-        setState {
-            copy(
-                updateTime = time,
-                listModels = constructList(
-                    games,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
-            )
-        }
-    }
-
-    private fun fetchGames() {
-        repository.getGames()
-            .execute { games ->
-                copy(
-                    games = games,
-                    listModels = constructList(
-                        games,
-                        updateTime,
-                        digest,
-                        selectedPart
-                    )
-                )
-            }
-    }
-
-    private fun constructList(
-        games: Async<List<Game>>,
-        updateTime: Async<*>,
-        digest: Async<*>,
-        selectedPart: PartSelectorItem?
-    ): List<ListModel> {
-        Timber.v("Constructing list...")
-
-        return arrayListOf(createTitleListModel()) +
-                createContentListModels(
-                    games,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
-    }
-
-    private fun createTitleListModel() = TitleListModel(
+    override fun createTitleListModel() = TitleListModel(
         R.string.subtitle_game.toLong(),
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_game)
     )
 
-    private fun createContentListModels(
-        games: Async<List<Game>>,
-        updateTime: Async<*>,
-        digest: Async<*>,
-        selectedPart: PartSelectorItem?
-    ) = when (games) {
-        is Loading, Uninitialized -> createLoadingListModels()
-        is Fail -> createErrorStateListModel(games.error)
-        is Success ->
-            if (selectedPart == null) {
-                createErrorStateListModel(
-                    IllegalArgumentException("No part selected.")
-                )
-            } else {
-                createSuccessListModels(
-                    games(),
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
-            }
-    }
+    override fun createFullEmptyStateListModel() = EmptyStateListModel(
+        R.drawable.ic_album_24dp,
+        "No games found at all. Check your internet connection?"
+    )
 
-    private fun createLoadingListModels(): List<ListModel> {
-        val listModels = ArrayList<ListModel>(GameListFragment.LOADING_ITEMS)
-
-        for (index in 0 until GameListFragment.LOADING_ITEMS) {
-            listModels.add(
-                LoadingNameCaptionListModel(index)
-            )
-        }
-
-        return listModels
-    }
-
-    private fun createErrorStateListModel(error: Throwable) =
-        arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))
-
-    private fun createSuccessListModels(
-        games: List<Game>,
+    override fun createSuccessListModels(
+        data: List<Game>,
         updateTime: Async<*>,
         digest: Async<*>,
         selectedPart: PartSelectorItem
-    ) = if (games.isEmpty()) {
-        if (digest is Loading || updateTime is Loading) {
-            createLoadingListModels()
-        } else {
-            arrayListOf(
-                EmptyStateListModel(
-                    R.drawable.ic_album_24dp,
-                    "No games found at all. Check your internet connection?"
-                )
-            )
-        }
-    } else {
-        val availableGames = filterGames(games, selectedPart)
+    ): List<ListModel> {
+        val availableGames = filterGames(data, selectedPart)
 
-        if (availableGames.isEmpty()) arrayListOf(
+        return if (availableGames.isEmpty()) listOf(
             EmptyStateListModel(
-                R.drawable.ic_album_24dp,
+                com.vgleadsheets.features.main.list.R.drawable.ic_album_24dp,
                 "No games found with a ${selectedPart.apiId} part. Try another part?"
             )
         ) else availableGames
@@ -201,8 +75,23 @@ class GameListViewModel @AssistedInject constructor(
                     it.name,
                     generateSubtitleText(it.songs),
                     it.photoUrl,
-                    R.drawable.placeholder_game,
+                    com.vgleadsheets.features.main.list.R.drawable.placeholder_game,
                     this@GameListViewModel
+                )
+            }
+    }
+
+    private fun fetchGames() {
+        repository.getGames()
+            .execute { games ->
+                updateListState(
+                    data = games,
+                    listModels = constructList(
+                        games,
+                        updateTime,
+                        digest,
+                        selectedPart
+                    )
                 )
             }
     }
@@ -226,10 +115,10 @@ class GameListViewModel @AssistedInject constructor(
         val builder = StringBuilder()
         var numberOfOthers = items.size
 
-        while (builder.length < GameListFragment.MAX_LENGTH_SUBTITLE_CHARS) {
+        while (builder.length < MAX_LENGTH_SUBTITLE_CHARS) {
             val index = items.size - numberOfOthers
 
-            if (index >= GameListFragment.MAX_LENGTH_SUBTITLE_ITEMS) {
+            if (index >= MAX_LENGTH_SUBTITLE_ITEMS) {
                 break
             }
 
