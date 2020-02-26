@@ -1,7 +1,5 @@
 package com.vgleadsheets.features.main.games
 
-import android.os.Bundle
-import android.view.View
 import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.ListFragment
@@ -16,9 +14,7 @@ class GameListFragment : ListFragment<Game, GameListState>() {
 
     private var apiAvailableErrorShown = false
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(GameListState::clickedGbListModel, deliveryMode = UniqueOnly("clicked")) {
             val clickedGameId = it?.dataId
             if (clickedGameId != null) {

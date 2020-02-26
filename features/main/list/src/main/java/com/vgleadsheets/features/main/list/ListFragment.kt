@@ -19,6 +19,8 @@ abstract class ListFragment<DataType, StateType: ListState<DataType>> : VglsFrag
 
     private val adapter = ComponentAdapter()
 
+    abstract fun subscribeToViewEvents()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,6 +49,8 @@ abstract class ListFragment<DataType, StateType: ListState<DataType>> : VglsFrag
         hudViewModel.selectSubscribe(HudState::parts) { parts ->
             viewModel.onSelectedPartUpdate(parts.firstOrNull { it.selected } )
         }
+
+        subscribeToViewEvents()
     }
 
     override fun invalidate() = withState(viewModel) { state ->
