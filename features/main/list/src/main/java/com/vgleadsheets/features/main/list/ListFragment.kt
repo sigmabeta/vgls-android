@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_list.list_content
 abstract class ListFragment<DataType, StateType: ListState<DataType>> : VglsFragment() {
     abstract val viewModel: ListViewModel<DataType, StateType>
 
-    private val hudViewModel: HudViewModel by existingViewModel()
+    protected val hudViewModel: HudViewModel by existingViewModel()
 
     private val adapter = ComponentAdapter()
 

@@ -16,9 +16,9 @@ class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(ComposerListState::clickedGbListModel, deliveryMode = UniqueOnly("clicked")) {
-            val clickedGameId = it?.dataId
-            if (clickedGameId != null) {
-                showSongList(clickedGameId)
+            val clickedComposerId = it?.dataId
+            if (clickedComposerId != null) {
+                showSongList(clickedComposerId)
             }
         }
 
