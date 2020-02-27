@@ -15,7 +15,7 @@ import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.resources.ResourceProvider
 import timber.log.Timber
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class ListViewModel<DataType, StateType : ListState<DataType>> constructor(
     initialState: StateType,
     private val resourceProvider: ResourceProvider
@@ -80,7 +80,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     }
 
     abstract fun createTitleListModel(): TitleListModel
-    
+
     abstract fun createFullEmptyStateListModel(): EmptyStateListModel
 
     abstract fun createSuccessListModels(
@@ -99,26 +99,35 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         is Loading, Uninitialized -> createLoadingListModels()
         is Fail -> createErrorStateListModel(data.error)
         is Success ->
-            if (selectedPart == null) {
-                createErrorStateListModel(
-                    IllegalArgumentException("No part selected.")
-                )
-            } else if (data().isEmpty()) {
-                if (digest is Loading || updateTime is Loading) {
-                    createLoadingListModels()
-                } else {
-                    listOf(
-                        createFullEmptyStateListModel()
-                    )
-                }
-            } else { 
-                createSuccessListModels(
-                    data(),
-                    updateTime,
-                    digest,
-                    selectedPart
+            successListModelHelper(selectedPart, data, digest, updateTime)
+    }
+
+    private fun successListModelHelper(
+        selectedPart: PartSelectorItem?,
+        data: Success<List<DataType>>,
+        digest: Async<*>,
+        updateTime: Async<*>
+    ): List<ListModel> {
+        return if (selectedPart == null) {
+            createErrorStateListModel(
+                IllegalArgumentException("No part selected.")
+            )
+        } else if (data().isEmpty()) {
+            if (digest is Loading || updateTime is Loading) {
+                createLoadingListModels()
+            } else {
+                listOf(
+                    createFullEmptyStateListModel()
                 )
             }
+        } else {
+            createSuccessListModels(
+                data(),
+                updateTime,
+                digest,
+                selectedPart
+            )
+        }
     }
 
     private fun createLoadingListModels(): List<ListModel> {

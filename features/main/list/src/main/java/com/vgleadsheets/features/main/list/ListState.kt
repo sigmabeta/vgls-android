@@ -12,7 +12,7 @@ abstract class ListState<DataType>(
     open val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     open val listModels: List<ListModel> = emptyList(),
     open val data: Async<List<DataType>> = Uninitialized
-): MvRxState {
+) : MvRxState {
     abstract fun updateListState(
         updateTime: Async<*> = this.updateTime,
         digest: Async<*> = this.digest,

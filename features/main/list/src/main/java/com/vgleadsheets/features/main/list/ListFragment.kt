@@ -12,7 +12,7 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_list.list_content
 
-abstract class ListFragment<DataType, StateType: ListState<DataType>> : VglsFragment() {
+abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFragment() {
     abstract val viewModel: ListViewModel<DataType, StateType>
 
     protected val hudViewModel: HudViewModel by existingViewModel()
@@ -47,7 +47,7 @@ abstract class ListFragment<DataType, StateType: ListState<DataType>> : VglsFrag
         }
 
         hudViewModel.selectSubscribe(HudState::parts) { parts ->
-            viewModel.onSelectedPartUpdate(parts.firstOrNull { it.selected } )
+            viewModel.onSelectedPartUpdate(parts.firstOrNull { it.selected })
         }
 
         subscribeToViewEvents()

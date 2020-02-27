@@ -129,7 +129,6 @@ class ComposerListViewModel @AssistedInject constructor(
         return builder.toString()
     }
 
-
     private fun filterComposers(
         composers: List<Composer>,
         selectedPart: PartSelectorItem
