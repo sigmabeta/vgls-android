@@ -51,7 +51,7 @@ abstract class UiTest {
 
     abstract val startingTopLevelScreenSubtitleId: Int
 
-    protected fun launchScreen() {
+    open fun launchScreen() {
         activityRule.launchActivity(null)
 
         val titleId = startingTopLevelScreenTitleId
