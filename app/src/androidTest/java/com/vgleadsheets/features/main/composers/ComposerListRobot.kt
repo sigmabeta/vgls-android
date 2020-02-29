@@ -18,8 +18,8 @@ class ComposerListRobot(test: ListUiTest): ListRobot(test) {
         return this
     }
 
-    fun clickItemWithTitle(title: String) {
-        clickItemWithTitleInternal(title)
+    fun clickComposerWithTitle(title: String) {
+        clickItemWithTitle(title)
     }
 }
 

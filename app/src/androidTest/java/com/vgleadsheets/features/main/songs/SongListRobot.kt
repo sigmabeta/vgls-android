@@ -18,8 +18,8 @@ class SongListRobot(test: ListUiTest): ListRobot(test) {
         return this
     }
 
-    fun clickItemWithTitle(title: String) {
-        clickItemWithTitleInternal(title)
+    fun clickSongWithTitle(title: String) {
+        clickItemWithTitle(title)
     }
 }
 

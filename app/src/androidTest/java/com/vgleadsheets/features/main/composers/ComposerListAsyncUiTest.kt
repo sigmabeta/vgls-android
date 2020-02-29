@@ -27,7 +27,7 @@ class ComposerListAsyncUiTest : ListUiTest() {
     @Test
     fun clickingFirstItemLoadsComposerScreen() {
         composerList(this) {
-            clickItemWithTitle(TITLE_FIRST_ITEM)
+            clickComposerWithTitle(TITLE_FIRST_ITEM)
         }
     }
 

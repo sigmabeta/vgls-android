@@ -40,7 +40,7 @@ abstract class ListRobot(val test: ListUiTest) {
         )
     }
 
-    protected fun clickItemWithTitleInternal(title: String) {
+    protected fun clickItemWithTitle(title: String) {
         onView(
             withText(
                 title

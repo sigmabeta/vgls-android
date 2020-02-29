@@ -18,8 +18,8 @@ class GameListRobot(test: ListUiTest): ListRobot(test) {
         return this
     }
 
-    fun clickItemWithTitle(title: String) {
-        clickItemWithTitleInternal(title)
+    fun clickGameWithTitle(title: String) {
+        clickItemWithTitle(title)
     }
 }
 

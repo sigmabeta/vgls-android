@@ -28,7 +28,7 @@ class GameListAsyncUiTest : ListUiTest() {
     @Test
     fun clickingFirstItemLoadsGameScreen() {
         gameList(this) {
-            clickItemWithTitle(TITLE_FIRST_ITEM)
+            clickGameWithTitle(TITLE_FIRST_ITEM)
         }
     }
 

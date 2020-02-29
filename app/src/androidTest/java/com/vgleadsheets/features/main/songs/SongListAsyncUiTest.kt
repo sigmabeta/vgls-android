@@ -27,7 +27,7 @@ class SongListAsyncUiTest : ListUiTest() {
     @Test
     fun clickingFirstItemLoadsSongScreen() {
         songList(this) {
-            clickItemWithTitle(TITLE_FIRST_ITEM)
+            clickSongWithTitle(TITLE_FIRST_ITEM)
         }
     }
 
