@@ -11,21 +11,72 @@ class GameAsyncUiTest: ListUiTest() {
     override val startingTopLevelScreenSubtitleId = R.string.subtitle_game
 
     @Test
-    fun clickingFirstItemLoadsGameScreen() {
+    fun firstGameClickingFirstSongLoadsViewerScreen() {
         gameList(this) {
-            clickGameWithTitle(GAME_TITLE_FIRST_ITEM)
+            clickGameWithTitle(GAME_FIRST_TITLE)
         }
 
-        game(this, GAME_TITLE_FIRST_ITEM, GAME_SHEET_COUNT_FIRST_ITEM) {
-            checkFirstSongIs(SHEET_TITLE_FIRST_ITEM)
+        game(this, GAME_FIRST_TITLE, GAME_FIRST_SHEET_COUNT) {
+            checkFirstSongIs(GAME_FIRST_SHEET_TITLE_FIRST)
+            checkFirstSongArtistIs(GAME_FIRST_SHEET_ARTIST_FIRST)
+            clickSongWithTitle(GAME_FIRST_SHEET_TITLE_FIRST)
+        }
+    }
+
+    @Test
+    fun firstGameClickingArbitrarySongLoadsViewerScreen() {
+        gameList(this) {
+            clickGameWithTitle(GAME_FIRST_TITLE)
+        }
+
+        game(this, GAME_FIRST_TITLE, GAME_FIRST_SHEET_COUNT) {
+            checkFirstSongIs(GAME_FIRST_SHEET_TITLE_FIRST)
+            checkFirstSongArtistIs(GAME_FIRST_SHEET_ARTIST_FIRST)
+            clickSongWithTitle(GAME_FIRST_SHEET_TITLE_ARBITRARY)
+        }
+    }
+
+    @Test
+    fun arbitraryGameClickingFirstSongLoadsViewerScreen() {
+        gameList(this) {
+            clickGameWithTitle(GAME_ARBITRARY_TITLE)
+        }
+
+        game(this, GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SHEET_COUNT) {
+            checkFirstSongIs(GAME_ARBITRARY_SHEET_TITLE_FIRST)
+            checkFirstSongArtistIs(GAME_ARBITRARY_SHEET_ARTIST_FIRST)
+            clickSongWithTitle(GAME_ARBITRARY_SHEET_TITLE_FIRST)
+        }
+    }
+
+    @Test
+    fun arbitraryGameClickingArbitrarySongLoadsViewerScreen() {
+        gameList(this) {
+            clickGameWithTitle(GAME_ARBITRARY_TITLE)
+        }
+
+        game(this, GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SHEET_COUNT) {
+            checkFirstSongIs(GAME_ARBITRARY_SHEET_TITLE_FIRST)
+            checkFirstSongArtistIs(GAME_ARBITRARY_SHEET_ARTIST_FIRST)
+            clickSongWithTitle(GAME_ARBITRARY_SHEET_TITLE_ARBITRARY)
         }
     }
 
     companion object {
-        const val GAME_TITLE_FIRST_ITEM = "A Ac"
-        const val GAME_SHEET_COUNT_FIRST_ITEM = "5 Sheets"
+        const val GAME_FIRST_TITLE = "A Ac"
+        const val GAME_FIRST_SHEET_COUNT = "5 Sheets"
 
-        const val SHEET_TITLE_FIRST_ITEM = "Amet"
-        const val SHEET_ARTIST_FIRST_ITEM = "Camille Wyatt"
+        const val GAME_ARBITRARY_TITLE = "Quisque"
+        const val GAME_ARBITRARY_SHEET_COUNT = "8 Sheets"
+
+        const val GAME_FIRST_SHEET_TITLE_FIRST = "Amet"
+        const val GAME_FIRST_SHEET_ARTIST_FIRST = "Camille Wyatt"
+
+        const val GAME_FIRST_SHEET_TITLE_ARBITRARY = "Quis Ut Finibus Hendrerit"
+
+        const val GAME_ARBITRARY_SHEET_TITLE_FIRST = "Ac In"
+        const val GAME_ARBITRARY_SHEET_ARTIST_FIRST = "Kali Browning"
+
+        const val GAME_ARBITRARY_SHEET_TITLE_ARBITRARY = "Pharetra Justo"
     }
 }

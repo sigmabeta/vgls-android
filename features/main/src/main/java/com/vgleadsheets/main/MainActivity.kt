@@ -4,7 +4,9 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
@@ -34,6 +36,7 @@ import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.toplevel
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -62,6 +65,13 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
 
         if (savedInstanceState == null) {
             addHud()
+        }
+
+        if (isRunningTest()) {
+            val inflater = LayoutInflater.from(this)
+            val topLevelView = findViewById<CoordinatorLayout>(R.id.toplevel)
+
+            inflater.inflate(R.layout.scroll_target, topLevelView, true)
         }
     }
 
@@ -251,4 +261,24 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         R.anim.enter_pop,
         R.anim.exit_pop
     )
+
+    private var isRunningTest: AtomicBoolean? = null
+
+    @Synchronized
+    private fun isRunningTest(): Boolean {
+        val runningTest = isRunningTest?.get()
+
+        if (null == runningTest) {
+            val checkedValue: Boolean = try {
+                Class.forName("androidx.test.espresso.Espresso")
+                true
+            } catch (e: ClassNotFoundException) {
+                false
+            }
+            isRunningTest = AtomicBoolean(checkedValue)
+            return checkedValue
+        }
+
+        return runningTest
+    }
 }

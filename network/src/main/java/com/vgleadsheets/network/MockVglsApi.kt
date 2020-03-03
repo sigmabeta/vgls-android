@@ -209,7 +209,7 @@ class MockVglsApi(
     private fun getTags(): Map<String, List<String>> = mapOf()
 
     companion object {
-        const val DEFAULT_MAX_SONGS = 1000
+        const val DEFAULT_MAX_SONGS = 50
         const val DEFAULT_MAX_GAMES = 400
         const val DEFAULT_MAX_COMPOSERS = 200
         const val DEFAULT_MAX_SONGS_PER_GAME = 10

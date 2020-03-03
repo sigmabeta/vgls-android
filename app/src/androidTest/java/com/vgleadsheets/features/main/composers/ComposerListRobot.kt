@@ -8,6 +8,8 @@ class ComposerListRobot(test: ListUiTest): ListRobot(test) {
         checkScreenHeader("VGLeadSheets", "By Composer")
     }
 
+    override val maxScrolls = 6
+
     fun checkIsEmptyStateDisplayed(emptyStateLabel: String): ComposerListRobot {
         checkIsEmptyStateDisplayedInternal(emptyStateLabel)
         return this
@@ -19,7 +21,7 @@ class ComposerListRobot(test: ListUiTest): ListRobot(test) {
     }
 
     fun clickComposerWithTitle(title: String) {
-        clickItemWithTitle(title)
+        clickItemWithText(title)
     }
 }
 
