@@ -2,6 +2,7 @@ package com.vgleadsheets.features.main.songs
 
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.hud.HudFragment
+import com.vgleadsheets.features.main.viewer.viewer
 import org.junit.Test
 
 class SongListAsyncUiTest : ListUiTest() {
@@ -25,9 +26,13 @@ class SongListAsyncUiTest : ListUiTest() {
     }
 
     @Test
-    fun clickingFirstItemLoadsSongScreen() {
+    fun clickingFirstItemShowsViewerScreen() {
         songList(this) {
             clickSongWithTitle(TITLE_FIRST_ITEM)
+        }
+
+        viewer {
+            checkPageVisible(1)
         }
     }
 

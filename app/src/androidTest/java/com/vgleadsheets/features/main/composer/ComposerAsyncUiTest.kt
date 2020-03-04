@@ -4,6 +4,7 @@ import com.vgleadsheets.R
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.composers.composerList
 import com.vgleadsheets.features.main.hud.HudFragment
+import com.vgleadsheets.features.main.viewer.viewer
 import org.junit.Test
 
 class ComposerAsyncUiTest : ListUiTest() {
@@ -11,7 +12,7 @@ class ComposerAsyncUiTest : ListUiTest() {
     override val startingTopLevelScreenSubtitleId = R.string.subtitle_composer
 
     @Test
-    fun firstComposerClickingFirstSongLoadsViewerScreen() {
+    fun firstComposerClickingFirstSongShowsViewerScreen() {
         composerList(this) {
             clickComposerWithTitle(COMPOSER_FIRST_TITLE)
         }
@@ -21,12 +22,16 @@ class ComposerAsyncUiTest : ListUiTest() {
             checkFirstSongGameIs(COMPOSER_FIRST_SHEET_GAME_FIRST)
             clickSongWithTitle(COMPOSER_FIRST_SHEET_TITLE_FIRST)
         }
+
+        viewer {
+            checkPageVisible(1)
+        }
     }
 
     // TODO Can't test with the current dataset because the first composer has only one song.
     /*
     @Test
-    fun firstComposerClickingArbitrarySongLoadsViewerScreen() {
+    fun firstComposerClickingArbitrarySongShowsViewerScreen() {
         composerList(this) {
             clickComposerWithTitle(COMPOSER_FIRST_TITLE)
         }
@@ -40,7 +45,7 @@ class ComposerAsyncUiTest : ListUiTest() {
     */
 
     @Test
-    fun arbitraryComposerClickingFirstSongLoadsViewerScreen() {
+    fun arbitraryComposerClickingFirstSongShowsViewerScreen() {
         composerList(this) {
             clickComposerWithTitle(COMPOSER_ARBITRARY_TITLE)
         }
@@ -50,10 +55,14 @@ class ComposerAsyncUiTest : ListUiTest() {
             checkFirstSongGameIs(COMPOSER_ARBITRARY_SHEET_GAME_FIRST)
             clickSongWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
         }
+
+        viewer {
+            checkPageVisible(1)
+        }
     }
 
     @Test
-    fun arbitraryComposerClickingArbitrarySongLoadsViewerScreen() {
+    fun arbitraryComposerClickingArbitrarySongShowsViewerScreen() {
         composerList(this) {
             clickComposerWithTitle(COMPOSER_ARBITRARY_TITLE)
         }
@@ -62,6 +71,10 @@ class ComposerAsyncUiTest : ListUiTest() {
             checkFirstSongIs(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_ARBITRARY_SHEET_GAME_FIRST)
             clickSongWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_ARBITRARY)
+        }
+
+        viewer {
+            checkPageVisible(1)
         }
     }
 

@@ -18,6 +18,7 @@
             android:id="@+id/image_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@{toBind.sheetUrl}"
             app:listener="@{toBind.listener}"
             app:sheetUrl="@{toBind.sheetUrl}" />
 
