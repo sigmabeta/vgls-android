@@ -35,6 +35,8 @@ abstract class UiTest {
         false
     )
 
+    private var screenLaunched: Boolean = false
+
     @Before
     open fun setup() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
@@ -51,7 +53,9 @@ abstract class UiTest {
 
     abstract val startingTopLevelScreenSubtitleId: Int
 
-    protected fun launchScreen() {
+    open fun launchScreen() {
+        if (screenLaunched) return
+
         activityRule.launchActivity(null)
 
         val titleId = startingTopLevelScreenTitleId
@@ -59,6 +63,8 @@ abstract class UiTest {
         if (titleId != null) {
             checkTopLevelScreen(titleId, startingTopLevelScreenSubtitleId)
         }
+
+        screenLaunched = true
     }
 
     protected fun checkViewText(viewId: Int, textId: Int) {

@@ -102,12 +102,7 @@ class JamFragment : VglsFragment(),
     override fun invalidate() = withState(viewModel, hudViewModel) { jamState, hudState ->
         hudViewModel.dontAlwaysShowBack()
 
-        val selectedPart = hudState.parts?.first { it.selected }
-
-        if (selectedPart == null) {
-            showError("No part selected.")
-            return@withState
-        }
+        val selectedPart = hudState.parts.first { it.selected }
 
         val jam = jamState.jam
         val jamRefresh = jamState.jamRefresh

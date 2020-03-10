@@ -102,7 +102,7 @@ class SearchFragment : VglsFragment(),
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, localState ->
         hudViewModel.alwaysShowBack()
 
-        val selectedPart = hudState.parts?.firstOrNull { it.selected }
+        val selectedPart = hudState.parts.firstOrNull { it.selected }
 
         if (selectedPart == null) {
             showError("No part selected.")
@@ -376,7 +376,7 @@ class SearchFragment : VglsFragment(),
             tracker.logSongView(
                 song.name,
                 song.gameName,
-                hudState.parts?.firstOrNull { it.selected }?.apiId ?: "C",
+                hudState.parts.firstOrNull { it.selected }?.apiId ?: "C",
                 hudState.searchQuery
             )
 

@@ -68,12 +68,7 @@ class ComposerFragment : VglsFragment(),
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, composerState ->
         hudViewModel.alwaysShowBack()
 
-        val selectedPart = hudState.parts?.first { it.selected }
-
-        if (selectedPart == null) {
-            showError("No part selected.")
-            return@withState
-        }
+        val selectedPart = hudState.parts.first { it.selected }
 
         val composer = composerState.composer
         val songs = composerState.songs
@@ -204,7 +199,7 @@ class ComposerFragment : VglsFragment(),
             tracker.logSongView(
                 song.name,
                 song.gameName,
-                hudState.parts?.first { it.selected }?.apiId ?: "C",
+                hudState.parts.first { it.selected }.apiId,
                 null
             )
             getFragmentRouter().showSongViewer(clickedSongId)

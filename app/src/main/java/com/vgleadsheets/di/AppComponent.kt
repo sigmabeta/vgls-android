@@ -5,6 +5,7 @@ import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.repository.di.RepositoryModule
+import com.vgleadsheets.resources.di.ResourcesModule
 import com.vgleadsheets.storage.di.StorageModule
 import com.vgleadsheets.tracking.TrackerModule
 import dagger.Component
@@ -20,6 +21,7 @@ import javax.inject.Singleton
         AssistedInjectionModules::class,
         ActivityBindingModule::class,
         RepositoryModule::class,
+        ResourcesModule::class,
         DatabaseModule::class,
         ImageModule::class,
         ApiModule::class,

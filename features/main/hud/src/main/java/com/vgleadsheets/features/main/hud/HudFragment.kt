@@ -108,29 +108,19 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         onPartSelect(clicked)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            val screenLoad = storage.getSavedTopLevelScreen().subscribe(
-                {
-                    val selection = if (it.isEmpty()) {
-                        TOP_LEVEL_SCREEN_ID_DEFAULT
-                    } else {
-                        it
-                    }
-                    showScreen(selection, false)
-                },
-                {
-                    Timber.w("No screen ID found, going with default.")
-                    showScreen(TOP_LEVEL_SCREEN_ID_DEFAULT, false)
-                }
-            )
-            disposables.add(screenLoad)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState == null) {
+            viewModel.selectSubscribe(
+                HudState::readyToShowScreens,
+                deliveryMode = uniqueOnly("readyToShow")
+            ) { ready ->
+                if (ready) {
+                    showInitialScreen()
+                }
+            }
+        }
 
         // Configure search bar insets
         card_search.setInsetListenerForMargin(offset = resources.getDimension(R.dimen.margin_medium).toInt())
@@ -248,7 +238,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             is Success -> showUpdateTimeSuccess(state.updateTime())
         }
 
-        val listComponents = state.parts?.map {
+        val listComponents = state.parts.map {
             PartListModel(
                 it.apiId.hashCode().toLong(),
                 it.apiId,
@@ -274,6 +264,27 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun shouldTrackViews() = false
+
+    private fun showInitialScreen() {
+        Timber.d("Checking to see which screen to show.")
+        val screenLoad = storage.getSavedTopLevelScreen().subscribe(
+            {
+                val selection = if (it.isEmpty()) {
+                    TOP_LEVEL_SCREEN_ID_DEFAULT
+                } else {
+                    it
+                }
+
+                Timber.v("Showing screen: $it")
+                showScreen(selection, false)
+            },
+            {
+                Timber.w("No screen ID found, going with default.")
+                showScreen(TOP_LEVEL_SCREEN_ID_DEFAULT, false)
+            }
+        )
+        disposables.add(screenLoad)
+    }
 
     @Suppress("ComplexMethod")
     private fun showScreen(screenId: String, save: Boolean = true) {
@@ -310,7 +321,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         tracker.logRandomSongView(
             song.name,
             song.gameName,
-            hudState.parts?.first { it.selected }?.apiId ?: "C"
+            hudState.parts.first { it.selected }.apiId
         )
 
         getFragmentRouter().showSongViewer(song.id)
@@ -528,8 +539,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun enableRandomSelector() {
         layout_random_select.setOnClickListener {
             withState(viewModel) { state ->
-                val selectedPart = state.parts?.first { it.selected }
-                viewModel.onRandomSelectClick(selectedPart!!)
+                val selectedPart = state.parts.first { it.selected }
+                viewModel.onRandomSelectClick(selectedPart)
             }
         }
     }

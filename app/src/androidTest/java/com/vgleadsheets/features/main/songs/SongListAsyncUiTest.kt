@@ -2,23 +2,42 @@ package com.vgleadsheets.features.main.songs
 
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.hud.HudFragment
+import com.vgleadsheets.features.main.viewer.viewer
+import org.junit.Test
 
 class SongListAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
     override val startingTopLevelScreenSubtitleId = R.string.subtitle_all_sheets
-    override val emptyStateLabel = "songs"
-    override val firstItemTitle = "A Lobortis"
-    override val firstItemSubtitle = "1 Sheets"
 
-    override fun goToFirstItem() {
-        launchScreen()
+    @Test
+    fun showEmptyStateIfNoData() {
+        setApiToReturnBlank()
 
-        emitDataFromApi()
+        songList(this) {
+            checkIsEmptyStateDisplayed(LABEL_EMPTY_STATE)
+        }
+    }
 
-        waitForUi()
+    @Test
+    fun showsDataOnSuccessfulLoad() {
+        songList(this) {
+            checkFirstSongIs(TITLE_FIRST_ITEM)
+        }
+    }
 
-        clickFirstItem()
+    @Test
+    fun clickingFirstItemShowsViewerScreen() {
+        songList(this) {
+            clickSongWithTitle(TITLE_FIRST_ITEM)
+        }
 
-        checkViewVisible(com.vgleadsheets.features.main.viewer.R.id.pager_sheets)
+        viewer {
+            checkPageVisible(1)
+        }
+    }
+
+    companion object {
+        const val LABEL_EMPTY_STATE = "songs"
+        const val TITLE_FIRST_ITEM = "A Lobortis"
     }
 }

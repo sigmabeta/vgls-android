@@ -6,6 +6,7 @@ import com.vgleadsheets.database.di.MockDatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.repository.di.RepositoryModule
+import com.vgleadsheets.resources.di.ResourcesModule
 import com.vgleadsheets.tracking.TrackerModule
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -20,6 +21,7 @@ import javax.inject.Singleton
         AssistedInjectionModules::class,
         ActivityBindingModule::class,
         RepositoryModule::class,
+        ResourcesModule::class,
         MockDatabaseModule::class,
         ImageModule::class,
         MockApiModule::class,

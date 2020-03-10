@@ -63,12 +63,7 @@ class TagValueListFragment : VglsFragment(),
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, state ->
         hudViewModel.alwaysShowBack()
 
-        val selectedPart = hudState.parts?.first { it.selected }
-
-        if (selectedPart == null) {
-            showError("No part selected.")
-            return@withState
-        }
+        val selectedPart = hudState.parts.first { it.selected }
 
         val listModels = constructList(state.tagKey, state.tagValues, selectedPart)
 
