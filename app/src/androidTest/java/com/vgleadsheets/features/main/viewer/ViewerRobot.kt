@@ -28,4 +28,3 @@ class ViewerRobot {
 fun viewer(func: ViewerRobot.() -> Unit) = ViewerRobot().apply {
     func()
 }
-

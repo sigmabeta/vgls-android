@@ -7,7 +7,7 @@ import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.viewer.viewer
 import org.junit.Test
 
-class GameAsyncUiTest: ListUiTest() {
+class GameAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_GAME
     override val startingTopLevelScreenSubtitleId = R.string.subtitle_game
 

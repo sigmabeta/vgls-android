@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.composers
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
-class ComposerListRobot(test: ListUiTest): ListRobot(test) {
+class ComposerListRobot(test: ListUiTest) : ListRobot(test) {
     init {
         checkScreenHeader("VGLeadSheets", "By Composer")
     }

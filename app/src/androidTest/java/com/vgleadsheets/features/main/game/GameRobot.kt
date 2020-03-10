@@ -7,7 +7,7 @@ class GameRobot(
     test: ListUiTest,
     gameTitle: String,
     sheetCountText: String
-): ListRobot(test) {
+) : ListRobot(test) {
     init {
         checkScreenHeader(gameTitle, sheetCountText)
     }

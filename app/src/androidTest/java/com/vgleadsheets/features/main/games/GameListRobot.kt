@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.games
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
-class GameListRobot(test: ListUiTest): ListRobot(test) {
+class GameListRobot(test: ListUiTest) : ListRobot(test) {
     init {
         checkScreenHeader("VGLeadSheets", "By Game")
     }
@@ -31,4 +31,3 @@ fun gameList(
 ) = GameListRobot(test).apply {
     func()
 }
-

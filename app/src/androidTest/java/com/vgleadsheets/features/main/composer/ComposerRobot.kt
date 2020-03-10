@@ -7,7 +7,7 @@ class ComposerRobot(
     test: ListUiTest,
     composerName: String,
     sheetCountText: String
-): ListRobot(test) {
+) : ListRobot(test) {
     init {
         checkScreenHeader(composerName, sheetCountText)
     }

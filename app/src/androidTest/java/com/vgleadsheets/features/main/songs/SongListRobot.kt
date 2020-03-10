@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.songs
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
-class SongListRobot(test: ListUiTest): ListRobot(test) {
+class SongListRobot(test: ListUiTest) : ListRobot(test) {
     init {
         checkScreenHeader("VGLeadSheets", "All Sheets")
     }
