@@ -1,8 +1,8 @@
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
     }
 }
 
