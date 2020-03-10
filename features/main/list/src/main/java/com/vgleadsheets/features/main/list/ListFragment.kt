@@ -1,5 +1,6 @@
 package com.vgleadsheets.features.main.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,15 +12,22 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_list.list_content
+import javax.inject.Inject
 
 abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFragment() {
     abstract val viewModel: ListViewModel<DataType, StateType>
 
+    abstract fun subscribeToViewEvents()
+
+    // THIS IS A DUMMY INJECTION. If this isn't here, ListFragment_MembersInjector.java
+    // doesn't get generated, which causes it to get generated multiple times in children
+    // modules, which causes R8 to fail.
+    @Inject
+    lateinit var dummyContext: Context
+
     protected val hudViewModel: HudViewModel by existingViewModel()
 
     private val adapter = ComponentAdapter()
-
-    abstract fun subscribeToViewEvents()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
