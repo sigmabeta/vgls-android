@@ -36,14 +36,15 @@ buildscript {
         jcenter()
 
         // Firebase (Crashlytics)
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
+        maven { url 'https://maven.fabric.io/public' }
+
+        // Gradle license plugin snapshot
+        maven { url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/' }
     }
 
     dependencies {
         // Android, lol
-        classpath 'com.android.tools.build:gradle:4.0.0-beta01'
+        classpath 'com.android.tools.build:gradle:4.0.0-beta03'
 
         // Kotlin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -54,7 +55,7 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.31.1'
 
         // License downloader
-        classpath 'com.jaredsburrows:gradle-license-plugin:0.8.70'
+        classpath 'com.jaredsburrows:gradle-license-plugin:0.8.80-SNAPSHOT'
     }
 }
 
