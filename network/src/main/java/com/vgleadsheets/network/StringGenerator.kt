@@ -23,7 +23,7 @@ class StringGenerator @Inject constructor(private val random: Random) {
     }
 
     companion object {
-        @UseExperimental(ExperimentalStdlibApi::class)
+        @OptIn(ExperimentalStdlibApi::class)
         val RANDOM_WORDS = """Lorem ipsum dolor sit amet consectetur adipiscing elit Curabitur 
                 |iaculis neque vel fermentum dictum Pellentesque ac justo ultricies 
                 |hendrerit sem in blandit tellus Nam non congue ante In ultricies 

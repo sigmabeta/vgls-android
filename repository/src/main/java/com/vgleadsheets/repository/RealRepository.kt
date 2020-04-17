@@ -576,7 +576,7 @@ class RealRepository constructor(
             )
         }
 
-    @UseExperimental(ExperimentalStdlibApi::class)
+    @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("DefaultLocale")
     @Suppress("LongMethod", "ComplexMethod")
     private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
@@ -732,7 +732,7 @@ class RealRepository constructor(
     }
 }
 
-@UseExperimental(ExperimentalStdlibApi::class)
+@OptIn(ExperimentalStdlibApi::class)
 @SuppressLint("DefaultLocale")
 private fun String.toTitleCase() = this
     .replace("_", " ")
