@@ -22,7 +22,7 @@ class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
             }
         }
 
-        viewModel.selectSubscribe(ComposerListState::gbApiNotAvailable, deliveryMode = UniqueOnly("clicked")) {
+        viewModel.selectSubscribe(ComposerListState::gbApiNotAvailable, deliveryMode = UniqueOnly("api")) {
             if (it == true) {
                 if (!apiAvailableErrorShown) {
                     apiAvailableErrorShown = true

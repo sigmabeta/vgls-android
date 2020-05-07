@@ -22,7 +22,7 @@ class GameListFragment : ListFragment<Game, GameListState>() {
             }
         }
 
-        viewModel.selectSubscribe(GameListState::gbApiNotAvailable, deliveryMode = UniqueOnly("clicked")) {
+        viewModel.selectSubscribe(GameListState::gbApiNotAvailable, deliveryMode = UniqueOnly("api")) {
             if (it == true) {
                 if (!apiAvailableErrorShown) {
                     apiAvailableErrorShown = true
