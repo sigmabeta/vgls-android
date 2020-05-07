@@ -46,6 +46,10 @@ class TagValueSongListFragment : VglsFragment(),
         showSongViewer(clicked.dataId)
     }
 
+    override fun clearClicked() {
+        TODO("Not yet implemented")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +

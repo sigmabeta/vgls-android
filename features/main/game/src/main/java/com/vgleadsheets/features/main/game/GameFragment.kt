@@ -24,10 +24,12 @@ class GameFragment : AsyncListFragment<GameData, GameState>() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(GameState::clickedListModel, deliveryMode = UniqueOnly("clicked")) {
+        viewModel.selectSubscribe(GameState::clickedListModel) {
             val clickedId = it?.dataId
+
             if (clickedId != null) {
                 showSongViewer(clickedId)
+                viewModel.clearClicked()
             }
         }
 

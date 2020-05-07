@@ -33,6 +33,12 @@ class GameListViewModel @AssistedInject constructor(
         )
     }
 
+    override fun clearClicked() = setState {
+        copy(
+            clickedGbListModel = null
+        )
+    }
+
     override fun onGbApiNotAvailable() = setState {
         copy(
             gbApiNotAvailable = true

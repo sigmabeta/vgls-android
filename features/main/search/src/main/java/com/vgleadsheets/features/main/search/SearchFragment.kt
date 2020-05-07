@@ -49,6 +49,10 @@ class SearchFragment : VglsFragment(),
         override fun onClicked(clicked: GiantBombImageNameCaptionListModel) =
             onGameClicked(clicked.dataId)
 
+        override fun clearClicked() {
+            TODO("Not yet implemented")
+        }
+
         override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
             viewModel.onGbGameNotChecked(vglsId, name)
 
@@ -60,6 +64,10 @@ class SearchFragment : VglsFragment(),
     private val composerHandler = object : GiantBombImageNameCaptionListModel.EventHandler {
         override fun onClicked(clicked: GiantBombImageNameCaptionListModel) =
             onComposerClicked(clicked.dataId)
+
+        override fun clearClicked() {
+            TODO("Not yet implemented")
+        }
 
         override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
             viewModel.onGbComposerNotChecked(vglsId, name)
@@ -78,6 +86,10 @@ class SearchFragment : VglsFragment(),
 
     override fun onClicked(clicked: ImageNameCaptionListModel) {
         onSongClicked(clicked.dataId)
+    }
+
+    override fun clearClicked() {
+        TODO("Not yet implemented")
     }
 
     override fun onBackPress(): Boolean {

@@ -15,10 +15,12 @@ class GameListFragment : ListFragment<Game, GameListState>() {
     private var apiAvailableErrorShown = false
 
     override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(GameListState::clickedGbListModel, deliveryMode = UniqueOnly("clicked")) {
+        viewModel.selectSubscribe(GameListState::clickedGbListModel) {
             val clickedGameId = it?.dataId
+
             if (clickedGameId != null) {
                 showSongList(clickedGameId)
+                viewModel.clearClicked()
             }
         }
 

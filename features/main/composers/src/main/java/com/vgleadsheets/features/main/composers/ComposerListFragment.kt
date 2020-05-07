@@ -15,10 +15,12 @@ class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
     private var apiAvailableErrorShown = false
 
     override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(ComposerListState::clickedGbListModel, deliveryMode = UniqueOnly("clicked")) {
+        viewModel.selectSubscribe(ComposerListState::clickedGbListModel) {
             val clickedComposerId = it?.dataId
+
             if (clickedComposerId != null) {
                 showSongList(clickedComposerId)
+                viewModel.clearClicked()
             }
         }
 

@@ -49,6 +49,10 @@ class ComposerFragment : VglsFragment(),
         showSongViewer(clicked.dataId)
     }
 
+    override fun clearClicked() {
+        TODO("Not yet implemented")
+    }
+
     override fun onGbModelNotChecked(vglsId: Long, name: String) {
         viewModel.onGbComposerNotChecked(vglsId, name)
     }

@@ -44,6 +44,12 @@ class GameViewModel @AssistedInject constructor(
         )
     }
 
+    override fun clearClicked() = setState {
+        copy(
+            clickedListModel = null
+        )
+    }
+
     override fun createTitleListModel(): TitleListModel? = null
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(

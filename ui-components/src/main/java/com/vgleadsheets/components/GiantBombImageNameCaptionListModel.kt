@@ -12,6 +12,7 @@ data class GiantBombImageNameCaptionListModel(
 ) : ListModel {
     interface EventHandler {
         fun onClicked(clicked: GiantBombImageNameCaptionListModel)
+        fun clearClicked()
         fun onGbModelNotChecked(vglsId: Long, name: String, type: String)
         fun onGbApiNotAvailable()
     }

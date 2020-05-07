@@ -61,6 +61,10 @@ class JamFragment : VglsFragment(),
         }
     }
 
+    override fun clearClicked() {
+        TODO("Not yet implemented")
+    }
+
     override fun onClicked(clicked: CtaListModel) {
         when (clicked.iconId) {
             R.drawable.ic_playlist_play_black_24dp -> followJam()
