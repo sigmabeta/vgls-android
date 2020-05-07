@@ -63,10 +63,6 @@ class GameViewModel @AssistedInject constructor(
         return title + content
     }
 
-    fun onGbGameNotChecked(vglsId: Long, name: String) {
-        repository.searchGiantBombForGame(vglsId, name)
-    }
-
     private fun fetchGame() = withState { state ->
         repository
             .getGame(state.gameId)

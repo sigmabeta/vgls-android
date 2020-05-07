@@ -20,41 +20,41 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     initialState: StateType,
     private val resourceProvider: ResourceProvider
 ) : MvRxViewModel<StateType>(initialState) {
-    fun onSelectedPartUpdate(part: PartSelectorItem?) {
+    fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
         setState {
             updateListState(
-                selectedPart = part,
+                selectedPart = newPart,
                 listModels = constructList(
                     data,
                     updateTime,
                     digest,
+                    newPart
+                )
+            ) as StateType
+        }
+    }
+
+    fun onDigestUpdate(newDigest: Async<List<*>>) {
+        setState {
+            updateListState(
+                digest = newDigest,
+                listModels = constructList(
+                    data,
+                    updateTime,
+                    newDigest,
                     selectedPart
                 )
             ) as StateType
         }
     }
 
-    fun onDigestUpdate(digest: Async<List<*>>) {
+    fun onTimeUpdate(newTime: Async<*>) {
         setState {
             updateListState(
-                digest = digest,
+                updateTime = newTime,
                 listModels = constructList(
                     data,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
-            ) as StateType
-        }
-    }
-
-    fun onTimeUpdate(time: Async<*>) {
-        setState {
-            updateListState(
-                updateTime = time,
-                listModels = constructList(
-                    data,
-                    updateTime,
+                    newTime,
                     digest,
                     selectedPart
                 )
