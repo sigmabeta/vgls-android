@@ -12,14 +12,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.vgleadsheets.R
 import com.vgleadsheets.RecyclerViewMatcher
+import com.vgleadsheets.Robot
 import org.hamcrest.Matcher
 import timber.log.Timber
 
-abstract class ListRobot(val test: ListUiTest) {
-    init {
-        test.launchScreen()
-    }
-
+abstract class ListRobot(test: ListUiTest): Robot(test) {
     abstract val maxScrolls: Int
 
     protected fun clickItemWithText(text: String) {
@@ -72,21 +69,6 @@ abstract class ListRobot(val test: ListUiTest) {
         checkFirstContentItem(
             hasDescendant(
                 withText(subtitle)
-            )
-        )
-    }
-
-    protected fun checkScreenHeader(title: String, subtitle: String) {
-        checkViewText(R.id.text_title_title, title)
-        checkViewText(R.id.text_title_subtitle, subtitle)
-    }
-
-    protected fun checkViewText(viewId: Int, text: String) {
-        onView(
-            withId(viewId)
-        ).check(
-            matches(
-                withText(text)
             )
         )
     }

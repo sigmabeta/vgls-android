@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.game
 
-import com.vgleadsheets.R
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.games.gameList
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -9,7 +8,6 @@ import org.junit.Test
 
 class GameAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_GAME
-    override val startingTopLevelScreenSubtitleId = R.string.subtitle_game
 
     @Test
     fun firstGameClickingFirstSongShowsViewerScreen() {

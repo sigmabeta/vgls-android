@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.composer
 
-import com.vgleadsheets.R
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.composers.composerList
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -9,7 +8,6 @@ import org.junit.Test
 
 class ComposerAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER
-    override val startingTopLevelScreenSubtitleId = R.string.subtitle_composer
 
     @Test
     fun firstComposerClickingFirstSongShowsViewerScreen() {
