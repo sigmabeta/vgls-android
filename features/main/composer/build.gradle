@@ -1,11 +1,13 @@
-// Uncomment whichever of these plugins you need (for a UI feature, probably both)
- apply plugin: 'kotlin-kapt'
- apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 dependencies {
+    api project(path: ':features:main:list')
+
     implementation project(path: ':features:main:hud')
 
     implementation project(path: ':repository')
+    implementation project(path: ':resources')
     implementation project(path: ':recyclerview')
     implementation project(path: ':ui-core')
 
