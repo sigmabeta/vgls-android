@@ -293,11 +293,12 @@ class RealRepository constructor(
                         photoUrl = null
                     } else {
                         giantBombId = game.id
-                        photoUrl = if (game.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
-                            game.image.original_url
-                        } else {
-                            null
-                        }
+                        photoUrl =
+                            if (!game.image.original_url.contains(GB_URL_ID_IMAGE_NOT_FOUND)) {
+                                game.image.original_url
+                            } else {
+                                null
+                            }
 
                         val aliasEntities = game.aliases
                             ?.split('\n')
@@ -336,11 +337,12 @@ class RealRepository constructor(
                         photoUrl = null
                     } else {
                         giantBombId = composer.id
-                        photoUrl = if (composer.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
-                            composer.image.original_url
-                        } else {
-                            null
-                        }
+                        photoUrl =
+                            if (!composer.image.original_url.contains(GB_URL_ID_IMAGE_NOT_FOUND)) {
+                                composer.image.original_url
+                            } else {
+                                null
+                            }
 
                         val aliasEntities = composer.aliases
                             ?.split('\n')
@@ -725,8 +727,7 @@ class RealRepository constructor(
         const val URL_SEPARATOR_NUMBER = "-"
         const val URL_FILE_EXT_PNG = ".png"
 
-        const val GB_URL_IMAGE_NOT_FOUND = "https://www.giantbomb.com/api/image/original/" +
-                "3026329-gb_default-16_9.png"
+        const val GB_URL_ID_IMAGE_NOT_FOUND = "3026329"
 
         val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
