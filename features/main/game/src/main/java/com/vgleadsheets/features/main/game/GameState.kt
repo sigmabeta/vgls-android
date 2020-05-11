@@ -14,7 +14,7 @@ data class GameState(
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
-    override val data: GameData = GameData(Uninitialized, Uninitialized),
+    override val data: GameData = GameData(),
     val clickedListModel: ImageNameCaptionListModel? = null,
     val gbApiNotAvailable: Boolean? = null
 ) : AsyncListState<GameData>(data = data) {

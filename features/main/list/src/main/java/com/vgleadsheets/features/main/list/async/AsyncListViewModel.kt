@@ -3,7 +3,6 @@ package com.vgleadsheets.features.main.list.async
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Loading
-import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
@@ -84,7 +83,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
     abstract fun createTitleListModel(): TitleListModel?
 
-    abstract fun createFullEmptyStateListModel(): EmptyStateListModel
+    abstract fun createFullEmptyStateListModel(): ListModel
 
     abstract fun createSuccessListModels(
         data: DataType,

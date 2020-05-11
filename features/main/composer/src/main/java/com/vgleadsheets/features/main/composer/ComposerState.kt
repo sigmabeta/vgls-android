@@ -14,7 +14,7 @@ data class ComposerState(
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
-    override val data: ComposerData = ComposerData(Uninitialized, Uninitialized),
+    override val data: ComposerData = ComposerData(),
     val clickedListModel: ImageNameCaptionListModel? = null,
     val gbApiNotAvailable: Boolean? = null
 ) : AsyncListState<ComposerData>(data = data) {
