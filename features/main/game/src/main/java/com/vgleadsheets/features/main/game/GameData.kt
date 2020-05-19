@@ -1,8 +1,6 @@
 package com.vgleadsheets.features.main.game
 
 import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.list.async.ListData
@@ -18,12 +16,4 @@ data class GameData(
                     songs is Success &&
                     songs()?.isNotEmpty() == true
             )
-
-    override fun isUninitialized() = game is Uninitialized
-
-    override fun isLoading() = game is Loading
-
-    override fun getFailReason() = (game as? Fail)?.error
-
-    override fun isSuccess() = game is Success
 }

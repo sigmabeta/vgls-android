@@ -10,7 +10,6 @@ import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.resources.ResourceProvider
-import timber.log.Timber
 
 @Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListState<DataType>> constructor(
@@ -23,9 +22,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
                 selectedPart = newPart,
                 listModels = constructList(
                     data,
-                    updateTime,
-                    digest,
-                    newPart
+                    this
                 )
             ) as StateType
         }
@@ -37,9 +34,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
                 digest = newDigest,
                 listModels = constructList(
                     data,
-                    updateTime,
-                    newDigest,
-                    selectedPart
+                    this
                 )
             ) as StateType
         }
@@ -51,9 +46,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
                 updateTime = newTime,
                 listModels = constructList(
                     data,
-                    newTime,
-                    digest,
-                    selectedPart
+                    this
                 )
             ) as StateType
         }
@@ -61,21 +54,17 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
     fun constructList(
         data: DataType,
-        updateTime: Async<*>,
-        digest: Async<*>,
-        selectedPart: PartSelectorItem?
+        state: StateType
     ): List<ListModel> {
-        Timber.v("Constructing list...")
-
         val titleModel = createTitleListModel()
         val titleModelAsList =
             if (titleModel != null) listOf(titleModel) else emptyList()
 
         val contentListModels = createDataListModels(
             data,
-            updateTime,
-            digest,
-            selectedPart
+            state.updateTime,
+            state.digest,
+            state.selectedPart
         )
 
         return titleModelAsList + contentListModels
@@ -109,26 +98,9 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
     private fun createDataListModels(
         data: DataType,
+        digest: Async<*>,
         updateTime: Async<*>,
-        digest: Async<*>,
         selectedPart: PartSelectorItem?
-    ): List<ListModel> {
-        val failReason = data.getFailReason()
-
-        return when {
-            failReason != null -> createErrorStateListModel(failReason)
-            data.isUninitialized() -> createLoadingListModels()
-            data.isLoading() -> createLoadingListModels()
-            data.isSuccess() -> successListModelHelper(selectedPart, data, digest, updateTime)
-            else -> createErrorStateListModel(IllegalStateException("Unhandled ListData state."))
-        }
-    }
-
-    private fun successListModelHelper(
-        selectedPart: PartSelectorItem?,
-        data: DataType,
-        digest: Async<*>,
-        updateTime: Async<*>
     ) = if (selectedPart == null) {
         createErrorStateListModel(
             IllegalArgumentException("No part selected.")
@@ -152,8 +124,5 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
     companion object {
         const val LOADING_ITEMS = 15
-
-        const val MAX_LENGTH_SUBTITLE_CHARS = 20
-        const val MAX_LENGTH_SUBTITLE_ITEMS = 6
     }
 }

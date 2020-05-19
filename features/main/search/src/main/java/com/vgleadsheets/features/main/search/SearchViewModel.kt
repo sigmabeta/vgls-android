@@ -88,15 +88,8 @@ class SearchViewModel @AssistedInject constructor(
         withState { state ->
             if (state.data.query != searchQuery) {
                 setState {
-                    val newData = SearchData(searchQuery, data.songs, data.composers, data.games)
-                    updateListState(
-                        data = newData,
-                        listModels = constructList(
-                            newData,
-                            updateTime,
-                            digest,
-                            selectedPart
-                        )
+                    updateSearchState(
+                        query = searchQuery
                     )
                 }
 
@@ -105,46 +98,19 @@ class SearchViewModel @AssistedInject constructor(
                 val gameSearch = repository.searchGamesCombined(searchQuery)
                     .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute { newGames ->
-                        val newData = SearchData(data.query, data.songs, data.composers, newGames)
-                        updateListState(
-                            data = newData,
-                            listModels = constructList(
-                                newData,
-                                updateTime,
-                                digest,
-                                selectedPart
-                            )
-                        )
+                        updateSearchState(games = newGames)
                     }
 
                 val songSearch = repository.searchSongs(searchQuery)
                     .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute { newSongs ->
-                        val newData = SearchData(data.query, newSongs, data.composers, data.games)
-                        updateListState(
-                            data = newData,
-                            listModels = constructList(
-                                newData,
-                                updateTime,
-                                digest,
-                                selectedPart
-                            )
-                        )
+                        updateSearchState(songs = newSongs)
                     }
 
                 val composerSearch = repository.searchComposersCombined(searchQuery)
                     .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute { newComposers ->
-                        val newData = SearchData(data.query, data.songs, newComposers, data.games)
-                        updateListState(
-                            data = newData,
-                            listModels = constructList(
-                                newData,
-                                updateTime,
-                                digest,
-                                selectedPart
-                            )
-                        )
+                        updateSearchState(composers = newComposers)
                     }
 
                 searchOperations.addAll(gameSearch, songSearch, composerSearch)
@@ -154,15 +120,11 @@ class SearchViewModel @AssistedInject constructor(
 
     fun onQueryClear() {
         setState {
-            val newData = SearchData(data.query, Uninitialized, Uninitialized, Uninitialized)
-            updateListState(
-                data = newData,
-                listModels = constructList(
-                    newData,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
+            updateSearchState(
+                null,
+                Uninitialized,
+                Uninitialized,
+                Uninitialized
             )
         }
     }
@@ -422,6 +384,22 @@ class SearchViewModel @AssistedInject constructor(
         }
 
         return builder.toString()
+    }
+
+    private fun SearchState.updateSearchState(
+        query: String? = data.query,
+        songs: Async<List<Song>> = data.songs,
+        composers: Async<List<Composer>> = data.composers,
+        games: Async<List<Game>> = data.games
+    ): SearchState {
+        val newData = SearchData(query, songs, composers, games)
+        return updateListState(
+            data = newData,
+            listModels = constructList(
+                newData,
+                this
+            )
+        )
     }
 
     @AssistedInject.Factory
