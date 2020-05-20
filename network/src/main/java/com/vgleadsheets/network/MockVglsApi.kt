@@ -21,6 +21,8 @@ class MockVglsApi(
     @Named("RngSeed") private val seed: Long,
     private val stringGenerator: StringGenerator
 ) : VglsApi {
+    private var possibleTags: Map<String, List<String>>? = null
+
     private var possibleComposers: List<ApiComposer>? = null
 
     private var remainingSongs: Stack<ApiSong>? = null
@@ -30,6 +32,8 @@ class MockVglsApi(
     var maxSongs = DEFAULT_MAX_SONGS
     var maxGames = DEFAULT_MAX_GAMES
     var maxComposers = DEFAULT_MAX_COMPOSERS
+    var maxTags = DEFAULT_MAX_TAGS
+    var maxTagsValues = DEFAULT_MAX_TAGS_VALUES
     var maxSongsPerGame = DEFAULT_MAX_SONGS_PER_GAME
 
     var digestEmitTrigger: Observable<Long> = Single.just(0L).toObservable()
@@ -205,13 +209,59 @@ class MockVglsApi(
         stringGenerator.generateName()
     )
 
-    // TODO fill this in
-    private fun getTags(): Map<String, List<String>> = mapOf()
+    private fun getTags(): Map<String, List<String>> {
+        if (possibleTags == null) {
+            generateTags()
+        }
+
+        val songTags = mutableMapOf<String, List<String>>()
+
+        possibleTags!!.forEach { possibleTag ->
+            val valuesSize = possibleTag.value.size
+            val selectedValue = possibleTag.value[random.nextInt(valuesSize)]
+
+            songTags.put(possibleTag.key, listOf(selectedValue))
+        }
+
+        return songTags
+    }
+
+    private fun generateTags() {
+        val tagCount = random.nextInt(maxTags) + 1
+        Timber.i("Generating $tagCount tags...")
+        val tags = mutableMapOf<String, List<String>>()
+
+        for (tagIndex in 0 until tagCount) {
+            val tagName = stringGenerator.generateTitle()
+            val isNumericTag = random.nextBoolean()
+
+            val tagValues = if (isNumericTag) {
+                TAG_VALUES_NUMERIC
+            } else {
+                val tagValuesCount = random.nextInt(maxTagsValues - 1) + 1
+                val tagValues = ArrayList<String>(tagValuesCount)
+
+                for (tagValueIndex in 0 until tagValuesCount) {
+                    val tagValue = stringGenerator.generateTitle()
+                    tagValues.add(tagValue)
+                }
+
+                Timber.v("For tag $tagName; Generated values: $tagValues")
+                tagValues
+            }
+
+            tags[tagName] = tagValues
+        }
+
+        possibleTags = tags
+    }
 
     companion object {
         const val DEFAULT_MAX_SONGS = 50
         const val DEFAULT_MAX_GAMES = 400
         const val DEFAULT_MAX_COMPOSERS = 200
+        const val DEFAULT_MAX_TAGS = 20
+        const val DEFAULT_MAX_TAGS_VALUES = 10
         const val DEFAULT_MAX_SONGS_PER_GAME = 10
 
         const val MAX_WORDS_PER_TITLE = 5
@@ -219,5 +269,7 @@ class MockVglsApi(
 
         val PARTS_NO_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto")
         val PARTS_WITH_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto", "Vocals")
+
+        val TAG_VALUES_NUMERIC = listOf("1", "2", "3", "4", "5")
     }
 }
