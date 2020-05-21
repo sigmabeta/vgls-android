@@ -32,13 +32,14 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
             waitForUi()
 
-            isItemWithTextDisplayed("Quis Donec")
+            isItemWithTextDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
+            isItemWithTextDisplayed(RESULT_TITLE_SONG, SCROLL_POS_RESULT_SONG)
 
-            isItemWithTextDisplayed("Games")
-            isItemWithTextDisplayed("Quisque")
+            isItemWithTextDisplayed(SECTION_HEADER_GAMES, SCROLL_POS_HEADER_GAME)
+            isItemWithTextDisplayed(RESULT_TITLE_GAME, SCROLL_POS_RESULT_GAME)
 
-            isItemWithTextDisplayed("Composers")
-            isItemWithTextDisplayed("Cinda Quinn")
+            isItemWithTextDisplayed(SECTION_HEADER_COMPOSERS, SCROLL_POS_HEADER_COMPOSER)
+            isItemWithTextDisplayed(RESULT_TITLE_COMPOSER, SCROLL_POS_RESULT_COMPOSER)
         }
     }
 
@@ -54,7 +55,8 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
             waitForUi()
 
-            clickResultWithText(RESULT_TITLE_SONG)
+            isItemWithTextDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
+            clickResultWithText(RESULT_TITLE_SONG, SCROLL_POS_RESULT_SONG)
         }
 
         viewer {
@@ -74,7 +76,9 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
             waitForUi()
 
-            clickResultWithText(RESULT_TITLE_GAME)
+            isItemWithTextDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
+
+            clickResultWithText(RESULT_TITLE_GAME, SCROLL_POS_RESULT_GAME)
         }
 
         game(this, RESULT_TITLE_GAME, GAME_SUBTITLE_SHEET_COUNT) {
@@ -94,7 +98,9 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
             waitForUi()
 
-            clickResultWithText(RESULT_TITLE_COMPOSER)
+            isItemWithTextDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
+
+            clickResultWithText(RESULT_TITLE_COMPOSER, SCROLL_POS_RESULT_COMPOSER)
         }
 
         composer(this, RESULT_TITLE_COMPOSER, COMPOSER_SUBTITLE_SHEET_COUNT) {
@@ -103,16 +109,27 @@ class SearchAsyncUiTest : ListUiTest() {
     }
 
     companion object {
-        const val QUERY_SEARCH = "qui"
+        const val QUERY_SEARCH = "in"
 
-        const val RESULT_TITLE_SONG = "Quis Donec"
-        const val RESULT_TITLE_GAME = "Quisque"
-        const val RESULT_TITLE_COMPOSER = "Cinda Quinn"
+        const val SECTION_HEADER_GAMES = "Games"
+        const val SECTION_HEADER_SONGS = "Songs"
+        const val SECTION_HEADER_COMPOSERS = "Composers"
 
-        const val GAME_SONG_TITLE_FIRST = "Ac In"
-        const val GAME_SUBTITLE_SHEET_COUNT= "8 Sheets"
+        const val RESULT_TITLE_SONG = "Ante Integer Quisque Blandit"
+        const val RESULT_TITLE_GAME = "In Tellus Curabitur"
+        const val RESULT_TITLE_COMPOSER = "Robbin Hanson"
 
-        const val COMPOSER_SONG_TITLE_FIRST = "Pellentesque Quis Finibus"
+        const val GAME_SONG_TITLE_FIRST = "Congue"
+        const val GAME_SUBTITLE_SHEET_COUNT= "4 Sheets"
+
+        const val COMPOSER_SONG_TITLE_FIRST = "Justo Urna"
         const val COMPOSER_SUBTITLE_SHEET_COUNT= "1 Sheets"
+
+        const val SCROLL_POS_HEADER_SONG = 0
+        const val SCROLL_POS_RESULT_SONG = 2
+        const val SCROLL_POS_HEADER_GAME = 20
+        const val SCROLL_POS_RESULT_GAME = 21
+        const val SCROLL_POS_HEADER_COMPOSER = 22
+        const val SCROLL_POS_RESULT_COMPOSER = 30
     }
 }

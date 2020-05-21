@@ -32,6 +32,6 @@ class ComposerListAsyncUiTest : ListUiTest() {
 
     companion object {
         const val LABEL_EMPTY_STATE = "composers"
-        const val TITLE_FIRST_ITEM = "Alona Dunn"
+        const val TITLE_FIRST_ITEM = "Albertine Rice"
     }
 }

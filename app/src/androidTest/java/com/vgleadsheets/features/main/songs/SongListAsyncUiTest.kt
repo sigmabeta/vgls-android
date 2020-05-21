@@ -37,6 +37,6 @@ class SongListAsyncUiTest : ListUiTest() {
 
     companion object {
         const val LABEL_EMPTY_STATE = "songs"
-        const val TITLE_FIRST_ITEM = "A Lobortis"
+        const val TITLE_FIRST_ITEM = "Adipiscing In Orci"
     }
 }

@@ -20,8 +20,8 @@ class GameListRobot(test: ListUiTest) : ListRobot(test) {
         return this
     }
 
-    fun clickGameWithTitle(title: String) {
-        clickItemWithText(title)
+    fun clickGameWithTitle(title: String, scrollPosition: Int? = null) {
+        clickItemWithText(title, scrollPosition)
     }
 }
 

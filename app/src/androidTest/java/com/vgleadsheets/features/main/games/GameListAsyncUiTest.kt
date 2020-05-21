@@ -36,7 +36,7 @@ class GameListAsyncUiTest : ListUiTest() {
     @Test
     fun clickingArbitraryItemLoadsGameScreen() {
         gameList(this) {
-            clickGameWithTitle(TITLE_ARBITRARY_GAME)
+            clickGameWithTitle(TITLE_ARBITRARY_GAME, GAME_ARBITRARY_SCROLL_POS)
         }
 
         game(this, TITLE_ARBITRARY_GAME, GAME_ARBITRARY_SHEET_COUNT) { }
@@ -45,11 +45,13 @@ class GameListAsyncUiTest : ListUiTest() {
     companion object {
         const val LABEL_EMPTY_STATE = "games"
 
-        const val TITLE_FIRST_GAME = "A Ac"
-        const val TITLE_ARBITRARY_GAME = "Quisque"
+        const val TITLE_FIRST_GAME = "Elit"
+        const val TITLE_ARBITRARY_GAME = "Ultricies Justo"
 
         const val GAME_FIRST_SHEET_COUNT = "5 Sheets"
 
-        const val GAME_ARBITRARY_SHEET_COUNT = "8 Sheets"
+        const val GAME_ARBITRARY_SHEET_COUNT = "3 Sheets"
+
+        const val GAME_ARBITRARY_SCROLL_POS = 8
     }
 }

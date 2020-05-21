@@ -20,8 +20,8 @@ class ComposerListRobot(test: ListUiTest) : ListRobot(test) {
         return this
     }
 
-    fun clickComposerWithTitle(title: String) {
-        clickItemWithText(title)
+    fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
+        clickItemWithText(title, scrollPosition)
     }
 }
 

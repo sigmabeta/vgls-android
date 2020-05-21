@@ -46,7 +46,7 @@ class GameAsyncUiTest : ListUiTest() {
     @Test
     fun arbitraryGameClickingFirstSongShowsViewerScreen() {
         gameList(this) {
-            clickGameWithTitle(GAME_ARBITRARY_TITLE)
+            clickGameWithTitle(GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SCROLL_POS)
         }
 
         game(this, GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SHEET_COUNT) {
@@ -63,7 +63,7 @@ class GameAsyncUiTest : ListUiTest() {
     @Test
     fun arbitraryGameClickingArbitrarySongShowsViewerScreen() {
         gameList(this) {
-            clickGameWithTitle(GAME_ARBITRARY_TITLE)
+            clickGameWithTitle(GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SCROLL_POS)
         }
 
         game(this, GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SHEET_COUNT) {
@@ -78,20 +78,21 @@ class GameAsyncUiTest : ListUiTest() {
     }
 
     companion object {
-        const val GAME_FIRST_TITLE = "A Ac"
+        const val GAME_FIRST_TITLE = "Elit"
         const val GAME_FIRST_SHEET_COUNT = "5 Sheets"
 
-        const val GAME_ARBITRARY_TITLE = "Quisque"
-        const val GAME_ARBITRARY_SHEET_COUNT = "8 Sheets"
+        const val GAME_ARBITRARY_SCROLL_POS = 7
+        const val GAME_ARBITRARY_TITLE = "Pellentesque Fermentum Donec"
+        const val GAME_ARBITRARY_SHEET_COUNT = "5 Sheets"
 
-        const val GAME_FIRST_SHEET_TITLE_FIRST = "Amet"
-        const val GAME_FIRST_SHEET_ARTIST_FIRST = "Camille Wyatt"
+        const val GAME_FIRST_SHEET_TITLE_FIRST = "Et Pellentesque Adipiscing Ligula"
+        const val GAME_FIRST_SHEET_ARTIST_FIRST = "Jeannetta Nixon"
 
-        const val GAME_FIRST_SHEET_TITLE_ARBITRARY = "Quis Ut Finibus Hendrerit"
+        const val GAME_FIRST_SHEET_TITLE_ARBITRARY = "In Hendrerit Quisque Est"
 
-        const val GAME_ARBITRARY_SHEET_TITLE_FIRST = "Ac In"
-        const val GAME_ARBITRARY_SHEET_ARTIST_FIRST = "Kali Browning"
+        const val GAME_ARBITRARY_SHEET_TITLE_FIRST = "Hendrerit Lobortis Dolor"
+        const val GAME_ARBITRARY_SHEET_ARTIST_FIRST = "Lacresha Dunn"
 
-        const val GAME_ARBITRARY_SHEET_TITLE_ARBITRARY = "Pharetra Justo"
+        const val GAME_ARBITRARY_SHEET_TITLE_ARBITRARY = "Justo Neque Finibus In"
     }
 }
