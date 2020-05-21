@@ -247,7 +247,6 @@ class MockVglsApi(
                     tagValues.add(tagValue)
                 }
 
-                Timber.v("For tag $tagName; Generated values: $tagValues")
                 tagValues
             }
 
