@@ -62,6 +62,7 @@ class MockVglsApi(
         Single.error(NotImplementedError())
 
     private fun generateGames(): List<VglsApiGame> {
+        possibleTags = null
         possibleComposers = null
         remainingSongs = null
 
