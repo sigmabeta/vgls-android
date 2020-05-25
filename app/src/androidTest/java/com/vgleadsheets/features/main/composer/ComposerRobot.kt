@@ -25,7 +25,7 @@ class ComposerRobot(
     }
 
     fun clickSongWithTitle(name: String, scrollPosition: Int? = null) {
-        clickItemWithText(name, scrollPosition)
+        clickItemWithTitle(name, scrollPosition)
     }
 }
 

@@ -21,7 +21,7 @@ class GameListRobot(test: ListUiTest) : ListRobot(test) {
     }
 
     fun clickGameWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithText(title, scrollPosition)
+        clickItemWithTitle(title, scrollPosition)
     }
 }
 

@@ -21,7 +21,7 @@ class ComposerListRobot(test: ListUiTest) : ListRobot(test) {
     }
 
     fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithText(title, scrollPosition)
+        clickItemWithTitle(title, scrollPosition)
     }
 }
 

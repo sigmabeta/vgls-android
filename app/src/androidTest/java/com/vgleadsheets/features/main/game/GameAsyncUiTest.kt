@@ -52,7 +52,7 @@ class GameAsyncUiTest : ListUiTest() {
         game(this, GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SHEET_COUNT) {
             checkFirstSongIs(GAME_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongArtistIs(GAME_ARBITRARY_SHEET_ARTIST_FIRST)
-            clickSongWithTitle(GAME_ARBITRARY_SHEET_TITLE_FIRST)
+            clickSongWithTitle(GAME_ARBITRARY_SHEET_TITLE_FIRST, 7)
         }
 
         viewer {
@@ -69,7 +69,7 @@ class GameAsyncUiTest : ListUiTest() {
         game(this, GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SHEET_COUNT) {
             checkFirstSongIs(GAME_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongArtistIs(GAME_ARBITRARY_SHEET_ARTIST_FIRST)
-            clickSongWithTitle(GAME_ARBITRARY_SHEET_TITLE_ARBITRARY)
+            clickSongWithTitle(GAME_ARBITRARY_SHEET_TITLE_ARBITRARY, 7)
         }
 
         viewer {

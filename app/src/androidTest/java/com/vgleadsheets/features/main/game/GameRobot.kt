@@ -25,7 +25,7 @@ class GameRobot(
     }
 
     fun clickSongWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithText(title, scrollPosition)
+        clickItemWithTitle(title, scrollPosition)
     }
 }
 

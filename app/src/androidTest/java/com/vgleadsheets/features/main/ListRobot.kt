@@ -2,7 +2,6 @@ package com.vgleadsheets.features.main
 
 import android.view.View
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -14,62 +13,27 @@ import com.vgleadsheets.R
 import com.vgleadsheets.RecyclerViewMatcher
 import com.vgleadsheets.Robot
 import com.vgleadsheets.components.ComponentViewHolder
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 
 abstract class ListRobot(test: ListUiTest) : Robot(test) {
     abstract val maxScrolls: Int
 
-    fun isItemWithTextDisplayed(text: String, scrollPosition: Int? = null) {
+    fun isHeaderWithTitleDisplayed(text: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            isItemWithTextDisplayedHelper(text)
+            isHeaderWithTitleDisplayedHelper(text)
         }
     }
 
-    protected fun clickItemWithText(text: String, scrollPosition: Int? = null) {
+    fun isItemWithTitleDisplayed(text: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickItemWithTextHelper(text)
+            isItemWithTitleDisplayedHelper(text)
         }
     }
 
-    private fun isItemWithTextDisplayedHelper(text: String) {
-        onView(
-            withText(
-                text
-            )
-        ).check(
-            matches(
-                isDisplayed()
-            )
-        )
-    }
-
-    private fun clickItemWithTextHelper(text: String) {
-        onView(
-            withText(
-                text
-            )
-        ).perform(
-            click()
-        )
-    }
-
-    private fun scrollHelper(scrollPosition: Int?, afterScroll: () -> Unit) {
-        try {
-            afterScroll()
-        } catch (ex: NoMatchingViewException) {
-            if (scrollPosition != null) {
-                onView(
-                    withId(
-                        R.id.list_content
-                    )
-                ).perform(
-                    RecyclerViewActions.scrollToPosition<ComponentViewHolder>(scrollPosition)
-                )
-
-                afterScroll()
-            } else {
-                throw ex
-            }
+    protected fun clickItemWithTitle(text: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickItemWithTitleHelper(text)
         }
     }
 
@@ -108,6 +72,74 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
             matches(
                 matcher
             )
+        )
+    }
+
+    private fun isHeaderWithTitleDisplayedHelper(text: String) {
+        onView(
+            allOf(
+                withId(
+                    R.id.text_header_name
+                ),
+                withText(
+                    text
+                )
+            )
+        ).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
+    private fun isItemWithTitleDisplayedHelper(text: String) {
+        onView(
+            allOf(
+                withId(
+                    R.id.text_name
+                ),
+                withText(
+                    text
+                )
+            )
+        ).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
+    private fun clickItemWithTitleHelper(text: String) {
+        onView(
+            allOf(
+                withId(
+                    R.id.text_name
+                ),
+                withText(
+                    text
+                )
+            )
+        ).perform(
+            click()
+        )
+    }
+
+    private fun scrollHelper(scrollPosition: Int?, afterScroll: () -> Unit) {
+        if (scrollPosition != null) {
+            scrollTo(0)
+            scrollTo(scrollPosition)
+        }
+
+        afterScroll()
+    }
+
+    private fun scrollTo(scrollPosition: Int) {
+        onView(
+            withId(
+                R.id.list_content
+            )
+        ).perform(
+            RecyclerViewActions.scrollToPosition<ComponentViewHolder>(scrollPosition)
         )
     }
 }

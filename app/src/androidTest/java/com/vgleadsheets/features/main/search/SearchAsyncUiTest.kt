@@ -32,14 +32,14 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
             waitForUi()
 
-            isItemWithTextDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
-            isItemWithTextDisplayed(RESULT_TITLE_SONG, SCROLL_POS_RESULT_SONG)
+            isHeaderWithTitleDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
+            isItemWithTitleDisplayed(RESULT_TITLE_SONG, SCROLL_POS_RESULT_SONG)
 
-            isItemWithTextDisplayed(SECTION_HEADER_GAMES, SCROLL_POS_HEADER_GAME)
-            isItemWithTextDisplayed(RESULT_TITLE_GAME, SCROLL_POS_RESULT_GAME)
+            isHeaderWithTitleDisplayed(SECTION_HEADER_GAMES, SCROLL_POS_HEADER_GAME)
+            isItemWithTitleDisplayed(RESULT_TITLE_GAME, SCROLL_POS_RESULT_GAME)
 
-            isItemWithTextDisplayed(SECTION_HEADER_COMPOSERS, SCROLL_POS_HEADER_COMPOSER)
-            isItemWithTextDisplayed(RESULT_TITLE_COMPOSER, SCROLL_POS_RESULT_COMPOSER)
+            isHeaderWithTitleDisplayed(SECTION_HEADER_COMPOSERS, SCROLL_POS_HEADER_COMPOSER)
+            isItemWithTitleDisplayed(RESULT_TITLE_COMPOSER, SCROLL_POS_RESULT_COMPOSER)
         }
     }
 
@@ -55,7 +55,7 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
             waitForUi()
 
-            isItemWithTextDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
+            isHeaderWithTitleDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
             clickResultWithText(RESULT_TITLE_SONG, SCROLL_POS_RESULT_SONG)
         }
 
@@ -76,7 +76,7 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
             waitForUi()
 
-            isItemWithTextDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
+            isHeaderWithTitleDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
 
             clickResultWithText(RESULT_TITLE_GAME, SCROLL_POS_RESULT_GAME)
         }
@@ -98,7 +98,7 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
             waitForUi()
 
-            isItemWithTextDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
+            isHeaderWithTitleDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
 
             clickResultWithText(RESULT_TITLE_COMPOSER, SCROLL_POS_RESULT_COMPOSER)
         }

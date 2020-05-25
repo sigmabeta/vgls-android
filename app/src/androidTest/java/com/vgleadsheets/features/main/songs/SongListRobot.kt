@@ -21,7 +21,7 @@ class SongListRobot(test: ListUiTest) : ListRobot(test) {
     }
 
     fun clickSongWithTitle(title: String) {
-        clickItemWithText(title)
+        clickItemWithTitle(title)
     }
 }
 

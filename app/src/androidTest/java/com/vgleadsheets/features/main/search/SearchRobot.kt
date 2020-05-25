@@ -24,7 +24,7 @@ class SearchRobot(test: ListUiTest): ListRobot(test) {
     }
 
     fun clickResultWithText(text: String, scrollPosition: Int? = null) {
-        clickItemWithText(text, scrollPosition)
+        clickItemWithTitle(text, scrollPosition)
     }
 }
 
