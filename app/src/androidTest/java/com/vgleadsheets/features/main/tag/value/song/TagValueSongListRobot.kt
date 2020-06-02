@@ -1,25 +1,24 @@
-package com.vgleadsheets.features.main.game
+package com.vgleadsheets.features.main.tag.value.song
 
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
-class GameRobot(
+
+class TagValueSongListRobot(
     test: ListUiTest,
-    gameTitle: String,
+    tagValue: String,
     sheetCountText: String
 ) : ListRobot(test) {
     init {
-        checkScreenHeader(gameTitle, sheetCountText)
+        checkScreenHeader(tagValue, sheetCountText)
     }
 
-    fun checkFirstSongIs(title: String): GameRobot {
+    fun checkFirstSongIs(title: String) {
         checkFirstItemHasTitleInternal(title)
-        return this
     }
 
-    fun checkFirstSongArtistIs(name: String): GameRobot {
+    fun checkFirstSongGameIs(name: String) {
         checkFirstItemHasSubtitleInternal(name)
-        return this
     }
 
     fun clickSongWithTitle(title: String, scrollPosition: Int? = null) {
@@ -27,11 +26,11 @@ class GameRobot(
     }
 }
 
-fun game(
+fun tagValueSongList(
     test: ListUiTest,
-    gameTitle: String,
+    tagValue: String,
     sheetCountText: String,
-    func: GameRobot.() -> Unit
-) = GameRobot(test, gameTitle, sheetCountText).apply {
+    func: TagValueSongListRobot.() -> Unit
+) = TagValueSongListRobot(test, tagValue, sheetCountText).apply {
     func()
 }

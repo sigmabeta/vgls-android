@@ -17,8 +17,6 @@ import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 
 abstract class ListRobot(test: ListUiTest) : Robot(test) {
-    abstract val maxScrolls: Int
-
     fun isHeaderWithTitleDisplayed(text: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
             isHeaderWithTitleDisplayedHelper(text)

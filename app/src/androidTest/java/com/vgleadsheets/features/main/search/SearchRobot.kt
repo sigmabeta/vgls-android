@@ -11,8 +11,6 @@ class SearchRobot(test: ListUiTest): ListRobot(test) {
         checkViewWithIdAndTextVisible(R.id.text_empty_state_search, R.string.empty_search_no_query)
     }
 
-    override val maxScrolls = 2
-
     fun typeInSearchBox(text: String) {
         onView(
             withId(R.id.edit_search_query)

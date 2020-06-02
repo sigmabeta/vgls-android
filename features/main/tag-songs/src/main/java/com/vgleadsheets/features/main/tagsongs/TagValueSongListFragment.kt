@@ -26,7 +26,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_tag_value_song_list.list_tag_value_songs
+import kotlinx.android.synthetic.main.fragment_tag_value_song_list.list_content
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -57,9 +57,9 @@ class TagValueSongListFragment : VglsFragment(),
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_tag_value_songs.adapter = adapter
-        list_tag_value_songs.layoutManager = LinearLayoutManager(context)
-        list_tag_value_songs.setInsetListenerForPadding(
+        list_content.adapter = adapter
+        list_content.layoutManager = LinearLayoutManager(context)
+        list_content.setInsetListenerForPadding(
             topOffset = topOffset,
             bottomOffset = bottomOffset
         )

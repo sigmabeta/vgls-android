@@ -23,7 +23,7 @@ import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_tag_key.list_tag_key
+import kotlinx.android.synthetic.main.fragment_tag_key.list_content
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -49,9 +49,9 @@ class TagKeyFragment : VglsFragment(), NameCaptionListModel.EventHandler {
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_tag_key.adapter = adapter
-        list_tag_key.layoutManager = LinearLayoutManager(context)
-        list_tag_key.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
+        list_content.adapter = adapter
+        list_content.layoutManager = LinearLayoutManager(context)
+        list_content.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }
 
     override fun invalidate() = withState(viewModel) { state ->

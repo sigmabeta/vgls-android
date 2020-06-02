@@ -27,7 +27,7 @@ import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_tag_value_list.list_tag_values
+import kotlinx.android.synthetic.main.fragment_tag_value_list.list_content
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -55,9 +55,9 @@ class TagValueListFragment : VglsFragment(),
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_tag_values.adapter = adapter
-        list_tag_values.layoutManager = LinearLayoutManager(context)
-        list_tag_values.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
+        list_content.adapter = adapter
+        list_content.layoutManager = LinearLayoutManager(context)
+        list_content.setInsetListenerForPadding(topOffset = topOffset, bottomOffset = bottomOffset)
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, state ->

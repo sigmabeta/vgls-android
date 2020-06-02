@@ -12,8 +12,6 @@ class ComposerRobot(
         checkScreenHeader(composerName, sheetCountText)
     }
 
-    override val maxScrolls = 2
-
     fun checkFirstSongIs(name: String): ComposerRobot {
         checkFirstItemHasTitleInternal(name)
         return this
