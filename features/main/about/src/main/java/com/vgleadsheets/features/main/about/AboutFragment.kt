@@ -28,6 +28,10 @@ class AboutFragment : VglsFragment(),
         }
     }
 
+    override fun clearClicked() {
+        TODO("Not yet implemented")
+    }
+
     override fun onClicked(clicked: SingleTextListModel) {
         when (clicked.dataId) {
             R.string.label_link_licenses.toLong() -> getFragmentRouter().showLicenseScreen()

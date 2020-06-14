@@ -11,6 +11,7 @@ data class NameCaptionListModel(
 
     interface EventHandler {
         fun onClicked(clicked: NameCaptionListModel)
+        fun clearClicked()
     }
 
     companion object {
