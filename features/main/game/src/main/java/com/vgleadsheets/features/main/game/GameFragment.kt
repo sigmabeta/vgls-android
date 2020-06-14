@@ -10,7 +10,6 @@ import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
 class GameFragment : AsyncListFragment<GameData, GameState>() {
     @Inject
     lateinit var gameViewModelFactory: GameViewModel.Factory
