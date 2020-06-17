@@ -15,6 +15,8 @@ class MockStorage : Storage {
 
     var savedSelectedPart: String = ""
 
+    var sheetScreenOn = false
+
     override fun getSavedTopLevelScreen() = Single.just(savedTopLevelScreen)
 
     override fun getSavedSelectedPart() = Single.just(savedSelectedPart)
@@ -38,12 +40,14 @@ class MockStorage : Storage {
         BooleanSetting(
             SimpleStorage.KEY_SHEETS_KEEP_SCREEN_ON,
             R.string.label_setting_screen_on,
-            false
+            sheetScreenOn
         )
     )
 
-    override fun saveSettingSheetScreenOn(setting: Boolean) =
-        Single.error<String>(NotImplementedError("Implement this!"))
+    override fun saveSettingSheetScreenOn(setting: Boolean) = Single.create<String> {
+        sheetScreenOn = setting
+        it.onSuccess(setting.toString())
+    }
 
     override fun getAllDebugSettings() = Single
         .concat(

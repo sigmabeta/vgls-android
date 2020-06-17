@@ -5,9 +5,12 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withChild
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.vgleadsheets.R
 import com.vgleadsheets.RecyclerViewMatcher
@@ -17,6 +20,8 @@ import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 
 abstract class ListRobot(test: ListUiTest) : Robot(test) {
+    protected val resources by lazy { test.activityRule.activity.resources }
+
     fun isHeaderWithTitleDisplayed(text: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
             isHeaderWithTitleDisplayedHelper(text)
@@ -57,6 +62,48 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
                 withText(subtitle)
             )
         )
+    }
+
+    protected fun checkBooleanSettingValueIsInternal(
+        title: String,
+        value: Boolean,
+        scrollPosition: Int? = null
+    ) {
+        scrollHelper(scrollPosition) {
+            val checkBox = onView(
+                allOf(
+                    withParent(
+                        withChild(
+                            allOf(
+                                withId(
+                                    R.id.text_name
+                                ),
+                                withText(
+                                    title
+                                )
+                            )
+                        )
+                    ),
+                    withId(
+                        R.id.checkbox_setting
+                    )
+                )
+            )
+
+            if (value) {
+                checkBox.check(
+                    matches(
+                        ViewMatchers.isChecked()
+                    )
+                )
+            } else {
+                checkBox.check(
+                    matches(
+                        ViewMatchers.isNotChecked()
+                    )
+                )
+            }
+        }
     }
 
     private fun checkFirstContentItem(

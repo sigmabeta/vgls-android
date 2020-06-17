@@ -25,7 +25,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
 import com.vgleadsheets.storage.Setting
-import kotlinx.android.synthetic.main.fragment_settings.list_settings
+import kotlinx.android.synthetic.main.fragment_settings.list_content
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -60,9 +60,9 @@ class SettingsFragment : VglsFragment(), CheckableListModel.EventHandler,
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_settings.adapter = adapter
-        list_settings.layoutManager = LinearLayoutManager(context)
-        list_settings.setInsetListenerForPadding(
+        list_content.adapter = adapter
+        list_content.layoutManager = LinearLayoutManager(context)
+        list_content.setInsetListenerForPadding(
             topOffset = topOffset,
             bottomOffset = bottomOffset
         )
