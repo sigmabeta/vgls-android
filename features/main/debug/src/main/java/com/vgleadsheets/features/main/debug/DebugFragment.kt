@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
-    SingleTextListModel.Handler, DropdownSettingListModel.EventHandler {
+    SingleTextListModel.EventHandler, DropdownSettingListModel.EventHandler {
     @Inject
     lateinit var debugViewModelFactory: DebugViewModel.Factory
 
@@ -49,6 +49,10 @@ class DebugFragment : VglsFragment(), CheckableListModel.EventHandler,
 
     override fun onClicked(clicked: CheckableListModel) {
         TODO("Implement this!")
+    }
+
+    override fun clearClickedSingleTextModel() {
+        TODO("Not yet implemented")
     }
 
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {

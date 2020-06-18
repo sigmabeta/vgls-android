@@ -14,7 +14,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_about.list_content
 
 class AboutFragment : VglsFragment(),
-    SingleTextListModel.Handler,
+    SingleTextListModel.EventHandler,
     NameCaptionListModel.EventHandler {
     private val adapter = ComponentAdapter()
 
@@ -29,6 +29,10 @@ class AboutFragment : VglsFragment(),
     }
 
     override fun clearClicked() {
+        TODO("Not yet implemented")
+    }
+
+    override fun clearClickedSingleTextModel() {
         TODO("Not yet implemented")
     }
 
