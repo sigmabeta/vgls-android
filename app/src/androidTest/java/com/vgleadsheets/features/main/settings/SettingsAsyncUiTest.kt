@@ -60,6 +60,18 @@ class SettingsAsyncUiTest : ListUiTest() {
     }
 
     @Test
+    fun clickAboutAndVglsLaunchesWebBrowser() {
+        settings(this) {
+            clickSettingWithTitle(R.string.label_link_about)
+        }
+
+        about(this) {
+            clickSettingWithTitle(R.string.label_link_vgls)
+            checkWebBrowserLaunchedUrl("https://www.vgleadsheets.com/")
+        }
+    }
+
+    @Test
     fun clickAboutAndGiantBombLaunchesWebBrowser() {
         settings(this) {
             clickSettingWithTitle(R.string.label_link_about)

@@ -22,6 +22,8 @@ class AboutFragment : VglsFragment(),
 
     override fun onClicked(clicked: NameCaptionListModel) {
         when (clicked.dataId) {
+            R.string.label_link_vgls.toLong() -> getFragmentRouter()
+                .goToWebUrl(getString(R.string.url_vgls))
             R.string.label_link_giantbomb.toLong() -> getFragmentRouter()
                 .goToWebUrl(getString(R.string.url_giantbomb))
             else -> showError("Unimplemented.")
@@ -73,15 +75,21 @@ class AboutFragment : VglsFragment(),
         SectionHeaderListModel(
             getString(R.string.label_section_about_app)
         ),
-        SingleTextListModel(
-            R.string.label_link_licenses.toLong(),
-            getString(R.string.label_link_licenses),
+        NameCaptionListModel(
+            R.string.label_link_vgls.toLong(),
+            getString(R.string.label_link_vgls),
+            getString(R.string.caption_link_vgls),
             this
         ),
         NameCaptionListModel(
             R.string.label_link_giantbomb.toLong(),
             getString(R.string.label_link_giantbomb),
             getString(R.string.caption_link_giantbomb),
+            this
+        ),
+        SingleTextListModel(
+            R.string.label_link_licenses.toLong(),
+            getString(R.string.label_link_licenses),
             this
         )
     )
