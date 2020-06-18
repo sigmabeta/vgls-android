@@ -22,7 +22,7 @@ abstract class UiTest {
     lateinit var vglsDatabase: VglsDatabase
 
     @get:Rule
-    val activityRule = ActivityTestRule(
+    open val activityRule = ActivityTestRule(
         MainActivity::class.java,
         false,
         false

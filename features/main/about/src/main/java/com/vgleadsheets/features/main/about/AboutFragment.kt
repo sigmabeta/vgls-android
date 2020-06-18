@@ -11,7 +11,7 @@ import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_about.list_abouts
+import kotlinx.android.synthetic.main.fragment_about.list_content
 
 class AboutFragment : VglsFragment(),
     SingleTextListModel.Handler,
@@ -46,9 +46,9 @@ class AboutFragment : VglsFragment(),
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_abouts.adapter = adapter
-        list_abouts.layoutManager = LinearLayoutManager(context)
-        list_abouts.setInsetListenerForPadding(
+        list_content.adapter = adapter
+        list_content.layoutManager = LinearLayoutManager(context)
+        list_content.setInsetListenerForPadding(
             topOffset = topOffset,
             bottomOffset = bottomOffset
         )

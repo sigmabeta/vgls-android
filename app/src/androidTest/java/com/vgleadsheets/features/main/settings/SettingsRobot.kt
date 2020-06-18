@@ -5,6 +5,10 @@ import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
 class SettingsRobot(test: ListUiTest) : ListRobot(test) {
+    init {
+        isHeaderWithTitleDisplayed("Sheets", 0)
+    }
+
     fun clickSettingWithTitle(@StringRes titleId: Int, scrollPosition: Int? = null) {
         val titleString = resources.getString(titleId)
         clickItemWithTitle(titleString, scrollPosition)
