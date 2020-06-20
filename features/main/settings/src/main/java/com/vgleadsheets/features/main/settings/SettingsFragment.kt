@@ -4,7 +4,6 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
 class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
     @Inject
     lateinit var settingsViewModelFactory: SettingsViewModel.Factory
