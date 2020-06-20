@@ -2,6 +2,7 @@ package com.vgleadsheets.features.main.jam
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -38,7 +39,10 @@ class JamViewModel @AssistedInject constructor(
     fun deleteJam() = withState {
         repository.removeJam(it.jamId)
             .execute {
-                copy(deletion = it)
+                copy(
+                    deletion = it,
+                    setlistRefresh = Uninitialized
+                )
             }
     }
 

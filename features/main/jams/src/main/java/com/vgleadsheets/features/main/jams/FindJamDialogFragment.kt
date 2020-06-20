@@ -100,6 +100,8 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
                     } else {
                         showError("Could not find Jam: ${it.message}")
                     }
+
+                    Timber.e("Error finding Jam: ${it.message}")
                 }
             )
 

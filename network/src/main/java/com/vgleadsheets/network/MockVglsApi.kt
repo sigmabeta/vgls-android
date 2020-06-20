@@ -4,12 +4,19 @@ import com.vgleadsheets.model.composer.ApiComposer
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.ApiSetlist
+import com.vgleadsheets.model.jam.ApiSongHistoryEntry
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.time.ApiTime
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.json.JSONObject
+import retrofit2.HttpException
+import retrofit2.Response
 import timber.log.Timber
+import java.net.HttpURLConnection
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
@@ -26,6 +33,8 @@ class MockVglsApi(
     private var possibleComposers: List<ApiComposer>? = null
 
     private var remainingSongs: Stack<ApiSong>? = null
+
+    private var possibleSongs: List<ApiSong>? = null
 
     var generateEmptyState = false
 
@@ -55,16 +64,71 @@ class MockVglsApi(
         .firstOrError()
         .subscribeOn(Schedulers.io())
 
-    override fun getJamState(name: String): Observable<ApiJam> =
-        Observable.error(NotImplementedError())
+    override fun getJamState(name: String) = Observable.create<ApiJam> {
+        if (possibleSongs == null) {
+            generateGames()
+        }
+
+        if (name.length % 2 > 0) {
+            val jsonObject = JSONObject()
+
+            jsonObject.put("error", "Only jam names of even-numbered length are valid!")
+
+            val body = jsonObject
+                .toString()
+                .toResponseBody("application/json; charset=utf-8".toMediaTypeOrNull())
+
+            it.onError(
+                HttpException(
+                    Response.error<Unit>(
+                        HttpURLConnection.HTTP_NOT_FOUND,
+                        body
+                    )
+                )
+            )
+
+            return@create
+        }
+
+        val jamRandomGenerator = Random(name.hashCode().toLong())
+
+        val jamId = jamRandomGenerator.nextLong()
+
+        val previousJamsSize = jamRandomGenerator.nextInt(10) + 1
+        val previousJams = ArrayList<ApiSongHistoryEntry>(previousJamsSize)
+
+        for (jamIndex in 0 until previousJamsSize) {
+            val possibleSongsSize = possibleSongs?.size ?: 0
+            val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
+
+            val song = possibleSongs?.get(possibleSongIndex)
+
+            if (song != null) {
+                val entry = ApiSongHistoryEntry(song.id)
+                previousJams.add(entry)
+            } else {
+                Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
+            }
+        }
+
+        val jam = ApiJam(
+            jamId,
+            previousJams
+        )
+
+        it.onNext(jam)
+    }
 
     override fun getSetlistForJam(name: String): Single<ApiSetlist> =
-        Single.error(NotImplementedError())
+        Single.error(
+            NotImplementedError("Get setlist for jam not implemented")
+        )
 
     private fun generateGames(): List<VglsApiGame> {
         possibleTags = null
         possibleComposers = null
         remainingSongs = null
+        possibleSongs = null
 
         random.setSeed(seed)
 
@@ -141,6 +205,7 @@ class MockVglsApi(
         }
 
         remainingSongs = songs
+        possibleSongs = songs.toList()
     }
 
     private fun generateSong() = ApiSong(
