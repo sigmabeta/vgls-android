@@ -331,7 +331,7 @@ class SearchViewModel @AssistedInject constructor(
         ?.isNotEmpty() ?: false
 
     private fun createLoadingListModels(sectionId: Int) = listOf(
-        LoadingNameCaptionListModel(sectionId)
+        LoadingNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
     )
 
     private fun getPlaceholderId(model: Any) = when (model) {

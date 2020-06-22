@@ -26,6 +26,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
+import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -66,7 +67,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         val jamName = edit_jam_name.text.toString()
 
         if (jamName.isNotBlank()) {
-            findJam(jamName)
+            findJam(jamName.toLowerCase(Locale.getDefault()))
         } else {
             showError("Jam name can't be empty.")
         }

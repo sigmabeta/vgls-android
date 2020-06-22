@@ -86,7 +86,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
         for (index in 0 until LOADING_ITEMS) {
             listModels.add(
-                LoadingNameCaptionListModel(index)
+                LoadingNameCaptionListModel("allData", index)
             )
         }
 

@@ -1,5 +1,6 @@
 package com.vgleadsheets.features.main.jams
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_jam_list.list_jams
+import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -102,7 +104,7 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
 
         for (index in 0 until LOADING_ITEMS) {
             listModels.add(
-                LoadingNameCaptionListModel(index)
+                LoadingNameCaptionListModel("allData", index)
             )
         }
 
@@ -132,7 +134,7 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
 
             NameCaptionListModel(
                 it.id,
-                it.name,
+                it.name.toTitleCase(),
                 generateSubtitleText(it.currentSong),
                 this
             )
@@ -144,6 +146,20 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
         currentSong.name,
         currentSong.gameName
     )
+
+    @OptIn(ExperimentalStdlibApi::class)
+    @SuppressLint("DefaultLocale")
+    private fun String.toTitleCase() = this
+        .replace("_", " ")
+        .split(" ")
+        .map {
+            if (it != "the") {
+                it.capitalize(Locale.getDefault())
+            } else {
+                it
+            }
+        }
+        .joinToString(" ")
 
     companion object {
         const val LOADING_ITEMS = 15
