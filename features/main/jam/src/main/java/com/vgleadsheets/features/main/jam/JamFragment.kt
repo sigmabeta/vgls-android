@@ -34,6 +34,7 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_jam.list_jam_options
+import timber.log.Timber
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -137,7 +138,7 @@ class JamFragment : VglsFragment(),
 
     private fun createTitleListModel(jam: Async<Jam>) = when (jam) {
         // TODO Loading state for title items
-        is Loading, Uninitialized -> createLoadingListModels()
+        is Loading, Uninitialized -> createLoadingListModels("Title")
         is Fail -> createErrorStateListModel(jam.error)
         is Success -> listOf(
             TitleListModel(
@@ -154,7 +155,7 @@ class JamFragment : VglsFragment(),
         setlist: Async<List<SetlistEntry>>,
         setlistRefresh: Async<List<Long>>,
         selectedPart: PartSelectorItem
-    ) = createCtaListModels() +
+    ) = createCtaListModels(jam) +
             createJamListModels(jam, jamRefresh, selectedPart) +
             createSetlistListModels(setlist, setlistRefresh, selectedPart) +
             createSongHistoryListModels(jam, selectedPart)
@@ -169,7 +170,7 @@ class JamFragment : VglsFragment(),
         } else emptyList()
 
         val jamListModels = when (jam) {
-            is Loading, Uninitialized -> createLoadingListModels()
+            is Loading, Uninitialized -> createLoadingListModels("JamList")
             is Fail -> createErrorStateListModel(jam.error)
             is Success -> createSuccessListModels(jam(), selectedPart)
         }
@@ -218,7 +219,7 @@ class JamFragment : VglsFragment(),
         }
 
         val jamListModels = when (setlist) {
-            is Loading, Uninitialized -> createLoadingListModels()
+            is Loading, Uninitialized -> createLoadingListModels("SetList")
             is Fail -> createErrorStateListModel(setlist.error)
             is Success -> createSuccessListModels(setlist(), selectedPart)
         }
@@ -265,7 +266,7 @@ class JamFragment : VglsFragment(),
         jam: Async<Jam>,
         selectedPart: PartSelectorItem
     ) = when (jam) {
-        is Loading, Uninitialized -> createLoadingListModels()
+        is Loading, Uninitialized -> createLoadingListModels("SongHistory")
         is Fail -> createErrorStateListModel(jam.error)
         is Success -> createSuccessListModelsForSongHistory(jam().songHistory!!, selectedPart)
     }
@@ -300,35 +301,40 @@ class JamFragment : VglsFragment(),
         }
     }
 
-    private fun createLoadingListModels(): List<ListModel> {
+    private fun createLoadingListModels(sectionId: String): List<ListModel> {
         val listModels = ArrayList<ListModel>(LOADING_ITEMS)
 
         for (index in 0 until LOADING_ITEMS) {
+            Timber.i("Creating loading item $index")
             listModels.add(
-                LoadingNameCaptionListModel("allData", index)
+                LoadingNameCaptionListModel(sectionId, index)
             )
         }
 
         return listModels
     }
 
-    private fun createCtaListModels() = listOf(
-        CtaListModel(
-            R.drawable.ic_playlist_play_black_24dp,
-            getString(R.string.cta_follow_jam),
-            this
-        ),
-        CtaListModel(
-            R.drawable.ic_refresh_24dp,
-            getString(R.string.cta_refresh_jam),
-            this
-        ),
-        CtaListModel(
-            R.drawable.ic_delete_black_24dp,
-            getString(R.string.cta_delete_jam),
-            this
+    private fun createCtaListModels(jam: Async<Jam>) = when (jam) {
+        // TODO Loading state for title items
+        is Loading, Uninitialized -> createLoadingListModels("Cta")
+        is Fail, is Success -> listOf(
+            CtaListModel(
+                R.drawable.ic_playlist_play_black_24dp,
+                getString(R.string.cta_follow_jam),
+                this
+            ),
+            CtaListModel(
+                R.drawable.ic_refresh_24dp,
+                getString(R.string.cta_refresh_jam),
+                this
+            ),
+            CtaListModel(
+                R.drawable.ic_delete_black_24dp,
+                getString(R.string.cta_delete_jam),
+                this
+            )
         )
-    )
+    }
 
     private fun createErrorStateListModel(error: Throwable) =
         listOf(ErrorStateListModel(error.message ?: "Unknown Error"))

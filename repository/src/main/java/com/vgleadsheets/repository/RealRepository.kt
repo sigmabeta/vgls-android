@@ -526,7 +526,7 @@ class RealRepository constructor(
                     songHistoryEntry.toSongHistoryEntryEntity(it.jam_id, songHistoryIndex++)
                 }
 
-            val jamEntity = it.toJamEntity(name.toTitleCase())
+            val jamEntity = it.toJamEntity(name.toLowerCase(Locale.getDefault()))
 
             jamDao.upsertJam(songHistoryEntryDao, jamEntity, songHistoryEntries)
             return@doOnNext
