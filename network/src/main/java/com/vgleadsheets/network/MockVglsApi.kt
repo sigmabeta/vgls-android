@@ -4,6 +4,7 @@ import com.vgleadsheets.model.composer.ApiComposer
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.ApiSetlist
+import com.vgleadsheets.model.jam.ApiSetlistEntry
 import com.vgleadsheets.model.jam.ApiSongHistoryEntry
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.time.ApiTime
@@ -90,16 +91,19 @@ class MockVglsApi(
             return@create
         }
 
-        val jamRandomGenerator = Random(name.hashCode().toLong())
+        val jamSeed = name.hashCode().toLong()
 
+        val jamRandomGenerator = Random(jamSeed)
         val jamId = jamRandomGenerator.nextLong()
 
         val previousJamsSize = jamRandomGenerator.nextInt(10) + 1
         val previousJams = ArrayList<ApiSongHistoryEntry>(previousJamsSize)
 
-        for (jamIndex in 0 until previousJamsSize) {
+        for (entryIndex in 0 until previousJamsSize) {
             val possibleSongsSize = possibleSongs?.size ?: 0
             val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
+
+            Timber.w("History entry $entryIndex will be possible song with index: $possibleSongIndex")
 
             val song = possibleSongs?.get(possibleSongIndex)
 
@@ -117,12 +121,44 @@ class MockVglsApi(
         )
 
         it.onNext(jam)
-    }
+    }.subscribeOn(Schedulers.io())
 
-    override fun getSetlistForJam(name: String): Single<ApiSetlist> =
-        Single.error(
-            NotImplementedError("Get setlist for jam not implemented")
+    override fun getSetlistForJam(name: String) = Single.create<ApiSetlist> {
+        if (possibleSongs == null) {
+            generateGames()
+        }
+
+        val jamRandomGenerator = Random(name.hashCode().toLong())
+
+        val setlistSize = if (name.length % 4 > 0) {
+            0
+        } else {
+            jamRandomGenerator.nextInt(5) + 1
+        }
+
+        val songs = ArrayList<ApiSetlistEntry>(setlistSize)
+
+        for (jamIndex in 0 until setlistSize) {
+            val possibleSongsSize = possibleSongs?.size ?: 0
+            val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
+
+            val song = possibleSongs?.get(possibleSongIndex)
+
+            if (song != null) {
+
+                val entry = ApiSetlistEntry(song.id, "Mocks Don't Name Games Yet", song.name)
+                songs.add(entry)
+            } else {
+                Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
+            }
+        }
+
+        val setlist = ApiSetlist(
+            songs
         )
+
+        it.onSuccess(setlist)
+    }.subscribeOn(Schedulers.io())
 
     private fun generateGames(): List<VglsApiGame> {
         possibleTags = null
@@ -205,7 +241,7 @@ class MockVglsApi(
         }
 
         remainingSongs = songs
-        possibleSongs = songs.toList()
+        possibleSongs = songs.toMutableList()
     }
 
     private fun generateSong() = ApiSong(
