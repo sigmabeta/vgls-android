@@ -46,4 +46,33 @@ class ComponentAdapter :
     override fun getItemId(position: Int) = getItem(position).dataId
 
     override fun getItemViewType(position: Int) = getItem(position).layoutId
+
+    override fun submitList(list: List<ListModel>?) {
+        val ids = list?.map {
+            it.dataId
+        }
+
+        val distinctIds = ids?.distinct()
+
+        if (ids?.size != distinctIds?.size) {
+            val duplicateModels = list!!
+                .groupBy { it.dataId }
+                .filter { it.value.size > 1 }
+
+            val builder = StringBuilder("Dataset contains duplicate ids!\n")
+            duplicateModels.forEach { entry ->
+                val duplicateId = entry.key
+                builder.append("ListModels with id $duplicateId:\n")
+                val modelsWithThisId = entry.value
+
+                modelsWithThisId.forEach { model ->
+                    builder.append("$model\n")
+                }
+            }
+
+            throw IllegalStateException(builder.toString())
+        }
+
+        super.submitList(list)
+    }
 }
