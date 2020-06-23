@@ -66,7 +66,12 @@ class ComponentAdapter :
                 val modelsWithThisId = entry.value
 
                 modelsWithThisId.forEach { model ->
-                    builder.append("$model\n")
+                    val toAppend = if (model.doesNonNullHandlerExist()) {
+                        model.javaClass.simpleName
+                    } else {
+                        model.toString()
+                    }
+                    builder.append("$toAppend\n")
                 }
             }
 
@@ -74,5 +79,16 @@ class ComponentAdapter :
         }
 
         super.submitList(list)
+    }
+
+    fun Any.doesNonNullHandlerExist(): Boolean {
+        val methods = javaClass.methods
+        for (method in methods) {
+            if (method.name == "getHandler") {
+                val value = method.invoke(this)
+                return value != null
+            }
+        }
+        return false
     }
 }
