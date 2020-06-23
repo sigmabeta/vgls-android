@@ -25,7 +25,7 @@ import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_jam_list.list_jams
+import kotlinx.android.synthetic.main.fragment_jam_list.list_content
 import java.util.Locale
 import javax.inject.Inject
 
@@ -60,9 +60,9 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_jams.adapter = adapter
-        list_jams.layoutManager = LinearLayoutManager(context)
-        list_jams.setInsetListenerForPadding(
+        list_content.adapter = adapter
+        list_content.layoutManager = LinearLayoutManager(context)
+        list_content.setInsetListenerForPadding(
             topOffset = topOffset,
             bottomOffset = bottomOffset
         )

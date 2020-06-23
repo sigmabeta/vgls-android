@@ -17,10 +17,6 @@ class GameListRobot(test: ListUiTest) : ListRobot(test) {
         checkFirstItemHasTitleInternal(title)
         return this
     }
-
-    fun clickGameWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithTitle(title, scrollPosition)
-    }
 }
 
 fun gameList(

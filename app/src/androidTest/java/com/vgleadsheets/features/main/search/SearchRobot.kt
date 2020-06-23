@@ -20,10 +20,6 @@ class SearchRobot(test: ListUiTest): ListRobot(test) {
             )
         )
     }
-
-    fun clickResultWithText(text: String, scrollPosition: Int? = null) {
-        clickItemWithTitle(text, scrollPosition)
-    }
 }
 
 fun search(

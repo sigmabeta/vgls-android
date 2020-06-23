@@ -21,10 +21,6 @@ class ComposerRobot(
         checkFirstItemHasSubtitleInternal(name)
         return this
     }
-
-    fun clickSongWithTitle(name: String, scrollPosition: Int? = null) {
-        clickItemWithTitle(name, scrollPosition)
-    }
 }
 
 fun composer(

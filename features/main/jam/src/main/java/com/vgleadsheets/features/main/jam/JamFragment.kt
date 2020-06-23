@@ -1,5 +1,6 @@
 package com.vgleadsheets.features.main.jam
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_jam.list_jam_options
 import timber.log.Timber
+import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -143,7 +145,7 @@ class JamFragment : VglsFragment(),
         is Success -> listOf(
             TitleListModel(
                 R.string.subtitle_jam.toLong(),
-                jam().name,
+                jam().name.toTitleCase(),
                 getString(R.string.subtitle_jam)
             )
         )
@@ -354,6 +356,20 @@ class JamFragment : VglsFragment(),
     private fun deleteJam() {
         viewModel.deleteJam()
     }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    @SuppressLint("DefaultLocale")
+    private fun String.toTitleCase() = this
+        .replace("_", " ")
+        .split(" ")
+        .map {
+            if (it != "the") {
+                it.capitalize(Locale.getDefault())
+            } else {
+                it
+            }
+        }
+        .joinToString(" ")
 
     companion object {
         const val LOADING_ITEMS = 2

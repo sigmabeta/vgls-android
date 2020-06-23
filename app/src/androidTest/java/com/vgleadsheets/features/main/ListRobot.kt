@@ -1,13 +1,15 @@
 package com.vgleadsheets.features.main
 
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isNotChecked
 import androidx.test.espresso.matcher.ViewMatchers.withChild
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
@@ -34,9 +36,98 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         }
     }
 
-    protected fun clickItemWithTitle(text: String, scrollPosition: Int? = null) {
+    fun checkSheetHasTitleAndSubtitle(
+        title: String,
+        subtitle: String,
+        scrollPosition: Int? = null
+    ) {
         scrollHelper(scrollPosition) {
-            clickItemWithTitleHelper(text)
+            onView(
+                allOf(
+                    withId(R.id.component_image_name_caption),
+                    withChild(
+                        allOf(
+                            withId(R.id.text_name),
+                            withText(title)
+                        )
+                    ),
+                    withChild(
+                        allOf(
+                            withId(R.id.text_caption),
+                            withText(subtitle)
+                        )
+                    )
+                )
+            ).check(
+                matches(
+                    isDisplayed()
+                )
+            )
+        }
+    }
+
+    fun clickSheetWithTitle(
+        title: String,
+        scrollPosition: Int? = null
+    ) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_image_name_caption, title)
+        }
+    }
+
+    fun clickJamWithTitle(
+        title: String,
+        scrollPosition: Int? = null
+    ) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_name_caption, title)
+        }
+    }
+
+    fun clickCtaWithTitle(
+        title: String,
+        scrollPosition: Int? = null
+    ) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_cta, title)
+        }
+    }
+
+    fun clickComposerWithTitle(
+        title: String,
+        scrollPosition: Int? = null
+    ) {
+        clickGbItemWithTitleHelper(scrollPosition, title)
+    }
+
+    fun clickGameWithTitle(
+        title: String,
+        scrollPosition: Int? = null
+    ) {
+        clickGbItemWithTitleHelper(scrollPosition, title)
+    }
+
+    fun clickTagWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_name_caption, title)
+        }
+    }
+
+    fun clickCheckboxWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_checkable, title)
+        }
+    }
+
+    fun clickLinkWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_single_line, title)
+        }
+    }
+
+    fun clickTwoLineLinkWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_name_caption, title)
         }
     }
 
@@ -93,16 +184,38 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
             if (value) {
                 checkBox.check(
                     matches(
-                        ViewMatchers.isChecked()
+                        isChecked()
                     )
                 )
             } else {
                 checkBox.check(
                     matches(
-                        ViewMatchers.isNotChecked()
+                        isNotChecked()
                     )
                 )
             }
+        }
+    }
+
+    private fun clickComponentWithTitle(@IdRes componentType: Int, title: String) {
+        onView(
+            allOf(
+                withId(componentType),
+                withChild(
+                    allOf(
+                        withId(R.id.text_name),
+                        withText(title)
+                    )
+                )
+            )
+        ).perform(
+            click()
+        )
+    }
+
+    private fun clickGbItemWithTitleHelper(scrollPosition: Int?, title: String) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_gb_image_name_caption, title)
         }
     }
 
@@ -151,21 +264,6 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
             matches(
                 isDisplayed()
             )
-        )
-    }
-
-    private fun clickItemWithTitleHelper(text: String) {
-        onView(
-            allOf(
-                withId(
-                    R.id.text_name
-                ),
-                withText(
-                    text
-                )
-            )
-        ).perform(
-            click()
         )
     }
 

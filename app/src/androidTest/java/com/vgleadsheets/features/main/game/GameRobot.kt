@@ -21,10 +21,6 @@ class GameRobot(
         checkFirstItemHasSubtitleInternal(name)
         return this
     }
-
-    fun clickSongWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithTitle(title, scrollPosition)
-    }
 }
 
 fun game(

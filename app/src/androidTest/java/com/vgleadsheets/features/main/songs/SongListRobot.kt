@@ -17,10 +17,6 @@ class SongListRobot(test: ListUiTest) : ListRobot(test) {
         checkFirstItemHasTitleInternal(title)
         return this
     }
-
-    fun clickSongWithTitle(title: String) {
-        clickItemWithTitle(title)
-    }
 }
 
 fun songList(

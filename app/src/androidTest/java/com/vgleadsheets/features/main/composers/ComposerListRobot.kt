@@ -17,10 +17,6 @@ class ComposerListRobot(test: ListUiTest) : ListRobot(test) {
         checkFirstItemHasTitleInternal(title)
         return this
     }
-
-    fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithTitle(title, scrollPosition)
-    }
 }
 
 fun composerList(

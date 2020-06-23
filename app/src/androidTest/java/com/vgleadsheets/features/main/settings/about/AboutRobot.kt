@@ -1,7 +1,6 @@
 package com.vgleadsheets.features.main.settings.about
 
 import android.content.Intent
-import androidx.annotation.StringRes
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intended
@@ -17,11 +16,6 @@ import org.hamcrest.Matchers.allOf
 class AboutRobot(test: ListUiTest) : ListRobot(test) {
     init {
         isHeaderWithTitleDisplayed("About VGLeadSheets", 0)
-    }
-
-    fun clickSettingWithTitle(@StringRes titleId: Int, scrollPosition: Int? = null) {
-        val titleString = resources.getString(titleId)
-        clickItemWithTitle(titleString, scrollPosition)
     }
 
     fun checkLicenseViewIsVisible() {

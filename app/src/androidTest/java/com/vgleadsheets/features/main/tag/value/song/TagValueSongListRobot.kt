@@ -20,10 +20,6 @@ class TagValueSongListRobot(
     fun checkFirstSongGameIs(name: String) {
         checkFirstItemHasSubtitleInternal(name)
     }
-
-    fun clickSongWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithTitle(title, scrollPosition)
-    }
 }
 
 fun tagValueSongList(

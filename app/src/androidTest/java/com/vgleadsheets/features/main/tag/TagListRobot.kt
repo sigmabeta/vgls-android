@@ -12,10 +12,6 @@ class TagListRobot(test: ListUiTest): ListRobot(test) {
         checkFirstItemHasTitleInternal(title)
         checkFirstItemHasSubtitleInternal(subtitle)
     }
-
-    fun clickTagWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithTitle(title, scrollPosition)
-    }
 }
 
 fun tagList(

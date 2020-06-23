@@ -14,6 +14,8 @@ class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun subscribeToViewEvents() {
+        hudViewModel.alwaysShowBack()
+
         viewModel.selectSubscribe(
             DebugState::changed,
             deliveryMode = uniqueOnly("changed")

@@ -19,7 +19,7 @@ class TagsAsyncUiTest : ListUiTest() {
 
         tagValueList(this, TAG_KEY_ARBITRARY_TITLE, TAG_KEY_ARBITRARY_OPTION_COUNT) {
             checkFirstTagValueIs(TAG_KEY_ARBITRARY_VALUE_FIRST_TITLE, TAG_KEY_ARBITRARY_VALUE_FIRST_SUBTITLE)
-            clickTagValueWithTitle(
+            clickTagWithTitle(
                 TAG_KEY_ARBITRARY_VALUE_ARBITRARY_TITLE,
                 TAG_KEY_ARBITRARY_VALUE_ARBITRARY_SCROLL_POS
             )
@@ -32,7 +32,7 @@ class TagsAsyncUiTest : ListUiTest() {
         ) {
             checkFirstSongIs(TAG_KEY_ARBITRARY_VALUE_ARBITRARY_SONG_FIRST_TITLE)
             checkFirstSongGameIs(TAG_KEY_ARBITRARY_VALUE_ARBITRARY_SONG_FIRST_SUBTITLE)
-            clickSongWithTitle(
+            clickSheetWithTitle(
                 TAG_KEY_ARBITRARY_VALUE_ARBITRARY_SONG_ARBITRARY_TITLE,
                 TAG_KEY_ARBITRARY_VALUE_ARBITRARY_SONG_ARBITRARY_SCROLL_POS
             )

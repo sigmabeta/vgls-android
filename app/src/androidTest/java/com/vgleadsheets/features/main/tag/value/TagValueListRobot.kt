@@ -16,10 +16,6 @@ class TagValueListRobot(
         checkFirstItemHasTitleInternal(title)
         checkFirstItemHasSubtitleInternal(subtitle)
     }
-
-    fun clickTagValueWithTitle(title: String, scrollPosition: Int? = null) {
-        clickItemWithTitle(title, scrollPosition)
-    }
 }
 
 fun tagValueList(

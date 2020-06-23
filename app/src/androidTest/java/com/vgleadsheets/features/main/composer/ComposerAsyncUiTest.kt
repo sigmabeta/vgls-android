@@ -18,7 +18,7 @@ class ComposerAsyncUiTest : ListUiTest() {
         composer(this, COMPOSER_FIRST_TITLE, COMPOSER_FIRST_SHEET_COUNT) {
             checkFirstSongIs(COMPOSER_FIRST_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_FIRST_SHEET_GAME_FIRST)
-            clickSongWithTitle(COMPOSER_FIRST_SHEET_TITLE_FIRST)
+            clickSheetWithTitle(COMPOSER_FIRST_SHEET_TITLE_FIRST)
         }
 
         viewer {
@@ -35,7 +35,7 @@ class ComposerAsyncUiTest : ListUiTest() {
         composer(this, COMPOSER_FIRST_TITLE, COMPOSER_FIRST_SHEET_COUNT) {
             checkFirstSongIs(COMPOSER_FIRST_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_FIRST_SHEET_GAME_FIRST)
-            clickSongWithTitle(COMPOSER_FIRST_SHEET_TITLE_ARBITRARY)
+            clickSheetWithTitle(COMPOSER_FIRST_SHEET_TITLE_ARBITRARY)
         }
     }
 
@@ -48,7 +48,7 @@ class ComposerAsyncUiTest : ListUiTest() {
         composer(this, COMPOSER_ARBITRARY_TITLE, COMPOSER_ARBITRARY_SHEET_COUNT) {
             checkFirstSongIs(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_ARBITRARY_SHEET_GAME_FIRST)
-            clickSongWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
+            clickSheetWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
         }
 
         viewer {
@@ -65,7 +65,7 @@ class ComposerAsyncUiTest : ListUiTest() {
         composer(this, COMPOSER_ARBITRARY_TITLE, COMPOSER_ARBITRARY_SHEET_COUNT) {
             checkFirstSongIs(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_ARBITRARY_SHEET_GAME_FIRST)
-            clickSongWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_ARBITRARY)
+            clickSheetWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_ARBITRARY)
         }
 
         viewer {

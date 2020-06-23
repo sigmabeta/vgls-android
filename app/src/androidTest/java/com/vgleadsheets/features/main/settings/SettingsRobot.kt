@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.settings
 
-import androidx.annotation.StringRes
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
@@ -9,18 +8,12 @@ class SettingsRobot(test: ListUiTest) : ListRobot(test) {
         isHeaderWithTitleDisplayed("Sheets", 0)
     }
 
-    fun clickSettingWithTitle(@StringRes titleId: Int, scrollPosition: Int? = null) {
-        val titleString = resources.getString(titleId)
-        clickItemWithTitle(titleString, scrollPosition)
-    }
-
     fun checkBooleanSettingValueIs(
-        @StringRes titleId: Int,
+        title: String,
         value: Boolean,
         scrollPosition: Int? = null
     ) {
-        val titleString = resources.getString(titleId)
-        checkBooleanSettingValueIsInternal(titleString, value, scrollPosition)
+        checkBooleanSettingValueIsInternal(title, value, scrollPosition)
     }
 }
 

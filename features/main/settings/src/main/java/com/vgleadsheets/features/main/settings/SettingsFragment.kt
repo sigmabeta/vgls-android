@@ -13,6 +13,8 @@ class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun subscribeToViewEvents() {
+        hudViewModel.alwaysShowBack()
+
         viewModel.selectSubscribe(SettingsState::clickedSingleTextModel) {
             val clickedId = it?.dataId
 

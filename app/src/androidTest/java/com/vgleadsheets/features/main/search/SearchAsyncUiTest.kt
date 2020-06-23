@@ -56,7 +56,7 @@ class SearchAsyncUiTest : ListUiTest() {
             waitForUi()
 
             isHeaderWithTitleDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
-            clickResultWithText(RESULT_TITLE_SONG, SCROLL_POS_RESULT_SONG)
+            clickSheetWithTitle(RESULT_TITLE_SONG, SCROLL_POS_RESULT_SONG)
         }
 
         viewer {
@@ -78,7 +78,7 @@ class SearchAsyncUiTest : ListUiTest() {
 
             isHeaderWithTitleDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
 
-            clickResultWithText(RESULT_TITLE_GAME, SCROLL_POS_RESULT_GAME)
+            clickGameWithTitle(RESULT_TITLE_GAME, SCROLL_POS_RESULT_GAME)
         }
 
         game(this, RESULT_TITLE_GAME, GAME_SUBTITLE_SHEET_COUNT) {
@@ -100,7 +100,7 @@ class SearchAsyncUiTest : ListUiTest() {
 
             isHeaderWithTitleDisplayed(SECTION_HEADER_SONGS, SCROLL_POS_HEADER_SONG)
 
-            clickResultWithText(RESULT_TITLE_COMPOSER, SCROLL_POS_RESULT_COMPOSER)
+            clickComposerWithTitle(RESULT_TITLE_COMPOSER, SCROLL_POS_RESULT_COMPOSER)
         }
 
         composer(this, RESULT_TITLE_COMPOSER, COMPOSER_SUBTITLE_SHEET_COUNT) {

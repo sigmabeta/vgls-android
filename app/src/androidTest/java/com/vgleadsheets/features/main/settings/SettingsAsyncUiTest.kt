@@ -28,20 +28,20 @@ class SettingsAsyncUiTest : ListUiTest() {
     @Test
     fun toggleSettingSheetsScreenOn() {
         settings(this) {
-            checkBooleanSettingValueIs(R.string.label_setting_screen_on, false, 1)
+            checkBooleanSettingValueIs("Sheets keep screen on", false, 1)
 
-            clickSettingWithTitle(R.string.label_setting_screen_on, 1)
-            checkBooleanSettingValueIs(R.string.label_setting_screen_on, true, 1)
+            clickCheckboxWithTitle("Sheets keep screen on", 1)
+            checkBooleanSettingValueIs("Sheets keep screen on", true, 1)
 
-            clickSettingWithTitle(R.string.label_setting_screen_on, 1)
-            checkBooleanSettingValueIs(R.string.label_setting_screen_on, false, 1)
+            clickCheckboxWithTitle("Sheets keep screen on", 1)
+            checkBooleanSettingValueIs("Sheets keep screen on", false, 1)
         }
     }
 
     @Test
     fun clickAboutLaunchesAboutScreen() {
         settings(this) {
-            clickSettingWithTitle(R.string.label_link_about)
+            clickLinkWithTitle("About this app", 3)
         }
 
         about(this) { }
@@ -50,11 +50,11 @@ class SettingsAsyncUiTest : ListUiTest() {
     @Test
     fun clickAboutAndOpenSourceLaunchesLicenseScreen() {
         settings(this) {
-            clickSettingWithTitle(R.string.label_link_about)
+            clickLinkWithTitle("About this app", 3)
         }
 
         about(this) {
-            clickSettingWithTitle(R.string.label_link_licenses)
+            clickLinkWithTitle("Open-source libraries used", 4)
             checkLicenseViewIsVisible()
         }
     }
@@ -62,11 +62,11 @@ class SettingsAsyncUiTest : ListUiTest() {
     @Test
     fun clickAboutAndVglsLaunchesWebBrowser() {
         settings(this) {
-            clickSettingWithTitle(R.string.label_link_about)
+            clickLinkWithTitle("About this app", 3)
         }
 
         about(this) {
-            clickSettingWithTitle(R.string.label_link_vgls)
+            clickTwoLineLinkWithTitle("VGLeadSheets.com", 2)
             checkWebBrowserLaunchedUrl("https://www.vgleadsheets.com/")
         }
     }
@@ -74,11 +74,11 @@ class SettingsAsyncUiTest : ListUiTest() {
     @Test
     fun clickAboutAndGiantBombLaunchesWebBrowser() {
         settings(this) {
-            clickSettingWithTitle(R.string.label_link_about)
+            clickLinkWithTitle("About this app")
         }
 
         about(this) {
-            clickSettingWithTitle(R.string.label_link_giantbomb)
+            clickTwoLineLinkWithTitle("Giant Bomb Wiki", 3)
             checkWebBrowserLaunchedUrl("https://www.giantbomb.com/")
         }
     }
