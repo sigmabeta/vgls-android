@@ -120,7 +120,7 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
     )
 
     private fun createErrorStateListModel(error: Throwable) =
-        arrayListOf(ErrorStateListModel(error.message ?: "Unknown Error"))
+        arrayListOf(ErrorStateListModel("allData", error.message ?: "Unknown Error"))
 
     private fun createSuccessListModels(jams: List<Jam>) = if (jams.isEmpty()) {
         arrayListOf(
@@ -131,7 +131,6 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
         )
     } else {
         jams.map {
-
             NameCaptionListModel(
                 it.id,
                 it.name.toTitleCase(),
@@ -141,10 +140,10 @@ class JamListFragment : VglsFragment(), NameCaptionListModel.EventHandler,
         }
     }
 
-    private fun generateSubtitleText(currentSong: Song) = getString(
+    private fun generateSubtitleText(currentSong: Song?) = getString(
         R.string.caption_jam,
-        currentSong.name,
-        currentSong.gameName
+        currentSong?.name ?: "Unknown Song",
+        currentSong?.gameName ?: "Unknown Game"
     )
 
     @OptIn(ExperimentalStdlibApi::class)

@@ -20,7 +20,7 @@ data class SongHistoryEntryEntity(
     val jam_id: Long,
     val song_id: Long
 ) {
-    fun toSongHistoryEntry(song: Song) = SongHistoryEntry(
+    fun toSongHistoryEntry(song: Song?) = SongHistoryEntry(
         id,
         song
     )

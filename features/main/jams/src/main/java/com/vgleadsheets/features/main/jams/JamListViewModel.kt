@@ -7,9 +7,6 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 
 class JamListViewModel @AssistedInject constructor(
     @Assisted initialState: JamListState,
@@ -17,15 +14,6 @@ class JamListViewModel @AssistedInject constructor(
 ) : MvRxViewModel<JamListState>(initialState) {
     init {
         fetchJams()
-    }
-
-    fun removeJam(dataId: Long) {
-        repository
-            .removeJam(dataId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, { Timber.e("Error removing Jam: ${it.message}") })
-            .disposeOnClear()
     }
 
     private fun fetchJams() {

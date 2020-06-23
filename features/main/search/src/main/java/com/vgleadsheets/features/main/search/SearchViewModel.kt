@@ -163,7 +163,10 @@ class SearchViewModel @AssistedInject constructor(
 
         if (query?.toLowerCase(Locale.getDefault())?.contains("stickerbr") == true) {
             return listOf(
-                ErrorStateListModel(resourceProvider.getString(R.string.error_search_stickerbrush))
+                ErrorStateListModel(
+                    "stickerbrush",
+                    resourceProvider.getString(R.string.error_search_stickerbrush)
+                )
             )
         }
 
@@ -202,7 +205,7 @@ class SearchViewModel @AssistedInject constructor(
         selectedPart: PartSelectorItem
     ) = when (results) {
         is Loading, Uninitialized -> createLoadingListModels(sectionId)
-        is Fail -> createErrorStateListModel(results.error)
+        is Fail -> createErrorStateListModel(resourceProvider.getString(sectionId), results.error)
         is Success -> createSectionSuccessModels(
             sectionId,
             results(),
@@ -332,6 +335,13 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun createLoadingListModels(sectionId: Int) = listOf(
         LoadingNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
+    )
+
+    private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(
+        ErrorStateListModel(
+            failedOperationName,
+            error.message ?: "Unknown Error"
+        )
     )
 
     private fun getPlaceholderId(model: Any) = when (model) {

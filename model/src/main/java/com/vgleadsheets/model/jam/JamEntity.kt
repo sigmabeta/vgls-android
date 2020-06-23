@@ -10,5 +10,5 @@ data class JamEntity(
     val name: String,
     val currentSheetId: Long
 ) {
-    fun toJam(currentSong: Song, songHistory: List<SongHistoryEntry>?) = Jam(id, name, currentSong, songHistory)
+    fun toJam(currentSong: Song?, songHistory: List<SongHistoryEntry>?) = Jam(id, name, currentSong, songHistory)
 }

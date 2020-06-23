@@ -34,7 +34,7 @@ import com.vgleadsheets.model.jam.SongHistoryEntry
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_jam.list_jam_options
+import kotlinx.android.synthetic.main.fragment_jam.list_content
 import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
@@ -83,9 +83,9 @@ class JamFragment : VglsFragment(),
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_jam_options.adapter = adapter
-        list_jam_options.layoutManager = LinearLayoutManager(context)
-        list_jam_options.setInsetListenerForPadding(
+        list_content.adapter = adapter
+        list_content.layoutManager = LinearLayoutManager(context)
+        list_content.setInsetListenerForPadding(
             topOffset = topOffset,
             bottomOffset = bottomOffset
         )
@@ -141,7 +141,7 @@ class JamFragment : VglsFragment(),
     private fun createTitleListModel(jam: Async<Jam>) = when (jam) {
         // TODO Loading state for title items
         is Loading, Uninitialized -> createLoadingListModels("Title")
-        is Fail -> createErrorStateListModel(jam.error)
+        is Fail -> createErrorStateListModel("title", jam.error)
         is Success -> listOf(
             TitleListModel(
                 R.string.subtitle_jam.toLong(),
@@ -173,7 +173,7 @@ class JamFragment : VglsFragment(),
 
         val jamListModels = when (jam) {
             is Loading, Uninitialized -> createLoadingListModels("JamList")
-            is Fail -> createErrorStateListModel(jam.error)
+            is Fail -> createErrorStateListModel("jam", jam.error)
             is Success -> createSuccessListModels(jam(), selectedPart)
         }
 
@@ -185,7 +185,7 @@ class JamFragment : VglsFragment(),
         selectedPart: PartSelectorItem
     ): List<ListModel> {
         val thumbUrl = jam.currentSong
-            .parts
+            ?.parts
             ?.getPartMatchingSelection(selectedPart)
             ?.pages
             ?.first()
@@ -197,12 +197,12 @@ class JamFragment : VglsFragment(),
             ),
             ImageNameCaptionListModel(
                 Long.MAX_VALUE,
-                jam.currentSong.name,
-                jam.currentSong.gameName,
+                jam.currentSong?.name ?: "Unknown Song",
+                jam.currentSong?.gameName ?: "Unknown Game",
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 this,
-                jam.currentSong.id
+                jam.currentSong?.id ?: -1L
             )
         )
     }
@@ -222,7 +222,7 @@ class JamFragment : VglsFragment(),
 
         val jamListModels = when (setlist) {
             is Loading, Uninitialized -> createLoadingListModels("SetList")
-            is Fail -> createErrorStateListModel(setlist.error)
+            is Fail -> createErrorStateListModel("setlist", setlist.error)
             is Success -> createSuccessListModels(setlist(), selectedPart)
         }
 
@@ -269,7 +269,7 @@ class JamFragment : VglsFragment(),
         selectedPart: PartSelectorItem
     ) = when (jam) {
         is Loading, Uninitialized -> createLoadingListModels("SongHistory")
-        is Fail -> createErrorStateListModel(jam.error)
+        is Fail -> createErrorStateListModel("history", jam.error)
         is Success -> createSuccessListModelsForSongHistory(jam().songHistory!!, selectedPart)
     }
 
@@ -285,7 +285,7 @@ class JamFragment : VglsFragment(),
             )
         ) + songHistory.map { entry ->
             val thumbUrl = entry.song
-                .parts
+                ?.parts
                 ?.getPartMatchingSelection(selectedPart)
                 ?.pages
                 ?.first()
@@ -293,12 +293,12 @@ class JamFragment : VglsFragment(),
 
             ImageNameCaptionListModel(
                 entry.id,
-                entry.song.name,
-                entry.song.gameName,
+                entry.song?.name ?: "Unknown Song",
+                entry.song?.gameName ?: "Unknown Game",
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 this,
-                entry.song.id
+                entry.song?.id
             )
         }
     }
@@ -338,8 +338,8 @@ class JamFragment : VglsFragment(),
         )
     }
 
-    private fun createErrorStateListModel(error: Throwable) =
-        listOf(ErrorStateListModel(error.message ?: "Unknown Error"))
+    private fun createErrorStateListModel(failedOperationName: String, error: Throwable) =
+        listOf(ErrorStateListModel(failedOperationName, error.message ?: "Unknown Error"))
 
     private fun followJam() = withState(viewModel) {
         getFragmentRouter().showJamViewer(it.jamId)

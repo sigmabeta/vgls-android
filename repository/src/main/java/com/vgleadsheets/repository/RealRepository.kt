@@ -84,7 +84,7 @@ class RealRepository constructor(
     override fun observeJamState(id: Long) = jamDao
         .getJam(id)
         .map {
-            val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+            val currentSong = getSongSync(it.currentSheetId)?.toSong(null, null)
             it.toJam(currentSong, null)
         }
 
@@ -162,7 +162,7 @@ class RealRepository constructor(
         .map { entryEntities ->
             entryEntities.map { entryEntity ->
                 val parts = getPartsForSongSync(entryEntity.song_id)
-                val song = getSongSync(entryEntity.song_id).toSong(null, parts)
+                val song = getSongSync(entryEntity.song_id)?.toSong(null, parts)
                 entryEntity.toSetlistEntry(song)
             }
         }
@@ -214,7 +214,7 @@ class RealRepository constructor(
         .getJam(id)
         .map {
             val parts = getPartsForSongSync(it.currentSheetId)
-            val currentSong = getSongSync(it.currentSheetId).toSong(null, parts)
+            val currentSong = getSongSync(it.currentSheetId)?.toSong(null, parts)
 
             val songHistory = if (withHistory) getSongHistoryForJamSync(id) else null
 
@@ -225,7 +225,7 @@ class RealRepository constructor(
         .getAll()
         .map {
             it.map {
-                val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+                val currentSong = getSongSync(it.currentSheetId)?.toSong(null, null)
                 it.toJam(currentSong, null)
             }
         }
@@ -510,7 +510,7 @@ class RealRepository constructor(
         .getSongHistoryEntriesForJamSync(jamId)
         .map { songHistoryEntryEntity ->
             val parts = getPartsForSongSync(songHistoryEntryEntity.song_id)
-            val song = getSongSync(songHistoryEntryEntity.song_id).toSong(null, parts)
+            val song = getSongSync(songHistoryEntryEntity.song_id)?.toSong(null, parts)
 
             songHistoryEntryEntity.toSongHistoryEntry(song)
         }

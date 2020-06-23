@@ -143,7 +143,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     }
 
     private fun createErrorStateListModel(error: Throwable) =
-        listOf(ErrorStateListModel(error.message ?: "Unknown Error"))
+        listOf(ErrorStateListModel("allData", error.message ?: "Unknown Error"))
 
     companion object {
         const val LOADING_ITEMS = 15
