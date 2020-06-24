@@ -21,10 +21,10 @@ interface GameDao {
     @Query("SELECT * FROM game WHERE id = :gameId")
     fun getGame(gameId: Long): Observable<GameEntity>
 
-    @Query("SELECT * FROM game ORDER BY name")
+    @Query("SELECT * FROM game ORDER BY name COLLATE NOCASE")
     fun getAll(): Observable<List<GameEntity>>
 
-    @Query("SELECT * FROM game WHERE name LIKE :title ORDER BY name")
+    @Query("SELECT * FROM game WHERE name LIKE :title ORDER BY name COLLATE NOCASE")
     fun searchGamesByTitle(title: String): Observable<List<GameEntity>>
 
     @Insert

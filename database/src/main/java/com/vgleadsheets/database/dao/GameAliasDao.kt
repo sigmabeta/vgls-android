@@ -8,7 +8,7 @@ import io.reactivex.Observable
 
 @Dao
 interface GameAliasDao {
-    @Query("SELECT * FROM alias_game WHERE name LIKE :name ORDER BY name")
+    @Query("SELECT * FROM alias_game WHERE name LIKE :name ORDER BY name COLLATE NOCASE")
     fun getAliasesByName(name: String): Observable<List<GameAliasEntity>>
 
     @Insert

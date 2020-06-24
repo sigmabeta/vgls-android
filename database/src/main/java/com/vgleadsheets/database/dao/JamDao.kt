@@ -14,7 +14,7 @@ interface JamDao {
     @Insert(onConflict = REPLACE)
     fun insert(jam: JamEntity)
 
-    @Query("SELECT * FROM jam ORDER BY name")
+    @Query("SELECT * FROM jam ORDER BY name COLLATE NOCASE")
     fun getAll(): Observable<List<JamEntity>>
 
     @Query("SELECT * FROM jam WHERE id = :jamId")
