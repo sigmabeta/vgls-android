@@ -47,8 +47,6 @@ class TagValueListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun createTitleListModel(): TitleListModel? = null
-
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No tag values found at all. Check your internet connection?"

@@ -66,44 +66,29 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         }
     }
 
-    fun clickSheetWithTitle(
-        title: String,
-        scrollPosition: Int? = null
-    ) {
+    fun clickSheetWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
             clickComponentWithTitle(R.id.component_image_name_caption, title)
         }
     }
 
-    fun clickJamWithTitle(
-        title: String,
-        scrollPosition: Int? = null
-    ) {
+    fun clickJamWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
             clickComponentWithTitle(R.id.component_name_caption, title)
         }
     }
 
-    fun clickCtaWithTitle(
-        title: String,
-        scrollPosition: Int? = null
-    ) {
+    fun clickCtaWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
             clickComponentWithTitle(R.id.component_cta, title)
         }
     }
 
-    fun clickComposerWithTitle(
-        title: String,
-        scrollPosition: Int? = null
-    ) {
+    fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
         clickGbItemWithTitleHelper(scrollPosition, title)
     }
 
-    fun clickGameWithTitle(
-        title: String,
-        scrollPosition: Int? = null
-    ) {
+    fun clickGameWithTitle(title: String, scrollPosition: Int? = null) {
         clickGbItemWithTitleHelper(scrollPosition, title)
     }
 

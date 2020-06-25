@@ -149,8 +149,6 @@ class SearchViewModel @AssistedInject constructor(
         composerHandler.clearClicked()
     }
 
-    override fun createTitleListModel() = null
-
     override fun createFullEmptyStateListModel() = SearchEmptyStateListModel()
 
     override fun createSuccessListModels(
@@ -161,7 +159,13 @@ class SearchViewModel @AssistedInject constructor(
     ): List<ListModel> {
         val query = data.query
 
-        if (query?.toLowerCase(Locale.getDefault())?.contains("stickerbr") == true) {
+        if (query.isNullOrEmpty()) {
+            return listOf(
+                createFullEmptyStateListModel()
+            )
+        }
+
+        if (query.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
             return listOf(
                 ErrorStateListModel(
                     "stickerbrush",

@@ -6,7 +6,6 @@ import com.airbnb.mvrx.Loading
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.resources.ResourceProvider
@@ -56,10 +55,6 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         data: DataType,
         state: StateType
     ): List<ListModel> {
-        val titleModel = createTitleListModel()
-        val titleModelAsList =
-            if (titleModel != null) listOf(titleModel) else emptyList()
-
         val contentListModels = createDataListModels(
             data,
             state.updateTime,
@@ -67,12 +62,12 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
             state.selectedPart
         )
 
-        return titleModelAsList + contentListModels
+        return contentListModels
     }
 
-    abstract fun createTitleListModel(): TitleListModel?
+    open fun createFullEmptyStateListModel(): ListModel? = null
 
-    abstract fun createFullEmptyStateListModel(): ListModel
+    protected open val showDefaultEmptyState = true
 
     abstract fun createSuccessListModels(
         data: DataType,
@@ -105,13 +100,18 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         createErrorStateListModel(
             IllegalArgumentException("No part selected.")
         )
-    } else if (data.isEmpty()) {
+    } else if (data.isEmpty() && showDefaultEmptyState) {
         if (digest is Loading || updateTime is Loading) {
             createLoadingListModels()
         } else {
-            listOf(
-                createFullEmptyStateListModel()
-            )
+            val emptyState = createFullEmptyStateListModel()
+            if (emptyState != null) {
+                listOf(
+                    emptyState
+                )
+            } else {
+                emptyList()
+            }
         }
     } else {
         createSuccessListModels(

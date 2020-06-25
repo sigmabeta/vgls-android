@@ -44,8 +44,6 @@ class TagValueSongListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun createTitleListModel(): TitleListModel? = null
-
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No songs found at all. Check your internet connection?"

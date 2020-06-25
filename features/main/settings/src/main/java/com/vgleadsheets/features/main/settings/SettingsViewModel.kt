@@ -16,7 +16,6 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.resources.ResourceProvider
@@ -57,8 +56,6 @@ class SettingsViewModel @AssistedInject constructor(
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         TODO("Implement this!")
     }
-
-    override fun createTitleListModel(): TitleListModel? = null
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,

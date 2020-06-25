@@ -5,7 +5,6 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
@@ -79,9 +78,11 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
                 )
     }
 
-    abstract fun createTitleListModel(): TitleListModel
+    open fun createFullEmptyStateListModel(): ListModel? = null
 
-    abstract fun createFullEmptyStateListModel(): EmptyStateListModel
+    protected open val showDefaultEmptyState = true
+
+    abstract fun createTitleListModel(): TitleListModel
 
     abstract fun createSuccessListModels(
         data: List<DataType>,
@@ -112,13 +113,18 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
             createErrorStateListModel(
                 IllegalArgumentException("No part selected.")
             )
-        } else if (data().isEmpty()) {
+        } else if (data().isEmpty() && showDefaultEmptyState) {
             if (digest is Loading || updateTime is Loading) {
                 createLoadingListModels()
             } else {
-                listOf(
-                    createFullEmptyStateListModel()
-                )
+                val emptyState = createFullEmptyStateListModel()
+                if (emptyState != null) {
+                    listOf(
+                        emptyState
+                    )
+                } else {
+                    emptyList()
+                }
             }
         } else {
             createSuccessListModels(

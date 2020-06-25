@@ -15,8 +15,7 @@ data class TagKeyState(
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
     override val data: Async<List<TagKey>> = Uninitialized,
-    val clickedListModel: NameCaptionListModel? = null,
-    val gbApiNotAvailable: Boolean? = null
+    val clickedListModel: NameCaptionListModel? = null
 ) : ListState<TagKey>() {
     override fun updateListState(
         updateTime: Async<*>,
