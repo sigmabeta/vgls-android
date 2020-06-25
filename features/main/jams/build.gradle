@@ -2,10 +2,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
+    api project(path: ':features:main:list')
+
     implementation project(path: ':features:main:hud')
 
     implementation project(path: ':repository')
     implementation project(path: ':recyclerview')
+    implementation project(path: ':resources')
     implementation project(path: ':ui-core')
 
     // RxJava2 libs
