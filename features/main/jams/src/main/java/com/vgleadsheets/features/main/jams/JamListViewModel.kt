@@ -24,7 +24,8 @@ class JamListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider
 ) : ListViewModel<Jam, JamListState>(initialState, resourceProvider),
-    CtaListModel.EventHandler, NameCaptionListModel.EventHandler {
+    CtaListModel.EventHandler,
+    NameCaptionListModel.EventHandler {
     init {
         fetchJams()
     }

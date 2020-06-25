@@ -60,8 +60,8 @@ class JamsAsyncUiTest : ListUiTest() {
         }
 
         jam(this, NAME_JAM.toTitleCase()) {
-            checkSheetHasTitleAndSubtitle("Pellentesque", "Ultricies Justo", 5)
-            clickSheetWithTitle("Pellentesque", 5)
+            checkSheetHasTitleAndSubtitle("In Hendrerit Quisque Est", "Mocks Don't Name Games Yet", 7)
+            clickSheetWithTitle("In Hendrerit Quisque Est", 7)
         }
 
         viewer {
