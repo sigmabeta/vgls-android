@@ -25,6 +25,7 @@ import com.vgleadsheets.storage.Setting
 import com.vgleadsheets.storage.Storage
 import timber.log.Timber
 
+@SuppressWarnings("TooManyFunctions")
 class SettingsViewModel @AssistedInject constructor(
     @Assisted initialState: SettingsState,
     private val storage: Storage,
@@ -43,7 +44,7 @@ class SettingsViewModel @AssistedInject constructor(
         )
     }
 
-    override fun clearClickedSingleTextModel() = setState {
+    override fun clearClicked() = setState {
         copy(
             clickedSingleTextModel = null
         )

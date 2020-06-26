@@ -22,6 +22,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
+@SuppressWarnings("TooManyFunctions")
 class GameViewModel @AssistedInject constructor(
     @Assisted initialState: GameState,
     private val repository: Repository,

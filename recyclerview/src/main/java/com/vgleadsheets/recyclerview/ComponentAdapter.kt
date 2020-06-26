@@ -55,30 +55,34 @@ class ComponentAdapter :
         val distinctIds = ids?.distinct()
 
         if (ids?.size != distinctIds?.size) {
-            val duplicateModels = list!!
-                .groupBy { it.dataId }
-                .filter { it.value.size > 1 }
-
-            val builder = StringBuilder("Dataset contains duplicate ids!\n")
-            duplicateModels.forEach { entry ->
-                val duplicateId = entry.key
-                builder.append("ListModels with id $duplicateId:\n")
-                val modelsWithThisId = entry.value
-
-                modelsWithThisId.forEach { model ->
-                    val toAppend = if (model.doesNonNullHandlerExist()) {
-                        model.javaClass.simpleName
-                    } else {
-                        model.toString()
-                    }
-                    builder.append("$toAppend\n")
-                }
-            }
-
-            throw IllegalStateException(builder.toString())
+            reportDuplicateModel(list)
         }
 
         super.submitList(list)
+    }
+
+    private fun reportDuplicateModel(list: List<ListModel>?) {
+        val duplicateModels = list!!
+            .groupBy { it.dataId }
+            .filter { it.value.size > 1 }
+
+        val builder = StringBuilder("Dataset contains duplicate ids!\n")
+        duplicateModels.forEach { entry ->
+            val duplicateId = entry.key
+            builder.append("ListModels with id $duplicateId:\n")
+            val modelsWithThisId = entry.value
+
+            modelsWithThisId.forEach { model ->
+                val toAppend = if (model.doesNonNullHandlerExist()) {
+                    model.javaClass.simpleName
+                } else {
+                    model.toString()
+                }
+                builder.append("$toAppend\n")
+            }
+        }
+
+        throw IllegalStateException(builder.toString())
     }
 
     fun Any.doesNonNullHandlerExist(): Boolean {

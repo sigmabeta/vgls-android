@@ -26,6 +26,7 @@ import com.vgleadsheets.storage.Storage
 import io.reactivex.Completable
 import timber.log.Timber
 
+@SuppressWarnings("TooManyFunctions")
 class DebugViewModel @AssistedInject constructor(
     @Assisted initialState: DebugState,
     private val storage: Storage,
@@ -46,7 +47,7 @@ class DebugViewModel @AssistedInject constructor(
         }
     }
 
-    override fun clearClickedSingleTextModel() { }
+    override fun clearClicked() = Unit
 
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         setDropdownSetting(settingId, selectedPosition)

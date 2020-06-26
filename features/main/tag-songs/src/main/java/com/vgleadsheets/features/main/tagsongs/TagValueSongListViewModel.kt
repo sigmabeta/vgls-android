@@ -21,6 +21,7 @@ import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
+@SuppressWarnings("TooManyFunctions")
 class TagValueSongListViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueSongListState,
     private val repository: Repository,

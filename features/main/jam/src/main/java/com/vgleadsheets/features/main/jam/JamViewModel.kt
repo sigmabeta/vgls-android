@@ -32,6 +32,7 @@ import com.vgleadsheets.resources.ResourceProvider
 import timber.log.Timber
 import java.util.Locale
 
+@SuppressWarnings("TooManyFunctions")
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
     private val repository: Repository,
@@ -358,7 +359,9 @@ class JamViewModel @AssistedInject constructor(
         .joinToString(" ")
 
     private val currentSongHandler = object : ImageNameCaptionListModel.EventHandler {
-        override fun onClicked(clicked: ImageNameCaptionListModel) = setState { copy(clickedCurrentSongModel = clicked) }
+        override fun onClicked(clicked: ImageNameCaptionListModel) = setState {
+            copy(clickedCurrentSongModel = clicked)
+        }
 
         override fun clearClicked() = setState { copy(clickedCurrentSongModel = null) }
     }

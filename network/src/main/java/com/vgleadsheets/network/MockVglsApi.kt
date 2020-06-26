@@ -96,7 +96,7 @@ class MockVglsApi(
         val jamRandomGenerator = Random(jamSeed)
         val jamId = jamRandomGenerator.nextLong()
 
-        val previousJamsSize = jamRandomGenerator.nextInt(10) + 1
+        val previousJamsSize = jamRandomGenerator.nextInt(JAM_PREVIOUS_SONGS_SIZE) + 1
         val previousJams = ArrayList<ApiSongHistoryEntry>(previousJamsSize)
 
         for (entryIndex in 0 until previousJamsSize) {
@@ -123,6 +123,7 @@ class MockVglsApi(
         it.onNext(jam)
     }.subscribeOn(Schedulers.io())
 
+    @SuppressWarnings("MagicNumber")
     override fun getSetlistForJam(name: String) = Single.create<ApiSetlist> {
         if (possibleSongs == null) {
             generateGames()
@@ -364,6 +365,8 @@ class MockVglsApi(
         const val DEFAULT_MAX_TAGS = 20
         const val DEFAULT_MAX_TAGS_VALUES = 10
         const val DEFAULT_MAX_SONGS_PER_GAME = 10
+
+        const val JAM_PREVIOUS_SONGS_SIZE = 10
 
         const val MAX_WORDS_PER_TITLE = 5
         const val MAX_PAGE_COUNT = 2

@@ -8,6 +8,6 @@ data class SingleTextListModel(
     override val layoutId = R.layout.list_component_single_line
     interface EventHandler {
         fun onClicked(clicked: SingleTextListModel)
-        fun clearClickedSingleTextModel()
+        fun clearClicked()
     }
 }

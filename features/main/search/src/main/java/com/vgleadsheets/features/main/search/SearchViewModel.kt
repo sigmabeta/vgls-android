@@ -29,6 +29,7 @@ import io.reactivex.disposables.CompositeDisposable
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
+@SuppressWarnings("TooManyFunctions")
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
     private val repository: Repository,
@@ -151,6 +152,7 @@ class SearchViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = SearchEmptyStateListModel()
 
+    @SuppressWarnings("ReturnCount")
     override fun createSuccessListModels(
         data: SearchData,
         updateTime: Async<*>,

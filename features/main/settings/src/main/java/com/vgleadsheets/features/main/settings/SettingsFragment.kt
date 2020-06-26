@@ -20,7 +20,7 @@ class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
 
             if (clickedId != null) {
                 getFragmentRouter().showAbout()
-                viewModel.clearClickedSingleTextModel()
+                viewModel.clearClicked()
             }
         }
     }

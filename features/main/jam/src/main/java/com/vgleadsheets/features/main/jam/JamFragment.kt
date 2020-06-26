@@ -24,6 +24,7 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
+    @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(JamState::clickedCurrentSongModel) {
             val clickedId = it?.dataId
