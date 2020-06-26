@@ -52,4 +52,3 @@ class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
         fun newInstance() = DebugFragment()
     }
 }
-

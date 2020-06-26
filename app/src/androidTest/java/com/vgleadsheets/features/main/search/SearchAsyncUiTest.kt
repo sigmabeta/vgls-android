@@ -120,10 +120,10 @@ class SearchAsyncUiTest : ListUiTest() {
         const val RESULT_TITLE_COMPOSER = "Robbin Hanson"
 
         const val GAME_SONG_TITLE_FIRST = "Congue"
-        const val GAME_SUBTITLE_SHEET_COUNT= "4 Sheets"
+        const val GAME_SUBTITLE_SHEET_COUNT = "4 Sheets"
 
         const val COMPOSER_SONG_TITLE_FIRST = "Justo Urna"
-        const val COMPOSER_SUBTITLE_SHEET_COUNT= "1 Sheets"
+        const val COMPOSER_SUBTITLE_SHEET_COUNT = "1 Sheets"
 
         const val SCROLL_POS_HEADER_SONG = 0
         const val SCROLL_POS_RESULT_SONG = 2

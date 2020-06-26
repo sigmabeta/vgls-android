@@ -90,7 +90,6 @@ class SettingsViewModel @AssistedInject constructor(
         is Uninitialized, is Loading -> createLoadingListModels()
     }
 
-
     private fun createSettingListModels(settings: List<Setting>): List<ListModel> {
         val sheetsSection = createSection(settings, HEADER_ID_SHEET)
         val miscSection = createMiscSection(settings)

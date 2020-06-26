@@ -46,7 +46,7 @@ class DebugViewModel @AssistedInject constructor(
         }
     }
 
-    override fun clearClickedSingleTextModel()  { }
+    override fun clearClickedSingleTextModel() { }
 
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         setDropdownSetting(settingId, selectedPosition)
@@ -85,11 +85,10 @@ class DebugViewModel @AssistedInject constructor(
         is Uninitialized, is Loading -> createLoadingListModels()
     }
 
-
     private fun createSettingListModels(settings: List<Setting>): List<ListModel> {
         val networkSection = createSection(settings, HEADER_ID_NETWORK)
         val databaseSection = createDatabaseSection(settings)
-        
+
         return networkSection + databaseSection
     }
 

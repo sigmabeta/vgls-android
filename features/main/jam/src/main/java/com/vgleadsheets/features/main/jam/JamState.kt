@@ -22,7 +22,7 @@ data class JamState(
     val clickedSetListModel: ImageNameCaptionListModel? = null,
     val clickedCtaModel: CtaListModel? = null,
     val refreshError: String? = null
-    ) : AsyncListState<JamData>(data = data) {
+) : AsyncListState<JamData>(data = data) {
     constructor(idArgs: IdArgs) : this(idArgs.id)
 
     override fun updateListState(

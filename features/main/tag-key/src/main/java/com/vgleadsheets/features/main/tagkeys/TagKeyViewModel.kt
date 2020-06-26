@@ -16,7 +16,6 @@ import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
-
 class TagKeyViewModel @AssistedInject constructor(
     @Assisted initialState: TagKeyState,
     private val repository: Repository,

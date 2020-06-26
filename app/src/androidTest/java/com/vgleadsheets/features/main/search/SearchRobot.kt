@@ -6,7 +6,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
-class SearchRobot(test: ListUiTest): ListRobot(test) {
+class SearchRobot(test: ListUiTest) : ListRobot(test) {
     init {
         checkViewWithIdAndTextVisible(R.id.text_empty_state_search, R.string.empty_search_no_query)
     }
@@ -28,4 +28,3 @@ fun search(
 ) = SearchRobot(test).apply {
     func()
 }
-

@@ -6,7 +6,7 @@ import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.list.async.ListData
 import com.vgleadsheets.storage.Setting
 
-data class DebugData (
+data class DebugData(
     val settings: Async<List<Setting>> = Uninitialized
 ) : ListData {
     override fun isEmpty() = !(settings is Success && settings()?.isNotEmpty() == true)

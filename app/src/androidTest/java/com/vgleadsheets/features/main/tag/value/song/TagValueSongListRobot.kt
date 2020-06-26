@@ -3,7 +3,6 @@ package com.vgleadsheets.features.main.tag.value.song
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
-
 class TagValueSongListRobot(
     test: ListUiTest,
     tagValue: String,

@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.tag
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
-class TagListRobot(test: ListUiTest): ListRobot(test) {
+class TagListRobot(test: ListUiTest) : ListRobot(test) {
     init {
         checkScreenHeader("VGLeadSheets", "By Tag")
     }

@@ -9,7 +9,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.allOf
 
-
 abstract class Robot(val test: UiTest) {
     init {
         test.launchScreen()
@@ -94,4 +93,3 @@ abstract class Robot(val test: UiTest) {
         }
     }
 }
-

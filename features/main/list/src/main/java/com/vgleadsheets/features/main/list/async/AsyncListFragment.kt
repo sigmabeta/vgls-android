@@ -15,7 +15,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import kotlinx.android.synthetic.main.fragment_list.list_content
 import javax.inject.Inject
 
-abstract class AsyncListFragment<DataType: ListData, StateType : AsyncListState<DataType>> : VglsFragment() {
+abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState<DataType>> : VglsFragment() {
     abstract val viewModel: AsyncListViewModel<DataType, StateType>
 
     abstract fun subscribeToViewEvents()

@@ -44,7 +44,7 @@ class JamViewModel @AssistedInject constructor(
 
     override val showDefaultEmptyState = false
 
-    override fun onClicked(clicked: CtaListModel ) = setState { copy(clickedCtaModel = clicked) }
+    override fun onClicked(clicked: CtaListModel) = setState { copy(clickedCtaModel = clicked) }
 
     override fun clearClicked() = setState {
         copy(

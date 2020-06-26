@@ -13,12 +13,9 @@ data class JamData(
     val jamRefresh: Async<ApiJam> = Uninitialized,
     val setlist: Async<List<SetlistEntry>> = Uninitialized,
     val setlistRefresh: Async<List<Long>> = Uninitialized
-    ) : ListData {
+) : ListData {
     override fun isEmpty() = !(
             jam is Success &&
                     jam()?.currentSong != null
             )
 }
-
-
-
