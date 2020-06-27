@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.composer
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.list.async.ListData
@@ -16,4 +17,8 @@ data class ComposerData(
                     songs is Success &&
                     songs()?.isNotEmpty() == true
             )
+
+    override fun isLoading() = songs is Loading
+
+    override fun canShowPartialData() = composer is Success
 }

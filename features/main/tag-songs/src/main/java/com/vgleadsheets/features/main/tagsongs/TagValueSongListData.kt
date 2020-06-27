@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.tagsongs
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.list.async.ListData
@@ -16,4 +17,8 @@ data class TagValueSongListData(
                     songs is Success &&
                     songs()?.isNotEmpty() == true
             )
+
+    override fun isLoading() = songs is Loading
+
+    override fun canShowPartialData() = tagValue is Success
 }

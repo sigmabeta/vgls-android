@@ -14,4 +14,8 @@ data class SearchData(
     val games: Async<List<Game>> = Uninitialized
 ) : ListData {
     override fun isEmpty() = query == null
+
+    override fun isLoading() = false
+
+    override fun canShowPartialData() = false
 }

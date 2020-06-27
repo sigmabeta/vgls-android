@@ -2,6 +2,8 @@ package com.vgleadsheets.features.main.list.async
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
@@ -100,8 +102,17 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
             IllegalArgumentException("No part selected.")
         )
     } else if (data.isEmpty() && showDefaultEmptyState) {
-        if (digest is Loading || updateTime is Loading) {
-            createLoadingListModels()
+        if (digest is Success || digest is Uninitialized || digest is Loading || data.isLoading()) {
+            if (data.canShowPartialData()) {
+                createSuccessListModels(
+                    data,
+                    updateTime,
+                    digest,
+                    selectedPart
+                )
+            } else {
+                createLoadingListModels()
+            }
         } else {
             val emptyState = createFullEmptyStateListModel()
             if (emptyState != null) {
