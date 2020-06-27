@@ -15,7 +15,5 @@ data class SearchData(
 ) : ListData {
     override fun isEmpty() = query == null
 
-    override fun isLoading() = false
-
     override fun canShowPartialData() = false
 }
