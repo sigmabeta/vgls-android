@@ -24,6 +24,12 @@ import org.hamcrest.Matcher
 abstract class ListRobot(test: ListUiTest) : Robot(test) {
     protected val resources by lazy { test.activityRule.activity.resources }
 
+    override fun checkScreenHeader(title: String, subtitle: String) {
+        scrollHelper(0) {
+            super.checkScreenHeader(title, subtitle)
+        }
+    }
+
     fun isHeaderWithTitleDisplayed(text: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
             isHeaderWithTitleDisplayedHelper(text)

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
@@ -56,6 +57,14 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
         button_cancel.setOnClickListener { dismiss() }
         button_find.setOnClickListener { onAddClicked() }
+        edit_jam_name.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                onAddClicked()
+                return@setOnEditorActionListener true
+            }
+
+            return@setOnEditorActionListener false
+        }
     }
 
     override fun onStop() {

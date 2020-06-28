@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.jams
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.pressImeActionButton
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
@@ -30,8 +31,12 @@ class JamListRobot(test: ListUiTest) : ListRobot(test) {
         )
     }
 
-    fun clickFindButton() {
-        clickView(R.id.button_find)
+    fun clickSearchButton() {
+        onView(
+            withId(R.id.edit_jam_name)
+        ).perform(
+            pressImeActionButton()
+        )
     }
 
     fun checkIsEmptyStateDisplayed() {

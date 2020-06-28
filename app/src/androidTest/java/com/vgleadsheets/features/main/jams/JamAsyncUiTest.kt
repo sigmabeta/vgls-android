@@ -15,13 +15,13 @@ class JamsAsyncUiTest : ListUiTest() {
         jamList(this) {
             openFindJamDialog()
             typeInSearchBox(NAME_JAM)
-            clickFindButton()
+            clickSearchButton()
             isItemWithTitleDisplayed(NAME_JAM.toTitleCase(), 2)
             clickJamWithTitle(NAME_JAM.toTitleCase())
         }
 
         jam(this, NAME_JAM.toTitleCase()) {
-            clickCtaWithTitle("Follow Jam")
+            clickCtaWithTitle("Follow Jam", 0)
         }
 
         viewer {
@@ -34,7 +34,7 @@ class JamsAsyncUiTest : ListUiTest() {
         jamList(this) {
             openFindJamDialog()
             typeInSearchBox(NAME_JAM)
-            clickFindButton()
+            clickSearchButton()
             isItemWithTitleDisplayed(NAME_JAM.toTitleCase(), 2)
             clickJamWithTitle(NAME_JAM.toTitleCase())
         }
@@ -54,7 +54,7 @@ class JamsAsyncUiTest : ListUiTest() {
         jamList(this) {
             openFindJamDialog()
             typeInSearchBox(NAME_JAM)
-            clickFindButton()
+            clickSearchButton()
             isItemWithTitleDisplayed(NAME_JAM.toTitleCase(), 2)
             clickJamWithTitle(NAME_JAM.toTitleCase())
         }
@@ -74,7 +74,7 @@ class JamsAsyncUiTest : ListUiTest() {
         jamList(this) {
             openFindJamDialog()
             typeInSearchBox(NAME_JAM)
-            clickFindButton()
+            clickSearchButton()
             isItemWithTitleDisplayed(NAME_JAM.toTitleCase(), 2)
             clickJamWithTitle(NAME_JAM.toTitleCase())
         }
@@ -95,13 +95,13 @@ class JamsAsyncUiTest : ListUiTest() {
             checkIsEmptyStateDisplayed()
             openFindJamDialog()
             typeInSearchBox(NAME_JAM)
-            clickFindButton()
+            clickSearchButton()
             isItemWithTitleDisplayed(NAME_JAM.toTitleCase(), 2)
             clickJamWithTitle(NAME_JAM.toTitleCase())
         }
 
         jam(this, NAME_JAM.toTitleCase()) {
-            clickCtaWithTitle("Forget Jam", 3)
+            clickCtaWithTitle("Forget Jam", 0)
         }
 
         jamList(this) {

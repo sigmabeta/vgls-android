@@ -77,7 +77,7 @@ abstract class Robot(val test: UiTest) {
         )
     }
 
-    fun checkScreenHeader(title: String, subtitle: String) {
+    open fun checkScreenHeader(title: String, subtitle: String) {
         checkViewText(R.id.text_title_title, title)
         checkViewText(R.id.text_title_subtitle, subtitle)
     }
