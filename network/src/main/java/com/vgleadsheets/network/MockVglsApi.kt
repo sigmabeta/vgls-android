@@ -17,6 +17,7 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
+import java.io.IOException
 import java.net.HttpURLConnection
 import java.util.EmptyStackException
 import java.util.Random
@@ -170,7 +171,7 @@ class MockVglsApi(
         random.setSeed(seed)
 
         if (generateEmptyState) {
-            return emptyList()
+            throw IOException("Arbitrarily failed a network request!")
         }
 
         val gameCount = random.nextInt(maxGames)

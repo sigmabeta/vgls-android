@@ -114,7 +114,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
                 IllegalArgumentException("No part selected.")
             )
         } else if (data().isEmpty() && showDefaultEmptyState) {
-            if (digest !is Fail || updateTime !is Fail) {
+            if (updateTime is Success && digest !is Fail) {
                 createLoadingListModels()
             } else {
                 val emptyState = createFullEmptyStateListModel()

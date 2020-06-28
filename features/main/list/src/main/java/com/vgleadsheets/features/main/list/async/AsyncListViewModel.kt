@@ -2,6 +2,7 @@ package com.vgleadsheets.features.main.list.async
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Success
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
@@ -100,7 +101,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
             IllegalArgumentException("No part selected.")
         )
     } else if (data.isEmpty() && showDefaultEmptyState) {
-        if (digest !is Fail || updateTime !is Fail) {
+        if (digest !is Success || updateTime !is Fail) {
             if (data.canShowPartialData()) {
                 createSuccessListModels(
                     data,

@@ -88,8 +88,6 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    fun clearDigest() = setState { copy(digest = Uninitialized) }
-
     fun searchClick() = withState { state ->
         if (!state.searchVisible) {
             setState { copy(searchVisible = true) }
