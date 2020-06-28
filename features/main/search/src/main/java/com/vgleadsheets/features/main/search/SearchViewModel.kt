@@ -339,9 +339,10 @@ class SearchViewModel @AssistedInject constructor(
     private fun Composer.performFilteringStep() = songs
         ?.isNotEmpty() ?: false
 
-    private fun createLoadingListModels(sectionId: Int) = listOf(
-        LoadingNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
-    )
+    private fun createLoadingListModels(sectionId: Int) = createSectionHeaderListModel(sectionId) +
+            listOf(
+                LoadingNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
+            )
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(
         ErrorStateListModel(
@@ -406,9 +407,18 @@ class SearchViewModel @AssistedInject constructor(
         query: String? = data.query,
         songs: Async<List<Song>> = data.songs,
         composers: Async<List<Composer>> = data.composers,
-        games: Async<List<Game>> = data.games
+        games: Async<List<Game>> = data.games,
+        oldSongs: Async<List<Song>> = data.songs,
+        oldComposers: Async<List<Composer>> = data.composers,
+        oldGames: Async<List<Game>> = data.games
     ): SearchState {
-        val newData = SearchData(query, songs, composers, games)
+        val newData = SearchData(
+            query,
+            OPTIMIZER_SONGS.skipLoadingIfPreviouslyLoaded(oldSongs, songs),
+            OPTIMIZER_COMPOSERS.skipLoadingIfPreviouslyLoaded(oldComposers, composers),
+            OPTIMIZER_GAMES.skipLoadingIfPreviouslyLoaded(oldGames, games)
+        )
+
         return updateListState(
             data = newData,
             listModels = constructList(
@@ -428,6 +438,10 @@ class SearchViewModel @AssistedInject constructor(
 
         const val MAX_LENGTH_SUBTITLE_CHARS = 20
         const val MAX_LENGTH_SUBTITLE_ITEMS = 6
+
+        val OPTIMIZER_SONGS = SearchOptimizer<Song>()
+        val OPTIMIZER_GAMES = SearchOptimizer<Game>()
+        val OPTIMIZER_COMPOSERS = SearchOptimizer<Composer>()
 
         override fun create(
             viewModelContext: ViewModelContext,
