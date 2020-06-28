@@ -403,6 +403,7 @@ class SearchViewModel @AssistedInject constructor(
         return builder.toString()
     }
 
+    @SuppressWarnings("LongParameterList")
     private fun SearchState.updateSearchState(
         query: String? = data.query,
         songs: Async<List<Song>> = data.songs,
