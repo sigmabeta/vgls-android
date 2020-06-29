@@ -5,7 +5,6 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
@@ -20,41 +19,41 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     initialState: StateType,
     private val resourceProvider: ResourceProvider
 ) : MvRxViewModel<StateType>(initialState) {
-    fun onSelectedPartUpdate(part: PartSelectorItem?) {
+    fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
         setState {
             updateListState(
-                selectedPart = part,
+                selectedPart = newPart,
                 listModels = constructList(
                     data,
                     updateTime,
                     digest,
+                    newPart
+                )
+            ) as StateType
+        }
+    }
+
+    fun onDigestUpdate(newDigest: Async<List<*>>) {
+        setState {
+            updateListState(
+                digest = newDigest,
+                listModels = constructList(
+                    data,
+                    updateTime,
+                    newDigest,
                     selectedPart
                 )
             ) as StateType
         }
     }
 
-    fun onDigestUpdate(digest: Async<List<*>>) {
+    fun onTimeUpdate(newTime: Async<*>) {
         setState {
             updateListState(
-                digest = digest,
+                updateTime = newTime,
                 listModels = constructList(
                     data,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
-            ) as StateType
-        }
-    }
-
-    fun onTimeUpdate(time: Async<*>) {
-        setState {
-            updateListState(
-                updateTime = time,
-                listModels = constructList(
-                    data,
-                    updateTime,
+                    newTime,
                     digest,
                     selectedPart
                 )
@@ -79,9 +78,11 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
                 )
     }
 
-    abstract fun createTitleListModel(): TitleListModel
+    open fun createFullEmptyStateListModel(): ListModel? = null
 
-    abstract fun createFullEmptyStateListModel(): EmptyStateListModel
+    protected open val showDefaultEmptyState = true
+
+    abstract fun createTitleListModel(): TitleListModel
 
     abstract fun createSuccessListModels(
         data: List<DataType>,
@@ -112,13 +113,18 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
             createErrorStateListModel(
                 IllegalArgumentException("No part selected.")
             )
-        } else if (data().isEmpty()) {
-            if (digest is Loading || updateTime is Loading) {
+        } else if (data().isEmpty() && showDefaultEmptyState) {
+            if (updateTime is Success && digest !is Fail) {
                 createLoadingListModels()
             } else {
-                listOf(
-                    createFullEmptyStateListModel()
-                )
+                val emptyState = createFullEmptyStateListModel()
+                if (emptyState != null) {
+                    listOf(
+                        emptyState
+                    )
+                } else {
+                    emptyList()
+                }
             }
         } else {
             createSuccessListModels(
@@ -135,7 +141,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
 
         for (index in 0 until LOADING_ITEMS) {
             listModels.add(
-                LoadingNameCaptionListModel(index)
+                LoadingNameCaptionListModel("allData", index)
             )
         }
 
@@ -143,7 +149,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     }
 
     private fun createErrorStateListModel(error: Throwable) =
-        listOf(ErrorStateListModel(error.message ?: "Unknown Error"))
+        listOf(ErrorStateListModel("allData", error.message ?: "Unknown Error"))
 
     companion object {
         const val LOADING_ITEMS = 15

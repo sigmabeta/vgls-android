@@ -2,5 +2,6 @@
 <resources>
     <string name="network_endpoint_prod">Production</string>
     <string name="network_endpoint_super">Super</string>
+    <string name="network_endpoint_beta">Beta</string>
     <string name="network_endpoint_mock">Mock</string>
 </resources>

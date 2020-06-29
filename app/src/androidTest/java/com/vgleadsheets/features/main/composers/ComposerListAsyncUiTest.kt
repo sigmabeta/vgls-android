@@ -6,7 +6,6 @@ import org.junit.Test
 
 class ComposerListAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER
-    override val startingTopLevelScreenSubtitleId = R.string.subtitle_composer
 
     @Test
     fun showEmptyStateIfNoData() {
@@ -33,6 +32,6 @@ class ComposerListAsyncUiTest : ListUiTest() {
 
     companion object {
         const val LABEL_EMPTY_STATE = "composers"
-        const val TITLE_FIRST_ITEM = "Alona Dunn"
+        const val TITLE_FIRST_ITEM = "Albertine Rice"
     }
 }

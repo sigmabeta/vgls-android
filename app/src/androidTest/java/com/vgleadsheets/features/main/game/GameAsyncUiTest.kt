@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.game
 
-import com.vgleadsheets.R
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.games.gameList
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -9,7 +8,6 @@ import org.junit.Test
 
 class GameAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_GAME
-    override val startingTopLevelScreenSubtitleId = R.string.subtitle_game
 
     @Test
     fun firstGameClickingFirstSongShowsViewerScreen() {
@@ -20,7 +18,7 @@ class GameAsyncUiTest : ListUiTest() {
         game(this, GAME_FIRST_TITLE, GAME_FIRST_SHEET_COUNT) {
             checkFirstSongIs(GAME_FIRST_SHEET_TITLE_FIRST)
             checkFirstSongArtistIs(GAME_FIRST_SHEET_ARTIST_FIRST)
-            clickSongWithTitle(GAME_FIRST_SHEET_TITLE_FIRST)
+            clickSheetWithTitle(GAME_FIRST_SHEET_TITLE_FIRST)
         }
 
         viewer {
@@ -37,7 +35,7 @@ class GameAsyncUiTest : ListUiTest() {
         game(this, GAME_FIRST_TITLE, GAME_FIRST_SHEET_COUNT) {
             checkFirstSongIs(GAME_FIRST_SHEET_TITLE_FIRST)
             checkFirstSongArtistIs(GAME_FIRST_SHEET_ARTIST_FIRST)
-            clickSongWithTitle(GAME_FIRST_SHEET_TITLE_ARBITRARY)
+            clickSheetWithTitle(GAME_FIRST_SHEET_TITLE_ARBITRARY)
         }
 
         viewer {
@@ -48,13 +46,13 @@ class GameAsyncUiTest : ListUiTest() {
     @Test
     fun arbitraryGameClickingFirstSongShowsViewerScreen() {
         gameList(this) {
-            clickGameWithTitle(GAME_ARBITRARY_TITLE)
+            clickGameWithTitle(GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SCROLL_POS)
         }
 
         game(this, GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SHEET_COUNT) {
             checkFirstSongIs(GAME_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongArtistIs(GAME_ARBITRARY_SHEET_ARTIST_FIRST)
-            clickSongWithTitle(GAME_ARBITRARY_SHEET_TITLE_FIRST)
+            clickSheetWithTitle(GAME_ARBITRARY_SHEET_TITLE_FIRST, 7)
         }
 
         viewer {
@@ -65,13 +63,13 @@ class GameAsyncUiTest : ListUiTest() {
     @Test
     fun arbitraryGameClickingArbitrarySongShowsViewerScreen() {
         gameList(this) {
-            clickGameWithTitle(GAME_ARBITRARY_TITLE)
+            clickGameWithTitle(GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SCROLL_POS)
         }
 
         game(this, GAME_ARBITRARY_TITLE, GAME_ARBITRARY_SHEET_COUNT) {
             checkFirstSongIs(GAME_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongArtistIs(GAME_ARBITRARY_SHEET_ARTIST_FIRST)
-            clickSongWithTitle(GAME_ARBITRARY_SHEET_TITLE_ARBITRARY)
+            clickSheetWithTitle(GAME_ARBITRARY_SHEET_TITLE_ARBITRARY, 7)
         }
 
         viewer {
@@ -80,20 +78,21 @@ class GameAsyncUiTest : ListUiTest() {
     }
 
     companion object {
-        const val GAME_FIRST_TITLE = "A Ac"
+        const val GAME_FIRST_TITLE = "Elit"
         const val GAME_FIRST_SHEET_COUNT = "5 Sheets"
 
-        const val GAME_ARBITRARY_TITLE = "Quisque"
-        const val GAME_ARBITRARY_SHEET_COUNT = "8 Sheets"
+        const val GAME_ARBITRARY_SCROLL_POS = 7
+        const val GAME_ARBITRARY_TITLE = "Pellentesque Fermentum Donec"
+        const val GAME_ARBITRARY_SHEET_COUNT = "5 Sheets"
 
-        const val GAME_FIRST_SHEET_TITLE_FIRST = "Amet"
-        const val GAME_FIRST_SHEET_ARTIST_FIRST = "Camille Wyatt"
+        const val GAME_FIRST_SHEET_TITLE_FIRST = "Et Pellentesque Adipiscing Ligula"
+        const val GAME_FIRST_SHEET_ARTIST_FIRST = "Jeannetta Nixon"
 
-        const val GAME_FIRST_SHEET_TITLE_ARBITRARY = "Quis Ut Finibus Hendrerit"
+        const val GAME_FIRST_SHEET_TITLE_ARBITRARY = "In Hendrerit Quisque Est"
 
-        const val GAME_ARBITRARY_SHEET_TITLE_FIRST = "Ac In"
-        const val GAME_ARBITRARY_SHEET_ARTIST_FIRST = "Kali Browning"
+        const val GAME_ARBITRARY_SHEET_TITLE_FIRST = "Hendrerit Lobortis Dolor"
+        const val GAME_ARBITRARY_SHEET_ARTIST_FIRST = "Lacresha Dunn"
 
-        const val GAME_ARBITRARY_SHEET_TITLE_ARBITRARY = "Pharetra Justo"
+        const val GAME_ARBITRARY_SHEET_TITLE_ARBITRARY = "Justo Neque Finibus In"
     }
 }

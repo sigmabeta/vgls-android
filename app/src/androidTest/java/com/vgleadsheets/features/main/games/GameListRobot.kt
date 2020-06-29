@@ -8,8 +8,6 @@ class GameListRobot(test: ListUiTest) : ListRobot(test) {
         checkScreenHeader("VGLeadSheets", "By Game")
     }
 
-    override val maxScrolls = 2
-
     fun checkIsEmptyStateDisplayed(emptyStateLabel: String): GameListRobot {
         checkIsEmptyStateDisplayedInternal(emptyStateLabel)
         return this
@@ -18,10 +16,6 @@ class GameListRobot(test: ListUiTest) : ListRobot(test) {
     fun checkFirstGameIs(title: String): GameListRobot {
         checkFirstItemHasTitleInternal(title)
         return this
-    }
-
-    fun clickGameWithTitle(title: String) {
-        clickItemWithText(title)
     }
 }
 

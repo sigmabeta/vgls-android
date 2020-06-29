@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.composer
 
-import com.vgleadsheets.R
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.composers.composerList
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -9,7 +8,6 @@ import org.junit.Test
 
 class ComposerAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER
-    override val startingTopLevelScreenSubtitleId = R.string.subtitle_composer
 
     @Test
     fun firstComposerClickingFirstSongShowsViewerScreen() {
@@ -20,7 +18,7 @@ class ComposerAsyncUiTest : ListUiTest() {
         composer(this, COMPOSER_FIRST_TITLE, COMPOSER_FIRST_SHEET_COUNT) {
             checkFirstSongIs(COMPOSER_FIRST_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_FIRST_SHEET_GAME_FIRST)
-            clickSongWithTitle(COMPOSER_FIRST_SHEET_TITLE_FIRST)
+            clickSheetWithTitle(COMPOSER_FIRST_SHEET_TITLE_FIRST)
         }
 
         viewer {
@@ -28,8 +26,6 @@ class ComposerAsyncUiTest : ListUiTest() {
         }
     }
 
-    // TODO Can't test with the current dataset because the first composer has only one song.
-    /*
     @Test
     fun firstComposerClickingArbitrarySongShowsViewerScreen() {
         composerList(this) {
@@ -39,21 +35,20 @@ class ComposerAsyncUiTest : ListUiTest() {
         composer(this, COMPOSER_FIRST_TITLE, COMPOSER_FIRST_SHEET_COUNT) {
             checkFirstSongIs(COMPOSER_FIRST_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_FIRST_SHEET_GAME_FIRST)
-            clickSongWithTitle(COMPOSER_FIRST_SHEET_TITLE_ARBITRARY)
+            clickSheetWithTitle(COMPOSER_FIRST_SHEET_TITLE_ARBITRARY)
         }
     }
-    */
 
     @Test
     fun arbitraryComposerClickingFirstSongShowsViewerScreen() {
         composerList(this) {
-            clickComposerWithTitle(COMPOSER_ARBITRARY_TITLE)
+            clickComposerWithTitle(COMPOSER_ARBITRARY_TITLE, COMPOSER_ARBITRARY_SCROLL_POS)
         }
 
         composer(this, COMPOSER_ARBITRARY_TITLE, COMPOSER_ARBITRARY_SHEET_COUNT) {
             checkFirstSongIs(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_ARBITRARY_SHEET_GAME_FIRST)
-            clickSongWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
+            clickSheetWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
         }
 
         viewer {
@@ -64,13 +59,13 @@ class ComposerAsyncUiTest : ListUiTest() {
     @Test
     fun arbitraryComposerClickingArbitrarySongShowsViewerScreen() {
         composerList(this) {
-            clickComposerWithTitle(COMPOSER_ARBITRARY_TITLE)
+            clickComposerWithTitle(COMPOSER_ARBITRARY_TITLE, COMPOSER_ARBITRARY_SCROLL_POS)
         }
 
         composer(this, COMPOSER_ARBITRARY_TITLE, COMPOSER_ARBITRARY_SHEET_COUNT) {
             checkFirstSongIs(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
             checkFirstSongGameIs(COMPOSER_ARBITRARY_SHEET_GAME_FIRST)
-            clickSongWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_ARBITRARY)
+            clickSheetWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_ARBITRARY)
         }
 
         viewer {
@@ -79,21 +74,21 @@ class ComposerAsyncUiTest : ListUiTest() {
     }
 
     companion object {
-        const val COMPOSER_FIRST_TITLE = "Alona Dunn"
-        const val COMPOSER_FIRST_SHEET_COUNT = "1 Sheets"
+        const val COMPOSER_FIRST_TITLE = "Albertine Rice"
+        const val COMPOSER_FIRST_SHEET_COUNT = "2 Sheets"
 
-        const val COMPOSER_ARBITRARY_TITLE = "Epifania Allen"
-        const val COMPOSER_ARBITRARY_SHEET_COUNT = "4 Sheets"
+        const val COMPOSER_ARBITRARY_SCROLL_POS = 45
+        const val COMPOSER_ARBITRARY_TITLE = "Odessa Maynard"
+        const val COMPOSER_ARBITRARY_SHEET_COUNT = "2 Sheets"
 
-        const val COMPOSER_FIRST_SHEET_TITLE_FIRST = "Integer Fermentum"
-        const val COMPOSER_FIRST_SHEET_GAME_FIRST = "Ultricies Vel Nam Suspendisse"
+        const val COMPOSER_FIRST_SHEET_TITLE_FIRST = "Iaculis Hendrerit Ultricies"
+        const val COMPOSER_FIRST_SHEET_GAME_FIRST = "Ipsum"
 
-        // TODO Can't test with the current dataset because the first composer has only one song.
-        // const val COMPOSER_FIRST_SHEET_TITLE_ARBITRARY = "Quis Ut Finibus Hendrerit"
+        const val COMPOSER_FIRST_SHEET_TITLE_ARBITRARY = "Suspendisse Nam Quis"
 
-        const val COMPOSER_ARBITRARY_SHEET_TITLE_FIRST = "Elit"
-        const val COMPOSER_ARBITRARY_SHEET_GAME_FIRST = "Quisque"
+        const val COMPOSER_ARBITRARY_SHEET_TITLE_FIRST = "Finibus Aliquam Neque Quisque"
+        const val COMPOSER_ARBITRARY_SHEET_GAME_FIRST = "Justo"
 
-        const val COMPOSER_ARBITRARY_SHEET_TITLE_ARBITRARY = "Velit Tincidunt Dictum Curabitur"
+        const val COMPOSER_ARBITRARY_SHEET_TITLE_ARBITRARY = "In Hendrerit Quisque Est"
     }
 }

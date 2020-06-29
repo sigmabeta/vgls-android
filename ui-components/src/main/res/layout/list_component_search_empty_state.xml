@@ -10,6 +10,7 @@
 
 
     <LinearLayout
+        android:id="@+id/component_search_empty_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -23,6 +24,7 @@
             android:tint="@color/divider" />
 
         <TextView
+            android:id="@+id/text_empty_state_search"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"

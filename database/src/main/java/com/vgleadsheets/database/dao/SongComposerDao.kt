@@ -19,6 +19,7 @@ interface SongComposerDao {
             ON composer.id=song_composer_join.composerId
             WHERE song_composer_join.songId=:songId
             ORDER BY name
+            COLLATE NOCASE
             """
     )
     fun getComposersForSong(songId: Long): List<ComposerEntity>
@@ -29,6 +30,7 @@ interface SongComposerDao {
             ON song.id=song_composer_join.songId
             WHERE song_composer_join.composerId=:composerId
             ORDER BY name, gameName
+            COLLATE NOCASE
             """
     )
     fun getSongsForComposerSync(composerId: Long): List<SongEntity>
@@ -39,6 +41,7 @@ interface SongComposerDao {
             ON song.id=song_composer_join.songId
             WHERE song_composer_join.composerId=:composerId
             ORDER BY name, gameName
+            COLLATE NOCASE
             """
     )
     fun getSongsForComposer(composerId: Long): Observable<List<SongEntity>>

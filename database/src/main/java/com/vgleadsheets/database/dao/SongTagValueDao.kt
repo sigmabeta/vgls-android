@@ -19,6 +19,7 @@ interface SongTagValueDao {
             ON tag_value.id=song_tag_value_join.tagValueId
             WHERE song_tag_value_join.songId=:songId
             ORDER BY name
+            COLLATE NOCASE
             """
     )
     fun getTagValuesForSong(songId: Long): List<TagValueEntity>
@@ -29,6 +30,7 @@ interface SongTagValueDao {
             ON song.id=song_tag_value_join.songId
             WHERE song_tag_value_join.tagValueId=:tagValueId
             ORDER BY name, gameName
+            COLLATE NOCASE
             """
     )
     fun getSongsForTagValueSync(tagValueId: Long): List<SongEntity>
@@ -39,6 +41,7 @@ interface SongTagValueDao {
             ON song.id=song_tag_value_join.songId
             WHERE song_tag_value_join.tagValueId=:tagValueId
             ORDER BY name, gameName
+            COLLATE NOCASE
             """
     )
     fun getSongsForTagValue(tagValueId: Long): Observable<List<SongEntity>>

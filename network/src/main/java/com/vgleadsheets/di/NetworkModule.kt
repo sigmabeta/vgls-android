@@ -210,6 +210,6 @@ class NetworkModule {
         const val CACHE_SIZE_BYTES = 100000000L
         const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
 
-        const val SEED_RANDOM_NUMBER_GENERATOR = 1234L
+        const val SEED_RANDOM_NUMBER_GENERATOR = 123456L
     }
 }

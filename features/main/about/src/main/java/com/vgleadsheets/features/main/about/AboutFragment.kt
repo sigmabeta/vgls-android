@@ -11,10 +11,10 @@ import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
-import kotlinx.android.synthetic.main.fragment_about.list_abouts
+import kotlinx.android.synthetic.main.fragment_about.list_content
 
 class AboutFragment : VglsFragment(),
-    SingleTextListModel.Handler,
+    SingleTextListModel.EventHandler,
     NameCaptionListModel.EventHandler {
     private val adapter = ComponentAdapter()
 
@@ -22,11 +22,15 @@ class AboutFragment : VglsFragment(),
 
     override fun onClicked(clicked: NameCaptionListModel) {
         when (clicked.dataId) {
+            R.string.label_link_vgls.toLong() -> getFragmentRouter()
+                .goToWebUrl(getString(R.string.url_vgls))
             R.string.label_link_giantbomb.toLong() -> getFragmentRouter()
                 .goToWebUrl(getString(R.string.url_giantbomb))
             else -> showError("Unimplemented.")
         }
     }
+
+    override fun clearClicked() = Unit
 
     override fun onClicked(clicked: SingleTextListModel) {
         when (clicked.dataId) {
@@ -42,9 +46,9 @@ class AboutFragment : VglsFragment(),
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_abouts.adapter = adapter
-        list_abouts.layoutManager = LinearLayoutManager(context)
-        list_abouts.setInsetListenerForPadding(
+        list_content.adapter = adapter
+        list_content.layoutManager = LinearLayoutManager(context)
+        list_content.setInsetListenerForPadding(
             topOffset = topOffset,
             bottomOffset = bottomOffset
         )
@@ -65,15 +69,21 @@ class AboutFragment : VglsFragment(),
         SectionHeaderListModel(
             getString(R.string.label_section_about_app)
         ),
-        SingleTextListModel(
-            R.string.label_link_licenses.toLong(),
-            getString(R.string.label_link_licenses),
+        NameCaptionListModel(
+            R.string.label_link_vgls.toLong(),
+            getString(R.string.label_link_vgls),
+            getString(R.string.caption_link_vgls),
             this
         ),
         NameCaptionListModel(
             R.string.label_link_giantbomb.toLong(),
             getString(R.string.label_link_giantbomb),
             getString(R.string.caption_link_giantbomb),
+            this
+        ),
+        SingleTextListModel(
+            R.string.label_link_licenses.toLong(),
+            getString(R.string.label_link_licenses),
             this
         )
     )

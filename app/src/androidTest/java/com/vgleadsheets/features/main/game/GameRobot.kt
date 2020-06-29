@@ -12,8 +12,6 @@ class GameRobot(
         checkScreenHeader(gameTitle, sheetCountText)
     }
 
-    override val maxScrolls = 2
-
     fun checkFirstSongIs(title: String): GameRobot {
         checkFirstItemHasTitleInternal(title)
         return this
@@ -22,10 +20,6 @@ class GameRobot(
     fun checkFirstSongArtistIs(name: String): GameRobot {
         checkFirstItemHasSubtitleInternal(name)
         return this
-    }
-
-    fun clickSongWithTitle(title: String) {
-        clickItemWithText(title)
     }
 }
 

@@ -7,6 +7,7 @@ data class CtaListModel(
 ) : ListModel {
     interface EventHandler {
         fun onClicked(clicked: CtaListModel)
+        fun clearClicked()
     }
 
     override val dataId = iconId.toLong()

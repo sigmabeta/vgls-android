@@ -4,12 +4,21 @@ import com.vgleadsheets.model.composer.ApiComposer
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.ApiSetlist
+import com.vgleadsheets.model.jam.ApiSetlistEntry
+import com.vgleadsheets.model.jam.ApiSongHistoryEntry
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.time.ApiTime
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.json.JSONObject
+import retrofit2.HttpException
+import retrofit2.Response
 import timber.log.Timber
+import java.io.IOException
+import java.net.HttpURLConnection
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
@@ -21,15 +30,21 @@ class MockVglsApi(
     @Named("RngSeed") private val seed: Long,
     private val stringGenerator: StringGenerator
 ) : VglsApi {
+    private var possibleTags: Map<String, List<String>>? = null
+
     private var possibleComposers: List<ApiComposer>? = null
 
     private var remainingSongs: Stack<ApiSong>? = null
+
+    private var possibleSongs: List<ApiSong>? = null
 
     var generateEmptyState = false
 
     var maxSongs = DEFAULT_MAX_SONGS
     var maxGames = DEFAULT_MAX_GAMES
     var maxComposers = DEFAULT_MAX_COMPOSERS
+    var maxTags = DEFAULT_MAX_TAGS
+    var maxTagsValues = DEFAULT_MAX_TAGS_VALUES
     var maxSongsPerGame = DEFAULT_MAX_SONGS_PER_GAME
 
     var digestEmitTrigger: Observable<Long> = Single.just(0L).toObservable()
@@ -51,20 +66,112 @@ class MockVglsApi(
         .firstOrError()
         .subscribeOn(Schedulers.io())
 
-    override fun getJamState(name: String): Observable<ApiJam> =
-        Observable.error(NotImplementedError())
+    override fun getJamState(name: String) = Observable.create<ApiJam> {
+        if (possibleSongs == null) {
+            generateGames()
+        }
 
-    override fun getSetlistForJam(name: String): Single<ApiSetlist> =
-        Single.error(NotImplementedError())
+        if (name.length % 2 > 0) {
+            val jsonObject = JSONObject()
+
+            jsonObject.put("error", "Only jam names of even-numbered length are valid!")
+
+            val body = jsonObject
+                .toString()
+                .toResponseBody("application/json; charset=utf-8".toMediaTypeOrNull())
+
+            it.onError(
+                HttpException(
+                    Response.error<Unit>(
+                        HttpURLConnection.HTTP_NOT_FOUND,
+                        body
+                    )
+                )
+            )
+
+            return@create
+        }
+
+        val jamSeed = name.hashCode().toLong()
+
+        val jamRandomGenerator = Random(jamSeed)
+        val jamId = jamRandomGenerator.nextLong()
+
+        val previousJamsSize = jamRandomGenerator.nextInt(JAM_PREVIOUS_SONGS_SIZE) + 1
+        val previousJams = ArrayList<ApiSongHistoryEntry>(previousJamsSize)
+
+        for (entryIndex in 0 until previousJamsSize) {
+            val possibleSongsSize = possibleSongs?.size ?: 0
+            val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
+
+            Timber.w("History entry $entryIndex will be possible song with index: $possibleSongIndex")
+
+            val song = possibleSongs?.get(possibleSongIndex)
+
+            if (song != null) {
+                val entry = ApiSongHistoryEntry(song.id)
+                previousJams.add(entry)
+            } else {
+                Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
+            }
+        }
+
+        val jam = ApiJam(
+            jamId,
+            previousJams
+        )
+
+        it.onNext(jam)
+    }.subscribeOn(Schedulers.io())
+
+    @SuppressWarnings("MagicNumber")
+    override fun getSetlistForJam(name: String) = Single.create<ApiSetlist> {
+        if (possibleSongs == null) {
+            generateGames()
+        }
+
+        val jamRandomGenerator = Random(name.hashCode().toLong())
+
+        val setlistSize = if (name.length % 4 > 0) {
+            0
+        } else {
+            jamRandomGenerator.nextInt(5) + 1
+        }
+
+        val songs = ArrayList<ApiSetlistEntry>(setlistSize)
+
+        for (jamIndex in 0 until setlistSize) {
+            val possibleSongsSize = possibleSongs?.size ?: 0
+            val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
+
+            val song = possibleSongs?.get(possibleSongIndex)
+
+            if (song != null) {
+
+                val entry = ApiSetlistEntry(song.id, "Mocks Don't Name Games Yet", song.name)
+                songs.add(entry)
+            } else {
+                Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
+            }
+        }
+
+        val setlist = ApiSetlist(
+            songs
+        )
+
+        it.onSuccess(setlist)
+    }.subscribeOn(Schedulers.io())
 
     private fun generateGames(): List<VglsApiGame> {
+        possibleTags = null
         possibleComposers = null
         remainingSongs = null
+        possibleSongs = null
 
         random.setSeed(seed)
 
         if (generateEmptyState) {
-            return emptyList()
+            throw IOException("Arbitrarily failed a network request!")
         }
 
         val gameCount = random.nextInt(maxGames)
@@ -136,6 +243,7 @@ class MockVglsApi(
         }
 
         remainingSongs = songs
+        possibleSongs = songs.toMutableList()
     }
 
     private fun generateSong() = ApiSong(
@@ -205,19 +313,68 @@ class MockVglsApi(
         stringGenerator.generateName()
     )
 
-    // TODO fill this in
-    private fun getTags(): Map<String, List<String>> = mapOf()
+    private fun getTags(): Map<String, List<String>> {
+        if (possibleTags == null) {
+            generateTags()
+        }
+
+        val songTags = mutableMapOf<String, List<String>>()
+
+        possibleTags!!.forEach { possibleTag ->
+            val valuesSize = possibleTag.value.size
+            val selectedValue = possibleTag.value[random.nextInt(valuesSize)]
+
+            songTags.put(possibleTag.key, listOf(selectedValue))
+        }
+
+        return songTags
+    }
+
+    private fun generateTags() {
+        val tagCount = random.nextInt(maxTags) + 1
+        Timber.i("Generating $tagCount tags...")
+        val tags = mutableMapOf<String, List<String>>()
+
+        for (tagIndex in 0 until tagCount) {
+            val tagName = stringGenerator.generateTitle()
+            val isNumericTag = random.nextBoolean()
+
+            val tagValues = if (isNumericTag) {
+                TAG_VALUES_NUMERIC
+            } else {
+                val tagValuesCount = random.nextInt(maxTagsValues - 1) + 1
+                val tagValues = ArrayList<String>(tagValuesCount)
+
+                for (tagValueIndex in 0 until tagValuesCount) {
+                    val tagValue = stringGenerator.generateTitle()
+                    tagValues.add(tagValue)
+                }
+
+                tagValues
+            }
+
+            tags[tagName] = tagValues
+        }
+
+        possibleTags = tags
+    }
 
     companion object {
         const val DEFAULT_MAX_SONGS = 50
         const val DEFAULT_MAX_GAMES = 400
         const val DEFAULT_MAX_COMPOSERS = 200
+        const val DEFAULT_MAX_TAGS = 20
+        const val DEFAULT_MAX_TAGS_VALUES = 10
         const val DEFAULT_MAX_SONGS_PER_GAME = 10
+
+        const val JAM_PREVIOUS_SONGS_SIZE = 10
 
         const val MAX_WORDS_PER_TITLE = 5
         const val MAX_PAGE_COUNT = 2
 
         val PARTS_NO_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto")
         val PARTS_WITH_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto", "Vocals")
+
+        val TAG_VALUES_NUMERIC = listOf("1", "2", "3", "4", "5")
     }
 }

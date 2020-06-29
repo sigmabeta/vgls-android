@@ -7,7 +7,6 @@ import org.junit.Test
 
 class SongListAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
-    override val startingTopLevelScreenSubtitleId = R.string.subtitle_all_sheets
 
     @Test
     fun showEmptyStateIfNoData() {
@@ -28,7 +27,7 @@ class SongListAsyncUiTest : ListUiTest() {
     @Test
     fun clickingFirstItemShowsViewerScreen() {
         songList(this) {
-            clickSongWithTitle(TITLE_FIRST_ITEM)
+            clickSheetWithTitle(TITLE_FIRST_ITEM)
         }
 
         viewer {
@@ -38,6 +37,6 @@ class SongListAsyncUiTest : ListUiTest() {
 
     companion object {
         const val LABEL_EMPTY_STATE = "songs"
-        const val TITLE_FIRST_ITEM = "A Lobortis"
+        const val TITLE_FIRST_ITEM = "Adipiscing In Orci"
     }
 }

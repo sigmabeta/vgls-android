@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.songs
 
-import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.list.ListFragment
@@ -14,10 +13,12 @@ class SongListFragment : ListFragment<Song, SongListState>() {
     override val viewModel: SongListViewModel by fragmentViewModel()
 
     override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(SongListState::clickedListModel, deliveryMode = UniqueOnly("clicked")) {
+        viewModel.selectSubscribe(SongListState::clickedListModel) {
             val clickedSongId = it?.dataId
+
             if (clickedSongId != null) {
                 showSongViewer(clickedSongId)
+                viewModel.clearClicked()
             }
         }
     }

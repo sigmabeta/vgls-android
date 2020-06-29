@@ -11,6 +11,7 @@ data class ImageNameCaptionListModel(
 ) : ListModel {
     interface EventHandler {
         fun onClicked(clicked: ImageNameCaptionListModel)
+        fun clearClicked()
     }
 
     override val layoutId = R.layout.list_component_image_name_caption

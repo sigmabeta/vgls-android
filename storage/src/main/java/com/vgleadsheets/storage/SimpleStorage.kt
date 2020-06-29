@@ -35,7 +35,7 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         Single.fromFuture(simpleStore.getString(KEY_DEBUG_NETWORK_ENDPOINT))
             .map { fromStorage ->
                 val savedValue = if (fromStorage.isBlank()) {
-                    0
+                    NetworkEndpoint.PROD.ordinal
                 } else {
                     fromStorage.toInt()
                 }
@@ -52,7 +52,7 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         Single.fromFuture(simpleStore.getString(KEY_DEBUG_NETWORK_GB_ENDPOINT))
             .map { fromStorage ->
                 val savedValue = if (fromStorage.isBlank()) {
-                    0
+                    GiantBombNetworkEndpoint.PROD.ordinal
                 } else {
                     fromStorage.toInt()
                 }

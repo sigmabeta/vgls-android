@@ -22,7 +22,7 @@ data class SetlistEntryEntity(
     val jam_id: Long,
     val song_id: Long
 ) {
-    fun toSetlistEntry(song: Song) = SetlistEntry(
+    fun toSetlistEntry(song: Song?) = SetlistEntry(
         id,
         game_name,
         song_name,

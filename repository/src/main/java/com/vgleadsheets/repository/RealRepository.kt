@@ -84,7 +84,7 @@ class RealRepository constructor(
     override fun observeJamState(id: Long) = jamDao
         .getJam(id)
         .map {
-            val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+            val currentSong = getSongSync(it.currentSheetId)?.toSong(null, null)
             it.toJam(currentSong, null)
         }
 
@@ -162,7 +162,7 @@ class RealRepository constructor(
         .map { entryEntities ->
             entryEntities.map { entryEntity ->
                 val parts = getPartsForSongSync(entryEntity.song_id)
-                val song = getSongSync(entryEntity.song_id).toSong(null, parts)
+                val song = getSongSync(entryEntity.song_id)?.toSong(null, parts)
                 entryEntity.toSetlistEntry(song)
             }
         }
@@ -214,7 +214,7 @@ class RealRepository constructor(
         .getJam(id)
         .map {
             val parts = getPartsForSongSync(it.currentSheetId)
-            val currentSong = getSongSync(it.currentSheetId).toSong(null, parts)
+            val currentSong = getSongSync(it.currentSheetId)?.toSong(null, parts)
 
             val songHistory = if (withHistory) getSongHistoryForJamSync(id) else null
 
@@ -225,7 +225,7 @@ class RealRepository constructor(
         .getAll()
         .map {
             it.map {
-                val currentSong = getSongSync(it.currentSheetId).toSong(null, null)
+                val currentSong = getSongSync(it.currentSheetId)?.toSong(null, null)
                 it.toJam(currentSong, null)
             }
         }
@@ -293,11 +293,12 @@ class RealRepository constructor(
                         photoUrl = null
                     } else {
                         giantBombId = game.id
-                        photoUrl = if (game.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
-                            game.image.original_url
-                        } else {
-                            null
-                        }
+                        photoUrl =
+                            if (!game.image.original_url.contains(GB_URL_ID_IMAGE_NOT_FOUND)) {
+                                game.image.original_url
+                            } else {
+                                null
+                            }
 
                         val aliasEntities = game.aliases
                             ?.split('\n')
@@ -336,11 +337,12 @@ class RealRepository constructor(
                         photoUrl = null
                     } else {
                         giantBombId = composer.id
-                        photoUrl = if (composer.image.original_url != GB_URL_IMAGE_NOT_FOUND) {
-                            composer.image.original_url
-                        } else {
-                            null
-                        }
+                        photoUrl =
+                            if (!composer.image.original_url.contains(GB_URL_ID_IMAGE_NOT_FOUND)) {
+                                composer.image.original_url
+                            } else {
+                                null
+                            }
 
                         val aliasEntities = composer.aliases
                             ?.split('\n')
@@ -508,7 +510,7 @@ class RealRepository constructor(
         .getSongHistoryEntriesForJamSync(jamId)
         .map { songHistoryEntryEntity ->
             val parts = getPartsForSongSync(songHistoryEntryEntity.song_id)
-            val song = getSongSync(songHistoryEntryEntity.song_id).toSong(null, parts)
+            val song = getSongSync(songHistoryEntryEntity.song_id)?.toSong(null, parts)
 
             songHistoryEntryEntity.toSongHistoryEntry(song)
         }
@@ -524,7 +526,7 @@ class RealRepository constructor(
                     songHistoryEntry.toSongHistoryEntryEntity(it.jam_id, songHistoryIndex++)
                 }
 
-            val jamEntity = it.toJamEntity(name.toTitleCase())
+            val jamEntity = it.toJamEntity(name.toLowerCase(Locale.getDefault()))
 
             jamDao.upsertJam(songHistoryEntryDao, jamEntity, songHistoryEntries)
             return@doOnNext
@@ -576,7 +578,7 @@ class RealRepository constructor(
             )
         }
 
-    @UseExperimental(ExperimentalStdlibApi::class)
+    @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("DefaultLocale")
     @Suppress("LongMethod", "ComplexMethod")
     private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
@@ -725,14 +727,13 @@ class RealRepository constructor(
         const val URL_SEPARATOR_NUMBER = "-"
         const val URL_FILE_EXT_PNG = ".png"
 
-        const val GB_URL_IMAGE_NOT_FOUND = "https://www.giantbomb.com/api/image/original/" +
-                "3026329-gb_default-16_9.png"
+        const val GB_URL_ID_IMAGE_NOT_FOUND = "3026329"
 
         val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
 }
 
-@UseExperimental(ExperimentalStdlibApi::class)
+@OptIn(ExperimentalStdlibApi::class)
 @SuppressLint("DefaultLocale")
 private fun String.toTitleCase() = this
     .replace("_", " ")

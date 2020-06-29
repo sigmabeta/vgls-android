@@ -3,6 +3,7 @@ package com.vgleadsheets
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.vgleadsheets.features.main.hud.HudFragment
+import com.vgleadsheets.features.main.hud.hud
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -10,7 +11,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class AppSmokeTest : UiTest() {
     override val startingTopLevelScreenTitleId: Int? = null
-    override val startingTopLevelScreenSubtitleId = 0
 
     @Test
     fun appLaunchesToGamesAndTitleIsVisible() {
@@ -53,13 +53,15 @@ class AppSmokeTest : UiTest() {
     }
 
     private fun checkSuccessfulLaunch(titleStringId: Int, subtitleStringId: Int?) {
-        checkViewVisible(R.id.text_title_title)
-        checkViewVisible(R.id.text_title_subtitle)
+        hud(this) {
+            checkViewVisible(R.id.text_title_title)
+            checkViewVisible(R.id.text_title_subtitle)
 
-        checkViewText(R.id.text_title_title, titleStringId)
+            checkViewText(R.id.text_title_title, titleStringId)
 
-        if (subtitleStringId != null) {
-            checkViewText(R.id.text_title_subtitle, subtitleStringId)
+            if (subtitleStringId != null) {
+                checkViewText(R.id.text_title_subtitle, subtitleStringId)
+            }
         }
     }
 }

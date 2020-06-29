@@ -32,7 +32,7 @@ def computeVersionName = { ->
 }
 
 android {
-    buildToolsVersion '28.0.3'
+    buildToolsVersion '30.0.0'
 
     defaultConfig {
         applicationId "com.vgleadsheets"
@@ -92,8 +92,8 @@ android {
         ignoreTestSources true
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
     }
 
     testOptions {
@@ -137,6 +137,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_core_version"
 
     androidTestImplementation "androidx.test:runner:$espresso_runner_version"
     androidTestImplementation "androidx.test:rules:$espresso_runner_version"

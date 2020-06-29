@@ -94,7 +94,8 @@ class ViewerViewModel @AssistedInject constructor(
         val databaseRefresh = repository.observeJamState(jamId)
             .subscribe(
                 {
-                    setState { copy(activeJamSheetId = it.currentSong.id) }
+                    // TODO Do more than a null check here; should we report an error if the *song* is null?
+                    setState { copy(activeJamSheetId = it.currentSong?.id) }
                 },
                 {
                     val message = "Error observing Jam: ${it.message}"

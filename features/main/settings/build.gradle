@@ -3,8 +3,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
+    api project(path: ':features:main:list')
+
     implementation project(path: ':features:main:hud')
     implementation project(path: ':recyclerview')
+    implementation project(path: ':resources')
     implementation project(path: ':storage')
     implementation project(path: ':ui-core')
     implementation project(path: ':ui-components')

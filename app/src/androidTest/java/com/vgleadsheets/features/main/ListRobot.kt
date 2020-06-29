@@ -1,61 +1,131 @@
 package com.vgleadsheets.features.main
 
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.NoMatchingViewException
-import androidx.test.espresso.PerformException
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isNotChecked
+import androidx.test.espresso.matcher.ViewMatchers.withChild
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.vgleadsheets.R
 import com.vgleadsheets.RecyclerViewMatcher
+import com.vgleadsheets.Robot
+import com.vgleadsheets.components.ComponentViewHolder
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
-import timber.log.Timber
 
-abstract class ListRobot(val test: ListUiTest) {
-    init {
-        test.launchScreen()
+abstract class ListRobot(test: ListUiTest) : Robot(test) {
+    protected val resources by lazy { test.activityRule.activity.resources }
+
+    override fun checkScreenHeader(title: String, subtitle: String) {
+        scrollHelper(0) {
+            super.checkScreenHeader(title, subtitle)
+        }
     }
 
-    abstract val maxScrolls: Int
-
-    protected fun clickItemWithText(text: String) {
-        var scrollAttempts = 0
-        var clickSuccessful = false
-        while (scrollAttempts < maxScrolls) {
-            try {
-                onView(
-                    withText(
-                        text
-                    )
-                ).perform(
-                    click()
-                )
-
-                clickSuccessful = true
-            } catch (ex: NoMatchingViewException) {
-                scrollAttempts = onClickFailed(scrollAttempts, ex)
-            } catch (ex: PerformException) {
-                scrollAttempts = onClickFailed(scrollAttempts, ex)
-            }
-
-            if (clickSuccessful) {
-                break
-            }
+    fun isHeaderWithTitleDisplayed(text: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            isHeaderWithTitleDisplayedHelper(text)
         }
+    }
 
-        if (!clickSuccessful) {
-            throw IllegalStateException("View with text \"$text\" not found.")
+    fun isItemWithTitleDisplayed(text: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            isItemWithTitleDisplayedHelper(text)
+        }
+    }
+
+    fun checkSheetHasTitleAndSubtitle(
+        title: String,
+        subtitle: String,
+        scrollPosition: Int? = null
+    ) {
+        scrollHelper(scrollPosition) {
+            onView(
+                allOf(
+                    withId(R.id.component_image_name_caption),
+                    withChild(
+                        allOf(
+                            withId(R.id.text_name),
+                            withText(title)
+                        )
+                    ),
+                    withChild(
+                        allOf(
+                            withId(R.id.text_caption),
+                            withText(subtitle)
+                        )
+                    )
+                )
+            ).check(
+                matches(
+                    isDisplayed()
+                )
+            )
+        }
+    }
+
+    fun clickSheetWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_image_name_caption, title)
+        }
+    }
+
+    fun clickJamWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_name_caption, title)
+        }
+    }
+
+    fun clickCtaWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_cta, title)
+        }
+    }
+
+    fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
+        clickGbItemWithTitleHelper(scrollPosition, title)
+    }
+
+    fun clickGameWithTitle(title: String, scrollPosition: Int? = null) {
+        clickGbItemWithTitleHelper(scrollPosition, title)
+    }
+
+    fun clickTagWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_name_caption, title)
+        }
+    }
+
+    fun clickCheckboxWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_checkable, title)
+        }
+    }
+
+    fun clickLinkWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_single_line, title)
+        }
+    }
+
+    fun clickTwoLineLinkWithTitle(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_name_caption, title)
         }
     }
 
     protected fun checkIsEmptyStateDisplayedInternal(emptyStateLabel: String) {
         checkFirstContentItem(
             hasDescendant(
-                    withText("No $emptyStateLabel found at all. Check your internet connection?")
+                withText("No $emptyStateLabel found at all. Check your internet connection?")
             )
         )
     }
@@ -76,30 +146,68 @@ abstract class ListRobot(val test: ListUiTest) {
         )
     }
 
-    protected fun checkScreenHeader(title: String, subtitle: String) {
-        checkViewText(R.id.text_title_title, title)
-        checkViewText(R.id.text_title_subtitle, subtitle)
+    protected fun checkBooleanSettingValueIsInternal(
+        title: String,
+        value: Boolean,
+        scrollPosition: Int? = null
+    ) {
+        scrollHelper(scrollPosition) {
+            val checkBox = onView(
+                allOf(
+                    withParent(
+                        withChild(
+                            allOf(
+                                withId(
+                                    R.id.text_name
+                                ),
+                                withText(
+                                    title
+                                )
+                            )
+                        )
+                    ),
+                    withId(
+                        R.id.checkbox_setting
+                    )
+                )
+            )
+
+            if (value) {
+                checkBox.check(
+                    matches(
+                        isChecked()
+                    )
+                )
+            } else {
+                checkBox.check(
+                    matches(
+                        isNotChecked()
+                    )
+                )
+            }
+        }
     }
 
-    protected fun checkViewText(viewId: Int, text: String) {
+    private fun clickComponentWithTitle(@IdRes componentType: Int, title: String) {
         onView(
-            withId(viewId)
-        ).check(
-            matches(
-                withText(text)
+            allOf(
+                withId(componentType),
+                withChild(
+                    allOf(
+                        withId(R.id.text_name),
+                        withText(title)
+                    )
+                )
             )
+        ).perform(
+            click()
         )
     }
 
-    private fun onClickFailed(
-        scrollAttempts: Int,
-        ex: Exception
-    ): Int {
-        var scrollAttempts1 = scrollAttempts
-        scrollAttempts1++
-        Timber.e("Error: ${ex.javaClass.simpleName}. Scrolling down for ${scrollAttempts1}th time")
-        scrollDown()
-        return scrollAttempts1
+    private fun clickGbItemWithTitleHelper(scrollPosition: Int?, title: String) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_gb_image_name_caption, title)
+        }
     }
 
     private fun checkFirstContentItem(
@@ -116,11 +224,56 @@ abstract class ListRobot(val test: ListUiTest) {
         )
     }
 
-    private fun scrollDown() {
+    private fun isHeaderWithTitleDisplayedHelper(text: String) {
         onView(
-            withId(R.id.view_scroll_target)
+            allOf(
+                withId(
+                    R.id.text_header_name
+                ),
+                withText(
+                    text
+                )
+            )
+        ).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
+    private fun isItemWithTitleDisplayedHelper(text: String) {
+        onView(
+            allOf(
+                withId(
+                    R.id.text_name
+                ),
+                withText(
+                    text
+                )
+            )
+        ).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
+    private fun scrollHelper(scrollPosition: Int?, afterScroll: () -> Unit) {
+        if (scrollPosition != null) {
+            scrollTo(0)
+            scrollTo(scrollPosition)
+        }
+
+        afterScroll()
+    }
+
+    private fun scrollTo(scrollPosition: Int) {
+        onView(
+            withId(
+                R.id.list_content
+            )
         ).perform(
-            swipeUp()
+            RecyclerViewActions.scrollToPosition<ComponentViewHolder>(scrollPosition)
         )
     }
 }

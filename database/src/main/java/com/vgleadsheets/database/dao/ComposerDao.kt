@@ -12,10 +12,10 @@ interface ComposerDao {
     @Query("SELECT * FROM composer WHERE id = :composerId")
     fun getComposer(composerId: Long): Observable<ComposerEntity>
 
-    @Query("SELECT * FROM composer ORDER BY name")
+    @Query("SELECT * FROM composer ORDER BY name COLLATE NOCASE")
     fun getAll(): Observable<List<ComposerEntity>>
 
-    @Query("SELECT * FROM composer WHERE name LIKE :name ORDER BY name")
+    @Query("SELECT * FROM composer WHERE name LIKE :name ORDER BY name COLLATE NOCASE")
     fun searchComposersByName(name: String): Observable<List<ComposerEntity>>
 
     @Insert

@@ -10,10 +10,12 @@
     </data>
 
     <FrameLayout
+        android:id="@+id/component_section_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/text_header_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"

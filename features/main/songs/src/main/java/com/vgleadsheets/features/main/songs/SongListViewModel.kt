@@ -32,6 +32,12 @@ class SongListViewModel @AssistedInject constructor(
         )
     }
 
+    override fun clearClicked() = setState {
+        copy(
+            clickedListModel = null
+        )
+    }
+
     override fun createTitleListModel() = TitleListModel(
         R.string.subtitle_all_sheets.toLong(),
         resourceProvider.getString(R.string.app_name),

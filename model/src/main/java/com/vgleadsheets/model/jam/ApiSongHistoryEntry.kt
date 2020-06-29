@@ -5,7 +5,7 @@ data class ApiSongHistoryEntry(
     val sheet_id: Long
 ) {
     fun toSongHistoryEntryEntity(jamId: Long, listPosition: Int) = SongHistoryEntryEntity(
-        ApiSetlistEntry.MULTIPLIER_JAM_ID * jamId + listPosition,
+        MULTIPLIER_JAM_ID * jamId + listPosition,
         jamId,
         sheet_id
     )

@@ -11,10 +11,10 @@ interface TagValueDao {
     @Query("SELECT * FROM tag_value WHERE id = :tagValueId")
     fun getTagValue(tagValueId: Long): Observable<TagValueEntity>
 
-    @Query("SELECT * FROM tag_value WHERE tag_key_id = :tagKeyId ORDER BY name")
+    @Query("SELECT * FROM tag_value WHERE tag_key_id = :tagKeyId ORDER BY name COLLATE NOCASE")
     fun getValuesForTag(tagKeyId: Long): Observable<List<TagValueEntity>>
 
-    @Query("SELECT * FROM tag_value WHERE tag_key_id = :tagKeyId ORDER BY name")
+    @Query("SELECT * FROM tag_value WHERE tag_key_id = :tagKeyId ORDER BY name COLLATE NOCASE")
     fun getValuesForTagSync(tagKeyId: Long): List<TagValueEntity>
 
     @Insert

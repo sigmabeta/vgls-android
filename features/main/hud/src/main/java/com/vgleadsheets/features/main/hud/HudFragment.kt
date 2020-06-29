@@ -6,6 +6,7 @@ import android.animation.ValueAnimator.REVERSE
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.View.GONE
 import android.view.View.SCALE_Y
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -229,7 +230,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             is Loading -> showDigestLoading()
             is Success -> {
                 hideDigestLoading()
-                viewModel.clearDigest()
             }
         }
 
@@ -369,11 +369,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     }
 
     private fun showDigestLoading() {
-        progress_hud.fadeIn()
+        progress_hud.visibility = VISIBLE
     }
 
     private fun hideDigestLoading() {
-        progress_hud.fadeOutGone()
+        progress_hud.visibility = GONE
     }
 
     private fun showSearchClearButton() {
@@ -401,7 +401,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             is NoSuchElementException -> hideDigestLoading()
             else -> {
                 showError("Couldn't load sheets from server: ${error.message}")
-                viewModel.clearDigest()
             }
         }
     }

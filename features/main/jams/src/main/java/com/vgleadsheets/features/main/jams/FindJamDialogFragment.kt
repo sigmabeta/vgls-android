@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
@@ -26,6 +27,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
+import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -55,6 +57,14 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
         button_cancel.setOnClickListener { dismiss() }
         button_find.setOnClickListener { onAddClicked() }
+        edit_jam_name.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                onAddClicked()
+                return@setOnEditorActionListener true
+            }
+
+            return@setOnEditorActionListener false
+        }
     }
 
     override fun onStop() {
@@ -66,7 +76,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         val jamName = edit_jam_name.text.toString()
 
         if (jamName.isNotBlank()) {
-            findJam(jamName)
+            findJam(jamName.toLowerCase(Locale.getDefault()))
         } else {
             showError("Jam name can't be empty.")
         }
@@ -100,6 +110,8 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
                     } else {
                         showError("Could not find Jam: ${it.message}")
                     }
+
+                    Timber.e("Error finding Jam: ${it.message}")
                 }
             )
 

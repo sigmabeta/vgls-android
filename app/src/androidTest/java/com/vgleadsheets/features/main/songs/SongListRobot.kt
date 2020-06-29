@@ -8,20 +8,12 @@ class SongListRobot(test: ListUiTest) : ListRobot(test) {
         checkScreenHeader("VGLeadSheets", "All Sheets")
     }
 
-    override val maxScrolls = 6
-
-    fun checkIsEmptyStateDisplayed(emptyStateLabel: String): SongListRobot {
+    fun checkIsEmptyStateDisplayed(emptyStateLabel: String) {
         checkIsEmptyStateDisplayedInternal(emptyStateLabel)
-        return this
     }
 
-    fun checkFirstSongIs(title: String): SongListRobot {
+    fun checkFirstSongIs(title: String) {
         checkFirstItemHasTitleInternal(title)
-        return this
-    }
-
-    fun clickSongWithTitle(title: String) {
-        clickItemWithText(title)
     }
 }
 
