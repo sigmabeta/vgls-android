@@ -337,7 +337,6 @@ class JamViewModel @AssistedInject constructor(
         is Fail -> createErrorStateListModel("title", jam.error)
         is Success -> listOf(
             TitleListModel(
-                R.string.subtitle_jam.toLong(),
                 jam().name.toTitleCase(),
                 resourceProvider.getString(R.string.subtitle_jam)
             )

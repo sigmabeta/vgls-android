@@ -99,7 +99,6 @@ class TagValueSongListViewModel @AssistedInject constructor(
         when (tagValue) {
             is Success -> listOf(
                 TitleListModel(
-                    R.string.title_tag_value_songs.toLong(),
                     resourceProvider.getString(R.string.title_tag_value_songs, tagValue().tagKeyName, tagValue().name),
                     generateSheetCountText(songs)
                 )

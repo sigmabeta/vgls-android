@@ -99,7 +99,6 @@ class TagValueListViewModel @AssistedInject constructor(
         when (tagKey) {
             is Success -> listOf(
                 TitleListModel(
-                    R.string.subtitle_options_count.toLong(),
                     tagKey().name,
                     generateSheetCountText(tagValues)
                 )

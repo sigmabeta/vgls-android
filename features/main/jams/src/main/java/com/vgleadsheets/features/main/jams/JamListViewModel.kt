@@ -52,7 +52,6 @@ class JamListViewModel @AssistedInject constructor(
     }
 
     override fun createTitleListModel() = TitleListModel(
-        R.string.title_jams.toLong(),
         resourceProvider.getString(R.string.title_jams),
         ""
     )

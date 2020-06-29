@@ -102,7 +102,6 @@ class GameViewModel @AssistedInject constructor(
         when (game) {
             is Success -> listOf(
                 GiantBombTitleListModel(
-                    game().id,
                     game().giantBombId,
                     game().name,
                     generateSheetCountText(songs),

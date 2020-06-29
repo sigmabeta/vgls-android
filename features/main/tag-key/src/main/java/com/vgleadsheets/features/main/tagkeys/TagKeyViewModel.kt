@@ -39,7 +39,6 @@ class TagKeyViewModel @AssistedInject constructor(
     }
 
     override fun createTitleListModel() = TitleListModel(
-        R.string.subtitle_tags.toLong(),
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_tags)
     )

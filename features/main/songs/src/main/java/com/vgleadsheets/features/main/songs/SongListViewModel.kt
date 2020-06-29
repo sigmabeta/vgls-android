@@ -39,7 +39,6 @@ class SongListViewModel @AssistedInject constructor(
     }
 
     override fun createTitleListModel() = TitleListModel(
-        R.string.subtitle_all_sheets.toLong(),
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_all_sheets)
     )

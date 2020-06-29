@@ -102,7 +102,6 @@ class ComposerViewModel @AssistedInject constructor(
         when (composer) {
             is Success -> listOf(
                 GiantBombTitleListModel(
-                    composer().id,
                     composer().giantBombId,
                     composer().name,
                     generateSheetCountText(songs),
