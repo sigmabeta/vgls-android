@@ -17,5 +17,5 @@ data class TagValueData(
                     tagValues()?.isNotEmpty() == true
             )
 
-    override fun canShowPartialData() = tagKey is Success
+    override fun canShowPartialData() = true
 }

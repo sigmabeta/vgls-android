@@ -14,7 +14,7 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.GiantBombTitleListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.game.Game
@@ -112,9 +112,8 @@ class GameViewModel @AssistedInject constructor(
             )
             is Fail -> createErrorStateListModel(game.error)
             is Uninitialized, is Loading -> listOf(
-                LoadingNameCaptionListModel("title", 0)
+                LoadingTitleListModel()
             )
-            else -> createErrorStateListModel(IllegalStateException("Unhandled title state."))
         }
 
     private fun generateSheetCountText(

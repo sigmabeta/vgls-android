@@ -17,5 +17,5 @@ data class ComposerData(
                     songs()?.isNotEmpty() == true
             )
 
-    override fun canShowPartialData() = composer is Success
+    override fun canShowPartialData() = true
 }

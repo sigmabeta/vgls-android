@@ -57,8 +57,8 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
     ): List<ListModel> {
         val contentListModels = createDataListModels(
             data,
-            state.updateTime,
             state.digest,
+            state.updateTime,
             state.selectedPart
         )
 

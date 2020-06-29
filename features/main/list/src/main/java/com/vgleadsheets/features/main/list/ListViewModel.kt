@@ -12,7 +12,6 @@ import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.resources.ResourceProvider
-import timber.log.Timber
 
 @Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class ListViewModel<DataType, StateType : ListState<DataType>> constructor(
@@ -67,8 +66,6 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         digest: Async<*>,
         selectedPart: PartSelectorItem?
     ): List<ListModel> {
-        Timber.v("Constructing list...")
-
         return listOf(createTitleListModel()) +
                 createContentListModels(
                     data,

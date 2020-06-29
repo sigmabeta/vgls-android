@@ -17,6 +17,7 @@ import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.NetworkRefreshingListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
@@ -333,7 +334,7 @@ class JamViewModel @AssistedInject constructor(
 
     private fun createTitleListModel(jam: Async<Jam>) = when (jam) {
         // TODO Loading state for title items
-        is Loading, Uninitialized -> createLoadingListModels("Title")
+        is Loading, Uninitialized -> listOf(LoadingTitleListModel())
         is Fail -> createErrorStateListModel("title", jam.error)
         is Success -> listOf(
             TitleListModel(

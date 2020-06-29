@@ -17,5 +17,5 @@ data class TagValueSongListData(
                     songs()?.isNotEmpty() == true
             )
 
-    override fun canShowPartialData() = tagValue is Success
+    override fun canShowPartialData() = true
 }

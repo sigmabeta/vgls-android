@@ -143,6 +143,12 @@ fun bindGiantBombIdTitle(
 }
 
 @BindingAdapter("model")
+fun bindNameCaptionLoading(view: LinearLayout, model: LoadingTitleListModel) {
+    view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+        .start()
+}
+
+@BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
     view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()

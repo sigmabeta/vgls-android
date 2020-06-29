@@ -13,6 +13,7 @@ import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
@@ -104,7 +105,7 @@ class TagValueSongListViewModel @AssistedInject constructor(
                 )
             )
             is Fail -> createErrorStateListModel(tagValue.error)
-            is Uninitialized, is Loading -> createLoadingListModels()
+            is Uninitialized, is Loading -> listOf(LoadingTitleListModel())
             else -> createErrorStateListModel(IllegalStateException("Unhandled title state."))
         }
 
