@@ -58,6 +58,9 @@ class JamViewModel @AssistedInject constructor(
         )
     }
 
+    override fun defaultLoadingListModel(index: Int): ListModel =
+        LoadingNameCaptionListModel("allData", index)
+
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
         "Unknown error occurred."

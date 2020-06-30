@@ -12,6 +12,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
@@ -48,6 +49,9 @@ class TagValueListViewModel @AssistedInject constructor(
             clickedListModel = null
         )
     }
+
+    override fun defaultLoadingListModel(index: Int): ListModel =
+        LoadingNameCaptionListModel("allData", index)
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
@@ -96,7 +100,10 @@ class TagValueListViewModel @AssistedInject constructor(
             }
     }
 
-    private fun createTitleListModel(tagKey: Async<TagKey>, tagValues: Async<List<TagValue>>): List<ListModel> =
+    private fun createTitleListModel(
+        tagKey: Async<TagKey>,
+        tagValues: Async<List<TagValue>>
+    ): List<ListModel> =
         when (tagKey) {
             is Success -> listOf(
                 TitleListModel(
@@ -189,7 +196,12 @@ class TagValueListViewModel @AssistedInject constructor(
         }
 
         if (numberOfOthers != 0) {
-            builder.append(resourceProvider.getString(R.string.subtitle_suffix_others, numberOfOthers))
+            builder.append(
+                resourceProvider.getString(
+                    R.string.subtitle_suffix_others,
+                    numberOfOthers
+                )
+            )
         }
 
         return builder.toString()
@@ -201,8 +213,12 @@ class TagValueListViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<TagValueListViewModel, TagValueListState> {
-        override fun create(viewModelContext: ViewModelContext, state: TagValueListState): TagValueListViewModel? {
-            val fragment: TagValueListFragment = (viewModelContext as FragmentViewModelContext).fragment()
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: TagValueListState
+        ): TagValueListViewModel? {
+            val fragment: TagValueListFragment =
+                (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.tagValueListViewModelFactory.create(state)
         }
     }

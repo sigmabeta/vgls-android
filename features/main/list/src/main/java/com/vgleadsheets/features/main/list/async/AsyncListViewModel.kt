@@ -5,7 +5,7 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.resources.ResourceProvider
@@ -67,6 +67,9 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
     open fun createFullEmptyStateListModel(): ListModel? = null
 
+    open fun defaultLoadingListModel(index: Int): ListModel =
+        LoadingImageNameCaptionListModel("allData", index)
+
     protected open val showDefaultEmptyState = true
 
     abstract fun createSuccessListModels(
@@ -81,12 +84,13 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
         for (index in 0 until LOADING_ITEMS) {
             listModels.add(
-                LoadingNameCaptionListModel("allData", index)
+                defaultLoadingListModel(index)
             )
         }
 
         return listModels
     }
+
 
     protected fun createErrorStateListModel(error: Throwable) =
         listOf(ErrorStateListModel("allData", error.message ?: "Unknown Error"))
