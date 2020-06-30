@@ -68,7 +68,6 @@ class RealRepository constructor(
     override fun checkForUpdate(): Single<List<VglsApiGame>> {
         return getLastCheckTime()
             .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
-            .onErrorComplete { it is NoSuchElementException }
             .flatMapSingle { getLastApiUpdateTime() }
             .zipWith<Time, Long>(getLastDbUpdateTimeOnce(), BiFunction { apiTime, dbTime ->
                 apiTime.timeMs - dbTime.timeMs
@@ -120,7 +119,6 @@ class RealRepository constructor(
                 songEntity.toSong(composers, parts)
             }
         }
-        .delay(3000L, TimeUnit.MILLISECONDS)
 
     override fun getSongsByComposer(
         composerId: Long,
@@ -135,7 +133,6 @@ class RealRepository constructor(
                     songEntity.toSong(composers, parts)
                 }
             }
-            .delay(3000L, TimeUnit.MILLISECONDS)
 
     override fun getTagValuesForTagKey(tagKeyId: Long, withSongs: Boolean) =
         tagValueDao.getValuesForTag(tagKeyId)
@@ -145,7 +142,6 @@ class RealRepository constructor(
                     tagValueEntity.toTagValue(songs)
                 }
             }
-            .delay(3000L, TimeUnit.MILLISECONDS)
 
     override fun getSongsForTagValue(
         tagValueId: Long,
@@ -160,7 +156,6 @@ class RealRepository constructor(
                     songEntity.toSong(composers, parts)
                 }
             }
-            .delay(3000L, TimeUnit.MILLISECONDS)
 
     override fun getSetlistForJam(jamId: Long) = setlistEntryDao
         .getSetlistEntriesForJam(jamId)
@@ -238,22 +233,18 @@ class RealRepository constructor(
     override fun getComposer(composerId: Long): Observable<Composer> = composerDao
         .getComposer(composerId)
         .map { it.toComposer(null) }
-        .delay(1500L, TimeUnit.MILLISECONDS)
 
     override fun getGame(gameId: Long): Observable<Game> = gameDao
         .getGame(gameId)
         .map { it.toGame(null) }
-        .delay(1500L, TimeUnit.MILLISECONDS)
 
     override fun getTagKey(tagKeyId: Long) = tagKeyDao
         .getTagKey(tagKeyId)
         .map { it.toTagKey(null) }
-        .delay(1500L, TimeUnit.MILLISECONDS)
 
     override fun getTagValue(tagValueId: Long) = tagValueDao
         .getTagValue(tagValueId)
         .map { it.toTagValue(null) }
-        .delay(1500L, TimeUnit.MILLISECONDS)
 
     @Suppress("MaxLineLength")
     override fun searchSongs(searchQuery: String) = songDao
