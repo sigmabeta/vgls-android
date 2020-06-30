@@ -21,6 +21,7 @@ import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import java.util.Locale
 
+@SuppressWarnings("TooManyFunctions")
 class JamListViewModel @AssistedInject constructor(
     @Assisted initialState: JamListState,
     private val repository: Repository,

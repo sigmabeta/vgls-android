@@ -91,7 +91,6 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         return listModels
     }
 
-
     protected fun createErrorStateListModel(error: Throwable) =
         listOf(ErrorStateListModel("allData", error.message ?: "Unknown Error"))
 
