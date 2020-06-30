@@ -17,6 +17,7 @@ import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.NetworkRefreshingListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
@@ -56,6 +57,9 @@ class JamViewModel @AssistedInject constructor(
             refreshError = null
         )
     }
+
+    override fun defaultLoadingListModel(index: Int): ListModel =
+        LoadingNameCaptionListModel("allData", index)
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
@@ -333,11 +337,10 @@ class JamViewModel @AssistedInject constructor(
 
     private fun createTitleListModel(jam: Async<Jam>) = when (jam) {
         // TODO Loading state for title items
-        is Loading, Uninitialized -> createLoadingListModels("Title")
+        is Loading, Uninitialized -> listOf(LoadingTitleListModel())
         is Fail -> createErrorStateListModel("title", jam.error)
         is Success -> listOf(
             TitleListModel(
-                R.string.subtitle_jam.toLong(),
                 jam().name.toTitleCase(),
                 resourceProvider.getString(R.string.subtitle_jam)
             )

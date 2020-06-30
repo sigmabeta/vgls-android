@@ -50,7 +50,6 @@ class ComposerListViewModel @AssistedInject constructor(
     }
 
     override fun createTitleListModel() = TitleListModel(
-        R.string.subtitle_composer.toLong(),
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_composer)
     )

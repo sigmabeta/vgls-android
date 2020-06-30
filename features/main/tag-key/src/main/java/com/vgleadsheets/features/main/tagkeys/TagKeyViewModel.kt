@@ -7,6 +7,8 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -39,10 +41,12 @@ class TagKeyViewModel @AssistedInject constructor(
     }
 
     override fun createTitleListModel() = TitleListModel(
-        R.string.subtitle_tags.toLong(),
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_tags)
     )
+
+    override fun defaultLoadingListModel(index: Int): ListModel =
+        LoadingNameCaptionListModel("allData", index)
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,

@@ -15,7 +15,7 @@ import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -341,7 +341,7 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun createLoadingListModels(sectionId: Int) = createSectionHeaderListModel(sectionId) +
             listOf(
-                LoadingNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
+                LoadingImageNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
             )
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(

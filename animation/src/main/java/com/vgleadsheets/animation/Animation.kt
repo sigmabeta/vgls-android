@@ -163,11 +163,9 @@ fun removeNullViewPairs(vararg views: Pair<View, String>?): Array<Pair<View, Str
 }
 
 fun View.getPulseAnimator(seed: Int): AnimatorSet {
-    val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE, ALPHA_SLIGHTLY_TRANSPARENT)
-    val scaleX = ObjectAnimator.ofFloat(this, View.SCALE_X, SCALE_UNITY, SCALE_SLIGHTLY_SMALLER)
-    val scaleY = ObjectAnimator.ofFloat(this, View.SCALE_Y, SCALE_UNITY, SCALE_SLIGHTLY_SMALLER)
+    val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE, ALPHA_VERY_TRANSPARENT)
 
-    val animatorList = listOf(alpha, scaleX, scaleY)
+    val animatorList = listOf(alpha)
 
     animatorList.forEach {
         it.repeatMode = REVERSE
@@ -184,10 +182,8 @@ fun View.getPulseAnimator(seed: Int): AnimatorSet {
 
 fun View.getEndPulseAnimator(): AnimatorSet {
     val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE)
-    val scaleX = ObjectAnimator.ofFloat(this, View.SCALE_X, SCALE_UNITY)
-    val scaleY = ObjectAnimator.ofFloat(this, View.SCALE_Y, SCALE_UNITY)
 
-    val animatorList = listOf(alpha, scaleX, scaleY)
+    val animatorList = listOf(alpha)
 
     animatorList.forEach {
         it.duration = DURATION_X_QUICK

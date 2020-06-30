@@ -14,7 +14,7 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.GiantBombTitleListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.composer.Composer
@@ -102,7 +102,6 @@ class ComposerViewModel @AssistedInject constructor(
         when (composer) {
             is Success -> listOf(
                 GiantBombTitleListModel(
-                    composer().id,
                     composer().giantBombId,
                     composer().name,
                     generateSheetCountText(songs),
@@ -113,9 +112,8 @@ class ComposerViewModel @AssistedInject constructor(
             )
             is Fail -> createErrorStateListModel(composer.error)
             is Uninitialized, is Loading -> listOf(
-                LoadingNameCaptionListModel("title", 0)
+                LoadingTitleListModel()
             )
-            else -> createErrorStateListModel(IllegalStateException("Unhandled title state."))
         }
 
     private fun generateSheetCountText(

@@ -17,5 +17,5 @@ data class GameData(
                     songs()?.isNotEmpty() == true
             )
 
-    override fun canShowPartialData() = game is Success
+    override fun canShowPartialData() = true
 }

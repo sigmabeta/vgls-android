@@ -9,6 +9,8 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -19,6 +21,7 @@ import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import java.util.Locale
 
+@SuppressWarnings("TooManyFunctions")
 class JamListViewModel @AssistedInject constructor(
     @Assisted initialState: JamListState,
     private val repository: Repository,
@@ -52,10 +55,12 @@ class JamListViewModel @AssistedInject constructor(
     }
 
     override fun createTitleListModel() = TitleListModel(
-        R.string.title_jams.toLong(),
         resourceProvider.getString(R.string.title_jams),
         ""
     )
+
+    override fun defaultLoadingListModel(index: Int): ListModel =
+        LoadingNameCaptionListModel("allData", index)
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,

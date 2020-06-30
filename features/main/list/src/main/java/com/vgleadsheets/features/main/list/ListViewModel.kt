@@ -7,12 +7,11 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.resources.ResourceProvider
-import timber.log.Timber
 
 @Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class ListViewModel<DataType, StateType : ListState<DataType>> constructor(
@@ -67,8 +66,6 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         digest: Async<*>,
         selectedPart: PartSelectorItem?
     ): List<ListModel> {
-        Timber.v("Constructing list...")
-
         return listOf(createTitleListModel()) +
                 createContentListModels(
                     data,
@@ -90,6 +87,9 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         digest: Async<*>,
         selectedPart: PartSelectorItem
     ): List<ListModel>
+
+    open fun defaultLoadingListModel(index: Int): ListModel =
+        LoadingImageNameCaptionListModel("allData", index)
 
     private fun createContentListModels(
         data: Async<List<DataType>>,
@@ -141,7 +141,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
 
         for (index in 0 until LOADING_ITEMS) {
             listModels.add(
-                LoadingNameCaptionListModel("allData", index)
+                defaultLoadingListModel(index)
             )
         }
 
