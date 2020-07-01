@@ -267,7 +267,7 @@ class MockVglsApi(
         stringGenerator.generateTitle(),
         random.nextInt(MAX_PAGE_COUNT) + 1,
         random.nextInt(MAX_PAGE_COUNT) + 1,
-        getComposers().map { ApiSongComposer(it.composer_id) },
+        getComposersForSong().map { ApiSongComposer(it.composer_id) },
         getTags()
     )
 
@@ -283,7 +283,7 @@ class MockVglsApi(
     }
 
     @Suppress("MagicNumber")
-    private fun getComposers(): List<ApiComposer> {
+    private fun getComposersForSong(): List<ApiComposer> {
         if (possibleComposers == null) {
             generateComposers()
         }
