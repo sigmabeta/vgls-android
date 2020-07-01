@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.alias.ComposerAliasEntity
 import com.vgleadsheets.model.alias.GameAliasEntity
 import com.vgleadsheets.model.composer.ApiComposer
@@ -60,7 +61,7 @@ class RealRepository constructor(
     private val songHistoryEntryDao = database.songHistoryEntryDao()
 
     @ExperimentalStdlibApi
-    override fun checkForUpdate(): Single<List<VglsApiGame>> {
+    override fun checkForUpdate(): Single<ApiDigest> {
         return getLastCheckTime()
             .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
             .flatMapSingle { getLastApiUpdateTime() }
@@ -74,7 +75,7 @@ class RealRepository constructor(
     }
 
     @ExperimentalStdlibApi
-    override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
+    override fun forceRefresh(): Single<ApiDigest> = getDigest()
 
     override fun observeJamState(id: Long) = jamDao
         .getJam(id)
@@ -488,8 +489,14 @@ class RealRepository constructor(
     @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("DefaultLocale")
     @Suppress("LongMethod", "ComplexMethod")
-    private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
-        .doOnSuccess { apiGames ->
+    private fun getDigest(): Single<ApiDigest> = vglsApi
+        .getDigest()
+        .doOnSuccess { digest ->
+            val apiComposers = digest.composers
+            val apiGames = digest.games
+
+
+            val composerEntities = apiComposers.map { apiComposer -> apiComposer.toComposerEntity() }
             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 
             val songEntities = ArrayList<SongEntity>(CAPACITY)
@@ -498,7 +505,6 @@ class RealRepository constructor(
             val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
             val songTagValueJoins = ArrayList<SongTagValueJoin>(CAPACITY)
 
-            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
             val tagKeyEntities = HashMap<String, TagKeyEntity>(CAPACITY)
             val tagValueEntities = HashMap<String, TagValueEntity>(CAPACITY)
 
@@ -511,9 +517,6 @@ class RealRepository constructor(
                             apiComposer.id + ApiComposer.ID_OFFSET
                         )
                         songComposerJoins.add(songComposerJoin)
-
-                        val composerEntity = apiComposer.toComposerEntity()
-                        composerEntities.add(composerEntity)
                     }
 
                     apiSong.parts.forEach { partId ->
