@@ -2,7 +2,6 @@ package com.vgleadsheets.features.main.game
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
@@ -18,8 +17,6 @@ class GameFragment : AsyncListFragment<GameData, GameState>() {
 
     private val idArgs: IdArgs by args()
 
-    private var apiAvailableErrorShown = false
-
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     override fun subscribeToViewEvents() {
@@ -29,15 +26,6 @@ class GameFragment : AsyncListFragment<GameData, GameState>() {
             if (clickedId != null) {
                 showSongViewer(clickedId)
                 viewModel.clearClicked()
-            }
-        }
-
-        viewModel.selectSubscribe(GameState::gbApiNotAvailable, deliveryMode = UniqueOnly("api")) {
-            if (it == true) {
-                if (!apiAvailableErrorShown) {
-                    apiAvailableErrorShown = true
-                    showError(getString(R.string.error_no_gb_api))
-                }
             }
         }
     }

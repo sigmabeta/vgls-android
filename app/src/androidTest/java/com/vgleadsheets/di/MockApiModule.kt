@@ -1,7 +1,5 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.network.GiantBombApi
-import com.vgleadsheets.network.MockGiantBombApi
 import com.vgleadsheets.network.MockVglsApi
 import com.vgleadsheets.network.StringGenerator
 import com.vgleadsheets.network.VglsApi
@@ -20,10 +18,4 @@ class MockApiModule {
         @Named("RngSeed") seed: Long,
         stringGenerator: StringGenerator
     ): VglsApi = MockVglsApi(random, seed, stringGenerator)
-
-    @Provides
-    @Singleton
-    fun provideGiantBombApi(
-        random: Random
-    ): GiantBombApi = MockGiantBombApi(random)
 }

@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.search
 
-import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.hud.HudState
@@ -13,8 +12,6 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
     override val viewModel: SearchViewModel by fragmentViewModel()
-
-    private var apiAvailableErrorShown = false
 
     override fun onBackPress(): Boolean {
         hudViewModel.exitSearch()
@@ -54,15 +51,6 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             if (clickedId != null) {
                 onComposerClicked(clickedId)
                 viewModel.clearClickedComposer()
-            }
-        }
-
-        viewModel.selectSubscribe(SearchState::gbApiNotAvailable, deliveryMode = UniqueOnly("api")) {
-            if (it == true) {
-                if (!apiAvailableErrorShown) {
-                    apiAvailableErrorShown = true
-                    showError(getString(R.string.error_no_gb_api))
-                }
             }
         }
     }

@@ -2,7 +2,6 @@ package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -10,9 +9,8 @@ import com.vgleadsheets.features.main.list.async.AsyncListState
 
 data class SearchState(
     val clickedSong: ImageNameCaptionListModel? = null,
-    val clickedGame: GiantBombImageNameCaptionListModel? = null,
-    val clickedComposer: GiantBombImageNameCaptionListModel? = null,
-    val gbApiNotAvailable: Boolean? = null,
+    val clickedGame: ImageNameCaptionListModel? = null,
+    val clickedComposer: ImageNameCaptionListModel? = null,
     override val updateTime: Async<*> = Uninitialized,
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),

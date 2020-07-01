@@ -14,7 +14,6 @@ import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.model.tag.TagKeyEntity
 import com.vgleadsheets.model.tag.TagValueEntity
 import io.reactivex.Observable
-import io.reactivex.Single
 
 @Dao
 interface GameDao {
@@ -81,7 +80,4 @@ interface GameDao {
         songTagValueDao.nukeTable()
         songTagValueDao.insertAll(songTagValueJoins)
     }
-
-    @Query("UPDATE game SET giantBombId = :giantBombId, photoUrl = :photoUrl WHERE id = :vglsId;")
-    fun giantBombifyGame(vglsId: Long, giantBombId: Long, photoUrl: String?): Single<Int>
 }

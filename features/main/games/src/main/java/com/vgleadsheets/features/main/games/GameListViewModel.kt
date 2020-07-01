@@ -7,7 +7,7 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
+import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -22,31 +22,21 @@ class GameListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider
 ) : ListViewModel<Game, GameListState>(initialState, resourceProvider),
-    GiantBombImageNameCaptionListModel.EventHandler {
+    ImageNameCaptionListModel.EventHandler {
     init {
         fetchGames()
     }
 
-    override fun onClicked(clicked: GiantBombImageNameCaptionListModel) = setState {
+    override fun onClicked(clicked: ImageNameCaptionListModel) = setState {
         copy(
-            clickedGbListModel = clicked
+            clickedListModel = clicked
         )
     }
 
     override fun clearClicked() = setState {
         copy(
-            clickedGbListModel = null
+            clickedListModel = null
         )
-    }
-
-    override fun onGbApiNotAvailable() = setState {
-        copy(
-            gbApiNotAvailable = true
-        )
-    }
-
-    override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) {
-        repository.searchGiantBombForGame(vglsId, name)
     }
 
     override fun createTitleListModel() = TitleListModel(
@@ -74,9 +64,8 @@ class GameListViewModel @AssistedInject constructor(
             )
         ) else availableGames
             .map {
-                GiantBombImageNameCaptionListModel(
+                ImageNameCaptionListModel(
                     it.id,
-                    it.giantBombId,
                     it.name,
                     generateSubtitleText(it.songs),
                     it.photoUrl,

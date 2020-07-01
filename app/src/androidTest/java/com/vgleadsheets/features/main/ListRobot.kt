@@ -91,11 +91,15 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
     }
 
     fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
-        clickGbItemWithTitleHelper(scrollPosition, title)
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_image_name_caption, title)
+        }
     }
 
     fun clickGameWithTitle(title: String, scrollPosition: Int? = null) {
-        clickGbItemWithTitleHelper(scrollPosition, title)
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_image_name_caption, title)
+        }
     }
 
     fun clickTagWithTitle(title: String, scrollPosition: Int? = null) {
@@ -202,12 +206,6 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         ).perform(
             click()
         )
-    }
-
-    private fun clickGbItemWithTitleHelper(scrollPosition: Int?, title: String) {
-        scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_gb_image_name_caption, title)
-        }
     }
 
     private fun checkFirstContentItem(

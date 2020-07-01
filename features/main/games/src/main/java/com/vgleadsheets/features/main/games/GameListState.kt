@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
+import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListState
@@ -15,8 +15,7 @@ data class GameListState(
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
     override val data: Async<List<Game>> = Uninitialized,
-    val clickedGbListModel: GiantBombImageNameCaptionListModel? = null,
-    val gbApiNotAvailable: Boolean? = null
+    val clickedListModel: ImageNameCaptionListModel? = null
 ) : ListState<Game>() {
     override fun updateListState(
         updateTime: Async<*>,

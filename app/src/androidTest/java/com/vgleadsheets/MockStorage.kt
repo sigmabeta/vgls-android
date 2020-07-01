@@ -1,6 +1,5 @@
 package com.vgleadsheets
 
-import com.vgleadsheets.common.debug.GiantBombNetworkEndpoint
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
@@ -51,8 +50,10 @@ class MockStorage : Storage {
 
     override fun getAllDebugSettings() = Single
         .concat(
-            getDebugSettingNetworkEndpoint(),
-            getDebugSettingNetworkGiantBombEndpoint()
+            // TODO Once there's actually more than one of these, we don't need the listOf call
+            listOf(
+                getDebugSettingNetworkEndpoint()
+            )
         )
         .toList()
 
@@ -65,18 +66,6 @@ class MockStorage : Storage {
         )
     )
 
-    override fun getDebugSettingNetworkGiantBombEndpoint() = Single.just(
-        DropdownSetting(
-            SimpleStorage.KEY_DEBUG_NETWORK_GB_ENDPOINT,
-            R.string.label_debug_network_giant_bomb_endpoint,
-            GiantBombNetworkEndpoint.MOCK.ordinal,
-            GiantBombNetworkEndpoint.values().map { it.displayStringId }
-        )
-    )
-
     override fun saveSelectedNetworkEndpoint(newValue: Int) =
-        Single.error<String>(NotImplementedError("Implement this!"))
-
-    override fun saveSelectedNetworkGiantBombEndpoint(newValue: Int) =
         Single.error<String>(NotImplementedError("Implement this!"))
 }

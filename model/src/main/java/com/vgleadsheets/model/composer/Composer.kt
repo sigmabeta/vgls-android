@@ -6,6 +6,5 @@ data class Composer(
     val id: Long,
     val name: String,
     val songs: List<Song>?,
-    val giantBombId: Long?,
     val photoUrl: String?
 )

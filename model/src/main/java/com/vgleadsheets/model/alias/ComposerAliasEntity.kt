@@ -21,9 +21,8 @@ import com.vgleadsheets.model.song.Song
 data class ComposerAliasEntity(
     val composerId: Long,
     val name: String,
-    val giantBombId: Long? = null,
     val photoUrl: String? = null,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
 ) {
-    fun toComposer(songs: List<Song>?) = Composer(composerId, name, songs, giantBombId, photoUrl)
+    fun toComposer(songs: List<Song>?) = Composer(composerId, name, songs, photoUrl)
 }

@@ -2,8 +2,6 @@
 
 package com.vgleadsheets.components
 
-import android.annotation.SuppressLint
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
@@ -16,7 +14,6 @@ import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
-import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -98,48 +95,6 @@ fun bindDrawable(
     drawable: Int
 ) {
     view.setImageResource(drawable)
-}
-
-@SuppressLint("BinaryOperationInTimber")
-@SuppressWarnings("LongParameterList")
-@BindingAdapter("vglsId", "giantBombId", "name", "type", "handler")
-fun bindGiantBombIdList(
-    view: View,
-    vglsId: Long,
-    giantBombId: Long?,
-    name: String,
-    type: String,
-    events: GiantBombImageNameCaptionListModel.EventHandler
-) {
-    // Just so unused check won't complain.
-    if (giantBombId == null) {
-        Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
-        events.onGbModelNotChecked(vglsId, name, type)
-    }
-
-    if (giantBombId == NO_API_KEY) {
-        Timber.w(
-            "Can't get metadata from Giant Bomb without an API key." +
-                    "See instructions in README.MD and make sure to clear app data after" +
-                    "rebuilding."
-        )
-        events.onGbApiNotAvailable()
-    }
-}
-
-@BindingAdapter("vglsId", "giantBombId", "name", "handler")
-fun bindGiantBombIdTitle(
-    view: View,
-    vglsId: Long,
-    giantBombId: Long?,
-    name: String,
-    events: GiantBombTitleListModel.EventHandler
-) {
-    // Just so unused check won't complain.
-    if (giantBombId == null) {
-        Timber.w("No GiantBomb ID found for ${view.javaClass.simpleName} with VGLS ID $vglsId: $name")
-        events.onGbModelNotChecked(vglsId, name)
-    }
 }
 
 @BindingAdapter("model")

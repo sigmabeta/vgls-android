@@ -58,10 +58,6 @@ interface Repository {
     fun searchGamesCombined(searchQuery: String): Observable<List<Game>>
     fun searchComposersCombined(searchQuery: String): Observable<List<Composer>>
 
-    // Giant Bomb searches
-    fun searchGiantBombForGame(vglsId: Long, name: String)
-    fun searchGiantBombForComposer(vglsId: Long, name: String)
-
     // Jam maintenance
     fun removeJam(id: Long): Completable
 
