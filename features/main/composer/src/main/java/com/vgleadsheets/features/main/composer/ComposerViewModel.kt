@@ -98,7 +98,9 @@ class ComposerViewModel @AssistedInject constructor(
             is Success -> listOf(
                 TitleListModel(
                     composer().name,
-                    generateSheetCountText(songs)
+                    generateSheetCountText(songs),
+                    composer().photoUrl,
+                    R.drawable.placeholder_composer
                 )
             )
             is Fail -> createErrorStateListModel(composer.error)

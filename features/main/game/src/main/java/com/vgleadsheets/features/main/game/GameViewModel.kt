@@ -98,7 +98,9 @@ class GameViewModel @AssistedInject constructor(
             is Success -> listOf(
                 TitleListModel(
                     game().name,
-                    generateSheetCountText(songs)
+                    generateSheetCountText(songs),
+                    game().photoUrl,
+                    R.drawable.placeholder_game
                 )
             )
             is Fail -> createErrorStateListModel(game.error)
