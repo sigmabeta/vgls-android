@@ -56,6 +56,8 @@ fun bindPhoto(
     photoUrl: String?,
     placeholder: Int
 ) {
+    view.clipToOutline = true
+
     if (photoUrl != null) {
         view.loadImageLowQuality(photoUrl, true, placeholder)
     } else {
@@ -69,6 +71,11 @@ fun bindBigPhoto(
     photoUrl: String?,
     placeholder: Int
 ) {
+    if (placeholder != R.drawable.ic_logo) {
+        view.clipToOutline = true
+        view.setBackgroundResource(R.drawable.background_image_circle)
+    }
+
     if (photoUrl != null) {
         view.loadImageHighQuality(photoUrl, true, placeholder)
     } else {
