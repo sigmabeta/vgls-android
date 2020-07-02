@@ -43,7 +43,7 @@
             android:layout_marginEnd="@dimen/margin_large"
             android:gravity="center"
             android:text="@{toBind.title}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             tools:text="VGLeadSheets" />
 
         <TextView
@@ -57,7 +57,7 @@
             android:layout_marginBottom="@dimen/margin_medium"
             android:gravity="center"
             android:text="@{toBind.subtitle}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             tools:text="By Game" />
     </LinearLayout>
 </layout>

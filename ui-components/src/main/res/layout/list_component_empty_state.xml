@@ -39,13 +39,15 @@
 
         <TextView
             android:id="@+id/text_empty_state_reason"
-            android:layout_width="240dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
             android:gravity="center"
             android:text="@{toBind.explanation}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/hint_text"
             tools:text="We don't have sheets to display! Oh noes. Fix it. Fix it fix it fix it." />
     </LinearLayout>
