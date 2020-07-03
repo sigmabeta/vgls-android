@@ -17,27 +17,23 @@
         android:background="?attr/selectableItemBackground"
         android:onClick="@{() -> toBind.handler.onClicked(toBind)}">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_image"
+        <ImageView
+            android:background="@drawable/background_image_circle"
+            android:id="@+id/image"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_medium"
-            android:elevation="@dimen/margin_medium"
+            android:elevation="4dp"
+            android:outlineProvider="background"
+            tools:src="@drawable/placeholder_composer"
             app:cardCornerRadius="@dimen/card_corner_radius_circle_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:photoUrl="@{toBind.imageUrl}"
-                app:placeholder="@{toBind.imagePlaceholder}"/>
-
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="parent"
+            app:photoUrl="@{toBind.imageUrl}"
+            app:placeholder="@{toBind.imagePlaceholder}" />
 
         <TextView
             android:id="@+id/text_name"
@@ -49,9 +45,9 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/card_image"
+            app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/sample_lorem_ipsum" />
 
@@ -66,10 +62,10 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.caption}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/card_image"
+            app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintTop_toBottomOf="@id/text_name"
             tools:text="@string/sample_lorem_ipsum" />
 

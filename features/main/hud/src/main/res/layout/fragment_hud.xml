@@ -27,7 +27,7 @@
 
         <ImageButton
             android:id="@+id/button_search_menu_back"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="@dimen/min_clickable_size"
             android:layout_height="@dimen/min_clickable_size"
             android:layout_gravity="start|center_vertical"
@@ -67,11 +67,11 @@
             android:text="@string/hint_search"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@color/hint_text"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
 
         <ImageButton
             android:id="@+id/button_search_clear"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="@dimen/min_clickable_size"
             android:layout_height="@dimen/min_clickable_size"
             android:layout_gravity="end|center_vertical"

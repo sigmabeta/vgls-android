@@ -14,10 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_large"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_marginTop="@dimen/margin_large"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@drawable/ic_search_black_24dp"
@@ -25,13 +25,15 @@
 
         <TextView
             android:id="@+id/text_empty_state_search"
-            android:layout_width="240dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginBottom="@dimen/margin_large"
             android:gravity="center"
             android:text="@string/empty_search_no_query"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/hint_text" />
     </LinearLayout>
 </layout>

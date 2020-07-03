@@ -16,16 +16,15 @@
         android:background="?attr/selectableItemBackground"
         app:model="@{toBind}">
 
-        <androidx.cardview.widget.CardView
+        <View
             android:id="@+id/card_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_medium"
-            android:elevation="@dimen/margin_medium"
-            app:cardBackgroundColor="@color/text_gray"
+            android:elevation="4dp"
+            android:background="@drawable/background_image_circle"
             app:cardCornerRadius="@dimen/card_corner_radius_circle_small"
-            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="parent"

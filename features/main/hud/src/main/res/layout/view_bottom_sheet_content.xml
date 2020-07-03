@@ -15,7 +15,7 @@
 
         <ImageButton
             android:id="@+id/button_menu"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="@dimen/min_clickable_size"
             android:layout_height="@dimen/min_clickable_size"
             android:padding="@dimen/icon_padding"
@@ -68,7 +68,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_by_game"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -97,7 +97,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_by_composer"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -126,7 +126,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_by_tag"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -155,7 +155,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_all_sheets"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -185,7 +185,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_random"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -215,7 +215,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_jams"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -244,7 +244,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_settings"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -273,7 +273,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_debug"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
     </LinearLayout>
 
@@ -302,7 +302,7 @@
             android:gravity="center_vertical|start"
             android:paddingStart="@dimen/margin_medium"
             android:text="@string/label_refresh"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@android:color/tertiary_text_dark" />
 
         <TextView

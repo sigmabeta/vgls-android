@@ -29,7 +29,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Menu"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="@string/sample_lorem_ipsum" />
 
     </FrameLayout>
