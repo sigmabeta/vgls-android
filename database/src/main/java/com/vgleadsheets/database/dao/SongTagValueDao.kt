@@ -22,7 +22,7 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getTagValuesForSong(songId: Long): List<TagValueEntity>
+    fun getTagValuesForSong(songId: Long): Observable<List<TagValueEntity>>
 
     @Query(
         """ 

@@ -143,7 +143,7 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
                 hudState.parts.first { it.selected }.apiId,
                 null
             )
-            getFragmentRouter().showSongViewer(song.id)
+            getFragmentRouter().showSheetDetail(song.id)
         }
 
     private fun followJam() = withState(viewModel) {

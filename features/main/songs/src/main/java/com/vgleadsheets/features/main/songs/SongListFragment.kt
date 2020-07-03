@@ -38,7 +38,7 @@ class SongListFragment : ListFragment<Song, SongListState>() {
                 hudState.parts.first { it.selected }.apiId,
                 null
             )
-            getFragmentRouter().showSongViewer(clickedSongId)
+            getFragmentRouter().showSheetDetail(clickedSongId)
         }
 
     companion object {

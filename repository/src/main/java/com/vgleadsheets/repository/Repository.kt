@@ -37,6 +37,7 @@ interface Repository {
     fun getPartsForSong(songId: Long, withPages: Boolean = true): Observable<List<Part>>
     fun getSongsByComposer(composerId: Long, withParts: Boolean = true): Observable<List<Song>>
     fun getSongsForTagValue(tagValueId: Long, withParts: Boolean = true): Observable<List<Song>>
+    fun getTagValuesForSong(songId: Long): Observable<List<TagValue>>
     fun getSetlistForJam(jamId: Long): Observable<List<SetlistEntry>>
     fun getSongsForGame(
         gameId: Long,
