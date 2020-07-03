@@ -2,7 +2,6 @@ package com.vgleadsheets.network
 
 import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.composer.ApiComposer
-import com.vgleadsheets.model.composer.ApiSongComposer
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.ApiSetlist
@@ -267,7 +266,7 @@ class MockVglsApi(
         stringGenerator.generateTitle(),
         random.nextInt(MAX_PAGE_COUNT) + 1,
         random.nextInt(MAX_PAGE_COUNT) + 1,
-        getComposersForSong().map { ApiSongComposer(it.composer_id) },
+        getComposersForSong(),
         getTags()
     )
 

@@ -513,7 +513,7 @@ class RealRepository constructor(
                     apiSong.composers.forEach { apiComposer ->
                         val songComposerJoin = SongComposerJoin(
                             apiSong.id,
-                            apiComposer.id + ApiComposer.ID_OFFSET
+                            apiComposer.composer_id + ApiComposer.ID_OFFSET
                         )
                         songComposerJoins.add(songComposerJoin)
                     }

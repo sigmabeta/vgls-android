@@ -1,6 +1,6 @@
 package com.vgleadsheets.model.song
 
-import com.vgleadsheets.model.composer.ApiSongComposer
+import com.vgleadsheets.model.composer.ApiComposer
 
 data class ApiSong(
     val id: Long,
@@ -9,7 +9,7 @@ data class ApiSong(
     val name: String,
     val pageCount: Int,
     val lyricsPageCount: Int,
-    val composers: List<ApiSongComposer>,
+    val composers: List<ApiComposer>,
     val tags: Map<String, List<String>>
 ) {
     fun toSongEntity(gameId: Long, gameName: String) = SongEntity(id,
