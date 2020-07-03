@@ -1,5 +1,6 @@
 package com.vgleadsheets.model.composer
 
+@Suppress("ConstructorParameterNaming")
 data class ApiComposer(
     val aliases: List<String>?,
     val composer_id: Long,

@@ -495,7 +495,6 @@ class RealRepository constructor(
             val apiComposers = digest.composers
             val apiGames = digest.games
 
-
             val composerEntities = apiComposers.map { apiComposer -> apiComposer.toComposerEntity() }
             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 
