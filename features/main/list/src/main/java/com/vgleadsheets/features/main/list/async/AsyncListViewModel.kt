@@ -27,7 +27,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         }
     }
 
-    fun onDigestUpdate(newDigest: Async<List<*>>) {
+    fun onDigestUpdate(newDigest: Async<*>) {
         setState {
             updateListState(
                 digest = newDigest,

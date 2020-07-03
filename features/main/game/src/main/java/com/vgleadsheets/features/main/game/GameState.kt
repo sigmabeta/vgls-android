@@ -15,8 +15,7 @@ data class GameState(
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
     override val data: GameData = GameData(),
-    val clickedListModel: ImageNameCaptionListModel? = null,
-    val gbApiNotAvailable: Boolean? = null
+    val clickedListModel: ImageNameCaptionListModel? = null
 ) : AsyncListState<GameData>(data = data) {
     constructor(idArgs: IdArgs) : this(idArgs.id)
 

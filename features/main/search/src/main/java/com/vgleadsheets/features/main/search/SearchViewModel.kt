@@ -12,7 +12,6 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.components.GiantBombImageNameCaptionListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
@@ -51,37 +50,23 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
-    private val gameHandler = object : GiantBombImageNameCaptionListModel.EventHandler {
-        override fun onClicked(clicked: GiantBombImageNameCaptionListModel) = setState {
+    private val gameHandler = object : ImageNameCaptionListModel.EventHandler {
+        override fun onClicked(clicked: ImageNameCaptionListModel) = setState {
             copy(clickedGame = clicked)
         }
 
         override fun clearClicked() = setState {
             copy(clickedGame = null)
         }
-
-        override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
-            onGbGameNotChecked(vglsId, name)
-
-        override fun onGbApiNotAvailable() = setState {
-            copy(gbApiNotAvailable = true)
-        }
     }
 
-    private val composerHandler = object : GiantBombImageNameCaptionListModel.EventHandler {
-        override fun onClicked(clicked: GiantBombImageNameCaptionListModel) = setState {
+    private val composerHandler = object : ImageNameCaptionListModel.EventHandler {
+        override fun onClicked(clicked: ImageNameCaptionListModel) = setState {
             copy(clickedComposer = clicked)
         }
 
         override fun clearClicked() = setState {
             copy(clickedComposer = null)
-        }
-
-        override fun onGbModelNotChecked(vglsId: Long, name: String, type: String) =
-            onGbComposerNotChecked(vglsId, name)
-
-        override fun onGbApiNotAvailable() = setState {
-            copy(gbApiNotAvailable = true)
         }
     }
 
@@ -128,14 +113,6 @@ class SearchViewModel @AssistedInject constructor(
                 Uninitialized
             )
         }
-    }
-
-    fun onGbGameNotChecked(vglsId: Long, name: String) {
-        repository.searchGiantBombForGame(vglsId, name)
-    }
-
-    fun onGbComposerNotChecked(vglsId: Long, name: String) {
-        repository.searchGiantBombForComposer(vglsId, name)
     }
 
     fun clearClickedSong() {
@@ -267,18 +244,16 @@ class SearchViewModel @AssistedInject constructor(
                             songHandler
                         )
                     }
-                    is Game -> GiantBombImageNameCaptionListModel(
+                    is Game -> ImageNameCaptionListModel(
                         it.id,
-                        it.giantBombId,
                         it.name,
                         generateSubtitleText(it.songs),
                         it.photoUrl,
                         getPlaceholderId(it),
                         gameHandler
                     )
-                    is Composer -> GiantBombImageNameCaptionListModel(
+                    is Composer -> ImageNameCaptionListModel(
                         it.id,
-                        it.giantBombId,
                         it.name,
                         generateSubtitleText(it.songs),
                         it.photoUrl,
@@ -356,13 +331,6 @@ class SearchViewModel @AssistedInject constructor(
         is Game -> R.drawable.placeholder_game
         is Composer -> R.drawable.placeholder_composer
         else -> R.drawable.ic_error_24dp
-    }
-
-    private fun generateSheetCaption(song: Song): String {
-        return when (song.composers?.size) {
-            1 -> song.composers?.firstOrNull()?.name ?: "Unknown Composer"
-            else -> "Various Composers"
-        }
     }
 
     private fun generateSubtitleText(items: List<Song>?): String {

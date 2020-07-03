@@ -11,10 +11,10 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.GiantBombTitleListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingTitleListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.game.Game
@@ -28,15 +28,10 @@ class GameViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider
 ) : AsyncListViewModel<GameData, GameState>(initialState, resourceProvider),
-    GiantBombTitleListModel.EventHandler,
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGame()
         fetchSongs()
-    }
-
-    override fun onGbModelNotChecked(vglsId: Long, name: String) {
-        repository.searchGiantBombForGame(vglsId, name)
     }
 
     override fun onClicked(clicked: ImageNameCaptionListModel) = setState {
@@ -101,13 +96,11 @@ class GameViewModel @AssistedInject constructor(
     private fun createTitleListModel(game: Async<Game>, songs: Async<List<Song>>): List<ListModel> =
         when (game) {
             is Success -> listOf(
-                GiantBombTitleListModel(
-                    game().giantBombId,
+                TitleListModel(
                     game().name,
                     generateSheetCountText(songs),
                     game().photoUrl,
-                    R.drawable.placeholder_game,
-                    this@GameViewModel
+                    R.drawable.placeholder_game
                 )
             )
             is Fail -> createErrorStateListModel(game.error)

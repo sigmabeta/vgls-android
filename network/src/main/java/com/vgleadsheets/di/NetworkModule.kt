@@ -2,7 +2,6 @@ package com.vgleadsheets.di
 
 import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.vgleadsheets.common.debug.GiantBombNetworkEndpoint
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.network.BuildConfig
 import com.vgleadsheets.storage.Storage
@@ -31,21 +30,6 @@ class NetworkModule {
     @Provides
     @Singleton
     internal fun provideRandom(@Named("RngSeed") seed: Long) = Random(seed)
-
-    @Provides
-    @Named("GiantBombUrl")
-    @Singleton
-    internal fun provideGiantBombUrl(
-        @Named("GiantBombNetworkEndpoint") selectedNetwork: Int
-    ) = GiantBombNetworkEndpoint.values()[selectedNetwork].url
-
-    @Provides
-    @Named("GiantBombNetworkEndpoint")
-    @Singleton
-    internal fun provideGiantBombNetworkSetting(storage: Storage) = storage
-        .getDebugSettingNetworkGiantBombEndpoint()
-        .map { it.selectedPosition }
-        .blockingGet()
 
     @Provides
     @Named("NetworkEndpoint")
@@ -119,34 +103,6 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
-    @Named("GiantBombOkHttp")
-    internal fun provideGiantBombOkClient(
-        @Named("GiantBombApiKeyInterceptor") keyInterceptor: Interceptor,
-        @Named("GiantBombJsonInterceptor") formatInterceptor: Interceptor,
-        @Named("HttpLoggingInterceptor") logger: Interceptor,
-        @Named("StethoInterceptor") debugger: Interceptor
-    ): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-
-        builder.addNetworkInterceptor(keyInterceptor)
-        builder.addNetworkInterceptor(formatInterceptor)
-
-        return if (BuildConfig.DEBUG) {
-            builder
-                .addNetworkInterceptor(logger)
-                .addNetworkInterceptor(debugger)
-                .build()
-        } else {
-            builder.build()
-        }
-    }
-
-    @Provides
-    @Named("GiantBombApiKey")
-    internal fun provideGiantBombApiKey() = BuildConfig.GiantBombApiKey
-
-    @Provides
     @Named("StethoInterceptor")
     internal fun provideStethoInterceptor(): Interceptor = StethoInterceptor()
 
@@ -166,36 +122,6 @@ class NetworkModule {
             return originalResponse.newBuilder()
                 .header("Cache-Control", "max-age=" + CACHE_MAX_AGE)
                 .build()
-        }
-    }
-
-    @Provides
-    @Named("GiantBombJsonInterceptor")
-    internal fun provideGiantBombJsonInterceptor() =
-        queryParamInterceptor("format", "json")
-
-    @Provides
-    @Named("GiantBombApiKeyInterceptor")
-    internal fun provideGiantBombApiKeyInterceptor(@Named("GiantBombApiKey") apiKey: String) =
-        queryParamInterceptor("api_key", apiKey)
-
-    private fun queryParamInterceptor(key: String, value: String): Interceptor {
-        return object : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val original = chain.request()
-                val originalHttpUrl = original.url
-
-                val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter(key, value)
-                    .build()
-
-                // Request customization: add request headers
-                val requestBuilder = original.newBuilder()
-                    .url(url)
-
-                val request = requestBuilder.build()
-                return chain.proceed(request)
-            }
         }
     }
 

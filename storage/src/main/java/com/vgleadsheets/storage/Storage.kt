@@ -22,9 +22,7 @@ interface Storage {
     // Loading Debug Settings
     fun getAllDebugSettings(): Single<List<DropdownSetting>>
     fun getDebugSettingNetworkEndpoint(): Single<DropdownSetting>
-    fun getDebugSettingNetworkGiantBombEndpoint(): Single<DropdownSetting>
 
     // Saving Debug Settings
     fun saveSelectedNetworkEndpoint(newValue: Int): Single<String>
-    fun saveSelectedNetworkGiantBombEndpoint(newValue: Int): Single<String>
 }

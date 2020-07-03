@@ -2,7 +2,6 @@ package com.vgleadsheets.features.main.composer
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
@@ -19,8 +18,6 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
 
     private val idArgs: IdArgs by args()
 
-    private var apiAvailableErrorShown = false
-
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     override fun subscribeToViewEvents() {
@@ -30,15 +27,6 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
             if (clickedId != null) {
                 showSongViewer(clickedId)
                 viewModel.clearClicked()
-            }
-        }
-
-        viewModel.selectSubscribe(ComposerState::gbApiNotAvailable, deliveryMode = UniqueOnly("api")) {
-            if (it == true) {
-                if (!apiAvailableErrorShown) {
-                    apiAvailableErrorShown = true
-                    showError(getString(R.string.error_no_gb_api))
-                }
             }
         }
     }

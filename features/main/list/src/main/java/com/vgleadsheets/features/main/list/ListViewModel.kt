@@ -32,7 +32,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         }
     }
 
-    fun onDigestUpdate(newDigest: Async<List<*>>) {
+    fun onDigestUpdate(newDigest: Async<*>) {
         setState {
             updateListState(
                 digest = newDigest,

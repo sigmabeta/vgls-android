@@ -1,5 +1,6 @@
 package com.vgleadsheets.network
 
+import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.composer.ApiComposer
 import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.ApiJam
@@ -51,7 +52,7 @@ class MockVglsApi(
     var updateTimeEmitTrigger: Observable<Long> = Single.just(0L).toObservable()
 
     override fun getDigest() = digestEmitTrigger
-        .flatMapSingle { Single.just(generateGames()) }
+        .flatMapSingle { Single.just(generateDigest()) }
         .firstOrError()
         .subscribeOn(Schedulers.io())
 
@@ -162,6 +163,16 @@ class MockVglsApi(
         it.onSuccess(setlist)
     }.subscribeOn(Schedulers.io())
 
+    private fun generateDigest(): ApiDigest {
+        val games = generateGames()
+        val composers = possibleComposers!!
+
+        return ApiDigest(
+            composers,
+            games
+        )
+    }
+
     private fun generateGames(): List<VglsApiGame> {
         possibleTags = null
         possibleComposers = null
@@ -197,9 +208,11 @@ class MockVglsApi(
     private fun generateGame(): VglsApiGame {
         val gameId = random.nextLong()
         return VglsApiGame(
+            null,
             gameId,
             stringGenerator.generateTitle(),
-            getSongs()
+            getSongs(),
+            null
         )
     }
 
@@ -253,7 +266,7 @@ class MockVglsApi(
         stringGenerator.generateTitle(),
         random.nextInt(MAX_PAGE_COUNT) + 1,
         random.nextInt(MAX_PAGE_COUNT) + 1,
-        getComposers(),
+        getComposersForSong(),
         getTags()
     )
 
@@ -269,7 +282,7 @@ class MockVglsApi(
     }
 
     @Suppress("MagicNumber")
-    private fun getComposers(): List<ApiComposer> {
+    private fun getComposersForSong(): List<ApiComposer> {
         if (possibleComposers == null) {
             generateComposers()
         }
@@ -292,7 +305,7 @@ class MockVglsApi(
             composers.add(composer)
         }
 
-        return composers.distinctBy { it.id }
+        return composers.distinctBy { it.composer_id }
     }
 
     private fun generateComposers() {
@@ -305,12 +318,14 @@ class MockVglsApi(
             composers.add(composer)
         }
 
-        possibleComposers = composers.distinctBy { it.id }
+        possibleComposers = composers.distinctBy { it.composer_id }
     }
 
     private fun generateComposer() = ApiComposer(
+        null,
         random.nextLong(),
-        stringGenerator.generateName()
+        stringGenerator.generateName(),
+        null
     )
 
     private fun getTags(): Map<String, List<String>> {

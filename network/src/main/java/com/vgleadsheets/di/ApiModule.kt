@@ -1,8 +1,5 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.network.GiantBombApi
-import com.vgleadsheets.network.GiantBombNoKeyApi
-import com.vgleadsheets.network.MockGiantBombApi
 import com.vgleadsheets.network.MockVglsApi
 import com.vgleadsheets.network.StringGenerator
 import com.vgleadsheets.network.VglsApi
@@ -39,29 +36,5 @@ class ApiModule {
             .create(VglsApi::class.java)
     } else {
         MockVglsApi(random, seed, stringGenerator)
-    }
-
-    @Provides
-    @Singleton
-    @Suppress("LongParameterList")
-    fun provideGiantBombApi(
-        @Named("GiantBombApiKey") apiKey: String,
-        @Named("GiantBombUrl") baseUrl: String?,
-        @Named("GiantBombOkHttp") client: OkHttpClient,
-        converterFactory: MoshiConverterFactory,
-        callAdapterFactory: RxJava2CallAdapterFactory,
-        random: Random
-    ) = if (baseUrl == null) {
-        MockGiantBombApi(random)
-    } else if (apiKey == "empty") {
-        GiantBombNoKeyApi()
-    } else {
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(client)
-            .addCallAdapterFactory(callAdapterFactory)
-            .addConverterFactory(converterFactory)
-            .build()
-            .create(GiantBombApi::class.java)
     }
 }

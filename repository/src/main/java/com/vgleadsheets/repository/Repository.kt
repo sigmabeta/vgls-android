@@ -1,8 +1,8 @@
 package com.vgleadsheets.repository
 
+import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.SetlistEntry
@@ -17,8 +17,8 @@ import io.reactivex.Single
 
 @Suppress("TooManyFunctions")
 interface Repository {
-    fun checkForUpdate(): Single<List<VglsApiGame>>
-    fun forceRefresh(): Single<List<VglsApiGame>>
+    fun checkForUpdate(): Single<ApiDigest>
+    fun forceRefresh(): Single<ApiDigest>
 
     fun refreshJamStateContinuously(name: String): Observable<ApiJam>
     fun refreshJamState(name: String): Single<ApiJam>
@@ -57,10 +57,6 @@ interface Repository {
     fun searchSongs(searchQuery: String): Observable<List<Song>>
     fun searchGamesCombined(searchQuery: String): Observable<List<Game>>
     fun searchComposersCombined(searchQuery: String): Observable<List<Composer>>
-
-    // Giant Bomb searches
-    fun searchGiantBombForGame(vglsId: Long, name: String)
-    fun searchGiantBombForComposer(vglsId: Long, name: String)
 
     // Jam maintenance
     fun removeJam(id: Long): Completable

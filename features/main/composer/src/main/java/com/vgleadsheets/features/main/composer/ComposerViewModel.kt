@@ -11,10 +11,10 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.GiantBombTitleListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingTitleListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.composer.Composer
@@ -28,15 +28,10 @@ class ComposerViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider
 ) : AsyncListViewModel<ComposerData, ComposerState>(initialState, resourceProvider),
-    GiantBombTitleListModel.EventHandler,
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchComposer()
         fetchSongs()
-    }
-
-    override fun onGbModelNotChecked(vglsId: Long, name: String) {
-        repository.searchGiantBombForComposer(vglsId, name)
     }
 
     override fun onClicked(clicked: ImageNameCaptionListModel) = setState {
@@ -101,13 +96,11 @@ class ComposerViewModel @AssistedInject constructor(
     private fun createTitleListModel(composer: Async<Composer>, songs: Async<List<Song>>): List<ListModel> =
         when (composer) {
             is Success -> listOf(
-                GiantBombTitleListModel(
-                    composer().giantBombId,
+                TitleListModel(
                     composer().name,
                     generateSheetCountText(songs),
                     composer().photoUrl,
-                    R.drawable.placeholder_composer,
-                    this@ComposerViewModel
+                    R.drawable.placeholder_composer
                 )
             )
             is Fail -> createErrorStateListModel(composer.error)

@@ -21,9 +21,8 @@ import com.vgleadsheets.model.song.Song
 data class GameAliasEntity(
     val gameId: Long,
     val name: String,
-    val giantBombId: Long? = null,
     val photoUrl: String? = null,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
 ) {
-    fun toGame(songs: List<Song>?) = Game(gameId, name, songs, giantBombId, photoUrl)
+    fun toGame(songs: List<Song>?) = Game(gameId, name, songs, photoUrl)
 }

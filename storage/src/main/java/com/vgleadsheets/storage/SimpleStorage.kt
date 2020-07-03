@@ -1,7 +1,6 @@
 package com.vgleadsheets.storage
 
 import com.uber.simplestore.SimpleStore
-import com.vgleadsheets.common.debug.GiantBombNetworkEndpoint
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import io.reactivex.Single
 
@@ -48,23 +47,6 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
                 )
             }
 
-    override fun getDebugSettingNetworkGiantBombEndpoint() =
-        Single.fromFuture(simpleStore.getString(KEY_DEBUG_NETWORK_GB_ENDPOINT))
-            .map { fromStorage ->
-                val savedValue = if (fromStorage.isBlank()) {
-                    GiantBombNetworkEndpoint.PROD.ordinal
-                } else {
-                    fromStorage.toInt()
-                }
-
-                DropdownSetting(
-                    KEY_DEBUG_NETWORK_GB_ENDPOINT,
-                    R.string.label_debug_network_giant_bomb_endpoint,
-                    savedValue,
-                    GiantBombNetworkEndpoint.values().map { it.displayStringId }
-                )
-            }
-
     override fun saveSettingSheetScreenOn(setting: Boolean) = Single.fromFuture(
         simpleStore.putString(KEY_SHEETS_KEEP_SCREEN_ON, setting.toString())
     )
@@ -80,17 +62,13 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
 
     override fun getAllDebugSettings(): Single<List<DropdownSetting>> = Single
         .concat(
-            getDebugSettingNetworkEndpoint(),
-            getDebugSettingNetworkGiantBombEndpoint()
+            // TODO Once there's actually more than one of these, we don't need the listOf call
+            listOf(getDebugSettingNetworkEndpoint())
         )
         .toList()
 
     override fun saveSelectedNetworkEndpoint(newValue: Int): Single<String> = Single.fromFuture(
         simpleStore.putString(KEY_DEBUG_NETWORK_ENDPOINT, newValue.toString())
-    )
-
-    override fun saveSelectedNetworkGiantBombEndpoint(newValue: Int): Single<String> = Single.fromFuture(
-        simpleStore.putString(KEY_DEBUG_NETWORK_GB_ENDPOINT, newValue.toString())
     )
 
     companion object {
@@ -100,6 +78,5 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         const val KEY_SHEETS_KEEP_SCREEN_ON = "SETTING_SHEET_KEEP_SCREEN_ON"
 
         const val KEY_DEBUG_NETWORK_ENDPOINT = "DEBUG_NETWORK_ENDPOINT"
-        const val KEY_DEBUG_NETWORK_GB_ENDPOINT = "DEBUG_NETWORK_GB_ENDPOINT"
     }
 }

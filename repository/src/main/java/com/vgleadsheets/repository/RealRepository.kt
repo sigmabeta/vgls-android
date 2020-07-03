@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.alias.ComposerAliasEntity
 import com.vgleadsheets.model.alias.GameAliasEntity
 import com.vgleadsheets.model.composer.ApiComposer
@@ -12,8 +13,6 @@ import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.game.VglsApiGame
-import com.vgleadsheets.model.giantbomb.GiantBombGame
-import com.vgleadsheets.model.giantbomb.GiantBombPerson
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.pages.PageEntity
@@ -27,7 +26,6 @@ import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
-import com.vgleadsheets.network.GiantBombApi
 import com.vgleadsheets.network.VglsApi
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -35,14 +33,12 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
-import timber.log.Timber
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(
     private val vglsApi: VglsApi,
-    private val giantBombApi: GiantBombApi,
     private val baseImageUrl: String,
     private val threeTen: ThreeTenTime,
     database: VglsDatabase
@@ -65,7 +61,7 @@ class RealRepository constructor(
     private val songHistoryEntryDao = database.songHistoryEntryDao()
 
     @ExperimentalStdlibApi
-    override fun checkForUpdate(): Single<List<VglsApiGame>> {
+    override fun checkForUpdate(): Single<ApiDigest> {
         return getLastCheckTime()
             .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
             .flatMapSingle { getLastApiUpdateTime() }
@@ -79,7 +75,7 @@ class RealRepository constructor(
     }
 
     @ExperimentalStdlibApi
-    override fun forceRefresh(): Single<List<VglsApiGame>> = getDigest()
+    override fun forceRefresh(): Single<ApiDigest> = getDigest()
 
     override fun observeJamState(id: Long) = jamDao
         .getJam(id)
@@ -278,94 +274,6 @@ class RealRepository constructor(
     }
 
     override fun getLastUpdateTime(): Observable<Time> = getLastDbUpdateTime()
-
-    override fun searchGiantBombForGame(vglsId: Long, name: String) {
-        giantBombApi
-            .searchForGame(name)
-            .flatMap { response ->
-                val giantBombId: Long
-                val photoUrl: String?
-                if (response.results.isNotEmpty()) {
-                    val game = response.results[0]
-
-                    if (game.id == GiantBombGame.ID_NO_API) {
-                        giantBombId = GiantBombGame.ID_NO_API
-                        photoUrl = null
-                    } else {
-                        giantBombId = game.id
-                        photoUrl =
-                            if (!game.image.original_url.contains(GB_URL_ID_IMAGE_NOT_FOUND)) {
-                                game.image.original_url
-                            } else {
-                                null
-                            }
-
-                        val aliasEntities = game.aliases
-                            ?.split('\n')
-                            ?.map { GameAliasEntity(vglsId, it, giantBombId, photoUrl) }
-
-                        if (aliasEntities != null) {
-                            gameAliasDao.insertAll(aliasEntities)
-                        }
-                    }
-                } else {
-                    giantBombId = GiantBombGame.ID_NOT_FOUND
-                    photoUrl = null
-                }
-
-                return@flatMap gameDao.giantBombifyGame(vglsId, giantBombId, photoUrl)
-            }
-            .subscribe(
-                {},
-                {
-                    Timber.e("Failed to retrieve game from GiantBomb: ${it.message}")
-                }
-            )
-    }
-
-    override fun searchGiantBombForComposer(vglsId: Long, name: String) {
-        giantBombApi
-            .searchForComposer(name)
-            .flatMap { response ->
-                val giantBombId: Long
-                val photoUrl: String?
-                if (response.results.isNotEmpty()) {
-                    val composer = response.results[0]
-
-                    if (composer.id == GiantBombPerson.ID_NO_API) {
-                        giantBombId = GiantBombPerson.ID_NO_API
-                        photoUrl = null
-                    } else {
-                        giantBombId = composer.id
-                        photoUrl =
-                            if (!composer.image.original_url.contains(GB_URL_ID_IMAGE_NOT_FOUND)) {
-                                composer.image.original_url
-                            } else {
-                                null
-                            }
-
-                        val aliasEntities = composer.aliases
-                            ?.split('\n')
-                            ?.map { ComposerAliasEntity(vglsId, it, giantBombId, photoUrl) }
-
-                        if (aliasEntities != null) {
-                            composerAliasDao.insertAll(aliasEntities)
-                        }
-                    }
-                } else {
-                    giantBombId = GiantBombPerson.ID_NOT_FOUND
-                    photoUrl = null
-                }
-
-                return@flatMap composerDao.giantBombifyComposer(vglsId, giantBombId, photoUrl)
-            }
-            .subscribe(
-                {},
-                {
-                    Timber.e("Failed to retrieve person from GiantBomb: ${it.message}")
-                }
-            )
-    }
 
     override fun removeJam(id: Long) = Completable.fromAction {
         songHistoryEntryDao.removeAllForJam(id)
@@ -581,8 +489,13 @@ class RealRepository constructor(
     @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("DefaultLocale")
     @Suppress("LongMethod", "ComplexMethod")
-    private fun getDigest(): Single<List<VglsApiGame>> = vglsApi.getDigest()
-        .doOnSuccess { apiGames ->
+    private fun getDigest(): Single<ApiDigest> = vglsApi
+        .getDigest()
+        .doOnSuccess { digest ->
+            val apiComposers = digest.composers
+            val apiGames = digest.games
+
+            val composerEntities = apiComposers.map { apiComposer -> apiComposer.toComposerEntity() }
             val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 
             val songEntities = ArrayList<SongEntity>(CAPACITY)
@@ -591,7 +504,6 @@ class RealRepository constructor(
             val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
             val songTagValueJoins = ArrayList<SongTagValueJoin>(CAPACITY)
 
-            val composerEntities = HashSet<ComposerEntity>(CAPACITY)
             val tagKeyEntities = HashMap<String, TagKeyEntity>(CAPACITY)
             val tagValueEntities = HashMap<String, TagValueEntity>(CAPACITY)
 
@@ -601,12 +513,9 @@ class RealRepository constructor(
                     apiSong.composers.forEach { apiComposer ->
                         val songComposerJoin = SongComposerJoin(
                             apiSong.id,
-                            apiComposer.id + ApiComposer.ID_OFFSET
+                            apiComposer.composer_id + ApiComposer.ID_OFFSET
                         )
                         songComposerJoins.add(songComposerJoin)
-
-                        val composerEntity = apiComposer.toComposerEntity()
-                        composerEntities.add(composerEntity)
                     }
 
                     apiSong.parts.forEach { partId ->
@@ -726,8 +635,6 @@ class RealRepository constructor(
         const val URL_SEPARATOR_FOLDER = "/"
         const val URL_SEPARATOR_NUMBER = "-"
         const val URL_FILE_EXT_PNG = ".png"
-
-        const val GB_URL_ID_IMAGE_NOT_FOUND = "3026329"
 
         val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
