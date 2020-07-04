@@ -193,7 +193,7 @@ class SheetDetailViewModel @AssistedInject constructor(
             listOf(
                 TitleListModel(
                     song().name,
-                    song().gameName,
+                    resourceProvider.getString(R.string.subtitle_from_game, song().gameName),
                     thumbUrl,
                     R.drawable.placeholder_sheet
                 )

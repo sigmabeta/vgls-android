@@ -18,7 +18,7 @@ interface SongTagValueDao {
             SELECT * FROM tag_value INNER JOIN song_tag_value_join 
             ON tag_value.id=song_tag_value_join.tagValueId
             WHERE song_tag_value_join.songId=:songId
-            ORDER BY name
+            ORDER BY tag_key_name
             COLLATE NOCASE
             """
     )

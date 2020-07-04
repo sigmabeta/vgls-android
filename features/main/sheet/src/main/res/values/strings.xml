@@ -7,4 +7,5 @@
     <string name="label_detail_pages">Pages</string>
 
     <string name="section_header_tags">Tags</string>
+    <string name="subtitle_from_game">from \"%1$s\"</string>
 </resources>

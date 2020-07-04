@@ -16,7 +16,8 @@
         android:layout_height="60dp"
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:onClick="@{() -> toBind.handler.onClicked(toBind)}">
 
         <TextView
             android:id="@+id/text_name"
