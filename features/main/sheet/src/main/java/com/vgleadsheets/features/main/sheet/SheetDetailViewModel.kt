@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.sheet
 
-import android.annotation.SuppressLint
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.FragmentViewModelContext
@@ -26,7 +25,6 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
-import java.util.Locale
 
 class SheetDetailViewModel @AssistedInject constructor(
     @Assisted initialState: SheetDetailState,
@@ -39,6 +37,7 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     fun clearClicked() {
         ctaHandler.clearClicked()
+        detailHandler.clearClicked()
         tagValueHandler.clearClicked()
     }
 
@@ -84,16 +83,21 @@ class SheetDetailViewModel @AssistedInject constructor(
             ?.pages
             ?.size
 
+        val dataId = if (song.composers?.size == 1) song.composers?.first()!!.id else ID_COMPOSER_MULTIPLE
+
         return listOf(
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_composer),
                 value,
-                detailHandler
+                detailHandler,
+                dataId
+
             ),
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_pages),
                 pageCount.toString(),
-                detailHandler
+                detailHandler,
+                R.string.label_detail_pages.toLong()
             )
         )
     }
@@ -201,20 +205,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
-    @SuppressLint("DefaultLocale")
-    private fun String.toTitleCase() = this
-        .replace("_", " ")
-        .split(" ")
-        .map {
-            if (it != "the") {
-                it.capitalize(Locale.getDefault())
-            } else {
-                it
-            }
-        }
-        .joinToString(" ")
-
     private val detailHandler = object : LabelValueListModel.EventHandler {
         override fun onClicked(clicked: LabelValueListModel) = setState {
             copy(clickedDetailModel = clicked)
@@ -245,6 +235,8 @@ class SheetDetailViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<SheetDetailViewModel, SheetDetailState> {
+        const val ID_COMPOSER_MULTIPLE = Long.MAX_VALUE
+
         override fun create(
             viewModelContext: ViewModelContext,
             state: SheetDetailState

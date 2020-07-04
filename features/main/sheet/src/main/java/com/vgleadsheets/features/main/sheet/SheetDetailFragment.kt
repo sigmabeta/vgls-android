@@ -34,6 +34,18 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
             viewModel.clearClicked()
         }
+
+        viewModel.selectSubscribe(SheetDetailState::clickedDetailModel) {
+            val clickedId = it?.dataId
+
+            when (clickedId) {
+                R.string.label_detail_pages.toLong() -> Unit
+                null -> Unit
+                else -> showComposer(clickedId)
+            }
+
+            viewModel.clearClicked()
+        }
     }
 
     private fun showSongViewer() = withState(viewModel, hudViewModel) { state, hudState ->
@@ -49,6 +61,14 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             getFragmentRouter().showSongViewer(song.id)
         } else {
             showError("Cannot find this sheet.")
+        }
+    }
+
+    private fun showComposer(clickedId: Long) {
+        if (clickedId != SheetDetailViewModel.ID_COMPOSER_MULTIPLE) {
+            getFragmentRouter().showSongListForComposer(clickedId)
+        } else {
+            showError("Links to multiple composers coming soon!")
         }
     }
 
