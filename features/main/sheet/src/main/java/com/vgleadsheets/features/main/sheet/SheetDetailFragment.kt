@@ -22,9 +22,7 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(SheetDetailState::clickedCtaModel) {
-            val clickedId = it?.dataId?.toInt()
-
-            when (clickedId) {
+            when (it?.dataId?.toInt()) {
                 R.drawable.ic_description_24dp -> showSongViewer()
                 R.drawable.ic_favorite_disabled_24 -> showError("Coming soon!")
                 R.drawable.ic_download_24 -> showError("Coming soon!")
@@ -36,12 +34,19 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         }
 
         viewModel.selectSubscribe(SheetDetailState::clickedDetailModel) {
-            val clickedId = it?.dataId
-
-            when (clickedId) {
+            when (val clickedId = it?.dataId) {
                 R.string.label_detail_pages.toLong() -> Unit
                 null -> Unit
                 else -> showComposer(clickedId)
+            }
+
+            viewModel.clearClicked()
+        }
+
+        viewModel.selectSubscribe(SheetDetailState::clickedTagValueModel) {
+            when (val clickedId = it?.dataId) {
+                null -> Unit
+                else -> showTagValue(clickedId)
             }
 
             viewModel.clearClicked()
@@ -70,6 +75,10 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         } else {
             showError("Links to multiple composers coming soon!")
         }
+    }
+
+    private fun showTagValue(clickedId: Long) {
+        getFragmentRouter().showSongListForTagValue(clickedId)
     }
 
     companion object {

@@ -116,7 +116,8 @@ class SheetDetailViewModel @AssistedInject constructor(
         LabelValueListModel(
             it.tagKeyName,
             it.name,
-            tagValueHandler
+            tagValueHandler,
+            it.id
         )
     }
 
