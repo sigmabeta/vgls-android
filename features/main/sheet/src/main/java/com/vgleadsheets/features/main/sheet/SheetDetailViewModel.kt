@@ -83,7 +83,8 @@ class SheetDetailViewModel @AssistedInject constructor(
             ?.pages
             ?.size
 
-        val dataId = if (song.composers?.size == 1) song.composers?.first()!!.id else ID_COMPOSER_MULTIPLE
+        val dataId =
+            if (song.composers?.size == 1) song.composers?.first()!!.id else ID_COMPOSER_MULTIPLE
 
         return listOf(
             LabelValueListModel(
@@ -108,17 +109,53 @@ class SheetDetailViewModel @AssistedInject constructor(
         is Success -> createSuccessTagValueListModels(tagValues())
     }
 
-    private fun createSuccessTagValueListModels(tagValues: List<TagValue>) = listOf(
-        SectionHeaderListModel(
-            resourceProvider.getString(R.string.section_header_tags)
+    private fun createSuccessTagValueListModels(tagValues: List<TagValue>): List<ListModel> {
+        val dupedTagValueGroups = tagValues
+            .groupBy { it.tagKeyName }
+            .filter { it.value.size > 1 }
+
+        val dedupedTagValues = if (dupedTagValueGroups.isEmpty()) {
+            tagValues
+        } else {
+            val tempValues = tagValues.toMutableList()
+
+            dupedTagValueGroups.forEach { entry ->
+                val dupesWithThisKey = entry.value
+                tempValues.removeAll(dupesWithThisKey)
+
+                val renamedDupesWithThisKey = dupesWithThisKey
+                    .mapIndexed { index, originalValue ->
+                        TagValue(
+                            originalValue.id,
+                            originalValue.name,
+                            "${originalValue.tagKeyName} ${index + 1}",
+                            originalValue.songs
+                        )
+                    }
+
+                tempValues.addAll(renamedDupesWithThisKey)
+            }
+
+            tempValues.sortBy { it.tagKeyName }
+            tempValues.toList()
+        }
+
+        val tagValueModels = dedupedTagValues.map {
+            LabelValueListModel(
+                it.tagKeyName,
+                it.name,
+                tagValueHandler,
+                it.id
+            )
+        }
+
+        val sectionHeader = listOf(
+            SectionHeaderListModel(
+                resourceProvider.getString(R.string.section_header_tags)
+            )
         )
-    ) + tagValues.map {
-        LabelValueListModel(
-            it.tagKeyName,
-            it.name,
-            tagValueHandler,
-            it.id
-        )
+
+        return sectionHeader + tagValueModels
     }
 
     private fun createLoadingListModels(sectionId: String) = listOf(
