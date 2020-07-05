@@ -6,6 +6,7 @@ import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import javax.inject.Inject
 
@@ -44,12 +45,11 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         }
 
         viewModel.selectSubscribe(SheetDetailState::clickedTagValueModel) {
-            when (val clickedId = it?.dataId) {
-                null -> Unit
-                else -> showTagValue(clickedId)
-            }
+            handleTagClick(it)
+        }
 
-            viewModel.clearClicked()
+        viewModel.selectSubscribe(SheetDetailState::clickedRatingStarModel) {
+            handleTagClick(it)
         }
     }
 
@@ -75,6 +75,15 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         } else {
             showError("Links to multiple composers coming soon!")
         }
+    }
+
+    private fun handleTagClick(it: ListModel?) {
+        when (val clickedId = it?.dataId) {
+            null -> Unit
+            else -> showTagValue(clickedId)
+        }
+
+        viewModel.clearClicked()
     }
 
     private fun showTagValue(clickedId: Long) {

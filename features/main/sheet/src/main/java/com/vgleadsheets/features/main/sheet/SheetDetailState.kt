@@ -4,6 +4,7 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.CtaListModel
+import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -18,7 +19,8 @@ data class SheetDetailState(
     override val data: SheetDetailData = SheetDetailData(),
     val clickedCtaModel: CtaListModel? = null,
     val clickedDetailModel: LabelValueListModel? = null,
-    val clickedTagValueModel: LabelValueListModel? = null
+    val clickedTagValueModel: LabelValueListModel? = null,
+    val clickedRatingStarModel: LabelRatingStarListModel? = null
 ) : AsyncListState<SheetDetailData>(data = data) {
     constructor(idArgs: IdArgs) : this(idArgs.id)
 

@@ -7,28 +7,26 @@
         <variable
             name="toBind"
             type="com.vgleadsheets.components.LabelValueListModel" />
-
     </data>
 
     <LinearLayout
-        android:id="@+id/component_dropdown"
+        android:id="@+id/component_value"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:onClick="@{() -> toBind.handler.onClicked(toBind)}">
+        android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/text_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="200dp"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
             android:layout_weight="0"
             android:ellipsize="end"
-            android:labelFor="@id/autocomplete_dropdown"
+            android:maxWidth="200dp"
             android:maxLines="1"
             android:text="@{toBind.label}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -46,8 +44,8 @@
             android:labelFor="@id/autocomplete_dropdown"
             android:maxLines="2"
             android:text="@{toBind.value}"
-            android:textColor="@color/gray_medium"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="@color/gray_medium"
             tools:text="Eb Major" />
 
     </LinearLayout>

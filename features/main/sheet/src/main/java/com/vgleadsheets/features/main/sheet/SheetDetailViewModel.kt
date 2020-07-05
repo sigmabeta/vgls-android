@@ -13,6 +13,7 @@ import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
@@ -38,6 +39,7 @@ class SheetDetailViewModel @AssistedInject constructor(
     fun clearClicked() {
         ctaHandler.clearClicked()
         detailHandler.clearClicked()
+        ratingStarHandler.clearClicked()
         tagValueHandler.clearClicked()
     }
 
@@ -140,14 +142,29 @@ class SheetDetailViewModel @AssistedInject constructor(
             tempValues.toList()
         }
 
-        val tagValueModels = dedupedTagValues.map {
-            LabelValueListModel(
-                it.tagKeyName,
-                it.name,
-                tagValueHandler,
-                it.id
-            )
+        val unsortedModels = dedupedTagValues.map {
+            val valueAsNumber = it.name.toIntOrNull() ?: -1
+
+            val listModel = if (valueAsNumber > -1 && valueAsNumber <= 5) {
+                LabelRatingStarListModel(
+                    it.tagKeyName,
+                    valueAsNumber,
+                    ratingStarHandler,
+                    it.id
+                )
+            } else {
+                LabelValueListModel(
+                    it.tagKeyName,
+                    it.name,
+                    tagValueHandler,
+                    it.id
+                )
+            }
+            return@map listModel
         }
+
+        val sortedModels = unsortedModels
+            .sortedBy { it.javaClass.simpleName }
 
         val sectionHeader = listOf(
             SectionHeaderListModel(
@@ -155,7 +172,7 @@ class SheetDetailViewModel @AssistedInject constructor(
             )
         )
 
-        return sectionHeader + tagValueModels
+        return sectionHeader + sortedModels
     }
 
     private fun createLoadingListModels(sectionId: String) = listOf(
@@ -265,6 +282,14 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedTagValueModel = null) }
+    }
+
+    private val ratingStarHandler = object : LabelRatingStarListModel.EventHandler {
+        override fun onClicked(clicked: LabelRatingStarListModel) = setState {
+            copy(clickedRatingStarModel = clicked)
+        }
+
+        override fun clearClicked() = setState { copy(clickedRatingStarModel = null) }
     }
 
     @AssistedInject.Factory

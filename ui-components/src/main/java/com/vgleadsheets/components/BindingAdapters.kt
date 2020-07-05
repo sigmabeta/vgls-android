@@ -83,17 +83,19 @@ fun bindBigPhoto(
     }
 }
 
-@BindingAdapter("thumbUrl", "placeholder")
-fun bindThumb(
+@BindingAdapter("starFillThreshold", "stars")
+fun bindStarFilling(
     view: ImageView,
-    thumbUrl: String?,
-    placeholder: Int
+    starFillThreshold: Int,
+    stars: Int
 ) {
-    if (thumbUrl != null) {
-        view.loadImageLowQuality(thumbUrl, true, placeholder)
+    val starResource = if (stars >= starFillThreshold) {
+        R.drawable.ic_star_filled_24
     } else {
-        view.setImageResource(placeholder)
+        R.drawable.ic_star_empty_24
     }
+
+    view.setImageResource(starResource)
 }
 
 @BindingAdapter("drawable")
