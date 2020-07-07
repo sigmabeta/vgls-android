@@ -3,8 +3,13 @@ package com.vgleadsheets
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.marginBottom
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
+import androidx.core.view.marginTop
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -54,6 +59,34 @@ fun View.setInsetListenerForMargin(
             left = insets.systemWindowInsetLeft + leftOffset + offset,
             right = insets.systemWindowInsetRight + rightOffset + offset,
             bottom = insets.systemWindowInsetBottom + bottomOffset + offset
+        )
+        insets
+    }
+}
+
+fun View.setInsetListenerForOneMargin(
+    side: Side,
+    offset: Int = 0
+) {
+    setOnApplyWindowInsetsListener { v, insets ->
+        (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(
+            top = if (side == Side.TOP) insets.systemWindowInsetTop + offset else marginTop,
+            left = if (side == Side.START) insets.systemWindowInsetLeft + offset else marginStart,
+            right = if (side == Side.END) insets.systemWindowInsetRight + offset else marginEnd,
+            bottom = if (side == Side.BOTTOM) insets.systemWindowInsetBottom + offset else marginBottom
+        )
+        insets
+    }
+}
+
+fun RecyclerView.setListsSpecialInsets(topOffset: Int, bottomOffset: Int, bottomPadding: Int) {
+    setOnApplyWindowInsetsListener { v, insets ->
+        v.updatePadding(
+            top = insets.systemWindowInsetTop + topOffset,
+            bottom = bottomPadding
+        )
+        (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(
+            bottom = insets.systemWindowInsetBottom + bottomOffset
         )
         insets
     }

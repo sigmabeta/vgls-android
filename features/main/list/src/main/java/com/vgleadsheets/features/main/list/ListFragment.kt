@@ -10,7 +10,7 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.setInsetListenerForPadding
+import com.vgleadsheets.setListsSpecialInsets
 import kotlinx.android.synthetic.main.fragment_list.list_content
 import javax.inject.Inject
 
@@ -32,17 +32,14 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
+        val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
                 resources.getDimension(R.dimen.margin_large).toInt()
-        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
-                resources.getDimension(R.dimen.margin_medium).toInt()
-
+        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
+        val bottomPadding = resources.getDimension(R.dimen.margin_medium).toInt()
         list_content.adapter = adapter
         list_content.layoutManager = LinearLayoutManager(context)
-        list_content.setInsetListenerForPadding(
-            topOffset = topOffset,
-            bottomOffset = bottomOffset
-        )
+
+        list_content.setListsSpecialInsets(topOffset, bottomOffset, bottomPadding)
 
         hudViewModel.dontAlwaysShowBack()
 
