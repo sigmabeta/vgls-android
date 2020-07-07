@@ -324,7 +324,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             hudState.parts.first { it.selected }.apiId
         )
 
-        getFragmentRouter().showSheetDetail(song.id)
+        getFragmentRouter().showSongViewer(song.id)
     }
 
     private fun onPartSelect(clicked: PartListModel) {

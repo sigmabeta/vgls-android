@@ -95,7 +95,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             )
 
             hudViewModel.exitSearch()
-            getFragmentRouter().showSheetDetail(id)
+            getFragmentRouter().showSongViewer(id)
         }
 
     private fun onComposerClicked(id: Long) =
