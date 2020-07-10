@@ -32,6 +32,7 @@ data class SongEntity(
     ) = Song(
         id,
         name,
+        game_id,
         gameName,
         composers,
         parts

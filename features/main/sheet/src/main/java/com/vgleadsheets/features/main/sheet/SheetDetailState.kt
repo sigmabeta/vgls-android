@@ -18,7 +18,8 @@ data class SheetDetailState(
     override val listModels: List<ListModel> = emptyList(),
     override val data: SheetDetailData = SheetDetailData(),
     val clickedCtaModel: CtaListModel? = null,
-    val clickedDetailModel: LabelValueListModel? = null,
+    val clickedComposerModel: LabelValueListModel? = null,
+    val clickedGameModel: LabelValueListModel? = null,
     val clickedTagValueModel: LabelValueListModel? = null,
     val clickedRatingStarModel: LabelRatingStarListModel? = null
 ) : AsyncListState<SheetDetailData>(data = data) {

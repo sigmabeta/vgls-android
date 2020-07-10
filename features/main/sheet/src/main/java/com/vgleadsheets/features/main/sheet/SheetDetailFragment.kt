@@ -35,11 +35,21 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             viewModel.clearClicked()
         }
 
-        viewModel.selectSubscribe(SheetDetailState::clickedDetailModel) {
-            when (val clickedId = it?.dataId) {
-                R.string.label_detail_pages.toLong() -> Unit
-                null -> Unit
-                else -> showComposer(clickedId)
+        viewModel.selectSubscribe(SheetDetailState::clickedComposerModel) {
+            val clickedId = it?.dataId
+
+            if (clickedId != null) {
+                showComposer(clickedId)
+            }
+
+            viewModel.clearClicked()
+        }
+
+        viewModel.selectSubscribe(SheetDetailState::clickedGameModel) {
+            val clickedId = it?.dataId
+
+            if (clickedId != null) {
+                showGame(clickedId)
             }
 
             viewModel.clearClicked()
@@ -79,6 +89,10 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
             getFragmentRouter().goToWebUrl(youtubeUrl)
         }
+    }
+
+    private fun showGame(clickedId: Long) {
+        getFragmentRouter().showSongListForGame(clickedId)
     }
 
     private fun showComposer(clickedId: Long) {

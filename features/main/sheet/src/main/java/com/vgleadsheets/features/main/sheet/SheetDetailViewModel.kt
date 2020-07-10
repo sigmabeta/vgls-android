@@ -38,7 +38,8 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     fun clearClicked() {
         ctaHandler.clearClicked()
-        detailHandler.clearClicked()
+        composerHandler.clearClicked()
+        gameHandler.clearClicked()
         ratingStarHandler.clearClicked()
         tagValueHandler.clearClicked()
     }
@@ -58,49 +59,40 @@ class SheetDetailViewModel @AssistedInject constructor(
         selectedPart: PartSelectorItem
     ) = createTitleListModel(data.song, selectedPart) +
             createCtaListModels(data.song) +
-            createDetailListModels(data.song, selectedPart) +
+            createDetailListModels(data.song) +
             createTagValueListModels(data.tagValues)
 
     private fun createDetailListModels(
-        song: Async<Song>,
-        selectedPart: PartSelectorItem
+        song: Async<Song>
     ) = when (song) {
         is Loading, Uninitialized -> createLoadingListModels("details")
         is Fail -> createErrorStateListModel("details", song.error)
-        is Success -> createSuccessDetailListModels(song(), selectedPart)
+        is Success -> createSuccessDetailListModels(song())
     }
 
     private fun createSuccessDetailListModels(
-        song: Song,
-        selectedPart: PartSelectorItem
+        song: Song
     ): List<ListModel> {
         val value = song
             .composers
             ?.map { it.name }
             ?.joinToString(", ") ?: "Unknown Composer"
 
-        val pageCount = song
-            .parts
-            ?.first { part -> part.name == selectedPart.apiId }
-            ?.pages
-            ?.size
-
-        val dataId =
+        val composerId =
             if (song.composers?.size == 1) song.composers?.first()!!.id else ID_COMPOSER_MULTIPLE
 
         return listOf(
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_composer),
                 value,
-                detailHandler,
-                dataId
-
+                composerHandler,
+                composerId
             ),
             LabelValueListModel(
-                resourceProvider.getString(R.string.label_detail_pages),
-                pageCount.toString(),
-                detailHandler,
-                R.string.label_detail_pages.toLong()
+                resourceProvider.getString(R.string.label_detail_game),
+                song.gameName,
+                gameHandler,
+                song.gameId
             )
         )
     }
@@ -237,17 +229,21 @@ class SheetDetailViewModel @AssistedInject constructor(
         is Loading, Uninitialized -> listOf(LoadingTitleListModel())
         is Fail -> createErrorStateListModel("title", song.error)
         is Success -> {
-            val thumbUrl = song()
+            val pages = song()
                 .parts
                 ?.first { part -> part.name == selectedPart.apiId }
                 ?.pages
+
+            val pageCount = pages?.size
+
+            val thumbUrl = pages
                 ?.first()
                 ?.imageUrl
 
             listOf(
                 TitleListModel(
                     song().name,
-                    resourceProvider.getString(R.string.subtitle_from_game, song().gameName),
+                    resourceProvider.getString(R.string.subtitle_pages, pageCount),
                     thumbUrl,
                     R.drawable.placeholder_sheet
                 )
@@ -255,12 +251,20 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
     }
 
-    private val detailHandler = object : LabelValueListModel.EventHandler {
+    private val composerHandler = object : LabelValueListModel.EventHandler {
         override fun onClicked(clicked: LabelValueListModel) = setState {
-            copy(clickedDetailModel = clicked)
+            copy(clickedComposerModel = clicked)
         }
 
-        override fun clearClicked() = setState { copy(clickedDetailModel = null) }
+        override fun clearClicked() = setState { copy(clickedComposerModel = null) }
+    }
+
+    private val gameHandler = object : LabelValueListModel.EventHandler {
+        override fun onClicked(clicked: LabelValueListModel) = setState {
+            copy(clickedGameModel = clicked)
+        }
+
+        override fun clearClicked() = setState { copy(clickedGameModel = null) }
     }
 
     private val ctaHandler = object : CtaListModel.EventHandler {
