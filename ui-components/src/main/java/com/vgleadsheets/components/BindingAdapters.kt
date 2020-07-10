@@ -4,6 +4,7 @@ package com.vgleadsheets.components
 
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -153,6 +154,18 @@ fun bindDropdownListener(
 
     view.setOnItemClickListener { _, _, clickedPosition, _ ->
         itemSelectListener.onNewOptionSelected(settingId, clickedPosition)
+    }
+}
+
+@BindingAdapter("model", "longClickHandler")
+fun bindLongClickHandler(
+    view: FrameLayout,
+    model: ToolbarItemListModel,
+    longClickHandler: ToolbarItemListModel.EventHandler
+) {
+    view.setOnLongClickListener {
+        longClickHandler.onLongClicked(model)
+        true
     }
 }
 

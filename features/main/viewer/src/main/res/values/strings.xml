@@ -4,4 +4,5 @@
     <string name="cta_snack_screen_off">Keep on</string>
     <string name="jam_updating_sheet">Updating sheet because you\'re following a jam.</string>
     <string name="cta_snack_cancel">Unfollow</string>
+    <string name="menu_item_label_sheet_detail">See details for this sheet</string>
 </resources>
