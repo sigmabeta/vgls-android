@@ -2,12 +2,14 @@ package com.vgleadsheets.features.main.sheet
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import javax.inject.Inject
 
 class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>() {
@@ -25,8 +27,9 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         viewModel.selectSubscribe(SheetDetailState::clickedCtaModel) {
             when (it?.dataId?.toInt()) {
                 R.drawable.ic_description_24dp -> showSongViewer()
-                R.drawable.ic_favorite_disabled_24 -> showError("Coming soon!")
-                R.drawable.ic_download_24 -> showError("Coming soon!")
+                R.drawable.ic_play_circle_filled_24 -> showYoutubeSearch()
+//                R.drawable.ic_favorite_disabled_24 -> showError("Coming soon!")
+//                R.drawable.ic_download_24 -> showError("Coming soon!")
                 null -> Unit
                 else -> TODO("Unimplemented button")
             }
@@ -66,6 +69,17 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             getFragmentRouter().showSongViewer(song.id)
         } else {
             showError("Cannot find this sheet.")
+        }
+    }
+
+    private fun showYoutubeSearch() = withState(viewModel) {
+        if (it.data.song is Success) {
+            val song = it.data.song()!!
+            val query = "${song.gameName} - ${song.name}"
+
+            val youtubeUrl = getYoutubeSearchUrlForQuery(query)
+
+            getFragmentRouter().goToWebUrl(youtubeUrl)
         }
     }
 

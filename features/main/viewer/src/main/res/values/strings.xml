@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="snack_screen_off">The screen will power down soon.</string>
-    <string name="cta_snack_screen_off">Keep on</string>
+
     <string name="jam_updating_sheet">Updating sheet because you\'re following a jam.</string>
+
+    <string name="cta_snack_screen_off">Keep on</string>
     <string name="cta_snack_cancel">Unfollow</string>
+
     <string name="menu_item_label_sheet_detail">See details for this sheet</string>
+    <string name="menu_item_label_youtube">Search Youtube for this song</string>
 </resources>

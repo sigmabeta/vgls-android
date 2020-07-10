@@ -2,6 +2,7 @@
     <string name="cta_view_sheet">View Sheet</string>
     <string name="cta_favorites_add">Add to Favorites</string>
     <string name="cta_make_offline">Make Available Offline</string>
+    <string name="cta_youtube">Search Youtube for this song</string>
 
     <string name="label_detail_composer">Composer</string>
     <string name="label_detail_pages">Pages</string>

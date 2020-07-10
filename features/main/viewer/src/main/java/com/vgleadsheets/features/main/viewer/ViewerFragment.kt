@@ -21,6 +21,7 @@ import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.components.ToolbarItemListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOnePadding
@@ -82,6 +83,7 @@ class ViewerFragment : VglsFragment(),
 
     override fun onClicked(clicked: ToolbarItemListModel) = when (clicked.iconId) {
         R.drawable.ic_details_24 -> showSheetDetails()
+        R.drawable.ic_play_circle_filled_24 -> showYoutubeSearch()
         else -> showError("Unimplemented toolbar button.")
     }
 
@@ -253,6 +255,11 @@ class ViewerFragment : VglsFragment(),
                 getString(R.string.menu_item_label_sheet_detail),
                 R.drawable.ic_details_24,
                 this
+            ),
+            ToolbarItemListModel(
+                getString(R.string.menu_item_label_youtube),
+                R.drawable.ic_play_circle_filled_24,
+                this
             )
         )
 
@@ -317,6 +324,17 @@ class ViewerFragment : VglsFragment(),
         val songId = state.songId
         if (songId != null) {
             getFragmentRouter().showSheetDetail(songId)
+        }
+    }
+
+    private fun showYoutubeSearch() = withState(viewModel) {
+        if (it.song is Success) {
+            val song = it.song()!!
+            val query = "${song.gameName} - ${song.name}"
+
+            val youtubeUrl = getYoutubeSearchUrlForQuery(query)
+
+            getFragmentRouter().goToWebUrl(youtubeUrl)
         }
     }
 
