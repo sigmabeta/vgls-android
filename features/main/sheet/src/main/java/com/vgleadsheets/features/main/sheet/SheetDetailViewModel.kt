@@ -192,17 +192,7 @@ class SheetDetailViewModel @AssistedInject constructor(
                 resourceProvider.getString(R.string.cta_youtube),
                 ctaHandler
             )
-//            CtaListModel(
-//                R.drawable.ic_favorite_disabled_24,
-//                resourceProvider.getString(R.string.cta_favorites_add),
-//                ctaHandler
-//            ),
-//            CtaListModel(
-//                R.drawable.ic_download_24,
-//                resourceProvider.getString(R.string.cta_make_offline),
-//                ctaHandler
-//            )
-            )
+        )
     }
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) =

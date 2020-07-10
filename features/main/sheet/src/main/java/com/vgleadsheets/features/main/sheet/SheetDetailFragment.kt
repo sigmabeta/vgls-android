@@ -28,8 +28,6 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             when (it?.dataId?.toInt()) {
                 R.drawable.ic_description_24dp -> showSongViewer()
                 R.drawable.ic_play_circle_filled_24 -> showYoutubeSearch()
-//                R.drawable.ic_favorite_disabled_24 -> showError("Coming soon!")
-//                R.drawable.ic_download_24 -> showError("Coming soon!")
                 null -> Unit
                 else -> TODO("Unimplemented button")
             }
