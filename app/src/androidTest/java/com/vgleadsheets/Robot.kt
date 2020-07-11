@@ -1,8 +1,13 @@
 package com.vgleadsheets
 
+import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
+import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -91,5 +96,18 @@ abstract class Robot(val test: UiTest) {
         if (subtitleStringId != null) {
             checkViewText(R.id.text_title_subtitle, subtitleStringId)
         }
+    }
+
+    fun checkWebBrowserLaunchedUrl(url: String) {
+        if (test.activityRule !is IntentsTestRule) {
+            throw IllegalStateException("Cannot run this assertion unless it's an IntentsTestRule.")
+        }
+
+        intended(
+            allOf(
+                hasAction(Intent.ACTION_VIEW),
+                hasData(url)
+            )
+        )
     }
 }

@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isNotChecked
 import androidx.test.espresso.matcher.ViewMatchers.withChild
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -126,6 +127,10 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         }
     }
 
+    fun clickToolbarItemWithTitle(title: String) {
+        clickComponentWithContentDescription(R.id.component_toolbar_item, title)
+    }
+
     protected fun checkIsEmptyStateDisplayedInternal(emptyStateLabel: String) {
         checkFirstContentItem(
             hasDescendant(
@@ -200,6 +205,21 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
                     allOf(
                         withId(R.id.text_name),
                         withText(title)
+                    )
+                )
+            )
+        ).perform(
+            click()
+        )
+    }
+
+    private fun clickComponentWithContentDescription(@IdRes componentType: Int, description: String) {
+        onView(
+            allOf(
+                withId(componentType),
+                withChild(
+                    allOf(
+                        withContentDescription(description)
                     )
                 )
             )

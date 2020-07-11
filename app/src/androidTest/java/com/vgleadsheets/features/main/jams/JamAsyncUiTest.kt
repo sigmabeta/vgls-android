@@ -24,7 +24,7 @@ class JamsAsyncUiTest : ListUiTest() {
             clickCtaWithTitle("Follow Jam", 0)
         }
 
-        viewer {
+        viewer (this) {
             checkPageVisible(1)
         }
     }
@@ -44,7 +44,7 @@ class JamsAsyncUiTest : ListUiTest() {
             clickSheetWithTitle("Pellentesque", 5)
         }
 
-        viewer {
+        viewer (this) {
             checkPageVisible(1)
         }
     }
@@ -64,7 +64,7 @@ class JamsAsyncUiTest : ListUiTest() {
             clickSheetWithTitle("In Hendrerit Quisque Est", 7)
         }
 
-        viewer {
+        viewer (this) {
             checkPageVisible(1)
         }
     }
@@ -84,7 +84,7 @@ class JamsAsyncUiTest : ListUiTest() {
             clickSheetWithTitle("Quis", 10)
         }
 
-        viewer {
+        viewer (this) {
             checkPageVisible(1)
         }
     }

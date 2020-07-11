@@ -5,8 +5,10 @@ import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import com.vgleadsheets.features.main.ListRobot
+import com.vgleadsheets.features.main.ListUiTest
 
-class ViewerRobot {
+class ViewerRobot(test: ListUiTest) : ListRobot(test) {
 
     fun nextPage() {
         swipeLeft()
@@ -23,8 +25,19 @@ class ViewerRobot {
             )
         )
     }
+
+    fun clickSheetDetails() {
+        clickToolbarItemWithTitle("See details for this sheet")
+    }
+
+    fun clickYoutube() {
+        clickToolbarItemWithTitle("Search Youtube for this song")
+    }
 }
 
-fun viewer(func: ViewerRobot.() -> Unit) = ViewerRobot().apply {
+fun viewer(
+    test: ListUiTest,
+    func: ViewerRobot.() -> Unit
+) = ViewerRobot(test).apply {
     func()
 }

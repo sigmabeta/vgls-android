@@ -21,7 +21,7 @@ class ComposerAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(COMPOSER_FIRST_SHEET_TITLE_FIRST)
         }
 
-        viewer {
+        viewer (this) {
             checkPageVisible(1)
         }
     }
@@ -51,7 +51,7 @@ class ComposerAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_FIRST)
         }
 
-        viewer {
+        viewer (this) {
             checkPageVisible(1)
         }
     }
@@ -68,7 +68,7 @@ class ComposerAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(COMPOSER_ARBITRARY_SHEET_TITLE_ARBITRARY)
         }
 
-        viewer {
+        viewer (this) {
             checkPageVisible(1)
         }
     }
