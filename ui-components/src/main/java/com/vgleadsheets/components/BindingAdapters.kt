@@ -91,9 +91,9 @@ fun bindStarFilling(
     stars: Int
 ) {
     val starResource = if (stars >= starFillThreshold) {
-        R.drawable.ic_star_filled_24
+        R.drawable.ic_jam_filled
     } else {
-        R.drawable.ic_star_empty_24
+        R.drawable.ic_jam_unfilled
     }
 
     view.setImageResource(starResource)

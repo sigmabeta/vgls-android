@@ -37,48 +37,38 @@
 
         <ImageView
             android:id="@+id/image_star_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            style="@style/RatingStar"
             app:starFillThreshold="@{1}"
             app:stars="@{toBind.value}"
-            tools:src="@drawable/ic_star_filled_24" />
+            tools:src="@drawable/ic_jam_filled" />
 
         <ImageView
             android:id="@+id/image_star_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            style="@style/RatingStar"
             app:starFillThreshold="@{2}"
             app:stars="@{toBind.value}"
-            tools:src="@drawable/ic_star_filled_24" />
+            tools:src="@drawable/ic_jam_filled" />
 
         <ImageView
             android:id="@+id/image_star_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            style="@style/RatingStar"
             app:starFillThreshold="@{3}"
             app:stars="@{toBind.value}"
-            tools:src="@drawable/ic_star_empty_24" />
+            tools:src="@drawable/ic_jam_unfilled" />
 
         <ImageView
             android:id="@+id/image_star_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            style="@style/RatingStar"
             app:starFillThreshold="@{4}"
             app:stars="@{toBind.value}"
-            tools:src="@drawable/ic_star_empty_24" />
+            tools:src="@drawable/ic_jam_unfilled" />
 
         <ImageView
             android:id="@+id/image_star_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            style="@style/RatingStar"
             app:starFillThreshold="@{5}"
             app:stars="@{toBind.value}"
-            tools:src="@drawable/ic_star_empty_24" />
+            tools:src="@drawable/ic_jam_unfilled" />
 
     </LinearLayout>
 </layout>
