@@ -27,6 +27,7 @@ import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
+@SuppressWarnings("TooManyFunctions")
 class SheetDetailViewModel @AssistedInject constructor(
     @Assisted initialState: SheetDetailState,
     private val repository: Repository,
@@ -137,7 +138,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         val unsortedModels = dedupedTagValues.map {
             val valueAsNumber = it.name.toIntOrNull() ?: -1
 
-            val listModel = if (valueAsNumber > -1 && valueAsNumber <= 5) {
+            return@map if (valueAsNumber >= RATING_MINIMUM && valueAsNumber <= RATING_MAXIMUM) {
                 LabelRatingStarListModel(
                     it.tagKeyName,
                     valueAsNumber,
@@ -152,7 +153,6 @@ class SheetDetailViewModel @AssistedInject constructor(
                     it.id
                 )
             }
-            return@map listModel
         }
 
         val sortedModels = unsortedModels
@@ -298,6 +298,9 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     companion object : MvRxViewModelFactory<SheetDetailViewModel, SheetDetailState> {
         const val ID_COMPOSER_MULTIPLE = Long.MAX_VALUE
+
+        const val RATING_MINIMUM = 0
+        const val RATING_MAXIMUM = 5
 
         override fun create(
             viewModelContext: ViewModelContext,

@@ -9,7 +9,7 @@ import com.vgleadsheets.main.MainActivity
 import org.junit.Rule
 import org.junit.Test
 
-class ViewerAsyncUiTest  : ListUiTest() {
+class ViewerAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
 
     @get:Rule
@@ -25,7 +25,7 @@ class ViewerAsyncUiTest  : ListUiTest() {
             clickSheetWithTitle(TITLE_FIRST_ITEM)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
             clickYoutube()
             checkWebBrowserLaunchedUrl("https://www.youtube.com/results?search_query=" +
@@ -39,13 +39,12 @@ class ViewerAsyncUiTest  : ListUiTest() {
             clickSheetWithTitle(TITLE_FIRST_ITEM)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
             clickSheetDetails()
         }
 
         sheetDetail(this, TITLE_FIRST_ITEM, "2 pages") {
-
         }
     }
 

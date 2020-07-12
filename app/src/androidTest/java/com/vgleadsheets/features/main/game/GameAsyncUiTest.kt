@@ -21,7 +21,7 @@ class GameAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(GAME_FIRST_SHEET_TITLE_FIRST)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
         }
     }
@@ -38,7 +38,7 @@ class GameAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(GAME_FIRST_SHEET_TITLE_ARBITRARY)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
         }
     }
@@ -55,7 +55,7 @@ class GameAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(GAME_ARBITRARY_SHEET_TITLE_FIRST, 7)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
         }
     }
@@ -72,7 +72,7 @@ class GameAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(GAME_ARBITRARY_SHEET_TITLE_ARBITRARY, 7)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
         }
     }

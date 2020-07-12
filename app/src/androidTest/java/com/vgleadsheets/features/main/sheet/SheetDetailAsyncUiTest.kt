@@ -12,7 +12,7 @@ import com.vgleadsheets.main.MainActivity
 import org.junit.Rule
 import org.junit.Test
 
-class SheetDetailAsyncUiTest  : ListUiTest() {
+class SheetDetailAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
 
     @get:Rule
@@ -28,7 +28,7 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
             clickSheetWithTitle(TITLE_SECOND_ITEM)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
             clickSheetDetails()
         }
@@ -46,7 +46,7 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
             clickSheetWithTitle(TITLE_SECOND_ITEM, 2)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
             clickSheetDetails()
         }
@@ -55,7 +55,7 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
             clickViewSheet()
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
         }
     }
@@ -66,7 +66,7 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
             clickSheetWithTitle(TITLE_SECOND_ITEM)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
             clickSheetDetails()
         }
@@ -76,7 +76,6 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
         }
 
         composer(this, "Phung Donovan", "2 Sheets") {
-
         }
     }
 
@@ -86,7 +85,7 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
             clickSheetWithTitle(TITLE_SECOND_ITEM)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
             clickSheetDetails()
         }
@@ -96,7 +95,6 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
         }
 
         game(this, "Justo", "3 Sheets") {
-
         }
     }
 
@@ -106,7 +104,7 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
             clickSheetWithTitle(TITLE_SECOND_ITEM)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
             clickSheetDetails()
         }
@@ -116,7 +114,6 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
         }
 
         tagValueSongList(this, "Iaculis: 2", "8 Sheets") {
-
         }
     }
 
@@ -126,7 +123,7 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
             clickSheetWithTitle(TITLE_SECOND_ITEM)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
             clickSheetDetails()
         }
@@ -136,7 +133,6 @@ class SheetDetailAsyncUiTest  : ListUiTest() {
         }
 
         tagValueSongList(this, "Eget: A", "20 Sheets") {
-
         }
     }
 

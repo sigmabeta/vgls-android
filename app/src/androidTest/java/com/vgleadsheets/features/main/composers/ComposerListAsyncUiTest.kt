@@ -31,7 +31,6 @@ class ComposerListAsyncUiTest : ListUiTest() {
         }
 
         composer(this, TITLE_FIRST_ITEM, "2 Sheets") {
-
         }
     }
 

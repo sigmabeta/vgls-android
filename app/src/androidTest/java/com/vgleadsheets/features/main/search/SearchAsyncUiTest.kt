@@ -59,7 +59,7 @@ class SearchAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(RESULT_TITLE_SONG, SCROLL_POS_RESULT_SONG)
         }
 
-        viewer (this) {
+        viewer(this) {
             checkPageVisible(1)
         }
     }
