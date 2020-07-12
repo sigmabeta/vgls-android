@@ -91,6 +91,18 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         }
     }
 
+    fun clickLabelValueWithLabel(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_label_value, title)
+        }
+    }
+
+    fun clickRatingWithLabel(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_label_rating, title)
+        }
+    }
+
     fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
             clickComponentWithTitle(R.id.component_image_name_caption, title)
