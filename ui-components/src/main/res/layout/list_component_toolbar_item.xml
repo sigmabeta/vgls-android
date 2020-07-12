@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="toBind"
+            type="com.vgleadsheets.components.ToolbarItemListModel" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/component_toolbar_item"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
+        app:longClickHandler="@{toBind.handler}"
+        app:model="@{toBind}">
+
+        <ImageView
+            android:id="@+id/text_part_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_small"
+            android:contentDescription="@{toBind.name}"
+            android:gravity="center"
+            android:tint="@android:color/white"
+            app:imageResource="@{toBind.iconId}"
+            tools:src="@drawable/ic_settings_black_24dp" />
+
+    </FrameLayout>
+</layout>

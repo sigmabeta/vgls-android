@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 dependencies {
     implementation project(path: ':features:main:hud')
 
+    implementation project(path: ':animation')
     implementation project(path: ':repository')
     implementation project(path: ':recyclerview')
     implementation project(path: ':storage')

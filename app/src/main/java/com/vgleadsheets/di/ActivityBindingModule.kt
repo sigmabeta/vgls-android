@@ -13,6 +13,7 @@ import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
+import com.vgleadsheets.features.main.sheet.SheetDetailFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.tagkeys.TagKeyFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongListFragment
@@ -88,6 +89,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeSongListFragmentInjector(): SongListFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeSheetDetailFragmentInjector(): SheetDetailFragment
 
     @FragmentScope
     @ContributesAndroidInjector

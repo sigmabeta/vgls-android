@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.composers
 
 import com.vgleadsheets.features.main.ListUiTest
+import com.vgleadsheets.features.main.composer.composer
 import com.vgleadsheets.features.main.hud.HudFragment
 import org.junit.Test
 
@@ -27,6 +28,9 @@ class ComposerListAsyncUiTest : ListUiTest() {
     fun clickingFirstItemLoadsComposerScreen() {
         composerList(this) {
             clickComposerWithTitle(TITLE_FIRST_ITEM)
+        }
+
+        composer(this, TITLE_FIRST_ITEM, "2 Sheets") {
         }
     }
 

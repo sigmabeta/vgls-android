@@ -279,7 +279,6 @@ class JamViewModel @AssistedInject constructor(
     )
 
     private fun createCtaListModels(jam: Async<Jam>) = when (jam) {
-        // TODO Loading state for title items
         is Loading, Uninitialized -> createLoadingListModels("Cta")
         is Fail, is Success -> listOf(
             CtaListModel(
@@ -336,7 +335,6 @@ class JamViewModel @AssistedInject constructor(
     }
 
     private fun createTitleListModel(jam: Async<Jam>) = when (jam) {
-        // TODO Loading state for title items
         is Loading, Uninitialized -> listOf(LoadingTitleListModel())
         is Fail -> createErrorStateListModel("title", jam.error)
         is Success -> listOf(

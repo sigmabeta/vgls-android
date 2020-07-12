@@ -6,6 +6,7 @@ import com.vgleadsheets.model.parts.Part
 data class Song(
     val id: Long,
     val name: String,
+    val gameId: Long,
     val gameName: String,
     val composers: List<Composer>?,
     val parts: List<Part>?

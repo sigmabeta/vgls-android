@@ -12,24 +12,33 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
+import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.animation.slideViewOnscreen
+import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
+import com.vgleadsheets.components.ToolbarItemListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
+import com.vgleadsheets.setInsetListenerForOnePadding
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_viewer.list_sheets
+import kotlinx.android.synthetic.main.fragment_viewer.list_toolbar_items
 import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
+class ViewerFragment : VglsFragment(),
+    SheetListModel.ImageListener,
+    ToolbarItemListModel.EventHandler {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
@@ -42,7 +51,9 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     // Keep a local copy for the fragment tag.
     private var songId: Long? = null
 
-    private val adapter = ComponentAdapter()
+    private val sheetsAdapter = ComponentAdapter()
+
+    private val toolbarAdapter = ComponentAdapter()
 
     private val timers = CompositeDisposable()
 
@@ -70,6 +81,19 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
         }
     }
 
+    override fun onClicked(clicked: ToolbarItemListModel) = when (clicked.iconId) {
+        R.drawable.ic_details_24 -> showSheetDetails()
+        R.drawable.ic_play_circle_filled_24 -> showYoutubeSearch()
+        else -> showError("Unimplemented toolbar button.")
+    }
+
+    override fun onLongClicked(clicked: ToolbarItemListModel) {
+        hudViewModel.startHudTimer()
+        showSnackbar(clicked.name)
+    }
+
+    override fun clearClicked() = Unit
+
     override fun onLoadFailed(imageUrl: String, ex: Exception?) {
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
     }
@@ -77,14 +101,27 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pager_sheets?.adapter = adapter
+        pager_sheets?.adapter = sheetsAdapter
 
-        list_sheets?.adapter = adapter
+        list_sheets?.adapter = sheetsAdapter
         list_sheets?.layoutManager = LinearLayoutManager(
             activity,
             LinearLayoutManager.HORIZONTAL,
             false
         )
+
+        val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
+                resources.getDimension(R.dimen.margin_medium).toInt()
+        list_toolbar_items?.setInsetListenerForOnePadding(Side.TOP, topOffset)
+
+        list_toolbar_items?.adapter = toolbarAdapter
+        list_toolbar_items?.layoutManager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.HORIZONTAL,
+            true
+        )
+
+        setUpToolbarItems()
 
         viewModel.selectSubscribe(
             ViewerState::activeJamSheetId,
@@ -123,13 +160,13 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     override fun onStop() {
         super.onStop()
         stopScreenTimer()
+        hudViewModel.showHud()
+        hudViewModel.stopHudTimer()
         viewModel.unfollowJam(null)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        hudViewModel.showHud()
-        hudViewModel.stopHudTimer()
         hudViewModel.resetAvailableParts()
     }
 
@@ -146,6 +183,12 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
         if (hudState.hudVisible && !hudState.searchVisible) {
             hudViewModel.startHudTimer()
+        }
+
+        if (hudState.hudVisible) {
+            list_toolbar_items?.slideViewOnscreen()
+        } else {
+            list_toolbar_items?.slideViewUpOffscreen()
         }
 
         val selectedPart = hudState.parts.first { it.selected }
@@ -172,7 +215,8 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     override fun getLayoutId() = R.layout.fragment_viewer
 
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${songId ?: viewerArgs.songId}"
+    override fun getVglsFragmentTag() =
+        this.javaClass.simpleName + ":${songId ?: viewerArgs.songId}"
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
@@ -203,6 +247,23 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
     private fun stopScreenTimer() {
         Timber.v("Clearing screen timer.")
         timers.clear()
+    }
+
+    private fun setUpToolbarItems() {
+        val toolbarItems = listOf(
+            ToolbarItemListModel(
+                getString(R.string.menu_item_label_sheet_detail),
+                R.drawable.ic_details_24,
+                this
+            ),
+            ToolbarItemListModel(
+                getString(R.string.menu_item_label_youtube),
+                R.drawable.ic_play_circle_filled_24,
+                this
+            )
+        )
+
+        toolbarAdapter.submitList(toolbarItems)
     }
 
     private fun setScreenOnLock() {
@@ -247,8 +308,8 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
             )
         }
 
-        if (adapter.currentList != listComponents) {
-            adapter.submitList(listComponents)
+        if (sheetsAdapter.currentList != listComponents) {
+            sheetsAdapter.submitList(listComponents)
             Timber.w("Lists changed, submitting.")
         } else {
             Timber.i("Lists equivalent, not submitting.")
@@ -257,6 +318,24 @@ class ViewerFragment : VglsFragment(), SheetListModel.ImageListener {
 
     private fun showEmptyState() {
         showError("No sheet found.")
+    }
+
+    private fun showSheetDetails() = withState(viewModel) { state ->
+        val songId = state.songId
+        if (songId != null) {
+            getFragmentRouter().showSheetDetail(songId)
+        }
+    }
+
+    private fun showYoutubeSearch() = withState(viewModel) {
+        if (it.song is Success) {
+            val song = it.song()!!
+            val query = "${song.gameName} - ${song.name}"
+
+            val youtubeUrl = getYoutubeSearchUrlForQuery(query)
+
+            getFragmentRouter().goToWebUrl(youtubeUrl)
+        }
     }
 
     companion object {

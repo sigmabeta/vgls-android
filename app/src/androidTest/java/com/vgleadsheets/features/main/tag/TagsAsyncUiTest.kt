@@ -38,7 +38,7 @@ class TagsAsyncUiTest : ListUiTest() {
             )
         }
 
-        viewer {
+        viewer(this) {
             checkPageVisible(1)
         }
     }

@@ -21,6 +21,7 @@ import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.model.tag.TagKeyEntity
+import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.tag.TagValueEntity
 import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.model.time.Time
@@ -150,6 +151,17 @@ class RealRepository constructor(
                     val composers = null
                     val parts = if (withParts) getPartsForSongSync(songEntity.id) else null
                     songEntity.toSong(composers, parts)
+                }
+            }
+
+    override fun getTagValuesForSong(
+        songId: Long
+    ): Observable<List<TagValue>> =
+        songTagValueDao
+            .getTagValuesForSong(songId)
+            .map { tagValueEntities ->
+                tagValueEntities.map { tagValueEntity ->
+                    tagValueEntity.toTagValue(null)
                 }
             }
 

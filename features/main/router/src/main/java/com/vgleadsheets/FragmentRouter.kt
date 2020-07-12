@@ -5,6 +5,7 @@ interface FragmentRouter {
     fun showGameList()
     fun showSongListForGame(gameId: Long)
     fun showSongViewer(songId: Long)
+    fun showSheetDetail(songId: Long)
     fun showJamViewer(jamId: Long)
     fun showJamDetailViewer(jamId: Long)
     fun showSearch()

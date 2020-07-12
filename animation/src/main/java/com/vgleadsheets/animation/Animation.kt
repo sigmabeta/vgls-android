@@ -43,7 +43,7 @@ fun View.slideViewUpOffscreen(): ViewPropertyAnimator {
         .withLayer()
         .setInterpolator(DECELERATE)
         .setDuration(DURATION_SLOW)
-        .translationY(-height.toFloat() * 2)
+        .translationY(-bottom.toFloat())
         .withEndAction { visibility = View.GONE }
 }
 
@@ -52,7 +52,7 @@ fun View.slideViewDownOffscreen(): ViewPropertyAnimator {
         .withLayer()
         .setInterpolator(DECELERATE)
         .setDuration(DURATION_SLOW)
-        .translationY(height.toFloat() * 2)
+        .translationY(top.toFloat())
         .withEndAction { visibility = View.GONE }
 }
 

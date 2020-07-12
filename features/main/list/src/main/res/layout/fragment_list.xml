@@ -12,6 +12,6 @@
         android:layout_marginStart="@dimen/margin_side"
         android:layout_marginEnd="@dimen/margin_side"
         android:clipToPadding="false"
-        tools:listitem="@layout/list_component_gb_image_name_caption" />
+        tools:listitem="@layout/list_component_image_name_caption" />
 
 </FrameLayout>

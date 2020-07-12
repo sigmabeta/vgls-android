@@ -10,6 +10,7 @@ import com.vgleadsheets.features.main.jam.JamAssistedModule
 import com.vgleadsheets.features.main.jams.JamListAssistedModule
 import com.vgleadsheets.features.main.search.SearchAssistedModule
 import com.vgleadsheets.features.main.settings.SettingsAssistedModule
+import com.vgleadsheets.features.main.sheet.SheetDetailAssistedModule
 import com.vgleadsheets.features.main.songs.SongListAssistedModule
 import com.vgleadsheets.features.main.tagkeys.TagKeyAssistedModule
 import com.vgleadsheets.features.main.tagsongs.TagValueSongListAssistedModule
@@ -32,6 +33,7 @@ import dagger.Module
         TagKeyAssistedModule::class,
         TagValueSongListAssistedModule::class,
         TagValueListAssistedModule::class,
+        SheetDetailAssistedModule::class,
         ViewerAssistedModule::class,
         HudAssistedModule::class
     ]

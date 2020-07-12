@@ -4,6 +4,7 @@ package com.vgleadsheets.components
 
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -83,17 +84,19 @@ fun bindBigPhoto(
     }
 }
 
-@BindingAdapter("thumbUrl", "placeholder")
-fun bindThumb(
+@BindingAdapter("starFillThreshold", "stars")
+fun bindStarFilling(
     view: ImageView,
-    thumbUrl: String?,
-    placeholder: Int
+    starFillThreshold: Int,
+    stars: Int
 ) {
-    if (thumbUrl != null) {
-        view.loadImageLowQuality(thumbUrl, true, placeholder)
+    val starResource = if (stars >= starFillThreshold) {
+        R.drawable.ic_jam_filled
     } else {
-        view.setImageResource(placeholder)
+        R.drawable.ic_jam_unfilled
     }
+
+    view.setImageResource(starResource)
 }
 
 @BindingAdapter("drawable")
@@ -151,6 +154,18 @@ fun bindDropdownListener(
 
     view.setOnItemClickListener { _, _, clickedPosition, _ ->
         itemSelectListener.onNewOptionSelected(settingId, clickedPosition)
+    }
+}
+
+@BindingAdapter("model", "longClickHandler")
+fun bindLongClickHandler(
+    view: FrameLayout,
+    model: ToolbarItemListModel,
+    longClickHandler: ToolbarItemListModel.EventHandler
+) {
+    view.setOnLongClickListener {
+        longClickHandler.onLongClicked(model)
+        true
     }
 }
 

@@ -30,7 +30,7 @@ class SongListAsyncUiTest : ListUiTest() {
             clickSheetWithTitle(TITLE_FIRST_ITEM)
         }
 
-        viewer {
+        viewer(this) {
             checkPageVisible(1)
         }
     }

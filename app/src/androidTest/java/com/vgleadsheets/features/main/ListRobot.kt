@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isNotChecked
 import androidx.test.espresso.matcher.ViewMatchers.withChild
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -90,6 +91,18 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         }
     }
 
+    fun clickLabelValueWithLabel(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_label_value, title)
+        }
+    }
+
+    fun clickRatingWithLabel(title: String, scrollPosition: Int? = null) {
+        scrollHelper(scrollPosition) {
+            clickComponentWithTitle(R.id.component_label_rating, title)
+        }
+    }
+
     fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
             clickComponentWithTitle(R.id.component_image_name_caption, title)
@@ -124,6 +137,10 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         scrollHelper(scrollPosition) {
             clickComponentWithTitle(R.id.component_name_caption, title)
         }
+    }
+
+    fun clickToolbarItemWithTitle(title: String) {
+        clickComponentWithContentDescription(R.id.component_toolbar_item, title)
     }
 
     protected fun checkIsEmptyStateDisplayedInternal(emptyStateLabel: String) {
@@ -200,6 +217,21 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
                     allOf(
                         withId(R.id.text_name),
                         withText(title)
+                    )
+                )
+            )
+        ).perform(
+            click()
+        )
+    }
+
+    private fun clickComponentWithContentDescription(@IdRes componentType: Int, description: String) {
+        onView(
+            allOf(
+                withId(componentType),
+                withChild(
+                    allOf(
+                        withContentDescription(description)
                     )
                 )
             )
