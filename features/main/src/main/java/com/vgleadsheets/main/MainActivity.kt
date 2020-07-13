@@ -130,13 +130,13 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         startActivity(launcher)
 
         val displayedFragment = getDisplayedFragment() ?: throw IllegalStateException(
-            "How are we launching a web brwoser from a blank view?"
+            "How are we launching a web browser from a blank view?"
         )
 
         tracker.logWebLaunch(
             url,
             displayedFragment.getTrackingScreen(),
-            displayedFragment.getArgs()?.id?.toString() ?: ""
+            displayedFragment.getDetails()
         )
     }
 
@@ -212,9 +212,9 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
             tracker.logScreenView(
                 this,
                 fragment.getTrackingScreen(),
-                fragment.getArgs()?.id?.toString() ?: "",
+                fragment.getDetails(),
                 displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-                displayedFragment?.getArgs()?.id?.toString() ?: ""
+                displayedFragment?.getDetails() ?: ""
             )
 
             supportFragmentManager.beginTransaction()
@@ -233,9 +233,9 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         tracker.logScreenView(
             this,
             fragment.getTrackingScreen(),
-            fragment.getArgs()?.id?.toString() ?: "",
+            fragment.getDetails(),
             displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            displayedFragment?.getArgs()?.id?.toString() ?: ""
+            displayedFragment?.getDetails() ?: ""
         )
 
         supportFragmentManager.beginTransaction()

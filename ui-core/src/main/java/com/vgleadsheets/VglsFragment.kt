@@ -32,10 +32,14 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     abstract fun getTrackingScreen(): TrackingScreen
 
+    open fun getDetails() = getArgs()?.id?.toString() ?: ""
+
     open fun getArgs(): IdArgs? {
         return try {
             idArgs
         } catch (ex: IllegalArgumentException) {
+            null
+        } catch (ex: ClassCastException) {
             null
         }
     }

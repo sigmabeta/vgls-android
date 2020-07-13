@@ -16,7 +16,6 @@ import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
-import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.components.ToolbarItemListModel
@@ -216,7 +215,7 @@ class ViewerFragment : VglsFragment(),
 
     override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
 
-    override fun getArgs() = IdArgs(viewerArgs.songId ?: throw IllegalArgumentException("Invalid song id."))
+    override fun getDetails() = getArgs()?.id?.toString() ?: viewerArgs.jamId.toString()
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
