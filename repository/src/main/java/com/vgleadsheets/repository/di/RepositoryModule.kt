@@ -6,6 +6,7 @@ import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.tracking.Tracker
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -19,8 +20,9 @@ class RepositoryModule {
         vglsApi: VglsApi,
         database: VglsDatabase,
         threeTenTime: ThreeTenTime,
+        tracker: Tracker,
         @Named("VglsImageUrl") baseImageUrl: String
-    ): Repository = RealRepository(vglsApi, baseImageUrl, threeTenTime, database)
+    ): Repository = RealRepository(vglsApi, baseImageUrl, threeTenTime, tracker, database)
 
     @Provides
     @Singleton

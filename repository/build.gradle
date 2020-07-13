@@ -9,6 +9,9 @@ dependencies {
     // So RealRepository can know about the "Vocals" enum member.
     implementation project(path: ':common:parts')
 
+    // So we can log auto-refreshes
+    implementation project(path: ':tracking-common')
+
     // So we don't have buggy time comparisons
     implementation "com.jakewharton.threetenabp:threetenabp:$threeten_version"
 

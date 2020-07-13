@@ -28,6 +28,7 @@ import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.tracking.Tracker
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -42,6 +43,7 @@ class RealRepository constructor(
     private val vglsApi: VglsApi,
     private val baseImageUrl: String,
     private val threeTen: ThreeTenTime,
+    private val tracker: Tracker,
     database: VglsDatabase
 ) : Repository {
 
@@ -72,6 +74,7 @@ class RealRepository constructor(
             .filter { diff ->
                 diff > 0
             }
+            .doOnSuccess { tracker.logAutoRefresh() }
             .flatMapSingle { getDigest() }
     }
 
