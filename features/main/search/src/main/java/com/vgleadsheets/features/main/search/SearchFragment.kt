@@ -85,6 +85,12 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             return@withState
         }
 
+        tracker.logSearchSuccess(
+            state.data.query ?: "",
+            TrackingScreen.GAME_DETAIL,
+            id.toString()
+        )
+
         hudViewModel.exitSearch()
         getFragmentRouter().showSongListForGame(id)
     }
@@ -97,6 +103,12 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             return@withState
         }
 
+        tracker.logSearchSuccess(
+            state.data.query ?: "",
+            TrackingScreen.SHEET_VIEWER,
+            id.toString()
+        )
+
         hudViewModel.exitSearch()
         getFragmentRouter().showSongViewer(id)
     }
@@ -108,6 +120,12 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             showError("Failed to show composer.")
             return@withState
         }
+
+        tracker.logSearchSuccess(
+            state.data.query ?: "",
+            TrackingScreen.COMPOSER_DETAIL,
+            id.toString()
+        )
 
         hudViewModel.exitSearch()
         getFragmentRouter().showSongListForComposer(id)
