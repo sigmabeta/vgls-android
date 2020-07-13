@@ -63,6 +63,8 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
                 null -> { }
                 else -> TODO("Unimplemented button")
             }
+
+            viewModel.clearClicked()
         }
 
         viewModel.selectSubscribe(JamState::refreshError) {
