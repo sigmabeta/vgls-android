@@ -1,10 +1,12 @@
 package com.vgleadsheets.features.main.search
 
+import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.tracking.TrackingScreen
+import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -22,9 +24,16 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
     }
 
     override fun subscribeToViewEvents() {
-        hudViewModel.selectSubscribe(HudState::searchQuery) {
+        hudViewModel.selectSubscribe(
+            HudState::searchQuery,
+            deliveryMode = UniqueOnly("query")
+        ) {
             if (it != null) {
-                onSearchQueryEntered(it)
+                if (it.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
+                    onStickerBrEntered()
+                } else {
+                    onSearchQueryEntered(it)
+                }
             } else {
                 viewModel.onQueryClear()
             }
@@ -61,6 +70,11 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
     private fun onSearchQueryEntered(query: String) {
         tracker.logSearch(query)
         viewModel.startQuery(query)
+    }
+
+    private fun onStickerBrEntered() {
+        tracker.logStickerBr()
+        viewModel.showStickerBr()
     }
 
     private fun onGameClicked(id: Long) = withState(viewModel) { state ->

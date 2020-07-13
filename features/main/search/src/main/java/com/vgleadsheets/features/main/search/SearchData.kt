@@ -9,6 +9,7 @@ import com.vgleadsheets.model.song.Song
 
 data class SearchData(
     val query: String? = null,
+    val showStickerBr: Boolean = false,
     val songs: Async<List<Song>> = Uninitialized,
     val composers: Async<List<Composer>> = Uninitialized,
     val games: Async<List<Game>> = Uninitialized

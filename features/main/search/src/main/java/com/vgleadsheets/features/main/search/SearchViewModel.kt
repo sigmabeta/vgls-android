@@ -25,7 +25,6 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import io.reactivex.disposables.CompositeDisposable
-import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 @SuppressWarnings("TooManyFunctions")
@@ -70,12 +69,17 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
+    fun showStickerBr() = setState {
+        updateSearchState(showStickerBr = true)
+    }
+
     fun startQuery(searchQuery: String) {
         withState { state ->
             if (state.data.query != searchQuery) {
                 setState {
                     updateSearchState(
-                        query = searchQuery
+                        query = searchQuery,
+                        showStickerBr = false
                     )
                 }
 
@@ -108,6 +112,7 @@ class SearchViewModel @AssistedInject constructor(
         setState {
             updateSearchState(
                 null,
+                false,
                 Uninitialized,
                 Uninitialized,
                 Uninitialized
@@ -144,7 +149,7 @@ class SearchViewModel @AssistedInject constructor(
             )
         }
 
-        if (query.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
+        if (data.showStickerBr) {
             return listOf(
                 ErrorStateListModel(
                     "stickerbrush",
@@ -374,6 +379,7 @@ class SearchViewModel @AssistedInject constructor(
     @SuppressWarnings("LongParameterList")
     private fun SearchState.updateSearchState(
         query: String? = data.query,
+        showStickerBr: Boolean = data.showStickerBr,
         songs: Async<List<Song>> = data.songs,
         composers: Async<List<Composer>> = data.composers,
         games: Async<List<Game>> = data.games,
@@ -383,6 +389,7 @@ class SearchViewModel @AssistedInject constructor(
     ): SearchState {
         val newData = SearchData(
             query,
+            showStickerBr,
             OPTIMIZER_SONGS.skipLoadingIfPreviouslyLoaded(oldSongs, songs),
             OPTIMIZER_COMPOSERS.skipLoadingIfPreviouslyLoaded(oldComposers, composers),
             OPTIMIZER_GAMES.skipLoadingIfPreviouslyLoaded(oldGames, games)
