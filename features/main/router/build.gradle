@@ -3,6 +3,7 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation project(path: ':mvrx')
+    implementation project(path: ':tracking-common')
 
     // Dagger
     api project(path: ':di')

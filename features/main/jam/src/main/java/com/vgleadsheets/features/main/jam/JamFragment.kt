@@ -2,13 +2,13 @@ package com.vgleadsheets.features.main.jam
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
@@ -18,11 +18,11 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
 
     override val viewModel: JamViewModel by fragmentViewModel()
 
-    private val idArgs: IdArgs by args()
-
     private var refreshLauncher: Disposable? = null
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+
+    override fun getTrackingScreen() = TrackingScreen.JAM_DETAIL
 
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {
@@ -135,16 +135,7 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
         showSongViewer(historySong)
     }
 
-    private fun showSongViewer(song: Song) =
-        withState(hudViewModel) { hudState ->
-            tracker.logSongView(
-                song.name,
-                song.gameName,
-                hudState.parts.first { it.selected }.apiId,
-                null
-            )
-            getFragmentRouter().showSongViewer(song.id)
-        }
+    private fun showSongViewer(song: Song) = getFragmentRouter().showSongViewer(song.id)
 
     private fun followJam() = withState(viewModel) {
         getFragmentRouter().showJamViewer(it.jamId)

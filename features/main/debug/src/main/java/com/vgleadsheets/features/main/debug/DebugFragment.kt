@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.debug
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
@@ -12,6 +13,8 @@ class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
     override val viewModel: DebugViewModel by fragmentViewModel()
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
+
+    override fun getTrackingScreen() = TrackingScreen.DEBUG
 
     override fun subscribeToViewEvents() {
         hudViewModel.alwaysShowBack()

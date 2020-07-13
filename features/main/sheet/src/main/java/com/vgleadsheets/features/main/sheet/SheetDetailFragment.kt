@@ -3,13 +3,13 @@ package com.vgleadsheets.features.main.sheet
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
+import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>() {
@@ -18,9 +18,9 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
     override val viewModel: SheetDetailViewModel by fragmentViewModel()
 
-    private val idArgs: IdArgs by args()
-
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+
+    override fun getTrackingScreen() = TrackingScreen.SHEET_DETAIL
 
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {
@@ -64,16 +64,10 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         }
     }
 
-    private fun showSongViewer() = withState(viewModel, hudViewModel) { state, hudState ->
+    private fun showSongViewer() = withState(viewModel) { state ->
         val song = state.data.song()
 
         if (song != null) {
-            tracker.logSongView(
-                song.name,
-                song.gameName,
-                hudState.parts.first { it.selected }.apiId,
-                null
-            )
             getFragmentRouter().showSongViewer(song.id)
         } else {
             showError("Cannot find this sheet.")

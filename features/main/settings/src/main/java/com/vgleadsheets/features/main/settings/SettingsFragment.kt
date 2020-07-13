@@ -2,11 +2,14 @@ package com.vgleadsheets.features.main.settings
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
     @Inject
     lateinit var settingsViewModelFactory: SettingsViewModel.Factory
+
+    override fun getTrackingScreen() = TrackingScreen.SETTINGS
 
     override val viewModel: SettingsViewModel by fragmentViewModel()
 

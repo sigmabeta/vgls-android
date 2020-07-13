@@ -7,6 +7,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.tracking.TrackingScreen
 import kotlinx.android.synthetic.main.fragment_license.web_license
 
 class LicenseFragment : VglsFragment() {
@@ -24,7 +25,7 @@ class LicenseFragment : VglsFragment() {
             val bottomPadding = (insets.systemWindowInsetBottom + bottomOffset) / density
 
             web_license.settings.javaScriptEnabled = true
-            web_license.setWebViewClient(object : WebViewClient() {
+            web_license.webViewClient = object : WebViewClient() {
                 override fun onPageFinished(web: WebView, url: String) {
                     val javascript =
                         "javascript:(function(){ document.body.style.paddingTop = '${topPadding}px';" +
@@ -46,7 +47,7 @@ class LicenseFragment : VglsFragment() {
 
                     return false
                 }
-            })
+            }
 
             web_license.loadUrl("file:///android_asset/open_source_licenses.html")
 
@@ -59,6 +60,8 @@ class LicenseFragment : VglsFragment() {
     override fun getLayoutId() = R.layout.fragment_license
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
+
+    override fun getTrackingScreen() = TrackingScreen.LICENSE
 
     companion object {
         fun newInstance() = LicenseFragment()

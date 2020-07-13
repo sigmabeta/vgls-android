@@ -9,8 +9,11 @@ import androidx.annotation.LayoutRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import com.airbnb.mvrx.BaseMvRxFragment
+import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
+import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.tracking.Tracker
+import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,10 +23,22 @@ abstract class VglsFragment : BaseMvRxFragment() {
     @Inject
     lateinit var tracker: Tracker
 
+    protected val idArgs: IdArgs by args()
+
     @LayoutRes
     abstract fun getLayoutId(): Int
 
     abstract fun getVglsFragmentTag(): String
+
+    abstract fun getTrackingScreen(): TrackingScreen
+
+    open fun getArgs(): IdArgs? {
+        return try {
+            idArgs
+        } catch (ex: IllegalArgumentException) {
+            null
+        }
+    }
 
     open fun onBackPress() = false
 
@@ -43,15 +58,6 @@ abstract class VglsFragment : BaseMvRxFragment() {
         super.onViewCreated(view, savedInstanceState)
         ViewCompat.requestApplyInsets(view)
     }
-
-    override fun onStart() {
-        super.onStart()
-        if (shouldTrackViews()) {
-            tracker.logScreenView(activity!!, getVglsFragmentTag())
-        }
-    }
-
-    protected open fun shouldTrackViews() = true
 
     protected fun showError(
         error: Throwable,

@@ -4,71 +4,123 @@ import android.app.Activity
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.vgleadsheets.tracking.Tracker
-import timber.log.Timber
+import com.vgleadsheets.tracking.TrackingScreen
 
 @SuppressWarnings("TooManyFunctions")
 class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
 
-    override fun logScreenView(activity: Activity, screenName: String) {
-        Timber.d("Logging screenview: $screenName")
-        firebaseAnalytics.setCurrentScreen(activity, screenName, screenName.substringBefore(":"))
+    override fun logScreenView(
+        activity: Activity,
+        screen: TrackingScreen,
+        details: String,
+        fromScreen: TrackingScreen,
+        fromDetails: String
+    ) {
+        firebaseAnalytics.setCurrentScreen(activity, screen.toString(), screen.toString())
+
+        val detailsBundle = Bundle()
+
+        detailsBundle.putString(PARAM_SCREEN, screen.toString())
+        detailsBundle.putString(PARAM_SCREEN_DETAILS, details)
+        detailsBundle.putString(PARAM_FROM_SCREEN, fromScreen.toString())
+        detailsBundle.putString(PARAM_FROM_DETAILS, fromDetails)
+
+        firebaseAnalytics.logEvent(EVENT_SCREEN_VIEW, detailsBundle)
     }
 
-    override fun logMenuShow() = logEvent(EVENT_SHOW_MENU)
-
-    override fun logForceRefresh() = logEvent(EVENT_FORCE_REFRESH)
-
-    override fun logPartSelect(transposition: String) {
-        Timber.d("Logging $EVENT_PART_SELECT $transposition")
-
+    override fun logGameView(
+        gameName: String,
+        fromScreen: TrackingScreen,
+        fromDetails: String
+    ) {
         val details = Bundle()
-        details.putString(PARAM_TRANSPOSITION, transposition)
 
-        firebaseAnalytics.logEvent(EVENT_PART_SELECT, details)
+        details.putString(PARAM_GAME_NAME, gameName)
+        details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
+        details.putString(PARAM_FROM_DETAILS, fromDetails)
+
+        firebaseAnalytics.logEvent(EVENT_GAME_VIEW, details)
+    }
+
+    override fun logComposerView(
+        composerName: String,
+        fromScreen: TrackingScreen,
+        fromDetails: String
+    ) {
+        val details = Bundle()
+
+        details.putString(PARAM_COMPOSER_NAME, composerName)
+        details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
+        details.putString(PARAM_FROM_DETAILS, fromDetails)
+
+        firebaseAnalytics.logEvent(EVENT_COMPOSER_VIEW, details)
     }
 
     override fun logSongView(
         songName: String,
         gameName: String,
         transposition: String,
-        searchTerm: String?
+        fromScreen: TrackingScreen,
+        fromDetails: String
     ) {
-        Timber.d("Logging $EVENT_SONG_VIEW $songName $gameName $transposition $searchTerm")
-
         val details = Bundle()
+
         details.putString(PARAM_SONG_NAME, songName)
         details.putString(PARAM_GAME_NAME, gameName)
         details.putString(PARAM_PAGE_TITLE, "$gameName - $songName")
         details.putString(PARAM_PAGE_TITLE_TRANSPOSITION, "$gameName - $songName: $transposition")
         details.putString(PARAM_TRANSPOSITION, transposition)
-        details.putString(FirebaseAnalytics.Param.SEARCH_TERM, searchTerm)
+        details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
+        details.putString(PARAM_FROM_DETAILS, fromDetails)
 
         firebaseAnalytics.logEvent(EVENT_SONG_VIEW, details)
     }
 
-    override fun logGameView(gameName: String, searchTerm: String?) {
-        Timber.d("Logging $EVENT_GAME_VIEW $gameName $searchTerm")
+    override fun logWebLaunch(
+        details: String,
+        fromScreen: TrackingScreen,
+        fromDetails: String
+    ) {
+        val detailsBundle = Bundle()
 
-        val details = Bundle()
-        details.putString(PARAM_GAME_NAME, gameName)
-        details.putString(FirebaseAnalytics.Param.SEARCH_TERM, searchTerm)
+        detailsBundle.putString(PARAM_SCREEN_DETAILS, details)
+        detailsBundle.putString(PARAM_FROM_SCREEN, fromScreen.toString())
+        detailsBundle.putString(PARAM_FROM_DETAILS, fromDetails)
 
-        firebaseAnalytics.logEvent(EVENT_GAME_VIEW, details)
+        firebaseAnalytics.logEvent(EVENT_LAUNCH_WEB, detailsBundle)
     }
 
-    override fun logComposerView(composerName: String, searchTerm: String?) {
-        Timber.d("Logging $EVENT_COMPOSER_VIEW $composerName $searchTerm")
+    override fun logMenuShow() = logEvent(EVENT_SHOW_MENU)
 
+    override fun logAutoRefresh() = logEvent(EVENT_AUTO_REFRESH)
+
+    override fun logForceRefresh() = logEvent(EVENT_FORCE_REFRESH)
+
+    override fun logSearch(query: String) {
         val details = Bundle()
-        details.putString(PARAM_COMPOSER_NAME, composerName)
-        details.putString(FirebaseAnalytics.Param.SEARCH_TERM, searchTerm)
+        details.putString(FirebaseAnalytics.Param.SEARCH_TERM, query)
 
-        firebaseAnalytics.logEvent(EVENT_COMPOSER_VIEW, details)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, details)
+    }
+
+    override fun logSearchSuccess(query: String, toScreen: TrackingScreen, toDetails: String) {
+        val details = Bundle()
+
+        details.putString(FirebaseAnalytics.Param.SEARCH_TERM, query)
+        details.putString(PARAM_TO_SCREEN, toScreen.toString())
+        details.putString(PARAM_TO_DETAILS, toDetails)
+
+        firebaseAnalytics.logEvent(EVENT_SEARCH_SUCCESS, details)
+    }
+
+    override fun logPartSelect(transposition: String) {
+        val details = Bundle()
+        details.putString(PARAM_TRANSPOSITION, transposition)
+
+        firebaseAnalytics.logEvent(EVENT_PART_SELECT, details)
     }
 
     override fun logRandomSongView(songName: String, gameName: String, transposition: String) {
-        Timber.d("Logging $EVENT_RANDOM_VIEW $songName $gameName $transposition")
-
         val details = Bundle()
         details.putString(PARAM_SONG_NAME, songName)
         details.putString(PARAM_GAME_NAME, gameName)
@@ -77,18 +129,11 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
         firebaseAnalytics.logEvent(EVENT_RANDOM_VIEW, details)
     }
 
-    override fun logSearch(query: String) {
-        Timber.d("Logging search: $query")
-
-        val details = Bundle()
-        details.putString(FirebaseAnalytics.Param.SEARCH_TERM, query)
-
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, details)
+    override fun logStickerBr() {
+        logEvent(EVENT_STICKERBR)
     }
 
     override fun logError(message: String) {
-        Timber.d("Logging $EVENT_APP_ERROR")
-
         val details = Bundle()
         details.putString(PARAM_ERROR_MESSAGE, message)
 
@@ -96,20 +141,30 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
     }
 
     private fun logEvent(name: String) {
-        Timber.d("Logging $name")
         firebaseAnalytics.logEvent(name, null)
     }
 
     companion object {
         const val EVENT_SHOW_MENU = "show_menu"
+        const val EVENT_AUTO_REFRESH = "auto_refresh"
         const val EVENT_FORCE_REFRESH = "force_refresh"
+        const val EVENT_SCREEN_VIEW = "screen_view"
         const val EVENT_SONG_VIEW = "song_view"
         const val EVENT_GAME_VIEW = "game_view"
         const val EVENT_COMPOSER_VIEW = "composer_view"
+        const val EVENT_LAUNCH_WEB = "launch_web"
+        const val EVENT_SEARCH_SUCCESS = "search_success"
         const val EVENT_RANDOM_VIEW = "song_view_random"
         const val EVENT_PART_SELECT = "part_select"
         const val EVENT_APP_ERROR = "error_app"
+        const val EVENT_STICKERBR = "stickerbr"
 
+        const val PARAM_SCREEN = "screen_name"
+        const val PARAM_SCREEN_DETAILS = "screen_details"
+        const val PARAM_FROM_SCREEN = "from_screen"
+        const val PARAM_FROM_DETAILS = "from_details"
+        const val PARAM_TO_SCREEN = "from_screen"
+        const val PARAM_TO_DETAILS = "from_details"
         const val PARAM_GAME_NAME = "game_name"
         const val PARAM_PAGE_TITLE = "page_title"
         const val PARAM_PAGE_TITLE_TRANSPOSITION = "page_title_transposition"

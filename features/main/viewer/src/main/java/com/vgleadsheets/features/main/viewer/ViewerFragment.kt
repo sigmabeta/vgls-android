@@ -16,6 +16,7 @@ import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
+import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.components.ToolbarItemListModel
@@ -25,6 +26,7 @@ import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOnePadding
+import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -65,12 +67,6 @@ class ViewerFragment : VglsFragment(),
 
     fun updateSongId(songId: Long) {
         viewModel.updateSongId(songId)
-    }
-
-    fun cancelJam() {
-        if (viewerArgs.jamId != null) {
-            viewModel.unfollowJam("Opened another sheet.")
-        }
     }
 
     override fun onClicked() = withState(hudViewModel) { state ->
@@ -217,6 +213,10 @@ class ViewerFragment : VglsFragment(),
 
     override fun getVglsFragmentTag() =
         this.javaClass.simpleName + ":${songId ?: viewerArgs.songId}"
+
+    override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
+
+    override fun getArgs() = IdArgs(viewerArgs.songId ?: throw IllegalArgumentException("Invalid song id."))
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")

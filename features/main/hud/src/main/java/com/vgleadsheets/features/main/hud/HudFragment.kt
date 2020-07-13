@@ -46,6 +46,7 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
+import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_hud.button_search_clear
 import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
@@ -78,7 +79,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class HudFragment : VglsFragment(), PartListModel.ClickListener {
+    class HudFragment : VglsFragment(), PartListModel.ClickListener {
     @Inject
     lateinit var storage: Storage
 
@@ -263,7 +264,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
-    override fun shouldTrackViews() = false
+    override fun getTrackingScreen() = TrackingScreen.HUD
 
     private fun showInitialScreen() {
         Timber.d("Checking to see which screen to show.")
