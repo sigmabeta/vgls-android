@@ -17,7 +17,7 @@ class TagValueListFragment : AsyncListFragment<TagValueData, TagValueListState>(
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
-    override fun getTrackingScreen() = TrackingScreen.TAG_VALUE_LIST
+    override fun getTrackingScreen() = TrackingScreen.LIST_TAG_VALUE
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(TagValueListState::clickedListModel) {

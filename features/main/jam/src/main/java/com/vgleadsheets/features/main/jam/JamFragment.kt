@@ -22,7 +22,7 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
-    override fun getTrackingScreen() = TrackingScreen.JAM_DETAIL
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_JAM
 
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {

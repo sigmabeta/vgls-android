@@ -17,7 +17,7 @@ class GameFragment : AsyncListFragment<GameData, GameState>() {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
-    override fun getTrackingScreen() = TrackingScreen.GAME_DETAIL
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_GAME
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(GameState::clickedListModel) {

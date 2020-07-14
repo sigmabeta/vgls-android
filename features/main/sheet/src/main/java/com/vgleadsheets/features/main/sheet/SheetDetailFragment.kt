@@ -20,7 +20,7 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
-    override fun getTrackingScreen() = TrackingScreen.SHEET_DETAIL
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_SHEET
 
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {

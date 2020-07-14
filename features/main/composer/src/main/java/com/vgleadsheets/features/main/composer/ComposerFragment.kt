@@ -18,7 +18,7 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
-    override fun getTrackingScreen() = TrackingScreen.COMPOSER_DETAIL
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_COMPOSER
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(ComposerState::clickedListModel) {

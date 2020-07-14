@@ -87,7 +87,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
         tracker.logSearchSuccess(
             state.data.query ?: "",
-            TrackingScreen.GAME_DETAIL,
+            TrackingScreen.DETAIL_GAME,
             id.toString()
         )
 
@@ -134,7 +134,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
         tracker.logSearchSuccess(
             state.data.query ?: "",
-            TrackingScreen.COMPOSER_DETAIL,
+            TrackingScreen.DETAIL_COMPOSER,
             id.toString()
         )
 
