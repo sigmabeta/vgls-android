@@ -2,6 +2,7 @@ package com.vgleadsheets.tracking
 
 import android.app.Activity
 
+@SuppressWarnings("TooManyFunctions")
 class NoopTracker : Tracker {
     override fun logMenuShow() = Unit
     override fun logForceRefresh() = Unit
@@ -11,7 +12,7 @@ class NoopTracker : Tracker {
     override fun logJamFollow(id: Long, fromScreen: TrackingScreen, fromDetails: String) = Unit
     override fun logError(message: String) = Unit
     override fun logAutoRefresh() = Unit
-    override fun logWebLaunch(details: String, fromScreen: TrackingScreen, fromDetails: String)  = Unit
+    override fun logWebLaunch(details: String, fromScreen: TrackingScreen, fromDetails: String) = Unit
     override fun logSearchSuccess(query: String, toScreen: TrackingScreen, toDetails: String) = Unit
     override fun logStickerBr() = Unit
 
@@ -21,7 +22,7 @@ class NoopTracker : Tracker {
         details: String,
         fromScreen: TrackingScreen,
         fromDetails: String
-    )  = Unit
+    ) = Unit
 
     override fun logGameView(gameName: String, fromScreen: TrackingScreen, fromDetails: String) = Unit
 
@@ -39,5 +40,4 @@ class NoopTracker : Tracker {
         fromScreen: TrackingScreen,
         fromDetails: String
     ) = Unit
-
 }

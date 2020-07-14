@@ -2,6 +2,7 @@ package com.vgleadsheets.tracking
 
 import android.app.Activity
 
+@SuppressWarnings("TooManyFunctions")
 interface Tracker {
     fun logScreenView(
         activity: Activity,
@@ -23,6 +24,7 @@ interface Tracker {
         fromDetails: String
     )
 
+    @SuppressWarnings("LongParameterList")
     fun logSongView(
         id: Long,
         songName: String,

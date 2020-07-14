@@ -207,19 +207,17 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         )
     }
 
-
     override fun showJamViewer(jamId: Long) {
         val prevFragment = getDisplayedFragment()
 
         tracker.logJamFollow(jamId,
             prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
             prevFragment?.getDetails() ?: "")
-        
+
         showFragmentSimple(
             ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
         )
     }
-
 
     override fun showJamDetailViewer(jamId: Long) = showFragmentSimple(
         JamFragment.newInstance(IdArgs(jamId))
