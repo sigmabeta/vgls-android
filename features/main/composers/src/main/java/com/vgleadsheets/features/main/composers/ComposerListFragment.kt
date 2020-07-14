@@ -19,14 +19,13 @@ class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
             val clickedComposerId = it?.dataId
 
             if (clickedComposerId != null) {
-                showSongList(clickedComposerId)
+                getFragmentRouter().showSongListForComposer(
+                    clickedComposerId,
+                    it.name
+                )
                 viewModel.clearClicked()
             }
         }
-    }
-
-    private fun showSongList(clickedComposerId: Long) {
-        getFragmentRouter().showSongListForComposer(clickedComposerId)
     }
 
     companion object {

@@ -19,14 +19,14 @@ class GameListFragment : ListFragment<Game, GameListState>() {
             val clickedGameId = it?.dataId
 
             if (clickedGameId != null) {
-                showSongList(clickedGameId)
+                getFragmentRouter().showSongListForGame(
+                    clickedGameId,
+                    it.name
+                )
+
                 viewModel.clearClicked()
             }
         }
-    }
-
-    private fun showSongList(clickedGameId: Long) {
-        getFragmentRouter().showSongListForGame(clickedGameId)
     }
 
     companion object {

@@ -26,14 +26,25 @@ class SongListFragment : ListFragment<Song, SongListState>() {
         }
     }
 
-    private fun showSongViewer(clickedSongId: Long) = withState(viewModel) { state ->
+    private fun showSongViewer(clickedSongId: Long) = withState(viewModel, hudViewModel) { state, hudState ->
         val song = state.data()?.first { it.id == clickedSongId }
 
         if (song == null) {
             showError("Failed to show song.")
             return@withState
         }
-        getFragmentRouter().showSongViewer(clickedSongId)
+
+        val transposition = hudState
+            .parts
+            .firstOrNull { it.selected }
+            ?.apiId ?: "Error"
+
+        getFragmentRouter().showSongViewer(
+            clickedSongId,
+            song.name,
+            song.gameName,
+            transposition
+        )
     }
 
     companion object {

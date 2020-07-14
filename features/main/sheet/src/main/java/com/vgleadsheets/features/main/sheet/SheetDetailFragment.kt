@@ -39,7 +39,11 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             val clickedId = it?.dataId
 
             if (clickedId != null) {
-                showComposer(clickedId)
+                if (clickedId != SheetDetailViewModel.ID_COMPOSER_MULTIPLE) {
+                    getFragmentRouter().showSongListForComposer(clickedId, it.value)
+                } else {
+                    showError("Links to multiple composers coming soon!")
+                }
             }
 
             viewModel.clearClicked()
@@ -49,7 +53,7 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             val clickedId = it?.dataId
 
             if (clickedId != null) {
-                showGame(clickedId)
+                getFragmentRouter().showSongListForGame(clickedId, it.value)
             }
 
             viewModel.clearClicked()
@@ -64,11 +68,21 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         }
     }
 
-    private fun showSongViewer() = withState(viewModel) { state ->
+    private fun showSongViewer() = withState(viewModel, hudViewModel) { state, hudState ->
         val song = state.data.song()
 
+        val transposition = hudState
+            .parts
+            .firstOrNull { it.selected }
+            ?.apiId ?: "Error"
+
         if (song != null) {
-            getFragmentRouter().showSongViewer(song.id)
+            getFragmentRouter().showSongViewer(
+                song.id,
+                song.name,
+                song.gameName,
+                transposition
+            )
         } else {
             showError("Cannot find this sheet.")
         }
@@ -82,18 +96,6 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             val youtubeUrl = getYoutubeSearchUrlForQuery(query)
 
             getFragmentRouter().goToWebUrl(youtubeUrl)
-        }
-    }
-
-    private fun showGame(clickedId: Long) {
-        getFragmentRouter().showSongListForGame(clickedId)
-    }
-
-    private fun showComposer(clickedId: Long) {
-        if (clickedId != SheetDetailViewModel.ID_COMPOSER_MULTIPLE) {
-            getFragmentRouter().showSongListForComposer(clickedId)
-        } else {
-            showError("Links to multiple composers coming soon!")
         }
     }
 

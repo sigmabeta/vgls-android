@@ -150,13 +150,33 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
             supportFragmentManager, FindJamDialogFragment::class.java.simpleName
         )
 
-    override fun showSongListForGame(gameId: Long) = showFragmentSimple(
-        GameFragment.newInstance(IdArgs(gameId))
-    )
+    override fun showSongListForGame(gameId: Long, name: String) {
+        val prevFragment = getDisplayedFragment()
 
-    override fun showSongListForComposer(composerId: Long) = showFragmentSimple(
-        ComposerFragment.newInstance(IdArgs(composerId))
-    )
+        tracker.logGameView(
+            name,
+            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            prevFragment?.getDetails() ?: ""
+        )
+
+        showFragmentSimple(
+            GameFragment.newInstance(IdArgs(gameId))
+        )
+    }
+
+    override fun showSongListForComposer(composerId: Long, name: String) {
+        val prevFragment = getDisplayedFragment()
+
+        tracker.logComposerView(
+            name,
+            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            prevFragment?.getDetails() ?: ""
+        )
+
+        showFragmentSimple(
+            ComposerFragment.newInstance(IdArgs(composerId))
+        )
+    }
 
     override fun showValueListForTagKey(tagKeyId: Long) = showFragmentSimple(
         TagValueListFragment.newInstance(IdArgs(tagKeyId))
@@ -170,14 +190,35 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         SheetDetailFragment.newInstance(IdArgs(songId))
     )
 
-    override fun showSongViewer(songId: Long) = showFragmentSimple(
-        ViewerFragment.newInstance(ViewerArgs(songId = songId))
-    )
+    override fun showSongViewer(songId: Long, name: String, gameName: String, transposition: String) {
+        val prevFragment = getDisplayedFragment()
+
+        tracker.logSongView(
+            songId,
+            name,
+            gameName,
+            transposition,
+            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            prevFragment?.getDetails() ?: ""
+        )
+
+        showFragmentSimple(
+            ViewerFragment.newInstance(ViewerArgs(songId = songId))
+        )
+    }
 
 
-    override fun showJamViewer(jamId: Long) = showFragmentSimple(
-        ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
-    )
+    override fun showJamViewer(jamId: Long) {
+        val prevFragment = getDisplayedFragment()
+
+        tracker.logJamFollow(jamId,
+            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            prevFragment?.getDetails() ?: "")
+        
+        showFragmentSimple(
+            ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
+        )
+    }
 
 
     override fun showJamDetailViewer(jamId: Long) = showFragmentSimple(

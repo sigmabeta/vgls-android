@@ -31,7 +31,7 @@ class TagValueSongListFragment : AsyncListFragment<TagValueSongListData, TagValu
     }
 
     private fun showSongViewer(clickedSongId: Long) =
-        withState(viewModel) { state ->
+        withState(viewModel, hudViewModel) { state, hudState ->
             val song = state.data.songs()?.first { it.id == clickedSongId }
 
             if (song == null) {
@@ -39,7 +39,17 @@ class TagValueSongListFragment : AsyncListFragment<TagValueSongListData, TagValu
                 return@withState
             }
 
-            getFragmentRouter().showSongViewer(clickedSongId)
+            val transposition = hudState
+                .parts
+                .firstOrNull { it.selected }
+                ?.apiId ?: "Error"
+
+            getFragmentRouter().showSongViewer(
+                clickedSongId,
+                song.name,
+                song.gameName,
+                transposition
+            )
         }
 
     companion object {

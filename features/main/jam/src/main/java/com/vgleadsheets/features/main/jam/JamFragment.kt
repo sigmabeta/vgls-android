@@ -137,7 +137,19 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
         showSongViewer(historySong)
     }
 
-    private fun showSongViewer(song: Song) = getFragmentRouter().showSongViewer(song.id)
+    private fun showSongViewer(song: Song) = withState(hudViewModel) { hudState ->
+        val transposition = hudState
+            .parts
+            .firstOrNull { it.selected }
+            ?.apiId ?: "Error"
+
+        getFragmentRouter().showSongViewer(
+            song.id,
+            song.name,
+            song.gameName,
+            transposition
+        )
+    }
 
     private fun followJam() = withState(viewModel) {
         getFragmentRouter().showJamViewer(it.jamId)

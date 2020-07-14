@@ -319,13 +319,18 @@ import javax.inject.Inject
             return
         }
 
+        val transposition = hudState
+            .parts
+            .firstOrNull { it.selected }
+            ?.apiId ?: "Error"
+
         tracker.logRandomSongView(
             song.name,
             song.gameName,
-            hudState.parts.first { it.selected }.apiId
+            transposition
         )
 
-        getFragmentRouter().showSongViewer(song.id)
+        getFragmentRouter().showSongViewer(song.id, song.name, song.gameName, transposition)
     }
 
     private fun onPartSelect(clicked: PartListModel) {

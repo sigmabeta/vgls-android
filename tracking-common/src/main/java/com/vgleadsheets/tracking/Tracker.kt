@@ -24,9 +24,16 @@ interface Tracker {
     )
 
     fun logSongView(
+        id: Long,
         songName: String,
         gameName: String,
         transposition: String,
+        fromScreen: TrackingScreen,
+        fromDetails: String
+    )
+
+    fun logJamFollow(
+        id: Long,
         fromScreen: TrackingScreen,
         fromDetails: String
     )

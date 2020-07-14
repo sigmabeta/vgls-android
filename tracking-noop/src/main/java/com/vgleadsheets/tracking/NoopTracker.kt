@@ -8,6 +8,7 @@ class NoopTracker : Tracker {
     override fun logSearch(query: String) = Unit
     override fun logPartSelect(transposition: String) = Unit
     override fun logRandomSongView(songName: String, gameName: String, transposition: String) = Unit
+    override fun logJamFollow(id: Long, fromScreen: TrackingScreen, fromDetails: String) = Unit
     override fun logError(message: String) = Unit
     override fun logAutoRefresh() = Unit
     override fun logWebLaunch(details: String, fromScreen: TrackingScreen, fromDetails: String)  = Unit
@@ -31,10 +32,12 @@ class NoopTracker : Tracker {
     ) = Unit
 
     override fun logSongView(
+        id: Long,
         songName: String,
         gameName: String,
         transposition: String,
         fromScreen: TrackingScreen,
         fromDetails: String
     ) = Unit
+
 }

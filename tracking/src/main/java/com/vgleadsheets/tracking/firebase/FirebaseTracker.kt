@@ -7,7 +7,7 @@ import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 
 @SuppressWarnings("TooManyFunctions")
-class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
+class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracker {
 
     override fun logScreenView(
         activity: Activity,
@@ -57,6 +57,7 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
     }
 
     override fun logSongView(
+        id: Long,
         songName: String,
         gameName: String,
         transposition: String,
@@ -65,15 +66,25 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
     ) {
         val details = Bundle()
 
+        details.putString(PARAM_ID, id.toString())
         details.putString(PARAM_SONG_NAME, songName)
         details.putString(PARAM_GAME_NAME, gameName)
-        details.putString(PARAM_PAGE_TITLE, "$gameName - $songName")
-        details.putString(PARAM_PAGE_TITLE_TRANSPOSITION, "$gameName - $songName: $transposition")
+        details.putString(PARAM_PAGE_TITLE, "$gameName|$songName")
         details.putString(PARAM_TRANSPOSITION, transposition)
         details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
         details.putString(PARAM_FROM_DETAILS, fromDetails)
 
         firebaseAnalytics.logEvent(EVENT_SONG_VIEW, details)
+    }
+
+    override fun logJamFollow(id: Long, fromScreen: TrackingScreen, fromDetails: String) {
+        val details = Bundle()
+
+        details.putString(PARAM_ID, id.toString())
+        details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
+        details.putString(PARAM_FROM_DETAILS, fromDetails)
+
+        firebaseAnalytics.logEvent(EVENT_JAM_FOLLOW, details)
     }
 
     override fun logWebLaunch(
@@ -150,6 +161,7 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
         const val EVENT_FORCE_REFRESH = "force_refresh"
         const val EVENT_SCREEN_VIEW = "screen_view"
         const val EVENT_SONG_VIEW = "song_view"
+        const val EVENT_JAM_FOLLOW = "jam_view"
         const val EVENT_GAME_VIEW = "game_view"
         const val EVENT_COMPOSER_VIEW = "composer_view"
         const val EVENT_LAUNCH_WEB = "launch_web"
@@ -167,7 +179,7 @@ class FirebaseTracker(val firebaseAnalytics: FirebaseAnalytics) : Tracker {
         const val PARAM_TO_DETAILS = "from_details"
         const val PARAM_GAME_NAME = "game_name"
         const val PARAM_PAGE_TITLE = "page_title"
-        const val PARAM_PAGE_TITLE_TRANSPOSITION = "page_title_transposition"
+        const val PARAM_ID = "id"
         const val PARAM_SONG_NAME = "song_name"
         const val PARAM_COMPOSER_NAME = "composer_name"
         const val PARAM_TRANSPOSITION = "transposition"

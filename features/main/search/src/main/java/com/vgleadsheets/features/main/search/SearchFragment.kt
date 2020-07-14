@@ -91,11 +91,11 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             id.toString()
         )
 
+        getFragmentRouter().showSongListForGame(id, game.name)
         hudViewModel.exitSearch()
-        getFragmentRouter().showSongListForGame(id)
     }
 
-    private fun onSongClicked(id: Long) = withState(viewModel) { state ->
+    private fun onSongClicked(id: Long) = withState(viewModel, hudViewModel) { state, hudState ->
         val song = state.data.songs()?.firstOrNull { it.id == id }
 
         if (song == null) {
@@ -109,8 +109,19 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             id.toString()
         )
 
+        val transposition = hudState
+            .parts
+            .firstOrNull { it.selected }
+            ?.apiId ?: "Error"
+
+        getFragmentRouter().showSongViewer(
+            id,
+            song.name,
+            song.gameName,
+            transposition
+        )
+
         hudViewModel.exitSearch()
-        getFragmentRouter().showSongViewer(id)
     }
 
     private fun onComposerClicked(id: Long) = withState(viewModel) { state ->
@@ -127,8 +138,8 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             id.toString()
         )
 
+        getFragmentRouter().showSongListForComposer(id, composer.name)
         hudViewModel.exitSearch()
-        getFragmentRouter().showSongListForComposer(id)
     }
 
     companion object {
