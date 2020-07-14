@@ -12,7 +12,6 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
-import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
@@ -24,7 +23,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.setInsetListenerForOnePadding
+import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -107,7 +106,13 @@ class ViewerFragment : VglsFragment(),
 
         val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
-        list_toolbar_items?.setInsetListenerForOnePadding(Side.TOP, topOffset)
+        val sideOffset = resources.getDimension(R.dimen.margin_medium).toInt()
+
+        list_toolbar_items?.setInsetListenerForPadding(
+            topOffset = topOffset,
+            leftOffset = sideOffset,
+            rightOffset = sideOffset
+        )
 
         list_toolbar_items?.adapter = toolbarAdapter
         list_toolbar_items?.layoutManager = LinearLayoutManager(

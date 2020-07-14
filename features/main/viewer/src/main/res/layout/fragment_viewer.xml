@@ -17,8 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_top_opaque_black_bottom_transparent"
-        android:paddingEnd="@dimen/margin_side"
-        android:paddingStart="@dimen/margin_side"
         tools:listitem="@layout/list_component_toolbar_item" />
 
 </FrameLayout>
