@@ -158,10 +158,7 @@ class ViewerFragment : VglsFragment(),
         hudViewModel.showHud()
         hudViewModel.stopHudTimer()
         viewModel.unfollowJam(null)
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
         hudViewModel.resetAvailableParts()
     }
 
@@ -290,7 +287,7 @@ class ViewerFragment : VglsFragment(),
         if (parts != null) {
             hudViewModel.setAvailableParts(parts)
         } else {
-            showError("Unable to determine which parts are available for this sheet: $partSelection.")
+            showError("Unable to determine which parts are available for this sheet.")
         }
 
         val selectedPart = sheet.parts?.firstOrNull { it.name == partSelection.apiId }

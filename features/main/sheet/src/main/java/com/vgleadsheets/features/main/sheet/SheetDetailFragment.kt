@@ -66,6 +66,23 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         viewModel.selectSubscribe(SheetDetailState::clickedRatingStarModel) {
             handleTagClick(it)
         }
+
+        viewModel.selectSubscribe(SheetDetailState::data) {
+            if (it.song is Success) {
+                val parts = it.song()?.parts
+
+                if (parts != null) {
+                    hudViewModel.setAvailableParts(parts)
+                } else {
+                    showError("Unable to determine which parts are available for this sheet.")
+                }
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        hudViewModel.resetAvailableParts()
     }
 
     private fun showSongViewer() = withState(viewModel, hudViewModel) { state, hudState ->
