@@ -18,6 +18,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
     override fun getTrackingScreen() = TrackingScreen.SEARCH
 
+    @SuppressWarnings("EmptyCatchBlock")
     override fun getDetails(): String {
         var query = ""
 

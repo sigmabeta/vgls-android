@@ -11,6 +11,7 @@ interface FragmentRouter {
 
     fun showSongListForGame(gameId: Long, name: String)
 
+    @SuppressWarnings("LongParameterList")
     fun showSongViewer(
         songId: Long,
         name: String,
