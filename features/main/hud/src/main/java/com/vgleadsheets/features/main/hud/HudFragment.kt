@@ -79,7 +79,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-    class HudFragment : VglsFragment(), PartListModel.ClickListener {
+class HudFragment : VglsFragment(), PartListModel.ClickListener {
     @Inject
     lateinit var storage: Storage
 
@@ -125,7 +125,9 @@ import javax.inject.Inject
         }
 
         // Configure search bar insets
-        card_search.setInsetListenerForMargin(offset = resources.getDimension(R.dimen.margin_medium).toInt())
+        card_search.setInsetListenerForMargin(
+            offset = resources.getDimension(R.dimen.margin_medium).toInt()
+        )
 
         val cornerOffset = resources.getDimension(R.dimen.margin_small).toInt()
 
@@ -296,7 +298,10 @@ import javax.inject.Inject
 
         when (screenId) {
             TOP_LEVEL_SCREEN_ID_GAME -> getFragmentRouter().showGameList(fromScreen, fromDetails)
-            TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList(fromScreen, fromDetails)
+            TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList(
+                fromScreen,
+                fromDetails
+            )
             TOP_LEVEL_SCREEN_ID_TAG -> getFragmentRouter().showTagList(fromScreen, fromDetails)
             TOP_LEVEL_SCREEN_ID_SONG -> getFragmentRouter().showAllSheets(fromScreen, fromDetails)
             TOP_LEVEL_SCREEN_ID_JAM -> getFragmentRouter().showJams(fromScreen, fromDetails)
@@ -319,6 +324,7 @@ import javax.inject.Inject
 
         if (song == null) {
             showError("Failed to get a random track.")
+            viewModel.clearRandom()
             return
         }
 
@@ -417,6 +423,7 @@ import javax.inject.Inject
             is NoSuchElementException -> hideDigestLoading()
             else -> {
                 showError("Couldn't load sheets from server: ${error.message}")
+                viewModel.clearDigestError()
             }
         }
     }
