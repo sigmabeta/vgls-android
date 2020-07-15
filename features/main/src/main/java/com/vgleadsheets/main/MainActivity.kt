@@ -4,9 +4,7 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
@@ -33,22 +31,25 @@ import com.vgleadsheets.features.main.tagkeys.TagKeyFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongListFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueListFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
+import com.vgleadsheets.tracking.Tracker
+import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.toplevel
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
     HudViewModel.HudViewModelFactoryProvider {
-
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     @Inject
     override lateinit var hudViewModelFactory: HudViewModel.Factory
+
+    @Inject
+    lateinit var tracker: Tracker
 
     override fun androidInjector() = androidInjector
 
@@ -67,163 +68,209 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         if (savedInstanceState == null) {
             addHud()
         }
-
-        if (isRunningTest()) {
-            val inflater = LayoutInflater.from(this)
-            val topLevelView = findViewById<CoordinatorLayout>(R.id.toplevel)
-
-            inflater.inflate(R.layout.scroll_target, topLevelView, true)
-        }
     }
 
     override fun showSearch() {
-        showFragmentSimple(SearchFragment.newInstance())
+        showFragmentSimple(
+            SearchFragment.newInstance()
+        )
     }
 
-    override fun showGameList() {
-        clearBackStack()
-        // TODO Move to Navigator Fragment
-        supportFragmentManager.beginTransaction()
-            .setDefaultAnimations()
-            .replace(R.id.frame_fragment, GameListFragment.newInstance())
-            .commit()
+    override fun showGameList(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        showTopLevelFragment(
+            GameListFragment.newInstance(),
+            fromScreen,
+            fromDetails
+        )
     }
 
-    override fun showComposerList() {
-        clearBackStack()
-        // TODO Move to Navigator Fragment
-        supportFragmentManager.beginTransaction()
-            .setDefaultAnimations()
-            .replace(R.id.frame_fragment, ComposerListFragment.newInstance())
-            .commit()
+    override fun showComposerList(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        showTopLevelFragment(
+            ComposerListFragment.newInstance(),
+            fromScreen,
+            fromDetails
+        )
     }
 
-    override fun showTagList() {
-        clearBackStack()
-        // TODO Move to Navigator Fragment
-        supportFragmentManager.beginTransaction()
-            .setDefaultAnimations()
-            .replace(R.id.frame_fragment, TagKeyFragment.newInstance())
-            .commit()
+    override fun showTagList(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        showTopLevelFragment(
+            TagKeyFragment.newInstance(),
+            fromScreen,
+            fromDetails
+        )
     }
 
-    override fun showJams() {
-        clearBackStack()
-        // TODO Move to Navigator Fragment
-        supportFragmentManager.beginTransaction()
-            .setDefaultAnimations()
-            .replace(R.id.frame_fragment, JamListFragment.newInstance())
-            .commit()
+    override fun showJams(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        showTopLevelFragment(
+            JamListFragment.newInstance(),
+            fromScreen,
+            fromDetails
+        )
     }
 
-    override fun showAllSheets() {
-        clearBackStack()
-        // TODO Move to Navigator Fragment
-        supportFragmentManager.beginTransaction()
-            .setDefaultAnimations()
-            .replace(R.id.frame_fragment, SongListFragment.newInstance())
-            .commit()
+    override fun showAllSheets(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        showTopLevelFragment(
+            SongListFragment.newInstance(),
+            fromScreen,
+            fromDetails
+        )
     }
 
-    override fun showSettings() {
-        showFragmentSimple(SettingsFragment.newInstance())
+    override fun showSettings(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        showFragmentSimple(
+            SettingsFragment.newInstance(),
+            fromScreen,
+            fromDetails
+        )
     }
 
-    override fun showDebug() {
-        showFragmentSimple(DebugFragment.newInstance())
+    override fun showDebug(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        showFragmentSimple(
+            DebugFragment.newInstance(),
+            fromScreen,
+            fromDetails
+        )
     }
 
     override fun showAbout() {
-        showFragmentSimple(AboutFragment.newInstance())
+        showFragmentSimple(
+            AboutFragment.newInstance()
+        )
     }
 
     override fun goToWebUrl(url: String) {
         val launcher = Intent(Intent.ACTION_VIEW)
         launcher.data = Uri.parse(url)
         startActivity(launcher)
-    }
 
-    override fun showLicenseScreen() {
-        showFragmentSimple(LicenseFragment.newInstance())
-    }
+        val displayedFragment = getDisplayedFragment() ?: throw IllegalStateException(
+            "How are we launching a web browser from a blank view?"
+        )
 
-    override fun showFindJamDialog() {
-        FindJamDialogFragment.newInstance().show(
-            supportFragmentManager,
-            FindJamDialogFragment::class.java.simpleName
+        tracker.logWebLaunch(
+            url,
+            displayedFragment.getTrackingScreen(),
+            displayedFragment.getDetails()
         )
     }
 
-    override fun showSongListForGame(gameId: Long) = showFragmentSimple(
-        GameFragment.newInstance(
-            IdArgs(gameId)
-        )
+    override fun showLicenseScreen() = showFragmentSimple(
+        LicenseFragment.newInstance()
     )
 
-    override fun showSongListForComposer(composerId: Long) = showFragmentSimple(
-        ComposerFragment.newInstance(
-            IdArgs(composerId)
+    override fun showFindJamDialog() = FindJamDialogFragment
+        .newInstance()
+        .show(
+            supportFragmentManager, FindJamDialogFragment::class.java.simpleName
         )
-    )
+
+    override fun showSongListForGame(gameId: Long, name: String) {
+        val prevFragment = getDisplayedFragment()
+
+        tracker.logGameView(
+            name,
+            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            prevFragment?.getDetails() ?: ""
+        )
+
+        showFragmentSimple(
+            GameFragment.newInstance(IdArgs(gameId))
+        )
+    }
+
+    override fun showSongListForComposer(composerId: Long, name: String) {
+        val prevFragment = getDisplayedFragment()
+
+        tracker.logComposerView(
+            name,
+            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            prevFragment?.getDetails() ?: ""
+        )
+
+        showFragmentSimple(
+            ComposerFragment.newInstance(IdArgs(composerId))
+        )
+    }
 
     override fun showValueListForTagKey(tagKeyId: Long) = showFragmentSimple(
-        TagValueListFragment.newInstance(
-            IdArgs(tagKeyId)
-        )
+        TagValueListFragment.newInstance(IdArgs(tagKeyId))
     )
 
     override fun showSongListForTagValue(tagValueId: Long) = showFragmentSimple(
-        TagValueSongListFragment.newInstance(
-            IdArgs(tagValueId)
-        )
+        TagValueSongListFragment.newInstance(IdArgs(tagValueId))
     )
-    override fun showSheetDetail(songId: Long) {
-        showFragmentSimple(
-            SheetDetailFragment.newInstance(
-                IdArgs(
-                    id = songId
-                )
-            )
+
+    override fun showSheetDetail(songId: Long) = showFragmentSimple(
+        SheetDetailFragment.newInstance(IdArgs(songId))
+    )
+
+    override fun showSongViewer(
+        songId: Long,
+        name: String,
+        gameName: String,
+        transposition: String,
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        val prevFragment = getDisplayedFragment()
+
+        tracker.logSongView(
+            songId,
+            name,
+            gameName,
+            transposition,
+            fromScreen ?: prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            fromDetails ?: prevFragment?.getDetails() ?: ""
         )
-    }
 
-    override fun showSongViewer(songId: Long) {
-        val previous = supportFragmentManager.findFragmentById(R.id.frame_fragment)
-
-        if (previous is ViewerFragment) {
-            previous.cancelJam()
-            previous.updateSongId(songId)
-        } else {
-            showFragmentSimple(
-                ViewerFragment.newInstance(
-                    ViewerArgs(
-                        songId = songId
-                    )
-                )
-            )
-        }
+        showFragmentSimple(
+            ViewerFragment.newInstance(ViewerArgs(songId = songId)),
+            fromScreen,
+            fromDetails
+        )
     }
 
     override fun showJamViewer(jamId: Long) {
+        val prevFragment = getDisplayedFragment()
+
+        tracker.logJamFollow(
+            jamId,
+            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            prevFragment?.getDetails() ?: ""
+        )
+
         showFragmentSimple(
-            ViewerFragment.newInstance(
-                ViewerArgs(
-                    jamId = jamId
-                )
-            )
+            ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
         )
     }
 
-    override fun showJamDetailViewer(jamId: Long) {
-        showFragmentSimple(
-            JamFragment.newInstance(
-                IdArgs(jamId)
-            )
-        )
-    }
+    override fun showJamDetailViewer(jamId: Long) = showFragmentSimple(
+        JamFragment.newInstance(IdArgs(jamId))
+    )
 
     override fun onBackPressed() {
-        if (!getHudFragment().onBackPress() && !getDisplayedFragment().onBackPress()) {
+        if (!getHudFragment().onBackPress() && getDisplayedFragment()?.onBackPress() != true) {
             super.onBackPressed()
         }
     }
@@ -243,8 +290,22 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
-    private fun showFragmentSimple(fragment: VglsFragment) {
-        if (getDisplayedFragment().getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
+    private fun showFragmentSimple(
+        fragment: VglsFragment,
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    ) {
+        val displayedFragment = getDisplayedFragment()
+
+        if (displayedFragment?.getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
+            tracker.logScreenView(
+                this,
+                fragment.getTrackingScreen(),
+                fragment.getDetails(),
+                fromScreen ?: displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+                fromDetails ?: displayedFragment?.getDetails() ?: ""
+            )
+
             supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)
@@ -253,11 +314,34 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
+    private fun showTopLevelFragment(
+        fragment: VglsFragment,
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    ) {
+        clearBackStack()
+
+        val displayedFragment = getDisplayedFragment()
+
+        tracker.logScreenView(
+            this,
+            fragment.getTrackingScreen(),
+            fragment.getDetails(),
+            fromScreen ?: displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            fromDetails ?: displayedFragment?.getDetails() ?: ""
+        )
+
+        supportFragmentManager.beginTransaction()
+            .setDefaultAnimations()
+            .replace(R.id.frame_fragment, fragment)
+            .commit()
+    }
+
     private fun getHudFragment() =
         supportFragmentManager.findFragmentById(R.id.frame_hud) as HudFragment
 
     private fun getDisplayedFragment() =
-        supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment
+        supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment?
 
     private fun addHud() {
         supportFragmentManager.beginTransaction()
@@ -271,24 +355,4 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         R.anim.enter_pop,
         R.anim.exit_pop
     )
-
-    private var isRunningTest: AtomicBoolean? = null
-
-    @Synchronized
-    private fun isRunningTest(): Boolean {
-        val runningTest = isRunningTest?.get()
-
-        if (null == runningTest) {
-            val checkedValue: Boolean = try {
-                Class.forName("androidx.test.espresso.Espresso")
-                true
-            } catch (e: ClassNotFoundException) {
-                false
-            }
-            isRunningTest = AtomicBoolean(checkedValue)
-            return checkedValue
-        }
-
-        return runningTest
-    }
 }

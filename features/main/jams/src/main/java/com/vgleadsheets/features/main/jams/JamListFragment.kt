@@ -3,11 +3,14 @@ package com.vgleadsheets.features.main.jams
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.ListFragment
 import com.vgleadsheets.model.jam.Jam
+import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 class JamListFragment : ListFragment<Jam, JamListState>() {
     @Inject
     lateinit var jamListViewModelFactory: JamListViewModel.Factory
+
+    override fun getTrackingScreen() = TrackingScreen.LIST_JAM
 
     override val viewModel: JamListViewModel by fragmentViewModel()
 

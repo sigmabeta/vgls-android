@@ -2,11 +2,12 @@ package com.vgleadsheets.features.main.composer
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.model.composer.ApiComposer
+import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -16,9 +17,11 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
 
     override val viewModel: ComposerViewModel by fragmentViewModel()
 
-    private val idArgs: IdArgs by args()
-
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_COMPOSER
+
+    override fun getDetails() = (idArgs.id - ApiComposer.ID_OFFSET).toString()
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(ComposerState::clickedListModel) {
@@ -32,20 +35,25 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
     }
 
     private fun showSongViewer(clickedSongId: Long) =
-        withState(hudViewModel, viewModel) { hudState, state ->
+        withState(viewModel, hudViewModel) { state, hudState ->
             val song = state.data.songs()?.first { it.id == clickedSongId }
 
             if (song == null) {
                 showError("Failed to show song.")
                 return@withState
             }
-            tracker.logSongView(
+
+            val transposition = hudState
+                .parts
+                .firstOrNull { it.selected }
+                ?.apiId ?: "Error"
+
+            getFragmentRouter().showSongViewer(
+                clickedSongId,
                 song.name,
                 song.gameName,
-                hudState.parts.first { it.selected }.apiId,
-                null
+                transposition
             )
-            getFragmentRouter().showSongViewer(clickedSongId)
         }
 
     companion object {

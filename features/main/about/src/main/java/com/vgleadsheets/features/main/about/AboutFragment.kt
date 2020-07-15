@@ -11,6 +11,7 @@ import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
+import com.vgleadsheets.tracking.TrackingScreen
 import kotlinx.android.synthetic.main.fragment_about.list_content
 
 class AboutFragment : VglsFragment(),
@@ -64,6 +65,8 @@ class AboutFragment : VglsFragment(),
     override fun getLayoutId() = R.layout.fragment_about
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
+
+    override fun getTrackingScreen() = TrackingScreen.ABOUT
 
     private fun constructList() = listOf(
         SectionHeaderListModel(

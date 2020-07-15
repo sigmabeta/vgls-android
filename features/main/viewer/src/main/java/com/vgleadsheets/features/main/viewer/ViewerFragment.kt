@@ -12,7 +12,6 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
-import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
@@ -24,7 +23,8 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.setInsetListenerForOnePadding
+import com.vgleadsheets.setInsetListenerForPadding
+import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -67,12 +67,6 @@ class ViewerFragment : VglsFragment(),
         viewModel.updateSongId(songId)
     }
 
-    fun cancelJam() {
-        if (viewerArgs.jamId != null) {
-            viewModel.unfollowJam("Opened another sheet.")
-        }
-    }
-
     override fun onClicked() = withState(hudViewModel) { state ->
         if (state.hudVisible) {
             hudViewModel.hideHud()
@@ -112,7 +106,13 @@ class ViewerFragment : VglsFragment(),
 
         val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
                 resources.getDimension(R.dimen.margin_medium).toInt()
-        list_toolbar_items?.setInsetListenerForOnePadding(Side.TOP, topOffset)
+        val sideOffset = resources.getDimension(R.dimen.margin_medium).toInt()
+
+        list_toolbar_items?.setInsetListenerForPadding(
+            topOffset = topOffset,
+            leftOffset = sideOffset,
+            rightOffset = sideOffset
+        )
 
         list_toolbar_items?.adapter = toolbarAdapter
         list_toolbar_items?.layoutManager = LinearLayoutManager(
@@ -163,10 +163,7 @@ class ViewerFragment : VglsFragment(),
         hudViewModel.showHud()
         hudViewModel.stopHudTimer()
         viewModel.unfollowJam(null)
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
         hudViewModel.resetAvailableParts()
     }
 
@@ -217,6 +214,10 @@ class ViewerFragment : VglsFragment(),
 
     override fun getVglsFragmentTag() =
         this.javaClass.simpleName + ":${songId ?: viewerArgs.songId}"
+
+    override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
+
+    override fun getDetails() = viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
@@ -291,7 +292,7 @@ class ViewerFragment : VglsFragment(),
         if (parts != null) {
             hudViewModel.setAvailableParts(parts)
         } else {
-            showError("Unable to determine which parts are available for this sheet: $partSelection.")
+            showError("Unable to determine which parts are available for this sheet.")
         }
 
         val selectedPart = sheet.parts?.firstOrNull { it.name == partSelection.apiId }

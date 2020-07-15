@@ -3,13 +3,13 @@ package com.vgleadsheets.features.main.sheet
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
+import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>() {
@@ -18,9 +18,9 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
     override val viewModel: SheetDetailViewModel by fragmentViewModel()
 
-    private val idArgs: IdArgs by args()
-
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_SHEET
 
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {
@@ -39,7 +39,11 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             val clickedId = it?.dataId
 
             if (clickedId != null) {
-                showComposer(clickedId)
+                if (clickedId != SheetDetailViewModel.ID_COMPOSER_MULTIPLE) {
+                    getFragmentRouter().showSongListForComposer(clickedId, it.value)
+                } else {
+                    showError("Links to multiple composers coming soon!")
+                }
             }
 
             viewModel.clearClicked()
@@ -49,7 +53,7 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             val clickedId = it?.dataId
 
             if (clickedId != null) {
-                showGame(clickedId)
+                getFragmentRouter().showSongListForGame(clickedId, it.value)
             }
 
             viewModel.clearClicked()
@@ -62,19 +66,40 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
         viewModel.selectSubscribe(SheetDetailState::clickedRatingStarModel) {
             handleTagClick(it)
         }
+
+        viewModel.selectSubscribe(SheetDetailState::data) {
+            if (it.song is Success) {
+                val parts = it.song()?.parts
+
+                if (parts != null) {
+                    hudViewModel.setAvailableParts(parts)
+                } else {
+                    showError("Unable to determine which parts are available for this sheet.")
+                }
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        hudViewModel.resetAvailableParts()
     }
 
     private fun showSongViewer() = withState(viewModel, hudViewModel) { state, hudState ->
         val song = state.data.song()
 
+        val transposition = hudState
+            .parts
+            .firstOrNull { it.selected }
+            ?.apiId ?: "Error"
+
         if (song != null) {
-            tracker.logSongView(
+            getFragmentRouter().showSongViewer(
+                song.id,
                 song.name,
                 song.gameName,
-                hudState.parts.first { it.selected }.apiId,
-                null
+                transposition
             )
-            getFragmentRouter().showSongViewer(song.id)
         } else {
             showError("Cannot find this sheet.")
         }
@@ -88,18 +113,6 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
             val youtubeUrl = getYoutubeSearchUrlForQuery(query)
 
             getFragmentRouter().goToWebUrl(youtubeUrl)
-        }
-    }
-
-    private fun showGame(clickedId: Long) {
-        getFragmentRouter().showSongListForGame(clickedId)
-    }
-
-    private fun showComposer(clickedId: Long) {
-        if (clickedId != SheetDetailViewModel.ID_COMPOSER_MULTIPLE) {
-            getFragmentRouter().showSongListForComposer(clickedId)
-        } else {
-            showError("Links to multiple composers coming soon!")
         }
     }
 

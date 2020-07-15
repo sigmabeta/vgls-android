@@ -156,6 +156,10 @@ class HudViewModel @AssistedInject constructor(
         copy(random = Uninitialized)
     }
 
+    fun clearDigestError() = setState {
+        copy(digest = Uninitialized)
+    }
+
     private fun hideMenu() = setState { copy(menuExpanded = false) }
 
     private fun showMenu() = setState { copy(menuExpanded = true) }

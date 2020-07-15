@@ -2,11 +2,11 @@ package com.vgleadsheets.features.main.tagvalues
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 class TagValueListFragment : AsyncListFragment<TagValueData, TagValueListState>() {
@@ -15,9 +15,9 @@ class TagValueListFragment : AsyncListFragment<TagValueData, TagValueListState>(
 
     override val viewModel: TagValueListViewModel by fragmentViewModel()
 
-    private val idArgs: IdArgs by args()
-
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+
+    override fun getTrackingScreen() = TrackingScreen.LIST_TAG_VALUE
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(TagValueListState::clickedListModel) {

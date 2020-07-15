@@ -138,7 +138,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         val unsortedModels = dedupedTagValues.map {
             val valueAsNumber = it.name.toIntOrNull() ?: -1
 
-            return@map if (valueAsNumber >= RATING_MINIMUM && valueAsNumber <= RATING_MAXIMUM) {
+            return@map if (valueAsNumber in RATING_MINIMUM..RATING_MAXIMUM) {
                 LabelRatingStarListModel(
                     it.tagKeyName,
                     valueAsNumber,

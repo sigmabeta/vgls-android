@@ -1,9 +1,12 @@
 package com.vgleadsheets.features.main.search
 
+import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.tracking.TrackingScreen
+import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -13,15 +16,35 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
     override val viewModel: SearchViewModel by fragmentViewModel()
 
+    override fun getTrackingScreen() = TrackingScreen.SEARCH
+
+    @SuppressWarnings("EmptyCatchBlock")
+    override fun getDetails(): String {
+        var query = ""
+
+        try {
+            withState(viewModel) { query = it.data.query ?: "" }
+        } catch (ex: IllegalStateException) { }
+
+        return query
+    }
+
     override fun onBackPress(): Boolean {
         hudViewModel.exitSearch()
         return false
     }
 
     override fun subscribeToViewEvents() {
-        hudViewModel.selectSubscribe(HudState::searchQuery) {
+        hudViewModel.selectSubscribe(
+            HudState::searchQuery,
+            deliveryMode = UniqueOnly("query")
+        ) {
             if (it != null) {
-                onSearchQueryEntered(it)
+                if (it.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
+                    onStickerBrEntered(it)
+                } else {
+                    onSearchQueryEntered(it)
+                }
             } else {
                 viewModel.onQueryClear()
             }
@@ -60,61 +83,75 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
         viewModel.startQuery(query)
     }
 
-    private fun onGameClicked(id: Long) =
-        withState(hudViewModel, viewModel) { hudState, state ->
-            val game = state.data.games()?.firstOrNull { it.id == id }
+    private fun onStickerBrEntered(query: String) {
+        tracker.logStickerBr()
+        viewModel.showStickerBr(query)
+    }
 
-            if (game == null) {
-                showError("Failed to show game.")
-                return@withState
-            }
+    private fun onGameClicked(id: Long) = withState(viewModel) { state ->
+        val game = state.data.games()?.firstOrNull { it.id == id }
 
-            tracker.logGameView(
-                game.name,
-                hudState.searchQuery
-            )
-
-            hudViewModel.exitSearch()
-            getFragmentRouter().showSongListForGame(id)
+        if (game == null) {
+            showError("Failed to show game.")
+            return@withState
         }
 
-    private fun onSongClicked(id: Long) =
-        withState(hudViewModel, viewModel) { hudState, state ->
-            val song = state.data.songs()?.firstOrNull { it.id == id }
+        tracker.logSearchSuccess(
+            state.data.query ?: "",
+            TrackingScreen.DETAIL_GAME,
+            id.toString()
+        )
 
-            if (song == null) {
-                showError("Failed to show song.")
-                return@withState
-            }
+        getFragmentRouter().showSongListForGame(id, game.name)
+        hudViewModel.exitSearch()
+    }
 
-            tracker.logSongView(
-                song.name,
-                song.gameName,
-                hudState.parts.firstOrNull { it.selected }?.apiId ?: "C",
-                hudState.searchQuery
-            )
+    private fun onSongClicked(id: Long) = withState(viewModel, hudViewModel) { state, hudState ->
+        val song = state.data.songs()?.firstOrNull { it.id == id }
 
-            hudViewModel.exitSearch()
-            getFragmentRouter().showSongViewer(id)
+        if (song == null) {
+            showError("Failed to show song.")
+            return@withState
         }
 
-    private fun onComposerClicked(id: Long) =
-        withState(hudViewModel, viewModel) { hudState, state ->
-            val composer = state.data.composers()?.firstOrNull { it.id == id }
+        tracker.logSearchSuccess(
+            state.data.query ?: "",
+            TrackingScreen.SHEET_VIEWER,
+            id.toString()
+        )
 
-            if (composer == null) {
-                showError("Failed to show composer.")
-                return@withState
-            }
+        val transposition = hudState
+            .parts
+            .firstOrNull { it.selected }
+            ?.apiId ?: "Error"
 
-            tracker.logComposerView(
-                composer.name,
-                hudState.searchQuery
-            )
+        getFragmentRouter().showSongViewer(
+            id,
+            song.name,
+            song.gameName,
+            transposition
+        )
 
-            hudViewModel.exitSearch()
-            getFragmentRouter().showSongListForComposer(id)
+        hudViewModel.exitSearch()
+    }
+
+    private fun onComposerClicked(id: Long) = withState(viewModel) { state ->
+        val composer = state.data.composers()?.firstOrNull { it.id == id }
+
+        if (composer == null) {
+            showError("Failed to show composer.")
+            return@withState
         }
+
+        tracker.logSearchSuccess(
+            state.data.query ?: "",
+            TrackingScreen.DETAIL_COMPOSER,
+            id.toString()
+        )
+
+        getFragmentRouter().showSongListForComposer(id, composer.name)
+        hudViewModel.exitSearch()
+    }
 
     companion object {
         fun newInstance() = SearchFragment()

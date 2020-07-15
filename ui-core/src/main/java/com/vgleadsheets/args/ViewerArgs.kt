@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ViewerArgs(
-    val jamId: Long? = null,
-    val songId: Long? = null
+    val songId: Long? = null,
+    val jamId: Long? = null
 ) : Parcelable
