@@ -217,7 +217,7 @@ class ViewerFragment : VglsFragment(),
 
     override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
 
-    override fun getDetails() = getArgs()?.id?.toString() ?: viewerArgs.jamId.toString()
+    override fun getDetails() = viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")

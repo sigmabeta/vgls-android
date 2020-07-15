@@ -18,6 +18,16 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
     override fun getTrackingScreen() = TrackingScreen.SEARCH
 
+    override fun getDetails(): String {
+        var query = ""
+
+        try {
+            withState(viewModel) { query = it.data.query ?: "" }
+        } catch (ex: IllegalStateException) { }
+
+        return query
+    }
+
     override fun onBackPress(): Boolean {
         hudViewModel.exitSearch()
         return false

@@ -6,6 +6,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -18,6 +19,8 @@ class GameFragment : AsyncListFragment<GameData, GameState>() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_GAME
+
+    override fun getDetails() = (idArgs.id - VglsApiGame.ID_OFFSET).toString()
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(GameState::clickedListModel) {

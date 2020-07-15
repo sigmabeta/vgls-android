@@ -277,29 +277,32 @@ import javax.inject.Inject
                 }
 
                 Timber.v("Showing screen: $it")
-                showScreen(selection, false)
+                showScreen(selection, false, false)
             },
             {
                 Timber.w("No screen ID found, going with default.")
-                showScreen(TOP_LEVEL_SCREEN_ID_DEFAULT, false)
+                showScreen(TOP_LEVEL_SCREEN_ID_DEFAULT, false, false)
             }
         )
         disposables.add(screenLoad)
     }
 
     @Suppress("ComplexMethod")
-    private fun showScreen(screenId: String, save: Boolean = true) {
+    private fun showScreen(screenId: String, fromUserClick: Boolean = true, save: Boolean = true) {
         viewModel.onMenuAction()
 
+        val fromScreen = if (fromUserClick) getTrackingScreen() else null
+        val fromDetails = if (fromUserClick) getDetails() else null
+
         when (screenId) {
-            TOP_LEVEL_SCREEN_ID_GAME -> getFragmentRouter().showGameList()
-            TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList()
-            TOP_LEVEL_SCREEN_ID_TAG -> getFragmentRouter().showTagList()
-            TOP_LEVEL_SCREEN_ID_SONG -> getFragmentRouter().showAllSheets()
-            TOP_LEVEL_SCREEN_ID_JAM -> getFragmentRouter().showJams()
-            MODAL_SCREEN_ID_SETTINGS -> getFragmentRouter().showSettings()
-            MODAL_SCREEN_ID_DEBUG -> getFragmentRouter().showDebug()
-            else -> getFragmentRouter().showGameList()
+            TOP_LEVEL_SCREEN_ID_GAME -> getFragmentRouter().showGameList(fromScreen, fromDetails)
+            TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList(fromScreen, fromDetails)
+            TOP_LEVEL_SCREEN_ID_TAG -> getFragmentRouter().showTagList(fromScreen, fromDetails)
+            TOP_LEVEL_SCREEN_ID_SONG -> getFragmentRouter().showAllSheets(fromScreen, fromDetails)
+            TOP_LEVEL_SCREEN_ID_JAM -> getFragmentRouter().showJams(fromScreen, fromDetails)
+            MODAL_SCREEN_ID_SETTINGS -> getFragmentRouter().showSettings(fromScreen, fromDetails)
+            MODAL_SCREEN_ID_DEBUG -> getFragmentRouter().showDebug(fromScreen, fromDetails)
+            else -> getFragmentRouter().showGameList(fromScreen, fromDetails)
         }
 
         if (save) {
@@ -330,7 +333,14 @@ import javax.inject.Inject
             transposition
         )
 
-        getFragmentRouter().showSongViewer(song.id, song.name, song.gameName, transposition)
+        getFragmentRouter().showSongViewer(
+            song.id,
+            song.name,
+            song.gameName,
+            transposition,
+            getTrackingScreen(),
+            getDetails()
+        )
     }
 
     private fun onPartSelect(clicked: PartListModel) {

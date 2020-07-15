@@ -76,45 +76,80 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         )
     }
 
-    override fun showGameList() {
+    override fun showGameList(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
         showTopLevelFragment(
-            GameListFragment.newInstance()
+            GameListFragment.newInstance(),
+            fromScreen,
+            fromDetails
         )
     }
 
-    override fun showComposerList() {
+    override fun showComposerList(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
         showTopLevelFragment(
-            ComposerListFragment.newInstance()
+            ComposerListFragment.newInstance(),
+            fromScreen,
+            fromDetails
         )
     }
 
-    override fun showTagList() {
+    override fun showTagList(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
         showTopLevelFragment(
-            TagKeyFragment.newInstance()
+            TagKeyFragment.newInstance(),
+            fromScreen,
+            fromDetails
         )
     }
 
-    override fun showJams() {
+    override fun showJams(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
         showTopLevelFragment(
-            JamListFragment.newInstance()
+            JamListFragment.newInstance(),
+            fromScreen,
+            fromDetails
         )
     }
 
-    override fun showAllSheets() {
+    override fun showAllSheets(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
         showTopLevelFragment(
-            SongListFragment.newInstance()
+            SongListFragment.newInstance(),
+            fromScreen,
+            fromDetails
         )
     }
 
-    override fun showSettings() {
+    override fun showSettings(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
         showFragmentSimple(
-            SettingsFragment.newInstance()
+            SettingsFragment.newInstance(),
+            fromScreen,
+            fromDetails
         )
     }
 
-    override fun showDebug() {
+    override fun showDebug(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
         showFragmentSimple(
-            DebugFragment.newInstance()
+            DebugFragment.newInstance(),
+            fromScreen,
+            fromDetails
         )
     }
 
@@ -190,7 +225,14 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         SheetDetailFragment.newInstance(IdArgs(songId))
     )
 
-    override fun showSongViewer(songId: Long, name: String, gameName: String, transposition: String) {
+    override fun showSongViewer(
+        songId: Long,
+        name: String,
+        gameName: String,
+        transposition: String,
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
         val prevFragment = getDisplayedFragment()
 
         tracker.logSongView(
@@ -198,21 +240,25 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
             name,
             gameName,
             transposition,
-            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            prevFragment?.getDetails() ?: ""
+            fromScreen ?: prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            fromDetails ?: prevFragment?.getDetails() ?: ""
         )
 
         showFragmentSimple(
-            ViewerFragment.newInstance(ViewerArgs(songId = songId))
+            ViewerFragment.newInstance(ViewerArgs(songId = songId)),
+            fromScreen,
+            fromDetails
         )
     }
 
     override fun showJamViewer(jamId: Long) {
         val prevFragment = getDisplayedFragment()
 
-        tracker.logJamFollow(jamId,
+        tracker.logJamFollow(
+            jamId,
             prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            prevFragment?.getDetails() ?: "")
+            prevFragment?.getDetails() ?: ""
+        )
 
         showFragmentSimple(
             ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
@@ -244,7 +290,11 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
-    private fun showFragmentSimple(fragment: VglsFragment) {
+    private fun showFragmentSimple(
+        fragment: VglsFragment,
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    ) {
         val displayedFragment = getDisplayedFragment()
 
         if (displayedFragment?.getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
@@ -252,8 +302,8 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
                 this,
                 fragment.getTrackingScreen(),
                 fragment.getDetails(),
-                displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-                displayedFragment?.getDetails() ?: ""
+                fromScreen ?: displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+                fromDetails ?: displayedFragment?.getDetails() ?: ""
             )
 
             supportFragmentManager.beginTransaction()
@@ -264,7 +314,11 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
         }
     }
 
-    private fun showTopLevelFragment(fragment: VglsFragment) {
+    private fun showTopLevelFragment(
+        fragment: VglsFragment,
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    ) {
         clearBackStack()
 
         val displayedFragment = getDisplayedFragment()
@@ -273,8 +327,8 @@ class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
             this,
             fragment.getTrackingScreen(),
             fragment.getDetails(),
-            displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            displayedFragment?.getDetails() ?: ""
+            fromScreen ?: displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
+            fromDetails ?: displayedFragment?.getDetails() ?: ""
         )
 
         supportFragmentManager.beginTransaction()

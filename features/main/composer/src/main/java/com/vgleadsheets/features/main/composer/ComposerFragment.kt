@@ -6,6 +6,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.model.composer.ApiComposer
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -19,6 +20,8 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_COMPOSER
+
+    override fun getDetails() = (idArgs.id - ApiComposer.ID_OFFSET).toString()
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(ComposerState::clickedListModel) {

@@ -1,12 +1,24 @@
 package com.vgleadsheets
 
+import com.vgleadsheets.tracking.TrackingScreen
+
 @Suppress("TooManyFunctions")
 interface FragmentRouter {
-    fun showGameList()
+    fun showGameList(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
     fun showSongListForGame(gameId: Long, name: String)
 
-    fun showSongViewer(songId: Long, name: String, gameName: String, transposition: String)
+    fun showSongViewer(
+        songId: Long,
+        name: String,
+        gameName: String,
+        transposition: String,
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
     fun showSheetDetail(songId: Long)
 
@@ -20,19 +32,37 @@ interface FragmentRouter {
 
     fun showSongListForTagValue(tagValueId: Long)
 
-    fun showComposerList()
+    fun showComposerList(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
-    fun showTagList()
+    fun showTagList(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
-    fun showJams()
+    fun showJams(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
     fun showValueListForTagKey(tagKeyId: Long)
 
-    fun showAllSheets()
+    fun showAllSheets(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
-    fun showSettings()
+    fun showSettings(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
-    fun showDebug()
+    fun showDebug(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
     fun showAbout()
 
