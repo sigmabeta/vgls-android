@@ -1,20 +1,51 @@
 package com.vgleadsheets.tracking
 
 import android.app.Activity
+import timber.log.Timber
 
 @SuppressWarnings("TooManyFunctions")
 class NoopTracker : Tracker {
-    override fun logMenuShow() = Unit
-    override fun logForceRefresh() = Unit
-    override fun logSearch(query: String) = Unit
-    override fun logPartSelect(transposition: String) = Unit
-    override fun logRandomSongView(songName: String, gameName: String, transposition: String) = Unit
-    override fun logJamFollow(id: Long, fromScreen: TrackingScreen, fromDetails: String) = Unit
+    override fun logMenuShow() {
+        Timber.d("Menu shown.")
+    }
+
+    override fun logForceRefresh() {
+        Timber.d("Refresh forced.")
+    }
+
+    override fun logAutoRefresh() {
+        Timber.d("Refresh performed automatically.")
+    }
+
+    override fun logStickerBr() {
+        Timber.d("Stickerbr search detected.")
+    }
+
+    override fun logSearch(query: String) {
+        Timber.d("Searching for: $query")
+    }
+
+    override fun logPartSelect(transposition: String) {
+        Timber.d("Transposition selected: $transposition")
+    }
+
+    override fun logRandomSongView(songName: String, gameName: String, transposition: String) {
+        Timber.d("Random song loaded: $gameName - $songName; for $transposition")
+    }
+
+    override fun logJamFollow(id: Long, fromScreen: TrackingScreen, fromDetails: String) {
+        Timber.d("Jam $id followed from screen: $fromScreen:$fromDetails")
+    }
+
     override fun logError(message: String) = Unit
-    override fun logAutoRefresh() = Unit
-    override fun logWebLaunch(details: String, fromScreen: TrackingScreen, fromDetails: String) = Unit
-    override fun logSearchSuccess(query: String, toScreen: TrackingScreen, toDetails: String) = Unit
-    override fun logStickerBr() = Unit
+
+    override fun logWebLaunch(url: String, fromScreen: TrackingScreen, fromDetails: String) {
+        Timber.d("Web browser launched with url $url from screen: $fromScreen:$fromDetails")
+    }
+
+    override fun logSearchSuccess(query: String, toScreen: TrackingScreen, toDetails: String) {
+        Timber.d("Search result clicked: $toScreen:$toDetails from query $query")
+    }
 
     override fun logScreenView(
         activity: Activity,
@@ -22,15 +53,25 @@ class NoopTracker : Tracker {
         details: String,
         fromScreen: TrackingScreen,
         fromDetails: String
-    ) = Unit
+    ) {
+        Timber.v("Screen view: $screen:$details from screen: $fromScreen:$fromDetails")
+    }
 
-    override fun logGameView(gameName: String, fromScreen: TrackingScreen, fromDetails: String) = Unit
+    override fun logGameView(
+        gameName: String,
+        fromScreen: TrackingScreen,
+        fromDetails: String
+    ) {
+        Timber.d("Game $gameName viewed from screen: $fromScreen:$fromDetails")
+    }
 
     override fun logComposerView(
         composerName: String,
         fromScreen: TrackingScreen,
         fromDetails: String
-    ) = Unit
+    ) {
+        Timber.d("Composer $composerName viewed from screen: $fromScreen:$fromDetails")
+    }
 
     override fun logSongView(
         id: Long,
@@ -39,5 +80,7 @@ class NoopTracker : Tracker {
         transposition: String,
         fromScreen: TrackingScreen,
         fromDetails: String
-    ) = Unit
+    ) {
+        Timber.i("Song $gameName - $songName, for $transposition; viewed from screen: $fromScreen:$fromDetails")
+    }
 }

@@ -4,6 +4,9 @@ dependencies {
     // Contains the Tracker interface
     api project(path: ':tracking-common')
 
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

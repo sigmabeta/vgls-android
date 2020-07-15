@@ -41,7 +41,7 @@ interface Tracker {
     )
 
     fun logWebLaunch(
-        details: String,
+        url: String,
         fromScreen: TrackingScreen,
         fromDetails: String
     )

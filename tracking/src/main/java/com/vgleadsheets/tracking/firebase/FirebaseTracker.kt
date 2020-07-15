@@ -88,13 +88,13 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
     }
 
     override fun logWebLaunch(
-        details: String,
+        url: String,
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
         val detailsBundle = Bundle()
 
-        detailsBundle.putString(PARAM_SCREEN_DETAILS, details)
+        detailsBundle.putString(PARAM_SCREEN_DETAILS, url)
         detailsBundle.putString(PARAM_FROM_SCREEN, fromScreen.toString())
         detailsBundle.putString(PARAM_FROM_DETAILS, fromDetails)
 
