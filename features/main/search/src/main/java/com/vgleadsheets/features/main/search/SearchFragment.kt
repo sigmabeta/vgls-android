@@ -30,7 +30,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
         ) {
             if (it != null) {
                 if (it.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
-                    onStickerBrEntered()
+                    onStickerBrEntered(it)
                 } else {
                     onSearchQueryEntered(it)
                 }
@@ -72,9 +72,9 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
         viewModel.startQuery(query)
     }
 
-    private fun onStickerBrEntered() {
+    private fun onStickerBrEntered(query: String) {
         tracker.logStickerBr()
-        viewModel.showStickerBr()
+        viewModel.showStickerBr(query)
     }
 
     private fun onGameClicked(id: Long) = withState(viewModel) { state ->

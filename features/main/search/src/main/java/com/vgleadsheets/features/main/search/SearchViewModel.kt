@@ -69,8 +69,11 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
-    fun showStickerBr() = setState {
-        updateSearchState(showStickerBr = true)
+    fun showStickerBr(query: String) = setState {
+        updateSearchState(
+            showStickerBr = true,
+            query = query
+        )
     }
 
     fun startQuery(searchQuery: String) {
