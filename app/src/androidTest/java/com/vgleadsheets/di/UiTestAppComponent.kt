@@ -5,6 +5,8 @@ import com.vgleadsheets.UiTestApplication
 import com.vgleadsheets.database.di.MockDatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
+import com.vgleadsheets.perf.tracking.PerfTrackingModule
+import com.vgleadsheets.perf.view.PerfViewModule
 import com.vgleadsheets.repository.di.RepositoryModule
 import com.vgleadsheets.resources.di.ResourcesModule
 import com.vgleadsheets.tracking.TrackerModule
@@ -27,7 +29,10 @@ import javax.inject.Singleton
         MockApiModule::class,
         NetworkModule::class,
         MockStorageModule::class,
-        TrackerModule::class]
+        TrackerModule::class,
+        PerfViewModule::class,
+        PerfTrackingModule::class
+    ]
 )
 interface UiTestAppComponent : AndroidInjector<UiTestApplication> {
     @Component.Factory
