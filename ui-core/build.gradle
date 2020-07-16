@@ -2,11 +2,13 @@ apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     // Firebase Analytics
-    if (checkShouldIncludeFirebase()) {
-        api project(path: ':tracking')
-    } else {
-        api project(path: ':tracking-noop')
-    }
+    api project(path: ':tracking-common')
+
+    // Perf tracking (should be disabled in debug builds, see app/build.gradle)
+    api project(path: ':perf:tracking:common')
+
+    // Perf View (should be disabled in release builds, see app/build.gradle
+    api project(path: ':perf:view:common')
 
     // To allow features to interact with MainActivity's state.
     api project(path: ":features:main:router")
@@ -35,8 +37,4 @@ dependencies {
 
 androidExtensions {
     experimental = true
-}
-
-private static boolean checkShouldIncludeFirebase() {
-    return new File("app/google-services.json").exists()
 }

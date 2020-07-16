@@ -1,0 +1,20 @@
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    // Contains the PerfTracker interface
+    api project(path: ':perf:tracking:common')
+
+    // Firebase Perf
+    implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':di')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}

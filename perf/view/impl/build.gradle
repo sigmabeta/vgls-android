@@ -1,0 +1,20 @@
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    // Contains the PerfView interface
+    api project(path: ':perf:view:common')
+
+    implementation project(path: ':recyclerview')
+
+    // RxJava2 libs
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':di')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}
