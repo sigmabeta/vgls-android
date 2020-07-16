@@ -149,8 +149,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         layout_by_tag.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_TAG) }
         layout_all_sheets.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_SONG) }
         layout_jams.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_JAM) }
-        layout_settings.setOnClickListener { showScreen(MODAL_SCREEN_ID_SETTINGS, false) }
-        layout_debug.setOnClickListener { showScreen(MODAL_SCREEN_ID_DEBUG, false) }
+        layout_settings.setOnClickListener { showScreen(MODAL_SCREEN_ID_SETTINGS, true, false) }
+        layout_debug.setOnClickListener { showScreen(MODAL_SCREEN_ID_DEBUG, true, false) }
         layout_refresh.setOnClickListener { onRefreshClick() }
 
         enableRandomSelector()
