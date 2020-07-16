@@ -69,7 +69,7 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
         details.putString(PARAM_ID, id.toString())
         details.putString(PARAM_SONG_NAME, songName)
         details.putString(PARAM_GAME_NAME, gameName)
-        details.putString(PARAM_PAGE_TITLE, "$gameName|$songName")
+        details.putString(PARAM_SHEET_TITLE, "$gameName|$songName")
         details.putString(PARAM_TRANSPOSITION, transposition)
         details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
         details.putString(PARAM_FROM_DETAILS, fromDetails)
@@ -178,7 +178,7 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
         const val PARAM_TO_SCREEN = "from_screen"
         const val PARAM_TO_DETAILS = "from_details"
         const val PARAM_GAME_NAME = "game_name"
-        const val PARAM_PAGE_TITLE = "page_title"
+        const val PARAM_SHEET_TITLE = "sheet_title"
         const val PARAM_ID = "id"
         const val PARAM_SONG_NAME = "song_name"
         const val PARAM_COMPOSER_NAME = "composer_name"
