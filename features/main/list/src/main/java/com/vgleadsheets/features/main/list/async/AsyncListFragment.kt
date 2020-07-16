@@ -45,7 +45,7 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
             bottomOffset = bottomOffset
         )
 
-        hudViewModel.dontAlwaysShowBack()
+        hudViewModel.alwaysShowBack()
 
         hudViewModel.selectSubscribe(HudState::digest) {
             viewModel.onDigestUpdate(it)
