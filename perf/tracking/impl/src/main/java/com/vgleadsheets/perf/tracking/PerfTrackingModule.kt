@@ -1,7 +1,9 @@
 package com.vgleadsheets.perf.tracking
 
+import com.google.firebase.perf.FirebasePerformance
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.perf.tracking.impl.PerfTrackerImpl
+import com.vgleadsheets.tracking.Tracker
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -10,5 +12,15 @@ import javax.inject.Singleton
 class PerfTrackingModule {
     @Provides
     @Singleton
-    fun providePerfTracker(): PerfTracker = PerfTrackerImpl()
+    fun provideFirebasePerfInstance(): FirebasePerformance = FirebasePerformance.getInstance()
+
+    @Provides
+    @Singleton
+    fun providePerfTracker(
+        firebase: FirebasePerformance,
+        tracker: Tracker
+    ): PerfTracker = PerfTrackerImpl(
+        firebase,
+        tracker
+    )
 }

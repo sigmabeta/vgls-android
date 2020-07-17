@@ -106,6 +106,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private var randomAnimation: ObjectAnimator? = null
 
+    override fun disablePerfTracking() = true
+
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
     }

@@ -54,6 +54,8 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     open fun onBackPress() = false
 
+    open fun disablePerfTracking() = false
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
@@ -68,7 +70,17 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (!disablePerfTracking()) {
+            perfTracker.start(getTrackingScreen())
+        }
         ViewCompat.requestApplyInsets(view)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!disablePerfTracking()) {
+            perfTracker.cancel(getTrackingScreen())
+        }
     }
 
     protected fun showError(
