@@ -1,5 +1,7 @@
 package com.vgleadsheets.components
 
+import com.vgleadsheets.PerfHandler
+
 data class ImageNameCaptionListModel(
     override val dataId: Long,
     val name: String,
@@ -7,7 +9,8 @@ data class ImageNameCaptionListModel(
     val imageUrl: String?,
     val imagePlaceholder: Int,
     val handler: EventHandler,
-    val actionableId: Long? = null
+    val actionableId: Long? = null,
+    val perfHandler: PerfHandler
 ) : ListModel {
     interface EventHandler {
         fun onClicked(clicked: ImageNameCaptionListModel)

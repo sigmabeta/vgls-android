@@ -42,7 +42,8 @@ class TagKeyViewModel @AssistedInject constructor(
 
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_tags)
+        resourceProvider.getString(R.string.subtitle_tags),
+        perfHandler = perfHandler
     )
 
     override fun defaultLoadingListModel(index: Int): ListModel =
@@ -63,7 +64,8 @@ class TagKeyViewModel @AssistedInject constructor(
             it.id,
             it.name,
             generateSubtitleText(it.values),
-            this@TagKeyViewModel
+            this@TagKeyViewModel,
+            perfHandler
         )
     }
 

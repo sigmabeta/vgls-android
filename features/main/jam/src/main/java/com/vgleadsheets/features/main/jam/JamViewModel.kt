@@ -169,7 +169,8 @@ class JamViewModel @AssistedInject constructor(
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 currentSongHandler,
-                jam.currentSong?.id ?: -1L
+                jam.currentSong?.id ?: -1L,
+                perfHandler = perfHandler
             )
         )
     }
@@ -230,7 +231,8 @@ class JamViewModel @AssistedInject constructor(
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 setlistSongHandler,
-                entry.song?.id
+                entry.song?.id,
+                perfHandler = perfHandler
             )
         }
     }
@@ -269,7 +271,8 @@ class JamViewModel @AssistedInject constructor(
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 historyHandler,
-                entry.song?.id
+                entry.song?.id,
+                perfHandler = perfHandler
             )
         }
     }
@@ -340,7 +343,8 @@ class JamViewModel @AssistedInject constructor(
         is Success -> listOf(
             TitleListModel(
                 jam().name.toTitleCase(),
-                resourceProvider.getString(R.string.subtitle_jam)
+                resourceProvider.getString(R.string.subtitle_jam),
+                perfHandler = perfHandler
             )
         )
     }

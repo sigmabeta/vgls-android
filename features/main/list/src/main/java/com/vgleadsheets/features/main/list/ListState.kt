@@ -5,12 +5,14 @@ import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.perf.tracking.common.LoadStatus
 
 abstract class ListState<DataType>(
     open val updateTime: Async<*> = Uninitialized,
     open val digest: Async<*> = Uninitialized,
     open val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     open val listModels: List<ListModel> = emptyList(),
+    open val loadStatus: LoadStatus = LoadStatus(),
     open val data: Async<List<DataType>> = Uninitialized
 ) : MvRxState {
     abstract fun updateListState(
@@ -18,6 +20,7 @@ abstract class ListState<DataType>(
         digest: Async<*> = this.digest,
         selectedPart: PartSelectorItem? = this.selectedPart,
         listModels: List<ListModel> = this.listModels,
+        loadStatus: LoadStatus = this.loadStatus,
         data: Async<List<DataType>> = this.data
     ): ListState<DataType>
 }

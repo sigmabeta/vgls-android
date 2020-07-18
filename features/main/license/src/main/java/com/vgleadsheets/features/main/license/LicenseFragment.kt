@@ -63,6 +63,8 @@ class LicenseFragment : VglsFragment() {
 
     override fun getTrackingScreen() = TrackingScreen.LICENSE
 
+    override fun tellViewmodelPerfCancelled() = Unit
+
     companion object {
         fun newInstance() = LicenseFragment()
     }

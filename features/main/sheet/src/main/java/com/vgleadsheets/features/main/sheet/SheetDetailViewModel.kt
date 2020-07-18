@@ -245,7 +245,8 @@ class SheetDetailViewModel @AssistedInject constructor(
                     song().name,
                     resourceProvider.getString(R.string.subtitle_pages, pageCount),
                     thumbUrl,
-                    R.drawable.placeholder_sheet
+                    R.drawable.placeholder_sheet,
+                    perfHandler
                 )
             )
         }

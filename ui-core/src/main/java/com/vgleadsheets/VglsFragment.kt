@@ -40,7 +40,19 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     abstract fun getTrackingScreen(): TrackingScreen
 
+    abstract fun tellViewmodelPerfCancelled()
+
     open fun getDetails() = getArgs()?.id?.toString() ?: ""
+
+    open fun getPerfScreenName(): String {
+        val details = getDetails()
+
+        return if (details.isNotEmpty()) {
+            "${getTrackingScreen()}:$details"
+        } else {
+            getTrackingScreen().toString()
+        }
+    }
 
     open fun getArgs(): IdArgs? {
         return try {
@@ -59,6 +71,10 @@ abstract class VglsFragment : BaseMvRxFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
+
+        if (!disablePerfTracking()) {
+            perfTracker.start(getPerfScreenName())
+        }
     }
 
     override fun onCreateView(
@@ -70,16 +86,20 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         if (!disablePerfTracking()) {
-            perfTracker.start(getTrackingScreen())
+            perfTracker.onViewCreated(getPerfScreenName())
         }
+
         ViewCompat.requestApplyInsets(view)
     }
+
 
     override fun onStop() {
         super.onStop()
         if (!disablePerfTracking()) {
-            perfTracker.cancel(getTrackingScreen())
+            perfTracker.cancel(getPerfScreenName())
+            tellViewmodelPerfCancelled()
         }
     }
 

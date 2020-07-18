@@ -5,7 +5,6 @@ import com.google.firebase.perf.metrics.Trace
 import com.vgleadsheets.perf.tracking.common.PerfStage
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.tracking.Tracker
-import com.vgleadsheets.tracking.TrackingScreen
 
 class PerfTrackerImpl(
     private val firebase: FirebasePerformance,
@@ -13,13 +12,13 @@ class PerfTrackerImpl(
 ) : PerfTracker {
 
     private val activeTraces =
-        HashMap<TrackingScreen, MutableMap<PerfStage, Trace?>?>(TrackingScreen.values().size)
+        HashMap<String, MutableMap<PerfStage, Trace?>?>()
 
-    override fun start(trackingScreen: TrackingScreen) {
+    override fun start(screenName: String) {
         // Check if an active trace list exists
-        if (activeTraces[trackingScreen] != null) {
+        if (activeTraces[screenName] != null) {
             tracker.logError(
-                "Active trace list from a previous instance of screen $trackingScreen " +
+                "Active trace list from a previous instance of screen $screenName " +
                         "still exists!"
             )
         }
@@ -28,53 +27,49 @@ class PerfTrackerImpl(
         val newTraces = HashMap<PerfStage, Trace?>(PerfStage.values().size)
 
         PerfStage.values().forEach { stage ->
-            val newTrace = firebase.newTrace("$trackingScreen:$stage")
+            val newTrace = firebase.newTrace("$screenName:$stage")
             newTraces[stage] = newTrace
             newTrace.start()
         }
 
         // Add it to the hashmap
-        activeTraces[trackingScreen] = newTraces
+        activeTraces[screenName] = newTraces
     }
 
-    override fun onViewCreated(trackingScreen: TrackingScreen) =
-        finishTrace(trackingScreen, PerfStage.VIEW_CREATED)
+    override fun onViewCreated(screenName: String) =
+        finishTrace(screenName, PerfStage.VIEW_CREATED)
 
-    override fun onTitleRendered(trackingScreen: TrackingScreen) =
-        finishTrace(trackingScreen, PerfStage.TITLE_RENDERED)
+    override fun onTitleLoaded(screenName: String) =
+        finishTrace(screenName, PerfStage.TITLE_LOADED)
 
-    override fun onTransitionStarted(trackingScreen: TrackingScreen) =
-        finishTrace(trackingScreen, PerfStage.TRANSITION_START)
+    override fun onTransitionStarted(screenName: String) =
+        finishTrace(screenName, PerfStage.TRANSITION_START)
 
-    override fun onTransitionEnded(trackingScreen: TrackingScreen) =
-        finishTrace(trackingScreen, PerfStage.TRANSITION_END)
+    override fun onTransitionEnded(screenName: String) =
+        finishTrace(screenName, PerfStage.TRANSITION_END)
 
-    override fun onPartialLoad(trackingScreen: TrackingScreen) =
-        finishTrace(trackingScreen, PerfStage.PARTIAL_LOAD)
+    override fun onPartialContentLoad(screenName: String) =
+        finishTrace(screenName, PerfStage.PARTIAL_CONTENT_LOAD)
 
-    override fun onFullLoad(trackingScreen: TrackingScreen): Long? {
-        val duration = finishTrace(trackingScreen, PerfStage.FULL_LOAD) ?: return null
+    override fun onFullContentLoad(screenName: String): Long? {
+        val duration = finishTrace(screenName, PerfStage.FULL_CONTENT_LOAD) ?: return null
 
-        removeTracesFor(trackingScreen)
+        removeTracesFor(screenName)
 
         return duration
     }
 
-    override fun cancel(trackingScreen: TrackingScreen) {
-        removeTracesFor(trackingScreen)
+    override fun cancel(screenName: String) {
+        removeTracesFor(screenName)
     }
 
-    private fun finishTrace(trackingScreen: TrackingScreen, perfStage: PerfStage): Long? {
-        val tracesForScreen = activeTraces[trackingScreen]
-        if (tracesForScreen == null) {
-            tracker.logError("Traces for $trackingScreen have already been cleared!")
-            return null
-        }
+    private fun finishTrace(screenName: String, perfStage: PerfStage): Long? {
+        val tracesForScreen = activeTraces[screenName] ?: return null
 
         val trace = tracesForScreen[perfStage]
 
         if (trace == null) {
-            tracker.logError("Trace $trackingScreen:$perfStage has already been stopped!")
+            tracker.logError("Trace $screenName:$perfStage has already been stopped!")
             return null
         }
 
@@ -84,13 +79,9 @@ class PerfTrackerImpl(
         return trace.getLongMetric("duration")
     }
 
-    private fun removeTracesFor(trackingScreen: TrackingScreen) {
-        val tracesForScreen = activeTraces[trackingScreen]
-        if (tracesForScreen == null) {
-            tracker.logError("Traces for $trackingScreen have already been cleared!")
-            return
-        }
+    private fun removeTracesFor(screenName: String) {
+        val tracesForScreen = activeTraces[screenName] ?: return
 
-        activeTraces[trackingScreen] = null
+        activeTraces[screenName] = null
     }
 }

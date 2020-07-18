@@ -7,6 +7,7 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListState
+import com.vgleadsheets.perf.tracking.common.LoadStatus
 
 data class TagValueListState(
     val tagKeyId: Long,
@@ -14,6 +15,7 @@ data class TagValueListState(
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
+    override val loadStatus: LoadStatus = LoadStatus(),
     override val data: TagValueData = TagValueData(),
     val clickedListModel: NameCaptionListModel? = null
 ) : AsyncListState<TagValueData>(data = data) {
@@ -24,12 +26,14 @@ data class TagValueListState(
         digest: Async<*>,
         selectedPart: PartSelectorItem?,
         listModels: List<ListModel>,
+        loadStatus: LoadStatus,
         data: TagValueData
     ) = copy(
         updateTime = updateTime,
         digest = digest,
         selectedPart = selectedPart,
         listModels = listModels,
+        loadStatus = loadStatus,
         data = data
     )
 }

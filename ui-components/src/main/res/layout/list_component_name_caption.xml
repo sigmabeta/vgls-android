@@ -15,7 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> toBind.handler.onClicked(toBind)}">
+        android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
+        app:partialLoadText="@{toBind.name}"
+        app:partialLoadHandler="@{toBind.perfHandler}"
+        app:fullLoadText="@{toBind.caption}"
+        app:fullLoadHandler="@{toBind.perfHandler}">
 
         <TextView
             android:id="@+id/text_name"

@@ -101,7 +101,8 @@ class TagValueSongListViewModel @AssistedInject constructor(
             is Success -> listOf(
                 TitleListModel(
                     resourceProvider.getString(R.string.title_tag_value_songs, tagValue().tagKeyName, tagValue().name),
-                    generateSheetCountText(songs)
+                    generateSheetCountText(songs),
+                    perfHandler = perfHandler
                 )
             )
             is Fail -> createErrorStateListModel(tagValue.error)
@@ -152,7 +153,8 @@ class TagValueSongListViewModel @AssistedInject constructor(
                     it.gameName,
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    this@TagValueSongListViewModel
+                    this@TagValueSongListViewModel,
+                    perfHandler = perfHandler
                 )
             }
         }

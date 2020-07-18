@@ -108,6 +108,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun disablePerfTracking() = true
 
+    override fun tellViewmodelPerfCancelled() = Unit
+
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
     }

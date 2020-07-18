@@ -14,6 +14,8 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
 
+    override val loadStatusProperty = SearchState::loadStatus
+
     override val viewModel: SearchViewModel by fragmentViewModel()
 
     override fun getTrackingScreen() = TrackingScreen.SEARCH

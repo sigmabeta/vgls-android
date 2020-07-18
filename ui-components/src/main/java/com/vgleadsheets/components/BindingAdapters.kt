@@ -2,6 +2,7 @@
 
 package com.vgleadsheets.components
 
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.FrameLayout
@@ -11,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.vgleadsheets.PerfHandler
 import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
@@ -66,11 +68,12 @@ fun bindPhoto(
     }
 }
 
-@BindingAdapter("bigPhotoUrl", "placeholder")
+@BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadedHandler")
 fun bindBigPhoto(
     view: ImageView,
     photoUrl: String?,
-    placeholder: Int
+    placeholder: Int,
+    imageLoadedHandler: PerfHandler
 ) {
     if (placeholder != R.drawable.ic_logo) {
         view.clipToOutline = true
@@ -78,8 +81,23 @@ fun bindBigPhoto(
     }
 
     if (photoUrl != null) {
-        view.loadImageHighQuality(photoUrl, true, placeholder)
+        val callback = object : Callback {
+            override fun onSuccess() {
+                imageLoadedHandler.onTransitionStart()
+            }
+
+            override fun onError(e: java.lang.Exception?) {
+                imageLoadedHandler.onLoadFail()
+            }
+        }
+
+        view.loadImageHighQuality(photoUrl, true, placeholder, callback)
     } else {
+        if (placeholder != R.drawable.ic_logo) {
+            imageLoadedHandler.onLoadFail()
+        } else {
+            imageLoadedHandler.onTransitionStart()
+        }
         view.setImageResource(placeholder)
     }
 }
@@ -169,7 +187,26 @@ fun bindLongClickHandler(
     }
 }
 
+@BindingAdapter("titleLoadedHandler")
+fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfHandler) {
+    if (view != null) {
+        titleLoadedHandler.onTitleLoaded()
+    }
+}
+
+@BindingAdapter("partialLoadText", "partialLoadHandler")
+fun bindPartialLoadHandler(view: View?, partialLoadText: String, partialLoadHandler: PerfHandler) {
+    if (view != null && partialLoadText.isNotEmpty()) {
+        partialLoadHandler.onPartialContentLoad()
+    }
+}
+
+@BindingAdapter("fullLoadText", "fullLoadHandler")
+fun bindFullLoadHandler(view: View?, fullLoadText: String, fullLoadHandler: PerfHandler) {
+    if (view != null && fullLoadText.isNotEmpty()) {
+        fullLoadHandler.onFullContentLoad()
+    }
+}
+
 const val MULTIPLIER_LIST_POSITION = 100
 const val MAXIMUM_LOAD_OFFSET = 250
-
-const val NO_API_KEY = -5678L

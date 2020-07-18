@@ -1,21 +1,17 @@
 package com.vgleadsheets.perf.tracking.common
 
-import com.vgleadsheets.tracking.TrackingScreen
-
 interface PerfTracker {
-    fun start(trackingScreen: TrackingScreen)
+    fun start(screenName: String)
 
-    fun onViewCreated(trackingScreen: TrackingScreen): Long?
+    fun onViewCreated(screenName: String): Long?
 
-    fun onTitleRendered(trackingScreen: TrackingScreen): Long?
+    fun onTitleLoaded(screenName: String): Long?
 
-    fun onTransitionStarted(trackingScreen: TrackingScreen): Long?
+    fun onTransitionStarted(screenName: String): Long?
 
-    fun onTransitionEnded(trackingScreen: TrackingScreen): Long?
+    fun onPartialContentLoad(screenName: String): Long?
 
-    fun onPartialLoad(trackingScreen: TrackingScreen): Long?
+    fun onFullContentLoad(screenName: String): Long?
 
-    fun onFullLoad(trackingScreen: TrackingScreen): Long?
-
-    fun cancel(trackingScreen: TrackingScreen)
+    fun cancel(screenName: String)
 }

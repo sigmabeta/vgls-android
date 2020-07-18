@@ -249,7 +249,8 @@ class SearchViewModel @AssistedInject constructor(
                             it.gameName,
                             thumbUrl,
                             getPlaceholderId(it),
-                            songHandler
+                            songHandler,
+                            perfHandler = perfHandler
                         )
                     }
                     is Game -> ImageNameCaptionListModel(
@@ -258,7 +259,8 @@ class SearchViewModel @AssistedInject constructor(
                         generateSubtitleText(it.songs),
                         it.photoUrl,
                         getPlaceholderId(it),
-                        gameHandler
+                        gameHandler,
+                        perfHandler = perfHandler
                     )
                     is Composer -> ImageNameCaptionListModel(
                         it.id,
@@ -266,7 +268,8 @@ class SearchViewModel @AssistedInject constructor(
                         generateSubtitleText(it.songs),
                         it.photoUrl,
                         getPlaceholderId(it),
-                        composerHandler
+                        composerHandler,
+                        perfHandler = perfHandler
                     )
                     else -> throw IllegalArgumentException(
                         "Bad model in search result list."

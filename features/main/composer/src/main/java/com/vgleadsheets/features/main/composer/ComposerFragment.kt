@@ -15,6 +15,8 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
     @Inject
     lateinit var composerViewModelFactory: ComposerViewModel.Factory
 
+    override val loadStatusProperty = ComposerState::loadStatus
+
     override val viewModel: ComposerViewModel by fragmentViewModel()
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"

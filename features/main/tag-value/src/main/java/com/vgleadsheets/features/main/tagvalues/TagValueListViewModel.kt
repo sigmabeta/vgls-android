@@ -108,7 +108,8 @@ class TagValueListViewModel @AssistedInject constructor(
             is Success -> listOf(
                 TitleListModel(
                     tagKey().name,
-                    generateSheetCountText(tagValues)
+                    generateSheetCountText(tagValues),
+                    perfHandler = perfHandler
                 )
             )
             is Fail -> createErrorStateListModel(tagKey.error)
@@ -150,7 +151,8 @@ class TagValueListViewModel @AssistedInject constructor(
                     it.id,
                     it.name,
                     generateSheetCaption(it.songs),
-                    this@TagValueListViewModel
+                    this@TagValueListViewModel,
+                    perfHandler
                 )
             }
         }

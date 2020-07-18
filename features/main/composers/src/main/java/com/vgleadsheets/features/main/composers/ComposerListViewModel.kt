@@ -41,7 +41,8 @@ class ComposerListViewModel @AssistedInject constructor(
 
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_composer)
+        resourceProvider.getString(R.string.subtitle_composer),
+        perfHandler = perfHandler
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
@@ -70,7 +71,8 @@ class ComposerListViewModel @AssistedInject constructor(
                     generateSubtitleText(it.songs),
                     it.photoUrl,
                     R.drawable.placeholder_composer,
-                    this
+                    this,
+                    perfHandler = perfHandler
                 )
             }
     }

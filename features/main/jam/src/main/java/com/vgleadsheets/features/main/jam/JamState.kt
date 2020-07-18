@@ -8,6 +8,7 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListState
+import com.vgleadsheets.perf.tracking.common.LoadStatus
 
 data class JamState(
     val jamId: Long,
@@ -15,6 +16,7 @@ data class JamState(
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
+    override val loadStatus: LoadStatus = LoadStatus(),
     override val data: JamData = JamData(),
     val deletion: Async<Unit> = Uninitialized,
     val clickedCurrentSongModel: ImageNameCaptionListModel? = null,
@@ -30,12 +32,14 @@ data class JamState(
         digest: Async<*>,
         selectedPart: PartSelectorItem?,
         listModels: List<ListModel>,
+        loadStatus: LoadStatus,
         data: JamData
     ) = copy(
         updateTime = updateTime,
         digest = digest,
         selectedPart = selectedPart,
         listModels = listModels,
+        loadStatus = loadStatus,
         data = data
     )
 }

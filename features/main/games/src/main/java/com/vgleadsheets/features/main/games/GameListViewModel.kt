@@ -41,7 +41,8 @@ class GameListViewModel @AssistedInject constructor(
 
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_game)
+        resourceProvider.getString(R.string.subtitle_game),
+        perfHandler = perfHandler
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
@@ -70,7 +71,8 @@ class GameListViewModel @AssistedInject constructor(
                     generateSubtitleText(it.songs),
                     it.photoUrl,
                     com.vgleadsheets.features.main.list.R.drawable.placeholder_game,
-                    this@GameListViewModel
+                    this@GameListViewModel,
+                    perfHandler = perfHandler
                 )
             }
     }

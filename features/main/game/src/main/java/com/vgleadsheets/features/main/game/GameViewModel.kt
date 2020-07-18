@@ -100,7 +100,8 @@ class GameViewModel @AssistedInject constructor(
                     game().name,
                     generateSheetCountText(songs),
                     game().photoUrl,
-                    R.drawable.placeholder_game
+                    R.drawable.placeholder_game,
+                    perfHandler
                 )
             )
             is Fail -> createErrorStateListModel(game.error)
@@ -152,7 +153,8 @@ class GameViewModel @AssistedInject constructor(
                     generateSheetCaption(it),
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    this@GameViewModel
+                    this@GameViewModel,
+                    perfHandler = perfHandler
                 )
             }
         }

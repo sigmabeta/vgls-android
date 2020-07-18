@@ -100,7 +100,8 @@ class ComposerViewModel @AssistedInject constructor(
                     composer().name,
                     generateSheetCountText(songs),
                     composer().photoUrl,
-                    R.drawable.placeholder_composer
+                    R.drawable.placeholder_composer,
+                    perfHandler
                 )
             )
             is Fail -> createErrorStateListModel(composer.error)
@@ -152,7 +153,8 @@ class ComposerViewModel @AssistedInject constructor(
                     it.gameName,
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    this@ComposerViewModel
+                    this@ComposerViewModel,
+                    perfHandler = perfHandler
                 )
             }
         }

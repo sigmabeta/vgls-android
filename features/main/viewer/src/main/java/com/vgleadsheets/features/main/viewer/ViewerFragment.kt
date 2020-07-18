@@ -219,6 +219,10 @@ class ViewerFragment : VglsFragment(),
 
     override fun getDetails() = viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
 
+    override fun tellViewmodelPerfCancelled() {
+        viewModel.cancelPerf()
+    }
+
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
         val screenTimer = Observable.timer(TIMEOUT_SCREEN_OFF_MINUTES, TimeUnit.MINUTES)

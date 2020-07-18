@@ -5,6 +5,7 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
+import com.vgleadsheets.PerfHandler
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
@@ -18,6 +19,56 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     initialState: StateType,
     private val resourceProvider: ResourceProvider
 ) : MvRxViewModel<StateType>(initialState) {
+    val perfHandler = object : PerfHandler {
+        override fun onTitleLoaded() = setState {
+            updateListState(
+                loadStatus = loadStatus.copy(
+                    titleLoaded = true
+                )
+            ) as StateType
+        }
+
+        override fun onTransitionStart() = setState {
+            updateListState(
+                loadStatus = loadStatus.copy(
+                    transitionStarted = true
+                )
+            ) as StateType
+        }
+
+        override fun onPartialContentLoad() = setState {
+            updateListState(
+                loadStatus = loadStatus.copy(
+                    contentPartiallyLoaded = true
+                )
+            ) as StateType
+        }
+
+        override fun onFullContentLoad() = setState {
+            updateListState(
+                loadStatus = loadStatus.copy(
+                    contentFullyLoaded = true
+                )
+            ) as StateType
+        }
+
+        override fun onLoadFail() = setState {
+            updateListState(
+                loadStatus = loadStatus.copy(
+                    loadFailed = true
+                )
+            ) as StateType
+        }
+    }
+
+    fun cancelPerf() = setState {
+        updateListState(
+            loadStatus = loadStatus.copy(
+                cancelled = true
+            )
+        ) as StateType
+    }
+
     fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
         setState {
             updateListState(

@@ -40,7 +40,8 @@ class SongListViewModel @AssistedInject constructor(
 
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_all_sheets)
+        resourceProvider.getString(R.string.subtitle_all_sheets),
+        perfHandler = perfHandler
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
@@ -78,7 +79,8 @@ class SongListViewModel @AssistedInject constructor(
                     it.gameName,
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    this
+                    this,
+                    perfHandler = perfHandler
                 )
             }
         }

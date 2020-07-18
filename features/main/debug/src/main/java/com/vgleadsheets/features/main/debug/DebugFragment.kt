@@ -10,6 +10,8 @@ class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
     @Inject
     lateinit var debugViewModelFactory: DebugViewModel.Factory
 
+    override val loadStatusProperty = DebugState::loadStatus
+
     override val viewModel: DebugViewModel by fragmentViewModel()
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName

@@ -9,6 +9,7 @@ import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListState
+import com.vgleadsheets.perf.tracking.common.LoadStatus
 
 data class SheetDetailState(
     val songId: Long,
@@ -16,6 +17,7 @@ data class SheetDetailState(
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
+    override val loadStatus: LoadStatus = LoadStatus(),
     override val data: SheetDetailData = SheetDetailData(),
     val clickedCtaModel: CtaListModel? = null,
     val clickedComposerModel: LabelValueListModel? = null,
@@ -30,12 +32,14 @@ data class SheetDetailState(
         digest: Async<*>,
         selectedPart: PartSelectorItem?,
         listModels: List<ListModel>,
+        loadStatus: LoadStatus,
         data: SheetDetailData
     ) = copy(
         updateTime = updateTime,
         digest = digest,
         selectedPart = selectedPart,
         listModels = listModels,
+        loadStatus = loadStatus,
         data = data
     )
 }

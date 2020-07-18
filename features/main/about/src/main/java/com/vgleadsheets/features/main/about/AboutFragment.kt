@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.existingViewModel
+import com.vgleadsheets.NoopPerfHandler
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
@@ -19,7 +20,11 @@ class AboutFragment : VglsFragment(),
     NameCaptionListModel.EventHandler {
     private val adapter = ComponentAdapter()
 
+    private val perfHandler = NoopPerfHandler()
+
     private val hudViewModel: HudViewModel by existingViewModel()
+
+    override fun tellViewmodelPerfCancelled() = Unit
 
     override fun onClicked(clicked: NameCaptionListModel) {
         when (clicked.dataId) {
@@ -76,13 +81,15 @@ class AboutFragment : VglsFragment(),
             R.string.label_link_vgls.toLong(),
             getString(R.string.label_link_vgls),
             getString(R.string.caption_link_vgls),
-            this
+            this,
+            perfHandler
         ),
         NameCaptionListModel(
             R.string.label_link_giantbomb.toLong(),
             getString(R.string.label_link_giantbomb),
             getString(R.string.caption_link_giantbomb),
-            this
+            this,
+            perfHandler
         ),
         SingleTextListModel(
             R.string.label_link_licenses.toLong(),

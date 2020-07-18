@@ -56,7 +56,8 @@ class JamListViewModel @AssistedInject constructor(
 
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.title_jams),
-        ""
+        "",
+        perfHandler = perfHandler
     )
 
     override fun defaultLoadingListModel(index: Int): ListModel =
@@ -85,7 +86,8 @@ class JamListViewModel @AssistedInject constructor(
                 it.id,
                 it.name.toTitleCase(),
                 generateSubtitleText(it.currentSong),
-                this
+                this,
+                perfHandler
             )
         }
     }
