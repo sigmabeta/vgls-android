@@ -1,5 +1,9 @@
 package com.vgleadsheets.perf.tracking.common
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class LoadStatus(
     val titleLoaded: Boolean = false,
     val transitionStarted: Boolean = false,
@@ -7,4 +11,4 @@ data class LoadStatus(
     val contentFullyLoaded: Boolean = false,
     val loadFailed: Boolean = false,
     val cancelled: Boolean = false
-)
+) : Parcelable

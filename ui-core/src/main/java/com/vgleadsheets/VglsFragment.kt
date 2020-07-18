@@ -71,8 +71,12 @@ abstract class VglsFragment : BaseMvRxFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
+    }
 
-        if (!disablePerfTracking()) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (!disablePerfTracking() && savedInstanceState == null) {
             perfTracker.start(getPerfScreenName())
         }
     }

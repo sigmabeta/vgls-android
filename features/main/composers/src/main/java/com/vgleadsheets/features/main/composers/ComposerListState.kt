@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.composers
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.PersistState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
@@ -15,7 +16,7 @@ data class ComposerListState(
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
-    override val loadStatus: LoadStatus = LoadStatus(),
+    @PersistState override val loadStatus: LoadStatus = LoadStatus(),
     override val data: Async<List<Composer>> = Uninitialized,
     val clickedListModel: ImageNameCaptionListModel? = null
 ) : ListState<Composer>() {

@@ -92,7 +92,7 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
         viewModel.selectSubscribe(loadStatusProperty, deliveryMode = UniqueOnly("perf")) { status ->
             Timber.v("Received new loadStatus: $status")
 
-            if (status.cancelled || status.loadFailed) {
+            if (prevLoadStatus?.cancelled != true && (status.cancelled || status.loadFailed)) {
                 perfTracker.cancel(getPerfScreenName())
                 prevLoadStatus = status
                 return@selectSubscribe

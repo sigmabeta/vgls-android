@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.game
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.PersistState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.ImageNameCaptionListModel
@@ -15,7 +16,7 @@ data class GameState(
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
-    override val loadStatus: LoadStatus = LoadStatus(),
+    @PersistState override val loadStatus: LoadStatus = LoadStatus(),
     override val data: GameData = GameData(),
     val clickedListModel: ImageNameCaptionListModel? = null
 ) : AsyncListState<GameData>(data = data) {

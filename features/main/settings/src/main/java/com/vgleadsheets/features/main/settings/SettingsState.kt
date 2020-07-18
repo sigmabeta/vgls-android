@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.settings
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.PersistState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SingleTextListModel
@@ -13,7 +14,7 @@ data class SettingsState(
     override val digest: Async<*> = Uninitialized,
     override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
     override val listModels: List<ListModel> = emptyList(),
-    override val loadStatus: LoadStatus = LoadStatus(),
+    @PersistState override val loadStatus: LoadStatus = LoadStatus(),
     override val data: SettingsData = SettingsData(),
     val clickedSingleTextModel: SingleTextListModel? = null
 ) : AsyncListState<SettingsData>(data = data) {
