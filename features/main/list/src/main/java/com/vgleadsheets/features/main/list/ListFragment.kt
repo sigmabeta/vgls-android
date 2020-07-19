@@ -15,7 +15,6 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
 import com.vgleadsheets.tabletSetListsSpecialInsets
 import kotlinx.android.synthetic.main.fragment_list.list_content
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.reflect.KProperty1
 
@@ -35,8 +34,6 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
     protected val hudViewModel: HudViewModel by existingViewModel()
 
     private val adapter = ComponentAdapter()
-
-    private var prevLoadStatus: LoadStatus? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,31 +86,7 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
 
     private fun setupPerfReporting() {
         viewModel.selectSubscribe(loadStatusProperty, deliveryMode = UniqueOnly("perf")) { status ->
-            Timber.v("Received new loadStatus: $status")
-
-            if (prevLoadStatus?.cancelled != true && (status.cancelled || status.loadFailed)) {
-                perfTracker.cancel(getPerfScreenName())
-                prevLoadStatus = status
-                return@selectSubscribe
-            }
-
-            if (status.titleLoaded && prevLoadStatus?.titleLoaded != true) {
-                perfTracker.onTitleLoaded(getPerfScreenName())
-            }
-
-            if (status.transitionStarted && prevLoadStatus?.transitionStarted != true) {
-                perfTracker.onTransitionStarted(getPerfScreenName())
-            }
-
-            if (status.contentPartiallyLoaded && prevLoadStatus?.contentPartiallyLoaded != true) {
-                perfTracker.onPartialContentLoad(getPerfScreenName())
-            }
-
-            if (status.contentFullyLoaded && prevLoadStatus?.contentFullyLoaded != true) {
-                perfTracker.onFullContentLoad(getPerfScreenName())
-            }
-
-            prevLoadStatus = status
+            onLoadStatusUpdate(status)
         }
     }
 

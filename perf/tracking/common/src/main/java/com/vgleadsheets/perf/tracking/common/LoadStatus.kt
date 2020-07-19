@@ -11,4 +11,6 @@ data class LoadStatus(
     val contentFullyLoaded: Boolean = false,
     val loadFailed: Boolean = false,
     val cancelled: Boolean = false
-) : Parcelable
+) : Parcelable {
+    fun isLoadComplete() = titleLoaded && transitionStarted && contentPartiallyLoaded && contentFullyLoaded
+}

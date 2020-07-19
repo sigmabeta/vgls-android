@@ -12,6 +12,7 @@ import com.airbnb.mvrx.BaseMvRxFragment
 import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.perf.tracking.common.LoadStatus
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.perf.view.common.PerfView
 import com.vgleadsheets.tracking.Tracker
@@ -32,6 +33,8 @@ abstract class VglsFragment : BaseMvRxFragment() {
     lateinit var perfView: PerfView
 
     protected val idArgs: IdArgs by args()
+
+    private var prevLoadStatus: LoadStatus? = null
 
     @LayoutRes
     abstract fun getLayoutId(): Int
@@ -76,9 +79,19 @@ abstract class VglsFragment : BaseMvRxFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!disablePerfTracking() && savedInstanceState == null) {
-            perfTracker.start(getPerfScreenName())
+        if (disablePerfTracking()) {
+            prevLoadStatus = LoadStatus(cancelled = true)
+            Timber.d("Not starting perf tracker: Perf tracking is disabled for screen ${getPerfScreenName()}.")
+            return
         }
+
+        if (savedInstanceState != null) {
+            prevLoadStatus = LoadStatus(cancelled = true)
+            Timber.i("Not starting perf tracker: Screen ${getPerfScreenName()} was recreated.")
+            return
+        }
+
+        perfTracker.start(getPerfScreenName())
     }
 
     override fun onCreateView(
@@ -102,6 +115,10 @@ abstract class VglsFragment : BaseMvRxFragment() {
     override fun onStop() {
         super.onStop()
         if (!disablePerfTracking()) {
+            if (prevLoadStatus?.isLoadComplete() == true) {
+                return
+            }
+
             perfTracker.cancel(getPerfScreenName())
             tellViewmodelPerfCancelled()
         }
@@ -144,4 +161,38 @@ abstract class VglsFragment : BaseMvRxFragment() {
     }
 
     protected fun getFragmentRouter() = (activity as FragmentRouter)
+
+    protected fun onLoadStatusUpdate(status: LoadStatus) {
+        if (prevLoadStatus?.isLoadComplete() == true) {
+            return
+        }
+
+        if (prevLoadStatus?.cancelled != true && (status.cancelled || status.loadFailed)) {
+            perfTracker.cancel(getPerfScreenName())
+            prevLoadStatus = status
+            return
+        }
+
+        if (status.titleLoaded && prevLoadStatus?.titleLoaded != true) {
+            perfTracker.onTitleLoaded(getPerfScreenName())
+        }
+
+        if (status.transitionStarted && prevLoadStatus?.transitionStarted != true) {
+            perfTracker.onTransitionStarted(getPerfScreenName())
+        }
+
+        if (status.contentPartiallyLoaded && prevLoadStatus?.contentPartiallyLoaded != true) {
+            perfTracker.onPartialContentLoad(getPerfScreenName())
+        }
+
+        if (status.contentFullyLoaded && prevLoadStatus?.contentFullyLoaded != true) {
+            perfTracker.onFullContentLoad(getPerfScreenName())
+        }
+
+        if (status.isLoadComplete()) {
+            Timber.d("Load complete!")
+        }
+
+        prevLoadStatus = status
+    }
 }

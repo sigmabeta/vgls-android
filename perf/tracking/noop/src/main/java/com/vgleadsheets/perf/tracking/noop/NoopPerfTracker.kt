@@ -82,11 +82,15 @@ class NoopPerfTracker : PerfTracker {
     ) {
         val remainingTraces = getNotClearedTraces(tracesForScreen)
         if (remainingTraces.isEmpty()) {
-            Timber.d("Successful load of $screenName in $duration ms!")
-            activeTraces[screenName] = null
-
-            stopFailureTimer(screenName)
+            onScreenFullyLoaded(screenName, duration)
         }
+    }
+
+    private fun onScreenFullyLoaded(screenName: String, duration: Long) {
+        Timber.d("Successful load of $screenName in $duration ms!")
+        activeTraces[screenName] = null
+
+        stopFailureTimer(screenName)
     }
 
     private fun removeTracesFor(screenName: String) {
