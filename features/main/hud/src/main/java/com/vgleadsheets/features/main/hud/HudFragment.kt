@@ -186,6 +186,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     override fun onStop() {
         super.onStop()
         disposables.clear()
+        viewModel.clearPerfTimers()
     }
 
     @Suppress("ComplexMethod", "LongMethod")
@@ -259,6 +260,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
 
         adapter.submitList(listComponents)
+
+        Timber.w("PerfViewStatus: ${state.perfViewStatus}")
     }
 
     override fun onBackPress() = withState(viewModel) {
@@ -275,6 +278,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun getTrackingScreen() = TrackingScreen.HUD
+
+    override fun getPerfView() = viewModel
 
     private fun showInitialScreen() {
         Timber.d("Checking to see which screen to show.")

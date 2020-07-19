@@ -80,6 +80,8 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
+    override fun getPerfView() = hudViewModel
+
     override fun tellViewmodelPerfCancelled() {
         viewModel.cancelPerf()
     }

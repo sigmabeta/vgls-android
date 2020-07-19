@@ -73,6 +73,8 @@ class AboutFragment : VglsFragment(),
 
     override fun getTrackingScreen() = TrackingScreen.ABOUT
 
+    override fun getPerfView() = hudViewModel
+
     private fun constructList() = listOf(
         SectionHeaderListModel(
             getString(R.string.label_section_about_app)

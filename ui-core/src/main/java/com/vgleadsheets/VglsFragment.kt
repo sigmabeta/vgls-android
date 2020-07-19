@@ -29,9 +29,6 @@ abstract class VglsFragment : BaseMvRxFragment() {
     @Inject
     lateinit var perfTracker: PerfTracker
 
-    @Inject
-    lateinit var perfView: PerfView
-
     protected val idArgs: IdArgs by args()
 
     private var prevLoadStatus: LoadStatus? = null
@@ -42,6 +39,8 @@ abstract class VglsFragment : BaseMvRxFragment() {
     abstract fun getVglsFragmentTag(): String
 
     abstract fun getTrackingScreen(): TrackingScreen
+
+    abstract fun getPerfView(): PerfView?
 
     abstract fun tellViewmodelPerfCancelled()
 
@@ -92,6 +91,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
         }
 
         perfTracker.start(getPerfScreenName())
+        getPerfView()?.start(getPerfScreenName())
     }
 
     override fun onCreateView(
@@ -106,6 +106,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
         if (!disablePerfTracking()) {
             perfTracker.onViewCreated(getPerfScreenName())
+            getPerfView()?.viewCreated(getPerfScreenName())
         }
 
         ViewCompat.requestApplyInsets(view)
@@ -120,6 +121,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
             }
 
             perfTracker.cancel(getPerfScreenName())
+            getPerfView()?.cancelled(getPerfScreenName())
             tellViewmodelPerfCancelled()
         }
     }
@@ -167,30 +169,42 @@ abstract class VglsFragment : BaseMvRxFragment() {
             return
         }
 
+        val screenName = getPerfScreenName()
+        val perfView = getPerfView()
+
         if (prevLoadStatus?.cancelled != true && (status.cancelled || status.loadFailed)) {
-            perfTracker.cancel(getPerfScreenName())
+            perfTracker.cancel(screenName)
+            perfView?.cancelled(screenName)
+            getPerfView()?.cancelled(getPerfScreenName())
             prevLoadStatus = status
             return
         }
 
         if (status.titleLoaded && prevLoadStatus?.titleLoaded != true) {
-            perfTracker.onTitleLoaded(getPerfScreenName())
-        }
+            perfTracker.onTitleLoaded(screenName)
+            perfView?.titleLoaded(screenName)
+            getPerfView()?.titleLoaded(getPerfScreenName())  }
 
         if (status.transitionStarted && prevLoadStatus?.transitionStarted != true) {
-            perfTracker.onTransitionStarted(getPerfScreenName())
+            perfTracker.onTransitionStarted(screenName)
+            perfView?.transitionStarted(screenName)
+            getPerfView()?.transitionStarted(getPerfScreenName())
         }
 
         if (status.contentPartiallyLoaded && prevLoadStatus?.contentPartiallyLoaded != true) {
-            perfTracker.onPartialContentLoad(getPerfScreenName())
-        }
+            perfTracker.onPartialContentLoad(screenName)
+            perfView?.partialContentLoaded(screenName)
+            getPerfView()?.partialContentLoaded(getPerfScreenName())  }
 
         if (status.contentFullyLoaded && prevLoadStatus?.contentFullyLoaded != true) {
-            perfTracker.onFullContentLoad(getPerfScreenName())
-        }
+            perfTracker.onFullContentLoad(screenName)
+            perfView?.fullContentLoaded(screenName)
+            getPerfView()?.fullContentLoaded(getPerfScreenName())}
 
         if (status.isLoadComplete()) {
             Timber.d("Load complete!")
+            perfView?.completed(screenName)
+            getPerfView()?.completed(getPerfScreenName())
         }
 
         prevLoadStatus = status

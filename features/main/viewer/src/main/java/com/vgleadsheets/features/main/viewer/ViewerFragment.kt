@@ -223,6 +223,8 @@ class ViewerFragment : VglsFragment(),
         viewModel.cancelPerf()
     }
 
+    override fun getPerfView() = hudViewModel
+
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
         val screenTimer = Observable.timer(TIMEOUT_SCREEN_OFF_MINUTES, TimeUnit.MINUTES)

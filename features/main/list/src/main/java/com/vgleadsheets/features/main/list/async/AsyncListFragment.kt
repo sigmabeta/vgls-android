@@ -83,6 +83,8 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
+    override fun getPerfView() = hudViewModel
+
     override fun tellViewmodelPerfCancelled() {
         viewModel.cancelPerf()
     }
