@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="min_clickable_size">56dp</dimen>
+    <dimen name="height_bottom_sheet_peek">56dp</dimen>
+
     <dimen name="icon_padding">16dp</dimen>
 </resources>

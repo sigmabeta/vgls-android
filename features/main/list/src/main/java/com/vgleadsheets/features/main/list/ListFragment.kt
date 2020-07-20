@@ -11,6 +11,7 @@ import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
+import com.vgleadsheets.tabletSetListsSpecialInsets
 import kotlinx.android.synthetic.main.fragment_list.list_content
 import javax.inject.Inject
 
@@ -32,14 +33,21 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
+        val displayMetrics = context!!.resources.displayMetrics
+        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+
+        val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
                 resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
-        val bottomPadding = resources.getDimension(R.dimen.margin_medium).toInt()
+
         list_content.adapter = adapter
         list_content.layoutManager = LinearLayoutManager(context)
 
-        list_content.setListsSpecialInsets(topOffset, bottomOffset, bottomPadding)
+        if (dpWidth > WIDTH_THRESHOLD_TABLET) {
+            list_content.tabletSetListsSpecialInsets(topOffset, bottomOffset)
+        } else {
+            list_content.setListsSpecialInsets(topOffset, bottomOffset)
+        }
 
         hudViewModel.dontAlwaysShowBack()
 
@@ -65,4 +73,8 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
     override fun getLayoutId() = R.layout.fragment_list
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
+
+    companion object {
+        const val WIDTH_THRESHOLD_TABLET = 500.0f
+    }
 }
