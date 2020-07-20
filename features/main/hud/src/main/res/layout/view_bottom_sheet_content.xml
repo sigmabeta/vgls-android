@@ -15,11 +15,11 @@
 
         <ImageButton
             android:id="@+id/button_menu"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="@dimen/min_clickable_size"
             android:layout_height="@dimen/min_clickable_size"
             android:padding="@dimen/icon_padding"
             android:src="@drawable/ic_menu_24dp"
+            android:background="?attr/selectableItemBackground"
             android:tint="@android:color/tertiary_text_dark" />
 
         <androidx.recyclerview.widget.RecyclerView
