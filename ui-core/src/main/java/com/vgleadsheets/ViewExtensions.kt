@@ -79,13 +79,22 @@ fun View.setInsetListenerForOneMargin(
     }
 }
 
-fun RecyclerView.setListsSpecialInsets(topOffset: Int, bottomOffset: Int, bottomPadding: Int) {
+fun RecyclerView.setListsSpecialInsets(topOffset: Int, bottomOffset: Int) {
+    setOnApplyWindowInsetsListener { v, insets ->
+        v.updatePadding(
+            top = insets.systemWindowInsetTop + topOffset
+        )
+        (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(
+            bottom = insets.systemWindowInsetBottom + bottomOffset
+        )
+        insets
+    }
+}
+
+fun RecyclerView.tabletSetListsSpecialInsets(topOffset: Int, bottomOffset: Int) {
     setOnApplyWindowInsetsListener { v, insets ->
         v.updatePadding(
             top = insets.systemWindowInsetTop + topOffset,
-            bottom = bottomPadding
-        )
-        (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(
             bottom = insets.systemWindowInsetBottom + bottomOffset
         )
         insets
