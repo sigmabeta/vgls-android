@@ -136,6 +136,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             bottomMargin = -cornerOffset
         }
 
+        if (!BuildConfig.DEBUG) {
+            layout_bottom_sheet.removeView(layout_debug)
+        }
+
         list_parts.adapter = adapter
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
@@ -150,7 +154,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         layout_all_sheets.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_SONG) }
         layout_jams.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_JAM) }
         layout_settings.setOnClickListener { showScreen(MODAL_SCREEN_ID_SETTINGS, true, false) }
-        layout_debug.setOnClickListener { showScreen(MODAL_SCREEN_ID_DEBUG, true, false) }
+        layout_debug?.setOnClickListener { showScreen(MODAL_SCREEN_ID_DEBUG, true, false) }
         layout_refresh.setOnClickListener { onRefreshClick() }
 
         enableRandomSelector()
@@ -488,7 +492,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             layout_jams.fadeIn()
             layout_random_select.fadeIn()
             layout_settings.fadeIn()
-            layout_debug.fadeIn()
+            layout_debug?.fadeIn()
             layout_refresh.fadeIn()
 
             val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
@@ -514,7 +518,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             layout_jams.fadeOutGone()
             layout_random_select.fadeOutGone()
             layout_settings.fadeOutGone()
-            layout_debug.fadeOutGone()
+            layout_debug?.fadeOutGone()
             layout_refresh.fadeOutGone()
 
             val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
