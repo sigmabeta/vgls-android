@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="toBind"
+            type="com.vgleadsheets.components.PerfStageListModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/component_label_value"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/gray_medium"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_weight="0"
+            android:ellipsize="end"
+            android:maxWidth="200dp"
+            android:maxLines="1"
+            android:text="@{toBind.perfStage}"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="TITLE_LOADED" />
+
+        <TextView
+            android:id="@+id/text_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:labelFor="@id/autocomplete_dropdown"
+            android:maxLines="2"
+            android:text="@{toBind.duration}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="235ms" />
+
+    </LinearLayout>
+</layout>

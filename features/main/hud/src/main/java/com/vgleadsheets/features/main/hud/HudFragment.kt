@@ -20,6 +20,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -41,7 +42,11 @@ import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.components.PartListModel
+import com.vgleadsheets.components.PerfStageListModel
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.common.PerfStage
+import com.vgleadsheets.perf.view.common.PerfViewScreenStatus
+import com.vgleadsheets.perf.view.common.PerfViewStatus
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
@@ -52,6 +57,7 @@ import kotlinx.android.synthetic.main.fragment_hud.button_search_clear
 import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
 import kotlinx.android.synthetic.main.fragment_hud.card_search
 import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
+import kotlinx.android.synthetic.main.fragment_hud.list_perf
 import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
 import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
@@ -88,6 +94,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private val disposables = CompositeDisposable()
 
     private val adapter = ComponentAdapter()
+
+    private val perfAdapter = ComponentAdapter()
 
     private val backListener = View.OnClickListener { activity?.onBackPressed() }
 
@@ -147,6 +155,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         list_parts.adapter = adapter
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
+
+        list_perf.adapter = perfAdapter
+        val linearLayoutManager = LinearLayoutManager(activity)
+        list_perf.layoutManager = linearLayoutManager
 
         button_search_clear.setOnClickListener { edit_search_query.text.clear() }
         button_menu.setOnClickListener { onMenuClick() }
@@ -261,7 +273,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         adapter.submitList(listComponents)
 
-        Timber.w("PerfViewStatus: ${state.perfViewStatus}")
+        showPerfStatus(state.perfViewStatus)
     }
 
     override fun onBackPress() = withState(viewModel) {
@@ -543,6 +555,48 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                 }
         }
     }
+
+    private fun showPerfStatus(perfViewStatus: PerfViewStatus) {
+        val listModels = perfViewStatus.screenStatuses
+            .sortedBy { it.startTime }
+            .map { getListModelsForPerfScreen(it) }
+            .flatten()
+
+        perfAdapter.submitList(listModels)
+    }
+
+    private fun getListModelsForPerfScreen(screen: PerfViewScreenStatus) = listOf(
+        PerfStageListModel(
+            screen.screenName,
+            screen.screenName,
+            ""
+        ),
+        PerfStageListModel(
+            screen.screenName,
+            PerfStage.VIEW_CREATED.toString(),
+            screen.viewCreationDuration?.toString() ?: "..."
+        ),
+        PerfStageListModel(
+            screen.screenName,
+            PerfStage.TITLE_LOADED.toString(),
+            screen.titleLoadDuration?.toString() ?: "..."
+        ),
+        PerfStageListModel(
+            screen.screenName,
+            PerfStage.TRANSITION_START.toString(),
+            screen.transitionStartDuration?.toString() ?: "..."
+        ),
+        PerfStageListModel(
+            screen.screenName,
+            PerfStage.PARTIAL_CONTENT_LOAD.toString(),
+            screen.partialContentLoadDuration?.toString() ?: "..."
+        ),
+        PerfStageListModel(
+            screen.screenName,
+            PerfStage.FULL_CONTENT_LOAD.toString(),
+            screen.fullContentLoadDuration?.toString() ?: "..."
+        )
+    )
 
     private fun searchClicks() = card_search.clicks()
         .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)

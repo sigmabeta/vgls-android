@@ -172,20 +172,23 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    override fun start(screenName: String) = setState {
-        Timber.d("Adding perf status view for screen $screenName...")
-
+    override fun start(screenName: String) = withState {
+        // This must be created outside setState to make it a pure reducer..
         val newScreenStatus = PerfViewScreenStatus(screenName)
 
-        val newScreenStatuses = perfViewStatus.screenStatuses.filter {
-            it.screenName != screenName
-        } + newScreenStatus
+        setState {
+            Timber.d("Adding perf status view for screen $screenName...")
 
-        copy(
-            perfViewStatus = perfViewStatus.copy(
-                screenStatuses = newScreenStatuses
+            val newScreenStatuses = perfViewStatus.screenStatuses.filter {
+                it.screenName != screenName
+            } + newScreenStatus
+
+            copy(
+                perfViewStatus = perfViewStatus.copy(
+                    screenStatuses = newScreenStatuses
+                )
             )
-        )
+        }
     }
 
     override fun completed(screenName: String) = updatePerfStatus(screenName, completed = true)
@@ -288,43 +291,46 @@ class HudViewModel @AssistedInject constructor(
         transitionStarted: Boolean? = null,
         partialContentLoaded: Boolean? = null,
         fullContentLoaded: Boolean? = null
-    ) = setState {
-        val oldScreenStatus = perfViewStatus.getScreenByName(screenName)
+    ) = withState {
+        // These must be retrieved outside setState to make it a pure reducer..
+        val oldScreenStatus = it.perfViewStatus.getScreenByName(screenName)
 
         if (oldScreenStatus == null) {
             Timber.w("No PerfViewScreenStatus found for screen $screenName.")
-            return@setState this
-        }
-
-        if (completed == true) {
-            startPerfCompleteTimer(screenName)
-        }
-
-        if (cancelled == true) {
-            startPerfCancelledTimer(screenName)
+            return@withState
         }
 
         val duration = System.currentTimeMillis() - oldScreenStatus.startTime
 
-        val newScreenStatus = oldScreenStatus.copy(
-            completed = if (completed == true) true else oldScreenStatus.completed,
-            cancellationDuration = if (cancelled == true) duration else oldScreenStatus.cancellationDuration,
-            viewCreationDuration = if (viewCreated == true) duration else oldScreenStatus.viewCreationDuration,
-            titleLoadDuration = if (titleLoaded == true) duration else oldScreenStatus.titleLoadDuration,
-            transitionStartDuration = if (transitionStarted == true) duration else oldScreenStatus.transitionStartDuration,
-            partialContentLoadDuration = if (partialContentLoaded == true) duration else oldScreenStatus.partialContentLoadDuration,
-            fullContentLoadDuration = if (fullContentLoaded == true) duration else oldScreenStatus.fullContentLoadDuration
-        )
+        setState {
+            if (completed == true) {
+                startPerfCompleteTimer(screenName)
+            }
 
-        val newStatuses = this.perfViewStatus.screenStatuses.replace(newScreenStatus) {
-            it.screenName == screenName
-        }
+            if (cancelled == true) {
+                startPerfCancelledTimer(screenName)
+            }
 
-        copy(
-            perfViewStatus = this.perfViewStatus.copy(
-                screenStatuses = newStatuses
+            val newScreenStatus = oldScreenStatus.copy(
+                completed = if (completed == true) true else oldScreenStatus.completed,
+                cancellationDuration = if (cancelled == true) duration else oldScreenStatus.cancellationDuration,
+                viewCreationDuration = if (viewCreated == true) duration else oldScreenStatus.viewCreationDuration,
+                titleLoadDuration = if (titleLoaded == true) duration else oldScreenStatus.titleLoadDuration,
+                transitionStartDuration = if (transitionStarted == true) duration else oldScreenStatus.transitionStartDuration,
+                partialContentLoadDuration = if (partialContentLoaded == true) duration else oldScreenStatus.partialContentLoadDuration,
+                fullContentLoadDuration = if (fullContentLoaded == true) duration else oldScreenStatus.fullContentLoadDuration
             )
-        )
+
+            val newStatuses = this.perfViewStatus.screenStatuses.replace(newScreenStatus) {
+                it.screenName == screenName
+            }
+
+            copy(
+                perfViewStatus = this.perfViewStatus.copy(
+                    screenStatuses = newStatuses
+                )
+            )
+        }
     }
 
     private fun startPerfCompleteTimer(screenName: String) {
