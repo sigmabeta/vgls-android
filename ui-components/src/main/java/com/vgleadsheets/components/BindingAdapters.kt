@@ -3,12 +3,14 @@
 package com.vgleadsheets.components
 
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -17,6 +19,7 @@ import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
+import kotlin.math.min
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -205,6 +208,38 @@ fun bindPartialLoadHandler(view: View?, partialLoadText: String, partialLoadHand
 fun bindFullLoadHandler(view: View?, fullLoadText: String, fullLoadHandler: PerfHandler) {
     if (view != null && fullLoadText.isNotEmpty()) {
         fullLoadHandler.onFullContentLoad()
+    }
+}
+
+@BindingAdapter("startTime", "duration")
+fun bindPerfBar(view: View, startTime: Long, duration: String) {
+    val durationLong = duration.toLongOrNull()
+    view.pivotX = 0.0f
+
+    if (durationLong == null) {
+        val startPercentage = (System.currentTimeMillis() - startTime) / 4000.0f
+        val animationTime = (1.0f - startPercentage) * 4000
+
+        view.scaleX = min(startPercentage, 1.0f)
+        view.animate()
+            .scaleX(1.0f)
+            .setInterpolator(LinearInterpolator())
+            .setDuration(animationTime.toLong())
+            .withEndAction {
+                val color = ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
+                view.setBackgroundColor(color)
+            }
+
+    } else {
+        val durationPercentage = durationLong / 4000.0f
+
+        view.animate().cancel()
+        view.scaleX = min(durationPercentage, 1.0f)
+
+        if (durationPercentage > 1.0f) {
+            val color = ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
+            view.setBackgroundColor(color)
+        }
     }
 }
 

@@ -2,6 +2,7 @@ package com.vgleadsheets.components
 
 data class PerfStageListModel(
     val screenName: String,
+    val startTime: Long,
     val perfStage: String,
     val duration: String
 ) : ListModel{

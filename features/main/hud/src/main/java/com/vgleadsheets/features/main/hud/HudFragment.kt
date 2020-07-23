@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.hud
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.animation.ValueAnimator.REVERSE
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -122,6 +123,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         onPartSelect(clicked)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -158,6 +160,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         list_perf.adapter = perfAdapter
         val linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager.stackFromEnd = true
         list_perf.layoutManager = linearLayoutManager
 
         button_search_clear.setOnClickListener { edit_search_query.text.clear() }
@@ -568,31 +571,37 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun getListModelsForPerfScreen(screen: PerfViewScreenStatus) = listOf(
         PerfStageListModel(
             screen.screenName,
+            screen.startTime,
             screen.screenName,
             ""
         ),
         PerfStageListModel(
             screen.screenName,
+            screen.startTime,
             PerfStage.VIEW_CREATED.toString(),
             screen.viewCreationDuration?.toString() ?: "..."
         ),
         PerfStageListModel(
             screen.screenName,
+            screen.startTime,
             PerfStage.TITLE_LOADED.toString(),
             screen.titleLoadDuration?.toString() ?: "..."
         ),
         PerfStageListModel(
             screen.screenName,
+            screen.startTime,
             PerfStage.TRANSITION_START.toString(),
             screen.transitionStartDuration?.toString() ?: "..."
         ),
         PerfStageListModel(
             screen.screenName,
+            screen.startTime,
             PerfStage.PARTIAL_CONTENT_LOAD.toString(),
             screen.partialContentLoadDuration?.toString() ?: "..."
         ),
         PerfStageListModel(
             screen.screenName,
+            screen.startTime,
             PerfStage.FULL_CONTENT_LOAD.toString(),
             screen.fullContentLoadDuration?.toString() ?: "..."
         )
