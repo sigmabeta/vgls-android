@@ -1,5 +1,8 @@
 package com.vgleadsheets.perf.tracking.common
 
+import io.reactivex.Observable
+
+
 interface PerfTracker {
     fun start(screenName: String)
 
@@ -14,4 +17,6 @@ interface PerfTracker {
     fun onFullContentLoad(screenName: String)
 
     fun cancel(screenName: String)
+
+    fun getEventStream(): Observable<PerfEvent>
 }

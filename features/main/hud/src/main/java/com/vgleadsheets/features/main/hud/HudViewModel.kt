@@ -13,7 +13,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.common.PerfStage
-import com.vgleadsheets.perf.view.common.PerfView
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.perf.view.common.PerfViewScreenStatus
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
     private val repository: Repository,
-    private val storage: Storage
-) : MvRxViewModel<HudState>(initialState),
-    PerfView {
+    private val storage: Storage,
+    private val perfTracker: PerfTracker
+) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
     private val perfViewTimers: MutableMap<String, Disposable> = HashMap()
@@ -38,6 +38,7 @@ class HudViewModel @AssistedInject constructor(
         checkSavedPartSelection()
         checkLastUpdateTime()
         checkForUpdate()
+        subscribeToPerfUpdates()
     }
 
     fun alwaysShowBack() = setState { copy(alwaysShowBack = true) }
@@ -173,12 +174,21 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    override fun start(
-        screenName: String,
-        targetTimes: HashMap<String, Long>
+    private fun start(
+        screenName: String
     ) = withState {
         // This must be created outside setState to make it a pure reducer..
-        val newScreenStatus = PerfViewScreenStatus(screenName, targetTimes)
+        val newScreenStatus = PerfViewScreenStatus(
+            screenName,
+            hashMapOf(
+                Pair(PerfStage.VIEW_CREATED.toString(), 50L),
+                Pair(PerfStage.TITLE_LOADED.toString(), 600L),
+                Pair(PerfStage.TRANSITION_START.toString(), 800L),
+                Pair(PerfStage.PARTIAL_CONTENT_LOAD.toString(), 4000L),
+                Pair(PerfStage.FULL_CONTENT_LOAD.toString(), 4000L),
+                Pair("completion", 8000L)
+            )
+        )
 
         setState {
             Timber.d("Adding perf status view for screen $screenName...")
@@ -195,22 +205,26 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    override fun completed(screenName: String) = updatePerfStatus(screenName, completed = true)
+    private fun completed(screenName: String, duration: Long) =
+        updatePerfStatus(screenName, duration, completed = true)
 
-    override fun cancelled(screenName: String) = updatePerfStatus(screenName, cancelled = true)
+    private fun cancelled(screenName: String, duration: Long) =
+        updatePerfStatus(screenName, duration, cancelled = true)
 
-    override fun viewCreated(screenName: String) = updatePerfStatus(screenName, viewCreated = true)
+    private fun viewCreated(screenName: String, duration: Long) =
+        updatePerfStatus(screenName, duration, viewCreated = true)
 
-    override fun titleLoaded(screenName: String) = updatePerfStatus(screenName, titleLoaded = true)
+    private fun titleLoaded(screenName: String, duration: Long) =
+        updatePerfStatus(screenName, duration, titleLoaded = true)
 
-    override fun transitionStarted(screenName: String) =
-        updatePerfStatus(screenName, transitionStarted = true)
+    private fun transitionStarted(screenName: String, duration: Long) =
+        updatePerfStatus(screenName, duration, transitionStarted = true)
 
-    override fun partialContentLoaded(screenName: String) =
-        updatePerfStatus(screenName, partialContentLoaded = true)
+    private fun partialContentLoaded(screenName: String, duration: Long) =
+        updatePerfStatus(screenName, duration, partialContentLoaded = true)
 
-    override fun fullContentLoaded(screenName: String) =
-        updatePerfStatus(screenName, fullContentLoaded = true)
+    private fun fullContentLoaded(screenName: String, duration: Long) =
+        updatePerfStatus(screenName, duration, fullContentLoaded = true)
 
     private fun removePerfScreenStatus(screenName: String) = setState {
         Timber.d("Removing perf status view for screen $screenName...")
@@ -277,6 +291,26 @@ class HudViewModel @AssistedInject constructor(
             copy(digest = it)
         }
 
+    private fun subscribeToPerfUpdates() {
+        perfTracker.getEventStream()
+            .subscribe {
+                when (it.perfStage) {
+                    PerfStage.VIEW_CREATED -> viewCreated(it.screenName, it.duration)
+                    PerfStage.TITLE_LOADED -> titleLoaded(it.screenName, it.duration)
+                    PerfStage.TRANSITION_START -> transitionStarted(it.screenName, it.duration)
+                    PerfStage.PARTIAL_CONTENT_LOAD -> partialContentLoaded(
+                        it.screenName,
+                        it.duration
+                    )
+                    PerfStage.FULL_CONTENT_LOAD -> fullContentLoaded(it.screenName, it.duration)
+                    PerfStage.CANCELLATION -> cancelled(it.screenName, it.duration)
+                    PerfStage.COMPLETION -> completed(it.screenName, it.duration)
+                    null -> start(it.screenName)
+                }
+            }
+            .disposeOnClear()
+    }
+
     private fun stopTimer() {
         timer?.dispose()
     }
@@ -288,6 +322,7 @@ class HudViewModel @AssistedInject constructor(
 
     private fun updatePerfStatus(
         screenName: String,
+        duration: Long,
         completed: Boolean? = null,
         cancelled: Boolean? = null,
         viewCreated: Boolean? = null,
@@ -303,8 +338,6 @@ class HudViewModel @AssistedInject constructor(
             Timber.w("No PerfViewScreenStatus found for screen $screenName.")
             return@withState
         }
-
-        val duration = System.currentTimeMillis() - oldStatus.startTime
 
         setState {
             if (completed == true) {
