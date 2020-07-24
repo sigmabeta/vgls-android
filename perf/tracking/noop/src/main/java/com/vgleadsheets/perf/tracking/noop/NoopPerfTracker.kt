@@ -1,5 +1,6 @@
 package com.vgleadsheets.perf.tracking.noop
 
+import com.vgleadsheets.perf.tracking.common.PerfScreenStatus
 import com.vgleadsheets.perf.tracking.common.PerfStage
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import io.reactivex.Observable
@@ -9,32 +10,23 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 class NoopPerfTracker : PerfTracker {
-    private val activeTraces =
-        HashMap<String, MutableMap<PerfStage, Long?>?>()
+    private val screens =
+        HashMap<String, PerfScreenStatus>()
 
     private val failureTimers =
         HashMap<String, Disposable?>()
 
     override fun start(screenName: String) {
-        // Check if an active trace list exists
-        if (activeTraces[screenName] != null) {
+        if (screens[screenName] != null) {
             throw IllegalStateException(
                 "Active trace list from a previous instance of screen $screenName " +
                         "still exists!"
             )
         }
 
-        // Create a new list of active traces
-        val newTraces = HashMap<PerfStage, Long?>(PerfStage.values().size)
-
-        PerfStage.values().forEach { stage ->
-            newTraces[stage] = System.currentTimeMillis()
-        }
-
-        // Add it to the hashmap
-        activeTraces[screenName] = newTraces
         Timber.d("Starting timing for $screenName...")
 
+        screens[screenName] = PerfScreenStatus()
         startFailureTimer(screenName)
     }
 
@@ -54,57 +46,66 @@ class NoopPerfTracker : PerfTracker {
         finishTrace(screenName, PerfStage.FULL_CONTENT_LOAD)
 
     override fun cancel(screenName: String) {
+        val perfScreenStatus = screens[screenName]
+            ?: throw IllegalStateException("Traces for $screenName not found!")
+
+        if (perfScreenStatus.cancelled) {
+            return
+        }
+
         Timber.w("Cancelling timing for $screenName...")
-        removeTracesFor(screenName)
+        perfScreenStatus.cancelled = true
     }
 
-    private fun finishTrace(screenName: String, perfStage: PerfStage): Long? {
-        val tracesForScreen = activeTraces[screenName]
-            ?: return null
+    private fun finishTrace(screenName: String, perfStage: PerfStage) {
+        val screen = screens[screenName]
+            ?: return
 
-        val startTime = tracesForScreen[perfStage]
-            ?: throw IllegalStateException("Trace $screenName:$perfStage has already been stopped!")
+        if (screen.stages[perfStage.ordinal]) {
+            return
+        }
 
-        tracesForScreen[perfStage] = null
+        if (screen.completed) {
+            throw IllegalStateException("Trace $screenName:$perfStage has already been completed!")
+        }
 
-        val duration = System.currentTimeMillis() - startTime
+        if (screen.cancelled) {
+            throw IllegalStateException("Trace $screenName:$perfStage has already been cancelled!")
+        }
+
+        val duration = System.currentTimeMillis() - screen.startTime
         Timber.v("Duration for $screenName:$perfStage: $duration ms ")
 
-        checkIfScreenFullyLoaded(tracesForScreen, screenName, duration)
+        screen.stages[perfStage.ordinal] = true
+        checkIfScreenFullyLoaded(screen, screenName, duration)
 
-        return duration
+        return
     }
 
     private fun checkIfScreenFullyLoaded(
-        tracesForScreen: MutableMap<PerfStage, Long?>,
+        screen: PerfScreenStatus,
         screenName: String,
         duration: Long
     ) {
-        val remainingTraces = getNotClearedTraces(tracesForScreen)
-        if (remainingTraces.isEmpty()) {
-            onScreenFullyLoaded(screenName, duration)
+        screen.stages.forEach { finished ->
+            if (!finished) {
+                return
+            }
         }
+
+        onScreenFullyLoaded(screenName, duration)
     }
 
     private fun onScreenFullyLoaded(screenName: String, duration: Long) {
-        Timber.d("Successful load of $screenName in $duration ms!")
-        activeTraces[screenName] = null
+        val perfScreenStatus = screens[screenName]
+            ?: throw IllegalStateException("Traces for $screenName not found!")
 
-        stopFailureTimer(screenName)
-    }
-
-    private fun removeTracesFor(screenName: String) {
-        val tracesForThisScreen = activeTraces[screenName] ?: return
-
-        val notClearedTraces = getNotClearedTraces(tracesForThisScreen)
-
-        if (notClearedTraces.isNotEmpty()) {
-            val emptinessMessage = "Missing traces for $screenName: ${notClearedTraces.joinToString()}."
-
-            Timber.i(emptinessMessage)
+        if (perfScreenStatus.completed) {
+            return
         }
 
-        activeTraces[screenName] = null
+        Timber.d("Successful load of $screenName in $duration ms!")
+        perfScreenStatus.completed = true
 
         stopFailureTimer(screenName)
     }
@@ -112,13 +113,13 @@ class NoopPerfTracker : PerfTracker {
     private fun startFailureTimer(screenName: String) {
         val timer = Observable.timer(TIMEOUT_SCREEN_LOAD, TimeUnit.MILLISECONDS)
             .subscribe {
-                val tracesForThisScreen = activeTraces[screenName]
-                if (tracesForThisScreen == null) {
-                    Timber.w("Timer went off even though traces have been cleared. What?")
+                val screen = screens[screenName]
+                if (screen == null) {
+                    Timber.w("Trace not found when timer went off. What?")
                     return@subscribe
                 }
 
-                val notClearedTraces = getNotClearedTraces(tracesForThisScreen)
+                val notClearedTraces = getNotClearedTraces(screen)
 
                 throw TimeoutException(
                     "Screen $screenName waited $TIMEOUT_SCREEN_LOAD ms, but still missing events for: $notClearedTraces"
@@ -136,13 +137,12 @@ class NoopPerfTracker : PerfTracker {
         failureTimers[screenName] = null
     }
 
-    private fun getNotClearedTraces(traces: MutableMap<PerfStage, Long?>): List<PerfStage> {
-        return traces
-            .entries
-            .map { if (it.value == null) null else it }
-            .filterNotNull()
-            .map { it.key }
-            .sortedBy { it.ordinal }
+    private fun getNotClearedTraces(screen: PerfScreenStatus): List<PerfStage> {
+        return screen
+            .stages
+            .mapIndexed { index, value -> Pair(index, value)}
+            .filter { it.second }
+            .map { PerfStage.values()[it.first] }
     }
 
     companion object {

@@ -5,6 +5,7 @@ import com.google.firebase.perf.metrics.Trace
 import com.vgleadsheets.perf.tracking.common.PerfStage
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.tracking.Tracker
+import timber.log.Timber
 
 class PerfTrackerImpl(
     private val firebase: FirebasePerformance,
@@ -66,7 +67,9 @@ class PerfTrackerImpl(
         val trace = tracesForScreen[perfStage]
 
         if (trace == null) {
-            tracker.logError("Trace $screenName:$perfStage has already been stopped!")
+            val message = "Trace $screenName:$perfStage has already been stopped!"
+            Timber.e(message)
+            tracker.logError(message)
             return null
         }
 
@@ -77,8 +80,6 @@ class PerfTrackerImpl(
     }
 
     private fun removeTracesFor(screenName: String) {
-        val tracesForScreen = activeTraces[screenName] ?: return
-
         activeTraces[screenName] = null
     }
 }
