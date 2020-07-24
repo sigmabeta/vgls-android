@@ -14,13 +14,16 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 class ComposerListViewModel @AssistedInject constructor(
     @Assisted initialState: ComposerListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : ListViewModel<Composer, ComposerListState>(initialState, resourceProvider),
     ImageNameCaptionListModel.EventHandler {
     init {
@@ -42,7 +45,8 @@ class ComposerListViewModel @AssistedInject constructor(
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_composer),
-        perfHandler = perfHandler
+        screenName = screenName,
+        tracker = perfTracker
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
@@ -72,7 +76,8 @@ class ComposerListViewModel @AssistedInject constructor(
                     it.photoUrl,
                     R.drawable.placeholder_composer,
                     this,
-                    perfHandler = perfHandler
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
     }
@@ -140,13 +145,13 @@ class ComposerListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: ComposerListState): ComposerListViewModel
+        fun create(initialState: ComposerListState, screenName: String): ComposerListViewModel
     }
 
     companion object : MvRxViewModelFactory<ComposerListViewModel, ComposerListState> {
         override fun create(viewModelContext: ViewModelContext, state: ComposerListState): ComposerListViewModel? {
             val fragment: ComposerListFragment = (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.composerListViewModelFactory.create(state)
+            return fragment.composerListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

@@ -10,8 +10,6 @@ class GameListFragment : ListFragment<Game, GameListState>() {
     @Inject
     lateinit var gameListViewModelFactory: GameListViewModel.Factory
 
-    override val loadStatusProperty = GameListState::loadStatus
-
     override fun getTrackingScreen() = TrackingScreen.LIST_GAME
 
     override val viewModel: GameListViewModel by fragmentViewModel()

@@ -219,12 +219,6 @@ class ViewerFragment : VglsFragment(),
 
     override fun getDetails() = viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
 
-    override fun tellViewmodelPerfCancelled() {
-        viewModel.cancelPerf()
-    }
-
-    override fun getPerfView() = hudViewModel
-
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
         val screenTimer = Observable.timer(TIMEOUT_SCREEN_OFF_MINUTES, TimeUnit.MINUTES)

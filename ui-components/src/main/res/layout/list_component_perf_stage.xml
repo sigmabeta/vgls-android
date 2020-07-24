@@ -22,6 +22,7 @@
             app:startTime="@{toBind.startTime}"
             app:duration="@{toBind.duration}"
             app:targetTime="@{toBind.targetTime}"
+            app:cancellation="@{toBind.cancellationDuration}"
             />
 
         <LinearLayout

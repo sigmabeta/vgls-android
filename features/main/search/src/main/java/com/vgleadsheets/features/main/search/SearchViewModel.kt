@@ -22,6 +22,7 @@ import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import io.reactivex.disposables.CompositeDisposable
@@ -30,8 +31,10 @@ import java.util.concurrent.TimeUnit
 @SuppressWarnings("TooManyFunctions")
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<SearchData, SearchState>(initialState, resourceProvider) {
     private val searchOperations = CompositeDisposable()
 
@@ -250,7 +253,8 @@ class SearchViewModel @AssistedInject constructor(
                             thumbUrl,
                             getPlaceholderId(it),
                             songHandler,
-                            perfHandler = perfHandler
+                            screenName = screenName,
+                            tracker = perfTracker
                         )
                     }
                     is Game -> ImageNameCaptionListModel(
@@ -260,7 +264,8 @@ class SearchViewModel @AssistedInject constructor(
                         it.photoUrl,
                         getPlaceholderId(it),
                         gameHandler,
-                        perfHandler = perfHandler
+                        screenName = screenName,
+                        tracker = perfTracker
                     )
                     is Composer -> ImageNameCaptionListModel(
                         it.id,
@@ -269,7 +274,8 @@ class SearchViewModel @AssistedInject constructor(
                         it.photoUrl,
                         getPlaceholderId(it),
                         composerHandler,
-                        perfHandler = perfHandler
+                        screenName = screenName,
+                        tracker = perfTracker
                     )
                     else -> throw IllegalArgumentException(
                         "Bad model in search result list."
@@ -412,7 +418,7 @@ class SearchViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SearchState): SearchViewModel
+        fun create(initialState: SearchState, screenName: String): SearchViewModel
     }
 
     companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
@@ -430,7 +436,7 @@ class SearchViewModel @AssistedInject constructor(
             state: SearchState
         ): SearchViewModel? {
             val fragment: SearchFragment = (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.searchViewModelFactory.create(state)
+            return fragment.searchViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

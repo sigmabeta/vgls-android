@@ -13,8 +13,6 @@ class SongListFragment : ListFragment<Song, SongListState>() {
 
     override val viewModel: SongListViewModel by fragmentViewModel()
 
-    override val loadStatusProperty = SongListState::loadStatus
-
     override fun getTrackingScreen() = TrackingScreen.LIST_SHEET
 
     override fun subscribeToViewEvents() {

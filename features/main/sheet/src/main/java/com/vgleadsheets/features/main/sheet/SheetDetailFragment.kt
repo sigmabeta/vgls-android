@@ -16,8 +16,6 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
     @Inject
     lateinit var sheetViewModelFactory: SheetDetailViewModel.Factory
 
-    override val loadStatusProperty = SheetDetailState::loadStatus
-
     override val viewModel: SheetDetailViewModel by fragmentViewModel()
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"

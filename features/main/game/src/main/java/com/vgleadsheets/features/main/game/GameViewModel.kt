@@ -19,14 +19,17 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 @SuppressWarnings("TooManyFunctions")
 class GameViewModel @AssistedInject constructor(
     @Assisted initialState: GameState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<GameData, GameState>(initialState, resourceProvider),
     ImageNameCaptionListModel.EventHandler {
     init {
@@ -101,7 +104,8 @@ class GameViewModel @AssistedInject constructor(
                     generateSheetCountText(songs),
                     game().photoUrl,
                     R.drawable.placeholder_game,
-                    perfHandler
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(game.error)
@@ -154,7 +158,8 @@ class GameViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this@GameViewModel,
-                    perfHandler = perfHandler
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
         }
@@ -176,13 +181,13 @@ class GameViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: GameState): GameViewModel
+        fun create(initialState: GameState, screenName: String): GameViewModel
     }
 
     companion object : MvRxViewModelFactory<GameViewModel, GameState> {
         override fun create(viewModelContext: ViewModelContext, state: GameState): GameViewModel? {
             val fragment: GameFragment = (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.gameViewModelFactory.create(state)
+            return fragment.gameViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

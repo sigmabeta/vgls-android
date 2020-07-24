@@ -28,6 +28,7 @@ import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.SetlistEntry
 import com.vgleadsheets.model.jam.SongHistoryEntry
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import timber.log.Timber
@@ -36,8 +37,10 @@ import java.util.Locale
 @SuppressWarnings("TooManyFunctions")
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<JamData, JamState>(initialState, resourceProvider),
     CtaListModel.EventHandler {
     init {
@@ -170,7 +173,8 @@ class JamViewModel @AssistedInject constructor(
                 R.drawable.placeholder_sheet,
                 currentSongHandler,
                 jam.currentSong?.id ?: -1L,
-                perfHandler = perfHandler
+                screenName = screenName,
+                tracker = perfTracker
             )
         )
     }
@@ -232,7 +236,8 @@ class JamViewModel @AssistedInject constructor(
                 R.drawable.placeholder_sheet,
                 setlistSongHandler,
                 entry.song?.id,
-                perfHandler = perfHandler
+                screenName = screenName,
+                tracker = perfTracker
             )
         }
     }
@@ -272,7 +277,8 @@ class JamViewModel @AssistedInject constructor(
                 R.drawable.placeholder_sheet,
                 historyHandler,
                 entry.song?.id,
-                perfHandler = perfHandler
+                screenName = screenName,
+                tracker = perfTracker
             )
         }
     }
@@ -344,7 +350,8 @@ class JamViewModel @AssistedInject constructor(
             TitleListModel(
                 jam().name.toTitleCase(),
                 resourceProvider.getString(R.string.subtitle_jam),
-                perfHandler = perfHandler
+                screenName = screenName,
+                tracker = perfTracker
             )
         )
     }
@@ -385,7 +392,7 @@ class JamViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: JamState): JamViewModel
+        fun create(initialState: JamState, screenName: String): JamViewModel
     }
 
     companion object : MvRxViewModelFactory<JamViewModel, JamState> {
@@ -395,7 +402,7 @@ class JamViewModel @AssistedInject constructor(
         ): JamViewModel? {
             val fragment: JamFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.jamViewModelFactory.create(state)
+            return fragment.jamViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

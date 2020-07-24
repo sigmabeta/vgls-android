@@ -10,8 +10,6 @@ class JamListFragment : ListFragment<Jam, JamListState>() {
     @Inject
     lateinit var jamListViewModelFactory: JamListViewModel.Factory
 
-    override val loadStatusProperty = JamListState::loadStatus
-
     override fun getTrackingScreen() = TrackingScreen.LIST_JAM
 
     override val viewModel: JamListViewModel by fragmentViewModel()

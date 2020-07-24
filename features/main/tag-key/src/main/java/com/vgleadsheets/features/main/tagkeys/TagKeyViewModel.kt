@@ -15,13 +15,16 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 class TagKeyViewModel @AssistedInject constructor(
     @Assisted initialState: TagKeyState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : ListViewModel<TagKey, TagKeyState>(initialState, resourceProvider),
     NameCaptionListModel.EventHandler {
     init {
@@ -43,7 +46,8 @@ class TagKeyViewModel @AssistedInject constructor(
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_tags),
-        perfHandler = perfHandler
+        screenName = screenName,
+        tracker = perfTracker
     )
 
     override fun defaultLoadingListModel(index: Int): ListModel =
@@ -65,7 +69,8 @@ class TagKeyViewModel @AssistedInject constructor(
             it.name,
             generateSubtitleText(it.values),
             this@TagKeyViewModel,
-            perfHandler
+            screenName = screenName,
+            tracker = perfTracker
         )
     }
 
@@ -121,7 +126,7 @@ class TagKeyViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: TagKeyState): TagKeyViewModel
+        fun create(initialState: TagKeyState, screenName: String): TagKeyViewModel
     }
 
     companion object : MvRxViewModelFactory<TagKeyViewModel, TagKeyState> {
@@ -131,7 +136,7 @@ class TagKeyViewModel @AssistedInject constructor(
         ): TagKeyViewModel? {
             val fragment: TagKeyFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.tagKeyViewModelFactory.create(state)
+            return fragment.tagKeyViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

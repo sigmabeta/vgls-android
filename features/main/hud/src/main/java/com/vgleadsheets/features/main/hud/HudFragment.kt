@@ -117,8 +117,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun disablePerfTracking() = true
 
-    override fun tellViewmodelPerfCancelled() = Unit
-
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
     }
@@ -293,8 +291,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun getTrackingScreen() = TrackingScreen.HUD
-
-    override fun getPerfView() = viewModel
 
     private fun showInitialScreen() {
         Timber.d("Checking to see which screen to show.")
@@ -576,7 +572,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             screen.completionDuration?.toString() ?: "...",
             screen.targetTimes["completion"] ?: throw IllegalArgumentException(
                 "Missing target time for completion."
-            )
+            ),
+            screen.cancellationDuration
         ),
         createPerfStageListModel(screen, PerfStage.VIEW_CREATED),
         createPerfStageListModel(screen, PerfStage.TITLE_LOADED),
@@ -595,7 +592,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         screen.durations[perfStage.toString()]?.toString() ?: "...",
         screen.targetTimes[perfStage.toString()] ?: throw IllegalArgumentException(
             "Missing target time for stage $perfStage."
-        )
+        ),
+        screen.cancellationDuration
     )
 
     private fun searchClicks() = card_search.clicks()

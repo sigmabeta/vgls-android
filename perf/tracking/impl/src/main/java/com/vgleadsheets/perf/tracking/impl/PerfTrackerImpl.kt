@@ -45,9 +45,6 @@ class PerfTrackerImpl(
     override fun onTransitionStarted(screenName: String) =
         finishTrace(screenName, PerfStage.TRANSITION_START)
 
-    override fun onTransitionEnded(screenName: String) =
-        finishTrace(screenName, PerfStage.TRANSITION_END)
-
     override fun onPartialContentLoad(screenName: String) =
         finishTrace(screenName, PerfStage.PARTIAL_CONTENT_LOAD)
 

@@ -14,8 +14,6 @@ class GameFragment : AsyncListFragment<GameData, GameState>() {
     @Inject
     lateinit var gameViewModelFactory: GameViewModel.Factory
 
-    override val loadStatusProperty = GameState::loadStatus
-
     override val viewModel: GameViewModel by fragmentViewModel()
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"

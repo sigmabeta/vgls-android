@@ -16,8 +16,6 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
     @Inject
     lateinit var jamViewModelFactory: JamViewModel.Factory
 
-    override val loadStatusProperty = JamState::loadStatus
-
     override val viewModel: JamViewModel by fragmentViewModel()
 
     private var refreshLauncher: Disposable? = null

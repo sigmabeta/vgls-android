@@ -23,14 +23,17 @@ import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 @SuppressWarnings("TooManyFunctions")
 class TagValueListViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<TagValueData, TagValueListState>(initialState, resourceProvider),
     NameCaptionListModel.EventHandler {
     init {
@@ -109,7 +112,8 @@ class TagValueListViewModel @AssistedInject constructor(
                 TitleListModel(
                     tagKey().name,
                     generateSheetCountText(tagValues),
-                    perfHandler = perfHandler
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(tagKey.error)
@@ -152,7 +156,8 @@ class TagValueListViewModel @AssistedInject constructor(
                     it.name,
                     generateSheetCaption(it.songs),
                     this@TagValueListViewModel,
-                    perfHandler
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
         }
@@ -211,7 +216,7 @@ class TagValueListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: TagValueListState): TagValueListViewModel
+        fun create(initialState: TagValueListState, screenName: String): TagValueListViewModel
     }
 
     companion object : MvRxViewModelFactory<TagValueListViewModel, TagValueListState> {
@@ -221,7 +226,7 @@ class TagValueListViewModel @AssistedInject constructor(
         ): TagValueListViewModel? {
             val fragment: TagValueListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.tagValueListViewModelFactory.create(state)
+            return fragment.tagValueListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

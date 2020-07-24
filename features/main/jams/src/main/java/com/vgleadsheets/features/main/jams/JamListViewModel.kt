@@ -17,6 +17,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import java.util.Locale
@@ -24,8 +25,10 @@ import java.util.Locale
 @SuppressWarnings("TooManyFunctions")
 class JamListViewModel @AssistedInject constructor(
     @Assisted initialState: JamListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : ListViewModel<Jam, JamListState>(initialState, resourceProvider),
     CtaListModel.EventHandler,
     NameCaptionListModel.EventHandler {
@@ -57,7 +60,8 @@ class JamListViewModel @AssistedInject constructor(
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.title_jams),
         "",
-        perfHandler = perfHandler
+        screenName = screenName,
+        tracker = perfTracker
     )
 
     override fun defaultLoadingListModel(index: Int): ListModel =
@@ -87,7 +91,8 @@ class JamListViewModel @AssistedInject constructor(
                 it.name.toTitleCase(),
                 generateSubtitleText(it.currentSong),
                 this,
-                perfHandler
+                screenName = screenName,
+                tracker = perfTracker
             )
         }
     }
@@ -136,7 +141,7 @@ class JamListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: JamListState): JamListViewModel
+        fun create(initialState: JamListState, screenName: String): JamListViewModel
     }
 
     companion object : MvRxViewModelFactory<JamListViewModel, JamListState> {
@@ -146,7 +151,7 @@ class JamListViewModel @AssistedInject constructor(
         ): JamListViewModel? {
             val fragment: JamListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.jamListViewModelFactory.create(state)
+            return fragment.jamListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

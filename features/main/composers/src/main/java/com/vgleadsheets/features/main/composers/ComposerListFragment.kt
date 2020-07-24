@@ -10,8 +10,6 @@ class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
     @Inject
     lateinit var composerListViewModelFactory: ComposerListViewModel.Factory
 
-    override val loadStatusProperty = ComposerListState::loadStatus
-
     override fun getTrackingScreen() = TrackingScreen.LIST_COMPOSER
 
     override val viewModel: ComposerListViewModel by fragmentViewModel()

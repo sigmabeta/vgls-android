@@ -13,13 +13,16 @@ import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 class SongListViewModel @AssistedInject constructor(
     @Assisted initialState: SongListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : ListViewModel<Song, SongListState>(initialState, resourceProvider),
     ImageNameCaptionListModel.EventHandler {
     init {
@@ -41,7 +44,8 @@ class SongListViewModel @AssistedInject constructor(
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_all_sheets),
-        perfHandler = perfHandler
+        screenName = screenName,
+        tracker = perfTracker
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
@@ -80,7 +84,8 @@ class SongListViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this,
-                    perfHandler = perfHandler
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
         }
@@ -110,7 +115,7 @@ class SongListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SongListState): SongListViewModel
+        fun create(initialState: SongListState, screenName: String): SongListViewModel
     }
 
     companion object : MvRxViewModelFactory<SongListViewModel, SongListState> {
@@ -120,7 +125,7 @@ class SongListViewModel @AssistedInject constructor(
         ): SongListViewModel? {
             val fragment: SongListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.sheetListViewModelFactory.create(state)
+            return fragment.sheetListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

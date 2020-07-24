@@ -14,11 +14,11 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.vgleadsheets.PerfHandler
 import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import kotlin.math.min
 
 @BindingAdapter("sheetUrl", "listener")
@@ -71,12 +71,13 @@ fun bindPhoto(
     }
 }
 
-@BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadedHandler")
+@BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadedHandler", "screenName")
 fun bindBigPhoto(
     view: ImageView,
     photoUrl: String?,
     placeholder: Int,
-    imageLoadedHandler: PerfHandler
+    imageLoadedHandler: PerfTracker,
+    screenName: String
 ) {
     if (placeholder != R.drawable.ic_logo) {
         view.clipToOutline = true
@@ -86,20 +87,20 @@ fun bindBigPhoto(
     if (photoUrl != null) {
         val callback = object : Callback {
             override fun onSuccess() {
-                imageLoadedHandler.onTransitionStart()
+                imageLoadedHandler.onTransitionStarted(screenName)
             }
 
             override fun onError(e: java.lang.Exception?) {
-                imageLoadedHandler.onLoadFail()
+                imageLoadedHandler.cancel(screenName)
             }
         }
 
         view.loadImageHighQuality(photoUrl, true, placeholder, callback)
     } else {
         if (placeholder != R.drawable.ic_logo) {
-            imageLoadedHandler.onLoadFail()
+            imageLoadedHandler.cancel(screenName)
         } else {
-            imageLoadedHandler.onTransitionStart()
+            imageLoadedHandler.onTransitionStarted(screenName)
         }
         view.setImageResource(placeholder)
     }
@@ -190,31 +191,60 @@ fun bindLongClickHandler(
     }
 }
 
-@BindingAdapter("titleLoadedHandler")
-fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfHandler) {
+@BindingAdapter("titleLoadedHandler", "screenName")
+fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfTracker, screenName: String) {
     if (view != null) {
-        titleLoadedHandler.onTitleLoaded()
+        titleLoadedHandler.onTitleLoaded(screenName)
     }
 }
 
-@BindingAdapter("partialLoadText", "partialLoadHandler")
-fun bindPartialLoadHandler(view: View?, partialLoadText: String, partialLoadHandler: PerfHandler) {
+@BindingAdapter(
+    "partialLoadText",
+    "partialLoadHandler",
+    "fullLoadText",
+    "fullLoadHandler",
+    "screenName"
+)
+fun bindPartialLoadHandler(
+    view: View?,
+    partialLoadText: String,
+    partialLoadHandler: PerfTracker,
+    fullLoadText: String,
+    fullLoadHandler: PerfTracker,
+    screenName: String
+) {
     if (view != null && partialLoadText.isNotEmpty()) {
-        partialLoadHandler.onPartialContentLoad()
+        partialLoadHandler.onPartialContentLoad(screenName)
     }
-}
 
-@BindingAdapter("fullLoadText", "fullLoadHandler")
-fun bindFullLoadHandler(view: View?, fullLoadText: String, fullLoadHandler: PerfHandler) {
     if (view != null && fullLoadText.isNotEmpty()) {
-        fullLoadHandler.onFullContentLoad()
+        fullLoadHandler.onFullContentLoad(screenName)
     }
 }
 
-@BindingAdapter("startTime", "duration", "targetTime")
-fun bindPerfBar(view: View, startTime: Long, duration: String, targetTime: Long) {
-    val durationLong = duration.toLongOrNull()
+@BindingAdapter("startTime", "duration", "targetTime", "cancellation")
+fun bindPerfBar(
+    view: View,
+    startTime: Long,
+    duration: String,
+    targetTime: Long,
+    cancellation: Long?
+) {
     view.pivotX = 0.0f
+
+    if (cancellation != null) {
+        val cancelPercentage = cancellation.toFloat() / targetTime
+
+        view.animate().cancel()
+        view.scaleX = min(cancelPercentage, 1.0f)
+        view.setBackgroundColor(
+            ContextCompat.getColor(view.context, android.R.color.holo_orange_light)
+        )
+
+        return
+    }
+
+    val durationLong = duration.toLongOrNull()
 
     if (durationLong == null) {
         val startPercentage = (System.currentTimeMillis().toFloat() - startTime) / targetTime

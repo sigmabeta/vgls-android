@@ -24,14 +24,17 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 @SuppressWarnings("TooManyFunctions")
 class SheetDetailViewModel @AssistedInject constructor(
     @Assisted initialState: SheetDetailState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, resourceProvider) {
     init {
         fetchSheetDetail()
@@ -246,7 +249,8 @@ class SheetDetailViewModel @AssistedInject constructor(
                     resourceProvider.getString(R.string.subtitle_pages, pageCount),
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    perfHandler
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             )
         }
@@ -294,7 +298,7 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SheetDetailState): SheetDetailViewModel
+        fun create(initialState: SheetDetailState, screenName: String): SheetDetailViewModel
     }
 
     companion object : MvRxViewModelFactory<SheetDetailViewModel, SheetDetailState> {
@@ -309,7 +313,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         ): SheetDetailViewModel? {
             val fragment: SheetDetailFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.sheetViewModelFactory.create(state)
+            return fragment.sheetViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

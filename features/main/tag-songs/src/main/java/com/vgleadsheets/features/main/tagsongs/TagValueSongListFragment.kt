@@ -13,8 +13,6 @@ class TagValueSongListFragment : AsyncListFragment<TagValueSongListData, TagValu
     @Inject
     lateinit var tagValueViewModelFactory: TagValueSongListViewModel.Factory
 
-    override val loadStatusProperty = TagValueSongListState::loadStatus
-
     override val viewModel: TagValueSongListViewModel by fragmentViewModel()
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"

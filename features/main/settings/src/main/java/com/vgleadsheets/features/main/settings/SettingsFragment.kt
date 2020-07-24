@@ -9,8 +9,6 @@ class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
     @Inject
     lateinit var settingsViewModelFactory: SettingsViewModel.Factory
 
-    override val loadStatusProperty = SettingsState::loadStatus
-
     override fun getTrackingScreen() = TrackingScreen.SETTINGS
 
     override val viewModel: SettingsViewModel by fragmentViewModel()

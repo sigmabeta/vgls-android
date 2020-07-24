@@ -10,8 +10,6 @@ class TagKeyFragment : ListFragment<TagKey, TagKeyState>() {
     @Inject
     lateinit var tagKeyViewModelFactory: TagKeyViewModel.Factory
 
-    override val loadStatusProperty = TagKeyState::loadStatus
-
     override fun getTrackingScreen() = TrackingScreen.LIST_TAG_KEY
 
     override val viewModel: TagKeyViewModel by fragmentViewModel()
