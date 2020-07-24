@@ -12,6 +12,7 @@ import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.perf.tracking.common.PerfStage
 import com.vgleadsheets.perf.view.common.PerfView
 import com.vgleadsheets.perf.view.common.PerfViewScreenStatus
 import com.vgleadsheets.repository.Repository
@@ -172,9 +173,12 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    override fun start(screenName: String) = withState {
+    override fun start(
+        screenName: String,
+        targetTimes: HashMap<String, Long>
+    ) = withState {
         // This must be created outside setState to make it a pure reducer..
-        val newScreenStatus = PerfViewScreenStatus(screenName)
+        val newScreenStatus = PerfViewScreenStatus(screenName, targetTimes)
 
         setState {
             Timber.d("Adding perf status view for screen $screenName...")
@@ -293,14 +297,14 @@ class HudViewModel @AssistedInject constructor(
         fullContentLoaded: Boolean? = null
     ) = withState {
         // These must be retrieved outside setState to make it a pure reducer..
-        val oldScreenStatus = it.perfViewStatus.getScreenByName(screenName)
+        val oldStatus = it.perfViewStatus.getScreenByName(screenName)
 
-        if (oldScreenStatus == null) {
+        if (oldStatus == null) {
             Timber.w("No PerfViewScreenStatus found for screen $screenName.")
             return@withState
         }
 
-        val duration = System.currentTimeMillis() - oldScreenStatus.startTime
+        val duration = System.currentTimeMillis() - oldStatus.startTime
 
         setState {
             if (completed == true) {
@@ -311,25 +315,103 @@ class HudViewModel @AssistedInject constructor(
                 startPerfCancelledTimer(screenName)
             }
 
-            val newScreenStatus = oldScreenStatus.copy(
-                completed = if (completed == true) true else oldScreenStatus.completed,
-                cancellationDuration = if (cancelled == true) duration else oldScreenStatus.cancellationDuration,
-                viewCreationDuration = if (viewCreated == true) duration else oldScreenStatus.viewCreationDuration,
-                titleLoadDuration = if (titleLoaded == true) duration else oldScreenStatus.titleLoadDuration,
-                transitionStartDuration = if (transitionStarted == true) duration else oldScreenStatus.transitionStartDuration,
-                partialContentLoadDuration = if (partialContentLoaded == true) duration else oldScreenStatus.partialContentLoadDuration,
-                fullContentLoadDuration = if (fullContentLoaded == true) duration else oldScreenStatus.fullContentLoadDuration
+            val newDurations = getUpdatedHashmap(
+                oldStatus,
+                viewCreated,
+                duration,
+                titleLoaded,
+                transitionStarted,
+                partialContentLoaded,
+                fullContentLoaded
             )
 
-            val newStatuses = this.perfViewStatus.screenStatuses.replace(newScreenStatus) {
-                it.screenName == screenName
-            }
+            val newScreenStatus = oldStatus.copy(
+                completionDuration = if (completed == true) duration else oldStatus.completionDuration,
+                cancellationDuration = if (cancelled == true) duration else oldStatus.cancellationDuration,
+                durations = newDurations
+            )
+
+            val newStatuses = this.perfViewStatus
+                .screenStatuses
+                .replace(newScreenStatus) { status ->
+                    status.screenName == screenName
+                }
 
             copy(
                 perfViewStatus = this.perfViewStatus.copy(
                     screenStatuses = newStatuses
                 )
             )
+        }
+    }
+
+    private fun getUpdatedHashmap(
+        oldStatus: PerfViewScreenStatus,
+        viewCreated: Boolean?,
+        duration: Long,
+        titleLoaded: Boolean?,
+        transitionStarted: Boolean?,
+        partialContentLoaded: Boolean?,
+        fullContentLoaded: Boolean?
+    ): HashMap<String, Long> {
+        val newDurations = hashMapOf<String, Long>()
+
+        val oldViewCreated = oldStatus.durations[PerfStage.VIEW_CREATED.toString()]
+        val oldTitleLoaded = oldStatus.durations[PerfStage.TITLE_LOADED.toString()]
+        val oldTransitionStarted = oldStatus.durations[PerfStage.TRANSITION_START.toString()]
+        val oldPartialContent = oldStatus.durations[PerfStage.PARTIAL_CONTENT_LOAD.toString()]
+        val oldFullContent = oldStatus.durations[PerfStage.FULL_CONTENT_LOAD.toString()]
+
+        updateDurationsMap(
+            viewCreated,
+            newDurations,
+            duration,
+            oldViewCreated,
+            PerfStage.VIEW_CREATED
+        )
+        updateDurationsMap(
+            titleLoaded,
+            newDurations,
+            duration,
+            oldTitleLoaded,
+            PerfStage.TITLE_LOADED
+        )
+        updateDurationsMap(
+            transitionStarted,
+            newDurations,
+            duration,
+            oldTransitionStarted,
+            PerfStage.TRANSITION_START
+        )
+        updateDurationsMap(
+            partialContentLoaded,
+            newDurations,
+            duration,
+            oldPartialContent,
+            PerfStage.PARTIAL_CONTENT_LOAD
+        )
+        updateDurationsMap(
+            fullContentLoaded,
+            newDurations,
+            duration,
+            oldFullContent,
+            PerfStage.FULL_CONTENT_LOAD
+        )
+
+        return newDurations
+    }
+
+    private fun updateDurationsMap(
+        viewCreated: Boolean?,
+        newDurations: HashMap<String, Long>,
+        duration: Long,
+        oldViewCreated: Long?,
+        perfStage: PerfStage
+    ) {
+        if (viewCreated != null) {
+            newDurations[perfStage.toString()] = duration
+        } else if (oldViewCreated != null) {
+            newDurations[perfStage.toString()] = oldViewCreated
         }
     }
 

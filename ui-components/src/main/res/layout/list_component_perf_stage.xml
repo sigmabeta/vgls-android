@@ -19,9 +19,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
             app:startTime="@{toBind.startTime}"
             app:duration="@{toBind.duration}"
+            app:targetTime="@{toBind.targetTime}"
             />
 
         <LinearLayout

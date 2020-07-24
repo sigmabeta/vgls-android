@@ -2,12 +2,9 @@ package com.vgleadsheets.perf.view.common
 
 data class PerfViewScreenStatus(
     val screenName: String,
+    val targetTimes: HashMap<String, Long> = hashMapOf(),
     val startTime: Long = System.currentTimeMillis(),
-    val completed: Boolean = false,
-    val cancellationDuration: Long? = null,
-    val viewCreationDuration: Long? = null,
-    val titleLoadDuration: Long? = null,
-    val transitionStartDuration: Long? = null,
-    val partialContentLoadDuration: Long? = null,
-    val fullContentLoadDuration: Long? = null
+    val durations: HashMap<String, Long> = hashMapOf(),
+    val completionDuration: Long? = null,
+    val cancellationDuration: Long? = null
 )

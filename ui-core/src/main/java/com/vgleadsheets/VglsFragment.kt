@@ -13,6 +13,7 @@ import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.perf.tracking.common.LoadStatus
+import com.vgleadsheets.perf.tracking.common.PerfStage
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.perf.view.common.PerfView
 import com.vgleadsheets.tracking.Tracker
@@ -70,6 +71,15 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     open fun disablePerfTracking() = false
 
+    open protected fun getPerfTargetTimes() = hashMapOf(
+        Pair(PerfStage.VIEW_CREATED.toString(), 50L),
+        Pair(PerfStage.TITLE_LOADED.toString(), 600L),
+        Pair(PerfStage.TRANSITION_START.toString(), 800L),
+        Pair(PerfStage.PARTIAL_CONTENT_LOAD.toString(), 8000L),
+        Pair(PerfStage.FULL_CONTENT_LOAD.toString(), 8000L),
+        Pair("completion", 8000L)
+    )
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
@@ -91,7 +101,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
         }
 
         perfTracker.start(getPerfScreenName())
-        getPerfView()?.start(getPerfScreenName())
+        getPerfView()?.start(getPerfScreenName(), getPerfTargetTimes())
     }
 
     override fun onCreateView(

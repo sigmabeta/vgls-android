@@ -573,37 +573,28 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             screen.screenName,
             screen.startTime,
             screen.screenName,
-            ""
+            screen.completionDuration?.toString() ?: "...",
+            screen.targetTimes["completion"] ?: throw IllegalArgumentException(
+                "Missing target time for completion."
+            )
         ),
-        PerfStageListModel(
-            screen.screenName,
-            screen.startTime,
-            PerfStage.VIEW_CREATED.toString(),
-            screen.viewCreationDuration?.toString() ?: "..."
-        ),
-        PerfStageListModel(
-            screen.screenName,
-            screen.startTime,
-            PerfStage.TITLE_LOADED.toString(),
-            screen.titleLoadDuration?.toString() ?: "..."
-        ),
-        PerfStageListModel(
-            screen.screenName,
-            screen.startTime,
-            PerfStage.TRANSITION_START.toString(),
-            screen.transitionStartDuration?.toString() ?: "..."
-        ),
-        PerfStageListModel(
-            screen.screenName,
-            screen.startTime,
-            PerfStage.PARTIAL_CONTENT_LOAD.toString(),
-            screen.partialContentLoadDuration?.toString() ?: "..."
-        ),
-        PerfStageListModel(
-            screen.screenName,
-            screen.startTime,
-            PerfStage.FULL_CONTENT_LOAD.toString(),
-            screen.fullContentLoadDuration?.toString() ?: "..."
+        createPerfStageListModel(screen, PerfStage.VIEW_CREATED),
+        createPerfStageListModel(screen, PerfStage.TITLE_LOADED),
+        createPerfStageListModel(screen, PerfStage.TRANSITION_START),
+        createPerfStageListModel(screen, PerfStage.PARTIAL_CONTENT_LOAD),
+        createPerfStageListModel(screen, PerfStage.FULL_CONTENT_LOAD)
+    )
+
+    private fun createPerfStageListModel(
+        screen: PerfViewScreenStatus,
+        perfStage: PerfStage
+    ) = PerfStageListModel(
+        screen.screenName,
+        screen.startTime,
+        perfStage.toString(),
+        screen.durations[perfStage.toString()]?.toString() ?: "...",
+        screen.targetTimes[perfStage.toString()] ?: throw IllegalArgumentException(
+            "Missing target time for stage $perfStage."
         )
     )
 

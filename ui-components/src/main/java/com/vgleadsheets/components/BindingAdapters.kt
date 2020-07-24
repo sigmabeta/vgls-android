@@ -211,14 +211,22 @@ fun bindFullLoadHandler(view: View?, fullLoadText: String, fullLoadHandler: Perf
     }
 }
 
-@BindingAdapter("startTime", "duration")
-fun bindPerfBar(view: View, startTime: Long, duration: String) {
+@BindingAdapter("startTime", "duration", "targetTime")
+fun bindPerfBar(view: View, startTime: Long, duration: String, targetTime: Long) {
     val durationLong = duration.toLongOrNull()
     view.pivotX = 0.0f
 
     if (durationLong == null) {
-        val startPercentage = (System.currentTimeMillis() - startTime) / 4000.0f
-        val animationTime = (1.0f - startPercentage) * 4000
+        val startPercentage = (System.currentTimeMillis().toFloat() - startTime) / targetTime
+        val animationTime = (1.0f - startPercentage) * targetTime
+
+        val startColor = if (startPercentage > 1.0f) {
+            ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
+        } else {
+            ContextCompat.getColor(view.context, R.color.colorPrimary)
+        }
+
+        view.setBackgroundColor(startColor)
 
         view.scaleX = min(startPercentage, 1.0f)
         view.animate()
@@ -226,20 +234,23 @@ fun bindPerfBar(view: View, startTime: Long, duration: String) {
             .setInterpolator(LinearInterpolator())
             .setDuration(animationTime.toLong())
             .withEndAction {
-                val color = ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
-                view.setBackgroundColor(color)
+                val endColor = ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
+                view.setBackgroundColor(endColor)
             }
 
     } else {
-        val durationPercentage = durationLong / 4000.0f
+        val durationPercentage = durationLong.toFloat() / targetTime
 
         view.animate().cancel()
         view.scaleX = min(durationPercentage, 1.0f)
 
-        if (durationPercentage > 1.0f) {
-            val color = ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
-            view.setBackgroundColor(color)
+        val color = if (durationPercentage > 1.0f) {
+            ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
+        } else {
+            ContextCompat.getColor(view.context, R.color.colorPrimary)
         }
+
+        view.setBackgroundColor(color)
     }
 }
 
