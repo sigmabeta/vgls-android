@@ -208,6 +208,20 @@ fun bindEmptyStatePerfEvents(view: View?, handler: EmptyStateListModel.EventHand
     }
 }
 
+@BindingAdapter("handler", "screenName")
+fun bindRatingPerfEvents(view: View?, handler: LabelRatingStarListModel.EventHandler, screenName: String) {
+    if (view != null) {
+        handler.onRatingStarsLoaded(screenName)
+    }
+}
+
+@BindingAdapter("handler", "screenName")
+fun bindLabelValuePerfEvents(view: View?, handler: LabelValueListModel.EventHandler, screenName: String) {
+    if (view != null) {
+        handler.onLabelValueLoaded(screenName)
+    }
+}
+
 @BindingAdapter(
     "partialLoadText",
     "partialLoadHandler",
