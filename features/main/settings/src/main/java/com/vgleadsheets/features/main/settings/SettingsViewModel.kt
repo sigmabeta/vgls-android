@@ -18,6 +18,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
@@ -28,8 +29,10 @@ import timber.log.Timber
 @SuppressWarnings("TooManyFunctions")
 class SettingsViewModel @AssistedInject constructor(
     @Assisted initialState: SettingsState,
+    @Assisted val screenName: String,
     private val storage: Storage,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<SettingsData, SettingsState>(initialState, resourceProvider),
     CheckableListModel.EventHandler,
     DropdownSettingListModel.EventHandler,
@@ -52,6 +55,11 @@ class SettingsViewModel @AssistedInject constructor(
 
     override fun onClicked(clicked: CheckableListModel) {
         setSetting(clicked.settingId, !clicked.checked)
+    }
+
+    override fun onCheckboxLoadComplete(screenName: String) {
+        perfTracker.onPartialContentLoad(screenName)
+        perfTracker.onFullContentLoad(screenName)
     }
 
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
@@ -129,6 +137,7 @@ class SettingsViewModel @AssistedInject constructor(
                         setting.settingId,
                         resourceProvider.getString(setting.labelStringId),
                         setting.value,
+                        screenName,
                         this
                     )
                     is DropdownSetting -> DropdownSettingListModel(
@@ -171,7 +180,7 @@ class SettingsViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SettingsState): SettingsViewModel
+        fun create(initialState: SettingsState, screenName: String): SettingsViewModel
     }
 
     companion object : MvRxViewModelFactory<SettingsViewModel, SettingsState> {
@@ -184,7 +193,7 @@ class SettingsViewModel @AssistedInject constructor(
         ): SettingsViewModel? {
             val fragment: SettingsFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.settingsViewModelFactory.create(state)
+            return fragment.settingsViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

@@ -194,10 +194,10 @@ fun bindLongClickHandler(
     }
 }
 
-@BindingAdapter("titleLoadedHandler", "screenName")
-fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfTracker, screenName: String) {
+@BindingAdapter("handler", "screenName")
+fun bindCheckablePerfEvents(view: View?, handler: CheckableListModel.EventHandler, screenName: String) {
     if (view != null) {
-        titleLoadedHandler.onTitleLoaded(screenName)
+        handler.onCheckboxLoadComplete(screenName)
     }
 }
 
@@ -222,6 +222,13 @@ fun bindPartialLoadHandler(
 
     if (view != null && fullLoadText.isNotEmpty()) {
         fullLoadHandler.onFullContentLoad(screenName)
+    }
+}
+
+@BindingAdapter("titleLoadedHandler", "screenName")
+fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfTracker, screenName: String) {
+    if (view != null) {
+        titleLoadedHandler.onTitleLoaded(screenName)
     }
 }
 

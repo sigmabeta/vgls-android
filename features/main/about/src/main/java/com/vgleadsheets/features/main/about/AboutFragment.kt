@@ -21,6 +21,8 @@ class AboutFragment : VglsFragment(),
 
     private val hudViewModel: HudViewModel by existingViewModel()
 
+    override fun disablePerfTracking() = true
+
     override fun onClicked(clicked: NameCaptionListModel) {
         when (clicked.dataId) {
             R.string.label_link_vgls.toLong() -> getFragmentRouter()
