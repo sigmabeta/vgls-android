@@ -35,7 +35,7 @@ class SearchViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SearchData, SearchState>(initialState, perfTracker) {
+) : AsyncListViewModel<SearchData, SearchState>(initialState, screenName, perfTracker) {
     private val searchOperations = CompositeDisposable()
 
     private val songHandler = object : ImageNameCaptionListModel.EventHandler {
@@ -159,7 +159,9 @@ class SearchViewModel @AssistedInject constructor(
             return listOf(
                 ErrorStateListModel(
                     "stickerbrush",
-                    resourceProvider.getString(R.string.error_search_stickerbrush)
+                    resourceProvider.getString(R.string.error_search_stickerbrush),
+                    screenName,
+                    cancelPerfOnErrorState
                 )
             )
         }
@@ -341,7 +343,9 @@ class SearchViewModel @AssistedInject constructor(
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(
         ErrorStateListModel(
             failedOperationName,
-            error.message ?: "Unknown Error"
+            error.message ?: "Unknown Error",
+            screenName,
+            cancelPerfOnErrorState
         )
     )
 

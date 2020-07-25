@@ -25,7 +25,7 @@ class TagKeyViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<TagKey, TagKeyState>(initialState, perfTracker),
+) : ListViewModel<TagKey, TagKeyState>(initialState, screenName, perfTracker),
     NameCaptionListModel.EventHandler {
     init {
         fetchTagKeys()

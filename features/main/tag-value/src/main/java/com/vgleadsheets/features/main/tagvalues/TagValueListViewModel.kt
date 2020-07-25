@@ -34,7 +34,7 @@ class TagValueListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<TagValueData, TagValueListState>(initialState, perfTracker),
+) : AsyncListViewModel<TagValueData, TagValueListState>(initialState, screenName, perfTracker),
     NameCaptionListModel.EventHandler {
     init {
         fetchTagKey()

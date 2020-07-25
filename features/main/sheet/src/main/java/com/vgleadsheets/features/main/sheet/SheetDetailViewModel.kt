@@ -35,7 +35,7 @@ class SheetDetailViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, perfTracker) {
+) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, screenName, perfTracker) {
     init {
         fetchSheetDetail()
     }
@@ -193,7 +193,14 @@ class SheetDetailViewModel @AssistedInject constructor(
     }
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) =
-        listOf(ErrorStateListModel(failedOperationName, error.message ?: "Unknown Error"))
+        listOf(
+            ErrorStateListModel(
+                failedOperationName,
+                error.message ?: "Unknown Error",
+                screenName,
+                cancelPerfOnErrorState
+            )
+        )
 
     private fun fetchSheetDetail() = withState { state ->
         val songId = state.songId

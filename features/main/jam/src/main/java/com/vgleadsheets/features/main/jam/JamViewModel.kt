@@ -41,7 +41,7 @@ class JamViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<JamData, JamState>(initialState, perfTracker),
+) : AsyncListViewModel<JamData, JamState>(initialState, screenName, perfTracker),
     CtaListModel.EventHandler {
     init {
         fetchJam()
@@ -313,7 +313,14 @@ class JamViewModel @AssistedInject constructor(
     }
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) =
-        listOf(ErrorStateListModel(failedOperationName, error.message ?: "Unknown Error"))
+        listOf(
+            ErrorStateListModel(
+                failedOperationName,
+                error.message ?: "Unknown Error",
+                screenName,
+                cancelPerfOnErrorState
+            )
+        )
 
     private fun fetchJam() = withState { state ->
         val jamId = state.jamId

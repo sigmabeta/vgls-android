@@ -23,7 +23,7 @@ class SongListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Song, SongListState>(initialState, perfTracker),
+) : ListViewModel<Song, SongListState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchSongs()

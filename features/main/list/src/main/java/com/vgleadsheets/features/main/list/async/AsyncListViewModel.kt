@@ -14,6 +14,7 @@ import com.vgleadsheets.perf.tracking.common.PerfTracker
 @Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListState<DataType>> constructor(
     initialState: StateType,
+    private val screenName: String,
     private val perfTracker: PerfTracker
 ) : MvRxViewModel<StateType>(initialState) {
     fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
@@ -79,6 +80,12 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         }
     }
 
+    protected val cancelPerfOnErrorState = object : ErrorStateListModel.EventHandler {
+        override fun onErrorStateLoadComplete(screenName: String) {
+            perfTracker.cancel(screenName)
+        }
+    }
+
     abstract fun createSuccessListModels(
         data: DataType,
         updateTime: Async<*>,
@@ -99,7 +106,14 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
     }
 
     protected fun createErrorStateListModel(error: Throwable) =
-        listOf(ErrorStateListModel("allData", error.message ?: "Unknown Error"))
+        listOf(
+            ErrorStateListModel(
+                "allData",
+                error.message ?: "Unknown Error",
+                screenName,
+                cancelPerfOnErrorState
+            )
+        )
 
     @SuppressWarnings("ComplexMethod")
     private fun createDataListModels(

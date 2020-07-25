@@ -24,7 +24,7 @@ class GameListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Game, GameListState>(initialState, perfTracker),
+) : ListViewModel<Game, GameListState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGames()

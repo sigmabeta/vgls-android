@@ -24,7 +24,7 @@ class ComposerListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Composer, ComposerListState>(initialState, perfTracker),
+) : ListViewModel<Composer, ComposerListState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchComposers()

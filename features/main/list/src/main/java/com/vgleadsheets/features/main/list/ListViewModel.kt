@@ -17,6 +17,7 @@ import com.vgleadsheets.perf.tracking.common.PerfTracker
 @Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class ListViewModel<DataType, StateType : ListState<DataType>> constructor(
     initialState: StateType,
+    private val screenName: String,
     private val perfTracker: PerfTracker
 ) : MvRxViewModel<StateType>(initialState) {
     fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
@@ -82,6 +83,12 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
 
     protected val cancelPerfOnEmptyState = object : EmptyStateListModel.EventHandler {
         override fun onEmptyStateLoadComplete(screenName: String) {
+            perfTracker.cancel(screenName)
+        }
+    }
+
+    protected val cancelPerfOnErrorState = object : ErrorStateListModel.EventHandler {
+        override fun onErrorStateLoadComplete(screenName: String) {
             perfTracker.cancel(screenName)
         }
     }
@@ -155,8 +162,15 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         return listModels
     }
 
-    private fun createErrorStateListModel(error: Throwable) =
-        listOf(ErrorStateListModel("allData", error.message ?: "Unknown Error"))
+    protected fun createErrorStateListModel(error: Throwable) =
+        listOf(
+            ErrorStateListModel(
+                "allData",
+                error.message ?: "Unknown Error",
+                screenName,
+                cancelPerfOnErrorState
+            )
+        )
 
     companion object {
         const val LOADING_ITEMS = 15

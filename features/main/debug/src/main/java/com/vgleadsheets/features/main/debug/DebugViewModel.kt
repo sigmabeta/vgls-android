@@ -30,11 +30,12 @@ import timber.log.Timber
 @SuppressWarnings("TooManyFunctions")
 class DebugViewModel @AssistedInject constructor(
     @Assisted initialState: DebugState,
+    @Assisted val screenName: String,
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
     private val repository: Repository,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<DebugData, DebugState>(initialState, perfTracker),
+) : AsyncListViewModel<DebugData, DebugState>(initialState, screenName, perfTracker),
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler {
     init {
@@ -200,7 +201,7 @@ class DebugViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: DebugState): DebugViewModel
+        fun create(initialState: DebugState, screenName: String): DebugViewModel
     }
 
     companion object : MvRxViewModelFactory<DebugViewModel, DebugState> {
@@ -213,7 +214,7 @@ class DebugViewModel @AssistedInject constructor(
         ): DebugViewModel? {
             val fragment: DebugFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.debugViewModelFactory.create(state)
+            return fragment.debugViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }
