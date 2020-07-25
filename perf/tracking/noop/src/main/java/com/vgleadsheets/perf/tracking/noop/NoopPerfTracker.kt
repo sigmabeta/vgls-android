@@ -23,11 +23,16 @@ class NoopPerfTracker : PerfTracker {
     override fun getEventStream() = eventSink
 
     override fun start(screenName: String) {
-        if (screens[screenName] != null) {
-            throw IllegalStateException(
-                "Active trace list from a previous instance of screen $screenName " +
-                        "still exists!"
-            )
+        val oldScreen = screens[screenName]
+        if (oldScreen != null) {
+            if (
+                !oldScreen.stages[PerfStage.CANCELLATION.ordinal] && !oldScreen.stages[PerfStage.COMPLETION.ordinal]
+            ) {
+                throw IllegalStateException(
+                    "Active trace list from a previous instance of screen $screenName " +
+                            "still exists!"
+                )
+            }
         }
 
         Timber.d("Starting timing for $screenName...")
@@ -60,9 +65,13 @@ class NoopPerfTracker : PerfTracker {
 
     override fun cancel(screenName: String) {
         val screen = screens[screenName]
-            ?: throw IllegalStateException("Traces for $screenName not found!")
+            ?: throw IllegalStateException("Screen $screenName not found!")
 
         if (screen.stages[PerfStage.CANCELLATION.ordinal]) {
+            return
+        }
+
+        if (screen.stages[PerfStage.COMPLETION.ordinal]) {
             return
         }
 
@@ -77,6 +86,25 @@ class NoopPerfTracker : PerfTracker {
             )
         )
         screen.stages[PerfStage.CANCELLATION.ordinal] = true
+
+        stopFailureTimer(screenName)
+    }
+
+    override fun clear(screenName: String) {
+        val screen = screens[screenName]
+            ?: throw IllegalStateException("Screen $screenName not found!")
+
+        if (screen.stages[PerfStage.CANCELLATION.ordinal]) {
+            return
+        }
+
+        if (screen.stages[PerfStage.COMPLETION.ordinal]) {
+            return
+        }
+
+        Timber.w("Clearing $screenName from traces list.")
+
+        screens.remove(screenName)
     }
 
     private fun finishTrace(screenName: String, perfStage: PerfStage) {
@@ -87,12 +115,12 @@ class NoopPerfTracker : PerfTracker {
             return
         }
 
-        if (screen.stages[PerfStage.COMPLETION.ordinal]) {
-            throw IllegalStateException("Trace $screenName:$perfStage has already been completed!")
+        if (screen.stages[PerfStage.CANCELLATION.ordinal]) {
+            return
         }
 
-        if (screen.stages[PerfStage.CANCELLATION.ordinal]) {
-            throw IllegalStateException("Trace $screenName:$perfStage has already been cancelled!")
+        if (screen.stages[PerfStage.COMPLETION.ordinal]) {
+            return
         }
 
         val duration = System.currentTimeMillis() - screen.startTime

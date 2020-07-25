@@ -186,7 +186,7 @@ class HudViewModel @AssistedInject constructor(
                 Pair(PerfStage.TRANSITION_START.toString(), 800L),
                 Pair(PerfStage.PARTIAL_CONTENT_LOAD.toString(), 4000L),
                 Pair(PerfStage.FULL_CONTENT_LOAD.toString(), 4000L),
-                Pair("completion", 8000L)
+                Pair("completion", 5000L)
             )
         )
 

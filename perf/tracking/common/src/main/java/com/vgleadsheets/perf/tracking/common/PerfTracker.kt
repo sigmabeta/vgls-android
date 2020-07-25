@@ -18,5 +18,7 @@ interface PerfTracker {
 
     fun cancel(screenName: String)
 
+    fun clear(screenName: String)
+
     fun getEventStream(): Observable<PerfEvent>
 }

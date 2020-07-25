@@ -232,21 +232,21 @@ fun bindPerfBar(
 ) {
     view.pivotX = 0.0f
 
-    if (cancellation != null) {
-        val cancelPercentage = cancellation.toFloat() / targetTime
-
-        view.animate().cancel()
-        view.scaleX = min(cancelPercentage, 1.0f)
-        view.setBackgroundColor(
-            ContextCompat.getColor(view.context, android.R.color.holo_orange_light)
-        )
-
-        return
-    }
-
     val durationLong = duration.toLongOrNull()
 
     if (durationLong == null) {
+        if (cancellation != null) {
+            val cancelPercentage = cancellation.toFloat() / targetTime
+
+            view.animate().cancel()
+            view.scaleX = min(cancelPercentage, 1.0f)
+            view.setBackgroundColor(
+                ContextCompat.getColor(view.context, android.R.color.holo_orange_light)
+            )
+
+            return
+        }
+
         val startPercentage = (System.currentTimeMillis().toFloat() - startTime) / targetTime
         val animationTime = (1.0f - startPercentage) * targetTime
 

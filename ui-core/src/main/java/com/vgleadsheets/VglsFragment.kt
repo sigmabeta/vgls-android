@@ -108,6 +108,15 @@ abstract class VglsFragment : BaseMvRxFragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // TODO is this a good idea?
+        if (!disablePerfTracking()) {
+            perfTracker.clear(getPerfScreenName())
+        }
+    }
+
     protected fun showError(
         error: Throwable,
         action: View.OnClickListener? = null,
