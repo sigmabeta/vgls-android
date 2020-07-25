@@ -9,6 +9,8 @@ data class SheetListModel(
 
     interface ImageListener {
         fun onClicked()
+        fun onLoadStarted()
+        fun onLoadComplete()
         fun onLoadFailed(imageUrl: String, ex: Exception?)
     }
 }

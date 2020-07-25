@@ -34,8 +34,11 @@ fun bindSheetImage(
     )
     pulseAnimator.start()
 
+    listener.onLoadStarted()
+
     val callback = object : Callback {
         override fun onSuccess() {
+            listener.onLoadComplete()
             pulseAnimator.cancel()
             view.getEndPulseAnimator().start()
         }
