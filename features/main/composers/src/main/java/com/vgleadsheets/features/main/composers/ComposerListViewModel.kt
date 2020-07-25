@@ -24,7 +24,7 @@ class ComposerListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Composer, ComposerListState>(initialState, resourceProvider),
+) : ListViewModel<Composer, ComposerListState>(initialState, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchComposers()
@@ -51,7 +51,9 @@ class ComposerListViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No composers found at all. Check your internet connection?"
+        "No composers found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -65,7 +67,9 @@ class ComposerListViewModel @AssistedInject constructor(
         return if (availableComposers.isEmpty()) arrayListOf(
             EmptyStateListModel(
                 R.drawable.ic_album_24dp,
-                "No composers found with a ${selectedPart.apiId} part. Try another part?"
+                "No composers found with a ${selectedPart.apiId} part. Try another part?",
+                screenName,
+                cancelPerfOnEmptyState
             )
         ) else availableComposers
             .map {

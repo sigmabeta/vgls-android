@@ -25,7 +25,7 @@ class TagKeyViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<TagKey, TagKeyState>(initialState, resourceProvider),
+) : ListViewModel<TagKey, TagKeyState>(initialState, perfTracker),
     NameCaptionListModel.EventHandler {
     init {
         fetchTagKeys()
@@ -55,7 +55,9 @@ class TagKeyViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No tags found at all. Check your internet connection?"
+        "No tags found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(

@@ -35,7 +35,7 @@ class SearchViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SearchData, SearchState>(initialState, resourceProvider) {
+) : AsyncListViewModel<SearchData, SearchState>(initialState, perfTracker) {
     private val searchOperations = CompositeDisposable()
 
     private val songHandler = object : ImageNameCaptionListModel.EventHandler {
@@ -185,7 +185,9 @@ class SearchViewModel @AssistedInject constructor(
             listOf(
                 EmptyStateListModel(
                     R.drawable.ic_description_24dp,
-                    resourceProvider.getString(R.string.empty_search_no_results)
+                    resourceProvider.getString(R.string.empty_search_no_results),
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {

@@ -17,6 +17,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
@@ -31,8 +32,9 @@ class DebugViewModel @AssistedInject constructor(
     @Assisted initialState: DebugState,
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
-    private val repository: Repository
-) : AsyncListViewModel<DebugData, DebugState>(initialState, resourceProvider),
+    private val repository: Repository,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<DebugData, DebugState>(initialState, perfTracker),
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler {
     init {
@@ -55,7 +57,11 @@ class DebugViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No settings found at all. What's going on here?"
+        "No settings found at all. What's going on here?",
+        "",
+        object : EmptyStateListModel.EventHandler {
+            override fun onEmptyStateLoadComplete(screenName: String) = Unit
+        }
     )
 
     override fun createSuccessListModels(

@@ -41,7 +41,7 @@ class JamViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<JamData, JamState>(initialState, resourceProvider),
+) : AsyncListViewModel<JamData, JamState>(initialState, perfTracker),
     CtaListModel.EventHandler {
     init {
         fetchJam()
@@ -66,7 +66,9 @@ class JamViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
-        "Unknown error occurred."
+        "Unknown error occurred.",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     fun refreshJam() = withState { state ->
@@ -216,7 +218,9 @@ class JamViewModel @AssistedInject constructor(
         listOf(
             EmptyStateListModel(
                 R.drawable.ic_list_black_24dp,
-                resourceProvider.getString(R.string.empty_setlist)
+                resourceProvider.getString(R.string.empty_setlist),
+                screenName,
+                cancelPerfOnEmptyState
             )
         )
     } else {

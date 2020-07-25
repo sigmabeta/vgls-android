@@ -33,7 +33,7 @@ class SettingsViewModel @AssistedInject constructor(
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SettingsData, SettingsState>(initialState, resourceProvider),
+) : AsyncListViewModel<SettingsData, SettingsState>(initialState, perfTracker),
     CheckableListModel.EventHandler,
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler {
@@ -68,7 +68,9 @@ class SettingsViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No settings found at all. What's going on here?"
+        "No settings found at all. What's going on here?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(

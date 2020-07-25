@@ -3,17 +3,18 @@ package com.vgleadsheets.features.main.list.async
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.mvrx.MvRxViewModel
-import com.vgleadsheets.resources.ResourceProvider
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 @Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListState<DataType>> constructor(
     initialState: StateType,
-    private val resourceProvider: ResourceProvider
+    private val perfTracker: PerfTracker
 ) : MvRxViewModel<StateType>(initialState) {
     fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
         setState {
@@ -71,6 +72,12 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         LoadingImageNameCaptionListModel("allData", index)
 
     protected open val showDefaultEmptyState = true
+
+    protected val cancelPerfOnEmptyState = object : EmptyStateListModel.EventHandler {
+        override fun onEmptyStateLoadComplete(screenName: String) {
+            perfTracker.cancel(screenName)
+        }
+    }
 
     abstract fun createSuccessListModels(
         data: DataType,

@@ -35,7 +35,7 @@ class SheetDetailViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, resourceProvider) {
+) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, perfTracker) {
     init {
         fetchSheetDetail()
     }
@@ -53,7 +53,9 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
-        "Sheet not found. Check your internet connection?."
+        "Sheet not found. Check your internet connection?.",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(

@@ -34,7 +34,7 @@ class TagValueListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<TagValueData, TagValueListState>(initialState, resourceProvider),
+) : AsyncListViewModel<TagValueData, TagValueListState>(initialState, perfTracker),
     NameCaptionListModel.EventHandler {
     init {
         fetchTagKey()
@@ -58,7 +58,9 @@ class TagValueListViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No tag values found at all. Check your internet connection?"
+        "No tag values found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -146,7 +148,9 @@ class TagValueListViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No tag values found with a ${selectedPart.apiId} part. Try another part?"
+                    "No tag values found with a ${selectedPart.apiId} part. Try another part?",
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {

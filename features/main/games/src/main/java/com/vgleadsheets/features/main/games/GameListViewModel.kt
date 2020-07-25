@@ -24,7 +24,7 @@ class GameListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Game, GameListState>(initialState, resourceProvider),
+) : ListViewModel<Game, GameListState>(initialState, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGames()
@@ -51,7 +51,9 @@ class GameListViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No games found at all. Check your internet connection?"
+        "No games found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -64,8 +66,10 @@ class GameListViewModel @AssistedInject constructor(
 
         return if (availableGames.isEmpty()) listOf(
             EmptyStateListModel(
-                com.vgleadsheets.features.main.list.R.drawable.ic_album_24dp,
-                "No games found with a ${selectedPart.apiId} part. Try another part?"
+                R.drawable.ic_album_24dp,
+                "No games found with a ${selectedPart.apiId} part. Try another part?",
+                screenName,
+                cancelPerfOnEmptyState
             )
         ) else availableGames
             .map {
@@ -74,7 +78,7 @@ class GameListViewModel @AssistedInject constructor(
                     it.name,
                     generateSubtitleText(it.songs),
                     it.photoUrl,
-                    com.vgleadsheets.features.main.list.R.drawable.placeholder_game,
+                    R.drawable.placeholder_game,
                     this@GameListViewModel,
                     screenName = screenName,
                     tracker = perfTracker

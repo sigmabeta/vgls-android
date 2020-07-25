@@ -201,6 +201,13 @@ fun bindCheckablePerfEvents(view: View?, handler: CheckableListModel.EventHandle
     }
 }
 
+@BindingAdapter("handler", "screenName")
+fun bindEmptyStatePerfEvents(view: View?, handler: EmptyStateListModel.EventHandler, screenName: String) {
+    if (view != null) {
+        handler.onEmptyStateLoadComplete(screenName)
+    }
+}
+
 @BindingAdapter(
     "partialLoadText",
     "partialLoadHandler",

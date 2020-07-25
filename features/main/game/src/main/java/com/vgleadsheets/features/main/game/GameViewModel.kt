@@ -30,7 +30,7 @@ class GameViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<GameData, GameState>(initialState, resourceProvider),
+) : AsyncListViewModel<GameData, GameState>(initialState, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGame()
@@ -51,7 +51,9 @@ class GameViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No songs found at all. Check your internet connection?"
+        "No songs found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -139,7 +141,9 @@ class GameViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No songs found with a ${selectedPart.apiId} part. Try another part?"
+                    "No songs found with a ${selectedPart.apiId} part. Try another part?",
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {

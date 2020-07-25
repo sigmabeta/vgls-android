@@ -29,9 +29,9 @@ class JamListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Jam, JamListState>(initialState, resourceProvider),
+) : ListViewModel<Jam, JamListState>(initialState, perfTracker),
     CtaListModel.EventHandler,
-    NameCaptionListModel.EventHandler {
+    NameCaptionListModel.EventHandler, EmptyStateListModel.EventHandler {
     init {
         fetchJams()
     }
@@ -57,6 +57,10 @@ class JamListViewModel @AssistedInject constructor(
         )
     }
 
+    override fun onEmptyStateLoadComplete(screenName: String) {
+        perfTracker.cancel(screenName)
+    }
+
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.title_jams),
         "",
@@ -69,7 +73,9 @@ class JamListViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
-        "Unknown error occurred."
+        "Unknown error occurred.",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -81,7 +87,9 @@ class JamListViewModel @AssistedInject constructor(
         arrayListOf(
             EmptyStateListModel(
                 R.drawable.ic_list_black_24dp,
-                "You haven't followed any jams. Click above to search for one."
+                "You haven't followed any jams. Click above to search for one.",
+                screenName,
+                this
             )
         )
     } else {
