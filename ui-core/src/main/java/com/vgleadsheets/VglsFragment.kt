@@ -29,6 +29,8 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     protected val idArgs: IdArgs by args()
 
+    private var perfTrackingStarted = false
+
     @LayoutRes
     abstract fun getLayoutId(): Int
 
@@ -62,6 +64,8 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     open fun disablePerfTracking() = false
 
+    open fun getPerfTrackingMinScreenHeight() = 580
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
@@ -80,8 +84,21 @@ abstract class VglsFragment : BaseMvRxFragment() {
             return
         }
 
+        val displayMetrics = resources.displayMetrics
+        val heightPixels = displayMetrics.heightPixels
+        val heightDp = heightPixels.pxToDp(displayMetrics)
+        val minHeightDp = getPerfTrackingMinScreenHeight()
+
+        if (heightDp < minHeightDp) {
+            Timber.i("Not starting perf tracker: Screen height $heightDp dp too small " +
+                    "for screen ${getPerfScreenName()} (min height $minHeightDp dp).")
+            return
+        }
+
         perfTracker.start(getPerfScreenName())
+        perfTrackingStarted = true
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -103,7 +120,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     override fun onStop() {
         super.onStop()
-        if (!disablePerfTracking()) {
+        if (perfTrackingStarted) {
             perfTracker.cancel(getPerfScreenName())
         }
     }
@@ -111,9 +128,9 @@ abstract class VglsFragment : BaseMvRxFragment() {
     override fun onDestroy() {
         super.onDestroy()
 
-        // TODO is this a good idea?
-        if (!disablePerfTracking()) {
+        if (perfTrackingStarted) {
             perfTracker.clear(getPerfScreenName())
+            perfTrackingStarted = false
         }
     }
 

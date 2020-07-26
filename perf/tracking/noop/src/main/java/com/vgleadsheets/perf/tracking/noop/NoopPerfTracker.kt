@@ -64,8 +64,7 @@ class NoopPerfTracker : PerfTracker {
         finishTrace(screenName, PerfStage.FULL_CONTENT_LOAD)
 
     override fun cancel(screenName: String) {
-        val screen = screens[screenName]
-            ?: throw IllegalStateException("Screen $screenName not found!")
+        val screen = screens[screenName] ?: return
 
         if (screen.stages[PerfStage.CANCELLATION.ordinal]) {
             return

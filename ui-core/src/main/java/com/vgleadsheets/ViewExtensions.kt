@@ -103,6 +103,7 @@ fun RecyclerView.tabletSetListsSpecialInsets(topOffset: Int, bottomOffset: Int) 
 
 fun Float.spToPx(metrics: DisplayMetrics) = (this * metrics.scaledDensity).round()
 fun Float.dpToPx(metrics: DisplayMetrics) = (this * metrics.density).round()
+fun Int.pxToDp(metrics: DisplayMetrics) = (this / metrics.density).round()
 
 private fun Float.round() =
     (if (this < 0) ceil(this - ROUND_THRESHOLD) else floor(this + ROUND_THRESHOLD)).toInt()
