@@ -29,6 +29,10 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
         return query
     }
 
+    override fun getPerfScreenName() = getTrackingScreen().toString()
+
+    override fun disablePerfTracking() = true
+
     override fun onBackPress(): Boolean {
         hudViewModel.exitSearch()
         return false
