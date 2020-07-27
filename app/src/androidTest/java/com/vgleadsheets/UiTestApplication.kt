@@ -40,7 +40,6 @@ class UiTestApplication : DaggerApplication(), HasAndroidInjector {
         val picasso = Picasso.Builder(this)
             .downloader(okHttp3Downloader)
             .indicatorsEnabled(BuildConfig.DEBUG)
-            .loggingEnabled(BuildConfig.DEBUG)
             .defaultBitmapConfig(Bitmap.Config.RGB_565)
             .build()
 
