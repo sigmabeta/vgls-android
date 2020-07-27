@@ -169,7 +169,12 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun clearPerfTimers() {
-        perfViewTimers.keys.forEach { screenName ->
+        // This copy step prevents concurrentmod exceptions
+        val timerKeys = perfViewTimers
+            .keys
+            .toMutableList()
+
+        timerKeys.forEach { screenName ->
             removePerfScreenStatus(screenName)
         }
     }

@@ -76,7 +76,7 @@ class NoopPerfTracker : PerfTracker {
 
         val duration = System.currentTimeMillis() - screen.startTime
 
-        Timber.w("Cancelling timing for $screenName after $duration ms.")
+        Timber.i("Cancelling timing for $screenName after $duration ms.")
         eventSink.onNext(
             PerfEvent(
                 screenName,
@@ -101,7 +101,14 @@ class NoopPerfTracker : PerfTracker {
             return
         }
 
-        Timber.w("Clearing $screenName from traces list.")
+        Timber.i("Clearing $screenName from traces list.")
+
+
+        val timer = failureTimers[screenName]
+        if (timer != null) {
+            Timber.w("Timer for $screenName was not previously cleared.")
+            stopFailureTimer(screenName)
+        }
 
         screens.remove(screenName)
     }
@@ -196,7 +203,11 @@ class NoopPerfTracker : PerfTracker {
 
     private fun stopFailureTimer(screenName: String) {
         val timer = failureTimers[screenName]
-            ?: throw IllegalStateException("Failure timer for $screenName has already been stopped!")
+
+        if (timer == null) {
+            Timber.w("Failure timer for $screenName has already been stopped!")
+            return
+        }
 
         timer.dispose()
 
