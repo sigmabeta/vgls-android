@@ -19,6 +19,8 @@ class TagValueSongListFragment : AsyncListFragment<TagValueSongListData, TagValu
 
     override fun getTrackingScreen() = TrackingScreen.LIST_TAG_VALUE_SONG
 
+    override fun getFullLoadTargetTime() = 2000L
+
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(TagValueSongListState::clickedListModel) {
             val clickedId = it?.dataId

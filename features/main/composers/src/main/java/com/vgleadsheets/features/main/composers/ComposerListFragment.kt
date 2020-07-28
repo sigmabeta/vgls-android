@@ -12,6 +12,8 @@ class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
 
     override fun getTrackingScreen() = TrackingScreen.LIST_COMPOSER
 
+    override fun getFullLoadTargetTime() = 5000L
+
     override val viewModel: ComposerListViewModel by fragmentViewModel()
 
     override fun subscribeToViewEvents() {

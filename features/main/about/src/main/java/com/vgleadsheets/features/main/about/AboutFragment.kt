@@ -23,6 +23,8 @@ class AboutFragment : VglsFragment(),
 
     override fun disablePerfTracking() = true
 
+    override fun getFullLoadTargetTime() = -1L
+
     override fun onClicked(clicked: NameCaptionListModel) {
         when (clicked.dataId) {
             R.string.label_link_vgls.toLong() -> getFragmentRouter()

@@ -33,6 +33,8 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
     override fun disablePerfTracking() = true
 
+    override fun getFullLoadTargetTime() = -1L
+
     override fun onBackPress(): Boolean {
         hudViewModel.exitSearch()
         return false

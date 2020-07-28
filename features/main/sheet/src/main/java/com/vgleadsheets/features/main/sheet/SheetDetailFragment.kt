@@ -24,6 +24,8 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
     override fun getPerfTrackingMinScreenHeight() = 600
 
+    override fun getFullLoadTargetTime() = 500L
+
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(SheetDetailState::clickedCtaModel) {

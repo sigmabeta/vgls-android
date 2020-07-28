@@ -4,7 +4,7 @@ import io.reactivex.Observable
 
 
 interface PerfTracker {
-    fun start(screenName: String)
+    fun start(screenName: String, targetTimes: Map<String, Long>?)
 
     fun onViewCreated(screenName: String)
 

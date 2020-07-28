@@ -22,7 +22,7 @@ class NoopPerfTracker : PerfTracker {
 
     override fun getEventStream() = eventSink
 
-    override fun start(screenName: String) {
+    override fun start(screenName: String, targetTimes: Map<String, Long>?) {
         val oldScreen = screens[screenName]
         if (oldScreen != null) {
             if (
@@ -40,7 +40,8 @@ class NoopPerfTracker : PerfTracker {
             PerfEvent(
                 screenName,
                 null,
-                -1L
+                -1L,
+                targetTimes
             )
         )
 
@@ -230,6 +231,6 @@ class NoopPerfTracker : PerfTracker {
 
 
     companion object {
-        const val TIMEOUT_SCREEN_LOAD = 10_000L
+        const val TIMEOUT_SCREEN_LOAD = 15_000L
     }
 }

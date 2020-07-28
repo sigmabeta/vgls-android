@@ -12,6 +12,8 @@ class GameListFragment : ListFragment<Game, GameListState>() {
 
     override fun getTrackingScreen() = TrackingScreen.LIST_GAME
 
+    override fun getFullLoadTargetTime() = 5000L
+
     override val viewModel: GameListViewModel by fragmentViewModel()
 
     override fun subscribeToViewEvents() {

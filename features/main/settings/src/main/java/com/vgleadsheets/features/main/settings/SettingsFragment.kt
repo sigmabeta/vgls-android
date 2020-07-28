@@ -13,6 +13,8 @@ class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
 
     override fun getTrackingScreen() = TrackingScreen.SETTINGS
 
+    override fun getFullLoadTargetTime() = 500L
+
     override val viewModel: SettingsViewModel by fragmentViewModel()
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName

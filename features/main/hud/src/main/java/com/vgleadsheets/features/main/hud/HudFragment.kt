@@ -117,6 +117,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     override fun disablePerfTracking() = true
 
+    override fun getFullLoadTargetTime() = -1L
+
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
     }

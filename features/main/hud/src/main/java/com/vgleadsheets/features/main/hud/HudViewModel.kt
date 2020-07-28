@@ -180,19 +180,13 @@ class HudViewModel @AssistedInject constructor(
     }
 
     private fun start(
-        screenName: String
+        screenName: String,
+        targetTimes: Map<String, Long>
     ) = withState {
         // This must be created outside setState to make it a pure reducer..
         val newScreenStatus = PerfViewScreenStatus(
             screenName,
-            hashMapOf(
-                Pair(PerfStage.VIEW_CREATED.toString(), 50L),
-                Pair(PerfStage.TITLE_LOADED.toString(), 600L),
-                Pair(PerfStage.TRANSITION_START.toString(), 800L),
-                Pair(PerfStage.PARTIAL_CONTENT_LOAD.toString(), 4000L),
-                Pair(PerfStage.FULL_CONTENT_LOAD.toString(), 4000L),
-                Pair("completion", 5000L)
-            )
+            targetTimes
         )
 
         setState {
@@ -310,7 +304,7 @@ class HudViewModel @AssistedInject constructor(
                     PerfStage.FULL_CONTENT_LOAD -> fullContentLoaded(it.screenName, it.duration)
                     PerfStage.CANCELLATION -> cancelled(it.screenName, it.duration)
                     PerfStage.COMPLETION -> completed(it.screenName, it.duration)
-                    null -> start(it.screenName)
+                    null -> start(it.screenName, it.targetTimes!!)
                 }
             }
             .disposeOnClear()
@@ -391,7 +385,7 @@ class HudViewModel @AssistedInject constructor(
         transitionStarted: Boolean?,
         partialContentLoaded: Boolean?,
         fullContentLoaded: Boolean?
-    ): HashMap<String, Long> {
+    ): Map<String, Long> {
         val newDurations = hashMapOf<String, Long>()
 
         val oldViewCreated = oldStatus.durations[PerfStage.VIEW_CREATED.toString()]
@@ -441,7 +435,7 @@ class HudViewModel @AssistedInject constructor(
 
     private fun updateDurationsMap(
         viewCreated: Boolean?,
-        newDurations: HashMap<String, Long>,
+        newDurations: MutableMap<String, Long>,
         duration: Long,
         oldViewCreated: Long?,
         perfStage: PerfStage
