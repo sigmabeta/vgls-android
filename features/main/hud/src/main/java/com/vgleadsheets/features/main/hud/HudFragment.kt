@@ -44,10 +44,10 @@ import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.components.PerfStageListModel
+import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
+import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.common.PerfStage
-import com.vgleadsheets.perf.view.common.PerfViewScreenStatus
-import com.vgleadsheets.perf.view.common.PerfViewStatus
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding

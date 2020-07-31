@@ -131,10 +131,6 @@ dependencies {
         implementation project(path: ':tracking-noop')
     }
 
-    // Perf Tracking View (should only be visible on debug builds)
-    debugImplementation project(path: ':perf:view:impl')
-    releaseImplementation project(path: ':perf:view:noop')
-
     // Perf Tracker View (should only be activated on release builds)
     debugImplementation project(path: ':perf:tracking:noop')
     releaseImplementation project(path: ':perf:tracking:impl')

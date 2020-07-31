@@ -1,4 +1,4 @@
-package com.vgleadsheets.perf.view.common
+package com.vgleadsheets.features.main.hud.perf
 
 data class PerfViewScreenStatus(
     val screenName: String,

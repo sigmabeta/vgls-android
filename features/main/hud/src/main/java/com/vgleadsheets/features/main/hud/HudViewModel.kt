@@ -10,11 +10,11 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.common.PerfStage
 import com.vgleadsheets.perf.tracking.common.PerfTracker
-import com.vgleadsheets.perf.view.common.PerfViewScreenStatus
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable

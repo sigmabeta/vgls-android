@@ -7,9 +7,6 @@ dependencies {
     // Perf tracking (should be disabled in debug builds, see app/build.gradle)
     api project(path: ':perf:tracking:common')
 
-    // Perf View (should be disabled in release builds, see app/build.gradle
-    api project(path: ':perf:view:common')
-
     // To allow features to interact with MainActivity's state.
     api project(path: ":features:main:router")
 

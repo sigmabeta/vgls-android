@@ -5,7 +5,6 @@ import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.perf.tracking.PerfTrackingModule
-import com.vgleadsheets.perf.view.PerfViewModule
 import com.vgleadsheets.repository.di.RepositoryModule
 import com.vgleadsheets.resources.di.ResourcesModule
 import com.vgleadsheets.storage.di.StorageModule
@@ -30,7 +29,6 @@ import javax.inject.Singleton
         NetworkModule::class,
         StorageModule::class,
         TrackerModule::class,
-        PerfViewModule::class,
         PerfTrackingModule::class
     ]
 )

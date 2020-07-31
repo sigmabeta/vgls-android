@@ -4,9 +4,9 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.view.common.PerfViewStatus
 
 data class HudState(
     val alwaysShowBack: Boolean = false,
