@@ -26,7 +26,7 @@ buildscript {
         photoview_version = "2.0.0"
         firebase_version = "17.2.0"
         crashlytics_version = "2.10.1"
-        firebase_perf_version = "19.0.8"
+        firebase_perf_version = "19.0.0"
         simplestore_version = "0.0.7"
         leakcanary_version = "2.0-beta-3"
     }
