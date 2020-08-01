@@ -131,9 +131,9 @@ dependencies {
         implementation project(path: ':tracking-noop')
     }
 
-    // Perf Tracker View (should only be activated on release builds)
+    // Perf tracking (only log to firebase on release builds)
     debugImplementation project(path: ':perf:tracking:noop')
-    releaseImplementation project(path: ':perf:tracking:impl')
+    releaseImplementation project(path: ':perf:tracking:firebase')
 
     // Memory leak detection (Uncomment to enable)
 //    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"

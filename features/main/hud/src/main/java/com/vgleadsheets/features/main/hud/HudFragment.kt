@@ -47,7 +47,6 @@ import com.vgleadsheets.components.PerfStageListModel
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.common.PerfStage
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
@@ -577,16 +576,16 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             ),
             screen.cancellationDuration
         ),
-        createPerfStageListModel(screen, PerfStage.VIEW_CREATED),
-        createPerfStageListModel(screen, PerfStage.TITLE_LOADED),
-        createPerfStageListModel(screen, PerfStage.TRANSITION_START),
-        createPerfStageListModel(screen, PerfStage.PARTIAL_CONTENT_LOAD),
-        createPerfStageListModel(screen, PerfStage.FULL_CONTENT_LOAD)
+        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.VIEW_CREATED),
+        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.TITLE_LOADED),
+        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.TRANSITION_START),
+        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.PARTIAL_CONTENT_LOAD),
+        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.FULL_CONTENT_LOAD)
     )
 
     private fun createPerfStageListModel(
         screen: PerfViewScreenStatus,
-        perfStage: PerfStage
+        perfStage: com.vgleadsheets.perf.tracking.api.PerfStage
     ) = PerfStageListModel(
         screen.screenName,
         screen.startTime,

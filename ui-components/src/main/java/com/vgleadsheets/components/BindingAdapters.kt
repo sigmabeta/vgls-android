@@ -18,7 +18,6 @@ import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
-import com.vgleadsheets.perf.tracking.common.PerfTracker
 import kotlin.math.min
 
 @BindingAdapter("sheetUrl", "listener")
@@ -79,7 +78,7 @@ fun bindBigPhoto(
     view: ImageView,
     photoUrl: String?,
     placeholder: Int,
-    imageLoadedHandler: PerfTracker,
+    imageLoadedHandler: com.vgleadsheets.perf.tracking.api.PerfTracker,
     screenName: String
 ) {
     if (placeholder != R.drawable.ic_logo) {
@@ -232,9 +231,9 @@ fun bindLabelValuePerfEvents(view: View?, handler: LabelValueListModel.EventHand
 fun bindPartialLoadHandler(
     view: View?,
     partialLoadText: String,
-    partialLoadHandler: PerfTracker,
+    partialLoadHandler: com.vgleadsheets.perf.tracking.api.PerfTracker,
     fullLoadText: String,
-    fullLoadHandler: PerfTracker,
+    fullLoadHandler: com.vgleadsheets.perf.tracking.api.PerfTracker,
     screenName: String
 ) {
     if (view != null && partialLoadText.isNotEmpty()) {
@@ -247,7 +246,7 @@ fun bindPartialLoadHandler(
 }
 
 @BindingAdapter("titleLoadedHandler", "screenName")
-fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfTracker, screenName: String) {
+fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: com.vgleadsheets.perf.tracking.api.PerfTracker, screenName: String) {
     if (view != null) {
         titleLoadedHandler.onTitleLoaded(screenName)
     }

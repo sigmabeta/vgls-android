@@ -17,7 +17,6 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import java.util.Locale
@@ -28,7 +27,7 @@ class JamListViewModel @AssistedInject constructor(
     @Assisted val screenName: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: PerfTracker
+    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
 ) : ListViewModel<Jam, JamListState>(initialState, screenName, perfTracker),
     CtaListModel.EventHandler,
     NameCaptionListModel.EventHandler, EmptyStateListModel.EventHandler {

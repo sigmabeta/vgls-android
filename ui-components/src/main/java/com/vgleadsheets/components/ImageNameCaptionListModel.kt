@@ -1,7 +1,5 @@
 package com.vgleadsheets.components
 
-import com.vgleadsheets.perf.tracking.common.PerfTracker
-
 data class ImageNameCaptionListModel(
     override val dataId: Long,
     val name: String,
@@ -11,7 +9,7 @@ data class ImageNameCaptionListModel(
     val handler: EventHandler,
     val actionableId: Long? = null,
     val screenName: String,
-    val tracker: PerfTracker
+    val tracker: com.vgleadsheets.perf.tracking.api.PerfTracker
 ) : ListModel {
     interface EventHandler {
         fun onClicked(clicked: ImageNameCaptionListModel)

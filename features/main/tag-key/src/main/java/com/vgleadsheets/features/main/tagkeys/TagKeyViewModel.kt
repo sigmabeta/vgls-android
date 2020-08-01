@@ -15,7 +15,6 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
@@ -24,7 +23,7 @@ class TagKeyViewModel @AssistedInject constructor(
     @Assisted val screenName: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: PerfTracker
+    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
 ) : ListViewModel<TagKey, TagKeyState>(initialState, screenName, perfTracker),
     NameCaptionListModel.EventHandler {
     init {

@@ -1,4 +1,4 @@
-package com.vgleadsheets.perf.tracking.common
+package com.vgleadsheets.perf.tracking.api
 
 enum class PerfStage {
     VIEW_CREATED,

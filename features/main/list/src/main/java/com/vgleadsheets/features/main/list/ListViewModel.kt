@@ -12,13 +12,12 @@ import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.mvrx.MvRxViewModel
-import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 @Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class ListViewModel<DataType, StateType : ListState<DataType>> constructor(
     initialState: StateType,
     private val screenName: String,
-    private val perfTracker: PerfTracker
+    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
 ) : MvRxViewModel<StateType>(initialState) {
     fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
         setState {

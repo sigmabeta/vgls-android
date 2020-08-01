@@ -22,7 +22,6 @@ import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import io.reactivex.disposables.CompositeDisposable
@@ -34,7 +33,7 @@ class SearchViewModel @AssistedInject constructor(
     @Assisted val screenName: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: PerfTracker
+    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
 ) : AsyncListViewModel<SearchData, SearchState>(initialState, screenName, perfTracker) {
     private val searchOperations = CompositeDisposable()
 

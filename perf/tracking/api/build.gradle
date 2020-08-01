@@ -1,8 +1,8 @@
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    // Contains the PerfTracker interface
-    api project(path: ':perf:tracking:common')
+    // RxJava2 libs
+    api "io.reactivex.rxjava2:rxjava:$rxjava_version"
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

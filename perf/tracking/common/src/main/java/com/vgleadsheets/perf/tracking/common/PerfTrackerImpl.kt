@@ -1,17 +1,15 @@
-package com.vgleadsheets.perf.tracking.noop
+package com.vgleadsheets.perf.tracking.common
 
-import com.vgleadsheets.perf.tracking.common.PerfEvent
-import com.vgleadsheets.perf.tracking.common.PerfScreenStatus
-import com.vgleadsheets.perf.tracking.common.PerfStage
-import com.vgleadsheets.perf.tracking.common.PerfTracker
+import com.vgleadsheets.perf.tracking.api.PerfEvent
+import com.vgleadsheets.perf.tracking.api.PerfStage
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
 
-class NoopPerfTracker : PerfTracker {
+class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : PerfTracker {
     private val screens =
         HashMap<String, PerfScreenStatus>()
 
@@ -28,12 +26,15 @@ class NoopPerfTracker : PerfTracker {
             if (
                 !oldScreen.stages[PerfStage.CANCELLATION.ordinal] && !oldScreen.stages[PerfStage.COMPLETION.ordinal]
             ) {
-                throw IllegalStateException(
+                perfTrackingBackend.error(
                     "Active trace list from a previous instance of screen $screenName " +
                             "still exists!"
                 )
+                return
             }
         }
+
+        val startTime = perfTrackingBackend.startScreen(screenName)
 
         Timber.d("Starting timing for $screenName...")
         eventSink.onNext(
@@ -45,7 +46,7 @@ class NoopPerfTracker : PerfTracker {
             )
         )
 
-        screens[screenName] = PerfScreenStatus()
+        screens[screenName] = PerfScreenStatus(startTime)
         startFailureTimer(screenName)
     }
 
@@ -75,6 +76,7 @@ class NoopPerfTracker : PerfTracker {
             return
         }
 
+        perfTrackingBackend.cancel(screenName)
         val duration = System.currentTimeMillis() - screen.startTime
 
         Timber.i("Cancelling timing for $screenName after $duration ms.")
@@ -92,7 +94,11 @@ class NoopPerfTracker : PerfTracker {
 
     override fun clear(screenName: String) {
         val screen = screens[screenName]
-            ?: throw IllegalStateException("Screen $screenName not found!")
+
+        if (screen == null) {
+            perfTrackingBackend.error("Screen $screenName not found!")
+            return
+        }
 
         if (screen.stages[PerfStage.CANCELLATION.ordinal]) {
             return
@@ -103,7 +109,6 @@ class NoopPerfTracker : PerfTracker {
         }
 
         Timber.i("Clearing $screenName from traces list.")
-
 
         val timer = failureTimers[screenName]
         if (timer != null) {
@@ -130,7 +135,8 @@ class NoopPerfTracker : PerfTracker {
             return
         }
 
-        val duration = System.currentTimeMillis() - screen.startTime
+        val duration = perfTrackingBackend.finishTrace(screenName, perfStage)
+
         Timber.v("Duration for $screenName:$perfStage: $duration ms ")
         eventSink.onNext(
             PerfEvent(
@@ -165,7 +171,11 @@ class NoopPerfTracker : PerfTracker {
 
     private fun onScreenFullyLoaded(screenName: String, duration: Long) {
         val screen = screens[screenName]
-            ?: throw IllegalStateException("Traces for $screenName not found!")
+
+        if (screen == null) {
+            perfTrackingBackend.error("Traces for $screenName not found!")
+            return
+        }
 
         if (screen.stages[PerfStage.COMPLETION.ordinal]) {
             return
@@ -195,7 +205,7 @@ class NoopPerfTracker : PerfTracker {
 
                 val notClearedTraces = getNotClearedTraces(screen)
 
-                throw TimeoutException(
+                perfTrackingBackend.error(
                     "Screen $screenName waited $TIMEOUT_SCREEN_LOAD ms, but still missing events for: $notClearedTraces"
                 )
             }

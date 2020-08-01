@@ -19,7 +19,6 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
@@ -29,7 +28,7 @@ class ComposerViewModel @AssistedInject constructor(
     @Assisted val screenName: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: PerfTracker
+    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
 ) : AsyncListViewModel<ComposerData, ComposerState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {

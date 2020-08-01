@@ -13,8 +13,6 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
-import com.vgleadsheets.perf.tracking.common.PerfStage
-import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
@@ -28,7 +26,7 @@ class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
     private val repository: Repository,
     private val storage: Storage,
-    private val perfTracker: PerfTracker
+    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
 ) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
@@ -294,16 +292,16 @@ class HudViewModel @AssistedInject constructor(
         perfTracker.getEventStream()
             .subscribe {
                 when (it.perfStage) {
-                    PerfStage.VIEW_CREATED -> viewCreated(it.screenName, it.duration)
-                    PerfStage.TITLE_LOADED -> titleLoaded(it.screenName, it.duration)
-                    PerfStage.TRANSITION_START -> transitionStarted(it.screenName, it.duration)
-                    PerfStage.PARTIAL_CONTENT_LOAD -> partialContentLoaded(
+                    com.vgleadsheets.perf.tracking.api.PerfStage.VIEW_CREATED -> viewCreated(it.screenName, it.duration)
+                    com.vgleadsheets.perf.tracking.api.PerfStage.TITLE_LOADED -> titleLoaded(it.screenName, it.duration)
+                    com.vgleadsheets.perf.tracking.api.PerfStage.TRANSITION_START -> transitionStarted(it.screenName, it.duration)
+                    com.vgleadsheets.perf.tracking.api.PerfStage.PARTIAL_CONTENT_LOAD -> partialContentLoaded(
                         it.screenName,
                         it.duration
                     )
-                    PerfStage.FULL_CONTENT_LOAD -> fullContentLoaded(it.screenName, it.duration)
-                    PerfStage.CANCELLATION -> cancelled(it.screenName, it.duration)
-                    PerfStage.COMPLETION -> completed(it.screenName, it.duration)
+                    com.vgleadsheets.perf.tracking.api.PerfStage.FULL_CONTENT_LOAD -> fullContentLoaded(it.screenName, it.duration)
+                    com.vgleadsheets.perf.tracking.api.PerfStage.CANCELLATION -> cancelled(it.screenName, it.duration)
+                    com.vgleadsheets.perf.tracking.api.PerfStage.COMPLETION -> completed(it.screenName, it.duration)
                     null -> start(it.screenName, it.targetTimes!!)
                 }
             }
@@ -388,46 +386,46 @@ class HudViewModel @AssistedInject constructor(
     ): Map<String, Long> {
         val newDurations = hashMapOf<String, Long>()
 
-        val oldViewCreated = oldStatus.durations[PerfStage.VIEW_CREATED.toString()]
-        val oldTitleLoaded = oldStatus.durations[PerfStage.TITLE_LOADED.toString()]
-        val oldTransitionStarted = oldStatus.durations[PerfStage.TRANSITION_START.toString()]
-        val oldPartialContent = oldStatus.durations[PerfStage.PARTIAL_CONTENT_LOAD.toString()]
-        val oldFullContent = oldStatus.durations[PerfStage.FULL_CONTENT_LOAD.toString()]
+        val oldViewCreated = oldStatus.durations[com.vgleadsheets.perf.tracking.api.PerfStage.VIEW_CREATED.toString()]
+        val oldTitleLoaded = oldStatus.durations[com.vgleadsheets.perf.tracking.api.PerfStage.TITLE_LOADED.toString()]
+        val oldTransitionStarted = oldStatus.durations[com.vgleadsheets.perf.tracking.api.PerfStage.TRANSITION_START.toString()]
+        val oldPartialContent = oldStatus.durations[com.vgleadsheets.perf.tracking.api.PerfStage.PARTIAL_CONTENT_LOAD.toString()]
+        val oldFullContent = oldStatus.durations[com.vgleadsheets.perf.tracking.api.PerfStage.FULL_CONTENT_LOAD.toString()]
 
         updateDurationsMap(
             viewCreated,
             newDurations,
             duration,
             oldViewCreated,
-            PerfStage.VIEW_CREATED
+            com.vgleadsheets.perf.tracking.api.PerfStage.VIEW_CREATED
         )
         updateDurationsMap(
             titleLoaded,
             newDurations,
             duration,
             oldTitleLoaded,
-            PerfStage.TITLE_LOADED
+            com.vgleadsheets.perf.tracking.api.PerfStage.TITLE_LOADED
         )
         updateDurationsMap(
             transitionStarted,
             newDurations,
             duration,
             oldTransitionStarted,
-            PerfStage.TRANSITION_START
+            com.vgleadsheets.perf.tracking.api.PerfStage.TRANSITION_START
         )
         updateDurationsMap(
             partialContentLoaded,
             newDurations,
             duration,
             oldPartialContent,
-            PerfStage.PARTIAL_CONTENT_LOAD
+            com.vgleadsheets.perf.tracking.api.PerfStage.PARTIAL_CONTENT_LOAD
         )
         updateDurationsMap(
             fullContentLoaded,
             newDurations,
             duration,
             oldFullContent,
-            PerfStage.FULL_CONTENT_LOAD
+            com.vgleadsheets.perf.tracking.api.PerfStage.FULL_CONTENT_LOAD
         )
 
         return newDurations
@@ -438,7 +436,7 @@ class HudViewModel @AssistedInject constructor(
         newDurations: MutableMap<String, Long>,
         duration: Long,
         oldViewCreated: Long?,
-        perfStage: PerfStage
+        perfStage: com.vgleadsheets.perf.tracking.api.PerfStage
     ) {
         if (viewCreated != null) {
             newDurations[perfStage.toString()] = duration
