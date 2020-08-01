@@ -141,6 +141,11 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
 
         val duration = perfTrackingBackend.finishTrace(screenName, perfStage)
 
+        if (duration < 0L) {
+            perfTrackingBackend.error("Error finishing trace.")
+            return
+        }
+
         Timber.v("Duration for $screenName:$perfStage: $duration ms ")
         eventSink.onNext(
             PerfEvent(
