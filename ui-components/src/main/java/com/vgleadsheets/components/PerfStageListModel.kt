@@ -7,7 +7,7 @@ data class PerfStageListModel(
     val duration: String,
     val targetTime: Long,
     val cancellationDuration: Long?
-) : ListModel{
+) : ListModel {
     override val dataId = (screenName + perfStage).hashCode().toLong()
     override val layoutId = R.layout.list_component_perf_stage
 }

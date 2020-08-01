@@ -2,7 +2,6 @@ package com.vgleadsheets.perf.tracking.api
 
 import io.reactivex.Observable
 
-
 interface PerfTracker {
     fun start(screenName: String, targetTimes: Map<String, Long>?)
 

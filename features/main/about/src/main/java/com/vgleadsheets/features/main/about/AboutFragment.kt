@@ -14,6 +14,7 @@ import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
 import kotlinx.android.synthetic.main.fragment_about.list_content
 
+@SuppressWarnings("TooManyFunctions")
 class AboutFragment : VglsFragment(),
     SingleTextListModel.EventHandler,
     NameCaptionListModel.EventHandler {

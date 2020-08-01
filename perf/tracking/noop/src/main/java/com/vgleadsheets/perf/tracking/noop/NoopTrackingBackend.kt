@@ -3,7 +3,7 @@ package com.vgleadsheets.perf.tracking.noop
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.common.PerfTrackingBackend
 
-class NoopTrackingBackend: PerfTrackingBackend {
+class NoopTrackingBackend : PerfTrackingBackend {
     private val screenStartTimes = hashMapOf<String, Long>()
 
     override fun startScreen(screenName: String): Long {
@@ -26,6 +26,6 @@ class NoopTrackingBackend: PerfTrackingBackend {
     override fun cancel(screenName: String) = Unit
 
     override fun error(message: String) {
-        throw Exception(message)
+        throw IllegalStateException(message)
     }
 }

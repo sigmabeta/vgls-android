@@ -18,6 +18,7 @@ import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import kotlin.math.min
 
 @BindingAdapter("sheetUrl", "listener")
@@ -78,7 +79,7 @@ fun bindBigPhoto(
     view: ImageView,
     photoUrl: String?,
     placeholder: Int,
-    imageLoadedHandler: com.vgleadsheets.perf.tracking.api.PerfTracker,
+    imageLoadedHandler: PerfTracker,
     screenName: String
 ) {
     if (placeholder != R.drawable.ic_logo) {
@@ -221,6 +222,7 @@ fun bindLabelValuePerfEvents(view: View?, handler: LabelValueListModel.EventHand
     }
 }
 
+@SuppressWarnings("LongParameterList")
 @BindingAdapter(
     "partialLoadText",
     "partialLoadHandler",
@@ -231,9 +233,9 @@ fun bindLabelValuePerfEvents(view: View?, handler: LabelValueListModel.EventHand
 fun bindPartialLoadHandler(
     view: View?,
     partialLoadText: String,
-    partialLoadHandler: com.vgleadsheets.perf.tracking.api.PerfTracker,
+    partialLoadHandler: PerfTracker,
     fullLoadText: String,
-    fullLoadHandler: com.vgleadsheets.perf.tracking.api.PerfTracker,
+    fullLoadHandler: PerfTracker,
     screenName: String
 ) {
     if (view != null && partialLoadText.isNotEmpty()) {
@@ -246,7 +248,7 @@ fun bindPartialLoadHandler(
 }
 
 @BindingAdapter("titleLoadedHandler", "screenName")
-fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: com.vgleadsheets.perf.tracking.api.PerfTracker, screenName: String) {
+fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfTracker, screenName: String) {
     if (view != null) {
         titleLoadedHandler.onTitleLoaded(screenName)
     }
@@ -297,7 +299,6 @@ fun bindPerfBar(
                 val endColor = ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
                 view.setBackgroundColor(endColor)
             }
-
     } else {
         val durationPercentage = durationLong.toFloat() / targetTime
 

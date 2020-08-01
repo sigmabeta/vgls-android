@@ -37,7 +37,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
             com.vgleadsheets.perf.tracking.api.PerfStage.TRANSITION_START.toString() to TARGET_TRANSITION_START_MS,
             com.vgleadsheets.perf.tracking.api.PerfStage.PARTIAL_CONTENT_LOAD.toString() to TARGET_PARTIAL_LOAD_MS,
             com.vgleadsheets.perf.tracking.api.PerfStage.FULL_CONTENT_LOAD.toString() to getFullLoadTargetTime(),
-            "completion" to 5000L
+            "completion" to TARGET_COMPLETION_MS
         )
     }
 
@@ -83,6 +83,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
         AndroidSupportInjection.inject(this)
     }
 
+    @SuppressWarnings("ReturnCount")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -111,7 +112,6 @@ abstract class VglsFragment : BaseMvRxFragment() {
         perfTrackingStarted = true
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -128,7 +128,6 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
         ViewCompat.requestApplyInsets(view)
     }
-
 
     override fun onStop() {
         super.onStop()
@@ -192,9 +191,11 @@ abstract class VglsFragment : BaseMvRxFragment() {
         private const val TARGET_TRANSITION_START_FRAMES = 20
         private const val TARGET_PARTIAL_LOAD_FRAMES = 90
 
-        const val TARGET_VIEW_CREATED_MS = (MS_PER_FRAME * TARGET_VIEW_CREATED_FRAMES).toLong()
-        const val TARGET_TITLE_LOADED_MS = (MS_PER_FRAME * TARGET_TITLE_LOADED_FRAMES).toLong()
-        const val TARGET_TRANSITION_START_MS = (MS_PER_FRAME * TARGET_TRANSITION_START_FRAMES).toLong()
-        const val TARGET_PARTIAL_LOAD_MS = (MS_PER_FRAME * TARGET_PARTIAL_LOAD_FRAMES).toLong()
+        private const val TARGET_VIEW_CREATED_MS = (MS_PER_FRAME * TARGET_VIEW_CREATED_FRAMES).toLong()
+        private const val TARGET_TITLE_LOADED_MS = (MS_PER_FRAME * TARGET_TITLE_LOADED_FRAMES).toLong()
+        private const val TARGET_TRANSITION_START_MS = (MS_PER_FRAME * TARGET_TRANSITION_START_FRAMES).toLong()
+        private const val TARGET_PARTIAL_LOAD_MS = (MS_PER_FRAME * TARGET_PARTIAL_LOAD_FRAMES).toLong()
+
+        private const val TARGET_COMPLETION_MS = 5000L
     }
 }

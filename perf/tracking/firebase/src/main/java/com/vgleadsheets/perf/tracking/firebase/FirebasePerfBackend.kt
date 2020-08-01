@@ -9,7 +9,7 @@ import com.vgleadsheets.tracking.Tracker
 class FirebasePerfBackend(
     private val firebase: FirebasePerformance,
     private val tracker: Tracker
-): PerfTrackingBackend {
+) : PerfTrackingBackend {
     private val screens = HashMap<String, List<Trace>>()
 
     override fun startScreen(screenName: String): Long {

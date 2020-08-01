@@ -9,6 +9,7 @@ import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+@SuppressWarnings("TooManyFunctions")
 class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : PerfTracker {
     private val screens =
         HashMap<String, PerfScreenStatus>()
@@ -65,6 +66,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     override fun onFullContentLoad(screenName: String) =
         finishTrace(screenName, PerfStage.FULL_CONTENT_LOAD)
 
+    @SuppressWarnings("ReturnCount")
     override fun cancel(screenName: String) {
         val screen = screens[screenName] ?: return
 
@@ -92,6 +94,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         stopFailureTimer(screenName)
     }
 
+    @SuppressWarnings("ReturnCount")
     override fun clear(screenName: String) {
         val screen = screens[screenName]
 
@@ -119,6 +122,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         screens.remove(screenName)
     }
 
+    @SuppressWarnings("ReturnCount")
     private fun finishTrace(screenName: String, perfStage: PerfStage) {
         val screen = screens[screenName]
             ?: return
@@ -238,7 +242,6 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         .filter {
             it.first != PerfStage.COMPLETION.ordinal && it.first != PerfStage.CANCELLATION.ordinal
         }
-
 
     companion object {
         const val TIMEOUT_SCREEN_LOAD = 15_000L
