@@ -25,7 +25,7 @@ class FirebasePerfBackend(
         val trace = screens[screenName]?.get(perfStage.ordinal) ?: return -1L
 
         trace.stop()
-        return trace.getLongMetric("Duration")
+        return trace.getLongMetric("duration")
     }
 
     override fun cancel(screenName: String) {
