@@ -280,7 +280,7 @@ fun bindPerfBar(
         }
 
         val startPercentage = (System.currentTimeMillis().toFloat() - startTime) / targetTime
-        val animationTime = (1.0f - startPercentage) * targetTime
+        val animationTime = min((1.0f - startPercentage) * targetTime, 1.0f)
 
         val startColor = if (startPercentage > 1.0f) {
             ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
