@@ -85,13 +85,6 @@
 
     <include layout="@layout/view_bottom_sheet_card" />
 
-    <com.vgleadsheets.features.main.hud.PerfRecyclerView
-        android:id="@+id/list_perf"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/height_bottom_sheet_peek"
-        android:elevation="20dp"
-        />
+    <include layout="@layout/view_perf_event_list" />
 
 </FrameLayout>

@@ -38,6 +38,7 @@ class HudViewModel @AssistedInject constructor(
         checkSavedPartSelection()
         checkLastUpdateTime()
         checkForUpdate()
+        checkPerfViewSetting()
         subscribeToPerfUpdates()
     }
 
@@ -288,6 +289,12 @@ class HudViewModel @AssistedInject constructor(
         .toObservable()
         .execute {
             copy(digest = it)
+        }
+
+    private fun checkPerfViewSetting() = storage
+        .getDebugSettingShowPerfView()
+        .execute {
+            copy(updatePerfView = it)
         }
 
     private fun subscribeToPerfUpdates() {

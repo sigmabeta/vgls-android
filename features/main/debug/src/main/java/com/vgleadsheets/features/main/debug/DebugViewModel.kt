@@ -238,6 +238,7 @@ class DebugViewModel @AssistedInject constructor(
             .subscribe(
                 {
                     fetchDebugSettings()
+                    setState { copy(changed = true) }
                 },
                 {
                     Timber.e("Failed to update setting: ${it.message}")

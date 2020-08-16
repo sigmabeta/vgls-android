@@ -58,7 +58,7 @@ import kotlinx.android.synthetic.main.fragment_hud.button_search_clear
 import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
 import kotlinx.android.synthetic.main.fragment_hud.card_search
 import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
-import kotlinx.android.synthetic.main.fragment_hud.list_perf
+import kotlinx.android.synthetic.main.fragment_hud.frame_content
 import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
 import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
@@ -77,6 +77,7 @@ import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_settings
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.list_parts
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.progress_hud
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.text_update_time
+import kotlinx.android.synthetic.main.view_perf_event_list.list_perf
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -154,14 +155,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             layout_bottom_sheet.removeView(layout_debug)
         }
 
+        checkShouldShowPerfView()
+
         list_parts.adapter = adapter
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
         list_parts.layoutManager = gridLayoutManager
-
-        list_perf.adapter = perfAdapter
-        val linearLayoutManager = LinearLayoutManager(activity)
-        linearLayoutManager.stackFromEnd = true
-        list_perf.layoutManager = linearLayoutManager
 
         button_search_clear.setOnClickListener { edit_search_query.text.clear() }
         button_menu.setOnClickListener { onMenuClick() }
@@ -276,7 +274,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         adapter.submitList(listComponents)
 
-        showPerfStatus(state.perfViewStatus)
+        val updatePerfView = state.updatePerfView
+        if (updatePerfView is Success && updatePerfView().value) {
+            showPerfStatus(state.perfViewStatus)
+        }
     }
 
     override fun onBackPress() = withState(viewModel) {
@@ -557,6 +558,36 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
+    private fun checkShouldShowPerfView() {
+        val showPerf = storage.getDebugSettingShowPerfView()
+            .subscribe(
+                {
+                    if (it.value) {
+                        setupPerfView()
+                    } else {
+                        hidePerfView()
+                    }
+                },
+                {
+                    Timber.w("No pref found for showing perf view; hiding.")
+                    hidePerfView()
+                }
+            )
+
+        disposables.add(showPerf)
+    }
+
+    private fun hidePerfView() {
+        frame_content.removeView(list_perf)
+    }
+
+    private fun setupPerfView() {
+        list_perf.adapter = perfAdapter
+        val linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager.stackFromEnd = true
+        list_perf.layoutManager = linearLayoutManager
+    }
+
     private fun showPerfStatus(perfViewStatus: PerfViewStatus) {
         val listModels = perfViewStatus.screenStatuses
             .sortedBy { it.startTime }
@@ -577,11 +608,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             ),
             screen.cancellationDuration
         ),
-        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.VIEW_CREATED),
-        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.TITLE_LOADED),
-        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.TRANSITION_START),
-        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.PARTIAL_CONTENT_LOAD),
-        createPerfStageListModel(screen, com.vgleadsheets.perf.tracking.api.PerfStage.FULL_CONTENT_LOAD)
+        createPerfStageListModel(screen, PerfStage.VIEW_CREATED),
+        createPerfStageListModel(screen, PerfStage.TITLE_LOADED),
+        createPerfStageListModel(screen, PerfStage.TRANSITION_START),
+        createPerfStageListModel(screen, PerfStage.PARTIAL_CONTENT_LOAD),
+        createPerfStageListModel(screen, PerfStage.FULL_CONTENT_LOAD)
     )
 
     private fun createPerfStageListModel(

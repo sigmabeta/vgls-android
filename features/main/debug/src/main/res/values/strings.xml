@@ -7,5 +7,5 @@
     <string name="label_database_clear_sheets">Clear sheets</string>
     <string name="label_database_clear_jams">Clear jams</string>
 
-    <string name="snack_restart_on_exit">Data cleared. App will restart after you exit</string>
+    <string name="snack_restart_on_exit">App will restart after you exit.</string>
 </resources>

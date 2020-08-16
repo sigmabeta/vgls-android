@@ -7,6 +7,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.storage.BooleanSetting
 
 data class HudState(
     val alwaysShowBack: Boolean = false,
@@ -17,6 +18,7 @@ data class HudState(
     val searchQuery: String? = null,
     val perfViewStatus: PerfViewStatus = PerfViewStatus(),
     val parts: List<PartSelectorItem> = PartSelectorItem.getDefaultPartPickerItems(null),
+    val updatePerfView: Async<BooleanSetting> = Uninitialized,
     val updateTime: Async<Long> = Uninitialized,
     val digest: Async<ApiDigest> = Uninitialized,
     val random: Async<Song> = Uninitialized

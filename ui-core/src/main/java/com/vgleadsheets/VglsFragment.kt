@@ -12,6 +12,7 @@ import com.airbnb.mvrx.BaseMvRxFragment
 import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
@@ -33,11 +34,11 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     private val targetTimes by lazy {
         hashMapOf(
-            com.vgleadsheets.perf.tracking.api.PerfStage.VIEW_CREATED.toString() to TARGET_VIEW_CREATED_MS,
-            com.vgleadsheets.perf.tracking.api.PerfStage.TITLE_LOADED.toString() to TARGET_TITLE_LOADED_MS,
-            com.vgleadsheets.perf.tracking.api.PerfStage.TRANSITION_START.toString() to TARGET_TRANSITION_START_MS,
-            com.vgleadsheets.perf.tracking.api.PerfStage.PARTIAL_CONTENT_LOAD.toString() to TARGET_PARTIAL_LOAD_MS,
-            com.vgleadsheets.perf.tracking.api.PerfStage.FULL_CONTENT_LOAD.toString() to getFullLoadTargetTime(),
+            PerfStage.VIEW_CREATED.toString() to TARGET_VIEW_CREATED_MS,
+            PerfStage.TITLE_LOADED.toString() to TARGET_TITLE_LOADED_MS,
+            PerfStage.TRANSITION_START.toString() to TARGET_TRANSITION_START_MS,
+            PerfStage.PARTIAL_CONTENT_LOAD.toString() to TARGET_PARTIAL_LOAD_MS,
+            PerfStage.FULL_CONTENT_LOAD.toString() to getFullLoadTargetTime(),
             "completion" to TARGET_COMPLETION_MS
         )
     }
