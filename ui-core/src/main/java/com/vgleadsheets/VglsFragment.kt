@@ -19,6 +19,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 @Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {
@@ -27,6 +28,10 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     @Inject
     lateinit var perfTracker: PerfTracker
+
+    @JvmField
+    @field:[Inject Named("RunningTest")]
+    var isRunningTest: Boolean = true
 
     protected val idArgs: IdArgs by args()
 
@@ -89,7 +94,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (disablePerfTracking()) {
+        if (disablePerfTracking() || isRunningTest) {
             Timber.d("Not starting perf tracker: Perf tracking is disabled for screen ${getPerfScreenName()}.")
             return
         }
@@ -109,9 +114,6 @@ abstract class VglsFragment : BaseMvRxFragment() {
                     "for screen ${getPerfScreenName()} (min height $minHeightDp dp).")
             return
         }
-
-        perfTracker.start(getPerfScreenName(), targetTimes)
-        perfTrackingStarted = true
     }
 
     override fun onCreateView(

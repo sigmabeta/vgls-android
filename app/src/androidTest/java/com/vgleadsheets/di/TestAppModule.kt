@@ -7,8 +7,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val context: Context) {
-
+class TestAppModule(private val context: Context) {
     @Provides
     @Singleton
     fun provideContext() = context
@@ -16,5 +15,5 @@ class AppModule(private val context: Context) {
     @Provides
     @Singleton
     @Named("RunningTest")
-    fun provideRunningTest() = false
+    fun provideRunningTest() = true
 }
