@@ -51,7 +51,7 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         Single.fromFuture(simpleStore.getString(KEY_DEBUG_MISC_PERF_VIEW))
             .map { fromStorage ->
                 val savedValue = if (fromStorage.isBlank()) {
-                    false
+                    BuildConfig.DEBUG
                 } else {
                     fromStorage.toBoolean()
                 }

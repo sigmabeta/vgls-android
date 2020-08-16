@@ -31,7 +31,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     @JvmField
     @field:[Inject Named("RunningTest")]
-    var isRunningTest: Boolean = true
+    var isRunningTest: Boolean = false
 
     protected val idArgs: IdArgs by args()
 
@@ -114,6 +114,9 @@ abstract class VglsFragment : BaseMvRxFragment() {
                     "for screen ${getPerfScreenName()} (min height $minHeightDp dp).")
             return
         }
+
+        perfTracker.start(getPerfScreenName(), targetTimes)
+        perfTrackingStarted = true
     }
 
     override fun onCreateView(
