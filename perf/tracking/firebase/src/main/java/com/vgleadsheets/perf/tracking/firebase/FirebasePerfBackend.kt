@@ -12,20 +12,24 @@ class FirebasePerfBackend(
 ) : PerfTrackingBackend {
     private val screens = HashMap<String, List<Trace>>()
 
-    override fun startScreen(screenName: String): Long {
+    override fun startScreen(screenName: String) {
         screens[screenName] = PerfStage.values()
             .map {
                 firebase.newTrace("$screenName:${it.name}")
             }
 
-        return System.currentTimeMillis()
+        screens[screenName]?.forEach { it.start() }
     }
 
-    override fun finishTrace(screenName: String, perfStage: PerfStage): Long {
-        val trace = screens[screenName]?.get(perfStage.ordinal) ?: return -1L
+    override fun finishTrace(screenName: String, perfStage: PerfStage) {
+        val trace = screens[screenName]?.get(perfStage.ordinal)
+
+        if (trace == null) {
+            error("Could not find trace to finish: $screenName:$perfStage")
+            return
+        }
 
         trace.stop()
-        return trace.getLongMetric("duration")
     }
 
     override fun cancel(screenName: String) {

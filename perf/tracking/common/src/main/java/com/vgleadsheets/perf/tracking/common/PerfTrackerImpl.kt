@@ -4,6 +4,7 @@ import com.vgleadsheets.perf.tracking.api.PerfEvent
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
@@ -35,7 +36,8 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
             }
         }
 
-        val startTime = perfTrackingBackend.startScreen(screenName)
+        perfTrackingBackend.startScreen(screenName)
+        val startTime = System.currentTimeMillis()
 
         Timber.d("Starting timing for $screenName...")
         eventSink.onNext(
@@ -139,12 +141,9 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
             return
         }
 
-        val duration = perfTrackingBackend.finishTrace(screenName, perfStage)
+        perfTrackingBackend.finishTrace(screenName, perfStage)
 
-        if (duration < 0L) {
-            perfTrackingBackend.error("Error finishing trace.")
-            return
-        }
+        val duration = System.currentTimeMillis() - screen.startTime
 
         Timber.v("Duration for $screenName:$perfStage: $duration ms ")
         eventSink.onNext(
@@ -205,6 +204,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
 
     private fun startFailureTimer(screenName: String) {
         val timer = Observable.timer(TIMEOUT_SCREEN_LOAD, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 val screen = screens[screenName]
                 if (screen == null) {

@@ -6,6 +6,9 @@ dependencies {
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // RxJava2 libs
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
