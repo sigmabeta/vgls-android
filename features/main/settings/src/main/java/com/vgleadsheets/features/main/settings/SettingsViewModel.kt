@@ -14,6 +14,7 @@ import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingCheckableListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -80,9 +81,18 @@ class SettingsViewModel @AssistedInject constructor(
         selectedPart: PartSelectorItem
     ): List<ListModel> = createContentListModels(data.settings)
 
+    override fun defaultLoadingListModel(index: Int) = LoadingCheckableListModel(
+        "allSettings",
+        index
+    )
+
     private fun fetchSettings() = storage
         .getAllSettings()
         .execute { settings ->
+            if (this.data.settings is Success && settings is Loading) {
+                return@execute this
+            }
+
             val newData = SettingsData(settings)
             updateListState(
                 data = newData,

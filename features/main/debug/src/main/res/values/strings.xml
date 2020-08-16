@@ -2,6 +2,7 @@
 <resources>
     <string name="section_network">Network</string>
     <string name="section_database">Database</string>
+    <string name="section_misc">Misc</string>
 
     <string name="label_database_clear_sheets">Clear sheets</string>
     <string name="label_database_clear_jams">Clear jams</string>

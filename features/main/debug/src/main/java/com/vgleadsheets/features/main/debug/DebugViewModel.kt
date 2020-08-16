@@ -10,9 +10,11 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingCheckableListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -37,7 +39,7 @@ class DebugViewModel @AssistedInject constructor(
     private val perfTracker: PerfTracker
 ) : AsyncListViewModel<DebugData, DebugState>(initialState, screenName, perfTracker),
     DropdownSettingListModel.EventHandler,
-    SingleTextListModel.EventHandler {
+    SingleTextListModel.EventHandler, CheckableListModel.EventHandler {
     init {
         fetchDebugSettings()
     }
@@ -51,6 +53,15 @@ class DebugViewModel @AssistedInject constructor(
     }
 
     override fun clearClicked() = Unit
+
+    override fun onClicked(clicked: CheckableListModel) {
+        setSetting(clicked.settingId, !clicked.checked)
+    }
+
+    override fun onCheckboxLoadComplete(screenName: String) {
+        perfTracker.onPartialContentLoad(screenName)
+        perfTracker.onFullContentLoad(screenName)
+    }
 
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         setDropdownSetting(settingId, selectedPosition)
@@ -72,9 +83,18 @@ class DebugViewModel @AssistedInject constructor(
         selectedPart: PartSelectorItem
     ): List<ListModel> = createContentListModels(data.settings)
 
+    override fun defaultLoadingListModel(index: Int) = LoadingCheckableListModel(
+        "allSettings",
+        index
+    )
+
     private fun fetchDebugSettings() = storage
         .getAllDebugSettings()
         .execute { settings ->
+            if (this.data.settings is Success && settings is Loading) {
+                return@execute this
+            }
+
             val newData = DebugData(settings)
             updateListState(
                 data = newData,
@@ -96,8 +116,9 @@ class DebugViewModel @AssistedInject constructor(
     private fun createSettingListModels(settings: List<Setting>): List<ListModel> {
         val networkSection = createSection(settings, HEADER_ID_NETWORK)
         val databaseSection = createDatabaseSection(settings)
+        val miscSection = createSection(settings, HEADER_ID_MISC)
 
-        return networkSection + databaseSection
+        return networkSection + databaseSection + miscSection
     }
 
     private fun createSection(
@@ -114,7 +135,13 @@ class DebugViewModel @AssistedInject constructor(
             .filter { it.settingId.startsWith(headerId) }
             .map { setting ->
                 when (setting) {
-                    is BooleanSetting -> throw IllegalArgumentException("BooleanSetting not implemented on this page.")
+                    is BooleanSetting  -> CheckableListModel(
+                        setting.settingId,
+                        resourceProvider.getString(setting.labelStringId),
+                        setting.value,
+                        screenName,
+                        this
+                    )
                     is DropdownSetting -> DropdownSettingListModel(
                         setting.settingId,
                         resourceProvider.getString(setting.labelStringId),
@@ -131,6 +158,7 @@ class DebugViewModel @AssistedInject constructor(
     private fun getSectionHeaderString(headerId: String) = when (headerId) {
         HEADER_ID_NETWORK -> resourceProvider.getString(R.string.section_network)
         HEADER_ID_DATABASE -> resourceProvider.getString(R.string.section_database)
+        HEADER_ID_MISC -> resourceProvider.getString(R.string.section_misc)
         else -> throw IllegalArgumentException()
     }
 
@@ -155,7 +183,7 @@ class DebugViewModel @AssistedInject constructor(
     private fun setDropdownSetting(settingId: String, newValue: Int) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {
-            "DEBUG_NETWORK_ENDPOINT" -> storage.saveSelectedNetworkEndpoint(newValue)
+            "DEBUG_NETWORK_ENDPOINT" -> storage.saveDebugSelectedNetworkEndpoint(newValue)
             else -> throw IllegalArgumentException()
         }
 
@@ -199,6 +227,25 @@ class DebugViewModel @AssistedInject constructor(
             .disposeOnClear()
     }
 
+    private fun setSetting(settingId: String, newValue: Boolean) {
+        // TODO These strings need to live in a common module
+        val settingSaveOperation = when (settingId) {
+            "DEBUG_MISC_PERF_VIEW" -> storage.saveDebugSettingPerfView(newValue)
+            else -> TODO("Don't know how to save setting $settingId yet!")
+        }
+
+        settingSaveOperation
+            .subscribe(
+                {
+                    fetchDebugSettings()
+                },
+                {
+                    Timber.e("Failed to update setting: ${it.message}")
+                }
+            )
+            .disposeOnClear()
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: DebugState, screenName: String): DebugViewModel
@@ -207,6 +254,7 @@ class DebugViewModel @AssistedInject constructor(
     companion object : MvRxViewModelFactory<DebugViewModel, DebugState> {
         const val HEADER_ID_NETWORK = "DEBUG_NETWORK"
         const val HEADER_ID_DATABASE = "DEBUG_DATABASE"
+        const val HEADER_ID_MISC = "DEBUG_MISC"
 
         override fun create(
             viewModelContext: ViewModelContext,

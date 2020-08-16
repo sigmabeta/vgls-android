@@ -20,9 +20,11 @@ interface Storage {
     fun saveSettingSheetScreenOn(setting: Boolean): Single<String>
 
     // Loading Debug Settings
-    fun getAllDebugSettings(): Single<List<DropdownSetting>>
+    fun getAllDebugSettings(): Single<List<Setting>>
     fun getDebugSettingNetworkEndpoint(): Single<DropdownSetting>
+    fun getDebugSettingShowPerfView(): Single<BooleanSetting>
 
     // Saving Debug Settings
-    fun saveSelectedNetworkEndpoint(newValue: Int): Single<String>
+    fun saveDebugSelectedNetworkEndpoint(newValue: Int): Single<String>
+    fun saveDebugSettingPerfView(newValue: Boolean): Single<String>
 }

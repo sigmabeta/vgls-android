@@ -1,8 +1,9 @@
 package com.vgleadsheets.components
 
 data class LoadingCheckableListModel(
-    val listPosition: Int
+    val loadOperationName: String,
+    val loadPositionOffset: Int
 ) : ListModel {
-    override val dataId = Long.MAX_VALUE - listPosition
+    override val dataId = loadOperationName.hashCode().toLong() + loadPositionOffset
     override val layoutId = R.layout.list_component_checkable_loading
 }
