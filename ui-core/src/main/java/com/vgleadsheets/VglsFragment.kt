@@ -12,6 +12,7 @@ import com.airbnb.mvrx.BaseMvRxFragment
 import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.support.AndroidSupportInjection
@@ -24,7 +25,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
     lateinit var tracker: Tracker
 
     @Inject
-    lateinit var perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
+    lateinit var perfTracker: PerfTracker
 
     protected val idArgs: IdArgs by args()
 

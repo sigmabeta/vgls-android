@@ -14,6 +14,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
@@ -22,7 +23,7 @@ class GameListViewModel @AssistedInject constructor(
     @Assisted val screenName: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
+    private val perfTracker: PerfTracker
 ) : ListViewModel<Game, GameListState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {

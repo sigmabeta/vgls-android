@@ -23,6 +23,7 @@ import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
@@ -32,7 +33,7 @@ class TagValueListViewModel @AssistedInject constructor(
     @Assisted val screenName: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<TagValueData, TagValueListState>(initialState, screenName, perfTracker),
     NameCaptionListModel.EventHandler {
     init {

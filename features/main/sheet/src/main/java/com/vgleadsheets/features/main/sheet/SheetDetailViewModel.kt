@@ -24,6 +24,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
@@ -33,7 +34,7 @@ class SheetDetailViewModel @AssistedInject constructor(
     @Assisted val screenName: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, screenName, perfTracker) {
     init {
         fetchSheetDetail()

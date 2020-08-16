@@ -18,6 +18,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
@@ -31,7 +32,7 @@ class SettingsViewModel @AssistedInject constructor(
     @Assisted val screenName: String,
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<SettingsData, SettingsState>(initialState, screenName, perfTracker),
     CheckableListModel.EventHandler,
     DropdownSettingListModel.EventHandler,

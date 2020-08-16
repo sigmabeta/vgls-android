@@ -17,6 +17,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
@@ -33,7 +34,7 @@ class DebugViewModel @AssistedInject constructor(
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
     private val repository: Repository,
-    private val perfTracker: com.vgleadsheets.perf.tracking.api.PerfTracker
+    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<DebugData, DebugState>(initialState, screenName, perfTracker),
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler {
