@@ -135,7 +135,7 @@ class DebugViewModel @AssistedInject constructor(
             .filter { it.settingId.startsWith(headerId) }
             .map { setting ->
                 when (setting) {
-                    is BooleanSetting  -> CheckableListModel(
+                    is BooleanSetting -> CheckableListModel(
                         setting.settingId,
                         resourceProvider.getString(setting.labelStringId),
                         setting.value,

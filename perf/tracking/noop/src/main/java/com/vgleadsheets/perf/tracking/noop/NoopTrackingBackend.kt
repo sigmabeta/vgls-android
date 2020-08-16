@@ -11,6 +11,6 @@ class NoopTrackingBackend : PerfTrackingBackend {
     override fun cancel(screenName: String) = Unit
 
     override fun error(message: String) {
-        throw RuntimeException(message)
+        throw IllegalStateException(message)
     }
 }
