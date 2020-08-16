@@ -159,7 +159,7 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
         const val EVENT_SHOW_MENU = "show_menu"
         const val EVENT_AUTO_REFRESH = "auto_refresh"
         const val EVENT_FORCE_REFRESH = "force_refresh"
-        const val EVENT_SCREEN_VIEW = "screen_view"
+        const val EVENT_SCREEN_VIEW = "screen_view_custom"
         const val EVENT_SONG_VIEW = "song_view"
         const val EVENT_JAM_FOLLOW = "jam_view"
         const val EVENT_GAME_VIEW = "game_view"

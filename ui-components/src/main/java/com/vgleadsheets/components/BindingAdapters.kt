@@ -19,6 +19,7 @@ import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
 import com.vgleadsheets.perf.tracking.api.PerfTracker
+import kotlin.math.max
 import kotlin.math.min
 
 @BindingAdapter("sheetUrl", "listener")
@@ -280,7 +281,7 @@ fun bindPerfBar(
         }
 
         val startPercentage = (System.currentTimeMillis().toFloat() - startTime) / targetTime
-        val animationTime = min((1.0f - startPercentage) * targetTime, 1.0f)
+        val animationTime = max((1.0f - startPercentage) * targetTime, 1.0f)
 
         val startColor = if (startPercentage > 1.0f) {
             ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
