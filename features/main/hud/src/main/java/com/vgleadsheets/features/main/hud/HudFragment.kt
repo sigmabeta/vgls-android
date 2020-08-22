@@ -278,6 +278,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         if (updatePerfView is Success && updatePerfView().value) {
             showPerfStatus(state.perfViewStatus)
         }
+
+        if (state.digest is Loading) {
+            perfTracker.cancelAll()
+        }
     }
 
     override fun onBackPress() = withState(viewModel) {

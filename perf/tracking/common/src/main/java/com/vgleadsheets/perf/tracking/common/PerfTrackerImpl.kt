@@ -49,7 +49,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
             )
         )
 
-        screens[screenName] = PerfScreenStatus(startTime)
+        screens[screenName] = PerfScreenStatus(screenName, startTime)
         startFailureTimer(screenName)
     }
 
@@ -72,28 +72,15 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     override fun cancel(screenName: String) {
         val screen = screens[screenName] ?: return
 
-        if (screen.stages[PerfStage.CANCELLATION.ordinal]) {
-            return
+        cancelInternal(screen)
+    }
+
+    override fun cancelAll() {
+        Timber.w("Canceling all screen timers.")
+
+        screens.forEach { entry ->
+            cancelInternal(entry.value)
         }
-
-        if (screen.stages[PerfStage.COMPLETION.ordinal]) {
-            return
-        }
-
-        perfTrackingBackend.cancel(screenName)
-        val duration = System.currentTimeMillis() - screen.startTime
-
-        Timber.i("Cancelling timing for $screenName after $duration ms.")
-        eventSink.onNext(
-            PerfEvent(
-                screenName,
-                PerfStage.CANCELLATION,
-                duration
-            )
-        )
-        screen.stages[PerfStage.CANCELLATION.ordinal] = true
-
-        stopFailureTimer(screenName)
     }
 
     @SuppressWarnings("ReturnCount")
@@ -122,6 +109,31 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         }
 
         screens.remove(screenName)
+    }
+
+    private fun cancelInternal(screen: PerfScreenStatus) {
+        if (screen.stages[PerfStage.CANCELLATION.ordinal]) {
+            return
+        }
+
+        if (screen.stages[PerfStage.COMPLETION.ordinal]) {
+            return
+        }
+
+        perfTrackingBackend.cancel(screen.name)
+        val duration = System.currentTimeMillis() - screen.startTime
+
+        Timber.i("Cancelling timing for ${screen.name} after $duration ms.")
+        eventSink.onNext(
+            PerfEvent(
+                screen.name,
+                PerfStage.CANCELLATION,
+                duration
+            )
+        )
+        screen.stages[PerfStage.CANCELLATION.ordinal] = true
+
+        stopFailureTimer(screen.name)
     }
 
     @SuppressWarnings("ReturnCount")
