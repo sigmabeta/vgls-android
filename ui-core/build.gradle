@@ -1,3 +1,4 @@
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
@@ -30,6 +31,11 @@ dependencies {
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // Dagger annotation processors
+    implementation project(path: ':di')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
 
 androidExtensions {
