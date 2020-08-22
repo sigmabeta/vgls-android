@@ -9,7 +9,7 @@ buildscript {
         rxbinding_version = "3.0.0-alpha2"
         mvrx_version = "1.1.0"
         dagger_version = "2.28.3"
-        assistedinject_version = "0.5.0"
+        assistedinject_version = "0.5.2"
         stetho_version = "1.5.1"
         viewpager_version = "1.0.0-beta04"
         core_ktx_version = "1.1.0"
