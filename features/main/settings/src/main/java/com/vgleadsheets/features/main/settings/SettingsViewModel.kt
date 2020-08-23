@@ -14,10 +14,12 @@ import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingCheckableListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
@@ -28,9 +30,11 @@ import timber.log.Timber
 @SuppressWarnings("TooManyFunctions")
 class SettingsViewModel @AssistedInject constructor(
     @Assisted initialState: SettingsState,
+    @Assisted val screenName: String,
     private val storage: Storage,
-    private val resourceProvider: ResourceProvider
-) : AsyncListViewModel<SettingsData, SettingsState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<SettingsData, SettingsState>(initialState, screenName, perfTracker),
     CheckableListModel.EventHandler,
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler {
@@ -54,13 +58,20 @@ class SettingsViewModel @AssistedInject constructor(
         setSetting(clicked.settingId, !clicked.checked)
     }
 
+    override fun onCheckboxLoadComplete(screenName: String) {
+        perfTracker.onPartialContentLoad(screenName)
+        perfTracker.onFullContentLoad(screenName)
+    }
+
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         TODO("Implement this!")
     }
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No settings found at all. What's going on here?"
+        "No settings found at all. What's going on here?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -70,9 +81,18 @@ class SettingsViewModel @AssistedInject constructor(
         selectedPart: PartSelectorItem
     ): List<ListModel> = createContentListModels(data.settings)
 
+    override fun defaultLoadingListModel(index: Int) = LoadingCheckableListModel(
+        "allSettings",
+        index
+    )
+
     private fun fetchSettings() = storage
         .getAllSettings()
         .execute { settings ->
+            if (this.data.settings is Success && settings is Loading) {
+                return@execute this
+            }
+
             val newData = SettingsData(settings)
             updateListState(
                 data = newData,
@@ -129,6 +149,7 @@ class SettingsViewModel @AssistedInject constructor(
                         setting.settingId,
                         resourceProvider.getString(setting.labelStringId),
                         setting.value,
+                        screenName,
                         this
                     )
                     is DropdownSetting -> DropdownSettingListModel(
@@ -171,7 +192,7 @@ class SettingsViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SettingsState): SettingsViewModel
+        fun create(initialState: SettingsState, screenName: String): SettingsViewModel
     }
 
     companion object : MvRxViewModelFactory<SettingsViewModel, SettingsState> {
@@ -184,7 +205,7 @@ class SettingsViewModel @AssistedInject constructor(
         ): SettingsViewModel? {
             val fragment: SettingsFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.settingsViewModelFactory.create(state)
+            return fragment.settingsViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

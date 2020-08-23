@@ -24,15 +24,18 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 @SuppressWarnings("TooManyFunctions")
 class SheetDetailViewModel @AssistedInject constructor(
     @Assisted initialState: SheetDetailState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, resourceProvider) {
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, screenName, perfTracker) {
     init {
         fetchSheetDetail()
     }
@@ -50,7 +53,9 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
-        "Sheet not found. Check your internet connection?."
+        "Sheet not found. Check your internet connection?.",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -86,12 +91,14 @@ class SheetDetailViewModel @AssistedInject constructor(
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_composer),
                 value,
+                screenName,
                 composerHandler,
                 composerId
             ),
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_game),
                 song.gameName,
+                screenName,
                 gameHandler,
                 song.gameId
             )
@@ -142,6 +149,7 @@ class SheetDetailViewModel @AssistedInject constructor(
                 LabelRatingStarListModel(
                     it.tagKeyName,
                     valueAsNumber,
+                    screenName,
                     ratingStarHandler,
                     it.id
                 )
@@ -149,6 +157,7 @@ class SheetDetailViewModel @AssistedInject constructor(
                 LabelValueListModel(
                     it.tagKeyName,
                     it.name,
+                    screenName,
                     tagValueHandler,
                     it.id
                 )
@@ -188,7 +197,14 @@ class SheetDetailViewModel @AssistedInject constructor(
     }
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) =
-        listOf(ErrorStateListModel(failedOperationName, error.message ?: "Unknown Error"))
+        listOf(
+            ErrorStateListModel(
+                failedOperationName,
+                error.message ?: "Unknown Error",
+                screenName,
+                cancelPerfOnErrorState
+            )
+        )
 
     private fun fetchSheetDetail() = withState { state ->
         val songId = state.songId
@@ -245,7 +261,9 @@ class SheetDetailViewModel @AssistedInject constructor(
                     song().name,
                     resourceProvider.getString(R.string.subtitle_pages, pageCount),
                     thumbUrl,
-                    R.drawable.placeholder_sheet
+                    R.drawable.placeholder_sheet,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             )
         }
@@ -257,6 +275,10 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedComposerModel = null) }
+
+        override fun onLabelValueLoaded(screenName: String) {
+            perfTracker.onPartialContentLoad(screenName)
+        }
     }
 
     private val gameHandler = object : LabelValueListModel.EventHandler {
@@ -265,6 +287,8 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedGameModel = null) }
+
+        override fun onLabelValueLoaded(screenName: String) = Unit
     }
 
     private val ctaHandler = object : CtaListModel.EventHandler {
@@ -281,6 +305,8 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedTagValueModel = null) }
+
+        override fun onLabelValueLoaded(screenName: String) = Unit
     }
 
     private val ratingStarHandler = object : LabelRatingStarListModel.EventHandler {
@@ -289,11 +315,15 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedRatingStarModel = null) }
+
+        override fun onRatingStarsLoaded(screenName: String) {
+            perfTracker.onFullContentLoad(screenName)
+        }
     }
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SheetDetailState): SheetDetailViewModel
+        fun create(initialState: SheetDetailState, screenName: String): SheetDetailViewModel
     }
 
     companion object : MvRxViewModelFactory<SheetDetailViewModel, SheetDetailState> {
@@ -308,7 +338,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         ): SheetDetailViewModel? {
             val fragment: SheetDetailFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.sheetViewModelFactory.create(state)
+            return fragment.sheetViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

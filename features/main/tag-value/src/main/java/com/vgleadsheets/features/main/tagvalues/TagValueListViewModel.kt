@@ -23,15 +23,18 @@ import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 @SuppressWarnings("TooManyFunctions")
 class TagValueListViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : AsyncListViewModel<TagValueData, TagValueListState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<TagValueData, TagValueListState>(initialState, screenName, perfTracker),
     NameCaptionListModel.EventHandler {
     init {
         fetchTagKey()
@@ -55,7 +58,9 @@ class TagValueListViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No tag values found at all. Check your internet connection?"
+        "No tag values found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -108,7 +113,9 @@ class TagValueListViewModel @AssistedInject constructor(
             is Success -> listOf(
                 TitleListModel(
                     tagKey().name,
-                    generateSheetCountText(tagValues)
+                    generateSheetCountText(tagValues),
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(tagKey.error)
@@ -141,7 +148,9 @@ class TagValueListViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No tag values found with a ${selectedPart.apiId} part. Try another part?"
+                    "No tag values found with a ${selectedPart.apiId} part. Try another part?",
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -150,7 +159,9 @@ class TagValueListViewModel @AssistedInject constructor(
                     it.id,
                     it.name,
                     generateSheetCaption(it.songs),
-                    this@TagValueListViewModel
+                    this@TagValueListViewModel,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
         }
@@ -209,7 +220,7 @@ class TagValueListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: TagValueListState): TagValueListViewModel
+        fun create(initialState: TagValueListState, screenName: String): TagValueListViewModel
     }
 
     companion object : MvRxViewModelFactory<TagValueListViewModel, TagValueListState> {
@@ -219,7 +230,7 @@ class TagValueListViewModel @AssistedInject constructor(
         ): TagValueListViewModel? {
             val fragment: TagValueListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.tagValueListViewModelFactory.create(state)
+            return fragment.tagValueListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

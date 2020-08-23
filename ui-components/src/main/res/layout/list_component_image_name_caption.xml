@@ -15,25 +15,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> toBind.handler.onClicked(toBind)}">
+        android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
+        app:fullLoadHandler="@{toBind.tracker}"
+        app:fullLoadText="@{toBind.caption}"
+        app:partialLoadHandler="@{toBind.tracker}"
+        app:partialLoadText="@{toBind.name}"
+        app:screenName="@{toBind.screenName}">
 
         <ImageView
-            android:background="@drawable/background_image_circle"
             android:id="@+id/image"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_medium"
+            android:background="@drawable/background_image_circle"
             android:elevation="4dp"
             android:outlineProvider="background"
-            tools:src="@drawable/placeholder_composer"
             app:cardCornerRadius="@dimen/card_corner_radius_circle_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:photoUrl="@{toBind.imageUrl}"
-            app:placeholder="@{toBind.imagePlaceholder}" />
+            app:placeholder="@{toBind.imagePlaceholder}"
+            tools:src="@drawable/placeholder_composer" />
 
         <TextView
             android:id="@+id/text_name"

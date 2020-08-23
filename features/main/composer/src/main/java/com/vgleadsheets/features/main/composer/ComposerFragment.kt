@@ -23,6 +23,8 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
 
     override fun getDetails() = (idArgs.id - ApiComposer.ID_OFFSET).toString()
 
+    override fun getFullLoadTargetTime() = 1000L
+
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(ComposerState::clickedListModel) {
             val clickedId = it?.dataId

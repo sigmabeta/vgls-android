@@ -14,14 +14,17 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 class GameListViewModel @AssistedInject constructor(
     @Assisted initialState: GameListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : ListViewModel<Game, GameListState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : ListViewModel<Game, GameListState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGames()
@@ -41,12 +44,16 @@ class GameListViewModel @AssistedInject constructor(
 
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_game)
+        resourceProvider.getString(R.string.subtitle_game),
+        screenName = screenName,
+        tracker = perfTracker
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No games found at all. Check your internet connection?"
+        "No games found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -59,8 +66,10 @@ class GameListViewModel @AssistedInject constructor(
 
         return if (availableGames.isEmpty()) listOf(
             EmptyStateListModel(
-                com.vgleadsheets.features.main.list.R.drawable.ic_album_24dp,
-                "No games found with a ${selectedPart.apiId} part. Try another part?"
+                R.drawable.ic_album_24dp,
+                "No games found with a ${selectedPart.apiId} part. Try another part?",
+                screenName,
+                cancelPerfOnEmptyState
             )
         ) else availableGames
             .map {
@@ -69,8 +78,10 @@ class GameListViewModel @AssistedInject constructor(
                     it.name,
                     generateSubtitleText(it.songs),
                     it.photoUrl,
-                    com.vgleadsheets.features.main.list.R.drawable.placeholder_game,
-                    this@GameListViewModel
+                    R.drawable.placeholder_game,
+                    this@GameListViewModel,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
     }
@@ -140,7 +151,7 @@ class GameListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: GameListState): GameListViewModel
+        fun create(initialState: GameListState, screenName: String): GameListViewModel
     }
 
     companion object : MvRxViewModelFactory<GameListViewModel, GameListState> {
@@ -150,7 +161,7 @@ class GameListViewModel @AssistedInject constructor(
         ): GameListViewModel? {
             val fragment: GameListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.gameListViewModelFactory.create(state)
+            return fragment.gameListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

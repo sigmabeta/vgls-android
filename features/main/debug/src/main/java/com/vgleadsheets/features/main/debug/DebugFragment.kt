@@ -16,6 +16,10 @@ class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
 
     override fun getTrackingScreen() = TrackingScreen.DEBUG
 
+    override fun disablePerfTracking() = true
+
+    override fun getFullLoadTargetTime() = -1L
+
     override fun subscribeToViewEvents() {
         hudViewModel.alwaysShowBack()
 

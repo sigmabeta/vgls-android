@@ -50,10 +50,8 @@ class MockStorage : Storage {
 
     override fun getAllDebugSettings() = Single
         .concat(
-            // TODO Once there's actually more than one of these, we don't need the listOf call
-            listOf(
-                getDebugSettingNetworkEndpoint()
-            )
+            getDebugSettingNetworkEndpoint(),
+            getDebugSettingShowPerfView()
         )
         .toList()
 
@@ -66,6 +64,17 @@ class MockStorage : Storage {
         )
     )
 
-    override fun saveSelectedNetworkEndpoint(newValue: Int) =
+    override fun getDebugSettingShowPerfView() = Single.just(
+        BooleanSetting(
+            SimpleStorage.KEY_DEBUG_MISC_PERF_VIEW,
+            R.string.label_debug_misc_perf_view,
+            false
+        )
+    )
+
+    override fun saveDebugSelectedNetworkEndpoint(newValue: Int) =
+        Single.error<String>(NotImplementedError("Implement this!"))
+
+    override fun saveDebugSettingPerfView(newValue: Boolean) =
         Single.error<String>(NotImplementedError("Implement this!"))
 }

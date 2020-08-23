@@ -85,6 +85,7 @@ android {
 
     packagingOptions {
         exclude 'META-INF/mvrx_release.kotlin_module'
+        exclude 'META-INF/common_debug.kotlin_module'
     }
 
     lintOptions {
@@ -123,9 +124,16 @@ dependencies {
     // Firebase (must be in app or else contentprovider init doesn't happen)
     if (checkShouldIncludeFirebase()) {
         implementation "com.google.firebase:firebase-analytics:$firebase_version"
-        implementation "com.google.firebase:firebase-perf:$firebase_perf_version"
         implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
+
+        implementation project(path: ':tracking')
+    } else {
+        implementation project(path: ':tracking-noop')
     }
+
+    // Perf tracking (only log to firebase on release builds)
+    debugImplementation project(path: ':perf:tracking:noop')
+    releaseImplementation project(path: ':perf:tracking:firebase')
 
     // Memory leak detection (Uncomment to enable)
 //    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
@@ -159,8 +167,6 @@ if (checkShouldIncludeFirebase()) {
     apply plugin: 'com.google.gms.google-services'
 }
 
-// This is duplicated in ui-core/build.gradle.
-// TODO Not duplicate this in ui-core/build.gradle.
 private static boolean checkShouldIncludeFirebase() {
     return new File("app/google-services.json").exists()
 }

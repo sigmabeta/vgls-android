@@ -13,14 +13,17 @@ import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 class SongListViewModel @AssistedInject constructor(
     @Assisted initialState: SongListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : ListViewModel<Song, SongListState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : ListViewModel<Song, SongListState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchSongs()
@@ -40,12 +43,16 @@ class SongListViewModel @AssistedInject constructor(
 
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_all_sheets)
+        resourceProvider.getString(R.string.subtitle_all_sheets),
+        screenName = screenName,
+        tracker = perfTracker
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No songs found at all. Check your internet connection?"
+        "No songs found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -60,7 +67,9 @@ class SongListViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No songs found with a ${selectedPart.apiId} part. Try another part?"
+                    "No songs found with a ${selectedPart.apiId} part. Try another part?",
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -78,7 +87,9 @@ class SongListViewModel @AssistedInject constructor(
                     it.gameName,
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    this
+                    this,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
         }
@@ -108,7 +119,7 @@ class SongListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SongListState): SongListViewModel
+        fun create(initialState: SongListState, screenName: String): SongListViewModel
     }
 
     companion object : MvRxViewModelFactory<SongListViewModel, SongListState> {
@@ -118,7 +129,7 @@ class SongListViewModel @AssistedInject constructor(
         ): SongListViewModel? {
             val fragment: SongListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.sheetListViewModelFactory.create(state)
+            return fragment.sheetListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

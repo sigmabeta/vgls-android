@@ -63,6 +63,10 @@ class LicenseFragment : VglsFragment() {
 
     override fun getTrackingScreen() = TrackingScreen.LICENSE
 
+    override fun disablePerfTracking() = true
+
+    override fun getFullLoadTargetTime() = -1L
+
     companion object {
         fun newInstance() = LicenseFragment()
     }

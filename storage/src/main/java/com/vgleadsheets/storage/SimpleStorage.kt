@@ -47,6 +47,22 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
                 )
             }
 
+    override fun getDebugSettingShowPerfView() =
+        Single.fromFuture(simpleStore.getString(KEY_DEBUG_MISC_PERF_VIEW))
+            .map { fromStorage ->
+                val savedValue = if (fromStorage.isBlank()) {
+                    BuildConfig.DEBUG
+                } else {
+                    fromStorage.toBoolean()
+                }
+
+                BooleanSetting(
+                    KEY_DEBUG_MISC_PERF_VIEW,
+                    R.string.label_debug_misc_perf_view,
+                    savedValue
+                )
+            }
+
     override fun saveSettingSheetScreenOn(setting: Boolean) = Single.fromFuture(
         simpleStore.putString(KEY_SHEETS_KEEP_SCREEN_ON, setting.toString())
     )
@@ -60,15 +76,19 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         )
         .toList()
 
-    override fun getAllDebugSettings(): Single<List<DropdownSetting>> = Single
+    override fun getAllDebugSettings(): Single<List<Setting>> = Single
         .concat(
-            // TODO Once there's actually more than one of these, we don't need the listOf call
-            listOf(getDebugSettingNetworkEndpoint())
+            getDebugSettingNetworkEndpoint(),
+            getDebugSettingShowPerfView()
         )
         .toList()
 
-    override fun saveSelectedNetworkEndpoint(newValue: Int): Single<String> = Single.fromFuture(
+    override fun saveDebugSelectedNetworkEndpoint(newValue: Int): Single<String> = Single.fromFuture(
         simpleStore.putString(KEY_DEBUG_NETWORK_ENDPOINT, newValue.toString())
+    )
+
+    override fun saveDebugSettingPerfView(newValue: Boolean): Single<String> = Single.fromFuture(
+        simpleStore.putString(KEY_DEBUG_MISC_PERF_VIEW, newValue.toString())
     )
 
     companion object {
@@ -78,5 +98,6 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         const val KEY_SHEETS_KEEP_SCREEN_ON = "SETTING_SHEET_KEEP_SCREEN_ON"
 
         const val KEY_DEBUG_NETWORK_ENDPOINT = "DEBUG_NETWORK_ENDPOINT"
+        const val KEY_DEBUG_MISC_PERF_VIEW = "DEBUG_MISC_PERF_VIEW"
     }
 }

@@ -28,6 +28,7 @@ import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.SetlistEntry
 import com.vgleadsheets.model.jam.SongHistoryEntry
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import timber.log.Timber
@@ -36,9 +37,11 @@ import java.util.Locale
 @SuppressWarnings("TooManyFunctions")
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : AsyncListViewModel<JamData, JamState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<JamData, JamState>(initialState, screenName, perfTracker),
     CtaListModel.EventHandler {
     init {
         fetchJam()
@@ -63,7 +66,9 @@ class JamViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
-        "Unknown error occurred."
+        "Unknown error occurred.",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     fun refreshJam() = withState { state ->
@@ -169,7 +174,9 @@ class JamViewModel @AssistedInject constructor(
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 currentSongHandler,
-                jam.currentSong?.id ?: -1L
+                jam.currentSong?.id ?: -1L,
+                screenName = screenName,
+                tracker = perfTracker
             )
         )
     }
@@ -211,7 +218,9 @@ class JamViewModel @AssistedInject constructor(
         listOf(
             EmptyStateListModel(
                 R.drawable.ic_list_black_24dp,
-                resourceProvider.getString(R.string.empty_setlist)
+                resourceProvider.getString(R.string.empty_setlist),
+                screenName,
+                cancelPerfOnEmptyState
             )
         )
     } else {
@@ -230,7 +239,9 @@ class JamViewModel @AssistedInject constructor(
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 setlistSongHandler,
-                entry.song?.id
+                entry.song?.id,
+                screenName = screenName,
+                tracker = perfTracker
             )
         }
     }
@@ -269,7 +280,9 @@ class JamViewModel @AssistedInject constructor(
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 historyHandler,
-                entry.song?.id
+                entry.song?.id,
+                screenName = screenName,
+                tracker = perfTracker
             )
         }
     }
@@ -300,7 +313,14 @@ class JamViewModel @AssistedInject constructor(
     }
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) =
-        listOf(ErrorStateListModel(failedOperationName, error.message ?: "Unknown Error"))
+        listOf(
+            ErrorStateListModel(
+                failedOperationName,
+                error.message ?: "Unknown Error",
+                screenName,
+                cancelPerfOnErrorState
+            )
+        )
 
     private fun fetchJam() = withState { state ->
         val jamId = state.jamId
@@ -340,7 +360,9 @@ class JamViewModel @AssistedInject constructor(
         is Success -> listOf(
             TitleListModel(
                 jam().name.toTitleCase(),
-                resourceProvider.getString(R.string.subtitle_jam)
+                resourceProvider.getString(R.string.subtitle_jam),
+                screenName = screenName,
+                tracker = perfTracker
             )
         )
     }
@@ -381,7 +403,7 @@ class JamViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: JamState): JamViewModel
+        fun create(initialState: JamState, screenName: String): JamViewModel
     }
 
     companion object : MvRxViewModelFactory<JamViewModel, JamState> {
@@ -391,7 +413,7 @@ class JamViewModel @AssistedInject constructor(
         ): JamViewModel? {
             val fragment: JamFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.jamViewModelFactory.create(state)
+            return fragment.jamViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

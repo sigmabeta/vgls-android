@@ -12,6 +12,8 @@ class TagKeyFragment : ListFragment<TagKey, TagKeyState>() {
 
     override fun getTrackingScreen() = TrackingScreen.LIST_TAG_KEY
 
+    override fun getFullLoadTargetTime() = 500L
+
     override val viewModel: TagKeyViewModel by fragmentViewModel()
 
     override fun subscribeToViewEvents() {

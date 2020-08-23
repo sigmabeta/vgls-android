@@ -17,6 +17,7 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import java.util.Locale
@@ -24,11 +25,13 @@ import java.util.Locale
 @SuppressWarnings("TooManyFunctions")
 class JamListViewModel @AssistedInject constructor(
     @Assisted initialState: JamListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : ListViewModel<Jam, JamListState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : ListViewModel<Jam, JamListState>(initialState, screenName, perfTracker),
     CtaListModel.EventHandler,
-    NameCaptionListModel.EventHandler {
+    NameCaptionListModel.EventHandler, EmptyStateListModel.EventHandler {
     init {
         fetchJams()
     }
@@ -54,9 +57,15 @@ class JamListViewModel @AssistedInject constructor(
         )
     }
 
+    override fun onEmptyStateLoadComplete(screenName: String) {
+        perfTracker.cancel(screenName)
+    }
+
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.title_jams),
-        ""
+        "",
+        screenName = screenName,
+        tracker = perfTracker
     )
 
     override fun defaultLoadingListModel(index: Int): ListModel =
@@ -64,7 +73,9 @@ class JamListViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
-        "Unknown error occurred."
+        "Unknown error occurred.",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -76,7 +87,9 @@ class JamListViewModel @AssistedInject constructor(
         arrayListOf(
             EmptyStateListModel(
                 R.drawable.ic_list_black_24dp,
-                "You haven't followed any jams. Click above to search for one."
+                "You haven't followed any jams. Click above to search for one.",
+                screenName,
+                this
             )
         )
     } else {
@@ -85,7 +98,9 @@ class JamListViewModel @AssistedInject constructor(
                 it.id,
                 it.name.toTitleCase(),
                 generateSubtitleText(it.currentSong),
-                this
+                this,
+                screenName = screenName,
+                tracker = perfTracker
             )
         }
     }
@@ -134,7 +149,7 @@ class JamListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: JamListState): JamListViewModel
+        fun create(initialState: JamListState, screenName: String): JamListViewModel
     }
 
     companion object : MvRxViewModelFactory<JamListViewModel, JamListState> {
@@ -144,7 +159,7 @@ class JamListViewModel @AssistedInject constructor(
         ): JamListViewModel? {
             val fragment: JamListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.jamListViewModelFactory.create(state)
+            return fragment.jamListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

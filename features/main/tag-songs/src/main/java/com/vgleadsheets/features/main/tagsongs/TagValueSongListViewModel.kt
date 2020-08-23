@@ -19,15 +19,18 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 @SuppressWarnings("TooManyFunctions")
 class TagValueSongListViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueSongListState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : AsyncListViewModel<TagValueSongListData, TagValueSongListState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<TagValueSongListData, TagValueSongListState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchTagValue()
@@ -48,7 +51,9 @@ class TagValueSongListViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No songs found at all. Check your internet connection?"
+        "No songs found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -101,7 +106,9 @@ class TagValueSongListViewModel @AssistedInject constructor(
             is Success -> listOf(
                 TitleListModel(
                     resourceProvider.getString(R.string.title_tag_value_songs, tagValue().tagKeyName, tagValue().name),
-                    generateSheetCountText(songs)
+                    generateSheetCountText(songs),
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(tagValue.error)
@@ -134,7 +141,9 @@ class TagValueSongListViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No songs found with a ${selectedPart.apiId} part. Try another part?"
+                    "No songs found with a ${selectedPart.apiId} part. Try another part?",
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -152,7 +161,9 @@ class TagValueSongListViewModel @AssistedInject constructor(
                     it.gameName,
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    this@TagValueSongListViewModel
+                    this@TagValueSongListViewModel,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
         }
@@ -167,7 +178,7 @@ class TagValueSongListViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: TagValueSongListState): TagValueSongListViewModel
+        fun create(initialState: TagValueSongListState, screenName: String): TagValueSongListViewModel
     }
 
     companion object : MvRxViewModelFactory<TagValueSongListViewModel, TagValueSongListState> {
@@ -177,7 +188,7 @@ class TagValueSongListViewModel @AssistedInject constructor(
         ): TagValueSongListViewModel? {
             val fragment: TagValueSongListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.tagValueViewModelFactory.create(state)
+            return fragment.tagValueViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

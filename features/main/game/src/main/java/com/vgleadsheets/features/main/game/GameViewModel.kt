@@ -19,15 +19,18 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 @SuppressWarnings("TooManyFunctions")
 class GameViewModel @AssistedInject constructor(
     @Assisted initialState: GameState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : AsyncListViewModel<GameData, GameState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<GameData, GameState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGame()
@@ -48,7 +51,9 @@ class GameViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No songs found at all. Check your internet connection?"
+        "No songs found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -100,7 +105,9 @@ class GameViewModel @AssistedInject constructor(
                     game().name,
                     generateSheetCountText(songs),
                     game().photoUrl,
-                    R.drawable.placeholder_game
+                    R.drawable.placeholder_game,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(game.error)
@@ -134,7 +141,9 @@ class GameViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No songs found with a ${selectedPart.apiId} part. Try another part?"
+                    "No songs found with a ${selectedPart.apiId} part. Try another part?",
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -152,7 +161,9 @@ class GameViewModel @AssistedInject constructor(
                     generateSheetCaption(it),
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    this@GameViewModel
+                    this@GameViewModel,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
         }
@@ -174,13 +185,13 @@ class GameViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: GameState): GameViewModel
+        fun create(initialState: GameState, screenName: String): GameViewModel
     }
 
     companion object : MvRxViewModelFactory<GameViewModel, GameState> {
         override fun create(viewModelContext: ViewModelContext, state: GameState): GameViewModel? {
             val fragment: GameFragment = (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.gameViewModelFactory.create(state)
+            return fragment.gameViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

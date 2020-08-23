@@ -14,6 +14,8 @@ class JamListFragment : ListFragment<Jam, JamListState>() {
 
     override val viewModel: JamListViewModel by fragmentViewModel()
 
+    override fun getFullLoadTargetTime() = 1000L
+
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(JamListState::clickedJamModel) {
             val clickedJamId = it?.dataId

@@ -24,6 +24,8 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_JAM
 
+    override fun getFullLoadTargetTime() = 500L
+
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(JamState::clickedCurrentSongModel) {

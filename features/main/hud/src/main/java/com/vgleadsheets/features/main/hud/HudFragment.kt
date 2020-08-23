@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.hud
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.animation.ValueAnimator.REVERSE
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -20,6 +21,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -41,7 +43,11 @@ import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.components.PartListModel
+import com.vgleadsheets.components.PerfStageListModel
+import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
+import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
@@ -52,6 +58,7 @@ import kotlinx.android.synthetic.main.fragment_hud.button_search_clear
 import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
 import kotlinx.android.synthetic.main.fragment_hud.card_search
 import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
+import kotlinx.android.synthetic.main.fragment_hud.frame_content
 import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
 import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
@@ -70,6 +77,7 @@ import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_settings
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.list_parts
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.progress_hud
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.text_update_time
+import kotlinx.android.synthetic.main.view_perf_event_list.list_perf
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -89,6 +97,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private val adapter = ComponentAdapter()
 
+    private val perfAdapter = ComponentAdapter()
+
     private val backListener = View.OnClickListener { activity?.onBackPressed() }
 
     private val menuListener = View.OnClickListener { onMenuClick() }
@@ -106,10 +116,15 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private var randomAnimation: ObjectAnimator? = null
 
+    override fun disablePerfTracking() = true
+
+    override fun getFullLoadTargetTime() = -1L
+
     override fun onClicked(clicked: PartListModel) {
         onPartSelect(clicked)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -139,6 +154,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         if (!BuildConfig.DEBUG) {
             layout_bottom_sheet.removeView(layout_debug)
         }
+
+        checkShouldShowPerfView()
 
         list_parts.adapter = adapter
         val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
@@ -182,6 +199,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     override fun onStop() {
         super.onStop()
         disposables.clear()
+        viewModel.clearPerfTimers()
     }
 
     @Suppress("ComplexMethod", "LongMethod")
@@ -255,6 +273,15 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
 
         adapter.submitList(listComponents)
+
+        val updatePerfView = state.updatePerfView
+        if (updatePerfView is Success && updatePerfView().value) {
+            showPerfStatus(state.perfViewStatus)
+        }
+
+        if (state.digest is Loading) {
+            perfTracker.cancelAll()
+        }
     }
 
     override fun onBackPress() = withState(viewModel) {
@@ -534,6 +561,77 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                 }
         }
     }
+
+    private fun checkShouldShowPerfView() {
+        val showPerf = storage.getDebugSettingShowPerfView()
+            .subscribe(
+                {
+                    if (it.value) {
+                        setupPerfView()
+                    } else {
+                        hidePerfView()
+                    }
+                },
+                {
+                    Timber.w("No pref found for showing perf view; hiding.")
+                    hidePerfView()
+                }
+            )
+
+        disposables.add(showPerf)
+    }
+
+    private fun hidePerfView() {
+        frame_content.removeView(list_perf)
+    }
+
+    private fun setupPerfView() {
+        list_perf.adapter = perfAdapter
+        val linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager.stackFromEnd = true
+        list_perf.layoutManager = linearLayoutManager
+    }
+
+    private fun showPerfStatus(perfViewStatus: PerfViewStatus) {
+        val listModels = perfViewStatus.screenStatuses
+            .sortedBy { it.startTime }
+            .map { getListModelsForPerfScreen(it) }
+            .flatten()
+
+        perfAdapter.submitList(listModels)
+    }
+
+    private fun getListModelsForPerfScreen(screen: PerfViewScreenStatus) = listOf(
+        PerfStageListModel(
+            screen.screenName,
+            screen.startTime,
+            screen.screenName,
+            screen.completionDuration?.toString() ?: "...",
+            screen.targetTimes["completion"] ?: throw IllegalArgumentException(
+                "Missing target time for completion."
+            ),
+            screen.cancellationDuration
+        ),
+        createPerfStageListModel(screen, PerfStage.VIEW_CREATED),
+        createPerfStageListModel(screen, PerfStage.TITLE_LOADED),
+        createPerfStageListModel(screen, PerfStage.TRANSITION_START),
+        createPerfStageListModel(screen, PerfStage.PARTIAL_CONTENT_LOAD),
+        createPerfStageListModel(screen, PerfStage.FULL_CONTENT_LOAD)
+    )
+
+    private fun createPerfStageListModel(
+        screen: PerfViewScreenStatus,
+        perfStage: PerfStage
+    ) = PerfStageListModel(
+        screen.screenName,
+        screen.startTime,
+        perfStage.toString(),
+        screen.durations[perfStage.toString()]?.toString() ?: "...",
+        screen.targetTimes[perfStage.toString()] ?: throw IllegalArgumentException(
+            "Missing target time for stage $perfStage."
+        ),
+        screen.cancellationDuration
+    )
 
     private fun searchClicks() = card_search.clicks()
         .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)

@@ -28,6 +28,9 @@ dependencies {
 
     implementation project(path: ':repository')
 
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

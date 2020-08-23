@@ -19,15 +19,18 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 @SuppressWarnings("TooManyFunctions")
 class ComposerViewModel @AssistedInject constructor(
     @Assisted initialState: ComposerState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : AsyncListViewModel<ComposerData, ComposerState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<ComposerData, ComposerState>(initialState, screenName, perfTracker),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchComposer()
@@ -48,7 +51,9 @@ class ComposerViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No songs found at all. Check your internet connection?"
+        "No songs found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -100,7 +105,9 @@ class ComposerViewModel @AssistedInject constructor(
                     composer().name,
                     generateSheetCountText(songs),
                     composer().photoUrl,
-                    R.drawable.placeholder_composer
+                    R.drawable.placeholder_composer,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(composer.error)
@@ -134,7 +141,9 @@ class ComposerViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No songs found with a ${selectedPart.apiId} part. Try another part?"
+                    "No songs found with a ${selectedPart.apiId} part. Try another part?",
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -152,7 +161,9 @@ class ComposerViewModel @AssistedInject constructor(
                     it.gameName,
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    this@ComposerViewModel
+                    this@ComposerViewModel,
+                    screenName = screenName,
+                    tracker = perfTracker
                 )
             }
         }
@@ -167,13 +178,13 @@ class ComposerViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: ComposerState): ComposerViewModel
+        fun create(initialState: ComposerState, screenName: String): ComposerViewModel
     }
 
     companion object : MvRxViewModelFactory<ComposerViewModel, ComposerState> {
         override fun create(viewModelContext: ViewModelContext, state: ComposerState): ComposerViewModel? {
             val fragment: ComposerFragment = (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.composerViewModelFactory.create(state)
+            return fragment.composerViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

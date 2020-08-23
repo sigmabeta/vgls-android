@@ -84,4 +84,7 @@
     </androidx.cardview.widget.CardView>
 
     <include layout="@layout/view_bottom_sheet_card" />
+
+    <include layout="@layout/view_perf_event_list" />
+
 </FrameLayout>

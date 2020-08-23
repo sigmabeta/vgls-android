@@ -15,6 +15,8 @@ class SongListFragment : ListFragment<Song, SongListState>() {
 
     override fun getTrackingScreen() = TrackingScreen.LIST_SHEET
 
+    override fun getFullLoadTargetTime() = 5000L
+
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(SongListState::clickedListModel) {
             val clickedSongId = it?.dataId

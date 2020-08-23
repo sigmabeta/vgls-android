@@ -15,14 +15,17 @@ import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 
 class TagKeyViewModel @AssistedInject constructor(
     @Assisted initialState: TagKeyState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : ListViewModel<TagKey, TagKeyState>(initialState, resourceProvider),
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : ListViewModel<TagKey, TagKeyState>(initialState, screenName, perfTracker),
     NameCaptionListModel.EventHandler {
     init {
         fetchTagKeys()
@@ -42,7 +45,9 @@ class TagKeyViewModel @AssistedInject constructor(
 
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_tags)
+        resourceProvider.getString(R.string.subtitle_tags),
+        screenName = screenName,
+        tracker = perfTracker
     )
 
     override fun defaultLoadingListModel(index: Int): ListModel =
@@ -50,7 +55,9 @@ class TagKeyViewModel @AssistedInject constructor(
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
-        "No tags found at all. Check your internet connection?"
+        "No tags found at all. Check your internet connection?",
+        screenName,
+        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -63,7 +70,9 @@ class TagKeyViewModel @AssistedInject constructor(
             it.id,
             it.name,
             generateSubtitleText(it.values),
-            this@TagKeyViewModel
+            this@TagKeyViewModel,
+            screenName = screenName,
+            tracker = perfTracker
         )
     }
 
@@ -119,7 +128,7 @@ class TagKeyViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: TagKeyState): TagKeyViewModel
+        fun create(initialState: TagKeyState, screenName: String): TagKeyViewModel
     }
 
     companion object : MvRxViewModelFactory<TagKeyViewModel, TagKeyState> {
@@ -129,7 +138,7 @@ class TagKeyViewModel @AssistedInject constructor(
         ): TagKeyViewModel? {
             val fragment: TagKeyFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.tagKeyViewModelFactory.create(state)
+            return fragment.tagKeyViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }

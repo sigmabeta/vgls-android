@@ -5,8 +5,8 @@ import android.os.Build
 import com.facebook.stetho.Stetho
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
-import com.vgleadsheets.di.AppModule
 import com.vgleadsheets.di.DaggerUiTestAppComponent
+import com.vgleadsheets.di.TestAppModule
 import com.vgleadsheets.di.UiTestAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -40,7 +40,6 @@ class UiTestApplication : DaggerApplication(), HasAndroidInjector {
         val picasso = Picasso.Builder(this)
             .downloader(okHttp3Downloader)
             .indicatorsEnabled(BuildConfig.DEBUG)
-            .loggingEnabled(BuildConfig.DEBUG)
             .defaultBitmapConfig(Bitmap.Config.RGB_565)
             .build()
 
@@ -50,7 +49,7 @@ class UiTestApplication : DaggerApplication(), HasAndroidInjector {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication>? {
         val component = DaggerUiTestAppComponent
             .factory()
-            .create(AppModule(this))
+            .create(TestAppModule(this))
 
         testComponent = component
         return component

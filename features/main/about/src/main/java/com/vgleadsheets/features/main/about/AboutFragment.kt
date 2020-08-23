@@ -14,12 +14,17 @@ import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
 import kotlinx.android.synthetic.main.fragment_about.list_content
 
+@SuppressWarnings("TooManyFunctions")
 class AboutFragment : VglsFragment(),
     SingleTextListModel.EventHandler,
     NameCaptionListModel.EventHandler {
     private val adapter = ComponentAdapter()
 
     private val hudViewModel: HudViewModel by existingViewModel()
+
+    override fun disablePerfTracking() = true
+
+    override fun getFullLoadTargetTime() = -1L
 
     override fun onClicked(clicked: NameCaptionListModel) {
         when (clicked.dataId) {
@@ -76,13 +81,17 @@ class AboutFragment : VglsFragment(),
             R.string.label_link_vgls.toLong(),
             getString(R.string.label_link_vgls),
             getString(R.string.caption_link_vgls),
-            this
+            this,
+            getPerfScreenName(),
+            perfTracker
         ),
         NameCaptionListModel(
             R.string.label_link_giantbomb.toLong(),
             getString(R.string.label_link_giantbomb),
             getString(R.string.caption_link_giantbomb),
-            this
+            this,
+            getPerfScreenName(),
+            perfTracker
         ),
         SingleTextListModel(
             R.string.label_link_licenses.toLong(),

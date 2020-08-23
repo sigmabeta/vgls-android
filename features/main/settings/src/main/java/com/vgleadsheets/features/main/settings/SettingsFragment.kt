@@ -1,5 +1,7 @@
 package com.vgleadsheets.features.main.settings
 
+import android.os.Bundle
+import android.view.View
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.tracking.TrackingScreen
@@ -11,9 +13,18 @@ class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
 
     override fun getTrackingScreen() = TrackingScreen.SETTINGS
 
+    override fun getFullLoadTargetTime() = 500L
+
     override val viewModel: SettingsViewModel by fragmentViewModel()
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        perfTracker.onTransitionStarted(getPerfScreenName())
+        perfTracker.onTitleLoaded(getPerfScreenName())
+    }
 
     override fun subscribeToViewEvents() {
         hudViewModel.alwaysShowBack()

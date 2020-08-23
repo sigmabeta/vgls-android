@@ -81,6 +81,16 @@ class ViewerFragment : VglsFragment(),
         else -> showError("Unimplemented toolbar button.")
     }
 
+    override fun onLoadStarted() {
+        perfTracker.onTitleLoaded(getPerfScreenName())
+    }
+
+    override fun onLoadComplete() {
+        perfTracker.onTransitionStarted(getPerfScreenName())
+        perfTracker.onPartialContentLoad(getPerfScreenName())
+        perfTracker.onFullContentLoad(getPerfScreenName())
+    }
+
     override fun onLongClicked(clicked: ToolbarItemListModel) {
         hudViewModel.startHudTimer()
         showSnackbar(clicked.name)
@@ -89,6 +99,7 @@ class ViewerFragment : VglsFragment(),
     override fun clearClicked() = Unit
 
     override fun onLoadFailed(imageUrl: String, ex: Exception?) {
+        perfTracker.cancel(getPerfScreenName())
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
     }
 
@@ -218,6 +229,10 @@ class ViewerFragment : VglsFragment(),
     override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
 
     override fun getDetails() = viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
+
+    override fun getPerfTrackingMinScreenHeight() = 200
+
+    override fun getFullLoadTargetTime() = 1000L
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")

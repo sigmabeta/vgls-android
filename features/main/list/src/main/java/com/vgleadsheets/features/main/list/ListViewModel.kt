@@ -5,18 +5,20 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.mvrx.MvRxViewModel
-import com.vgleadsheets.resources.ResourceProvider
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 
 @Suppress("UNCHECKED_CAST", "TooManyFunctions")
 abstract class ListViewModel<DataType, StateType : ListState<DataType>> constructor(
     initialState: StateType,
-    private val resourceProvider: ResourceProvider
+    private val screenName: String,
+    private val perfTracker: PerfTracker
 ) : MvRxViewModel<StateType>(initialState) {
     fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
         setState {
@@ -78,6 +80,18 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     open fun createFullEmptyStateListModel(): ListModel? = null
 
     protected open val showDefaultEmptyState = true
+
+    protected val cancelPerfOnEmptyState = object : EmptyStateListModel.EventHandler {
+        override fun onEmptyStateLoadComplete(screenName: String) {
+            perfTracker.cancel(screenName)
+        }
+    }
+
+    protected val cancelPerfOnErrorState = object : ErrorStateListModel.EventHandler {
+        override fun onErrorStateLoadComplete(screenName: String) {
+            perfTracker.cancel(screenName)
+        }
+    }
 
     abstract fun createTitleListModel(): TitleListModel
 
@@ -148,8 +162,15 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         return listModels
     }
 
-    private fun createErrorStateListModel(error: Throwable) =
-        listOf(ErrorStateListModel("allData", error.message ?: "Unknown Error"))
+    protected fun createErrorStateListModel(error: Throwable) =
+        listOf(
+            ErrorStateListModel(
+                "allData",
+                error.message ?: "Unknown Error",
+                screenName,
+                cancelPerfOnErrorState
+            )
+        )
 
     companion object {
         const val LOADING_ITEMS = 15

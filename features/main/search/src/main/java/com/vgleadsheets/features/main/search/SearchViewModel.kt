@@ -22,6 +22,7 @@ import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import io.reactivex.disposables.CompositeDisposable
@@ -30,9 +31,11 @@ import java.util.concurrent.TimeUnit
 @SuppressWarnings("TooManyFunctions")
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
+    @Assisted val screenName: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider
-) : AsyncListViewModel<SearchData, SearchState>(initialState, resourceProvider) {
+    private val resourceProvider: ResourceProvider,
+    private val perfTracker: PerfTracker
+) : AsyncListViewModel<SearchData, SearchState>(initialState, screenName, perfTracker) {
     private val searchOperations = CompositeDisposable()
 
     private val songHandler = object : ImageNameCaptionListModel.EventHandler {
@@ -156,7 +159,9 @@ class SearchViewModel @AssistedInject constructor(
             return listOf(
                 ErrorStateListModel(
                     "stickerbrush",
-                    resourceProvider.getString(R.string.error_search_stickerbrush)
+                    resourceProvider.getString(R.string.error_search_stickerbrush),
+                    screenName,
+                    cancelPerfOnErrorState
                 )
             )
         }
@@ -182,7 +187,9 @@ class SearchViewModel @AssistedInject constructor(
             listOf(
                 EmptyStateListModel(
                     R.drawable.ic_description_24dp,
-                    resourceProvider.getString(R.string.empty_search_no_results)
+                    resourceProvider.getString(R.string.empty_search_no_results),
+                    screenName,
+                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -249,7 +256,9 @@ class SearchViewModel @AssistedInject constructor(
                             it.gameName,
                             thumbUrl,
                             getPlaceholderId(it),
-                            songHandler
+                            songHandler,
+                            screenName = screenName,
+                            tracker = perfTracker
                         )
                     }
                     is Game -> ImageNameCaptionListModel(
@@ -258,7 +267,9 @@ class SearchViewModel @AssistedInject constructor(
                         generateSubtitleText(it.songs),
                         it.photoUrl,
                         getPlaceholderId(it),
-                        gameHandler
+                        gameHandler,
+                        screenName = screenName,
+                        tracker = perfTracker
                     )
                     is Composer -> ImageNameCaptionListModel(
                         it.id,
@@ -266,7 +277,9 @@ class SearchViewModel @AssistedInject constructor(
                         generateSubtitleText(it.songs),
                         it.photoUrl,
                         getPlaceholderId(it),
-                        composerHandler
+                        composerHandler,
+                        screenName = screenName,
+                        tracker = perfTracker
                     )
                     else -> throw IllegalArgumentException(
                         "Bad model in search result list."
@@ -330,7 +343,9 @@ class SearchViewModel @AssistedInject constructor(
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(
         ErrorStateListModel(
             failedOperationName,
-            error.message ?: "Unknown Error"
+            error.message ?: "Unknown Error",
+            screenName,
+            cancelPerfOnErrorState
         )
     )
 
@@ -409,7 +424,7 @@ class SearchViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SearchState): SearchViewModel
+        fun create(initialState: SearchState, screenName: String): SearchViewModel
     }
 
     companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
@@ -427,7 +442,7 @@ class SearchViewModel @AssistedInject constructor(
             state: SearchState
         ): SearchViewModel? {
             val fragment: SearchFragment = (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.searchViewModelFactory.create(state)
+            return fragment.searchViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }
 }
