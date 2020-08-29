@@ -83,6 +83,10 @@ android {
         targetCompatibility 1.8
     }
 
+    kotlinOptions {
+        jvmTarget = 1.8
+    }
+
     packagingOptions {
         exclude 'META-INF/mvrx_release.kotlin_module'
         exclude 'META-INF/common_debug.kotlin_module'
@@ -113,7 +117,7 @@ dependencies {
     androidTestImplementation project(path: ':common:debug-common')
 
     // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

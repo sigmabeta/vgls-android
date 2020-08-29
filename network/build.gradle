@@ -16,7 +16,7 @@ dependencies {
     api "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
     // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
