@@ -17,25 +17,15 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
     private val screenName: String,
     private val perfTracker: PerfTracker
 ) : MvRxViewModel<StateType>(initialState) {
-    fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
-        setState {
-            updateListState(
-                selectedPart = newPart,
-                listModels = constructList(
-                    data,
-                    this
-                )
-            ) as StateType
-        }
-    }
-
     fun onDigestUpdate(newDigest: Async<*>) {
         setState {
             updateListState(
                 digest = newDigest,
                 listModels = constructList(
                     data,
-                    this
+                    newDigest,
+                    updateTime,
+                    selectedPart
                 )
             ) as StateType
         }
@@ -47,7 +37,23 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
                 updateTime = newTime,
                 listModels = constructList(
                     data,
-                    this
+                    digest,
+                    updateTime,
+                    selectedPart
+                )
+            ) as StateType
+        }
+    }
+
+    fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
+        setState {
+            updateListState(
+                selectedPart = newPart,
+                listModels = constructList(
+                    data,
+                    digest,
+                    updateTime,
+                    newPart
                 )
             ) as StateType
         }
@@ -55,13 +61,15 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
     fun constructList(
         data: DataType,
-        state: StateType
+        digest: Async<*>,
+        updateTime: Async<*>,
+        selectedPart: PartSelectorItem?
     ): List<ListModel> {
         val contentListModels = createDataListModels(
             data,
-            state.digest,
-            state.updateTime,
-            state.selectedPart
+            digest,
+            updateTime,
+            selectedPart
         )
 
         return contentListModels

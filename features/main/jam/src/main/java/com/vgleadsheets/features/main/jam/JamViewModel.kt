@@ -93,7 +93,9 @@ class JamViewModel @AssistedInject constructor(
                     data = newData,
                     listModels = constructList(
                         newData,
-                        this
+                        digest,
+                        updateTime,
+ selectedPart
                     )
                 )
             }
@@ -108,7 +110,9 @@ class JamViewModel @AssistedInject constructor(
                     data = newData,
                     listModels = constructList(
                         newData,
-                        this
+                        digest,
+                        updateTime,
+ selectedPart
                     )
                 )
             }
@@ -334,7 +338,9 @@ class JamViewModel @AssistedInject constructor(
                     data = newData,
                     listModels = constructList(
                         newData,
-                        this
+                        digest,
+                        updateTime,
+ selectedPart
                     )
                 )
             }
@@ -348,7 +354,9 @@ class JamViewModel @AssistedInject constructor(
                     data = newData,
                     listModels = constructList(
                         newData,
-                        this
+                        digest,
+                        updateTime,
+ selectedPart
                     )
                 )
             }

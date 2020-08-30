@@ -77,7 +77,9 @@ class ComposerViewModel @AssistedInject constructor(
                     data = newData,
                     listModels = constructList(
                         newData,
-                        this
+                        digest,
+                        updateTime,
+ selectedPart
                     )
                 )
             }
@@ -92,7 +94,9 @@ class ComposerViewModel @AssistedInject constructor(
                     data = newData,
                     listModels = constructList(
                         newData,
-                        this
+                        digest,
+                        updateTime,
+ selectedPart
                     )
                 )
             }

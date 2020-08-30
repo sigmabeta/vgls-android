@@ -98,7 +98,9 @@ class SettingsViewModel @AssistedInject constructor(
                 data = newData,
                 listModels = constructList(
                     newData,
-                    this
+                    digest,
+                    updateTime,
+ selectedPart
                 )
             )
         }
