@@ -100,7 +100,7 @@ class SettingsViewModel @AssistedInject constructor(
                     newData,
                     digest,
                     updateTime,
- selectedPart
+                    selectedPart
                 )
             )
         }

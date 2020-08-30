@@ -419,7 +419,7 @@ class SearchViewModel @AssistedInject constructor(
                 newData,
                 digest,
                 updateTime,
- selectedPart
+                selectedPart
             )
         )
     }

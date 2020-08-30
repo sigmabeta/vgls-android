@@ -79,7 +79,7 @@ class ComposerViewModel @AssistedInject constructor(
                         newData,
                         digest,
                         updateTime,
- selectedPart
+                        selectedPart
                     )
                 )
             }
@@ -96,7 +96,7 @@ class ComposerViewModel @AssistedInject constructor(
                         newData,
                         digest,
                         updateTime,
- selectedPart
+                        selectedPart
                     )
                 )
             }

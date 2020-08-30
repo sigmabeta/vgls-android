@@ -220,7 +220,7 @@ class SheetDetailViewModel @AssistedInject constructor(
                         newData,
                         digest,
                         updateTime,
- selectedPart
+                        selectedPart
                     )
                 )
             }
@@ -236,7 +236,7 @@ class SheetDetailViewModel @AssistedInject constructor(
                         newData,
                         digest,
                         updateTime,
- selectedPart
+                        selectedPart
                     )
                 )
             }

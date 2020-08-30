@@ -86,7 +86,7 @@ class TagValueListViewModel @AssistedInject constructor(
                         newData,
                         digest,
                         updateTime,
- selectedPart
+                        selectedPart
                     )
                 )
             }
@@ -103,7 +103,7 @@ class TagValueListViewModel @AssistedInject constructor(
                         newData,
                         digest,
                         updateTime,
- selectedPart
+                        selectedPart
                     )
                 )
             }
