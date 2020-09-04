@@ -2,6 +2,7 @@ version: 2
 
 jobs:
   build:
+    resource_class: large
     docker:
       - image: cimg/android:2021.10.2
 
@@ -40,6 +41,7 @@ jobs:
 
 
   static_analysis:
+    resource_class: large
     docker:
       - image: circleci/android:api-27
 
