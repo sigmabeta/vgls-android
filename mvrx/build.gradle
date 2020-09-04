@@ -1,4 +1,5 @@
 dependencies {
     // MvRx - an implementation of MVI using Rx
     api "com.airbnb.android:mvrx:$mvrx_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
 }

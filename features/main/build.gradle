@@ -32,7 +32,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Dagger annotation processors
     implementation project(path: ':di')

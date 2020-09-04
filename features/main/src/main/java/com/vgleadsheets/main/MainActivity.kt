@@ -5,8 +5,8 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
-import com.airbnb.mvrx.BaseMvRxActivity
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
@@ -41,7 +41,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class MainActivity : BaseMvRxActivity(), HasAndroidInjector, FragmentRouter,
+class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentRouter,
     HudViewModel.HudViewModelFactoryProvider {
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>

@@ -218,7 +218,9 @@ class SheetDetailViewModel @AssistedInject constructor(
                     data = newData,
                     listModels = constructList(
                         newData,
-                        this
+                        digest,
+                        updateTime,
+                        selectedPart
                     )
                 )
             }
@@ -232,7 +234,9 @@ class SheetDetailViewModel @AssistedInject constructor(
                     data = newData,
                     listModels = constructList(
                         newData,
-                        this
+                        digest,
+                        updateTime,
+                        selectedPart
                     )
                 )
             }
