@@ -105,6 +105,10 @@ android {
     }
 }
 
+play {
+    track = System.getenv("TRACK")
+}
+
 dependencies {
     // Module deps
     implementation project(path: ':resources')
