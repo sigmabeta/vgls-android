@@ -108,6 +108,7 @@ android {
 
 play {
     track = System.getenv("TRACK")
+    artifactDir = file("build/outputs/apk/release/")
 }
 
 dependencies {

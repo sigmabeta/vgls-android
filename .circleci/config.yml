@@ -9,34 +9,40 @@ jobs:
       JVM_OPTS: -Xmx3200m
 
     steps:
-    - checkout
-    - restore_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-    - run:
-        name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-        command: sudo chmod +x ./gradlew
-    - run:
-        name: Setup Google Services JSON
-        command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
-    - run:
-        name: Download Dependencies
-        command: ./gradlew androidDependencies
-    - save_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-        paths:
-        - ~/.gradle
-    - run:
-        name: Get all Git tags
-        command: git fetch --tags
-    - run:
-        name: Prepare license information Webview
-        command: ./gradlew licenseReleaseReport
-    - run:
-        name: Build Release
-        command: ./gradlew assembleRelease -PdisablePreDex
-    - store_artifacts:
-        path: app/build/outputs/apk/
-        destination: apks
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+          command: sudo chmod +x ./gradlew
+      - run:
+          name: Setup Google Services JSON
+          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
+      - run:
+          name: Set target Google Play Track
+          command: ./set-track-name.sh
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          paths:
+            - ~/.gradle
+      - run:
+          name: Get all Git tags
+          command: git fetch --tags
+      - run:
+          name: Prepare license information Webview
+          command: ./gradlew licenseReleaseReport
+      - run:
+          name: Build Release
+          command: ./gradlew assembleRelease -PdisablePreDex
+      - run:
+          name: Upload to Google Play
+          command: ./gradlew publishApk
+      - store_artifacts:
+          path: app/build/outputs/apk/
+          destination: apks
 
 
   static_analysis:
@@ -47,31 +53,34 @@ jobs:
       JVM_OPTS: -Xmx3200m
 
     steps:
-    - checkout
-    - restore_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-    - run:
-        name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-        command: sudo chmod +x ./gradlew
-    - run:
-        name: Download Dependencies
-        command: ./gradlew androidDependencies
-    - save_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-        paths:
-        - ~/.gradle
-    - run:
-        name: Spotless / KTLint
-        command: ./gradlew spotlessCheck
-    - run:
-        name: Detekt
-        command: ./gradlew detekt
-    - run:
-        name: Android Lint
-        command: ./gradlew :app:lintRelease
-    - store_artifacts:
-        path: app/build/reports/
-        destination: reports
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+          command: sudo chmod +x ./gradlew
+      - run:
+          name: Set target Google Play Track
+          command: ./set-track-name.sh
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          paths:
+            - ~/.gradle
+      - run:
+          name: Spotless / KTLint
+          command: ./gradlew spotlessCheck
+      - run:
+          name: Detekt
+          command: ./gradlew detekt
+      - run:
+          name: Android Lint
+          command: ./gradlew :app:lintRelease
+      - store_artifacts:
+          path: app/build/reports/
+          destination: reports
 
 workflows:
   version: 2
