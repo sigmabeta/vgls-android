@@ -32,7 +32,6 @@ def computeVersionName = { ->
 }
 
 android {
-    buildToolsVersion '30.0.0'
 
     defaultConfig {
         applicationId "com.vgleadsheets"
@@ -86,16 +85,12 @@ android {
     kotlinOptions {
         jvmTarget = 1.8
     }
-
     packagingOptions {
-        exclude 'META-INF/mvrx_release.kotlin_module'
-        exclude 'META-INF/common_debug.kotlin_module'
+        resources {
+            excludes += ['META-INF/mvrx_release.kotlin_module', 'META-INF/common_debug.kotlin_module']
+        }
     }
 
-    lintOptions {
-        checkDependencies true
-        ignoreTestSources true
-    }
 
     buildFeatures {
         dataBinding true
@@ -103,6 +98,10 @@ android {
 
     testOptions {
         animationsDisabled = true
+    }
+    lint {
+        checkDependencies true
+        ignoreTestSources true
     }
 }
 
