@@ -261,6 +261,6 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         }
 
     companion object {
-        const val TIMEOUT_SCREEN_LOAD = 15_000L
+        const val TIMEOUT_SCREEN_LOAD = 30_000L
     }
 }

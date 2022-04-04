@@ -9,3 +9,4 @@ VGLeadSheets should build and install just like any other Android app:
 ```./gradlew :app:installDebug```
 
 Firebase features are also enabled automatically if you supply a `google-services.json` file.
+
