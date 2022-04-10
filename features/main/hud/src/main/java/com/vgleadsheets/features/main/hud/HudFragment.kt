@@ -1,52 +1,41 @@
 package com.vgleadsheets.features.main.hud
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator.INFINITE
-import android.animation.ValueAnimator.REVERSE
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.View.GONE
-import android.view.View.SCALE_Y
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.DECELERATE
-import com.vgleadsheets.animation.DURATION_QUICK
-import com.vgleadsheets.animation.DURATION_SLOW
-import com.vgleadsheets.animation.TRANSLATION_CENTER
 import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeInSlightly
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
+import com.vgleadsheets.components.MenuItemListModel
+import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.components.PerfStageListModel
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
-import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
@@ -62,29 +51,12 @@ import kotlinx.android.synthetic.main.fragment_hud.frame_content
 import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
 import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
 import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.button_menu
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.icon_random
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_all_sheets
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_bottom_sheet
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_composer
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_game
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_by_tag
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_debug
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_jams
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_random_select
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_refresh
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.layout_settings
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.list_parts
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.progress_hud
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.text_update_time
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.recycler_bottom
 import kotlinx.android.synthetic.main.view_perf_event_list.list_perf
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.NoSuchElementException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+
 
 @Suppress("TooManyFunctions")
 class HudFragment : VglsFragment(), PartListModel.ClickListener {
@@ -95,7 +67,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private val disposables = CompositeDisposable()
 
-    private val adapter = ComponentAdapter()
+    private val menuAdapter = ComponentAdapter()
 
     private val perfAdapter = ComponentAdapter()
 
@@ -113,8 +85,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             imm?.showSoftInput(edit_search_query, InputMethodManager.SHOW_IMPLICIT)
         }
     }
-
-    private var randomAnimation: ObjectAnimator? = null
 
     override fun disablePerfTracking() = true
 
@@ -146,35 +116,18 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         val cornerOffset = resources.getDimension(R.dimen.margin_small).toInt()
 
-        layout_bottom_sheet.setInsetListenerForOnePadding(Side.BOTTOM, offset = cornerOffset)
+        recycler_bottom.adapter = menuAdapter
+        recycler_bottom.layoutManager = LinearLayoutManager(context)
+        recycler_bottom.setInsetListenerForOnePadding(Side.BOTTOM, offset = cornerOffset)
         bottom_sheet.updateLayoutParams<FrameLayout.LayoutParams> {
             bottomMargin = -cornerOffset
         }
 
-        if (!BuildConfig.DEBUG) {
-            layout_bottom_sheet.removeView(layout_debug)
-        }
-
         checkShouldShowPerfView()
 
-        list_parts.adapter = adapter
-        val gridLayoutManager = GridLayoutManager(activity, SPAN_COUNT_DEFAULT)
-        list_parts.layoutManager = gridLayoutManager
-
         button_search_clear.setOnClickListener { edit_search_query.text.clear() }
-        button_menu.setOnClickListener { onMenuClick() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
 
-        layout_by_game.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_GAME) }
-        layout_by_composer.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_COMPOSER) }
-        layout_by_tag.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_TAG) }
-        layout_all_sheets.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_SONG) }
-        layout_jams.setOnClickListener { showScreen(TOP_LEVEL_SCREEN_ID_JAM) }
-        layout_settings.setOnClickListener { showScreen(MODAL_SCREEN_ID_SETTINGS, true, false) }
-        layout_debug?.setOnClickListener { showScreen(MODAL_SCREEN_ID_DEBUG, true, false) }
-        layout_refresh.setOnClickListener { onRefreshClick() }
-
-        enableRandomSelector()
     }
 
     override fun onStart() {
@@ -218,12 +171,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             showSearchMenuButton()
         }
 
-        if (state.menuExpanded) {
-            showFullMenu()
-            showSearchBackButton()
-        } else {
-            hideFullMenu()
-        }
+        renderMenu(state.menuExpanded)
 
         if (state.alwaysShowBack) {
             showSearchBackButton()
@@ -235,48 +183,9 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             showSearchClearButton()
         }
 
-        when (state.random) {
-            is Success -> {
-                onRandomSuccess(state, state.random())
-            }
-            is Loading -> {
-                startRandomLoadAnimation()
-            }
-            is Fail -> {
-                showError("Failed to load random sheet.")
-                viewModel.clearRandom()
-            }
-            is Uninitialized -> stopRandomLoadAnimation()
-        }
-
-        when (state.digest) {
-            is Uninitialized -> hideDigestLoading()
-            is Fail -> handleDigestError(state.digest.error)
-            is Loading -> showDigestLoading()
-            is Success -> {
-                hideDigestLoading()
-            }
-        }
-
-        when (state.updateTime) {
-            is Loading -> showUpdateTimeLoading()
-            is Success -> showUpdateTimeSuccess(state.updateTime())
-        }
-
-        val listComponents = state.parts.map {
-            PartListModel(
-                it.apiId.hashCode().toLong(),
-                it.apiId,
-                it.selected,
-                this
-            )
-        }
-
-        adapter.submitList(listComponents)
-
         val updatePerfView = state.updatePerfView
         if (updatePerfView is Success && updatePerfView().value) {
-            showPerfStatus(state.perfViewStatus)
+//            showPerfStatus(state.perfViewStatus)
         }
 
         if (state.digest is Loading) {
@@ -346,40 +255,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun onRandomSuccess(
-        hudState: HudState,
-        song: Song?
-    ) {
-        viewModel.clearRandom()
-        viewModel.onMenuAction()
-
-        if (song == null) {
-            showError("Failed to get a random track.")
-            viewModel.clearRandom()
-            return
-        }
-
-        val transposition = hudState
-            .parts
-            .firstOrNull { it.selected }
-            ?.apiId ?: "Error"
-
-        tracker.logRandomSongView(
-            song.name,
-            song.gameName,
-            transposition
-        )
-
-        getFragmentRouter().showSongViewer(
-            song.id,
-            song.name,
-            song.gameName,
-            transposition,
-            getTrackingScreen(),
-            getDetails()
-        )
-    }
-
     private fun onPartSelect(clicked: PartListModel) {
         tracker.logPartSelect(clicked.name)
         viewModel.onPartSelect(clicked.name)
@@ -387,22 +262,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val save = storage.saveSelectedPart(clicked.name)
             .subscribe({}, { showError("Failed to save part selection: ${it.message}") })
         disposables.add(save)
-    }
-
-    private fun showUpdateTimeSuccess(updateTime: Long?) {
-        val calendar = Calendar.getInstance()
-        val checkedTime = updateTime ?: 0L
-
-        val date = if (checkedTime > 0L) {
-            calendar.timeInMillis = checkedTime
-            val time = calendar.time
-            val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.US)
-            dateFormat.format(time)
-        } else {
-            getString(R.string.date_never)
-        }
-
-        text_update_time.text = getString(R.string.label_refresh_date, date)
     }
 
     private fun onMenuClick() {
@@ -415,18 +274,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             tracker.logForceRefresh()
             viewModel.refresh()
         }
-    }
-
-    private fun showUpdateTimeLoading() {
-        Timber.i("Loading update time.")
-    }
-
-    private fun showDigestLoading() {
-        progress_hud.visibility = VISIBLE
-    }
-
-    private fun hideDigestLoading() {
-        progress_hud.visibility = GONE
     }
 
     private fun showSearchClearButton() {
@@ -447,16 +294,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         button_search_menu_back.contentDescription = getString(R.string.cd_search_back)
         button_search_menu_back.setImageResource(R.drawable.ic_arrow_back_black_24dp)
         button_search_menu_back.setOnClickListener(backListener)
-    }
-
-    private fun handleDigestError(error: Throwable) {
-        when (error) {
-            is NoSuchElementException -> hideDigestLoading()
-            else -> {
-                showError("Couldn't load sheets from server: ${error.message}")
-                viewModel.clearDigestError()
-            }
-        }
     }
 
     private fun showSearch() {
@@ -495,7 +332,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     }
 
     private fun hideHud() {
-        if (card_search.visibility != View.GONE) {
+        if (card_search.visibility != GONE) {
             card_search.slideViewUpOffscreen()
             bottom_sheet.slideViewDownOffscreen()
 
@@ -508,58 +345,108 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun showFullMenu() {
-        if (layout_by_game.visibility != VISIBLE) {
-            shadow_hud.fadeInSlightly()
-
-            layout_by_game.fadeIn()
-            layout_by_composer.fadeIn()
-            layout_by_tag.fadeIn()
-            layout_all_sheets.fadeIn()
-            layout_jams.fadeIn()
-            layout_random_select.fadeIn()
-            layout_settings.fadeIn()
-            layout_debug?.fadeIn()
-            layout_refresh.fadeIn()
-
-            val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
-            val options = layout_bottom_sheet.childCount - CHILDREN_ABOVE_FOLD
-            val slideDistance = (itemHeight * options)
-
-            bottom_sheet.translationY = slideDistance
-            bottom_sheet.animate()
-                .translationY(TRANSLATION_CENTER)
-                .setDuration(DURATION_SLOW)
-                .setInterpolator(DECELERATE)
-        }
-    }
-
-    private fun hideFullMenu() {
-        if (layout_by_game.visibility == VISIBLE) {
+    private fun renderMenu(visible: Boolean) {
+        if (!visible) {
             shadow_hud.fadeOutGone()
 
-            layout_by_game.fadeOutGone()
-            layout_by_composer.fadeOutGone()
-            layout_by_tag.fadeOutGone()
-            layout_all_sheets.fadeOutGone()
-            layout_jams.fadeOutGone()
-            layout_random_select.fadeOutGone()
-            layout_settings.fadeOutGone()
-            layout_debug?.fadeOutGone()
-            layout_refresh.fadeOutGone()
+            menuAdapter.submitList(
+                listOf(
+                    MenuTitleBarListModel(
+                        getString(R.string.app_name),
+                        false,
+                        object : MenuTitleBarListModel.EventHandler {
+                            override fun onClicked() {
+                                viewModel.onMenuClick()
+                            }
+                        },
+                        "",
+                        perfTracker
+                    )
+                )
+            )
 
-            val itemHeight = resources.getDimension(R.dimen.min_clickable_size)
-            val options = layout_bottom_sheet.childCount - CHILDREN_ABOVE_FOLD
-            val slideDistance = (itemHeight * options)
-
-            bottom_sheet.animate()
-                .translationY(slideDistance)
-                .setDuration(DURATION_QUICK)
-                .setInterpolator(DECELERATE)
-                .withEndAction {
-                    bottom_sheet.translationY = TRANSLATION_CENTER
-                }
+            return
         }
+
+        shadow_hud.fadeInSlightly()
+
+        val menuItems = listOf(
+            MenuTitleBarListModel(
+                getString(R.string.app_name),
+                true,
+                object : MenuTitleBarListModel.EventHandler {
+                    override fun onClicked() {
+                        viewModel.onMenuClick()
+                    }
+                },
+                "",
+                perfTracker
+            ),
+            MenuItemListModel(
+                getString(R.string.label_by_game),
+                R.drawable.ic_album_24dp,
+                menuItemClickHandler(),
+                "",
+                perfTracker
+            ),
+            MenuItemListModel(
+                getString(R.string.label_by_composer),
+                R.drawable.ic_person_24dp,
+                menuItemClickHandler(),
+                "",
+                perfTracker
+            ),
+            MenuItemListModel(
+                getString(R.string.label_by_tag),
+                R.drawable.ic_tag_black_24dp,
+                menuItemClickHandler(),
+                "",
+                perfTracker
+            ),
+            MenuItemListModel(
+                getString(R.string.label_all_sheets),
+                R.drawable.ic_description_24dp,
+                menuItemClickHandler(),
+                "",
+                perfTracker
+            ),
+            MenuItemListModel(
+                getString(R.string.label_random),
+                R.drawable.ic_shuffle_24dp,
+                menuItemClickHandler(),
+                "",
+                perfTracker
+            ),
+            MenuItemListModel(
+                getString(R.string.label_jams),
+                R.drawable.ic_queue_music_black_24dp,
+                menuItemClickHandler(),
+                "",
+                perfTracker
+            ),
+            MenuItemListModel(
+                getString(R.string.label_settings),
+                R.drawable.ic_settings_black_24dp,
+                menuItemClickHandler(),
+                "",
+                perfTracker
+            ),
+            MenuItemListModel(
+                getString(R.string.label_refresh),
+                R.drawable.ic_refresh_24dp,
+                menuItemClickHandler(),
+                "",
+                perfTracker
+            ),
+        )
+
+        menuAdapter.submitList(
+            menuItems
+        )
+    }
+
+    private fun menuItemClickHandler() = object : MenuItemListModel.EventHandler {
+        override fun onClicked(clicked: MenuItemListModel) = Unit
     }
 
     private fun checkShouldShowPerfView() {
@@ -641,45 +528,9 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         .throttleLast(THRESHOLD_SEARCH_EVENTS, TimeUnit.MILLISECONDS)
         .map { it.editable.toString() }
 
-    private fun startRandomLoadAnimation() {
-        randomAnimation = ObjectAnimator.ofFloat(icon_random, SCALE_Y, 0.0f)
-
-        randomAnimation?.repeatCount = INFINITE
-        randomAnimation?.repeatMode = REVERSE
-
-        randomAnimation?.start()
-
-        disableRandomSelector()
-    }
-
-    private fun stopRandomLoadAnimation() {
-        randomAnimation?.cancel()
-        randomAnimation = null
-        icon_random.scaleY = 1.0f
-
-        enableRandomSelector()
-    }
-
-    private fun enableRandomSelector() {
-        layout_random_select.setOnClickListener {
-            withState(viewModel) { state ->
-                val selectedPart = state.parts.first { it.selected }
-                viewModel.onRandomSelectClick(selectedPart)
-            }
-        }
-    }
-
-    private fun disableRandomSelector() {
-        layout_random_select.setOnClickListener(null)
-    }
-
     companion object {
         const val THRESHOLD_SEARCH_EVENTS = 1500L
         const val THRESHOLD_SEARCH_CLICKS = 200L
-
-        const val SPAN_COUNT_DEFAULT = 7
-
-        const val CHILDREN_ABOVE_FOLD = 2
 
         const val DELAY_HALF_SECOND = 500L
 

@@ -10,4 +10,6 @@
 
     <string name="empty_search_no_query">Use the text box to search by title, game, or composer.</string>
     <string name="label_refreshing">Refreshing…</string>
+
+    <string name="button_label_transpo_change">Change</string>
 </resources>

@@ -74,7 +74,6 @@ fun View.fadeInSlightly() {
     }
 
     if (alpha != ALPHA_VERY_TRANSPARENT) {
-        animate().cancel()
         animate()
             .setInterpolator(DECELERATE)
             .setDuration(DURATION_XSLOW)
@@ -98,7 +97,6 @@ fun View.fadeIn() {
 
 fun View.fadeOutGone() {
     if (visibility != View.GONE) {
-        animate().cancel()
         animate()
             .setInterpolator(DECELERATE)
             .setDuration(DURATION_QUICK)
