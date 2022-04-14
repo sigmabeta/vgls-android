@@ -11,6 +11,7 @@ import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
@@ -361,7 +362,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         if (!visible) {
             shadow_hud.fadeOutGone()
 
-            menuAdapter.submitList(
+            menuAdapter.submitListAnimateResizeContainer(
                 listOf(
                     MenuTitleBarListModel(
                         getString(R.string.app_name),
@@ -370,7 +371,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                         "",
                         perfTracker
                     )
-                )
+                ),
+                recycler_bottom?.parent?.parent as? ViewGroup
             )
 
             return
@@ -452,8 +454,9 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             )
         )
 
-        menuAdapter.submitList(
-            menuItems
+        menuAdapter.submitListAnimateResizeContainer(
+            menuItems,
+            recycler_bottom?.parent?.parent as? ViewGroup
         )
     }
 
