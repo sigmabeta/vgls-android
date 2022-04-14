@@ -16,6 +16,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
@@ -54,6 +55,9 @@ import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.recycler_bottom
 import kotlinx.android.synthetic.main.view_perf_event_list.list_perf
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -171,7 +175,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             showSearchMenuButton()
         }
 
-        renderMenu(state.menuExpanded)
+        renderMenu(
+            state.menuExpanded,
+            state.updateTime
+        )
 
         if (state.alwaysShowBack) {
             showSearchBackButton()
@@ -269,6 +276,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         viewModel.onMenuClick()
     }
 
+    private fun onRandomClick() = withState(viewModel) { state ->
+        val selectedPart = state.parts.first { it.selected }
+        viewModel.onRandomSelectClick(selectedPart)
+    }
+
     private fun onRefreshClick() = withState(viewModel) {
         if (it.digest !is Loading) {
             tracker.logForceRefresh()
@@ -345,7 +357,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun renderMenu(visible: Boolean) {
+    private fun renderMenu(visible: Boolean, updateTime: Async<Long>) {
         if (!visible) {
             shadow_hud.fadeOutGone()
 
@@ -354,11 +366,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                     MenuTitleBarListModel(
                         getString(R.string.app_name),
                         false,
-                        object : MenuTitleBarListModel.EventHandler {
-                            override fun onClicked() {
-                                viewModel.onMenuClick()
-                            }
-                        },
+                        { viewModel.onMenuClick() },
                         "",
                         perfTracker
                     )
@@ -374,70 +382,74 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             MenuTitleBarListModel(
                 getString(R.string.app_name),
                 true,
-                object : MenuTitleBarListModel.EventHandler {
-                    override fun onClicked() {
-                        viewModel.onMenuClick()
-                    }
-                },
+                { viewModel.onMenuClick() },
                 "",
                 perfTracker
             ),
             MenuItemListModel(
                 getString(R.string.label_by_game),
+                null,
                 R.drawable.ic_album_24dp,
-                menuItemClickHandler(),
+                { showScreen(TOP_LEVEL_SCREEN_ID_GAME) },
                 "",
                 perfTracker
             ),
             MenuItemListModel(
                 getString(R.string.label_by_composer),
+                null,
                 R.drawable.ic_person_24dp,
-                menuItemClickHandler(),
+                { showScreen(TOP_LEVEL_SCREEN_ID_COMPOSER) },
                 "",
                 perfTracker
             ),
             MenuItemListModel(
                 getString(R.string.label_by_tag),
+                null,
                 R.drawable.ic_tag_black_24dp,
-                menuItemClickHandler(),
+                { showScreen(TOP_LEVEL_SCREEN_ID_TAG) },
                 "",
                 perfTracker
             ),
             MenuItemListModel(
                 getString(R.string.label_all_sheets),
+                null,
                 R.drawable.ic_description_24dp,
-                menuItemClickHandler(),
+                { showScreen(TOP_LEVEL_SCREEN_ID_SONG) },
                 "",
                 perfTracker
             ),
             MenuItemListModel(
                 getString(R.string.label_random),
+                null,
                 R.drawable.ic_shuffle_24dp,
-                menuItemClickHandler(),
+                { onRandomClick() },
                 "",
                 perfTracker
             ),
             MenuItemListModel(
                 getString(R.string.label_jams),
+                null,
                 R.drawable.ic_queue_music_black_24dp,
-                menuItemClickHandler(),
+                { showScreen(TOP_LEVEL_SCREEN_ID_JAM) },
                 "",
                 perfTracker
             ),
             MenuItemListModel(
                 getString(R.string.label_settings),
+                null,
                 R.drawable.ic_settings_black_24dp,
-                menuItemClickHandler(),
+                { showScreen(MODAL_SCREEN_ID_SETTINGS) },
                 "",
                 perfTracker
             ),
             MenuItemListModel(
                 getString(R.string.label_refresh),
+                getUpdateTimeString(updateTime),
                 R.drawable.ic_refresh_24dp,
-                menuItemClickHandler(),
+                { onRefreshClick() },
                 "",
                 perfTracker
-            ),
+            )
         )
 
         menuAdapter.submitList(
@@ -445,8 +457,25 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         )
     }
 
-    private fun menuItemClickHandler() = object : MenuItemListModel.EventHandler {
-        override fun onClicked(clicked: MenuItemListModel) = Unit
+    private fun getUpdateTimeString(updateTime: Async<Long>): String {
+        val calendar = Calendar.getInstance()
+
+        if (updateTime !is Success) {
+            return "..."
+        }
+
+        val checkedTime = updateTime()
+
+        val date = if (checkedTime > 0L) {
+            calendar.timeInMillis = checkedTime
+            val time = calendar.time
+            val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.US)
+            dateFormat.format(time)
+        } else {
+            getString(R.string.date_never)
+        }
+
+        return getString(R.string.label_refresh_date, date)
     }
 
     private fun checkShouldShowPerfView() {

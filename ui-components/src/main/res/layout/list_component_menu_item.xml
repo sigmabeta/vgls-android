@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="toBind"
             type="com.vgleadsheets.components.MenuItemListModel" />
@@ -15,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
+        android:onClick="@{() -> toBind.onClicked.invoke()}"
         android:orientation="horizontal">
 
         <ImageView
@@ -28,6 +30,7 @@
             tools:src="@drawable/ic_person_24dp" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_name"
             android:layout_width="0dp"
             android:layout_height="@dimen/min_clickable_size"
             android:layout_marginEnd="@dimen/margin_medium"
@@ -42,5 +45,17 @@
             app:autoSizeMinTextSize="10sp"
             app:autoSizeTextType="uniform"
             tools:text="@string/sample_lorem_ipsum" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@{toBind.caption}"
+            android:textColor="@color/hint_text"
+            android:textStyle="italic"
+            android:visibility="@{toBind.caption == null  ? View.GONE : View.VISIBLE}"
+            tools:text="Updated Sept 27, 2019" />
     </LinearLayout>
 </layout>

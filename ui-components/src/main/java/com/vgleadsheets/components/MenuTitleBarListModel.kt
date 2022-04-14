@@ -5,13 +5,10 @@ import com.vgleadsheets.perf.tracking.api.PerfTracker
 data class MenuTitleBarListModel(
     val name: String,
     val expanded: Boolean,
-    val handler: EventHandler,
+    val onClicked: () -> Unit,
     val screenName: String,
     val tracker: PerfTracker
 ) : ListModel {
-    interface EventHandler {
-        fun onClicked()
-    }
 
     override val dataId = javaClass.simpleName.hashCode().toLong()
 

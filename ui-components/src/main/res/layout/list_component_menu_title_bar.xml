@@ -23,7 +23,7 @@
             android:background="?attr/selectableItemBackground"
             android:padding="@dimen/icon_padding"
             android:tint="@android:color/tertiary_text_dark"
-            android:onClick="@{() -> toBind.handler.onClicked()}"
+            android:onClick="@{() -> toBind.onClicked.invoke()}"
             app:expanded="@{toBind.expanded}"
             tools:src="@drawable/ic_menu_24dp" />
 
@@ -31,7 +31,7 @@
             style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="0dp"
             android:layout_height="@dimen/min_clickable_size"
-            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_small"
             android:layout_weight="1"
             android:ellipsize="end"
             android:gravity="center_vertical|start"
@@ -48,6 +48,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/margin_small"
             android:text="@string/button_label_transpo_change" />
 
     </LinearLayout>
