@@ -13,7 +13,12 @@ import com.vgleadsheets.model.jam.Jam
 data class JamListState(
     override val updateTime: Async<*> = Uninitialized,
     override val digest: Async<*> = Uninitialized,
-    override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
+    override val selectedPart: PartSelectorItem? = PartSelectorItem(
+        "C",
+        R.string.part_c,
+        R.string.part_long_c,
+        true
+    ),
     override val listModels: List<ListModel> = emptyList(),
     override val data: Async<List<Jam>> = Uninitialized,
     val clickedCtaModel: CtaListModel? = null,

@@ -37,6 +37,7 @@ import com.vgleadsheets.components.MenuLoadingItemListModel
 import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.components.PerfStageListModel
+import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.song.Song
@@ -184,6 +185,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         renderMenu(
             state.menuExpanded,
+            state.parts.first { it.selected },
             state.digest is Loading,
             state.random is Loading,
             state.updateTime
@@ -368,6 +370,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
     private fun renderMenu(
         visible: Boolean,
+        selectedPart: PartSelectorItem,
         refreshing: Boolean,
         randoming: Boolean,
         updateTime: Async<Long>
@@ -378,6 +381,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             val listItems = listOf(
                 MenuTitleBarListModel(
                     getString(R.string.app_name),
+                    getSelectedPartString(selectedPart),
                     false,
                     { viewModel.onMenuClick() },
                     "",
@@ -407,6 +411,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         val menuItems = listOf(
             MenuTitleBarListModel(
                 getString(R.string.app_name),
+                getSelectedPartString(selectedPart),
                 true,
                 { viewModel.onMenuClick() },
                 "",
@@ -500,6 +505,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             menuItems,
             recycler_bottom?.parent?.parent as? ViewGroup
         )
+    }
+
+    private fun getSelectedPartString(selectedPart: PartSelectorItem): String {
+        return getString(R.string.subtitle_menu, getString(selectedPart.longResId))
     }
 
     private fun getUpdateTimeString(updateTime: Async<Long>): String {

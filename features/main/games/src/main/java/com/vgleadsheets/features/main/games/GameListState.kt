@@ -12,7 +12,12 @@ import com.vgleadsheets.model.game.Game
 data class GameListState(
     override val updateTime: Async<*> = Uninitialized,
     override val digest: Async<*> = Uninitialized,
-    override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
+    override val selectedPart: PartSelectorItem? = PartSelectorItem(
+        "C",
+        R.string.part_c,
+        R.string.part_long_c,
+        true
+    ),
     override val listModels: List<ListModel> = emptyList(),
     override val data: Async<List<Game>> = Uninitialized,
     val clickedListModel: ImageNameCaptionListModel? = null

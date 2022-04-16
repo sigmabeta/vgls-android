@@ -3,7 +3,12 @@ package com.vgleadsheets.features.main.hud.parts
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.model.parts.Part
 
-data class PartSelectorItem(val apiId: String, val resId: Int, val selected: Boolean) {
+data class PartSelectorItem(
+    val apiId: String,
+    val resId: Int,
+    val longResId: Int,
+    val selected: Boolean
+) {
     companion object {
         fun getDefaultPartPickerItems(selectedId: String? = null): List<PartSelectorItem> {
             val partsEnums = getDefaultPartsEnumList()
@@ -47,6 +52,7 @@ data class PartSelectorItem(val apiId: String, val resId: Int, val selected: Boo
         private fun fromEnum(enumValue: PartSelectorOption) = PartSelectorItem(
             enumValue.apiId,
             enumValue.resId,
+            enumValue.longResId,
             false
         )
     }

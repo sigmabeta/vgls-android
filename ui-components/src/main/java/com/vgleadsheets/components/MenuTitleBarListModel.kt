@@ -3,7 +3,8 @@ package com.vgleadsheets.components
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
 data class MenuTitleBarListModel(
-    val name: String,
+    val title: String,
+    val subtitle: String,
     val expanded: Boolean,
     val onClicked: () -> Unit,
     val screenName: String,
