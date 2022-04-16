@@ -39,6 +39,7 @@ import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.components.PerfStageListModel
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
+import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
@@ -177,9 +178,14 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             showSearchMenuButton()
         }
 
+        if (state.random is Success) {
+            onRandomSuccess(state, state.random())
+        }
+
         renderMenu(
             state.menuExpanded,
             state.digest is Loading,
+            state.random is Loading,
             state.updateTime
         )
 
@@ -360,7 +366,12 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun renderMenu(visible: Boolean, refreshing: Boolean, updateTime: Async<Long>) {
+    private fun renderMenu(
+        visible: Boolean,
+        refreshing: Boolean,
+        randoming: Boolean,
+        updateTime: Async<Long>
+    ) {
         if (!visible) {
             shadow_hud.fadeOutGone()
 
@@ -433,14 +444,23 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                 "",
                 perfTracker
             ),
-            MenuItemListModel(
-                getString(R.string.label_random),
-                null,
-                R.drawable.ic_shuffle_24dp,
-                { onRandomClick() },
-                "",
-                perfTracker
-            ),
+            if (randoming) {
+                MenuLoadingItemListModel(
+                    getString(R.string.label_random_loading),
+                    R.drawable.ic_shuffle_24dp,
+                    "",
+                    perfTracker
+                )
+            } else {
+                MenuItemListModel(
+                    getString(R.string.label_random),
+                    null,
+                    R.drawable.ic_shuffle_24dp,
+                    { onRandomClick() },
+                    "",
+                    perfTracker
+                )
+            },
             MenuItemListModel(
                 getString(R.string.label_jams),
                 null,
@@ -540,6 +560,40 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             .flatten()
 
         perfAdapter.submitList(listModels)
+    }
+
+    private fun onRandomSuccess(
+        hudState: HudState,
+        song: Song?
+    ) {
+        viewModel.clearRandom()
+        viewModel.onMenuAction()
+
+        if (song == null) {
+            showError("Failed to get a random track.")
+            viewModel.clearRandom()
+            return
+        }
+
+        val transposition = hudState
+            .parts
+            .firstOrNull { it.selected }
+            ?.apiId ?: "Error"
+
+        tracker.logRandomSongView(
+            song.name,
+            song.gameName,
+            transposition
+        )
+
+        getFragmentRouter().showSongViewer(
+            song.id,
+            song.name,
+            song.gameName,
+            transposition,
+            getTrackingScreen(),
+            getDetails()
+        )
     }
 
     private fun getListModelsForPerfScreen(screen: PerfViewScreenStatus) = listOf(
