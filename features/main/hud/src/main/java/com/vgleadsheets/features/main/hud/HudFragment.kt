@@ -33,6 +33,7 @@ import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.components.MenuItemListModel
+import com.vgleadsheets.components.MenuLoadingItemListModel
 import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.components.PerfStageListModel
@@ -178,6 +179,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         renderMenu(
             state.menuExpanded,
+            state.digest is Loading,
             state.updateTime
         )
 
@@ -358,20 +360,31 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun renderMenu(visible: Boolean, updateTime: Async<Long>) {
+    private fun renderMenu(visible: Boolean, refreshing: Boolean, updateTime: Async<Long>) {
         if (!visible) {
             shadow_hud.fadeOutGone()
 
+            val listItems = listOf(
+                MenuTitleBarListModel(
+                    getString(R.string.app_name),
+                    false,
+                    { viewModel.onMenuClick() },
+                    "",
+                    perfTracker
+                )
+            )
+
             menuAdapter.submitListAnimateResizeContainer(
-                listOf(
-                    MenuTitleBarListModel(
-                        getString(R.string.app_name),
-                        false,
-                        { viewModel.onMenuClick() },
+                if (refreshing) {
+                    listItems + MenuLoadingItemListModel(
+                        getString(R.string.label_refresh_loading),
+                        R.drawable.ic_refresh_24dp,
                         "",
                         perfTracker
                     )
-                ),
+                } else {
+                    listItems
+                },
                 recycler_bottom?.parent?.parent as? ViewGroup
             )
 
@@ -444,14 +457,23 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                 "",
                 perfTracker
             ),
-            MenuItemListModel(
-                getString(R.string.label_refresh),
-                getUpdateTimeString(updateTime),
-                R.drawable.ic_refresh_24dp,
-                { onRefreshClick() },
-                "",
-                perfTracker
-            )
+            if (refreshing) {
+                MenuLoadingItemListModel(
+                    getString(R.string.label_refresh_loading),
+                    R.drawable.ic_refresh_24dp,
+                    "",
+                    perfTracker
+                )
+            } else {
+                MenuItemListModel(
+                    getString(R.string.label_refresh),
+                    getUpdateTimeString(updateTime),
+                    R.drawable.ic_refresh_24dp,
+                    { onRefreshClick() },
+                    "",
+                    perfTracker
+                )
+            }
         )
 
         menuAdapter.submitListAnimateResizeContainer(
