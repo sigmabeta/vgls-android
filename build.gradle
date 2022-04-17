@@ -24,9 +24,9 @@ buildscript {
         constraint_version = "2.0.0-beta4"
         threeten_version = "1.2.1"
         photoview_version = "2.0.0"
-        firebase_version = "17.2.0"
-        crashlytics_version = "2.10.1"
-        firebase_perf_version = "19.0.0"
+        firebase_version = "20.1.2"
+        crashlytics_version = "18.2.9"
+        firebase_perf_version = "20.0.6"
         simplestore_version = "0.0.7"
         leakcanary_version = "2.0-beta-3"
         lifecycle_version = "2.2.0"
@@ -50,10 +50,11 @@ buildscript {
         // Firebase
         classpath 'com.google.gms:google-services:4.3.10'
         classpath 'com.google.firebase:perf-plugin:1.4.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
 
         // License downloader
         classpath 'com.jaredsburrows:gradle-license-plugin:0.8.90'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
     }
 }
 
