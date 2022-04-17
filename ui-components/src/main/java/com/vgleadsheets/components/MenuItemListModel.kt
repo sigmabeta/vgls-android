@@ -10,7 +10,7 @@ data class MenuItemListModel(
     val screenName: String,
     val tracker: PerfTracker
 ) : ListModel {
-    override val dataId = iconId.toLong()
+    override val dataId = name.hashCode().toLong()
 
     override val layoutId = R.layout.list_component_menu_item
 }

@@ -185,6 +185,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         renderMenu(
             state.menuExpanded,
+            state.partsExpanded,
+            state.parts,
             state.parts.first { it.selected },
             state.digest is Loading,
             state.random is Loading,
@@ -212,7 +214,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     }
 
     override fun onBackPress() = withState(viewModel) {
-        if (it.menuExpanded) {
+        if (it.menuExpanded || it.partsExpanded) {
             viewModel.onMenuBackPress()
             return@withState true
         }
@@ -369,13 +371,58 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     }
 
     private fun renderMenu(
-        visible: Boolean,
+        menuExpanded: Boolean,
+        partsExpanded: Boolean,
+        parts: List<PartSelectorItem>,
         selectedPart: PartSelectorItem,
         refreshing: Boolean,
         randoming: Boolean,
         updateTime: Async<Long>
     ) {
-        if (!visible) {
+        if (partsExpanded) {
+            shadow_hud.fadeInSlightly()
+
+            val listItems = listOf(
+                MenuTitleBarListModel(
+                    getString(R.string.app_name),
+                    getSelectedPartString(selectedPart),
+                    true,
+                    { viewModel.onMenuClick() },
+                    { },
+                    "",
+                    perfTracker
+                )
+            ) + parts.map {
+                MenuItemListModel(
+                    getString(it.longResId),
+                    null,
+                    R.drawable.ic_description_24dp,
+                    { viewModel.onPartSelect(it.apiId) },
+                    "",
+                    perfTracker
+                )
+            } + if (refreshing) {
+                listOf(
+                    MenuLoadingItemListModel(
+                        getString(R.string.label_refresh_loading),
+                        R.drawable.ic_refresh_24dp,
+                        "",
+                        perfTracker
+                    )
+                )
+            } else {
+                emptyList()
+            }
+
+            menuAdapter.submitListAnimateResizeContainer(
+                listItems,
+                recycler_bottom?.parent?.parent as? ViewGroup
+            )
+
+            return
+        }
+
+        if (!menuExpanded) {
             shadow_hud.fadeOutGone()
 
             val listItems = listOf(
@@ -384,6 +431,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                     getSelectedPartString(selectedPart),
                     false,
                     { viewModel.onMenuClick() },
+                    { viewModel.onChangePartClick() },
                     "",
                     perfTracker
                 )
@@ -414,6 +462,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
                 getSelectedPartString(selectedPart),
                 true,
                 { viewModel.onMenuClick() },
+                { viewModel.onChangePartClick() },
                 "",
                 perfTracker
             ),

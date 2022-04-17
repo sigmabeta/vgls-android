@@ -7,6 +7,7 @@ data class MenuTitleBarListModel(
     val subtitle: String,
     val expanded: Boolean,
     val onClicked: () -> Unit,
+    val onChangePartClicked: () -> Unit,
     val screenName: String,
     val tracker: PerfTracker
 ) : ListModel {

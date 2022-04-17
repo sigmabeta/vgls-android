@@ -47,19 +47,27 @@ class HudViewModel @AssistedInject constructor(
     fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }
 
     fun onMenuClick() = withState {
-        if (it.menuExpanded) {
-            hideMenu()
+        if (it.menuExpanded || it.partsExpanded) {
+            hideMenus()
         } else {
             showMenu()
         }
     }
 
+    fun onChangePartClick() = withState {
+        if (it.menuExpanded || it.partsExpanded) {
+            hideMenus()
+        } else {
+            showParts()
+        }
+    }
+
     fun onMenuBackPress() {
-        hideMenu()
+        hideMenus()
     }
 
     fun onMenuAction() {
-        setState { copy(menuExpanded = false) }
+        hideMenus()
     }
 
     fun setAvailableParts(parts: List<Part>) = withState { state ->
@@ -84,7 +92,11 @@ class HudViewModel @AssistedInject constructor(
 
     fun onPartSelect(apiId: String) = withState { state ->
         setState {
-            copy(parts = setSelection(apiId, state.parts), menuExpanded = false)
+            copy(
+                parts = setSelection(apiId, state.parts),
+                partsExpanded = false,
+                menuExpanded = false
+            )
         }
     }
 
@@ -130,7 +142,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun startHudTimer() = withState { state ->
         stopTimer()
-        if (!state.menuExpanded) {
+        if (!state.menuExpanded && !state.partsExpanded) {
             timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
                 .execute { timer ->
                     if (timer is Success) {
@@ -246,9 +258,26 @@ class HudViewModel @AssistedInject constructor(
         )
     }
 
-    private fun hideMenu() = setState { copy(menuExpanded = false) }
+    private fun hideMenus() = setState {
+        copy(
+            menuExpanded = false,
+            partsExpanded = false
+        )
+    }
 
-    private fun showMenu() = setState { copy(menuExpanded = true) }
+    private fun showMenu() = setState {
+        copy(
+            menuExpanded = true,
+            partsExpanded = false
+        )
+    }
+
+    private fun showParts() = setState {
+        copy(
+            menuExpanded = false,
+            partsExpanded = true
+        )
+    }
 
     private fun checkSavedPartSelection() = withState {
         storage.getSavedSelectedPart().subscribe(
