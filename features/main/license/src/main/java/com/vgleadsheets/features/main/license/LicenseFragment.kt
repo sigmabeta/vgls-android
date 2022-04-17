@@ -10,6 +10,7 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.tracking.TrackingScreen
 import kotlinx.android.synthetic.main.fragment_license.web_license
 
+@Suppress("Deprecation")
 class LicenseFragment : VglsFragment() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

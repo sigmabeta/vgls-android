@@ -40,7 +40,7 @@ import kotlinx.android.synthetic.main.activity_main.toplevel
 import timber.log.Timber
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "Deprecation")
 class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentRouter,
     HudViewModel.HudViewModelFactoryProvider {
     @Inject

@@ -66,7 +66,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment(), PartListModel.ClickListener {
     @Inject
     lateinit var storage: Storage
