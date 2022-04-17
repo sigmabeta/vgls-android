@@ -53,7 +53,7 @@ buildscript {
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
 
         // License downloader
-        classpath 'com.jaredsburrows:gradle-license-plugin:0.8.90'
+        classpath 'com.jaredsburrows:gradle-license-plugin:0.8.91'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
     }
 }
