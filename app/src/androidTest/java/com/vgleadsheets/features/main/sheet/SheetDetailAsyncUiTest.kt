@@ -37,7 +37,7 @@ class SheetDetailAsyncUiTest : ListUiTest() {
             clickYoutube()
             checkWebBrowserLaunchedUrl(
                 "https://www.youtube.com/results?search_query=" +
-                        "Justo%20-%20Ante"
+                    "Justo%20-%20Ante"
             )
         }
     }
