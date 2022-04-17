@@ -5,4 +5,5 @@ import dagger.Module
 
 @AssistedModule
 @Module(includes = [AssistedInject_ViewerAssistedModule::class])
+@Suppress("UnnecessaryAbstractClass")
 abstract class ViewerAssistedModule

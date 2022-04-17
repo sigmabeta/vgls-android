@@ -12,10 +12,10 @@ data class TagValueSongListData(
     val songs: Async<List<Song>> = Uninitialized
 ) : ListData {
     override fun isEmpty() = !(
-            tagValue is Success &&
-                    songs is Success &&
-                    songs()?.isNotEmpty() == true
-            )
+        tagValue is Success &&
+            songs is Success &&
+            songs()?.isNotEmpty() == true
+        )
 
     override fun canShowPartialData() = true
 }

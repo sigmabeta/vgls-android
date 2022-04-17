@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="toBind"
+            type="com.vgleadsheets.components.MenuTitleBarListModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:animateLayoutChanges="true"
+        android:paddingEnd="@dimen/margin_small"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/button_menu"
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{() -> toBind.onClicked.invoke()}"
+            android:padding="@dimen/icon_padding"
+            android:tint="@android:color/tertiary_text_dark"
+            app:expanded="@{toBind.expanded}"
+            tools:src="@drawable/ic_menu_24dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:ellipsize="end"
+            android:gravity="center_vertical|start"
+            android:maxLines="1"
+            android:text="@{toBind.title}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="@android:color/tertiary_text_dark"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform"
+            tools:text="@string/app_name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_name"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/min_clickable_size"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|end"
+            android:maxLines="1"
+            android:text="@{toBind.subtitle}"
+            android:textColor="@color/hint_text"
+            android:textStyle="italic"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform"
+            tools:text="@string/sample_lorem_ipsum" />
+
+        <Button
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="@{toBind.expanded ? View.GONE : View.VISIBLE}"
+            android:onClick="@{() -> toBind.onChangePartClicked.invoke()}"
+            android:text="@string/button_label_transpo_change" />
+
+    </LinearLayout>
+</layout>
+

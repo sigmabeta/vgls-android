@@ -5,4 +5,5 @@ import dagger.Module
 
 @AssistedModule
 @Module(includes = [AssistedInject_JamAssistedModule::class])
+@Suppress("UnnecessaryAbstractClass")
 abstract class JamAssistedModule

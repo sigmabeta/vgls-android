@@ -5,4 +5,5 @@ import dagger.Module
 
 @AssistedModule
 @Module(includes = [AssistedInject_SearchAssistedModule::class])
+@Suppress("UnnecessaryAbstractClass")
 abstract class SearchAssistedModule

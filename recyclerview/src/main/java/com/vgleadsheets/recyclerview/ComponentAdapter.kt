@@ -1,8 +1,11 @@
 package com.vgleadsheets.recyclerview
 
 import android.annotation.SuppressLint
+import android.transition.ChangeBounds
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
@@ -49,6 +52,26 @@ class ComponentAdapter :
     override fun getItemViewType(position: Int) = getItem(position).layoutId
 
     override fun submitList(list: List<ListModel>?) {
+        checkDupes(list)
+        super.submitList(list)
+    }
+
+    @Suppress("MagicNumber")
+    fun submitListAnimateResizeContainer(list: List<ListModel>?, container: ViewGroup?) {
+        checkDupes(list)
+        super.submitList(list) {
+            container?.let {
+                val transition = ChangeBounds()
+
+                transition.interpolator = DecelerateInterpolator(2.0f)
+                transition.duration = 300L
+
+                TransitionManager.beginDelayedTransition(it, transition)
+            }
+        }
+    }
+
+    private fun checkDupes(list: List<ListModel>?) {
         val ids = list?.map {
             it.dataId
         }
@@ -58,8 +81,6 @@ class ComponentAdapter :
         if (ids?.size != distinctIds?.size) {
             reportDuplicateModel(list)
         }
-
-        super.submitList(list)
     }
 
     private fun reportDuplicateModel(list: List<ListModel>?) {

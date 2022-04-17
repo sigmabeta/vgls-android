@@ -12,6 +12,7 @@ import com.vgleadsheets.storage.BooleanSetting
 data class HudState(
     val alwaysShowBack: Boolean = false,
     val menuExpanded: Boolean = false,
+    val partsExpanded: Boolean = false,
     val hudVisible: Boolean = true,
     val searchVisible: Boolean = false,
     val readyToShowScreens: Boolean = false,

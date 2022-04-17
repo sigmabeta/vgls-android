@@ -7,9 +7,13 @@
     <string name="label_all_sheets">Browse All Sheets</string>
     <string name="label_by_tag">Browse by Tag</string>
     <string name="label_random">Random Select</string>
+    <string name="label_random_loading">Finding a random sheet...</string>
     <string name="label_jams">Jam Sessions</string>
     <string name="label_refresh">Check For Updates</string>
+    <string name="label_refresh_loading">Checking for updates...</string>
     <string name="label_refresh_date">Updated %1$s</string>
+
+    <string name="subtitle_menu">…for %1$s</string>
 
     <string name="date_never">Never</string>
     <string name="label_settings">Settings</string>

@@ -13,7 +13,8 @@ import com.vgleadsheets.model.parts.PartEntity
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("partId"),
             onDelete = ForeignKey.CASCADE
-        )]
+        )
+    ]
 )
 data class PageEntity(
     @PrimaryKey(autoGenerate = true) val id: Long? = null,

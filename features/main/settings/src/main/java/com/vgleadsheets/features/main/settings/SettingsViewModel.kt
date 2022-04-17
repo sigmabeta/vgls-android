@@ -167,12 +167,14 @@ class SettingsViewModel @AssistedInject constructor(
         return headerModels + settingsModels
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun getSectionHeaderString(headerId: String) = when (headerId) {
         HEADER_ID_SHEET -> resourceProvider.getString(R.string.section_sheets)
         HEADER_ID_MISC -> resourceProvider.getString(R.string.section_misc)
         else -> throw IllegalArgumentException()
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun setSetting(settingId: String, newValue: Boolean) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {

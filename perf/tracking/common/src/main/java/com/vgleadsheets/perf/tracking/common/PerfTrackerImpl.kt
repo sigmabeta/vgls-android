@@ -30,7 +30,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
             ) {
                 perfTrackingBackend.error(
                     "Active trace list from a previous instance of screen $screenName " +
-                            "still exists!"
+                        "still exists!"
                 )
                 return
             }

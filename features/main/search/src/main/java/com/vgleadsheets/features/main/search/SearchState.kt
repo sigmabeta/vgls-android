@@ -13,7 +13,12 @@ data class SearchState(
     val clickedComposer: ImageNameCaptionListModel? = null,
     override val updateTime: Async<*> = Uninitialized,
     override val digest: Async<*> = Uninitialized,
-    override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
+    override val selectedPart: PartSelectorItem? = PartSelectorItem(
+        "C",
+        R.string.part_c,
+        R.string.part_long_c,
+        true
+    ),
     override val listModels: List<ListModel> = emptyList(),
     override val data: SearchData = SearchData()
 ) : AsyncListState<SearchData>(data = data) {

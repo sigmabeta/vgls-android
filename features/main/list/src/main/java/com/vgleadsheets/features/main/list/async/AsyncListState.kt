@@ -10,7 +10,12 @@ import com.vgleadsheets.features.main.list.R
 abstract class AsyncListState<DataType : ListData>(
     open val updateTime: Async<*> = Uninitialized,
     open val digest: Async<*> = Uninitialized,
-    open val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
+    open val selectedPart: PartSelectorItem? = PartSelectorItem(
+        "C",
+        R.string.part_c,
+        R.string.part_long_c,
+        true
+    ),
     open val listModels: List<ListModel> = emptyList(),
     open val data: DataType
 ) : MvRxState {

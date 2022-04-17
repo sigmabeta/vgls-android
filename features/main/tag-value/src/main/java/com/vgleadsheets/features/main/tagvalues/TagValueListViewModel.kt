@@ -184,6 +184,7 @@ class TagValueListViewModel @AssistedInject constructor(
         it.songs?.isNotEmpty() ?: false
     }
 
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSheetCaption(songs: List<Song>?): String {
         if (songs.isNullOrEmpty()) return "Error: no values found."
 

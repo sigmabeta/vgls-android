@@ -13,7 +13,8 @@ import com.vgleadsheets.model.song.Song
             entity = JamEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("jam_id")
-        )]
+        )
+    ]
 )
 data class SetlistEntryEntity(
     @PrimaryKey val id: Long,

@@ -31,7 +31,8 @@ class JamListViewModel @AssistedInject constructor(
     private val perfTracker: PerfTracker
 ) : ListViewModel<Jam, JamListState>(initialState, screenName, perfTracker),
     CtaListModel.EventHandler,
-    NameCaptionListModel.EventHandler, EmptyStateListModel.EventHandler {
+    NameCaptionListModel.EventHandler,
+    EmptyStateListModel.EventHandler {
     init {
         fetchJams()
     }

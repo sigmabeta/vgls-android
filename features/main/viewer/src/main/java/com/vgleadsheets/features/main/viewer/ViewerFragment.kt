@@ -36,7 +36,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class ViewerFragment : VglsFragment(),
+class ViewerFragment :
+    VglsFragment(),
     SheetListModel.ImageListener,
     ToolbarItemListModel.EventHandler {
     @Inject
@@ -116,7 +117,7 @@ class ViewerFragment : VglsFragment(),
         )
 
         val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
-                resources.getDimension(R.dimen.margin_medium).toInt()
+            resources.getDimension(R.dimen.margin_medium).toInt()
         val sideOffset = resources.getDimension(R.dimen.margin_medium).toInt()
 
         list_toolbar_items?.setInsetListenerForPadding(
@@ -252,7 +253,7 @@ class ViewerFragment : VglsFragment(),
                 {
                     showError(
                         "There was an error with the screen timer. Literally how" +
-                                "did you make this happen?"
+                            "did you make this happen?"
                     )
                 }
             )

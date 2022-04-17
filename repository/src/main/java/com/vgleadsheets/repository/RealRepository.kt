@@ -68,9 +68,12 @@ class RealRepository constructor(
         return getLastCheckTime()
             .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
             .flatMapSingle { getLastApiUpdateTime() }
-            .zipWith<Time, Long>(getLastDbUpdateTimeOnce(), BiFunction { apiTime, dbTime ->
-                apiTime.timeMs - dbTime.timeMs
-            })
+            .zipWith<Time, Long>(
+                getLastDbUpdateTimeOnce(),
+                BiFunction { apiTime, dbTime ->
+                    apiTime.timeMs - dbTime.timeMs
+                }
+            )
             .filter { diff ->
                 diff > 0
             }
@@ -472,9 +475,9 @@ class RealRepository constructor(
         pageNumber: Int
     ): String {
         return baseImageUrl +
-                partEntity.part + URL_SEPARATOR_FOLDER +
-                Uri.encode(apiSong.filename) + URL_SEPARATOR_NUMBER +
-                pageNumber + URL_FILE_EXT_PNG
+            partEntity.part + URL_SEPARATOR_FOLDER +
+            Uri.encode(apiSong.filename) + URL_SEPARATOR_NUMBER +
+            pageNumber + URL_FILE_EXT_PNG
     }
 
     private fun getLastCheckTime() = dbStatisticsDao

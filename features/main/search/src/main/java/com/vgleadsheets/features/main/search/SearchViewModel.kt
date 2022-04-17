@@ -336,9 +336,9 @@ class SearchViewModel @AssistedInject constructor(
         ?.isNotEmpty() ?: false
 
     private fun createLoadingListModels(sectionId: Int) = createSectionHeaderListModel(sectionId) +
-            listOf(
-                LoadingImageNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
-            )
+        listOf(
+            LoadingImageNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
+        )
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(
         ErrorStateListModel(
@@ -356,6 +356,7 @@ class SearchViewModel @AssistedInject constructor(
         else -> R.drawable.ic_error_24dp
     }
 
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSubtitleText(items: List<Song>?): String {
         if (items.isNullOrEmpty()) return "Error: no values found."
 

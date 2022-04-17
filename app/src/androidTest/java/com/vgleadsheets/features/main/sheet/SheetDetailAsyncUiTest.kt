@@ -35,8 +35,10 @@ class SheetDetailAsyncUiTest : ListUiTest() {
 
         sheetDetail(this, TITLE_SECOND_ITEM, "1 pages") {
             clickYoutube()
-            checkWebBrowserLaunchedUrl("https://www.youtube.com/results?search_query=" +
-                    "Justo%20-%20Ante")
+            checkWebBrowserLaunchedUrl(
+                "https://www.youtube.com/results?search_query=" +
+                    "Justo%20-%20Ante"
+            )
         }
     }
 

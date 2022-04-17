@@ -38,4 +38,5 @@ import dagger.Module
         HudAssistedModule::class
     ]
 )
+@Suppress("UnnecessaryAbstractClass")
 abstract class AssistedInjectionModules
