@@ -101,6 +101,7 @@ class ComposerListViewModel @AssistedInject constructor(
             }
     }
 
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSubtitleText(items: List<Song>?): String {
         if (items.isNullOrEmpty()) return "Error: no values found."
 

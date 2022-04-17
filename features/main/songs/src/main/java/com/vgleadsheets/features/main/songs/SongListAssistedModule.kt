@@ -5,4 +5,5 @@ import dagger.Module
 
 @AssistedModule
 @Module(includes = [AssistedInject_SongListAssistedModule::class])
+@Suppress("UnnecessaryAbstractClass")
 abstract class SongListAssistedModule

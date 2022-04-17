@@ -91,6 +91,7 @@ class TagKeyViewModel @AssistedInject constructor(
             }
     }
 
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSubtitleText(items: List<TagValue>?): String {
         if (items.isNullOrEmpty()) return "Error: no values found."
 

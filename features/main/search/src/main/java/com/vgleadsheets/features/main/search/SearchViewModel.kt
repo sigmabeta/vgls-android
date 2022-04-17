@@ -356,6 +356,7 @@ class SearchViewModel @AssistedInject constructor(
         else -> R.drawable.ic_error_24dp
     }
 
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSubtitleText(items: List<Song>?): String {
         if (items.isNullOrEmpty()) return "Error: no values found."
 

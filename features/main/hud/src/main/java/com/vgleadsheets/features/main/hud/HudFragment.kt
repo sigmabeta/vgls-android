@@ -205,7 +205,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         val updatePerfView = state.updatePerfView
         if (updatePerfView is Success && updatePerfView().value) {
-//            showPerfStatus(state.perfViewStatus)
+            showPerfStatus(state.perfViewStatus)
         }
 
         if (state.digest is Loading) {
@@ -370,6 +370,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
+    @Suppress("LongParameterList", "LongMethod")
     private fun renderMenu(
         menuExpanded: Boolean,
         partsExpanded: Boolean,

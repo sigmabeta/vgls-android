@@ -114,6 +114,7 @@ class GameListViewModel @AssistedInject constructor(
         it.songs?.isNotEmpty() ?: false
     }
 
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSubtitleText(items: List<Song>?): String {
         if (items.isNullOrEmpty()) return "Error: no values found."
 

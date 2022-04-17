@@ -16,5 +16,6 @@ class AppModule(private val context: Context) {
     @Provides
     @Singleton
     @Named("RunningTest")
+    @Suppress("FunctionOnlyReturningConstant")
     fun provideRunningTest() = false
 }

@@ -199,6 +199,7 @@ class HudViewModel @AssistedInject constructor(
         // This must be created outside setState to make it a pure reducer..
         val newScreenStatus = PerfViewScreenStatus(
             screenName,
+            targetTimes
         )
 
         setState {

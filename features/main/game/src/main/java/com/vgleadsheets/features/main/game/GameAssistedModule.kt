@@ -5,4 +5,5 @@ import dagger.Module
 
 @AssistedModule
 @Module(includes = [AssistedInject_GameAssistedModule::class])
+@Suppress("UnnecessaryAbstractClass")
 abstract class GameAssistedModule

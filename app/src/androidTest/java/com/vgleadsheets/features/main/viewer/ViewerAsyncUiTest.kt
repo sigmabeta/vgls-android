@@ -28,8 +28,10 @@ class ViewerAsyncUiTest : ListUiTest() {
         viewer(this) {
             checkPageVisible(1)
             clickYoutube()
-            checkWebBrowserLaunchedUrl("https://www.youtube.com/results?search_query=" +
-                    "Ultricies%20Ligula%20Ultricies%20Ultricies%20-%20Adipiscing%20In%20Orci")
+            checkWebBrowserLaunchedUrl(
+                "https://www.youtube.com/results?search_query=" +
+                        "Ultricies%20Ligula%20Ultricies%20Ultricies%20-%20Adipiscing%20In%20Orci"
+            )
         }
     }
 

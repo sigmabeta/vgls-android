@@ -69,6 +69,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
         }
     }
 
+    @Suppress("SwallowedException")
     open fun getArgs(): IdArgs? {
         return try {
             idArgs

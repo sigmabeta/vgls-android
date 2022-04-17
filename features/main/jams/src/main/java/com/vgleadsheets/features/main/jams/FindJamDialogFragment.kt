@@ -9,10 +9,8 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
@@ -126,23 +124,6 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
-    }
-
-    protected fun showSnackbar(
-        message: String,
-        action: View.OnClickListener? = null,
-        actionLabel: Int = 0,
-        length: Int = Snackbar.LENGTH_LONG
-    ): Snackbar {
-        val toplevel = view?.parent as? CoordinatorLayout ?: view ?: throw IllegalStateException()
-        val snackbar = Snackbar.make(toplevel, message, length)
-
-        if (action != null && actionLabel > 0) {
-            snackbar.setAction(actionLabel, action)
-        }
-
-        snackbar.show()
-        return snackbar
     }
 
     companion object {

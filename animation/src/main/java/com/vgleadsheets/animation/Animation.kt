@@ -21,13 +21,11 @@ const val DURATION_X_QUICK = 100L
 const val DURATION_XX_QUICK = 50L
 
 private const val ALPHA_OPAQUE = 1.0f
-private const val ALPHA_SLIGHTLY_TRANSPARENT = 0.8f
 private const val ALPHA_SEMI_TRANSPARENT = 0.6f
 private const val ALPHA_VERY_TRANSPARENT = 0.4f
 private const val ALPHA_TRANSPARENT = 0.0f
 
 private const val SCALE_UNITY = 1.0f
-private const val SCALE_SLIGHTLY_SMALLER = 0.95f
 private const val SCALE_NOTHING = 0.0f
 
 const val TRANSLATION_CENTER = 0.0f

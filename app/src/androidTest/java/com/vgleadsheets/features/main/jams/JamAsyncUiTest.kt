@@ -7,7 +7,7 @@ import com.vgleadsheets.features.main.viewer.viewer
 import org.junit.Test
 import java.util.Locale
 
-class JamsAsyncUiTest : ListUiTest() {
+class JamAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_JAM
 
     @Test

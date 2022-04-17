@@ -56,6 +56,7 @@ class ComponentAdapter :
         super.submitList(list)
     }
 
+    @Suppress("MagicNumber")
     fun submitListAnimateResizeContainer(list: List<ListModel>?, container: ViewGroup?) {
         checkDupes(list)
         super.submitList(list) {

@@ -157,6 +157,7 @@ class DebugViewModel @AssistedInject constructor(
         return headerModels + settingsModels
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun getSectionHeaderString(headerId: String) = when (headerId) {
         HEADER_ID_NETWORK -> resourceProvider.getString(R.string.section_network)
         HEADER_ID_DATABASE -> resourceProvider.getString(R.string.section_database)
@@ -182,6 +183,7 @@ class DebugViewModel @AssistedInject constructor(
         return normalItems + customItems
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun setDropdownSetting(settingId: String, newValue: Int) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {
