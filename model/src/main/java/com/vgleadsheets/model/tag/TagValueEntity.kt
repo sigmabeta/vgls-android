@@ -14,7 +14,8 @@ import com.vgleadsheets.model.song.Song
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("tag_key_id"),
             onDelete = ForeignKey.CASCADE
-        )]
+        )
+    ]
 )
 data class TagValueEntity(
     @PrimaryKey val id: Long,

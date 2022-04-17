@@ -64,9 +64,9 @@ class SheetDetailViewModel @AssistedInject constructor(
         digest: Async<*>,
         selectedPart: PartSelectorItem
     ) = createTitleListModel(data.song, selectedPart) +
-            createCtaListModels(data.song) +
-            createDetailListModels(data.song) +
-            createTagValueListModels(data.tagValues)
+        createCtaListModels(data.song) +
+        createDetailListModels(data.song) +
+        createTagValueListModels(data.tagValues)
 
     private fun createDetailListModels(
         song: Async<Song>

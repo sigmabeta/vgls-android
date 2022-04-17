@@ -34,7 +34,8 @@ import com.vgleadsheets.model.tag.TagValueEntity
 import com.vgleadsheets.model.time.TimeEntity
 
 @Database(
-    entities = [GameEntity::class,
+    entities = [
+        GameEntity::class,
         SongEntity::class,
         ComposerEntity::class,
         SongComposerJoin::class,
@@ -48,7 +49,8 @@ import com.vgleadsheets.model.time.TimeEntity
         JamEntity::class,
         SetlistEntryEntity::class,
         SongHistoryEntryEntity::class,
-        ComposerAliasEntity::class],
+        ComposerAliasEntity::class
+    ],
     version = 6
 )
 @Suppress("TooManyFunctions")

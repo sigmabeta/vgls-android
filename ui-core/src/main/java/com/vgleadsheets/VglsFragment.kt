@@ -111,8 +111,10 @@ abstract class VglsFragment : BaseMvRxFragment() {
         val minHeightDp = getPerfTrackingMinScreenHeight()
 
         if (heightDp < minHeightDp) {
-            Timber.i("Not starting perf tracker: Screen height $heightDp dp too small " +
-                    "for screen ${getPerfScreenName()} (min height $minHeightDp dp).")
+            Timber.i(
+                "Not starting perf tracker: Screen height $heightDp dp too small " +
+                    "for screen ${getPerfScreenName()} (min height $minHeightDp dp)."
+            )
             return
         }
 

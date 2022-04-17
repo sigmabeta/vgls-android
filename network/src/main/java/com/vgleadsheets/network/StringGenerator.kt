@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class StringGenerator @Inject constructor(private val random: Random) {
     fun generateName() = "${FIRST_NAMES[random.nextInt(FIRST_NAMES.size)]} " +
-            LAST_NAMES[random.nextInt(LAST_NAMES.size)]
+        LAST_NAMES[random.nextInt(LAST_NAMES.size)]
 
     @Suppress("UnusedPrivateMember")
     fun generateTitle(): String {

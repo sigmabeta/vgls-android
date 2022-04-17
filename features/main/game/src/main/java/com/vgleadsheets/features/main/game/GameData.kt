@@ -12,10 +12,10 @@ data class GameData(
     val songs: Async<List<Song>> = Uninitialized
 ) : ListData {
     override fun isEmpty() = !(
-            game is Success &&
-                    songs is Success &&
-                    songs()?.isNotEmpty() == true
-            )
+        game is Success &&
+            songs is Success &&
+            songs()?.isNotEmpty() == true
+        )
 
     override fun canShowPartialData() = true
 }

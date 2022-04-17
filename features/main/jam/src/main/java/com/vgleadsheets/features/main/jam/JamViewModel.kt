@@ -133,10 +133,10 @@ class JamViewModel @AssistedInject constructor(
         digest: Async<*>,
         selectedPart: PartSelectorItem
     ) = createTitleListModel(data.jam) +
-            createCtaListModels(data.jam) +
-            createJamListModels(data.jam, data.jamRefresh, selectedPart) +
-            createSetlistListModels(data.setlist, data.setlistRefresh, selectedPart) +
-            createSongHistoryListModels(data.jam, selectedPart)
+        createCtaListModels(data.jam) +
+        createJamListModels(data.jam, data.jamRefresh, selectedPart) +
+        createSetlistListModels(data.setlist, data.setlistRefresh, selectedPart) +
+        createSongHistoryListModels(data.jam, selectedPart)
 
     private fun createJamListModels(
         jam: Async<Jam>,

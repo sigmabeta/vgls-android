@@ -65,7 +65,6 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment(), PartListModel.ClickListener {
     @Inject
@@ -135,7 +134,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         button_search_clear.setOnClickListener { edit_search_query.text.clear() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
-
     }
 
     override fun onStart() {
@@ -352,8 +350,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         bottom_sheet.slideViewOnscreen()
 
         view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                SYSTEM_UI_FLAG_LAYOUT_STABLE
+            SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
     private fun hideHud() {
@@ -362,11 +360,11 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             bottom_sheet.slideViewDownOffscreen()
 
             view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or
-                    SYSTEM_UI_FLAG_FULLSCREEN or
-                    SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                    SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    SYSTEM_UI_FLAG_LAYOUT_STABLE
+                SYSTEM_UI_FLAG_FULLSCREEN or
+                SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
     }
 

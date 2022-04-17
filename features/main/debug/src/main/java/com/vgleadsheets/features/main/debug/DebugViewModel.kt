@@ -39,7 +39,8 @@ class DebugViewModel @AssistedInject constructor(
     private val perfTracker: PerfTracker
 ) : AsyncListViewModel<DebugData, DebugState>(initialState, screenName, perfTracker),
     DropdownSettingListModel.EventHandler,
-    SingleTextListModel.EventHandler, CheckableListModel.EventHandler {
+    SingleTextListModel.EventHandler,
+    CheckableListModel.EventHandler {
     init {
         fetchDebugSettings()
     }

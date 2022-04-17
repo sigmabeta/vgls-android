@@ -115,7 +115,8 @@ class ViewerViewModel @AssistedInject constructor(
     private fun subscribeToJamNetwork(jam: Jam) {
         Timber.i("Subscribing to jam ${jam.id} on the network.")
         val networkRefresh = repository.refreshJamStateContinuously(jam.name)
-            .subscribe({},
+            .subscribe(
+                {},
                 {
                     val message: String
                     if (it is HttpException) {

@@ -15,9 +15,9 @@ data class JamData(
     val setlistRefresh: Async<List<Long>> = Uninitialized
 ) : ListData {
     override fun isEmpty() = !(
-            jam is Success &&
-                    jam()?.currentSong != null
-            )
+        jam is Success &&
+            jam()?.currentSong != null
+        )
 
     override fun canShowPartialData() = true
 }

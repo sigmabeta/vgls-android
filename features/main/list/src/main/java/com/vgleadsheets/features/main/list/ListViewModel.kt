@@ -69,12 +69,12 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         selectedPart: PartSelectorItem?
     ): List<ListModel> {
         return listOf(createTitleListModel()) +
-                createContentListModels(
-                    data,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
+            createContentListModels(
+                data,
+                updateTime,
+                digest,
+                selectedPart
+            )
     }
 
     open fun createFullEmptyStateListModel(): ListModel? = null

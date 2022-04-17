@@ -14,7 +14,8 @@ import com.vgleadsheets.model.song.SongEntity
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("songId"),
             onDelete = ForeignKey.CASCADE
-        )]
+        )
+    ]
 )
 data class PartEntity(
     @PrimaryKey val id: Long,

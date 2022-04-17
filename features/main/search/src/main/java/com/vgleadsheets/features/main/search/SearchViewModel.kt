@@ -336,9 +336,9 @@ class SearchViewModel @AssistedInject constructor(
         ?.isNotEmpty() ?: false
 
     private fun createLoadingListModels(sectionId: Int) = createSectionHeaderListModel(sectionId) +
-            listOf(
-                LoadingImageNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
-            )
+        listOf(
+            LoadingImageNameCaptionListModel(resourceProvider.getString(sectionId), sectionId)
+        )
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(
         ErrorStateListModel(
