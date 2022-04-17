@@ -16,8 +16,6 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        firebaseAnalytics.setCurrentScreen(activity, screen.toString(), screen.toString())
-
         val detailsBundle = Bundle()
 
         detailsBundle.putString(PARAM_SCREEN, screen.toString())
