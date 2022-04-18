@@ -47,7 +47,7 @@ jobs:
 
   static_analysis:
     docker:
-      - image: circleci/android:api-27
+      - image: cimg/android:2021.10.2
 
     environment:
       JVM_OPTS: -Xmx3200m
