@@ -1,12 +1,7 @@
 package com.vgleadsheets.features.main.hud
 
 import androidx.fragment.app.FragmentActivity
-import com.airbnb.mvrx.ActivityViewModelContext
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.Uninitialized
-import com.airbnb.mvrx.ViewModelContext
+import com.airbnb.mvrx.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
@@ -177,6 +172,14 @@ class HudViewModel @AssistedInject constructor(
         timerKeys.forEach { screenName ->
             removePerfScreenStatus(screenName)
         }
+    }
+
+    fun setCurrentSong(song: Song) = setState {
+        copy(currentSong = song)
+    }
+
+    fun clearCurrentSong() = setState {
+        copy(currentSong = null)
     }
 
     private fun start(
