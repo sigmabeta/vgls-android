@@ -54,7 +54,9 @@ buildscript {
 
         // License downloader
         classpath 'com.jaredsburrows:gradle-license-plugin:0.8.91'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
+
+        // Gradle Play Publisher
+        classpath 'com.github.triplet.gradle:play-publisher:2.8.0'
     }
 }
 
@@ -86,6 +88,7 @@ allprojects {
 subprojects {
     if (project.name == 'app') {
         apply plugin: 'com.android.application'
+        apply plugin: 'com.github.triplet.play'
     } else {
         apply plugin: 'com.android.library'
     }
