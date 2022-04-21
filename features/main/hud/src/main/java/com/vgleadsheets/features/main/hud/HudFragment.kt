@@ -35,6 +35,7 @@ import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.components.PerfStageListModel
 import com.vgleadsheets.features.main.hud.menu.MenuOptions
 import com.vgleadsheets.features.main.hud.menu.PartPicker
+import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
 import com.vgleadsheets.features.main.hud.menu.Shadow
 import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
@@ -393,10 +394,15 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             randoming,
             refreshing,
             updateTime,
-            resources,
             { showScreen(it) },
             { onRandomClick() },
             { onRefreshClick() },
+            { showScreen(MODAL_SCREEN_ID_DEBUG) },
+            resources,
+            perfTracker,
+        ) + RefreshIndicator.getListModels(
+            refreshing,
+            resources,
             perfTracker
         )
 

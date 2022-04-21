@@ -5,6 +5,7 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Success
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.MenuLoadingItemListModel
+import com.vgleadsheets.features.main.hud.BuildConfig
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -18,37 +19,38 @@ object MenuOptions {
         randoming: Boolean,
         refreshing: Boolean,
         updateTime: Async<Long>,
-        resources: Resources,
         onScreenLinkClick: (String) -> Unit,
         onRandomClick: () -> Unit,
         onRefreshClick: () -> Unit,
-        perfTracker: PerfTracker,
-    ) = when {
-        expanded -> {
-            getFullOptionsList(
-                resources,
-                onScreenLinkClick,
-                perfTracker,
-                randoming,
-                onRandomClick,
-                refreshing,
-                updateTime,
-                onRefreshClick
-            )
-        }
-        refreshing -> getRefreshingIndicatorListModels(resources, perfTracker)
-        else -> emptyList()
+        onDebugClick: () -> Unit,
+        resources: Resources,
+        perfTracker: PerfTracker
+    ) = if (expanded) {
+        getFullOptionsList(
+            randoming,
+            refreshing,
+            updateTime,
+            onScreenLinkClick,
+            onRandomClick,
+            onRefreshClick,
+            onDebugClick,
+            resources,
+            perfTracker
+        )
+    } else {
+        emptyList()
     }
 
     private fun getFullOptionsList(
-        resources: Resources,
-        onScreenLinkClick: (String) -> Unit,
-        perfTracker: PerfTracker,
         randoming: Boolean,
-        onRandomClick: () -> Unit,
         refreshing: Boolean,
         updateTime: Async<Long>,
-        onRefreshClick: () -> Unit
+        onScreenLinkClick: (String) -> Unit,
+        onRandomClick: () -> Unit,
+        onRefreshClick: () -> Unit,
+        onDebugClick: () -> Unit,
+        resources: Resources,
+        perfTracker: PerfTracker
     ) = listOf(
         MenuItemListModel(
             resources.getString(R.string.label_by_game),
@@ -114,10 +116,46 @@ object MenuOptions {
             { onScreenLinkClick(HudFragment.MODAL_SCREEN_ID_SETTINGS) },
             "",
             perfTracker
-        ),
-        if (refreshing) {
-            getRefreshIndicatorListModel(resources, perfTracker)
-        } else {
+        )
+    ) + getRefreshOptionListModels(
+        refreshing,
+        updateTime,
+        onRefreshClick,
+        resources,
+        perfTracker
+    ) + getDebugScreenListModels(
+        onDebugClick,
+        resources,
+        perfTracker
+    )
+
+    private fun getDebugScreenListModels(
+        onDebugClick: () -> Unit,
+        resources: Resources,
+        perfTracker: PerfTracker
+    ) = if (BuildConfig.DEBUG) {
+        listOf(
+            MenuItemListModel(
+                resources.getString(R.string.label_debug),
+                null,
+                R.drawable.ic_baseline_warning_24,
+                onDebugClick,
+                "",
+                perfTracker
+            )
+        )
+    } else {
+        emptyList()
+    }
+
+    private fun getRefreshOptionListModels(
+        refreshing: Boolean,
+        updateTime: Async<Long>,
+        onRefreshClick: () -> Unit,
+        resources: Resources,
+        perfTracker: PerfTracker
+    ) = if (!refreshing) {
+        listOf(
             MenuItemListModel(
                 resources.getString(R.string.label_refresh),
                 resources.getUpdateTimeString(updateTime),
@@ -126,25 +164,10 @@ object MenuOptions {
                 "",
                 perfTracker
             )
-        }
-    )
-
-    private fun getRefreshingIndicatorListModels(
-        resources: Resources,
-        perfTracker: PerfTracker
-    ) = listOf(
-        getRefreshIndicatorListModel(resources, perfTracker)
-    )
-
-    private fun getRefreshIndicatorListModel(
-        resources: Resources,
-        perfTracker: PerfTracker
-    ) = MenuLoadingItemListModel(
-        resources.getString(R.string.label_refresh_loading),
-        R.drawable.ic_refresh_24dp,
-        "",
-        perfTracker
-    )
+        )
+    } else {
+        emptyList()
+    }
 
     private fun Resources.getUpdateTimeString(updateTime: Async<Long>): String {
         val calendar = Calendar.getInstance()
