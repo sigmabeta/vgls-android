@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+@Suppress("LongParameterList")
 object MenuOptions {
     fun getListModels(
         expanded: Boolean,
@@ -41,6 +42,7 @@ object MenuOptions {
         emptyList()
     }
 
+    @Suppress("LongMethod")
     private fun getFullOptionsList(
         randoming: Boolean,
         refreshing: Boolean,

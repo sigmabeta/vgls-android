@@ -6,6 +6,7 @@ import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
+@Suppress("LongParameterList")
 object PartPicker {
     fun getListModels(
         expanded: Boolean,
