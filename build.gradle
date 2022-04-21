@@ -88,7 +88,6 @@ allprojects {
 subprojects {
     if (project.name == 'app') {
         apply plugin: 'com.android.application'
-        apply plugin: 'com.github.triplet.play'
     } else {
         apply plugin: 'com.android.library'
     }

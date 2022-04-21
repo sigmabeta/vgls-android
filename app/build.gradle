@@ -32,7 +32,6 @@ def computeVersionName = { ->
 }
 
 android {
-
     defaultConfig {
         applicationId "com.vgleadsheets"
 
@@ -105,9 +104,14 @@ android {
     }
 }
 
-play {
-    track = System.getenv("TRACK")
-    artifactDir = file("build/outputs/apk/release/")
+def googlePlayTrack = System.getenv("TRACK")
+if (googlePlayTrack != null) {
+    apply plugin: 'com.github.triplet.play'
+
+    play {
+        track = googlePlayTrack
+        artifactDir = file("build/outputs/apk/release/")
+    }
 }
 
 dependencies {
