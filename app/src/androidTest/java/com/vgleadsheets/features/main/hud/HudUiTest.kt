@@ -12,7 +12,7 @@ class HudUiTest : UiTest() {
     fun openAndCloseMenuFromTopBar() {
         hud(this) {
             clickView(R.id.button_search_menu_back)
-            checkViewText(R.string.label_refresh)
+            checkViewText(R.string.label_settings)
 
             clickView(R.id.button_search_menu_back)
             checkSearchButtonIsHamburger()
