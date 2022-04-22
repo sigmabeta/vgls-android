@@ -88,10 +88,11 @@ class SettingsAsyncUiTest : ListUiTest() {
             checkSearchButtonIsHamburger()
 
             clickView(R.id.button_menu)
-            checkViewVisible(R.id.text_update_time)
 
-            clickView(R.id.layout_settings)
-            checkViewNotVisible(R.id.text_update_time)
+            checkSearchButtonIsCross()
+
+            clickViewWithText(R.string.label_settings)
+            checkSearchButtonIsBackArrow()
         }
     }
 }

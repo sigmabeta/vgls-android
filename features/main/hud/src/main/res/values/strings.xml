@@ -21,4 +21,5 @@
     <string name="label_debug">Debug Menu</string>
     <string name="cd_search_menu">Open Menu</string>
     <string name="cd_search_back">Go Back</string>
+    <string name="cd_search_close">Close Menu</string>
 </resources>

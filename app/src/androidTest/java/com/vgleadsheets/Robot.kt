@@ -8,9 +8,7 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.allOf
 
@@ -27,12 +25,40 @@ abstract class Robot(val test: UiTest) {
         )
     }
 
+    fun clickViewWithText(textId: Int) {
+        onView(
+            withText(textId)
+        ).perform(
+            click()
+        )
+    }
+
     fun checkViewText(viewId: Int, textId: Int) {
         onView(
             withId(viewId)
         ).check(
             matches(
                 withText(textId)
+            )
+        )
+    }
+
+    fun checkViewText(textId: Int) {
+        onView(
+            withText(textId)
+        ).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
+    fun checkViewText(text: String) {
+        onView(
+            withText(text)
+        ).check(
+            matches(
+                isDisplayed()
             )
         )
     }

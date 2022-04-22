@@ -12,17 +12,17 @@ class HudUiTest : UiTest() {
     fun openAndCloseMenuFromTopBar() {
         hud(this) {
             clickView(R.id.button_search_menu_back)
-            checkViewVisible(R.id.text_update_time)
+            checkViewText(R.string.label_refresh)
 
             clickView(R.id.button_search_menu_back)
-            checkViewNotVisible(R.id.text_update_time)
+            checkSearchButtonIsHamburger()
         }
     }
 
     @Test
     fun navigateToComposerList() {
         checkNavigationButton(
-            R.id.layout_by_composer,
+            R.string.label_by_composer,
             R.string.app_name,
             R.string.subtitle_composer
         )
@@ -31,7 +31,7 @@ class HudUiTest : UiTest() {
     @Test
     fun navigateToTagList() {
         checkNavigationButton(
-            R.id.layout_by_tag,
+            R.string.label_by_tag,
             R.string.app_name,
             R.string.subtitle_tags
         )
@@ -40,7 +40,7 @@ class HudUiTest : UiTest() {
     @Test
     fun navigateToSongList() {
         checkNavigationButton(
-            R.id.layout_all_sheets,
+            R.string.label_all_sheets,
             R.string.app_name,
             R.string.subtitle_all_sheets
         )
@@ -49,7 +49,7 @@ class HudUiTest : UiTest() {
     @Test
     fun navigateToJamList() {
         checkNavigationButton(
-            R.id.layout_jams,
+            R.string.label_jams,
             R.string.title_jams,
             null
         )
@@ -64,7 +64,7 @@ class HudUiTest : UiTest() {
         }
 
         checkNavigationButton(
-            R.id.layout_by_game,
+            R.string.label_by_game,
             R.string.app_name,
             R.string.subtitle_game
         )
@@ -73,13 +73,13 @@ class HudUiTest : UiTest() {
     @Test
     fun navigateToJamListThenBackToGameList() {
         checkNavigationButton(
-            R.id.layout_jams,
+            R.string.label_jams,
             R.string.title_jams,
             null
         )
 
         checkNavigationButton(
-            R.id.layout_by_game,
+            R.string.label_by_game,
             R.string.app_name,
             R.string.subtitle_game
         )
@@ -93,10 +93,9 @@ class HudUiTest : UiTest() {
             checkSearchButtonIsHamburger()
 
             clickView(R.id.button_menu)
-            checkViewVisible(R.id.text_update_time)
+            checkViewText(R.string.label_settings)
 
-            clickView(R.id.layout_settings)
-            checkViewNotVisible(R.id.text_update_time)
+            clickViewWithText(R.string.label_settings)
 
             checkViewVisible(R.id.checkbox_setting)
             checkSearchButtonIsBackArrow()
@@ -111,10 +110,8 @@ class HudUiTest : UiTest() {
             checkSearchButtonIsHamburger()
 
             clickView(R.id.button_menu)
-            checkViewVisible(R.id.text_update_time)
 
-            clickView(R.id.layout_debug)
-            checkViewNotVisible(R.id.text_update_time)
+            clickViewWithText(R.string.label_debug)
 
             checkViewWithIdAndTextVisible(
                 R.id.text_name,
@@ -126,16 +123,16 @@ class HudUiTest : UiTest() {
     }
 
     private fun checkNavigationButton(
-        buttonId: Int,
+        buttonTextId: Int,
         titleStringId: Int,
         subtitleStringId: Int?
     ) {
         hud(this) {
             clickView(R.id.button_menu)
-            checkViewVisible(R.id.text_update_time)
+            checkViewText(R.string.label_settings)
 
-            clickView(buttonId)
-            checkViewNotVisible(R.id.text_update_time)
+            clickViewWithText(buttonTextId)
+            checkSearchButtonIsHamburger()
 
             checkTopLevelScreen(titleStringId, subtitleStringId)
         }

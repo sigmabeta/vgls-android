@@ -13,15 +13,14 @@ class HudAsyncUiTest : AsyncUiTest() {
 
         hud(this) {
             checkViewVisible(R.id.button_menu)
-            checkViewText(R.id.text_update_time, "Updated Never")
+            checkViewText("Updated Never")
         }
 
         updateTimeEmitTrigger.onNext(1L)
 
         hud(this) {
             clickView(R.id.button_menu)
-            checkViewVisible(R.id.text_update_time)
-            checkViewText(R.id.text_update_time, "Updated Apr 1, 2017")
+            checkViewText("Updated Apr 1, 2017")
         }
     }
 
@@ -31,7 +30,7 @@ class HudAsyncUiTest : AsyncUiTest() {
 
         hud(this) {
             clickView(R.id.button_menu)
-            checkViewText(R.id.text_update_time, "Updated Never")
+            checkViewText( "Updated Never")
         }
     }
 }
