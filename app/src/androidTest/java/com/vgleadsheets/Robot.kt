@@ -27,12 +27,40 @@ abstract class Robot(val test: UiTest) {
         )
     }
 
+    fun clickViewWithText(textId: Int) {
+        onView(
+            withText(textId)
+        ).perform(
+            click()
+        )
+    }
+
     fun checkViewText(viewId: Int, textId: Int) {
         onView(
             withId(viewId)
         ).check(
             matches(
                 withText(textId)
+            )
+        )
+    }
+
+    fun checkViewText(textId: Int) {
+        onView(
+            withText(textId)
+        ).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
+    fun checkViewText(text: String) {
+        onView(
+            withText(text)
+        ).check(
+            matches(
+                isDisplayed()
             )
         )
     }

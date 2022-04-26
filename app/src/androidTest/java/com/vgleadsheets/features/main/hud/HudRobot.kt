@@ -22,6 +22,16 @@ class HudRobot(test: UiTest) : Robot(test) {
         )
     }
 
+    fun checkSearchButtonIsCross() {
+        onView(
+            ViewMatchers.withId(R.id.button_search_menu_back)
+        ).check(
+            ViewAssertions.matches(
+                ViewMatchers.withContentDescription(R.string.cd_search_close)
+            )
+        )
+    }
+
     fun checkSearchButtonIsHamburger() {
         onView(
             ViewMatchers.withId(R.id.button_search_menu_back)

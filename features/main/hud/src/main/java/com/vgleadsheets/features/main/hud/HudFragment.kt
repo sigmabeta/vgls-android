@@ -27,16 +27,19 @@ import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeInSlightly
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
-import com.vgleadsheets.components.MenuItemListModel
-import com.vgleadsheets.components.MenuLoadingItemListModel
-import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.components.PerfStageListModel
+import com.vgleadsheets.features.main.hud.menu.MenuOptions
+import com.vgleadsheets.features.main.hud.menu.PartPicker
+import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
+import com.vgleadsheets.features.main.hud.menu.SearchIcon
+import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
+import com.vgleadsheets.features.main.hud.menu.Shadow
+import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
@@ -59,9 +62,6 @@ import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
 import kotlinx.android.synthetic.main.view_bottom_sheet_content.recycler_bottom
 import kotlinx.android.synthetic.main.view_perf_event_list.list_perf
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -77,10 +77,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private val menuAdapter = ComponentAdapter()
 
     private val perfAdapter = ComponentAdapter()
-
-    private val backListener = View.OnClickListener { activity?.onBackPressed() }
-
-    private val menuListener = View.OnClickListener { onMenuClick() }
 
     private val handler = Handler()
 
@@ -134,6 +130,16 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
 
         button_search_clear.setOnClickListener { edit_search_query.text.clear() }
         shadow_hud.setOnClickListener { viewModel.onMenuAction() }
+
+        button_search_menu_back.setOnClickListener {
+            withState(viewModel) {
+                if (it.searchVisible) {
+                    activity?.onBackPressed()
+                } else {
+                    onMenuClick()
+                }
+            }
+        }
     }
 
     override fun onStart() {
@@ -169,12 +175,14 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             hideHud()
         }
 
-        if (state.searchVisible) {
+        if (state.menuExpanded || state.partsExpanded) {
+            button_search_menu_back.setIcon(SearchIcon.State.CLOSE)
+        } else if (state.searchVisible) {
             showSearch()
-            showSearchBackButton()
+            button_search_menu_back.setIcon(SearchIcon.State.BACK)
         } else {
             hideSearch()
-            showSearchMenuButton()
+            button_search_menu_back.setIcon(SearchIcon.State.HAMBURGER)
         }
 
         if (state.random is Success) {
@@ -192,7 +200,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         )
 
         if (state.alwaysShowBack) {
-            showSearchBackButton()
+            button_search_menu_back.setIcon(SearchIcon.State.BACK)
         }
 
         if (state.searchQuery.isNullOrEmpty()) {
@@ -307,18 +315,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         button_search_clear.fadeOutGone()
     }
 
-    private fun showSearchMenuButton() {
-        button_search_menu_back.contentDescription = getString(R.string.cd_search_menu)
-        button_search_menu_back.setImageResource(R.drawable.ic_menu_24dp)
-        button_search_menu_back.setOnClickListener(menuListener)
-    }
-
-    private fun showSearchBackButton() {
-        button_search_menu_back.contentDescription = getString(R.string.cd_search_back)
-        button_search_menu_back.setImageResource(R.drawable.ic_arrow_back_black_24dp)
-        button_search_menu_back.setOnClickListener(backListener)
-    }
-
     private fun showSearch() {
         viewModel.stopHudTimer()
 
@@ -378,206 +374,46 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         randoming: Boolean,
         updateTime: Async<Long>
     ) {
-        if (partsExpanded) {
-            shadow_hud.fadeInSlightly()
+        Shadow.setToLookRightIdk(
+            shadow_hud,
+            menuExpanded,
+            partsExpanded
+        )
 
-            val listItems = listOf(
-                MenuTitleBarListModel(
-                    getString(R.string.app_name),
-                    getSelectedPartString(selectedPart),
-                    true,
-                    { viewModel.onMenuClick() },
-                    { },
-                    "",
-                    perfTracker
-                )
-            ) + parts.map {
-                MenuItemListModel(
-                    getString(it.longResId),
-                    null,
-                    R.drawable.ic_description_24dp,
-                    { viewModel.onPartSelect(it.apiId) },
-                    "",
-                    perfTracker
-                )
-            } + if (refreshing) {
-                listOf(
-                    MenuLoadingItemListModel(
-                        getString(R.string.label_refresh_loading),
-                        R.drawable.ic_refresh_24dp,
-                        "",
-                        perfTracker
-                    )
-                )
-            } else {
-                emptyList()
-            }
-
-            menuAdapter.submitListAnimateResizeContainer(
-                listItems,
-                recycler_bottom?.parent?.parent as? ViewGroup
-            )
-
-            return
-        }
-
-        if (!menuExpanded) {
-            shadow_hud.fadeOutGone()
-
-            val listItems = listOf(
-                MenuTitleBarListModel(
-                    getString(R.string.app_name),
-                    getSelectedPartString(selectedPart),
-                    false,
-                    { viewModel.onMenuClick() },
-                    { viewModel.onChangePartClick() },
-                    "",
-                    perfTracker
-                )
-            )
-
-            menuAdapter.submitListAnimateResizeContainer(
-                if (refreshing) {
-                    listItems + MenuLoadingItemListModel(
-                        getString(R.string.label_refresh_loading),
-                        R.drawable.ic_refresh_24dp,
-                        "",
-                        perfTracker
-                    )
-                } else {
-                    listItems
-                },
-                recycler_bottom?.parent?.parent as? ViewGroup
-            )
-
-            return
-        }
-
-        shadow_hud.fadeInSlightly()
-
-        val menuItems = listOf(
-            MenuTitleBarListModel(
-                getString(R.string.app_name),
-                getSelectedPartString(selectedPart),
-                true,
-                { viewModel.onMenuClick() },
-                { viewModel.onChangePartClick() },
-                "",
-                perfTracker
-            ),
-            MenuItemListModel(
-                getString(R.string.label_by_game),
-                null,
-                R.drawable.ic_album_24dp,
-                { showScreen(TOP_LEVEL_SCREEN_ID_GAME) },
-                "",
-                perfTracker
-            ),
-            MenuItemListModel(
-                getString(R.string.label_by_composer),
-                null,
-                R.drawable.ic_person_24dp,
-                { showScreen(TOP_LEVEL_SCREEN_ID_COMPOSER) },
-                "",
-                perfTracker
-            ),
-            MenuItemListModel(
-                getString(R.string.label_by_tag),
-                null,
-                R.drawable.ic_tag_black_24dp,
-                { showScreen(TOP_LEVEL_SCREEN_ID_TAG) },
-                "",
-                perfTracker
-            ),
-            MenuItemListModel(
-                getString(R.string.label_all_sheets),
-                null,
-                R.drawable.ic_description_24dp,
-                { showScreen(TOP_LEVEL_SCREEN_ID_SONG) },
-                "",
-                perfTracker
-            ),
-            if (randoming) {
-                MenuLoadingItemListModel(
-                    getString(R.string.label_random_loading),
-                    R.drawable.ic_shuffle_24dp,
-                    "",
-                    perfTracker
-                )
-            } else {
-                MenuItemListModel(
-                    getString(R.string.label_random),
-                    null,
-                    R.drawable.ic_shuffle_24dp,
-                    { onRandomClick() },
-                    "",
-                    perfTracker
-                )
-            },
-            MenuItemListModel(
-                getString(R.string.label_jams),
-                null,
-                R.drawable.ic_queue_music_black_24dp,
-                { showScreen(TOP_LEVEL_SCREEN_ID_JAM) },
-                "",
-                perfTracker
-            ),
-            MenuItemListModel(
-                getString(R.string.label_settings),
-                null,
-                R.drawable.ic_settings_black_24dp,
-                { showScreen(MODAL_SCREEN_ID_SETTINGS) },
-                "",
-                perfTracker
-            ),
-            if (refreshing) {
-                MenuLoadingItemListModel(
-                    getString(R.string.label_refresh_loading),
-                    R.drawable.ic_refresh_24dp,
-                    "",
-                    perfTracker
-                )
-            } else {
-                MenuItemListModel(
-                    getString(R.string.label_refresh),
-                    getUpdateTimeString(updateTime),
-                    R.drawable.ic_refresh_24dp,
-                    { onRefreshClick() },
-                    "",
-                    perfTracker
-                )
-            }
+        val menuItems = TitleBar.getListModels(
+            selectedPart,
+            partsExpanded || menuExpanded,
+            resources,
+            { viewModel.onMenuClick() },
+            { viewModel.onChangePartClick() },
+            perfTracker
+        ) + PartPicker.getListModels(
+            partsExpanded,
+            parts,
+            { viewModel.onPartSelect(it) },
+            resources,
+            perfTracker
+        ) + MenuOptions.getListModels(
+            menuExpanded,
+            randoming,
+            refreshing,
+            updateTime,
+            { showScreen(it) },
+            { onRandomClick() },
+            { onRefreshClick() },
+            { showScreen(MODAL_SCREEN_ID_DEBUG) },
+            resources,
+            perfTracker,
+        ) + RefreshIndicator.getListModels(
+            refreshing,
+            resources,
+            perfTracker
         )
 
         menuAdapter.submitListAnimateResizeContainer(
             menuItems,
             recycler_bottom?.parent?.parent as? ViewGroup
         )
-    }
-
-    private fun getSelectedPartString(selectedPart: PartSelectorItem): String {
-        return getString(R.string.subtitle_menu, getString(selectedPart.longResId))
-    }
-
-    private fun getUpdateTimeString(updateTime: Async<Long>): String {
-        val calendar = Calendar.getInstance()
-
-        if (updateTime !is Success) {
-            return "..."
-        }
-
-        val checkedTime = updateTime()
-
-        val date = if (checkedTime > 0L) {
-            calendar.timeInMillis = checkedTime
-            val time = calendar.time
-            val dateFormat = SimpleDateFormat("MMM d, yyyy", Locale.US)
-            dateFormat.format(time)
-        } else {
-            getString(R.string.date_never)
-        }
-
-        return getString(R.string.label_refresh_date, date)
     }
 
     private fun checkShouldShowPerfView() {
