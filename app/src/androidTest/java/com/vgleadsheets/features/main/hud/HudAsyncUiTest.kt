@@ -33,7 +33,7 @@ class HudAsyncUiTest : AsyncUiTest() {
 
         hud(this) {
             clickView(R.id.button_menu)
-            checkViewText( "Checking for updates...")
+            checkViewText("Checking for updates...")
         }
     }
 }

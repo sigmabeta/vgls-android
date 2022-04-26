@@ -3,15 +3,15 @@ package com.vgleadsheets.features.main.hud.menu
 import android.widget.ImageButton
 import com.vgleadsheets.features.main.hud.R
 
-object Icon {
+object SearchIcon {
     fun ImageButton.setIcon(state: State) {
         when (state) {
-            State.HAMBRUGER -> showMenuButton()
+            State.HAMBURGER -> showMenuButton()
             State.BACK -> showBackButton()
             State.CLOSE -> showCloseButton()
         }
     }
-    
+
     private fun ImageButton.showMenuButton() {
         setIconAndContentDesc(R.drawable.ic_menu_24dp, R.string.cd_search_menu)
     }
@@ -31,9 +31,9 @@ object Icon {
         contentDescription = resources.getString(contentDescId)
         setImageResource(iconId)
     }
-    
+
     enum class State {
-        HAMBRUGER,
+        HAMBURGER,
         BACK,
         CLOSE
     }

@@ -8,7 +8,9 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.allOf
 

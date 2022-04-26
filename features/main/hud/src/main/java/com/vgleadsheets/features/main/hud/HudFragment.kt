@@ -4,23 +4,42 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
+import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.*
+import com.vgleadsheets.animation.fadeIn
+import com.vgleadsheets.animation.fadeOutGone
+import com.vgleadsheets.animation.slideViewDownOffscreen
+import com.vgleadsheets.animation.slideViewOnscreen
+import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.components.PartListModel
 import com.vgleadsheets.components.PerfStageListModel
-import com.vgleadsheets.features.main.hud.menu.*
-import com.vgleadsheets.features.main.hud.menu.Icon.setIcon
+import com.vgleadsheets.features.main.hud.menu.MenuOptions
+import com.vgleadsheets.features.main.hud.menu.PartPicker
+import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
+import com.vgleadsheets.features.main.hud.menu.SearchIcon
+import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
+import com.vgleadsheets.features.main.hud.menu.Shadow
+import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
@@ -32,10 +51,16 @@ import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_hud.*
-import kotlinx.android.synthetic.main.view_bottom_sheet_card.*
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.*
-import kotlinx.android.synthetic.main.view_perf_event_list.*
+import kotlinx.android.synthetic.main.fragment_hud.button_search_clear
+import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
+import kotlinx.android.synthetic.main.fragment_hud.card_search
+import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
+import kotlinx.android.synthetic.main.fragment_hud.frame_content
+import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
+import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
+import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
+import kotlinx.android.synthetic.main.view_bottom_sheet_content.recycler_bottom
+import kotlinx.android.synthetic.main.view_perf_event_list.list_perf
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -151,13 +176,13 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
 
         if (state.menuExpanded || state.partsExpanded) {
-            button_search_menu_back.setIcon(Icon.State.CLOSE)
+            button_search_menu_back.setIcon(SearchIcon.State.CLOSE)
         } else if (state.searchVisible) {
             showSearch()
-            button_search_menu_back.setIcon(Icon.State.BACK)
+            button_search_menu_back.setIcon(SearchIcon.State.BACK)
         } else {
             hideSearch()
-            button_search_menu_back.setIcon(Icon.State.HAMBRUGER)
+            button_search_menu_back.setIcon(SearchIcon.State.HAMBURGER)
         }
 
         if (state.random is Success) {
@@ -175,7 +200,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         )
 
         if (state.alwaysShowBack) {
-            button_search_menu_back.setIcon(Icon.State.BACK)
+            button_search_menu_back.setIcon(SearchIcon.State.BACK)
         }
 
         if (state.searchQuery.isNullOrEmpty()) {
@@ -289,8 +314,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun hideSearchClearButton() {
         button_search_clear.fadeOutGone()
     }
-
-
 
     private fun showSearch() {
         viewModel.stopHudTimer()
