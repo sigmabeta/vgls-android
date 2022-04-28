@@ -17,7 +17,10 @@ import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_find_jam.*
+import kotlinx.android.synthetic.main.fragment_find_jam.button_cancel
+import kotlinx.android.synthetic.main.fragment_find_jam.button_find
+import kotlinx.android.synthetic.main.fragment_find_jam.edit_jam_name
+import kotlinx.android.synthetic.main.fragment_find_jam.progress_loading
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.HttpURLConnection

@@ -157,7 +157,7 @@ class TagValueSongListViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No songs found with a ${selectedPart} part. Try another part?",
+                    "No songs found with a $selectedPart part. Try another part?",
                     screenName,
                     cancelPerfOnEmptyState
                 )

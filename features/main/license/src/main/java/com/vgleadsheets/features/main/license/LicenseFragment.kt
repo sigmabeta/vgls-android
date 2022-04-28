@@ -8,7 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.tracking.TrackingScreen
-import kotlinx.android.synthetic.main.fragment_license.*
+import kotlinx.android.synthetic.main.fragment_license.web_license
 
 @Suppress("Deprecation")
 class LicenseFragment : VglsFragment() {

@@ -12,7 +12,7 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
 import com.vgleadsheets.tabletSetListsSpecialInsets
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_list.list_content
 import javax.inject.Inject
 
 abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFragment() {

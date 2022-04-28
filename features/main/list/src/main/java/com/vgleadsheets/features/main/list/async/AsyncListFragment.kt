@@ -13,7 +13,7 @@ import com.vgleadsheets.features.main.list.R
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
 import com.vgleadsheets.tabletSetListsSpecialInsets
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_list.list_content
 import javax.inject.Inject
 
 abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState<DataType>> : VglsFragment() {

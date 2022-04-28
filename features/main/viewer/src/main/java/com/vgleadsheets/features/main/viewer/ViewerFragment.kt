@@ -29,7 +29,9 @@ import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_viewer.*
+import kotlinx.android.synthetic.main.fragment_viewer.list_sheets
+import kotlinx.android.synthetic.main.fragment_viewer.list_toolbar_items
+import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

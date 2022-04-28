@@ -12,7 +12,7 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
-import kotlinx.android.synthetic.main.fragment_about.*
+import kotlinx.android.synthetic.main.fragment_about.list_content
 
 @SuppressWarnings("TooManyFunctions")
 class AboutFragment :

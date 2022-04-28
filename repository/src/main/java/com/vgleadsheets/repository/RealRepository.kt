@@ -501,6 +501,7 @@ class RealRepository constructor(
             )
         }
 
+    @Suppress("LongParameterList")
     private fun processGame(
         apiGame: VglsApiGame,
         composerEntities: MutableMap<Long, ComposerEntity>,
@@ -524,6 +525,7 @@ class RealRepository constructor(
         }
     }
 
+    @Suppress("LongParameterList")
     private fun processSong(
         apiSong: ApiSong,
         apiGame: VglsApiGame,
@@ -599,6 +601,7 @@ class RealRepository constructor(
         }
     }
 
+    @Suppress("LongParameterList")
     private fun joinSongToTagValue(
         key: String,
         value: String,
