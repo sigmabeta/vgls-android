@@ -10,9 +10,10 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.model.filteredForVocals
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
@@ -60,7 +61,7 @@ class ComposerListViewModel @AssistedInject constructor(
         data: List<Composer>,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val availableComposers = filterComposers(data, selectedPart)
 
@@ -129,7 +130,12 @@ class ComposerListViewModel @AssistedInject constructor(
         }
 
         if (numberOfOthers != 0) {
-            builder.append(resourceProvider.getString(R.string.subtitle_suffix_others, numberOfOthers))
+            builder.append(
+                resourceProvider.getString(
+                    R.string.subtitle_suffix_others,
+                    numberOfOthers
+                )
+            )
         }
 
         return builder.toString()
@@ -137,11 +143,9 @@ class ComposerListViewModel @AssistedInject constructor(
 
     private fun filterComposers(
         composers: List<Composer>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = composers.map { composer ->
-        val availableSongs = composer.songs?.filter { song ->
-            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-        }
+        val availableSongs = composer.songs?.filteredForVocals(selectedPart.apiId)
 
         composer.copy(songs = availableSongs)
     }.filter {
@@ -154,8 +158,12 @@ class ComposerListViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<ComposerListViewModel, ComposerListState> {
-        override fun create(viewModelContext: ViewModelContext, state: ComposerListState): ComposerListViewModel? {
-            val fragment: ComposerListFragment = (viewModelContext as FragmentViewModelContext).fragment()
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: ComposerListState
+        ): ComposerListViewModel? {
+            val fragment: ComposerListFragment =
+                (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.composerListViewModelFactory.create(state, fragment.getPerfScreenName())
         }
     }

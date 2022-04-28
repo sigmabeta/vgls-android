@@ -12,7 +12,7 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
 import com.vgleadsheets.tabletSetListsSpecialInsets
-import kotlinx.android.synthetic.main.fragment_list.list_content
+import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
 abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFragment() {
@@ -59,8 +59,8 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
             viewModel.onTimeUpdate(it)
         }
 
-        hudViewModel.selectSubscribe(HudState::parts) { parts ->
-            viewModel.onSelectedPartUpdate(parts.firstOrNull { it.selected })
+        hudViewModel.selectSubscribe(HudState::selectedPart) { part ->
+            viewModel.onSelectedPartUpdate(part)
         }
 
         subscribeToViewEvents()

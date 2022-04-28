@@ -7,9 +7,10 @@ data class ApiComposer(
     val composer_name: String?,
     val image_url: String?
 ) {
-    fun toComposerEntity() = ComposerEntity(
+    fun toComposerEntity(hasVocalSongs: Boolean) = ComposerEntity(
         composer_id + ID_OFFSET,
         composer_name ?: "Unknown Composer",
+        hasVocalSongs,
         image_url
     )
 

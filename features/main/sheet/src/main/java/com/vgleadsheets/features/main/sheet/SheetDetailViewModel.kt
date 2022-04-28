@@ -20,18 +20,21 @@ import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
+import javax.inject.Named
 
 @SuppressWarnings("TooManyFunctions")
 class SheetDetailViewModel @AssistedInject constructor(
     @Assisted initialState: SheetDetailState,
     @Assisted val screenName: String,
+    @Named("VglsImageUrl") val baseImageUrl: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
@@ -62,7 +65,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         data: SheetDetailData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = createTitleListModel(data.song, selectedPart) +
         createCtaListModels(data.song) +
         createDetailListModels(data.song) +
@@ -244,21 +247,25 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     private fun createTitleListModel(
         song: Async<Song>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = when (song) {
         is Loading, Uninitialized -> listOf(LoadingTitleListModel())
         is Fail -> createErrorStateListModel("title", song.error)
         is Success -> {
-            val pages = song()
-                .parts
-                ?.first { part -> part.name == selectedPart.apiId }
-                ?.pages
+            val vocalsSelected = selectedPart == Part.VOCAL
 
-            val pageCount = pages?.size
+            val pageCount = if (vocalsSelected) {
+                song().lyricPageCount
+            } else {
+                song().pageCount
+            }
 
-            val thumbUrl = pages
-                ?.first()
-                ?.imageUrl
+            val thumbUrl = Page.generateImageUrl(
+                baseImageUrl,
+                selectedPart,
+                song().filename,
+                1
+            )
 
             listOf(
                 TitleListModel(

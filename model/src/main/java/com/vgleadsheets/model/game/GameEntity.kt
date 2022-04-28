@@ -8,6 +8,7 @@ import com.vgleadsheets.model.song.Song
 data class GameEntity(
     @PrimaryKey val id: Long,
     val name: String,
+    val hasVocalSongs: Boolean,
     val photoUrl: String? = null
 ) {
     fun toGame(songs: List<Song>?) = Game(id, name, songs, photoUrl)

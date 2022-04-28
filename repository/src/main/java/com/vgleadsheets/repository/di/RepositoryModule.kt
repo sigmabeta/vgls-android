@@ -9,7 +9,6 @@ import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker
 import dagger.Module
 import dagger.Provides
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -20,9 +19,8 @@ class RepositoryModule {
         vglsApi: VglsApi,
         database: VglsDatabase,
         threeTenTime: ThreeTenTime,
-        tracker: Tracker,
-        @Named("VglsImageUrl") baseImageUrl: String
-    ): Repository = RealRepository(vglsApi, baseImageUrl, threeTenTime, tracker, database)
+        tracker: Tracker
+    ): Repository = RealRepository(vglsApi, threeTenTime, tracker, database)
 
     @Provides
     @Singleton

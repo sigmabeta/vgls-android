@@ -6,7 +6,6 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.GameEntity
-import com.vgleadsheets.model.parts.Part
 
 @Suppress("ConstructorParameterNaming")
 @Entity(
@@ -23,19 +22,23 @@ import com.vgleadsheets.model.parts.Part
 data class SongEntity(
     @PrimaryKey val id: Long,
     val name: String,
+    val filename: String,
     val pageCount: Int,
+    val lyricPageCount: Int,
     val gameName: String,
     val game_id: Long
 ) {
     fun toSong(
-        composers: List<Composer>?,
-        parts: List<Part>?
+        composers: List<Composer>?
     ) = Song(
         id,
         name,
+        filename,
         game_id,
         gameName,
-        composers,
-        parts
+        lyricPageCount > 0,
+        pageCount,
+        lyricPageCount,
+        composers
     )
 }

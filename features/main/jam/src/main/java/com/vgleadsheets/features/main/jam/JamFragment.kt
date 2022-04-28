@@ -140,10 +140,7 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
     }
 
     private fun showSongViewer(song: Song) = withState(hudViewModel) { hudState ->
-        val transposition = hudState
-            .parts
-            .firstOrNull { it.selected }
-            ?.apiId ?: "Error"
+        val transposition = hudState.selectedPart.apiId
 
         getFragmentRouter().showSongViewer(
             song.id,
