@@ -10,7 +10,14 @@ data class VglsApiGame(
     val songs: List<ApiSong>,
     val image_url: String?
 ) {
-    fun toGameEntity() = GameEntity(game_id + ID_OFFSET, game_name, image_url)
+    fun toGameEntity() = GameEntity(
+        game_id + ID_OFFSET,
+        game_name,
+        songs.hasVocalSongs(),
+        image_url
+    )
+
+    private fun List<ApiSong>.hasVocalSongs() = firstOrNull { it.parts.contains("Vocals") } != null
 
     companion object {
         const val ID_OFFSET = 100000L

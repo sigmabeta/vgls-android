@@ -17,8 +17,8 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingCheckableListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
@@ -78,7 +78,7 @@ class SettingsViewModel @AssistedInject constructor(
         data: SettingsData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> = createContentListModels(data.settings)
 
     override fun defaultLoadingListModel(index: Int) = LoadingCheckableListModel(
@@ -167,12 +167,14 @@ class SettingsViewModel @AssistedInject constructor(
         return headerModels + settingsModels
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun getSectionHeaderString(headerId: String) = when (headerId) {
         HEADER_ID_SHEET -> resourceProvider.getString(R.string.section_sheets)
         HEADER_ID_MISC -> resourceProvider.getString(R.string.section_misc)
         else -> throw IllegalArgumentException()
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun setSetting(settingId: String, newValue: Boolean) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {

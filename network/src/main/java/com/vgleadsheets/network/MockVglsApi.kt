@@ -25,7 +25,7 @@ import java.util.Random
 import java.util.Stack
 import javax.inject.Named
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "UnusedPrivateMember")
 class MockVglsApi(
     private val random: Random,
     @Named("RngSeed") private val seed: Long,
@@ -216,6 +216,7 @@ class MockVglsApi(
         )
     }
 
+    @Suppress("SwallowedException")
     private fun getSongs(): List<ApiSong> {
         if (remainingSongs == null) {
             generateSongs()

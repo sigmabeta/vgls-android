@@ -7,10 +7,11 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.model.parts.Part
 
-class Feature_Name_ViewModel @AssistedInject constructor(
-    @Assisted initialState: Feature_Name_State,
-    private val repository: Repository
+Feature_Name_ViewModel @AssistedInject constructor(
+@Assisted initialState: Feature_Name_State,
+private val repository: Repository
 ) : MvRxViewModel<Feature_Name_State>(initialState) {
 
     @AssistedInject.Factory

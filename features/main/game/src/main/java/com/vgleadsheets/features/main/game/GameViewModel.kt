@@ -15,18 +15,22 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
+import javax.inject.Named
 
 @SuppressWarnings("TooManyFunctions")
 class GameViewModel @AssistedInject constructor(
     @Assisted initialState: GameState,
     @Assisted val screenName: String,
+    @Named("VglsImageUrl") val baseImageUrl: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
@@ -60,7 +64,7 @@ class GameViewModel @AssistedInject constructor(
         data: GameData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val title = createTitleListModel(data.game, data.songs)
         val content = createContentListModels(data.songs, selectedPart)
@@ -128,7 +132,7 @@ class GameViewModel @AssistedInject constructor(
 
     private fun createContentListModels(
         songs: Async<List<Song>>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = when (songs) {
         is Success -> createSongListModels(songs(), selectedPart)
         is Fail -> createErrorStateListModel(songs.error)
@@ -137,7 +141,7 @@ class GameViewModel @AssistedInject constructor(
 
     private fun createSongListModels(
         songs: List<Song>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val availableSongs = filterSongs(songs, selectedPart)
 
@@ -152,12 +156,12 @@ class GameViewModel @AssistedInject constructor(
             )
         } else {
             availableSongs.map {
-                val thumbUrl = it
-                    .parts
-                    ?.first { part -> part.name == selectedPart.apiId }
-                    ?.pages
-                    ?.first()
-                    ?.imageUrl
+                val thumbUrl = Page.generateImageUrl(
+                    baseImageUrl,
+                    selectedPart,
+                    it.filename,
+                    1
+                )
 
                 ImageNameCaptionListModel(
                     it.id,
@@ -175,10 +179,8 @@ class GameViewModel @AssistedInject constructor(
 
     private fun filterSongs(
         songs: List<Song>,
-        selectedPart: PartSelectorItem
-    ) = songs.filter { song ->
-        song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-    }
+        selectedPart: Part
+    ) = songs.filteredForVocals(selectedPart.apiId)
 
     private fun generateSheetCaption(song: Song): String {
         return when (song.composers?.size) {

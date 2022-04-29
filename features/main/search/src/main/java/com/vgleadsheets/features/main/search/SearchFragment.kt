@@ -18,7 +18,11 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
     override fun getTrackingScreen() = TrackingScreen.SEARCH
 
-    @SuppressWarnings("EmptyCatchBlock")
+    @SuppressWarnings(
+        "ThrowingExceptionsWithoutMessageOrCause",
+        "EmptyCatchBlock",
+        "SwallowedException"
+    )
     override fun getDetails(): String {
         var query = ""
 
@@ -126,10 +130,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             id.toString()
         )
 
-        val transposition = hudState
-            .parts
-            .firstOrNull { it.selected }
-            ?.apiId ?: "Error"
+        val transposition = hudState.selectedPart.apiId
 
         getFragmentRouter().showSongViewer(
             id,

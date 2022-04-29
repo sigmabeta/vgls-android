@@ -19,8 +19,9 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.components.ToolbarItemListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
+import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
@@ -34,13 +35,19 @@ import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Named
 
 @Suppress("TooManyFunctions")
-class ViewerFragment : VglsFragment(),
+class ViewerFragment :
+    VglsFragment(),
     SheetListModel.ImageListener,
     ToolbarItemListModel.EventHandler {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
+
+    @Inject
+    @Named("VglsImageUrl")
+    lateinit var baseImageUrl: String
 
     private val hudViewModel: HudViewModel by existingViewModel()
 
@@ -116,7 +123,7 @@ class ViewerFragment : VglsFragment(),
         )
 
         val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
-                resources.getDimension(R.dimen.margin_medium).toInt()
+            resources.getDimension(R.dimen.margin_medium).toInt()
         val sideOffset = resources.getDimension(R.dimen.margin_medium).toInt()
 
         list_toolbar_items?.setInsetListenerForPadding(
@@ -175,7 +182,7 @@ class ViewerFragment : VglsFragment(),
         hudViewModel.stopHudTimer()
         viewModel.unfollowJam(null)
 
-        hudViewModel.resetAvailableParts()
+        hudViewModel.clearSelectedSong()
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
@@ -199,7 +206,7 @@ class ViewerFragment : VglsFragment(),
             list_toolbar_items?.slideViewUpOffscreen()
         }
 
-        val selectedPart = hudState.parts.first { it.selected }
+        val selectedPart = hudState.selectedPart
 
         songId = viewerState.songId
 
@@ -208,7 +215,7 @@ class ViewerFragment : VglsFragment(),
                 viewerState.song.error.message
                     ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
             )
-            is Success -> showSheet(viewerState.song(), selectedPart)
+            is Success -> showSong(viewerState.song(), selectedPart)
         }
     }
 
@@ -252,7 +259,7 @@ class ViewerFragment : VglsFragment(),
                 {
                     showError(
                         "There was an error with the screen timer. Literally how" +
-                                "did you make this happen?"
+                            "did you make this happen?"
                     )
                 }
             )
@@ -297,29 +304,22 @@ class ViewerFragment : VglsFragment(),
         screenOffSnack = null
     }
 
-    private fun showSheet(sheet: Song?, partSelection: PartSelectorItem) {
-        if (sheet == null) {
+    private fun showSong(song: Song?, selectedPart: Part) {
+        if (song == null) {
             showEmptyState()
             return
         }
 
-        val parts = sheet.parts
-        if (parts != null) {
-            hudViewModel.setAvailableParts(parts)
-        } else {
-            showError("Unable to determine which parts are available for this sheet.")
-        }
+        hudViewModel.setSelectedSong(song)
 
-        val selectedPart = sheet.parts?.firstOrNull { it.name == partSelection.apiId }
-
-        if (selectedPart == null) {
-            showError("This sheet doesn't include the part you selected. Choose another.")
-            return
-        }
-
-        val listComponents = selectedPart.pages?.map {
+        val listComponents = (1..song.pageCount).map { pageNumber ->
             SheetListModel(
-                it.imageUrl,
+                Page.generateImageUrl(
+                    baseImageUrl,
+                    selectedPart,
+                    song.filename,
+                    pageNumber
+                ),
                 this
             )
         }

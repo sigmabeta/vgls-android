@@ -21,23 +21,25 @@ import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.NetworkRefreshingListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
-import com.vgleadsheets.features.main.hud.parts.getPartMatchingSelection
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.SetlistEntry
 import com.vgleadsheets.model.jam.SongHistoryEntry
+import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import timber.log.Timber
 import java.util.Locale
+import javax.inject.Named
 
 @SuppressWarnings("TooManyFunctions")
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
     @Assisted val screenName: String,
+    @Named("VglsImageUrl") val baseImageUrl: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
@@ -131,17 +133,17 @@ class JamViewModel @AssistedInject constructor(
         data: JamData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = createTitleListModel(data.jam) +
-            createCtaListModels(data.jam) +
-            createJamListModels(data.jam, data.jamRefresh, selectedPart) +
-            createSetlistListModels(data.setlist, data.setlistRefresh, selectedPart) +
-            createSongHistoryListModels(data.jam, selectedPart)
+        createCtaListModels(data.jam) +
+        createJamListModels(data.jam, data.jamRefresh, selectedPart) +
+        createSetlistListModels(data.setlist, data.setlistRefresh, selectedPart) +
+        createSongHistoryListModels(data.jam, selectedPart)
 
     private fun createJamListModels(
         jam: Async<Jam>,
         jamRefresh: Async<ApiJam>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val refreshingListModels = if (jamRefresh is Loading) {
             listOf(NetworkRefreshingListModel("jam"))
@@ -158,37 +160,40 @@ class JamViewModel @AssistedInject constructor(
 
     private fun createSuccessListModels(
         jam: Jam,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
-        val thumbUrl = jam.currentSong
-            ?.parts
-            ?.getPartMatchingSelection(selectedPart)
-            ?.pages
-            ?.first()
-            ?.imageUrl
+        val currentSong = jam.currentSong
 
         return listOf(
             SectionHeaderListModel(
                 resourceProvider.getString(R.string.jam_current_song)
-            ),
+            )
+        ) + if (currentSong != null) {
             ImageNameCaptionListModel(
                 Long.MAX_VALUE,
-                jam.currentSong?.name ?: "Unknown Song",
-                jam.currentSong?.gameName ?: "Unknown Game",
-                thumbUrl,
+                currentSong.name,
+                currentSong.gameName,
+                Page.generateImageUrl(
+                    baseImageUrl,
+                    selectedPart,
+                    currentSong.filename,
+                    1
+                ),
                 R.drawable.placeholder_sheet,
                 currentSongHandler,
-                jam.currentSong?.id ?: -1L,
+                currentSong.id,
                 screenName = screenName,
                 tracker = perfTracker
             )
-        )
+        } else {
+            generateSongLoadError()
+        }
     }
 
     private fun createSetlistListModels(
         setlist: Async<List<SetlistEntry>>,
         setlistRefresh: Async<List<Long>>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val refreshingListModels = if (setlistRefresh is Loading) {
             listOf(NetworkRefreshingListModel("setlist"))
@@ -213,7 +218,7 @@ class JamViewModel @AssistedInject constructor(
 
     private fun createSuccessListModels(
         setlist: List<SetlistEntry>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = listOf(
         SectionHeaderListModel(
             resourceProvider.getString(R.string.jam_setlist)
@@ -229,12 +234,15 @@ class JamViewModel @AssistedInject constructor(
         )
     } else {
         setlist.map { entry ->
-            val thumbUrl = entry.song
-                ?.parts
-                ?.getPartMatchingSelection(selectedPart)
-                ?.pages
-                ?.first()
-                ?.imageUrl
+            val song = entry.song
+                ?: return@map generateSongLoadError()
+
+            val thumbUrl = Page.generateImageUrl(
+                baseImageUrl,
+                selectedPart,
+                song.filename,
+                1
+            )
 
             ImageNameCaptionListModel(
                 entry.id,
@@ -243,16 +251,28 @@ class JamViewModel @AssistedInject constructor(
                 thumbUrl,
                 R.drawable.placeholder_sheet,
                 setlistSongHandler,
-                entry.song?.id,
+                song.id,
                 screenName = screenName,
                 tracker = perfTracker
             )
         }
     }
 
+    private fun generateSongLoadError() = ImageNameCaptionListModel(
+        -1L,
+        "Unknown Song",
+        "An error occurred.",
+        null,
+        R.drawable.ic_error_24dp,
+        setlistSongHandler,
+        null,
+        screenName,
+        perfTracker
+    )
+
     private fun createSongHistoryListModels(
         jam: Async<Jam>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = when (jam) {
         is Loading, Uninitialized -> createLoadingListModels("SongHistory")
         is Fail -> createErrorStateListModel("history", jam.error)
@@ -261,7 +281,7 @@ class JamViewModel @AssistedInject constructor(
 
     private fun createSuccessListModelsForSongHistory(
         songHistory: List<SongHistoryEntry>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = if (songHistory.isEmpty()) {
         emptyList()
     } else {
@@ -270,24 +290,28 @@ class JamViewModel @AssistedInject constructor(
                 resourceProvider.getString(R.string.jam_song_history)
             )
         ) + songHistory.map { entry ->
-            val thumbUrl = entry.song
-                ?.parts
-                ?.getPartMatchingSelection(selectedPart)
-                ?.pages
-                ?.first()
-                ?.imageUrl
+            val song = entry.song
 
-            ImageNameCaptionListModel(
-                entry.id,
-                entry.song?.name ?: "Unknown Song",
-                entry.song?.gameName ?: "Unknown Game",
-                thumbUrl,
-                R.drawable.placeholder_sheet,
-                historyHandler,
-                entry.song?.id,
-                screenName = screenName,
-                tracker = perfTracker
-            )
+            if (song != null) {
+                ImageNameCaptionListModel(
+                    entry.id,
+                    song.name,
+                    song.gameName,
+                    Page.generateImageUrl(
+                        baseImageUrl,
+                        selectedPart,
+                        song.filename,
+                        1
+                    ),
+                    R.drawable.placeholder_sheet,
+                    historyHandler,
+                    song.id,
+                    screenName = screenName,
+                    tracker = perfTracker
+                )
+            } else {
+                generateSongLoadError()
+            }
         }
     }
 
@@ -398,13 +422,15 @@ class JamViewModel @AssistedInject constructor(
     }
 
     private val historyHandler = object : ImageNameCaptionListModel.EventHandler {
-        override fun onClicked(clicked: ImageNameCaptionListModel) = setState { copy(clickedHistoryModel = clicked) }
+        override fun onClicked(clicked: ImageNameCaptionListModel) =
+            setState { copy(clickedHistoryModel = clicked) }
 
         override fun clearClicked() = setState { copy(clickedHistoryModel = null) }
     }
 
     private val setlistSongHandler = object : ImageNameCaptionListModel.EventHandler {
-        override fun onClicked(clicked: ImageNameCaptionListModel) = setState { copy(clickedSetListModel = clicked) }
+        override fun onClicked(clicked: ImageNameCaptionListModel) =
+            setState { copy(clickedSetListModel = clicked) }
 
         override fun clearClicked() = setState { copy(clickedSetListModel = null) }
     }

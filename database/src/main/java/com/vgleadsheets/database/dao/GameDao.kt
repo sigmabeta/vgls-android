@@ -8,8 +8,6 @@ import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.joins.SongTagValueJoin
-import com.vgleadsheets.model.pages.PageEntity
-import com.vgleadsheets.model.parts.PartEntity
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.model.tag.TagKeyEntity
 import com.vgleadsheets.model.tag.TagValueEntity
@@ -40,14 +38,10 @@ interface GameDao {
         composerDao: ComposerDao,
         songComposerDao: SongComposerDao,
         songTagValueDao: SongTagValueDao,
-        partDao: PartDao,
-        pageDao: PageDao,
         tagKeyDao: TagKeyDao,
         tagValueDao: TagValueDao,
         songs: List<SongEntity>,
         composerEntities: List<ComposerEntity>,
-        parts: List<PartEntity>,
-        pages: List<PageEntity>,
         songComposerJoins: List<SongComposerJoin>,
         songTagValueJoins: List<SongTagValueJoin>,
         tagKeys: List<TagKeyEntity>,
@@ -64,12 +58,6 @@ interface GameDao {
 
         songComposerDao.nukeTable()
         songComposerDao.insertAll(songComposerJoins)
-
-        partDao.nukeTable()
-        partDao.insertAll(parts)
-
-        pageDao.nukeTable()
-        pageDao.insertAll(pages)
 
         tagKeyDao.nukeTable()
         tagKeyDao.insertAll(tagKeys)

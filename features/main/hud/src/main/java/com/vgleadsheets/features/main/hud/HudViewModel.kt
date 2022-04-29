@@ -9,9 +9,10 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
+import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
+import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -47,45 +48,45 @@ class HudViewModel @AssistedInject constructor(
     fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }
 
     fun onMenuClick() = withState {
-        if (it.menuExpanded) {
-            hideMenu()
+        if (it.menuExpanded || it.partsExpanded) {
+            hideMenus()
         } else {
             showMenu()
         }
     }
 
+    fun onChangePartClick() = withState {
+        if (it.menuExpanded || it.partsExpanded) {
+            hideMenus()
+        } else {
+            showParts()
+        }
+    }
+
     fun onMenuBackPress() {
-        hideMenu()
+        hideMenus()
     }
 
     fun onMenuAction() {
-        setState { copy(menuExpanded = false) }
+        hideMenus()
     }
 
-    fun setAvailableParts(parts: List<Part>) = withState { state ->
-        if (state.parts == parts) {
-            return@withState
-        }
-
-        Timber.i("Setting available parts: $parts")
-
-        val selectedId = state.parts.first { part -> part.selected }.apiId
-        setState {
-            copy(parts = PartSelectorItem.getAvailablePartPickerItems(parts, selectedId))
-        }
+    fun setSelectedSong(song: Song) = setState {
+        copy(
+            selectedSong = song
+        )
     }
 
-    fun resetAvailableParts() = withState {
-        val selectedId = it.parts.first { part -> part.selected }.apiId
-        setState {
-            copy(parts = PartSelectorItem.getDefaultPartPickerItems(selectedId))
-        }
+    fun clearSelectedSong() = setState {
+        copy(selectedSong = null)
     }
 
-    fun onPartSelect(apiId: String) = withState { state ->
-        setState {
-            copy(parts = setSelection(apiId, state.parts), menuExpanded = false)
-        }
+    fun onPartSelect(apiId: String) = setState {
+        copy(
+            selectedPart = Part.valueOf(apiId),
+            partsExpanded = false,
+            menuExpanded = false
+        )
     }
 
     fun refresh() = withState {
@@ -130,7 +131,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun startHudTimer() = withState { state ->
         stopTimer()
-        if (!state.menuExpanded) {
+        if (!state.menuExpanded && !state.partsExpanded) {
             timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
                 .execute { timer ->
                     if (timer is Success) {
@@ -146,14 +147,12 @@ class HudViewModel @AssistedInject constructor(
         stopTimer()
     }
 
-    fun onRandomSelectClick(selectedPart: PartSelectorItem) {
+    fun onRandomSelectClick(selectedPart: Part) {
         repository
             .getAllSongs()
             .firstOrError()
             .map { songs ->
-                songs.filter { song ->
-                    song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-                }
+                songs.filteredForVocals(selectedPart.apiId)
             }
             .map { it.random() }
             .execute {
@@ -247,22 +246,37 @@ class HudViewModel @AssistedInject constructor(
         )
     }
 
-    private fun hideMenu() = setState { copy(menuExpanded = false) }
+    private fun hideMenus() = setState {
+        copy(
+            menuExpanded = false,
+            partsExpanded = false
+        )
+    }
 
-    private fun showMenu() = setState { copy(menuExpanded = true) }
+    private fun showMenu() = setState {
+        copy(
+            menuExpanded = true,
+            partsExpanded = false
+        )
+    }
+
+    private fun showParts() = setState {
+        copy(
+            menuExpanded = false,
+            partsExpanded = true
+        )
+    }
 
     private fun checkSavedPartSelection() = withState {
         storage.getSavedSelectedPart().subscribe(
             {
-                val selection = if (it.isEmpty()) {
+                val selection = it.ifEmpty {
                     "C"
-                } else {
-                    it
                 }
 
                 setState {
                     copy(
-                        parts = PartSelectorItem.getDefaultPartPickerItems(selection),
+                        selectedPart = Part.valueOf(selection),
                         readyToShowScreens = true
                     )
                 }
@@ -271,7 +285,6 @@ class HudViewModel @AssistedInject constructor(
                 Timber.w("No part selection found, going with default.")
                 setState {
                     copy(
-                        parts = PartSelectorItem.getDefaultPartPickerItems("C"),
                         readyToShowScreens = true
                     )
                 }
@@ -320,11 +333,6 @@ class HudViewModel @AssistedInject constructor(
     private fun stopTimer() {
         timer?.dispose()
     }
-
-    private fun setSelection(selection: String, oldList: List<PartSelectorItem>) =
-        oldList.map { item ->
-            item.copy(selected = selection == item.apiId)
-        }
 
     @SuppressWarnings("LongParameterList")
     private fun updatePerfStatus(

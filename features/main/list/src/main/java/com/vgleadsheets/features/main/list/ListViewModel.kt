@@ -10,7 +10,7 @@ import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
@@ -20,7 +20,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     private val screenName: String,
     private val perfTracker: PerfTracker
 ) : MvRxViewModel<StateType>(initialState) {
-    fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
+    fun onSelectedPartUpdate(newPart: Part) {
         setState {
             updateListState(
                 selectedPart = newPart,
@@ -66,15 +66,15 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         data: Async<List<DataType>>,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem?
+        selectedPart: Part
     ): List<ListModel> {
         return listOf(createTitleListModel()) +
-                createContentListModels(
-                    data,
-                    updateTime,
-                    digest,
-                    selectedPart
-                )
+            createContentListModels(
+                data,
+                updateTime,
+                digest,
+                selectedPart
+            )
     }
 
     open fun createFullEmptyStateListModel(): ListModel? = null
@@ -99,7 +99,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         data: List<DataType>,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel>
 
     open fun defaultLoadingListModel(index: Int): ListModel =
@@ -109,7 +109,7 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
         data: Async<List<DataType>>,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem?
+        selectedPart: Part
     ) = when (data) {
         is Loading, Uninitialized -> createLoadingListModels()
         is Fail -> createErrorStateListModel(data.error)
@@ -118,16 +118,12 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
     }
 
     private fun successListModelHelper(
-        selectedPart: PartSelectorItem?,
+        selectedPart: Part,
         data: Success<List<DataType>>,
         digest: Async<*>,
         updateTime: Async<*>
     ): List<ListModel> {
-        return if (selectedPart == null) {
-            createErrorStateListModel(
-                IllegalArgumentException("No part selected.")
-            )
-        } else if (data().isEmpty() && showDefaultEmptyState) {
+        return if (data().isEmpty() && showDefaultEmptyState) {
             if (updateTime is Success && digest is Loading) {
                 createLoadingListModels()
             } else {

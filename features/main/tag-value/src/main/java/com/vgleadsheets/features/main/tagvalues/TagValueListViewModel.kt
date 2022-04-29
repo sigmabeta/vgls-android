@@ -16,10 +16,11 @@ import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel.Companion.MAX_LENGTH_SUBTITLE_CHARS
 import com.vgleadsheets.features.main.list.ListViewModel.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.model.filteredForVocals
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
@@ -67,7 +68,7 @@ class TagValueListViewModel @AssistedInject constructor(
         data: TagValueData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val title = createTitleListModel(data.tagKey, data.tagValues)
         val content = createContentListModels(data.tagValues, selectedPart)
@@ -135,7 +136,7 @@ class TagValueListViewModel @AssistedInject constructor(
 
     private fun createContentListModels(
         tagValues: Async<List<TagValue>>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = when (tagValues) {
         is Success -> createTagValueListModels(tagValues(), selectedPart)
         is Fail -> createErrorStateListModel(tagValues.error)
@@ -144,7 +145,7 @@ class TagValueListViewModel @AssistedInject constructor(
 
     private fun createTagValueListModels(
         tagValues: List<TagValue>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val availableTagValues = filterTagValues(tagValues, selectedPart)
 
@@ -152,7 +153,7 @@ class TagValueListViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No tag values found with a ${selectedPart.apiId} part. Try another part?",
+                    "No tag values found with a $selectedPart part. Try another part?",
                     screenName,
                     cancelPerfOnEmptyState
                 )
@@ -173,17 +174,16 @@ class TagValueListViewModel @AssistedInject constructor(
 
     private fun filterTagValues(
         tagValues: List<TagValue>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = tagValues.map { tagValue ->
-        val availableSongs = tagValue.songs?.filter { song ->
-            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-        }
+        val availableSongs = tagValue.songs?.filteredForVocals(selectedPart.apiId)
 
         tagValue.copy(songs = availableSongs)
     }.filter {
         it.songs?.isNotEmpty() ?: false
     }
 
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSheetCaption(songs: List<Song>?): String {
         if (songs.isNullOrEmpty()) return "Error: no values found."
 

@@ -2,6 +2,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
+    api project(path: ':model')
     api project(path: ':resources')
 
     implementation project(path: ':features:main:hud')

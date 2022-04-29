@@ -17,8 +17,8 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingCheckableListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -39,7 +39,8 @@ class DebugViewModel @AssistedInject constructor(
     private val perfTracker: PerfTracker
 ) : AsyncListViewModel<DebugData, DebugState>(initialState, screenName, perfTracker),
     DropdownSettingListModel.EventHandler,
-    SingleTextListModel.EventHandler, CheckableListModel.EventHandler {
+    SingleTextListModel.EventHandler,
+    CheckableListModel.EventHandler {
     init {
         fetchDebugSettings()
     }
@@ -80,7 +81,7 @@ class DebugViewModel @AssistedInject constructor(
         data: DebugData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> = createContentListModels(data.settings)
 
     override fun defaultLoadingListModel(index: Int) = LoadingCheckableListModel(
@@ -157,6 +158,7 @@ class DebugViewModel @AssistedInject constructor(
         return headerModels + settingsModels
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun getSectionHeaderString(headerId: String) = when (headerId) {
         HEADER_ID_NETWORK -> resourceProvider.getString(R.string.section_network)
         HEADER_ID_DATABASE -> resourceProvider.getString(R.string.section_database)
@@ -182,6 +184,7 @@ class DebugViewModel @AssistedInject constructor(
         return normalItems + customItems
     }
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun setDropdownSetting(settingId: String, newValue: Int) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {

@@ -5,14 +5,14 @@ import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListState
+import com.vgleadsheets.model.parts.Part
 
 data class TagValueSongListState(
     val tagValueId: Long,
     override val updateTime: Async<*> = Uninitialized,
     override val digest: Async<*> = Uninitialized,
-    override val selectedPart: PartSelectorItem? = PartSelectorItem("C", R.string.part_c, true),
+    override val selectedPart: Part = Part.C,
     override val listModels: List<ListModel> = emptyList(),
     override val data: TagValueSongListData = TagValueSongListData(),
     val clickedListModel: ImageNameCaptionListModel? = null
@@ -22,7 +22,7 @@ data class TagValueSongListState(
     override fun updateListState(
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem?,
+        selectedPart: Part,
         listModels: List<ListModel>,
         data: TagValueSongListData
     ) = copy(

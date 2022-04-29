@@ -44,8 +44,6 @@ abstract class AsyncUiTest : UiTest() {
         vglsDatabase.songHistoryEntryDao().nukeTable()
         vglsDatabase.setlistEntryDao().nukeTable()
         vglsDatabase.jamDao().nukeTable()
-        vglsDatabase.pageDao().nukeTable()
-        vglsDatabase.partDao().nukeTable()
         vglsDatabase.songComposerDao().nukeTable()
         vglsDatabase.songDao().nukeTable()
         vglsDatabase.songTagValueDao().nukeTable()

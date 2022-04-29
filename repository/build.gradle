@@ -6,9 +6,6 @@ dependencies {
     api project(path: ':database')
     api project(path: ':network')
 
-    // So RealRepository can know about the "Vocals" enum member.
-    implementation project(path: ':common:parts')
-
     // So we can log auto-refreshes
     implementation project(path: ':tracking-common')
 

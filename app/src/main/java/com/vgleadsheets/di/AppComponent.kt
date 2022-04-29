@@ -36,6 +36,7 @@ import javax.inject.Singleton
 )
 interface AppComponent : AndroidInjector<VglsApplication> {
     @Component.Factory
+    @Suppress("UnnecessaryAbstractClass")
     abstract class Factory {
         abstract fun create(appModule: AppModule): AppComponent
     }

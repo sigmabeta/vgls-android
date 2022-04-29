@@ -5,4 +5,5 @@ import dagger.Module
 
 @AssistedModule
 @Module(includes = [AssistedInject_HudAssistedModule::class])
+@Suppress("UnnecessaryAbstractClass")
 abstract class HudAssistedModule

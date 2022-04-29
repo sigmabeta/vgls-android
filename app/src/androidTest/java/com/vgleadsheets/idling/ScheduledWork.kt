@@ -47,8 +47,8 @@ internal class ScheduledWork(
                 return // Nothing to do.
             } else if (compareAndSet(state, STATE_DISPOSED)
             ) {
-                // If idle, startWork() hasn't been called so we don't need a matching stopWork(). 
-                // If running, startWork() was called but the try/finally ensures a stopWork() call. 
+                // If idle, startWork() hasn't been called so we don't need a matching stopWork().
+                // If running, startWork() was called but the try/finally ensures a stopWork() call.
                 // If completed, both startWork() and stopWork() have been called.
                 if (state == STATE_SCHEDULED) {
                     scheduler.stopWork() // Scheduled but not running means we called startWork().

@@ -1,9 +1,13 @@
 package com.vgleadsheets.model.parts
 
-import com.vgleadsheets.model.pages.Page
-
-data class Part(
-    val id: Long,
-    val name: String,
-    val pages: List<Page>?
-)
+enum class Part(
+    val apiId: String,
+) {
+    C("C"),
+    B("Bb"),
+    E("Eb"),
+    F("F"),
+    ALTO("Alto"),
+    BASS("Bass"),
+    VOCAL("Vocals")
+}

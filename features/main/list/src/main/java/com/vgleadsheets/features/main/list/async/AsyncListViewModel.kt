@@ -7,7 +7,7 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
@@ -45,7 +45,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         }
     }
 
-    fun onSelectedPartUpdate(newPart: PartSelectorItem?) {
+    fun onSelectedPartUpdate(newPart: Part) {
         setState {
             updateListState(
                 selectedPart = newPart,
@@ -63,16 +63,14 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         data: DataType,
         digest: Async<*>,
         updateTime: Async<*>,
-        selectedPart: PartSelectorItem?
+        selectedPart: Part?
     ): List<ListModel> {
-        val contentListModels = createDataListModels(
+        return createDataListModels(
             data,
             digest,
             updateTime,
             selectedPart
         )
-
-        return contentListModels
     }
 
     open fun createFullEmptyStateListModel(): ListModel? = null
@@ -98,7 +96,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         data: DataType,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel>
 
     protected fun createLoadingListModels(): List<ListModel> {
@@ -128,7 +126,7 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
         data: DataType,
         digest: Async<*>,
         updateTime: Async<*>,
-        selectedPart: PartSelectorItem?
+        selectedPart: Part?
     ) = if (selectedPart == null) {
         createErrorStateListModel(
             IllegalArgumentException("No part selected.")

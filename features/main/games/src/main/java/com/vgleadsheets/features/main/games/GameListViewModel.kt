@@ -10,9 +10,10 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
+import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
@@ -60,7 +61,7 @@ class GameListViewModel @AssistedInject constructor(
         data: List<Game>,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val availableGames = filterGames(data, selectedPart)
 
@@ -103,17 +104,16 @@ class GameListViewModel @AssistedInject constructor(
 
     private fun filterGames(
         games: List<Game>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = games.map { game ->
-        val availableSongs = game.songs?.filter { song ->
-            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-        }
+        val availableSongs = game.songs?.filteredForVocals(selectedPart.apiId)
 
         game.copy(songs = availableSongs)
     }.filter {
         it.songs?.isNotEmpty() ?: false
     }
 
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSubtitleText(items: List<Song>?): String {
         if (items.isNullOrEmpty()) return "Error: no values found."
 

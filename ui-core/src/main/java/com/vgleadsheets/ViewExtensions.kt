@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.ceil
 import kotlin.math.floor
 
+@Suppress("DEPRECATION")
 fun View.setInsetListenerForPadding(
     offset: Int = 0,
     topOffset: Int = 0,
@@ -31,6 +32,7 @@ fun View.setInsetListenerForPadding(
     }
 }
 
+@Suppress("DEPRECATION")
 fun View.setInsetListenerForOnePadding(
     side: Side,
     offset: Int = 0
@@ -46,6 +48,7 @@ fun View.setInsetListenerForOnePadding(
     }
 }
 
+@Suppress("DEPRECATION")
 fun View.setInsetListenerForMargin(
     offset: Int = 0,
     topOffset: Int = 0,
@@ -64,6 +67,7 @@ fun View.setInsetListenerForMargin(
     }
 }
 
+@Suppress("DEPRECATION")
 fun View.setInsetListenerForOneMargin(
     side: Side,
     offset: Int = 0
@@ -79,6 +83,7 @@ fun View.setInsetListenerForOneMargin(
     }
 }
 
+@Suppress("DEPRECATION")
 fun RecyclerView.setListsSpecialInsets(topOffset: Int, bottomOffset: Int) {
     setOnApplyWindowInsetsListener { v, insets ->
         v.updatePadding(
@@ -91,6 +96,7 @@ fun RecyclerView.setListsSpecialInsets(topOffset: Int, bottomOffset: Int) {
     }
 }
 
+@Suppress("DEPRECATION")
 fun RecyclerView.tabletSetListsSpecialInsets(topOffset: Int, bottomOffset: Int) {
     setOnApplyWindowInsetsListener { v, insets ->
         v.updatePadding(

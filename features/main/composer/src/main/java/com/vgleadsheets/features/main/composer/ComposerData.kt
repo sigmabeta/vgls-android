@@ -12,10 +12,10 @@ data class ComposerData(
     val songs: Async<List<Song>> = Uninitialized
 ) : ListData {
     override fun isEmpty() = !(
-            composer is Success &&
-                    songs is Success &&
-                    songs()?.isNotEmpty() == true
-            )
+        composer is Success &&
+            songs is Success &&
+            songs()?.isNotEmpty() == true
+        )
 
     override fun canShowPartialData() = true
 }

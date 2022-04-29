@@ -7,6 +7,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -253,6 +254,12 @@ fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfTracker, screenN
     if (view != null) {
         titleLoadedHandler.onTitleLoaded(screenName)
     }
+}
+
+@BindingAdapter("expanded")
+fun bindExpanded(view: ImageButton, expanded: Boolean) {
+    val iconId = if (expanded) R.drawable.ic_clear_black_24dp else R.drawable.ic_menu_24dp
+    view.setImageResource(iconId)
 }
 
 @BindingAdapter("startTime", "duration", "targetTime", "cancellation")
