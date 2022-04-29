@@ -15,7 +15,9 @@ data class ApiSong(
     fun toSongEntity(gameId: Long, gameName: String) = SongEntity(
         id,
         name,
+        filename,
         pageCount,
+        lyricsPageCount,
         gameName,
         gameId
     )

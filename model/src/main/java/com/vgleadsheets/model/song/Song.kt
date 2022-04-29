@@ -1,13 +1,15 @@
 package com.vgleadsheets.model.song
 
 import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.parts.Part
 
 data class Song(
     val id: Long,
     val name: String,
+    val filename: String,
     val gameId: Long,
     val gameName: String,
-    val composers: List<Composer>?,
-    val parts: List<Part>?
+    val hasVocals: Boolean,
+    val pageCount: Int,
+    val lyricPageCount: Int,
+    val composers: List<Composer>?
 )

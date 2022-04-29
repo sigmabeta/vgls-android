@@ -11,8 +11,8 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -64,7 +64,7 @@ class TagKeyViewModel @AssistedInject constructor(
         data: List<TagKey>,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = data.map {
         NameCaptionListModel(
             it.id,

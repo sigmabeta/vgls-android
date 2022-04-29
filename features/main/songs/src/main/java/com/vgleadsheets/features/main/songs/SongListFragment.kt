@@ -36,10 +36,7 @@ class SongListFragment : ListFragment<Song, SongListState>() {
             return@withState
         }
 
-        val transposition = hudState
-            .parts
-            .firstOrNull { it.selected }
-            ?.apiId ?: "Error"
+        val transposition = hudState.selectedPart.apiId
 
         getFragmentRouter().showSongViewer(
             clickedSongId,

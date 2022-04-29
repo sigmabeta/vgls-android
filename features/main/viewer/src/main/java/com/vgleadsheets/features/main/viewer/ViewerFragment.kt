@@ -19,8 +19,9 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.components.ToolbarItemListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
+import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
@@ -34,6 +35,7 @@ import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Named
 
 @Suppress("TooManyFunctions")
 class ViewerFragment :
@@ -42,6 +44,10 @@ class ViewerFragment :
     ToolbarItemListModel.EventHandler {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
+
+    @Inject
+    @Named("VglsImageUrl")
+    lateinit var baseImageUrl: String
 
     private val hudViewModel: HudViewModel by existingViewModel()
 
@@ -176,7 +182,7 @@ class ViewerFragment :
         hudViewModel.stopHudTimer()
         viewModel.unfollowJam(null)
 
-        hudViewModel.resetAvailableParts()
+        hudViewModel.clearSelectedSong()
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
@@ -200,7 +206,7 @@ class ViewerFragment :
             list_toolbar_items?.slideViewUpOffscreen()
         }
 
-        val selectedPart = hudState.parts.first { it.selected }
+        val selectedPart = hudState.selectedPart
 
         songId = viewerState.songId
 
@@ -209,7 +215,7 @@ class ViewerFragment :
                 viewerState.song.error.message
                     ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
             )
-            is Success -> showSheet(viewerState.song(), selectedPart)
+            is Success -> showSong(viewerState.song(), selectedPart)
         }
     }
 
@@ -298,29 +304,22 @@ class ViewerFragment :
         screenOffSnack = null
     }
 
-    private fun showSheet(sheet: Song?, partSelection: PartSelectorItem) {
-        if (sheet == null) {
+    private fun showSong(song: Song?, selectedPart: Part) {
+        if (song == null) {
             showEmptyState()
             return
         }
 
-        val parts = sheet.parts
-        if (parts != null) {
-            hudViewModel.setAvailableParts(parts)
-        } else {
-            showError("Unable to determine which parts are available for this sheet.")
-        }
+        hudViewModel.setSelectedSong(song)
 
-        val selectedPart = sheet.parts?.firstOrNull { it.name == partSelection.apiId }
-
-        if (selectedPart == null) {
-            showError("This sheet doesn't include the part you selected. Choose another.")
-            return
-        }
-
-        val listComponents = selectedPart.pages?.map {
+        val listComponents = (1..song.pageCount).map { pageNumber ->
             SheetListModel(
-                it.imageUrl,
+                Page.generateImageUrl(
+                    baseImageUrl,
+                    selectedPart,
+                    song.filename,
+                    pageNumber
+                ),
                 this
             )
         }

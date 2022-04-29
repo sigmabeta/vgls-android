@@ -73,12 +73,9 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
         viewModel.selectSubscribe(SheetDetailState::data) {
             if (it.song is Success) {
-                val parts = it.song()?.parts
-
-                if (parts != null) {
-                    hudViewModel.setAvailableParts(parts)
-                } else {
-                    showError("Unable to determine which parts are available for this sheet.")
+                val song = it.song()
+                if (song != null) {
+                    hudViewModel.setSelectedSong(song)
                 }
             }
         }
@@ -86,23 +83,20 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
     override fun onStop() {
         super.onStop()
-        hudViewModel.resetAvailableParts()
+        hudViewModel.clearSelectedSong()
     }
 
     private fun showSongViewer() = withState(viewModel, hudViewModel) { state, hudState ->
         val song = state.data.song()
 
-        val transposition = hudState
-            .parts
-            .firstOrNull { it.selected }
-            ?.apiId ?: "Error"
+        val transposition = hudState.selectedPart
 
         if (song != null) {
             getFragmentRouter().showSongViewer(
                 song.id,
                 song.name,
                 song.gameName,
-                transposition
+                transposition.apiId
             )
         } else {
             showError("Cannot find this sheet.")

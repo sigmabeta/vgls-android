@@ -130,10 +130,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             id.toString()
         )
 
-        val transposition = hudState
-            .parts
-            .firstOrNull { it.selected }
-            ?.apiId ?: "Error"
+        val transposition = hudState.selectedPart.apiId
 
         getFragmentRouter().showSongViewer(
             id,

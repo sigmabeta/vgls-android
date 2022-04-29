@@ -17,21 +17,25 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 
 @SuppressWarnings("TooManyFunctions")
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
     @Assisted val screenName: String,
+    @Named("VglsImageUrl") val baseImageUrl: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
@@ -145,7 +149,7 @@ class SearchViewModel @AssistedInject constructor(
         data: SearchData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val query = data.query
 
@@ -200,7 +204,7 @@ class SearchViewModel @AssistedInject constructor(
     private fun createSectionModels(
         sectionId: Int,
         results: Async<List<Any>>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = when (results) {
         is Loading, Uninitialized -> createLoadingListModels(sectionId)
         is Fail -> createErrorStateListModel(resourceProvider.getString(sectionId), results.error)
@@ -214,7 +218,7 @@ class SearchViewModel @AssistedInject constructor(
     private fun createSectionSuccessModels(
         sectionId: Int,
         results: List<Any>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         return if (results.isEmpty()) {
             emptyList()
@@ -237,18 +241,18 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun createSectionModels(
         results: List<Any>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         return results
             .map {
                 when (it) {
                     is Song -> {
-                        val thumbUrl = it
-                            .parts
-                            ?.firstOrNull() { part -> part.name == selectedPart.apiId }
-                            ?.pages
-                            ?.firstOrNull()
-                            ?.imageUrl
+                        val thumbUrl = Page.generateImageUrl(
+                            baseImageUrl,
+                            selectedPart,
+                            it.filename,
+                            1
+                        )
 
                         ImageNameCaptionListModel(
                             it.id,
@@ -288,11 +292,11 @@ class SearchViewModel @AssistedInject constructor(
             }
     }
 
-    private fun filterResults(results: List<Any>, selectedPart: PartSelectorItem) = results
+    private fun filterResults(results: List<Any>, selectedPart: Part) = results
         .performMappingStep(selectedPart)
-        .performFilteringStep(selectedPart)
+        .performFilteringStep()
 
-    private fun List<Any>.performMappingStep(selectedPart: PartSelectorItem) = map {
+    private fun List<Any>.performMappingStep(selectedPart: Part) = map {
         when (it) {
             is Song -> it
             is Game -> it.performMappingStep(selectedPart)
@@ -301,33 +305,28 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
-    private fun Game.performMappingStep(selectedPart: PartSelectorItem): Game {
-        val availableSongs = songs?.filter { song ->
-            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-        }
+    private fun Game.performMappingStep(selectedPart: Part): Game {
+        val availableSongs = songs?.filteredForVocals(selectedPart.apiId)
 
         return copy(songs = availableSongs)
     }
 
-    private fun Composer.performMappingStep(selectedPart: PartSelectorItem): Composer {
-        val availableSongs = songs?.filter { song ->
-            song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-        }
+    private fun Composer.performMappingStep(selectedPart: Part): Composer {
+        val availableSongs = songs?.filteredForVocals(selectedPart.apiId)
 
         return copy(songs = availableSongs)
     }
 
-    private fun List<Any>.performFilteringStep(selectedPart: PartSelectorItem) = filter {
+    private fun List<Any>.performFilteringStep() = filter {
         when (it) {
-            is Song -> it.performFilteringStep(selectedPart)
+            is Song -> it.performFilteringStep()
             is Game -> it.performFilteringStep()
             is Composer -> it.performFilteringStep()
             else -> throw IllegalArgumentException("ListModel filtering not supported!")
         }
     }
 
-    private fun Song.performFilteringStep(selectedPart: PartSelectorItem) = parts
-        ?.firstOrNull { part -> part.name == selectedPart.apiId } != null
+    private fun Song.performFilteringStep() = hasVocals
 
     private fun Game.performFilteringStep() = songs
         ?.isNotEmpty() ?: false

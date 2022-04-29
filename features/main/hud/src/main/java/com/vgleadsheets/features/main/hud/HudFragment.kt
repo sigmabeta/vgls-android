@@ -31,7 +31,7 @@ import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
-import com.vgleadsheets.components.PartListModel
+import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.components.PerfStageListModel
 import com.vgleadsheets.features.main.hud.menu.MenuOptions
 import com.vgleadsheets.features.main.hud.menu.PartPicker
@@ -40,9 +40,9 @@ import com.vgleadsheets.features.main.hud.menu.SearchIcon
 import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
 import com.vgleadsheets.features.main.hud.menu.Shadow
 import com.vgleadsheets.features.main.hud.menu.TitleBar
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.recyclerview.ComponentAdapter
@@ -66,7 +66,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions", "DEPRECATION")
-class HudFragment : VglsFragment(), PartListModel.ClickListener {
+class HudFragment : VglsFragment() {
     @Inject
     lateinit var storage: Storage
 
@@ -92,10 +92,6 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     override fun disablePerfTracking() = true
 
     override fun getFullLoadTargetTime() = -1L
-
-    override fun onClicked(clicked: PartListModel) {
-        onPartSelect(clicked)
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -192,8 +188,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         renderMenu(
             state.menuExpanded,
             state.partsExpanded,
-            state.parts,
-            state.parts.first { it.selected },
+            state.selectedSong?.hasVocals ?: true,
+            state.selectedPart,
             state.digest is Loading,
             state.random is Loading,
             state.updateTime
@@ -281,7 +277,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         }
     }
 
-    private fun onPartSelect(clicked: PartListModel) {
+    private fun onPartSelect(clicked: Part) {
         tracker.logPartSelect(clicked.name)
         viewModel.onPartSelect(clicked.name)
 
@@ -296,8 +292,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     }
 
     private fun onRandomClick() = withState(viewModel) { state ->
-        val selectedPart = state.parts.first { it.selected }
-        viewModel.onRandomSelectClick(selectedPart)
+        viewModel.onRandomSelectClick(state.selectedPart)
     }
 
     private fun onRefreshClick() = withState(viewModel) {
@@ -368,8 +363,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
     private fun renderMenu(
         menuExpanded: Boolean,
         partsExpanded: Boolean,
-        parts: List<PartSelectorItem>,
-        selectedPart: PartSelectorItem,
+        showVocalsOption: Boolean,
+        selectedPart: Part,
         refreshing: Boolean,
         randoming: Boolean,
         updateTime: Async<Long>
@@ -381,7 +376,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
         )
 
         val menuItems = TitleBar.getListModels(
-            selectedPart,
+            PartSelectorOption.valueOf(selectedPart.name),
             partsExpanded || menuExpanded,
             resources,
             { viewModel.onMenuClick() },
@@ -389,8 +384,8 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             perfTracker
         ) + PartPicker.getListModels(
             partsExpanded,
-            parts,
-            { viewModel.onPartSelect(it) },
+            showVocalsOption,
+            { onPartSelect(it) },
             resources,
             perfTracker
         ) + MenuOptions.getListModels(
@@ -398,10 +393,10 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             randoming,
             refreshing,
             updateTime,
-            { showScreen(it) },
+            { showScreen(it, save = shouldSaveScreenSelection(it)) },
             { onRandomClick() },
             { onRefreshClick() },
-            { showScreen(MODAL_SCREEN_ID_DEBUG) },
+            { showScreen(MODAL_SCREEN_ID_DEBUG, save = false) },
             resources,
             perfTracker,
         ) + RefreshIndicator.getListModels(
@@ -415,6 +410,9 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             recycler_bottom?.parent?.parent as? ViewGroup
         )
     }
+
+    private fun shouldSaveScreenSelection(screenId: String) =
+        screenId != MODAL_SCREEN_ID_DEBUG && screenId != MODAL_SCREEN_ID_SETTINGS
 
     private fun checkShouldShowPerfView() {
         val showPerf = storage.getDebugSettingShowPerfView()
@@ -468,10 +466,7 @@ class HudFragment : VglsFragment(), PartListModel.ClickListener {
             return
         }
 
-        val transposition = hudState
-            .parts
-            .firstOrNull { it.selected }
-            ?.apiId ?: "Error"
+        val transposition = hudState.selectedPart.apiId
 
         tracker.logRandomSongView(
             song.name,

@@ -41,10 +41,7 @@ class TagValueSongListFragment : AsyncListFragment<TagValueSongListData, TagValu
                 return@withState
             }
 
-            val transposition = hudState
-                .parts
-                .firstOrNull { it.selected }
-                ?.apiId ?: "Error"
+            val transposition = hudState.selectedPart.apiId
 
             getFragmentRouter().showSongViewer(
                 clickedSongId,

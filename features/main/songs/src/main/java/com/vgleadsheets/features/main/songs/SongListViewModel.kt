@@ -10,16 +10,20 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
+import com.vgleadsheets.model.filteredForVocals
+import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
+import javax.inject.Named
 
 class SongListViewModel @AssistedInject constructor(
     @Assisted initialState: SongListState,
     @Assisted val screenName: String,
+    @Named("VglsImageUrl") val baseImageUrl: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
@@ -59,7 +63,7 @@ class SongListViewModel @AssistedInject constructor(
         data: List<Song>,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val availableSongs = filterSongs(data, selectedPart)
 
@@ -74,12 +78,12 @@ class SongListViewModel @AssistedInject constructor(
             )
         } else {
             availableSongs.map {
-                val thumbUrl = it
-                    .parts
-                    ?.first { part -> part.name == selectedPart.apiId }
-                    ?.pages
-                    ?.first()
-                    ?.imageUrl
+                val thumbUrl = Page.generateImageUrl(
+                    baseImageUrl,
+                    selectedPart,
+                    it.filename,
+                    1
+                )
 
                 ImageNameCaptionListModel(
                     it.id,
@@ -112,10 +116,8 @@ class SongListViewModel @AssistedInject constructor(
 
     private fun filterSongs(
         songs: List<Song>,
-        selectedPart: PartSelectorItem
-    ) = songs.filter { song ->
-        song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-    }
+        selectedPart: Part
+    ) = songs.filteredForVocals(selectedPart.apiId)
 
     @AssistedInject.Factory
     interface Factory {

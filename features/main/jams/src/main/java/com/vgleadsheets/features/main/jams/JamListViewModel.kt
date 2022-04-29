@@ -13,9 +13,9 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.jam.Jam
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
@@ -83,7 +83,7 @@ class JamListViewModel @AssistedInject constructor(
         data: List<Jam>,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = createCtaListModels() + if (data.isEmpty()) {
         arrayListOf(
             EmptyStateListModel(

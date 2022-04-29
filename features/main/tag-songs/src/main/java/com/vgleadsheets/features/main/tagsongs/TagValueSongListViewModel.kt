@@ -15,22 +15,30 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.model.filteredForVocals
+import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
+import javax.inject.Named
 
 @SuppressWarnings("TooManyFunctions")
 class TagValueSongListViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueSongListState,
     @Assisted val screenName: String,
+    @Named("VglsImageUrl") val baseImageUrl: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<TagValueSongListData, TagValueSongListState>(initialState, screenName, perfTracker),
+) : AsyncListViewModel<TagValueSongListData, TagValueSongListState>(
+    initialState,
+    screenName,
+    perfTracker
+),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchTagValue()
@@ -60,7 +68,7 @@ class TagValueSongListViewModel @AssistedInject constructor(
         data: TagValueSongListData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val title = createTitleListModel(data.tagValue, data.songs)
         val content = createContentListModels(data.songs, selectedPart)
@@ -109,7 +117,11 @@ class TagValueSongListViewModel @AssistedInject constructor(
         when (tagValue) {
             is Success -> listOf(
                 TitleListModel(
-                    resourceProvider.getString(R.string.title_tag_value_songs, tagValue().tagKeyName, tagValue().name),
+                    resourceProvider.getString(
+                        R.string.title_tag_value_songs,
+                        tagValue().tagKeyName,
+                        tagValue().name
+                    ),
                     generateSheetCountText(songs),
                     screenName = screenName,
                     tracker = perfTracker
@@ -128,7 +140,7 @@ class TagValueSongListViewModel @AssistedInject constructor(
 
     private fun createContentListModels(
         songs: Async<List<Song>>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ) = when (songs) {
         is Success -> createSongListModels(songs(), selectedPart)
         is Fail -> createErrorStateListModel(songs.error)
@@ -137,7 +149,7 @@ class TagValueSongListViewModel @AssistedInject constructor(
 
     private fun createSongListModels(
         songs: List<Song>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> {
         val availableSongs = filterSongs(songs, selectedPart)
 
@@ -145,19 +157,19 @@ class TagValueSongListViewModel @AssistedInject constructor(
             arrayListOf(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
-                    "No songs found with a ${selectedPart.apiId} part. Try another part?",
+                    "No songs found with a $selectedPart part. Try another part?",
                     screenName,
                     cancelPerfOnEmptyState
                 )
             )
         } else {
             availableSongs.map {
-                val thumbUrl = it
-                    .parts
-                    ?.first { part -> part.name == selectedPart.apiId }
-                    ?.pages
-                    ?.first()
-                    ?.imageUrl
+                val thumbUrl = Page.generateImageUrl(
+                    baseImageUrl,
+                    selectedPart,
+                    it.filename,
+                    1
+                )
 
                 ImageNameCaptionListModel(
                     it.id,
@@ -175,14 +187,15 @@ class TagValueSongListViewModel @AssistedInject constructor(
 
     private fun filterSongs(
         songs: List<Song>,
-        selectedPart: PartSelectorItem
-    ) = songs.filter { song ->
-        song.parts?.firstOrNull { part -> part.name == selectedPart.apiId } != null
-    }
+        selectedPart: Part
+    ) = songs.filteredForVocals(selectedPart.apiId)
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: TagValueSongListState, screenName: String): TagValueSongListViewModel
+        fun create(
+            initialState: TagValueSongListState,
+            screenName: String
+        ): TagValueSongListViewModel
     }
 
     companion object : MvRxViewModelFactory<TagValueSongListViewModel, TagValueSongListState> {

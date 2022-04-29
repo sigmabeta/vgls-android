@@ -1,15 +1,15 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
+import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
 @Suppress("LongParameterList")
 object TitleBar {
     fun getListModels(
-        selectedPart: PartSelectorItem,
+        selectedPart: PartSelectorOption,
         expanded: Boolean,
         resources: Resources,
         onMenuClick: () -> Unit,
@@ -27,7 +27,7 @@ object TitleBar {
         )
     )
 
-    private fun Resources.getSelectedPartString(selectedPart: PartSelectorItem): String {
+    private fun Resources.getSelectedPartString(selectedPart: PartSelectorOption): String {
         return getString(R.string.subtitle_menu, getString(selectedPart.longResId))
     }
 }

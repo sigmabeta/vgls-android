@@ -59,8 +59,8 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
             viewModel.onTimeUpdate(it)
         }
 
-        hudViewModel.selectSubscribe(HudState::parts) { parts ->
-            viewModel.onSelectedPartUpdate(parts.firstOrNull { it.selected })
+        hudViewModel.selectSubscribe(HudState::selectedPart) { part ->
+            viewModel.onSelectedPartUpdate(part)
         }
 
         subscribeToViewEvents()

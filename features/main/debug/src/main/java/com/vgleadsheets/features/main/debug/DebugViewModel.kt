@@ -17,8 +17,8 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingCheckableListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -81,7 +81,7 @@ class DebugViewModel @AssistedInject constructor(
         data: DebugData,
         updateTime: Async<*>,
         digest: Async<*>,
-        selectedPart: PartSelectorItem
+        selectedPart: Part
     ): List<ListModel> = createContentListModels(data.settings)
 
     override fun defaultLoadingListModel(index: Int) = LoadingCheckableListModel(

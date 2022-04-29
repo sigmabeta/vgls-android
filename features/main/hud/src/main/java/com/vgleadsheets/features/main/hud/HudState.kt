@@ -3,9 +3,9 @@ package com.vgleadsheets.features.main.hud
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.features.main.hud.parts.PartSelectorItem
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.ApiDigest
+import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.storage.BooleanSetting
 
@@ -18,7 +18,8 @@ data class HudState(
     val readyToShowScreens: Boolean = false,
     val searchQuery: String? = null,
     val perfViewStatus: PerfViewStatus = PerfViewStatus(),
-    val parts: List<PartSelectorItem> = PartSelectorItem.getDefaultPartPickerItems(null),
+    val selectedPart: Part = Part.C,
+    val selectedSong: Song? = null,
     val updatePerfView: Async<BooleanSetting> = Uninitialized,
     val updateTime: Async<Long> = Uninitialized,
     val digest: Async<ApiDigest> = Uninitialized,
