@@ -5,9 +5,8 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Success
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.MenuLoadingItemListModel
-import com.vgleadsheets.features.main.hud.BuildConfig
-import com.vgleadsheets.features.main.hud.HudFragment
-import com.vgleadsheets.features.main.hud.R
+import com.vgleadsheets.features.main.hud.*
+import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -52,7 +51,7 @@ object MenuOptions {
         onRefreshClick: () -> Unit,
         onDebugClick: () -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker
+        perfTracker: PerfTracker,
     ) = listOf(
         MenuItemListModel(
             resources.getString(R.string.label_by_game),

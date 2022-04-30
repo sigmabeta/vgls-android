@@ -202,7 +202,8 @@ class HudFragment : VglsFragment() {
             state.selectedPart,
             state.digest is Loading,
             state.random is Loading,
-            state.updateTime
+            state.updateTime,
+            state.currentSong
         )
 
         if (state.alwaysShowBack) {
@@ -351,8 +352,8 @@ class HudFragment : VglsFragment() {
         screen.includedBottomSheet.containerCard.slideViewOnscreen()
 
         view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            SYSTEM_UI_FLAG_LAYOUT_STABLE
+                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
     private fun hideHud() {
@@ -361,11 +362,11 @@ class HudFragment : VglsFragment() {
             screen.includedBottomSheet.containerCard.slideViewDownOffscreen()
 
             view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or
-                SYSTEM_UI_FLAG_FULLSCREEN or
-                SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    SYSTEM_UI_FLAG_FULLSCREEN or
+                    SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                    SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
     }
 
@@ -377,7 +378,8 @@ class HudFragment : VglsFragment() {
         selectedPart: Part,
         refreshing: Boolean,
         randoming: Boolean,
-        updateTime: Async<Long>
+        updateTime: Async<Long>,
+        currentSong: Song?
     ) {
         Shadow.setToLookRightIdk(
             screen.shadowHud,
@@ -391,6 +393,9 @@ class HudFragment : VglsFragment() {
             resources,
             { viewModel.onMenuClick() },
             { viewModel.onChangePartClick() },
+            perfTracker
+        ) + SongDisplay.getListModels(
+            currentSong,
             perfTracker
         ) + PartPicker.getListModels(
             partsExpanded,
@@ -408,7 +413,7 @@ class HudFragment : VglsFragment() {
             { onRefreshClick() },
             { showScreen(MODAL_SCREEN_ID_DEBUG, save = false) },
             resources,
-            perfTracker,
+            perfTracker
         ) + RefreshIndicator.getListModels(
             refreshing,
             resources,
