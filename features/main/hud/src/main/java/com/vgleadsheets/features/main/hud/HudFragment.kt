@@ -3,43 +3,26 @@ package com.vgleadsheets.features.main.hud
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeOutGone
-import com.vgleadsheets.animation.slideViewDownOffscreen
-import com.vgleadsheets.animation.slideViewOnscreen
-import com.vgleadsheets.animation.slideViewUpOffscreen
+import com.vgleadsheets.animation.*
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.components.PerfStageListModel
-import com.vgleadsheets.features.main.hud.menu.MenuOptions
-import com.vgleadsheets.features.main.hud.menu.PartPicker
-import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
-import com.vgleadsheets.features.main.hud.menu.SearchIcon
+import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
+import com.vgleadsheets.features.main.hud.menu.*
 import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
-import com.vgleadsheets.features.main.hud.menu.Shadow
-import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.parts.Part
@@ -51,16 +34,6 @@ import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_hud.button_search_clear
-import kotlinx.android.synthetic.main.fragment_hud.button_search_menu_back
-import kotlinx.android.synthetic.main.fragment_hud.card_search
-import kotlinx.android.synthetic.main.fragment_hud.edit_search_query
-import kotlinx.android.synthetic.main.fragment_hud.frame_content
-import kotlinx.android.synthetic.main.fragment_hud.shadow_hud
-import kotlinx.android.synthetic.main.fragment_hud.text_search_hint
-import kotlinx.android.synthetic.main.view_bottom_sheet_card.bottom_sheet
-import kotlinx.android.synthetic.main.view_bottom_sheet_content.recycler_bottom
-import kotlinx.android.synthetic.main.view_perf_event_list.list_perf
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -69,6 +42,11 @@ import javax.inject.Inject
 class HudFragment : VglsFragment() {
     @Inject
     lateinit var storage: Storage
+
+    private var _binding: FragmentHudBinding? = null
+
+    private val screen: FragmentHudBinding
+        get() = _binding!!
 
     private val viewModel: HudViewModel by activityViewModel()
 
@@ -81,17 +59,27 @@ class HudFragment : VglsFragment() {
     private val handler = Handler()
 
     private val focusRequester = Runnable {
-        if (edit_search_query?.alpha == 1.0f) {
-            edit_search_query?.requestFocus()
+        if (screen.editSearchQuery.alpha == 1.0f) {
+            screen.editSearchQuery.requestFocus()
 
-            val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
-            imm?.showSoftInput(edit_search_query, InputMethodManager.SHOW_IMPLICIT)
+            val imm =
+                ContextCompat.getSystemService(requireActivity(), InputMethodManager::class.java)
+            imm?.showSoftInput(screen.editSearchQuery, InputMethodManager.SHOW_IMPLICIT)
         }
     }
 
     override fun disablePerfTracking() = true
 
     override fun getFullLoadTargetTime() = -1L
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): FrameLayout {
+        _binding = FragmentHudBinding.inflate(inflater)
+        return screen.root
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,25 +97,28 @@ class HudFragment : VglsFragment() {
         }
 
         // Configure search bar insets
-        card_search.setInsetListenerForMargin(
+        screen.cardSearch.setInsetListenerForMargin(
             offset = resources.getDimension(R.dimen.margin_medium).toInt()
         )
 
         val cornerOffset = resources.getDimension(R.dimen.margin_small).toInt()
 
-        recycler_bottom.adapter = menuAdapter
-        recycler_bottom.layoutManager = LinearLayoutManager(context)
-        recycler_bottom.setInsetListenerForOnePadding(Side.BOTTOM, offset = cornerOffset)
-        bottom_sheet.updateLayoutParams<FrameLayout.LayoutParams> {
+        val recyclerBottom = screen.includedBottomSheet.includedBottomSheetContent.recyclerBottom
+        val cardBottomSheet = screen.includedBottomSheet.containerCard
+
+        recyclerBottom.adapter = menuAdapter
+        recyclerBottom.layoutManager = LinearLayoutManager(context)
+        recyclerBottom.setInsetListenerForOnePadding(Side.BOTTOM, offset = cornerOffset)
+        cardBottomSheet.updateLayoutParams<FrameLayout.LayoutParams> {
             bottomMargin = -cornerOffset
         }
 
         checkShouldShowPerfView()
 
-        button_search_clear.setOnClickListener { edit_search_query.text.clear() }
-        shadow_hud.setOnClickListener { viewModel.onMenuAction() }
+        screen.buttonSearchClear.setOnClickListener { screen.editSearchQuery.text.clear() }
+        screen.shadowHud.setOnClickListener { viewModel.onMenuAction() }
 
-        button_search_menu_back.setOnClickListener {
+        screen.buttonSearchMenuBack.setOnClickListener {
             withState(viewModel) {
                 if (it.searchVisible) {
                     activity?.onBackPressed()
@@ -172,13 +163,13 @@ class HudFragment : VglsFragment() {
         }
 
         if (state.menuExpanded || state.partsExpanded) {
-            button_search_menu_back.setIcon(SearchIcon.State.CLOSE)
+            screen.buttonSearchMenuBack.setIcon(SearchIcon.State.CLOSE)
         } else if (state.searchVisible) {
             showSearch()
-            button_search_menu_back.setIcon(SearchIcon.State.BACK)
+            screen.buttonSearchMenuBack.setIcon(SearchIcon.State.BACK)
         } else {
             hideSearch()
-            button_search_menu_back.setIcon(SearchIcon.State.HAMBURGER)
+            screen.buttonSearchMenuBack.setIcon(SearchIcon.State.HAMBURGER)
         }
 
         if (state.random is Success) {
@@ -196,7 +187,7 @@ class HudFragment : VglsFragment() {
         )
 
         if (state.alwaysShowBack) {
-            button_search_menu_back.setIcon(SearchIcon.State.BACK)
+            screen.buttonSearchMenuBack.setIcon(SearchIcon.State.BACK)
         }
 
         if (state.searchQuery.isNullOrEmpty()) {
@@ -303,18 +294,18 @@ class HudFragment : VglsFragment() {
     }
 
     private fun showSearchClearButton() {
-        button_search_clear.fadeIn()
+        screen.buttonSearchClear.fadeIn()
     }
 
     private fun hideSearchClearButton() {
-        button_search_clear.fadeOutGone()
+        screen.buttonSearchClear.fadeOutGone()
     }
 
     private fun showSearch() {
         viewModel.stopHudTimer()
 
-        text_search_hint.fadeOutGone()
-        edit_search_query.fadeIn()
+        screen.textSearchHint.fadeOutGone()
+        screen.editSearchQuery.fadeIn()
 
         handler.postDelayed(focusRequester, DELAY_HALF_SECOND)
 
@@ -323,39 +314,39 @@ class HudFragment : VglsFragment() {
 
     private fun hideSearch() {
         // TODO Delay the text clearing
-        edit_search_query.text.clear()
-        edit_search_query.fadeOutGone()
-        text_search_hint.fadeIn()
+        screen.editSearchQuery.text.clear()
+        screen.editSearchQuery.fadeOutGone()
+        screen.textSearchHint.fadeIn()
 
         handler.removeCallbacks(focusRequester)
 
-        val imm = ContextCompat.getSystemService(activity!!, InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(edit_search_query.windowToken, 0)
+        val imm = ContextCompat.getSystemService(requireActivity(), InputMethodManager::class.java)
+        imm?.hideSoftInputFromWindow(screen.editSearchQuery.windowToken, 0)
     }
 
     private fun showHud() {
-        card_search.animate().cancel()
-        bottom_sheet.animate().cancel()
+        screen.editSearchQuery.animate().cancel()
+        screen.includedBottomSheet.containerCard.animate().cancel()
 
-        card_search.slideViewOnscreen()
-        bottom_sheet.slideViewOnscreen()
+        screen.editSearchQuery.slideViewOnscreen()
+        screen.includedBottomSheet.containerCard.slideViewOnscreen()
 
         view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            SYSTEM_UI_FLAG_LAYOUT_STABLE
+                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
     private fun hideHud() {
-        if (card_search.visibility != GONE) {
-            card_search.slideViewUpOffscreen()
-            bottom_sheet.slideViewDownOffscreen()
+        if (screen.editSearchQuery.visibility != GONE) {
+            screen.editSearchQuery.slideViewUpOffscreen()
+            screen.includedBottomSheet.containerCard.slideViewDownOffscreen()
 
             view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or
-                SYSTEM_UI_FLAG_FULLSCREEN or
-                SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    SYSTEM_UI_FLAG_FULLSCREEN or
+                    SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                    SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
     }
 
@@ -370,7 +361,7 @@ class HudFragment : VglsFragment() {
         updateTime: Async<Long>
     ) {
         Shadow.setToLookRightIdk(
-            shadow_hud,
+            screen.shadowHud,
             menuExpanded,
             partsExpanded
         )
@@ -407,7 +398,7 @@ class HudFragment : VglsFragment() {
 
         menuAdapter.submitListAnimateResizeContainer(
             menuItems,
-            recycler_bottom?.parent?.parent as? ViewGroup
+            screen.includedBottomSheet.root as ViewGroup
         )
     }
 
@@ -434,14 +425,14 @@ class HudFragment : VglsFragment() {
     }
 
     private fun hidePerfView() {
-        frame_content.removeView(list_perf)
+        screen.frameContent.removeView(screen.includedPerf.recyclerPerf)
     }
 
     private fun setupPerfView() {
-        list_perf.adapter = perfAdapter
+        screen.includedPerf.recyclerPerf.adapter = perfAdapter
         val linearLayoutManager = LinearLayoutManager(activity)
         linearLayoutManager.stackFromEnd = true
-        list_perf.layoutManager = linearLayoutManager
+        screen.includedPerf.recyclerPerf.layoutManager = linearLayoutManager
     }
 
     private fun showPerfStatus(perfViewStatus: PerfViewStatus) {
@@ -516,10 +507,10 @@ class HudFragment : VglsFragment() {
         screen.cancellationDuration
     )
 
-    private fun searchClicks() = card_search.clicks()
+    private fun searchClicks() = screen.editSearchQuery.clicks()
         .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)
 
-    private fun searchEvents() = edit_search_query
+    private fun searchEvents() = screen.editSearchQuery
         .afterTextChangeEvents()
         .throttleLast(THRESHOLD_SEARCH_EVENTS, TimeUnit.MILLISECONDS)
         .map { it.editable.toString() }

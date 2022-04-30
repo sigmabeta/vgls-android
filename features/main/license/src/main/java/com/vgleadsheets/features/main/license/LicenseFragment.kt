@@ -8,7 +8,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.tracking.TrackingScreen
-import kotlinx.android.synthetic.main.fragment_license.web_license
 
 @Suppress("Deprecation")
 class LicenseFragment : VglsFragment() {
@@ -16,21 +15,22 @@ class LicenseFragment : VglsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-            resources.getDimension(R.dimen.margin_large).toInt()
+                resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
-            resources.getDimension(R.dimen.margin_medium).toInt()
+                resources.getDimension(R.dimen.margin_medium).toInt()
 
-        web_license.setOnApplyWindowInsetsListener { _, insets ->
+        val webview = view.findViewById<WebView>(R.id.web_license)
+        webview.setOnApplyWindowInsetsListener { _, insets ->
             val density = resources.displayMetrics.density
             val topPadding = (insets.systemWindowInsetTop + topOffset) / density
             val bottomPadding = (insets.systemWindowInsetBottom + bottomOffset) / density
 
-            web_license.settings.javaScriptEnabled = true
-            web_license.webViewClient = object : WebViewClient() {
+            webview.settings.javaScriptEnabled = true
+            webview.webViewClient = object : WebViewClient() {
                 override fun onPageFinished(web: WebView, url: String) {
                     val javascript =
                         "javascript:(function(){ document.body.style.paddingTop = '${topPadding}px';" +
-                            "document.body.style.paddingBottom = '${bottomPadding}px';})();"
+                                "document.body.style.paddingBottom = '${bottomPadding}px';})();"
                     web.loadUrl(javascript)
                     web.settings.javaScriptEnabled = false
                 }
@@ -50,7 +50,7 @@ class LicenseFragment : VglsFragment() {
                 }
             }
 
-            web_license.loadUrl("file:///android_asset/open_source_licenses.html")
+            webview.loadUrl("file:///android_asset/open_source_licenses.html")
 
             insets
         }

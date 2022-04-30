@@ -7,12 +7,7 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.components.CtaListModel
-import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.components.TitleListModel
+import com.vgleadsheets.components.*
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.parts.Part
@@ -20,7 +15,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
-import java.util.Locale
+import java.util.*
 
 @SuppressWarnings("TooManyFunctions")
 class JamListViewModel @AssistedInject constructor(
@@ -134,19 +129,26 @@ class JamListViewModel @AssistedInject constructor(
         currentSong?.gameName ?: "Unknown Game"
     )
 
-    @OptIn(ExperimentalStdlibApi::class)
-    @SuppressLint("DefaultLocale")
     private fun String.toTitleCase() = this
         .replace("_", " ")
         .split(" ")
         .map {
             if (it != "the") {
-                it.capitalize(Locale.getDefault())
+                it.capitalize()
             } else {
                 it
             }
         }
         .joinToString(" ")
+
+    @SuppressLint("DefaultLocale")
+    private fun String.capitalize() = replaceFirstChar { char ->
+        if (char.isLowerCase()) {
+            char.titlecase(Locale.getDefault())
+        } else {
+            char.toString()
+        }
+    }
 
     @AssistedInject.Factory
     interface Factory {

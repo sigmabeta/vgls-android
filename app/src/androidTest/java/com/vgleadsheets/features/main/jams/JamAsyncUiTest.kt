@@ -5,7 +5,7 @@ import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.viewer.viewer
 import org.junit.Test
-import java.util.Locale
+import java.util.*
 
 class JamAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_JAM
@@ -109,19 +109,26 @@ class JamAsyncUiTest : ListUiTest() {
         }
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
-    @SuppressLint("DefaultLocale")
     private fun String.toTitleCase() = this
         .replace("_", " ")
         .split(" ")
         .map {
             if (it != "the") {
-                it.capitalize(Locale.getDefault())
+                it.capitalize()
             } else {
                 it
             }
         }
         .joinToString(" ")
+
+    @SuppressLint("DefaultLocale")
+    private fun String.capitalize() = replaceFirstChar { char ->
+        if (char.isLowerCase()) {
+            char.titlecase(Locale.getDefault())
+        } else {
+            char.toString()
+        }
+    }
 
     companion object {
         const val NAME_JAM = "test"

@@ -6,7 +6,6 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.tracking.TrackingScreen
-import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -50,7 +49,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             deliveryMode = UniqueOnly("query")
         ) {
             if (it != null) {
-                if (it.toLowerCase(Locale.getDefault()).contains("stickerbr")) {
+                if (it.lowercase().contains("stickerbr")) {
                     onStickerBrEntered(it)
                 } else {
                     onSearchQueryEntered(it)

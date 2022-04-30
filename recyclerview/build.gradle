@@ -1,5 +1,3 @@
-apply plugin: 'kotlin-android-extensions'
-
 android {
     buildFeatures {
         dataBinding true
@@ -21,8 +19,4 @@ dependencies {
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
-}
-
-androidExtensions {
-    experimental = true
 }

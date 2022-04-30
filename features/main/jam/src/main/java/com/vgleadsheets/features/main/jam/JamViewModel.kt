@@ -1,26 +1,10 @@
 package com.vgleadsheets.features.main.jam
 
 import android.annotation.SuppressLint
-import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.Uninitialized
-import com.airbnb.mvrx.ViewModelContext
+import com.airbnb.mvrx.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.components.CtaListModel
-import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
-import com.vgleadsheets.components.LoadingTitleListModel
-import com.vgleadsheets.components.NetworkRefreshingListModel
-import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.components.TitleListModel
+import com.vgleadsheets.components.*
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
@@ -32,7 +16,7 @@ import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import timber.log.Timber
-import java.util.Locale
+import java.util.*
 import javax.inject.Named
 
 @SuppressWarnings("TooManyFunctions")
@@ -399,19 +383,26 @@ class JamViewModel @AssistedInject constructor(
         )
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
-    @SuppressLint("DefaultLocale")
     private fun String.toTitleCase() = this
         .replace("_", " ")
         .split(" ")
         .map {
             if (it != "the") {
-                it.capitalize(Locale.getDefault())
+                it.capitalize()
             } else {
                 it
             }
         }
         .joinToString(" ")
+
+    @SuppressLint("DefaultLocale")
+    private fun String.capitalize() = replaceFirstChar { char ->
+        if (char.isLowerCase()) {
+            char.titlecase(Locale.getDefault())
+        } else {
+            char.toString()
+        }
+    }
 
     private val currentSongHandler = object : ImageNameCaptionListModel.EventHandler {
         override fun onClicked(clicked: ImageNameCaptionListModel) = setState {

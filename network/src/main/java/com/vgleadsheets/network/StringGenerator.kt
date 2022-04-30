@@ -1,12 +1,12 @@
 package com.vgleadsheets.network
 
-import java.util.Locale
-import java.util.Random
+import android.annotation.SuppressLint
+import java.util.*
 import javax.inject.Inject
 
 class StringGenerator @Inject constructor(private val random: Random) {
     fun generateName() = "${FIRST_NAMES[random.nextInt(FIRST_NAMES.size)]} " +
-        LAST_NAMES[random.nextInt(LAST_NAMES.size)]
+            LAST_NAMES[random.nextInt(LAST_NAMES.size)]
 
     @Suppress("UnusedPrivateMember")
     fun generateTitle(): String {
@@ -24,7 +24,6 @@ class StringGenerator @Inject constructor(private val random: Random) {
     }
 
     companion object {
-        @OptIn(ExperimentalStdlibApi::class)
         val RANDOM_WORDS = """Lorem ipsum dolor sit amet consectetur adipiscing elit Curabitur 
                 |iaculis neque vel fermentum dictum Pellentesque ac justo ultricies 
                 |hendrerit sem in blandit tellus Nam non congue ante In ultricies 
@@ -36,7 +35,7 @@ class StringGenerator @Inject constructor(private val random: Random) {
             .trimMargin()
             .split(" ")
             .map { it.trim() }
-            .map { it.capitalize(Locale.getDefault()) }
+            .map { it.capitalize() }
             .toList()
 
         val FIRST_NAMES = listOf(
@@ -144,5 +143,14 @@ class StringGenerator @Inject constructor(private val random: Random) {
             "Harrison",
             "Wallace"
         )
+
+        @SuppressLint("DefaultLocale")
+        private fun String.capitalize() = replaceFirstChar { char ->
+            if (char.isLowerCase()) {
+                char.titlecase(Locale.getDefault())
+            } else {
+                char.toString()
+            }
+        }
     }
 }

@@ -1,5 +1,4 @@
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     api project(path: ':model')
