@@ -27,7 +27,7 @@
             android:background="?attr/selectableItemBackground"
             android:onClick="@{() -> toBind.onClicked.invoke()}"
             android:padding="@dimen/icon_padding"
-            android:tint="@android:color/tertiary_text_dark"
+            app:tint="@android:color/tertiary_text_dark"
             app:expanded="@{toBind.expanded}"
             tools:src="@drawable/ic_menu_24dp" />
 

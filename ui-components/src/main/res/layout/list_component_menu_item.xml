@@ -26,7 +26,7 @@
             android:layout_height="@dimen/min_clickable_size"
             android:importantForAccessibility="no"
             android:padding="@dimen/icon_padding"
-            android:tint="@android:color/tertiary_text_dark"
+            app:tint="@android:color/tertiary_text_dark"
             app:drawable="@{toBind.iconId}"
             tools:src="@drawable/ic_person_24dp" />
 

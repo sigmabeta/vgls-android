@@ -25,7 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/margin_small"
             android:padding="10dp"
-            android:tint="@color/gray_medium"
+            app:tint="@color/gray_medium"
             app:imageResource="@{toBind.iconId}"
             tools:src="@drawable/ic_settings_black_24dp" />
 

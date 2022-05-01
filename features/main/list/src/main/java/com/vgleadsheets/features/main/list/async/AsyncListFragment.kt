@@ -34,7 +34,7 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val displayMetrics = context!!.resources.displayMetrics
+        val displayMetrics = requireContext().resources.displayMetrics
         val dpWidth = displayMetrics.widthPixels / displayMetrics.density
 
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +

@@ -28,7 +28,7 @@
             android:layout_margin="@dimen/margin_small"
             android:contentDescription="@{toBind.name}"
             android:gravity="center"
-            android:tint="@android:color/white"
+            app:tint="@android:color/white"
             app:imageResource="@{toBind.iconId}"
             tools:src="@drawable/ic_settings_black_24dp" />
 
