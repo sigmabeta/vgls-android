@@ -5,7 +5,13 @@ import android.view.View
 import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.args
+import com.airbnb.mvrx.existingViewModel
+import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.slideViewOnscreen

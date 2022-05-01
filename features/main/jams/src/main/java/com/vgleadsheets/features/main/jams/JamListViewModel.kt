@@ -7,7 +7,12 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.components.*
+import com.vgleadsheets.components.CtaListModel
+import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.parts.Part
@@ -15,7 +20,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
-import java.util.*
+import java.util.Locale
 
 @SuppressWarnings("TooManyFunctions")
 class JamListViewModel @AssistedInject constructor(
