@@ -48,7 +48,7 @@ jobs:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache
       - save_cache:
-          key: builds-v1-{{ .BuildNum }}
+          key: builds-v1-{{ .Revision }}
           paths:
             - ./app/build/
       - save_cache:
@@ -87,12 +87,12 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - restore_cache:
-          key: builds-v1-{{ .BuildNum }}
+          key: builds-v1-{{ .Revision }}
       - run:
           name: Build Release
           command: ./gradlew assembleRelease -PdisablePreDex
       - save_cache:
-          key: builds-v1-{{ .BuildNum }}
+          key: builds-v1-{{ .Revision }}
           paths:
             - ./app/build/
       - store_artifacts:
@@ -118,7 +118,7 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - restore_cache:
-          key: builds-v1-{{ .BuildNum }}
+          key: builds-v1-{{ .Revision }}
       - run:
           name: Run Detekt checks
           command: ./gradlew detekt --no-configuration-cache
@@ -145,7 +145,7 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - restore_cache:
-          key: builds-v1-{{ .BuildNum }}
+          key: builds-v1-{{ .Revision }}
       - run:
           name: Run Android Lint checks
           command: ./gradlew :app:lintRelease
