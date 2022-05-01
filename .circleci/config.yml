@@ -70,9 +70,6 @@ jobs:
           paths:
             - ~/.gradle
       - run:
-          name: Spotless / KTLint
-          command: ./gradlew spotlessCheck
-      - run:
           name: Detekt
           command: ./gradlew detekt
       - run:
