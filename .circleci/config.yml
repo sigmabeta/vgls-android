@@ -84,6 +84,10 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
       - checkout
+      - restore_cache:
+          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - restore_cache:
+          key: builds-v1-{{ .BuildNum }}
       - run:
           name: Build Release
           command: ./gradlew assembleRelease -PdisablePreDex
@@ -92,8 +96,8 @@ jobs:
           paths:
             - ./app/build/
       - store_artifacts:
-          path: app/build/outputs/apk/
-          destination: apks
+          path: app/build/outputs
+          destination: outputs
 
   detekt:
     resource_class: medium
@@ -111,6 +115,8 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
       - checkout
+      - restore_cache:
+          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - restore_cache:
           key: builds-v1-{{ .BuildNum }}
       - run:
@@ -136,6 +142,8 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
       - checkout
+      - restore_cache:
+          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - restore_cache:
           key: builds-v1-{{ .BuildNum }}
       - run:
