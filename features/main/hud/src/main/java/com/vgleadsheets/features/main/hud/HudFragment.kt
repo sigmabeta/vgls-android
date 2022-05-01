@@ -203,7 +203,7 @@ class HudFragment : VglsFragment() {
             state.digest is Loading,
             state.random is Loading,
             state.updateTime,
-            state.currentSong
+            state.selectedSong
         )
 
         if (state.alwaysShowBack) {
