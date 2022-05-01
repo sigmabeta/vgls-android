@@ -1,5 +1,5 @@
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 
 dependencies {
     // Firebase Analytics
@@ -36,8 +36,4 @@ dependencies {
     implementation project(path: ':di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-}
-
-androidExtensions {
-    experimental = true
 }

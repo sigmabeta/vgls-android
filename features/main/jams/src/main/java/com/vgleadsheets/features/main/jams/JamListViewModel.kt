@@ -134,19 +134,26 @@ class JamListViewModel @AssistedInject constructor(
         currentSong?.gameName ?: "Unknown Game"
     )
 
-    @OptIn(ExperimentalStdlibApi::class)
-    @SuppressLint("DefaultLocale")
     private fun String.toTitleCase() = this
         .replace("_", " ")
         .split(" ")
         .map {
             if (it != "the") {
-                it.capitalize(Locale.getDefault())
+                it.capitalize()
             } else {
                 it
             }
         }
         .joinToString(" ")
+
+    @SuppressLint("DefaultLocale")
+    private fun String.capitalize() = replaceFirstChar { char ->
+        if (char.isLowerCase()) {
+            char.titlecase(Locale.getDefault())
+        } else {
+            char.toString()
+        }
+    }
 
     @AssistedInject.Factory
     interface Factory {

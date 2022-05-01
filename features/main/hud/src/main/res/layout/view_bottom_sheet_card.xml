@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottom_sheet"
+    android:id="@+id/container_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|center_vertical"
@@ -10,5 +10,7 @@
     app:cardCornerRadius="8dp"
     tools:showIn="@layout/fragment_hud">
 
-    <include layout="@layout/view_bottom_sheet_content" />
+    <include
+        android:id="@+id/included_bottom_sheet_content"
+        layout="@layout/view_bottom_sheet_content" />
 </androidx.cardview.widget.CardView>

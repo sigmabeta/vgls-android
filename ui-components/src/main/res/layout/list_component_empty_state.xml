@@ -29,7 +29,7 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 app:drawable="@{toBind.iconId}"
-                android:tint="@color/divider"
+                app:tint="@color/divider"
                 tools:src="@drawable/ic_album_24dp" />
 
             <ImageView

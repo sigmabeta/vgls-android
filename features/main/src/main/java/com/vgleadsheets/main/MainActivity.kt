@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentTransaction
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
@@ -36,7 +37,6 @@ import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import kotlinx.android.synthetic.main.activity_main.toplevel
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -65,6 +65,7 @@ class MainActivity :
         setContentView(R.layout.activity_main)
 
         // Configure app for edge-to-edge
+        val toplevel = findViewById<CoordinatorLayout>(R.id.toplevel)
         toplevel.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE

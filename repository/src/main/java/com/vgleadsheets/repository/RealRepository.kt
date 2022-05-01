@@ -31,7 +31,7 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Duration
-import java.util.Locale
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
@@ -56,7 +56,6 @@ class RealRepository constructor(
     private val setlistEntryDao = database.setlistEntryDao()
     private val songHistoryEntryDao = database.songHistoryEntryDao()
 
-    @ExperimentalStdlibApi
     override fun checkForUpdate(): Single<ApiDigest> {
         return getLastCheckTime()
             .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
@@ -74,7 +73,6 @@ class RealRepository constructor(
             .flatMapSingle { getDigest() }
     }
 
-    @ExperimentalStdlibApi
     override fun forceRefresh(): Single<ApiDigest> = getDigest()
 
     override fun observeJamState(id: Long) = jamDao
@@ -404,7 +402,7 @@ class RealRepository constructor(
                     songHistoryEntry.toSongHistoryEntryEntity(it.jam_id, songHistoryIndex++)
                 }
 
-            val jamEntity = it.toJamEntity(name.toLowerCase(Locale.getDefault()))
+            val jamEntity = it.toJamEntity(name.lowercase())
 
             jamDao.upsertJam(songHistoryEntryDao, jamEntity, songHistoryEntries)
             return@doOnNext
@@ -445,7 +443,6 @@ class RealRepository constructor(
             )
         }
 
-    @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("DefaultLocale")
     @Suppress("LongMethod", "ComplexMethod")
     private fun getDigest(): Single<ApiDigest> = vglsApi
@@ -617,7 +614,7 @@ class RealRepository constructor(
             val newValueId = (tagValueEntities.size + 1).toLong()
             val newEntity = TagValueEntity(
                 newValueId,
-                value.capitalize(Locale.getDefault()),
+                value.capitalize(),
                 keyId,
                 key
             )
@@ -644,6 +641,25 @@ class RealRepository constructor(
         songComposerJoins.add(songComposerJoin)
     }
 
+    @SuppressLint("DefaultLocale")
+    private fun String.capitalize() = replaceFirstChar { char ->
+        if (char.isLowerCase()) {
+            char.titlecase(Locale.getDefault())
+        } else {
+            char.toString()
+        }
+    }
+
+    private fun String.toTitleCase() = replace("_", " ")
+        .split(" ")
+        .joinToString(" ") {
+            if (it != "the") {
+                it.capitalize()
+            } else {
+                it
+            }
+        }
+
     companion object {
         const val CAPACITY = 500
 
@@ -652,17 +668,3 @@ class RealRepository constructor(
         val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
 }
-
-@OptIn(ExperimentalStdlibApi::class)
-@SuppressLint("DefaultLocale")
-private fun String.toTitleCase() = this
-    .replace("_", " ")
-    .split(" ")
-    .map {
-        if (it != "the") {
-            it.capitalize(Locale.getDefault())
-        } else {
-            it
-        }
-    }
-    .joinToString(" ")

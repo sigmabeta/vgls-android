@@ -1,5 +1,4 @@
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     // So ListView.kt can be found. TODO Make this not necessary

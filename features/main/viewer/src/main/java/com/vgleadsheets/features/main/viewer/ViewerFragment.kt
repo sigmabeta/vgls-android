@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
@@ -29,9 +30,6 @@ import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_viewer.list_sheets
-import kotlinx.android.synthetic.main.fragment_viewer.list_toolbar_items
-import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -48,6 +46,8 @@ class ViewerFragment :
     @Inject
     @Named("VglsImageUrl")
     lateinit var baseImageUrl: String
+
+    private lateinit var toolbarItems: RecyclerView
 
     private val hudViewModel: HudViewModel by existingViewModel()
 
@@ -113,27 +113,31 @@ class ViewerFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pager_sheets?.adapter = sheetsAdapter
+        val sheetsAsPager = view.findViewById<RecyclerView>(R.id.pager_sheets)
+        val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
+        toolbarItems = view.findViewById(R.id.list_toolbar_items)
 
-        list_sheets?.adapter = sheetsAdapter
-        list_sheets?.layoutManager = LinearLayoutManager(
+        sheetsAsPager?.adapter = sheetsAdapter
+
+        sheetsAsScrollingList?.adapter = sheetsAdapter
+        sheetsAsScrollingList?.layoutManager = LinearLayoutManager(
             activity,
             LinearLayoutManager.HORIZONTAL,
             false
         )
 
         val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
-            resources.getDimension(R.dimen.margin_medium).toInt()
+                resources.getDimension(R.dimen.margin_medium).toInt()
         val sideOffset = resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_toolbar_items?.setInsetListenerForPadding(
+        toolbarItems.setInsetListenerForPadding(
             topOffset = topOffset,
             leftOffset = sideOffset,
             rightOffset = sideOffset
         )
 
-        list_toolbar_items?.adapter = toolbarAdapter
-        list_toolbar_items?.layoutManager = LinearLayoutManager(
+        toolbarItems.adapter = toolbarAdapter
+        toolbarItems.layoutManager = LinearLayoutManager(
             activity,
             LinearLayoutManager.HORIZONTAL,
             true
@@ -201,9 +205,9 @@ class ViewerFragment :
         }
 
         if (hudState.hudVisible) {
-            list_toolbar_items?.slideViewOnscreen()
+            toolbarItems.slideViewOnscreen()
         } else {
-            list_toolbar_items?.slideViewUpOffscreen()
+            toolbarItems.slideViewUpOffscreen()
         }
 
         val selectedPart = hudState.selectedPart
@@ -216,6 +220,9 @@ class ViewerFragment :
                     ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
             )
             is Success -> showSong(viewerState.song(), selectedPart)
+            else -> {
+                showError("No song found.")
+            }
         }
     }
 

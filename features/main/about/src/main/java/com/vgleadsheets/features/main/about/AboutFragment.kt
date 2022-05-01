@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.about
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.existingViewModel
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.NameCaptionListModel
@@ -12,7 +13,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
-import kotlinx.android.synthetic.main.fragment_about.list_content
 
 @SuppressWarnings("TooManyFunctions")
 class AboutFragment :
@@ -49,13 +49,14 @@ class AboutFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-            resources.getDimension(R.dimen.margin_large).toInt()
+                resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
-            resources.getDimension(R.dimen.margin_medium).toInt()
+                resources.getDimension(R.dimen.margin_medium).toInt()
 
-        list_content.adapter = adapter
-        list_content.layoutManager = LinearLayoutManager(context)
-        list_content.setInsetListenerForPadding(
+        val content = view.findViewById<RecyclerView>(R.id.list_content)
+        content.adapter = adapter
+        content.layoutManager = LinearLayoutManager(context)
+        content.setInsetListenerForPadding(
             topOffset = topOffset,
             bottomOffset = bottomOffset
         )

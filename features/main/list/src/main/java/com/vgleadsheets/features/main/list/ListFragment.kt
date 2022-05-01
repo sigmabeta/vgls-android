@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
@@ -12,7 +13,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
 import com.vgleadsheets.tabletSetListsSpecialInsets
-import kotlinx.android.synthetic.main.fragment_list.list_content
 import javax.inject.Inject
 
 abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFragment() {
@@ -33,20 +33,21 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val displayMetrics = context!!.resources.displayMetrics
+        val displayMetrics = requireContext().resources.displayMetrics
         val dpWidth = displayMetrics.widthPixels / displayMetrics.density
 
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-            resources.getDimension(R.dimen.margin_large).toInt()
+                resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
 
-        list_content.adapter = adapter
-        list_content.layoutManager = LinearLayoutManager(context)
+        val content = view.findViewById<RecyclerView>(R.id.list_content)
+        content.adapter = adapter
+        content.layoutManager = LinearLayoutManager(context)
 
         if (dpWidth > WIDTH_THRESHOLD_TABLET) {
-            list_content.tabletSetListsSpecialInsets(topOffset, bottomOffset)
+            content.tabletSetListsSpecialInsets(topOffset, bottomOffset)
         } else {
-            list_content.setListsSpecialInsets(topOffset, bottomOffset)
+            content.setListsSpecialInsets(topOffset, bottomOffset)
         }
 
         hudViewModel.dontAlwaysShowBack()

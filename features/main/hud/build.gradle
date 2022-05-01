@@ -1,6 +1,11 @@
 // Uncomment whichever of these plugins you need (for a UI feature, probably both)
  apply plugin: 'kotlin-kapt'
- apply plugin: 'kotlin-android-extensions'
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
 
 dependencies {
     implementation project(path: ':common:parts')
