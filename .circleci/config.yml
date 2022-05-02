@@ -1,5 +1,29 @@
 version: 2
 
+workflows:
+  version: 2
+  build_analyze_deploy:
+    jobs:
+      - setup
+      - kt-lint:
+          requires:
+            - setup
+      - build_apk:
+          requires:
+            - kt-lint
+      - detekt:
+          requires:
+            - build_apk
+      - android-lint:
+          requires:
+            - build_apk
+      - publish-app-bundle:
+          requires:
+            - detekt
+            - android-lint
+
+##################################################
+
 jobs:
   setup:
     resource_class: small
@@ -163,7 +187,7 @@ jobs:
           path: app/build/reports/
           destination: reports
 
-  build_app_bundle:
+  publish_app_bundle:
     resource_class: large
 
     docker:
@@ -187,49 +211,6 @@ jobs:
       - run:
           name: Build Release
           command: ./gradlew :app:bundleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
-      - save_cache:
-          key: builds-v1-{{ .Revision }}
-          paths:
-            - app/build/
-      - store_artifacts:
-          path: app/build/outputs
-          destination: outputs
-
-  # publish-app-bundle:
-  #  resource_class: small
-
-  #   docker:
-  #     - image: cimg/android:2022.04.1
-
-  #   environment:
-  #     JVM_OPTS: -Xmx3200m
-
-  #   steps:
-  #     - checkout
-
-
-
-workflows:
-  version: 2
-  build_analyze_deploy:
-    jobs:
-      - setup
-      - kt-lint:
-          requires:
-            - setup
-      - build_apk:
-          requires:
-            - kt-lint
-      - detekt:
-          requires:
-            - build_apk
-      - android-lint:
-          requires:
-            - build_apk
-      - build_app_bundle:
-          requires:
-            - detekt
-            - android-lint
-      # - publish-app-bundle:
-      #     requires:
-      #       - build_app_bundle
+      - run:
+          name: Publish Bundle
+          command: ./gradlew publishBundle --no-configuration-cache --no-daemon --max-workers=4
