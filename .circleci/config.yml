@@ -74,10 +74,10 @@ jobs:
           command: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.45.2/ktlint && chmod a+x ktlint
       - run:
           name: Run Ktlint
-          command: ./ktlint --android
+          command: ./ktlint --android --reporter=html,output=ktlint.html
       - store_artifacts:
-          path: app/build/reports/
-          destination: apks
+          path: ktlint.html
+          destination: ktlint-reports
 
   build_apk:
     resource_class: large
@@ -135,7 +135,7 @@ jobs:
           command: ./gradlew detekt --no-configuration-cache
       - store_artifacts:
           path: app/build/reports/
-          destination: apks
+          destination: reports
 
   android-lint:
     resource_class: large
@@ -162,7 +162,7 @@ jobs:
           command: ./gradlew :app:lintRelease --no-configuration-cache
       - store_artifacts:
           path: app/build/reports/
-          destination: apks
+          destination: reports
 
         # build-app-bundle:
         #        resource_class: large
