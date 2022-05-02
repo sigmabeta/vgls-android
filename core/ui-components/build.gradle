@@ -1,9 +1,19 @@
-// Uncomment whichever of these plugins you need (for a UI feature, probably both)
 apply plugin: 'kotlin-kapt'
 
+android {
+    buildFeatures {
+        dataBinding true
+    }
+}
+
 dependencies {
-    implementation project(path: ':features:main:hud')
+    implementation project(path: ':core:images')
+    implementation project(path: ':core:animation')
     implementation project(path: ':core:ui-core')
+    implementation project(path: ':core:vectors')
+
+    // For zoomable sheet images
+    implementation "com.github.chrisbanes:PhotoView:$photoview_version"
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

@@ -1,11 +1,11 @@
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    implementation project(path: ':mvrx')
-    implementation project(path: ':tracking-common')
+    implementation project(path: ':core:mvrx')
+    implementation project(path: ':core:tracking-common')
 
     // Dagger
-    api project(path: ':di')
+    api project(path: ':core:di')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

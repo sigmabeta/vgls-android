@@ -1,0 +1,54 @@
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    // Module deps
+    implementation project(path: ':core:model')
+    implementation project(path: ':core:storage')
+    implementation project(path: ':core:common:debug-common')
+
+    // OkHttp libs
+    api "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    // Retrofit libs
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    api "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // Debug Helper
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+
+    // Junit libs
+    testImplementation "junit:junit:$junit_version"
+
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':core:di')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}
+
+android {
+    buildTypes {
+        debug {
+            buildConfigField 'String', "GiantBombApiKey", getGbApiKeyIfExists()
+        }
+
+        release {
+            buildConfigField 'String', "GiantBombApiKey", getGbApiKeyIfExists()
+        }
+    }
+}
+
+private String getGbApiKeyIfExists() {
+    if (project.hasProperty("APIKEY_GIANTBOMB")) {
+        APIKEY_GIANTBOMB
+    } else {
+        "\"empty\""
+    }
+}
