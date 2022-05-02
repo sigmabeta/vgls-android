@@ -5,22 +5,23 @@ workflows:
   build_analyze_deploy:
     jobs:
       - setup
-      - kt-lint:
-          requires:
-            - setup
-      - build_apk:
-          requires:
-            - kt-lint
-      - detekt:
-          requires:
-            - build_apk
-      - android-lint:
-          requires:
-            - build_apk
-      - publish_app_bundle:
-          requires:
-            - detekt
-            - android-lint
+#      - kt-lint:
+#          requires:
+#            - setup
+#      - build_apk:
+#          requires:
+#            - kt-lint
+#      - detekt:
+#          requires:
+#            - build_apk
+#      - android-lint:
+#          requires:
+#            - build_apk
+      - publish_app_bundle
+#      - publish_app_bundle:
+#          requires:
+#            - detekt
+#            - android-lint
 
 ##################################################
 
@@ -206,8 +207,8 @@ jobs:
           name: Set target Google Play Track
           command: ./set-track-name.sh
       - run:
-          name: Build Release
-          command: ./gradlew :app:bundleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
+          name: Prepare license information Webview
+          command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
       - run:
           name: Publish Bundle
-          command: ./gradlew publishBundle --no-configuration-cache --no-daemon --max-workers=4
+          command: ./gradlew publishReleaseBundle --no-configuration-cache --no-daemon --max-workers=4
