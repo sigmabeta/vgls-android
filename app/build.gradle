@@ -110,7 +110,7 @@ if (googlePlayTrack != null) {
 
     play {
         track = googlePlayTrack
-        artifactDir = file("build/outputs/apk/release/")
+        artifactDir = file("build/outputs/bundle/release/")
     }
 }
 
