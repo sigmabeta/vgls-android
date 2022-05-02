@@ -55,7 +55,7 @@ buildscript {
         classpath 'com.jaredsburrows:gradle-license-plugin:0.8.91'
 
         // Gradle Play Publisher
-        classpath 'com.github.triplet.gradle:play-publisher:2.8.0'
+        classpath 'com.github.triplet.gradle:play-publisher:3.7.0'
     }
 }
 

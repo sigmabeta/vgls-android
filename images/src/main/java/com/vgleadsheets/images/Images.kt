@@ -5,7 +5,12 @@ import android.widget.ImageView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Int, callback: Callback? = null) {
+fun ImageView.loadImageLowQuality(
+    path: String,
+    fade: Boolean,
+    placeholder: Int,
+    callback: Callback? = null
+) {
     val requestCreator = Picasso.get()
         .load(path)
         .config(Bitmap.Config.RGB_565)
@@ -26,7 +31,12 @@ fun ImageView.loadImageLowQuality(path: String, fade: Boolean, placeholder: Int,
     }
 }
 
-fun ImageView.loadImageHighQuality(path: String, fade: Boolean, placeholder: Int, callback: Callback? = null) {
+fun ImageView.loadImageHighQuality(
+    path: String,
+    fade: Boolean,
+    placeholder: Int,
+    callback: Callback? = null
+) {
     val requestCreator = Picasso.get()
         .load(path)
         .centerCrop()

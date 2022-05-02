@@ -15,9 +15,9 @@ class LicenseFragment : VglsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-                resources.getDimension(R.dimen.margin_large).toInt()
+            resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
-                resources.getDimension(R.dimen.margin_medium).toInt()
+            resources.getDimension(R.dimen.margin_medium).toInt()
 
         val webview = view.findViewById<WebView>(R.id.web_license)
         webview.setOnApplyWindowInsetsListener { _, insets ->
@@ -30,7 +30,7 @@ class LicenseFragment : VglsFragment() {
                 override fun onPageFinished(web: WebView, url: String) {
                     val javascript =
                         "javascript:(function(){ document.body.style.paddingTop = '${topPadding}px';" +
-                                "document.body.style.paddingBottom = '${bottomPadding}px';})();"
+                            "document.body.style.paddingBottom = '${bottomPadding}px';})();"
                     web.loadUrl(javascript)
                     web.settings.javaScriptEnabled = false
                 }

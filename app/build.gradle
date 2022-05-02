@@ -47,7 +47,7 @@ android {
         release {
             String decodedPass = System.getenv("KEYPASS")
 
-            storeFile file("vgls.jks")
+            storeFile file("vgls-upload.jks")
             storePassword decodedPass
             keyAlias System.getenv("KEY_ALIAS")
             keyPassword decodedPass
@@ -110,7 +110,7 @@ if (googlePlayTrack != null) {
 
     play {
         track = googlePlayTrack
-        artifactDir = file("build/outputs/apk/release/")
+        artifactDir = file("build/outputs/bundle/release/")
     }
 }
 

@@ -7,11 +7,10 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.model.parts.Part
 
-Feature_Name_ViewModel @AssistedInject constructor(
-@Assisted initialState: Feature_Name_State,
-private val repository: Repository
+class Feature_Name_ViewModel @AssistedInject constructor(
+    @Assisted initialState: Feature_Name_State,
+    private val repository: Repository
 ) : MvRxViewModel<Feature_Name_State>(initialState) {
 
     @AssistedInject.Factory
@@ -20,8 +19,12 @@ private val repository: Repository
     }
 
     companion object : MvRxViewModelFactory<Feature_Name_ViewModel, Feature_Name_State> {
-        override fun create(viewModelContext: ViewModelContext, state: Feature_Name_State): Feature_Name_ViewModel? {
-            val fragment: Feature_Name_Fragment = (viewModelContext as FragmentViewModelContext).fragment()
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: Feature_Name_State
+        ): Feature_Name_ViewModel? {
+            val fragment: Feature_Name_Fragment =
+                (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.feature_nameViewModelFactory.create(state)
         }
     }

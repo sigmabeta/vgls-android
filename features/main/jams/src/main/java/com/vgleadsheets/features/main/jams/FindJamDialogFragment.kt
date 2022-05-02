@@ -20,11 +20,11 @@ import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
-import timber.log.Timber
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
 import javax.inject.Inject
+import retrofit2.HttpException
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class FindJamDialogFragment : BottomSheetDialogFragment() {

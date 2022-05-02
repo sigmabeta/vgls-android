@@ -21,8 +21,8 @@ import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class HudViewModel @AssistedInject constructor(
