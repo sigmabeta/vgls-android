@@ -53,31 +53,31 @@ jobs:
             - ".git"
 
 
-    kt-lint:
-      docker:
-        - image: cimg/android:2022.04.1
+  kt-lint:
+    docker:
+      - image: cimg/android:2022.04.1
 
-      environment:
-        JVM_OPTS: -Xmx2048m
+    environment:
+      JVM_OPTS: -Xmx2048m
 
-      steps:
-        - restore_cache:
-            keys:
-              - source-v1-{{ .Branch }}-{{ .Revision }}
-              - source-v1-{{ .Branch }}-
-              - source-v1-
-        - checkout
-        - restore_cache:
-            key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-        - run:
-            name: Download Ktlint
-            commmand: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.45.2/ktlint && chmod a+x ktlint
-        - run:
-            name: Run Ktlint
-            commnd: ./ktlint --android
-        - store_artifacts:
-            path: app/build/reports/
-            destination: apks
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - restore_cache:
+          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Ktlint
+          commmand: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.45.2/ktlint && chmod a+x ktlint
+      - run:
+          name: Run Ktlint
+          commnd: ./ktlint --android
+      - store_artifacts:
+          path: app/build/reports/
+          destination: apks
 
   build_apk:
     resource_class: large
