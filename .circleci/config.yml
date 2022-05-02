@@ -17,7 +17,7 @@ workflows:
       - android-lint:
           requires:
             - build_apk
-      - publish-app-bundle:
+      - publish_app_bundle:
           requires:
             - detekt
             - android-lint
