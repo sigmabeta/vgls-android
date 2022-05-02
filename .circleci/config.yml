@@ -216,4 +216,4 @@ jobs:
           command: ./gradlew :app:bundleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
       - run:
           name: Publish Bundle
-          command: ./gradlew publishReleaseBundle --no-configuration-cache --no-daemon --max-workers=4
+          command: ./gradlew :app:publishReleaseBundle --no-configuration-cache --no-daemon --max-workers=4
