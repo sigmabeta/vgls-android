@@ -44,20 +44,11 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Setup Google Services JSON
-          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
-      - run:
-          name: Set target Google Play Track
-          command: ./set-track-name.sh
-      - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies --no-configuration-cache --no-daemon --max-workers=1
       - run:
           name: Clean previous builds
           command: ./gradlew clean --no-configuration-cache --no-daemon --max-workers=1
-      - run:
-          name: Set target Google Play Track
-          command: ./set-track-name.sh
       - save_cache:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           paths:
@@ -208,6 +199,12 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - restore_cache:
           key: builds-v1-{{ .Revision }}
+      - run:
+          name: Setup Google Services JSON
+          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
+      - run:
+          name: Set target Google Play Track
+          command: ./set-track-name.sh
       - run:
           name: Build Release
           command: ./gradlew :app:bundleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
