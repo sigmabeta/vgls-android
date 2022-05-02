@@ -197,28 +197,44 @@ fun bindLongClickHandler(
 }
 
 @BindingAdapter("handler", "screenName")
-fun bindCheckablePerfEvents(view: View?, handler: CheckableListModel.EventHandler, screenName: String) {
+fun bindCheckablePerfEvents(
+    view: View?,
+    handler: CheckableListModel.EventHandler,
+    screenName: String
+) {
     if (view != null) {
         handler.onCheckboxLoadComplete(screenName)
     }
 }
 
 @BindingAdapter("handler", "screenName")
-fun bindEmptyStatePerfEvents(view: View?, handler: EmptyStateListModel.EventHandler, screenName: String) {
+fun bindEmptyStatePerfEvents(
+    view: View?,
+    handler: EmptyStateListModel.EventHandler,
+    screenName: String
+) {
     if (view != null) {
         handler.onEmptyStateLoadComplete(screenName)
     }
 }
 
 @BindingAdapter("handler", "screenName")
-fun bindRatingPerfEvents(view: View?, handler: LabelRatingStarListModel.EventHandler, screenName: String) {
+fun bindRatingPerfEvents(
+    view: View?,
+    handler: LabelRatingStarListModel.EventHandler,
+    screenName: String
+) {
     if (view != null) {
         handler.onRatingStarsLoaded(screenName)
     }
 }
 
 @BindingAdapter("handler", "screenName")
-fun bindLabelValuePerfEvents(view: View?, handler: LabelValueListModel.EventHandler, screenName: String) {
+fun bindLabelValuePerfEvents(
+    view: View?,
+    handler: LabelValueListModel.EventHandler,
+    screenName: String
+) {
     if (view != null) {
         handler.onLabelValueLoaded(screenName)
     }

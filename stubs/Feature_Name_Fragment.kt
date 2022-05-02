@@ -7,8 +7,8 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
-import kotlinx.android.synthetic.main.fragment_feature_name_.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_feature_name_.*
 
 class Feature_Name_Fragment : VglsFragment() {
     @Inject
@@ -19,13 +19,12 @@ class Feature_Name_Fragment : VglsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-                resources.getDimension(R.dimen.margin_large).toInt()
+            resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
-                resources.getDimension(R.dimen.margin_medium).toInt()
+            resources.getDimension(R.dimen.margin_medium).toInt()
     }
 
     override fun invalidate() = withState(viewModel) { state ->
-
     }
 
     override fun getLayoutId() = R.layout.fragment_feature_name_

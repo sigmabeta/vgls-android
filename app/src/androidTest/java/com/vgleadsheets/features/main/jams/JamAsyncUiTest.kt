@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.viewer.viewer
-import org.junit.Test
 import java.util.*
+import org.junit.Test
 
 class JamAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_JAM

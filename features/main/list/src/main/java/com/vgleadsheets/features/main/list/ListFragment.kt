@@ -37,7 +37,7 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
         val dpWidth = displayMetrics.widthPixels / displayMetrics.density
 
         val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-                resources.getDimension(R.dimen.margin_large).toInt()
+            resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
 
         val content = view.findViewById<RecyclerView>(R.id.list_content)

@@ -30,9 +30,9 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import org.threeten.bp.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
+import org.threeten.bp.Duration
 
 @Suppress("TooManyFunctions")
 class RealRepository constructor(

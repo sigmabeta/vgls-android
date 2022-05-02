@@ -30,10 +30,10 @@ import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class ViewerFragment :
@@ -127,7 +127,7 @@ class ViewerFragment :
         )
 
         val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
-                resources.getDimension(R.dimen.margin_medium).toInt()
+            resources.getDimension(R.dimen.margin_medium).toInt()
         val sideOffset = resources.getDimension(R.dimen.margin_medium).toInt()
 
         toolbarItems.setInsetListenerForPadding(
