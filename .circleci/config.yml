@@ -212,5 +212,8 @@ jobs:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
       - run:
+          name: Build Release
+          command: ./gradlew :app:bundleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
+      - run:
           name: Publish Bundle
           command: ./gradlew publishReleaseBundle --no-configuration-cache --no-daemon --max-workers=4
