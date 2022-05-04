@@ -2,7 +2,7 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     // So ListView.kt can be found. TODO Make this not necessary
-    api project (path: ':recyclerview')
+    api project (path: ':core:recyclerview')
 
     api project(path: ':features:main:about')
     api project(path: ':features:main:composer')
@@ -23,9 +23,9 @@ dependencies {
     api project(path: ':features:main:tag-value')
     api project(path: ':features:main:viewer')
 
-    api project(path: ':ui-core')
+    api project(path: ':core:ui-core')
 
-    implementation project(path: ':repository')
+    implementation project(path: ':core:repository')
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
@@ -34,7 +34,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Dagger annotation processors
-    implementation project(path: ':di')
+    implementation project(path: ':core:di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

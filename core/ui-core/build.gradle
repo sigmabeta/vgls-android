@@ -1,0 +1,39 @@
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
+
+dependencies {
+    // Firebase Analytics
+    api project(path: ':core:tracking-common')
+
+    // Perf tracking (should be disabled in debug builds, see app/build.gradle)
+    api project(path: ':core:perf:tracking:common')
+
+    // To allow features to interact with MainActivity's state.
+    api project(path: ":features:main:router")
+
+    // All UI features should depend on MvRx
+    api project(path: ':core:mvrx')
+
+    // RxJava bindings for Android views
+    api "com.jakewharton.rxbinding3:rxbinding:$rxbinding_version"
+
+    // AndroidX libs
+    api "androidx.core:core-ktx:$core_ktx_version"
+    api "androidx.appcompat:appcompat:$appcompat_version"
+    api "androidx.constraintlayout:constraintlayout:$constraint_version"
+    api "com.google.android.material:material:$material_version"
+
+    // Dagger
+    api project(path: ':core:di')
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // Dagger annotation processors
+    implementation project(path: ':core:di')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}

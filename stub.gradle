@@ -6,9 +6,9 @@ dependencies {
 	// Add whatever dependencies you need. Examples provided for a UI feature.
 
 	/*
-    implementation project(path: ':repository')
-    implementation project(path: ':recyclerview')
-    implementation project(path: ':ui-core')
+    implementation project(path: ':core:repository')
+    implementation project(path: ':core:recyclerview')
+    implementation project(path: ':core:ui-core')
 
     // RxJava2 libs
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
@@ -23,7 +23,7 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    // Dagger (important: include all 3 of these in modules that use Dagger
+    // Dagger (important: include all 3 of these in core that use Dagger
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 

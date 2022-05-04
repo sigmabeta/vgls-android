@@ -1,17 +1,20 @@
-// Uncomment whichever of these plugins you need (for a UI feature, probably both)
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    implementation project(path: ':features:main:hud')
-    implementation project(path: ':core:ui-core')
-
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    api project(path: ':core:perf:tracking:api')
+    api project(path: ':core:tracking-common')
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
+    // RxJava2 libs
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
     // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(path: ':core:di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
