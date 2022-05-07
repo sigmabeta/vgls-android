@@ -388,6 +388,12 @@ class HudFragment : VglsFragment() {
             partsExpanded
         )
 
+        val songDisplayClickHandler = {
+            if (currentSong != null) {
+                getFragmentRouter().showSheetDetail(currentSong.id)
+            }
+        }
+
         val menuItems = TitleBar.getListModels(
             PartSelectorOption.valueOf(selectedPart.name),
             partsExpanded || menuExpanded,
@@ -397,7 +403,8 @@ class HudFragment : VglsFragment() {
             perfTracker
         ) + SongDisplay.getListModels(
             currentSong,
-            perfTracker
+            perfTracker,
+            songDisplayClickHandler
         ) + PartPicker.getListModels(
             partsExpanded,
             showVocalsOption,

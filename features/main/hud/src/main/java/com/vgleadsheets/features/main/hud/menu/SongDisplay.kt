@@ -11,7 +11,8 @@ import com.vgleadsheets.perf.tracking.api.PerfTracker
 object SongDisplay {
     fun getListModels(
         currentSong: Song?,
-        perfTracker: PerfTracker
+        perfTracker: PerfTracker,
+        clickHandler: () -> Unit
     ) = if (currentSong != null) {
         listOf(
             EikonNameCaptionListModel(
@@ -20,7 +21,8 @@ object SongDisplay {
                 currentSong.gameName,
                 R.drawable.ic_baseline_music_note_24,
                 "",
-                perfTracker
+                perfTracker,
+                clickHandler
             ),
         )
     } else {

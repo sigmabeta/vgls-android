@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
+        android:onClick="@{() -> toBind.clickHandler.invoke()}"
         app:fullLoadHandler="@{toBind.tracker}"
         app:fullLoadText="@{toBind.caption}"
         app:partialLoadHandler="@{toBind.tracker}"

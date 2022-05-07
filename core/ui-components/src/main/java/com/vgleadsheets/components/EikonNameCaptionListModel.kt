@@ -8,7 +8,8 @@ data class EikonNameCaptionListModel(
     val caption: String,
     val eikonId: Int,
     val screenName: String,
-    val tracker: PerfTracker
+    val tracker: PerfTracker,
+    val clickHandler: () -> Unit
 ) : ListModel {
     override val layoutId = R.layout.list_component_eikon_name_caption
 }
