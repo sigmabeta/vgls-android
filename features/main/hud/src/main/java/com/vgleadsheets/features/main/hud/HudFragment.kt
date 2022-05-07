@@ -41,6 +41,7 @@ import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
 import com.vgleadsheets.features.main.hud.menu.SearchIcon
 import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
 import com.vgleadsheets.features.main.hud.menu.Shadow
+import com.vgleadsheets.features.main.hud.menu.SongDisplay
 import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
@@ -53,9 +54,9 @@ import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import timber.log.Timber
 
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment() {
