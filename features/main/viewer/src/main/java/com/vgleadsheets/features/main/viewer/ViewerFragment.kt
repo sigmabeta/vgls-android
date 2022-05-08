@@ -31,10 +31,10 @@ import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class ViewerFragment :
