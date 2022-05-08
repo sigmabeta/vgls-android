@@ -1,6 +1,6 @@
 package com.vgleadsheets.features.main.hud.menu
 
-import com.vgleadsheets.components.EikonNameCaptionListModel
+import com.vgleadsheets.components.IconNameCaptionListModel
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -12,7 +12,7 @@ object SongDisplay {
         clickHandler: () -> Unit
     ) = if (currentSong != null) {
         listOf(
-            EikonNameCaptionListModel(
+            IconNameCaptionListModel(
                 currentSong.id,
                 currentSong.name,
                 currentSong.gameName,

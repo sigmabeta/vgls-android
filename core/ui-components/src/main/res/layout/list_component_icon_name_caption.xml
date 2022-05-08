@@ -7,7 +7,7 @@
 
         <variable
             name="toBind"
-            type="com.vgleadsheets.components.EikonNameCaptionListModel" />
+            type="com.vgleadsheets.components.IconNameCaptionListModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,6 @@
         app:partialLoadHandler="@{toBind.tracker}"
         app:partialLoadText="@{toBind.name}"
         app:screenName="@{toBind.screenName}">
-
 
         <ImageView
             android:id="@+id/image"

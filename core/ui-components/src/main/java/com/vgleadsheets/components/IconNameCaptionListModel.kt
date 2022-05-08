@@ -2,7 +2,7 @@ package com.vgleadsheets.components
 
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-data class EikonNameCaptionListModel(
+data class IconNameCaptionListModel(
     override val dataId: Long,
     val name: String,
     val caption: String,
@@ -11,5 +11,5 @@ data class EikonNameCaptionListModel(
     val tracker: PerfTracker,
     val clickHandler: () -> Unit
 ) : ListModel {
-    override val layoutId = R.layout.list_component_eikon_name_caption
+    override val layoutId = R.layout.list_component_icon_name_caption
 }
