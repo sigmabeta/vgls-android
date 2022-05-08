@@ -41,6 +41,7 @@ import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
 import com.vgleadsheets.features.main.hud.menu.SearchIcon
 import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
 import com.vgleadsheets.features.main.hud.menu.Shadow
+import com.vgleadsheets.features.main.hud.menu.SongDisplay
 import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
@@ -202,7 +203,8 @@ class HudFragment : VglsFragment() {
             state.selectedPart,
             state.digest is Loading,
             state.random is Loading,
-            state.updateTime
+            state.updateTime,
+            state.selectedSong
         )
 
         if (state.alwaysShowBack) {
@@ -377,13 +379,20 @@ class HudFragment : VglsFragment() {
         selectedPart: Part,
         refreshing: Boolean,
         randoming: Boolean,
-        updateTime: Async<Long>
+        updateTime: Async<Long>,
+        currentSong: Song?
     ) {
         Shadow.setToLookRightIdk(
             screen.shadowHud,
             menuExpanded,
             partsExpanded
         )
+
+        val songDisplayClickHandler = {
+            if (currentSong != null) {
+                getFragmentRouter().showSheetDetail(currentSong.id)
+            }
+        }
 
         val menuItems = TitleBar.getListModels(
             PartSelectorOption.valueOf(selectedPart.name),
@@ -392,6 +401,10 @@ class HudFragment : VglsFragment() {
             { viewModel.onMenuClick() },
             { viewModel.onChangePartClick() },
             perfTracker
+        ) + SongDisplay.getListModels(
+            currentSong,
+            perfTracker,
+            songDisplayClickHandler
         ) + PartPicker.getListModels(
             partsExpanded,
             showVocalsOption,
@@ -408,7 +421,7 @@ class HudFragment : VglsFragment() {
             { onRefreshClick() },
             { showScreen(MODAL_SCREEN_ID_DEBUG, save = false) },
             resources,
-            perfTracker,
+            perfTracker
         ) + RefreshIndicator.getListModels(
             refreshing,
             resources,

@@ -52,7 +52,7 @@ object MenuOptions {
         onRefreshClick: () -> Unit,
         onDebugClick: () -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker
+        perfTracker: PerfTracker,
     ) = listOf(
         MenuItemListModel(
             resources.getString(R.string.label_by_game),
