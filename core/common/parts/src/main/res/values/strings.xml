@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="part_c">C</string>
-    <string name="part_b">B♭</string>
-    <string name="part_e">E♭</string>
-    <string name="part_f">F</string>
-    <string name="part_alto">Alto</string>
-    <string name="part_bass">Bass</string>
-    <string name="part_vocal">Vocals</string>
-
     <string name="part_long_c">C Instruments</string>
     <string name="part_long_b">B♭ Instruments</string>
     <string name="part_long_e">E♭ Instruments</string>
