@@ -17,6 +17,7 @@ data class HudState(
     val searchVisible: Boolean = false,
     val readyToShowScreens: Boolean = false,
     val searchQuery: String? = null,
+    val currentSong: Song? = null,
     val perfViewStatus: PerfViewStatus = PerfViewStatus(),
     val selectedPart: Part = Part.C,
     val selectedSong: Song? = null,

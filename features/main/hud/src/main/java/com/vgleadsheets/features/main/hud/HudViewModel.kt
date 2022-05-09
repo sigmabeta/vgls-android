@@ -179,6 +179,14 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
+    fun setCurrentSong(song: Song) = setState {
+        copy(currentSong = song)
+    }
+
+    fun clearCurrentSong() = setState {
+        copy(currentSong = null)
+    }
+
     private fun start(
         screenName: String,
         targetTimes: Map<String, Long>
