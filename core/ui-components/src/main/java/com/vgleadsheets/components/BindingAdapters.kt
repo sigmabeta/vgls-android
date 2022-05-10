@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.vgleadsheets.animation.getEndPulseAnimator
@@ -337,6 +338,22 @@ fun bindPerfBar(
 
         view.setBackgroundColor(color)
     }
+}
+
+@BindingAdapter("selectedItemColor")
+@Suppress("deprecation")
+fun colorChanger(
+    view: MaterialTextView,
+    selected: Boolean
+) {
+    val colorId = if (selected) {
+        R.color.colorPrimaryDark
+    } else {
+        android.R.color.tertiary_text_dark
+    }
+
+    val color = ContextCompat.getColor(view.context, colorId)
+    view.setTextColor(color)
 }
 
 const val MULTIPLIER_LIST_POSITION = 100

@@ -14,7 +14,8 @@ object PartPicker {
         showVocalOption: Boolean,
         onPartClick: (Part) -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker
+        perfTracker: PerfTracker,
+        selectedPartId: String
     ) = if (expanded) {
         generatePartPickerItems(showVocalOption)
             .map {
@@ -24,7 +25,8 @@ object PartPicker {
                     R.drawable.ic_description_24dp,
                     { onPartClick(Part.valueOf(it.name)) },
                     "",
-                    perfTracker
+                    perfTracker,
+                    it.apiId == selectedPartId
                 )
             }
     } else {

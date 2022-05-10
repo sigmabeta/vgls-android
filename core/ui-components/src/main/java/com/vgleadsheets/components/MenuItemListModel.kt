@@ -8,7 +8,8 @@ data class MenuItemListModel(
     val iconId: Int,
     val onClicked: () -> Unit,
     val screenName: String,
-    val tracker: PerfTracker
+    val tracker: PerfTracker,
+    val selected: Boolean = false
 ) : ListModel {
     override val dataId = name.hashCode().toLong()
 
