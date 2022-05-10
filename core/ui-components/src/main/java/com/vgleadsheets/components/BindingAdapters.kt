@@ -340,13 +340,13 @@ fun bindPerfBar(
     }
 }
 
-@BindingAdapter("highlightItemColor")
+@BindingAdapter("highlighted")
 @Suppress("deprecation")
-fun colorChanger(
+fun setHighlighting(
     view: MaterialTextView,
-    selected: Boolean
+    highlighted: Boolean
 ) {
-    val colorId = if (selected) {
+    val colorId = if (highlighted) {
         R.color.colorPrimaryDark
     } else {
         android.R.color.tertiary_text_dark
