@@ -340,7 +340,7 @@ fun bindPerfBar(
     }
 }
 
-@BindingAdapter("selectedItemColor")
+@BindingAdapter("highlightItemColor")
 @Suppress("deprecation")
 fun colorChanger(
     view: MaterialTextView,
