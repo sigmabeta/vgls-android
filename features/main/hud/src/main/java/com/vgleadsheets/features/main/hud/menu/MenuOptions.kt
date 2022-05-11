@@ -24,6 +24,7 @@ object MenuOptions {
         onRandomClick: () -> Unit,
         onRefreshClick: () -> Unit,
         onDebugClick: () -> Unit,
+        onPerfClick: () -> Unit,
         resources: Resources,
         perfTracker: PerfTracker
     ) = if (expanded) {
@@ -35,8 +36,9 @@ object MenuOptions {
             onRandomClick,
             onRefreshClick,
             onDebugClick,
+            onPerfClick,
             resources,
-            perfTracker
+            perfTracker,
         )
     } else {
         emptyList()
@@ -51,6 +53,7 @@ object MenuOptions {
         onRandomClick: () -> Unit,
         onRefreshClick: () -> Unit,
         onDebugClick: () -> Unit,
+        onPerfClick: () -> Unit,
         resources: Resources,
         perfTracker: PerfTracker,
     ) = listOf(
@@ -127,16 +130,26 @@ object MenuOptions {
         perfTracker
     ) + getDebugScreenListModels(
         onDebugClick,
+        onPerfClick,
         resources,
         perfTracker
     )
 
     private fun getDebugScreenListModels(
         onDebugClick: () -> Unit,
+        onPerfClick: () -> Unit,
         resources: Resources,
         perfTracker: PerfTracker
     ) = if (BuildConfig.DEBUG) {
         listOf(
+            MenuItemListModel(
+                resources.getString(R.string.label_perf),
+                null,
+                R.drawable.ic_baseline_speed_24,
+                onPerfClick,
+                "",
+                perfTracker
+            ),
             MenuItemListModel(
                 resources.getString(R.string.label_debug),
                 null,

@@ -8,6 +8,7 @@ import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -24,7 +25,7 @@ class JamFragment : AsyncListFragment<JamData, JamState>() {
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_JAM
 
-    override fun getFullLoadTargetTime() = 500L
+    override fun getPerfSpec() = PerfSpec.JAM
 
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {

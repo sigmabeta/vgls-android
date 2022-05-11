@@ -82,13 +82,13 @@ abstract class AsyncListViewModel<DataType : ListData, StateType : AsyncListStat
 
     protected val cancelPerfOnEmptyState = object : EmptyStateListModel.EventHandler {
         override fun onEmptyStateLoadComplete(screenName: String) {
-            perfTracker.cancel(screenName)
+            // perfTracker.cancel(screenName)
         }
     }
 
     protected val cancelPerfOnErrorState = object : ErrorStateListModel.EventHandler {
         override fun onErrorStateLoadComplete(screenName: String) {
-            perfTracker.cancel(screenName)
+            // perfTracker.cancel(screenName)
         }
     }
 

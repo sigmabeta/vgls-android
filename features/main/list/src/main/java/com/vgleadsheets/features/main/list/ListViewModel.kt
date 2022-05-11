@@ -83,13 +83,13 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
 
     protected val cancelPerfOnEmptyState = object : EmptyStateListModel.EventHandler {
         override fun onEmptyStateLoadComplete(screenName: String) {
-            perfTracker.cancel(screenName)
+            // perfTracker.cancel(screenName)
         }
     }
 
     protected val cancelPerfOnErrorState = object : ErrorStateListModel.EventHandler {
         override fun onErrorStateLoadComplete(screenName: String) {
-            perfTracker.cancel(screenName)
+            // perfTracker.cancel(screenName)
         }
     }
 

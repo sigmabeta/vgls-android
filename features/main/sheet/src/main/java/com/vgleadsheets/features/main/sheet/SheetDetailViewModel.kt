@@ -288,7 +288,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         override fun clearClicked() = setState { copy(clickedComposerModel = null) }
 
         override fun onLabelValueLoaded(screenName: String) {
-            perfTracker.onPartialContentLoad(screenName)
+            // perfTracker.onPartialContentLoad(screenName)
         }
     }
 
@@ -328,7 +328,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         override fun clearClicked() = setState { copy(clickedRatingStarModel = null) }
 
         override fun onRatingStarsLoaded(screenName: String) {
-            perfTracker.onFullContentLoad(screenName)
+            // perfTracker.onFullContentLoad(screenName)
         }
     }
 

@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.jams
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.ListFragment
 import com.vgleadsheets.model.jam.Jam
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -14,7 +15,7 @@ class JamListFragment : ListFragment<Jam, JamListState>() {
 
     override val viewModel: JamListViewModel by fragmentViewModel()
 
-    override fun getFullLoadTargetTime() = 1000L
+    override fun getPerfSpec() = PerfSpec.JAMS
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(JamListState::clickedJamModel) {

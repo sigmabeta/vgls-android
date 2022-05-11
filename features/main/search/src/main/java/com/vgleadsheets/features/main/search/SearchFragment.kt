@@ -5,6 +5,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -36,7 +37,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
     override fun disablePerfTracking() = true
 
-    override fun getFullLoadTargetTime() = -1L
+    override fun getPerfSpec() = PerfSpec.SEARCH
 
     override fun onBackPress(): Boolean {
         hudViewModel.exitSearch()
@@ -112,7 +113,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
         )
 
         getFragmentRouter().showSongListForGame(id, game.name)
-        hudViewModel.exitSearch()
+        hudViewModel.hideSearch()
     }
 
     private fun onSongClicked(id: Long) = withState(viewModel, hudViewModel) { state, hudState ->
@@ -138,7 +139,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
             transposition
         )
 
-        hudViewModel.exitSearch()
+        hudViewModel.hideSearch()
     }
 
     private fun onComposerClicked(id: Long) = withState(viewModel) { state ->
@@ -156,7 +157,7 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
         )
 
         getFragmentRouter().showSongListForComposer(id, composer.name)
-        hudViewModel.exitSearch()
+        hudViewModel.hideSearch()
     }
 
     companion object {

@@ -12,14 +12,14 @@ import com.airbnb.mvrx.BaseMvRxFragment
 import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.perf.tracking.api.PerfStage
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.support.AndroidSupportInjection
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
-import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {
@@ -37,25 +37,14 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
     private var perfTrackingStarted = false
 
-    private val targetTimes by lazy {
-        hashMapOf(
-            PerfStage.VIEW_CREATED.toString() to TARGET_VIEW_CREATED_MS,
-            PerfStage.TITLE_LOADED.toString() to TARGET_TITLE_LOADED_MS,
-            PerfStage.TRANSITION_START.toString() to TARGET_TRANSITION_START_MS,
-            PerfStage.PARTIAL_CONTENT_LOAD.toString() to TARGET_PARTIAL_LOAD_MS,
-            PerfStage.FULL_CONTENT_LOAD.toString() to getFullLoadTargetTime(),
-            "completion" to TARGET_COMPLETION_MS
-        )
-    }
-
     @LayoutRes
     abstract fun getLayoutId(): Int
 
     abstract fun getVglsFragmentTag(): String
 
-    abstract fun getTrackingScreen(): TrackingScreen
+    abstract fun getPerfSpec(): PerfSpec
 
-    abstract fun getFullLoadTargetTime(): Long
+    abstract fun getTrackingScreen(): TrackingScreen
 
     open fun getDetails() = getArgs()?.id?.toString() ?: ""
 
@@ -118,7 +107,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
             return
         }
 
-        perfTracker.start(getPerfScreenName(), targetTimes)
+        perfTracker.start(getPerfScreenName(), getPerfSpec())
         perfTrackingStarted = true
     }
 
@@ -133,7 +122,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (!disablePerfTracking()) {
-            perfTracker.onViewCreated(getPerfScreenName())
+            perfTracker.onViewCreated(getPerfSpec())
         }
 
         ViewCompat.requestApplyInsets(view)
@@ -142,7 +131,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
     override fun onStop() {
         super.onStop()
         if (perfTrackingStarted) {
-            perfTracker.cancel(getPerfScreenName())
+            perfTracker.cancel(getPerfSpec())
         }
     }
 
@@ -150,7 +139,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
         super.onDestroy()
 
         if (perfTrackingStarted) {
-            perfTracker.clear(getPerfScreenName())
+            perfTracker.clear(getPerfSpec())
             perfTrackingStarted = false
         }
     }
@@ -192,20 +181,4 @@ abstract class VglsFragment : BaseMvRxFragment() {
     }
 
     protected fun getFragmentRouter() = (activity as FragmentRouter)
-
-    companion object {
-        private const val MS_PER_FRAME = 16.666667f
-
-        private const val TARGET_VIEW_CREATED_FRAMES = 4
-        private const val TARGET_TITLE_LOADED_FRAMES = 6
-        private const val TARGET_TRANSITION_START_FRAMES = 20
-        private const val TARGET_PARTIAL_LOAD_FRAMES = 90
-
-        private const val TARGET_VIEW_CREATED_MS = (MS_PER_FRAME * TARGET_VIEW_CREATED_FRAMES).toLong()
-        private const val TARGET_TITLE_LOADED_MS = (MS_PER_FRAME * TARGET_TITLE_LOADED_FRAMES).toLong()
-        private const val TARGET_TRANSITION_START_MS = (MS_PER_FRAME * TARGET_TRANSITION_START_FRAMES).toLong()
-        private const val TARGET_PARTIAL_LOAD_MS = (MS_PER_FRAME * TARGET_PARTIAL_LOAD_FRAMES).toLong()
-
-        private const val TARGET_COMPLETION_MS = 5000L
-    }
 }

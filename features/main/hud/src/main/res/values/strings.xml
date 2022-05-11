@@ -18,8 +18,10 @@
     <string name="date_never">Never</string>
     <string name="label_settings">Settings</string>
     <string name="jam_cancelled">No longer following Jam.</string>
+    <string name="label_perf">Performance Details</string>
     <string name="label_debug">Debug Menu</string>
     <string name="cd_search_menu">Open Menu</string>
     <string name="cd_search_back">Go Back</string>
     <string name="cd_search_close">Close Menu</string>
+    <string name="label_perf_stats_for">Screen</string>
 </resources>

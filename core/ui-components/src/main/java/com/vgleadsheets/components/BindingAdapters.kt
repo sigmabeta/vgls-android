@@ -92,20 +92,20 @@ fun bindBigPhoto(
     if (photoUrl != null) {
         val callback = object : Callback {
             override fun onSuccess() {
-                imageLoadedHandler.onTransitionStarted(screenName)
+                // imageLoadedHandler.onTransitionStarted(screenName)
             }
 
             override fun onError(e: java.lang.Exception?) {
-                imageLoadedHandler.cancel(screenName)
+                // imageLoadedHandler.cancel(screenName)
             }
         }
 
         view.loadImageHighQuality(photoUrl, true, placeholder, callback)
     } else {
         if (placeholder != R.drawable.ic_logo) {
-            imageLoadedHandler.cancel(screenName)
+            // imageLoadedHandler.cancel(screenName)
         } else {
-            imageLoadedHandler.onTransitionStarted(screenName)
+            // imageLoadedHandler.onTransitionStarted(screenName)
         }
         view.setImageResource(placeholder)
     }
@@ -257,18 +257,18 @@ fun bindPartialLoadHandler(
     screenName: String
 ) {
     if (view != null && partialLoadText.isNotEmpty()) {
-        partialLoadHandler.onPartialContentLoad(screenName)
+        // partialLoadHandler.onPartialContentLoad(screenName)
     }
 
     if (view != null && fullLoadText.isNotEmpty()) {
-        fullLoadHandler.onFullContentLoad(screenName)
+        // fullLoadHandler.onFullContentLoad(screenName)
     }
 }
 
 @BindingAdapter("titleLoadedHandler", "screenName")
 fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfTracker, screenName: String) {
     if (view != null) {
-        titleLoadedHandler.onTitleLoaded(screenName)
+        // titleLoadedHandler.onTitleLoaded(screenName)
     }
 }
 

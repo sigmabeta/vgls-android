@@ -33,30 +33,29 @@ import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.common.parts.PartSelectorOption
-import com.vgleadsheets.components.PerfStageListModel
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
 import com.vgleadsheets.features.main.hud.menu.MenuOptions
 import com.vgleadsheets.features.main.hud.menu.PartPicker
+import com.vgleadsheets.features.main.hud.menu.PerfDisplay
 import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
 import com.vgleadsheets.features.main.hud.menu.SearchIcon
 import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
 import com.vgleadsheets.features.main.hud.menu.Shadow
 import com.vgleadsheets.features.main.hud.menu.SongDisplay
 import com.vgleadsheets.features.main.hud.menu.TitleBar
-import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
-import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.PerfStage
+import com.vgleadsheets.perf.tracking.api.PerfSpec
+import com.vgleadsheets.perf.tracking.api.PerfState
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import timber.log.Timber
 
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment() {
@@ -74,8 +73,6 @@ class HudFragment : VglsFragment() {
 
     private val menuAdapter = ComponentAdapter()
 
-    private val perfAdapter = ComponentAdapter()
-
     private val handler = Handler()
 
     private val focusRequester = Runnable {
@@ -90,7 +87,7 @@ class HudFragment : VglsFragment() {
 
     override fun disablePerfTracking() = true
 
-    override fun getFullLoadTargetTime() = -1L
+    override fun getPerfSpec() = PerfSpec.HUD
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -133,14 +130,12 @@ class HudFragment : VglsFragment() {
             bottomMargin = -cornerOffset
         }
 
-        checkShouldShowPerfView()
-
         screen.buttonSearchClear.setOnClickListener { screen.editSearchQuery.text.clear() }
         screen.shadowHud.setOnClickListener { viewModel.onMenuAction() }
 
         screen.buttonSearchMenuBack.setOnClickListener {
             withState(viewModel) {
-                if (it.searchVisible) {
+                if (it.mode != HudMode.REGULAR) {
                     activity?.onBackPressed()
                 } else {
                     onMenuClick()
@@ -160,7 +155,7 @@ class HudFragment : VglsFragment() {
         val clickEvents = searchClicks()
             .subscribe {
                 withState(viewModel) {
-                    if (!it.searchVisible) {
+                    if (it.mode != HudMode.SEARCH) {
                         viewModel.searchClick()
                     }
                 }
@@ -171,7 +166,6 @@ class HudFragment : VglsFragment() {
     override fun onStop() {
         super.onStop()
         disposables.clear()
-        viewModel.clearPerfTimers()
     }
 
     @Suppress("ComplexMethod", "LongMethod")
@@ -182,14 +176,18 @@ class HudFragment : VglsFragment() {
             hideHud()
         }
 
-        if (state.menuExpanded || state.partsExpanded) {
-            screen.buttonSearchMenuBack.setIcon(SearchIcon.State.CLOSE)
-        } else if (state.searchVisible) {
-            showSearch()
-            screen.buttonSearchMenuBack.setIcon(SearchIcon.State.BACK)
-        } else {
-            hideSearch()
-            screen.buttonSearchMenuBack.setIcon(SearchIcon.State.HAMBURGER)
+        when {
+            state.mode != HudMode.REGULAR -> {
+                screen.buttonSearchMenuBack.setIcon(SearchIcon.State.CLOSE)
+            }
+            state.mode == HudMode.SEARCH -> {
+                showSearch()
+                screen.buttonSearchMenuBack.setIcon(SearchIcon.State.BACK)
+            }
+            else -> {
+                hideSearch()
+                screen.buttonSearchMenuBack.setIcon(SearchIcon.State.HAMBURGER)
+            }
         }
 
         if (state.random is Success) {
@@ -197,14 +195,15 @@ class HudFragment : VglsFragment() {
         }
 
         renderMenu(
-            state.menuExpanded,
-            state.partsExpanded,
+            state.mode,
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
+            state.perfState,
             state.digest is Loading,
             state.random is Loading,
             state.updateTime,
-            state.selectedSong
+            state.selectedSong,
+            state.perfSelectedScreen
         )
 
         if (state.alwaysShowBack) {
@@ -217,18 +216,13 @@ class HudFragment : VglsFragment() {
             showSearchClearButton()
         }
 
-        val updatePerfView = state.updatePerfView
-        if (updatePerfView is Success && updatePerfView().value) {
-            showPerfStatus(state.perfViewStatus)
-        }
-
         if (state.digest is Loading) {
             perfTracker.cancelAll()
         }
     }
 
     override fun onBackPress() = withState(viewModel) {
-        if (it.menuExpanded || it.partsExpanded) {
+        if (it.mode != HudMode.REGULAR) {
             viewModel.onMenuBackPress()
             return@withState true
         }
@@ -373,19 +367,19 @@ class HudFragment : VglsFragment() {
 
     @Suppress("LongParameterList", "LongMethod")
     private fun renderMenu(
-        menuExpanded: Boolean,
-        partsExpanded: Boolean,
+        hudMode: HudMode,
         showVocalsOption: Boolean,
         selectedPart: Part,
+        perfState: PerfState?,
         refreshing: Boolean,
         randoming: Boolean,
         updateTime: Async<Long>,
-        currentSong: Song?
+        currentSong: Song?,
+        perfSelectedScreen: PerfSpec
     ) {
         Shadow.setToLookRightIdk(
             screen.shadowHud,
-            menuExpanded,
-            partsExpanded
+            hudMode
         )
 
         val songDisplayClickHandler = {
@@ -396,7 +390,7 @@ class HudFragment : VglsFragment() {
 
         val menuItems = TitleBar.getListModels(
             PartSelectorOption.valueOf(selectedPart.name),
-            partsExpanded || menuExpanded,
+            hudMode != HudMode.REGULAR,
             resources,
             { viewModel.onMenuClick() },
             { viewModel.onChangePartClick() },
@@ -406,13 +400,13 @@ class HudFragment : VglsFragment() {
             perfTracker,
             songDisplayClickHandler
         ) + PartPicker.getListModels(
-            partsExpanded,
+            hudMode == HudMode.PARTS,
             showVocalsOption,
             { onPartSelect(it) },
             resources,
             perfTracker
         ) + MenuOptions.getListModels(
-            menuExpanded,
+            hudMode == HudMode.MENU,
             randoming,
             refreshing,
             updateTime,
@@ -420,8 +414,15 @@ class HudFragment : VglsFragment() {
             { onRandomClick() },
             { onRefreshClick() },
             { showScreen(MODAL_SCREEN_ID_DEBUG, save = false) },
+            viewModel::onPerfClick,
             resources,
-            perfTracker
+            perfTracker,
+        ) + PerfDisplay.getListModels(
+            hudMode == HudMode.PERF,
+            perfSelectedScreen,
+            perfState,
+            viewModel::setPerfSelectedScreen,
+            resources
         ) + RefreshIndicator.getListModels(
             refreshing,
             resources,
@@ -436,45 +437,6 @@ class HudFragment : VglsFragment() {
 
     private fun shouldSaveScreenSelection(screenId: String) =
         screenId != MODAL_SCREEN_ID_DEBUG && screenId != MODAL_SCREEN_ID_SETTINGS
-
-    private fun checkShouldShowPerfView() {
-        val showPerf = storage.getDebugSettingShowPerfView()
-            .subscribe(
-                {
-                    if (it.value) {
-                        setupPerfView()
-                    } else {
-                        hidePerfView()
-                    }
-                },
-                {
-                    Timber.w("No pref found for showing perf view; hiding.")
-                    hidePerfView()
-                }
-            )
-
-        disposables.add(showPerf)
-    }
-
-    private fun hidePerfView() {
-        screen.frameContent.removeView(screen.includedPerf.recyclerPerf)
-    }
-
-    private fun setupPerfView() {
-        screen.includedPerf.recyclerPerf.adapter = perfAdapter
-        val linearLayoutManager = LinearLayoutManager(activity)
-        linearLayoutManager.stackFromEnd = true
-        screen.includedPerf.recyclerPerf.layoutManager = linearLayoutManager
-    }
-
-    private fun showPerfStatus(perfViewStatus: PerfViewStatus) {
-        val listModels = perfViewStatus.screenStatuses
-            .sortedBy { it.startTime }
-            .map { getListModelsForPerfScreen(it) }
-            .flatten()
-
-        perfAdapter.submitList(listModels)
-    }
 
     private fun onRandomSuccess(
         hudState: HudState,
@@ -506,38 +468,6 @@ class HudFragment : VglsFragment() {
             getDetails()
         )
     }
-
-    private fun getListModelsForPerfScreen(screen: PerfViewScreenStatus) = listOf(
-        PerfStageListModel(
-            screen.screenName,
-            screen.startTime,
-            screen.screenName,
-            screen.completionDuration?.toString() ?: "...",
-            screen.targetTimes["completion"] ?: throw IllegalArgumentException(
-                "Missing target time for completion."
-            ),
-            screen.cancellationDuration
-        ),
-        createPerfStageListModel(screen, PerfStage.VIEW_CREATED),
-        createPerfStageListModel(screen, PerfStage.TITLE_LOADED),
-        createPerfStageListModel(screen, PerfStage.TRANSITION_START),
-        createPerfStageListModel(screen, PerfStage.PARTIAL_CONTENT_LOAD),
-        createPerfStageListModel(screen, PerfStage.FULL_CONTENT_LOAD)
-    )
-
-    private fun createPerfStageListModel(
-        screen: PerfViewScreenStatus,
-        perfStage: PerfStage
-    ) = PerfStageListModel(
-        screen.screenName,
-        screen.startTime,
-        perfStage.toString(),
-        screen.durations[perfStage.toString()]?.toString() ?: "...",
-        screen.targetTimes[perfStage.toString()] ?: throw IllegalArgumentException(
-            "Missing target time for stage $perfStage."
-        ),
-        screen.cancellationDuration
-    )
 
     private fun searchClicks() = screen.editSearchQuery.clicks()
         .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)

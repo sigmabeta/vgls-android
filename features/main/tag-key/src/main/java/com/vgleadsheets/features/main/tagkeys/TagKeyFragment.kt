@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.tagkeys
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.ListFragment
 import com.vgleadsheets.model.tag.TagKey
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -12,7 +13,7 @@ class TagKeyFragment : ListFragment<TagKey, TagKeyState>() {
 
     override fun getTrackingScreen() = TrackingScreen.LIST_TAG_KEY
 
-    override fun getFullLoadTargetTime() = 500L
+    override fun getPerfSpec() = PerfSpec.TAG_KEY
 
     override val viewModel: TagKeyViewModel by fragmentViewModel()
 

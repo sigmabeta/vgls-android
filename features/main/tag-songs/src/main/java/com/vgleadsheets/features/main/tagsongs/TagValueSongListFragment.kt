@@ -6,6 +6,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class TagValueSongListFragment : AsyncListFragment<TagValueSongListData, TagValu
 
     override fun getTrackingScreen() = TrackingScreen.LIST_TAG_VALUE_SONG
 
-    override fun getFullLoadTargetTime() = 2000L
+    override fun getPerfSpec() = PerfSpec.TAG_SONGS
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(TagValueSongListState::clickedListModel) {

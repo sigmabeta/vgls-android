@@ -59,7 +59,7 @@ class JamListViewModel @AssistedInject constructor(
     }
 
     override fun onEmptyStateLoadComplete(screenName: String) {
-        perfTracker.cancel(screenName)
+        // perfTracker.cancel(screenName)
     }
 
     override fun createTitleListModel() = TitleListModel(

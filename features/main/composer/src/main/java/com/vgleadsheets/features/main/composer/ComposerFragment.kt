@@ -7,6 +7,7 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.model.composer.ApiComposer
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class ComposerFragment : AsyncListFragment<ComposerData, ComposerState>() {
 
     override fun getDetails() = (idArgs.id - ApiComposer.ID_OFFSET).toString()
 
-    override fun getFullLoadTargetTime() = 1000L
+    override fun getPerfSpec() = PerfSpec.COMPOSER
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(ComposerState::clickedListModel) {

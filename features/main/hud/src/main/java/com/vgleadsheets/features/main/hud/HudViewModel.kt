@@ -9,20 +9,18 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.mvrx.MvRxViewModel
-import com.vgleadsheets.perf.tracking.api.PerfStage
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
 class HudViewModel @AssistedInject constructor(
@@ -33,13 +31,10 @@ class HudViewModel @AssistedInject constructor(
 ) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
-    private val perfViewTimers: MutableMap<String, Disposable> = HashMap()
-
     init {
         checkSavedPartSelection()
         checkLastUpdateTime()
         checkForUpdate()
-        checkPerfViewSetting()
         subscribeToPerfUpdates()
     }
 
@@ -48,7 +43,7 @@ class HudViewModel @AssistedInject constructor(
     fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }
 
     fun onMenuClick() = withState {
-        if (it.menuExpanded || it.partsExpanded) {
+        if (it.mode != HudMode.REGULAR) {
             hideMenus()
         } else {
             showMenu()
@@ -56,9 +51,7 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun onChangePartClick() = withState {
-        if (it.menuExpanded || it.partsExpanded) {
-            hideMenus()
-        } else {
+        if (it.mode != HudMode.PARTS) {
             showParts()
         }
     }
@@ -84,8 +77,7 @@ class HudViewModel @AssistedInject constructor(
     fun onPartSelect(apiId: String) = setState {
         copy(
             selectedPart = Part.valueOf(apiId),
-            partsExpanded = false,
-            menuExpanded = false
+            mode = HudMode.REGULAR
         )
     }
 
@@ -99,20 +91,26 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun searchClick() = withState { state ->
-        if (!state.searchVisible) {
-            setState { copy(searchVisible = true) }
+        if (state.mode != HudMode.SEARCH) {
+            setState { copy(mode = HudMode.SEARCH) }
         }
     }
 
     fun searchQuery(query: String?) = withState { state ->
-        if (state.searchVisible) {
+        if (state.mode == HudMode.SEARCH) {
             setState { copy(searchQuery = query) }
         }
     }
 
+    fun hideSearch() = withState { state ->
+        if (state.mode == HudMode.SEARCH) {
+            setState { copy(mode = HudMode.REGULAR) }
+        }
+    }
+
     fun exitSearch() = withState { state ->
-        if (state.searchVisible) {
-            setState { copy(searchVisible = false, searchQuery = null) }
+        if (state.mode == HudMode.SEARCH) {
+            setState { copy(mode = HudMode.REGULAR, searchQuery = null) }
         }
     }
 
@@ -131,7 +129,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun startHudTimer() = withState { state ->
         stopTimer()
-        if (!state.menuExpanded && !state.partsExpanded) {
+        if (state.mode == HudMode.REGULAR) {
             timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
                 .execute { timer ->
                     if (timer is Success) {
@@ -168,110 +166,21 @@ class HudViewModel @AssistedInject constructor(
         copy(digest = Uninitialized)
     }
 
-    fun clearPerfTimers() {
-        // This copy step prevents concurrentmod exceptions
-        val timerKeys = perfViewTimers
-            .keys
-            .toMutableList()
-
-        timerKeys.forEach { screenName ->
-            removePerfScreenStatus(screenName)
-        }
-    }
-
-    fun setCurrentSong(song: Song) = setState {
-        copy(currentSong = song)
-    }
-
-    fun clearCurrentSong() = setState {
-        copy(currentSong = null)
-    }
-
-    private fun start(
-        screenName: String,
-        targetTimes: Map<String, Long>
-    ) = withState {
-        // This must be created outside setState to make it a pure reducer..
-        val newScreenStatus = PerfViewScreenStatus(
-            screenName,
-            targetTimes
-        )
-
-        setState {
-            Timber.d("Adding perf status view for screen $screenName...")
-
-            val newScreenStatuses = perfViewStatus.screenStatuses.filter {
-                it.screenName != screenName
-            } + newScreenStatus
-
-            copy(
-                perfViewStatus = perfViewStatus.copy(
-                    screenStatuses = newScreenStatuses
-                )
-            )
-        }
-    }
-
-    private fun completed(screenName: String, duration: Long) =
-        updatePerfStatus(screenName, duration, completed = true)
-
-    private fun cancelled(screenName: String, duration: Long) =
-        updatePerfStatus(screenName, duration, cancelled = true)
-
-    private fun viewCreated(screenName: String, duration: Long) =
-        updatePerfStatus(screenName, duration, viewCreated = true)
-
-    private fun titleLoaded(screenName: String, duration: Long) =
-        updatePerfStatus(screenName, duration, titleLoaded = true)
-
-    private fun transitionStarted(screenName: String, duration: Long) =
-        updatePerfStatus(screenName, duration, transitionStarted = true)
-
-    private fun partialContentLoaded(screenName: String, duration: Long) =
-        updatePerfStatus(screenName, duration, partialContentLoaded = true)
-
-    private fun fullContentLoaded(screenName: String, duration: Long) =
-        updatePerfStatus(screenName, duration, fullContentLoaded = true)
-
-    private fun removePerfScreenStatus(screenName: String) = setState {
-        Timber.d("Removing perf status view for screen $screenName...")
-        val timer = perfViewTimers[screenName]
-
-        if (timer?.isDisposed == false) {
-            timer.dispose()
-        }
-
-        perfViewTimers.remove(screenName)
-
-        val newScreenStatuses = perfViewStatus.screenStatuses.filter {
-            it.screenName != screenName
-        }
-
-        copy(
-            perfViewStatus = perfViewStatus.copy(
-                screenStatuses = newScreenStatuses
-            )
-        )
-    }
-
     private fun hideMenus() = setState {
         copy(
-            menuExpanded = false,
-            partsExpanded = false
+            mode = HudMode.REGULAR
         )
     }
 
     private fun showMenu() = setState {
         copy(
-            menuExpanded = true,
-            partsExpanded = false
+            mode = HudMode.MENU
         )
     }
 
     private fun showParts() = setState {
         copy(
-            menuExpanded = false,
-            partsExpanded = true
+            mode = HudMode.PARTS
         )
     }
 
@@ -312,27 +221,11 @@ class HudViewModel @AssistedInject constructor(
             copy(digest = it)
         }
 
-    private fun checkPerfViewSetting() = storage
-        .getDebugSettingShowPerfView()
-        .execute {
-            copy(updatePerfView = it)
-        }
-
     private fun subscribeToPerfUpdates() {
         perfTracker.getEventStream()
             .subscribe {
-                when (it.perfStage) {
-                    PerfStage.VIEW_CREATED -> viewCreated(it.screenName, it.duration)
-                    PerfStage.TITLE_LOADED -> titleLoaded(it.screenName, it.duration)
-                    PerfStage.TRANSITION_START -> transitionStarted(it.screenName, it.duration)
-                    PerfStage.PARTIAL_CONTENT_LOAD -> partialContentLoaded(
-                        it.screenName,
-                        it.duration
-                    )
-                    PerfStage.FULL_CONTENT_LOAD -> fullContentLoaded(it.screenName, it.duration)
-                    PerfStage.CANCELLATION -> cancelled(it.screenName, it.duration)
-                    PerfStage.COMPLETION -> completed(it.screenName, it.duration)
-                    null -> start(it.screenName, it.targetTimes!!)
+                setState {
+                    copy(perfState = it)
                 }
             }
             .disposeOnClear()
@@ -342,155 +235,16 @@ class HudViewModel @AssistedInject constructor(
         timer?.dispose()
     }
 
-    @SuppressWarnings("LongParameterList")
-    private fun updatePerfStatus(
-        screenName: String,
-        duration: Long,
-        completed: Boolean? = null,
-        cancelled: Boolean? = null,
-        viewCreated: Boolean? = null,
-        titleLoaded: Boolean? = null,
-        transitionStarted: Boolean? = null,
-        partialContentLoaded: Boolean? = null,
-        fullContentLoaded: Boolean? = null
-    ) = withState {
-        // These must be retrieved outside setState to make it a pure reducer..
-        val oldStatus = it.perfViewStatus.getScreenByName(screenName)
-
-        if (oldStatus == null) {
-            Timber.w("No PerfViewScreenStatus found for screen $screenName.")
-            return@withState
-        }
-
+    fun setPerfSelectedScreen(screen: PerfSpec) {
         setState {
-            if (completed == true) {
-                startPerfCompleteTimer(screenName)
-            }
-
-            if (cancelled == true) {
-                startPerfCancelledTimer(screenName)
-            }
-
-            val newDurations = getUpdatedHashmap(
-                oldStatus,
-                viewCreated,
-                duration,
-                titleLoaded,
-                transitionStarted,
-                partialContentLoaded,
-                fullContentLoaded
-            )
-
-            val newScreenStatus = oldStatus.copy(
-                completionDuration = if (completed == true) duration else oldStatus.completionDuration,
-                cancellationDuration = if (cancelled == true) duration else oldStatus.cancellationDuration,
-                durations = newDurations
-            )
-
-            val newStatuses = this.perfViewStatus
-                .screenStatuses
-                .replace(newScreenStatus) { status ->
-                    status.screenName == screenName
-                }
-
-            copy(
-                perfViewStatus = this.perfViewStatus.copy(
-                    screenStatuses = newStatuses
-                )
-            )
+            copy(perfSelectedScreen = screen)
         }
     }
 
-    @SuppressWarnings("LongParameterList")
-    private fun getUpdatedHashmap(
-        oldStatus: PerfViewScreenStatus,
-        viewCreated: Boolean?,
-        duration: Long,
-        titleLoaded: Boolean?,
-        transitionStarted: Boolean?,
-        partialContentLoaded: Boolean?,
-        fullContentLoaded: Boolean?
-    ): Map<String, Long> {
-        val newDurations = hashMapOf<String, Long>()
-
-        val oldViewCreated = oldStatus.durations[PerfStage.VIEW_CREATED.toString()]
-        val oldTitleLoaded = oldStatus.durations[PerfStage.TITLE_LOADED.toString()]
-        val oldTransitionStarted = oldStatus.durations[PerfStage.TRANSITION_START.toString()]
-        val oldPartialContent = oldStatus.durations[PerfStage.PARTIAL_CONTENT_LOAD.toString()]
-        val oldFullContent = oldStatus.durations[PerfStage.FULL_CONTENT_LOAD.toString()]
-
-        updateDurationsMap(
-            viewCreated,
-            newDurations,
-            duration,
-            oldViewCreated,
-            PerfStage.VIEW_CREATED
-        )
-        updateDurationsMap(
-            titleLoaded,
-            newDurations,
-            duration,
-            oldTitleLoaded,
-            PerfStage.TITLE_LOADED
-        )
-        updateDurationsMap(
-            transitionStarted,
-            newDurations,
-            duration,
-            oldTransitionStarted,
-            PerfStage.TRANSITION_START
-        )
-        updateDurationsMap(
-            partialContentLoaded,
-            newDurations,
-            duration,
-            oldPartialContent,
-            PerfStage.PARTIAL_CONTENT_LOAD
-        )
-        updateDurationsMap(
-            fullContentLoaded,
-            newDurations,
-            duration,
-            oldFullContent,
-            PerfStage.FULL_CONTENT_LOAD
-        )
-
-        return newDurations
-    }
-
-    private fun updateDurationsMap(
-        viewCreated: Boolean?,
-        newDurations: MutableMap<String, Long>,
-        duration: Long,
-        oldViewCreated: Long?,
-        perfStage: PerfStage
-    ) {
-        if (viewCreated != null) {
-            newDurations[perfStage.toString()] = duration
-        } else if (oldViewCreated != null) {
-            newDurations[perfStage.toString()] = oldViewCreated
+    fun onPerfClick() {
+        setState {
+            copy(mode = HudMode.PERF)
         }
-    }
-
-    private fun startPerfCompleteTimer(screenName: String) {
-        startPerfTimer(screenName, TIMEOUT_PERF_COMPLETE_CLEAR)
-    }
-
-    private fun startPerfCancelledTimer(screenName: String) {
-        startPerfTimer(screenName, TIMEOUT_PERF_CANCEL_CLEAR)
-    }
-
-    private fun startPerfTimer(screenName: String, timeout: Long) {
-        val timer = Observable.timer(timeout, TimeUnit.MILLISECONDS, Schedulers.io())
-            .subscribe {
-                removePerfScreenStatus(screenName)
-            }
-
-        perfViewTimers[screenName] = timer
-    }
-
-    private fun <T> List<T>.replace(newValue: T, block: (T) -> Boolean) = map {
-        if (block(it)) newValue else it
     }
 
     @AssistedInject.Factory
@@ -504,9 +258,6 @@ class HudViewModel @AssistedInject constructor(
 
     companion object : MvRxViewModelFactory<HudViewModel, HudState> {
         const val TIMEOUT_HUD_VISIBLE = 3000L
-
-        const val TIMEOUT_PERF_COMPLETE_CLEAR = 3000L
-        const val TIMEOUT_PERF_CANCEL_CLEAR = 1000L
 
         override fun create(viewModelContext: ViewModelContext, state: HudState): HudViewModel? {
             val activity =

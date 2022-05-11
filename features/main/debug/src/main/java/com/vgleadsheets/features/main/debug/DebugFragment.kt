@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.debug
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
 
     override fun disablePerfTracking() = true
 
-    override fun getFullLoadTargetTime() = -1L
+    override fun getPerfSpec() = PerfSpec.DEBUG
 
     override fun subscribeToViewEvents() {
         hudViewModel.alwaysShowBack()

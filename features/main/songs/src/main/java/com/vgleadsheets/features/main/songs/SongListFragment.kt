@@ -4,6 +4,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.list.ListFragment
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -15,7 +16,7 @@ class SongListFragment : ListFragment<Song, SongListState>() {
 
     override fun getTrackingScreen() = TrackingScreen.LIST_SHEET
 
-    override fun getFullLoadTargetTime() = 5000L
+    override fun getPerfSpec() = PerfSpec.SONGS
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(SongListState::clickedListModel) {

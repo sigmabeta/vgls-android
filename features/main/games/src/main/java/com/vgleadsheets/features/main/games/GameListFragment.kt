@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.games
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.ListFragment
 import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -12,7 +13,7 @@ class GameListFragment : ListFragment<Game, GameListState>() {
 
     override fun getTrackingScreen() = TrackingScreen.LIST_GAME
 
-    override fun getFullLoadTargetTime() = 5000L
+    override fun getPerfSpec() = PerfSpec.GAMES
 
     override val viewModel: GameListViewModel by fragmentViewModel()
 

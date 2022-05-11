@@ -59,8 +59,8 @@ class SettingsViewModel @AssistedInject constructor(
     }
 
     override fun onCheckboxLoadComplete(screenName: String) {
-        perfTracker.onPartialContentLoad(screenName)
-        perfTracker.onFullContentLoad(screenName)
+        // perfTracker.onPartialContentLoad(screenName)
+        // perfTracker.onFullContentLoad(screenName)
     }
 
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
