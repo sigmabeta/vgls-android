@@ -85,16 +85,12 @@ class AboutFragment :
             getString(R.string.label_link_vgls),
             getString(R.string.caption_link_vgls),
             this,
-            getPerfScreenName(),
-            perfTracker
         ),
         NameCaptionListModel(
             R.string.label_link_giantbomb.toLong(),
             getString(R.string.label_link_giantbomb),
             getString(R.string.caption_link_giantbomb),
             this,
-            getPerfScreenName(),
-            perfTracker
         ),
         SingleTextListModel(
             R.string.label_link_licenses.toLong(),

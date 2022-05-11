@@ -1,14 +1,10 @@
 package com.vgleadsheets.components
 
-import com.vgleadsheets.perf.tracking.api.PerfTracker
-
 data class MenuItemListModel(
     val name: String,
     val caption: String?,
     val iconId: Int,
-    val onClicked: () -> Unit,
-    val screenName: String,
-    val tracker: PerfTracker
+    val onClicked: () -> Unit
 ) : ListModel {
     override val dataId = name.hashCode().toLong()
 

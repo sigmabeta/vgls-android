@@ -56,8 +56,6 @@ class GameViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No songs found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -114,8 +112,6 @@ class GameViewModel @AssistedInject constructor(
                     generateSheetCountText(songs),
                     game().photoUrl,
                     R.drawable.placeholder_game,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(game.error)
@@ -150,8 +146,6 @@ class GameViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -170,8 +164,6 @@ class GameViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this@GameViewModel,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
         }

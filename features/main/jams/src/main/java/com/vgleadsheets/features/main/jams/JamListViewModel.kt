@@ -31,8 +31,7 @@ class JamListViewModel @AssistedInject constructor(
     private val perfTracker: PerfTracker
 ) : ListViewModel<Jam, JamListState>(initialState, screenName, perfTracker),
     CtaListModel.EventHandler,
-    NameCaptionListModel.EventHandler,
-    EmptyStateListModel.EventHandler {
+    NameCaptionListModel.EventHandler {
     init {
         fetchJams()
     }
@@ -58,15 +57,9 @@ class JamListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun onEmptyStateLoadComplete(screenName: String) {
-        // perfTracker.cancel(screenName)
-    }
-
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.title_jams),
         "",
-        screenName = screenName,
-        tracker = perfTracker
     )
 
     override fun defaultLoadingListModel(index: Int): ListModel =
@@ -75,8 +68,6 @@ class JamListViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
         "Unknown error occurred.",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -89,8 +80,6 @@ class JamListViewModel @AssistedInject constructor(
             EmptyStateListModel(
                 R.drawable.ic_list_black_24dp,
                 "You haven't followed any jams. Click above to search for one.",
-                screenName,
-                this
             )
         )
     } else {
@@ -100,8 +89,6 @@ class JamListViewModel @AssistedInject constructor(
                 it.name.toTitleCase(),
                 generateSubtitleText(it.currentSong),
                 this,
-                screenName = screenName,
-                tracker = perfTracker
             )
         }
     }

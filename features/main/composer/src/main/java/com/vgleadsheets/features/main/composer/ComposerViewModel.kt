@@ -56,8 +56,6 @@ class ComposerViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No songs found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -117,8 +115,6 @@ class ComposerViewModel @AssistedInject constructor(
                     generateSheetCountText(songs),
                     composer().photoUrl,
                     R.drawable.placeholder_composer,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(composer.error)
@@ -153,8 +149,6 @@ class ComposerViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -173,8 +167,6 @@ class ComposerViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this@ComposerViewModel,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
         }

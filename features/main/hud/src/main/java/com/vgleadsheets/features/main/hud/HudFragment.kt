@@ -394,10 +394,8 @@ class HudFragment : VglsFragment() {
             resources,
             { viewModel.onMenuClick() },
             { viewModel.onChangePartClick() },
-            perfTracker
         ) + SongDisplay.getListModels(
             currentSong,
-            perfTracker,
             songDisplayClickHandler
         ) + PartPicker.getListModels(
             hudMode == HudMode.PARTS,
@@ -426,7 +424,6 @@ class HudFragment : VglsFragment() {
         ) + RefreshIndicator.getListModels(
             refreshing,
             resources,
-            perfTracker
         )
 
         menuAdapter.submitListAnimateResizeContainer(

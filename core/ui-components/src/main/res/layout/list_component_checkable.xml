@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -18,8 +17,6 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
-        app:screenName="@{toBind.screenName}"
-        app:handler="@{toBind.handler}"
         android:orientation="horizontal">
 
         <TextView

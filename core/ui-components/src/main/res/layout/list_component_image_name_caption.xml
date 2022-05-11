@@ -15,12 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
-        app:fullLoadHandler="@{toBind.tracker}"
-        app:fullLoadText="@{toBind.caption}"
-        app:partialLoadHandler="@{toBind.tracker}"
-        app:partialLoadText="@{toBind.name}"
-        app:screenName="@{toBind.screenName}">
+        android:onClick="@{() -> toBind.handler.onClicked(toBind)}">
 
         <ImageView
             android:id="@+id/image"

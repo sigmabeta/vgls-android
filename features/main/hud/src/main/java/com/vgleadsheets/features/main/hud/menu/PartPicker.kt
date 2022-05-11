@@ -22,10 +22,7 @@ object PartPicker {
                     resources.getString(it.longResId),
                     null,
                     R.drawable.ic_description_24dp,
-                    { onPartClick(Part.valueOf(it.name)) },
-                    "",
-                    perfTracker
-                )
+                ) { onPartClick(Part.valueOf(it.name)) }
             }
     } else {
         emptyList()

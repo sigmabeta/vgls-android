@@ -57,8 +57,6 @@ class SheetDetailViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
         "Sheet not found. Check your internet connection?.",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -94,14 +92,12 @@ class SheetDetailViewModel @AssistedInject constructor(
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_composer),
                 value,
-                screenName,
                 composerHandler,
                 composerId
             ),
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_game),
                 song.gameName,
-                screenName,
                 gameHandler,
                 song.gameId
             )
@@ -152,7 +148,6 @@ class SheetDetailViewModel @AssistedInject constructor(
                 LabelRatingStarListModel(
                     it.tagKeyName,
                     valueAsNumber,
-                    screenName,
                     ratingStarHandler,
                     it.id
                 )
@@ -160,7 +155,6 @@ class SheetDetailViewModel @AssistedInject constructor(
                 LabelValueListModel(
                     it.tagKeyName,
                     it.name,
-                    screenName,
                     tagValueHandler,
                     it.id
                 )
@@ -204,8 +198,6 @@ class SheetDetailViewModel @AssistedInject constructor(
             ErrorStateListModel(
                 failedOperationName,
                 error.message ?: "Unknown Error",
-                screenName,
-                cancelPerfOnErrorState
             )
         )
 
@@ -273,8 +265,6 @@ class SheetDetailViewModel @AssistedInject constructor(
                     resourceProvider.getString(R.string.subtitle_pages, pageCount),
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             )
         }
@@ -286,10 +276,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedComposerModel = null) }
-
-        override fun onLabelValueLoaded(screenName: String) {
-            // perfTracker.onPartialContentLoad(screenName)
-        }
     }
 
     private val gameHandler = object : LabelValueListModel.EventHandler {
@@ -298,8 +284,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedGameModel = null) }
-
-        override fun onLabelValueLoaded(screenName: String) = Unit
     }
 
     private val ctaHandler = object : CtaListModel.EventHandler {
@@ -316,8 +300,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedTagValueModel = null) }
-
-        override fun onLabelValueLoaded(screenName: String) = Unit
     }
 
     private val ratingStarHandler = object : LabelRatingStarListModel.EventHandler {
@@ -326,10 +308,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedRatingStarModel = null) }
-
-        override fun onRatingStarsLoaded(screenName: String) {
-            // perfTracker.onFullContentLoad(screenName)
-        }
     }
 
     @AssistedInject.Factory

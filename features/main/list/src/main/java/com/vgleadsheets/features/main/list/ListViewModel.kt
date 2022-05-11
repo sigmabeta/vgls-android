@@ -5,7 +5,6 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
@@ -81,17 +80,6 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
 
     protected open val showDefaultEmptyState = true
 
-    protected val cancelPerfOnEmptyState = object : EmptyStateListModel.EventHandler {
-        override fun onEmptyStateLoadComplete(screenName: String) {
-            // perfTracker.cancel(screenName)
-        }
-    }
-
-    protected val cancelPerfOnErrorState = object : ErrorStateListModel.EventHandler {
-        override fun onErrorStateLoadComplete(screenName: String) {
-            // perfTracker.cancel(screenName)
-        }
-    }
 
     abstract fun createTitleListModel(): TitleListModel
 
@@ -163,8 +151,6 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
             ErrorStateListModel(
                 "allData",
                 error.message ?: "Unknown Error",
-                screenName,
-                cancelPerfOnErrorState
             )
         )
 

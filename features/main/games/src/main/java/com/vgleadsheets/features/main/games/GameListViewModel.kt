@@ -46,15 +46,11 @@ class GameListViewModel @AssistedInject constructor(
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_game),
-        screenName = screenName,
-        tracker = perfTracker
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No games found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -69,8 +65,6 @@ class GameListViewModel @AssistedInject constructor(
             EmptyStateListModel(
                 R.drawable.ic_album_24dp,
                 "No games found with a ${selectedPart.apiId} part. Try another part?",
-                screenName,
-                cancelPerfOnEmptyState
             )
         ) else availableGames
             .map {
@@ -81,8 +75,6 @@ class GameListViewModel @AssistedInject constructor(
                     it.photoUrl,
                     R.drawable.placeholder_game,
                     this@GameListViewModel,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
     }

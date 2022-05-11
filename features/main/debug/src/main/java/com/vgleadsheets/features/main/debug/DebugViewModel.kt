@@ -59,11 +59,6 @@ class DebugViewModel @AssistedInject constructor(
         setSetting(clicked.settingId, !clicked.checked)
     }
 
-    override fun onCheckboxLoadComplete(screenName: String) {
-        // perfTracker.onPartialContentLoad(screenName)
-        // perfTracker.onFullContentLoad(screenName)
-    }
-
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         setDropdownSetting(settingId, selectedPosition)
     }
@@ -71,10 +66,6 @@ class DebugViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No settings found at all. What's going on here?",
-        "",
-        object : EmptyStateListModel.EventHandler {
-            override fun onEmptyStateLoadComplete(screenName: String) = Unit
-        }
     )
 
     override fun createSuccessListModels(
@@ -142,7 +133,6 @@ class DebugViewModel @AssistedInject constructor(
                         setting.settingId,
                         resourceProvider.getString(setting.labelStringId),
                         setting.value,
-                        screenName,
                         this
                     )
                     is DropdownSetting -> DropdownSettingListModel(

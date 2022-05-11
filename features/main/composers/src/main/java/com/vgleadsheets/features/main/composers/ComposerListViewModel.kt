@@ -46,15 +46,11 @@ class ComposerListViewModel @AssistedInject constructor(
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_composer),
-        screenName = screenName,
-        tracker = perfTracker
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No composers found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -69,8 +65,6 @@ class ComposerListViewModel @AssistedInject constructor(
             EmptyStateListModel(
                 R.drawable.ic_album_24dp,
                 "No composers found with a ${selectedPart.apiId} part. Try another part?",
-                screenName,
-                cancelPerfOnEmptyState
             )
         ) else availableComposers
             .map {
@@ -81,8 +75,6 @@ class ComposerListViewModel @AssistedInject constructor(
                     it.photoUrl,
                     R.drawable.placeholder_composer,
                     this,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
     }

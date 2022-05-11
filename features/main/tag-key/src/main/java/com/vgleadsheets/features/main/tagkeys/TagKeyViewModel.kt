@@ -46,8 +46,6 @@ class TagKeyViewModel @AssistedInject constructor(
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_tags),
-        screenName = screenName,
-        tracker = perfTracker
     )
 
     override fun defaultLoadingListModel(index: Int): ListModel =
@@ -56,8 +54,6 @@ class TagKeyViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No tags found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -71,8 +67,6 @@ class TagKeyViewModel @AssistedInject constructor(
             it.name,
             generateSubtitleText(it.values),
             this@TagKeyViewModel,
-            screenName = screenName,
-            tracker = perfTracker
         )
     }
 

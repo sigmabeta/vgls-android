@@ -48,15 +48,11 @@ class SongListViewModel @AssistedInject constructor(
     override fun createTitleListModel() = TitleListModel(
         resourceProvider.getString(R.string.app_name),
         resourceProvider.getString(R.string.subtitle_all_sheets),
-        screenName = screenName,
-        tracker = perfTracker
     )
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No songs found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -72,8 +68,6 @@ class SongListViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -92,8 +86,6 @@ class SongListViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
         }

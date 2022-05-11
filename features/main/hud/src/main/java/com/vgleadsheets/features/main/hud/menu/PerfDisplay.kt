@@ -57,7 +57,6 @@ object PerfDisplay {
                 LabelValueListModel(
                     it.key.name,
                     it.value.toString(),
-                    "",
                     noopClicker()
                 )
             }
@@ -65,7 +64,6 @@ object PerfDisplay {
             listOf(
                 LabelValueListModel(
                     "No perf data recorded.",
-                    "",
                     "",
                     noopClicker()
                 )
@@ -84,7 +82,5 @@ object PerfDisplay {
         override fun onClicked(clicked: LabelValueListModel) {}
 
         override fun clearClicked() {}
-
-        override fun onLabelValueLoaded(screenName: String) {}
     }
 }

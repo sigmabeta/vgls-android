@@ -1,12 +1,8 @@
 package com.vgleadsheets.components
 
-import com.vgleadsheets.perf.tracking.api.PerfTracker
-
 data class MenuLoadingItemListModel(
     val name: String,
-    val iconId: Int,
-    val screenName: String,
-    val tracker: PerfTracker
+    val iconId: Int
 ) : ListModel {
     override val dataId = iconId.toLong()
 

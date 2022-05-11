@@ -60,8 +60,6 @@ class TagValueListViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No tag values found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -119,8 +117,6 @@ class TagValueListViewModel @AssistedInject constructor(
                 TitleListModel(
                     tagKey().name,
                     generateSheetCountText(tagValues),
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             )
             is Fail -> createErrorStateListModel(tagKey.error)
@@ -154,8 +150,6 @@ class TagValueListViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No tag values found with a $selectedPart part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -165,8 +159,6 @@ class TagValueListViewModel @AssistedInject constructor(
                     it.name,
                     generateSheetCaption(it.songs),
                     this@TagValueListViewModel,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
         }

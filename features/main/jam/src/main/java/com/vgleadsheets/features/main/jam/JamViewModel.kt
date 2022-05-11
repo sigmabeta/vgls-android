@@ -31,9 +31,9 @@ import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Named
-import timber.log.Timber
 
 @SuppressWarnings("TooManyFunctions")
 class JamViewModel @AssistedInject constructor(
@@ -69,8 +69,6 @@ class JamViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
         "Unknown error occurred.",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     fun refreshJam() = withState { state ->
@@ -182,8 +180,6 @@ class JamViewModel @AssistedInject constructor(
                 R.drawable.placeholder_sheet,
                 currentSongHandler,
                 currentSong.id,
-                screenName = screenName,
-                tracker = perfTracker
             )
         } else {
             generateSongLoadError()
@@ -228,8 +224,6 @@ class JamViewModel @AssistedInject constructor(
             EmptyStateListModel(
                 R.drawable.ic_list_black_24dp,
                 resourceProvider.getString(R.string.empty_setlist),
-                screenName,
-                cancelPerfOnEmptyState
             )
         )
     } else {
@@ -252,8 +246,6 @@ class JamViewModel @AssistedInject constructor(
                 R.drawable.placeholder_sheet,
                 setlistSongHandler,
                 song.id,
-                screenName = screenName,
-                tracker = perfTracker
             )
         }
     }
@@ -266,8 +258,6 @@ class JamViewModel @AssistedInject constructor(
         R.drawable.ic_error_24dp,
         setlistSongHandler,
         null,
-        screenName,
-        perfTracker
     )
 
     private fun createSongHistoryListModels(
@@ -306,8 +296,6 @@ class JamViewModel @AssistedInject constructor(
                     R.drawable.placeholder_sheet,
                     historyHandler,
                     song.id,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             } else {
                 generateSongLoadError()
@@ -345,8 +333,6 @@ class JamViewModel @AssistedInject constructor(
             ErrorStateListModel(
                 failedOperationName,
                 error.message ?: "Unknown Error",
-                screenName,
-                cancelPerfOnErrorState
             )
         )
 
@@ -393,8 +379,6 @@ class JamViewModel @AssistedInject constructor(
             TitleListModel(
                 jam().name.toTitleCase(),
                 resourceProvider.getString(R.string.subtitle_jam),
-                screenName = screenName,
-                tracker = perfTracker
             )
         )
     }

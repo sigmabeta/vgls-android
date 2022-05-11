@@ -164,8 +164,6 @@ class SearchViewModel @AssistedInject constructor(
                 ErrorStateListModel(
                     "stickerbrush",
                     resourceProvider.getString(R.string.error_search_stickerbrush),
-                    screenName,
-                    cancelPerfOnErrorState
                 )
             )
         }
@@ -192,8 +190,6 @@ class SearchViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_description_24dp,
                     resourceProvider.getString(R.string.empty_search_no_results),
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
@@ -261,8 +257,6 @@ class SearchViewModel @AssistedInject constructor(
                             thumbUrl,
                             getPlaceholderId(it),
                             songHandler,
-                            screenName = screenName,
-                            tracker = perfTracker
                         )
                     }
                     is Game -> ImageNameCaptionListModel(
@@ -272,8 +266,6 @@ class SearchViewModel @AssistedInject constructor(
                         it.photoUrl,
                         getPlaceholderId(it),
                         gameHandler,
-                        screenName = screenName,
-                        tracker = perfTracker
                     )
                     is Composer -> ImageNameCaptionListModel(
                         it.id,
@@ -282,8 +274,6 @@ class SearchViewModel @AssistedInject constructor(
                         it.photoUrl,
                         getPlaceholderId(it),
                         composerHandler,
-                        screenName = screenName,
-                        tracker = perfTracker
                     )
                     else -> throw IllegalArgumentException(
                         "Bad model in search result list."
@@ -343,8 +333,6 @@ class SearchViewModel @AssistedInject constructor(
         ErrorStateListModel(
             failedOperationName,
             error.message ?: "Unknown Error",
-            screenName,
-            cancelPerfOnErrorState
         )
     )
 
