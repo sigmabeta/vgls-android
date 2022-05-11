@@ -43,7 +43,7 @@ class JamViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<JamData, JamState>(initialState, screenName, perfTracker),
+) : AsyncListViewModel<JamData, JamState>(initialState),
     CtaListModel.EventHandler {
     init {
         fetchJam()

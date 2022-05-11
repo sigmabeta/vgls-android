@@ -217,7 +217,7 @@ class HudFragment : VglsFragment() {
         }
 
         if (state.digest is Loading) {
-            perfTracker.cancelAll()
+            // perfTracker.cancelAll()
         }
     }
 
@@ -402,7 +402,6 @@ class HudFragment : VglsFragment() {
             showVocalsOption,
             { onPartSelect(it) },
             resources,
-            perfTracker,
             selectedPart.apiId
         ) + MenuOptions.getListModels(
             hudMode == HudMode.MENU,
@@ -415,7 +414,6 @@ class HudFragment : VglsFragment() {
             { showScreen(MODAL_SCREEN_ID_DEBUG, save = false) },
             viewModel::onPerfClick,
             resources,
-            perfTracker,
         ) + PerfDisplay.getListModels(
             hudMode == HudMode.PERF,
             perfSelectedScreen,

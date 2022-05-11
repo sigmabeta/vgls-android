@@ -34,7 +34,7 @@ class GameViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<GameData, GameState>(initialState, screenName, perfTracker),
+) : AsyncListViewModel<GameData, GameState>(initialState),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGame()

@@ -8,7 +8,6 @@ import com.vgleadsheets.components.MenuLoadingItemListModel
 import com.vgleadsheets.features.main.hud.BuildConfig
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.perf.tracking.api.PerfTracker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -26,7 +25,6 @@ object MenuOptions {
         onDebugClick: () -> Unit,
         onPerfClick: () -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker
     ) = if (expanded) {
         getFullOptionsList(
             randoming,
@@ -38,7 +36,6 @@ object MenuOptions {
             onDebugClick,
             onPerfClick,
             resources,
-            perfTracker,
         )
     } else {
         emptyList()
@@ -55,28 +52,31 @@ object MenuOptions {
         onDebugClick: () -> Unit,
         onPerfClick: () -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker,
     ) = listOf(
         MenuItemListModel(
             resources.getString(R.string.label_by_game),
             null,
             R.drawable.ic_album_24dp,
-        ) { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_GAME) },
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_GAME) }
+        ),
         MenuItemListModel(
             resources.getString(R.string.label_by_composer),
             null,
             R.drawable.ic_person_24dp,
-        ) { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER) },
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER) }
+        ),
         MenuItemListModel(
             resources.getString(R.string.label_by_tag),
             null,
             R.drawable.ic_tag_black_24dp,
-        ) { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_TAG) },
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_TAG) }
+        ),
         MenuItemListModel(
             resources.getString(R.string.label_all_sheets),
             null,
             R.drawable.ic_description_24dp,
-        ) { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_SONG) },
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_SONG) }
+        ),
         if (randoming) {
             MenuLoadingItemListModel(
                 resources.getString(R.string.label_random_loading),
@@ -87,18 +87,21 @@ object MenuOptions {
                 resources.getString(R.string.label_random),
                 null,
                 R.drawable.ic_shuffle_24dp,
-            ) { onRandomClick() }
+                { onRandomClick() })
         },
         MenuItemListModel(
             resources.getString(R.string.label_jams),
             null,
             R.drawable.ic_queue_music_black_24dp,
-        ) { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_JAM) },
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_JAM) }
+        ),
+
         MenuItemListModel(
             resources.getString(R.string.label_settings),
             null,
             R.drawable.ic_settings_black_24dp,
-        ) { onScreenLinkClick(HudFragment.MODAL_SCREEN_ID_SETTINGS) }
+            { onScreenLinkClick(HudFragment.MODAL_SCREEN_ID_SETTINGS) }
+        )
     ) + getRefreshOptionListModels(
         refreshing,
         updateTime,
@@ -144,7 +147,8 @@ object MenuOptions {
                 resources.getString(R.string.label_refresh),
                 resources.getUpdateTimeString(updateTime),
                 R.drawable.ic_refresh_24dp,
-            ) { onRefreshClick() }
+                { onRefreshClick() }
+            )
         )
     } else {
         emptyList()

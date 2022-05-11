@@ -15,6 +15,7 @@ import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -25,7 +26,7 @@ class GameListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Game, GameListState>(initialState, screenName, perfTracker),
+) : ListViewModel<Game, GameListState>(initialState),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGames()
@@ -43,10 +44,17 @@ class GameListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun createTitleListModel() = TitleListModel(
-        resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_game),
-    )
+    override fun createTitleListModel(): TitleListModel {
+        val spec = PerfSpec.GAMES
+
+        perfTracker.onTitleLoaded(spec)
+        perfTracker.onTransitionStarted(spec)
+
+        return TitleListModel(
+            resourceProvider.getString(R.string.app_name),
+            resourceProvider.getString(R.string.subtitle_game),
+        )
+    }
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
@@ -66,17 +74,22 @@ class GameListViewModel @AssistedInject constructor(
                 R.drawable.ic_album_24dp,
                 "No games found with a ${selectedPart.apiId} part. Try another part?",
             )
-        ) else availableGames
-            .map {
-                ImageNameCaptionListModel(
-                    it.id,
-                    it.name,
-                    generateSubtitleText(it.songs),
-                    it.photoUrl,
-                    R.drawable.placeholder_game,
-                    this@GameListViewModel,
-                )
-            }
+        ) else {
+            val spec = PerfSpec.GAMES
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+            availableGames
+                .map {
+                    ImageNameCaptionListModel(
+                        it.id,
+                        it.name,
+                        generateSubtitleText(it.songs),
+                        it.photoUrl,
+                        R.drawable.placeholder_game,
+                        this@GameListViewModel,
+                    )
+                }
+        }
     }
 
     private fun fetchGames() {

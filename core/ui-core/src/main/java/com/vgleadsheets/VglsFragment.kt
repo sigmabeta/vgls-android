@@ -144,6 +144,18 @@ abstract class VglsFragment : BaseMvRxFragment() {
         }
     }
 
+    protected fun setPerfTransitionStart() {
+        perfTracker.onTransitionStarted(getPerfSpec())
+    }
+
+    protected fun setPerfPartialLoadComplete() {
+        perfTracker.onPartialContentLoad(getPerfSpec())
+    }
+
+    protected fun setPerfFulllLoadComplete() {
+        perfTracker.onFullContentLoad(getPerfSpec())
+    }
+
     protected fun showError(
         error: Throwable,
         action: View.OnClickListener? = null,

@@ -34,7 +34,7 @@ class SettingsViewModel @AssistedInject constructor(
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SettingsData, SettingsState>(initialState, screenName, perfTracker),
+) : AsyncListViewModel<SettingsData, SettingsState>(initialState),
     CheckableListModel.EventHandler,
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler {

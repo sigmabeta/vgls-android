@@ -39,7 +39,7 @@ class SearchViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SearchData, SearchState>(initialState, screenName, perfTracker) {
+) : AsyncListViewModel<SearchData, SearchState>(initialState) {
     private val searchOperations = CompositeDisposable()
 
     private val songHandler = object : ImageNameCaptionListModel.EventHandler {

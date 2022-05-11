@@ -108,6 +108,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     }
 
     private fun publishState() {
+        Timber.i("Publishing trace: $screens")
         eventSink.onNext(
             PerfState(
                 screens.toMap()
@@ -158,17 +159,16 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         perfTrackingBackend.finishTrace(screen.name, perfStage)
 
         val duration = System.currentTimeMillis() - screen.startTime
-
-        Timber.v("Duration for ${screen.name}:$perfStage: $duration ms ")
-
-        screens[spec] = screen.copy(
+        val updatedScreen = screen.copy(
             stageDurations = screen.stageDurations + (perfStage to duration)
         )
 
+        Timber.v("Duration for ${screen.name}:$perfStage: $duration ms ")
+
+        screens[spec] = updatedScreen
         publishState()
 
-        checkIfScreenFullyLoaded(screen, spec, duration)
-
+        checkIfScreenFullyLoaded(updatedScreen, spec, duration)
         return
     }
 
@@ -177,14 +177,18 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         spec: PerfSpec,
         duration: Long
     ) {
-        screen.stageDurations
+        val durations = screen.stageDurations
+        if (durations[PerfStage.COMPLETION] != null) {
+            return
+        }
+
+        val durationsRecorded = durations
             .exceptCancelAndComplete()
-            .map { it.value }
-            .forEach {
-                if (it == null) {
-                    return
-                }
-            }
+            .size
+
+        if (PerfStage.values().exceptCancelAndComplete().size > durationsRecorded) {
+            return
+        }
 
         onScreenFullyLoaded(spec, duration)
     }
@@ -244,12 +248,15 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     }
 
     private fun getNotClearedTraces(screen: PerfScreenStatus): List<PerfStage> {
-        return screen
-            .stageDurations
+        return PerfStage.values()
             .exceptCancelAndComplete()
-            .filter { it.value != null }
-            .map { it.key }
+            .filter { !screen.stageDurations.containsKey(it) }
     }
+
+    private fun Array<PerfStage>.exceptCancelAndComplete() = this
+        .filter {
+            it != PerfStage.COMPLETION && it != PerfStage.CANCELLATION
+        }
 
     private fun Map<PerfStage, Long?>.exceptCancelAndComplete() = this
         .filter {

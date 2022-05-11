@@ -38,7 +38,7 @@ class SheetDetailViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, screenName, perfTracker) {
+) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState) {
     init {
         fetchSheetDetail()
     }

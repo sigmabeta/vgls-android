@@ -29,7 +29,7 @@ class JamListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Jam, JamListState>(initialState, screenName, perfTracker),
+) : ListViewModel<Jam, JamListState>(initialState),
     CtaListModel.EventHandler,
     NameCaptionListModel.EventHandler {
     init {
