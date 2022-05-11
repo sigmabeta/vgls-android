@@ -402,7 +402,8 @@ class HudFragment : VglsFragment() {
             showVocalsOption,
             { onPartSelect(it) },
             resources,
-            perfTracker
+            perfTracker,
+            selectedPart.apiId
         ) + MenuOptions.getListModels(
             hudMode == HudMode.MENU,
             randoming,
