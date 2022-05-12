@@ -15,6 +15,7 @@ import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -45,10 +46,17 @@ class SongListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun createTitleListModel() = TitleListModel(
-        resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_all_sheets),
-    )
+    override fun createTitleListModel(): TitleListModel {
+        val spec = PerfSpec.SONGS
+
+        perfTracker.onTitleLoaded(spec)
+        perfTracker.onTransitionStarted(spec)
+
+        return TitleListModel(
+            resourceProvider.getString(R.string.app_name),
+            resourceProvider.getString(R.string.subtitle_all_sheets),
+        )
+    }
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
@@ -71,6 +79,11 @@ class SongListViewModel @AssistedInject constructor(
                 )
             )
         } else {
+            val spec = PerfSpec.SONGS
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
             availableSongs.map {
                 val thumbUrl = Page.generateImageUrl(
                     baseImageUrl,

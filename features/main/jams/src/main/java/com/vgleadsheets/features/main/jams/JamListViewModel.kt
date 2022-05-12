@@ -17,6 +17,7 @@ import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -57,10 +58,17 @@ class JamListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun createTitleListModel() = TitleListModel(
-        resourceProvider.getString(R.string.title_jams),
-        "",
-    )
+    override fun createTitleListModel(): TitleListModel {
+        val spec = PerfSpec.JAMS
+
+        perfTracker.onTitleLoaded(spec)
+        perfTracker.onTransitionStarted(spec)
+
+        return TitleListModel(
+            resourceProvider.getString(R.string.title_jams),
+            "",
+        )
+    }
 
     override fun defaultLoadingListModel(index: Int): ListModel =
         LoadingNameCaptionListModel("allData", index)
@@ -83,6 +91,11 @@ class JamListViewModel @AssistedInject constructor(
             )
         )
     } else {
+        val spec = PerfSpec.JAMS
+
+        perfTracker.onPartialContentLoad(spec)
+        perfTracker.onFullContentLoad(spec)
+
         data.map {
             NameCaptionListModel(
                 it.id,

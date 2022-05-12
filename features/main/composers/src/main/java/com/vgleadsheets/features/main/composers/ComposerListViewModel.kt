@@ -15,6 +15,7 @@ import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -43,10 +44,17 @@ class ComposerListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun createTitleListModel() = TitleListModel(
-        resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_composer),
-    )
+    override fun createTitleListModel(): TitleListModel {
+        val spec = PerfSpec.COMPOSERS
+
+        perfTracker.onTitleLoaded(spec)
+        perfTracker.onTransitionStarted(spec)
+
+        return TitleListModel(
+            resourceProvider.getString(R.string.app_name),
+            resourceProvider.getString(R.string.subtitle_composer),
+        )
+    }
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
@@ -66,8 +74,13 @@ class ComposerListViewModel @AssistedInject constructor(
                 R.drawable.ic_album_24dp,
                 "No composers found with a ${selectedPart.apiId} part. Try another part?",
             )
-        ) else availableComposers
-            .map {
+        ) else {
+            val spec = PerfSpec.COMPOSERS
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
+            availableComposers.map {
                 ImageNameCaptionListModel(
                     it.id,
                     it.name,
@@ -77,6 +90,7 @@ class ComposerListViewModel @AssistedInject constructor(
                     this,
                 )
             }
+        }
     }
 
     private fun fetchComposers() {

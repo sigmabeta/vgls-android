@@ -76,8 +76,10 @@ class GameListViewModel @AssistedInject constructor(
             )
         ) else {
             val spec = PerfSpec.GAMES
+
             perfTracker.onPartialContentLoad(spec)
             perfTracker.onFullContentLoad(spec)
+
             availableGames
                 .map {
                     ImageNameCaptionListModel(
