@@ -7,6 +7,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
 object SheetOptions {
+    @Suppress("LongParameterList")
     fun getListModels(
         shouldShow: Boolean,
         currentSong: Song?,
