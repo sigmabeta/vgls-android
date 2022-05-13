@@ -53,6 +53,8 @@ class ComposerListViewModel @AssistedInject constructor(
         return TitleListModel(
             resourceProvider.getString(R.string.app_name),
             resourceProvider.getString(R.string.subtitle_composer),
+            {},
+            {}
         )
     }
 

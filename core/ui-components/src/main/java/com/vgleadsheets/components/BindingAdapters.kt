@@ -72,11 +72,13 @@ fun bindPhoto(
     }
 }
 
-@BindingAdapter("bigPhotoUrl", "placeholder")
+@BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadSuccess", "imageLoadFail")
 fun bindBigPhoto(
     view: ImageView,
     photoUrl: String?,
     placeholder: Int,
+    imageLoadSuccess: () -> Unit,
+    imageLoadFail: (Exception) -> Unit
 ) {
     if (placeholder != R.drawable.ic_logo) {
         view.clipToOutline = true
@@ -85,9 +87,13 @@ fun bindBigPhoto(
 
     if (photoUrl != null) {
         val callback = object : Callback {
-            override fun onSuccess() {}
+            override fun onSuccess() {
+                imageLoadSuccess()
+            }
 
-            override fun onError(e: java.lang.Exception?) {}
+            override fun onError(e: Exception) {
+                imageLoadFail(e)
+            }
         }
 
         view.loadImageHighQuality(photoUrl, true, placeholder, callback)

@@ -317,8 +317,6 @@ class HudFragment : VglsFragment() {
     }
 
     private fun showSearch() {
-        viewModel.stopHudTimer()
-
         screen.textSearchHint.fadeOutGone()
         screen.editSearchQuery.fadeIn()
 
@@ -386,6 +384,12 @@ class HudFragment : VglsFragment() {
             if (currentSong != null) {
                 getFragmentRouter().showSheetDetail(currentSong.id)
             }
+        }
+
+        if (hudMode == HudMode.REGULAR) {
+            viewModel.startHudTimer()
+        } else {
+            viewModel.stopHudTimer()
         }
 
         val menuItems = TitleBar.getListModels(

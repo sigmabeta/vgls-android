@@ -21,6 +21,7 @@ import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -109,14 +110,22 @@ class ComposerViewModel @AssistedInject constructor(
         songs: Async<List<Song>>
     ): List<ListModel> =
         when (composer) {
-            is Success -> listOf(
-                TitleListModel(
-                    composer().name,
-                    generateSheetCountText(songs),
-                    composer().photoUrl,
-                    R.drawable.placeholder_composer,
+            is Success -> {
+                val spec = PerfSpec.COMPOSER
+
+                perfTracker.onTitleLoaded(spec)
+
+                listOf(
+                    TitleListModel(
+                        composer().name,
+                        generateSheetCountText(songs),
+                        { perfTracker.onTransitionStarted(spec) },
+                        { perfTracker.cancel(spec) },
+                        composer().photoUrl,
+                        R.drawable.placeholder_composer,
+                    )
                 )
-            )
+            }
             is Fail -> createErrorStateListModel(composer.error)
             is Uninitialized, is Loading -> listOf(
                 LoadingTitleListModel()
@@ -152,6 +161,11 @@ class ComposerViewModel @AssistedInject constructor(
                 )
             )
         } else {
+            val spec = PerfSpec.COMPOSER
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
             availableSongs.map {
                 val thumbUrl = Page.generateImageUrl(
                     baseImageUrl,

@@ -21,6 +21,7 @@ import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -109,16 +110,25 @@ class TagValueSongListViewModel @AssistedInject constructor(
         songs: Async<List<Song>>
     ): List<ListModel> =
         when (tagValue) {
-            is Success -> listOf(
-                TitleListModel(
-                    resourceProvider.getString(
-                        R.string.title_tag_value_songs,
-                        tagValue().tagKeyName,
-                        tagValue().name
-                    ),
-                    generateSheetCountText(songs),
+            is Success -> {
+                val spec = PerfSpec.TAG_SONGS
+
+                perfTracker.onTitleLoaded(spec)
+                perfTracker.onTransitionStarted(spec)
+
+                listOf(
+                    TitleListModel(
+                        resourceProvider.getString(
+                            R.string.title_tag_value_songs,
+                            tagValue().tagKeyName,
+                            tagValue().name
+                        ),
+                        generateSheetCountText(songs),
+                        { },
+                        { },
+                    )
                 )
-            )
+            }
             is Fail -> createErrorStateListModel(tagValue.error)
             is Uninitialized, is Loading -> listOf(LoadingTitleListModel())
             else -> createErrorStateListModel(IllegalStateException("Unhandled title state."))
@@ -153,6 +163,11 @@ class TagValueSongListViewModel @AssistedInject constructor(
                 )
             )
         } else {
+            val spec = PerfSpec.TAG_SONGS
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
             availableSongs.map {
                 val thumbUrl = Page.generateImageUrl(
                     baseImageUrl,

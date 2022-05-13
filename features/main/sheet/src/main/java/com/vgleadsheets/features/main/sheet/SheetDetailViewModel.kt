@@ -25,6 +25,7 @@ import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -179,18 +180,25 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     private fun createCtaListModels(song: Async<Song>) = when (song) {
         is Loading, Uninitialized -> createLoadingListModels("Cta")
-        is Fail, is Success -> listOf(
-            CtaListModel(
-                R.drawable.ic_description_24dp,
-                resourceProvider.getString(R.string.cta_view_sheet),
-                ctaHandler
-            ),
-            CtaListModel(
-                R.drawable.ic_play_circle_filled_24,
-                resourceProvider.getString(R.string.cta_youtube),
-                ctaHandler
+        is Fail, is Success -> {
+            val spec = PerfSpec.SHEET
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
+            listOf(
+                CtaListModel(
+                    R.drawable.ic_description_24dp,
+                    resourceProvider.getString(R.string.cta_view_sheet),
+                    ctaHandler
+                ),
+                CtaListModel(
+                    R.drawable.ic_play_circle_filled_24,
+                    resourceProvider.getString(R.string.cta_youtube),
+                    ctaHandler
+                )
             )
-        )
+        }
     }
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) =
@@ -259,10 +267,15 @@ class SheetDetailViewModel @AssistedInject constructor(
                 1
             )
 
+            val spec = PerfSpec.GAME
+            perfTracker.onTitleLoaded(spec)
+
             listOf(
                 TitleListModel(
                     song().name,
                     resourceProvider.getString(R.string.subtitle_pages, pageCount),
+                    { perfTracker.onTransitionStarted(spec) },
+                    { perfTracker.cancel(spec) },
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                 )

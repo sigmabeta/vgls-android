@@ -28,6 +28,7 @@ import com.vgleadsheets.model.jam.SetlistEntry
 import com.vgleadsheets.model.jam.SongHistoryEntry
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -275,6 +276,11 @@ class JamViewModel @AssistedInject constructor(
     ) = if (songHistory.isEmpty()) {
         emptyList()
     } else {
+        val spec = PerfSpec.JAM
+
+        perfTracker.onPartialContentLoad(spec)
+        perfTracker.onFullContentLoad(spec)
+
         listOf(
             SectionHeaderListModel(
                 resourceProvider.getString(R.string.jam_song_history)
@@ -375,12 +381,20 @@ class JamViewModel @AssistedInject constructor(
     private fun createTitleListModel(jam: Async<Jam>) = when (jam) {
         is Loading, Uninitialized -> listOf(LoadingTitleListModel())
         is Fail -> createErrorStateListModel("title", jam.error)
-        is Success -> listOf(
-            TitleListModel(
-                jam().name.toTitleCase(),
-                resourceProvider.getString(R.string.subtitle_jam),
+        is Success -> {
+            val spec = PerfSpec.JAM
+
+            perfTracker.onTitleLoaded(spec)
+
+            listOf(
+                TitleListModel(
+                    jam().name.toTitleCase(),
+                    resourceProvider.getString(R.string.subtitle_jam),
+                    { perfTracker.onTransitionStarted(spec) },
+                    { perfTracker.cancel(spec) },
+                )
             )
-        )
+        }
     }
 
     private fun String.toTitleCase() = this

@@ -67,6 +67,8 @@ class JamListViewModel @AssistedInject constructor(
         return TitleListModel(
             resourceProvider.getString(R.string.title_jams),
             "",
+            {},
+            {}
         )
     }
 

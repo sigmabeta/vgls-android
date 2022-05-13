@@ -116,6 +116,8 @@ class ViewerFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        hudViewModel.setPerfSelectedScreen(getPerfSpec())
+
         val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
         val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
         toolbarItems = view.findViewById(R.id.list_toolbar_items)

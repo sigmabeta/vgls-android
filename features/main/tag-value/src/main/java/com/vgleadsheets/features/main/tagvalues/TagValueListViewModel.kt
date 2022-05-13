@@ -24,6 +24,7 @@ import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -113,12 +114,21 @@ class TagValueListViewModel @AssistedInject constructor(
         tagValues: Async<List<TagValue>>
     ): List<ListModel> =
         when (tagKey) {
-            is Success -> listOf(
-                TitleListModel(
-                    tagKey().name,
-                    generateSheetCountText(tagValues),
+            is Success -> {
+                val spec = PerfSpec.TAG_VALUE
+
+                perfTracker.onTitleLoaded(spec)
+                perfTracker.onTransitionStarted(spec)
+
+                listOf(
+                    TitleListModel(
+                        tagKey().name,
+                        generateSheetCountText(tagValues),
+                        { },
+                        { },
+                    )
                 )
-            )
+            }
             is Fail -> createErrorStateListModel(tagKey.error)
             is Uninitialized, is Loading -> listOf(LoadingTitleListModel())
             else -> createErrorStateListModel(IllegalStateException("Unhandled title state."))
@@ -153,6 +163,11 @@ class TagValueListViewModel @AssistedInject constructor(
                 )
             )
         } else {
+            val spec = PerfSpec.TAG_VALUE
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
             availableTagValues.map {
                 NameCaptionListModel(
                     it.id,

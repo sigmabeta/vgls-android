@@ -53,6 +53,8 @@ class GameListViewModel @AssistedInject constructor(
         return TitleListModel(
             resourceProvider.getString(R.string.app_name),
             resourceProvider.getString(R.string.subtitle_game),
+            {},
+            {}
         )
     }
 
