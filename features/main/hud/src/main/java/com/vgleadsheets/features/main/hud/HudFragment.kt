@@ -398,7 +398,7 @@ class HudFragment : VglsFragment() {
 
         val youtubeSearchClickHandler = {
             if (currentSong != null) {
-                val query = "${currentSong.gameName} - ${currentSong.name}"
+                val query = "${currentSong.gameName} - ${currentSong.name} music"
 
                 val youtubeUrl = getYoutubeSearchUrlForQuery(query)
 

@@ -144,8 +144,6 @@ class ViewerFragment :
             true
         )
 
-        // setUpToolbarItems()
-
         viewModel.selectSubscribe(
             ViewerState::activeJamSheetId,
             deliveryMode = uniqueOnly("sheet")
@@ -279,23 +277,6 @@ class ViewerFragment :
         Timber.v("Clearing screen timer.")
         timers.clear()
     }
-
-    // private fun setUpToolbarItems() {
-    //     val toolbarItems = listOf(
-    //         ToolbarItemListModel(
-    //             getString(R.string.menu_item_label_sheet_detail),
-    //             R.drawable.ic_details_24,
-    //             this
-    //         ),
-    //         ToolbarItemListModel(
-    //             getString(R.string.menu_item_label_youtube),
-    //             R.drawable.ic_play_circle_filled_24,
-    //             this
-    //         )
-    //     )
-    //
-    //     toolbarAdapter.submitList(toolbarItems)
-    // }
 
     private fun setScreenOnLock() {
         Timber.v("Setting screen-on lock.")

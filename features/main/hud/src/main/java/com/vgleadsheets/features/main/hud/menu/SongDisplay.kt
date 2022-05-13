@@ -9,7 +9,7 @@ object SongDisplay {
     fun getListModels(
         currentSong: Song?,
         perfTracker: PerfTracker,
-        clickHandler: () -> Unit,
+        clickHandler: () -> Unit
     ) = if (currentSong != null) {
         listOf(
             IconNameCaptionListModel(
