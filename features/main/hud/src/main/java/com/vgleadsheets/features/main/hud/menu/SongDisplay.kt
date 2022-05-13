@@ -1,5 +1,6 @@
 package com.vgleadsheets.features.main.hud.menu
 
+
 import com.vgleadsheets.components.IconNameCaptionListModel
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.song.Song
@@ -9,7 +10,7 @@ object SongDisplay {
     fun getListModels(
         currentSong: Song?,
         perfTracker: PerfTracker,
-        clickHandler: () -> Unit
+        clickHandler: () -> Unit,
     ) = if (currentSong != null) {
         listOf(
             IconNameCaptionListModel(
