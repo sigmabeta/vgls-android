@@ -6,7 +6,7 @@ data class IconNameCaptionListModel(
     override val dataId: Long,
     val name: String,
     val caption: String,
-    val eikonId: Int,
+    val iconId: Int,
     val screenName: String,
     val tracker: PerfTracker,
     val clickHandler: () -> Unit

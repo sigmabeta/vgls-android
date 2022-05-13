@@ -41,10 +41,12 @@ import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
 import com.vgleadsheets.features.main.hud.menu.SearchIcon
 import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
 import com.vgleadsheets.features.main.hud.menu.Shadow
+import com.vgleadsheets.features.main.hud.menu.SheetOptions
 import com.vgleadsheets.features.main.hud.menu.SongDisplay
 import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.features.main.hud.perf.PerfViewScreenStatus
 import com.vgleadsheets.features.main.hud.perf.PerfViewStatus
+import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfStage
@@ -388,9 +390,19 @@ class HudFragment : VglsFragment() {
             partsExpanded
         )
 
-        val songDisplayClickHandler = {
+        val songDetailClickHandler = {
             if (currentSong != null) {
                 getFragmentRouter().showSheetDetail(currentSong.id)
+            }
+        }
+
+        val youtubeSearchClickHandler = {
+            if (currentSong != null) {
+                val query = "${currentSong.gameName} - ${currentSong.name} music"
+
+                val youtubeUrl = getYoutubeSearchUrlForQuery(query)
+
+                getFragmentRouter().goToWebUrl(youtubeUrl)
             }
         }
 
@@ -404,7 +416,14 @@ class HudFragment : VglsFragment() {
         ) + SongDisplay.getListModels(
             currentSong,
             perfTracker,
-            songDisplayClickHandler
+            songDetailClickHandler,
+        ) + SheetOptions.getListModels(
+            !partsExpanded && !menuExpanded,
+            currentSong,
+            perfTracker,
+            songDetailClickHandler,
+            youtubeSearchClickHandler,
+            resources
         ) + PartPicker.getListModels(
             partsExpanded,
             showVocalsOption,
