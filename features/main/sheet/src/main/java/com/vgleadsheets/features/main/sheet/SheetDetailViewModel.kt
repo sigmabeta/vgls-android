@@ -267,7 +267,7 @@ class SheetDetailViewModel @AssistedInject constructor(
                 1
             )
 
-            val spec = PerfSpec.GAME
+            val spec = PerfSpec.SHEET
             perfTracker.onTitleLoaded(spec)
 
             listOf(
@@ -337,7 +337,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         override fun create(
             viewModelContext: ViewModelContext,
             state: SheetDetailState
-        ): SheetDetailViewModel? {
+        ): SheetDetailViewModel {
             val fragment: SheetDetailFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.sheetViewModelFactory.create(state, fragment.getPerfScreenName())

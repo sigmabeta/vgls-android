@@ -19,6 +19,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.parts.Part
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
@@ -107,6 +108,11 @@ class SettingsViewModel @AssistedInject constructor(
     }
 
     private fun createSettingListModels(settings: List<Setting>): List<ListModel> {
+        val spec = PerfSpec.SETTINGS
+
+        perfTracker.onPartialContentLoad(spec)
+        perfTracker.onFullContentLoad(spec)
+
         val sheetsSection = createSection(settings, HEADER_ID_SHEET)
         val miscSection = createMiscSection(settings)
 
@@ -198,7 +204,7 @@ class SettingsViewModel @AssistedInject constructor(
         override fun create(
             viewModelContext: ViewModelContext,
             state: SettingsState
-        ): SettingsViewModel? {
+        ): SettingsViewModel {
             val fragment: SettingsFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.settingsViewModelFactory.create(state, fragment.getPerfScreenName())
