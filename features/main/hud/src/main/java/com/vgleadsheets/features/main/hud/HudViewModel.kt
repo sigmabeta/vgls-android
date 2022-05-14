@@ -83,7 +83,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun refresh() = withState {
         if (it.digest !is Loading) {
-            repository.forceRefresh()
+            repository.refresh()
                 .execute { digest ->
                     copy(digest = digest)
                 }
@@ -215,11 +215,18 @@ class HudViewModel @AssistedInject constructor(
             copy(updateTime = newTime)
         }
 
-    private fun checkForUpdate() = repository.checkForUpdate()
+    private fun checkForUpdate() = repository.checkShouldAutoUpdate()
         .toObservable()
-        .execute {
-            copy(digest = it)
-        }
+        .subscribe(
+            { shouldRefresh ->
+                if (shouldRefresh) {
+                    refresh()
+                }
+            },
+            {
+                Timber.e("Failed to check update time: ${it.message}")
+            }
+        )
 
     private fun subscribeToPerfUpdates() {
         perfTracker.getEventStream()
@@ -259,7 +266,7 @@ class HudViewModel @AssistedInject constructor(
     companion object : MvRxViewModelFactory<HudViewModel, HudState> {
         const val TIMEOUT_HUD_VISIBLE = 3000L
 
-        override fun create(viewModelContext: ViewModelContext, state: HudState): HudViewModel? {
+        override fun create(viewModelContext: ViewModelContext, state: HudState): HudViewModel {
             val activity =
                 (viewModelContext as ActivityViewModelContext).activity<FragmentActivity>()
             val provider = activity as HudViewModelFactoryProvider

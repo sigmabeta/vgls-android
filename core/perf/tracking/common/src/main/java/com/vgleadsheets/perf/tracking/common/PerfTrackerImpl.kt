@@ -108,7 +108,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     }
 
     private fun publishState() {
-        Timber.i("Publishing trace.")
+        // Timber.i("Publishing trace.")
         eventSink.onNext(
             PerfState(
                 screens.toMap()

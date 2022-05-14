@@ -16,8 +16,8 @@ import io.reactivex.Single
 
 @Suppress("TooManyFunctions")
 interface Repository {
-    fun checkForUpdate(): Single<ApiDigest>
-    fun forceRefresh(): Single<ApiDigest>
+    fun checkShouldAutoUpdate(): Single<Boolean>
+    fun refresh(): Single<ApiDigest>
 
     fun refreshJamStateContinuously(name: String): Observable<ApiJam>
     fun refreshJamState(name: String): Single<ApiJam>

@@ -56,24 +56,18 @@ class RealRepository constructor(
     private val setlistEntryDao = database.setlistEntryDao()
     private val songHistoryEntryDao = database.songHistoryEntryDao()
 
-    override fun checkForUpdate(): Single<ApiDigest> {
-        return getLastCheckTime()
-            .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
-            .flatMapSingle { getLastApiUpdateTime() }
-            .zipWith<Time, Long>(
-                getLastDbUpdateTimeOnce(),
-                BiFunction { apiTime, dbTime ->
-                    apiTime.timeMs - dbTime.timeMs
-                }
-            )
-            .filter { diff ->
-                diff > 0
-            }
-            .doOnSuccess { tracker.logAutoRefresh() }
-            .flatMapSingle { getDigest() }
-    }
+    override fun checkShouldAutoUpdate() = getLastCheckTime()
+        .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
+        .flatMapSingle { getLastApiUpdateTime() }
+        .zipWith<Time, Long>(
+            getLastDbUpdateTimeOnce()
+        ) { apiTime, dbTime ->
+            apiTime.timeMs - dbTime.timeMs
+        }
+        .doOnSuccess { tracker.logAutoRefresh() }
+        .map { diff -> diff > 0L }
 
-    override fun forceRefresh(): Single<ApiDigest> = getDigest()
+    override fun refresh() = getDigest()
 
     override fun observeJamState(id: Long) = jamDao
         .getJam(id)

@@ -219,7 +219,7 @@ class HudFragment : VglsFragment() {
         }
 
         if (state.digest is Loading) {
-            // perfTracker.cancelAll()
+            perfTracker.cancelAll()
         }
     }
 
