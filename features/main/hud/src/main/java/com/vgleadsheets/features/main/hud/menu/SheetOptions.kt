@@ -4,7 +4,6 @@ import android.content.res.Resources
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.PerfTracker
 
 object SheetOptions {
     @Suppress("LongParameterList")

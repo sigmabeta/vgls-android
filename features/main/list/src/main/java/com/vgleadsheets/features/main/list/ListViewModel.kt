@@ -77,7 +77,6 @@ abstract class ListViewModel<DataType, StateType : ListState<DataType>> construc
 
     protected open val showDefaultEmptyState = true
 
-
     abstract fun createTitleListModel(): TitleListModel
 
     abstract fun createSuccessListModels(

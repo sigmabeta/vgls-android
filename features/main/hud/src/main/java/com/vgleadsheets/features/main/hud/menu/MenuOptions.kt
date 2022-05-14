@@ -87,7 +87,8 @@ object MenuOptions {
                 resources.getString(R.string.label_random),
                 null,
                 R.drawable.ic_shuffle_24dp,
-                { onRandomClick() })
+                { onRandomClick() }
+            )
         },
         MenuItemListModel(
             resources.getString(R.string.label_jams),

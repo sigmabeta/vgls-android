@@ -12,8 +12,8 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 class UiTestApplication : DaggerApplication(), HasAndroidInjector {
     lateinit var testComponent: UiTestAppComponent

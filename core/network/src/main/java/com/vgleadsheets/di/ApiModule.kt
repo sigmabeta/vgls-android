@@ -5,13 +5,13 @@ import com.vgleadsheets.network.StringGenerator
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides
-import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.Random
+import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 class ApiModule {

@@ -12,18 +12,18 @@ import com.vgleadsheets.model.time.ApiTime
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.util.EmptyStackException
-import java.util.Random
-import java.util.Stack
-import javax.inject.Named
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.util.EmptyStackException
+import java.util.Random
+import java.util.Stack
+import javax.inject.Named
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
 class MockVglsApi(
