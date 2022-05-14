@@ -228,7 +228,8 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
                 val notClearedTraces = getNotClearedTraces(screen)
 
                 perfTrackingBackend.error(
-                    "Screen ${screen.name} waited $TIMEOUT_SCREEN_LOAD ms, but still missing events for: $notClearedTraces"
+                    "Screen ${screen.name} waited $TIMEOUT_SCREEN_LOAD ms, " +
+                        "but still missing events for: $notClearedTraces"
                 )
             }
         failureTimers[spec] = timer

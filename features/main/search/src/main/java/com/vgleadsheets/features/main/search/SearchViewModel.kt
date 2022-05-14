@@ -38,7 +38,6 @@ class SearchViewModel @AssistedInject constructor(
     @Named("VglsImageUrl") val baseImageUrl: String,
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
-    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<SearchData, SearchState>(initialState) {
     private val searchOperations = CompositeDisposable()
 
@@ -430,7 +429,7 @@ class SearchViewModel @AssistedInject constructor(
         override fun create(
             viewModelContext: ViewModelContext,
             state: SearchState
-        ): SearchViewModel? {
+        ): SearchViewModel {
             val fragment: SearchFragment = (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.searchViewModelFactory.create(state, fragment.getPerfScreenName())
         }

@@ -79,8 +79,8 @@ object PerfDisplay {
         }
 
     private fun noopClicker() = object : LabelValueListModel.EventHandler {
-        override fun onClicked(clicked: LabelValueListModel) {}
+        override fun onClicked(clicked: LabelValueListModel) = Unit
 
-        override fun clearClicked() {}
+        override fun clearClicked() = Unit
     }
 }

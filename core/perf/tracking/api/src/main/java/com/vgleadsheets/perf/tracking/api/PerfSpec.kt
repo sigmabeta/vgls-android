@@ -1,5 +1,6 @@
 package com.vgleadsheets.perf.tracking.api
 
+@Suppress("MagicNumber")
 enum class PerfSpec(val completionTargetTime: Long) {
     ABOUT(TARGET_COMPLETION_NONE_MS),
     COMPOSER(1000L),
@@ -21,7 +22,8 @@ enum class PerfSpec(val completionTargetTime: Long) {
     VIEWER(1000L);
 
     companion object {
-        private const val MS_PER_FRAME = 16.666667f
+        // TODO Use these later.
+        /*private const val MS_PER_FRAME = 16.666667f
 
         private const val TARGET_VIEW_CREATED_FRAMES = 4
         private const val TARGET_TITLE_LOADED_FRAMES = 6
@@ -35,7 +37,7 @@ enum class PerfSpec(val completionTargetTime: Long) {
         private const val TARGET_TRANSITION_START_MS =
             (MS_PER_FRAME * TARGET_TRANSITION_START_FRAMES).toLong()
         private const val TARGET_PARTIAL_LOAD_MS =
-            (MS_PER_FRAME * TARGET_PARTIAL_LOAD_FRAMES).toLong()
+            (MS_PER_FRAME * TARGET_PARTIAL_LOAD_FRAMES).toLong()*/
     }
 }
 

@@ -36,7 +36,6 @@ class DebugViewModel @AssistedInject constructor(
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
     private val repository: Repository,
-    private val perfTracker: PerfTracker
 ) : AsyncListViewModel<DebugData, DebugState>(initialState),
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler,
@@ -255,7 +254,7 @@ class DebugViewModel @AssistedInject constructor(
         override fun create(
             viewModelContext: ViewModelContext,
             state: DebugState
-        ): DebugViewModel? {
+        ): DebugViewModel {
             val fragment: DebugFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.debugViewModelFactory.create(state, fragment.getPerfScreenName())
