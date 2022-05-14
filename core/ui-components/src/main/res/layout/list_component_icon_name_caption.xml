@@ -25,7 +25,7 @@
             android:importantForAccessibility="no"
             android:padding="@dimen/icon_padding"
             app:tint="@android:color/tertiary_text_dark"
-            app:drawable="@{toBind.eikonId}"
+            app:drawable="@{toBind.iconId}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -15,6 +15,9 @@
 
     <string name="subtitle_menu">…for %1$s</string>
 
+    <string name="label_song_details">Show Details</string>
+    <string name="label_youtube">Find On YouTube</string>
+
     <string name="date_never">Never</string>
     <string name="label_settings">Settings</string>
     <string name="jam_cancelled">No longer following Jam.</string>
