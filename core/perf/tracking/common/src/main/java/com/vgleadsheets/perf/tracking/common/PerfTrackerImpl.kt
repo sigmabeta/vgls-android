@@ -9,8 +9,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import timber.log.Timber
 
 @SuppressWarnings("TooManyFunctions")
 class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : PerfTracker {

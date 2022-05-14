@@ -12,10 +12,10 @@ import com.vgleadsheets.storage.Storage
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
-import timber.log.Timber
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
+import retrofit2.HttpException
+import timber.log.Timber
 
 class ViewerViewModel @AssistedInject constructor(
     @Assisted initialState: ViewerState,

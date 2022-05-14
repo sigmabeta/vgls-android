@@ -1,7 +1,8 @@
 package com.vgleadsheets.network
 
 import android.annotation.SuppressLint
-import java.util.*
+import java.util.Locale
+import java.util.Random
 import javax.inject.Inject
 
 class StringGenerator @Inject constructor(private val random: Random) {
