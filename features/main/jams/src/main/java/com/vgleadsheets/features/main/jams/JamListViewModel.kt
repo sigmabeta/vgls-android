@@ -17,6 +17,7 @@ import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -29,10 +30,9 @@ class JamListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Jam, JamListState>(initialState, screenName, perfTracker),
+) : ListViewModel<Jam, JamListState>(initialState),
     CtaListModel.EventHandler,
-    NameCaptionListModel.EventHandler,
-    EmptyStateListModel.EventHandler {
+    NameCaptionListModel.EventHandler {
     init {
         fetchJams()
     }
@@ -58,16 +58,19 @@ class JamListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun onEmptyStateLoadComplete(screenName: String) {
-        perfTracker.cancel(screenName)
-    }
+    override fun createTitleListModel(): TitleListModel {
+        val spec = PerfSpec.JAMS
 
-    override fun createTitleListModel() = TitleListModel(
-        resourceProvider.getString(R.string.title_jams),
-        "",
-        screenName = screenName,
-        tracker = perfTracker
-    )
+        perfTracker.onTitleLoaded(spec)
+        perfTracker.onTransitionStarted(spec)
+
+        return TitleListModel(
+            resourceProvider.getString(R.string.title_jams),
+            "",
+            {},
+            {}
+        )
+    }
 
     override fun defaultLoadingListModel(index: Int): ListModel =
         LoadingNameCaptionListModel("allData", index)
@@ -75,8 +78,6 @@ class JamListViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
         "Unknown error occurred.",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -89,19 +90,20 @@ class JamListViewModel @AssistedInject constructor(
             EmptyStateListModel(
                 R.drawable.ic_list_black_24dp,
                 "You haven't followed any jams. Click above to search for one.",
-                screenName,
-                this
             )
         )
     } else {
+        val spec = PerfSpec.JAMS
+
+        perfTracker.onPartialContentLoad(spec)
+        perfTracker.onFullContentLoad(spec)
+
         data.map {
             NameCaptionListModel(
                 it.id,
                 it.name.toTitleCase(),
                 generateSubtitleText(it.currentSong),
                 this,
-                screenName = screenName,
-                tracker = perfTracker
             )
         }
     }

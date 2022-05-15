@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.composers
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.ListFragment
 import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -12,7 +13,7 @@ class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
 
     override fun getTrackingScreen() = TrackingScreen.LIST_COMPOSER
 
-    override fun getFullLoadTargetTime() = 5000L
+    override fun getPerfSpec() = PerfSpec.COMPOSERS
 
     override val viewModel: ComposerListViewModel by fragmentViewModel()
 

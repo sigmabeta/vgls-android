@@ -21,6 +21,7 @@ import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -34,11 +35,7 @@ class TagValueSongListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<TagValueSongListData, TagValueSongListState>(
-    initialState,
-    screenName,
-    perfTracker
-),
+) : AsyncListViewModel<TagValueSongListData, TagValueSongListState>(initialState),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchTagValue()
@@ -60,8 +57,6 @@ class TagValueSongListViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No songs found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -115,18 +110,25 @@ class TagValueSongListViewModel @AssistedInject constructor(
         songs: Async<List<Song>>
     ): List<ListModel> =
         when (tagValue) {
-            is Success -> listOf(
-                TitleListModel(
-                    resourceProvider.getString(
-                        R.string.title_tag_value_songs,
-                        tagValue().tagKeyName,
-                        tagValue().name
-                    ),
-                    generateSheetCountText(songs),
-                    screenName = screenName,
-                    tracker = perfTracker
+            is Success -> {
+                val spec = PerfSpec.TAG_SONGS
+
+                perfTracker.onTitleLoaded(spec)
+                perfTracker.onTransitionStarted(spec)
+
+                listOf(
+                    TitleListModel(
+                        resourceProvider.getString(
+                            R.string.title_tag_value_songs,
+                            tagValue().tagKeyName,
+                            tagValue().name
+                        ),
+                        generateSheetCountText(songs),
+                        { },
+                        { },
+                    )
                 )
-            )
+            }
             is Fail -> createErrorStateListModel(tagValue.error)
             is Uninitialized, is Loading -> listOf(LoadingTitleListModel())
             else -> createErrorStateListModel(IllegalStateException("Unhandled title state."))
@@ -158,11 +160,14 @@ class TagValueSongListViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No songs found with a $selectedPart part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
+            val spec = PerfSpec.TAG_SONGS
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
             availableSongs.map {
                 val thumbUrl = Page.generateImageUrl(
                     baseImageUrl,
@@ -178,8 +183,6 @@ class TagValueSongListViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this@TagValueSongListViewModel,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
         }

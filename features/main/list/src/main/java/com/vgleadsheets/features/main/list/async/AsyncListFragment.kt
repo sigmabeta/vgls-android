@@ -52,6 +52,8 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
             content.setListsSpecialInsets(topOffset, bottomOffset)
         }
 
+        hudViewModel.setPerfSelectedScreen(getPerfSpec())
+
         hudViewModel.alwaysShowBack()
 
         hudViewModel.selectSubscribe(HudState::digest) {

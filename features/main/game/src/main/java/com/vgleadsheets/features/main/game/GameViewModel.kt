@@ -21,6 +21,7 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -34,7 +35,7 @@ class GameViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<GameData, GameState>(initialState, screenName, perfTracker),
+) : AsyncListViewModel<GameData, GameState>(initialState),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchGame()
@@ -56,8 +57,6 @@ class GameViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No songs found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -106,23 +105,31 @@ class GameViewModel @AssistedInject constructor(
             }
     }
 
-    private fun createTitleListModel(game: Async<Game>, songs: Async<List<Song>>): List<ListModel> =
-        when (game) {
-            is Success -> listOf(
+    private fun createTitleListModel(
+        game: Async<Game>,
+        songs: Async<List<Song>>
+    ) = when (game) {
+        is Success -> {
+            val spec = PerfSpec.GAME
+
+            perfTracker.onTitleLoaded(spec)
+
+            listOf(
                 TitleListModel(
                     game().name,
                     generateSheetCountText(songs),
+                    { perfTracker.onTransitionStarted(spec) },
+                    { perfTracker.cancel(spec) },
                     game().photoUrl,
                     R.drawable.placeholder_game,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             )
-            is Fail -> createErrorStateListModel(game.error)
-            is Uninitialized, is Loading -> listOf(
-                LoadingTitleListModel()
-            )
         }
+        is Fail -> createErrorStateListModel(game.error)
+        is Uninitialized, is Loading -> listOf(
+            LoadingTitleListModel()
+        )
+    }
 
     private fun generateSheetCountText(
         songs: Async<List<Song>>
@@ -150,11 +157,14 @@ class GameViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
+            val spec = PerfSpec.GAME
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
             availableSongs.map {
                 val thumbUrl = Page.generateImageUrl(
                     baseImageUrl,
@@ -170,8 +180,6 @@ class GameViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this@GameViewModel,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
         }

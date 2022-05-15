@@ -15,6 +15,7 @@ import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -25,7 +26,7 @@ class TagKeyViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<TagKey, TagKeyState>(initialState, screenName, perfTracker),
+) : ListViewModel<TagKey, TagKeyState>(initialState),
     NameCaptionListModel.EventHandler {
     init {
         fetchTagKeys()
@@ -43,12 +44,19 @@ class TagKeyViewModel @AssistedInject constructor(
         )
     }
 
-    override fun createTitleListModel() = TitleListModel(
-        resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_tags),
-        screenName = screenName,
-        tracker = perfTracker
-    )
+    override fun createTitleListModel(): TitleListModel {
+        val spec = PerfSpec.TAG_KEY
+
+        perfTracker.onTitleLoaded(spec)
+        perfTracker.onTransitionStarted(spec)
+
+        return TitleListModel(
+            resourceProvider.getString(R.string.app_name),
+            resourceProvider.getString(R.string.subtitle_tags),
+            {},
+            {}
+        )
+    }
 
     override fun defaultLoadingListModel(index: Int): ListModel =
         LoadingNameCaptionListModel("allData", index)
@@ -56,8 +64,6 @@ class TagKeyViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No tags found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -65,15 +71,20 @@ class TagKeyViewModel @AssistedInject constructor(
         updateTime: Async<*>,
         digest: Async<*>,
         selectedPart: Part
-    ) = data.map {
-        NameCaptionListModel(
-            it.id,
-            it.name,
-            generateSubtitleText(it.values),
-            this@TagKeyViewModel,
-            screenName = screenName,
-            tracker = perfTracker
-        )
+    ): List<NameCaptionListModel> {
+        val spec = PerfSpec.TAG_KEY
+
+        perfTracker.onPartialContentLoad(spec)
+        perfTracker.onFullContentLoad(spec)
+
+        return data.map {
+            NameCaptionListModel(
+                it.id,
+                it.name,
+                generateSubtitleText(it.values),
+                this@TagKeyViewModel,
+            )
+        }
     }
 
     private fun fetchTagKeys() {

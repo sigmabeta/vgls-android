@@ -15,6 +15,7 @@ import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -27,7 +28,7 @@ class SongListViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : ListViewModel<Song, SongListState>(initialState, screenName, perfTracker),
+) : ListViewModel<Song, SongListState>(initialState),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchSongs()
@@ -45,18 +46,23 @@ class SongListViewModel @AssistedInject constructor(
         )
     }
 
-    override fun createTitleListModel() = TitleListModel(
-        resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_all_sheets),
-        screenName = screenName,
-        tracker = perfTracker
-    )
+    override fun createTitleListModel(): TitleListModel {
+        val spec = PerfSpec.SONGS
+
+        perfTracker.onTitleLoaded(spec)
+        perfTracker.onTransitionStarted(spec)
+
+        return TitleListModel(
+            resourceProvider.getString(R.string.app_name),
+            resourceProvider.getString(R.string.subtitle_all_sheets),
+            {},
+            {}
+        )
+    }
 
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No songs found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -72,11 +78,14 @@ class SongListViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
+            val spec = PerfSpec.SONGS
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
             availableSongs.map {
                 val thumbUrl = Page.generateImageUrl(
                     baseImageUrl,
@@ -92,8 +101,6 @@ class SongListViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
         }

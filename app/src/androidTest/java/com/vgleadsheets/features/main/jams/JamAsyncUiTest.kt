@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.viewer.viewer
-import java.util.*
+import java.util.Locale
 import org.junit.Test
 
 class JamAsyncUiTest : ListUiTest() {

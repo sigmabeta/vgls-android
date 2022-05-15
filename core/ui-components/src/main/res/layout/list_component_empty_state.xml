@@ -10,15 +10,12 @@
             type="com.vgleadsheets.components.EmptyStateListModel" />
     </data>
 
-
     <LinearLayout
         android:id="@+id/component_empty_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:screenName="@{toBind.screenName}"
-        app:handler="@{toBind.handler}">
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="wrap_content"

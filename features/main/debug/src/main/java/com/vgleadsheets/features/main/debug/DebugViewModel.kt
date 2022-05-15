@@ -19,7 +19,6 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
@@ -36,8 +35,7 @@ class DebugViewModel @AssistedInject constructor(
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
     private val repository: Repository,
-    private val perfTracker: PerfTracker
-) : AsyncListViewModel<DebugData, DebugState>(initialState, screenName, perfTracker),
+) : AsyncListViewModel<DebugData, DebugState>(initialState),
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler,
     CheckableListModel.EventHandler {
@@ -59,11 +57,6 @@ class DebugViewModel @AssistedInject constructor(
         setSetting(clicked.settingId, !clicked.checked)
     }
 
-    override fun onCheckboxLoadComplete(screenName: String) {
-        perfTracker.onPartialContentLoad(screenName)
-        perfTracker.onFullContentLoad(screenName)
-    }
-
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         setDropdownSetting(settingId, selectedPosition)
     }
@@ -71,10 +64,6 @@ class DebugViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No settings found at all. What's going on here?",
-        "",
-        object : EmptyStateListModel.EventHandler {
-            override fun onEmptyStateLoadComplete(screenName: String) = Unit
-        }
     )
 
     override fun createSuccessListModels(
@@ -142,7 +131,6 @@ class DebugViewModel @AssistedInject constructor(
                         setting.settingId,
                         resourceProvider.getString(setting.labelStringId),
                         setting.value,
-                        screenName,
                         this
                     )
                     is DropdownSetting -> DropdownSettingListModel(
@@ -265,7 +253,7 @@ class DebugViewModel @AssistedInject constructor(
         override fun create(
             viewModelContext: ViewModelContext,
             state: DebugState
-        ): DebugViewModel? {
+        ): DebugViewModel {
             val fragment: DebugFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.debugViewModelFactory.create(state, fragment.getPerfScreenName())

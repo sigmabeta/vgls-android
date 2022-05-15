@@ -60,7 +60,9 @@
             android:text="@{toBind.caption}"
             android:textColor="@color/hint_text"
             android:textStyle="italic"
-            android:visibility="@{toBind.caption == null  ? View.GONE : View.VISIBLE}"
+            android:visibility="gone"
             tools:text="Updated Sept 27, 2019" />
+
+
     </LinearLayout>
 </layout>

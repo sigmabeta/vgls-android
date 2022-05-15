@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
 
     override fun getTrackingScreen() = TrackingScreen.SETTINGS
 
-    override fun getFullLoadTargetTime() = 500L
+    override fun getPerfSpec() = PerfSpec.SETTINGS
 
     override val viewModel: SettingsViewModel by fragmentViewModel()
 
@@ -22,8 +23,8 @@ class SettingsFragment : AsyncListFragment<SettingsData, SettingsState>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        perfTracker.onTransitionStarted(getPerfScreenName())
-        perfTracker.onTitleLoaded(getPerfScreenName())
+        perfTracker.onTransitionStarted(getPerfSpec())
+        perfTracker.onTitleLoaded(getPerfSpec())
     }
 
     override fun subscribeToViewEvents() {

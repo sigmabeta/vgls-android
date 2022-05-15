@@ -25,6 +25,7 @@ import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -38,7 +39,7 @@ class SheetDetailViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState, screenName, perfTracker) {
+) : AsyncListViewModel<SheetDetailData, SheetDetailState>(initialState) {
     init {
         fetchSheetDetail()
     }
@@ -57,8 +58,6 @@ class SheetDetailViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_list_black_24dp,
         "Sheet not found. Check your internet connection?.",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -94,14 +93,12 @@ class SheetDetailViewModel @AssistedInject constructor(
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_composer),
                 value,
-                screenName,
                 composerHandler,
                 composerId
             ),
             LabelValueListModel(
                 resourceProvider.getString(R.string.label_detail_game),
                 song.gameName,
-                screenName,
                 gameHandler,
                 song.gameId
             )
@@ -152,7 +149,6 @@ class SheetDetailViewModel @AssistedInject constructor(
                 LabelRatingStarListModel(
                     it.tagKeyName,
                     valueAsNumber,
-                    screenName,
                     ratingStarHandler,
                     it.id
                 )
@@ -160,7 +156,6 @@ class SheetDetailViewModel @AssistedInject constructor(
                 LabelValueListModel(
                     it.tagKeyName,
                     it.name,
-                    screenName,
                     tagValueHandler,
                     it.id
                 )
@@ -185,18 +180,25 @@ class SheetDetailViewModel @AssistedInject constructor(
 
     private fun createCtaListModels(song: Async<Song>) = when (song) {
         is Loading, Uninitialized -> createLoadingListModels("Cta")
-        is Fail, is Success -> listOf(
-            CtaListModel(
-                R.drawable.ic_description_24dp,
-                resourceProvider.getString(R.string.cta_view_sheet),
-                ctaHandler
-            ),
-            CtaListModel(
-                R.drawable.ic_play_circle_filled_24,
-                resourceProvider.getString(R.string.cta_youtube),
-                ctaHandler
+        is Fail, is Success -> {
+            val spec = PerfSpec.SHEET
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
+            listOf(
+                CtaListModel(
+                    R.drawable.ic_description_24dp,
+                    resourceProvider.getString(R.string.cta_view_sheet),
+                    ctaHandler
+                ),
+                CtaListModel(
+                    R.drawable.ic_play_circle_filled_24,
+                    resourceProvider.getString(R.string.cta_youtube),
+                    ctaHandler
+                )
             )
-        )
+        }
     }
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) =
@@ -204,8 +206,6 @@ class SheetDetailViewModel @AssistedInject constructor(
             ErrorStateListModel(
                 failedOperationName,
                 error.message ?: "Unknown Error",
-                screenName,
-                cancelPerfOnErrorState
             )
         )
 
@@ -267,14 +267,17 @@ class SheetDetailViewModel @AssistedInject constructor(
                 1
             )
 
+            val spec = PerfSpec.SHEET
+            perfTracker.onTitleLoaded(spec)
+
             listOf(
                 TitleListModel(
                     song().name,
                     resourceProvider.getString(R.string.subtitle_pages, pageCount),
+                    { perfTracker.onTransitionStarted(spec) },
+                    { perfTracker.cancel(spec) },
                     thumbUrl,
                     R.drawable.placeholder_sheet,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             )
         }
@@ -286,10 +289,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedComposerModel = null) }
-
-        override fun onLabelValueLoaded(screenName: String) {
-            perfTracker.onPartialContentLoad(screenName)
-        }
     }
 
     private val gameHandler = object : LabelValueListModel.EventHandler {
@@ -298,8 +297,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedGameModel = null) }
-
-        override fun onLabelValueLoaded(screenName: String) = Unit
     }
 
     private val ctaHandler = object : CtaListModel.EventHandler {
@@ -316,8 +313,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedTagValueModel = null) }
-
-        override fun onLabelValueLoaded(screenName: String) = Unit
     }
 
     private val ratingStarHandler = object : LabelRatingStarListModel.EventHandler {
@@ -326,10 +321,6 @@ class SheetDetailViewModel @AssistedInject constructor(
         }
 
         override fun clearClicked() = setState { copy(clickedRatingStarModel = null) }
-
-        override fun onRatingStarsLoaded(screenName: String) {
-            perfTracker.onFullContentLoad(screenName)
-        }
     }
 
     @AssistedInject.Factory
@@ -346,7 +337,7 @@ class SheetDetailViewModel @AssistedInject constructor(
         override fun create(
             viewModelContext: ViewModelContext,
             state: SheetDetailState
-        ): SheetDetailViewModel? {
+        ): SheetDetailViewModel {
             val fragment: SheetDetailFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.sheetViewModelFactory.create(state, fragment.getPerfScreenName())

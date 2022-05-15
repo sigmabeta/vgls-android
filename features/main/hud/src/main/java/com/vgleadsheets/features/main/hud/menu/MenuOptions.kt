@@ -8,7 +8,6 @@ import com.vgleadsheets.components.MenuLoadingItemListModel
 import com.vgleadsheets.features.main.hud.BuildConfig
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.perf.tracking.api.PerfTracker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -24,8 +23,8 @@ object MenuOptions {
         onRandomClick: () -> Unit,
         onRefreshClick: () -> Unit,
         onDebugClick: () -> Unit,
+        onPerfClick: () -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker
     ) = if (expanded) {
         getFullOptionsList(
             randoming,
@@ -35,8 +34,8 @@ object MenuOptions {
             onRandomClick,
             onRefreshClick,
             onDebugClick,
+            onPerfClick,
             resources,
-            perfTracker
         )
     } else {
         emptyList()
@@ -51,99 +50,87 @@ object MenuOptions {
         onRandomClick: () -> Unit,
         onRefreshClick: () -> Unit,
         onDebugClick: () -> Unit,
+        onPerfClick: () -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker,
     ) = listOf(
         MenuItemListModel(
             resources.getString(R.string.label_by_game),
             null,
             R.drawable.ic_album_24dp,
-            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_GAME) },
-            "",
-            perfTracker
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_GAME) }
         ),
         MenuItemListModel(
             resources.getString(R.string.label_by_composer),
             null,
             R.drawable.ic_person_24dp,
-            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER) },
-            "",
-            perfTracker
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER) }
         ),
         MenuItemListModel(
             resources.getString(R.string.label_by_tag),
             null,
             R.drawable.ic_tag_black_24dp,
-            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_TAG) },
-            "",
-            perfTracker
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_TAG) }
         ),
         MenuItemListModel(
             resources.getString(R.string.label_all_sheets),
             null,
             R.drawable.ic_description_24dp,
-            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_SONG) },
-            "",
-            perfTracker
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_SONG) }
         ),
         if (randoming) {
             MenuLoadingItemListModel(
                 resources.getString(R.string.label_random_loading),
                 R.drawable.ic_shuffle_24dp,
-                "",
-                perfTracker
             )
         } else {
             MenuItemListModel(
                 resources.getString(R.string.label_random),
                 null,
                 R.drawable.ic_shuffle_24dp,
-                { onRandomClick() },
-                "",
-                perfTracker
+                { onRandomClick() }
             )
         },
         MenuItemListModel(
             resources.getString(R.string.label_jams),
             null,
             R.drawable.ic_queue_music_black_24dp,
-            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_JAM) },
-            "",
-            perfTracker
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_JAM) }
         ),
+
         MenuItemListModel(
             resources.getString(R.string.label_settings),
             null,
             R.drawable.ic_settings_black_24dp,
-            { onScreenLinkClick(HudFragment.MODAL_SCREEN_ID_SETTINGS) },
-            "",
-            perfTracker
+            { onScreenLinkClick(HudFragment.MODAL_SCREEN_ID_SETTINGS) }
         )
     ) + getRefreshOptionListModels(
         refreshing,
         updateTime,
         onRefreshClick,
         resources,
-        perfTracker
     ) + getDebugScreenListModels(
         onDebugClick,
+        onPerfClick,
         resources,
-        perfTracker
     )
 
     private fun getDebugScreenListModels(
         onDebugClick: () -> Unit,
+        onPerfClick: () -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker
     ) = if (BuildConfig.DEBUG) {
         listOf(
+            MenuItemListModel(
+                resources.getString(R.string.label_perf),
+                null,
+                R.drawable.ic_baseline_speed_24,
+                onPerfClick,
+            ),
             MenuItemListModel(
                 resources.getString(R.string.label_debug),
                 null,
                 R.drawable.ic_baseline_warning_24,
                 onDebugClick,
-                "",
-                perfTracker
             )
         )
     } else {
@@ -155,16 +142,13 @@ object MenuOptions {
         updateTime: Async<Long>,
         onRefreshClick: () -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker
     ) = if (!refreshing) {
         listOf(
             MenuItemListModel(
                 resources.getString(R.string.label_refresh),
                 resources.getUpdateTimeString(updateTime),
                 R.drawable.ic_refresh_24dp,
-                { onRefreshClick() },
-                "",
-                perfTracker
+                { onRefreshClick() }
             )
         )
     } else {

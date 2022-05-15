@@ -10,6 +10,7 @@ import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
@@ -25,7 +26,7 @@ class AboutFragment :
 
     override fun disablePerfTracking() = true
 
-    override fun getFullLoadTargetTime() = -1L
+    override fun getPerfSpec() = PerfSpec.ABOUT
 
     override fun onClicked(clicked: NameCaptionListModel) {
         when (clicked.dataId) {
@@ -84,16 +85,12 @@ class AboutFragment :
             getString(R.string.label_link_vgls),
             getString(R.string.caption_link_vgls),
             this,
-            getPerfScreenName(),
-            perfTracker
         ),
         NameCaptionListModel(
             R.string.label_link_giantbomb.toLong(),
             getString(R.string.label_link_giantbomb),
             getString(R.string.caption_link_giantbomb),
             this,
-            getPerfScreenName(),
-            perfTracker
         ),
         SingleTextListModel(
             R.string.label_link_licenses.toLong(),

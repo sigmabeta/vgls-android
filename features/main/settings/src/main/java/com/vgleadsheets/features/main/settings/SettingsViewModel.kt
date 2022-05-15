@@ -19,6 +19,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.list.async.AsyncListViewModel
 import com.vgleadsheets.model.parts.Part
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.resources.ResourceProvider
 import com.vgleadsheets.storage.BooleanSetting
@@ -34,7 +35,7 @@ class SettingsViewModel @AssistedInject constructor(
     private val storage: Storage,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<SettingsData, SettingsState>(initialState, screenName, perfTracker),
+) : AsyncListViewModel<SettingsData, SettingsState>(initialState),
     CheckableListModel.EventHandler,
     DropdownSettingListModel.EventHandler,
     SingleTextListModel.EventHandler {
@@ -58,11 +59,6 @@ class SettingsViewModel @AssistedInject constructor(
         setSetting(clicked.settingId, !clicked.checked)
     }
 
-    override fun onCheckboxLoadComplete(screenName: String) {
-        perfTracker.onPartialContentLoad(screenName)
-        perfTracker.onFullContentLoad(screenName)
-    }
-
     override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
         TODO("Implement this!")
     }
@@ -70,8 +66,6 @@ class SettingsViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No settings found at all. What's going on here?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -114,6 +108,11 @@ class SettingsViewModel @AssistedInject constructor(
     }
 
     private fun createSettingListModels(settings: List<Setting>): List<ListModel> {
+        val spec = PerfSpec.SETTINGS
+
+        perfTracker.onPartialContentLoad(spec)
+        perfTracker.onFullContentLoad(spec)
+
         val sheetsSection = createSection(settings, HEADER_ID_SHEET)
         val miscSection = createMiscSection(settings)
 
@@ -151,7 +150,6 @@ class SettingsViewModel @AssistedInject constructor(
                         setting.settingId,
                         resourceProvider.getString(setting.labelStringId),
                         setting.value,
-                        screenName,
                         this
                     )
                     is DropdownSetting -> DropdownSettingListModel(
@@ -206,7 +204,7 @@ class SettingsViewModel @AssistedInject constructor(
         override fun create(
             viewModelContext: ViewModelContext,
             state: SettingsState
-        ): SettingsViewModel? {
+        ): SettingsViewModel {
             val fragment: SettingsFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.settingsViewModelFactory.create(state, fragment.getPerfScreenName())

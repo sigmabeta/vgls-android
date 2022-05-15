@@ -20,11 +20,13 @@ import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.components.ToolbarItemListModel
+import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
@@ -90,13 +92,13 @@ class ViewerFragment :
     }
 
     override fun onLoadStarted() {
-        perfTracker.onTitleLoaded(getPerfScreenName())
+        perfTracker.onTitleLoaded(getPerfSpec())
     }
 
     override fun onLoadComplete() {
-        perfTracker.onTransitionStarted(getPerfScreenName())
-        perfTracker.onPartialContentLoad(getPerfScreenName())
-        perfTracker.onFullContentLoad(getPerfScreenName())
+        perfTracker.onTransitionStarted(getPerfSpec())
+        perfTracker.onPartialContentLoad(getPerfSpec())
+        perfTracker.onFullContentLoad(getPerfSpec())
     }
 
     override fun onLongClicked(clicked: ToolbarItemListModel) {
@@ -107,12 +109,14 @@ class ViewerFragment :
     override fun clearClicked() = Unit
 
     override fun onLoadFailed(imageUrl: String, ex: Exception?) {
-        perfTracker.cancel(getPerfScreenName())
+        perfTracker.cancel(getPerfSpec())
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        hudViewModel.setPerfSelectedScreen(getPerfSpec())
 
         val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
         val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
@@ -199,7 +203,7 @@ class ViewerFragment :
             startScreenTimer()
         }
 
-        if (hudState.hudVisible && !hudState.searchVisible) {
+        if (hudState.hudVisible && hudState.mode == HudMode.REGULAR) {
             hudViewModel.startHudTimer()
         }
 
@@ -245,7 +249,7 @@ class ViewerFragment :
 
     override fun getPerfTrackingMinScreenHeight() = 200
 
-    override fun getFullLoadTargetTime() = 1000L
+    override fun getPerfSpec() = PerfSpec.VIEWER
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")

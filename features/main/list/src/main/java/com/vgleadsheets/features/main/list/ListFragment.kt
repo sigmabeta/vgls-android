@@ -50,6 +50,8 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
             content.setListsSpecialInsets(topOffset, bottomOffset)
         }
 
+        hudViewModel.setPerfSelectedScreen(getPerfSpec())
+
         hudViewModel.dontAlwaysShowBack()
 
         hudViewModel.selectSubscribe(HudState::digest) {

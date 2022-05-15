@@ -4,7 +4,6 @@ import android.content.res.Resources
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.perf.tracking.api.PerfTracker
 
 @Suppress("LongParameterList")
 object TitleBar {
@@ -14,7 +13,6 @@ object TitleBar {
         resources: Resources,
         onMenuClick: () -> Unit,
         onChangePartClick: () -> Unit,
-        perfTracker: PerfTracker
     ) = listOf(
         MenuTitleBarListModel(
             resources.getString(R.string.app_name),
@@ -22,8 +20,6 @@ object TitleBar {
             expanded,
             onMenuClick,
             onChangePartClick,
-            "",
-            perfTracker
         )
     )
 

@@ -21,6 +21,7 @@ import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.resources.ResourceProvider
@@ -34,7 +35,7 @@ class ComposerViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val resourceProvider: ResourceProvider,
     private val perfTracker: PerfTracker
-) : AsyncListViewModel<ComposerData, ComposerState>(initialState, screenName, perfTracker),
+) : AsyncListViewModel<ComposerData, ComposerState>(initialState),
     ImageNameCaptionListModel.EventHandler {
     init {
         fetchComposer()
@@ -56,8 +57,6 @@ class ComposerViewModel @AssistedInject constructor(
     override fun createFullEmptyStateListModel() = EmptyStateListModel(
         R.drawable.ic_album_24dp,
         "No songs found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
     )
 
     override fun createSuccessListModels(
@@ -111,16 +110,22 @@ class ComposerViewModel @AssistedInject constructor(
         songs: Async<List<Song>>
     ): List<ListModel> =
         when (composer) {
-            is Success -> listOf(
-                TitleListModel(
-                    composer().name,
-                    generateSheetCountText(songs),
-                    composer().photoUrl,
-                    R.drawable.placeholder_composer,
-                    screenName = screenName,
-                    tracker = perfTracker
+            is Success -> {
+                val spec = PerfSpec.COMPOSER
+
+                perfTracker.onTitleLoaded(spec)
+
+                listOf(
+                    TitleListModel(
+                        composer().name,
+                        generateSheetCountText(songs),
+                        { perfTracker.onTransitionStarted(spec) },
+                        { perfTracker.cancel(spec) },
+                        composer().photoUrl,
+                        R.drawable.placeholder_composer,
+                    )
                 )
-            )
+            }
             is Fail -> createErrorStateListModel(composer.error)
             is Uninitialized, is Loading -> listOf(
                 LoadingTitleListModel()
@@ -153,11 +158,14 @@ class ComposerViewModel @AssistedInject constructor(
                 EmptyStateListModel(
                     R.drawable.ic_album_24dp,
                     "No songs found with a ${selectedPart.apiId} part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
                 )
             )
         } else {
+            val spec = PerfSpec.COMPOSER
+
+            perfTracker.onPartialContentLoad(spec)
+            perfTracker.onFullContentLoad(spec)
+
             availableSongs.map {
                 val thumbUrl = Page.generateImageUrl(
                     baseImageUrl,
@@ -173,8 +181,6 @@ class ComposerViewModel @AssistedInject constructor(
                     thumbUrl,
                     R.drawable.placeholder_sheet,
                     this@ComposerViewModel,
-                    screenName = screenName,
-                    tracker = perfTracker
                 )
             }
         }

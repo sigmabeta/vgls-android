@@ -3,23 +3,23 @@ package com.vgleadsheets.perf.tracking.api
 import io.reactivex.Observable
 
 interface PerfTracker {
-    fun start(screenName: String, targetTimes: Map<String, Long>?)
+    fun start(screenName: String, spec: PerfSpec)
 
-    fun onViewCreated(screenName: String)
+    fun onViewCreated(spec: PerfSpec)
 
-    fun onTitleLoaded(screenName: String)
+    fun onTitleLoaded(spec: PerfSpec)
 
-    fun onTransitionStarted(screenName: String)
+    fun onTransitionStarted(spec: PerfSpec)
 
-    fun onPartialContentLoad(screenName: String)
+    fun onPartialContentLoad(spec: PerfSpec)
 
-    fun onFullContentLoad(screenName: String)
+    fun onFullContentLoad(spec: PerfSpec)
 
-    fun cancel(screenName: String)
+    fun cancel(spec: PerfSpec)
 
     fun cancelAll()
 
-    fun clear(screenName: String)
+    fun clear(spec: PerfSpec)
 
-    fun getEventStream(): Observable<PerfEvent>
+    fun getEventStream(): Observable<PerfState>
 }

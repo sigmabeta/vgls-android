@@ -2,8 +2,6 @@
 
 package com.vgleadsheets.components
 
-import android.view.View
-import android.view.animation.LinearInterpolator
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.FrameLayout
@@ -20,9 +18,6 @@ import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
-import com.vgleadsheets.perf.tracking.api.PerfTracker
-import kotlin.math.max
-import kotlin.math.min
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -77,13 +72,13 @@ fun bindPhoto(
     }
 }
 
-@BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadedHandler", "screenName")
+@BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadSuccess", "imageLoadFail")
 fun bindBigPhoto(
     view: ImageView,
     photoUrl: String?,
     placeholder: Int,
-    imageLoadedHandler: PerfTracker,
-    screenName: String
+    imageLoadSuccess: () -> Unit,
+    imageLoadFail: (Exception) -> Unit
 ) {
     if (placeholder != R.drawable.ic_logo) {
         view.clipToOutline = true
@@ -93,21 +88,16 @@ fun bindBigPhoto(
     if (photoUrl != null) {
         val callback = object : Callback {
             override fun onSuccess() {
-                imageLoadedHandler.onTransitionStarted(screenName)
+                imageLoadSuccess()
             }
 
-            override fun onError(e: java.lang.Exception?) {
-                imageLoadedHandler.cancel(screenName)
+            override fun onError(e: Exception) {
+                imageLoadFail(e)
             }
         }
 
         view.loadImageHighQuality(photoUrl, true, placeholder, callback)
     } else {
-        if (placeholder != R.drawable.ic_logo) {
-            imageLoadedHandler.cancel(screenName)
-        } else {
-            imageLoadedHandler.onTransitionStarted(screenName)
-        }
         view.setImageResource(placeholder)
     }
 }
@@ -197,147 +187,10 @@ fun bindLongClickHandler(
     }
 }
 
-@BindingAdapter("handler", "screenName")
-fun bindCheckablePerfEvents(
-    view: View?,
-    handler: CheckableListModel.EventHandler,
-    screenName: String
-) {
-    if (view != null) {
-        handler.onCheckboxLoadComplete(screenName)
-    }
-}
-
-@BindingAdapter("handler", "screenName")
-fun bindEmptyStatePerfEvents(
-    view: View?,
-    handler: EmptyStateListModel.EventHandler,
-    screenName: String
-) {
-    if (view != null) {
-        handler.onEmptyStateLoadComplete(screenName)
-    }
-}
-
-@BindingAdapter("handler", "screenName")
-fun bindRatingPerfEvents(
-    view: View?,
-    handler: LabelRatingStarListModel.EventHandler,
-    screenName: String
-) {
-    if (view != null) {
-        handler.onRatingStarsLoaded(screenName)
-    }
-}
-
-@BindingAdapter("handler", "screenName")
-fun bindLabelValuePerfEvents(
-    view: View?,
-    handler: LabelValueListModel.EventHandler,
-    screenName: String
-) {
-    if (view != null) {
-        handler.onLabelValueLoaded(screenName)
-    }
-}
-
-@SuppressWarnings("LongParameterList")
-@BindingAdapter(
-    "partialLoadText",
-    "partialLoadHandler",
-    "fullLoadText",
-    "fullLoadHandler",
-    "screenName"
-)
-fun bindPartialLoadHandler(
-    view: View?,
-    partialLoadText: String,
-    partialLoadHandler: PerfTracker,
-    fullLoadText: String,
-    fullLoadHandler: PerfTracker,
-    screenName: String
-) {
-    if (view != null && partialLoadText.isNotEmpty()) {
-        partialLoadHandler.onPartialContentLoad(screenName)
-    }
-
-    if (view != null && fullLoadText.isNotEmpty()) {
-        fullLoadHandler.onFullContentLoad(screenName)
-    }
-}
-
-@BindingAdapter("titleLoadedHandler", "screenName")
-fun bindTitleLoadedHandler(view: View?, titleLoadedHandler: PerfTracker, screenName: String) {
-    if (view != null) {
-        titleLoadedHandler.onTitleLoaded(screenName)
-    }
-}
-
 @BindingAdapter("expanded")
 fun bindExpanded(view: ImageButton, expanded: Boolean) {
     val iconId = if (expanded) R.drawable.ic_clear_black_24dp else R.drawable.ic_menu_24dp
     view.setImageResource(iconId)
-}
-
-@BindingAdapter("startTime", "duration", "targetTime", "cancellation")
-fun bindPerfBar(
-    view: View,
-    startTime: Long,
-    duration: String,
-    targetTime: Long,
-    cancellation: Long?
-) {
-    view.pivotX = 0.0f
-
-    val durationLong = duration.toLongOrNull()
-
-    if (durationLong == null) {
-        if (cancellation != null) {
-            val cancelPercentage = cancellation.toFloat() / targetTime
-
-            view.animate().cancel()
-            view.scaleX = min(cancelPercentage, 1.0f)
-            view.setBackgroundColor(
-                ContextCompat.getColor(view.context, android.R.color.holo_orange_light)
-            )
-
-            return
-        }
-
-        val startPercentage = (System.currentTimeMillis().toFloat() - startTime) / targetTime
-        val animationTime = max((1.0f - startPercentage) * targetTime, 1.0f)
-
-        val startColor = if (startPercentage > 1.0f) {
-            ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
-        } else {
-            ContextCompat.getColor(view.context, R.color.colorPrimary)
-        }
-
-        view.setBackgroundColor(startColor)
-
-        view.scaleX = min(startPercentage, 1.0f)
-        view.animate()
-            .scaleX(1.0f)
-            .setInterpolator(LinearInterpolator())
-            .setDuration(animationTime.toLong())
-            .withEndAction {
-                val endColor = ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
-                view.setBackgroundColor(endColor)
-            }
-    } else {
-        val durationPercentage = durationLong.toFloat() / targetTime
-
-        view.animate().cancel()
-        view.scaleX = min(durationPercentage, 1.0f)
-
-        val color = if (durationPercentage > 1.0f) {
-            ContextCompat.getColor(view.context, android.R.color.holo_red_dark)
-        } else {
-            ContextCompat.getColor(view.context, R.color.colorPrimary)
-        }
-
-        view.setBackgroundColor(color)
-    }
 }
 
 @BindingAdapter("highlighted")

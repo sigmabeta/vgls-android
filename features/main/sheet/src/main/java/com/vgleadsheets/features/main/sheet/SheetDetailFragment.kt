@@ -9,6 +9,7 @@ import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ class SheetDetailFragment : AsyncListFragment<SheetDetailData, SheetDetailState>
 
     override fun getPerfTrackingMinScreenHeight() = 600
 
-    override fun getFullLoadTargetTime() = 500L
+    override fun getPerfSpec() = PerfSpec.SHEET
 
     @SuppressWarnings("ComplexMethod")
     override fun subscribeToViewEvents() {

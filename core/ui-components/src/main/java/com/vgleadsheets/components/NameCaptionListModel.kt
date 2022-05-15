@@ -1,14 +1,10 @@
 package com.vgleadsheets.components
 
-import com.vgleadsheets.perf.tracking.api.PerfTracker
-
 data class NameCaptionListModel(
     override val dataId: Long,
     val name: String,
     val caption: String,
-    val handler: EventHandler,
-    val screenName: String,
-    val tracker: PerfTracker
+    val handler: EventHandler
 ) : ListModel {
     override val layoutId = R.layout.list_component_name_caption
 

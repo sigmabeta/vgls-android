@@ -7,6 +7,7 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.async.AsyncListFragment
 import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class GameFragment : AsyncListFragment<GameData, GameState>() {
 
     override fun getDetails() = (idArgs.id - VglsApiGame.ID_OFFSET).toString()
 
-    override fun getFullLoadTargetTime() = 1000L
+    override fun getPerfSpec() = PerfSpec.GAME
 
     override fun subscribeToViewEvents() {
         viewModel.selectSubscribe(GameState::clickedListModel) {

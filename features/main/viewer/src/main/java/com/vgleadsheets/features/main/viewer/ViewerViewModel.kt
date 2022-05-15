@@ -89,10 +89,6 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    fun cancelPerf() {
-        TODO("Not yet implemented")
-    }
-
     private fun subscribeToJamDatabase(jamId: Long) {
         Timber.i("Subscribing to jam $jamId in the database.")
         val databaseRefresh = repository.observeJamState(jamId)

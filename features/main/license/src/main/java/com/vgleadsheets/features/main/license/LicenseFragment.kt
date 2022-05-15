@@ -7,6 +7,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 
 @Suppress("Deprecation")
@@ -66,7 +67,7 @@ class LicenseFragment : VglsFragment() {
 
     override fun disablePerfTracking() = true
 
-    override fun getFullLoadTargetTime() = -1L
+    override fun getPerfSpec() = PerfSpec.LICENSE
 
     companion object {
         fun newInstance() = LicenseFragment()
