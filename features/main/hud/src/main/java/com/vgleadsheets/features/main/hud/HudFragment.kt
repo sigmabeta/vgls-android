@@ -205,7 +205,7 @@ class HudFragment : VglsFragment() {
             state.random is Loading,
             state.updateTime,
             state.selectedSong,
-            state.perfSelectedScreen
+            state.perfViewState
         )
 
         if (state.alwaysShowBack) {
@@ -375,7 +375,7 @@ class HudFragment : VglsFragment() {
         randoming: Boolean,
         updateTime: Async<Long>,
         currentSong: Song?,
-        perfSelectedScreen: PerfSpec
+        perfViewState: PerfViewState
     ) {
         Shadow.setToLookRightIdk(
             screen.shadowHud,
@@ -438,10 +438,11 @@ class HudFragment : VglsFragment() {
             resources,
         ) + PerfDisplay.getListModels(
             hudMode == HudMode.PERF,
-            perfSelectedScreen,
+            perfViewState,
             perfState,
-            viewModel::setPerfSelectedScreen,
-            resources
+            { viewModel.setPerfSelectedScreen(it) },
+            { viewModel.setPerfViewMode(it) },
+            resources,
         ) + RefreshIndicator.getListModels(
             refreshing,
             resources,

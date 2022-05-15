@@ -26,5 +26,15 @@
     <string name="cd_search_menu">Open Menu</string>
     <string name="cd_search_back">Go Back</string>
     <string name="cd_search_close">Close Menu</string>
+
     <string name="label_perf_stats_for">Screen</string>
+    <string name="label_perf_summary">Summary</string>
+    <string name="label_perf_summary_frame_drops">Frame Drops</string>
+    <string name="label_perf_summary_completion">Full Load Time</string>
+    <string name="label_perf_summary_invalidate">Invalidate Median Time</string>
+    <string name="label_perf_load_times">Load Times</string>
+    <string name="label_perf_frame_times">Frame Times</string>
+    <string name="label_perf_invalidates">Invalidate</string>
+
+    <string name="value_perf_ms">%1$d ms</string>
 </resources>

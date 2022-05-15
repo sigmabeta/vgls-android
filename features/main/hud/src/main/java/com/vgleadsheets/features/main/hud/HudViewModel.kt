@@ -244,7 +244,23 @@ class HudViewModel @AssistedInject constructor(
 
     fun setPerfSelectedScreen(screen: PerfSpec) {
         setState {
-            copy(perfSelectedScreen = screen)
+            val newPerfViewState = perfViewState.copy(
+                selectedScreen = screen
+            )
+            copy(
+                perfViewState = newPerfViewState
+            )
+        }
+    }
+
+    fun setPerfViewMode(perfViewMode: PerfViewMode) {
+        setState {
+            val newPerfViewState = perfViewState.copy(
+                viewMode = perfViewMode
+            )
+            copy(
+                perfViewState = newPerfViewState
+            )
         }
     }
 

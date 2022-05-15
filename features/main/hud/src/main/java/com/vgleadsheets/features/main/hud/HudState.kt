@@ -6,7 +6,6 @@ import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfState
 
 data class HudState(
@@ -18,7 +17,7 @@ data class HudState(
     val selectedPart: Part = Part.C,
     val selectedSong: Song? = null,
     val perfState: PerfState? = null,
-    val perfSelectedScreen: PerfSpec = PerfSpec.values().first(),
+    val perfViewState: PerfViewState = PerfViewState(),
     val updateTime: Async<Long> = Uninitialized,
     val digest: Async<ApiDigest> = Uninitialized,
     val random: Async<Song> = Uninitialized
