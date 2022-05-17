@@ -123,6 +123,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
         if (!disablePerfTracking()) {
             perfTracker.onViewCreated(getPerfSpec())
+            (requireActivity() as FragmentRouter).setPerfSpec(getPerfSpec().name)
         }
 
         ViewCompat.requestApplyInsets(view)
@@ -139,7 +140,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
         super.onDestroy()
 
         if (perfTrackingStarted) {
-            perfTracker.clear(getPerfSpec())
+            perfTracker.requestFrameTimeList()
             perfTrackingStarted = false
         }
     }

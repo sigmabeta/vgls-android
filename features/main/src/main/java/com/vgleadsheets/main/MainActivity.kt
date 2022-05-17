@@ -8,6 +8,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentTransaction
+import androidx.metrics.performance.FrameData
+import androidx.metrics.performance.JankStats
+import androidx.metrics.performance.PerformanceMetricsState
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
@@ -32,12 +35,17 @@ import com.vgleadsheets.features.main.tagkeys.TagKeyFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongListFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueListFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
+import com.vgleadsheets.perf.tracking.api.FrameInfo
+import com.vgleadsheets.perf.tracking.api.PerfSpec
+import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import timber.log.Timber
 
 @Suppress("TooManyFunctions", "Deprecation")
@@ -55,6 +63,13 @@ class MainActivity :
     @Inject
     lateinit var tracker: Tracker
 
+    @Inject
+    lateinit var perfTracker: PerfTracker
+
+    private var jankStats: JankStats? = null
+
+    private lateinit var metricsStateHolder: PerformanceMetricsState.MetricsStateHolder
+
     override fun androidInjector() = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +78,8 @@ class MainActivity :
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+
+        initializeJankStats()
 
         // Configure app for edge-to-edge
         val toplevel = findViewById<CoordinatorLayout>(R.id.toplevel)
@@ -85,6 +102,20 @@ class MainActivity :
         if (savedInstanceState == null) {
             addHud()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        jankStats?.isTrackingEnabled = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        jankStats?.isTrackingEnabled = false
+    }
+
+    override fun setPerfSpec(specName: String) {
+        metricsStateHolder.state?.addState(PerfSpec.toString(), specName)
     }
 
     override fun showSearch() {
@@ -365,6 +396,42 @@ class MainActivity :
             .add(R.id.frame_hud, HudFragment.newInstance())
             .commit()
     }
+
+    private fun initializeJankStats() {
+        if (!BuildConfig.DEBUG) {
+            return
+        }
+
+        Timber.i("Initializing JankStats.")
+
+        jankStats = JankStats.createAndTrack(
+            window,
+            Dispatchers.Default.asExecutor(),
+        ) {
+            val spec = it
+                .states
+                .firstOrNull { state -> state.stateName == PerfSpec.toString() }
+                ?.let { state -> PerfSpec.valueOf(state.state) }
+
+            Timber.w("Reporting frame: $spec")
+
+            if (spec != null) {
+                perfTracker.reportFrame(it.toFrameInfo(), spec)
+            }
+        }
+
+        metricsStateHolder = PerformanceMetricsState.getForHierarchy(
+            window.findViewById(R.id.frame_fragment)
+        )
+    }
+
+    private fun Long.nanosToMillis() = div(1_000_000L)
+
+    private fun FrameData.toFrameInfo() = FrameInfo(
+        frameStartNanos.nanosToMillis(),
+        frameDurationUiNanos.nanosToMillis(),
+        isJank
+    )
 
     private fun FragmentTransaction.setDefaultAnimations() = setCustomAnimations(
         R.anim.enter,

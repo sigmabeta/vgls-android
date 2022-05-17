@@ -7,20 +7,21 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.PerfViewMode
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.perf.tracking.api.PerfScreenStatus
+import com.vgleadsheets.perf.tracking.api.FrameInfo
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
-import com.vgleadsheets.perf.tracking.api.PerfState
+import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
 
 object PerfDisplay {
     fun getListModels(
         visible: Boolean,
         perfViewState: PerfViewState,
-        perfState: PerfState?,
+        loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
+        frameTimeLists: Map<PerfSpec, List<FrameInfo>>?,
         onScreenSelected: (PerfSpec) -> Unit,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
-    ) = if (visible && perfState != null) {
+    ) = if (visible) {
         screenPicker(
             perfViewState.selectedScreen,
             onScreenSelected,
@@ -28,7 +29,8 @@ object PerfDisplay {
         ) + getPerfContentForScreen(
             perfViewState.selectedScreen,
             perfViewState.viewMode,
-            perfState,
+            loadTimeLists,
+            frameTimeLists,
             onPerfCategoryClicked,
             resources
         )
@@ -39,48 +41,51 @@ object PerfDisplay {
     private fun getPerfContentForScreen(
         selectedScreen: PerfSpec,
         perfViewMode: PerfViewMode,
-        perfState: PerfState,
+        loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
+        frameTimeLists: Map<PerfSpec, List<FrameInfo>>?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
     ): List<ListModel> {
-        val perfScreenStatus = perfState.screens[selectedScreen]
-
-        if (perfScreenStatus == null) {
-            return listOf(
-                LabelValueListModel(
-                    "No perf data recorded.",
-                    "",
-                    noopClicker()
-                )
-            )
-        }
+        val loadTimes = loadTimeLists?.get(selectedScreen)
+        val frameTimes = frameTimeLists?.get(selectedScreen)
 
         return when (perfViewMode) {
             PerfViewMode.REGULAR -> perfSummaryForScreen(
-                perfScreenStatus,
+                loadTimes,
+                frameTimes,
                 onPerfCategoryClicked,
                 resources
             )
             PerfViewMode.LOAD_TIMES -> loadTimesForScreen(
-                perfScreenStatus,
+                loadTimes,
                 resources
             )
             PerfViewMode.FRAME_TIMES -> frameTimesForScreen(
-                perfScreenStatus,
-                perfState
+                frameTimes,
+                resources
             )
             PerfViewMode.INVALIDATES -> invalidatesForScreen(
-                selectedScreen,
-                perfState
+                // invalidates
             )
         }
     }
 
     private fun perfSummaryForScreen(
-        perfScreenStatus: PerfScreenStatus,
+        perfScreenStatus: ScreenLoadStatus?,
+        frameTimes: List<FrameInfo>?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
     ) = listOf(
+        loadTimeSummary(perfScreenStatus, resources, onPerfCategoryClicked),
+        frameTimeSummary(frameTimes, resources, onPerfCategoryClicked),
+        invalidateSummary(resources/*, onPerfCategoryClicked*/)
+    )
+
+    private fun loadTimeSummary(
+        perfScreenStatus: ScreenLoadStatus?,
+        resources: Resources,
+        onPerfCategoryClicked: (PerfViewMode) -> Unit
+    ) = if (perfScreenStatus != null) {
         LabelValueListModel(
             resources.getString(R.string.label_perf_summary_completion),
             resources.getString(
@@ -89,6 +94,45 @@ object PerfDisplay {
             ),
             categoryClickHandler(onPerfCategoryClicked, PerfViewMode.LOAD_TIMES)
         )
+    } else {
+        summaryEmptyLine(R.string.label_perf_empty_load_times, resources)
+    }
+
+    private fun frameTimeSummary(
+        frameTimes: List<FrameInfo>?,
+        resources: Resources,
+        onPerfCategoryClicked: (PerfViewMode) -> Unit
+    ) = if (frameTimes != null) {
+        LabelValueListModel(
+            resources.getString(R.string.label_perf_summary_frame_drops),
+            frameTimes.filter { it.isJank }.size.toString(),
+            categoryClickHandler(onPerfCategoryClicked, PerfViewMode.FRAME_TIMES)
+        )
+    } else {
+        summaryEmptyLine(R.string.label_perf_empty_frame_times, resources)
+    }
+
+    private fun invalidateSummary(
+        // invalidates: List<InvalidateInfo>?,
+        resources: Resources,
+        // onPerfCategoryClicked: (PerfViewMode) -> Unit
+    ) = // if (invalidates != null) {
+    // LabelValueListModel(
+    //     resources.getString(R.string.label_perf_summary_frame_drops),
+    //     something lol,
+    //     categoryClickHandler(onPerfCategoryClicked, PerfViewMode.FRAME_TIMES)
+    // )
+        // } else {
+        summaryEmptyLine(R.string.label_perf_empty_invalidates, resources)
+    // }
+
+    private fun summaryEmptyLine(
+        labelId: Int,
+        resources: Resources
+    ) = LabelValueListModel(
+        resources.getString(labelId),
+        "",
+        noopClicker()
     )
 
     private fun screenPicker(
@@ -109,34 +153,49 @@ object PerfDisplay {
     }
 
     private fun loadTimesForScreen(
-        perfScreenStatus: PerfScreenStatus,
+        loadTimes: ScreenLoadStatus?,
         resources: Resources
-    ) = perfScreenStatus.stageDurations.map {
+    ) = loadTimes?.stageDurations?.map {
         LabelValueListModel(
             it.key.name,
             resources.getString(R.string.value_perf_ms, it.value),
             noopClicker()
         )
-    }
+    } ?: listOf(
+        summaryEmptyLine(R.string.label_perf_empty_load_times, resources)
+    )
 
     @Suppress("UNUSED_PARAMETER")
     private fun frameTimesForScreen(
-        perfScreenStatus: PerfScreenStatus,
-        perfState: PerfState
-    ) = todo()
+        frameTimes: List<FrameInfo>?,
+        resources: Resources
+    ) = if (frameTimes != null) {
+        listOf(
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_frame_total),
+                frameTimes.size.toString(),
+                noopClicker()
+            ),
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_summary_frame_drops),
+                frameTimes.filter { it.isJank }.size.toString(),
+                noopClicker()
+            )
+        )
+    } else {
+        listOf(
+            summaryEmptyLine(R.string.label_perf_empty_frame_times, resources)
+        )
+    }
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun invalidatesForScreen(
-        selectedScreen: PerfSpec,
-        perfState: PerfState
-    ) = todo()
+    private fun invalidatesForScreen() = todo()
 
     private fun todo() = listOf(
         LabelValueListModel(
             "Not implemented yet",
             "LOL",
             noopClicker()
-        )
+        ),
     )
 
     private fun dropdownHandler(onOptionSelected: (PerfSpec) -> Unit) =

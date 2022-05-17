@@ -19,7 +19,12 @@ interface PerfTracker {
 
     fun cancelAll()
 
-    fun clear(spec: PerfSpec)
+    fun reportFrame(frame: FrameInfo, spec: PerfSpec)
 
-    fun getEventStream(): Observable<PerfState>
+    fun screenLoadStream(): Observable<Map<PerfSpec, ScreenLoadStatus>>
+
+    fun frameTimeStream(): Observable<Map<PerfSpec, List<FrameInfo>>>
+
+    fun requestFrameTimeList()
 }
+

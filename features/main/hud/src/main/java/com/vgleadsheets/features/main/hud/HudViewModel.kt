@@ -168,7 +168,8 @@ class HudViewModel @AssistedInject constructor(
 
     private fun hideMenus() = setState {
         copy(
-            mode = HudMode.REGULAR
+            mode = HudMode.REGULAR,
+            perfViewState = perfViewState.copy(viewMode = PerfViewMode.REGULAR)
         )
     }
 
@@ -229,10 +230,18 @@ class HudViewModel @AssistedInject constructor(
         )
 
     private fun subscribeToPerfUpdates() {
-        perfTracker.getEventStream()
+        perfTracker.screenLoadStream()
             .subscribe {
                 setState {
-                    copy(perfState = it)
+                    copy(loadTimeLists = it)
+                }
+            }
+            .disposeOnClear()
+
+        perfTracker.frameTimeStream()
+            .subscribe {
+                setState {
+                    copy(frameTimeLists = it)
                 }
             }
             .disposeOnClear()
@@ -244,6 +253,8 @@ class HudViewModel @AssistedInject constructor(
 
     fun setPerfSelectedScreen(screen: PerfSpec) {
         setState {
+            perfTracker.requestFrameTimeList()
+
             val newPerfViewState = perfViewState.copy(
                 selectedScreen = screen
             )
@@ -255,6 +266,8 @@ class HudViewModel @AssistedInject constructor(
 
     fun setPerfViewMode(perfViewMode: PerfViewMode) {
         setState {
+            perfTracker.requestFrameTimeList()
+
             val newPerfViewState = perfViewState.copy(
                 viewMode = perfViewMode
             )
@@ -265,6 +278,7 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun onPerfClick() {
+        perfTracker.requestFrameTimeList()
         setState {
             copy(mode = HudMode.PERF)
         }

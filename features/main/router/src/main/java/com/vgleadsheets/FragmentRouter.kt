@@ -73,6 +73,8 @@ interface FragmentRouter {
 
     fun showFindJamDialog()
 
+    fun setPerfSpec(specName: String)
+
     // TODO We should rename this interface.
     fun restartApp()
 }
