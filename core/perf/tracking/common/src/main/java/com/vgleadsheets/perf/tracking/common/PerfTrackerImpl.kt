@@ -1,6 +1,7 @@
 package com.vgleadsheets.perf.tracking.common
 
 import com.vgleadsheets.perf.tracking.api.FrameInfo
+import com.vgleadsheets.perf.tracking.api.FrameTimeStats
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -22,7 +23,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
 
     private val screenLoadSink = BehaviorSubject.create<Map<PerfSpec, ScreenLoadStatus>>()
 
-    private val frameTimeSink = BehaviorSubject.create<Map<PerfSpec, List<FrameInfo>>>()
+    private val frameTimeSink = BehaviorSubject.create<Map<PerfSpec, FrameTimeStats>>()
 
     override fun screenLoadStream() = screenLoadSink
 
@@ -99,7 +100,26 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     private fun publishFrameTimes() {
         frameTimeSink.onNext(
             frameTimeScreens.mapValues {
-                ArrayList(it.value).toList()
+                val frametimes = it.value.sortedBy { it.durationOnUiThreadMillis }
+                val totalFrames = frametimes.size
+
+                try {
+                    FrameTimeStats(
+                        frametimes.filter { it.isJank }.size,
+                        totalFrames,
+                        frametimes[totalFrames / 2].durationOnUiThreadMillis,
+                        frametimes[totalFrames * 95 / 100].durationOnUiThreadMillis,
+                        frametimes[totalFrames * 99 / 100].durationOnUiThreadMillis,
+                    )
+                } catch (ex: IndexOutOfBoundsException) {
+                    FrameTimeStats(
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                    )
+                }
             }
         )
     }

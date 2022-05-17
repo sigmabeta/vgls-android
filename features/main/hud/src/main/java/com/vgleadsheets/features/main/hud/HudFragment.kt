@@ -47,7 +47,7 @@ import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.FrameInfo
+import com.vgleadsheets.perf.tracking.api.FrameTimeStats
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
 import com.vgleadsheets.recyclerview.ComponentAdapter
@@ -202,7 +202,7 @@ class HudFragment : VglsFragment() {
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
             state.loadTimeLists,
-            state.frameTimeLists,
+            state.frameTimeStatses,
             state.digest is Loading,
             state.random is Loading,
             state.updateTime,
@@ -373,7 +373,7 @@ class HudFragment : VglsFragment() {
         showVocalsOption: Boolean,
         selectedPart: Part,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
-        frameTimeLists: Map<PerfSpec, List<FrameInfo>>?,
+        frameTimeStatses: Map<PerfSpec, FrameTimeStats>?,
         refreshing: Boolean,
         randoming: Boolean,
         updateTime: Async<Long>,
@@ -443,7 +443,7 @@ class HudFragment : VglsFragment() {
             hudMode == HudMode.PERF,
             perfViewState,
             loadTimeLists,
-            frameTimeLists,
+            frameTimeStatses,
             { viewModel.setPerfSelectedScreen(it) },
             { viewModel.setPerfViewMode(it) },
             resources,

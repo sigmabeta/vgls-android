@@ -23,7 +23,7 @@ interface PerfTracker {
 
     fun screenLoadStream(): Observable<Map<PerfSpec, ScreenLoadStatus>>
 
-    fun frameTimeStream(): Observable<Map<PerfSpec, List<FrameInfo>>>
+    fun frameTimeStream(): Observable<Map<PerfSpec, FrameTimeStats>>
 
     fun requestFrameTimeList()
 }

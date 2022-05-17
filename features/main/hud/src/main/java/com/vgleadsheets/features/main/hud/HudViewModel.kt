@@ -241,7 +241,7 @@ class HudViewModel @AssistedInject constructor(
         perfTracker.frameTimeStream()
             .subscribe {
                 setState {
-                    copy(frameTimeLists = it)
+                    copy(frameTimeStatses = it)
                 }
             }
             .disposeOnClear()

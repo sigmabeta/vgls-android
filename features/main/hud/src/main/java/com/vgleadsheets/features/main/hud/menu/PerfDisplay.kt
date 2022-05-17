@@ -7,7 +7,7 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.PerfViewMode
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.perf.tracking.api.FrameInfo
+import com.vgleadsheets.perf.tracking.api.FrameTimeStats
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
@@ -17,7 +17,7 @@ object PerfDisplay {
         visible: Boolean,
         perfViewState: PerfViewState,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
-        frameTimeLists: Map<PerfSpec, List<FrameInfo>>?,
+        frameTimeStatses: Map<PerfSpec, FrameTimeStats>?,
         onScreenSelected: (PerfSpec) -> Unit,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
@@ -30,7 +30,7 @@ object PerfDisplay {
             perfViewState.selectedScreen,
             perfViewState.viewMode,
             loadTimeLists,
-            frameTimeLists,
+            frameTimeStatses,
             onPerfCategoryClicked,
             resources
         )
@@ -42,17 +42,17 @@ object PerfDisplay {
         selectedScreen: PerfSpec,
         perfViewMode: PerfViewMode,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
-        frameTimeLists: Map<PerfSpec, List<FrameInfo>>?,
+        frameTimeStatses: Map<PerfSpec, FrameTimeStats>?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
     ): List<ListModel> {
         val loadTimes = loadTimeLists?.get(selectedScreen)
-        val frameTimes = frameTimeLists?.get(selectedScreen)
+        val frameTimeStats = frameTimeStatses?.get(selectedScreen)
 
         return when (perfViewMode) {
             PerfViewMode.REGULAR -> perfSummaryForScreen(
                 loadTimes,
-                frameTimes,
+                frameTimeStats,
                 onPerfCategoryClicked,
                 resources
             )
@@ -61,7 +61,7 @@ object PerfDisplay {
                 resources
             )
             PerfViewMode.FRAME_TIMES -> frameTimesForScreen(
-                frameTimes,
+                frameTimeStats,
                 resources
             )
             PerfViewMode.INVALIDATES -> invalidatesForScreen(
@@ -72,12 +72,12 @@ object PerfDisplay {
 
     private fun perfSummaryForScreen(
         perfScreenStatus: ScreenLoadStatus?,
-        frameTimes: List<FrameInfo>?,
+        frameTimeStats: FrameTimeStats?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
     ) = listOf(
         loadTimeSummary(perfScreenStatus, resources, onPerfCategoryClicked),
-        frameTimeSummary(frameTimes, resources, onPerfCategoryClicked),
+        frameTimeSummary(frameTimeStats, resources, onPerfCategoryClicked),
         invalidateSummary(resources/*, onPerfCategoryClicked*/)
     )
 
@@ -99,13 +99,13 @@ object PerfDisplay {
     }
 
     private fun frameTimeSummary(
-        frameTimes: List<FrameInfo>?,
+        frameTimeStats: FrameTimeStats?,
         resources: Resources,
         onPerfCategoryClicked: (PerfViewMode) -> Unit
-    ) = if (frameTimes != null) {
+    ) = if (frameTimeStats != null) {
         LabelValueListModel(
             resources.getString(R.string.label_perf_summary_frame_drops),
-            frameTimes.filter { it.isJank }.size.toString(),
+            frameTimeStats.jankFrames.toString(),
             categoryClickHandler(onPerfCategoryClicked, PerfViewMode.FRAME_TIMES)
         )
     } else {
@@ -167,18 +167,33 @@ object PerfDisplay {
 
     @Suppress("UNUSED_PARAMETER")
     private fun frameTimesForScreen(
-        frameTimes: List<FrameInfo>?,
+        frameTimeStats: FrameTimeStats?,
         resources: Resources
-    ) = if (frameTimes != null) {
+    ) = if (frameTimeStats != null) {
         listOf(
             LabelValueListModel(
                 resources.getString(R.string.label_perf_frame_total),
-                frameTimes.size.toString(),
+                frameTimeStats.totalFrames.toString(),
                 noopClicker()
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_summary_frame_drops),
-                frameTimes.filter { it.isJank }.size.toString(),
+                frameTimeStats.jankFrames.toString(),
+                noopClicker()
+            ),
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_frame_median),
+                resources.getString(R.string.value_perf_ms, frameTimeStats.median),
+                noopClicker()
+            ),
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_frame_five),
+                resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyFive),
+                noopClicker()
+            ),
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_frame_nine),
+                resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyNine),
                 noopClicker()
             )
         )
