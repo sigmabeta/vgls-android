@@ -28,7 +28,7 @@
             android:onClick="@{() -> toBind.onClicked.invoke()}"
             android:padding="@dimen/icon_padding"
             app:tint="@android:color/tertiary_text_dark"
-            app:expanded="@{toBind.expanded}"
+            app:icon="@{toBind.iconId}"
             tools:src="@drawable/ic_menu_24dp" />
 
         <com.google.android.material.textview.MaterialTextView

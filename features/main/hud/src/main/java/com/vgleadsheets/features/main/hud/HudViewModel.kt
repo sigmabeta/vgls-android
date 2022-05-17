@@ -43,10 +43,13 @@ class HudViewModel @AssistedInject constructor(
     fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }
 
     fun onMenuClick() = withState {
-        if (it.mode != HudMode.REGULAR) {
-            hideMenus()
-        } else {
-            showMenu()
+        when (it.mode) {
+            HudMode.PERF -> when (it.perfViewState.viewMode) {
+                PerfViewMode.REGULAR -> backToMenu()
+                else -> backoPerfRegular()
+            }
+            HudMode.REGULAR -> showMenu()
+            else -> hideMenus()
         }
     }
 
@@ -54,10 +57,6 @@ class HudViewModel @AssistedInject constructor(
         if (it.mode != HudMode.PARTS) {
             showParts()
         }
-    }
-
-    fun onMenuBackPress() {
-        hideMenus()
     }
 
     fun onMenuAction() {
@@ -182,6 +181,18 @@ class HudViewModel @AssistedInject constructor(
     private fun showParts() = setState {
         copy(
             mode = HudMode.PARTS
+        )
+    }
+
+    private fun backoPerfRegular() = setState {
+        copy(
+            perfViewState = perfViewState.copy(viewMode = PerfViewMode.REGULAR)
+        )
+    }
+
+    private fun backToMenu() = setState {
+        copy(
+            mode = HudMode.MENU
         )
     }
 

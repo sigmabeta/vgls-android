@@ -138,7 +138,7 @@ class HudFragment : VglsFragment() {
 
         screen.buttonSearchMenuBack.setOnClickListener {
             withState(viewModel) {
-                if (it.mode != HudMode.REGULAR) {
+                if (it.mode == HudMode.REGULAR) {
                     activity?.onBackPressed()
                 } else {
                     onMenuClick()
@@ -227,7 +227,7 @@ class HudFragment : VglsFragment() {
 
     override fun onBackPress() = withState(viewModel) {
         if (it.mode != HudMode.REGULAR) {
-            viewModel.onMenuBackPress()
+            viewModel.onMenuClick()
             return@withState true
         }
 
@@ -409,7 +409,7 @@ class HudFragment : VglsFragment() {
 
         val menuItems = TitleBar.getListModels(
             PartSelectorOption.valueOf(selectedPart.name),
-            hudMode != HudMode.REGULAR,
+            hudMode,
             resources,
             { viewModel.onMenuClick() },
             { viewModel.onChangePartClick() },
