@@ -26,7 +26,8 @@ data class SongEntity(
     val pageCount: Int,
     val lyricPageCount: Int,
     val gameName: String,
-    val game_id: Long
+    val game_id: Long,
+    val playCount: Int = 0
 ) {
     fun toSong(
         composers: List<Composer>?
@@ -39,6 +40,7 @@ data class SongEntity(
         lyricPageCount > 0,
         pageCount,
         lyricPageCount,
-        composers
+        composers,
+        playCount
     )
 }
