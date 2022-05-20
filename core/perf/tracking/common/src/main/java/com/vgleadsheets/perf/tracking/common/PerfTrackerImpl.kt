@@ -17,7 +17,13 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.nanoseconds
 
-@SuppressWarnings("TooManyFunctions")
+@SuppressWarnings(
+    "TooManyFunctions",
+    "MagicNumber",
+    "TooGenericExceptionCaught",
+    "SwallowedException",
+    "MaxLineLength"
+)
 class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : PerfTracker {
     private val loadTimeScreens = HashMap<PerfSpec, ScreenLoadStatus>()
 

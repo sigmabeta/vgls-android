@@ -14,6 +14,7 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
 
+@Suppress("LongParameterList", "TooManyFunctions")
 object PerfDisplay {
     fun getListModels(
         visible: Boolean,

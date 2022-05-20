@@ -88,6 +88,7 @@ class ComponentAdapter :
         }
     }
 
+    @Suppress("SwallowedException")
     private fun reportDuplicateModel(list: List<ListModel>?) {
         val duplicateModels = list!!
             .groupBy { it.dataId }
@@ -99,7 +100,7 @@ class ComponentAdapter :
 
             val duplicateIdName = try {
                 resources?.getResourceName(duplicateId.toInt())
-            } catch (ex: Exception) {
+            } catch (ex: Resources.NotFoundException) {
                 null
             }
 

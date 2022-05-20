@@ -2,6 +2,7 @@ package com.vgleadsheets.perf.tracking.api
 
 import io.reactivex.Observable
 
+@Suppress("TooManyFunctions")
 interface PerfTracker {
     fun start(screenName: String, spec: PerfSpec)
 
