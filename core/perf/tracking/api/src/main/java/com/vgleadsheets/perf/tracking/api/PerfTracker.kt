@@ -21,10 +21,14 @@ interface PerfTracker {
 
     fun reportFrame(frame: FrameInfo, spec: PerfSpec)
 
+    fun reportInvalidate(invalidateTimeMs: Long, spec: PerfSpec)
+
     fun screenLoadStream(): Observable<Map<PerfSpec, ScreenLoadStatus>>
 
     fun frameTimeStream(): Observable<Map<PerfSpec, FrameTimeStats>>
 
-    fun requestFrameTimeList()
+    fun invalidateStream(): Observable<Map<PerfSpec, InvalidateStats>>
+
+    fun requestUpdates()
 }
 

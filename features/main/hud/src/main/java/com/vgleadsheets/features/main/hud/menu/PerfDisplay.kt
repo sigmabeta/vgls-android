@@ -8,6 +8,7 @@ import com.vgleadsheets.features.main.hud.PerfViewMode
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.perf.tracking.api.FrameTimeStats
+import com.vgleadsheets.perf.tracking.api.InvalidateStats
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
@@ -17,7 +18,8 @@ object PerfDisplay {
         visible: Boolean,
         perfViewState: PerfViewState,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
-        frameTimeStatses: Map<PerfSpec, FrameTimeStats>?,
+        frameTimeStatsMap: Map<PerfSpec, FrameTimeStats>?,
+        invalidateStatsMap: Map<PerfSpec, InvalidateStats>?,
         onScreenSelected: (PerfSpec) -> Unit,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
@@ -30,7 +32,8 @@ object PerfDisplay {
             perfViewState.selectedScreen,
             perfViewState.viewMode,
             loadTimeLists,
-            frameTimeStatses,
+            frameTimeStatsMap,
+            invalidateStatsMap,
             onPerfCategoryClicked,
             resources
         )
@@ -42,17 +45,20 @@ object PerfDisplay {
         selectedScreen: PerfSpec,
         perfViewMode: PerfViewMode,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
-        frameTimeStatses: Map<PerfSpec, FrameTimeStats>?,
+        frameTimeStatsMap: Map<PerfSpec, FrameTimeStats>?,
+        invalidateStatsMap: Map<PerfSpec, InvalidateStats>?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
     ): List<ListModel> {
         val loadTimes = loadTimeLists?.get(selectedScreen)
-        val frameTimeStats = frameTimeStatses?.get(selectedScreen)
+        val frameTimeStats = frameTimeStatsMap?.get(selectedScreen)
+        val invalidateStats = invalidateStatsMap?.get(selectedScreen)
 
         return when (perfViewMode) {
             PerfViewMode.REGULAR -> perfSummaryForScreen(
                 loadTimes,
                 frameTimeStats,
+                invalidateStats,
                 onPerfCategoryClicked,
                 resources
             )
@@ -65,7 +71,8 @@ object PerfDisplay {
                 resources
             )
             PerfViewMode.INVALIDATES -> invalidatesForScreen(
-                // invalidates
+                invalidateStats,
+                resources
             )
         }
     }
@@ -73,12 +80,13 @@ object PerfDisplay {
     private fun perfSummaryForScreen(
         perfScreenStatus: ScreenLoadStatus?,
         frameTimeStats: FrameTimeStats?,
+        invalidateStats: InvalidateStats?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
     ) = listOf(
         loadTimeSummary(perfScreenStatus, resources, onPerfCategoryClicked),
         frameTimeSummary(frameTimeStats, resources, onPerfCategoryClicked),
-        invalidateSummary(resources/*, onPerfCategoryClicked*/)
+        invalidateSummary(invalidateStats, resources, onPerfCategoryClicked)
     )
 
     private fun loadTimeSummary(
@@ -113,18 +121,18 @@ object PerfDisplay {
     }
 
     private fun invalidateSummary(
-        // invalidates: List<InvalidateInfo>?,
+        invalidateStats: InvalidateStats?,
         resources: Resources,
-        // onPerfCategoryClicked: (PerfViewMode) -> Unit
-    ) = // if (invalidates != null) {
-    // LabelValueListModel(
-    //     resources.getString(R.string.label_perf_summary_frame_drops),
-    //     something lol,
-    //     categoryClickHandler(onPerfCategoryClicked, PerfViewMode.FRAME_TIMES)
-    // )
-        // } else {
+        onPerfCategoryClicked: (PerfViewMode) -> Unit
+    ) = if (invalidateStats != null) {
+        LabelValueListModel(
+            resources.getString(R.string.label_perf_summary_invalidate),
+            invalidateStats.jankInvalidates.toString(),
+            categoryClickHandler(onPerfCategoryClicked, PerfViewMode.INVALIDATES)
+        )
+    } else {
         summaryEmptyLine(R.string.label_perf_empty_invalidates, resources)
-    // }
+    }
 
     private fun summaryEmptyLine(
         labelId: Int,
@@ -203,15 +211,42 @@ object PerfDisplay {
         )
     }
 
-    private fun invalidatesForScreen() = todo()
-
-    private fun todo() = listOf(
-        LabelValueListModel(
-            "Not implemented yet",
-            "LOL",
-            noopClicker()
-        ),
-    )
+    private fun invalidatesForScreen(
+        invalidateStats: InvalidateStats?,
+        resources: Resources
+    ) = if (invalidateStats != null) {
+        listOf(
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_invalidate_total),
+                invalidateStats.totalInvalidates.toString(),
+                noopClicker()
+            ),
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_invalidate_jank),
+                invalidateStats.jankInvalidates.toString(),
+                noopClicker()
+            ),
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_invalidate_median),
+                resources.getString(R.string.value_perf_ms, invalidateStats.median),
+                noopClicker()
+            ),
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_invalidate_five),
+                resources.getString(R.string.value_perf_ms, invalidateStats.ninetyFive),
+                noopClicker()
+            ),
+            LabelValueListModel(
+                resources.getString(R.string.label_perf_invalidate_nine),
+                resources.getString(R.string.value_perf_ms, invalidateStats.ninetyNine),
+                noopClicker()
+            )
+        )
+    } else {
+        listOf(
+            summaryEmptyLine(R.string.label_perf_empty_invalidates, resources)
+        )
+    }
 
     private fun dropdownHandler(onOptionSelected: (PerfSpec) -> Unit) =
         object : DropdownSettingListModel.EventHandler {

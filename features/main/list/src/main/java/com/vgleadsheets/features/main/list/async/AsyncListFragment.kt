@@ -15,6 +15,7 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
 import com.vgleadsheets.tabletSetListsSpecialInsets
 import javax.inject.Inject
+import kotlin.system.measureTimeMillis
 
 abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState<DataType>> : VglsFragment() {
     abstract val viewModel: AsyncListViewModel<DataType, StateType>
@@ -71,8 +72,14 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
         subscribeToViewEvents()
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
-        adapter.submitList(state.listModels)
+    override fun invalidate() {
+        val invalidateTimeMs = measureTimeMillis {
+            withState(viewModel) { state ->
+                adapter.submitList(state.listModels)
+            }
+        }
+
+        perfTracker.reportInvalidate(invalidateTimeMs, getPerfSpec())
     }
 
     override fun getLayoutId() = R.layout.fragment_list

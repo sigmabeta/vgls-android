@@ -252,7 +252,15 @@ class HudViewModel @AssistedInject constructor(
         perfTracker.frameTimeStream()
             .subscribe {
                 setState {
-                    copy(frameTimeStatses = it)
+                    copy(frameTimeStatsMap = it)
+                }
+            }
+            .disposeOnClear()
+
+        perfTracker.invalidateStream()
+            .subscribe {
+                setState {
+                    copy(invalidateStatsMap = it)
                 }
             }
             .disposeOnClear()
@@ -264,7 +272,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun setPerfSelectedScreen(screen: PerfSpec) {
         setState {
-            perfTracker.requestFrameTimeList()
+            perfTracker.requestUpdates()
 
             val newPerfViewState = perfViewState.copy(
                 selectedScreen = screen
@@ -277,7 +285,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun setPerfViewMode(perfViewMode: PerfViewMode) {
         setState {
-            perfTracker.requestFrameTimeList()
+            perfTracker.requestUpdates()
 
             val newPerfViewState = perfViewState.copy(
                 viewMode = perfViewMode
@@ -289,7 +297,7 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun onPerfClick() {
-        perfTracker.requestFrameTimeList()
+        perfTracker.requestUpdates()
         setState {
             copy(mode = HudMode.PERF)
         }

@@ -7,6 +7,7 @@ import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.FrameTimeStats
+import com.vgleadsheets.perf.tracking.api.InvalidateStats
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
 
@@ -19,7 +20,8 @@ data class HudState(
     val selectedPart: Part = Part.C,
     val selectedSong: Song? = null,
     val loadTimeLists: Map<PerfSpec, ScreenLoadStatus>? = null,
-    val frameTimeStatses: Map<PerfSpec, FrameTimeStats>? = null,
+    val frameTimeStatsMap: Map<PerfSpec, FrameTimeStats>? = null,
+    val invalidateStatsMap: Map<PerfSpec, InvalidateStats>? = null,
     val perfViewState: PerfViewState = PerfViewState(),
     val updateTime: Async<Long> = Uninitialized,
     val digest: Async<ApiDigest> = Uninitialized,

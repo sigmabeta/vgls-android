@@ -2,6 +2,7 @@ package com.vgleadsheets.perf.tracking.common
 
 import com.vgleadsheets.perf.tracking.api.FrameInfo
 import com.vgleadsheets.perf.tracking.api.FrameTimeStats
+import com.vgleadsheets.perf.tracking.api.InvalidateStats
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -17,6 +18,8 @@ import timber.log.Timber
 class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : PerfTracker {
     private val loadTimeScreens = HashMap<PerfSpec, ScreenLoadStatus>()
 
+    private val invalidateScreens = HashMap<PerfSpec, MutableList<Long>>()
+
     private val frameTimeScreens = HashMap<PerfSpec, MutableList<FrameInfo>>()
 
     private val failureTimers = HashMap<PerfSpec, Disposable?>()
@@ -25,9 +28,13 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
 
     private val frameTimeSink = BehaviorSubject.create<Map<PerfSpec, FrameTimeStats>>()
 
+    private val invalidateSink = BehaviorSubject.create<Map<PerfSpec, InvalidateStats>>()
+
     override fun screenLoadStream() = screenLoadSink
 
     override fun frameTimeStream() = frameTimeSink
+
+    override fun invalidateStream() = invalidateSink
 
     override fun start(screenName: String, spec: PerfSpec) {
         val oldScreen = loadTimeScreens[spec]
@@ -48,6 +55,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         publishScreenLoads()
 
         frameTimeScreens[spec] = mutableListOf()
+        invalidateScreens[spec] = mutableListOf()
         loadTimeScreens[spec] = ScreenLoadStatus(screenName, startTime)
         startFailureTimer(spec)
     }
@@ -87,8 +95,14 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         frameList?.add(frame)
     }
 
-    override fun requestFrameTimeList() {
+    override fun reportInvalidate(invalidateTimeMs: Long, spec: PerfSpec) {
+        val invalidateList = invalidateScreens[spec]
+        invalidateList?.add(invalidateTimeMs)
+    }
+
+    override fun requestUpdates() {
         publishFrameTimes()
+        publishInvalidates()
     }
 
     private fun publishScreenLoads() {
@@ -113,6 +127,33 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
                     )
                 } catch (ex: IndexOutOfBoundsException) {
                     FrameTimeStats(
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                    )
+                }
+            }
+        )
+    }
+
+    private fun publishInvalidates() {
+        invalidateSink.onNext(
+            invalidateScreens.mapValues {
+                val invalidates = it.value.sortedBy { it }
+                val totalInvalidates = invalidates.size
+
+                try {
+                    InvalidateStats(
+                        invalidates.filter { it > 4L }.size,
+                        totalInvalidates,
+                        invalidates[totalInvalidates / 2],
+                        invalidates[totalInvalidates * 95 / 100],
+                        invalidates[totalInvalidates * 99 / 100],
+                    )
+                } catch (ex: IndexOutOfBoundsException) {
+                    InvalidateStats(
                         -1,
                         -1,
                         -1,

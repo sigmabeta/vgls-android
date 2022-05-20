@@ -31,7 +31,7 @@
     <string name="label_perf_summary">Summary</string>
     <string name="label_perf_summary_frame_drops">Janky Frames</string>
     <string name="label_perf_summary_completion">Full Load Time</string>
-    <string name="label_perf_summary_invalidate">Invalidate Median Time</string>
+    <string name="label_perf_summary_invalidate">Slow Invalidates</string>
     <string name="label_perf_load_times">Load Times</string>
     <string name="label_perf_frame_times">Frame Times</string>
     <string name="label_perf_invalidates">Invalidate</string>
@@ -43,6 +43,12 @@
     <string name="label_perf_frame_median">Median Frame Time</string>
     <string name="label_perf_frame_five">95th Percentile FT</string>
     <string name="label_perf_frame_nine">99th Percentile FT</string>
+
+    <string name="label_perf_invalidate_total">Total Invalidates</string>
+    <string name="label_perf_invalidate_jank">Slow Invalidates</string>
+    <string name="label_perf_invalidate_median">Median Time</string>
+    <string name="label_perf_invalidate_five">95th Percentile Time</string>
+    <string name="label_perf_invalidate_nine">99th Percentile Time</string>
 
     <string name="label_perf_empty_load_times">No load times recorded.</string>
     <string name="label_perf_empty_frame_times">No frame times recorded.</string>

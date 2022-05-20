@@ -140,7 +140,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
         super.onDestroy()
 
         if (perfTrackingStarted) {
-            perfTracker.requestFrameTimeList()
+            perfTracker.requestUpdates()
             perfTrackingStarted = false
         }
     }
