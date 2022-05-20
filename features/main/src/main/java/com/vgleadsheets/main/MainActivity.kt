@@ -43,10 +43,10 @@ import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import timber.log.Timber
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions", "Deprecation")
 class MainActivity :

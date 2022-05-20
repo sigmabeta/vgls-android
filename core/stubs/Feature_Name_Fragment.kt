@@ -7,8 +7,8 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
-import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_feature_name_.*
+import javax.inject.Inject
 
 class Feature_Name_Fragment : VglsFragment() {
     @Inject

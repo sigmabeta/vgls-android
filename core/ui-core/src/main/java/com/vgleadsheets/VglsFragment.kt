@@ -17,9 +17,9 @@ import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.support.AndroidSupportInjection
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
-import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {

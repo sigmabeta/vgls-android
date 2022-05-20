@@ -7,4 +7,3 @@ data class FrameTimeStats(
     val ninetyFiveMillis: Long,
     val ninetyNineMillis: Long
 )
-

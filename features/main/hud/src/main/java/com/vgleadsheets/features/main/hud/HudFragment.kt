@@ -57,9 +57,9 @@ import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import timber.log.Timber
 
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment() {
