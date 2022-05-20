@@ -49,6 +49,8 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
         content.adapter = adapter
         content.layoutManager = LinearLayoutManager(context)
 
+        adapter.resources = resources
+
         if (dpWidth > WIDTH_THRESHOLD_TABLET) {
             content.tabletSetListsSpecialInsets(topOffset, bottomOffset)
         } else {

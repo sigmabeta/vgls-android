@@ -413,8 +413,6 @@ class MainActivity :
                 .firstOrNull { state -> state.stateName == PerfSpec.toString() }
                 ?.let { state -> PerfSpec.valueOf(state.state) }
 
-            Timber.w("Reporting frame: $spec")
-
             if (spec != null) {
                 perfTracker.reportFrame(it.toFrameInfo(), spec)
             }

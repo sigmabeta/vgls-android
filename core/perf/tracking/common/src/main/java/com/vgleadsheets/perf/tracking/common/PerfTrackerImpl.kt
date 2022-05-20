@@ -253,8 +253,10 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
 
         Timber.v("Duration for ${screen.name}:$perfStage: $durationMillis ms ")
 
-        loadTimeScreens[spec] = updatedScreen
-        publishScreenLoads()
+        synchronized(loadTimeScreens) {
+            loadTimeScreens[spec] = updatedScreen
+            publishScreenLoads()
+        }
 
         checkIfScreenFullyLoaded(updatedScreen, spec, durationMillis)
         return

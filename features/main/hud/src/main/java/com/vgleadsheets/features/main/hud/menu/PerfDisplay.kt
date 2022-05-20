@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.PerfViewMode
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.R
@@ -84,6 +85,7 @@ object PerfDisplay {
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
     ) = listOf(
+        SectionHeaderListModel(resources.getString(R.string.label_perf_summary)),
         loadTimeSummary(perfScreenStatus, resources, onPerfCategoryClicked),
         frameTimeSummary(frameTimeStats, resources, onPerfCategoryClicked),
         invalidateSummary(invalidateStats, resources, onPerfCategoryClicked)
@@ -95,9 +97,9 @@ object PerfDisplay {
         onPerfCategoryClicked: (PerfViewMode) -> Unit
     ) = if (perfScreenStatus != null) {
         LabelValueListModel(
-            resources.getString(R.string.label_perf_summary_completion),
+            resources.getString(R.string.label_perf_load_times),
             resources.getString(
-                R.string.value_perf_ms,
+                R.string.value_perf_summary_completion,
                 perfScreenStatus.stageDurationMillis[PerfStage.COMPLETION]
             ),
             categoryClickHandler(onPerfCategoryClicked, PerfViewMode.LOAD_TIMES)
@@ -112,8 +114,12 @@ object PerfDisplay {
         onPerfCategoryClicked: (PerfViewMode) -> Unit
     ) = if (frameTimeStats != null) {
         LabelValueListModel(
-            resources.getString(R.string.label_perf_summary_frame_drops),
-            frameTimeStats.jankFrames.toString(),
+            resources.getString(R.string.label_perf_frame_times),
+            resources.getString(
+                R.string.value_perf_summary_frame_drops,
+                frameTimeStats.jankFrames,
+                frameTimeStats.totalFrames
+            ),
             categoryClickHandler(onPerfCategoryClicked, PerfViewMode.FRAME_TIMES)
         )
     } else {
@@ -126,8 +132,12 @@ object PerfDisplay {
         onPerfCategoryClicked: (PerfViewMode) -> Unit
     ) = if (invalidateStats != null) {
         LabelValueListModel(
-            resources.getString(R.string.label_perf_summary_invalidate),
-            invalidateStats.jankInvalidates.toString(),
+            resources.getString(R.string.label_perf_invalidates),
+            resources.getString(
+                R.string.value_perf_summary_invalidate,
+                invalidateStats.jankInvalidates,
+                invalidateStats.totalInvalidates
+            ),
             categoryClickHandler(onPerfCategoryClicked, PerfViewMode.INVALIDATES)
         )
     } else {
@@ -163,15 +173,26 @@ object PerfDisplay {
     private fun loadTimesForScreen(
         loadTimes: ScreenLoadStatus?,
         resources: Resources
-    ) = loadTimes?.stageDurationMillis?.map {
-        LabelValueListModel(
-            it.key.name,
-            resources.getString(R.string.value_perf_ms, it.value),
-            noopClicker()
+    ) = loadTimeHeader(resources) + loadTimeContent(loadTimes, resources)
+
+    private fun loadTimeHeader(resources: Resources) = listOf(
+        SectionHeaderListModel(
+            resources.getString(R.string.label_perf_invalidates)
         )
-    } ?: listOf(
-        summaryEmptyLine(R.string.label_perf_empty_load_times, resources)
     )
+
+    private fun loadTimeContent(
+        loadTimes: ScreenLoadStatus?,
+        resources: Resources
+    ) = loadTimes
+        ?.stageDurationMillis
+        ?.map {
+            LabelValueListModel(
+                resources.getString(it.key.getOnScreenNameId()),
+                resources.getString(R.string.value_perf_ms, it.value),
+                noopClicker()
+            )
+        } ?: listOf(summaryEmptyLine(R.string.label_perf_empty_load_times, resources))
 
     @Suppress("UNUSED_PARAMETER")
     private fun frameTimesForScreen(
@@ -179,28 +200,31 @@ object PerfDisplay {
         resources: Resources
     ) = if (frameTimeStats != null) {
         listOf(
+            SectionHeaderListModel(
+                resources.getString(R.string.label_perf_frame_times)
+            ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_frame_total),
+                resources.getString(R.string.label_perf_total),
                 frameTimeStats.totalFrames.toString(),
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_summary_frame_drops),
+                resources.getString(R.string.label_perf_jank),
                 frameTimeStats.jankFrames.toString(),
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_frame_median),
+                resources.getString(R.string.label_perf_median),
                 resources.getString(R.string.value_perf_ms, frameTimeStats.medianMillis),
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_frame_five),
+                resources.getString(R.string.label_perf_five),
                 resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyFiveMillis),
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_frame_nine),
+                resources.getString(R.string.label_perf_nine),
                 resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyNineMillis),
                 noopClicker()
             )
@@ -216,18 +240,21 @@ object PerfDisplay {
         resources: Resources
     ) = if (invalidateStats != null) {
         listOf(
+            SectionHeaderListModel(
+                resources.getString(R.string.label_perf_invalidates)
+            ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_invalidate_total),
+                resources.getString(R.string.label_perf_total),
                 invalidateStats.totalInvalidates.toString(),
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_invalidate_jank),
+                resources.getString(R.string.label_perf_jank),
                 invalidateStats.jankInvalidates.toString(),
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_invalidate_total_time),
+                resources.getString(R.string.label_perf_total_time),
                 resources.getString(
                     R.string.value_perf_ms,
                     invalidateStats.totalInvalidateTimeMillis
@@ -235,18 +262,18 @@ object PerfDisplay {
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_invalidate_median),
+                resources.getString(R.string.label_perf_median),
                 resources.getString(R.string.value_perf_ms, invalidateStats.medianMillis),
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_invalidate_five),
-                resources.getString(R.string.value_perf_ms, invalidateStats.medianMillis),
+                resources.getString(R.string.label_perf_five),
+                resources.getString(R.string.value_perf_ms, invalidateStats.ninetyFiveMillis),
                 noopClicker()
             ),
             LabelValueListModel(
-                resources.getString(R.string.label_perf_invalidate_nine),
-                resources.getString(R.string.value_perf_ms, invalidateStats.medianMillis),
+                resources.getString(R.string.label_perf_nine),
+                resources.getString(R.string.value_perf_ms, invalidateStats.ninetyNineMillis),
                 noopClicker()
             )
         )
@@ -254,6 +281,16 @@ object PerfDisplay {
         listOf(
             summaryEmptyLine(R.string.label_perf_empty_invalidates, resources)
         )
+    }
+
+    private fun PerfStage.getOnScreenNameId() = when (this) {
+        PerfStage.VIEW_CREATED -> R.string.label_perf_stage_view_created
+        PerfStage.TITLE_LOADED -> R.string.label_perf_stage_title_loaded
+        PerfStage.TRANSITION_START -> R.string.label_perf_stage_transition_start
+        PerfStage.PARTIAL_CONTENT_LOAD -> R.string.label_perf_stage_partial_content
+        PerfStage.FULL_CONTENT_LOAD -> R.string.label_perf_stage_full_content
+        PerfStage.CANCELLATION -> R.string.label_perf_stage_cancelled
+        PerfStage.COMPLETION -> R.string.label_perf_stage_completed
     }
 
     private fun dropdownHandler(onOptionSelected: (PerfSpec) -> Unit) =

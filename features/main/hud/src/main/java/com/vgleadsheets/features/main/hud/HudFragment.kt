@@ -134,6 +134,8 @@ class HudFragment : VglsFragment() {
             bottomMargin = -cornerOffset
         }
 
+        menuAdapter.resources = resources
+
         screen.buttonSearchClear.setOnClickListener { screen.editSearchQuery.text.clear() }
         screen.shadowHud.setOnClickListener { viewModel.onMenuAction() }
 

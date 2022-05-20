@@ -148,6 +148,8 @@ class ViewerFragment :
             true
         )
 
+        sheetsAdapter.resources = resources
+
         viewModel.selectSubscribe(
             ViewerState::activeJamSheetId,
             deliveryMode = uniqueOnly("sheet")
