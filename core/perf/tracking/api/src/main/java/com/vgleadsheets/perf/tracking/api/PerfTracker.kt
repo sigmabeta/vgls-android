@@ -2,6 +2,7 @@ package com.vgleadsheets.perf.tracking.api
 
 import io.reactivex.Observable
 
+@Suppress("TooManyFunctions")
 interface PerfTracker {
     fun start(screenName: String, spec: PerfSpec)
 
@@ -19,7 +20,15 @@ interface PerfTracker {
 
     fun cancelAll()
 
-    fun clear(spec: PerfSpec)
+    fun reportFrame(frame: FrameInfo, spec: PerfSpec)
 
-    fun getEventStream(): Observable<PerfState>
+    fun reportInvalidate(invalidate: InvalidateInfo, spec: PerfSpec)
+
+    fun screenLoadStream(): Observable<Map<PerfSpec, ScreenLoadStatus>>
+
+    fun frameTimeStream(): Observable<Map<PerfSpec, FrameTimeStats>>
+
+    fun invalidateStream(): Observable<Map<PerfSpec, InvalidateStats>>
+
+    fun requestUpdates()
 }

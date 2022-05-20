@@ -87,8 +87,4 @@
         android:id="@+id/included_bottom_sheet"
         layout="@layout/view_bottom_sheet_card" />
 
-    <include
-        android:id="@+id/included_perf"
-        layout="@layout/view_perf_event_list" />
-
 </FrameLayout>

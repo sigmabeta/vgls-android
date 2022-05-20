@@ -1,6 +1,7 @@
 package com.vgleadsheets.recyclerview
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.transition.ChangeBounds
 import android.transition.TransitionManager
 import android.view.LayoutInflater
@@ -30,14 +31,18 @@ class ComponentAdapter :
         stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
 
+    var resources: Resources? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val itemBinding = DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
+        val itemBinding =
+            DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
 
         return ComponentViewHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) = holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) =
+        holder.bind(getItem(position))
 
     override fun onBindViewHolder(
         holder: ComponentViewHolder,
@@ -83,6 +88,7 @@ class ComponentAdapter :
         }
     }
 
+    @Suppress("SwallowedException")
     private fun reportDuplicateModel(list: List<ListModel>?) {
         val duplicateModels = list!!
             .groupBy { it.dataId }
@@ -91,7 +97,14 @@ class ComponentAdapter :
         val builder = StringBuilder("Dataset contains duplicate ids!\n")
         duplicateModels.forEach { entry ->
             val duplicateId = entry.key
-            builder.append("ListModels with id $duplicateId:\n")
+
+            val duplicateIdName = try {
+                resources?.getResourceName(duplicateId.toInt())
+            } catch (ex: Resources.NotFoundException) {
+                null
+            }
+
+            builder.append("ListModels with id ${duplicateIdName ?: duplicateId}:\n")
             val modelsWithThisId = entry.value
 
             modelsWithThisId.forEach { model ->

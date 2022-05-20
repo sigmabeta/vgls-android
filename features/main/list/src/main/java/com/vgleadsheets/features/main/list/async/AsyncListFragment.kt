@@ -11,12 +11,15 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.R
+import com.vgleadsheets.perf.tracking.api.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
 import com.vgleadsheets.tabletSetListsSpecialInsets
 import javax.inject.Inject
+import kotlin.system.measureNanoTime
 
-abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState<DataType>> : VglsFragment() {
+abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState<DataType>> :
+    VglsFragment() {
     abstract val viewModel: AsyncListViewModel<DataType, StateType>
 
     abstract fun subscribeToViewEvents()
@@ -46,6 +49,8 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
         content.adapter = adapter
         content.layoutManager = LinearLayoutManager(context)
 
+        adapter.resources = resources
+
         if (dpWidth > WIDTH_THRESHOLD_TABLET) {
             content.tabletSetListsSpecialInsets(topOffset, bottomOffset)
         } else {
@@ -71,8 +76,21 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
         subscribeToViewEvents()
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
-        adapter.submitList(state.listModels)
+    override fun invalidate() {
+        val invalidateStartNanos = System.nanoTime()
+        val invalidateDurationNanos = measureNanoTime {
+            withState(viewModel) { state ->
+                adapter.submitList(state.listModels)
+            }
+        }
+
+        perfTracker.reportInvalidate(
+            InvalidateInfo(
+                invalidateStartNanos,
+                invalidateDurationNanos
+            ),
+            getPerfSpec()
+        )
     }
 
     override fun getLayoutId() = R.layout.fragment_list

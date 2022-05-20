@@ -187,9 +187,8 @@ fun bindLongClickHandler(
     }
 }
 
-@BindingAdapter("expanded")
-fun bindExpanded(view: ImageButton, expanded: Boolean) {
-    val iconId = if (expanded) R.drawable.ic_clear_black_24dp else R.drawable.ic_menu_24dp
+@BindingAdapter("icon")
+fun bindIcon(view: ImageButton, iconId: Int) {
     view.setImageResource(iconId)
 }
 

@@ -4,6 +4,7 @@ data class MenuTitleBarListModel(
     val title: String,
     val subtitle: String,
     val expanded: Boolean,
+    val iconId: Int,
     val onClicked: () -> Unit,
     val onChangePartClicked: () -> Unit
 ) : ListModel {

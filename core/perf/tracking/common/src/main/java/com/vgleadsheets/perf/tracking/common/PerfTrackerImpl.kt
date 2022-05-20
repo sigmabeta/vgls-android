@@ -1,51 +1,71 @@
 package com.vgleadsheets.perf.tracking.common
 
-import com.vgleadsheets.perf.tracking.api.PerfScreenStatus
+import com.vgleadsheets.perf.tracking.api.FrameInfo
+import com.vgleadsheets.perf.tracking.api.FrameTimeStats
+import com.vgleadsheets.perf.tracking.api.InvalidateInfo
+import com.vgleadsheets.perf.tracking.api.InvalidateStats
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
-import com.vgleadsheets.perf.tracking.api.PerfState
 import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.nanoseconds
 import timber.log.Timber
 
-@SuppressWarnings("TooManyFunctions")
+@SuppressWarnings(
+    "TooManyFunctions",
+    "MagicNumber",
+    "TooGenericExceptionCaught",
+    "SwallowedException",
+    "MaxLineLength"
+)
 class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : PerfTracker {
-    private val screens =
-        HashMap<PerfSpec, PerfScreenStatus>()
+    private val loadTimeScreens = HashMap<PerfSpec, ScreenLoadStatus>()
 
-    private val failureTimers =
-        HashMap<PerfSpec, Disposable?>()
+    private val invalidateScreens = HashMap<PerfSpec, MutableList<InvalidateInfo>>()
 
-    private val eventSink = BehaviorSubject.create<PerfState>()
+    private val frameTimeScreens = HashMap<PerfSpec, MutableList<FrameInfo>>()
 
-    override fun getEventStream() = eventSink
+    private val failureTimers = HashMap<PerfSpec, Disposable?>()
+
+    private val screenLoadSink = BehaviorSubject.create<Map<PerfSpec, ScreenLoadStatus>>()
+
+    private val frameTimeSink = BehaviorSubject.create<Map<PerfSpec, FrameTimeStats>>()
+
+    private val invalidateSink = BehaviorSubject.create<Map<PerfSpec, InvalidateStats>>()
+
+    override fun screenLoadStream() = screenLoadSink
+
+    override fun frameTimeStream() = frameTimeSink
+
+    override fun invalidateStream() = invalidateSink
 
     override fun start(screenName: String, spec: PerfSpec) {
-        val oldScreen = screens[spec]
+        val oldScreen = loadTimeScreens[spec]
         if (oldScreen != null) {
             if (
-                oldScreen.stageDurations[PerfStage.CANCELLATION] != null &&
-                oldScreen.stageDurations[PerfStage.COMPLETION] != null
+                oldScreen.stageDurationMillis[PerfStage.CANCELLATION] != null &&
+                oldScreen.stageDurationMillis[PerfStage.COMPLETION] != null
             ) {
-                perfTrackingBackend.error(
-                    "Active trace list from a previous instance of screen $screenName still exists!"
-                )
-                return
+                clear(spec)
             }
         }
 
         perfTrackingBackend.startScreen(screenName)
-        val startTime = System.currentTimeMillis()
+        val startTimeNanos = System.nanoTime()
 
         Timber.d("Starting timing for $screenName...")
 
-        publishState()
+        publishScreenLoads()
 
-        screens[spec] = PerfScreenStatus(screenName, startTime)
+        frameTimeScreens[spec] = mutableListOf()
+        invalidateScreens[spec] = mutableListOf()
+        loadTimeScreens[spec] = ScreenLoadStatus(screenName, startTimeNanos)
         startFailureTimer(spec)
     }
 
@@ -66,7 +86,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
 
     @SuppressWarnings("ReturnCount")
     override fun cancel(spec: PerfSpec) {
-        val screen = screens[spec] ?: return
+        val screen = loadTimeScreens[spec] ?: return
 
         cancelInternal(screen, spec)
     }
@@ -74,25 +94,127 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     override fun cancelAll() {
         Timber.w("Canceling all screen timers.")
 
-        screens.forEach { entry ->
+        loadTimeScreens.forEach { entry ->
             cancelInternal(entry.value, entry.key)
         }
     }
 
+    override fun reportFrame(frame: FrameInfo, spec: PerfSpec) {
+        val frameList = frameTimeScreens[spec]
+        frameList?.add(frame)
+    }
+
+    override fun reportInvalidate(invalidate: InvalidateInfo, spec: PerfSpec) {
+        val invalidateList = invalidateScreens[spec]
+        invalidateList?.add(invalidate)
+    }
+
+    override fun requestUpdates() {
+        publishFrameTimes()
+        publishInvalidates()
+    }
+
+    private fun publishScreenLoads() {
+        screenLoadSink.onNext(
+            loadTimeScreens.toMap()
+        )
+    }
+
+    private fun publishFrameTimes() {
+        frameTimeSink.onNext(
+            frameTimeScreens.mapValues {
+                val frametimes = it.value.sortedBy { it.durationOnUiThreadNanos }
+                val totalFrames = frametimes.size
+
+                try {
+                    FrameTimeStats(
+                        frametimes.filter { frame -> frame.isJank }.size,
+                        totalFrames,
+                        frametimes[totalFrames / 2].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
+                        frametimes[totalFrames * 95 / 100].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
+                        frametimes[totalFrames * 99 / 100].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
+                    )
+                } catch (ex: IndexOutOfBoundsException) {
+                    FrameTimeStats(
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                    )
+                }
+            }
+        )
+    }
+
+    private fun publishInvalidates() {
+        invalidateSink.onNext(
+            invalidateScreens.mapValues {
+                val invalidates = it.value.sortedBy { it.durationNanos }
+                val totalInvalidates = invalidates.size
+
+                try {
+                    InvalidateStats(
+                        invalidates.filter { invalidate -> invalidate.durationNanos > 4L.milliseconds.inWholeNanoseconds }.size,
+                        totalInvalidates,
+                        invalidates.sumOf { invalidate -> invalidate.durationNanos }.nanoseconds.inWholeMilliseconds,
+                        invalidates[totalInvalidates / 2].durationNanos.nanoseconds.inWholeMilliseconds,
+                        invalidates[totalInvalidates * 95 / 100].durationNanos.nanoseconds.inWholeMilliseconds,
+                        invalidates[totalInvalidates * 99 / 100].durationNanos.nanoseconds.inWholeMilliseconds,
+                    )
+                } catch (ex: IndexOutOfBoundsException) {
+                    InvalidateStats(
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                        -1,
+                    )
+                }
+            }
+        )
+    }
+
+    private fun cancelInternal(screen: ScreenLoadStatus, spec: PerfSpec) {
+        if (screen.stageDurationMillis[PerfStage.CANCELLATION] != null) {
+            return
+        }
+
+        if (screen.stageDurationMillis[PerfStage.COMPLETION] != null) {
+            return
+        }
+
+        perfTrackingBackend.cancel(screen.name)
+        val durationMillis = (System.nanoTime() - screen.startTimeNanos)
+            .nanoseconds
+            .inWholeMilliseconds
+
+        Timber.i("Cancelling timing for ${screen.name} after $durationMillis ms.")
+
+        loadTimeScreens[spec] = screen.copy(
+            stageDurationMillis = screen.stageDurationMillis + (PerfStage.CANCELLATION to durationMillis)
+        )
+
+        publishScreenLoads()
+
+        stopFailureTimer(spec)
+    }
+
     @SuppressWarnings("ReturnCount")
-    override fun clear(spec: PerfSpec) {
-        val screen = screens[spec]
+    private fun clear(spec: PerfSpec) {
+        val screen = loadTimeScreens[spec]
 
         if (screen == null) {
             perfTrackingBackend.error("Screen $spec not found!")
             return
         }
 
-        if (screen.stageDurations[PerfStage.CANCELLATION] != null) {
+        if (screen.stageDurationMillis[PerfStage.CANCELLATION] != null) {
             return
         }
 
-        if (screen.stageDurations[PerfStage.COMPLETION] != null) {
+        if (screen.stageDurationMillis[PerfStage.COMPLETION] != null) {
             return
         }
 
@@ -104,80 +226,54 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
             stopFailureTimer(spec)
         }
 
-        screens.remove(spec)
-    }
-
-    private fun publishState() {
-        // Timber.i("Publishing trace.")
-        eventSink.onNext(
-            PerfState(
-                screens.toMap()
-            )
-        )
-    }
-
-    private fun cancelInternal(screen: PerfScreenStatus, spec: PerfSpec) {
-        if (screen.stageDurations[PerfStage.CANCELLATION] != null) {
-            return
-        }
-
-        if (screen.stageDurations[PerfStage.COMPLETION] != null) {
-            return
-        }
-
-        perfTrackingBackend.cancel(screen.name)
-        val duration = System.currentTimeMillis() - screen.startTime
-
-        Timber.i("Cancelling timing for ${screen.name} after $duration ms.")
-
-        screens[spec] = screen.copy(
-            stageDurations = screen.stageDurations + (PerfStage.CANCELLATION to duration)
-        )
-
-        publishState()
-
-        stopFailureTimer(spec)
+        frameTimeScreens.remove(spec)
+        loadTimeScreens.remove(spec)
     }
 
     @SuppressWarnings("ReturnCount")
     private fun finishTrace(spec: PerfSpec, perfStage: PerfStage) {
-        val screen = screens[spec]
+        val screen = loadTimeScreens[spec]
             ?: return
 
-        if (screen.stageDurations[perfStage] != null) {
+        if (screen.stageDurationMillis[perfStage] != null) {
             return
         }
 
-        if (screen.stageDurations[PerfStage.CANCELLATION] != null) {
+        if (screen.stageDurationMillis[PerfStage.CANCELLATION] != null) {
             return
         }
 
-        if (screen.stageDurations[PerfStage.COMPLETION] != null) {
+        if (screen.stageDurationMillis[PerfStage.COMPLETION] != null) {
             return
         }
 
         perfTrackingBackend.finishTrace(screen.name, perfStage)
 
-        val duration = System.currentTimeMillis() - screen.startTime
+        val durationMillis = (System.nanoTime() - screen.startTimeNanos)
+            .nanoseconds
+            .inWholeMilliseconds
+
         val updatedScreen = screen.copy(
-            stageDurations = screen.stageDurations + (perfStage to duration)
+            stageDurationMillis = screen.stageDurationMillis + (perfStage to durationMillis)
         )
 
-        Timber.v("Duration for ${screen.name}:$perfStage: $duration ms ")
+        Timber.v("Duration for ${screen.name}:$perfStage: $durationMillis ms ")
 
-        screens[spec] = updatedScreen
-        publishState()
+        synchronized(loadTimeScreens) {
+            loadTimeScreens[spec] = updatedScreen
+            publishScreenLoads()
+        }
 
-        checkIfScreenFullyLoaded(updatedScreen, spec, duration)
+        checkIfScreenFullyLoaded(updatedScreen, spec, durationMillis)
         return
     }
 
     private fun checkIfScreenFullyLoaded(
-        screen: PerfScreenStatus,
+        screen: ScreenLoadStatus,
         spec: PerfSpec,
         duration: Long
     ) {
-        val durations = screen.stageDurations
+        val durations = screen.stageDurationMillis
         if (durations[PerfStage.COMPLETION] != null) {
             return
         }
@@ -194,23 +290,23 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     }
 
     private fun onScreenFullyLoaded(spec: PerfSpec, duration: Long) {
-        val screen = screens[spec]
+        val screen = loadTimeScreens[spec]
 
         if (screen == null) {
             perfTrackingBackend.error("Traces for $spec not found!")
             return
         }
 
-        if (screen.stageDurations[PerfStage.COMPLETION] != null) {
+        if (screen.stageDurationMillis[PerfStage.COMPLETION] != null) {
             return
         }
 
         Timber.d("Successful load of ${screen.name} in $duration ms!")
 
-        screens[spec] = screen.copy(
-            stageDurations = screen.stageDurations + (PerfStage.COMPLETION to duration)
+        loadTimeScreens[spec] = screen.copy(
+            stageDurationMillis = screen.stageDurationMillis + (PerfStage.COMPLETION to duration)
         )
-        publishState()
+        publishScreenLoads()
 
         stopFailureTimer(spec)
     }
@@ -219,7 +315,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         val timer = Observable.timer(TIMEOUT_SCREEN_LOAD, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                val screen = screens[spec]
+                val screen = loadTimeScreens[spec]
                 if (screen == null) {
                     Timber.w("Trace not found when timer went off. What?")
                     return@subscribe
@@ -248,10 +344,10 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
         failureTimers[spec] = null
     }
 
-    private fun getNotClearedTraces(screen: PerfScreenStatus): List<PerfStage> {
+    private fun getNotClearedTraces(screen: ScreenLoadStatus): List<PerfStage> {
         return PerfStage.values()
             .exceptCancelAndComplete()
-            .filter { !screen.stageDurations.containsKey(it) }
+            .filter { !screen.stageDurationMillis.containsKey(it) }
     }
 
     private fun Array<PerfStage>.exceptCancelAndComplete() = this

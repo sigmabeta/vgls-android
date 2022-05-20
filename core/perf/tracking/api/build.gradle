@@ -1,6 +1,9 @@
 apply plugin: 'kotlin-kapt'
 
 dependencies {
+    // JankStats library
+    api "androidx.metrics:metrics-performance:1.0.0-alpha01"
+
     // RxJava2 libs
     api "io.reactivex.rxjava2:rxjava:$rxjava_version"
 

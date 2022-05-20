@@ -47,8 +47,10 @@ import com.vgleadsheets.features.main.hud.menu.TitleBar
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.FrameTimeStats
+import com.vgleadsheets.perf.tracking.api.InvalidateStats
 import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfState
+import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
@@ -132,12 +134,14 @@ class HudFragment : VglsFragment() {
             bottomMargin = -cornerOffset
         }
 
+        menuAdapter.resources = resources
+
         screen.buttonSearchClear.setOnClickListener { screen.editSearchQuery.text.clear() }
         screen.shadowHud.setOnClickListener { viewModel.onMenuAction() }
 
         screen.buttonSearchMenuBack.setOnClickListener {
             withState(viewModel) {
-                if (it.mode != HudMode.REGULAR) {
+                if (it.mode == HudMode.REGULAR) {
                     activity?.onBackPressed()
                 } else {
                     onMenuClick()
@@ -200,12 +204,14 @@ class HudFragment : VglsFragment() {
             state.mode,
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
-            state.perfState,
+            state.loadTimeLists,
+            state.frameTimeStatsMap,
+            state.invalidateStatsMap,
             state.digest is Loading,
             state.random is Loading,
             state.updateTime,
             state.selectedSong,
-            state.perfSelectedScreen
+            state.perfViewState
         )
 
         if (state.alwaysShowBack) {
@@ -225,7 +231,7 @@ class HudFragment : VglsFragment() {
 
     override fun onBackPress() = withState(viewModel) {
         if (it.mode != HudMode.REGULAR) {
-            viewModel.onMenuBackPress()
+            viewModel.onMenuClick()
             return@withState true
         }
 
@@ -370,12 +376,14 @@ class HudFragment : VglsFragment() {
         hudMode: HudMode,
         showVocalsOption: Boolean,
         selectedPart: Part,
-        perfState: PerfState?,
+        loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
+        frameTimeStatsMap: Map<PerfSpec, FrameTimeStats>?,
+        invalidateStatsMap: Map<PerfSpec, InvalidateStats>?,
         refreshing: Boolean,
         randoming: Boolean,
         updateTime: Async<Long>,
         currentSong: Song?,
-        perfSelectedScreen: PerfSpec
+        perfViewState: PerfViewState
     ) {
         Shadow.setToLookRightIdk(
             screen.shadowHud,
@@ -406,7 +414,7 @@ class HudFragment : VglsFragment() {
 
         val menuItems = TitleBar.getListModels(
             PartSelectorOption.valueOf(selectedPart.name),
-            hudMode != HudMode.REGULAR,
+            hudMode,
             resources,
             { viewModel.onMenuClick() },
             { viewModel.onChangePartClick() },
@@ -438,10 +446,13 @@ class HudFragment : VglsFragment() {
             resources,
         ) + PerfDisplay.getListModels(
             hudMode == HudMode.PERF,
-            perfSelectedScreen,
-            perfState,
-            viewModel::setPerfSelectedScreen,
-            resources
+            perfViewState,
+            loadTimeLists,
+            frameTimeStatsMap,
+            invalidateStatsMap,
+            { viewModel.setPerfSelectedScreen(it) },
+            { viewModel.setPerfViewMode(it) },
+            resources,
         ) + RefreshIndicator.getListModels(
             refreshing,
             resources,
