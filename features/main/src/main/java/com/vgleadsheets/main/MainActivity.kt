@@ -425,11 +425,9 @@ class MainActivity :
         )
     }
 
-    private fun Long.nanosToMillis() = div(1_000_000L)
-
     private fun FrameData.toFrameInfo() = FrameInfo(
-        frameStartNanos.nanosToMillis(),
-        frameDurationUiNanos.nanosToMillis(),
+        frameStartNanos,
+        frameDurationUiNanos,
         isJank
     )
 

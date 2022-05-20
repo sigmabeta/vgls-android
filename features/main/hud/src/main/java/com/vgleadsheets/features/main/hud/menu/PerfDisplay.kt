@@ -98,7 +98,7 @@ object PerfDisplay {
             resources.getString(R.string.label_perf_summary_completion),
             resources.getString(
                 R.string.value_perf_ms,
-                perfScreenStatus.stageDurations[PerfStage.COMPLETION]
+                perfScreenStatus.stageDurationMillis[PerfStage.COMPLETION]
             ),
             categoryClickHandler(onPerfCategoryClicked, PerfViewMode.LOAD_TIMES)
         )
@@ -163,7 +163,7 @@ object PerfDisplay {
     private fun loadTimesForScreen(
         loadTimes: ScreenLoadStatus?,
         resources: Resources
-    ) = loadTimes?.stageDurations?.map {
+    ) = loadTimes?.stageDurationMillis?.map {
         LabelValueListModel(
             it.key.name,
             resources.getString(R.string.value_perf_ms, it.value),
@@ -191,17 +191,17 @@ object PerfDisplay {
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_frame_median),
-                resources.getString(R.string.value_perf_ms, frameTimeStats.median),
+                resources.getString(R.string.value_perf_ms, frameTimeStats.medianMillis),
                 noopClicker()
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_frame_five),
-                resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyFive),
+                resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyFiveMillis),
                 noopClicker()
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_frame_nine),
-                resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyNine),
+                resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyNineMillis),
                 noopClicker()
             )
         )
@@ -227,18 +227,26 @@ object PerfDisplay {
                 noopClicker()
             ),
             LabelValueListModel(
+                resources.getString(R.string.label_perf_invalidate_total_time),
+                resources.getString(
+                    R.string.value_perf_ms,
+                    invalidateStats.totalInvalidateTimeMillis
+                ),
+                noopClicker()
+            ),
+            LabelValueListModel(
                 resources.getString(R.string.label_perf_invalidate_median),
-                resources.getString(R.string.value_perf_ms, invalidateStats.median),
+                resources.getString(R.string.value_perf_ms, invalidateStats.medianMillis),
                 noopClicker()
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_invalidate_five),
-                resources.getString(R.string.value_perf_ms, invalidateStats.ninetyFive),
+                resources.getString(R.string.value_perf_ms, invalidateStats.medianMillis),
                 noopClicker()
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_invalidate_nine),
-                resources.getString(R.string.value_perf_ms, invalidateStats.ninetyNine),
+                resources.getString(R.string.value_perf_ms, invalidateStats.medianMillis),
                 noopClicker()
             )
         )

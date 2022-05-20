@@ -4,6 +4,6 @@ import java.util.EnumMap
 
 data class ScreenLoadStatus(
     val name: String,
-    val startTime: Long,
-    val stageDurations: Map<PerfStage, Long?> = EnumMap(PerfStage::class.java),
+    val startTimeNanos: Long,
+    val stageDurationMillis: Map<PerfStage, Long?> = EnumMap(PerfStage::class.java),
 )

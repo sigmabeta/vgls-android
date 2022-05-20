@@ -46,6 +46,7 @@
 
     <string name="label_perf_invalidate_total">Total Invalidates</string>
     <string name="label_perf_invalidate_jank">Slow Invalidates</string>
+    <string name="label_perf_invalidate_total_time">Total Time</string>
     <string name="label_perf_invalidate_median">Median Time</string>
     <string name="label_perf_invalidate_five">95th Percentile Time</string>
     <string name="label_perf_invalidate_nine">99th Percentile Time</string>
