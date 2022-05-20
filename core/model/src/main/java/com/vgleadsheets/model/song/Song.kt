@@ -11,5 +11,6 @@ data class Song(
     val hasVocals: Boolean,
     val pageCount: Int,
     val lyricPageCount: Int,
-    val composers: List<Composer>?
+    val composers: List<Composer>?,
+    val playCount: Int
 )

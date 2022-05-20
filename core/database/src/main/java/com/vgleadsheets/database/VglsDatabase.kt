@@ -45,7 +45,7 @@ import com.vgleadsheets.model.time.TimeEntity
         SongHistoryEntryEntity::class,
         ComposerAliasEntity::class
     ],
-    version = 7
+    version = 8
 )
 @Suppress("TooManyFunctions")
 abstract class VglsDatabase : RoomDatabase() {
