@@ -18,7 +18,8 @@ import com.vgleadsheets.tabletSetListsSpecialInsets
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
 
-abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState<DataType>> : VglsFragment() {
+abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState<DataType>> :
+    VglsFragment() {
     abstract val viewModel: AsyncListViewModel<DataType, StateType>
 
     abstract fun subscribeToViewEvents()
@@ -73,10 +74,12 @@ abstract class AsyncListFragment<DataType : ListData, StateType : AsyncListState
         subscribeToViewEvents()
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
+    override fun invalidate() {
         val invalidateStartNanos = System.nanoTime()
         val invalidateDurationNanos = measureNanoTime {
-            adapter.submitList(state.listModels)
+            withState(viewModel) { state ->
+                adapter.submitList(state.listModels)
+            }
         }
 
         perfTracker.reportInvalidate(

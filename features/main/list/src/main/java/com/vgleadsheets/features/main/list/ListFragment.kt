@@ -71,10 +71,12 @@ abstract class ListFragment<DataType, StateType : ListState<DataType>> : VglsFra
         subscribeToViewEvents()
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
+    override fun invalidate() {
         val invalidateStartNanos = System.nanoTime()
         val invalidateDurationNanos = measureNanoTime {
-            adapter.submitList(state.listModels)
+            withState(viewModel) { state ->
+                adapter.submitList(state.listModels)
+            }
         }
 
         perfTracker.reportInvalidate(
