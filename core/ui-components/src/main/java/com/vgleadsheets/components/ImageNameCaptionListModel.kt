@@ -1,11 +1,13 @@
 package com.vgleadsheets.components
 
+import androidx.annotation.DrawableRes
+
 data class ImageNameCaptionListModel(
     override val dataId: Long,
     val name: String,
     val caption: String,
     val imageUrl: String?,
-    val imagePlaceholder: Int,
+    @DrawableRes val imagePlaceholder: Int,
     val handler: EventHandler,
     val actionableId: Long? = null
 ) : ListModel {

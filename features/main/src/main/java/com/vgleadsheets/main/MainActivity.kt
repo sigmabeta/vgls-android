@@ -20,7 +20,7 @@ import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.game.GameFragment
-import com.vgleadsheets.features.main.games.GameListFragment
+import com.vgleadsheets.features.main.games.better.BetterGameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.jam.JamFragment
@@ -129,7 +129,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            GameListFragment.newInstance(),
+            BetterGameListFragment.newInstance(),
             fromScreen,
             fromDetails
         )
