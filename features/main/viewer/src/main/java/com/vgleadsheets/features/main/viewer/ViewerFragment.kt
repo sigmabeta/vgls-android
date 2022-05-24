@@ -312,11 +312,10 @@ class ViewerFragment :
 
         hudViewModel.setSelectedSong(song)
 
-        val pageCount = if (selectedPart == Part.VOCAL) {
+        val pageCount = if (selectedPart == Part.VOCAL)
             song.lyricPageCount
-        } else {
+        else
             song.pageCount
-        }
 
         val listComponents = (1..pageCount).map { pageNumber ->
             SheetListModel(
