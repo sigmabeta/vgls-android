@@ -29,13 +29,13 @@ import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.android.synthetic.main.fragment_viewer.list_sheets
 import kotlinx.android.synthetic.main.fragment_viewer.list_toolbar_items
 import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Named
 
 @Suppress("TooManyFunctions")
 class ViewerFragment :
@@ -312,7 +312,13 @@ class ViewerFragment :
 
         hudViewModel.setSelectedSong(song)
 
-        val listComponents = (1..song.pageCount).map { pageNumber ->
+        val pageCount = if (selectedPart == Part.VOCAL) {
+            song.lyricPageCount
+        } else {
+            song.pageCount
+        }
+
+        val listComponents = (1..pageCount).map { pageNumber ->
             SheetListModel(
                 Page.generateImageUrl(
                     baseImageUrl,
