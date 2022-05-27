@@ -23,6 +23,8 @@ object BetterLists {
                 resources,
                 config.titleConfig.photoUrl,
                 config.titleConfig.placeholder,
+                config.titleConfig.shouldShow,
+                config.titleConfig.isLoading,
                 config.titleConfig.titleGenerator,
             ),
             Content.listItems(

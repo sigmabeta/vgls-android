@@ -9,6 +9,7 @@ import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.ListViewModel
 import com.vgleadsheets.features.main.list.LoadingItemStyle
+import com.vgleadsheets.features.main.list.isNullOrEmpty
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
@@ -40,11 +41,11 @@ class GameListConfig(
     )
 
     override val contentConfig = Content.Config(
-        !state.data().isNullOrEmpty()
+        !state.contentLoad.isNullOrEmpty()
     ) {
-        state.data()!!
-            .filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
-            .map {
+        state.contentLoad.content()
+            ?.filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
+            ?.map {
                 ImageNameCaptionListModel(
                     it.id,
                     it.name,
@@ -53,7 +54,7 @@ class GameListConfig(
                     R.drawable.placeholder_game,
                     onGameClicked(clicks)
                 )
-            }
+            } ?: emptyList()
     }
 
     override val emptyConfig = EmptyState.Config(

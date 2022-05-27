@@ -19,7 +19,7 @@ import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.debug.DebugFragment
-import com.vgleadsheets.features.main.game.GameFragment
+import com.vgleadsheets.features.main.game.better.BetterGameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -243,7 +243,7 @@ class MainActivity :
         )
 
         showFragmentSimple(
-            GameFragment.newInstance(IdArgs(gameId))
+            BetterGameFragment.newInstance(IdArgs(gameId))
         )
     }
 

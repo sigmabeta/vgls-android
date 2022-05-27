@@ -21,7 +21,7 @@ class BetterGameListViewModel @AssistedInject constructor(
     private fun fetchGames() {
         repository.getGames()
             .execute {
-                copy(dataLoad = it)
+                copy(contentLoad = BetterGameListContent(it))
             }
     }
 

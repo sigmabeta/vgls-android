@@ -6,12 +6,11 @@ import com.vgleadsheets.features.main.games.GameListConfig
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
 import com.vgleadsheets.features.main.list.BetterLists
-import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class BetterGameListFragment : BetterListFragment<Game, BetterGameListState>() {
+class BetterGameListFragment : BetterListFragment<BetterGameListContent, BetterGameListState>() {
     @Inject
     lateinit var viewModelFactory: BetterGameListViewModel.Factory
 

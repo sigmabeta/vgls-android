@@ -19,7 +19,7 @@ import com.vgleadsheets.tabletSetListsSpecialInsets
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
 
-abstract class BetterListFragment<DataType, StateType : BetterListState<DataType>> :
+abstract class BetterListFragment<DataType : ListContent, StateType : BetterCompositeState<DataType>> :
     VglsFragment() {
     abstract val viewModel: MvRxViewModel<StateType>
 
