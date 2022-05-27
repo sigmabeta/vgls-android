@@ -3,6 +3,7 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.model.song.Song
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 class DelayOrErrorRepository(
     val realRepository: RealRepository
@@ -81,9 +82,27 @@ class DelayOrErrorRepository(
     override fun clearJams() = realRepository.clearJams()
 
     private fun <EventType, RxType : Observable<EventType>> RxType.withDelay() =
-        delay(DELAY_MS, TimeUnit.MILLISECONDS)
+        delay(
+            DELAY_MINIMUM_MS + Random.nextLong(DELAY_VARIANCE_MS),
+            TimeUnit.MILLISECONDS
+        )
+
+    private fun <EventType, RxType : Observable<EventType>> RxType.butItFailsEveryTime() = map {
+        if (SHOULD_IT_FAIL) {
+            error(BUT_IT_FAILS_EVERY_TIME)
+        } else {
+            it
+        }
+    }
 
     companion object {
-        const val DELAY_MS = 3_000L
+        const val DELAY_MINIMUM_MS = 1_000L
+
+        const val DELAY_VARIANCE_MS = 4_000L
+
+        const val SHOULD_IT_FAIL = true
+
+        const val BUT_IT_FAILS_EVERY_TIME =
+            "This repository request is configured to fail every time."
     }
 }
