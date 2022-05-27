@@ -4,6 +4,8 @@ import android.content.Context
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.repository.BuildConfig
+import com.vgleadsheets.repository.DelayOrErrorRepository
 import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker
@@ -16,11 +18,21 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRepository(
+        realRepository: RealRepository
+    ): Repository = if (BuildConfig.DEBUG) {
+        DelayOrErrorRepository(realRepository)
+    } else {
+        realRepository
+    }
+
+    @Provides
+    @Singleton
+    fun provideRealRepository(
         vglsApi: VglsApi,
         database: VglsDatabase,
         threeTenTime: ThreeTenTime,
         tracker: Tracker
-    ): Repository = RealRepository(vglsApi, threeTenTime, tracker, database)
+    ) = RealRepository(vglsApi, threeTenTime, tracker, database)
 
     @Provides
     @Singleton
