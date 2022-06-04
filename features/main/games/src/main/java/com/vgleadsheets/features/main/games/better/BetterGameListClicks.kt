@@ -1,9 +1,8 @@
-package com.vgleadsheets.features.main.games
+package com.vgleadsheets.features.main.games.better
 
-import com.vgleadsheets.features.main.games.better.BetterGameListViewModel
 import com.vgleadsheets.features.main.list.ListItemClicks
 
-object GameListClicks : ListItemClicks {
+object BetterGameListClicks : ListItemClicks {
     fun onGameClicked(
         id: Long,
         name: String,

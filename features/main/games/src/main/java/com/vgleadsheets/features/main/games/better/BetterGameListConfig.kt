@@ -1,10 +1,9 @@
-package com.vgleadsheets.features.main.games
+package com.vgleadsheets.features.main.games.better
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.features.main.games.better.BetterGameListFragment
-import com.vgleadsheets.features.main.games.better.BetterGameListState
-import com.vgleadsheets.features.main.games.better.BetterGameListViewModel
+import com.vgleadsheets.features.main.games.BuildConfig
+import com.vgleadsheets.features.main.games.R
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.ListViewModel
@@ -20,15 +19,15 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-class GameListConfig(
+class BetterGameListConfig(
     private val state: BetterGameListState,
     private val hudState: HudState,
     private val viewModel: BetterGameListViewModel,
-    private val clicks: GameListClicks,
+    private val clicks: BetterGameListClicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterGameListState, GameListClicks> {
+) : BetterListConfig<BetterGameListState, BetterGameListClicks> {
     override val titleConfig = Title.Config(
         resources.getString(R.string.app_name),
         resources.getString(R.string.label_by_game),
@@ -112,7 +111,7 @@ class GameListConfig(
         return builder.toString()
     }
 
-    private fun onGameClicked(clicks: GameListClicks) =
+    private fun onGameClicked(clicks: BetterGameListClicks) =
         object : ImageNameCaptionListModel.EventHandler {
             override fun onClicked(clicked: ImageNameCaptionListModel) {
                 clicks.onGameClicked(clicked.dataId, clicked.name, viewModel)

@@ -1,8 +1,6 @@
 package com.vgleadsheets.features.main.games.better
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.games.GameListClicks
-import com.vgleadsheets.features.main.games.GameListConfig
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
 import com.vgleadsheets.features.main.list.BetterLists
@@ -22,11 +20,11 @@ class BetterGameListFragment : BetterListFragment<BetterGameListContent, BetterG
 
     override fun generateList(state: BetterGameListState, hudState: HudState) =
         BetterLists.generateList(
-            GameListConfig(
+            BetterGameListConfig(
                 state,
                 hudState,
                 viewModel,
-                GameListClicks,
+                BetterGameListClicks,
                 perfTracker,
                 getPerfSpec(),
                 resources

@@ -17,7 +17,7 @@ import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.better.BetterComposerFragment
-import com.vgleadsheets.features.main.composers.ComposerListFragment
+import com.vgleadsheets.features.main.composers.better.BetterComposerListFragment
 import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.game.better.BetterGameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
@@ -140,7 +140,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            ComposerListFragment.newInstance(),
+            BetterComposerListFragment.newInstance(),
             fromScreen,
             fromDetails
         )
