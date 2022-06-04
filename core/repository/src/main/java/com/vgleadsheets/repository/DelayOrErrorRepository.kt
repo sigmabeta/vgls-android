@@ -81,7 +81,7 @@ class DelayOrErrorRepository(
 
     override fun clearJams() = realRepository.clearJams()
 
-    private fun <EventType, RxType : Observable<EventType>> RxType.withDelay() =
+    private fun <EventType, RxType : Observable<EventType>> RxType.butItTakesForever() =
         delay(
             DELAY_MINIMUM_MS + Random.nextLong(DELAY_VARIANCE_MS),
             TimeUnit.MILLISECONDS

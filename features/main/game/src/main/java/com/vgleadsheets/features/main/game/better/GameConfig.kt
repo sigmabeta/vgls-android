@@ -10,7 +10,6 @@ import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
-import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
@@ -41,7 +40,7 @@ class GameConfig(
     private val songs = songsLoad.content()
 
     override val titleConfig = Title.Config(
-        game?.name,
+        game?.name ?: resources.getString(R.string.unknown_game),
         songs?.captionText(),
         resources,
         {
@@ -51,7 +50,7 @@ class GameConfig(
         { },
         game?.photoUrl,
         R.drawable.placeholder_game,
-        gameLoad.isReady(),
+        true,
         gameLoad.isLoading()
     )
 
@@ -72,7 +71,7 @@ class GameConfig(
     }
 
     override val emptyConfig = EmptyState.Config(
-        songs.isNullOrEmpty(),
+        songs?.isEmpty() == true,
         R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_game_song)
     )
@@ -116,7 +115,10 @@ class GameConfig(
         1
     )
 
-    private fun List<Song>.captionText() = resources.getString(R.string.subtitle_sheets_count, size)
+    private fun List<Song>.captionText() = resources.getString(
+        R.string.subtitle_sheets_count,
+        size
+    )
 }
 
 

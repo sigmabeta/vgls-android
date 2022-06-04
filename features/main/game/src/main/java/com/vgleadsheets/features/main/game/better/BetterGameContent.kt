@@ -16,11 +16,11 @@ data class BetterGameContent(
     val songs: Async<List<Song>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException
-    override fun failure() = game.failure()
+    override fun failure() = game.failure() ?: songs.failure()
 
     override fun isLoading() = songs.isLoading()
 
-    override fun hasFailed() = game.hasFailed()
+    override fun hasFailed() = game.hasFailed() || songs.hasFailed()
 
     override fun isFullyLoaded() = game.isReady() && songs.isReady()
 
