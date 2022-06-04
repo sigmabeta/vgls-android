@@ -105,4 +105,3 @@ abstract class BetterListFragment<ContentType : ListContent, StateType : BetterC
         const val WIDTH_THRESHOLD_TABLET = 500.0f
     }
 }
-

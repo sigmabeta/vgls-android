@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.game.better
+package com.vgleadsheets.features.main.composer.better
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
@@ -12,23 +12,23 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class BetterGameFragment : BetterListFragment<BetterGameContent, BetterGameState>() {
+class BetterComposerFragment : BetterListFragment<BetterComposerContent, BetterComposerState>() {
     @Inject
-    lateinit var viewModelFactory: BetterGameViewModel.Factory
+    lateinit var viewModelFactory: BetterComposerViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
     lateinit var baseImageUrl: String
 
-    override fun getTrackingScreen() = TrackingScreen.DETAIL_GAME
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_COMPOSER
 
-    override fun getPerfSpec() = PerfSpec.GAME
+    override fun getPerfSpec() = PerfSpec.COMPOSER
 
-    override val viewModel: BetterGameViewModel by fragmentViewModel()
+    override val viewModel: BetterComposerViewModel by fragmentViewModel()
 
-    override fun generateList(state: BetterGameState, hudState: HudState) =
+    override fun generateList(state: BetterComposerState, hudState: HudState) =
         BetterLists.generateList(
-            GameConfig(
+            BetterComposerConfig(
                 state,
                 hudState,
                 baseImageUrl,
@@ -41,10 +41,10 @@ class BetterGameFragment : BetterListFragment<BetterGameContent, BetterGameState
         )
 
     companion object {
-        const val LOAD_OPERATION = "loadGame"
+        const val LOAD_OPERATION = "loadComposer"
 
-        fun newInstance(idArgs: IdArgs): BetterGameFragment {
-            val fragment = BetterGameFragment()
+        fun newInstance(idArgs: IdArgs): BetterComposerFragment {
+            val fragment = BetterComposerFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)
@@ -54,3 +54,4 @@ class BetterGameFragment : BetterListFragment<BetterGameContent, BetterGameState
         }
     }
 }
+
