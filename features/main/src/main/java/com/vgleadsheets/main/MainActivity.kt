@@ -30,7 +30,7 @@ import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.sheet.SheetDetailFragment
-import com.vgleadsheets.features.main.songs.SongListFragment
+import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
 import com.vgleadsheets.features.main.tagkeys.TagKeyFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongListFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueListFragment
@@ -173,7 +173,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            SongListFragment.newInstance(),
+            BetterSongListFragment.newInstance(),
             fromScreen,
             fromDetails
         )

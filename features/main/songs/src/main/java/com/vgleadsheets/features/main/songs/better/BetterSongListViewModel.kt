@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.composer.better
+package com.vgleadsheets.features.main.songs.better
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
@@ -10,67 +10,51 @@ import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.TrackingScreen
 
-class BetterComposerViewModel @AssistedInject constructor(
-    @Assisted initialState: BetterComposerState,
+class BetterSongListViewModel @AssistedInject constructor(
+    @Assisted initialState: BetterSongListState,
     @Assisted private val router: FragmentRouter,
     private val repository: Repository,
-) : MvRxViewModel<BetterComposerState>(initialState) {
+) : MvRxViewModel<BetterSongListState>(initialState) {
     init {
-        fetchComposer()
         fetchSongs()
-    }
-
-    private fun fetchComposer() = withState {
-        repository.getComposer(it.composerId)
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        composer = it
-                    )
-                )
-            }
-    }
-
-    private fun fetchSongs() = withState {
-        repository.getSongsByComposer(it.composerId)
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        songs = it
-                    )
-                )
-            }
     }
 
     fun onSongClicked(
         id: Long,
         songName: String,
-        gameName: String,
+        composerName: String,
         transposition: String
     ) {
         router.showSongViewer(
             id,
             songName,
-            gameName,
+            composerName,
             transposition,
             TrackingScreen.DETAIL_GAME,
         )
     }
 
+    private fun fetchSongs() {
+        repository.getAllSongs(false)
+            .execute {
+                copy(contentLoad = BetterSongListContent(it))
+            }
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            initialState: BetterComposerState,
+            initialState: BetterSongListState,
             router: FragmentRouter
-        ): BetterComposerViewModel
+        ): BetterSongListViewModel
     }
 
-    companion object : MvRxViewModelFactory<BetterComposerViewModel, BetterComposerState> {
+    companion object : MvRxViewModelFactory<BetterSongListViewModel, BetterSongListState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: BetterComposerState
-        ): BetterComposerViewModel {
-            val fragment: BetterComposerFragment =
+            state: BetterSongListState
+        ): BetterSongListViewModel {
+            val fragment: BetterSongListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
         }
