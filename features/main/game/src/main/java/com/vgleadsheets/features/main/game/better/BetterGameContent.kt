@@ -1,7 +1,6 @@
 package com.vgleadsheets.features.main.game.better
 
 import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.list.ListContent
 import com.vgleadsheets.features.main.list.failure
@@ -26,9 +25,5 @@ data class BetterGameContent(
 
     override fun isReady() = game.isReady()
 
-    override fun isEmpty() = !(
-        game is Success &&
-            songs is Success &&
-            songs()?.isNotEmpty() == true
-        )
+    override fun isEmpty() = songs()?.isEmpty() == true
 }
