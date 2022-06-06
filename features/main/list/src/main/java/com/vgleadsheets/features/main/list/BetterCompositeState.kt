@@ -17,5 +17,5 @@ interface BetterCompositeState<CompositeContentType : ListContent> : MvRxState {
 
     fun isReady() = contentLoad.isReady()
 
-    fun isFullyLoaded() = isReady()
+    fun isFullyLoaded() = contentLoad.isFullyLoaded()
 }
