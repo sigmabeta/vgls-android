@@ -87,6 +87,11 @@ class DelayOrErrorRepository(
             TimeUnit.MILLISECONDS
         )
 
+    private fun <EventType, RxType : Observable<List<EventType>>> RxType.butItsAlwaysEmpty() =
+        startWith(emptyList<EventType>())
+            .firstOrError()
+            .toObservable()
+
     private fun <EventType, RxType : Observable<EventType>> RxType.butItFailsEveryTime() = map {
         if (SHOULD_IT_FAIL) {
             error(BUT_IT_FAILS_EVERY_TIME)
