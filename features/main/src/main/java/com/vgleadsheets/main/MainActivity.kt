@@ -32,7 +32,7 @@ import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.sheet.SheetDetailFragment
 import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
-import com.vgleadsheets.features.main.tagsongs.TagValueSongListFragment
+import com.vgleadsheets.features.main.tagsongs.better.BetterTagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.better.BetterTagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.perf.tracking.api.FrameInfo
@@ -266,7 +266,7 @@ class MainActivity :
     )
 
     override fun showSongListForTagValue(tagValueId: Long) = showFragmentSimple(
-        TagValueSongListFragment.newInstance(IdArgs(tagValueId))
+        BetterTagValueSongFragment.newInstance(IdArgs(tagValueId))
     )
 
     override fun showSheetDetail(songId: Long) = showFragmentSimple(

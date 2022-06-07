@@ -23,6 +23,7 @@ import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
 import com.vgleadsheets.features.main.tagkeys.TagKeyFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongListFragment
+import com.vgleadsheets.features.main.tagsongs.better.BetterTagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueListFragment
 import com.vgleadsheets.features.main.tagvalues.better.BetterTagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
@@ -108,6 +109,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeTagValueSongListFragmentInjector(): TagValueSongListFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeBetterTagValueSongListFragmentInjector(): BetterTagValueSongFragment
 
     @FragmentScope
     @ContributesAndroidInjector
