@@ -229,7 +229,7 @@ class BetterJamConfig(
 
     private fun onFollowClicked() = object : CtaListModel.EventHandler {
         override fun onClicked(clicked: CtaListModel) {
-            viewModel.onFollowClicked()
+            viewModel.onFollowClicked(state.jamId)
         }
 
         override fun clearClicked() {}

@@ -38,8 +38,8 @@ class BetterJamViewModel @AssistedInject constructor(
         )
     }
 
-    fun onFollowClicked() = withState {
-        router.showJamViewer(it.jamId)
+    fun onFollowClicked(jamId: Long) {
+        router.showJamViewer(jamId)
     }
 
     fun refreshJam() = withState { state ->
