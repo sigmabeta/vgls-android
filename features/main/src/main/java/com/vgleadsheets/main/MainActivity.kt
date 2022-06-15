@@ -25,7 +25,7 @@ import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.jam.JamFragment
 import com.vgleadsheets.features.main.jams.FindJamDialogFragment
-import com.vgleadsheets.features.main.jams.JamListFragment
+import com.vgleadsheets.features.main.jams.better.BetterJamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
@@ -162,7 +162,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            JamListFragment.newInstance(),
+            BetterJamListFragment.newInstance(),
             fromScreen,
             fromDetails
         )
