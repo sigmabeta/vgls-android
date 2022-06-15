@@ -8,6 +8,7 @@ import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isNullOrEmpty
+import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
@@ -44,6 +45,8 @@ class BetterSongListConfig(
         },
         { }
     )
+
+    override val actionsConfig = Actions.NONE
 
     override val contentConfig = Content.Config(
         !state.contentLoad.isNullOrEmpty()

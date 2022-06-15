@@ -165,7 +165,7 @@ class JamViewModel @AssistedInject constructor(
 
         return listOf(
             SectionHeaderListModel(
-                resourceProvider.getString(R.string.jam_current_song)
+                resourceProvider.getString(R.string.section_current_song)
             )
         ) + if (currentSong != null) {
             ImageNameCaptionListModel(
@@ -218,7 +218,7 @@ class JamViewModel @AssistedInject constructor(
         selectedPart: Part
     ) = listOf(
         SectionHeaderListModel(
-            resourceProvider.getString(R.string.jam_setlist)
+            resourceProvider.getString(R.string.section_setlist)
         )
     ) + if (setlist.isEmpty()) {
         listOf(
@@ -283,7 +283,7 @@ class JamViewModel @AssistedInject constructor(
 
         listOf(
             SectionHeaderListModel(
-                resourceProvider.getString(R.string.jam_song_history)
+                resourceProvider.getString(R.string.section_song_history)
             )
         ) + songHistory.map { entry ->
             val song = entry.song

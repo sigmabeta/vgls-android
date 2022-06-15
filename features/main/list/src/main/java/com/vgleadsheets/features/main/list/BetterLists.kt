@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.list
 import android.content.res.Resources
 import com.airbnb.mvrx.MvRxState
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
@@ -26,6 +27,10 @@ object BetterLists {
                 config.titleConfig.shouldShow,
                 config.titleConfig.isLoading,
                 config.titleConfig.titleGenerator,
+            ),
+            Actions.listItems(
+                config.actionsConfig.shouldShow,
+                config.actionsConfig.actionList
             ),
             Content.listItems(
                 config.contentConfig.isDataReady,
