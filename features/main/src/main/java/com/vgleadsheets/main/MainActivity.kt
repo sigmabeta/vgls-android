@@ -29,7 +29,7 @@ import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
-import com.vgleadsheets.features.main.sheet.SheetDetailFragment
+import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
 import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.better.BetterTagValueSongFragment
@@ -270,7 +270,7 @@ class MainActivity :
     )
 
     override fun showSheetDetail(songId: Long) = showFragmentSimple(
-        SheetDetailFragment.newInstance(IdArgs(songId))
+        BetterSongFragment.newInstance(IdArgs(songId))
     )
 
     override fun showSongViewer(
