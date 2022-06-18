@@ -19,6 +19,8 @@ import com.vgleadsheets.features.main.jams.better.BetterJamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
+import com.vgleadsheets.features.main.settings.better.BetterDebugFragment
+import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
 import com.vgleadsheets.features.main.sheet.SheetDetailFragment
 import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
@@ -91,6 +93,10 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
+    internal abstract fun contributeBetterSettingsFragmentInjector(): BetterSettingFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
     internal abstract fun contributeSettingsFragmentInjector(): SettingsFragment
 
     @FragmentScope
@@ -156,6 +162,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeDebugFragmentInjector(): DebugFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeBetterDebugFragmentInjector(): BetterDebugFragment
 
     @FragmentScope
     @ContributesAndroidInjector

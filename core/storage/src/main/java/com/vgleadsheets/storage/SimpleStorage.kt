@@ -2,6 +2,11 @@ package com.vgleadsheets.storage
 
 import com.uber.simplestore.SimpleStore
 import com.vgleadsheets.common.debug.NetworkEndpoint
+import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_MISC_PERF_VIEW
+import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
+import com.vgleadsheets.storage.Storage.Companion.KEY_SELECTED_PART
+import com.vgleadsheets.storage.Storage.Companion.KEY_SELECTED_TOP_LEVEL
+import com.vgleadsheets.storage.Storage.Companion.KEY_SHEETS_KEEP_SCREEN_ON
 import io.reactivex.Single
 
 @Suppress("TooManyFunctions")
@@ -90,14 +95,4 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
     override fun saveDebugSettingPerfView(newValue: Boolean): Single<String> = Single.fromFuture(
         simpleStore.putString(KEY_DEBUG_MISC_PERF_VIEW, newValue.toString())
     )
-
-    companion object {
-        const val KEY_SELECTED_TOP_LEVEL = "KEY_SELECTED_TOP_LEVEL"
-        const val KEY_SELECTED_PART = "KEY_SELECTED_PART"
-
-        const val KEY_SHEETS_KEEP_SCREEN_ON = "SETTING_SHEET_KEEP_SCREEN_ON"
-
-        const val KEY_DEBUG_NETWORK_ENDPOINT = "DEBUG_NETWORK_ENDPOINT"
-        const val KEY_DEBUG_MISC_PERF_VIEW = "DEBUG_MISC_PERF_VIEW"
-    }
 }

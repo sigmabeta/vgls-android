@@ -27,4 +27,14 @@ interface Storage {
     // Saving Debug Settings
     fun saveDebugSelectedNetworkEndpoint(newValue: Int): Single<String>
     fun saveDebugSettingPerfView(newValue: Boolean): Single<String>
+
+    companion object {
+        const val KEY_SELECTED_TOP_LEVEL = "KEY_SELECTED_TOP_LEVEL"
+        const val KEY_SELECTED_PART = "KEY_SELECTED_PART"
+
+        const val KEY_SHEETS_KEEP_SCREEN_ON = "SETTING_SHEET_KEEP_SCREEN_ON"
+
+        const val KEY_DEBUG_NETWORK_ENDPOINT = "DEBUG_NETWORK_ENDPOINT"
+        const val KEY_DEBUG_MISC_PERF_VIEW = "DEBUG_MISC_PERF_VIEW"
+    }
 }

@@ -18,7 +18,6 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.better.BetterComposerFragment
 import com.vgleadsheets.features.main.composers.better.BetterComposerListFragment
-import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.game.better.BetterGameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -28,7 +27,8 @@ import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
-import com.vgleadsheets.features.main.settings.SettingsFragment
+import com.vgleadsheets.features.main.settings.better.BetterDebugFragment
+import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
 import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
 import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
@@ -184,7 +184,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showFragmentSimple(
-            SettingsFragment.newInstance(),
+            BetterSettingFragment.newInstance(),
             fromScreen,
             fromDetails
         )
@@ -195,7 +195,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showFragmentSimple(
-            DebugFragment.newInstance(),
+            BetterDebugFragment.newInstance(),
             fromScreen,
             fromDetails
         )
