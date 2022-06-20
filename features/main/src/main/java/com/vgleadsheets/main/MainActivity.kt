@@ -26,7 +26,7 @@ import com.vgleadsheets.features.main.jam.better.BetterJamFragment
 import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
-import com.vgleadsheets.features.main.search.SearchFragment
+import com.vgleadsheets.features.main.search.better.BetterSearchFragment
 import com.vgleadsheets.features.main.settings.better.BetterDebugFragment
 import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
 import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
@@ -120,7 +120,7 @@ class MainActivity :
 
     override fun showSearch() {
         showFragmentSimple(
-            SearchFragment.newInstance()
+            BetterSearchFragment.newInstance()
         )
     }
 

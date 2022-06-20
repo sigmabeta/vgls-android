@@ -11,15 +11,10 @@ import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
-import javax.inject.Named
 
 class BetterDebugFragment : BetterListFragment<BetterDebugContent, BetterDebugState>() {
     @Inject
     lateinit var viewModelFactory: BetterDebugViewModel.Factory
-
-    @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
 
     override fun getTrackingScreen() = TrackingScreen.DEBUG
 
@@ -75,7 +70,7 @@ class BetterDebugFragment : BetterListFragment<BetterDebugContent, BetterDebugSt
     }
 
     companion object {
-        const val LOAD_OPERATION = "loadComposer"
+        const val LOAD_OPERATION = "loadDebug"
 
         fun newInstance() = BetterDebugFragment()
     }

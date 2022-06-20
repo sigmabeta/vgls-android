@@ -34,7 +34,7 @@ class BetterJamViewModel @AssistedInject constructor(
             songName,
             gameName,
             transposition,
-            TrackingScreen.DETAIL_GAME,
+            TrackingScreen.DETAIL_JAM,
         )
     }
 

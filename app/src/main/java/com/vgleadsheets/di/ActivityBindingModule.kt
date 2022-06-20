@@ -18,6 +18,7 @@ import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.jams.better.BetterJamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
+import com.vgleadsheets.features.main.search.better.BetterSearchFragment
 import com.vgleadsheets.features.main.settings.SettingsFragment
 import com.vgleadsheets.features.main.settings.better.BetterDebugFragment
 import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
@@ -90,6 +91,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeSearchFragmentInjector(): SearchFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeBetterSearchFragmentInjector(): BetterSearchFragment
 
     @FragmentScope
     @ContributesAndroidInjector

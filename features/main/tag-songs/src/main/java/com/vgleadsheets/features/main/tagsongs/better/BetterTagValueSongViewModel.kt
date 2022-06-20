@@ -53,7 +53,7 @@ class BetterTagValueSongViewModel @AssistedInject constructor(
             songName,
             gameName,
             transposition,
-            TrackingScreen.DETAIL_GAME,
+            TrackingScreen.LIST_TAG_VALUE_SONG,
         )
     }
 

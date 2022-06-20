@@ -30,7 +30,7 @@ class BetterSongListViewModel @AssistedInject constructor(
             songName,
             composerName,
             transposition,
-            TrackingScreen.DETAIL_GAME,
+            TrackingScreen.LIST_SHEET,
         )
     }
 
