@@ -138,15 +138,8 @@ class HudFragment : VglsFragment() {
 
         screen.buttonSearchClear.setOnClickListener { screen.editSearchQuery.text.clear() }
         screen.shadowHud.setOnClickListener { viewModel.onMenuAction() }
-
         screen.buttonSearchMenuBack.setOnClickListener {
-            withState(viewModel) {
-                if (it.mode == HudMode.REGULAR) {
-                    activity?.onBackPressed()
-                } else {
-                    onMenuClick()
-                }
-            }
+            onAppBarButtonClick()
         }
     }
 
@@ -183,12 +176,12 @@ class HudFragment : VglsFragment() {
         }
 
         when {
-            state.mode != HudMode.REGULAR -> {
-                screen.buttonSearchMenuBack.setIcon(SearchIcon.State.CLOSE)
-            }
             state.mode == HudMode.SEARCH -> {
                 showSearch()
                 screen.buttonSearchMenuBack.setIcon(SearchIcon.State.BACK)
+            }
+            state.mode != HudMode.REGULAR -> {
+                screen.buttonSearchMenuBack.setIcon(SearchIcon.State.CLOSE)
             }
             else -> {
                 hideSearch()
@@ -202,6 +195,7 @@ class HudFragment : VglsFragment() {
 
         renderMenu(
             state.mode,
+            state.selectedSong != null,
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
             state.loadTimeLists,
@@ -211,7 +205,7 @@ class HudFragment : VglsFragment() {
             state.random is Loading,
             state.updateTime,
             state.selectedSong,
-            state.perfViewState
+            state.perfViewState,
         )
 
         if (state.alwaysShowBack) {
@@ -230,12 +224,7 @@ class HudFragment : VglsFragment() {
     }
 
     override fun onBackPress() = withState(viewModel) {
-        if (it.mode != HudMode.REGULAR) {
-            viewModel.onMenuClick()
-            return@withState true
-        }
-
-        return@withState false
+        return@withState viewModel.onBackPress(it)
     }
 
     override fun getLayoutId() = R.layout.fragment_hud
@@ -300,9 +289,9 @@ class HudFragment : VglsFragment() {
         disposables.add(save)
     }
 
-    private fun onMenuClick() {
+    private fun onAppBarButtonClick() {
         tracker.logMenuShow()
-        viewModel.onMenuClick()
+        viewModel.onAppBarButtonClick()
     }
 
     private fun onRandomClick() = withState(viewModel) { state ->
@@ -346,10 +335,7 @@ class HudFragment : VglsFragment() {
     }
 
     private fun showHud() {
-        screen.editSearchQuery.animate().cancel()
-        screen.includedBottomSheet.containerCard.animate().cancel()
-
-        screen.editSearchQuery.slideViewOnscreen()
+        screen.cardSearch.slideViewOnscreen()
         screen.includedBottomSheet.containerCard.slideViewOnscreen()
 
         view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
@@ -358,8 +344,8 @@ class HudFragment : VglsFragment() {
     }
 
     private fun hideHud() {
-        if (screen.editSearchQuery.visibility != GONE) {
-            screen.editSearchQuery.slideViewUpOffscreen()
+        if (screen.cardSearch.visibility != GONE) {
+            screen.cardSearch.slideViewUpOffscreen()
             screen.includedBottomSheet.containerCard.slideViewDownOffscreen()
 
             view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or
@@ -374,6 +360,7 @@ class HudFragment : VglsFragment() {
     @Suppress("LongParameterList", "LongMethod")
     private fun renderMenu(
         hudMode: HudMode,
+        shouldHide: Boolean,
         showVocalsOption: Boolean,
         selectedPart: Part,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
@@ -406,7 +393,7 @@ class HudFragment : VglsFragment() {
             }
         }
 
-        if (hudMode == HudMode.REGULAR) {
+        if (hudMode == HudMode.REGULAR && shouldHide) {
             viewModel.startHudTimer()
         } else {
             viewModel.stopHudTimer()
@@ -416,7 +403,10 @@ class HudFragment : VglsFragment() {
             PartSelectorOption.valueOf(selectedPart.name),
             hudMode,
             resources,
-            { viewModel.onMenuClick() },
+            {
+                tracker.logMenuShow()
+                viewModel.onBottomMenuButtonClick()
+            },
             { viewModel.onChangePartClick() },
         ) + SongDisplay.getListModels(
             currentSong,
@@ -498,7 +488,7 @@ class HudFragment : VglsFragment() {
         )
     }
 
-    private fun searchClicks() = screen.editSearchQuery.clicks()
+    private fun searchClicks() = screen.cardSearch.clicks()
         .throttleFirst(THRESHOLD_SEARCH_CLICKS, TimeUnit.MILLISECONDS)
 
     private fun searchEvents() = screen.editSearchQuery

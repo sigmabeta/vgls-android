@@ -18,7 +18,7 @@ object TitleBar {
         MenuTitleBarListModel(
             resources.getString(R.string.app_name),
             resources.getSelectedPartString(selectedPart),
-            hudMode != HudMode.REGULAR,
+            hudMode != HudMode.REGULAR && hudMode != HudMode.SEARCH,
             getIconId(hudMode),
             onMenuClick,
             onChangePartClick,

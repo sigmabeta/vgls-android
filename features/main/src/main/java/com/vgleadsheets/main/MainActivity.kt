@@ -233,6 +233,10 @@ class MainActivity :
             supportFragmentManager, FindJamDialogFragment::class.java.simpleName
         )
 
+    override fun back() {
+        supportFragmentManager.popBackStack()
+    }
+
     override fun showSongListForGame(gameId: Long, name: String) {
         val prevFragment = getDisplayedFragment()
 

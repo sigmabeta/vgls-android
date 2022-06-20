@@ -39,11 +39,6 @@ class SearchFragment : AsyncListFragment<SearchData, SearchState>() {
 
     override fun getPerfSpec() = PerfSpec.SEARCH
 
-    override fun onBackPress(): Boolean {
-        hudViewModel.exitSearch()
-        return false
-    }
-
     override fun subscribeToViewEvents() {
         hudViewModel.selectSubscribe(
             HudState::searchQuery,

@@ -68,7 +68,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="@{toBind.expanded ? View.GONE : View.VISIBLE}"
+            android:visibility="@{toBind.showChangeParts ? View.GONE : View.VISIBLE}"
             android:onClick="@{() -> toBind.onChangePartClicked.invoke()}"
             android:text="@string/button_label_transpo_change" />
 

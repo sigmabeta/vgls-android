@@ -1,6 +1,5 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.model.song.Song
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -65,9 +64,7 @@ class DelayOrErrorRepository(
 
     override fun getJam(id: Long, withHistory: Boolean) = realRepository.getJam(id, withHistory)
 
-    override fun searchSongs(searchQuery: String): Observable<List<Song>> {
-        TODO("Not yet implemented")
-    }
+    override fun searchSongs(searchQuery: String) = realRepository.searchSongs(searchQuery)
 
     override fun searchGamesCombined(searchQuery: String) =
         realRepository.searchGamesCombined(searchQuery)

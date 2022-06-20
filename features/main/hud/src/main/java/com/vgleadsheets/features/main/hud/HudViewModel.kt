@@ -9,6 +9,7 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
@@ -25,6 +26,7 @@ import timber.log.Timber
 @Suppress("TooManyFunctions")
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
+    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
     private val storage: Storage,
     private val perfTracker: PerfTracker
@@ -42,14 +44,47 @@ class HudViewModel @AssistedInject constructor(
 
     fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }
 
-    fun onMenuClick() = withState {
+    fun onAppBarButtonClick() = withState {
         when (it.mode) {
-            HudMode.PERF -> when (it.perfViewState.viewMode) {
-                PerfViewMode.REGULAR -> backToMenu()
-                else -> backoPerfRegular()
+            HudMode.SEARCH -> exitSearch()
+            HudMode.REGULAR -> showMenu()
+            else -> {
+                if (it.alwaysShowBack) {
+                    router.back()
+                } else {
+                    hideMenus()
+                }
             }
+        }
+    }
+
+    fun onBottomMenuButtonClick() = withState {
+        when (it.mode) {
+            HudMode.PERF -> perfBottomMenuButtonClick(it)
+            HudMode.SEARCH -> exitSearch()
             HudMode.REGULAR -> showMenu()
             else -> hideMenus()
+        }
+    }
+
+    fun onBackPress(hudState: HudState) = when (hudState.mode) {
+        HudMode.PERF -> {
+            when (hudState.perfViewState.viewMode) {
+                PerfViewMode.REGULAR -> backToMenu()
+                else -> backToPerfRegular()
+            }
+            true
+        }
+        HudMode.SEARCH -> {
+            exitSearch()
+            true
+        }
+        HudMode.REGULAR -> {
+            false
+        }
+        else -> {
+            hideMenus()
+            true
         }
     }
 
@@ -107,12 +142,6 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    fun exitSearch() = withState { state ->
-        if (state.mode == HudMode.SEARCH) {
-            setState { copy(mode = HudMode.REGULAR, searchQuery = null) }
-        }
-    }
-
     fun hideHud() = withState { state ->
         if (state.hudVisible) {
             setState { copy(hudVisible = false) }
@@ -161,10 +190,6 @@ class HudViewModel @AssistedInject constructor(
         copy(random = Uninitialized)
     }
 
-    fun clearDigestError() = setState {
-        copy(digest = Uninitialized)
-    }
-
     private fun hideMenus() = setState {
         copy(
             mode = HudMode.REGULAR,
@@ -178,13 +203,20 @@ class HudViewModel @AssistedInject constructor(
         )
     }
 
+    private fun perfBottomMenuButtonClick(it: HudState) {
+        when (it.perfViewState.viewMode) {
+            PerfViewMode.REGULAR -> backToMenu()
+            else -> backToPerfRegular()
+        }
+    }
+
     private fun showParts() = setState {
         copy(
             mode = HudMode.PARTS
         )
     }
 
-    private fun backoPerfRegular() = setState {
+    private fun backToPerfRegular() = setState {
         copy(
             perfViewState = perfViewState.copy(viewMode = PerfViewMode.REGULAR)
         )
@@ -194,6 +226,13 @@ class HudViewModel @AssistedInject constructor(
         copy(
             mode = HudMode.MENU
         )
+    }
+
+    private fun exitSearch() = withState { state ->
+        if (state.mode == HudMode.SEARCH) {
+            router.back()
+            setState { copy(mode = HudMode.REGULAR, searchQuery = null) }
+        }
     }
 
     private fun checkSavedPartSelection() = withState {
@@ -305,7 +344,10 @@ class HudViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: HudState): HudViewModel
+        fun create(
+            initialState: HudState,
+            router: FragmentRouter
+        ): HudViewModel
     }
 
     interface HudViewModelFactoryProvider {
@@ -319,7 +361,7 @@ class HudViewModel @AssistedInject constructor(
             val activity =
                 (viewModelContext as ActivityViewModelContext).activity<FragmentActivity>()
             val provider = activity as HudViewModelFactoryProvider
-            return provider.hudViewModelFactory.create(state)
+            return provider.hudViewModelFactory.create(state, activity as FragmentRouter)
         }
     }
 }
