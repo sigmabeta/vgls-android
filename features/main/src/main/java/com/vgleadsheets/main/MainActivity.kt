@@ -16,7 +16,7 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
-import com.vgleadsheets.features.main.composer.better.BetterComposerFragment
+import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.better.BetterComposerListFragment
 import com.vgleadsheets.features.main.game.better.BetterGameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
@@ -261,7 +261,7 @@ class MainActivity :
         )
 
         showFragmentSimple(
-            BetterComposerFragment.newInstance(IdArgs(composerId))
+            ComposerDetailFragment.newInstance(IdArgs(composerId))
         )
     }
 

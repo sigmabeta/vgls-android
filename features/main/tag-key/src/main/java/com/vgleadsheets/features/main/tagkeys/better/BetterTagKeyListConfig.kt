@@ -4,7 +4,8 @@ import android.content.res.Resources
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
-import com.vgleadsheets.features.main.list.ListViewModel
+import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
+import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
 import com.vgleadsheets.features.main.list.sections.Actions
@@ -80,10 +81,10 @@ class BetterTagKeyListConfig(
         val builder = StringBuilder()
         var numberOfOthers = items.size
 
-        while (builder.length < ListViewModel.MAX_LENGTH_SUBTITLE_CHARS) {
+        while (builder.length < MAX_LENGTH_SUBTITLE_CHARS) {
             val index = items.size - numberOfOthers
 
-            if (index >= ListViewModel.MAX_LENGTH_SUBTITLE_ITEMS) {
+            if (index >= MAX_LENGTH_SUBTITLE_ITEMS) {
                 break
             }
 

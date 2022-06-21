@@ -15,4 +15,11 @@ interface BetterListConfig<StateType : MvRxState, ClickHandlerType : ListItemCli
     val emptyConfig: EmptyState.Config
     val errorConfig: ErrorState.Config
     val loadingConfig: LoadingState.Config
+
+    companion object {
+        const val LOADING_ITEMS = 15
+
+        const val MAX_LENGTH_SUBTITLE_CHARS = 20
+        const val MAX_LENGTH_SUBTITLE_ITEMS = 6
+    }
 }
