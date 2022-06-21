@@ -20,7 +20,7 @@
         android:animateLayoutChanges="true"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> toBind.onClicked.invoke()}"
+        android:onClick="@{() -> toBind.onClick.invoke()}"
         android:orientation="horizontal">
 
         <ImageView

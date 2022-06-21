@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
+        android:onClick="@{() -> toBind.onClick.invoke()}"
         android:orientation="horizontal">
 
         <ImageView

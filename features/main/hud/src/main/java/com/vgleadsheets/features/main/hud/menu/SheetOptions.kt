@@ -10,8 +10,8 @@ object SheetOptions {
     fun getListModels(
         shouldShow: Boolean,
         currentSong: Song?,
-        clickHandler: () -> Unit,
-        otherClickHandler: () -> Unit,
+        onDetailsClick: () -> Unit,
+        onYoutubeClick: () -> Unit,
         resources: Resources,
     ) = if (currentSong != null && shouldShow) {
         listOf(
@@ -19,13 +19,13 @@ object SheetOptions {
                 resources.getString(R.string.label_song_details),
                 "",
                 R.drawable.ic_details_24,
-                clickHandler,
+                onDetailsClick,
             ),
             MenuItemListModel(
                 resources.getString(R.string.label_youtube),
                 "",
                 R.drawable.ic_play_circle_filled_24,
-                otherClickHandler,
+                onYoutubeClick,
             )
         )
     } else {

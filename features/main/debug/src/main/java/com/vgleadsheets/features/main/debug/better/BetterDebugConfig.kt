@@ -7,7 +7,6 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.debug.BuildConfig
-import com.vgleadsheets.features.main.debug.DebugViewModel
 import com.vgleadsheets.features.main.debug.R
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
@@ -54,67 +53,11 @@ class BetterDebugConfig(
 
         settings ?: return@Config emptyList()
 
-        val networkSection = createSection(settings, DebugViewModel.HEADER_ID_NETWORK)
+        val networkSection = createSection(settings, HEADER_ID_NETWORK)
         val databaseSection = createDatabaseSection(settings)
-        val miscSection = createSection(settings, DebugViewModel.HEADER_ID_MISC)
+        val miscSection = createSection(settings, HEADER_ID_MISC)
 
         networkSection + databaseSection + miscSection
-    }
-
-    private fun createSection(settings: List<Setting>, headerId: String): List<ListModel> {
-        val headerModels = listOf(
-            SectionHeaderListModel(
-                getSectionHeaderString(headerId)
-            )
-        )
-
-        val settingsModels = settings
-            .filter { it.settingId.startsWith(headerId) }
-            .map { setting ->
-                when (setting) {
-                    is BooleanSetting -> CheckableListModel(
-                        setting.settingId,
-                        resources.getString(setting.labelStringId),
-                        setting.value,
-                        onCheckboxClicked()
-                    )
-                    is DropdownSetting -> DropdownSettingListModel(
-                        setting.settingId,
-                        resources.getString(setting.labelStringId),
-                        setting.selectedPosition,
-                        setting.valueStringIds.map { resources.getString(it) },
-                        onDropdownSettingSelected()
-                    )
-                }
-            }
-
-        return headerModels + settingsModels
-    }
-
-    private fun createDatabaseSection(settings: List<Setting>): List<ListModel> {
-        val normalItems = createSection(settings, DebugViewModel.HEADER_ID_DATABASE)
-        val customItems = listOf(
-            SingleTextListModel(
-                R.string.label_database_clear_sheets.toLong(),
-                resources.getString(R.string.label_database_clear_sheets),
-                onSingleTextClicked()
-            ),
-            SingleTextListModel(
-                R.string.label_database_clear_jams.toLong(),
-                resources.getString(R.string.label_database_clear_jams),
-                onSingleTextClicked()
-            )
-        )
-
-        return normalItems + customItems
-    }
-
-    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
-    private fun getSectionHeaderString(headerId: String) = when (headerId) {
-        DebugViewModel.HEADER_ID_NETWORK -> resources.getString(R.string.section_network)
-        DebugViewModel.HEADER_ID_DATABASE -> resources.getString(R.string.section_database)
-        DebugViewModel.HEADER_ID_MISC -> resources.getString(R.string.section_misc)
-        else -> throw IllegalArgumentException()
     }
 
     override val emptyConfig = EmptyState.Config(
@@ -135,31 +78,66 @@ class BetterDebugConfig(
         LoadingItemStyle.WITH_IMAGE
     )
 
-    private fun onCheckboxClicked() =
-        object : CheckableListModel.EventHandler {
-            override fun onClicked(clicked: CheckableListModel) {
-                viewModel.onBooleanSettingClicked(
-                    clicked.settingId,
-                    !clicked.checked,
-                )
-            }
-        }
+    private fun createSection(settings: List<Setting>, headerId: String): List<ListModel> {
+        val headerModels = listOf(
+            SectionHeaderListModel(
+                getSectionHeaderString(headerId)
+            )
+        )
 
-    private fun onSingleTextClicked() = object : SingleTextListModel.EventHandler {
-        override fun onClicked(clicked: SingleTextListModel) {
-            when (clicked.dataId.toInt()) {
-                R.string.label_database_clear_sheets -> viewModel.clearSheets()
-                R.string.label_database_clear_jams -> viewModel.clearJams()
-                else -> throw java.lang.IllegalArgumentException("Unimplemented debug setting!")
+        val settingsModels = settings
+            .filter { it.settingId.startsWith(headerId) }
+            .map { setting ->
+                when (setting) {
+                    is BooleanSetting -> CheckableListModel(
+                        setting.settingId,
+                        resources.getString(setting.labelStringId),
+                        setting.value
+                    ) { viewModel.onBooleanSettingClicked(setting.settingId, !setting.value) }
+                    is DropdownSetting -> DropdownSettingListModel(
+                        setting.settingId,
+                        resources.getString(setting.labelStringId),
+                        setting.selectedPosition,
+                        setting.valueStringIds.map { resources.getString(it) }
+                    ) { selectedPos ->
+                        viewModel.onDropdownSettingSelected(
+                            setting.settingId,
+                            selectedPos
+                        )
+                    }
+                }
             }
-        }
 
-        override fun clearClicked() {}
+        return headerModels + settingsModels
     }
 
-    private fun onDropdownSettingSelected() = object : DropdownSettingListModel.EventHandler {
-        override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
-            viewModel.onDropdownSettingSelected(settingId, selectedPosition)
-        }
+    private fun createDatabaseSection(settings: List<Setting>): List<ListModel> {
+        val normalItems = createSection(settings, HEADER_ID_DATABASE)
+        val customItems = listOf(
+            SingleTextListModel(
+                R.string.label_database_clear_sheets.toLong(),
+                resources.getString(R.string.label_database_clear_sheets)
+            ) { viewModel.clearSheets() },
+            SingleTextListModel(
+                R.string.label_database_clear_jams.toLong(),
+                resources.getString(R.string.label_database_clear_jams),
+            ) { viewModel.clearJams() }
+        )
+
+        return normalItems + customItems
+    }
+
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
+    private fun getSectionHeaderString(headerId: String) = when (headerId) {
+        HEADER_ID_NETWORK -> resources.getString(R.string.section_network)
+        HEADER_ID_DATABASE -> resources.getString(R.string.section_database)
+        HEADER_ID_MISC -> resources.getString(R.string.section_misc)
+        else -> throw IllegalArgumentException()
+    }
+
+    companion object {
+        const val HEADER_ID_NETWORK = "DEBUG_NETWORK"
+        const val HEADER_ID_DATABASE = "DEBUG_DATABASE"
+        const val HEADER_ID_MISC = "DEBUG_MISC"
     }
 }

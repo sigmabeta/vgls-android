@@ -7,7 +7,6 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.FragmentRouter
-import com.vgleadsheets.features.main.search.SearchViewModel
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.TrackingScreen
@@ -42,7 +41,7 @@ class BetterSearchViewModel @AssistedInject constructor(
                 }
 
                 val gameSearch = repository.searchGamesCombined(searchQuery)
-                    .debounce(SearchViewModel.RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute { newGames ->
                         copy(
                             contentLoad = contentLoad.copy(
@@ -52,7 +51,7 @@ class BetterSearchViewModel @AssistedInject constructor(
                     }
 
                 val songSearch = repository.searchSongs(searchQuery)
-                    .debounce(SearchViewModel.RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute { newSongs ->
                         copy(
                             contentLoad = contentLoad.copy(
@@ -62,7 +61,7 @@ class BetterSearchViewModel @AssistedInject constructor(
                     }
 
                 val composerSearch = repository.searchComposersCombined(searchQuery)
-                    .debounce(SearchViewModel.RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
                     .execute { newComposers ->
                         copy(
                             contentLoad = contentLoad.copy(
@@ -122,6 +121,8 @@ class BetterSearchViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<BetterSearchViewModel, BetterSearchState> {
+        const val RESULT_DEBOUNCE_THRESHOLD = 250L
+
         override fun create(
             viewModelContext: ViewModelContext,
             state: BetterSearchState

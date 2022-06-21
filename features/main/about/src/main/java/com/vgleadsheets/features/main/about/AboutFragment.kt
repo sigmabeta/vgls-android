@@ -17,9 +17,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 
 @SuppressWarnings("TooManyFunctions")
 class AboutFragment :
-    VglsFragment(),
-    SingleTextListModel.EventHandler,
-    NameCaptionListModel.EventHandler {
+    VglsFragment() {
     private val adapter = ComponentAdapter()
 
     private val hudViewModel: HudViewModel by existingViewModel()
@@ -27,25 +25,6 @@ class AboutFragment :
     override fun disablePerfTracking() = true
 
     override fun getPerfSpec() = PerfSpec.ABOUT
-
-    override fun onClicked(clicked: NameCaptionListModel) {
-        when (clicked.dataId) {
-            R.string.label_link_vgls.toLong() -> getFragmentRouter()
-                .goToWebUrl(getString(R.string.url_vgls))
-            R.string.label_link_giantbomb.toLong() -> getFragmentRouter()
-                .goToWebUrl(getString(R.string.url_giantbomb))
-            else -> showError("Unimplemented.")
-        }
-    }
-
-    override fun clearClicked() = Unit
-
-    override fun onClicked(clicked: SingleTextListModel) {
-        when (clicked.dataId) {
-            R.string.label_link_licenses.toLong() -> getFragmentRouter().showLicenseScreen()
-            else -> showError("Unimplemented.")
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,19 +63,22 @@ class AboutFragment :
             R.string.label_link_vgls.toLong(),
             getString(R.string.label_link_vgls),
             getString(R.string.caption_link_vgls),
-            this,
-        ),
+        ) {
+            getFragmentRouter().goToWebUrl(getString(R.string.url_vgls))
+        },
         NameCaptionListModel(
             R.string.label_link_giantbomb.toLong(),
             getString(R.string.label_link_giantbomb),
             getString(R.string.caption_link_giantbomb),
-            this,
-        ),
+        ) {
+            getFragmentRouter().goToWebUrl(getString(R.string.url_giantbomb))
+        },
         SingleTextListModel(
             R.string.label_link_licenses.toLong(),
-            getString(R.string.label_link_licenses),
-            this
-        )
+            getString(R.string.label_link_licenses)
+        ) {
+            getFragmentRouter().showLicenseScreen()
+        }
     )
 
     companion object {

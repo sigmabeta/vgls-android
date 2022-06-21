@@ -53,9 +53,8 @@ class BetterGameListConfig(
                     it.name,
                     it.captionText(),
                     it.photoUrl,
-                    R.drawable.placeholder_game,
-                    onGameClicked(clicks)
-                )
+                    R.drawable.placeholder_game
+                ) { viewModel.onGameClicked(it.id, it.name) }
             } ?: emptyList()
     }
 
@@ -113,13 +112,4 @@ class BetterGameListConfig(
 
         return builder.toString()
     }
-
-    private fun onGameClicked(clicks: BetterGameListClicks) =
-        object : ImageNameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: ImageNameCaptionListModel) {
-                clicks.onGameClicked(clicked.dataId, clicked.name, viewModel)
-            }
-
-            override fun clearClicked() {}
-        }
 }

@@ -5,8 +5,8 @@ data class MenuTitleBarListModel(
     val subtitle: String,
     val showChangeParts: Boolean,
     val iconId: Int,
-    val onClicked: () -> Unit,
-    val onChangePartClicked: () -> Unit
+    val onMenuButtonClick: () -> Unit,
+    val onChangePartClick: () -> Unit
 ) : ListModel {
 
     override val dataId = javaClass.simpleName.hashCode().toLong()

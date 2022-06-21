@@ -49,9 +49,8 @@ class BetterTagKeyListConfig(
                 NameCaptionListModel(
                     it.id,
                     it.name,
-                    it.captionText(),
-                    onTagKeyClicked(clicks)
-                )
+                    it.captionText()
+                ) { viewModel.onTagKeyClicked(it.id, it.name) }
             } ?: emptyList()
     }
 
@@ -109,13 +108,4 @@ class BetterTagKeyListConfig(
 
         return builder.toString()
     }
-
-    private fun onTagKeyClicked(clicks: BetterTagKeyListClicks) =
-        object : NameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: NameCaptionListModel) {
-                clicks.onTagKeyClicked(clicked.dataId, clicked.name, viewModel)
-            }
-
-            override fun clearClicked() {}
-        }
 }

@@ -8,13 +8,8 @@ data class ImageNameCaptionListModel(
     val caption: String,
     val imageUrl: String?,
     @DrawableRes val imagePlaceholder: Int,
-    val handler: EventHandler,
-    val actionableId: Long? = null
+    val actionableId: Long? = null,
+    val onClick: () -> Unit
 ) : ListModel {
-    interface EventHandler {
-        fun onClicked(clicked: ImageNameCaptionListModel)
-        fun clearClicked()
-    }
-
     override val layoutId = R.layout.list_component_image_name_caption
 }

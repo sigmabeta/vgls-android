@@ -61,9 +61,8 @@ class BetterTagValueConfig(
                 NameCaptionListModel(
                     it.id,
                     it.name,
-                    it.captionText(),
-                    onTagValueClicked()
-                )
+                    it.captionText()
+                ) { viewModel.onTagValueClicked(it.id) }
             } ?: emptyList()
     }
 
@@ -84,17 +83,6 @@ class BetterTagValueConfig(
         state.isLoading(),
         LoadingItemStyle.WITH_IMAGE
     )
-
-    private fun onTagValueClicked() =
-        object : NameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: NameCaptionListModel) {
-                viewModel.onTagValueClicked(
-                    clicked.dataId
-                )
-            }
-
-            override fun clearClicked() {}
-        }
 
     @Suppress("LoopWithTooManyJumpStatements")
     private fun TagValue.captionText(): String {

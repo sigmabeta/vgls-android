@@ -12,6 +12,7 @@ import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.jam.BuildConfig
 import com.vgleadsheets.features.main.jam.R
 import com.vgleadsheets.features.main.list.BetterListConfig
+import com.vgleadsheets.features.main.list.ListItemClicks.Companion.NO_ACTION
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
@@ -22,7 +23,7 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.model.pages.Page
+import com.vgleadsheets.model.thumbUrl
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
@@ -61,19 +62,16 @@ class BetterJamConfig(
         listOf(
             CtaListModel(
                 R.drawable.ic_playlist_play_black_24dp,
-                resources.getString(R.string.cta_follow_jam),
-                onFollowClicked()
-            ),
+                resources.getString(R.string.cta_follow_jam)
+            ) { viewModel.onFollowClicked(state.jamId) },
             CtaListModel(
                 R.drawable.ic_refresh_24dp,
                 resources.getString(R.string.cta_refresh_jam),
-                onRefreshClicked()
-            ),
+            ) { viewModel.refreshJam() },
             CtaListModel(
                 R.drawable.ic_delete_black_24dp,
-                resources.getString(R.string.cta_delete_jam),
-                onDeleteClicked()
-            )
+                resources.getString(R.string.cta_delete_jam)
+            ) { viewModel.deleteJam() }
         )
     )
 
@@ -110,15 +108,16 @@ class BetterJamConfig(
                         currentSong.id,
                         currentSong.name,
                         currentSong.gameName,
-                        Page.generateImageUrl(
-                            baseImageUrl,
-                            hudState.selectedPart,
-                            currentSong.filename,
-                            1
-                        ),
-                        R.drawable.placeholder_sheet,
-                        onSongClicked()
-                    )
+                        currentSong.thumbUrl(baseImageUrl, hudState.selectedPart),
+                        R.drawable.placeholder_sheet
+                    ) {
+                        viewModel.onSongClicked(
+                            currentSong.id,
+                            currentSong.name,
+                            currentSong.gameName,
+                            hudState.selectedPart.apiId
+                        )
+                    }
                 )
             }
         }
@@ -147,19 +146,21 @@ class BetterJamConfig(
             emptyList()
         } else {
             sectionTitle + setlist.map {
+                val song = it.song
                 ImageNameCaptionListModel(
                     it.id,
-                    it.songName,
-                    it.gameName,
-                    Page.generateImageUrl(
-                        baseImageUrl,
-                        hudState.selectedPart,
-                        it.song?.filename ?: return@map songLoadError(),
-                        1
-                    ),
-                    R.drawable.placeholder_sheet,
-                    onSongClicked()
-                )
+                    song?.name ?: return@map songLoadError(),
+                    song.gameName,
+                    song.thumbUrl(baseImageUrl, hudState.selectedPart),
+                    R.drawable.placeholder_sheet
+                ) {
+                    viewModel.onSongClicked(
+                        song.id,
+                        song.name,
+                        song.gameName,
+                        hudState.selectedPart.apiId
+                    )
+                }
             }
         }
     }
@@ -190,20 +191,22 @@ class BetterJamConfig(
             if (songHistory == null) {
                 emptyList()
             } else {
-                sectionTitle + songHistory.map {
+                sectionTitle + songHistory.map { it ->
+                    val song = it.song
                     ImageNameCaptionListModel(
                         it.id,
-                        it.song?.name ?: return@map songLoadError(),
-                        it.song?.gameName ?: return@map songLoadError(),
-                        Page.generateImageUrl(
-                            baseImageUrl,
-                            hudState.selectedPart,
-                            it.song?.filename ?: return@map songLoadError(),
-                            1
-                        ),
-                        R.drawable.placeholder_sheet,
-                        onSongClicked()
-                    )
+                        song?.name ?: return@map songLoadError(),
+                        song.gameName,
+                        song.thumbUrl(baseImageUrl, hudState.selectedPart),
+                        R.drawable.placeholder_sheet
+                    ) {
+                        viewModel.onSongClicked(
+                            song.id,
+                            song.name,
+                            song.gameName,
+                            hudState.selectedPart.apiId
+                        )
+                    }
                 }
             }
         }
@@ -227,55 +230,12 @@ class BetterJamConfig(
         LoadingItemStyle.WITH_IMAGE
     )
 
-    private fun onFollowClicked() = object : CtaListModel.EventHandler {
-        override fun onClicked(clicked: CtaListModel) {
-            viewModel.onFollowClicked(state.jamId)
-        }
-
-        override fun clearClicked() {}
-    }
-
-    private fun onRefreshClicked() = object : CtaListModel.EventHandler {
-        override fun onClicked(clicked: CtaListModel) {
-            viewModel.refreshJam()
-        }
-
-        override fun clearClicked() {}
-    }
-
-    private fun onDeleteClicked() = object : CtaListModel.EventHandler {
-        override fun onClicked(clicked: CtaListModel) {
-            viewModel.deleteJam()
-        }
-
-        override fun clearClicked() {}
-    }
-
-    private fun onSongClicked() =
-        object : ImageNameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: ImageNameCaptionListModel) {
-                viewModel.onSongClicked(
-                    clicked.dataId,
-                    clicked.name,
-                    setlistLoad
-                        .content()
-                        ?.firstOrNull { it.id == clicked.dataId }
-                        ?.gameName
-                        ?: "",
-                    hudState.selectedPart.apiId
-                )
-            }
-
-            override fun clearClicked() {}
-        }
-
     private fun songLoadError() = ImageNameCaptionListModel(
         -1L,
         resources.getString(R.string.unknown_song),
         resources.getString(R.string.error_song),
         null,
         R.drawable.ic_error_24dp,
-        onSongClicked(),
-        null,
+        onClick = NO_ACTION
     )
 }

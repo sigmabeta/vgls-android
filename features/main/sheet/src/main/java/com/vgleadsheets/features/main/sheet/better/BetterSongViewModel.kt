@@ -7,7 +7,6 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.sheet.R
-import com.vgleadsheets.features.main.sheet.SheetDetailViewModel
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
@@ -25,7 +24,7 @@ class BetterSongViewModel @AssistedInject constructor(
     }
 
     fun onComposerClicked(composerId: Long, composerName: String) {
-        if (composerId != SheetDetailViewModel.ID_COMPOSER_MULTIPLE) {
+        if (composerId != ID_COMPOSER_MULTIPLE) {
             router.showSongListForComposer(composerId, composerName)
         }
     }
@@ -95,6 +94,11 @@ class BetterSongViewModel @AssistedInject constructor(
     }
 
     companion object : MvRxViewModelFactory<BetterSongViewModel, BetterSongState> {
+        const val ID_COMPOSER_MULTIPLE = Long.MAX_VALUE
+
+        const val RATING_MINIMUM = 0
+        const val RATING_MAXIMUM = 5
+
         override fun create(
             viewModelContext: ViewModelContext,
             state: BetterSongState

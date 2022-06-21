@@ -59,15 +59,21 @@ class BetterComposerConfig(
         !songs.isNullOrEmpty()
     ) {
         songs?.filteredForVocals(hudState.selectedPart.apiId)
-            ?.map {
+            ?.map { song ->
                 ImageNameCaptionListModel(
-                    it.id,
-                    it.name,
-                    it.captionText(),
-                    it.thumbUrl(baseImageUrl, hudState.selectedPart),
-                    R.drawable.placeholder_sheet,
-                    onSongClicked()
-                )
+                    song.id,
+                    song.name,
+                    song.captionText(),
+                    song.thumbUrl(baseImageUrl, hudState.selectedPart),
+                    R.drawable.placeholder_sheet
+                ) {
+                    viewModel.onSongClicked(
+                        song.id,
+                        song.name,
+                        song.gameName,
+                        hudState.selectedPart.apiId
+                    )
+                }
             } ?: emptyList()
     }
 
@@ -88,24 +94,6 @@ class BetterComposerConfig(
         state.isLoading(),
         LoadingItemStyle.WITH_IMAGE
     )
-
-    private fun onSongClicked() =
-        object : ImageNameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: ImageNameCaptionListModel) {
-                viewModel.onSongClicked(
-                    clicked.dataId,
-                    clicked.name,
-                    songsLoad
-                        .content()
-                        ?.firstOrNull { it.id == clicked.dataId }
-                        ?.gameName
-                        ?: "",
-                    hudState.selectedPart.apiId
-                )
-            }
-
-            override fun clearClicked() {}
-        }
 
     private fun Song.captionText() = gameName
 

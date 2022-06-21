@@ -103,7 +103,7 @@ object PerfDisplay {
                 R.string.value_perf_summary_completion,
                 perfScreenStatus.stageDurationMillis[PerfStage.COMPLETION]
             ),
-            categoryClickHandler(onPerfCategoryClicked, PerfViewMode.LOAD_TIMES)
+            { onPerfCategoryClicked(PerfViewMode.LOAD_TIMES) }
         )
     } else {
         summaryEmptyLine(R.string.label_perf_empty_load_times, resources)
@@ -121,7 +121,7 @@ object PerfDisplay {
                 frameTimeStats.jankFrames,
                 frameTimeStats.totalFrames
             ),
-            categoryClickHandler(onPerfCategoryClicked, PerfViewMode.FRAME_TIMES)
+            { onPerfCategoryClicked(PerfViewMode.FRAME_TIMES) }
         )
     } else {
         summaryEmptyLine(R.string.label_perf_empty_frame_times, resources)
@@ -139,7 +139,7 @@ object PerfDisplay {
                 invalidateStats.jankInvalidates,
                 invalidateStats.totalInvalidates
             ),
-            categoryClickHandler(onPerfCategoryClicked, PerfViewMode.INVALIDATES)
+            { onPerfCategoryClicked(PerfViewMode.INVALIDATES) }
         )
     } else {
         summaryEmptyLine(R.string.label_perf_empty_invalidates, resources)
@@ -151,7 +151,7 @@ object PerfDisplay {
     ) = LabelValueListModel(
         resources.getString(labelId),
         "",
-        noopClicker()
+        onClick = NO_ACTION
     )
 
     private fun screenPicker(
@@ -165,9 +165,8 @@ object PerfDisplay {
                 "PerfSpec",
                 resources.getString(R.string.label_perf_stats_for),
                 perfSpecs.indexOf(selectedScreen),
-                perfSpecs.map { it.name },
-                dropdownHandler { onScreenSelected(it) }
-            )
+                perfSpecs.map { it.name }
+            ) { position -> onScreenSelected(perfSpecs[position]) }
         )
     }
 
@@ -191,7 +190,7 @@ object PerfDisplay {
             LabelValueListModel(
                 resources.getString(it.key.getOnScreenNameId()),
                 resources.getString(R.string.value_perf_ms, it.value),
-                noopClicker()
+                onClick = NO_ACTION
             )
         } ?: listOf(summaryEmptyLine(R.string.label_perf_empty_load_times, resources))
 
@@ -207,27 +206,27 @@ object PerfDisplay {
             LabelValueListModel(
                 resources.getString(R.string.label_perf_total),
                 frameTimeStats.totalFrames.toString(),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_jank),
                 frameTimeStats.jankFrames.toString(),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_median),
                 resources.getString(R.string.value_perf_ms, frameTimeStats.medianMillis),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_five),
                 resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyFiveMillis),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_nine),
                 resources.getString(R.string.value_perf_ms, frameTimeStats.ninetyNineMillis),
-                noopClicker()
+                onClick = NO_ACTION
             )
         )
     } else {
@@ -247,12 +246,12 @@ object PerfDisplay {
             LabelValueListModel(
                 resources.getString(R.string.label_perf_total),
                 invalidateStats.totalInvalidates.toString(),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_jank),
                 invalidateStats.jankInvalidates.toString(),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_total_time),
@@ -260,22 +259,22 @@ object PerfDisplay {
                     R.string.value_perf_ms,
                     invalidateStats.totalInvalidateTimeMillis
                 ),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_median),
                 resources.getString(R.string.value_perf_ms, invalidateStats.medianMillis),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_five),
                 resources.getString(R.string.value_perf_ms, invalidateStats.ninetyFiveMillis),
-                noopClicker()
+                onClick = NO_ACTION
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_perf_nine),
                 resources.getString(R.string.value_perf_ms, invalidateStats.ninetyNineMillis),
-                noopClicker()
+                onClick = NO_ACTION
             )
         )
     } else {
@@ -294,27 +293,5 @@ object PerfDisplay {
         PerfStage.COMPLETION -> R.string.label_perf_stage_completed
     }
 
-    private fun dropdownHandler(onOptionSelected: (PerfSpec) -> Unit) =
-        object : DropdownSettingListModel.EventHandler {
-            override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
-                onOptionSelected(PerfSpec.values()[selectedPosition])
-            }
-        }
-
-    private fun categoryClickHandler(
-        onPerfCategoryClicked: (PerfViewMode) -> Unit,
-        perfViewMode: PerfViewMode
-    ) = object : LabelValueListModel.EventHandler {
-        override fun onClicked(clicked: LabelValueListModel) {
-            onPerfCategoryClicked(perfViewMode)
-        }
-
-        override fun clearClicked() = Unit
-    }
-
-    private fun noopClicker() = object : LabelValueListModel.EventHandler {
-        override fun onClicked(clicked: LabelValueListModel) = Unit
-
-        override fun clearClicked() = Unit
-    }
+    val NO_ACTION = { }
 }

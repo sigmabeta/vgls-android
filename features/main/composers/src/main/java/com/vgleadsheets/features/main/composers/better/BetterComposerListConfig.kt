@@ -53,9 +53,8 @@ class BetterComposerListConfig(
                     it.name,
                     it.captionText(),
                     it.photoUrl,
-                    R.drawable.placeholder_composer,
-                    onComposerClicked(clicks)
-                )
+                    R.drawable.placeholder_composer
+                ) { viewModel.onComposerClicked(it.id, it.name) }
             } ?: emptyList()
     }
 
@@ -113,13 +112,4 @@ class BetterComposerListConfig(
 
         return builder.toString()
     }
-
-    private fun onComposerClicked(clicks: BetterComposerListClicks) =
-        object : ImageNameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: ImageNameCaptionListModel) {
-                clicks.onComposerClicked(clicked.dataId, clicked.name, viewModel)
-            }
-
-            override fun clearClicked() {}
-        }
 }

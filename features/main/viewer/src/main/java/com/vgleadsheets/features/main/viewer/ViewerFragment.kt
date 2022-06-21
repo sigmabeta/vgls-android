@@ -15,11 +15,8 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.slideViewOnscreen
-import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
-import com.vgleadsheets.components.ToolbarItemListModel
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
@@ -28,7 +25,6 @@ import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -41,16 +37,13 @@ import timber.log.Timber
 @Suppress("TooManyFunctions")
 class ViewerFragment :
     VglsFragment(),
-    SheetListModel.ImageListener,
-    ToolbarItemListModel.EventHandler {
+    SheetListModel.ImageListener {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
     lateinit var baseImageUrl: String
-
-    private lateinit var toolbarItems: RecyclerView
 
     private val hudViewModel: HudViewModel by existingViewModel()
 
@@ -62,8 +55,6 @@ class ViewerFragment :
     private var songId: Long? = null
 
     private val sheetsAdapter = ComponentAdapter()
-
-    private val toolbarAdapter = ComponentAdapter()
 
     private val timers = CompositeDisposable()
 
@@ -85,12 +76,6 @@ class ViewerFragment :
         }
     }
 
-    override fun onClicked(clicked: ToolbarItemListModel) = when (clicked.iconId) {
-        R.drawable.ic_details_24 -> showSheetDetails()
-        R.drawable.ic_play_circle_filled_24 -> showYoutubeSearch()
-        else -> showError("Unimplemented toolbar button.")
-    }
-
     override fun onLoadStarted() {
         perfTracker.onTitleLoaded(getPerfSpec())
     }
@@ -100,13 +85,6 @@ class ViewerFragment :
         perfTracker.onPartialContentLoad(getPerfSpec())
         perfTracker.onFullContentLoad(getPerfSpec())
     }
-
-    override fun onLongClicked(clicked: ToolbarItemListModel) {
-        hudViewModel.startHudTimer()
-        showSnackbar(clicked.name)
-    }
-
-    override fun clearClicked() = Unit
 
     override fun onLoadFailed(imageUrl: String, ex: Exception?) {
         perfTracker.cancel(getPerfSpec())
@@ -120,7 +98,6 @@ class ViewerFragment :
 
         val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
         val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
-        toolbarItems = view.findViewById(R.id.list_toolbar_items)
 
         sheetsAsPager?.adapter = sheetsAdapter
 
@@ -129,23 +106,6 @@ class ViewerFragment :
             activity,
             LinearLayoutManager.HORIZONTAL,
             false
-        )
-
-        val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
-            resources.getDimension(R.dimen.margin_medium).toInt()
-        val sideOffset = resources.getDimension(R.dimen.margin_medium).toInt()
-
-        toolbarItems.setInsetListenerForPadding(
-            topOffset = topOffset,
-            leftOffset = sideOffset,
-            rightOffset = sideOffset
-        )
-
-        toolbarItems.adapter = toolbarAdapter
-        toolbarItems.layoutManager = LinearLayoutManager(
-            activity,
-            LinearLayoutManager.HORIZONTAL,
-            true
         )
 
         sheetsAdapter.resources = resources
@@ -207,12 +167,6 @@ class ViewerFragment :
 
         if (hudState.hudVisible && hudState.mode == HudMode.REGULAR) {
             hudViewModel.startHudTimer()
-        }
-
-        if (hudState.hudVisible) {
-            toolbarItems.slideViewOnscreen()
-        } else {
-            toolbarItems.slideViewUpOffscreen()
         }
 
         val selectedPart = hudState.selectedPart

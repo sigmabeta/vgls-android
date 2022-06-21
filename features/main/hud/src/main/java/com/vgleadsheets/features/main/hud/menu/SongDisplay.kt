@@ -7,7 +7,7 @@ import com.vgleadsheets.model.song.Song
 object SongDisplay {
     fun getListModels(
         currentSong: Song?,
-        clickHandler: () -> Unit
+        onClick: () -> Unit
     ) = if (currentSong != null) {
         listOf(
             IconNameCaptionListModel(
@@ -15,7 +15,7 @@ object SongDisplay {
                 currentSong.name,
                 currentSong.gameName,
                 R.drawable.ic_baseline_music_note_24,
-                clickHandler
+                onClick
             ),
         )
     } else {

@@ -4,7 +4,7 @@ data class MenuItemListModel(
     val name: String,
     val caption: String?,
     val iconId: Int,
-    val onClicked: () -> Unit,
+    val onClick: () -> Unit,
     val selected: Boolean = false
 ) : ListModel {
     override val dataId = name.hashCode().toLong()

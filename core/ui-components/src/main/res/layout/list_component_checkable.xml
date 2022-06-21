@@ -16,7 +16,7 @@
         android:layout_height="60dp"
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
-        android:onClick="@{() -> toBind.handler.onClicked(toBind)}"
+        android:onClick="@{() -> toBind.onClick.invoke()}"
         android:orientation="horizontal">
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_small"
             android:checked="@{toBind.checked}"
-            android:onClick="@{() -> toBind.handler.onClicked(toBind)}" />
+            android:onClick="@{() -> toBind.onClick.invoke()}" />
 
     </LinearLayout>
 </layout>

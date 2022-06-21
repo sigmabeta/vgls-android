@@ -19,7 +19,9 @@ import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.features.main.sheet.BuildConfig
 import com.vgleadsheets.features.main.sheet.R
-import com.vgleadsheets.features.main.sheet.SheetDetailViewModel
+import com.vgleadsheets.features.main.sheet.better.BetterSongViewModel.Companion.ID_COMPOSER_MULTIPLE
+import com.vgleadsheets.features.main.sheet.better.BetterSongViewModel.Companion.RATING_MAXIMUM
+import com.vgleadsheets.features.main.sheet.better.BetterSongViewModel.Companion.RATING_MINIMUM
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
@@ -86,19 +88,19 @@ class BetterSongConfig(
             ?.joinToString(", ") { it.name } ?: resources.getString(R.string.unknown_composer)
 
         val composerId =
-            if (song.composers?.size == 1) song.composers?.first()!!.id else SheetDetailViewModel.ID_COMPOSER_MULTIPLE
+            if (song.composers?.size == 1) song.composers?.first()!!.id else ID_COMPOSER_MULTIPLE
 
         return listOf(
             LabelValueListModel(
                 resources.getString(R.string.label_detail_composer),
                 composer,
-                onComposerClicked(composerId, composer),
+                { viewModel.onComposerClicked(composerId, composer) },
                 composerId
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_detail_game),
                 song.gameName,
-                onGameClicked(song.gameId, song.gameName),
+                { viewModel.onGameClicked(song.gameId, song.gameName) },
                 song.gameId
             )
         )
@@ -115,14 +117,24 @@ class BetterSongConfig(
         return listOf(
             CtaListModel(
                 R.drawable.ic_description_24dp,
-                resources.getString(R.string.cta_view_sheet),
-                onCtaClicked(R.drawable.ic_description_24dp, song, hudState.selectedPart)
-            ),
+                resources.getString(R.string.cta_view_sheet)
+            ) {
+                viewModel.onCtaClicked(
+                    R.drawable.ic_description_24dp,
+                    song,
+                    hudState.selectedPart
+                )
+            },
             CtaListModel(
                 R.drawable.ic_play_circle_filled_24,
-                resources.getString(R.string.cta_youtube),
-                onCtaClicked(R.drawable.ic_play_circle_filled_24, song, hudState.selectedPart)
-            )
+                resources.getString(R.string.cta_youtube)
+            ) {
+                viewModel.onCtaClicked(
+                    R.drawable.ic_play_circle_filled_24,
+                    song,
+                    hudState.selectedPart
+                )
+            }
         )
     }
 
@@ -134,18 +146,18 @@ class BetterSongConfig(
         ) + dedupeTagValues(tagValues ?: return emptyList()).map {
             val valueAsNumber = it.name.toIntOrNull() ?: -1
 
-            return@map if (valueAsNumber in SheetDetailViewModel.RATING_MINIMUM..SheetDetailViewModel.RATING_MAXIMUM) {
+            return@map if (valueAsNumber in RATING_MINIMUM..RATING_MAXIMUM) {
                 LabelRatingStarListModel(
                     it.tagKeyName,
                     valueAsNumber,
-                    onRatingClicked(),
+                    { viewModel.onTagValueClicked(it.id) },
                     it.id
                 )
             } else {
                 LabelValueListModel(
                     it.tagKeyName,
                     it.name,
-                    onTagValueClicked(),
+                    { viewModel.onTagValueClicked(it.id) },
                     it.id
                 )
             }
@@ -190,59 +202,6 @@ class BetterSongConfig(
         tempValues.sortBy { it.tagKeyName }
         return tempValues.toList()
     }
-
-    private fun onComposerClicked(composerId: Long, composerName: String) =
-        object : LabelValueListModel.EventHandler {
-            override fun onClicked(clicked: LabelValueListModel) {
-                viewModel.onComposerClicked(composerId, composerName)
-            }
-
-            override fun clearClicked() {}
-        }
-
-    private fun onGameClicked(gameId: Long, gameName: String) =
-        object : LabelValueListModel.EventHandler {
-            override fun onClicked(clicked: LabelValueListModel) {
-                viewModel.onGameClicked(gameId, gameName)
-            }
-
-            override fun clearClicked() {}
-        }
-
-    private fun onCtaClicked(clickedId: Int, song: Song, selectedPart: Part) =
-        object : CtaListModel.EventHandler {
-            override fun onClicked(clicked: CtaListModel) {
-                viewModel.onCtaClicked(
-                    clickedId,
-                    song,
-                    selectedPart
-                )
-            }
-
-            override fun clearClicked() {}
-        }
-
-    private fun onRatingClicked() =
-        object : LabelRatingStarListModel.EventHandler {
-            override fun onClicked(clicked: LabelRatingStarListModel) {
-                viewModel.onTagValueClicked(
-                    clicked.dataId,
-                )
-            }
-
-            override fun clearClicked() {}
-        }
-
-    private fun onTagValueClicked() =
-        object : LabelValueListModel.EventHandler {
-            override fun onClicked(clicked: LabelValueListModel) {
-                viewModel.onTagValueClicked(
-                    clicked.dataId,
-                )
-            }
-
-            override fun clearClicked() {}
-        }
 
     private fun Song.captionText() = resources.getString(
         R.string.subtitle_pages,

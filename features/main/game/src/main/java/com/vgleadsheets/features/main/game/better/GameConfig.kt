@@ -1,7 +1,6 @@
 package com.vgleadsheets.features.main.game.better
 
 import android.content.res.Resources
-import com.airbnb.mvrx.Async
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.features.main.game.BuildConfig
 import com.vgleadsheets.features.main.game.R
@@ -17,7 +16,6 @@ import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfSpec
@@ -61,15 +59,21 @@ class GameConfig(
         !songs.isNullOrEmpty()
     ) {
         songs?.filteredForVocals(hudState.selectedPart.apiId)
-            ?.map {
+            ?.map { song ->
                 ImageNameCaptionListModel(
-                    it.id,
-                    it.name,
-                    it.subtitleText(),
-                    it.thumbUrl(),
-                    R.drawable.placeholder_game,
-                    onSongClicked(state.content().game)
-                )
+                    song.id,
+                    song.name,
+                    song.subtitleText(),
+                    song.thumbUrl(),
+                    R.drawable.placeholder_game
+                ) {
+                    viewModel.onSongClicked(
+                        song.id,
+                        song.name,
+                        song.gameName,
+                        hudState.selectedPart.apiId
+                    )
+                }
             } ?: emptyList()
     }
 
@@ -90,20 +94,6 @@ class GameConfig(
         state.isLoading(),
         LoadingItemStyle.WITH_IMAGE
     )
-
-    private fun onSongClicked(gameLoad: Async<Game>) =
-        object : ImageNameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: ImageNameCaptionListModel) {
-                viewModel.onSongClicked(
-                    clicked.dataId,
-                    clicked.name,
-                    gameLoad.content()?.name ?: "",
-                    hudState.selectedPart.apiId
-                )
-            }
-
-            override fun clearClicked() {}
-        }
 
     private fun Song.subtitleText() = when (composers?.size) {
         1 -> composers?.firstOrNull()?.name

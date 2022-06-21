@@ -40,29 +40,29 @@ class BetterJamListConfig(
         { }
     )
 
-    override val actionsConfig = Actions.NONE
+    override val actionsConfig = Actions.Config(
+        true,
+        listOf(
+            CtaListModel(
+                R.drawable.ic_add_black_24dp,
+                resources.getString(R.string.cta_find_jam)
+            ) { viewModel.onFindJamClicked() }
+        )
+    )
 
     override val contentConfig = Content.Config(
         !state.contentLoad.isNullOrEmpty()
     ) {
-        listOf(
-            CtaListModel(
-                R.drawable.ic_add_black_24dp,
-                resources.getString(R.string.cta_find_jam),
-                onFindJamClicked(clicks)
-            )
-        ) + (
-            state.contentLoad
-                .content()
-                ?.map {
-                    NameCaptionListModel(
-                        it.id,
-                        it.name,
-                        it.captionText(),
-                        onJamClicked(clicks)
-                    )
-                } ?: emptyList()
-            )
+        state.contentLoad
+            .content()
+            ?.map {
+                NameCaptionListModel(
+                    it.id,
+                    it.name,
+                    it.captionText()
+                ) { viewModel.onJamClicked(it.id, it.name) }
+            } ?: emptyList()
+
     }
 
     override val emptyConfig = EmptyState.Config(
@@ -96,22 +96,4 @@ class BetterJamListConfig(
         currentSong?.name ?: "Unknown Song",
         currentSong?.gameName ?: "Unknown Game"
     )
-
-    private fun onFindJamClicked(clicks: BetterJamListClicks) =
-        object : CtaListModel.EventHandler {
-            override fun onClicked(clicked: CtaListModel) {
-                clicks.onFindJamClicked(viewModel)
-            }
-
-            override fun clearClicked() {}
-        }
-
-    private fun onJamClicked(clicks: BetterJamListClicks) =
-        object : NameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: NameCaptionListModel) {
-                clicks.onJamClicked(clicked.dataId, clicked.name, viewModel)
-            }
-
-            override fun clearClicked() {}
-        }
 }

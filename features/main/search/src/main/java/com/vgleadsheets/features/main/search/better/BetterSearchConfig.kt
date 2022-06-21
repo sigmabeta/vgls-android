@@ -15,6 +15,8 @@ import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
+import com.vgleadsheets.features.main.list.ListViewModel.Companion.MAX_LENGTH_SUBTITLE_CHARS
+import com.vgleadsheets.features.main.list.ListViewModel.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
@@ -24,13 +26,12 @@ import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.features.main.search.BuildConfig
 import com.vgleadsheets.features.main.search.R
-import com.vgleadsheets.features.main.search.SearchViewModel
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.thumbUrl
 
 class BetterSearchConfig(
     private val state: BetterSearchState,
@@ -89,15 +90,13 @@ class BetterSearchConfig(
         )
 
         val listModels = songModels + gameModels + composerModels
-        return@Config if (listModels.isEmpty()) {
+        return@Config listModels.ifEmpty {
             listOf(
                 EmptyStateListModel(
                     R.drawable.ic_description_24dp,
                     resources.getString(R.string.empty_search_no_results),
                 )
             )
-        } else {
-            listModels
         }
     }
 
@@ -162,41 +161,41 @@ class BetterSearchConfig(
         selectedPart: Part
     ): List<ListModel> {
         return results
-            .map {
-                when (it) {
+            .map { result ->
+                when (result) {
                     is Song -> {
-                        val thumbUrl = Page.generateImageUrl(
-                            baseImageUrl,
-                            selectedPart,
-                            it.filename,
-                            1
-                        )
-
                         ImageNameCaptionListModel(
-                            it.id,
-                            it.name,
-                            it.gameName,
-                            thumbUrl,
-                            getPlaceholderId(it),
-                            onSongClicked(),
-                        )
+                            result.id,
+                            result.name,
+                            result.gameName,
+                            result.thumbUrl(baseImageUrl, hudState.selectedPart),
+                            R.drawable.placeholder_sheet
+                        ) {
+                            viewModel.onSongClicked(
+                                result.id,
+                                result.name,
+                                result.gameName,
+                                selectedPart.apiId
+                            )
+                        }
                     }
+
                     is Game -> ImageNameCaptionListModel(
-                        it.id,
-                        it.name,
-                        generateSubtitleText(it.songs),
-                        it.photoUrl,
-                        getPlaceholderId(it),
-                        onGameClicked(),
-                    )
+                        result.id,
+                        result.name,
+                        generateSubtitleText(result.songs),
+                        result.photoUrl,
+                        R.drawable.placeholder_game
+                    ) { viewModel.onGameClicked(result.id, result.name) }
+
                     is Composer -> ImageNameCaptionListModel(
-                        it.id,
-                        it.name,
-                        generateSubtitleText(it.songs),
-                        it.photoUrl,
-                        getPlaceholderId(it),
-                        onComposerClicked(),
-                    )
+                        result.id,
+                        result.name,
+                        generateSubtitleText(result.songs),
+                        result.photoUrl,
+                        R.drawable.placeholder_composer
+                    ) { viewModel.onComposerClicked(result.id, result.name) }
+
                     else -> throw IllegalArgumentException(
                         "Bad model in search result list."
                     )
@@ -261,13 +260,6 @@ class BetterSearchConfig(
         )
     )
 
-    private fun getPlaceholderId(model: Any) = when (model) {
-        is Song -> R.drawable.placeholder_sheet
-        is Game -> R.drawable.placeholder_game
-        is Composer -> R.drawable.placeholder_composer
-        else -> R.drawable.ic_error_24dp
-    }
-
     @Suppress("LoopWithTooManyJumpStatements")
     private fun generateSubtitleText(items: List<Song>?): String {
         if (items.isNullOrEmpty()) return "Error: no values found."
@@ -275,10 +267,10 @@ class BetterSearchConfig(
         val builder = StringBuilder()
         var numberOfOthers = items.size
 
-        while (builder.length < SearchViewModel.MAX_LENGTH_SUBTITLE_CHARS) {
+        while (builder.length < MAX_LENGTH_SUBTITLE_CHARS) {
             val index = items.size - numberOfOthers
 
-            if (index >= SearchViewModel.MAX_LENGTH_SUBTITLE_ITEMS) {
+            if (index >= MAX_LENGTH_SUBTITLE_ITEMS) {
                 break
             }
 
@@ -306,43 +298,4 @@ class BetterSearchConfig(
 
         return builder.toString()
     }
-
-    private fun onSongClicked() =
-        object : ImageNameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: ImageNameCaptionListModel) {
-                onResultClicked()
-                viewModel.onSongClicked(
-                    clicked.dataId,
-                    clicked.name,
-                    state.contentLoad
-                        .songs()
-                        ?.firstOrNull { it.id == clicked.dataId }
-                        ?.gameName
-                        ?: "",
-                    hudState.selectedPart.apiId
-                )
-            }
-
-            override fun clearClicked() {}
-        }
-
-    private fun onGameClicked() =
-        object : ImageNameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: ImageNameCaptionListModel) {
-                onResultClicked()
-                viewModel.onGameClicked(clicked.dataId, clicked.name)
-            }
-
-            override fun clearClicked() {}
-        }
-
-    private fun onComposerClicked() =
-        object : ImageNameCaptionListModel.EventHandler {
-            override fun onClicked(clicked: ImageNameCaptionListModel) {
-                onResultClicked()
-                viewModel.onComposerClicked(clicked.dataId, clicked.name)
-            }
-
-            override fun clearClicked() {}
-        }
 }

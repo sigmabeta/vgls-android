@@ -22,13 +22,13 @@ class BetterSongListViewModel @AssistedInject constructor(
     fun onSongClicked(
         id: Long,
         songName: String,
-        composerName: String,
+        gameName: String,
         transposition: String
     ) {
         router.showSongViewer(
             id,
             songName,
-            composerName,
+            gameName,
             transposition,
             TrackingScreen.LIST_SHEET,
         )

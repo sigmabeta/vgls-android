@@ -17,7 +17,6 @@ import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.features.main.settings.BuildConfig
 import com.vgleadsheets.features.main.settings.R
-import com.vgleadsheets.features.main.settings.SettingsViewModel
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.storage.BooleanSetting
@@ -54,60 +53,10 @@ class BetterSettingConfig(
 
         settings ?: return@Config emptyList()
 
-        val sheetsSection = createSection(settings, SettingsViewModel.HEADER_ID_SHEET)
+        val sheetsSection = createSection(settings, HEADER_ID_SHEET)
         val miscSection = createMiscSection(settings)
 
         sheetsSection + miscSection
-    }
-
-    private fun createSection(settings: List<Setting>, headerId: String): List<ListModel> {
-        val headerModels = listOf(
-            SectionHeaderListModel(
-                getSectionHeaderString(headerId)
-            )
-        )
-
-        val settingsModels = settings
-            .filter { it.settingId.startsWith(headerId) }
-            .map { setting ->
-                when (setting) {
-                    is BooleanSetting -> CheckableListModel(
-                        setting.settingId,
-                        resources.getString(setting.labelStringId),
-                        setting.value,
-                        onCheckboxClicked()
-                    )
-                    is DropdownSetting -> DropdownSettingListModel(
-                        setting.settingId,
-                        resources.getString(setting.labelStringId),
-                        setting.selectedPosition,
-                        setting.valueStringIds.map { resources.getString(it) },
-                        onDropdownSettingSelected()
-                    )
-                }
-            }
-
-        return headerModels + settingsModels
-    }
-
-    private fun createMiscSection(settings: List<Setting>): List<ListModel> {
-        val normalItems = createSection(settings, SettingsViewModel.HEADER_ID_MISC)
-        val customItems = listOf(
-            SingleTextListModel(
-                R.string.label_link_about.toLong(),
-                resources.getString(R.string.label_link_about),
-                onSingleTextClicked()
-            )
-        )
-
-        return normalItems + customItems
-    }
-
-    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
-    private fun getSectionHeaderString(headerId: String) = when (headerId) {
-        SettingsViewModel.HEADER_ID_SHEET -> resources.getString(R.string.section_sheets)
-        SettingsViewModel.HEADER_ID_MISC -> resources.getString(R.string.section_misc)
-        else -> throw IllegalArgumentException()
     }
 
     override val emptyConfig = EmptyState.Config(
@@ -128,27 +77,62 @@ class BetterSettingConfig(
         LoadingItemStyle.WITH_IMAGE
     )
 
-    private fun onCheckboxClicked() =
-        object : CheckableListModel.EventHandler {
-            override fun onClicked(clicked: CheckableListModel) {
-                viewModel.onBooleanSettingClicked(
-                    clicked.settingId,
-                    !clicked.checked,
-                )
+    private fun createSection(settings: List<Setting>, headerId: String): List<ListModel> {
+        val headerModels = listOf(
+            SectionHeaderListModel(
+                getSectionHeaderString(headerId)
+            )
+        )
+
+        val settingsModels = settings
+            .filter { it.settingId.startsWith(headerId) }
+            .map { setting ->
+                when (setting) {
+                    is BooleanSetting -> CheckableListModel(
+                        setting.settingId,
+                        resources.getString(setting.labelStringId),
+                        setting.value
+                    ) { viewModel.onBooleanSettingClicked(setting.settingId, !setting.value) }
+                    is DropdownSetting -> DropdownSettingListModel(
+                        setting.settingId,
+                        resources.getString(setting.labelStringId),
+                        setting.selectedPosition,
+                        setting.valueStringIds.map { resources.getString(it) }
+                    ) { selectedPos ->
+                        viewModel.onDropdownSettingSelected(
+                            setting.settingId,
+                            selectedPos
+                        )
+                    }
+                }
             }
-        }
 
-    private fun onSingleTextClicked() = object : SingleTextListModel.EventHandler {
-        override fun onClicked(clicked: SingleTextListModel) {
-            viewModel.onAboutClicked()
-        }
-
-        override fun clearClicked() {}
+        return headerModels + settingsModels
     }
 
-    private fun onDropdownSettingSelected() = object : DropdownSettingListModel.EventHandler {
-        override fun onNewOptionSelected(settingId: String, selectedPosition: Int) {
-            viewModel.onDropdownSettingSelected(settingId, selectedPosition)
-        }
+    private fun createMiscSection(settings: List<Setting>): List<ListModel> {
+        val normalItems = createSection(settings, HEADER_ID_MISC)
+        val customItems = listOf(
+            SingleTextListModel(
+                R.string.label_link_about.toLong(),
+                resources.getString(R.string.label_link_about)
+            ) {
+                viewModel.onAboutClicked()
+            }
+        )
+
+        return normalItems + customItems
+    }
+
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
+    private fun getSectionHeaderString(headerId: String) = when (headerId) {
+        HEADER_ID_SHEET -> resources.getString(R.string.section_sheets)
+        HEADER_ID_MISC -> resources.getString(R.string.section_misc)
+        else -> throw IllegalArgumentException()
+    }
+
+    companion object {
+        const val HEADER_ID_SHEET = "SETTING_SHEET"
+        const val HEADER_ID_MISC = "SETTING_MISC"
     }
 }
