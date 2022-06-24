@@ -5,14 +5,11 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.tracking.TrackingScreen
 
 class BetterGameViewModel @AssistedInject constructor(
     @Assisted initialState: BetterGameState,
-    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
 ) : MvRxViewModel<BetterGameState>(initialState) {
     init {
@@ -43,17 +40,10 @@ class BetterGameViewModel @AssistedInject constructor(
     }
 
     fun onSongClicked(
-        id: Long,
-        songName: String,
-        gameName: String,
-        transposition: String
+        id: Long
     ) {
         router.showSongViewer(
-            id,
-            songName,
-            gameName,
-            transposition,
-            TrackingScreen.DETAIL_GAME,
+            id
         )
     }
 
@@ -61,7 +51,6 @@ class BetterGameViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterGameState,
-            router: FragmentRouter
         ): BetterGameViewModel
     }
 
@@ -72,7 +61,7 @@ class BetterGameViewModel @AssistedInject constructor(
         ): BetterGameViewModel {
             val fragment: BetterGameFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

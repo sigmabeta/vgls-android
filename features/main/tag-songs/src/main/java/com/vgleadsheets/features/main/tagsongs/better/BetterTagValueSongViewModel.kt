@@ -5,14 +5,11 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.tracking.TrackingScreen
 
 class BetterTagValueSongViewModel @AssistedInject constructor(
     @Assisted initialState: BetterTagValueSongState,
-    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
 ) : MvRxViewModel<BetterTagValueSongState>(initialState) {
     init {
@@ -22,10 +19,10 @@ class BetterTagValueSongViewModel @AssistedInject constructor(
 
     private fun fetchTagValue() = withState {
         repository.getTagValue(it.tagValueId)
-            .execute {
+            .execute { tagValue ->
                 copy(
                     contentLoad = contentLoad.copy(
-                        tagValue = it
+                        tagValue = tagValue
                     )
                 )
             }
@@ -33,27 +30,20 @@ class BetterTagValueSongViewModel @AssistedInject constructor(
 
     private fun fetchSongs() = withState {
         repository.getSongsForTagValue(it.tagValueId)
-            .execute {
+            .execute { songs ->
                 copy(
                     contentLoad = contentLoad.copy(
-                        songs = it
+                        songs = songs
                     )
                 )
             }
     }
 
     fun onSongClicked(
-        id: Long,
-        songName: String,
-        gameName: String,
-        transposition: String
+        id: Long
     ) {
         router.showSongViewer(
-            id,
-            songName,
-            gameName,
-            transposition,
-            TrackingScreen.LIST_TAG_VALUE_SONG,
+            id
         )
     }
 
@@ -61,7 +51,6 @@ class BetterTagValueSongViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterTagValueSongState,
-            router: FragmentRouter
         ): BetterTagValueSongViewModel
     }
 
@@ -72,7 +61,7 @@ class BetterTagValueSongViewModel @AssistedInject constructor(
         ): BetterTagValueSongViewModel {
             val fragment: BetterTagValueSongFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

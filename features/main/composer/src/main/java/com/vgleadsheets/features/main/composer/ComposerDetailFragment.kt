@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.composer.better
+package com.vgleadsheets.features.main.composer
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
@@ -12,9 +12,9 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class BetterComposerFragment : BetterListFragment<BetterComposerContent, BetterComposerState>() {
+class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, ComposerDetailState>() {
     @Inject
-    lateinit var viewModelFactory: BetterComposerViewModel.Factory
+    lateinit var viewModelFactory: ComposerDetailViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
@@ -24,15 +24,20 @@ class BetterComposerFragment : BetterListFragment<BetterComposerContent, BetterC
 
     override fun getPerfSpec() = PerfSpec.COMPOSER
 
-    override val viewModel: BetterComposerViewModel by fragmentViewModel()
+    override val viewModel: ComposerDetailViewModel by fragmentViewModel()
 
-    override fun generateList(state: BetterComposerState, hudState: HudState) =
+    override fun generateList(state: ComposerDetailState, hudState: HudState) =
         BetterLists.generateList(
-            BetterComposerConfig(
+            Config(
                 state,
                 hudState,
                 baseImageUrl,
-                viewModel,
+                Clicks(
+                    viewModel,
+                    getFragmentRouter(),
+                    tracker,
+                    getDetails()
+                ),
                 perfTracker,
                 getPerfSpec(),
                 resources
@@ -43,8 +48,8 @@ class BetterComposerFragment : BetterListFragment<BetterComposerContent, BetterC
     companion object {
         const val LOAD_OPERATION = "loadComposer"
 
-        fun newInstance(idArgs: IdArgs): BetterComposerFragment {
-            val fragment = BetterComposerFragment()
+        fun newInstance(idArgs: IdArgs): ComposerDetailFragment {
+            val fragment = ComposerDetailFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)

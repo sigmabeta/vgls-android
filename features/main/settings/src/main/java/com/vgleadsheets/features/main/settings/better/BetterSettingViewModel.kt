@@ -5,7 +5,6 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
@@ -14,7 +13,6 @@ import timber.log.Timber
 
 class BetterSettingViewModel @AssistedInject constructor(
     @Assisted initialState: BetterSettingState,
-    @Assisted private val router: FragmentRouter,
     private val storage: Storage,
 ) : MvRxViewModel<BetterSettingState>(initialState) {
     init {
@@ -91,7 +89,6 @@ class BetterSettingViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterSettingState,
-            router: FragmentRouter
         ): BetterSettingViewModel
     }
 
@@ -102,7 +99,7 @@ class BetterSettingViewModel @AssistedInject constructor(
         ): BetterSettingViewModel {
             val fragment: BetterSettingFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

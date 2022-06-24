@@ -17,7 +17,7 @@ import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
-import com.vgleadsheets.features.main.composers.better.BetterComposerListFragment
+import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.game.better.BetterGameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -27,7 +27,7 @@ import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.better.BetterJamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.better.BetterSearchFragment
-import com.vgleadsheets.features.main.settings.better.BetterDebugFragment
+import com.vgleadsheets.features.main.debug.BetterDebugFragment
 import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
 import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
 import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
@@ -140,7 +140,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            BetterComposerListFragment.newInstance(),
+            ComposerListFragment.newInstance(),
             fromScreen,
             fromDetails
         )
@@ -184,9 +184,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showFragmentSimple(
-            BetterSettingFragment.newInstance(),
-            fromScreen,
-            fromDetails
+            BetterSettingFragment.newInstance()
         )
     }
 
@@ -195,9 +193,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showFragmentSimple(
-            BetterDebugFragment.newInstance(),
-            fromScreen,
-            fromDetails
+            BetterDebugFragment.newInstance()
         )
     }
 
@@ -251,15 +247,7 @@ class MainActivity :
         )
     }
 
-    override fun showSongListForComposer(composerId: Long, name: String) {
-        val prevFragment = getDisplayedFragment()
-
-        tracker.logComposerView(
-            name,
-            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            prevFragment?.getDetails() ?: ""
-        )
-
+    override fun showSongListForComposer(composerId: Long) {
         showFragmentSimple(
             ComposerDetailFragment.newInstance(IdArgs(composerId))
         )
@@ -278,28 +266,10 @@ class MainActivity :
     )
 
     override fun showSongViewer(
-        songId: Long,
-        name: String,
-        gameName: String,
-        transposition: String,
-        fromScreen: TrackingScreen?,
-        fromDetails: String?
+        songId: Long
     ) {
-        val prevFragment = getDisplayedFragment()
-
-        tracker.logSongView(
-            songId,
-            name,
-            gameName,
-            transposition,
-            fromScreen ?: prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            fromDetails ?: prevFragment?.getDetails() ?: ""
-        )
-
         showFragmentSimple(
-            ViewerFragment.newInstance(ViewerArgs(songId = songId)),
-            fromScreen,
-            fromDetails
+            ViewerFragment.newInstance(ViewerArgs(songId = songId))
         )
     }
 
@@ -343,21 +313,11 @@ class MainActivity :
     }
 
     private fun showFragmentSimple(
-        fragment: VglsFragment,
-        fromScreen: TrackingScreen? = null,
-        fromDetails: String? = null
+        fragment: VglsFragment
     ) {
         val displayedFragment = getDisplayedFragment()
 
         if (displayedFragment?.getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
-            tracker.logScreenView(
-                this,
-                fragment.getTrackingScreen(),
-                fragment.getDetails(),
-                fromScreen ?: displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-                fromDetails ?: displayedFragment?.getDetails() ?: ""
-            )
-
             supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)

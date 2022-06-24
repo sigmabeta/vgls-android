@@ -121,8 +121,7 @@ class BetterSongConfig(
             ) {
                 viewModel.onCtaClicked(
                     R.drawable.ic_description_24dp,
-                    song,
-                    hudState.selectedPart
+                    song
                 )
             },
             CtaListModel(
@@ -131,8 +130,7 @@ class BetterSongConfig(
             ) {
                 viewModel.onCtaClicked(
                     R.drawable.ic_play_circle_filled_24,
-                    song,
-                    hudState.selectedPart
+                    song
                 )
             }
         )

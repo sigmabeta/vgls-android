@@ -59,12 +59,13 @@ import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import timber.log.Timber
 
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment() {
     @Inject
     lateinit var storage: Storage
+
+    internal lateinit var clicks: Clicks
 
     private var _binding: FragmentHudBinding? = null
 
@@ -106,16 +107,12 @@ class HudFragment : VglsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null) {
-            viewModel.selectSubscribe(
-                HudState::readyToShowScreens,
-                deliveryMode = uniqueOnly("readyToShow")
-            ) { ready ->
-                if (ready) {
-                    showInitialScreen()
-                }
-            }
-        }
+        clicks = Clicks(
+            viewModel,
+            getFragmentRouter(),
+            tracker,
+            ""
+        )
 
         // Configure search bar insets
         screen.cardSearch.setInsetListenerForMargin(
@@ -137,7 +134,7 @@ class HudFragment : VglsFragment() {
         menuAdapter.resources = resources
 
         screen.buttonSearchClear.setOnClickListener { screen.editSearchQuery.text.clear() }
-        screen.shadowHud.setOnClickListener { viewModel.onMenuAction() }
+        screen.shadowHud.setOnClickListener { clicks.shadow() }
         screen.buttonSearchMenuBack.setOnClickListener {
             onAppBarButtonClick()
         }
@@ -147,7 +144,7 @@ class HudFragment : VglsFragment() {
         super.onStart()
         val textEntryEvents = searchEvents()
             .subscribe {
-                viewModel.searchQuery(it)
+                clicks.searchQuery(it)
             }
         disposables.add(textEntryEvents)
 
@@ -155,7 +152,7 @@ class HudFragment : VglsFragment() {
             .subscribe {
                 withState(viewModel) {
                     if (it.mode != HudMode.SEARCH) {
-                        viewModel.searchClick()
+                        clicks.searchBox()
                     }
                 }
             }
@@ -189,10 +186,6 @@ class HudFragment : VglsFragment() {
             }
         }
 
-        if (state.random is Success) {
-            onRandomSuccess(state, state.random())
-        }
-
         renderMenu(
             state.mode,
             state.selectedSong != null,
@@ -202,7 +195,6 @@ class HudFragment : VglsFragment() {
             state.frameTimeStatsMap,
             state.invalidateStatsMap,
             state.digest is Loading,
-            state.random is Loading,
             state.updateTime,
             state.selectedSong,
             state.perfViewState,
@@ -224,7 +216,7 @@ class HudFragment : VglsFragment() {
     }
 
     override fun onBackPress() = withState(viewModel) {
-        return@withState viewModel.onBackPress(it)
+        return@withState clicks.back(it)
     }
 
     override fun getLayoutId() = R.layout.fragment_hud
@@ -233,76 +225,8 @@ class HudFragment : VglsFragment() {
 
     override fun getTrackingScreen() = TrackingScreen.HUD
 
-    private fun showInitialScreen() {
-        Timber.d("Checking to see which screen to show.")
-        val screenLoad = storage.getSavedTopLevelScreen().subscribe(
-            {
-                val selection = if (it.isEmpty()) {
-                    TOP_LEVEL_SCREEN_ID_DEFAULT
-                } else {
-                    it
-                }
-
-                Timber.v("Showing screen: $it")
-                showScreen(selection, false, false)
-            },
-            {
-                Timber.w("No screen ID found, going with default.")
-                showScreen(TOP_LEVEL_SCREEN_ID_DEFAULT, false, false)
-            }
-        )
-        disposables.add(screenLoad)
-    }
-
-    @Suppress("ComplexMethod")
-    private fun showScreen(screenId: String, fromUserClick: Boolean = true, save: Boolean = true) {
-        viewModel.onMenuAction()
-
-        val fromScreen = if (fromUserClick) getTrackingScreen() else null
-        val fromDetails = if (fromUserClick) getDetails() else null
-
-        when (screenId) {
-            TOP_LEVEL_SCREEN_ID_GAME -> getFragmentRouter().showGameList(fromScreen, fromDetails)
-            TOP_LEVEL_SCREEN_ID_COMPOSER -> getFragmentRouter().showComposerList(
-                fromScreen,
-                fromDetails
-            )
-            TOP_LEVEL_SCREEN_ID_TAG -> getFragmentRouter().showTagList(fromScreen, fromDetails)
-            TOP_LEVEL_SCREEN_ID_SONG -> getFragmentRouter().showAllSheets(fromScreen, fromDetails)
-            TOP_LEVEL_SCREEN_ID_JAM -> getFragmentRouter().showJams(fromScreen, fromDetails)
-            MODAL_SCREEN_ID_SETTINGS -> getFragmentRouter().showSettings(fromScreen, fromDetails)
-            MODAL_SCREEN_ID_DEBUG -> getFragmentRouter().showDebug(fromScreen, fromDetails)
-            else -> getFragmentRouter().showGameList(fromScreen, fromDetails)
-        }
-
-        if (save) {
-            storage.saveTopLevelScreen(screenId)
-        }
-    }
-
-    private fun onPartSelect(clicked: Part) {
-        tracker.logPartSelect(clicked.name)
-        viewModel.onPartSelect(clicked.name)
-
-        val save = storage.saveSelectedPart(clicked.name)
-            .subscribe({}, { showError("Failed to save part selection: ${it.message}") })
-        disposables.add(save)
-    }
-
-    private fun onAppBarButtonClick() {
-        tracker.logMenuShow()
-        viewModel.onAppBarButtonClick()
-    }
-
-    private fun onRandomClick() = withState(viewModel) { state ->
-        viewModel.onRandomSelectClick(state.selectedPart)
-    }
-
-    private fun onRefreshClick() = withState(viewModel) {
-        if (it.digest !is Loading) {
-            tracker.logForceRefresh()
-            viewModel.refresh()
-        }
+    private fun onAppBarButtonClick() = withState(viewModel) {
+        clicks.appBarButton(it)
     }
 
     private fun showSearchClearButton() {
@@ -367,7 +291,6 @@ class HudFragment : VglsFragment() {
         frameTimeStatsMap: Map<PerfSpec, FrameTimeStats>?,
         invalidateStatsMap: Map<PerfSpec, InvalidateStats>?,
         refreshing: Boolean,
-        randoming: Boolean,
         updateTime: Async<Long>,
         currentSong: Song?,
         perfViewState: PerfViewState
@@ -403,11 +326,8 @@ class HudFragment : VglsFragment() {
             PartSelectorOption.valueOf(selectedPart.name),
             hudMode,
             resources,
-            {
-                tracker.logMenuShow()
-                viewModel.onBottomMenuButtonClick()
-            },
-            { viewModel.onChangePartClick() },
+            { clicks.bottomMenuButton(hudMode, perfViewState.viewMode) },
+            { clicks.changePart() },
         ) + SongDisplay.getListModels(
             currentSong,
             songDetailClickHandler,
@@ -420,19 +340,18 @@ class HudFragment : VglsFragment() {
         ) + PartPicker.getListModels(
             hudMode == HudMode.PARTS,
             showVocalsOption,
-            { onPartSelect(it) },
+            { clicks.part(it.name) },
             resources,
             selectedPart.apiId
         ) + MenuOptions.getListModels(
             hudMode == HudMode.MENU,
-            randoming,
             refreshing,
             updateTime,
-            { showScreen(it, save = shouldSaveScreenSelection(it)) },
-            { onRandomClick() },
-            { onRefreshClick() },
-            { showScreen(MODAL_SCREEN_ID_DEBUG, save = false) },
-            viewModel::onPerfClick,
+            { clicks.screenLink(it) },
+            { clicks.randomSelect(selectedPart) },
+            { clicks.refresh() },
+            { clicks.screenLink(MODAL_SCREEN_ID_DEBUG) },
+            { clicks.perf() },
             resources,
         ) + PerfDisplay.getListModels(
             hudMode == HudMode.PERF,
@@ -440,8 +359,8 @@ class HudFragment : VglsFragment() {
             loadTimeLists,
             frameTimeStatsMap,
             invalidateStatsMap,
-            { viewModel.setPerfSelectedScreen(it) },
-            { viewModel.setPerfViewMode(it) },
+            { clicks.perfScreenSelection(it) },
+            { clicks.setPerfViewMode(it) },
             resources,
         ) + RefreshIndicator.getListModels(
             refreshing,
@@ -451,40 +370,6 @@ class HudFragment : VglsFragment() {
         menuAdapter.submitListAnimateResizeContainer(
             menuItems,
             screen.includedBottomSheet.root as ViewGroup
-        )
-    }
-
-    private fun shouldSaveScreenSelection(screenId: String) =
-        screenId != MODAL_SCREEN_ID_DEBUG && screenId != MODAL_SCREEN_ID_SETTINGS
-
-    private fun onRandomSuccess(
-        hudState: HudState,
-        song: Song?
-    ) {
-        viewModel.clearRandom()
-        viewModel.onMenuAction()
-
-        if (song == null) {
-            showError("Failed to get a random track.")
-            viewModel.clearRandom()
-            return
-        }
-
-        val transposition = hudState.selectedPart.apiId
-
-        tracker.logRandomSongView(
-            song.name,
-            song.gameName,
-            transposition
-        )
-
-        getFragmentRouter().showSongViewer(
-            song.id,
-            song.name,
-            song.gameName,
-            transposition,
-            getTrackingScreen(),
-            getDetails()
         )
     }
 

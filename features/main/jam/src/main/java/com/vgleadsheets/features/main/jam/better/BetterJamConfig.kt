@@ -112,10 +112,7 @@ class BetterJamConfig(
                         R.drawable.placeholder_sheet
                     ) {
                         viewModel.onSongClicked(
-                            currentSong.id,
-                            currentSong.name,
-                            currentSong.gameName,
-                            hudState.selectedPart.apiId
+                            currentSong.id
                         )
                     }
                 )
@@ -155,10 +152,7 @@ class BetterJamConfig(
                     R.drawable.placeholder_sheet
                 ) {
                     viewModel.onSongClicked(
-                        song.id,
-                        song.name,
-                        song.gameName,
-                        hudState.selectedPart.apiId
+                        song.id
                     )
                 }
             }
@@ -201,10 +195,7 @@ class BetterJamConfig(
                         R.drawable.placeholder_sheet
                     ) {
                         viewModel.onSongClicked(
-                            song.id,
-                            song.name,
-                            song.gameName,
-                            hudState.selectedPart.apiId
+                            song.id
                         )
                     }
                 }

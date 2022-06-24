@@ -2,7 +2,8 @@ package com.vgleadsheets.di
 
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
-import com.vgleadsheets.features.main.composers.better.BetterComposerListFragment
+import com.vgleadsheets.features.main.composers.ComposerListFragment
+import com.vgleadsheets.features.main.debug.BetterDebugFragment
 import com.vgleadsheets.features.main.game.better.BetterGameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -11,7 +12,6 @@ import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.better.BetterJamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.better.BetterSearchFragment
-import com.vgleadsheets.features.main.settings.better.BetterDebugFragment
 import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
 import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
 import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
@@ -71,7 +71,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterComposerListFragmentInjector(): BetterComposerListFragment
+    internal abstract fun contributeBetterComposerListFragmentInjector(): ComposerListFragment
 
     @FragmentScope
     @ContributesAndroidInjector

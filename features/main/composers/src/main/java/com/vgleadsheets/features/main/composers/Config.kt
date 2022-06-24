@@ -1,9 +1,7 @@
-package com.vgleadsheets.features.main.composers.better
+package com.vgleadsheets.features.main.composers
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.features.main.composers.BuildConfig
-import com.vgleadsheets.features.main.composers.R
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
@@ -21,15 +19,14 @@ import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-class BetterComposerListConfig(
-    private val state: BetterComposerListState,
+internal class Config(
+    private val state: ComposerListState,
     private val hudState: HudState,
-    private val viewModel: BetterComposerListViewModel,
-    private val clicks: BetterComposerListClicks,
+    private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterComposerListState, BetterComposerListClicks> {
+) : BetterListConfig<ComposerListState, Clicks> {
     override val titleConfig = Title.Config(
         resources.getString(R.string.app_name),
         resources.getString(R.string.label_by_composer),
@@ -55,7 +52,7 @@ class BetterComposerListConfig(
                     it.captionText(),
                     it.photoUrl,
                     R.drawable.placeholder_composer
-                ) { viewModel.onComposerClicked(it.id, it.name) }
+                ) { clicks.onComposerClicked(it.id, it.name) }
             } ?: emptyList()
     }
 
@@ -68,7 +65,7 @@ class BetterComposerListConfig(
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        BetterComposerListFragment.LOAD_OPERATION,
+        ComposerListFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
 

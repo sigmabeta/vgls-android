@@ -1,20 +1,17 @@
-package com.vgleadsheets.features.main.composer.better
+package com.vgleadsheets.features.main.composer
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.tracking.TrackingScreen
 
-class BetterComposerViewModel @AssistedInject constructor(
-    @Assisted initialState: BetterComposerState,
-    @Assisted private val router: FragmentRouter,
+class ComposerDetailViewModel @AssistedInject constructor(
+    @Assisted initialState: ComposerDetailState,
     private val repository: Repository,
-) : MvRxViewModel<BetterComposerState>(initialState) {
+) : MvRxViewModel<ComposerDetailState>(initialState) {
     init {
         fetchComposer()
         fetchSongs()
@@ -42,37 +39,21 @@ class BetterComposerViewModel @AssistedInject constructor(
             }
     }
 
-    fun onSongClicked(
-        id: Long,
-        songName: String,
-        gameName: String,
-        transposition: String
-    ) {
-        router.showSongViewer(
-            id,
-            songName,
-            gameName,
-            transposition,
-            TrackingScreen.DETAIL_COMPOSER,
-        )
-    }
-
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            initialState: BetterComposerState,
-            router: FragmentRouter
-        ): BetterComposerViewModel
+            initialState: ComposerDetailState
+        ): ComposerDetailViewModel
     }
 
-    companion object : MvRxViewModelFactory<BetterComposerViewModel, BetterComposerState> {
+    companion object : MvRxViewModelFactory<ComposerDetailViewModel, ComposerDetailState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: BetterComposerState
-        ): BetterComposerViewModel {
-            val fragment: BetterComposerFragment =
+            state: ComposerDetailState
+        ): ComposerDetailViewModel {
+            val fragment: ComposerDetailFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

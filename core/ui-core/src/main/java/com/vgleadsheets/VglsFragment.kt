@@ -109,6 +109,15 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
         perfTracker.start(getPerfScreenName(), getPerfSpec())
         perfTrackingStarted = true
+
+        // TODO Resume supplying Fromscreen and Fromdetails
+        tracker.logScreenView(
+            requireActivity(),
+            getTrackingScreen(),
+            getDetails(),
+            TrackingScreen.NONE,
+            ""
+        )
     }
 
     override fun onCreateView(

@@ -1,9 +1,7 @@
-package com.vgleadsheets.features.main.composer.better
+package com.vgleadsheets.features.main.composer
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.features.main.composer.BuildConfig
-import com.vgleadsheets.features.main.composer.R
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
@@ -21,15 +19,15 @@ import com.vgleadsheets.model.thumbUrl
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-class BetterComposerConfig(
-    private val state: BetterComposerState,
+internal class Config(
+    private val state: ComposerDetailState,
     private val hudState: HudState,
     private val baseImageUrl: String,
-    private val viewModel: BetterComposerViewModel,
+    private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterComposerState, BetterComposerClicks> {
+) : BetterListConfig<ComposerDetailState, Clicks> {
     private val composerLoad = state.contentLoad.composer
 
     private val composer = composerLoad.content()
@@ -67,7 +65,7 @@ class BetterComposerConfig(
                     song.thumbUrl(baseImageUrl, hudState.selectedPart),
                     R.drawable.placeholder_sheet
                 ) {
-                    viewModel.onSongClicked(
+                    clicks.onSongClicked(
                         song.id,
                         song.name,
                         song.gameName,
@@ -86,7 +84,7 @@ class BetterComposerConfig(
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        BetterComposerFragment.LOAD_OPERATION,
+        ComposerDetailFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
 

@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.composer.better
+package com.vgleadsheets.features.main.composer
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
@@ -10,7 +10,7 @@ import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.song.Song
 
-data class BetterComposerContent(
+data class ComposerDetailContent(
     val composer: Async<Composer> = Uninitialized,
     val songs: Async<List<Song>> = Uninitialized
 ) : ListContent {

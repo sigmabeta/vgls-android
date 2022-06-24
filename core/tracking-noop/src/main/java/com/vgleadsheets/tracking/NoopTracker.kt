@@ -5,11 +5,7 @@ import timber.log.Timber
 
 @SuppressWarnings("TooManyFunctions")
 class NoopTracker : Tracker {
-    override fun logMenuShow() {
-        Timber.d("Menu shown.")
-    }
-
-    override fun logForceRefresh() {
+    override fun logRefreshClick() {
         Timber.d("Refresh forced.")
     }
 
@@ -82,5 +78,37 @@ class NoopTracker : Tracker {
         fromDetails: String
     ) {
         Timber.i("Song $gameName - $songName, for $transposition; viewed from screen: $fromScreen:$fromDetails")
+    }
+
+    override fun logShadowClick() {
+        Timber.d("Shadow clicked.")
+    }
+
+    override fun logSearchBoxClick() {
+        Timber.d("Search box clicked.")
+    }
+
+    override fun logAppBarButtonClick() {
+        Timber.d("App bar button clicked.")
+    }
+
+    override fun logBottomMenuButtonClick() {
+        Timber.d("Bottom Menu button clicked.")
+    }
+
+    override fun logChangePartClick() {
+        Timber.d("Change part button clicked.")
+    }
+
+    override fun logScreenLinkClick(
+        screenId: String,
+        fromScreen: TrackingScreen,
+        trackingDetails: String
+    ) {
+        Timber.d("Screen link to $screenId clicked.")
+    }
+
+    override fun logRandomClick() {
+        Timber.d("Random select button clicked.")
     }
 }

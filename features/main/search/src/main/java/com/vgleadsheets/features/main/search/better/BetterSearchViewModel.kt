@@ -6,16 +6,13 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 
 class BetterSearchViewModel @AssistedInject constructor(
     @Assisted initialState: BetterSearchState,
-    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
 ) : MvRxViewModel<BetterSearchState>(initialState) {
 
@@ -90,17 +87,10 @@ class BetterSearchViewModel @AssistedInject constructor(
     }
 
     fun onSongClicked(
-        id: Long,
-        songName: String,
-        gameName: String,
-        transposition: String
+        id: Long
     ) {
         router.showSongViewer(
-            id,
-            songName,
-            gameName,
-            transposition,
-            TrackingScreen.SEARCH,
+            id
         )
     }
 
@@ -116,7 +106,6 @@ class BetterSearchViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterSearchState,
-            router: FragmentRouter
         ): BetterSearchViewModel
     }
 
@@ -129,7 +118,7 @@ class BetterSearchViewModel @AssistedInject constructor(
         ): BetterSearchViewModel {
             val fragment: BetterSearchFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

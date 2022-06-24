@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.settings.better
+package com.vgleadsheets.features.main.debug
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
@@ -14,9 +14,8 @@ import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
 import io.reactivex.Completable
 import timber.log.Timber
 
-class BetterDebugViewModel @AssistedInject constructor(
+class DebugViewModel @AssistedInject constructor(
     @Assisted initialState: BetterDebugState,
-    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
     private val storage: Storage,
 ) : MvRxViewModel<BetterDebugState>(initialState) {
@@ -118,18 +117,17 @@ class BetterDebugViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterDebugState,
-            router: FragmentRouter
-        ): BetterDebugViewModel
+        ): DebugViewModel
     }
 
-    companion object : MvRxViewModelFactory<BetterDebugViewModel, BetterDebugState> {
+    companion object : MvRxViewModelFactory<DebugViewModel, BetterDebugState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: BetterDebugState
-        ): BetterDebugViewModel {
+        ): DebugViewModel {
             val fragment: BetterDebugFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

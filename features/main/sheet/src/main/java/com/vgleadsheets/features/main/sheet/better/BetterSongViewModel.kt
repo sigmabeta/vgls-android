@@ -5,17 +5,14 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.sheet.R
 import com.vgleadsheets.getYoutubeSearchUrlForQuery
-import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 
 class BetterSongViewModel @AssistedInject constructor(
     @Assisted initialState: BetterSongState,
-    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
 ) : MvRxViewModel<BetterSongState>(initialState) {
     init {
@@ -33,9 +30,9 @@ class BetterSongViewModel @AssistedInject constructor(
         router.showSongListForGame(gameId, gameName)
     }
 
-    fun onCtaClicked(clickedId: Int, song: Song, selectedPart: Part) {
+    fun onCtaClicked(clickedId: Int, song: Song) {
         when (clickedId) {
-            R.drawable.ic_description_24dp -> showSongViewer(song, selectedPart)
+            R.drawable.ic_description_24dp -> showSongViewer(song)
             R.drawable.ic_play_circle_filled_24 -> showYoutubeSearch(song)
             else -> TODO("Unimplemented button")
         }
@@ -69,12 +66,9 @@ class BetterSongViewModel @AssistedInject constructor(
             }
     }
 
-    private fun showSongViewer(song: Song, selectedPart: Part) {
+    private fun showSongViewer(song: Song) {
         router.showSongViewer(
-            song.id,
-            song.name,
-            song.gameName,
-            selectedPart.apiId
+            song.id
         )
     }
 
@@ -89,7 +83,6 @@ class BetterSongViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterSongState,
-            router: FragmentRouter
         ): BetterSongViewModel
     }
 
@@ -105,7 +98,7 @@ class BetterSongViewModel @AssistedInject constructor(
         ): BetterSongViewModel {
             val fragment: BetterSongFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

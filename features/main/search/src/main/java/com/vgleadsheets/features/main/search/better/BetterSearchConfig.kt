@@ -145,10 +145,7 @@ class BetterSearchConfig(
             if (filteredResults.isEmpty()) {
                 emptyList()
             } else {
-                createSectionHeaderListModel(sectionId) + createSectionModels(
-                    filteredResults,
-                    selectedPart
-                )
+                createSectionHeaderListModel(sectionId) + createSectionModels(filteredResults)
             }
         }
     }
@@ -157,8 +154,7 @@ class BetterSearchConfig(
         listOf(SectionHeaderListModel(resources.getString(sectionId)))
 
     private fun createSectionModels(
-        results: List<Any>,
-        selectedPart: Part
+        results: List<Any>
     ): List<ListModel> {
         return results
             .map { result ->
@@ -172,10 +168,7 @@ class BetterSearchConfig(
                             R.drawable.placeholder_sheet
                         ) {
                             viewModel.onSongClicked(
-                                result.id,
-                                result.name,
-                                result.gameName,
-                                selectedPart.apiId
+                                result.id
                             )
                         }
                     }

@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.settings.better
+package com.vgleadsheets.features.main.debug
 
 import android.content.res.Resources
 import com.vgleadsheets.components.CheckableListModel
@@ -6,8 +6,6 @@ import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.features.main.debug.BuildConfig
-import com.vgleadsheets.features.main.debug.R
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
@@ -23,13 +21,13 @@ import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
 import com.vgleadsheets.storage.Setting
 
-class BetterDebugConfig(
+internal class Config(
     private val state: BetterDebugState,
-    private val viewModel: BetterDebugViewModel,
+    private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterDebugState, BetterDebugClicks> {
+) : BetterListConfig<BetterDebugState, Clicks> {
     private val settingsLoad = state.contentLoad.settings
 
     private val settings = settingsLoad.content()
@@ -93,14 +91,14 @@ class BetterDebugConfig(
                         setting.settingId,
                         resources.getString(setting.labelStringId),
                         setting.value
-                    ) { viewModel.onBooleanSettingClicked(setting.settingId, !setting.value) }
+                    ) { clicks.onBooleanSettingClicked(setting.settingId, !setting.value) }
                     is DropdownSetting -> DropdownSettingListModel(
                         setting.settingId,
                         resources.getString(setting.labelStringId),
                         setting.selectedPosition,
                         setting.valueStringIds.map { resources.getString(it) }
                     ) { selectedPos ->
-                        viewModel.onDropdownSettingSelected(
+                        clicks.onDropdownSettingSelected(
                             setting.settingId,
                             selectedPos
                         )
@@ -117,11 +115,11 @@ class BetterDebugConfig(
             SingleTextListModel(
                 R.string.label_database_clear_sheets.toLong(),
                 resources.getString(R.string.label_database_clear_sheets)
-            ) { viewModel.clearSheets() },
+            ) { clicks.clearSheets() },
             SingleTextListModel(
                 R.string.label_database_clear_jams.toLong(),
                 resources.getString(R.string.label_database_clear_jams),
-            ) { viewModel.clearJams() }
+            ) { clicks.clearJams() }
         )
 
         return normalItems + customItems

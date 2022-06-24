@@ -12,14 +12,7 @@ interface FragmentRouter {
     fun showSongListForGame(gameId: Long, name: String)
 
     @SuppressWarnings("LongParameterList")
-    fun showSongViewer(
-        songId: Long,
-        name: String,
-        gameName: String,
-        transposition: String,
-        fromScreen: TrackingScreen? = null,
-        fromDetails: String? = null
-    )
+    fun showSongViewer(songId: Long)
 
     fun showSheetDetail(songId: Long)
 
@@ -29,7 +22,7 @@ interface FragmentRouter {
 
     fun showSearch()
 
-    fun showSongListForComposer(composerId: Long, name: String)
+    fun showSongListForComposer(composerId: Long)
 
     fun showSongListForTagValue(tagValueId: Long)
 

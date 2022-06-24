@@ -70,10 +70,7 @@ class BetterTagValueSongConfig(
                     R.drawable.placeholder_sheet
                 ) {
                     viewModel.onSongClicked(
-                        song.id,
-                        song.name,
-                        song.gameName,
-                        hudState.selectedPart.apiId
+                        song.id
                     )
                 }
             } ?: emptyList()

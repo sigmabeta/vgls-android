@@ -5,13 +5,11 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 
 class BetterGameListViewModel @AssistedInject constructor(
     @Assisted initialState: BetterGameListState,
-    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
 ) : MvRxViewModel<BetterGameListState>(initialState) {
     init {
@@ -34,7 +32,6 @@ class BetterGameListViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterGameListState,
-            router: FragmentRouter
         ): BetterGameListViewModel
     }
 
@@ -45,7 +42,7 @@ class BetterGameListViewModel @AssistedInject constructor(
         ): BetterGameListViewModel {
             val fragment: BetterGameListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

@@ -68,10 +68,7 @@ class GameConfig(
                     R.drawable.placeholder_game
                 ) {
                     viewModel.onSongClicked(
-                        song.id,
-                        song.name,
-                        song.gameName,
-                        hudState.selectedPart.apiId
+                        song.id
                     )
                 }
             } ?: emptyList()

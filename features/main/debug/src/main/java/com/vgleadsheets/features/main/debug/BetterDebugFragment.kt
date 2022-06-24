@@ -1,10 +1,9 @@
-package com.vgleadsheets.features.main.settings.better
+package com.vgleadsheets.features.main.debug
 
 import android.os.Bundle
 import android.view.View
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.vgleadsheets.features.main.debug.R
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
 import com.vgleadsheets.features.main.list.BetterLists
@@ -14,13 +13,13 @@ import javax.inject.Inject
 
 class BetterDebugFragment : BetterListFragment<BetterDebugContent, BetterDebugState>() {
     @Inject
-    lateinit var viewModelFactory: BetterDebugViewModel.Factory
+    lateinit var viewModelFactory: DebugViewModel.Factory
 
     override fun getTrackingScreen() = TrackingScreen.DEBUG
 
     override fun getPerfSpec() = PerfSpec.DEBUG
 
-    override val viewModel: BetterDebugViewModel by fragmentViewModel()
+    override val viewModel: DebugViewModel by fragmentViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +50,7 @@ class BetterDebugFragment : BetterListFragment<BetterDebugContent, BetterDebugSt
 
     override fun generateList(state: BetterDebugState, hudState: HudState) =
         BetterLists.generateList(
-            BetterDebugConfig(
+            Config(
                 state,
                 viewModel,
                 perfTracker,

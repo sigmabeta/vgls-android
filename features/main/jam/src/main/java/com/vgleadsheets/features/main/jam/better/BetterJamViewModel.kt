@@ -5,16 +5,13 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.tracking.TrackingScreen
 import timber.log.Timber
 
 class BetterJamViewModel @AssistedInject constructor(
     @Assisted initialState: BetterJamState,
-    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
 ) : MvRxViewModel<BetterJamState>(initialState) {
     init {
@@ -24,17 +21,10 @@ class BetterJamViewModel @AssistedInject constructor(
     private var firstRefresh = true
 
     fun onSongClicked(
-        id: Long,
-        songName: String,
-        gameName: String,
-        transposition: String
+        id: Long
     ) {
         router.showSongViewer(
-            id,
-            songName,
-            gameName,
-            transposition,
-            TrackingScreen.DETAIL_JAM,
+            id
         )
     }
 
@@ -115,7 +105,6 @@ class BetterJamViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterJamState,
-            router: FragmentRouter
         ): BetterJamViewModel
     }
 
@@ -126,7 +115,7 @@ class BetterJamViewModel @AssistedInject constructor(
         ): BetterJamViewModel {
             val fragment: BetterJamFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

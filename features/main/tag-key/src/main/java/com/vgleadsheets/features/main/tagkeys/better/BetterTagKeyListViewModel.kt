@@ -5,13 +5,11 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 
 class BetterTagKeyListViewModel @AssistedInject constructor(
     @Assisted initialState: BetterTagKeyListState,
-    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
 ) : MvRxViewModel<BetterTagKeyListState>(initialState) {
     init {
@@ -34,7 +32,6 @@ class BetterTagKeyListViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: BetterTagKeyListState,
-            router: FragmentRouter
         ): BetterTagKeyListViewModel
     }
 
@@ -45,7 +42,7 @@ class BetterTagKeyListViewModel @AssistedInject constructor(
         ): BetterTagKeyListViewModel {
             val fragment: BetterTagKeyListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.viewModelFactory.create(state, fragment.activity as FragmentRouter)
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

@@ -62,7 +62,6 @@ class BetterSearchFragment : BetterListFragment<BetterSearchContent, BetterSearc
         )
 
     private fun onSearchQueryEntered(query: String) {
-        tracker.logSearch(query)
         viewModel.startQuery(query)
     }
 
