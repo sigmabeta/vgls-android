@@ -24,9 +24,7 @@ class ComposerListFragment :
             Config(
                 state,
                 hudState,
-                viewModel,
                 Clicks(
-                    viewModel,
                     getFragmentRouter(),
                     tracker,
                     ""

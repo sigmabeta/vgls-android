@@ -6,10 +6,9 @@ import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 
 internal class Clicks(
-    val viewModel: ComposerListViewModel,
-    val router: FragmentRouter,
-    val tracker: Tracker,
-    val trackingDetails: String
+    private val router: FragmentRouter,
+    private val tracker: Tracker,
+    private val trackingDetails: String
 ) : ListItemClicks {
     fun onComposerClicked(
         id: Long,

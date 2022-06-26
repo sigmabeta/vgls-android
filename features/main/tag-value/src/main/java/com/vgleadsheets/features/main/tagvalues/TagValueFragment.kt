@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tagvalues.better
+package com.vgleadsheets.features.main.tagvalues
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
@@ -12,9 +12,9 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class BetterTagValueFragment : BetterListFragment<BetterTagValueContent, BetterTagValueState>() {
+class TagValueFragment : BetterListFragment<TagValueContent, TagValueState>() {
     @Inject
-    lateinit var viewModelFactory: BetterTagValueViewModel.Factory
+    lateinit var viewModelFactory: TagValueViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
@@ -24,14 +24,16 @@ class BetterTagValueFragment : BetterListFragment<BetterTagValueContent, BetterT
 
     override fun getPerfSpec() = PerfSpec.TAG_VALUE
 
-    override val viewModel: BetterTagValueViewModel by fragmentViewModel()
+    override val viewModel: TagValueViewModel by fragmentViewModel()
 
-    override fun generateList(state: BetterTagValueState, hudState: HudState) =
+    override fun generateList(state: TagValueState, hudState: HudState) =
         BetterLists.generateList(
-            BetterTagValueConfig(
+            Config(
                 state,
                 hudState,
-                viewModel,
+                Clicks(
+                    getFragmentRouter()
+                ),
                 perfTracker,
                 getPerfSpec(),
                 resources
@@ -42,8 +44,8 @@ class BetterTagValueFragment : BetterListFragment<BetterTagValueContent, BetterT
     companion object {
         const val LOAD_OPERATION = "loadTagValue"
 
-        fun newInstance(idArgs: IdArgs): BetterTagValueFragment {
-            val fragment = BetterTagValueFragment()
+        fun newInstance(idArgs: IdArgs): TagValueFragment {
+            val fragment = TagValueFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)

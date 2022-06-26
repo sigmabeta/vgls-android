@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tagvalues.better
+package com.vgleadsheets.features.main.tagvalues
 
 import android.content.res.Resources
 import com.vgleadsheets.components.NameCaptionListModel
@@ -9,27 +9,20 @@ import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
-import com.vgleadsheets.features.main.list.sections.Actions
-import com.vgleadsheets.features.main.list.sections.Content
-import com.vgleadsheets.features.main.list.sections.EmptyState
-import com.vgleadsheets.features.main.list.sections.ErrorState
-import com.vgleadsheets.features.main.list.sections.LoadingState
-import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.features.main.tagvalues.BuildConfig
-import com.vgleadsheets.features.main.tagvalues.R
+import com.vgleadsheets.features.main.list.sections.*
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-class BetterTagValueConfig(
-    private val state: BetterTagValueState,
+class Config(
+    private val state: TagValueState,
     private val hudState: HudState,
-    private val viewModel: BetterTagValueViewModel,
+    private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterTagValueState, BetterTagValueClicks> {
+) : BetterListConfig<TagValueState, Clicks> {
     private val tagKeyLoad = state.contentLoad.tagKey
 
     private val tagKey = tagKeyLoad.content()
@@ -63,7 +56,7 @@ class BetterTagValueConfig(
                     it.id,
                     it.name,
                     it.captionText()
-                ) { viewModel.onTagValueClicked(it.id) }
+                ) { clicks.tagValue(it.id) }
             } ?: emptyList()
     }
 
@@ -76,7 +69,7 @@ class BetterTagValueConfig(
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        BetterTagValueFragment.LOAD_OPERATION,
+        TagValueFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
 

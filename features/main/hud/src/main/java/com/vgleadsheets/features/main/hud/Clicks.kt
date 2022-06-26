@@ -14,10 +14,10 @@ import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 
 internal class Clicks(
-    val viewModel: HudViewModel,
-    val router: FragmentRouter,
-    val tracker: Tracker,
-    val trackingDetails: String
+    private val viewModel: HudViewModel,
+    private val router: FragmentRouter,
+    private val tracker: Tracker,
+    private val trackingDetails: String
 ) {
     fun shadow() {
         tracker.logShadowClick()

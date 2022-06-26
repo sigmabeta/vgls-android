@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tagvalues.better
+package com.vgleadsheets.features.main.tagvalues
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
@@ -8,21 +8,13 @@ import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 
-class BetterTagValueViewModel @AssistedInject constructor(
-    @Assisted initialState: BetterTagValueState,
+class TagValueViewModel @AssistedInject constructor(
+    @Assisted initialState: TagValueState,
     private val repository: Repository,
-) : MvRxViewModel<BetterTagValueState>(initialState) {
+) : MvRxViewModel<TagValueState>(initialState) {
     init {
         fetchTagKey()
         fetchTagValues()
-    }
-
-    fun onTagValueClicked(
-        id: Long
-    ) {
-        router.showSongListForTagValue(
-            id
-        )
     }
 
     private fun fetchTagKey() = withState {
@@ -50,16 +42,16 @@ class BetterTagValueViewModel @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            initialState: BetterTagValueState,
-        ): BetterTagValueViewModel
+            initialState: TagValueState,
+        ): TagValueViewModel
     }
 
-    companion object : MvRxViewModelFactory<BetterTagValueViewModel, BetterTagValueState> {
+    companion object : MvRxViewModelFactory<TagValueViewModel, TagValueState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: BetterTagValueState
-        ): BetterTagValueViewModel {
-            val fragment: BetterTagValueFragment =
+            state: TagValueState
+        ): TagValueViewModel {
+            val fragment: TagValueFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewModelFactory.create(state)
         }

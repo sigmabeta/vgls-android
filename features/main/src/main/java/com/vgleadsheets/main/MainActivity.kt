@@ -18,6 +18,7 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
+import com.vgleadsheets.features.main.debug.BetterDebugFragment
 import com.vgleadsheets.features.main.game.better.BetterGameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -27,13 +28,12 @@ import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.better.BetterJamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.better.BetterSearchFragment
-import com.vgleadsheets.features.main.debug.BetterDebugFragment
 import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
 import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
 import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.better.BetterTagValueSongFragment
-import com.vgleadsheets.features.main.tagvalues.better.BetterTagValueFragment
+import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.perf.tracking.api.FrameInfo
 import com.vgleadsheets.perf.tracking.api.PerfSpec
@@ -43,10 +43,10 @@ import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import timber.log.Timber
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions", "Deprecation")
 class MainActivity :
@@ -254,7 +254,7 @@ class MainActivity :
     }
 
     override fun showValueListForTagKey(tagKeyId: Long) = showFragmentSimple(
-        BetterTagValueFragment.newInstance(IdArgs(tagKeyId))
+        TagValueFragment.newInstance(IdArgs(tagKeyId))
     )
 
     override fun showSongListForTagValue(tagValueId: Long) = showFragmentSimple(

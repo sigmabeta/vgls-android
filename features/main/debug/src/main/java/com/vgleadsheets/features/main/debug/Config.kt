@@ -1,20 +1,11 @@
 package com.vgleadsheets.features.main.debug
 
 import android.content.res.Resources
-import com.vgleadsheets.components.CheckableListModel
-import com.vgleadsheets.components.DropdownSettingListModel
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.components.SingleTextListModel
+import com.vgleadsheets.components.*
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
-import com.vgleadsheets.features.main.list.sections.Actions
-import com.vgleadsheets.features.main.list.sections.Content
-import com.vgleadsheets.features.main.list.sections.EmptyState
-import com.vgleadsheets.features.main.list.sections.ErrorState
-import com.vgleadsheets.features.main.list.sections.LoadingState
-import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.features.main.list.sections.*
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.storage.BooleanSetting
@@ -91,14 +82,14 @@ internal class Config(
                         setting.settingId,
                         resources.getString(setting.labelStringId),
                         setting.value
-                    ) { clicks.onBooleanSettingClicked(setting.settingId, !setting.value) }
+                    ) { clicks.boolean(setting.settingId, !setting.value) }
                     is DropdownSetting -> DropdownSettingListModel(
                         setting.settingId,
                         resources.getString(setting.labelStringId),
                         setting.selectedPosition,
                         setting.valueStringIds.map { resources.getString(it) }
                     ) { selectedPos ->
-                        clicks.onDropdownSettingSelected(
+                        clicks.dropdownSelection(
                             setting.settingId,
                             selectedPos
                         )

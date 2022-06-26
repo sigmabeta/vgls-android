@@ -1,15 +1,15 @@
-package com.vgleadsheets.features.main.tagvalues.better
+package com.vgleadsheets.features.main.tagvalues
 
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.BetterCompositeState
 
-data class BetterTagValueState(
+data class TagValueState(
     val tagValueId: Long,
-    override val contentLoad: BetterTagValueContent = BetterTagValueContent(
+    override val contentLoad: TagValueContent = TagValueContent(
         Uninitialized,
         Uninitialized
     ),
-) : BetterCompositeState<BetterTagValueContent> {
+) : BetterCompositeState<TagValueContent> {
     constructor(args: IdArgs) : this(args.id)
 }
