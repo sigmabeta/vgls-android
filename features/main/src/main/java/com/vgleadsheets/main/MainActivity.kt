@@ -19,20 +19,20 @@ import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.debug.BetterDebugFragment
-import com.vgleadsheets.features.main.game.better.BetterGameFragment
+import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.features.main.jam.better.BetterJamFragment
+import com.vgleadsheets.features.main.jam.JamFragment
 import com.vgleadsheets.features.main.jams.FindJamDialogFragment
-import com.vgleadsheets.features.main.jams.better.BetterJamListFragment
+import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
-import com.vgleadsheets.features.main.search.better.BetterSearchFragment
+import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
-import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
-import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
+import com.vgleadsheets.features.main.sheet.SongFragment
+import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
-import com.vgleadsheets.features.main.tagsongs.better.BetterTagValueSongFragment
+import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.perf.tracking.api.FrameInfo
@@ -120,7 +120,7 @@ class MainActivity :
 
     override fun showSearch() {
         showFragmentSimple(
-            BetterSearchFragment.newInstance()
+            SearchFragment.newInstance()
         )
     }
 
@@ -162,7 +162,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            BetterJamListFragment.newInstance(),
+            JamListFragment.newInstance(),
             fromScreen,
             fromDetails
         )
@@ -173,7 +173,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            BetterSongListFragment.newInstance(),
+            SongListFragment.newInstance(),
             fromScreen,
             fromDetails
         )
@@ -233,17 +233,9 @@ class MainActivity :
         supportFragmentManager.popBackStack()
     }
 
-    override fun showSongListForGame(gameId: Long, name: String) {
-        val prevFragment = getDisplayedFragment()
-
-        tracker.logGameView(
-            name,
-            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            prevFragment?.getDetails() ?: ""
-        )
-
+    override fun showSongListForGame(gameId: Long) {
         showFragmentSimple(
-            BetterGameFragment.newInstance(IdArgs(gameId))
+            GameFragment.newInstance(IdArgs(gameId))
         )
     }
 
@@ -258,11 +250,11 @@ class MainActivity :
     )
 
     override fun showSongListForTagValue(tagValueId: Long) = showFragmentSimple(
-        BetterTagValueSongFragment.newInstance(IdArgs(tagValueId))
+        TagValueSongFragment.newInstance(IdArgs(tagValueId))
     )
 
     override fun showSheetDetail(songId: Long) = showFragmentSimple(
-        BetterSongFragment.newInstance(IdArgs(songId))
+        SongFragment.newInstance(IdArgs(songId))
     )
 
     override fun showSongViewer(
@@ -288,7 +280,7 @@ class MainActivity :
     }
 
     override fun showJamDetailViewer(jamId: Long) = showFragmentSimple(
-        BetterJamFragment.newInstance(IdArgs(jamId))
+        JamFragment.newInstance(IdArgs(jamId))
     )
 
     override fun onBackPressed() {

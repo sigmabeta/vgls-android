@@ -4,19 +4,19 @@ import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.debug.BetterDebugFragment
-import com.vgleadsheets.features.main.game.better.BetterGameFragment
+import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.better.BetterGameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
-import com.vgleadsheets.features.main.jam.better.BetterJamFragment
+import com.vgleadsheets.features.main.jam.JamFragment
 import com.vgleadsheets.features.main.jams.FindJamDialogFragment
-import com.vgleadsheets.features.main.jams.better.BetterJamListFragment
+import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
-import com.vgleadsheets.features.main.search.better.BetterSearchFragment
+import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
-import com.vgleadsheets.features.main.sheet.better.BetterSongFragment
-import com.vgleadsheets.features.main.songs.better.BetterSongListFragment
+import com.vgleadsheets.features.main.sheet.SongFragment
+import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
-import com.vgleadsheets.features.main.tagsongs.better.BetterTagValueSongFragment
+import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.main.MainActivity
@@ -36,10 +36,10 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterJamListFragmentInjector(): BetterJamListFragment
+    internal abstract fun contributeBetterJamListFragmentInjector(): JamListFragment
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterJamFragmentInjector(): BetterJamFragment
+    internal abstract fun contributeBetterJamFragmentInjector(): JamFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -47,7 +47,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterGameFragmentInjector(): BetterGameFragment
+    internal abstract fun contributeBetterGameFragmentInjector(): GameFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -55,7 +55,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterSearchFragmentInjector(): BetterSearchFragment
+    internal abstract fun contributeBetterSearchFragmentInjector(): SearchFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -79,7 +79,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterTagValueSongListFragmentInjector(): BetterTagValueSongFragment
+    internal abstract fun contributeBetterTagValueSongListFragmentInjector(): TagValueSongFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -87,11 +87,11 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterSongListFragmentInjector(): BetterSongListFragment
+    internal abstract fun contributeBetterSongListFragmentInjector(): SongListFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterSongDetailFragmentInjector(): BetterSongFragment
+    internal abstract fun contributeBetterSongDetailFragmentInjector(): SongFragment
 
     @FragmentScope
     @ContributesAndroidInjector

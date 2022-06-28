@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.composer
+package com.vgleadsheets.features.main.sheet
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
@@ -12,31 +12,27 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, ComposerDetailState>() {
+class SongFragment : BetterListFragment<SongContent, SongState>() {
     @Inject
-    lateinit var viewModelFactory: ComposerDetailViewModel.Factory
+    lateinit var viewModelFactory: SongViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
     lateinit var baseImageUrl: String
 
-    override fun getTrackingScreen() = TrackingScreen.DETAIL_COMPOSER
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_SHEET
 
-    override fun getPerfSpec() = PerfSpec.COMPOSER
+    override fun getPerfSpec() = PerfSpec.SHEET
 
-    override val viewModel: ComposerDetailViewModel by fragmentViewModel()
+    override val viewModel: SongViewModel by fragmentViewModel()
 
-    override fun generateList(state: ComposerDetailState, hudState: HudState) =
+    override fun generateList(state: SongState, hudState: HudState) =
         BetterLists.generateList(
             Config(
                 state,
                 hudState,
                 baseImageUrl,
-                Clicks(
-                    getFragmentRouter(),
-                    tracker,
-                    getDetails()
-                ),
+                viewModel,
                 perfTracker,
                 getPerfSpec(),
                 resources
@@ -45,10 +41,10 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
         )
 
     companion object {
-        const val LOAD_OPERATION = "loadComposer"
+        const val LOAD_OPERATION = "loadSong"
 
-        fun newInstance(idArgs: IdArgs): ComposerDetailFragment {
-            val fragment = ComposerDetailFragment()
+        fun newInstance(idArgs: IdArgs): SongFragment {
+            val fragment = SongFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)

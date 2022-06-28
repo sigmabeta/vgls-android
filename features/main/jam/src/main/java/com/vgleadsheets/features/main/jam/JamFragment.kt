@@ -1,6 +1,7 @@
-package com.vgleadsheets.features.main.composer
+package com.vgleadsheets.features.main.jam
 
 import android.os.Bundle
+import android.view.View
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
@@ -12,21 +13,33 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, ComposerDetailState>() {
+class JamFragment : BetterListFragment<JamContent, JamState>() {
     @Inject
-    lateinit var viewModelFactory: ComposerDetailViewModel.Factory
+    lateinit var viewModelFactory: JamViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
     lateinit var baseImageUrl: String
 
-    override fun getTrackingScreen() = TrackingScreen.DETAIL_COMPOSER
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_JAM
 
-    override fun getPerfSpec() = PerfSpec.COMPOSER
+    override fun getPerfSpec() = PerfSpec.JAM
 
-    override val viewModel: ComposerDetailViewModel by fragmentViewModel()
+    override val viewModel: JamViewModel by fragmentViewModel()
 
-    override fun generateList(state: ComposerDetailState, hudState: HudState) =
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Quit the screen if the jam is deleted.
+        viewModel.asyncSubscribe(
+            JamState::deletion,
+            deliveryMode = uniqueOnly("deletion")
+        ) {
+            activity?.onBackPressed()
+        }
+    }
+
+    override fun generateList(state: JamState, hudState: HudState) =
         BetterLists.generateList(
             Config(
                 state,
@@ -34,8 +47,7 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
                 baseImageUrl,
                 Clicks(
                     getFragmentRouter(),
-                    tracker,
-                    getDetails()
+                    viewModel
                 ),
                 perfTracker,
                 getPerfSpec(),
@@ -45,10 +57,10 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
         )
 
     companion object {
-        const val LOAD_OPERATION = "loadComposer"
+        const val LOAD_OPERATION = "loadJam"
 
-        fun newInstance(idArgs: IdArgs): ComposerDetailFragment {
-            val fragment = ComposerDetailFragment()
+        fun newInstance(idArgs: IdArgs): JamFragment {
+            val fragment = JamFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)

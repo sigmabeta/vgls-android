@@ -9,7 +9,7 @@ interface FragmentRouter {
         fromDetails: String? = null
     )
 
-    fun showSongListForGame(gameId: Long, name: String)
+    fun showSongListForGame(gameId: Long)
 
     @SuppressWarnings("LongParameterList")
     fun showSongViewer(songId: Long)

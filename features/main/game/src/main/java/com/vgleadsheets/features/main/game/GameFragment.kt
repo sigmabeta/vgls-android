@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.composer
+package com.vgleadsheets.features.main.game
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
@@ -12,30 +12,28 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, ComposerDetailState>() {
+class GameFragment : BetterListFragment<Content, GameState>() {
     @Inject
-    lateinit var viewModelFactory: ComposerDetailViewModel.Factory
+    lateinit var viewModelFactory: GameViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
     lateinit var baseImageUrl: String
 
-    override fun getTrackingScreen() = TrackingScreen.DETAIL_COMPOSER
+    override fun getTrackingScreen() = TrackingScreen.DETAIL_GAME
 
-    override fun getPerfSpec() = PerfSpec.COMPOSER
+    override fun getPerfSpec() = PerfSpec.GAME
 
-    override val viewModel: ComposerDetailViewModel by fragmentViewModel()
+    override val viewModel: GameViewModel by fragmentViewModel()
 
-    override fun generateList(state: ComposerDetailState, hudState: HudState) =
+    override fun generateList(state: GameState, hudState: HudState) =
         BetterLists.generateList(
-            Config(
+            GameConfig(
                 state,
                 hudState,
                 baseImageUrl,
                 Clicks(
-                    getFragmentRouter(),
-                    tracker,
-                    getDetails()
+                    getFragmentRouter()
                 ),
                 perfTracker,
                 getPerfSpec(),
@@ -45,10 +43,10 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
         )
 
     companion object {
-        const val LOAD_OPERATION = "loadComposer"
+        const val LOAD_OPERATION = "loadGame"
 
-        fun newInstance(idArgs: IdArgs): ComposerDetailFragment {
-            val fragment = ComposerDetailFragment()
+        fun newInstance(idArgs: IdArgs): GameFragment {
+            val fragment = GameFragment()
 
             val args = Bundle()
             args.putParcelable(MvRx.KEY_ARG, idArgs)
@@ -58,4 +56,3 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
         }
     }
 }
-
