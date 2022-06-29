@@ -6,20 +6,13 @@ import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.MvRx
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.args
-import com.airbnb.mvrx.existingViewModel
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
@@ -29,10 +22,10 @@ import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
-import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class ViewerFragment :
@@ -283,24 +276,6 @@ class ViewerFragment :
 
     private fun showEmptyState() {
         showError("No sheet found.")
-    }
-
-    private fun showSheetDetails() = withState(viewModel) { state ->
-        val songId = state.songId
-        if (songId != null) {
-            getFragmentRouter().showSheetDetail(songId)
-        }
-    }
-
-    private fun showYoutubeSearch() = withState(viewModel) {
-        if (it.song is Success) {
-            val song = it.song()!!
-            val query = "${song.gameName} - ${song.name}"
-
-            val youtubeUrl = getYoutubeSearchUrlForQuery(query)
-
-            getFragmentRouter().goToWebUrl(youtubeUrl)
-        }
     }
 
     companion object {

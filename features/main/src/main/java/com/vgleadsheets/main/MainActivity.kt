@@ -27,14 +27,13 @@ import com.vgleadsheets.features.main.jam.JamFragment
 import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
-import com.vgleadsheets.features.main.search.SearchFragment
-import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
+import com.vgleadsheets.features.main.settings.SettingFragment
 import com.vgleadsheets.features.main.sheet.SongFragment
-import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
+import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.perf.tracking.api.FrameInfo
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -184,7 +183,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showFragmentSimple(
-            BetterSettingFragment.newInstance()
+            SettingFragment.newInstance()
         )
     }
 
@@ -203,7 +202,15 @@ class MainActivity :
         )
     }
 
+    override fun searchYoutube(name: String, gameName: String) {
+        val query = "$gameName - $name"
+        val youtubeUrl = getYoutubeSearchUrlForQuery(query)
+
+        goToWebUrl(youtubeUrl)
+    }
+
     override fun goToWebUrl(url: String) {
+
         val launcher = Intent(Intent.ACTION_VIEW)
         launcher.data = Uri.parse(url)
         startActivity(launcher)

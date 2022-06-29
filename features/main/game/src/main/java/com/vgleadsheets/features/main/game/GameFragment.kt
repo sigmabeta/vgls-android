@@ -12,7 +12,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class GameFragment : BetterListFragment<Content, GameState>() {
+class GameFragment : BetterListFragment<GameContent, GameState>() {
     @Inject
     lateinit var viewModelFactory: GameViewModel.Factory
 
@@ -28,12 +28,13 @@ class GameFragment : BetterListFragment<Content, GameState>() {
 
     override fun generateList(state: GameState, hudState: HudState) =
         BetterLists.generateList(
-            GameConfig(
+            Config(
                 state,
                 hudState,
                 baseImageUrl,
                 Clicks(
-                    getFragmentRouter()
+                    viewModel,
+                    getFragmentRouter(),
                 ),
                 perfTracker,
                 getPerfSpec(),

@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.settings.better
+package com.vgleadsheets.features.main.settings
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
@@ -11,42 +11,16 @@ import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
 import com.vgleadsheets.storage.Storage.Companion.KEY_SHEETS_KEEP_SCREEN_ON
 import timber.log.Timber
 
-class BetterSettingViewModel @AssistedInject constructor(
-    @Assisted initialState: BetterSettingState,
+class SettingViewModel @AssistedInject constructor(
+    @Assisted initialState: SettingState,
     private val storage: Storage,
-) : MvRxViewModel<BetterSettingState>(initialState) {
+) : MvRxViewModel<SettingState>(initialState) {
     init {
         fetchSettings()
     }
 
-    fun onBooleanSettingClicked(
-        id: String,
-        newSetting: Boolean
-    ) {
-        setBooleanSetting(id, newSetting)
-    }
-
-    fun onDropdownSettingSelected(id: String, selectedPosition: Int) {
-        setDropdownSetting(id, selectedPosition)
-    }
-
-    fun onAboutClicked() {
-        router.showAbout()
-    }
-
-    private fun fetchSettings() = withState {
-        storage.getAllSettings()
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        settings = it
-                    )
-                )
-            }
-    }
-
     @Suppress("ThrowingExceptionsWithoutMessageOrCause")
-    private fun setBooleanSetting(settingId: String, newValue: Boolean) {
+    fun setBooleanSetting(settingId: String, newValue: Boolean) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {
             KEY_SHEETS_KEEP_SCREEN_ON -> storage.saveSettingSheetScreenOn(newValue)
@@ -66,7 +40,7 @@ class BetterSettingViewModel @AssistedInject constructor(
     }
 
     @Suppress("ThrowingExceptionsWithoutMessageOrCause")
-    private fun setDropdownSetting(settingId: String, newValue: Int) {
+    fun setDropdownSetting(settingId: String, newValue: Int) {
         // TODO These strings need to live in a common module
         val settingSaveOperation = when (settingId) {
             KEY_DEBUG_NETWORK_ENDPOINT -> storage.saveDebugSelectedNetworkEndpoint(newValue)
@@ -85,19 +59,30 @@ class BetterSettingViewModel @AssistedInject constructor(
             .disposeOnClear()
     }
 
+    private fun fetchSettings() = withState {
+        storage.getAllSettings()
+            .execute {
+                copy(
+                    contentLoad = contentLoad.copy(
+                        settings = it
+                    )
+                )
+            }
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            initialState: BetterSettingState,
-        ): BetterSettingViewModel
+            initialState: SettingState,
+        ): SettingViewModel
     }
 
-    companion object : MvRxViewModelFactory<BetterSettingViewModel, BetterSettingState> {
+    companion object : MvRxViewModelFactory<SettingViewModel, SettingState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: BetterSettingState
-        ): BetterSettingViewModel {
-            val fragment: BetterSettingFragment =
+            state: SettingState
+        ): SettingViewModel {
+            val fragment: SettingFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewModelFactory.create(state)
         }

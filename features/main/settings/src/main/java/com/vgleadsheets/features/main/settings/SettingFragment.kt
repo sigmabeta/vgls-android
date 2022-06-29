@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.settings.better
+package com.vgleadsheets.features.main.settings
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
@@ -9,9 +9,9 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class BetterSettingFragment : BetterListFragment<BetterSettingContent, BetterSettingState>() {
+class SettingFragment : BetterListFragment<SettingContent, SettingState>() {
     @Inject
-    lateinit var viewModelFactory: BetterSettingViewModel.Factory
+    lateinit var viewModelFactory: SettingViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
@@ -21,13 +21,16 @@ class BetterSettingFragment : BetterListFragment<BetterSettingContent, BetterSet
 
     override fun getPerfSpec() = PerfSpec.SETTINGS
 
-    override val viewModel: BetterSettingViewModel by fragmentViewModel()
+    override val viewModel: SettingViewModel by fragmentViewModel()
 
-    override fun generateList(state: BetterSettingState, hudState: HudState) =
+    override fun generateList(state: SettingState, hudState: HudState) =
         BetterLists.generateList(
-            BetterSettingConfig(
+            Config(
                 state,
-                viewModel,
+                Clicks(
+                    viewModel,
+                    getFragmentRouter()
+                ),
                 perfTracker,
                 getPerfSpec(),
                 resources
@@ -38,7 +41,7 @@ class BetterSettingFragment : BetterListFragment<BetterSettingContent, BetterSet
     companion object {
         const val LOAD_OPERATION = "loadComposer"
 
-        fun newInstance() = BetterSettingFragment()
+        fun newInstance() = SettingFragment()
     }
 }
 

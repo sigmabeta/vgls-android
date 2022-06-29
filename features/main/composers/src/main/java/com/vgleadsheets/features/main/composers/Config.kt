@@ -8,12 +8,7 @@ import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
-import com.vgleadsheets.features.main.list.sections.Actions
-import com.vgleadsheets.features.main.list.sections.Content
-import com.vgleadsheets.features.main.list.sections.EmptyState
-import com.vgleadsheets.features.main.list.sections.ErrorState
-import com.vgleadsheets.features.main.list.sections.LoadingState
-import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.features.main.list.sections.*
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.perf.tracking.api.PerfSpec
@@ -52,7 +47,7 @@ internal class Config(
                     it.captionText(),
                     it.photoUrl,
                     R.drawable.placeholder_composer
-                ) { clicks.onComposerClicked(it.id, it.name) }
+                ) { clicks.composer(it.id, it.name) }
             } ?: emptyList()
     }
 

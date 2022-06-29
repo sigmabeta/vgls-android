@@ -60,7 +60,7 @@ interface FragmentRouter {
 
     fun showAbout()
 
-    fun goToWebUrl(url: String)
+    fun searchYoutube(name: String, gameName: String)
 
     fun showLicenseScreen()
 
@@ -72,4 +72,6 @@ interface FragmentRouter {
 
     // TODO We should rename this interface.
     fun restartApp()
+
+    fun goToWebUrl(url: String)
 }

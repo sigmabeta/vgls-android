@@ -15,7 +15,7 @@ import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-class Config(
+internal class Config(
     private val state: TagValueState,
     private val hudState: HudState,
     private val clicks: Clicks,

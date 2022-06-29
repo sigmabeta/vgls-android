@@ -2,9 +2,11 @@ package com.vgleadsheets.features.main.sheet
 
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
-import com.vgleadsheets.model.song.Song
 
-class Clicks(private val router: FragmentRouter) : ListItemClicks {
+class Clicks(
+    private val viewModel: SongViewModel,
+    private val router: FragmentRouter
+) : ListItemClicks {
     fun composer(composerId: Long) {
         router.showSongListForComposer(composerId)
     }
@@ -17,8 +19,8 @@ class Clicks(private val router: FragmentRouter) : ListItemClicks {
         router.showSongViewer(id)
     }
 
-    fun searchYoutube(song: Song) {
-        TODO("Not yet implemented")
+    fun searchYoutube(name: String, gameName: String) {
+        router.searchYoutube(name, gameName)
     }
 
     fun tagValue(id: Long) {

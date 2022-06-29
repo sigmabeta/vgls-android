@@ -1,35 +1,24 @@
-package com.vgleadsheets.features.main.settings.better
+package com.vgleadsheets.features.main.settings
 
 import android.content.res.Resources
-import com.vgleadsheets.components.CheckableListModel
-import com.vgleadsheets.components.DropdownSettingListModel
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.components.SingleTextListModel
+import com.vgleadsheets.components.*
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
-import com.vgleadsheets.features.main.list.sections.Actions
-import com.vgleadsheets.features.main.list.sections.Content
-import com.vgleadsheets.features.main.list.sections.EmptyState
-import com.vgleadsheets.features.main.list.sections.ErrorState
-import com.vgleadsheets.features.main.list.sections.LoadingState
-import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.features.main.settings.BuildConfig
-import com.vgleadsheets.features.main.settings.R
+import com.vgleadsheets.features.main.list.sections.*
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
 import com.vgleadsheets.storage.Setting
 
-class BetterSettingConfig(
-    private val state: BetterSettingState,
-    private val viewModel: BetterSettingViewModel,
+internal class Config(
+    private val state: SettingState,
+    private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterSettingState, BetterSettingClicks> {
+) : BetterListConfig<SettingState, Clicks> {
     private val settingsLoad = state.contentLoad.settings
 
     private val settings = settingsLoad.content()
@@ -68,7 +57,7 @@ class BetterSettingConfig(
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        BetterSettingFragment.LOAD_OPERATION,
+        SettingFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
 
@@ -92,14 +81,14 @@ class BetterSettingConfig(
                         setting.settingId,
                         resources.getString(setting.labelStringId),
                         setting.value
-                    ) { viewModel.onBooleanSettingClicked(setting.settingId, !setting.value) }
+                    ) { clicks.boolean(setting.settingId, !setting.value) }
                     is DropdownSetting -> DropdownSettingListModel(
                         setting.settingId,
                         resources.getString(setting.labelStringId),
                         setting.selectedPosition,
                         setting.valueStringIds.map { resources.getString(it) }
                     ) { selectedPos ->
-                        viewModel.onDropdownSettingSelected(
+                        clicks.dropdownSelection(
                             setting.settingId,
                             selectedPos
                         )
@@ -117,7 +106,7 @@ class BetterSettingConfig(
                 R.string.label_link_about.toLong(),
                 resources.getString(R.string.label_link_about)
             ) {
-                viewModel.onAboutClicked()
+                clicks.about()
             }
         )
 

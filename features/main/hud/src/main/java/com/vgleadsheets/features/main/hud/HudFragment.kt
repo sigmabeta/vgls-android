@@ -5,13 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
@@ -20,31 +14,17 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.fadeIn
-import com.vgleadsheets.animation.fadeOutGone
-import com.vgleadsheets.animation.slideViewDownOffscreen
-import com.vgleadsheets.animation.slideViewOnscreen
-import com.vgleadsheets.animation.slideViewUpOffscreen
+import com.vgleadsheets.animation.*
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
-import com.vgleadsheets.features.main.hud.menu.MenuOptions
-import com.vgleadsheets.features.main.hud.menu.PartPicker
-import com.vgleadsheets.features.main.hud.menu.PerfDisplay
-import com.vgleadsheets.features.main.hud.menu.RefreshIndicator
-import com.vgleadsheets.features.main.hud.menu.SearchIcon
+import com.vgleadsheets.features.main.hud.menu.*
 import com.vgleadsheets.features.main.hud.menu.SearchIcon.setIcon
-import com.vgleadsheets.features.main.hud.menu.Shadow
-import com.vgleadsheets.features.main.hud.menu.SheetOptions
-import com.vgleadsheets.features.main.hud.menu.SongDisplay
-import com.vgleadsheets.features.main.hud.menu.TitleBar
-import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.FrameTimeStats
@@ -308,11 +288,7 @@ class HudFragment : VglsFragment() {
 
         val youtubeSearchClickHandler = {
             if (currentSong != null) {
-                val query = "${currentSong.gameName} - ${currentSong.name} music"
-
-                val youtubeUrl = getYoutubeSearchUrlForQuery(query)
-
-                getFragmentRouter().goToWebUrl(youtubeUrl)
+                getFragmentRouter().searchYoutube(currentSong.name, currentSong.gameName)
             }
         }
 

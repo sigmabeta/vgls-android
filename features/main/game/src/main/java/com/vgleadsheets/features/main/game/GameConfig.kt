@@ -3,30 +3,29 @@ package com.vgleadsheets.features.main.game
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
-import com.vgleadsheets.features.main.list.sections.Actions
-import com.vgleadsheets.features.main.list.sections.Content
-import com.vgleadsheets.features.main.list.sections.EmptyState
-import com.vgleadsheets.features.main.list.sections.ErrorState
-import com.vgleadsheets.features.main.list.sections.LoadingState
-import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.features.main.list.sections.*
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
+<<<<<<<< HEAD:features/main/game/src/main/java/com/vgleadsheets/features/main/game/GameConfig.kt
 class GameConfig(
-    private val state: GameState,
-    private val hudState: HudState,
-    private val baseImageUrl: String,
-    private val clicks: Clicks,
-    private val perfTracker: PerfTracker,
-    private val perfSpec: PerfSpec,
-    private val resources: Resources
+    ========
+
+internal class Config(
+    >>>>>>>> a63471dc (WIP harder):features/main/game/src/main/java/com/vgleadsheets/features/main/game/Config.kt
+private val state: GameState,
+private val hudState: HudState,
+private val baseImageUrl: String,
+private val clicks: Clicks,
+private val perfTracker: PerfTracker,
+private val perfSpec: PerfSpec,
+private val resources: Resources
 ) : BetterListConfig<GameState, Clicks> {
     private val gameLoad = state.contentLoad.game
 

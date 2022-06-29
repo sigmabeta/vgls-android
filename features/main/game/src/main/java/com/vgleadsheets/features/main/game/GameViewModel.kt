@@ -30,10 +30,10 @@ class GameViewModel @AssistedInject constructor(
 
     private fun fetchSongs() = withState {
         repository.getSongsForGame(it.gameId)
-            .execute {
+            .execute { songs ->
                 copy(
                     contentLoad = contentLoad.copy(
-                        songs = it
+                        songs = songs
                     )
                 )
             }

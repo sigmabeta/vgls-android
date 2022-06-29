@@ -12,7 +12,7 @@ import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
-import com.vgleadsheets.features.main.settings.better.BetterSettingFragment
+import com.vgleadsheets.features.main.settings.SettingFragment
 import com.vgleadsheets.features.main.sheet.SongFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
 import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
@@ -59,7 +59,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterSettingsFragmentInjector(): BetterSettingFragment
+    internal abstract fun contributeBetterSettingsFragmentInjector(): SettingFragment
 
     @FragmentScope
     @ContributesAndroidInjector
