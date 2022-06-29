@@ -33,7 +33,7 @@ class TagValueSongFragment :
                 state,
                 hudState,
                 baseImageUrl,
-                viewModel,
+                Clicks(getFragmentRouter()),
                 perfTracker,
                 getPerfSpec(),
                 resources

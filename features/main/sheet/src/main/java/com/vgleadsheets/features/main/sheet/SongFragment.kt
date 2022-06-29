@@ -32,7 +32,7 @@ class SongFragment : BetterListFragment<SongContent, SongState>() {
                 state,
                 hudState,
                 baseImageUrl,
-                viewModel,
+                Clicks(getFragmentRouter()),
                 perfTracker,
                 getPerfSpec(),
                 resources
