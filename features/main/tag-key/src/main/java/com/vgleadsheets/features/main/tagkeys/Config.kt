@@ -1,8 +1,7 @@
-package com.vgleadsheets.features.main.tagkeys.better
+package com.vgleadsheets.features.main.tagkeys
 
 import android.content.res.Resources
 import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
@@ -14,21 +13,17 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.features.main.tagkeys.BuildConfig
-import com.vgleadsheets.features.main.tagkeys.R
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-class BetterTagKeyListConfig(
-    private val state: BetterTagKeyListState,
-    private val hudState: HudState,
-    private val viewModel: BetterTagKeyListViewModel,
-    private val clicks: BetterTagKeyListClicks,
+class Config(
+    private val state: TagKeyListState,
+    private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterTagKeyListState, BetterTagKeyListClicks> {
+) : BetterListConfig<TagKeyListState, Clicks> {
     override val titleConfig = Title.Config(
         resources.getString(R.string.app_name),
         resources.getString(R.string.label_by_tag),
@@ -51,7 +46,7 @@ class BetterTagKeyListConfig(
                     it.id,
                     it.name,
                     it.captionText()
-                ) { viewModel.onTagKeyClicked(it.id, it.name) }
+                ) { clicks.tagKey(it.id) }
             } ?: emptyList()
     }
 
@@ -64,7 +59,7 @@ class BetterTagKeyListConfig(
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        BetterTagKeyListFragment.LOAD_OPERATION,
+        TagKeyListFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
 

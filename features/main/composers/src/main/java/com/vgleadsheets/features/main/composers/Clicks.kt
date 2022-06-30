@@ -10,7 +10,6 @@ internal class Clicks(
 ) : ListItemClicks {
     fun composer(
         id: Long,
-        name: String,
     ) {
 /*        tracker.logComposerClick(id, trackingDetails)*/
 

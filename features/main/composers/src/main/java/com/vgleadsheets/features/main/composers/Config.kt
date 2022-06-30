@@ -47,7 +47,7 @@ internal class Config(
                     it.captionText(),
                     it.photoUrl,
                     R.drawable.placeholder_composer
-                ) { clicks.composer(it.id, it.name) }
+                ) { clicks.composer(it.id) }
             } ?: emptyList()
     }
 

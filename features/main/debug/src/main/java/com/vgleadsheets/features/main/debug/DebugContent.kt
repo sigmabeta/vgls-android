@@ -9,7 +9,7 @@ import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.storage.Setting
 
-data class BetterDebugContent(
+data class DebugContent(
     val settings: Async<List<Setting>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException

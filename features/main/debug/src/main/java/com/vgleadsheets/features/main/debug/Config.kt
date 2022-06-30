@@ -13,12 +13,12 @@ import com.vgleadsheets.storage.DropdownSetting
 import com.vgleadsheets.storage.Setting
 
 internal class Config(
-    private val state: BetterDebugState,
+    private val state: DebugState,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterDebugState, Clicks> {
+) : BetterListConfig<DebugState, Clicks> {
     private val settingsLoad = state.contentLoad.settings
 
     private val settings = settingsLoad.content()
@@ -58,7 +58,7 @@ internal class Config(
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        BetterDebugFragment.LOAD_OPERATION,
+        DebugFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
 

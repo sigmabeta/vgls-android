@@ -1,9 +1,7 @@
-package com.vgleadsheets.features.main.games.better
+package com.vgleadsheets.features.main.games
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.features.main.games.BuildConfig
-import com.vgleadsheets.features.main.games.R
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
@@ -21,15 +19,14 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-class BetterGameListConfig(
-    private val state: BetterGameListState,
+class Config(
+    private val state: GameListState,
     private val hudState: HudState,
-    private val viewModel: BetterGameListViewModel,
-    private val clicks: BetterGameListClicks,
+    private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<BetterGameListState, BetterGameListClicks> {
+) : BetterListConfig<GameListState, Clicks> {
     override val titleConfig = Title.Config(
         resources.getString(R.string.app_name),
         resources.getString(R.string.label_by_game),
@@ -55,7 +52,7 @@ class BetterGameListConfig(
                     it.captionText(),
                     it.photoUrl,
                     R.drawable.placeholder_game
-                ) { viewModel.onGameClicked(it.id, it.name) }
+                ) { clicks.game(it.id) }
             } ?: emptyList()
     }
 
@@ -68,7 +65,7 @@ class BetterGameListConfig(
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        BetterGameListFragment.LOAD_OPERATION,
+        GameListFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
 

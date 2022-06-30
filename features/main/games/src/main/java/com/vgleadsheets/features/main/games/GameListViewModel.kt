@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.games.better
+package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
@@ -8,10 +8,10 @@ import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 
-class BetterGameListViewModel @AssistedInject constructor(
-    @Assisted initialState: BetterGameListState,
+class GameListViewModel @AssistedInject constructor(
+    @Assisted initialState: GameListState,
     private val repository: Repository,
-) : MvRxViewModel<BetterGameListState>(initialState) {
+) : MvRxViewModel<GameListState>(initialState) {
     init {
         fetchGames()
     }
@@ -19,28 +19,23 @@ class BetterGameListViewModel @AssistedInject constructor(
     private fun fetchGames() {
         repository.getGames()
             .execute {
-                copy(contentLoad = BetterGameListContent(it))
+                copy(contentLoad = GameListContent(it))
             }
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun onGameClicked(dataId: Long, name: String) {
-        router.showSongListForGame(dataId, name)
     }
 
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            initialState: BetterGameListState,
-        ): BetterGameListViewModel
+            initialState: GameListState,
+        ): GameListViewModel
     }
 
-    companion object : MvRxViewModelFactory<BetterGameListViewModel, BetterGameListState> {
+    companion object : MvRxViewModelFactory<GameListViewModel, GameListState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: BetterGameListState
-        ): BetterGameListViewModel {
-            val fragment: BetterGameListFragment =
+            state: GameListState
+        ): GameListViewModel {
+            val fragment: GameListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewModelFactory.create(state)
         }

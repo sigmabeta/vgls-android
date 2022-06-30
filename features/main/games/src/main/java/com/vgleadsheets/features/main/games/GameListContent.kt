@@ -1,10 +1,10 @@
-package com.vgleadsheets.features.main.games.better
+package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.list.SimpleListContent
 import com.vgleadsheets.model.game.Game
 
-data class BetterGameListContent(
+data class GameListContent(
     val gamesLoad: Async<List<Game>> = Uninitialized
 ) : SimpleListContent<Game>(gamesLoad)

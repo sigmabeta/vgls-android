@@ -4,11 +4,11 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.list.BetterCompositeState
 
-data class BetterDebugState(
+data class DebugState(
     val changed: Boolean = false,
     val sheetDeletion: Async<Unit> = Uninitialized,
     val jamDeletion: Async<Unit> = Uninitialized,
-    override val contentLoad: BetterDebugContent = BetterDebugContent(
+    override val contentLoad: DebugContent = DebugContent(
         Uninitialized
     ),
-) : BetterCompositeState<BetterDebugContent>
+) : BetterCompositeState<DebugContent>

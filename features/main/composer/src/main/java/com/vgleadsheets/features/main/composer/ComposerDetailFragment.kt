@@ -34,8 +34,6 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
                 baseImageUrl,
                 Clicks(
                     getFragmentRouter(),
-                    tracker,
-                    getDetails()
                 ),
                 perfTracker,
                 getPerfSpec(),

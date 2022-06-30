@@ -3,9 +3,9 @@ package com.vgleadsheets.di
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
-import com.vgleadsheets.features.main.debug.BetterDebugFragment
+import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.game.GameFragment
-import com.vgleadsheets.features.main.games.better.BetterGameListFragment
+import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.jam.JamFragment
 import com.vgleadsheets.features.main.jams.FindJamDialogFragment
@@ -15,7 +15,7 @@ import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingFragment
 import com.vgleadsheets.features.main.sheet.SongFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
-import com.vgleadsheets.features.main.tagkeys.better.BetterTagKeyListFragment
+import com.vgleadsheets.features.main.tagkeys.TagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
@@ -32,7 +32,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributGBetterGameListFragmentInjector(): BetterGameListFragment
+    internal abstract fun contributGBetterGameListFragmentInjector(): GameListFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -75,7 +75,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterTagKeyFragmentInjector(): BetterTagKeyListFragment
+    internal abstract fun contributeBetterTagKeyFragmentInjector(): TagKeyListFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -99,7 +99,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeBetterDebugFragmentInjector(): BetterDebugFragment
+    internal abstract fun contributeBetterDebugFragmentInjector(): DebugFragment
 
     @FragmentScope
     @ContributesAndroidInjector

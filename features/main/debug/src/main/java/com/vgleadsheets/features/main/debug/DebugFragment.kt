@@ -11,7 +11,7 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class BetterDebugFragment : BetterListFragment<BetterDebugContent, BetterDebugState>() {
+class DebugFragment : BetterListFragment<DebugContent, DebugState>() {
     @Inject
     lateinit var viewModelFactory: DebugViewModel.Factory
 
@@ -25,7 +25,7 @@ class BetterDebugFragment : BetterListFragment<BetterDebugContent, BetterDebugSt
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.selectSubscribe(
-            BetterDebugState::changed,
+            DebugState::changed,
             deliveryMode = uniqueOnly("changed")
         ) { changed ->
             if (changed) {
@@ -34,25 +34,25 @@ class BetterDebugFragment : BetterListFragment<BetterDebugContent, BetterDebugSt
         }
 
         viewModel.asyncSubscribe(
-            BetterDebugState::jamDeletion,
+            DebugState::jamDeletion,
             deliveryMode = uniqueOnly("jamDeletion")
         ) {
             showSnackbar("Jams cleared.")
         }
 
         viewModel.asyncSubscribe(
-            BetterDebugState::sheetDeletion,
+            DebugState::sheetDeletion,
             deliveryMode = uniqueOnly("sheetDeletion")
         ) {
             showSnackbar("Sheets cleared.")
         }
     }
 
-    override fun generateList(state: BetterDebugState, hudState: HudState) =
+    override fun generateList(state: DebugState, hudState: HudState) =
         BetterLists.generateList(
             Config(
                 state,
-                viewModel,
+                Clicks(viewModel),
                 perfTracker,
                 getPerfSpec(),
                 resources
@@ -71,7 +71,7 @@ class BetterDebugFragment : BetterListFragment<BetterDebugContent, BetterDebugSt
     companion object {
         const val LOAD_OPERATION = "loadDebug"
 
-        fun newInstance() = BetterDebugFragment()
+        fun newInstance() = DebugFragment()
     }
 }
 

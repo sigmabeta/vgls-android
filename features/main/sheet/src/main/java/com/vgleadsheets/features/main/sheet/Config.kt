@@ -111,7 +111,7 @@ class Config(
             CtaListModel(
                 R.drawable.ic_play_circle_filled_24,
                 resources.getString(R.string.cta_youtube)
-            ) { clicks.searchYoutube(song) }
+            ) { clicks.searchYoutube(song.name, song.gameName) }
         )
     }
 

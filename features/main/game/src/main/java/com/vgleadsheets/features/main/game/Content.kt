@@ -7,7 +7,7 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
 
 
-data class GameContent(
+data class Content(
     val game: Async<Game> = Uninitialized,
     val songs: Async<List<Song>> = Uninitialized
 ) : ListContent {

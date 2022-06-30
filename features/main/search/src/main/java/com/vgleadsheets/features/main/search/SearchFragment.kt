@@ -53,11 +53,12 @@ class SearchFragment : BetterListFragment<SearchContent, SearchState>() {
                 state,
                 hudState,
                 baseImageUrl,
-                Clicks(getFragmentRouter()),
+                Clicks(
+                    getFragmentRouter(),
+                    hudViewModel
+                ),
                 resources
-            ) {
-                hudViewModel.hideSearch()
-            },
+            ),
             resources
         )
 

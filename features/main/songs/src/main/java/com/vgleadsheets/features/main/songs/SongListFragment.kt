@@ -30,7 +30,7 @@ class SongListFragment :
                 state,
                 hudState,
                 baseImageUrl,
-                viewModel,
+                Clicks(getFragmentRouter()),
                 perfTracker,
                 getPerfSpec(),
                 resources

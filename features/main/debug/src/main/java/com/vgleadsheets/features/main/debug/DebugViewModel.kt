@@ -5,7 +5,6 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
@@ -15,10 +14,10 @@ import io.reactivex.Completable
 import timber.log.Timber
 
 class DebugViewModel @AssistedInject constructor(
-    @Assisted initialState: BetterDebugState,
+    @Assisted initialState: DebugState,
     private val repository: Repository,
     private val storage: Storage,
-) : MvRxViewModel<BetterDebugState>(initialState) {
+) : MvRxViewModel<DebugState>(initialState) {
     init {
         fetchSettings()
     }
@@ -116,16 +115,16 @@ class DebugViewModel @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            initialState: BetterDebugState,
+            initialState: DebugState,
         ): DebugViewModel
     }
 
-    companion object : MvRxViewModelFactory<DebugViewModel, BetterDebugState> {
+    companion object : MvRxViewModelFactory<DebugViewModel, DebugState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: BetterDebugState
+            state: DebugState
         ): DebugViewModel {
-            val fragment: BetterDebugFragment =
+            val fragment: DebugFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewModelFactory.create(state)
         }

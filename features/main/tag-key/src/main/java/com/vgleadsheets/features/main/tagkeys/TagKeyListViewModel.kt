@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tagkeys.better
+package com.vgleadsheets.features.main.tagkeys
 
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
@@ -8,10 +8,10 @@ import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
 
-class BetterTagKeyListViewModel @AssistedInject constructor(
-    @Assisted initialState: BetterTagKeyListState,
+class TagKeyListViewModel @AssistedInject constructor(
+    @Assisted initialState: TagKeyListState,
     private val repository: Repository,
-) : MvRxViewModel<BetterTagKeyListState>(initialState) {
+) : MvRxViewModel<TagKeyListState>(initialState) {
     init {
         fetchTagKeys()
     }
@@ -19,28 +19,23 @@ class BetterTagKeyListViewModel @AssistedInject constructor(
     private fun fetchTagKeys() {
         repository.getAllTagKeys()
             .execute {
-                copy(contentLoad = BetterTagKeyListContent(it))
+                copy(contentLoad = TagKeyListContent(it))
             }
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun onTagKeyClicked(dataId: Long, name: String) {
-        router.showValueListForTagKey(dataId)
     }
 
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            initialState: BetterTagKeyListState,
-        ): BetterTagKeyListViewModel
+            initialState: TagKeyListState,
+        ): TagKeyListViewModel
     }
 
-    companion object : MvRxViewModelFactory<BetterTagKeyListViewModel, BetterTagKeyListState> {
+    companion object : MvRxViewModelFactory<TagKeyListViewModel, TagKeyListState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: BetterTagKeyListState
-        ): BetterTagKeyListViewModel {
-            val fragment: BetterTagKeyListFragment =
+            state: TagKeyListState
+        ): TagKeyListViewModel {
+            val fragment: TagKeyListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewModelFactory.create(state)
         }

@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tagkeys.better
+package com.vgleadsheets.features.main.tagkeys
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
@@ -8,24 +8,22 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class BetterTagKeyListFragment :
-    BetterListFragment<BetterTagKeyListContent, BetterTagKeyListState>() {
+class TagKeyListFragment :
+    BetterListFragment<TagKeyListContent, TagKeyListState>() {
     @Inject
-    lateinit var viewModelFactory: BetterTagKeyListViewModel.Factory
+    lateinit var viewModelFactory: TagKeyListViewModel.Factory
 
     override fun getTrackingScreen() = TrackingScreen.LIST_TAG_KEY
 
     override fun getPerfSpec() = PerfSpec.TAG_KEY
 
-    override val viewModel: BetterTagKeyListViewModel by fragmentViewModel()
+    override val viewModel: TagKeyListViewModel by fragmentViewModel()
 
-    override fun generateList(state: BetterTagKeyListState, hudState: HudState) =
+    override fun generateList(state: TagKeyListState, hudState: HudState) =
         BetterLists.generateList(
-            BetterTagKeyListConfig(
+            Config(
                 state,
-                hudState,
-                viewModel,
-                BetterTagKeyListClicks,
+                Clicks(getFragmentRouter()),
                 perfTracker,
                 getPerfSpec(),
                 resources
@@ -36,6 +34,6 @@ class BetterTagKeyListFragment :
     companion object {
         const val LOAD_OPERATION = "loadTagKeys"
 
-        fun newInstance() = BetterTagKeyListFragment()
+        fun newInstance() = TagKeyListFragment()
     }
 }
