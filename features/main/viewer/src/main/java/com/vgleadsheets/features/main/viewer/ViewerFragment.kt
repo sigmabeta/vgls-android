@@ -166,12 +166,12 @@ class ViewerFragment :
 
         songId = viewerState.songId
 
-        when (viewerState.song) {
+        when (val song = viewerState.song) {
             is Fail -> showError(
-                viewerState.song.error.message
-                    ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
+                song.error.message ?: song.error::class.simpleName ?: "Unknown Error"
             )
             is Success -> showSong(viewerState.song(), selectedPart)
+            Uninitialized -> Unit
             else -> {
                 showError("No song found.")
             }

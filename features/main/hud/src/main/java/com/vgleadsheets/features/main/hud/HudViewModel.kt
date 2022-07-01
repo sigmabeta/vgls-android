@@ -141,6 +141,7 @@ class HudViewModel @AssistedInject constructor(
                 songs.filteredForVocals(selectedPart.apiId)
             }
             .map { it.random() }
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { song ->
                     if (song == null) {
@@ -149,21 +150,18 @@ class HudViewModel @AssistedInject constructor(
                     }
 
                     // TODO In one-shot stream
-                    /*
-                    val transposition = state.selectedPart.apiId
+                    /*val transposition = state.selectedPart.apiId
 
                     tracker.logRandomSongView(
                         song.name,
                         song.gameName,
                         transposition
-                    )
-
-                    getFragmentRouter().showSongViewer(
-                        song.id
                     )*/
+
+                    router.showSongViewer(song.id)
                 },
                 {
-
+                    // showError("Failed to get a random track.")
                 }
             ).disposeOnClear()
     }
@@ -239,7 +237,7 @@ class HudViewModel @AssistedInject constructor(
 
     private fun showInitialScreen() {
         storage.getSavedTopLevelScreen()
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { savedId ->
                     val selection = savedId.ifEmpty { HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT }
