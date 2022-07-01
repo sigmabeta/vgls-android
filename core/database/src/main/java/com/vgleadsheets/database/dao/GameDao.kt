@@ -30,8 +30,7 @@ interface GameDao {
     @Query("DELETE FROM game")
     fun nukeTable()
 
-    @Suppress("LongParameterList")
-    @Transaction
+        @Transaction
     fun refreshTable(
         gameEntities: List<GameEntity>,
         songDao: SongDao,

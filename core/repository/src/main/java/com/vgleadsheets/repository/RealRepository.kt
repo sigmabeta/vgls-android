@@ -33,7 +33,6 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 import org.threeten.bp.Duration
 
-@Suppress("TooManyFunctions")
 class RealRepository constructor(
     private val vglsApi: VglsApi,
     private val threeTen: ThreeTenTime,
@@ -491,8 +490,7 @@ class RealRepository constructor(
             )
         }
 
-    @Suppress("LongParameterList")
-    private fun processGame(
+        private fun processGame(
         apiGame: VglsApiGame,
         composerEntities: MutableMap<Long, ComposerEntity>,
         songComposerJoins: ArrayList<SongComposerJoin>,
@@ -515,8 +513,7 @@ class RealRepository constructor(
         }
     }
 
-    @Suppress("LongParameterList")
-    private fun processSong(
+        private fun processSong(
         apiSong: ApiSong,
         apiGame: VglsApiGame,
         composerEntities: MutableMap<Long, ComposerEntity>,
@@ -591,8 +588,7 @@ class RealRepository constructor(
         }
     }
 
-    @Suppress("LongParameterList")
-    private fun joinSongToTagValue(
+        private fun joinSongToTagValue(
         key: String,
         value: String,
         tagValueEntities: HashMap<String, TagValueEntity>,

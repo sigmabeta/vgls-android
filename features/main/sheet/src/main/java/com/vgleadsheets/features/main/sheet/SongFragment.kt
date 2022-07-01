@@ -33,7 +33,6 @@ class SongFragment : BetterListFragment<SongContent, SongState>() {
                 hudState,
                 baseImageUrl,
                 Clicks(
-                    viewModel,
                     getFragmentRouter()
                 ),
                 perfTracker,

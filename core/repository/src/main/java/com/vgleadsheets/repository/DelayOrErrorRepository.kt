@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
+@Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
     val realRepository: RealRepository
 ) : Repository {

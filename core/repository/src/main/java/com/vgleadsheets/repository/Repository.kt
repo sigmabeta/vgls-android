@@ -14,7 +14,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
-@Suppress("TooManyFunctions")
 interface Repository {
     fun checkShouldAutoUpdate(): Single<Boolean>
     fun refresh(): Single<ApiDigest>

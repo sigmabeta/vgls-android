@@ -2,7 +2,6 @@ package com.vgleadsheets
 
 import com.vgleadsheets.tracking.TrackingScreen
 
-@Suppress("TooManyFunctions")
 interface FragmentRouter {
     fun showGameList(
         fromScreen: TrackingScreen? = null,

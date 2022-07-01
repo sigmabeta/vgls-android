@@ -34,7 +34,6 @@ import javax.inject.Inject
 import javax.inject.Named
 import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 class ViewerFragment :
     VglsFragment(),
     SheetListModel.ImageListener {

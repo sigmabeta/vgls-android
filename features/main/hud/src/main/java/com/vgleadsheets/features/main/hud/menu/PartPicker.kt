@@ -6,7 +6,6 @@ import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.parts.Part
 
-@Suppress("LongParameterList")
 object PartPicker {
     fun getListModels(
         expanded: Boolean,

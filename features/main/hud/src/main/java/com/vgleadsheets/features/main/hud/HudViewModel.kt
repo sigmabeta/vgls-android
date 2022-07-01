@@ -23,7 +23,6 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
     @Assisted private val router: FragmentRouter,

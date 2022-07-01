@@ -2,7 +2,6 @@ package com.vgleadsheets.storage
 
 import io.reactivex.Single
 
-@Suppress("TooManyFunctions")
 interface Storage {
     // Loading Defaults
     fun getSavedTopLevelScreen(): Single<String>

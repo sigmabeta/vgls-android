@@ -47,7 +47,6 @@ import com.vgleadsheets.model.time.TimeEntity
     ],
     version = 8
 )
-@Suppress("TooManyFunctions")
 abstract class VglsDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao
     abstract fun songDao(): SongDao

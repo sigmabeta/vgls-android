@@ -9,7 +9,6 @@ import com.vgleadsheets.storage.Storage.Companion.KEY_SELECTED_TOP_LEVEL
 import com.vgleadsheets.storage.Storage.Companion.KEY_SHEETS_KEEP_SCREEN_ON
 import io.reactivex.Single
 
-@Suppress("TooManyFunctions")
 class SimpleStorage(val simpleStore: SimpleStore) : Storage {
     override fun getSavedTopLevelScreen() =
         Single.fromFuture(simpleStore.getString(KEY_SELECTED_TOP_LEVEL))

@@ -6,8 +6,7 @@ import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.song.Song
 
 object SheetOptions {
-    @Suppress("LongParameterList")
-    fun getListModels(
+        fun getListModels(
         shouldShow: Boolean,
         currentSong: Song?,
         onDetailsClick: () -> Unit,

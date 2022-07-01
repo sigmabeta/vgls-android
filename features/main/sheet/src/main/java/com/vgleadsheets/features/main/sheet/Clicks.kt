@@ -4,7 +4,6 @@ import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
 
 class Clicks(
-    private val viewModel: SongViewModel,
     private val router: FragmentRouter
 ) : ListItemClicks {
     fun composer(composerId: Long) {

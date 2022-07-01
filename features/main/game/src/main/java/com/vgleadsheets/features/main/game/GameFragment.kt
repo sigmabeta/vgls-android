@@ -33,7 +33,6 @@ class GameFragment : BetterListFragment<Content, GameState>() {
                 hudState,
                 baseImageUrl,
                 Clicks(
-                    viewModel,
                     getFragmentRouter(),
                 ),
                 perfTracker,

@@ -20,7 +20,6 @@ import com.vgleadsheets.perf.tracking.api.PerfTracker
 
 class Config(
     private val state: JamListState,
-    private val hudState: HudState,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,

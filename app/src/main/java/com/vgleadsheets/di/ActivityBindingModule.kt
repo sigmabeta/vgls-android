@@ -24,7 +24,6 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-@Suppress("TooManyFunctions")
 internal abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector

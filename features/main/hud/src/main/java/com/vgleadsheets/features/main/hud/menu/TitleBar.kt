@@ -6,7 +6,6 @@ import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 
-@Suppress("LongParameterList")
 object TitleBar {
     fun getListModels(
         selectedPart: PartSelectorOption,

@@ -23,7 +23,6 @@ class JamListFragment :
         BetterLists.generateList(
             Config(
                 state,
-                hudState,
                 Clicks(
                     getFragmentRouter()
                 ),

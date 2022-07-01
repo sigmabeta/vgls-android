@@ -21,7 +21,6 @@ import javax.inject.Inject
 import javax.inject.Named
 import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {
     @Inject
     lateinit var tracker: Tracker

@@ -26,7 +26,6 @@ import javax.inject.Inject
 import retrofit2.HttpException
 import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 class FindJamDialogFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var tracker: Tracker
