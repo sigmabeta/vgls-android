@@ -5,10 +5,10 @@ import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
@@ -18,13 +18,14 @@ import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
+    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
     private val storage: Storage,
     private val perfTracker: PerfTracker
@@ -42,25 +43,10 @@ class HudViewModel @AssistedInject constructor(
 
     fun dontAlwaysShowBack() = setState { copy(alwaysShowBack = false) }
 
-    fun onMenuClick() = withState {
-        when (it.mode) {
-            HudMode.PERF -> when (it.perfViewState.viewMode) {
-                PerfViewMode.REGULAR -> backToMenu()
-                else -> backoPerfRegular()
-            }
-            HudMode.REGULAR -> showMenu()
-            else -> hideMenus()
-        }
-    }
-
     fun onChangePartClick() = withState {
         if (it.mode != HudMode.PARTS) {
             showParts()
         }
-    }
-
-    fun onMenuAction() {
-        hideMenus()
     }
 
     fun setSelectedSong(song: Song) = setState {
@@ -74,6 +60,14 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun onPartSelect(apiId: String) = setState {
+        storage.saveSelectedPart(apiId)
+            .subscribe(
+                {},
+                {
+                    // showError("Failed to save part selection: ${it.message}")
+                }
+            ).disposeOnClear()
+
         copy(
             selectedPart = Part.valueOf(apiId),
             mode = HudMode.REGULAR
@@ -89,7 +83,7 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    fun searchClick() = withState { state ->
+    fun showSearch() = withState { state ->
         if (state.mode != HudMode.SEARCH) {
             setState { copy(mode = HudMode.SEARCH) }
         }
@@ -104,12 +98,6 @@ class HudViewModel @AssistedInject constructor(
     fun hideSearch() = withState { state ->
         if (state.mode == HudMode.SEARCH) {
             setState { copy(mode = HudMode.REGULAR) }
-        }
-    }
-
-    fun exitSearch() = withState { state ->
-        if (state.mode == HudMode.SEARCH) {
-            setState { copy(mode = HudMode.REGULAR, searchQuery = null) }
         }
     }
 
@@ -144,7 +132,7 @@ class HudViewModel @AssistedInject constructor(
         stopTimer()
     }
 
-    fun onRandomSelectClick(selectedPart: Part) {
+    fun onRandomSelectClick(selectedPart: Part) = withState { _ ->
         repository
             .getAllSongs()
             .firstOrError()
@@ -152,73 +140,146 @@ class HudViewModel @AssistedInject constructor(
                 songs.filteredForVocals(selectedPart.apiId)
             }
             .map { it.random() }
-            .execute {
-                copy(random = it)
-            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { song ->
+                    if (song == null) {
+                        // showError("Failed to get a random track.")
+                        return@subscribe
+                    }
+
+                    // TODO In one-shot stream
+                    /*val transposition = state.selectedPart.apiId
+
+                    tracker.logRandomSongView(
+                        song.name,
+                        song.gameName,
+                        transposition
+                    )*/
+
+                    router.showSongViewer(song.id)
+                },
+                {
+                    // showError("Failed to get a random track.")
+                }
+            ).disposeOnClear()
     }
 
-    fun clearRandom() = setState {
-        copy(random = Uninitialized)
-    }
-
-    fun clearDigestError() = setState {
-        copy(digest = Uninitialized)
-    }
-
-    private fun hideMenus() = setState {
-        copy(
-            mode = HudMode.REGULAR,
-            perfViewState = perfViewState.copy(viewMode = PerfViewMode.REGULAR)
-        )
-    }
-
-    private fun showMenu() = setState {
+    fun toMenu() = setState {
         copy(
             mode = HudMode.MENU
         )
     }
 
-    private fun showParts() = setState {
+    fun showParts() = setState {
         copy(
             mode = HudMode.PARTS
         )
     }
 
-    private fun backoPerfRegular() = setState {
+    fun toRegularMode() = setState {
         copy(
-            perfViewState = perfViewState.copy(viewMode = PerfViewMode.REGULAR)
+            mode = HudMode.REGULAR,
+            searchQuery = null,
+            perfViewState = perfViewState.copy(
+                viewMode = PerfViewMode.REGULAR
+            )
         )
     }
 
-    private fun backToMenu() = setState {
-        copy(
-            mode = HudMode.MENU
-        )
+    fun setPerfSelectedScreen(screen: PerfSpec) {
+        setState {
+            perfTracker.requestUpdates()
+
+            val newPerfViewState = perfViewState.copy(
+                selectedScreen = screen
+            )
+            copy(
+                perfViewState = newPerfViewState
+            )
+        }
+    }
+
+    fun setPerfViewMode(perfViewMode: PerfViewMode) {
+        setState {
+            perfTracker.requestUpdates()
+
+            val newPerfViewState = perfViewState.copy(
+                viewMode = perfViewMode
+            )
+            copy(
+                perfViewState = newPerfViewState
+            )
+        }
+    }
+
+    fun toPerf() {
+        perfTracker.requestUpdates()
+        setState {
+            copy(
+                mode = HudMode.PERF,
+                perfViewState = perfViewState.copy(
+                    viewMode = PerfViewMode.REGULAR
+                )
+            )
+        }
+    }
+
+    fun saveTopLevelScreen(screenId: String) {
+        val shouldSave = screenId != HudFragment.MODAL_SCREEN_ID_DEBUG &&
+                screenId != HudFragment.MODAL_SCREEN_ID_SETTINGS
+
+        if (shouldSave) {
+            storage.saveTopLevelScreen(screenId)
+        }
+    }
+
+    private fun showInitialScreen() {
+        storage.getSavedTopLevelScreen()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { savedId ->
+                    val selection = savedId.ifEmpty { HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT }
+
+                    Timber.v("Showing screen: $selection")
+                    showScreen(selection)
+                },
+                {
+                    Timber.w("No screen ID found, going with default.")
+                    showScreen(HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT)
+                }
+            ).disposeOnClear()
+    }
+
+    private fun showScreen(topLevelScreenIdDefault: String) {
+        when (topLevelScreenIdDefault) {
+            HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList()
+            HudFragment.TOP_LEVEL_SCREEN_ID_GAME -> router.showGameList()
+            HudFragment.TOP_LEVEL_SCREEN_ID_JAM -> router.showJams()
+            HudFragment.TOP_LEVEL_SCREEN_ID_SONG -> router.showAllSheets()
+            HudFragment.TOP_LEVEL_SCREEN_ID_TAG -> router.showTagList()
+            else -> router.showGameList()
+        }
     }
 
     private fun checkSavedPartSelection() = withState {
-        storage.getSavedSelectedPart().subscribe(
-            {
-                val selection = it.ifEmpty {
-                    "C"
-                }
+        storage.getSavedSelectedPart()
+            .subscribe(
+                { partId ->
+                    val selection = partId.ifEmpty { "C" }
 
-                setState {
-                    copy(
-                        selectedPart = Part.valueOf(selection),
-                        readyToShowScreens = true
-                    )
+                    setState {
+                        copy(
+                            selectedPart = Part.valueOf(selection),
+                        )
+                    }
+                    showInitialScreen()
+                },
+                {
+                    Timber.w("No part selection found, going with default.")
+                    showInitialScreen()
                 }
-            },
-            {
-                Timber.w("No part selection found, going with default.")
-                setState {
-                    copy(
-                        readyToShowScreens = true
-                    )
-                }
-            }
-        ).disposeOnClear()
+            ).disposeOnClear()
     }
 
     private fun checkLastUpdateTime() = repository.getLastUpdateTime()
@@ -270,42 +331,12 @@ class HudViewModel @AssistedInject constructor(
         timer?.dispose()
     }
 
-    fun setPerfSelectedScreen(screen: PerfSpec) {
-        setState {
-            perfTracker.requestUpdates()
-
-            val newPerfViewState = perfViewState.copy(
-                selectedScreen = screen
-            )
-            copy(
-                perfViewState = newPerfViewState
-            )
-        }
-    }
-
-    fun setPerfViewMode(perfViewMode: PerfViewMode) {
-        setState {
-            perfTracker.requestUpdates()
-
-            val newPerfViewState = perfViewState.copy(
-                viewMode = perfViewMode
-            )
-            copy(
-                perfViewState = newPerfViewState
-            )
-        }
-    }
-
-    fun onPerfClick() {
-        perfTracker.requestUpdates()
-        setState {
-            copy(mode = HudMode.PERF)
-        }
-    }
-
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: HudState): HudViewModel
+        fun create(
+            initialState: HudState,
+            router: FragmentRouter
+        ): HudViewModel
     }
 
     interface HudViewModelFactoryProvider {
@@ -319,7 +350,7 @@ class HudViewModel @AssistedInject constructor(
             val activity =
                 (viewModelContext as ActivityViewModelContext).activity<FragmentActivity>()
             val provider = activity as HudViewModelFactoryProvider
-            return provider.hudViewModelFactory.create(state)
+            return provider.hudViewModelFactory.create(state, activity as FragmentRouter)
         }
     }
 }

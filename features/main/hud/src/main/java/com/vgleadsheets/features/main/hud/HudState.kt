@@ -15,7 +15,6 @@ data class HudState(
     val alwaysShowBack: Boolean = false,
     val mode: HudMode = HudMode.REGULAR,
     val hudVisible: Boolean = true,
-    val readyToShowScreens: Boolean = false,
     val searchQuery: String? = null,
     val selectedPart: Part = Part.C,
     val selectedSong: Song? = null,
@@ -24,6 +23,5 @@ data class HudState(
     val invalidateStatsMap: Map<PerfSpec, InvalidateStats>? = null,
     val perfViewState: PerfViewState = PerfViewState(),
     val updateTime: Async<Long> = Uninitialized,
-    val digest: Async<ApiDigest> = Uninitialized,
-    val random: Async<Song> = Uninitialized
+    val digest: Async<ApiDigest> = Uninitialized
 ) : MvRxState

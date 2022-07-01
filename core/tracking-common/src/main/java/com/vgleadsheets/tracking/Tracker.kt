@@ -12,6 +12,10 @@ interface Tracker {
         fromDetails: String
     )
 
+    /**
+     * Screens that matter
+     */
+
     fun logGameView(
         gameName: String,
         fromScreen: TrackingScreen,
@@ -46,10 +50,31 @@ interface Tracker {
         fromDetails: String
     )
 
-    fun logMenuShow()
+    /**
+     * Clicks
+     */
+
+    fun logShadowClick()
+
+    fun logSearchBoxClick()
+
+    fun logRefreshClick()
+
+    fun logAppBarButtonClick()
+
+    fun logBottomMenuButtonClick()
+
+    fun logChangePartClick()
+
+    fun logScreenLinkClick(screenId: String, fromScreen: TrackingScreen, trackingDetails: String)
+
+    fun logRandomClick()
+
+    /**
+     * Misc events
+     */
 
     fun logAutoRefresh()
-    fun logForceRefresh()
 
     fun logSearch(query: String)
     fun logSearchSuccess(query: String, toScreen: TrackingScreen, toDetails: String)

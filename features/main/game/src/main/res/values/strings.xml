@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="subtitle_sheets_count">%1$d Sheets</string>
+
+    <string name="subtitle_composer_unknown">Unknown Composer</string>
+    <string name="subtitle_composer_various">Various Composers</string>
+    <string name="missing_thing_game_song">songs for this game</string>
+
+    <string name="unknown_game">Unknown Game</string>
 </resources>

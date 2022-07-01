@@ -1,4 +1,4 @@
- apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-kapt'
 
 dependencies {
     api "com.uber.simplestore:simplestore:$simplestore_version"

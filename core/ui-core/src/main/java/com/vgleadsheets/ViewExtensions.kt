@@ -87,9 +87,7 @@ fun View.setInsetListenerForOneMargin(
 fun RecyclerView.setListsSpecialInsets(topOffset: Int, bottomOffset: Int) {
     setOnApplyWindowInsetsListener { v, insets ->
         v.updatePadding(
-            top = insets.systemWindowInsetTop + topOffset
-        )
-        (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(
+            top = insets.systemWindowInsetTop + topOffset,
             bottom = insets.systemWindowInsetBottom + bottomOffset
         )
         insets

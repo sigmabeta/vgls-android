@@ -60,7 +60,11 @@ class JamAsyncUiTest : ListUiTest() {
         }
 
         jam(this, NAME_JAM.toTitleCase()) {
-            checkSheetHasTitleAndSubtitle("In Hendrerit Quisque Est", "Mocks Don't Name Games Yet", 7)
+            checkSheetHasTitleAndSubtitle(
+                "In Hendrerit Quisque Est",
+                "Mocks Don't Name Games Yet",
+                7
+            )
             clickSheetWithTitle("In Hendrerit Quisque Est", 7)
         }
 

@@ -15,5 +15,6 @@ class TrackerModule {
 
     @Provides
     @Singleton
-    fun provideTracker(firebaseAnalytics: FirebaseAnalytics): Tracker = FirebaseTracker(firebaseAnalytics)
+    fun provideTracker(firebaseAnalytics: FirebaseAnalytics): Tracker =
+        FirebaseTracker(firebaseAnalytics)
 }

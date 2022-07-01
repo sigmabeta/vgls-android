@@ -1,5 +1,5 @@
 // Uncomment whichever of these plugins you need (for a UI feature, probably both)
- apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-kapt'
 
 dependencies {
     // Kotlin libs

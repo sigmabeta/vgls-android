@@ -54,8 +54,7 @@
                 tools:text="Lorem ipsum"
                 app:selectedPosition="@{toBind.selectedPosition}"
                 app:labels="@{toBind.settingsLabels}"
-                app:settingId="@{toBind.settingId}"
-                app:itemSelectListener="@{toBind.handler}" />
+                app:onNewOptionSelected="@{toBind.onNewOptionSelected}" />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

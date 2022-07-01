@@ -1,47 +1,41 @@
 package com.vgleadsheets.features.main.jams
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.list.ListFragment
-import com.vgleadsheets.model.jam.Jam
+import com.vgleadsheets.features.main.hud.HudState
+import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class JamListFragment : ListFragment<Jam, JamListState>() {
+class JamListFragment :
+    BetterListFragment<JamListContent, JamListState>() {
     @Inject
-    lateinit var jamListViewModelFactory: JamListViewModel.Factory
+    lateinit var viewModelFactory: JamListViewModel.Factory
 
     override fun getTrackingScreen() = TrackingScreen.LIST_JAM
 
-    override val viewModel: JamListViewModel by fragmentViewModel()
-
     override fun getPerfSpec() = PerfSpec.JAMS
 
-    override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(JamListState::clickedJamModel) {
-            val clickedJamId = it?.dataId
+    override val viewModel: JamListViewModel by fragmentViewModel()
 
-            if (clickedJamId != null) {
-                showSongList(clickedJamId)
-                viewModel.clearClicked()
-            }
-        }
-
-        viewModel.selectSubscribe(JamListState::clickedCtaModel) {
-            val clickedCtaId = it?.dataId
-
-            if (clickedCtaId != null) {
-                getFragmentRouter().showFindJamDialog()
-                viewModel.clearClicked()
-            }
-        }
-    }
-
-    private fun showSongList(clickedJamId: Long) {
-        getFragmentRouter().showJamDetailViewer(clickedJamId)
-    }
+    override fun generateList(state: JamListState, hudState: HudState) =
+        BetterLists.generateList(
+            Config(
+                state,
+                Clicks(
+                    getFragmentRouter()
+                ),
+                perfTracker,
+                getPerfSpec(),
+                resources
+            ),
+            resources
+        )
 
     companion object {
+        const val LOAD_OPERATION = "loadJams"
+
         fun newInstance() = JamListFragment()
     }
 }

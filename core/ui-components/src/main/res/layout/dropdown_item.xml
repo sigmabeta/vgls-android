@@ -7,4 +7,4 @@
     android:maxLines="1"
     android:padding="16dp"
     android:textAppearance="?attr/textAppearanceSubtitle1"
-    tools:text="Lorem Ipsum"/>
+    tools:text="Lorem Ipsum" />

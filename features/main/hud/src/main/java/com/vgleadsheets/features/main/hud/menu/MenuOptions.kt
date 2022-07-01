@@ -4,7 +4,6 @@ import android.content.res.Resources
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Success
 import com.vgleadsheets.components.MenuItemListModel
-import com.vgleadsheets.components.MenuLoadingItemListModel
 import com.vgleadsheets.features.main.hud.BuildConfig
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.R
@@ -12,11 +11,9 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-@Suppress("LongParameterList")
 object MenuOptions {
     fun getListModels(
         expanded: Boolean,
-        randoming: Boolean,
         refreshing: Boolean,
         updateTime: Async<Long>,
         onScreenLinkClick: (String) -> Unit,
@@ -27,7 +24,6 @@ object MenuOptions {
         resources: Resources,
     ) = if (expanded) {
         getFullOptionsList(
-            randoming,
             refreshing,
             updateTime,
             onScreenLinkClick,
@@ -43,7 +39,6 @@ object MenuOptions {
 
     @Suppress("LongMethod")
     private fun getFullOptionsList(
-        randoming: Boolean,
         refreshing: Boolean,
         updateTime: Async<Long>,
         onScreenLinkClick: (String) -> Unit,
@@ -77,19 +72,12 @@ object MenuOptions {
             R.drawable.ic_description_24dp,
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_SONG) }
         ),
-        if (randoming) {
-            MenuLoadingItemListModel(
-                resources.getString(R.string.label_random_loading),
-                R.drawable.ic_shuffle_24dp,
-            )
-        } else {
-            MenuItemListModel(
-                resources.getString(R.string.label_random),
-                null,
-                R.drawable.ic_shuffle_24dp,
-                { onRandomClick() }
-            )
-        },
+        MenuItemListModel(
+            resources.getString(R.string.label_random),
+            null,
+            R.drawable.ic_shuffle_24dp,
+            { onRandomClick() }
+        ),
         MenuItemListModel(
             resources.getString(R.string.label_jams),
             null,

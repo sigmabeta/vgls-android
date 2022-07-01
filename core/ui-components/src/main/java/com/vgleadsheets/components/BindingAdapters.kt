@@ -4,7 +4,6 @@ package com.vgleadsheets.components
 
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -160,30 +159,17 @@ fun bindDropdownValues(view: AutoCompleteTextView, labels: List<String>) {
     view.setAdapter(adapter)
 }
 
-@BindingAdapter("settingId", "selectedPosition", "itemSelectListener")
+@BindingAdapter("selectedPosition", "onNewOptionSelected")
 fun bindDropdownListener(
     view: AutoCompleteTextView,
-    settingId: String,
     selectedPosition: Int,
-    itemSelectListener: DropdownSettingListModel.EventHandler
+    onNewOptionSelected: (Int) -> Unit,
 ) {
     val valueToDisplay = view.adapter.getItem(selectedPosition).toString()
     view.setText(valueToDisplay, false)
 
     view.setOnItemClickListener { _, _, clickedPosition, _ ->
-        itemSelectListener.onNewOptionSelected(settingId, clickedPosition)
-    }
-}
-
-@BindingAdapter("model", "longClickHandler")
-fun bindLongClickHandler(
-    view: FrameLayout,
-    model: ToolbarItemListModel,
-    longClickHandler: ToolbarItemListModel.EventHandler
-) {
-    view.setOnLongClickListener {
-        longClickHandler.onLongClicked(model)
-        true
+        onNewOptionSelected(clickedPosition)
     }
 }
 

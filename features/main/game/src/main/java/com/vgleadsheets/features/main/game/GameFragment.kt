@@ -3,59 +3,48 @@ package com.vgleadsheets.features.main.game
 import android.os.Bundle
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.features.main.list.async.AsyncListFragment
-import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.features.main.hud.HudState
+import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
+import javax.inject.Named
 
-class GameFragment : AsyncListFragment<GameData, GameState>() {
+class GameFragment : BetterListFragment<Content, GameState>() {
     @Inject
-    lateinit var gameViewModelFactory: GameViewModel.Factory
+    lateinit var viewModelFactory: GameViewModel.Factory
 
-    override val viewModel: GameViewModel by fragmentViewModel()
-
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+    @Inject
+    @Named("VglsImageUrl")
+    lateinit var baseImageUrl: String
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_GAME
 
-    override fun getDetails() = (idArgs.id - VglsApiGame.ID_OFFSET).toString()
-
     override fun getPerfSpec() = PerfSpec.GAME
 
-    override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(GameState::clickedListModel) {
-            val clickedId = it?.dataId
+    override val viewModel: GameViewModel by fragmentViewModel()
 
-            if (clickedId != null) {
-                showSongViewer(clickedId)
-                viewModel.clearClicked()
-            }
-        }
-    }
-
-    private fun showSongViewer(clickedSongId: Long) =
-        withState(viewModel, hudViewModel) { state, hudState ->
-            val song = state.data.songs()?.first { it.id == clickedSongId }
-
-            if (song == null) {
-                showError("Failed to show song.")
-                return@withState
-            }
-
-            val transposition = hudState.selectedPart.apiId
-
-            getFragmentRouter().showSongViewer(
-                clickedSongId,
-                song.name,
-                song.gameName,
-                transposition
-            )
-        }
+    override fun generateList(state: GameState, hudState: HudState) =
+        BetterLists.generateList(
+            Config(
+                state,
+                hudState,
+                baseImageUrl,
+                Clicks(
+                    getFragmentRouter(),
+                ),
+                perfTracker,
+                getPerfSpec(),
+                resources
+            ),
+            resources
+        )
 
     companion object {
+        const val LOAD_OPERATION = "loadGame"
+
         fun newInstance(idArgs: IdArgs): GameFragment {
             val fragment = GameFragment()
 

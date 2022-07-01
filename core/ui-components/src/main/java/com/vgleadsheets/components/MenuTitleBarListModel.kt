@@ -3,10 +3,10 @@ package com.vgleadsheets.components
 data class MenuTitleBarListModel(
     val title: String,
     val subtitle: String,
-    val expanded: Boolean,
+    val showChangeParts: Boolean,
     val iconId: Int,
-    val onClicked: () -> Unit,
-    val onChangePartClicked: () -> Unit
+    val onMenuButtonClick: () -> Unit,
+    val onChangePartClick: () -> Unit
 ) : ListModel {
 
     override val dataId = javaClass.simpleName.hashCode().toLong()

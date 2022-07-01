@@ -35,7 +35,6 @@
             android:background="@color/divider"
             android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
-            />
+            android:layout_marginEnd="@dimen/margin_small" />
     </FrameLayout>
 </layout>

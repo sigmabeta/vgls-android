@@ -28,7 +28,7 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:cardBackgroundColor="@color/text_gray"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
-            app:cardElevation="0dp"/>
+            app:cardElevation="0dp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/checkbox_setting"

@@ -26,6 +26,10 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
         firebaseAnalytics.logEvent(EVENT_SCREEN_VIEW, detailsBundle)
     }
 
+    /**
+     * Screens that matter
+     */
+
     override fun logGameView(
         gameName: String,
         fromScreen: TrackingScreen,
@@ -99,11 +103,35 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
         firebaseAnalytics.logEvent(EVENT_LAUNCH_WEB, detailsBundle)
     }
 
-    override fun logMenuShow() = logEvent(EVENT_SHOW_MENU)
+    /**
+     * Clicks
+     */
+
+    override fun logShadowClick() = logEvent(CLICK_SHADOW)
+
+    override fun logSearchBoxClick() = logEvent(CLICK_SEARCH_BOX)
+
+    override fun logRefreshClick() = logEvent(CLICK_REFRESH)
+
+    override fun logAppBarButtonClick() = logEvent(CLICK_APP_BAR_BUTTON)
+
+    override fun logBottomMenuButtonClick() = logEvent(CLICK_BOTTOM_MENU_BUTTON)
+
+    override fun logChangePartClick() = logEvent(CLICK_CHANGE_PART)
+
+    override fun logScreenLinkClick(
+        screenId: String,
+        fromScreen: TrackingScreen,
+        trackingDetails: String
+    ) = logEvent(CLICK_SCREEN_LINK)
+
+    override fun logRandomClick() = logEvent(CLICK_RANDOM)
+
+    /**
+     * Misc events
+     */
 
     override fun logAutoRefresh() = logEvent(EVENT_AUTO_REFRESH)
-
-    override fun logForceRefresh() = logEvent(EVENT_FORCE_REFRESH)
 
     override fun logSearch(query: String) {
         val details = Bundle()
@@ -154,7 +182,15 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
     }
 
     companion object {
-        const val EVENT_SHOW_MENU = "show_menu"
+        const val CLICK_SHADOW = "click_shadow"
+        const val CLICK_SEARCH_BOX = "click_search_box"
+        const val CLICK_REFRESH = "click_refresh"
+        const val CLICK_APP_BAR_BUTTON = "click_app_bar"
+        const val CLICK_BOTTOM_MENU_BUTTON = "click_bottom_menu_button"
+        const val CLICK_CHANGE_PART = "click_change_part"
+        const val CLICK_SCREEN_LINK = "click_screen_link"
+        const val CLICK_RANDOM = "click_random"
+
         const val EVENT_AUTO_REFRESH = "auto_refresh"
         const val EVENT_FORCE_REFRESH = "force_refresh"
         const val EVENT_SCREEN_VIEW = "screen_view_custom"

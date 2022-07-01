@@ -21,7 +21,6 @@ import javax.inject.Inject
 import javax.inject.Named
 import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 abstract class VglsFragment : BaseMvRxFragment() {
     @Inject
     lateinit var tracker: Tracker
@@ -109,6 +108,15 @@ abstract class VglsFragment : BaseMvRxFragment() {
 
         perfTracker.start(getPerfScreenName(), getPerfSpec())
         perfTrackingStarted = true
+
+        // TODO Resume supplying Fromscreen and Fromdetails
+        tracker.logScreenView(
+            requireActivity(),
+            getTrackingScreen(),
+            getDetails(),
+            TrackingScreen.NONE,
+            ""
+        )
     }
 
     override fun onCreateView(

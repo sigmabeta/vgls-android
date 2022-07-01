@@ -1,15 +1,16 @@
 package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.list.ListFragment
-import com.vgleadsheets.model.game.Game
+import com.vgleadsheets.features.main.hud.HudState
+import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class GameListFragment : ListFragment<Game, GameListState>() {
+class GameListFragment : BetterListFragment<GameListContent, GameListState>() {
     @Inject
-    lateinit var gameListViewModelFactory: GameListViewModel.Factory
+    lateinit var viewModelFactory: GameListViewModel.Factory
 
     override fun getTrackingScreen() = TrackingScreen.LIST_GAME
 
@@ -17,22 +18,22 @@ class GameListFragment : ListFragment<Game, GameListState>() {
 
     override val viewModel: GameListViewModel by fragmentViewModel()
 
-    override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(GameListState::clickedListModel) {
-            val clickedGameId = it?.dataId
-
-            if (clickedGameId != null) {
-                getFragmentRouter().showSongListForGame(
-                    clickedGameId,
-                    it.name
-                )
-
-                viewModel.clearClicked()
-            }
-        }
-    }
+    override fun generateList(state: GameListState, hudState: HudState) =
+        BetterLists.generateList(
+            Config(
+                state,
+                hudState,
+                Clicks(getFragmentRouter()),
+                perfTracker,
+                getPerfSpec(),
+                resources
+            ),
+            resources
+        )
 
     companion object {
+        const val LOAD_OPERATION = "loadGames"
+
         fun newInstance() = GameListFragment()
     }
 }

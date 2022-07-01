@@ -19,7 +19,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-@Suppress("TooManyFunctions")
 @Module
 class NetworkModule {
     @Provides
@@ -132,6 +131,7 @@ class NetworkModule {
     @Provides
     @Singleton
     internal fun provideConverterFactory() = MoshiConverterFactory.create()
+
     companion object {
         const val CACHE_SIZE_BYTES = 100000000L
         const val CACHE_MAX_AGE = 60 * 60 * 24 * 365

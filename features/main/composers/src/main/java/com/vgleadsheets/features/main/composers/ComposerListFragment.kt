@@ -1,15 +1,17 @@
 package com.vgleadsheets.features.main.composers
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.list.ListFragment
-import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.features.main.hud.HudState
+import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
+class ComposerListFragment :
+    BetterListFragment<ComposerListContent, ComposerListState>() {
     @Inject
-    lateinit var composerListViewModelFactory: ComposerListViewModel.Factory
+    lateinit var viewModelFactory: ComposerListViewModel.Factory
 
     override fun getTrackingScreen() = TrackingScreen.LIST_COMPOSER
 
@@ -17,21 +19,24 @@ class ComposerListFragment : ListFragment<Composer, ComposerListState>() {
 
     override val viewModel: ComposerListViewModel by fragmentViewModel()
 
-    override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(ComposerListState::clickedListModel) {
-            val clickedComposerId = it?.dataId
-
-            if (clickedComposerId != null) {
-                getFragmentRouter().showSongListForComposer(
-                    clickedComposerId,
-                    it.name
-                )
-                viewModel.clearClicked()
-            }
-        }
-    }
+    override fun generateList(state: ComposerListState, hudState: HudState) =
+        BetterLists.generateList(
+            Config(
+                state,
+                hudState,
+                Clicks(
+                    getFragmentRouter(),
+                ),
+                perfTracker,
+                getPerfSpec(),
+                resources
+            ),
+            resources
+        )
 
     companion object {
+        const val LOAD_OPERATION = "loadComposers"
+
         fun newInstance() = ComposerListFragment()
     }
 }

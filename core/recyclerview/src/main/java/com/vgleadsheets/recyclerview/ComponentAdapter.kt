@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.ListAdapter
 import com.vgleadsheets.components.ComponentViewHolder
 import com.vgleadsheets.components.ListModel
 
-@Suppress("TooManyFunctions")
 class ComponentAdapter :
     ListAdapter<ListModel, ComponentViewHolder>(object : DiffUtil.ItemCallback<ListModel>() {
-        override fun areItemsTheSame(oldItem: ListModel, newItem: ListModel) = oldItem.dataId == newItem.dataId
+        override fun areItemsTheSame(oldItem: ListModel, newItem: ListModel) =
+            oldItem.dataId == newItem.dataId
 
         // Impls should be data classes, it's fiiiine
         @SuppressLint("DiffUtilEquals")
