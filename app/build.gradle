@@ -45,11 +45,11 @@ android {
 
     signingConfigs {
         release {
-            String decodedPass = System.getenv("KEYPASS")
+            String decodedPass = System.getenv("UPLOAD_KEYPASS")
 
             storeFile file("vgls-upload.jks")
             storePassword decodedPass
-            keyAlias System.getenv("KEY_ALIAS")
+            keyAlias System.getenv("UPLOAD_KEY")
             keyPassword decodedPass
         }
     }
