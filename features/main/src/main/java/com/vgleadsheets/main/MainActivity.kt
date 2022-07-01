@@ -39,15 +39,14 @@ import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.perf.tracking.api.FrameInfo
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
-import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import timber.log.Timber
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions", "Deprecation")
 class MainActivity :
@@ -60,9 +59,6 @@ class MainActivity :
 
     @Inject
     override lateinit var hudViewModelFactory: HudViewModel.Factory
-
-    @Inject
-    lateinit var tracker: Tracker
 
     @Inject
     lateinit var perfTracker: PerfTracker
@@ -130,9 +126,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            GameListFragment.newInstance(),
-            fromScreen,
-            fromDetails
+            GameListFragment.newInstance()
         )
     }
 
@@ -141,9 +135,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            ComposerListFragment.newInstance(),
-            fromScreen,
-            fromDetails
+            ComposerListFragment.newInstance()
         )
     }
 
@@ -152,9 +144,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            TagKeyListFragment.newInstance(),
-            fromScreen,
-            fromDetails
+            TagKeyListFragment.newInstance()
         )
     }
 
@@ -163,9 +153,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            JamListFragment.newInstance(),
-            fromScreen,
-            fromDetails
+            JamListFragment.newInstance()
         )
     }
 
@@ -174,9 +162,7 @@ class MainActivity :
         fromDetails: String?
     ) {
         showTopLevelFragment(
-            SongListFragment.newInstance(),
-            fromScreen,
-            fromDetails
+            SongListFragment.newInstance()
         )
     }
 
@@ -212,20 +198,9 @@ class MainActivity :
     }
 
     override fun goToWebUrl(url: String) {
-
         val launcher = Intent(Intent.ACTION_VIEW)
         launcher.data = Uri.parse(url)
         startActivity(launcher)
-
-        val displayedFragment = getDisplayedFragment() ?: throw IllegalStateException(
-            "How are we launching a web browser from a blank view?"
-        )
-
-        tracker.logWebLaunch(
-            url,
-            displayedFragment.getTrackingScreen(),
-            displayedFragment.getDetails()
-        )
     }
 
     override fun showLicenseScreen() = showFragmentSimple(
@@ -275,14 +250,6 @@ class MainActivity :
     }
 
     override fun showJamViewer(jamId: Long) {
-        val prevFragment = getDisplayedFragment()
-
-        tracker.logJamFollow(
-            jamId,
-            prevFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            prevFragment?.getDetails() ?: ""
-        )
-
         showFragmentSimple(
             ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
         )
@@ -328,21 +295,9 @@ class MainActivity :
     }
 
     private fun showTopLevelFragment(
-        fragment: VglsFragment,
-        fromScreen: TrackingScreen? = null,
-        fromDetails: String? = null
+        fragment: VglsFragment
     ) {
         clearBackStack()
-
-        val displayedFragment = getDisplayedFragment()
-
-        tracker.logScreenView(
-            this,
-            fragment.getTrackingScreen(),
-            fragment.getDetails(),
-            fromScreen ?: displayedFragment?.getTrackingScreen() ?: TrackingScreen.NONE,
-            fromDetails ?: displayedFragment?.getDetails() ?: ""
-        )
 
         supportFragmentManager.beginTransaction()
             .setDefaultAnimations()

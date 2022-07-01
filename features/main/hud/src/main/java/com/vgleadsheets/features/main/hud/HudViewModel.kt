@@ -8,6 +8,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
@@ -17,6 +18,7 @@ import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 import timber.log.Timber
@@ -24,6 +26,7 @@ import timber.log.Timber
 @Suppress("TooManyFunctions")
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
+    @Assisted private val router: FragmentRouter,
     private val repository: Repository,
     private val storage: Storage,
     private val perfTracker: PerfTracker
@@ -177,18 +180,14 @@ class HudViewModel @AssistedInject constructor(
         )
     }
 
-    fun toRegularMode() = withState { state ->
-        if (state.mode == HudMode.SEARCH) {
-            setState {
-                copy(
-                    mode = HudMode.REGULAR,
-                    searchQuery = null,
-                    perfViewState = perfViewState.copy(
-                        viewMode = PerfViewMode.REGULAR
-                    )
-                )
-            }
-        }
+    fun toRegularMode() = setState {
+        copy(
+            mode = HudMode.REGULAR,
+            searchQuery = null,
+            perfViewState = perfViewState.copy(
+                viewMode = PerfViewMode.REGULAR
+            )
+        )
     }
 
     fun setPerfSelectedScreen(screen: PerfSpec) {
@@ -240,24 +239,30 @@ class HudViewModel @AssistedInject constructor(
 
     private fun showInitialScreen() {
         storage.getSavedTopLevelScreen()
+            .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { savedId ->
-                    val selection = savedId.ifEmpty {
-                        HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT
-                    }
+                    val selection = savedId.ifEmpty { HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT }
 
                     Timber.v("Showing screen: $selection")
-                    // showScreen(selection)
+                    showScreen(selection)
                 },
                 {
                     Timber.w("No screen ID found, going with default.")
-                    // showScreen(HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT)
+                    showScreen(HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT)
                 }
             ).disposeOnClear()
     }
 
-    private fun showScreen(/*topLevelScreenIdDefault: String*/) {
-        TODO("Not yet implemented")
+    private fun showScreen(topLevelScreenIdDefault: String) {
+        when (topLevelScreenIdDefault) {
+            HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList()
+            HudFragment.TOP_LEVEL_SCREEN_ID_GAME -> router.showGameList()
+            HudFragment.TOP_LEVEL_SCREEN_ID_JAM -> router.showJams()
+            HudFragment.TOP_LEVEL_SCREEN_ID_SONG -> router.showAllSheets()
+            HudFragment.TOP_LEVEL_SCREEN_ID_TAG -> router.showTagList()
+            else -> router.showGameList()
+        }
     }
 
     private fun checkSavedPartSelection() = withState {
@@ -333,6 +338,7 @@ class HudViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             initialState: HudState,
+            router: FragmentRouter
         ): HudViewModel
     }
 
@@ -347,7 +353,7 @@ class HudViewModel @AssistedInject constructor(
             val activity =
                 (viewModelContext as ActivityViewModelContext).activity<FragmentActivity>()
             val provider = activity as HudViewModelFactoryProvider
-            return provider.hudViewModelFactory.create(state)
+            return provider.hudViewModelFactory.create(state, activity as FragmentRouter)
         }
     }
 }
