@@ -70,4 +70,3 @@ class JamFragment : BetterListFragment<JamContent, JamState>() {
         }
     }
 }
-

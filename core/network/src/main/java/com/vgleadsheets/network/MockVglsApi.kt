@@ -148,7 +148,6 @@ class MockVglsApi(
             val song = possibleSongs?.get(possibleSongIndex)
 
             if (song != null) {
-
                 val entry = ApiSetlistEntry(song.id, "Mocks Don't Name Games Yet", song.name)
                 songs.add(entry)
             } else {

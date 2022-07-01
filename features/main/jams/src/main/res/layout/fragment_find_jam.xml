@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_jam_name"
             android:inputType="textAutoComplete"
-            android:imeOptions="actionSearch"/>
+            android:imeOptions="actionSearch" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

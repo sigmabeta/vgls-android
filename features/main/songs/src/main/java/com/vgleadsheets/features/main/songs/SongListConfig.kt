@@ -55,7 +55,6 @@ class SongListConfig(
                     song.thumbUrl(baseImageUrl, hudState.selectedPart),
                     R.drawable.placeholder_sheet
                 ) { clicks.song(song.id) }
-
             } ?: emptyList()
     }
 

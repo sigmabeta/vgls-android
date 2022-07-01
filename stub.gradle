@@ -3,9 +3,9 @@
 // apply plugin: 'kotlin-android-extensions'
 
 dependencies {
-	// Add whatever dependencies you need. Examples provided for a UI feature.
+    // Add whatever dependencies you need. Examples provided for a UI feature.
 
-	/*
+    /*
     implementation project(path: ':core:repository')
     implementation project(path: ':core:recyclerview')
     implementation project(path: ':core:ui-core')

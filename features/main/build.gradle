@@ -2,7 +2,7 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     // So ListView.kt can be found. TODO Make this not necessary
-    api project (path: ':core:recyclerview')
+    api project(path: ':core:recyclerview')
 
     api project(path: ':features:main:about')
     api project(path: ':features:main:composer')

@@ -88,9 +88,10 @@ class SimpleStorage(val simpleStore: SimpleStore) : Storage {
         )
         .toList()
 
-    override fun saveDebugSelectedNetworkEndpoint(newValue: Int): Single<String> = Single.fromFuture(
-        simpleStore.putString(KEY_DEBUG_NETWORK_ENDPOINT, newValue.toString())
-    )
+    override fun saveDebugSelectedNetworkEndpoint(newValue: Int): Single<String> =
+        Single.fromFuture(
+            simpleStore.putString(KEY_DEBUG_NETWORK_ENDPOINT, newValue.toString())
+        )
 
     override fun saveDebugSettingPerfView(newValue: Boolean): Single<String> = Single.fromFuture(
         simpleStore.putString(KEY_DEBUG_MISC_PERF_VIEW, newValue.toString())

@@ -4,7 +4,6 @@ import android.content.res.Resources
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Success
 import com.vgleadsheets.components.MenuItemListModel
-import com.vgleadsheets.components.MenuLoadingItemListModel
 import com.vgleadsheets.features.main.hud.BuildConfig
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.R

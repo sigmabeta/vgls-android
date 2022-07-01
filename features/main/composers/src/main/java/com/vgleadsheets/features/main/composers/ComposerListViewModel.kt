@@ -22,7 +22,7 @@ class ComposerListViewModel @AssistedInject constructor(
                 copy(contentLoad = ComposerListContent(it))
             }
     }
-    
+
     @AssistedInject.Factory
     interface Factory {
         fun create(

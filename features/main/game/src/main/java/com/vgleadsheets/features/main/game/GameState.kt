@@ -10,6 +10,6 @@ data class GameState(
         Uninitialized,
         Uninitialized
     )
-): BetterCompositeState<Content> {
+) : BetterCompositeState<Content> {
     constructor(args: IdArgs) : this(args.id)
 }

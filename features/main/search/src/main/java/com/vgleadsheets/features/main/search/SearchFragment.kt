@@ -77,4 +77,3 @@ class SearchFragment : BetterListFragment<SearchContent, SearchState>() {
         fun newInstance() = SearchFragment()
     }
 }
-

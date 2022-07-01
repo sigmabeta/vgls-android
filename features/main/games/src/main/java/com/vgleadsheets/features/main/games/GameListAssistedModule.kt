@@ -7,4 +7,3 @@ import dagger.Module
 @Module(includes = [AssistedInject_GameListAssistedModule::class])
 @Suppress("UnnecessaryAbstractClass")
 abstract class GameListAssistedModule
-

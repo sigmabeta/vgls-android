@@ -56,4 +56,3 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
         }
     }
 }
-

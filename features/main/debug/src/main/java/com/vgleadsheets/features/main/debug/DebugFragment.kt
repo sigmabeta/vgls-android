@@ -74,4 +74,3 @@ class DebugFragment : BetterListFragment<DebugContent, DebugState>() {
         fun newInstance() = DebugFragment()
     }
 }
-

@@ -44,4 +44,3 @@ class SettingFragment : BetterListFragment<SettingContent, SettingState>() {
         fun newInstance() = SettingFragment()
     }
 }
-

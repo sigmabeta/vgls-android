@@ -132,6 +132,7 @@ class NetworkModule {
     @Provides
     @Singleton
     internal fun provideConverterFactory() = MoshiConverterFactory.create()
+
     companion object {
         const val CACHE_SIZE_BYTES = 100000000L
         const val CACHE_MAX_AGE = 60 * 60 * 24 * 365

@@ -1,4 +1,4 @@
-package com.vgleadsheets
+package com.vgleadsheets.main
 
 import android.net.Uri
 

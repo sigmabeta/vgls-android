@@ -59,7 +59,6 @@ class Config(
                     it.captionText()
                 ) { clicks.jam(it.id) }
             } ?: emptyList()
-
     }
 
     override val emptyConfig = EmptyState.Config(

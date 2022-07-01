@@ -37,6 +37,7 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeBetterJamListFragmentInjector(): JamListFragment
+
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeBetterJamFragmentInjector(): JamFragment

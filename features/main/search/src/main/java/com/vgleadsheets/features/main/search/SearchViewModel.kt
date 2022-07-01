@@ -85,6 +85,7 @@ class SearchViewModel @AssistedInject constructor(
             )
         }
     }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(

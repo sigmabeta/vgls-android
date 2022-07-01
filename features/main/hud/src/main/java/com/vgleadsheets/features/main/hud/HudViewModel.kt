@@ -228,7 +228,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun saveTopLevelScreen(screenId: String) {
         val shouldSave = screenId != HudFragment.MODAL_SCREEN_ID_DEBUG &&
-            screenId != HudFragment.MODAL_SCREEN_ID_SETTINGS
+                screenId != HudFragment.MODAL_SCREEN_ID_SETTINGS
 
         if (shouldSave) {
             storage.saveTopLevelScreen(screenId)

@@ -2,10 +2,13 @@ package com.vgleadsheets.features.main.game
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.features.main.list.*
+import com.vgleadsheets.features.main.list.ListContent
+import com.vgleadsheets.features.main.list.failure
+import com.vgleadsheets.features.main.list.hasFailed
+import com.vgleadsheets.features.main.list.isLoading
+import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.song.Song
-
 
 data class Content(
     val game: Async<Game> = Uninitialized,

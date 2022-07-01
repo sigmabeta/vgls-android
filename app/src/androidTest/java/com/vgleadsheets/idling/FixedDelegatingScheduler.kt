@@ -128,10 +128,7 @@ internal class FixedDelegatingScheduler(
             startWork()
         }
 
-        val startingState = if (immediate)
-            ScheduledWork.STATE_SCHEDULED
-        else
-            ScheduledWork.STATE_IDLE
+        val startingState = if (immediate) ScheduledWork.STATE_SCHEDULED else ScheduledWork.STATE_IDLE
 
         return ScheduledWork(
             localAction,

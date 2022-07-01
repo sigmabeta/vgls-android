@@ -221,7 +221,10 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         )
     }
 
-    private fun clickComponentWithContentDescription(@IdRes componentType: Int, description: String) {
+    private fun clickComponentWithContentDescription(
+        @IdRes componentType: Int,
+        description: String
+    ) {
         onView(
             allOf(
                 withId(componentType),

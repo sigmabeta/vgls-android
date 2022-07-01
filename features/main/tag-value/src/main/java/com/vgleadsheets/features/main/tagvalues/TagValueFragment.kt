@@ -55,4 +55,3 @@ class TagValueFragment : BetterListFragment<TagValueContent, TagValueState>() {
         }
     }
 }
-

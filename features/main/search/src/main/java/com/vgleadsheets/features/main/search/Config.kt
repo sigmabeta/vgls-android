@@ -182,7 +182,7 @@ class Config(
                         generateSubtitleText(result.songs),
                         result.photoUrl,
                         R.drawable.placeholder_composer
-                    ) { clicks.composer(result.id,) }
+                    ) { clicks.composer(result.id) }
 
                     else -> throw IllegalArgumentException(
                         "Bad model in search result list."
