@@ -268,9 +268,15 @@ class HudViewModel @AssistedInject constructor(
                 { partId ->
                     val selection = partId.ifEmpty { "C" }
 
+                    val selectedPart = try {
+                        Part.valueOf(selection)
+                    } catch (ex: IllegalArgumentException) {
+                        Part.C
+                    }
+
                     setState {
                         copy(
-                            selectedPart = Part.valueOf(selection),
+                            selectedPart = selectedPart,
                         )
                     }
                     showInitialScreen()
