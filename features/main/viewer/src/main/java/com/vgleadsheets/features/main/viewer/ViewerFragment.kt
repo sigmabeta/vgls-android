@@ -260,7 +260,14 @@ class ViewerFragment :
 
         hudViewModel.setSelectedSong(song)
 
-        val listComponents = (1..song.pageCount).map { pageNumber ->
+        // Meaningless comment indicating a bugfix
+        val pageCount = if (selectedPart == Part.VOCAL) {
+            song.lyricPageCount
+        } else {
+            song.pageCount
+        }
+
+        val listComponents = (1..pageCount).map { pageNumber ->
             SheetListModel(
                 Page.generateImageUrl(
                     baseImageUrl,
