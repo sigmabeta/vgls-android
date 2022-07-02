@@ -64,7 +64,7 @@ class MainActivity :
 
     private var jankStats: JankStats? = null
 
-    private lateinit var metricsStateHolder: PerformanceMetricsState.MetricsStateHolder
+    private var metricsStateHolder: PerformanceMetricsState.MetricsStateHolder? = null
 
     override fun androidInjector() = androidInjector
 
@@ -111,7 +111,7 @@ class MainActivity :
     }
 
     override fun setPerfSpec(specName: String) {
-        metricsStateHolder.state?.addState(PerfSpec.toString(), specName)
+        metricsStateHolder?.state?.addState(PerfSpec.toString(), specName)
     }
 
     override fun showSearch() {

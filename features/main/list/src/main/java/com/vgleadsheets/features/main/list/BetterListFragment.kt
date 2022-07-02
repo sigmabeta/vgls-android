@@ -19,8 +19,10 @@ import com.vgleadsheets.tabletSetListsSpecialInsets
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
 
-abstract class BetterListFragment<ContentType : ListContent, StateType : BetterCompositeState<ContentType>> :
-    VglsFragment() {
+abstract class BetterListFragment<
+    ContentType : ListContent,
+    StateType : BetterCompositeState<ContentType>
+    > : VglsFragment() {
     abstract val viewModel: MvRxViewModel<StateType>
 
     abstract fun generateList(state: StateType, hudState: HudState): List<ListModel>?
