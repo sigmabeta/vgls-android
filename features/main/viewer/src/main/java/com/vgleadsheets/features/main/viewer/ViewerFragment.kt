@@ -180,7 +180,6 @@ class ViewerFragment :
             is Success -> showSong(viewerState.song(), selectedPart)
             is Loading -> Unit
             Uninitialized -> Unit
-            is Fail -> { showError("No song found.") }
         }
     }
 
