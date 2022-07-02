@@ -7,4 +7,6 @@
 
     <string name="subtitle_suffix_others">" and %1$d more…"</string>
     <string name="subtitle_separator">", "</string>
+
+    <string name="missing_thing_composer">composers</string>
 </resources>

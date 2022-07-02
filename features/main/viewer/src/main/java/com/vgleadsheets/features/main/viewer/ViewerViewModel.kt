@@ -12,10 +12,10 @@ import com.vgleadsheets.storage.Storage
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
-import timber.log.Timber
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
+import retrofit2.HttpException
+import timber.log.Timber
 
 class ViewerViewModel @AssistedInject constructor(
     @Assisted initialState: ViewerState,
@@ -41,7 +41,9 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    fun updateSongId(newSheetId: Long) { setState { copy(songId = newSheetId) } }
+    fun updateSongId(newSheetId: Long) {
+        setState { copy(songId = newSheetId) }
+    }
 
     fun checkScreenSetting() {
         storage.getSettingSheetScreenOn()
@@ -87,10 +89,6 @@ class ViewerViewModel @AssistedInject constructor(
 
             subscribeToJamDatabase(jamId)
         }
-    }
-
-    fun cancelPerf() {
-        TODO("Not yet implemented")
     }
 
     private fun subscribeToJamDatabase(jamId: Long) {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="part_long_c">C Instruments</string>
+    <string name="part_long_b">B♭ Instruments</string>
+    <string name="part_long_e">E♭ Instruments</string>
+    <string name="part_long_f">F Instruments</string>
+    <string name="part_long_alto">Alto Clef</string>
+    <string name="part_long_bass">Bass Clef</string>
+    <string name="part_long_vocal">Vocalists</string>
+</resources>

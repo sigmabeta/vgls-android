@@ -1,13 +1,12 @@
 // Uncomment whichever of these plugins you need (for a UI feature, probably both)
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(path: ':features:main:hud')
-    implementation project(path: ':recyclerview')
-    implementation project(path: ':storage')
-    implementation project(path: ':ui-core')
-    implementation project(path: ':ui-components')
+    implementation project(path: ':core:recyclerview')
+    implementation project(path: ':core:storage')
+    implementation project(path: ':core:ui-core')
+    implementation project(path: ':core:ui-components')
 
     // RxJava2 libs
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"

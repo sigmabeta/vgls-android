@@ -1,12 +1,11 @@
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    implementation project(path: ':mvrx')
-    implementation project(path: ':tracking-common')
+    implementation project(path: ':core:mvrx')
+    implementation project(path: ':core:tracking-common')
 
     // Dagger
-    api project(path: ':di')
+    api project(path: ':core:di')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -21,8 +20,4 @@ dependencies {
     // AssistedInject Annotation Processors
     compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
     kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
-}
-
-androidExtensions {
-    experimental = true
 }

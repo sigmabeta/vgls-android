@@ -2,24 +2,16 @@ package com.vgleadsheets
 
 import com.vgleadsheets.tracking.TrackingScreen
 
-@Suppress("TooManyFunctions")
 interface FragmentRouter {
     fun showGameList(
         fromScreen: TrackingScreen? = null,
         fromDetails: String? = null
     )
 
-    fun showSongListForGame(gameId: Long, name: String)
+    fun showSongListForGame(gameId: Long)
 
     @SuppressWarnings("LongParameterList")
-    fun showSongViewer(
-        songId: Long,
-        name: String,
-        gameName: String,
-        transposition: String,
-        fromScreen: TrackingScreen? = null,
-        fromDetails: String? = null
-    )
+    fun showSongViewer(songId: Long)
 
     fun showSheetDetail(songId: Long)
 
@@ -29,7 +21,7 @@ interface FragmentRouter {
 
     fun showSearch()
 
-    fun showSongListForComposer(composerId: Long, name: String)
+    fun showSongListForComposer(composerId: Long)
 
     fun showSongListForTagValue(tagValueId: Long)
 
@@ -67,12 +59,18 @@ interface FragmentRouter {
 
     fun showAbout()
 
-    fun goToWebUrl(url: String)
+    fun searchYoutube(name: String, gameName: String)
 
     fun showLicenseScreen()
 
     fun showFindJamDialog()
 
+    fun back()
+
+    fun setPerfSpec(specName: String)
+
     // TODO We should rename this interface.
     fun restartApp()
+
+    fun goToWebUrl(url: String)
 }

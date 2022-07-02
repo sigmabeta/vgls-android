@@ -1,137 +1,43 @@
 package com.vgleadsheets.features.main.songs
 
-import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.list.ListViewModel
-import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.pages.Page
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.repository.Repository
-import com.vgleadsheets.resources.ResourceProvider
-import javax.inject.Named
 
 class SongListViewModel @AssistedInject constructor(
     @Assisted initialState: SongListState,
-    @Assisted val screenName: String,
-    @Named("VglsImageUrl") val baseImageUrl: String,
     private val repository: Repository,
-    private val resourceProvider: ResourceProvider,
-    private val perfTracker: PerfTracker
-) : ListViewModel<Song, SongListState>(initialState, screenName, perfTracker),
-    ImageNameCaptionListModel.EventHandler {
+) : MvRxViewModel<SongListState>(initialState) {
     init {
         fetchSongs()
     }
 
-    override fun onClicked(clicked: ImageNameCaptionListModel) = setState {
-        copy(
-            clickedListModel = clicked
-        )
-    }
-
-    override fun clearClicked() = setState {
-        copy(
-            clickedListModel = null
-        )
-    }
-
-    override fun createTitleListModel() = TitleListModel(
-        resourceProvider.getString(R.string.app_name),
-        resourceProvider.getString(R.string.subtitle_all_sheets),
-        screenName = screenName,
-        tracker = perfTracker
-    )
-
-    override fun createFullEmptyStateListModel() = EmptyStateListModel(
-        R.drawable.ic_album_24dp,
-        "No songs found at all. Check your internet connection?",
-        screenName,
-        cancelPerfOnEmptyState
-    )
-
-    override fun createSuccessListModels(
-        data: List<Song>,
-        updateTime: Async<*>,
-        digest: Async<*>,
-        selectedPart: Part
-    ): List<ListModel> {
-        val availableSongs = filterSongs(data, selectedPart)
-
-        return if (availableSongs.isEmpty()) {
-            arrayListOf(
-                EmptyStateListModel(
-                    R.drawable.ic_album_24dp,
-                    "No songs found with a ${selectedPart.apiId} part. Try another part?",
-                    screenName,
-                    cancelPerfOnEmptyState
-                )
-            )
-        } else {
-            availableSongs.map {
-                val thumbUrl = Page.generateImageUrl(
-                    baseImageUrl,
-                    selectedPart,
-                    it.filename,
-                    1
-                )
-
-                ImageNameCaptionListModel(
-                    it.id,
-                    it.name,
-                    it.gameName,
-                    thumbUrl,
-                    R.drawable.placeholder_sheet,
-                    this,
-                    screenName = screenName,
-                    tracker = perfTracker
-                )
-            }
-        }
-    }
-
     private fun fetchSongs() {
-        repository.getAllSongs()
-            .execute { data ->
-                copy(
-                    data = data,
-                    listModels = constructList(
-                        data,
-                        updateTime,
-                        digest,
-                        selectedPart
-                    )
-                )
+        repository.getAllSongs(false)
+            .execute {
+                copy(contentLoad = SongListContent(it))
             }
     }
-
-    private fun filterSongs(
-        songs: List<Song>,
-        selectedPart: Part
-    ) = songs.filteredForVocals(selectedPart.apiId)
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: SongListState, screenName: String): SongListViewModel
+        fun create(
+            initialState: SongListState,
+        ): SongListViewModel
     }
 
     companion object : MvRxViewModelFactory<SongListViewModel, SongListState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: SongListState
-        ): SongListViewModel? {
+        ): SongListViewModel {
             val fragment: SongListFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.sheetListViewModelFactory.create(state, fragment.getPerfScreenName())
+            return fragment.viewModelFactory.create(state)
         }
     }
 }

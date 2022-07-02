@@ -1,0 +1,27 @@
+apply plugin: 'kotlin-kapt'
+
+android {
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    implementation project(path: ':core:images')
+    implementation project(path: ':core:animation')
+    implementation project(path: ':core:ui-core')
+    implementation project(path: ':core:vectors')
+
+    // For zoomable sheet images
+    implementation "com.github.chrisbanes:PhotoView:$photoview_version"
+
+    // Kotlin libs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}

@@ -1,14 +1,13 @@
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(path: ':features:main:hud')
 
-    implementation project(path: ':animation')
-    implementation project(path: ':repository')
-    implementation project(path: ':recyclerview')
-    implementation project(path: ':storage')
-    implementation project(path: ':ui-core')
+    implementation project(path: ':core:animation')
+    implementation project(path: ':core:repository')
+    implementation project(path: ':core:recyclerview')
+    implementation project(path: ':core:storage')
+    implementation project(path: ':core:ui-core')
 
     // Viewpager2
     implementation "androidx.viewpager2:viewpager2:$viewpager_version"

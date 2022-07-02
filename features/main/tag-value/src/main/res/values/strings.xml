@@ -5,4 +5,8 @@
     <string name="subtitle_separator">", "</string>
 
     <string name="subtitle_options_count">%1$d Options</string>
+
+    <string name="missing_thing_tag_value_key">values for this tag</string>
+
+    <string name="unknown_tag_key">Unknown Tag Key</string>
 </resources>

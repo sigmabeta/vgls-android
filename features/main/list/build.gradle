@@ -1,13 +1,12 @@
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 dependencies {
-    api project(path: ':model')
-    api project(path: ':resources')
+    api project(path: ':core:model')
+    api project(path: ':core:resources')
 
     implementation project(path: ':features:main:hud')
-    implementation project(path: ':recyclerview')
-    implementation project(path: ':ui-core')
+    implementation project(path: ':core:recyclerview')
+    implementation project(path: ':core:ui-core')
 
     // RxJava2 libs
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
@@ -22,4 +21,10 @@ dependencies {
     // Dagger (important: include all 3 of these in modules that use Dagger
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}
+
+android {
+    kotlinOptions {
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+    }
 }

@@ -4,27 +4,27 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.slideViewOnscreen
-import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
-import com.vgleadsheets.components.ToolbarItemListModel
+import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.getYoutubeSearchUrlForQuery
 import com.vgleadsheets.model.pages.Page
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.setInsetListenerForPadding
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,16 +32,11 @@ import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
-import kotlinx.android.synthetic.main.fragment_viewer.list_sheets
-import kotlinx.android.synthetic.main.fragment_viewer.list_toolbar_items
-import kotlinx.android.synthetic.main.fragment_viewer.pager_sheets
 import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 class ViewerFragment :
     VglsFragment(),
-    SheetListModel.ImageListener,
-    ToolbarItemListModel.EventHandler {
+    SheetListModel.ImageListener {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
@@ -59,8 +54,6 @@ class ViewerFragment :
     private var songId: Long? = null
 
     private val sheetsAdapter = ComponentAdapter()
-
-    private val toolbarAdapter = ComponentAdapter()
 
     private val timers = CompositeDisposable()
 
@@ -82,64 +75,39 @@ class ViewerFragment :
         }
     }
 
-    override fun onClicked(clicked: ToolbarItemListModel) = when (clicked.iconId) {
-        R.drawable.ic_details_24 -> showSheetDetails()
-        R.drawable.ic_play_circle_filled_24 -> showYoutubeSearch()
-        else -> showError("Unimplemented toolbar button.")
-    }
-
     override fun onLoadStarted() {
-        perfTracker.onTitleLoaded(getPerfScreenName())
+        perfTracker.onTitleLoaded(getPerfSpec())
     }
 
     override fun onLoadComplete() {
-        perfTracker.onTransitionStarted(getPerfScreenName())
-        perfTracker.onPartialContentLoad(getPerfScreenName())
-        perfTracker.onFullContentLoad(getPerfScreenName())
+        perfTracker.onTransitionStarted(getPerfSpec())
+        perfTracker.onPartialContentLoad(getPerfSpec())
+        perfTracker.onFullContentLoad(getPerfSpec())
     }
-
-    override fun onLongClicked(clicked: ToolbarItemListModel) {
-        hudViewModel.startHudTimer()
-        showSnackbar(clicked.name)
-    }
-
-    override fun clearClicked() = Unit
 
     override fun onLoadFailed(imageUrl: String, ex: Exception?) {
-        perfTracker.cancel(getPerfScreenName())
+        perfTracker.cancel(getPerfSpec())
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pager_sheets?.adapter = sheetsAdapter
+        hudViewModel.setPerfSelectedScreen(getPerfSpec())
 
-        list_sheets?.adapter = sheetsAdapter
-        list_sheets?.layoutManager = LinearLayoutManager(
+        val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
+        val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
+
+        sheetsAsPager?.adapter = sheetsAdapter
+
+        sheetsAsScrollingList?.adapter = sheetsAdapter
+        sheetsAsScrollingList?.layoutManager = LinearLayoutManager(
             activity,
             LinearLayoutManager.HORIZONTAL,
             false
         )
 
-        val topOffset = resources.getDimension(R.dimen.margin_xlarge).toInt() +
-            resources.getDimension(R.dimen.margin_medium).toInt()
-        val sideOffset = resources.getDimension(R.dimen.margin_medium).toInt()
-
-        list_toolbar_items?.setInsetListenerForPadding(
-            topOffset = topOffset,
-            leftOffset = sideOffset,
-            rightOffset = sideOffset
-        )
-
-        list_toolbar_items?.adapter = toolbarAdapter
-        list_toolbar_items?.layoutManager = LinearLayoutManager(
-            activity,
-            LinearLayoutManager.HORIZONTAL,
-            true
-        )
-
-        setUpToolbarItems()
+        sheetsAdapter.resources = resources
 
         viewModel.selectSubscribe(
             ViewerState::activeJamSheetId,
@@ -196,26 +164,23 @@ class ViewerFragment :
             startScreenTimer()
         }
 
-        if (hudState.hudVisible && !hudState.searchVisible) {
+        if (hudState.hudVisible && hudState.mode == HudMode.REGULAR) {
             hudViewModel.startHudTimer()
-        }
-
-        if (hudState.hudVisible) {
-            list_toolbar_items?.slideViewOnscreen()
-        } else {
-            list_toolbar_items?.slideViewUpOffscreen()
         }
 
         val selectedPart = hudState.selectedPart
 
         songId = viewerState.songId
 
-        when (viewerState.song) {
+        when (val song = viewerState.song) {
             is Fail -> showError(
-                viewerState.song.error.message
-                    ?: viewerState.song.error::class.simpleName ?: "Unknown Error"
+                song.error.message ?: song.error::class.simpleName ?: "Unknown Error"
             )
             is Success -> showSong(viewerState.song(), selectedPart)
+            Uninitialized -> Unit
+            else -> {
+                showError("No song found.")
+            }
         }
     }
 
@@ -239,7 +204,7 @@ class ViewerFragment :
 
     override fun getPerfTrackingMinScreenHeight() = 200
 
-    override fun getFullLoadTargetTime() = 1000L
+    override fun getPerfSpec() = PerfSpec.VIEWER
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
@@ -270,23 +235,6 @@ class ViewerFragment :
     private fun stopScreenTimer() {
         Timber.v("Clearing screen timer.")
         timers.clear()
-    }
-
-    private fun setUpToolbarItems() {
-        val toolbarItems = listOf(
-            ToolbarItemListModel(
-                getString(R.string.menu_item_label_sheet_detail),
-                R.drawable.ic_details_24,
-                this
-            ),
-            ToolbarItemListModel(
-                getString(R.string.menu_item_label_youtube),
-                R.drawable.ic_play_circle_filled_24,
-                this
-            )
-        )
-
-        toolbarAdapter.submitList(toolbarItems)
     }
 
     private fun setScreenOnLock() {
@@ -341,24 +289,6 @@ class ViewerFragment :
 
     private fun showEmptyState() {
         showError("No sheet found.")
-    }
-
-    private fun showSheetDetails() = withState(viewModel) { state ->
-        val songId = state.songId
-        if (songId != null) {
-            getFragmentRouter().showSheetDetail(songId)
-        }
-    }
-
-    private fun showYoutubeSearch() = withState(viewModel) {
-        if (it.song is Success) {
-            val song = it.song()!!
-            val query = "${song.gameName} - ${song.name}"
-
-            val youtubeUrl = getYoutubeSearchUrlForQuery(query)
-
-            getFragmentRouter().goToWebUrl(youtubeUrl)
-        }
     }
 
     companion object {

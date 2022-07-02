@@ -8,6 +8,9 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -17,24 +20,26 @@ import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_find_jam.button_cancel
-import kotlinx.android.synthetic.main.fragment_find_jam.button_find
-import kotlinx.android.synthetic.main.fragment_find_jam.edit_jam_name
-import kotlinx.android.synthetic.main.fragment_find_jam.progress_loading
-import retrofit2.HttpException
-import timber.log.Timber
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
-import java.util.Locale
 import javax.inject.Inject
+import retrofit2.HttpException
+import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 class FindJamDialogFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var tracker: Tracker
 
     @Inject
     lateinit var repository: Repository
+
+    private lateinit var buttonCancel: Button
+
+    private lateinit var buttonFind: Button
+
+    private lateinit var editJamName: EditText
+
+    private lateinit var progressLoading: ProgressBar
 
     private val disposables = CompositeDisposable()
 
@@ -53,9 +58,14 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         ViewCompat.requestApplyInsets(view)
 
-        button_cancel.setOnClickListener { dismiss() }
-        button_find.setOnClickListener { onAddClicked() }
-        edit_jam_name.setOnEditorActionListener { _, actionId, _ ->
+        buttonCancel = view.findViewById(R.id.button_cancel)
+        buttonFind = view.findViewById(R.id.button_find)
+        editJamName = view.findViewById(R.id.edit_jam_name)
+        progressLoading = view.findViewById(R.id.progress_loading)
+
+        buttonCancel.setOnClickListener { dismiss() }
+        buttonFind.setOnClickListener { onAddClicked() }
+        editJamName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 onAddClicked()
                 return@setOnEditorActionListener true
@@ -71,31 +81,31 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun onAddClicked() {
-        val jamName = edit_jam_name.text.toString()
+        val jamName = editJamName.text.toString()
 
         if (jamName.isNotBlank()) {
-            findJam(jamName.toLowerCase(Locale.getDefault()))
+            findJam(jamName.lowercase())
         } else {
             showError("Jam name can't be empty.")
         }
     }
 
     private fun findJam(jamName: String) {
-        progress_loading.visibility = VISIBLE
-        button_find.visibility = GONE
+        progressLoading.visibility = VISIBLE
+        buttonFind.visibility = GONE
         val find = repository.refreshJamState(jamName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    progress_loading.visibility = GONE
-                    button_find.visibility = VISIBLE
+                    progressLoading.visibility = GONE
+                    buttonFind.visibility = VISIBLE
 
                     dismiss()
                 },
                 {
-                    progress_loading.visibility = GONE
-                    button_find.visibility = VISIBLE
+                    progressLoading.visibility = GONE
+                    buttonFind.visibility = VISIBLE
 
                     if (it is HttpException) {
                         if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {

@@ -15,11 +15,46 @@
 
     <string name="subtitle_menu">…for %1$s</string>
 
+    <string name="label_song_details">Show Details</string>
+    <string name="label_youtube">Find On YouTube</string>
+
     <string name="date_never">Never</string>
     <string name="label_settings">Settings</string>
     <string name="jam_cancelled">No longer following Jam.</string>
+    <string name="label_perf">Performance Details</string>
     <string name="label_debug">Debug Menu</string>
     <string name="cd_search_menu">Open Menu</string>
     <string name="cd_search_back">Go Back</string>
     <string name="cd_search_close">Close Menu</string>
+
+    <string name="label_perf_stage_view_created">View Created</string>
+    <string name="label_perf_stage_title_loaded">Title Loaded</string>
+    <string name="label_perf_stage_transition_start">Transition Started</string>
+    <string name="label_perf_stage_partial_content">Content Partially Loaded</string>
+    <string name="label_perf_stage_full_content">Content Fully Loaded</string>
+    <string name="label_perf_stage_cancelled">Cancelled</string>
+    <string name="label_perf_stage_completed">Completed</string>
+
+    <string name="label_perf_stats_for">Screen</string>
+    <string name="label_perf_summary">Summary</string>
+    <string name="label_perf_load_times">Load Times</string>
+    <string name="label_perf_frame_times">Frame Times</string>
+    <string name="label_perf_invalidates">Invalidates</string>
+
+    <string name="label_perf_total">Total</string>
+    <string name="label_perf_jank">Slow</string>
+    <string name="label_perf_total_time">Total Time</string>
+    <string name="label_perf_median">Median Time</string>
+    <string name="label_perf_five">95th Percentile Time</string>
+    <string name="label_perf_nine">99th Percentile Time</string>
+
+    <string name="label_perf_empty_load_times">No load times recorded.</string>
+    <string name="label_perf_empty_frame_times">No frame times recorded.</string>
+    <string name="label_perf_empty_invalidates">No invalidates recorded.</string>
+
+    <string name="value_perf_summary_completion">After %1$d ms</string>
+    <string name="value_perf_summary_frame_drops">%1$d of %2$d janky</string>
+    <string name="value_perf_summary_invalidate">%1$d of %2$d slow</string>
+
+    <string name="value_perf_ms">%1$d ms</string>
 </resources>
