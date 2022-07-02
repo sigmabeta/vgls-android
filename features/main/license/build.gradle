@@ -1,10 +1,9 @@
 // Uncomment whichever of these plugins you need (for a UI feature, probably both)
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(path: ':features:main:hud')
-    implementation project(path: ':ui-core')
+    implementation project(path: ':core:ui-core')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

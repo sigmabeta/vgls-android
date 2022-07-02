@@ -1,26 +1,59 @@
+plugins {
+    id "com.gradle.enterprise" version "3.10"
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+    }
+}
+
+buildCache {
+    local {
+        enabled = true
+        directory = new File(rootDir, 'build-cache')
+        removeUnusedEntriesAfterDays = 30
+    }
+}
+
 rootProject.name = 'VGLeadSheets'
 
 include ':app',
-        ':animation',
-        ':recyclerview',
-        ':ui-core',
-        ':ui-components',
-        ':mvrx',
-        ':di',
-        ':images',
-        ':network',
-        ':database',
-        ':model',
-        ':repository',
-        ':storage',
-        ':common:debug-common',
-        ':common:parts',
+
+        ':core:animation',
+        ':core:common:debug-common',
+        ':core:common:parts',
+        ':core:database',
+        ':core:di',
+        ':core:images',
+        ':core:model',
+        ':core:mvrx',
+        ':core:network',
+        ':core:perf:tracking:api',
+        ':core:perf:tracking:common',
+        ':core:perf:tracking:firebase',
+        ':core:perf:tracking:noop',
+        ':core:recyclerview',
+        ':core:repository',
+        ':core:resources',
+        ':core:storage',
+        ':core:tracking',
+        ':core:tracking-common',
+        ':core:tracking-noop',
+        ':core:ui-core',
+        ':core:ui-components',
+        ':core:vectors',
+
+
         ':features:main',
         ':features:main:about',
         ':features:main:composer',
+        ':features:main:composers',
         ':features:main:debug',
         ':features:main:games',
         ':features:main:game',
+        ':features:main:hud',
         ':features:main:jam',
         ':features:main:jams',
         ':features:main:license',
@@ -33,15 +66,4 @@ include ':app',
         ':features:main:tag-key',
         ':features:main:tag-songs',
         ':features:main:tag-value',
-        ':features:main:viewer',
-        ':features:main:hud',
-        ':features:main:composers',
-        ':perf:tracking:api',
-        ':perf:tracking:common',
-        ':perf:tracking:firebase',
-        ':perf:tracking:noop',
-        ':resources',
-        ':tracking',
-        ':tracking-common',
-        ':tracking-noop',
-        ':vectors'
+        ':features:main:viewer'

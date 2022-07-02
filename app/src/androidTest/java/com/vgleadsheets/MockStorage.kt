@@ -8,7 +8,6 @@ import com.vgleadsheets.storage.SimpleStorage
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Single
 
-@Suppress("TooManyFunctions")
 class MockStorage : Storage {
     var savedTopLevelScreen: String = ""
 

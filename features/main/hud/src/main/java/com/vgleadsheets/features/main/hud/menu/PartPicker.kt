@@ -5,16 +5,14 @@ import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-@Suppress("LongParameterList")
 object PartPicker {
     fun getListModels(
         expanded: Boolean,
         showVocalOption: Boolean,
         onPartClick: (Part) -> Unit,
         resources: Resources,
-        perfTracker: PerfTracker
+        selectedPartId: String
     ) = if (expanded) {
         generatePartPickerItems(showVocalOption)
             .map {
@@ -23,8 +21,7 @@ object PartPicker {
                     null,
                     R.drawable.ic_description_24dp,
                     { onPartClick(Part.valueOf(it.name)) },
-                    "",
-                    perfTracker
+                    it.apiId == selectedPartId
                 )
             }
     } else {

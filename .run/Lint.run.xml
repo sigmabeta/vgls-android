@@ -10,7 +10,7 @@
             </option>
             <option name="taskNames">
                 <list>
-                    <option value="lintDebug" />
+                    <option value=":app:lintDebug" />
                 </list>
             </option>
             <option name="vmOptions" value="" />

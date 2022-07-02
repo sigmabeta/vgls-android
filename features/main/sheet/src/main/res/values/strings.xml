@@ -9,4 +9,6 @@
 
     <string name="section_header_tags">Tags</string>
     <string name="subtitle_pages">%1$d pages</string>
+    <string name="unknown_song">Unknown Song</string>
+    <string name="unknown_composer">Unknown Composer</string>
 </resources>

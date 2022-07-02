@@ -1,11 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.vgleadsheets.main">
-    <application>
-        <activity android:name="com.vgleadsheets.main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+    package="com.vgleadsheets.main">
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+    <application>
+        <activity
+            android:name="com.vgleadsheets.main.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

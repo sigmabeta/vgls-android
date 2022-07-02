@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.viewer.viewer
-import org.junit.Test
 import java.util.Locale
+import org.junit.Test
 
 class JamAsyncUiTest : ListUiTest() {
     override val screenId = HudFragment.TOP_LEVEL_SCREEN_ID_JAM
@@ -60,7 +60,11 @@ class JamAsyncUiTest : ListUiTest() {
         }
 
         jam(this, NAME_JAM.toTitleCase()) {
-            checkSheetHasTitleAndSubtitle("In Hendrerit Quisque Est", "Mocks Don't Name Games Yet", 7)
+            checkSheetHasTitleAndSubtitle(
+                "In Hendrerit Quisque Est",
+                "Mocks Don't Name Games Yet",
+                7
+            )
             clickSheetWithTitle("In Hendrerit Quisque Est", 7)
         }
 
@@ -109,19 +113,26 @@ class JamAsyncUiTest : ListUiTest() {
         }
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
-    @SuppressLint("DefaultLocale")
     private fun String.toTitleCase() = this
         .replace("_", " ")
         .split(" ")
         .map {
             if (it != "the") {
-                it.capitalize(Locale.getDefault())
+                it.capitalize()
             } else {
                 it
             }
         }
         .joinToString(" ")
+
+    @SuppressLint("DefaultLocale")
+    private fun String.capitalize() = replaceFirstChar { char ->
+        if (char.isLowerCase()) {
+            char.titlecase(Locale.getDefault())
+        } else {
+            char.toString()
+        }
+    }
 
     companion object {
         const val NAME_JAM = "test"

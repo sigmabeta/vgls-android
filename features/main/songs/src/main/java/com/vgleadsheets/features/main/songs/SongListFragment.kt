@@ -1,52 +1,46 @@
 package com.vgleadsheets.features.main.songs
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
-import com.vgleadsheets.features.main.list.ListFragment
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.features.main.hud.HudState
+import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.BetterLists
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
+import javax.inject.Named
 
-class SongListFragment : ListFragment<Song, SongListState>() {
+class SongListFragment :
+    BetterListFragment<SongListContent, SongListState>() {
     @Inject
-    lateinit var sheetListViewModelFactory: SongListViewModel.Factory
+    lateinit var viewModelFactory: SongListViewModel.Factory
 
-    override val viewModel: SongListViewModel by fragmentViewModel()
+    @Inject
+    @Named("VglsImageUrl")
+    lateinit var baseImageUrl: String
 
     override fun getTrackingScreen() = TrackingScreen.LIST_SHEET
 
-    override fun getFullLoadTargetTime() = 5000L
+    override fun getPerfSpec() = PerfSpec.SONGS
 
-    override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(SongListState::clickedListModel) {
-            val clickedSongId = it?.dataId
+    override val viewModel: SongListViewModel by fragmentViewModel()
 
-            if (clickedSongId != null) {
-                showSongViewer(clickedSongId)
-                viewModel.clearClicked()
-            }
-        }
-    }
-
-    private fun showSongViewer(clickedSongId: Long) = withState(viewModel, hudViewModel) { state, hudState ->
-        val song = state.data()?.first { it.id == clickedSongId }
-
-        if (song == null) {
-            showError("Failed to show song.")
-            return@withState
-        }
-
-        val transposition = hudState.selectedPart.apiId
-
-        getFragmentRouter().showSongViewer(
-            clickedSongId,
-            song.name,
-            song.gameName,
-            transposition
+    override fun generateList(state: SongListState, hudState: HudState) =
+        BetterLists.generateList(
+            SongListConfig(
+                state,
+                hudState,
+                baseImageUrl,
+                Clicks(getFragmentRouter()),
+                perfTracker,
+                getPerfSpec(),
+                resources
+            ),
+            resources
         )
-    }
 
     companion object {
+        const val LOAD_OPERATION = "loadSongs"
+
         fun newInstance() = SongListFragment()
     }
 }

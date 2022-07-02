@@ -139,10 +139,6 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         }
     }
 
-    fun clickToolbarItemWithTitle(title: String) {
-        clickComponentWithContentDescription(R.id.component_toolbar_item, title)
-    }
-
     protected fun checkIsEmptyStateDisplayedInternal(emptyStateLabel: String) {
         checkFirstContentItem(
             hasDescendant(
@@ -225,7 +221,10 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         )
     }
 
-    private fun clickComponentWithContentDescription(@IdRes componentType: Int, description: String) {
+    private fun clickComponentWithContentDescription(
+        @IdRes componentType: Int,
+        description: String
+    ) {
         onView(
             allOf(
                 withId(componentType),

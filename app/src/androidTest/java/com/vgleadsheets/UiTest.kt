@@ -7,9 +7,9 @@ import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.network.MockVglsApi
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.storage.Storage
+import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
-import javax.inject.Inject
 
 abstract class UiTest {
     @Inject

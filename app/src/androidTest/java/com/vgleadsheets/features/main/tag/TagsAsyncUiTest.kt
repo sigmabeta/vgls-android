@@ -18,7 +18,10 @@ class TagsAsyncUiTest : ListUiTest() {
         }
 
         tagValueList(this, TAG_KEY_ARBITRARY_TITLE, TAG_KEY_ARBITRARY_OPTION_COUNT) {
-            checkFirstTagValueIs(TAG_KEY_ARBITRARY_VALUE_FIRST_TITLE, TAG_KEY_ARBITRARY_VALUE_FIRST_SUBTITLE)
+            checkFirstTagValueIs(
+                TAG_KEY_ARBITRARY_VALUE_FIRST_TITLE,
+                TAG_KEY_ARBITRARY_VALUE_FIRST_SUBTITLE
+            )
             clickTagWithTitle(
                 TAG_KEY_ARBITRARY_VALUE_ARBITRARY_TITLE,
                 TAG_KEY_ARBITRARY_VALUE_ARBITRARY_SCROLL_POS

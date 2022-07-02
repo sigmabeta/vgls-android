@@ -1,27 +1,28 @@
 package com.vgleadsheets.features.main.debug
 
+import android.os.Bundle
+import android.view.View
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.vgleadsheets.features.main.list.async.AsyncListFragment
+import com.vgleadsheets.features.main.hud.HudState
+import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.BetterLists
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
+class DebugFragment : BetterListFragment<DebugContent, DebugState>() {
     @Inject
-    lateinit var debugViewModelFactory: DebugViewModel.Factory
-
-    override val viewModel: DebugViewModel by fragmentViewModel()
-
-    override fun getVglsFragmentTag() = this.javaClass.simpleName
+    lateinit var viewModelFactory: DebugViewModel.Factory
 
     override fun getTrackingScreen() = TrackingScreen.DEBUG
 
-    override fun disablePerfTracking() = true
+    override fun getPerfSpec() = PerfSpec.DEBUG
 
-    override fun getFullLoadTargetTime() = -1L
+    override val viewModel: DebugViewModel by fragmentViewModel()
 
-    override fun subscribeToViewEvents() {
-        hudViewModel.alwaysShowBack()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.selectSubscribe(
             DebugState::changed,
@@ -47,6 +48,18 @@ class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
         }
     }
 
+    override fun generateList(state: DebugState, hudState: HudState) =
+        BetterLists.generateList(
+            Config(
+                state,
+                Clicks(viewModel),
+                perfTracker,
+                getPerfSpec(),
+                resources
+            ),
+            resources
+        )
+
     override fun onBackPress() = withState(viewModel) {
         if (it.changed) {
             getFragmentRouter().restartApp()
@@ -56,6 +69,8 @@ class DebugFragment : AsyncListFragment<DebugData, DebugState>() {
     }
 
     companion object {
+        const val LOAD_OPERATION = "loadDebug"
+
         fun newInstance() = DebugFragment()
     }
 }

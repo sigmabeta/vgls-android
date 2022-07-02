@@ -1,6 +1,8 @@
 # VGLeadSheets for Android
 
-The mobile companion to the website www.vgleadsheets.com. Offers a mobile-tailored experience for viewing sheet music from video games, designed specifically for jam sessions (both the app and the sheets).
+The mobile companion to the website www.vgleadsheets.com. Offers a mobile-tailored experience for
+viewing sheet music from video games, designed specifically for jam sessions (both the app and the
+sheets).
 
 ## Building
 

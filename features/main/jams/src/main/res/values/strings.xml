@@ -11,4 +11,5 @@
     <string name="error_could_not_find_jam">Could not find Jam. Check the name?</string>
     <string name="error_network">Error communicating with jam server.</string>
     <string name="error_connection">Could not reach jam server. Check your connection?</string>
+    <string name="empty_jams">You haven\'t followed any jams. Click above to search for one.</string>
 </resources>

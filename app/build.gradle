@@ -35,7 +35,7 @@ android {
     defaultConfig {
         applicationId "com.vgleadsheets"
 
-        targetSdkVersion 30
+        targetSdkVersion 31
 
         versionCode 1
         versionName "debug"
@@ -45,11 +45,11 @@ android {
 
     signingConfigs {
         release {
-            String decodedPass = System.getenv("KEYPASS")
+            String decodedPass = System.getenv("UPLOAD_KEYPASS")
 
-            storeFile file("vgls.jks")
+            storeFile file("vgls-upload.jks")
             storePassword decodedPass
-            keyAlias System.getenv("KEY_ALIAS")
+            keyAlias System.getenv("UPLOAD_KEY")
             keyPassword decodedPass
         }
     }
@@ -110,19 +110,19 @@ if (googlePlayTrack != null) {
 
     play {
         track = googlePlayTrack
-        artifactDir = file("build/outputs/apk/release/")
+        artifactDir = file("build/outputs/bundle/release/")
     }
 }
 
 dependencies {
     // Module deps
-    implementation project(path: ':resources')
-    implementation project(path: ':repository')
+    implementation project(path: ':core:resources')
+    implementation project(path: ':core:repository')
     implementation project(path: ':features:main')
-    implementation project(path: ':storage')
-    implementation project(path: ':images')
+    implementation project(path: ':core:storage')
+    implementation project(path: ':core:images')
 
-    androidTestImplementation project(path: ':common:debug-common')
+    androidTestImplementation project(path: ':core:common:debug-common')
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -138,14 +138,14 @@ dependencies {
         implementation "com.google.firebase:firebase-analytics:$firebase_version"
         implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
 
-        implementation project(path: ':tracking')
+        implementation project(path: ':core:tracking')
     } else {
-        implementation project(path: ':tracking-noop')
+        implementation project(path: ':core:tracking-noop')
     }
 
     // Perf tracking (only log to firebase on release builds)
-    debugImplementation project(path: ':perf:tracking:noop')
-    releaseImplementation project(path: ':perf:tracking:firebase')
+    debugImplementation project(path: ':core:perf:tracking:noop')
+    releaseImplementation project(path: ':core:perf:tracking:firebase')
 
     // Memory leak detection (Uncomment to enable)
 //    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
@@ -164,7 +164,7 @@ dependencies {
     androidTestImplementation "com.squareup.rx.idler:rx2-idler:0.10.0"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
-    implementation project(path: ':di')
+    implementation project(path: ':core:di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     kaptAndroidTest "com.google.dagger:dagger-android-processor:$dagger_version"

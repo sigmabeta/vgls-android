@@ -1,15 +1,14 @@
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     api project(path: ':features:main:list')
 
     implementation project(path: ':features:main:hud')
 
-    implementation project(path: ':repository')
-    implementation project(path: ':resources')
-    implementation project(path: ':recyclerview')
-    implementation project(path: ':ui-core')
+    implementation project(path: ':core:repository')
+    implementation project(path: ':core:resources')
+    implementation project(path: ':core:recyclerview')
+    implementation project(path: ':core:ui-core')
 
     // RxJava2 libs
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
@@ -25,7 +24,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
-    implementation project(path: ':di')
+    implementation project(path: ':core:di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 

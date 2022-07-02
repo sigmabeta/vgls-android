@@ -63,3 +63,6 @@ fastlane/readme.md
 .DS_Store
 /build
 .cxx
+
+# Gradle Build Cache
+build-cache

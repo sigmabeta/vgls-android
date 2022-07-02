@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.features.main.about.AboutFragment
-import com.vgleadsheets.features.main.composer.ComposerFragment
+import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.game.GameFragment
@@ -12,19 +12,18 @@ import com.vgleadsheets.features.main.jams.FindJamDialogFragment
 import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
-import com.vgleadsheets.features.main.settings.SettingsFragment
-import com.vgleadsheets.features.main.sheet.SheetDetailFragment
+import com.vgleadsheets.features.main.settings.SettingFragment
+import com.vgleadsheets.features.main.sheet.SongFragment
 import com.vgleadsheets.features.main.songs.SongListFragment
-import com.vgleadsheets.features.main.tagkeys.TagKeyFragment
-import com.vgleadsheets.features.main.tagsongs.TagValueSongListFragment
-import com.vgleadsheets.features.main.tagvalues.TagValueListFragment
+import com.vgleadsheets.features.main.tagkeys.TagKeyListFragment
+import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
+import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.main.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-@Suppress("TooManyFunctions")
 internal abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
@@ -32,15 +31,15 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeGameListFragmentInjector(): GameListFragment
+    internal abstract fun contributGBetterGameListFragmentInjector(): GameListFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeJamListFragmentInjector(): JamListFragment
+    internal abstract fun contributeBetterJamListFragmentInjector(): JamListFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeJamFragmentInjector(): JamFragment
+    internal abstract fun contributeBetterJamFragmentInjector(): JamFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -48,19 +47,19 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeGameFragmentInjector(): GameFragment
+    internal abstract fun contributeBetterGameFragmentInjector(): GameFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeComposerFragmentInjector(): ComposerFragment
+    internal abstract fun contributeBetterComposerFragmentInjector(): ComposerDetailFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeSearchFragmentInjector(): SearchFragment
+    internal abstract fun contributeBetterSearchFragmentInjector(): SearchFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeSettingsFragmentInjector(): SettingsFragment
+    internal abstract fun contributeBetterSettingsFragmentInjector(): SettingFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -72,27 +71,27 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeComposerListFragmentInjector(): ComposerListFragment
+    internal abstract fun contributeBetterComposerListFragmentInjector(): ComposerListFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeTagKeyFragmentInjector(): TagKeyFragment
+    internal abstract fun contributeBetterTagKeyFragmentInjector(): TagKeyListFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeTagValueSongListFragmentInjector(): TagValueSongListFragment
+    internal abstract fun contributeBetterTagValueSongListFragmentInjector(): TagValueSongFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeTagValueFragmentInjector(): TagValueListFragment
+    internal abstract fun contributeBetterTagValueFragmentInjector(): TagValueFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeSongListFragmentInjector(): SongListFragment
+    internal abstract fun contributeBetterSongListFragmentInjector(): SongListFragment
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeSheetDetailFragmentInjector(): SheetDetailFragment
+    internal abstract fun contributeBetterSongDetailFragmentInjector(): SongFragment
 
     @FragmentScope
     @ContributesAndroidInjector
@@ -100,7 +99,7 @@ internal abstract class ActivityBindingModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeDebugFragmentInjector(): DebugFragment
+    internal abstract fun contributeBetterDebugFragmentInjector(): DebugFragment
 
     @FragmentScope
     @ContributesAndroidInjector

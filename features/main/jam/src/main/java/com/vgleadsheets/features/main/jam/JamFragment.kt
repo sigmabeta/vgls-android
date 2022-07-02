@@ -1,160 +1,64 @@
 package com.vgleadsheets.features.main.jam
 
 import android.os.Bundle
+import android.view.View
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.features.main.list.async.AsyncListFragment
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.features.main.hud.HudState
+import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.BetterLists
+import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
-import io.reactivex.disposables.Disposable
 import javax.inject.Inject
+import javax.inject.Named
 
-class JamFragment : AsyncListFragment<JamData, JamState>() {
+class JamFragment : BetterListFragment<JamContent, JamState>() {
     @Inject
-    lateinit var jamViewModelFactory: JamViewModel.Factory
+    lateinit var viewModelFactory: JamViewModel.Factory
 
-    override val viewModel: JamViewModel by fragmentViewModel()
-
-    private var refreshLauncher: Disposable? = null
-
-    override fun getVglsFragmentTag() = this.javaClass.simpleName + ":${idArgs.id}"
+    @Inject
+    @Named("VglsImageUrl")
+    lateinit var baseImageUrl: String
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_JAM
 
-    override fun getFullLoadTargetTime() = 500L
+    override fun getPerfSpec() = PerfSpec.JAM
 
-    @SuppressWarnings("ComplexMethod")
-    override fun subscribeToViewEvents() {
-        viewModel.selectSubscribe(JamState::clickedCurrentSongModel) {
-            val clickedId = it?.dataId
+    override val viewModel: JamViewModel by fragmentViewModel()
 
-            if (clickedId != null) {
-                showCurrentSong()
-                viewModel.clearClicked()
-            }
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.selectSubscribe(JamState::clickedHistoryModel) {
-            val clickedId = it?.dataId
-
-            if (clickedId != null) {
-                showHistorySong(clickedId)
-                viewModel.clearClicked()
-            }
-        }
-
-        viewModel.selectSubscribe(JamState::clickedSetListModel) {
-            val clickedId = it?.dataId
-
-            if (clickedId != null) {
-                showSetlistSong(clickedId)
-                viewModel.clearClicked()
-            }
-        }
-
-        viewModel.selectSubscribe(JamState::clickedCtaModel) {
-            val clickedId = it?.dataId
-
-            when (clickedId?.toInt()) {
-                R.drawable.ic_playlist_play_black_24dp -> followJam()
-                R.drawable.ic_refresh_24dp -> viewModel.refreshJam()
-                R.drawable.ic_delete_black_24dp -> viewModel.deleteJam()
-                null -> { }
-                else -> TODO("Unimplemented button")
-            }
-
-            viewModel.clearClicked()
-        }
-
-        viewModel.selectSubscribe(JamState::refreshError) {
-            if (it != null) {
-                showError(it)
-                viewModel.clearClicked()
-            }
-        }
-
-        // Quit the screen when the jam is deleted.
+        // Quit the screen if the jam is deleted.
         viewModel.asyncSubscribe(
             JamState::deletion,
             deliveryMode = uniqueOnly("deletion")
         ) {
             activity?.onBackPressed()
         }
-
-        // Fire up one refresh whenever we launch the screen. // TODO Not this
-        refreshLauncher = viewModel.selectSubscribe(
-            JamState::listModels,
-            deliveryMode = uniqueOnly("jam")
-        ) { listModels ->
-            val titleListModel = listModels
-                .firstOrNull { it is TitleListModel }
-
-            if (titleListModel != null) {
-                viewModel.refreshJam()
-                refreshLauncher?.dispose()
-            }
-        }
     }
 
-    private fun showCurrentSong() = withState(viewModel) { state ->
-        val currentSong = state.data.jam()?.currentSong
-        if (currentSong == null) {
-            showError("Failed to show song.")
-            return@withState
-        }
-        showSongViewer(currentSong)
-    }
-
-    private fun showHistorySong(clickedId: Long) = withState(viewModel) { state ->
-        val historySong = state
-            .data
-            .jam()
-            ?.songHistory
-            ?.first { it.id == clickedId }
-            ?.song
-
-        if (historySong == null) {
-            showError("Failed to show song.")
-            return@withState
-        }
-
-        showSongViewer(historySong)
-    }
-
-    private fun showSetlistSong(clickedId: Long) = withState(viewModel) { state ->
-        val historySong = state
-            .data
-            .setlist()
-            ?.first { it.id == clickedId }
-            ?.song
-
-        if (historySong == null) {
-            showError("Failed to show song.")
-            return@withState
-        }
-
-        showSongViewer(historySong)
-    }
-
-    private fun showSongViewer(song: Song) = withState(hudViewModel) { hudState ->
-        val transposition = hudState.selectedPart.apiId
-
-        getFragmentRouter().showSongViewer(
-            song.id,
-            song.name,
-            song.gameName,
-            transposition
+    override fun generateList(state: JamState, hudState: HudState) =
+        BetterLists.generateList(
+            Config(
+                state,
+                hudState,
+                baseImageUrl,
+                Clicks(
+                    getFragmentRouter(),
+                    viewModel
+                ),
+                perfTracker,
+                getPerfSpec(),
+                resources
+            ),
+            resources
         )
-    }
-
-    private fun followJam() = withState(viewModel) {
-        getFragmentRouter().showJamViewer(it.jamId)
-    }
 
     companion object {
+        const val LOAD_OPERATION = "loadJam"
+
         fun newInstance(idArgs: IdArgs): JamFragment {
             val fragment = JamFragment()
 
