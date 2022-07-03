@@ -44,7 +44,6 @@
             android:maxLines="1"
             android:text="@{toBind.name}"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="?attr/colorOnPrimary"
             android:typeface="@{Typeface.defaultFromStyle(!toBind.selected ? Typeface.NORMAL : Typeface.BOLD)}"
             app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="10sp"
