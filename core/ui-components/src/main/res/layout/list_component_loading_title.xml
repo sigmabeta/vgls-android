@@ -43,7 +43,7 @@
             tools:text="VGLeadSheets" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/text_title_subtitle"
+            android:id="@+id/text_title_LabelLarge"
             android:layout_width="128dp"
             android:layout_height="22dp"
             android:layout_gravity="center"

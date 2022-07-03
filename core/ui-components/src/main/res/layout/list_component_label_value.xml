@@ -29,7 +29,7 @@
             android:maxWidth="200dp"
             android:maxLines="1"
             android:text="@{toBind.label}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             tools:text="Key Signature" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:labelFor="@id/autocomplete_dropdown"
             android:maxLines="2"
             android:text="@{toBind.value}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             android:textColor="@color/gray_medium"
             tools:text="Eb Major" />
 

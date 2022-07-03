@@ -49,7 +49,7 @@
             android:hint="@string/hint_search"
             android:inputType="textAutoCorrect"
             android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:textColor="@color/hint_text"
             android:visibility="gone" />
 
@@ -65,9 +65,9 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="@string/hint_search"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:textColor="@color/hint_text"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+            app:popupTheme="@style/ThemeOverlay.Material3.Light" />
 
         <ImageButton
             android:id="@+id/button_search_clear"

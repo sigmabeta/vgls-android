@@ -32,7 +32,7 @@
             android:maxWidth="200dp"
             android:maxLines="1"
             android:text="@{toBind.label}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             tools:text="Key Signature" />
 
         <ImageView

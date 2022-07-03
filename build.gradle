@@ -14,7 +14,7 @@ buildscript {
         viewpager_version = "1.0.0"
         core_ktx_version = "1.8.0-beta01"
         appcompat_version = "1.4.1"
-        material_version = "1.6.0-rc01"
+        material_version = "1.6.0"
         recycler_version = "1.2.1"
         timber_version = "5.0.1"
         junit_version = "4.12"

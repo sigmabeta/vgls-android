@@ -46,7 +46,7 @@
             android:layout_marginEnd="@dimen/margin_large"
             android:gravity="center"
             android:text="@{toBind.explanation}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             android:textColor="@color/hint_text"
             tools:text="We don't have sheets to display! Oh noes. Fix it. Fix it fix it fix it." />
     </LinearLayout>

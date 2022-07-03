@@ -39,7 +39,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:textColor="@android:color/tertiary_text_dark"
             tools:text="@string/sample_lorem_ipsum" />
 

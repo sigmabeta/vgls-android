@@ -34,7 +34,7 @@
             android:layout_marginBottom="@dimen/margin_large"
             android:gravity="center"
             android:text="@{toBind.errorString}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             android:textColor="@color/hint_text"
             tools:text="Something bad happened! Oh noes. Fix it. Fix it fix it fix it." />
     </LinearLayout>
