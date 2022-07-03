@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
@@ -177,10 +178,8 @@ class ViewerFragment :
                 song.error.message ?: song.error::class.simpleName ?: "Unknown Error"
             )
             is Success -> showSong(viewerState.song(), selectedPart)
+            is Loading -> Unit
             Uninitialized -> Unit
-            else -> {
-                showError("No song found.")
-            }
         }
     }
 
