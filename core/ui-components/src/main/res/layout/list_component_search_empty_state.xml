@@ -22,7 +22,7 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@drawable/ic_search_black_24dp"
-            app:tint="@color/divider" />
+            app:tint="?attr/colorOutline" />
 
         <TextView
             android:id="@+id/text_empty_state_search"
@@ -35,6 +35,6 @@
             android:gravity="center"
             android:text="@string/empty_search_no_query"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/hint_text" />
+            android:textColor="?attr/colorOutline" />
     </LinearLayout>
 </layout>

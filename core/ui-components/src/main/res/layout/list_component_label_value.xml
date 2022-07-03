@@ -45,7 +45,7 @@
             android:maxLines="2"
             android:text="@{toBind.value}"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-            android:textColor="@color/gray_medium"
+            android:textColor="?attr/colorOutline"
             tools:text="Eb Major" />
 
     </LinearLayout>

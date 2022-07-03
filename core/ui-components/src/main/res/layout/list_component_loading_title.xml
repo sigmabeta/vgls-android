@@ -23,7 +23,7 @@
             android:layout_height="144dp"
             android:layout_marginTop="@dimen/margin_medium"
             android:elevation="@dimen/margin_medium"
-            app:cardBackgroundColor="@color/text_gray"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="72dp"
             app:cardElevation="0dp" />
 
@@ -37,7 +37,7 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginEnd="@dimen/margin_large"
             android:gravity="center"
-            app:cardBackgroundColor="@color/text_gray"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
             app:cardElevation="0dp"
             tools:text="VGLeadSheets" />
@@ -52,7 +52,7 @@
             android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginBottom="@dimen/margin_medium"
             android:gravity="center"
-            app:cardBackgroundColor="@color/text_gray"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
             app:cardElevation="0dp"
             tools:text="By Game" />

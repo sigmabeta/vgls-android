@@ -20,7 +20,8 @@
             android:layout_height="@dimen/min_clickable_size"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
-            android:layout_marginStart="@dimen/margin_medium" />
+            android:layout_marginStart="@dimen/margin_medium"
+            android:indeterminateTint="?attr/colorTertiary"/>
 
         <TextView
             style="@style/TextAppearance.Material3.BodyMedium"

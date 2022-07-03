@@ -26,7 +26,7 @@
             android:layout_marginEnd="@dimen/margin_small"
             android:layout_weight="1"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            app:cardBackgroundColor="@color/text_gray"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
             app:cardElevation="0dp" />
 
@@ -35,7 +35,7 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginEnd="@dimen/margin_small"
-            app:cardBackgroundColor="@color/text_gray"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
             app:cardElevation="0dp" />
 

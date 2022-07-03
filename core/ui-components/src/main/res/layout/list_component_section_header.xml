@@ -32,7 +32,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/divider"
+            android:background="?attr/colorOutline"
             android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small" />

@@ -27,11 +27,11 @@
             android:background="?attr/selectableItemBackground"
             android:onClick="@{() -> toBind.onMenuButtonClick.invoke()}"
             android:padding="@dimen/icon_padding"
-            app:tint="@android:color/tertiary_text_dark"
+            app:tint="?attr/colorOnPrimary"
             app:icon="@{toBind.iconId}"
             tools:src="@drawable/ic_menu_24dp" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             style="@style/TextAppearance.Material3.LabelLarge"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/min_clickable_size"
@@ -41,13 +41,13 @@
             android:maxLines="1"
             android:text="@{toBind.title}"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@android:color/tertiary_text_dark"
+            android:textColor="?attr/colorOnPrimary"
             app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="10sp"
             app:autoSizeTextType="uniform"
             tools:text="@string/app_name" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/item_name"
             android:layout_width="0dp"
             android:layout_height="@dimen/min_clickable_size"
@@ -57,7 +57,7 @@
             android:gravity="center_vertical|end"
             android:maxLines="1"
             android:text="@{toBind.subtitle}"
-            android:textColor="@color/hint_text"
+            android:textColor="?attr/colorOnPrimary"
             android:textStyle="italic"
             app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="8sp"
@@ -68,6 +68,7 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:textColor="?attr/colorTertiaryContainer"
             android:visibility="@{toBind.showChangeParts ? View.GONE : View.VISIBLE}"
             android:onClick="@{() -> toBind.onChangePartClick.invoke()}"
             android:text="@string/button_label_transpo_change" />

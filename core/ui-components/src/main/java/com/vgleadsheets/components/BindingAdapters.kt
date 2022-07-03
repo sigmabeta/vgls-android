@@ -2,15 +2,16 @@
 
 package com.vgleadsheets.components
 
+import android.graphics.Color
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import com.google.android.material.textview.MaterialTextView
+import com.google.android.material.color.MaterialColors
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.vgleadsheets.animation.getEndPulseAnimator
@@ -181,16 +182,15 @@ fun bindIcon(view: ImageButton, iconId: Int) {
 @BindingAdapter("highlighted")
 @Suppress("deprecation")
 fun setHighlighting(
-    view: MaterialTextView,
+    view: TextView,
     highlighted: Boolean
 ) {
-    val colorId = if (highlighted) {
-        R.color.colorPrimaryDark
+    val color = if (highlighted) {
+        MaterialColors.getColor(view.context, R.attr.colorTertiary, Color.BLACK)
     } else {
-        android.R.color.tertiary_text_dark
+        MaterialColors.getColor(view.context, R.attr.colorOnPrimary, Color.BLACK)
     }
 
-    val color = ContextCompat.getColor(view.context, colorId)
     view.setTextColor(color)
 }
 

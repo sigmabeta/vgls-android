@@ -7,5 +7,5 @@ data class IconNameCaptionListModel(
     val iconId: Int,
     val onClick: () -> Unit
 ) : ListModel {
-    override val layoutId = R.layout.list_component_icon_name_caption
+    override val layoutId = R.layout.list_component_now_playing
 }

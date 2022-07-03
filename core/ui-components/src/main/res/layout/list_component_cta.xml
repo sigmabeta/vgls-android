@@ -25,7 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/margin_small"
             android:padding="10dp"
-            app:tint="@color/gray_medium"
+            app:tint="?attr/colorTertiary"
             app:imageResource="@{toBind.iconId}"
             tools:src="@drawable/ic_settings_black_24dp" />
 
@@ -40,7 +40,7 @@
             android:maxLines="1"
             android:text="@{toBind.name}"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@android:color/tertiary_text_dark"
+            android:textColor="?attr/colorTertiary"
             tools:text="@string/sample_lorem_ipsum" />
 
     </LinearLayout>
