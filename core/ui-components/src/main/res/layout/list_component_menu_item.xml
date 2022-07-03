@@ -24,12 +24,13 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/icon"
             android:layout_width="@dimen/min_clickable_size"
             android:layout_height="@dimen/min_clickable_size"
             android:importantForAccessibility="no"
             android:padding="@dimen/icon_padding"
-            app:tint="?attr/colorOnPrimary"
             app:drawable="@{toBind.iconId}"
+            app:highlighted="@{toBind.selected}"
             tools:src="@drawable/ic_person_24dp" />
 
         <TextView

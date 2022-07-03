@@ -2,7 +2,6 @@
 
 package com.vgleadsheets.components
 
-import android.graphics.Color
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
@@ -180,18 +179,31 @@ fun bindIcon(view: ImageButton, iconId: Int) {
 }
 
 @BindingAdapter("highlighted")
-@Suppress("deprecation")
 fun setHighlighting(
     view: TextView,
     highlighted: Boolean
 ) {
     val color = if (highlighted) {
-        MaterialColors.getColor(view.context, R.attr.colorTertiary, Color.BLACK)
+        MaterialColors.getColor(view, R.attr.colorTertiaryContainer)
     } else {
-        MaterialColors.getColor(view.context, R.attr.colorOnPrimary, Color.BLACK)
+        MaterialColors.getColor(view, R.attr.colorOnPrimary)
     }
 
     view.setTextColor(color)
+}
+
+@BindingAdapter("highlighted")
+fun setHighlighting(
+    view: ImageView,
+    highlighted: Boolean
+) {
+    val color = if (highlighted) {
+        MaterialColors.getColor(view, R.attr.colorTertiaryContainer)
+    } else {
+        MaterialColors.getColor(view, R.attr.colorOnPrimary)
+    }
+
+    view.setColorFilter(color)
 }
 
 const val MULTIPLIER_LIST_POSITION = 100
