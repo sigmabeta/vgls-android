@@ -271,6 +271,7 @@ class HudViewModel @AssistedInject constructor(
                     val selectedPart = try {
                         Part.valueOf(selection)
                     } catch (ex: IllegalArgumentException) {
+                        Timber.e("${ex.message}: value $selection no longer valid; defaulting to C")
                         Part.C
                     }
 
