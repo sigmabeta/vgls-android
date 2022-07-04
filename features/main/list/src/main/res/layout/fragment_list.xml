@@ -9,8 +9,6 @@
         android:id="@+id/list_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_side"
-        android:layout_marginEnd="@dimen/margin_side"
         android:clipToPadding="false"
         tools:listitem="@layout/list_component_image_name_caption" />
 

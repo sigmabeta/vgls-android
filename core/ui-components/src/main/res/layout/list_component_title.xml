@@ -13,7 +13,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="16dp"
+        app:cardElevation="8dp"
         app:cardBackgroundColor="?attr/colorPrimaryContainer">
 
         <LinearLayout
@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            app:shouldHavePadding="@{toBind.shouldHavePadding}"
             android:orientation="vertical">
 
             <ImageView

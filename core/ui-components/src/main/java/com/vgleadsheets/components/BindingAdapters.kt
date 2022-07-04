@@ -2,6 +2,7 @@
 
 package com.vgleadsheets.components
 
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
@@ -13,10 +14,12 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.color.MaterialColors
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.vgleadsheets.Side
 import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
+import com.vgleadsheets.setInsetForOnePadding
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -204,6 +207,16 @@ fun setHighlighting(
     }
 
     view.setColorFilter(color)
+}
+
+@BindingAdapter("shouldHavePadding")
+fun setShouldHavePadding(view: View, shouldHavePadding: Boolean) {
+    if (shouldHavePadding) {
+        val topOffset = view.resources.getDimension(R.dimen.height_search_bar).toInt() +
+            view.resources.getDimension(R.dimen.margin_large).toInt()
+
+        view.setInsetForOnePadding(Side.TOP, topOffset)
+    }
 }
 
 const val MULTIPLIER_LIST_POSITION = 100

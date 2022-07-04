@@ -15,7 +15,6 @@ import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.api.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
-import com.vgleadsheets.tabletSetListsSpecialInsets
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
 
@@ -40,11 +39,6 @@ abstract class BetterListFragment<
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val displayMetrics = requireContext().resources.displayMetrics
-        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-
-        val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-            resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
 
         val content = view.findViewById<RecyclerView>(R.id.list_content)
@@ -53,11 +47,7 @@ abstract class BetterListFragment<
 
         adapter.resources = resources
 
-        if (dpWidth > WIDTH_THRESHOLD_TABLET) {
-            content.tabletSetListsSpecialInsets(topOffset, bottomOffset)
-        } else {
-            content.setListsSpecialInsets(topOffset, bottomOffset)
-        }
+        content.setListsSpecialInsets(bottomOffset)
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
         hudViewModel.dontAlwaysShowBack()
@@ -102,8 +92,4 @@ abstract class BetterListFragment<
     override fun getLayoutId() = R.layout.fragment_list
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
-
-    companion object {
-        const val WIDTH_THRESHOLD_TABLET = 500.0f
-    }
 }

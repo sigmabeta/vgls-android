@@ -31,7 +31,7 @@
 
     <style name="VglsImmersive" parent="VglsBaseTheme">
         <item name="android:navigationBarColor">?attr/colorPrimary</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
