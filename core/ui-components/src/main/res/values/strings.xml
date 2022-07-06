@@ -13,4 +13,5 @@
 
     <string name="button_label_transpo_change">Change</string>
     <string name="cont_desc_logo">App Logo</string>
+    <string name="cont_desc_app_menu">App Menu</string>
 </resources>

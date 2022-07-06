@@ -26,6 +26,7 @@ class ComposerListFragment :
                 hudState,
                 Clicks(
                     getFragmentRouter(),
+                    hudViewModel
                 ),
                 perfTracker,
                 getPerfSpec(),

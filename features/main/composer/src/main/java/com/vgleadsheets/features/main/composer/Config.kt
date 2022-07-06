@@ -48,7 +48,8 @@ internal class Config(
         composer?.photoUrl,
         R.drawable.placeholder_composer,
         true,
-        composerLoad.isLoading()
+        composerLoad.isLoading(),
+        onMenuButtonClick = { clicks.menu() }
     )
 
     override val actionsConfig = Actions.NONE

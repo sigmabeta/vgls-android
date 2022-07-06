@@ -34,6 +34,7 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
                 baseImageUrl,
                 Clicks(
                     getFragmentRouter(),
+                    hudViewModel
                 ),
                 perfTracker,
                 getPerfSpec(),

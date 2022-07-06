@@ -22,6 +22,7 @@ object BetterLists {
                 config.titleConfig.onImageLoadSuccess,
                 config.titleConfig.onImageLoadFail,
                 resources,
+                config.titleConfig.onMenuButtonClick,
                 config.titleConfig.photoUrl,
                 config.titleConfig.placeholder,
                 config.titleConfig.shouldShow,

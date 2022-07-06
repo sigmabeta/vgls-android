@@ -17,6 +17,19 @@
         </Constraint>
 
         <Constraint
+            android:id="@+id/button_app_menu"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/space_status_bar">
+
+            <CustomAttribute
+                motion:attributeName="colorFilter"
+                motion:customColorValue="?attr/colorOutline" />
+
+        </Constraint>
+
+        <Constraint
             android:id="@+id/icon_logo"
             android:layout_height="144dp"
             android:layout_width="144dp"
@@ -77,15 +90,27 @@
         </Constraint>
 
         <Constraint
+            android:id="@+id/button_app_menu"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/space_status_bar">
+
+            <CustomAttribute
+                motion:attributeName="colorFilter"
+                motion:customColorValue="?attr/colorOnPrimary" />
+
+        </Constraint>
+
+        <Constraint
             android:id="@id/icon_logo"
             android:layout_height="36dp"
             android:layout_width="36dp"
-            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
             motion:layout_constraintTop_toBottomOf="@id/space_status_bar"
             motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintStart_toStartOf="parent" />
+            motion:layout_constraintStart_toEndOf="@id/button_app_menu" />
 
         <Constraint
             android:id="@+id/text_title_title"

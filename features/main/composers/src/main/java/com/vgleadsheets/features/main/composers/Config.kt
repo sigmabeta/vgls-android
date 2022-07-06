@@ -35,7 +35,8 @@ internal class Config(
             perfTracker.onTitleLoaded(perfSpec)
             perfTracker.onTransitionStarted(perfSpec)
         },
-        { }
+        { },
+        onMenuButtonClick = { clicks.menu() }
     )
 
     override val actionsConfig = Actions.NONE

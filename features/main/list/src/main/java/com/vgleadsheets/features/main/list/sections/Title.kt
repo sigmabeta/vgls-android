@@ -14,6 +14,7 @@ object Title {
         onImageLoadSuccess: (() -> Unit)?,
         onImageLoadFail: ((Exception) -> Unit)?,
         resources: Resources,
+        onMenuButtonClick: (() -> Unit) = Common.noop(),
         photoUrl: String? = null,
         placeholder: Int? = R.drawable.ic_logo,
         shouldShow: Boolean = true,
@@ -37,6 +38,7 @@ object Title {
                 TitleListModel(
                     title ?: resources.getString(R.string.app_name),
                     subtitle ?: "",
+                    onMenuButtonClick,
                     onImageLoadSuccess ?: Common.noop(),
                     onImageLoadFail ?: Common.noopError(),
                     photoUrl,
@@ -56,6 +58,7 @@ object Title {
         val placeholder: Int? = R.drawable.ic_logo,
         val shouldShow: Boolean = true,
         val isLoading: Boolean = false,
-        val titleGenerator: (() -> List<ListModel>)? = null
+        val titleGenerator: (() -> List<ListModel>)? = null,
+        val onMenuButtonClick: (() -> Unit) = Common.noop()
     )
 }
