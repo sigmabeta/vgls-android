@@ -1,6 +1,5 @@
 package com.vgleadsheets.recyclerview
 
-import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.transition.ChangeBounds
 import android.transition.TransitionManager
@@ -9,22 +8,13 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.vgleadsheets.components.ComponentViewHolder
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.recyclerview.ComponentDiffer
 
 class ComponentAdapter :
-    ListAdapter<ListModel, ComponentViewHolder>(object : DiffUtil.ItemCallback<ListModel>() {
-        override fun areItemsTheSame(oldItem: ListModel, newItem: ListModel) =
-            oldItem.dataId == newItem.dataId
-
-        // Impls should be data classes, it's fiiiine
-        @SuppressLint("DiffUtilEquals")
-        override fun areContentsTheSame(oldItem: ListModel, newItem: ListModel) = oldItem == newItem
-
-        override fun getChangePayload(oldItem: ListModel, newItem: ListModel) = true
-    }) {
+    ListAdapter<ListModel, ComponentViewHolder>(ComponentDiffer) {
 
     init {
         setHasStableIds(true)
@@ -33,10 +23,18 @@ class ComponentAdapter :
 
     var resources: Resources? = null
 
+    fun getFirstItem() = if (itemCount > 0) {
+        getItem(0)
+    } else null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val itemBinding =
-            DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
+        val itemBinding = DataBindingUtil.inflate<ViewDataBinding>(
+            inflater,
+            viewType,
+            parent,
+            false
+        )
 
         return ComponentViewHolder(itemBinding)
     }

@@ -7,7 +7,9 @@ data class TitleListModel(
     val onImageLoadFail: ((Exception) -> Unit),
     val photoUrl: String? = null,
     val placeholder: Int? = R.drawable.ic_logo,
-    val shouldHavePadding: Boolean? = true
+    val shouldSetMinHeightOnly: Boolean? = false,
+    val shrinkPercent: Float = 0.0f,
+    val hidden: Boolean = false
 ) : ListModel {
     override val dataId = R.layout.list_component_title.toLong()
     override val layoutId = R.layout.list_component_title

@@ -19,7 +19,8 @@ import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
-import com.vgleadsheets.setInsetForOnePadding
+import com.vgleadsheets.setCurrentHeightFromInset
+import com.vgleadsheets.setMinHeightFromInset
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -209,14 +210,18 @@ fun setHighlighting(
     view.setColorFilter(color)
 }
 
-@BindingAdapter("shouldHavePadding")
-fun setShouldHavePadding(view: View, shouldHavePadding: Boolean) {
-    if (shouldHavePadding) {
-        val topOffset = view.resources.getDimension(R.dimen.height_search_bar).toInt() +
-            view.resources.getDimension(R.dimen.margin_large).toInt()
-
-        view.setInsetForOnePadding(Side.TOP, topOffset)
+@BindingAdapter("shouldSetMinHeightOnly")
+fun setShouldSetMinHeightOnly(view: View, shouldSetMinHeightOnly: Boolean) {
+    if (shouldSetMinHeightOnly) {
+        view.setMinHeightFromInset(Side.TOP, 0)
+    } else {
+        view.setCurrentHeightFromInset(Side.TOP, 0)
     }
+}
+
+@BindingAdapter("shrinkPercent")
+fun setShrinkPercent(view: CustomMotionLayout, shrinkPercent: Float) {
+    view.progress = shrinkPercent
 }
 
 const val MULTIPLIER_LIST_POSITION = 100

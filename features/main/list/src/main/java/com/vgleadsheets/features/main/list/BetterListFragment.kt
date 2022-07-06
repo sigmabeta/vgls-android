@@ -45,6 +45,8 @@ abstract class BetterListFragment<
         content.adapter = adapter
         content.layoutManager = LinearLayoutManager(context)
 
+        content.addItemDecoration(StickyHeaderDecoration(adapter, content))
+
         adapter.resources = resources
 
         content.setListsSpecialInsets(bottomOffset)

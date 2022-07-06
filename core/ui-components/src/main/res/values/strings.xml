@@ -12,4 +12,5 @@
     <string name="label_refreshing">Refreshing…</string>
 
     <string name="button_label_transpo_change">Change</string>
+    <string name="cont_desc_logo">App Logo</string>
 </resources>

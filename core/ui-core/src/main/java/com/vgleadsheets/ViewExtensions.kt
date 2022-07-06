@@ -10,6 +10,7 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginEnd
 import androidx.core.view.marginStart
 import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import kotlin.math.ceil
@@ -69,14 +70,57 @@ fun View.setInsetForOnePadding(
     val insets = ViewCompat.getRootWindowInsets(decorView) ?: return
 
     val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-    val top = systemBarInsets.top
 
     updatePadding(
-        top = if (side == Side.TOP) top + offset else paddingTop,
+        top = if (side == Side.TOP) systemBarInsets.top + offset else paddingTop,
         left = if (side == Side.START) systemBarInsets.left + offset else paddingStart,
         right = if (side == Side.END) systemBarInsets.right + offset else paddingEnd,
         bottom = if (side == Side.BOTTOM) systemBarInsets.bottom + offset else paddingBottom
     )
+}
+
+fun View.setMinHeightFromInset(
+    side: Side,
+    offset: Int = 0
+) {
+    val decorView = (context as? Activity)
+        ?.window
+        ?.decorView ?: return
+
+    val insets = ViewCompat.getRootWindowInsets(decorView) ?: return
+
+    val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+    val newHeight = when (side) {
+        Side.TOP -> systemBarInsets.top
+        Side.BOTTOM -> systemBarInsets.bottom
+        Side.START -> systemBarInsets.left
+        Side.END -> systemBarInsets.right
+    }
+
+    minimumHeight = newHeight + offset
+}
+
+fun View.setCurrentHeightFromInset(
+    side: Side,
+    offset: Int = 0
+) {
+    val decorView = (context as? Activity)
+        ?.window
+        ?.decorView ?: return
+
+    val insets = ViewCompat.getRootWindowInsets(decorView) ?: return
+
+    val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+    val newHeight = when (side) {
+        Side.TOP -> systemBarInsets.top
+        Side.BOTTOM -> systemBarInsets.bottom
+        Side.START -> systemBarInsets.left
+        Side.END -> systemBarInsets.right
+    }
+
+    updateLayoutParams { height = newHeight + offset }
 }
 
 fun View.setInsetListenerForMargin(

@@ -4,38 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View" />
         <variable
             name="toBind"
             type="com.vgleadsheets.components.LoadingTitleListModel" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/component_gb_title"
+    <com.vgleadsheets.components.CustomMotionLayout
+        android:id="@id/root_title"
+        android:visibility="@{toBind.hidden ? View.INVISIBLE : View.VISIBLE}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:model="@{toBind}">
+        app:shrinkPercent="@{toBind.shrinkPercent}"
+        app:layoutDescription="@xml/list_component_title_scene">
+
+        <Space
+            android:id="@+id/space_status_bar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shouldSetMinHeightOnly="@{toBind.shouldSetMinHeightOnly}" />
+
+        <View
+            android:id="@+id/view_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
 
         <androidx.cardview.widget.CardView
-            android:layout_width="144dp"
-            android:layout_height="144dp"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:elevation="@dimen/margin_medium"
+            android:id="@+id/icon_logo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="72dp"
-            app:cardElevation="0dp" />
+            app:cardElevation="16dp" />
 
 
         <androidx.cardview.widget.CardView
             android:id="@+id/text_title_title"
-            android:layout_width="220dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
@@ -43,18 +51,12 @@
             tools:text="VGLeadSheets" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/text_title_LabelLarge"
-            android:layout_width="128dp"
-            android:layout_height="22dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_large"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:gravity="center"
+            android:id="@+id/text_title_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/loading_card_corner_radius"
-            app:cardElevation="0dp"
-            tools:text="By Game" />
-    </LinearLayout>
+            app:cardElevation="0dp"/>
+
+    </com.vgleadsheets.components.CustomMotionLayout>
 </layout>

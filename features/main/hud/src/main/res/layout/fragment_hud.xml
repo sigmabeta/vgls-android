@@ -17,6 +17,7 @@
         tools:visibility="visible" />
 
     <androidx.cardview.widget.CardView
+        android:visibility="gone"
         android:id="@+id/card_search"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_search_bar"

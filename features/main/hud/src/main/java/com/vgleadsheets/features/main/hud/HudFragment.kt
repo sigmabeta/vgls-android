@@ -257,12 +257,12 @@ class HudFragment : VglsFragment() {
     }
 
     private fun showHud() {
-        screen.cardSearch.slideViewOnscreen()
+        // screen.cardSearch.slideViewOnscreen()
         screen.includedBottomSheet.containerCard.slideViewOnscreen()
 
         view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                SYSTEM_UI_FLAG_LAYOUT_STABLE
+            SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
     private fun hideHud() {
@@ -271,11 +271,11 @@ class HudFragment : VglsFragment() {
             screen.includedBottomSheet.containerCard.slideViewDownOffscreen()
 
             view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or
-                    SYSTEM_UI_FLAG_FULLSCREEN or
-                    SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                    SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    SYSTEM_UI_FLAG_LAYOUT_STABLE
+                SYSTEM_UI_FLAG_FULLSCREEN or
+                SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
     }
 
