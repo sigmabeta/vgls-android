@@ -2,6 +2,7 @@ package com.vgleadsheets.components
 
 data class LoadingTitleListModel(
     val loadOperationName: String = "title",
+    val onMenuButtonClick: (() -> Unit)? = { },
     val shouldSetMinHeightOnly: Boolean? = false,
     val shrinkPercent: Float = 0.0f,
     val hidden: Boolean = false

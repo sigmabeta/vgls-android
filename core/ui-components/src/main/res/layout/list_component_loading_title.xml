@@ -31,6 +31,17 @@
             android:layout_width="0dp"
             android:layout_height="0dp" />
 
+        <ImageView
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/button_app_menu"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:contentDescription="@string/cont_desc_app_menu"
+            android:src="@drawable/ic_menu_24dp"
+            android:onClick="@{() -> toBind.onMenuButtonClick.invoke()}"
+            />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/icon_logo"
             android:layout_width="0dp"

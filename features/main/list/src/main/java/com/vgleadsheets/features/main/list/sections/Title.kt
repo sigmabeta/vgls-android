@@ -31,7 +31,9 @@ object Title {
             emptyList()
         } else if (isLoading) {
             listOf(
-                LoadingTitleListModel()
+                LoadingTitleListModel(
+                    onMenuButtonClick = onMenuButtonClick
+                )
             )
         } else {
             listOf(
