@@ -16,6 +16,20 @@
         tools:alpha="0.3"
         tools:visibility="visible" />
 
+    <View android:id="@+id/click_shield"
+        android:layout_height="52dp"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:focusable="false"
+        />
+
+    <ImageButton
+        android:id="@+id/button_app_menu_back_transparent"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="start|top"
+        android:background="?attr/selectableItemBackground" />
+
     <androidx.cardview.widget.CardView
         android:visibility="gone"
         android:id="@+id/card_search"

@@ -51,6 +51,7 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForMargin
+import com.vgleadsheets.setInsetListenerForOneMargin
 import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
@@ -128,6 +129,8 @@ class HudFragment : VglsFragment() {
         cardBottomSheet.updateLayoutParams<FrameLayout.LayoutParams> {
             bottomMargin = -cornerOffset
         }
+
+        screen.buttonAppMenuBackTransparent.setInsetListenerForOneMargin(Side.TOP, 0)
 
         menuAdapter.resources = resources
 

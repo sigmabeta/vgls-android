@@ -18,8 +18,8 @@
 
         <Constraint
             android:id="@+id/button_app_menu"
-            android:layout_height="48dp"
-            android:layout_width="48dp"
+            android:layout_height="52dp"
+            android:layout_width="52dp"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/space_status_bar">
 
@@ -91,8 +91,8 @@
 
         <Constraint
             android:id="@+id/button_app_menu"
-            android:layout_height="48dp"
-            android:layout_width="48dp"
+            android:layout_height="52dp"
+            android:layout_width="52dp"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/space_status_bar">
 

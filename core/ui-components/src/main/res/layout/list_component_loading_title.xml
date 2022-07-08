@@ -34,8 +34,8 @@
         <ImageView
             android:background="?attr/selectableItemBackground"
             android:id="@+id/button_app_menu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:padding="12dp"
             android:contentDescription="@string/cont_desc_app_menu"
             android:src="@drawable/ic_menu_24dp"
