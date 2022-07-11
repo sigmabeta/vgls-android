@@ -2,7 +2,6 @@
 
 package com.vgleadsheets.components
 
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
@@ -14,13 +13,10 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.color.MaterialColors
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.vgleadsheets.Side
 import com.vgleadsheets.animation.getEndPulseAnimator
 import com.vgleadsheets.animation.getPulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
-import com.vgleadsheets.setCurrentHeightFromInset
-import com.vgleadsheets.setMinHeightFromInset
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -80,22 +76,25 @@ fun bindBigPhoto(
     view: ImageView,
     photoUrl: String?,
     placeholder: Int,
-    imageLoadSuccess: () -> Unit,
-    imageLoadFail: (Exception) -> Unit
+    imageLoadSuccess: (() -> Unit)?,
+    imageLoadFail: ((Exception) -> Unit)?
 ) {
     if (placeholder != R.drawable.ic_logo) {
         view.clipToOutline = true
         view.setBackgroundResource(R.drawable.background_image_circle)
+    } else {
+        view.clipToOutline = false
+        view.setBackgroundResource(0)
     }
 
     if (photoUrl != null) {
         val callback = object : Callback {
             override fun onSuccess() {
-                imageLoadSuccess()
+                imageLoadSuccess?.invoke()
             }
 
             override fun onError(e: Exception) {
-                imageLoadFail(e)
+                imageLoadFail?.invoke(e)
             }
         }
 
@@ -130,12 +129,6 @@ fun bindDrawable(
 
 @BindingAdapter("model")
 fun bindImageNameCaptionLoading(view: ConstraintLayout, model: LoadingImageNameCaptionListModel) {
-    view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
-        .start()
-}
-
-@BindingAdapter("model")
-fun bindTitleLoading(view: LinearLayout, model: LoadingTitleListModel) {
     view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
@@ -208,20 +201,6 @@ fun setHighlighting(
     }
 
     view.setColorFilter(color)
-}
-
-@BindingAdapter("shouldSetMinHeightOnly")
-fun setShouldSetMinHeightOnly(view: View, shouldSetMinHeightOnly: Boolean) {
-    if (shouldSetMinHeightOnly) {
-        view.setMinHeightFromInset(Side.TOP, 0)
-    } else {
-        view.setCurrentHeightFromInset(Side.TOP, 0)
-    }
-}
-
-@BindingAdapter("shrinkPercent")
-fun setShrinkPercent(view: CustomMotionLayout, shrinkPercent: Float) {
-    view.progress = shrinkPercent
 }
 
 const val MULTIPLIER_LIST_POSITION = 100

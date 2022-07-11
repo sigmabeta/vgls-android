@@ -2,13 +2,12 @@ package com.vgleadsheets.features.main.list.sections
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.list.Common
 import com.vgleadsheets.features.main.list.R
 
 object Title {
-    fun listItems(
+    fun model(
         title: String?,
         subtitle: String?,
         onImageLoadSuccess: (() -> Unit)?,
@@ -19,7 +18,7 @@ object Title {
         placeholder: Int? = R.drawable.ic_logo,
         shouldShow: Boolean = true,
         isLoading: Boolean = false,
-        titleGenerator: (() -> List<ListModel>)? = null
+        titleGenerator: (() -> ListModel?)? = null
     ) = if (titleGenerator != null) {
         titleGenerator()
     } else {
@@ -28,24 +27,17 @@ object Title {
         }
 
         if (!shouldShow) {
-            emptyList()
-        } else if (isLoading) {
-            listOf(
-                LoadingTitleListModel(
-                    onMenuButtonClick = onMenuButtonClick
-                )
-            )
+            null
         } else {
-            listOf(
-                TitleListModel(
-                    title ?: resources.getString(R.string.app_name),
-                    subtitle ?: "",
-                    onMenuButtonClick,
-                    onImageLoadSuccess ?: Common.noop(),
-                    onImageLoadFail ?: Common.noopError(),
-                    photoUrl,
-                    placeholder
-                )
+            TitleListModel(
+                title ?: resources.getString(R.string.app_name),
+                subtitle ?: "",
+                isLoading,
+                onMenuButtonClick,
+                onImageLoadSuccess ?: Common.noop(),
+                onImageLoadFail ?: Common.noopError(),
+                photoUrl,
+                placeholder
             )
         }
     }
@@ -60,7 +52,7 @@ object Title {
         val placeholder: Int? = R.drawable.ic_logo,
         val shouldShow: Boolean = true,
         val isLoading: Boolean = false,
-        val titleGenerator: (() -> List<ListModel>)? = null,
+        val titleGenerator: (() -> ListModel?)? = null,
         val onMenuButtonClick: (() -> Unit) = Common.noop()
     )
 }

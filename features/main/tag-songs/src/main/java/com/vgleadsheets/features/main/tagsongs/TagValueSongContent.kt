@@ -10,7 +10,7 @@ import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
 
-data class Content(
+data class TagValueSongContent(
     val tagValue: Async<TagValue> = Uninitialized,
     val songs: Async<List<Song>> = Uninitialized
 ) : ListContent {

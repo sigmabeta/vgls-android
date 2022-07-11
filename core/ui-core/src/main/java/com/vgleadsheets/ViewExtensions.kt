@@ -79,6 +79,50 @@ fun View.setInsetForOnePadding(
     )
 }
 
+fun View.setInsetListenerForHeight(
+    side: Side,
+    offset: Int = 0
+) {
+    setOnApplyWindowInsetsListener { _, insets ->
+        val systemBarInsets = WindowInsetsCompat
+            .toWindowInsetsCompat(insets)
+            .getInsets(WindowInsetsCompat.Type.systemBars())
+
+        val newHeight = when (side) {
+            Side.TOP -> systemBarInsets.top
+            Side.BOTTOM -> systemBarInsets.bottom
+            Side.START -> systemBarInsets.left
+            Side.END -> systemBarInsets.right
+        }
+
+        updateLayoutParams { height = newHeight + offset }
+
+        insets
+    }
+}
+
+fun View.setInsetListenerForMinHeight(
+    side: Side,
+    offset: Int = 0
+) {
+    setOnApplyWindowInsetsListener { _, insets ->
+        val systemBarInsets = WindowInsetsCompat
+            .toWindowInsetsCompat(insets)
+            .getInsets(WindowInsetsCompat.Type.systemBars())
+
+        val newHeight = when (side) {
+            Side.TOP -> systemBarInsets.top
+            Side.BOTTOM -> systemBarInsets.bottom
+            Side.START -> systemBarInsets.left
+            Side.END -> systemBarInsets.right
+        }
+
+        minimumHeight = newHeight + offset
+
+        insets
+    }
+}
+
 fun View.setMinHeightFromInset(
     side: Side,
     offset: Int = 0

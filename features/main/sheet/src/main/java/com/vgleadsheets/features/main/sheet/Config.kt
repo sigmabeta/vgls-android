@@ -35,7 +35,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<SongState, Clicks> {
+) : BetterListConfig {
     private val songLoad = state.contentLoad.song
 
     private val song = songLoad.content()

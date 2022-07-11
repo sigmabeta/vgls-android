@@ -23,7 +23,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<JamListState, Clicks> {
+) : BetterListConfig {
     override val titleConfig = Title.Config(
         resources.getString(R.string.app_name),
         resources.getString(R.string.label_jams),

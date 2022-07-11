@@ -19,14 +19,14 @@ import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-internal class Config(
+class Config(
     private val state: ComposerListState,
     private val hudState: HudState,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<ComposerListState, Clicks> {
+) : BetterListConfig {
     override val titleConfig = Title.Config(
         resources.getString(R.string.app_name),
         resources.getString(R.string.label_by_composer),

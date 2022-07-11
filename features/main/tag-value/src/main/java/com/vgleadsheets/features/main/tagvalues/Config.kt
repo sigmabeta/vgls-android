@@ -20,14 +20,14 @@ import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-internal class Config(
+class Config(
     private val state: TagValueState,
     private val hudState: HudState,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<TagValueState, Clicks> {
+) : BetterListConfig {
     private val tagKeyLoad = state.contentLoad.tagKey
 
     private val tagKey = tagKeyLoad.content()

@@ -6,7 +6,6 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -26,20 +25,16 @@ class TagValueFragment : BetterListFragment<TagValueContent, TagValueState>() {
 
     override val viewModel: TagValueViewModel by fragmentViewModel()
 
-    override fun generateList(state: TagValueState, hudState: HudState) =
-        BetterLists.generateList(
-            Config(
-                state,
-                hudState,
-                Clicks(
-                    getFragmentRouter()
-                ),
-                perfTracker,
-                getPerfSpec(),
-                resources
-            ),
-            resources
-        )
+    override fun generateListConfig(state: TagValueState, hudState: HudState) = Config(
+        state,
+        hudState,
+        Clicks(
+            getFragmentRouter()
+        ),
+        perfTracker,
+        getPerfSpec(),
+        resources
+    )
 
     companion object {
         const val LOAD_OPERATION = "loadTagValue"

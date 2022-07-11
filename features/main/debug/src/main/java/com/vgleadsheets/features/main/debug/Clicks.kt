@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.debug
 
 import com.vgleadsheets.features.main.list.ListItemClicks
 
-internal class Clicks(
+class Clicks(
     private val viewModel: DebugViewModel,
 ) : ListItemClicks {
     fun boolean(settingId: String, newValue: Boolean) {

@@ -13,7 +13,7 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 
-internal class Clicks(
+class Clicks(
     private val viewModel: HudViewModel,
     private val router: FragmentRouter,
     private val tracker: Tracker,

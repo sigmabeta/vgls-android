@@ -19,7 +19,7 @@ import com.vgleadsheets.model.thumbUrl
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-internal class Config(
+class Config(
     private val state: ComposerDetailState,
     private val hudState: HudState,
     private val baseImageUrl: String,
@@ -27,7 +27,7 @@ internal class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<ComposerDetailState, Clicks> {
+) : BetterListConfig {
     private val composerLoad = state.contentLoad.composer
 
     private val composer = composerLoad.content()

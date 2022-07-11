@@ -37,7 +37,7 @@ class Config(
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val resources: Resources,
-) : BetterListConfig<SearchState, Clicks> {
+) : BetterListConfig {
 
     override val titleConfig = Title.Config(
         "",

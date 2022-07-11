@@ -3,7 +3,6 @@ package com.vgleadsheets.features.main.composers
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -19,21 +18,17 @@ class ComposerListFragment :
 
     override val viewModel: ComposerListViewModel by fragmentViewModel()
 
-    override fun generateList(state: ComposerListState, hudState: HudState) =
-        BetterLists.generateList(
-            Config(
-                state,
-                hudState,
-                Clicks(
-                    getFragmentRouter(),
-                    hudViewModel
-                ),
-                perfTracker,
-                getPerfSpec(),
-                resources
-            ),
-            resources
-        )
+    override fun generateListConfig(state: ComposerListState, hudState: HudState) = Config(
+        state,
+        hudState,
+        Clicks(
+            getFragmentRouter(),
+            hudViewModel
+        ),
+        perfTracker,
+        getPerfSpec(),
+        resources
+    )
 
     companion object {
         const val LOAD_OPERATION = "loadComposers"
