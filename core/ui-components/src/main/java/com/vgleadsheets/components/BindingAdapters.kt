@@ -13,8 +13,8 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.color.MaterialColors
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.vgleadsheets.animation.getEndPulseAnimator
-import com.vgleadsheets.animation.getPulseAnimator
+import com.vgleadsheets.animation.endPulseAnimator
+import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
 
@@ -26,7 +26,7 @@ fun bindSheetImage(
 ) {
     view.setOnClickListener { listener.onClicked() }
 
-    val pulseAnimator = view.getPulseAnimator(
+    val pulseAnimator = view.pulseAnimator(
         sheetUrl.hashCode() % MAXIMUM_LOAD_OFFSET
     )
     pulseAnimator.start()
@@ -37,12 +37,12 @@ fun bindSheetImage(
         override fun onSuccess() {
             listener.onLoadComplete()
             pulseAnimator.cancel()
-            view.getEndPulseAnimator().start()
+            view.endPulseAnimator().start()
         }
 
         override fun onError(e: Exception?) {
             pulseAnimator.cancel()
-            view.getEndPulseAnimator().start()
+            view.endPulseAnimator().start()
             listener.onLoadFailed(sheetUrl, e)
         }
     }
@@ -129,19 +129,19 @@ fun bindDrawable(
 
 @BindingAdapter("model")
 fun bindImageNameCaptionLoading(view: ConstraintLayout, model: LoadingImageNameCaptionListModel) {
-    view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+    view.pulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
 
 @BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
-    view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+    view.pulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
 
 @BindingAdapter("model")
 fun bindCheckableLoading(view: LinearLayout, model: LoadingCheckableListModel) {
-    view.getPulseAnimator(model.loadPositionOffset * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+    view.pulseAnimator(model.loadPositionOffset * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
 

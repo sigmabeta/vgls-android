@@ -17,7 +17,7 @@
             motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toBottomOf="@id/card_title_subtitle">
+            motion:layout_constraintBottom_toBottomOf="@id/text_title_subtitle">
             <CustomAttribute
                 motion:attributeName="backgroundColor"
                 motion:customColorValue="?android:attr/colorBackground" />
@@ -48,18 +48,6 @@
             motion:transitionEasing="linear" />
 
         <Constraint
-            android:id="@+id/card_title_title"
-            android:layout_width="192dp"
-            android:layout_height="32sp"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_large"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/icon_logo"
-            motion:transitionEasing="linear" />
-
-        <Constraint
             android:id="@+id/text_title_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,19 +61,6 @@
                 motion:attributeName="textColor"
                 motion:customColorValue="?attr/colorOnBackground" />
         </Constraint>
-
-        <Constraint
-            android:id="@id/card_title_subtitle"
-            android:layout_width="128dp"
-            android:layout_height="18sp"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_large"
-            android:layout_marginBottom="@dimen/margin_medium"
-            motion:layout_constraintTop_toBottomOf="@+id/card_title_title"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:transitionEasing="linear" />
 
         <Constraint
             android:id="@id/text_title_subtitle"
@@ -146,17 +121,6 @@
             motion:layout_constraintStart_toEndOf="@id/button_app_menu" />
 
         <Constraint
-            android:id="@+id/card_title_title"
-            android:layout_width="140dp"
-            android:layout_height="24sp"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="8dp"
-            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
-            motion:layout_constraintStart_toEndOf="@id/icon_logo"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintHorizontal_bias="0.0" />
-
-        <Constraint
             android:id="@+id/text_title_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -174,18 +138,6 @@
                 motion:attributeName="textColor"
                 motion:customColorValue="?attr/colorOnPrimary" />
         </Constraint>
-
-        <Constraint
-            android:id="@id/card_title_subtitle"
-            android:layout_width="92dp"
-            android:layout_height="16sp"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="2dp"
-            motion:layout_constraintTop_toBottomOf="@id/card_title_title"
-            motion:layout_constraintStart_toEndOf="@id/icon_logo"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintHorizontal_bias="0.0" />
 
         <Constraint
             android:id="@id/text_title_subtitle"

@@ -30,7 +30,8 @@
         <View
             android:id="@+id/background_title"
             android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            tools:layout_editor_absoluteY="24dp" />
 
         <ImageView
             android:background="?attr/selectableItemBackground"
@@ -53,17 +54,6 @@
             tools:src="@drawable/ic_logo"
             android:contentDescription="@string/cont_desc_logo" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_title_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="192dp"
-            android:alpha="@{toBind.loading ? 1.0f : 0.0f}"
-            app:cardBackgroundColor="?attr/colorSurfaceVariant"
-            app:cardCornerRadius="@dimen/loading_card_corner_radius"
-            app:cardElevation="0dp"
-            tools:text="VGLeadSheets" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,17 +63,8 @@
             android:textSize="24sp"
             android:textColor="?attr/colorOnPrimaryContainer"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            android:alpha="0.0"
             tools:text="VGLeadSheets" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_title_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="128dp"
-            android:alpha="@{toBind.loading ? 1.0f : 0.0f}"
-            app:cardBackgroundColor="?attr/colorSurfaceVariant"
-            app:cardCornerRadius="@dimen/loading_card_corner_radius"
-            app:cardElevation="0dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -94,6 +75,7 @@
             android:textSize="14sp"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             android:gravity="center"
+            android:alpha="0.0"
             tools:text="By Game" />
 
         <androidx.recyclerview.widget.RecyclerView

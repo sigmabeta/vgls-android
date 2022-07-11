@@ -104,6 +104,7 @@ abstract class BetterListFragment<
                 )
 
                 screen.toBind = title
+
                 if (title.alwaysCollapsed) {
                     screen.moLayoutScreen.progress = 1.0f
                     screen.moLayoutScreen.enableTransition(R.id.transition_scroll, false)

@@ -28,7 +28,11 @@ object Title {
 
         TitleListModel(
             title ?: resources.getString(R.string.app_name),
-            subtitle ?: "",
+            if (isLoading) {
+                resources.getString(R.string.loading)
+            } else {
+                subtitle ?: ""
+            },
             isLoading,
             shouldShowBack,
             !shouldShow,
