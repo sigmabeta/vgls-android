@@ -30,7 +30,6 @@ import com.vgleadsheets.animation.fadeIn
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.animation.slideViewDownOffscreen
 import com.vgleadsheets.animation.slideViewOnscreen
-import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
 import com.vgleadsheets.features.main.hud.menu.MenuOptions
@@ -257,7 +256,6 @@ class HudFragment : VglsFragment() {
     }
 
     private fun showHud() {
-        // screen.cardSearch.slideViewOnscreen()
         screen.includedBottomSheet.containerCard.slideViewOnscreen()
 
         view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
@@ -266,8 +264,7 @@ class HudFragment : VglsFragment() {
     }
 
     private fun hideHud() {
-        if (screen.cardSearch.visibility != GONE) {
-            screen.cardSearch.slideViewUpOffscreen()
+        if (screen.includedBottomSheet.containerCard.visibility != GONE) {
             screen.includedBottomSheet.containerCard.slideViewDownOffscreen()
 
             view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or

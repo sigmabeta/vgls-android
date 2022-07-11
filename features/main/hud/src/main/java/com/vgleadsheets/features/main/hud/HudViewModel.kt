@@ -4,7 +4,6 @@ import androidx.fragment.app.FragmentActivity
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -118,13 +117,9 @@ class HudViewModel @AssistedInject constructor(
         stopTimer()
         if (state.mode == HudMode.REGULAR) {
             timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
-                .execute { timer ->
-                    if (timer is Success) {
-                        copy(hudVisible = false)
-                    } else {
-                        this
-                    }
-                }
+                .subscribe {
+                    hideHud()
+                }.disposeOnClear()
         }
     }
 
@@ -227,7 +222,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun saveTopLevelScreen(screenId: String) {
         val shouldSave = screenId != HudFragment.MODAL_SCREEN_ID_DEBUG &&
-                screenId != HudFragment.MODAL_SCREEN_ID_SETTINGS
+            screenId != HudFragment.MODAL_SCREEN_ID_SETTINGS
 
         if (shouldSave) {
             storage.saveTopLevelScreen(screenId)
