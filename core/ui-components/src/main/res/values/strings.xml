@@ -14,4 +14,8 @@
     <string name="button_label_transpo_change">Change</string>
     <string name="cont_desc_logo">App Logo</string>
     <string name="cont_desc_app_menu">App Menu</string>
+
+    <string name="hint_search">Search for a song or game…</string>
+    <string name="cont_desc_search_clear">Clear search input</string>
+    <string name="label_search">Search</string>
 </resources>

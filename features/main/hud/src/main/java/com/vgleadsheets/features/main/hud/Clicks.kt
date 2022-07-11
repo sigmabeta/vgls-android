@@ -24,8 +24,8 @@ class Clicks(
         viewModel.toRegularMode()
     }
 
-    fun searchBox() {
-        tracker.logSearchBoxClick()
+    fun searchButton() {
+        tracker.logSearchButtonClick()
         viewModel.showSearch()
     }
 
@@ -145,5 +145,9 @@ class Clicks(
             PerfViewMode.REGULAR -> viewModel.toMenu()
             else -> viewModel.toPerf()
         }
+    }
+
+    fun searchClear() {
+        viewModel.clearSearchQuery()
     }
 }

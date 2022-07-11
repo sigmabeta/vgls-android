@@ -1,10 +1,9 @@
 package com.vgleadsheets.components
 
 data class MenuTitleBarListModel(
-    val title: String,
-    val subtitle: String,
-    val showChangeParts: Boolean,
+    val partLabel: String,
     val iconId: Int,
+    val onSearchButtonClick: () -> Unit,
     val onMenuButtonClick: () -> Unit,
     val onChangePartClick: () -> Unit
 ) : ListModel {

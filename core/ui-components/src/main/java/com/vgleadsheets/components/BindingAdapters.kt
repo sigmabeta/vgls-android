@@ -2,13 +2,19 @@
 
 package com.vgleadsheets.components
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.postDelayed
 import androidx.databinding.BindingAdapter
 import com.google.android.material.color.MaterialColors
 import com.squareup.picasso.Callback
@@ -17,6 +23,7 @@ import com.vgleadsheets.animation.endPulseAnimator
 import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
+import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -202,6 +209,48 @@ fun setHighlighting(
 
     view.setColorFilter(color)
 }
+
+@BindingAdapter("query")
+fun searchQuery(
+    view: EditText,
+    query: String?
+) {
+    if (query != view.text.toString()) {
+        view.setText(query)
+        if (query.isNullOrEmpty()) {
+            view.postDelayed(DELAY_HALF_SECOND) {
+                Timber.i("Requesting focus.")
+                view.requestFocus()
+
+                val imm = ContextCompat.getSystemService(
+                    view.context,
+                    InputMethodManager::class.java
+                )
+                imm?.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }
+        }
+    }
+}
+
+@BindingAdapter("textEntered")
+fun searchQuery(
+    view: EditText,
+    onTextEntered: (String) -> Unit,
+) {
+    view.addTextChangedListener(
+        object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(enteredText: Editable?) {
+                onTextEntered(enteredText.toString())
+            }
+        }
+    )
+}
+
+const val DELAY_HALF_SECOND = 500L
 
 const val MULTIPLIER_LIST_POSITION = 100
 const val MAXIMUM_LOAD_OFFSET = 250

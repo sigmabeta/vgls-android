@@ -5,8 +5,8 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.metrics.performance.FrameData
 import androidx.metrics.performance.JankStats
@@ -77,13 +77,14 @@ class MainActivity :
 
         setContentView(R.layout.activity_main)
 
+        val toplevel = findViewById<FrameLayout>(R.id.toplevel)
+
         initializeJankStats()
 
         // Configure app for edge-to-edge
-        val toplevel = findViewById<CoordinatorLayout>(R.id.toplevel)
         toplevel.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
         val displayMetrics = resources.displayMetrics
         val widthPixels = displayMetrics.widthPixels
@@ -94,7 +95,7 @@ class MainActivity :
         Timber.v("Device screen size: ${widthPixels}x$heightPixels")
         Timber.v(
             "Device screen size (scaled): ${(widthPixels / displayMetrics.density).toInt()}" +
-                    "x${(heightPixels / displayMetrics.density).toInt()}"
+                "x${(heightPixels / displayMetrics.density).toInt()}"
         )
 
         if (savedInstanceState == null) {

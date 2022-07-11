@@ -94,6 +94,12 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
+    fun clearSearchQuery() = setState {
+        copy(
+            searchQuery = ""
+        )
+    }
+
     fun hideSearch() = withState { state ->
         if (state.mode == HudMode.SEARCH) {
             setState { copy(mode = HudMode.REGULAR) }

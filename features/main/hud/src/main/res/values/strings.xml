@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hint_search">Search for a song or game…</string>
-
     <string name="label_by_game">Browse by Game</string>
     <string name="label_by_composer">Browse by Composer</string>
     <string name="label_all_sheets">Browse All Sheets</string>
@@ -12,8 +10,6 @@
     <string name="label_refresh">Check For Updates</string>
     <string name="label_refresh_loading">Checking for updates...</string>
     <string name="label_refresh_date">Updated %1$s</string>
-
-    <string name="subtitle_menu">…for %1$s</string>
 
     <string name="label_song_details">Show Details</string>
     <string name="label_youtube">Find On YouTube</string>

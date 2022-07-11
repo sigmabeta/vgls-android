@@ -24,15 +24,25 @@ fun View.setInsetListenerForPadding(
     bottomOffset: Int = 0
 ) {
     setOnApplyWindowInsetsListener { v, insets ->
+        val imeInsets = WindowInsetsCompat
+            .toWindowInsetsCompat(insets)
+            .getInsets(WindowInsetsCompat.Type.ime())
+
         val systemBarInsets = WindowInsetsCompat
             .toWindowInsetsCompat(insets)
             .getInsets(WindowInsetsCompat.Type.systemBars())
 
+        val targetInsets = if (imeInsets.bottom > 0) {
+            imeInsets
+        } else {
+            systemBarInsets
+        }
+
         v.updatePadding(
-            top = systemBarInsets.top + topOffset + offset,
-            left = systemBarInsets.left + leftOffset + offset,
-            right = systemBarInsets.right + rightOffset + offset,
-            bottom = systemBarInsets.bottom + bottomOffset + offset
+            top = targetInsets.top + topOffset + offset,
+            left = targetInsets.left + leftOffset + offset,
+            right = targetInsets.right + rightOffset + offset,
+            bottom = targetInsets.bottom + bottomOffset + offset
         )
 
         insets
@@ -44,15 +54,25 @@ fun View.setInsetListenerForOnePadding(
     offset: Int = 0
 ) {
     setOnApplyWindowInsetsListener { v, insets ->
+        val imeInsets = WindowInsetsCompat
+            .toWindowInsetsCompat(insets)
+            .getInsets(WindowInsetsCompat.Type.ime())
+
         val systemBarInsets = WindowInsetsCompat
             .toWindowInsetsCompat(insets)
             .getInsets(WindowInsetsCompat.Type.systemBars())
 
+        val targetInsets = if (imeInsets.bottom > 0) {
+            imeInsets
+        } else {
+            systemBarInsets
+        }
+
         v.updatePadding(
-            top = if (side == Side.TOP) systemBarInsets.top + offset else paddingTop,
-            left = if (side == Side.START) systemBarInsets.left + offset else paddingStart,
-            right = if (side == Side.END) systemBarInsets.right + offset else paddingEnd,
-            bottom = if (side == Side.BOTTOM) systemBarInsets.bottom + offset else paddingBottom
+            top = if (side == Side.TOP) targetInsets.top + offset else paddingTop,
+            left = if (side == Side.START) targetInsets.left + offset else paddingStart,
+            right = if (side == Side.END) targetInsets.right + offset else paddingEnd,
+            bottom = if (side == Side.BOTTOM) targetInsets.bottom + offset else paddingBottom
         )
 
         insets
@@ -184,6 +204,28 @@ fun View.setInsetListenerForMargin(
             left = systemBarInsets.left + leftOffset + offset,
             right = systemBarInsets.right + rightOffset + offset,
             bottom = systemBarInsets.bottom + bottomOffset + offset
+        )
+        insets
+    }
+}
+
+fun View.setImeInsetListenerForMargin(
+    offset: Int = 0,
+    topOffset: Int = 0,
+    leftOffset: Int = 0,
+    rightOffset: Int = 0,
+    bottomOffset: Int = 0
+) {
+    setOnApplyWindowInsetsListener { v, insets ->
+        val imeInsets = WindowInsetsCompat
+            .toWindowInsetsCompat(insets)
+            .getInsets(WindowInsetsCompat.Type.ime())
+
+        (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(
+            top = imeInsets.top + topOffset + offset,
+            left = imeInsets.left + leftOffset + offset,
+            right = imeInsets.right + rightOffset + offset,
+            bottom = imeInsets.bottom + bottomOffset + offset
         )
         insets
     }
