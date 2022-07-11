@@ -5,6 +5,7 @@ data class TitleListModel(
     val subtitle: String,
     val isLoading: Boolean,
     val shouldShowBack: Boolean,
+    val alwaysCollapsed: Boolean,
     val onMenuButtonClick: (() -> Unit),
     val onImageLoadSuccess: (() -> Unit),
     val onImageLoadFail: ((Exception) -> Unit),

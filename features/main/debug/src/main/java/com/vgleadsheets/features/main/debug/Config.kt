@@ -33,8 +33,8 @@ class Config(
     private val settings = settingsLoad.content()
 
     override val titleConfig = Title.Config(
-        "",
-        "",
+        resources.getString(R.string.app_name),
+        resources.getString(R.string.label_debug),
         resources,
         { },
         { },

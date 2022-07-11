@@ -10,7 +10,6 @@ import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.databinding.FragmentListBinding
@@ -22,7 +21,6 @@ import com.vgleadsheets.setInsetListenerForHeight
 import com.vgleadsheets.setListsSpecialInsets
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
-import timber.log.Timber
 
 abstract class BetterListFragment<
     ContentType : ListContent,
@@ -85,15 +83,6 @@ abstract class BetterListFragment<
         progress = screen.moLayoutScreen.progress
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        val progress = screen.moLayoutScreen.progress
-
-        Timber.i("Saving progress: $progress")
-
-        outState.putFloat(KEY_PROGRESS_HEADER_SHRINK, progress)
-    }
-
     override fun invalidate() {
         withState(viewModel, hudViewModel) { state, hudState ->
             val invalidateStartNanos = System.nanoTime()
@@ -114,8 +103,10 @@ abstract class BetterListFragment<
                     config.titleConfig.titleGenerator,
                 )
 
-                if (title is TitleListModel) {
-                    screen.toBind = title
+                screen.toBind = title
+                if (title.alwaysCollapsed) {
+                    screen.moLayoutScreen.progress = 1.0f
+                    screen.moLayoutScreen.enableTransition(R.id.transition_scroll, false)
                 }
 
                 val listItems = BetterLists.generateList(config, resources)
