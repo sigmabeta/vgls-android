@@ -11,6 +11,8 @@
     </data>
 
     <LinearLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_cta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

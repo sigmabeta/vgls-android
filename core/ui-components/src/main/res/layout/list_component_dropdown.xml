@@ -12,6 +12,8 @@
     </data>
 
     <LinearLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_dropdown"
         android:layout_width="match_parent"
         android:layout_height="60dp"

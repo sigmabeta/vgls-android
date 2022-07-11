@@ -9,7 +9,6 @@
             type="com.vgleadsheets.components.SearchEmptyStateListModel" />
     </data>
 
-
     <LinearLayout
         android:id="@+id/component_search_empty_state"
         android:layout_width="match_parent"
