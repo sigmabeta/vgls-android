@@ -16,6 +16,8 @@ class ComposerListFragment :
 
     override fun getPerfSpec() = PerfSpec.COMPOSERS
 
+    override val alwaysShowBack = false
+
     override val viewModel: ComposerListViewModel by fragmentViewModel()
 
     override fun generateListConfig(state: ComposerListState, hudState: HudState) = Config(

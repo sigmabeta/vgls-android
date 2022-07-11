@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
+import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.TitleListModel
@@ -27,8 +28,6 @@ abstract class BetterListFragment<
     ContentType : ListContent,
     StateType : BetterCompositeState<ContentType>
     > : VglsFragment() {
-    private var progress: Float? = null
-
     abstract val viewModel: MvRxViewModel<StateType>
 
     abstract fun generateListConfig(state: StateType, hudState: HudState): BetterListConfig
@@ -41,7 +40,11 @@ abstract class BetterListFragment<
 
     protected val hudViewModel: HudViewModel by existingViewModel()
 
+    protected open val alwaysShowBack = true
+
     private val adapter = ComponentAdapter()
+
+    private var progress: Float? = null
 
     private lateinit var screen: FragmentListBinding
 
@@ -61,7 +64,12 @@ abstract class BetterListFragment<
         content.setListsSpecialInsets(bottomOffset)
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
-        hudViewModel.dontAlwaysShowBack()
+
+        if (alwaysShowBack) {
+            hudViewModel.alwaysShowBack()
+        } else {
+            hudViewModel.dontAlwaysShowBack()
+        }
     }
 
     override fun onStart() {
@@ -94,10 +102,11 @@ abstract class BetterListFragment<
                 val title = Title.model(
                     config.titleConfig.title,
                     config.titleConfig.subtitle,
+                    hudState.alwaysShowBack,
                     config.titleConfig.onImageLoadSuccess,
                     config.titleConfig.onImageLoadFail,
                     resources,
-                    config.titleConfig.onMenuButtonClick,
+                    { (activity as FragmentInterface).onAppBarButtonClick() },
                     config.titleConfig.photoUrl,
                     config.titleConfig.placeholder,
                     config.titleConfig.shouldShow,

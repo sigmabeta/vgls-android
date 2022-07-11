@@ -21,6 +21,8 @@ class SongListFragment :
 
     override fun getPerfSpec() = PerfSpec.SONGS
 
+    override val alwaysShowBack = false
+
     override val viewModel: SongListViewModel by fragmentViewModel()
 
     override fun generateListConfig(state: SongListState, hudState: HudState) = Config(

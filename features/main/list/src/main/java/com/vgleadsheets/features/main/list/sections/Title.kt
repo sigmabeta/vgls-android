@@ -10,6 +10,7 @@ object Title {
     fun model(
         title: String?,
         subtitle: String?,
+        shouldShowBack: Boolean,
         onImageLoadSuccess: (() -> Unit)?,
         onImageLoadFail: ((Exception) -> Unit)?,
         resources: Resources,
@@ -33,6 +34,7 @@ object Title {
                 title ?: resources.getString(R.string.app_name),
                 subtitle ?: "",
                 isLoading,
+                shouldShowBack,
                 onMenuButtonClick,
                 onImageLoadSuccess ?: Common.noop(),
                 onImageLoadFail ?: Common.noopError(),

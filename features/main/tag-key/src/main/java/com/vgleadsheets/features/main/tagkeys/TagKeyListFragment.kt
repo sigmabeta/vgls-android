@@ -16,6 +16,8 @@ class TagKeyListFragment :
 
     override fun getPerfSpec() = PerfSpec.TAG_KEY
 
+    override val alwaysShowBack = false
+
     override val viewModel: TagKeyListViewModel by fragmentViewModel()
 
     override fun generateListConfig(state: TagKeyListState, hudState: HudState) = Config(

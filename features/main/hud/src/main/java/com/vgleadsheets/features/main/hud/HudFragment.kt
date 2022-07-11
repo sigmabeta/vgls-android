@@ -88,6 +88,10 @@ class HudFragment : VglsFragment() {
         }
     }
 
+    fun onAppBarButtonClick() = withState(viewModel) {
+        clicks.appBarButton(it)
+    }
+
     override fun disablePerfTracking() = true
 
     override fun getPerfSpec() = PerfSpec.HUD
@@ -222,10 +226,6 @@ class HudFragment : VglsFragment() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun getTrackingScreen() = TrackingScreen.HUD
-
-    private fun onAppBarButtonClick() = withState(viewModel) {
-        clicks.appBarButton(it)
-    }
 
     private fun showSearchClearButton() {
         screen.buttonSearchClear.fadeIn()

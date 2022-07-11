@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.metrics.performance.FrameData
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
+import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
@@ -52,6 +53,7 @@ class MainActivity :
     AppCompatActivity(),
     HasAndroidInjector,
     FragmentRouter,
+    FragmentInterface,
     HudViewModel.HudViewModelFactoryProvider {
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -112,6 +114,10 @@ class MainActivity :
 
     override fun setPerfSpec(specName: String) {
         metricsStateHolder?.state?.addState(PerfSpec.toString(), specName)
+    }
+
+    override fun onAppBarButtonClick() {
+        getHudFragment().onAppBarButtonClick()
     }
 
     override fun showSearch() {

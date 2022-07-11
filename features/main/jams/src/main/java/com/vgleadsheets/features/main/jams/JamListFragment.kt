@@ -16,6 +16,8 @@ class JamListFragment :
 
     override fun getPerfSpec() = PerfSpec.JAMS
 
+    override val alwaysShowBack = false
+
     override val viewModel: JamListViewModel by fragmentViewModel()
 
     override fun generateListConfig(state: JamListState, hudState: HudState) = Config(

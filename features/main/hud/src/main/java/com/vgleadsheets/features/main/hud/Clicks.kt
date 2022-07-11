@@ -65,7 +65,13 @@ class Clicks(
         tracker.logAppBarButtonClick()
         when (state.mode) {
             HudMode.SEARCH -> viewModel.toRegularMode()
-            HudMode.REGULAR -> viewModel.toMenu()
+            HudMode.REGULAR -> {
+                if (state.alwaysShowBack) {
+                    router.back()
+                } else {
+                    viewModel.toMenu()
+                }
+            }
             else -> {
                 if (state.alwaysShowBack) {
                     router.back()
@@ -73,6 +79,7 @@ class Clicks(
                     viewModel.toRegularMode()
                 }
             }
+
         }
     }
 

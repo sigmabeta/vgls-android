@@ -15,6 +15,8 @@ class GameListFragment : BetterListFragment<GameListContent, GameListState>() {
 
     override fun getPerfSpec() = PerfSpec.GAMES
 
+    override val alwaysShowBack = false
+
     override val viewModel: GameListViewModel by fragmentViewModel()
 
     override fun generateListConfig(state: GameListState, hudState: HudState) = Config(
