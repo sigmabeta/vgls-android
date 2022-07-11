@@ -23,7 +23,6 @@ import com.vgleadsheets.animation.endPulseAnimator
 import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
-import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -219,7 +218,6 @@ fun searchQuery(
         view.setText(query)
         if (query.isNullOrEmpty()) {
             view.postDelayed(DELAY_HALF_SECOND) {
-                Timber.i("Requesting focus.")
                 view.requestFocus()
 
                 val imm = ContextCompat.getSystemService(

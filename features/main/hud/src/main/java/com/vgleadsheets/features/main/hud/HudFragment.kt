@@ -31,11 +31,16 @@ import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
+import javax.inject.Named
 
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment() {
     @Inject
     lateinit var storage: Storage
+
+    @Inject
+    @Named("VglsImageUrl")
+    lateinit var baseImageUrl: String
 
     internal lateinit var clicks: Clicks
 
@@ -109,6 +114,7 @@ class HudFragment : VglsFragment() {
         val menuItems = MenuRenderer.renderMenu(
             state.mode,
             state.searchQuery,
+            state.searchResults,
             state.selectedSong != null,
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
@@ -119,6 +125,7 @@ class HudFragment : VglsFragment() {
             state.updateTime,
             state.selectedSong,
             state.perfViewState,
+            baseImageUrl,
             getFragmentRouter(),
             viewModel,
             clicks,

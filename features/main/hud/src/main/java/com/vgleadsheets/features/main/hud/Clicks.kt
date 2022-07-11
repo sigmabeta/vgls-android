@@ -31,7 +31,7 @@ class Clicks(
 
     fun searchQuery(query: String) {
         tracker.logSearch(query)
-        viewModel.searchQuery(query)
+        viewModel.startQuery(query)
     }
 
     fun back(hudState: HudState) = when (hudState.mode) {
@@ -149,5 +149,17 @@ class Clicks(
 
     fun searchClear() {
         viewModel.clearSearchQuery()
+    }
+
+    fun songSearchResult(id: Long) {
+        router.showSongViewer(id)
+    }
+
+    fun gameSearchResult(id: Long) {
+        router.showSongListForGame(id)
+    }
+
+    fun composerSearchResult(id: Long) {
+        router.showSongListForComposer(id)
     }
 }

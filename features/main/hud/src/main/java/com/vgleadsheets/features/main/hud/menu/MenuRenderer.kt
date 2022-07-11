@@ -10,6 +10,7 @@ import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.PerfViewState
+import com.vgleadsheets.features.main.hud.search.SearchContent
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.FrameTimeStats
@@ -22,6 +23,7 @@ object MenuRenderer {
     fun renderMenu(
         hudMode: HudMode,
         searchQuery: String?,
+        searchResults: SearchContent,
         shouldHide: Boolean,
         showVocalsOption: Boolean,
         selectedPart: Part,
@@ -32,6 +34,7 @@ object MenuRenderer {
         updateTime: Async<Long>,
         currentSong: Song?,
         perfViewState: PerfViewState,
+        baseImageUrl: String,
         router: FragmentRouter,
         viewModel: HudViewModel,
         clicks: Clicks,
@@ -66,9 +69,14 @@ object MenuRenderer {
         ) + Search.getListModels(
             hudMode,
             searchQuery,
+            selectedPart,
+            searchResults,
+            baseImageUrl,
+            clicks,
             { text -> clicks.searchQuery(text) },
             { clicks.bottomMenuButton(hudMode, perfViewState.viewMode) },
             { clicks.searchClear() },
+            resources
         ) + SongDisplay.getListModels(
             currentSong,
             songDetailClickHandler,
