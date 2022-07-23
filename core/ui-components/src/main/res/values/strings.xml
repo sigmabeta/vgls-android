@@ -8,7 +8,7 @@
     <string name="error_image_load">Could not load image.  Tap to try again.</string>
     <string name="error_no_gb_api">For sheet metadata, build app using a Giant Bomb API key. See README.MD.</string>
 
-    <string name="empty_search_no_query">Use the text box to search by title, game, or composer.</string>
+    <string name="search_empty_no_query">Use the text box to search by title, game, or composer.</string>
     <string name="label_refreshing">Refreshing…</string>
 
     <string name="button_label_transpo_change">Change</string>

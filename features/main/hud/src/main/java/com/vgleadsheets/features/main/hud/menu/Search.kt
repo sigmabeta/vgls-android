@@ -8,9 +8,9 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
+import com.vgleadsheets.components.MenuEmptyStateListModel
+import com.vgleadsheets.components.MenuErrorStateListModel
 import com.vgleadsheets.components.MenuSearchListModel
-import com.vgleadsheets.components.SearchEmptyStateListModel
-import com.vgleadsheets.components.SearchErrorStateListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.Clicks
@@ -67,13 +67,16 @@ object Search {
 
         if (query.isNullOrEmpty()) {
             return listOf(
-                SearchEmptyStateListModel()
+                MenuEmptyStateListModel(
+                    R.drawable.ic_search_black_24dp,
+                    resources.getString(R.string.search_empty_no_query)
+                )
             )
         }
 
         if (query.startsWith("stickerbr")) {
             return listOf(
-                SearchErrorStateListModel(
+                MenuErrorStateListModel(
                     "stickerbrush",
                     resources.getString(R.string.search_error_search_stickerbrush),
                 )
@@ -108,7 +111,7 @@ object Search {
         val listModels = songModels + gameModels + composerModels
         return listModels.ifEmpty {
             listOf(
-                SearchEmptyStateListModel(
+                MenuEmptyStateListModel(
                     R.drawable.ic_description_24dp,
                     resources.getString(R.string.search_empty_search_no_results),
                 )
@@ -271,7 +274,7 @@ object Search {
         )
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(
-        SearchErrorStateListModel(
+        MenuErrorStateListModel(
             failedOperationName,
             error.message ?: "Unknown Error",
         )

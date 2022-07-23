@@ -7,11 +7,11 @@
 
         <variable
             name="toBind"
-            type="com.vgleadsheets.components.SearchEmptyStateListModel" />
+            type="com.vgleadsheets.components.MenuErrorStateListModel" />
     </data>
 
     <LinearLayout
-        android:id="@+id/component_search_empty_state"
+        android:id="@+id/component_error_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -22,11 +22,10 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:src="@drawable/ic_search_black_24dp"
+            android:src="@drawable/ic_error_24dp"
             app:tint="?attr/colorOnPrimary" />
 
         <TextView
-            android:id="@+id/text_empty_state_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_large"
@@ -34,8 +33,9 @@
             android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginBottom="@dimen/margin_medium"
             android:gravity="center"
-            android:text="@string/empty_search_no_query"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="?attr/colorOnPrimary" />
+            android:text="@{toBind.errorString}"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="?attr/colorOnPrimary"
+            tools:text="Something bad happened! Oh noes. Fix it. Fix it fix it fix it." />
     </LinearLayout>
 </layout>
