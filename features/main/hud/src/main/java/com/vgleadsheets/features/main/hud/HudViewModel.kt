@@ -21,6 +21,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 import timber.log.Timber
 
@@ -35,10 +36,13 @@ class HudViewModel @AssistedInject constructor(
 
     private val searchOperations = CompositeDisposable()
 
+    private val searchQueryQueue = BehaviorSubject.create<String>()
+
     init {
         checkSavedPartSelection()
         checkLastUpdateTime()
         checkForUpdate()
+        subscribeToSearchQueryQueue()
         subscribeToPerfUpdates()
     }
 
@@ -96,57 +100,15 @@ class HudViewModel @AssistedInject constructor(
         copy(
             searchQuery = null,
             searchResults = searchResults.copy(
-                Uninitialized,
-                Uninitialized,
-                Uninitialized
+                songs = Uninitialized,
+                composers = Uninitialized,
+                games = Uninitialized
             )
         )
     }
 
-    fun startQuery(searchQuery: String) {
-        withState { state ->
-            if (state.searchQuery != searchQuery) {
-                searchOperations.clear()
-
-                setState {
-                    copy(
-                        searchQuery = searchQuery,
-                    )
-                }
-
-                val gameSearch = repository.searchGamesCombined(searchQuery)
-                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
-                    .execute { newGames ->
-                        copy(
-                            searchResults = searchResults.copy(
-                                games = newGames
-                            )
-                        )
-                    }
-
-                val songSearch = repository.searchSongs(searchQuery)
-                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
-                    .execute { newSongs ->
-                        copy(
-                            searchResults = searchResults.copy(
-                                songs = newSongs
-                            )
-                        )
-                    }
-
-                val composerSearch = repository.searchComposersCombined(searchQuery)
-                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
-                    .execute { newComposers ->
-                        copy(
-                            searchResults = searchResults.copy(
-                                composers = newComposers
-                            )
-                        )
-                    }
-
-                searchOperations.addAll(gameSearch, songSearch, composerSearch)
-            }
-        }
+    fun queueSearchQuery(query: String) {
+        searchQueryQueue.onNext(query)
     }
 
     fun hideSearch() = withState { state ->
@@ -358,6 +320,61 @@ class HudViewModel @AssistedInject constructor(
             }
         )
 
+    private fun startSearchQuery(searchQuery: String) {
+        withState { state ->
+            if (state.searchQuery != searchQuery) {
+                searchOperations.clear()
+
+                setState {
+                    copy(
+                        searchQuery = searchQuery,
+                    )
+                }
+
+                val gameSearch = repository.searchGamesCombined(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                    .execute { newGames ->
+                        copy(
+                            searchResults = searchResults.copy(
+                                games = newGames
+                            )
+                        )
+                    }
+
+                val songSearch = repository.searchSongs(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                    .execute { newSongs ->
+                        copy(
+                            searchResults = searchResults.copy(
+                                songs = newSongs
+                            )
+                        )
+                    }
+
+                val composerSearch = repository.searchComposersCombined(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                    .execute { newComposers ->
+                        copy(
+                            searchResults = searchResults.copy(
+                                composers = newComposers
+                            )
+                        )
+                    }
+
+                searchOperations.addAll(gameSearch, songSearch, composerSearch)
+            }
+        }
+    }
+
+    private fun subscribeToSearchQueryQueue() {
+        searchQueryQueue
+            .throttleLast(THRESHOLD_SEARCH_INPUTS, TimeUnit.MILLISECONDS)
+            .subscribe(
+                { startSearchQuery(it) },
+                { }
+            ).disposeOnClear()
+    }
+
     private fun subscribeToPerfUpdates() {
         perfTracker.screenLoadStream()
             .subscribe {
@@ -403,7 +420,8 @@ class HudViewModel @AssistedInject constructor(
     companion object : MvRxViewModelFactory<HudViewModel, HudState> {
         const val TIMEOUT_HUD_VISIBLE = 3000L
 
-        const val RESULT_DEBOUNCE_THRESHOLD = 250L
+        const val THRESHOLD_SEARCH_INPUTS = 500L
+        const val THRESHOLD_RESULT_DEBOUNCE = 250L
 
         override fun create(viewModelContext: ViewModelContext, state: HudState): HudViewModel {
             val activity =

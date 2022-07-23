@@ -11,8 +11,8 @@ import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.MenuEmptyStateListModel
 import com.vgleadsheets.components.MenuErrorStateListModel
 import com.vgleadsheets.components.MenuSearchListModel
+import com.vgleadsheets.components.MenuSectionHeaderListModel
 import com.vgleadsheets.components.SearchResultListModel
-import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.Clicks
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
@@ -172,8 +172,11 @@ object Search {
     private fun createSectionHeaderListModel(
         sectionId: Int,
         resources: Resources
-    ) =
-        listOf(SectionHeaderListModel(resources.getString(sectionId)))
+    ) = listOf(
+        MenuSectionHeaderListModel(
+            resources.getString(sectionId)
+        )
+    )
 
     private fun mapSearchResults(
         results: List<Any>,

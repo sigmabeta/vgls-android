@@ -31,7 +31,7 @@ class Clicks(
 
     fun searchQuery(query: String) {
         tracker.logSearch(query)
-        viewModel.startQuery(query)
+        viewModel.queueSearchQuery(query)
     }
 
     fun back(hudState: HudState) = when (hudState.mode) {
