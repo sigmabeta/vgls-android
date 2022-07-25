@@ -30,8 +30,12 @@ class Clicks(
     }
 
     fun searchQuery(query: String) {
-        tracker.logSearch(query)
-        viewModel.queueSearchQuery(query)
+        val trimmedQuery = query.trim()
+
+        if (trimmedQuery.length > 2) {
+            tracker.logSearch(trimmedQuery)
+            viewModel.queueSearchQuery(trimmedQuery)
+        }
     }
 
     fun back(hudState: HudState) = when (hudState.mode) {

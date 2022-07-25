@@ -23,7 +23,6 @@ import com.vgleadsheets.animation.endPulseAnimator
 import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
-import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -56,8 +55,6 @@ fun bindSheetImage(
 
     Picasso.get()
         .load(sheetUrl)
-        .fit()
-        .centerInside()
         .placeholder(R.drawable.ic_description_white_24dp)
         .error(R.drawable.ic_error_white_24dp)
         .into(view, callback)
@@ -219,7 +216,6 @@ fun searchQuery(
         if (query.isNullOrEmpty()) {
             view.setText(query)
             view.postDelayed(DELAY_HALF_SECOND) {
-                Timber.i("Requesting focus.")
                 view.requestFocus()
 
                 val imm = ContextCompat.getSystemService(

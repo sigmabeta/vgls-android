@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="toBind"
+            type="com.vgleadsheets.components.MenuSearchMoreListModel" />
+    </data>
+
+    <FrameLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
+        android:id="@+id/component_section_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/min_clickable_size"
+        tools:background="?attr/colorPrimary">
+
+        <TextView
+            android:id="@+id/text_header_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="30dp"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_gravity="center_vertical"
+            android:gravity="start"
+            android:text="@{toBind.text}"
+            android:textColor="?attr/colorOnPrimary"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            tools:text="Show 37 more games..."
+            tools:ignore="RtlSymmetry" />
+
+    </FrameLayout>
+</layout>

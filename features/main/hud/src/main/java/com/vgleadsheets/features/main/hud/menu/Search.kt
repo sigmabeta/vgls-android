@@ -11,6 +11,7 @@ import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.MenuEmptyStateListModel
 import com.vgleadsheets.components.MenuErrorStateListModel
 import com.vgleadsheets.components.MenuSearchListModel
+import com.vgleadsheets.components.MenuSearchMoreListModel
 import com.vgleadsheets.components.MenuSectionHeaderListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.features.main.hud.Clicks
@@ -23,6 +24,7 @@ import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.thumbUrl
+import java.util.Locale
 
 object Search {
     fun getListModels(
@@ -69,7 +71,8 @@ object Search {
             return listOf(
                 MenuEmptyStateListModel(
                     R.drawable.ic_search_black_24dp,
-                    resources.getString(R.string.search_empty_no_query)
+                    resources.getString(R.string.search_empty_no_query),
+                    showCrossOut = false
                 )
             )
         }
@@ -83,17 +86,19 @@ object Search {
             )
         }
 
-        val songModels = createSectionModels(
-            R.string.search_section_header_songs,
-            contentLoad.songs,
+        val gameModels = createSectionModels(
+            R.string.search_section_header_games,
+            2,
+            contentLoad.games,
             baseImageUrl,
             selectedPart,
             clicks,
             resources
         )
-        val gameModels = createSectionModels(
-            R.string.search_section_header_games,
-            contentLoad.games,
+        val songModels = createSectionModels(
+            R.string.search_section_header_songs,
+            1,
+            contentLoad.songs,
             baseImageUrl,
             selectedPart,
             clicks,
@@ -101,6 +106,7 @@ object Search {
         )
         val composerModels = createSectionModels(
             R.string.search_section_header_composers,
+            1,
             contentLoad.composers,
             baseImageUrl,
             selectedPart,
@@ -108,7 +114,7 @@ object Search {
             resources
         )
 
-        val listModels = songModels + gameModels + composerModels
+        val listModels = gameModels + songModels + composerModels
         return listModels.ifEmpty {
             listOf(
                 MenuEmptyStateListModel(
@@ -121,6 +127,7 @@ object Search {
 
     private fun createSectionModels(
         sectionId: Int,
+        maxResults: Int,
         results: Async<List<Any>>,
         baseImageUrl: String,
         selectedPart: Part,
@@ -131,6 +138,7 @@ object Search {
         is Fail -> createErrorStateListModel(resources.getString(sectionId), results.error)
         is Success -> createSectionSuccessModels(
             sectionId,
+            maxResults,
             results(),
             baseImageUrl,
             selectedPart,
@@ -141,6 +149,7 @@ object Search {
 
     private fun createSectionSuccessModels(
         sectionId: Int,
+        maxResults: Int,
         results: List<Any>,
         baseImageUrl: String,
         selectedPart: Part,
@@ -158,13 +167,25 @@ object Search {
                 createSectionHeaderListModel(
                     sectionId,
                     resources
-                ) + mapSearchResults(
-                    filteredResults,
-                    baseImageUrl,
-                    selectedPart,
-                    clicks,
-                    resources
-                )
+                ) + if (filteredResults.size > maxResults) {
+                    truncateSearchResults(
+                        sectionId,
+                        maxResults,
+                        filteredResults,
+                        baseImageUrl,
+                        selectedPart,
+                        clicks,
+                        resources
+                    )
+                } else {
+                    mapSearchResults(
+                        filteredResults,
+                        baseImageUrl,
+                        selectedPart,
+                        clicks,
+                        resources
+                    )
+                }
             }
         }
     }
@@ -177,6 +198,30 @@ object Search {
             resources.getString(sectionId)
         )
     )
+
+    private fun truncateSearchResults(
+        sectionId: Int,
+        maxResults: Int,
+        filteredResults: List<Any>,
+        baseImageUrl: String,
+        selectedPart: Part,
+        clicks: Clicks,
+        resources: Resources
+    ): List<ListModel> {
+        return mapSearchResults(
+            filteredResults.take(maxResults),
+            baseImageUrl,
+            selectedPart,
+            clicks,
+            resources
+        ) + MenuSearchMoreListModel(
+            resources.getString(
+                R.string.search_cta_more,
+                filteredResults.size,
+                resources.getString(sectionId).lowercase(Locale.getDefault())
+            )
+        )
+    }
 
     private fun mapSearchResults(
         results: List<Any>,

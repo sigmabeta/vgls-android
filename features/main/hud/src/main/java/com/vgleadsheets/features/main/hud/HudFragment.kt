@@ -12,7 +12,10 @@ import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
@@ -111,6 +114,18 @@ class HudFragment : VglsFragment() {
             state.mode
         )
 
+        if (state.mode != HudMode.SEARCH) {
+            val searchText = screen.includedBottomSheet
+                .includedBottomSheetContent
+                .recyclerBottom
+                .findViewById<EditText>(R.id.edit_search_query)
+
+            if (searchText != null) {
+                searchText.clearFocus()
+                hideKeyboard()
+            }
+        }
+
         val menuItems = MenuRenderer.renderMenu(
             state.mode,
             state.searchQuery,
@@ -173,9 +188,12 @@ class HudFragment : VglsFragment() {
         }
     }
 
-    companion object {
-        const val DELAY_HALF_SECOND = 500L
+    private fun hideKeyboard() {
+        val imm = getSystemService(requireContext(), InputMethodManager::class.java)
+        imm?.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }
 
+    companion object {
         const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
         const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"
         const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"

@@ -10,7 +10,7 @@ object Shadow {
         shadow: View,
         hudMode: HudMode
     ) {
-        if (hudMode != HudMode.REGULAR && hudMode != HudMode.SEARCH) {
+        if (hudMode != HudMode.REGULAR) {
             shadow.fadeInSlightly()
         } else {
             shadow.fadeOutGone()

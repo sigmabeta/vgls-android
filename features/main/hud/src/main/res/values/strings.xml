@@ -66,6 +66,8 @@
     <string name="search_section_header_songs">Songs</string>
     <string name="search_section_header_composers">Composers</string>
 
+    <string name="search_cta_more">Show %1$d more %2$s… </string>
+
     <string name="search_empty_search_no_results">No results found. Try a different search term.</string>
 
     <string name="search_error_search_stickerbrush">Did you know the song is called \"Stickerbush Symphony\"? Yeah. \"Stickerbrush\" isn\'t a word.</string>
