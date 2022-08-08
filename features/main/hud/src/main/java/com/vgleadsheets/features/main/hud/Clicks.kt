@@ -166,4 +166,9 @@ class Clicks(
     fun composerSearchResult(id: Long) {
         router.showSongListForComposer(id)
     }
+
+    fun showMoreResults(query: String) {
+        router.showSearch(query)
+        viewModel.toRegularMode()
+    }
 }

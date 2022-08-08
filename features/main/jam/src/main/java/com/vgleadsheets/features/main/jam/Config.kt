@@ -51,7 +51,7 @@ class Config(
             perfTracker.onTransitionStarted(perfSpec)
         },
         { },
-        shouldShow = true,
+        allowExpansion = true,
         isLoading = jamLoad.isLoading()
     )
 

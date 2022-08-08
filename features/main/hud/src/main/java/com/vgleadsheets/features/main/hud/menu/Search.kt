@@ -77,7 +77,7 @@ object Search {
             )
         }
 
-        if (query.startsWith("stickerbr")) {
+        if (query.lowercase().startsWith("stickerbr")) {
             return listOf(
                 MenuErrorStateListModel(
                     "stickerbrush",
@@ -88,6 +88,7 @@ object Search {
 
         val gameModels = createSectionModels(
             R.string.search_section_header_games,
+            query,
             2,
             contentLoad.games,
             baseImageUrl,
@@ -97,6 +98,7 @@ object Search {
         )
         val songModels = createSectionModels(
             R.string.search_section_header_songs,
+            query,
             1,
             contentLoad.songs,
             baseImageUrl,
@@ -106,6 +108,7 @@ object Search {
         )
         val composerModels = createSectionModels(
             R.string.search_section_header_composers,
+            query,
             1,
             contentLoad.composers,
             baseImageUrl,
@@ -127,6 +130,7 @@ object Search {
 
     private fun createSectionModels(
         sectionId: Int,
+        query: String,
         maxResults: Int,
         results: Async<List<Any>>,
         baseImageUrl: String,
@@ -138,17 +142,19 @@ object Search {
         is Fail -> createErrorStateListModel(resources.getString(sectionId), results.error)
         is Success -> createSectionSuccessModels(
             sectionId,
+            query,
             maxResults,
             results(),
             baseImageUrl,
             selectedPart,
             clicks,
-            resources
+            resources,
         )
     }
 
     private fun createSectionSuccessModels(
         sectionId: Int,
+        query: String,
         maxResults: Int,
         results: List<Any>,
         baseImageUrl: String,
@@ -170,6 +176,7 @@ object Search {
                 ) + if (filteredResults.size > maxResults) {
                     truncateSearchResults(
                         sectionId,
+                        query,
                         maxResults,
                         filteredResults,
                         baseImageUrl,
@@ -201,6 +208,7 @@ object Search {
 
     private fun truncateSearchResults(
         sectionId: Int,
+        query: String,
         maxResults: Int,
         filteredResults: List<Any>,
         baseImageUrl: String,
@@ -219,8 +227,10 @@ object Search {
                 R.string.search_cta_more,
                 filteredResults.size,
                 resources.getString(sectionId).lowercase(Locale.getDefault())
-            )
-        )
+            ),
+        ) {
+            clicks.showMoreResults(query)
+        }
     }
 
     private fun mapSearchResults(

@@ -15,15 +15,15 @@ class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
     private val repository: Repository,
 ) : MvRxViewModel<SearchState>(initialState) {
+    init {
+        withState {
+            if (!it.initialQuery.isNullOrEmpty()) {
+                startQuery(it.initialQuery)
+            }
+        }
+    }
 
     private val searchOperations = CompositeDisposable()
-
-    fun showStickerBr(query: String) = setState {
-        copy(
-            showStickerBr = true,
-            query = query
-        )
-    }
 
     fun startQuery(searchQuery: String) {
         withState { state ->
@@ -32,8 +32,7 @@ class SearchViewModel @AssistedInject constructor(
 
                 setState {
                     copy(
-                        query = searchQuery,
-                        showStickerBr = false
+                        query = searchQuery
                     )
                 }
 
@@ -72,11 +71,10 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
-    fun onQueryClear() {
+    fun clearQuery() {
         setState {
             copy(
                 null,
-                false,
                 contentLoad = contentLoad.copy(
                     Uninitialized,
                     Uninitialized,

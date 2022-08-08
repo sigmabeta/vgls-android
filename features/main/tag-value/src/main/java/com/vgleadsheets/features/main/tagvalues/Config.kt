@@ -45,7 +45,7 @@ class Config(
             perfTracker.onTransitionStarted(perfSpec)
         },
         { },
-        shouldShow = true,
+        allowExpansion = true,
         isLoading = tagKeyLoad.isLoading()
     )
 

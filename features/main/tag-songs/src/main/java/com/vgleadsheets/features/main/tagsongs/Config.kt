@@ -49,7 +49,7 @@ class Config(
             perfTracker.onTransitionStarted(perfSpec)
         },
         { },
-        shouldShow = true,
+        allowExpansion = true,
         isLoading = tagValueLoad.isLoading()
     )
 

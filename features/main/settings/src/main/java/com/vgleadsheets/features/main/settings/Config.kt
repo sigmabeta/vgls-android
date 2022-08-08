@@ -38,7 +38,7 @@ class Config(
         resources,
         { },
         { },
-        shouldShow = false,
+        allowExpansion = false,
     )
 
     override val actionsConfig = Actions.NONE

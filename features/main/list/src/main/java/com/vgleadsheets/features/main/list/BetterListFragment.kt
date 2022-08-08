@@ -98,14 +98,14 @@ abstract class BetterListFragment<
                     { (activity as FragmentInterface).onAppBarButtonClick() },
                     config.titleConfig.photoUrl,
                     config.titleConfig.placeholder,
-                    config.titleConfig.shouldShow,
+                    config.titleConfig.allowExpansion,
                     config.titleConfig.isLoading,
                     config.titleConfig.titleGenerator,
                 )
 
                 screen.toBind = title
 
-                if (title.alwaysCollapsed) {
+                if (title.allowExpansion) {
                     screen.moLayoutScreen.progress = 1.0f
                     screen.moLayoutScreen.enableTransition(R.id.transition_scroll, false)
                 }

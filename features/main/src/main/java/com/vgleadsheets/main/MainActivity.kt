@@ -15,6 +15,7 @@ import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.args.NullableStringArgs
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
@@ -121,9 +122,9 @@ class MainActivity :
         getHudFragment().onAppBarButtonClick()
     }
 
-    override fun showSearch() {
+    override fun showSearch(query: String?) {
         showFragmentSimple(
-            SearchFragment.newInstance()
+            SearchFragment.newInstance(NullableStringArgs(query))
         )
     }
 

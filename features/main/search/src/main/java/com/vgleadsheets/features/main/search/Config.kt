@@ -39,12 +39,12 @@ class Config(
 ) : BetterListConfig {
 
     override val titleConfig = Title.Config(
-        "",
-        "",
+        resources.getString(R.string.app_name),
+        resources.getString(R.string.label_search),
         resources,
         { },
         { },
-        shouldShow = false,
+        allowExpansion = false,
     )
 
     override val actionsConfig = Actions.NONE
@@ -63,7 +63,7 @@ class Config(
             )
         }
 
-        if (state.showStickerBr) {
+        if (query.lowercase().startsWith("stickerbr")) {
             return@Config listOf(
                 ErrorStateListModel(
                     "stickerbrush",

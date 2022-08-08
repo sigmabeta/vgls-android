@@ -16,7 +16,7 @@ object Title {
         onMenuButtonClick: (() -> Unit) = Common.noop(),
         photoUrl: String? = null,
         placeholder: Int? = R.drawable.ic_logo,
-        shouldShow: Boolean = true,
+        allowExpansion: Boolean = true,
         isLoading: Boolean = false,
         titleGenerator: (() -> TitleListModel)? = null
     ) = if (titleGenerator != null) {
@@ -35,7 +35,7 @@ object Title {
             },
             isLoading,
             shouldShowBack,
-            !shouldShow,
+            !allowExpansion,
             onMenuButtonClick,
             onImageLoadSuccess ?: Common.noop(),
             onImageLoadFail ?: Common.noopError(),
@@ -52,7 +52,7 @@ object Title {
         val onImageLoadFail: ((Exception) -> Unit)?,
         val photoUrl: String? = null,
         val placeholder: Int? = R.drawable.ic_logo,
-        val shouldShow: Boolean = true,
+        val allowExpansion: Boolean = true,
         val isLoading: Boolean = false,
         val titleGenerator: (() -> TitleListModel)? = null,
         val onMenuButtonClick: (() -> Unit) = Common.noop()

@@ -9,20 +9,21 @@
             type="com.vgleadsheets.components.MenuSearchMoreListModel" />
     </data>
 
+<!--  Spacings adjusted for tablets. If bad on phones, make a new file.  -->
     <FrameLayout
         android:paddingStart="@dimen/margin_side"
         android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_section_header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/min_clickable_size"
+        android:onClick="@{() -> toBind.onClick.invoke()}"
         tools:background="?attr/colorPrimary">
 
         <TextView
             android:id="@+id/text_header_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="30dp"
-            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             android:layout_gravity="center_vertical"
             android:gravity="start"
