@@ -27,19 +27,10 @@ class SearchFragment : BetterListFragment<SearchContent, SearchState>() {
 
     override val viewModel: SearchViewModel by fragmentViewModel()
 
-    private var stickerBrLogged = false
-
-    // {
-    //     if (it != null) {
-    //         if (it.lowercase().contains("stickerbr")) {
-    //                     viewModel.startQuery(query)
-    //         } else {
-    //             onSearchQueryEntered(it)
-    //         }
-    //     } else {
-    //         viewModel.clearQuery()
-    //     }
-    // }
+    fun startQuery(query: String?) {
+        query ?: return
+        viewModel.startQuery(query)
+    }
 
     override fun generateListConfig(state: SearchState, hudState: HudState) = Config(
         state,
@@ -51,17 +42,6 @@ class SearchFragment : BetterListFragment<SearchContent, SearchState>() {
         ),
         resources
     )
-
-    private fun onSearchQueryEntered(query: String) {
-        viewModel.startQuery(query)
-    }
-
-    private fun onStickerBrEntered() {
-        if (!stickerBrLogged) {
-            tracker.logStickerBr()
-            stickerBrLogged = true
-        }
-    }
 
     companion object {
         const val LOAD_OPERATION = "loadSearch"

@@ -20,7 +20,8 @@ data class HudState(
     val searchResults: SearchContent = SearchContent(
         Uninitialized,
         Uninitialized,
-        Uninitialized
+        Uninitialized,
+        false
     ),
     val selectedPart: Part = Part.C,
     val selectedSong: Song? = null,

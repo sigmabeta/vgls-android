@@ -328,15 +328,23 @@ class HudViewModel @AssistedInject constructor(
                 setState {
                     copy(
                         searchQuery = searchQuery,
+                        searchResults = searchResults.copy(
+                            searching = true
+                        )
                     )
                 }
 
                 val gameSearch = repository.searchGamesCombined(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
                     .execute { newGames ->
+                        if (newGames is Loading) {
+                            return@execute this
+                        }
+
                         copy(
                             searchResults = searchResults.copy(
-                                games = newGames
+                                games = newGames,
+                                searching = false
                             )
                         )
                     }
@@ -344,9 +352,14 @@ class HudViewModel @AssistedInject constructor(
                 val songSearch = repository.searchSongs(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
                     .execute { newSongs ->
+                        if (newSongs is Loading) {
+                            return@execute this
+                        }
+
                         copy(
                             searchResults = searchResults.copy(
-                                songs = newSongs
+                                songs = newSongs,
+                                searching = false
                             )
                         )
                     }
@@ -354,9 +367,14 @@ class HudViewModel @AssistedInject constructor(
                 val composerSearch = repository.searchComposersCombined(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
                     .execute { newComposers ->
+                        if (newComposers is Loading) {
+                            return@execute this
+                        }
+
                         copy(
                             searchResults = searchResults.copy(
-                                composers = newComposers
+                                composers = newComposers,
+                                searching = false
                             )
                         )
                     }

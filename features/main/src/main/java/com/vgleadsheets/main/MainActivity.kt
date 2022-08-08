@@ -123,6 +123,13 @@ class MainActivity :
     }
 
     override fun showSearch(query: String?) {
+        val currentScreen = getDisplayedFragment()
+
+        if (currentScreen is SearchFragment) {
+            currentScreen.startQuery(query)
+            return
+        }
+
         showFragmentSimple(
             SearchFragment.newInstance(NullableStringArgs(query))
         )

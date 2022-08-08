@@ -9,5 +9,6 @@ import com.vgleadsheets.model.song.Song
 data class SearchContent(
     val songs: Async<List<Song>> = Uninitialized,
     val composers: Async<List<Composer>> = Uninitialized,
-    val games: Async<List<Game>> = Uninitialized
+    val games: Async<List<Game>> = Uninitialized,
+    val searching: Boolean
 )

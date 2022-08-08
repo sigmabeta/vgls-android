@@ -7,7 +7,6 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.MenuEmptyStateListModel
 import com.vgleadsheets.components.MenuErrorStateListModel
 import com.vgleadsheets.components.MenuSearchListModel
@@ -66,7 +65,6 @@ object Search {
         clicks: Clicks,
         resources: Resources
     ): List<ListModel> {
-
         if (query.isNullOrEmpty()) {
             return listOf(
                 MenuEmptyStateListModel(
@@ -117,7 +115,12 @@ object Search {
             resources
         )
 
-        val listModels = gameModels + songModels + composerModels
+        val loading = createLoadingListModels(
+            contentLoad.searching,
+            resources
+        )
+
+        val listModels = gameModels + songModels + composerModels + loading
         return listModels.ifEmpty {
             listOf(
                 MenuEmptyStateListModel(
@@ -138,7 +141,7 @@ object Search {
         clicks: Clicks,
         resources: Resources
     ) = when (results) {
-        is Loading, Uninitialized -> createLoadingListModels(sectionId, resources)
+        is Loading, Uninitialized -> emptyList()
         is Fail -> createErrorStateListModel(resources.getString(sectionId), results.error)
         is Success -> createSectionSuccessModels(
             sectionId,
@@ -324,12 +327,15 @@ object Search {
         ?.isNotEmpty() ?: false
 
     private fun createLoadingListModels(
-        sectionId: Int,
+        searching: Boolean,
         resources: Resources
-    ) = createSectionHeaderListModel(sectionId, resources) +
+    ) = if (!searching) {
+        emptyList()
+    } else {
         listOf(
-            LoadingImageNameCaptionListModel(resources.getString(sectionId), sectionId)
+            MenuSearchMoreListModel(resources.getString(R.string.search_now_loading)) {}
         )
+    }
 
     private fun createErrorStateListModel(failedOperationName: String, error: Throwable) = listOf(
         MenuErrorStateListModel(
