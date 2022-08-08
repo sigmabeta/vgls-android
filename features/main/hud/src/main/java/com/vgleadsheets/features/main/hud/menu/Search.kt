@@ -57,6 +57,7 @@ object Search {
         emptyList()
     }
 
+    @Suppress("LongMethod", "ReturnCount")
     private fun searchResults(
         query: String?,
         contentLoad: SearchContent,
