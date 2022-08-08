@@ -11,7 +11,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.vgleadsheets.components.ComponentViewHolder
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.recyclerview.ComponentDiffer
 
 class ComponentAdapter :
     ListAdapter<ListModel, ComponentViewHolder>(ComponentDiffer) {

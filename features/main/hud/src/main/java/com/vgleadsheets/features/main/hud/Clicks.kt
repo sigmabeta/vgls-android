@@ -83,7 +83,6 @@ class Clicks(
                     viewModel.toRegularMode()
                 }
             }
-
         }
     }
 

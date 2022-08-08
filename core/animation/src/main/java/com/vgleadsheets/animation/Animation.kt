@@ -161,7 +161,6 @@ fun removeNullViewPairs(vararg views: Pair<View, String>?): Array<Pair<View, Str
 fun View.pulseAnimator(seed: Int): Animator {
     val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE, ALPHA_VERY_TRANSPARENT)
 
-
     alpha.apply {
         repeatMode = REVERSE
         repeatCount = INFINITE
@@ -174,7 +173,6 @@ fun View.pulseAnimator(seed: Int): Animator {
 
 fun View.endPulseAnimator(): Animator {
     val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE)
-
 
     alpha.apply {
         duration = DURATION_X_QUICK
@@ -194,6 +192,3 @@ fun View.fadeOutAnimator(): Animator {
 
     return alpha
 }
-
-
-
