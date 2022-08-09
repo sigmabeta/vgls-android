@@ -19,7 +19,7 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-internal class Config(
+class Config(
     private val state: GameState,
     private val hudState: HudState,
     private val baseImageUrl: String,
@@ -27,7 +27,7 @@ internal class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<GameState, Clicks> {
+) : BetterListConfig {
     private val gameLoad = state.contentLoad.game
 
     private val game = gameLoad.content()

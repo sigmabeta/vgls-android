@@ -5,12 +5,16 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="toBind"
             type="com.vgleadsheets.components.EmptyStateListModel" />
     </data>
 
     <LinearLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_empty_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,13 +30,15 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 app:drawable="@{toBind.iconId}"
-                app:tint="@color/divider"
+                app:tint="?attr/colorOutline"
+                tools:tint="?attr/colorOutline"
                 tools:src="@drawable/ic_album_24dp" />
 
             <ImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:src="@drawable/ic_cross_out_24dp" />
+                android:src="@drawable/ic_cross_out_24dp"
+                android:visibility="@{toBind.showCrossOut ? View.VISIBLE : View.GONE}" />
 
         </FrameLayout>
 
@@ -46,8 +52,8 @@
             android:layout_marginEnd="@dimen/margin_large"
             android:gravity="center"
             android:text="@{toBind.explanation}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textColor="@color/hint_text"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="?attr/colorOutline"
             tools:text="We don't have sheets to display! Oh noes. Fix it. Fix it fix it fix it." />
     </LinearLayout>
 </layout>

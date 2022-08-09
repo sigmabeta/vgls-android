@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame_content"
     android:layout_width="match_parent"
@@ -15,73 +15,6 @@
         android:visibility="gone"
         tools:alpha="0.3"
         tools:visibility="visible" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_search"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_search_bar"
-        android:layout_gravity="top"
-        android:layout_margin="@dimen/margin_medium"
-        android:elevation="16dp"
-        app:cardCornerRadius="6dp">
-
-        <ImageButton
-            android:id="@+id/button_search_menu_back"
-            android:layout_width="@dimen/min_clickable_size"
-            android:layout_height="@dimen/min_clickable_size"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/margin_small"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_menu_24dp"
-            app:tint="@color/gray_medium" />
-
-        <EditText
-            android:id="@+id/edit_search_query"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_xlarge"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_xlarge"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:hint="@string/hint_search"
-            android:inputType="textAutoCorrect"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@color/hint_text"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/text_search_hint"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|start"
-            android:layout_marginStart="@dimen/margin_xlarge"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_xlarge"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="@string/hint_search"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@color/hint_text"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
-
-        <ImageButton
-            android:id="@+id/button_search_clear"
-            android:layout_width="@dimen/min_clickable_size"
-            android:layout_height="@dimen/min_clickable_size"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:alpha="0.0"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_clear_black_24dp"
-            app:tint="@color/gray_medium"
-            android:visibility="gone" />
-
-    </androidx.cardview.widget.CardView>
 
     <include
         android:id="@+id/included_bottom_sheet"

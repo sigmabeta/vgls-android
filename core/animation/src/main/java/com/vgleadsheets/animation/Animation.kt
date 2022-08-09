@@ -2,7 +2,7 @@
 
 package com.vgleadsheets.animation
 
-import android.animation.AnimatorSet
+import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.animation.ValueAnimator.REVERSE
@@ -158,36 +158,37 @@ fun removeNullViewPairs(vararg views: Pair<View, String>?): Array<Pair<View, Str
     return viewsList.toTypedArray()
 }
 
-fun View.getPulseAnimator(seed: Int): AnimatorSet {
+fun View.pulseAnimator(seed: Int): Animator {
     val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE, ALPHA_VERY_TRANSPARENT)
 
-    val animatorList = listOf(alpha)
-
-    animatorList.forEach {
-        it.repeatMode = REVERSE
-        it.repeatCount = INFINITE
-        it.duration = DURATION_XSLOW + seed
-        it.interpolator = ACCEL_DECEL
+    alpha.apply {
+        repeatMode = REVERSE
+        repeatCount = INFINITE
+        duration = DURATION_XSLOW + seed
+        interpolator = ACCEL_DECEL
     }
 
-    val animatorSet = AnimatorSet()
-    animatorSet.playTogether(animatorList)
-
-    return animatorSet
+    return alpha
 }
 
-fun View.getEndPulseAnimator(): AnimatorSet {
+fun View.endPulseAnimator(): Animator {
     val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_OPAQUE)
 
-    val animatorList = listOf(alpha)
-
-    animatorList.forEach {
-        it.duration = DURATION_X_QUICK
-        it.interpolator = ACCEL_DECEL
+    alpha.apply {
+        duration = DURATION_X_QUICK
+        interpolator = ACCEL_DECEL
     }
 
-    val animatorSet = AnimatorSet()
-    animatorSet.playTogether(animatorList)
+    return alpha
+}
 
-    return animatorSet
+fun View.fadeOutAnimator(): Animator {
+    val alpha = ObjectAnimator.ofFloat(this, View.ALPHA, ALPHA_TRANSPARENT)
+
+    alpha.apply {
+        duration = DURATION_X_QUICK
+        interpolator = ACCEL_DECEL
+    }
+
+    return alpha
 }

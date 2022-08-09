@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hint_search">Search for a song or game…</string>
-
     <string name="label_by_game">Browse by Game</string>
     <string name="label_by_composer">Browse by Composer</string>
     <string name="label_all_sheets">Browse All Sheets</string>
@@ -12,8 +10,6 @@
     <string name="label_refresh">Check For Updates</string>
     <string name="label_refresh_loading">Checking for updates...</string>
     <string name="label_refresh_date">Updated %1$s</string>
-
-    <string name="subtitle_menu">…for %1$s</string>
 
     <string name="label_song_details">Show Details</string>
     <string name="label_youtube">Find On YouTube</string>
@@ -57,4 +53,26 @@
     <string name="value_perf_summary_invalidate">%1$d of %2$d slow</string>
 
     <string name="value_perf_ms">%1$d ms</string>
+
+    <string name="search_label_type_game">Game</string>
+    <string name="search_label_type_composer">Composer</string>
+    <string name="search_label_type_song">Song</string>
+    <string name="search_label_sheet_count">%1$d Sheets</string>
+
+    <string name="search_sample_text_result">Baden National Golf Course</string>
+    <string name="search_sample_text_result_type">Song</string>
+
+    <string name="search_section_header_games">Games</string>
+    <string name="search_section_header_songs">Songs</string>
+    <string name="search_section_header_composers">Composers</string>
+
+    <string name="search_cta_more">Show %1$d more %2$s… </string>
+
+    <string name="search_empty_search_no_results">No results found. Try a different search term.</string>
+
+    <string name="search_error_search_stickerbrush">Did you know the song is called \"Stickerbush Symphony\"? Yeah. \"Stickerbrush\" isn\'t a word.</string>
+
+    <string name="search_subtitle_suffix_others">" and %1$d more…"</string>
+    <string name="search_subtitle_separator">", "</string>
+    <string name="search_now_loading">Please wait, now loading…</string>
 </resources>

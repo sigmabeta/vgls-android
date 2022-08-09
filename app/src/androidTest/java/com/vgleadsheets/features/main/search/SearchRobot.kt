@@ -8,7 +8,7 @@ import com.vgleadsheets.features.main.ListUiTest
 
 class SearchRobot(test: ListUiTest) : ListRobot(test) {
     init {
-        checkViewWithIdAndTextVisible(R.id.text_empty_state_search, R.string.empty_search_no_query)
+        checkViewWithIdAndTextVisible(R.id.text_empty_state_search, R.string.search_empty_no_query)
     }
 
     fun typeInSearchBox(text: String) {

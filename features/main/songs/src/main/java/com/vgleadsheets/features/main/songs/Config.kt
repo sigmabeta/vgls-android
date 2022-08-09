@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.tagsongs
+package com.vgleadsheets.features.main.songs
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
@@ -6,7 +6,7 @@ import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
-import com.vgleadsheets.features.main.list.isLoading
+import com.vgleadsheets.features.main.list.isNullOrEmpty
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -14,86 +14,65 @@ import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.thumbUrl
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 
-class TagValueSongConfig(
-    private val state: TagValueSongState,
+class Config(
+    private val state: SongListState,
     private val hudState: HudState,
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<TagValueSongState, Clicks> {
-    private val tagValueLoad = state.contentLoad.tagValue
-
-    private val tagValue = tagValueLoad.content()
-
-    private val songsLoad = state.contentLoad.songs
-
-    private val songs = songsLoad.content()
+) : BetterListConfig {
+    private val songsLoad = state.contentLoad.songsLoad
 
     override val titleConfig = Title.Config(
-        resources.getString(
-            R.string.title_tag_value_songs,
-            tagValue?.tagKeyName ?: resources.getString(R.string.unknown_tag_key),
-            tagValue?.name ?: resources.getString(R.string.unknown_tag_value)
-        ),
-        songs?.captionText(),
+        resources.getString(R.string.app_name),
+        resources.getString(R.string.subtitle_all_sheets),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
             perfTracker.onTransitionStarted(perfSpec)
         },
-        { },
-        shouldShow = true,
-        isLoading = tagValueLoad.isLoading()
+        { }
     )
 
     override val actionsConfig = Actions.NONE
 
     override val contentConfig = Content.Config(
-        !songs.isNullOrEmpty()
+        !state.contentLoad.isNullOrEmpty()
     ) {
-        songs?.filteredForVocals(hudState.selectedPart.apiId)
+        songsLoad.content()
+            ?.filteredForVocals(hudState.selectedPart.apiId)
             ?.map { song ->
                 ImageNameCaptionListModel(
                     song.id,
                     song.name,
-                    song.captionText(),
+                    song.gameName,
                     song.thumbUrl(baseImageUrl, hudState.selectedPart),
                     R.drawable.placeholder_sheet
-                ) {
-                    clicks.song(song.id)
-                }
+                ) { clicks.song(song.id) }
             } ?: emptyList()
     }
 
     override val emptyConfig = EmptyState.Config(
-        songs?.isEmpty() == true,
+        state.isEmpty(),
         R.drawable.ic_album_24dp,
-        resources.getString(R.string.missing_thing_tag_value_song)
+        resources.getString(R.string.missing_thing_song)
     )
 
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        TagValueSongFragment.LOAD_OPERATION,
+        SongListFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(
         state.isLoading(),
         LoadingItemStyle.WITH_IMAGE
-    )
-
-    private fun Song.captionText() = gameName
-
-    private fun List<Song>.captionText() = resources.getString(
-        R.string.subtitle_sheets_count,
-        size
     )
 }

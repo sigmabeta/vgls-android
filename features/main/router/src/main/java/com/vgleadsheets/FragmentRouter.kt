@@ -19,7 +19,7 @@ interface FragmentRouter {
 
     fun showJamDetailViewer(jamId: Long)
 
-    fun showSearch()
+    fun showSearch(query: String?)
 
     fun showSongListForComposer(composerId: Long)
 

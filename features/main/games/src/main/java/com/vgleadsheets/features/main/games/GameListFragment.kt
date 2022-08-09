@@ -3,7 +3,6 @@ package com.vgleadsheets.features.main.games
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -16,20 +15,18 @@ class GameListFragment : BetterListFragment<GameListContent, GameListState>() {
 
     override fun getPerfSpec() = PerfSpec.GAMES
 
+    override val alwaysShowBack = false
+
     override val viewModel: GameListViewModel by fragmentViewModel()
 
-    override fun generateList(state: GameListState, hudState: HudState) =
-        BetterLists.generateList(
-            Config(
-                state,
-                hudState,
-                Clicks(getFragmentRouter()),
-                perfTracker,
-                getPerfSpec(),
-                resources
-            ),
-            resources
-        )
+    override fun generateListConfig(state: GameListState, hudState: HudState) = Config(
+        state,
+        hudState,
+        Clicks(getFragmentRouter()),
+        perfTracker,
+        getPerfSpec(),
+        resources
+    )
 
     companion object {
         const val LOAD_OPERATION = "loadGames"

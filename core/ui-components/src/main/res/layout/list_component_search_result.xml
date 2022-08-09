@@ -7,39 +7,47 @@
 
         <variable
             name="toBind"
-            type="com.vgleadsheets.components.IconNameCaptionListModel" />
+            type="com.vgleadsheets.components.SearchResultListModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/component_eikon_name_caption"
+        android:id="@+id/component_image_name_caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{() -> toBind.onClick.invoke()}">
+        android:onClick="@{() -> toBind.onClick.invoke()}"
+        tools:background="?attr/colorPrimary">
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="@dimen/min_clickable_size"
-            android:layout_height="@dimen/min_clickable_size"
-            android:importantForAccessibility="no"
-            android:padding="@dimen/icon_padding"
-            app:tint="@android:color/tertiary_text_dark"
-            app:drawable="@{toBind.iconId}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:background="@drawable/background_image_circle"
+            android:elevation="4dp"
+            android:outlineProvider="background"
+            app:cardCornerRadius="@dimen/card_corner_radius_circle_small"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_person_24dp" />
+            app:photoUrl="@{toBind.imageUrl}"
+            app:placeholder="@{toBind.imagePlaceholder}"
+            tools:src="@drawable/placeholder_composer" />
 
         <TextView
             android:id="@+id/text_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="?attr/colorOnPrimary"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintTop_toTopOf="parent"
@@ -49,13 +57,15 @@
             android:id="@+id/text_caption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_xsmall"
             android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_small"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="?attr/colorOnPrimary"
             android:text="@{toBind.caption}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/image"

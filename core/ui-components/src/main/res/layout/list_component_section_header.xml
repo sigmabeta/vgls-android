@@ -10,6 +10,8 @@
     </data>
 
     <FrameLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_section_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -26,13 +28,13 @@
             android:textAllCaps="true"
             android:fontFamily="sans-serif-condensed"
             android:text="@{toBind.title}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             tools:text="Games" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/divider"
+            android:background="?attr/colorOutline"
             android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small" />

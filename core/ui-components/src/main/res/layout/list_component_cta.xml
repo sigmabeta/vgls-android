@@ -11,6 +11,8 @@
     </data>
 
     <LinearLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_cta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +27,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/margin_small"
             android:padding="10dp"
-            app:tint="@color/gray_medium"
+            app:tint="?attr/colorSecondary"
             app:imageResource="@{toBind.iconId}"
             tools:src="@drawable/ic_settings_black_24dp" />
 
@@ -39,8 +41,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@android:color/tertiary_text_dark"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?attr/colorSecondary"
             tools:text="@string/sample_lorem_ipsum" />
 
     </LinearLayout>

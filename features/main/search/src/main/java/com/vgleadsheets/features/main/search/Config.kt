@@ -11,7 +11,6 @@ import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
-import com.vgleadsheets.components.SearchEmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
@@ -37,15 +36,15 @@ class Config(
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val resources: Resources,
-) : BetterListConfig<SearchState, Clicks> {
+) : BetterListConfig {
 
     override val titleConfig = Title.Config(
-        "",
-        "",
+        resources.getString(R.string.app_name),
+        resources.getString(R.string.label_search),
         resources,
         { },
         { },
-        shouldShow = false,
+        allowExpansion = false,
     )
 
     override val actionsConfig = Actions.NONE
@@ -57,11 +56,14 @@ class Config(
 
         if (query.isNullOrEmpty()) {
             return@Config listOf(
-                SearchEmptyStateListModel()
+                EmptyStateListModel(
+                    R.drawable.ic_search_black_24dp,
+                    resources.getString(R.string.search_empty_no_query)
+                )
             )
         }
 
-        if (state.showStickerBr) {
+        if (query.lowercase().startsWith("stickerbr")) {
             return@Config listOf(
                 ErrorStateListModel(
                     "stickerbrush",

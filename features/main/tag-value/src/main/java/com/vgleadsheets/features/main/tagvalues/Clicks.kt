@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.tagvalues
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
 
-internal class Clicks(
+class Clicks(
     private val router: FragmentRouter,
 ) : ListItemClicks {
     fun tagValue(id: Long) {

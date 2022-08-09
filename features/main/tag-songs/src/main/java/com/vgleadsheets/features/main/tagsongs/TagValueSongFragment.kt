@@ -6,14 +6,13 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
 class TagValueSongFragment :
-    BetterListFragment<Content, TagValueSongState>() {
+    BetterListFragment<TagValueSongContent, TagValueSongState>() {
     @Inject
     lateinit var viewModelFactory: TagValueSongViewModel.Factory
 
@@ -27,17 +26,14 @@ class TagValueSongFragment :
 
     override val viewModel: TagValueSongViewModel by fragmentViewModel()
 
-    override fun generateList(state: TagValueSongState, hudState: HudState) =
-        BetterLists.generateList(
-            TagValueSongConfig(
-                state,
-                hudState,
-                baseImageUrl,
-                Clicks(getFragmentRouter()),
-                perfTracker,
-                getPerfSpec(),
-                resources
-            ),
+    override fun generateListConfig(state: TagValueSongState, hudState: HudState) =
+        Config(
+            state,
+            hudState,
+            baseImageUrl,
+            Clicks(getFragmentRouter()),
+            perfTracker,
+            getPerfSpec(),
             resources
         )
 

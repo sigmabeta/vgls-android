@@ -15,10 +15,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:animateLayoutChanges="true"
-        android:paddingEnd="@dimen/margin_small"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        tools:background="?attr/colorPrimary">
 
         <ImageButton
             android:id="@+id/button_menu"
@@ -27,50 +26,39 @@
             android:background="?attr/selectableItemBackground"
             android:onClick="@{() -> toBind.onMenuButtonClick.invoke()}"
             android:padding="@dimen/icon_padding"
-            app:tint="@android:color/tertiary_text_dark"
+            android:contentDescription="@string/cont_desc_app_menu"
+            app:tint="?attr/colorOnPrimary"
             app:icon="@{toBind.iconId}"
             tools:src="@drawable/ic_menu_24dp" />
 
-        <com.google.android.material.textview.MaterialTextView
-            style="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/min_clickable_size"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:ellipsize="end"
-            android:gravity="center_vertical|start"
-            android:maxLines="1"
-            android:text="@{toBind.title}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@android:color/tertiary_text_dark"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="10sp"
-            app:autoSizeTextType="uniform"
-            tools:text="@string/app_name" />
+        <com.google.android.material.button.MaterialButton
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/item_name"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
             android:layout_width="0dp"
-            android:layout_height="@dimen/min_clickable_size"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-condensed"
-            android:gravity="center_vertical|end"
-            android:maxLines="1"
-            android:text="@{toBind.subtitle}"
-            android:textColor="@color/hint_text"
-            android:textStyle="italic"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="8sp"
-            app:autoSizeTextType="uniform"
-            tools:text="@string/sample_lorem_ipsum" />
+            android:textColor="?attr/colorOnPrimary"
+            app:strokeColor="?attr/colorOnPrimary"
+            app:icon="@drawable/ic_search_black_24dp"
+            app:iconTint="?attr/colorOnPrimary"
+            android:text="@string/label_search"
+            android:onClick="@{() -> toBind.onSearchButtonClick.invoke()}" />
 
-        <Button
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:visibility="@{toBind.showChangeParts ? View.GONE : View.VISIBLE}"
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="?attr/colorOnPrimary"
+            app:strokeColor="?attr/colorOnPrimary"
+            app:icon="@drawable/ic_description_24dp"
+            app:iconTint="?attr/colorOnPrimary"
+            android:text="@{toBind.partLabel}"
             android:onClick="@{() -> toBind.onChangePartClick.invoke()}"
-            android:text="@string/button_label_transpo_change" />
+            tools:text="E♭ Instr." />
 
     </LinearLayout>
 </layout>

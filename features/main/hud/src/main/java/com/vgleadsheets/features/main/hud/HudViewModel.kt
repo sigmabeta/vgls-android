@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -19,7 +19,9 @@ import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 import timber.log.Timber
 
@@ -32,10 +34,15 @@ class HudViewModel @AssistedInject constructor(
 ) : MvRxViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
+    private val searchOperations = CompositeDisposable()
+
+    private val searchQueryQueue = BehaviorSubject.create<String>()
+
     init {
         checkSavedPartSelection()
         checkLastUpdateTime()
         checkForUpdate()
+        subscribeToSearchQueryQueue()
         subscribeToPerfUpdates()
     }
 
@@ -89,10 +96,19 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    fun searchQuery(query: String?) = withState { state ->
-        if (state.mode == HudMode.SEARCH) {
-            setState { copy(searchQuery = query) }
-        }
+    fun clearSearchQuery() = setState {
+        copy(
+            searchQuery = null,
+            searchResults = searchResults.copy(
+                songs = Uninitialized,
+                composers = Uninitialized,
+                games = Uninitialized
+            )
+        )
+    }
+
+    fun queueSearchQuery(query: String) {
+        searchQueryQueue.onNext(query)
     }
 
     fun hideSearch() = withState { state ->
@@ -118,13 +134,9 @@ class HudViewModel @AssistedInject constructor(
         stopTimer()
         if (state.mode == HudMode.REGULAR) {
             timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
-                .execute { timer ->
-                    if (timer is Success) {
-                        copy(hudVisible = false)
-                    } else {
-                        this
-                    }
-                }
+                .subscribe {
+                    hideHud()
+                }.disposeOnClear()
         }
     }
 
@@ -227,7 +239,7 @@ class HudViewModel @AssistedInject constructor(
 
     fun saveTopLevelScreen(screenId: String) {
         val shouldSave = screenId != HudFragment.MODAL_SCREEN_ID_DEBUG &&
-                screenId != HudFragment.MODAL_SCREEN_ID_SETTINGS
+            screenId != HudFragment.MODAL_SCREEN_ID_SETTINGS
 
         if (shouldSave) {
             storage.saveTopLevelScreen(screenId)
@@ -308,6 +320,79 @@ class HudViewModel @AssistedInject constructor(
             }
         )
 
+    private fun startSearchQuery(searchQuery: String) {
+        withState { state ->
+            if (state.searchQuery != searchQuery) {
+                searchOperations.clear()
+
+                setState {
+                    copy(
+                        searchQuery = searchQuery,
+                        searchResults = searchResults.copy(
+                            searching = true
+                        )
+                    )
+                }
+
+                val gameSearch = repository.searchGamesCombined(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                    .execute { newGames ->
+                        if (newGames is Loading) {
+                            return@execute this
+                        }
+
+                        copy(
+                            searchResults = searchResults.copy(
+                                games = newGames,
+                                searching = false
+                            )
+                        )
+                    }
+
+                val songSearch = repository.searchSongs(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                    .execute { newSongs ->
+                        if (newSongs is Loading) {
+                            return@execute this
+                        }
+
+                        copy(
+                            searchResults = searchResults.copy(
+                                songs = newSongs,
+                                searching = false
+                            )
+                        )
+                    }
+
+                val composerSearch = repository.searchComposersCombined(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                    .execute { newComposers ->
+                        if (newComposers is Loading) {
+                            return@execute this
+                        }
+
+                        copy(
+                            searchResults = searchResults.copy(
+                                composers = newComposers,
+                                searching = false
+                            )
+                        )
+                    }
+
+                searchOperations.addAll(gameSearch, songSearch, composerSearch)
+            }
+        }
+    }
+
+    private fun subscribeToSearchQueryQueue() {
+        searchQueryQueue
+            .throttleLast(THRESHOLD_SEARCH_INPUTS, TimeUnit.MILLISECONDS)
+            .subscribe(
+                { startSearchQuery(it) },
+                { }
+            ).disposeOnClear()
+    }
+
     private fun subscribeToPerfUpdates() {
         perfTracker.screenLoadStream()
             .subscribe {
@@ -352,6 +437,9 @@ class HudViewModel @AssistedInject constructor(
 
     companion object : MvRxViewModelFactory<HudViewModel, HudState> {
         const val TIMEOUT_HUD_VISIBLE = 3000L
+
+        const val THRESHOLD_SEARCH_INPUTS = 500L
+        const val THRESHOLD_RESULT_DEBOUNCE = 250L
 
         override fun create(viewModelContext: ViewModelContext, state: HudState): HudViewModel {
             val activity =
