@@ -56,7 +56,7 @@ interface Tracker {
 
     fun logShadowClick()
 
-    fun logSearchBoxClick()
+    fun logSearchButtonClick()
 
     fun logRefreshClick()
 

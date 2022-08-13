@@ -33,7 +33,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<JamState, Clicks> {
+) : BetterListConfig {
     private val jamLoad = state.contentLoad.jam
 
     private val jam = jamLoad.content()
@@ -51,7 +51,7 @@ class Config(
             perfTracker.onTransitionStarted(perfSpec)
         },
         { },
-        shouldShow = true,
+        allowExpansion = true,
         isLoading = jamLoad.isLoading()
     )
 

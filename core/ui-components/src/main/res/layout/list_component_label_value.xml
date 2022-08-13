@@ -10,6 +10,8 @@
     </data>
 
     <LinearLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_label_value"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -29,7 +31,7 @@
             android:maxWidth="200dp"
             android:maxLines="1"
             android:text="@{toBind.label}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             tools:text="Key Signature" />
 
         <TextView
@@ -44,8 +46,8 @@
             android:labelFor="@id/autocomplete_dropdown"
             android:maxLines="2"
             android:text="@{toBind.value}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:textColor="@color/gray_medium"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            android:textColor="?attr/colorOutline"
             tools:text="Eb Major" />
 
     </LinearLayout>

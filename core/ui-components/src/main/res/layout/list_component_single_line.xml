@@ -11,6 +11,8 @@
     </data>
 
     <FrameLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_single_line"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -29,7 +31,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             tools:text="@string/sample_lorem_ipsum" />
 
     </FrameLayout>

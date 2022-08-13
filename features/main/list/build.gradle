@@ -24,7 +24,12 @@ dependencies {
 }
 
 android {
+    buildFeatures {
+        dataBinding true
+    }
+
     kotlinOptions {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 }
+

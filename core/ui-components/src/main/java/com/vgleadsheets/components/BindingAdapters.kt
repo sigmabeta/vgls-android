@@ -2,19 +2,25 @@
 
 package com.vgleadsheets.components
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.postDelayed
 import androidx.databinding.BindingAdapter
-import com.google.android.material.textview.MaterialTextView
+import com.google.android.material.color.MaterialColors
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.vgleadsheets.animation.getEndPulseAnimator
-import com.vgleadsheets.animation.getPulseAnimator
+import com.vgleadsheets.animation.endPulseAnimator
+import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
 
@@ -26,7 +32,7 @@ fun bindSheetImage(
 ) {
     view.setOnClickListener { listener.onClicked() }
 
-    val pulseAnimator = view.getPulseAnimator(
+    val pulseAnimator = view.pulseAnimator(
         sheetUrl.hashCode() % MAXIMUM_LOAD_OFFSET
     )
     pulseAnimator.start()
@@ -37,20 +43,18 @@ fun bindSheetImage(
         override fun onSuccess() {
             listener.onLoadComplete()
             pulseAnimator.cancel()
-            view.getEndPulseAnimator().start()
+            view.endPulseAnimator().start()
         }
 
         override fun onError(e: Exception?) {
             pulseAnimator.cancel()
-            view.getEndPulseAnimator().start()
+            view.endPulseAnimator().start()
             listener.onLoadFailed(sheetUrl, e)
         }
     }
 
     Picasso.get()
         .load(sheetUrl)
-        .fit()
-        .centerInside()
         .placeholder(R.drawable.ic_description_white_24dp)
         .error(R.drawable.ic_error_white_24dp)
         .into(view, callback)
@@ -76,22 +80,25 @@ fun bindBigPhoto(
     view: ImageView,
     photoUrl: String?,
     placeholder: Int,
-    imageLoadSuccess: () -> Unit,
-    imageLoadFail: (Exception) -> Unit
+    imageLoadSuccess: (() -> Unit)?,
+    imageLoadFail: ((Exception) -> Unit)?
 ) {
     if (placeholder != R.drawable.ic_logo) {
         view.clipToOutline = true
         view.setBackgroundResource(R.drawable.background_image_circle)
+    } else {
+        view.clipToOutline = false
+        view.setBackgroundResource(0)
     }
 
     if (photoUrl != null) {
         val callback = object : Callback {
             override fun onSuccess() {
-                imageLoadSuccess()
+                imageLoadSuccess?.invoke()
             }
 
             override fun onError(e: Exception) {
-                imageLoadFail(e)
+                imageLoadFail?.invoke(e)
             }
         }
 
@@ -126,25 +133,19 @@ fun bindDrawable(
 
 @BindingAdapter("model")
 fun bindImageNameCaptionLoading(view: ConstraintLayout, model: LoadingImageNameCaptionListModel) {
-    view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
-        .start()
-}
-
-@BindingAdapter("model")
-fun bindTitleLoading(view: LinearLayout, model: LoadingTitleListModel) {
-    view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+    view.pulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
 
 @BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
-    view.getPulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+    view.pulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
 
 @BindingAdapter("model")
 fun bindCheckableLoading(view: LinearLayout, model: LoadingCheckableListModel) {
-    view.getPulseAnimator(model.loadPositionOffset * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
+    view.pulseAnimator(model.loadPositionOffset * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
 
@@ -179,20 +180,74 @@ fun bindIcon(view: ImageButton, iconId: Int) {
 }
 
 @BindingAdapter("highlighted")
-@Suppress("deprecation")
 fun setHighlighting(
-    view: MaterialTextView,
+    view: TextView,
     highlighted: Boolean
 ) {
-    val colorId = if (highlighted) {
-        R.color.colorPrimaryDark
+    val color = if (highlighted) {
+        MaterialColors.getColor(view, R.attr.colorTertiaryContainer)
     } else {
-        android.R.color.tertiary_text_dark
+        MaterialColors.getColor(view, R.attr.colorOnPrimary)
     }
 
-    val color = ContextCompat.getColor(view.context, colorId)
     view.setTextColor(color)
 }
+
+@BindingAdapter("highlighted")
+fun setHighlighting(
+    view: ImageView,
+    highlighted: Boolean
+) {
+    val color = if (highlighted) {
+        MaterialColors.getColor(view, R.attr.colorTertiaryContainer)
+    } else {
+        MaterialColors.getColor(view, R.attr.colorOnPrimary)
+    }
+
+    view.setColorFilter(color)
+}
+
+@BindingAdapter("query")
+fun searchQuery(
+    view: EditText,
+    query: String?
+) {
+    if (query != view.text.toString()) {
+        if (query.isNullOrEmpty()) {
+            view.setText(query)
+            view.postDelayed(DELAY_HALF_SECOND) {
+                view.requestFocus()
+
+                val imm = ContextCompat.getSystemService(
+                    view.context,
+                    InputMethodManager::class.java
+                )
+                imm?.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }
+        }
+    }
+}
+
+@BindingAdapter("textEntered")
+fun searchQuery(
+    view: EditText,
+    onTextEntered: (String) -> Unit,
+) {
+    view.addTextChangedListener(
+        object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
+                Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+            override fun afterTextChanged(enteredText: Editable?) {
+                onTextEntered(enteredText.toString())
+            }
+        }
+    )
+}
+
+const val DELAY_HALF_SECOND = 500L
 
 const val MULTIPLIER_LIST_POSITION = 100
 const val MAXIMUM_LOAD_OFFSET = 250

@@ -3,7 +3,6 @@ package com.vgleadsheets.features.main.jams
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -17,21 +16,19 @@ class JamListFragment :
 
     override fun getPerfSpec() = PerfSpec.JAMS
 
+    override val alwaysShowBack = false
+
     override val viewModel: JamListViewModel by fragmentViewModel()
 
-    override fun generateList(state: JamListState, hudState: HudState) =
-        BetterLists.generateList(
-            Config(
-                state,
-                Clicks(
-                    getFragmentRouter()
-                ),
-                perfTracker,
-                getPerfSpec(),
-                resources
-            ),
-            resources
-        )
+    override fun generateListConfig(state: JamListState, hudState: HudState) = Config(
+        state,
+        Clicks(
+            getFragmentRouter()
+        ),
+        perfTracker,
+        getPerfSpec(),
+        resources
+    )
 
     companion object {
         const val LOAD_OPERATION = "loadJams"

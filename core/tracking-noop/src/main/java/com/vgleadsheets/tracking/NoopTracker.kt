@@ -84,8 +84,8 @@ class NoopTracker : Tracker {
         Timber.d("Shadow clicked.")
     }
 
-    override fun logSearchBoxClick() {
-        Timber.d("Search box clicked.")
+    override fun logSearchButtonClick() {
+        Timber.d("Search button clicked.")
     }
 
     override fun logAppBarButtonClick() {

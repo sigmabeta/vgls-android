@@ -1,24 +1,24 @@
 package com.vgleadsheets.features.main.list.sections
 
 import android.content.res.Resources
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingTitleListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.features.main.list.Common
 import com.vgleadsheets.features.main.list.R
 
 object Title {
-    fun listItems(
+    fun model(
         title: String?,
         subtitle: String?,
+        shouldShowBack: Boolean,
         onImageLoadSuccess: (() -> Unit)?,
         onImageLoadFail: ((Exception) -> Unit)?,
         resources: Resources,
+        onMenuButtonClick: (() -> Unit) = Common.noop(),
         photoUrl: String? = null,
         placeholder: Int? = R.drawable.ic_logo,
-        shouldShow: Boolean = true,
+        allowExpansion: Boolean = true,
         isLoading: Boolean = false,
-        titleGenerator: (() -> List<ListModel>)? = null
+        titleGenerator: (() -> TitleListModel)? = null
     ) = if (titleGenerator != null) {
         titleGenerator()
     } else {
@@ -26,24 +26,22 @@ object Title {
             onImageLoadSuccess?.invoke()
         }
 
-        if (!shouldShow) {
-            emptyList()
-        } else if (isLoading) {
-            listOf(
-                LoadingTitleListModel()
-            )
-        } else {
-            listOf(
-                TitleListModel(
-                    title ?: resources.getString(R.string.app_name),
-                    subtitle ?: "",
-                    onImageLoadSuccess ?: Common.noop(),
-                    onImageLoadFail ?: Common.noopError(),
-                    photoUrl,
-                    placeholder
-                )
-            )
-        }
+        TitleListModel(
+            title ?: resources.getString(R.string.app_name),
+            if (isLoading) {
+                resources.getString(R.string.loading)
+            } else {
+                subtitle ?: ""
+            },
+            isLoading,
+            shouldShowBack,
+            !allowExpansion,
+            onMenuButtonClick,
+            onImageLoadSuccess ?: Common.noop(),
+            onImageLoadFail ?: Common.noopError(),
+            photoUrl,
+            placeholder
+        )
     }
 
     data class Config(
@@ -54,8 +52,9 @@ object Title {
         val onImageLoadFail: ((Exception) -> Unit)?,
         val photoUrl: String? = null,
         val placeholder: Int? = R.drawable.ic_logo,
-        val shouldShow: Boolean = true,
+        val allowExpansion: Boolean = true,
         val isLoading: Boolean = false,
-        val titleGenerator: (() -> List<ListModel>)? = null
+        val titleGenerator: (() -> TitleListModel)? = null,
+        val onMenuButtonClick: (() -> Unit) = Common.noop()
     )
 }

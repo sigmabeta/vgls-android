@@ -13,7 +13,7 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 
-internal class Clicks(
+class Clicks(
     private val viewModel: HudViewModel,
     private val router: FragmentRouter,
     private val tracker: Tracker,
@@ -24,14 +24,18 @@ internal class Clicks(
         viewModel.toRegularMode()
     }
 
-    fun searchBox() {
-        tracker.logSearchBoxClick()
+    fun searchButton() {
+        tracker.logSearchButtonClick()
         viewModel.showSearch()
     }
 
     fun searchQuery(query: String) {
-        tracker.logSearch(query)
-        viewModel.searchQuery(query)
+        val trimmedQuery = query.trim()
+
+        if (trimmedQuery.length > 2) {
+            tracker.logSearch(trimmedQuery)
+            viewModel.queueSearchQuery(trimmedQuery)
+        }
     }
 
     fun back(hudState: HudState) = when (hudState.mode) {
@@ -65,7 +69,13 @@ internal class Clicks(
         tracker.logAppBarButtonClick()
         when (state.mode) {
             HudMode.SEARCH -> viewModel.toRegularMode()
-            HudMode.REGULAR -> viewModel.toMenu()
+            HudMode.REGULAR -> {
+                if (state.alwaysShowBack) {
+                    router.back()
+                } else {
+                    viewModel.toMenu()
+                }
+            }
             else -> {
                 if (state.alwaysShowBack) {
                     router.back()
@@ -138,5 +148,26 @@ internal class Clicks(
             PerfViewMode.REGULAR -> viewModel.toMenu()
             else -> viewModel.toPerf()
         }
+    }
+
+    fun searchClear() {
+        viewModel.clearSearchQuery()
+    }
+
+    fun songSearchResult(id: Long) {
+        router.showSongViewer(id)
+    }
+
+    fun gameSearchResult(id: Long) {
+        router.showSongListForGame(id)
+    }
+
+    fun composerSearchResult(id: Long) {
+        router.showSongListForComposer(id)
+    }
+
+    fun showMoreResults(query: String) {
+        router.showSearch(query)
+        viewModel.toRegularMode()
     }
 }

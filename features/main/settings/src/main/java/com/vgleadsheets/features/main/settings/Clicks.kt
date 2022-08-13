@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.settings
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
 
-internal class Clicks(
+class Clicks(
     private val viewModel: SettingViewModel,
     private val router: FragmentRouter
 ) : ListItemClicks {

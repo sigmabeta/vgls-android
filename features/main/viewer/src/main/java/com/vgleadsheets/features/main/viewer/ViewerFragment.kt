@@ -3,10 +3,12 @@ package com.vgleadsheets.features.main.viewer
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
@@ -15,7 +17,11 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
+import com.vgleadsheets.FragmentInterface
+import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.animation.slideViewOnscreen
+import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.features.main.hud.HudMode
@@ -25,6 +31,7 @@ import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
+import com.vgleadsheets.setInsetListenerForOneMargin
 import com.vgleadsheets.tracking.TrackingScreen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -56,6 +63,8 @@ class ViewerFragment :
     private val sheetsAdapter = ComponentAdapter()
 
     private val timers = CompositeDisposable()
+
+    private lateinit var appButton: ImageView
 
     private var screenOffSnack: Snackbar? = null
 
@@ -92,6 +101,11 @@ class ViewerFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        appButton = view.findViewById(R.id.button_app_menu)
+
+        appButton.setInsetListenerForOneMargin(Side.TOP)
+        appButton.setOnClickListener { (activity as FragmentInterface).onAppBarButtonClick() }
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
 
@@ -164,8 +178,14 @@ class ViewerFragment :
             startScreenTimer()
         }
 
-        if (hudState.hudVisible && hudState.mode == HudMode.REGULAR) {
-            hudViewModel.startHudTimer()
+        if (hudState.hudVisible) {
+            appButton.slideViewOnscreen()
+
+            if (hudState.mode == HudMode.REGULAR) {
+                hudViewModel.startHudTimer()
+            }
+        } else {
+            appButton.slideViewUpOffscreen()
         }
 
         val selectedPart = hudState.selectedPart
@@ -177,10 +197,8 @@ class ViewerFragment :
                 song.error.message ?: song.error::class.simpleName ?: "Unknown Error"
             )
             is Success -> showSong(viewerState.song(), selectedPart)
+            is Loading -> Unit
             Uninitialized -> Unit
-            else -> {
-                showError("No song found.")
-            }
         }
     }
 

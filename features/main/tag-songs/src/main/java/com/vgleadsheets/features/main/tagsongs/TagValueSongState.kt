@@ -6,10 +6,10 @@ import com.vgleadsheets.features.main.list.BetterCompositeState
 
 data class TagValueSongState(
     val tagValueId: Long,
-    override val contentLoad: Content = Content(
+    override val contentLoad: TagValueSongContent = TagValueSongContent(
         Uninitialized,
         Uninitialized
     ),
-) : BetterCompositeState<Content> {
+) : BetterCompositeState<TagValueSongContent> {
     constructor(args: IdArgs) : this(args.id)
 }

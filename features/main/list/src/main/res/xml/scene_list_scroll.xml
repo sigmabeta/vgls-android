@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/big">
+        <Constraint android:id="@+id/background_status_bar">
+            <CustomAttribute
+                motion:attributeName="backgroundColor"
+                motion:customColorValue="?android:attr/colorBackground" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/background_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="-16dp"
+            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="@id/text_title_subtitle">
+            <CustomAttribute
+                motion:attributeName="backgroundColor"
+                motion:customColorValue="?android:attr/colorBackground" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/button_app_menu"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            android:layout_marginTop="8dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/background_status_bar">
+
+            <CustomAttribute
+                motion:attributeName="colorFilter"
+                motion:customColorValue="?attr/colorOutline" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/icon_logo"
+            android:layout_height="144dp"
+            android:layout_width="144dp"
+            android:layout_marginTop="@dimen/margin_medium"
+            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:transitionEasing="linear" />
+
+        <Constraint
+            android:id="@+id/text_title_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/icon_logo">
+            <CustomAttribute
+                motion:attributeName="textColor"
+                motion:customColorValue="?attr/colorOnBackground" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/text_title_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_medium"
+            motion:layout_constraintTop_toBottomOf="@+id/text_title_title"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent">
+            <CustomAttribute
+                motion:attributeName="textColor"
+                motion:customColorValue="?attr/colorOnBackground" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/small">
+        <Constraint android:id="@+id/background_status_bar">
+            <CustomAttribute
+                motion:attributeName="backgroundColor"
+                motion:customColorValue="?attr/colorPrimary" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/background_title"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent">
+            <CustomAttribute
+                motion:attributeName="backgroundColor"
+                motion:customColorValue="?attr/colorPrimary" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/button_app_menu"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            motion:layout_constraintBottom_toBottomOf="@id/background_title"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/background_status_bar">
+
+            <CustomAttribute
+                motion:attributeName="colorFilter"
+                motion:customColorValue="?attr/colorOnPrimary" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/icon_logo"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            motion:layout_constraintBottom_toBottomOf="@id/background_title"
+            motion:layout_constraintStart_toEndOf="@id/button_app_menu" />
+
+        <Constraint
+            android:id="@+id/text_title_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="8dp"
+            android:scaleX="0.75"
+            android:scaleY="0.75"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"
+            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            motion:layout_constraintStart_toEndOf="@id/icon_logo"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.0">
+            <CustomAttribute
+                motion:attributeName="textColor"
+                motion:customColorValue="?attr/colorOnPrimary" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/text_title_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="-6dp"
+            android:layout_marginBottom="2dp"
+            motion:layout_constraintTop_toBottomOf="@id/text_title_title"
+            motion:layout_constraintStart_toEndOf="@id/icon_logo"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.0">
+            <CustomAttribute
+                motion:attributeName="textColor"
+                motion:customColorValue="?attr/colorOnPrimary" />
+        </Constraint>
+    </ConstraintSet>
+
+    <Transition
+        android:id="@+id/transition_scroll"
+        motion:constraintSetStart="@id/big"
+        motion:constraintSetEnd="@id/small">
+
+        <OnSwipe
+            motion:dragDirection="dragUp"
+            motion:touchAnchorId="@id/list_content"
+            motion:touchAnchorSide="top" />
+
+    </Transition>
+</MotionScene>

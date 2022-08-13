@@ -21,24 +21,24 @@ import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
 import com.vgleadsheets.storage.Setting
 
-internal class Config(
+class Config(
     private val state: SettingState,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig<SettingState, Clicks> {
+) : BetterListConfig {
     private val settingsLoad = state.contentLoad.settings
 
     private val settings = settingsLoad.content()
 
     override val titleConfig = Title.Config(
-        "",
-        "",
+        resources.getString(R.string.app_name),
+        resources.getString(R.string.label_settings),
         resources,
         { },
         { },
-        shouldShow = false,
+        allowExpansion = false,
     )
 
     override val actionsConfig = Actions.NONE

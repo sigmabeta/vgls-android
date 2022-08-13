@@ -28,16 +28,13 @@ class AboutFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val topOffset = resources.getDimension(R.dimen.height_search_bar).toInt() +
-                resources.getDimension(R.dimen.margin_large).toInt()
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
-                resources.getDimension(R.dimen.margin_medium).toInt()
+            resources.getDimension(R.dimen.margin_medium).toInt()
 
         val content = view.findViewById<RecyclerView>(R.id.list_content)
         content.adapter = adapter
         content.layoutManager = LinearLayoutManager(context)
         content.setInsetListenerForPadding(
-            topOffset = topOffset,
             bottomOffset = bottomOffset
         )
     }

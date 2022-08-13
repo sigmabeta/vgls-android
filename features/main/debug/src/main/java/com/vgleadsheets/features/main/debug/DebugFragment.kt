@@ -6,7 +6,6 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -48,17 +47,13 @@ class DebugFragment : BetterListFragment<DebugContent, DebugState>() {
         }
     }
 
-    override fun generateList(state: DebugState, hudState: HudState) =
-        BetterLists.generateList(
-            Config(
-                state,
-                Clicks(viewModel),
-                perfTracker,
-                getPerfSpec(),
-                resources
-            ),
-            resources
-        )
+    override fun generateListConfig(state: DebugState, hudState: HudState) = Config(
+        state,
+        Clicks(viewModel),
+        perfTracker,
+        getPerfSpec(),
+        resources
+    )
 
     override fun onBackPress() = withState(viewModel) {
         if (it.changed) {

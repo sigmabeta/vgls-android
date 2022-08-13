@@ -1,12 +1,11 @@
 package com.vgleadsheets.features.main.search
 
 import android.os.Bundle
-import android.view.View
-import com.airbnb.mvrx.UniqueOnly
+import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
+import com.vgleadsheets.args.NullableStringArgs
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.features.main.list.BetterLists
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -28,52 +27,33 @@ class SearchFragment : BetterListFragment<SearchContent, SearchState>() {
 
     override val viewModel: SearchViewModel by fragmentViewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        hudViewModel.selectSubscribe(
-            HudState::searchQuery,
-            deliveryMode = UniqueOnly("query")
-        ) {
-            if (it != null) {
-                if (it.lowercase().contains("stickerbr")) {
-                    onStickerBrEntered(it)
-                } else {
-                    onSearchQueryEntered(it)
-                }
-            } else {
-                viewModel.onQueryClear()
-            }
-        }
-    }
-
-    override fun generateList(state: SearchState, hudState: HudState) =
-        BetterLists.generateList(
-            Config(
-                state,
-                hudState,
-                baseImageUrl,
-                Clicks(
-                    getFragmentRouter(),
-                    hudViewModel
-                ),
-                resources
-            ),
-            resources
-        )
-
-    private fun onSearchQueryEntered(query: String) {
+    fun startQuery(query: String?) {
+        query ?: return
         viewModel.startQuery(query)
     }
 
-    private fun onStickerBrEntered(query: String) {
-        tracker.logStickerBr()
-        viewModel.showStickerBr(query)
-    }
+    override fun generateListConfig(state: SearchState, hudState: HudState) = Config(
+        state,
+        hudState,
+        baseImageUrl,
+        Clicks(
+            getFragmentRouter(),
+            hudViewModel
+        ),
+        resources
+    )
 
     companion object {
         const val LOAD_OPERATION = "loadSearch"
 
-        fun newInstance() = SearchFragment()
+        fun newInstance(stringArgs: NullableStringArgs): SearchFragment {
+            val fragment = SearchFragment()
+
+            val args = Bundle()
+            args.putParcelable(MvRx.KEY_ARG, stringArgs)
+            fragment.arguments = args
+
+            return fragment
+        }
     }
 }

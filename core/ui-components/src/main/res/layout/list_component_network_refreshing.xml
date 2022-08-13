@@ -10,6 +10,8 @@
     </data>
 
     <LinearLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_network_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,10 +22,11 @@
             android:layout_height="@dimen/min_clickable_size"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
-            android:layout_marginStart="@dimen/margin_medium" />
+            android:layout_marginStart="@dimen/margin_medium"
+            android:indeterminateTint="?attr/colorTertiary"/>
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Body2"
+            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

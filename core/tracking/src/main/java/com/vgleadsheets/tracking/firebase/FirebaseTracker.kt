@@ -109,7 +109,7 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
 
     override fun logShadowClick() = logEvent(CLICK_SHADOW)
 
-    override fun logSearchBoxClick() = logEvent(CLICK_SEARCH_BOX)
+    override fun logSearchButtonClick() = logEvent(CLICK_SEARCH_BOX)
 
     override fun logRefreshClick() = logEvent(CLICK_REFRESH)
 

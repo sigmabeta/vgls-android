@@ -11,6 +11,8 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingStart="@dimen/margin_side"
+        android:paddingEnd="@dimen/margin_side"
         android:id="@+id/component_name_caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +29,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +46,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.caption}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
