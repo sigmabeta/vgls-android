@@ -9,8 +9,9 @@ object SongDisplay {
     fun getListModels(
         hudMode: HudMode,
         currentSong: Song?,
+        viewerScreenVisible: Boolean,
         onClick: () -> Unit
-    ) = if (currentSong != null && hudMode != HudMode.SEARCH) {
+    ) = if (currentSong != null && hudMode != HudMode.SEARCH && viewerScreenVisible) {
         listOf(
             IconNameCaptionListModel(
                 currentSong.id,

@@ -48,7 +48,6 @@ class Clicks(
         }
         HudMode.SEARCH -> {
             viewModel.toRegularMode()
-            router.back()
             true
         }
         HudMode.REGULAR -> {

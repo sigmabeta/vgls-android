@@ -24,7 +24,7 @@ object MenuRenderer {
         hudMode: HudMode,
         searchQuery: String?,
         searchResults: SearchContent,
-        shouldHide: Boolean,
+        viewerScreenVisible: Boolean,
         showVocalsOption: Boolean,
         selectedPart: Part,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
@@ -53,7 +53,7 @@ object MenuRenderer {
             }
         }
 
-        if (hudMode == HudMode.REGULAR && shouldHide) {
+        if (hudMode == HudMode.REGULAR && viewerScreenVisible) {
             viewModel.startHudTimer()
         } else {
             viewModel.stopHudTimer()
@@ -80,10 +80,12 @@ object MenuRenderer {
         ) + SongDisplay.getListModels(
             hudMode,
             currentSong,
+            viewerScreenVisible,
             songDetailClickHandler,
         ) + SheetOptions.getListModels(
-            hudMode == HudMode.REGULAR,
+            hudMode,
             currentSong,
+            viewerScreenVisible,
             songDetailClickHandler,
             youtubeSearchClickHandler,
             resources
