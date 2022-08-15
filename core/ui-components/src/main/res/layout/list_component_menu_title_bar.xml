@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        tools:background="?attr/colorPrimary">
+        tools:background="@color/md_theme_light_primary">
 
         <ImageButton
             android:id="@+id/button_menu"
@@ -27,7 +27,7 @@
             android:onClick="@{() -> toBind.onMenuButtonClick.invoke()}"
             android:padding="@dimen/icon_padding"
             android:contentDescription="@string/cont_desc_app_menu"
-            app:tint="?attr/colorOnPrimary"
+            app:tint="@color/md_theme_light_onPrimary"
             app:icon="@{toBind.iconId}"
             tools:src="@drawable/ic_menu_24dp" />
 
@@ -39,10 +39,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="?attr/colorOnPrimary"
-            app:strokeColor="?attr/colorOnPrimary"
+            android:textColor="@color/md_theme_light_onPrimary"
+            app:strokeColor="@color/md_theme_light_onPrimary"
             app:icon="@drawable/ic_search_black_24dp"
-            app:iconTint="?attr/colorOnPrimary"
+            app:iconTint="@color/md_theme_light_onPrimary"
             android:text="@string/label_search"
             android:onClick="@{() -> toBind.onSearchButtonClick.invoke()}" />
 
@@ -52,10 +52,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="?attr/colorOnPrimary"
-            app:strokeColor="?attr/colorOnPrimary"
+            android:textColor="@color/md_theme_light_onPrimary"
+            app:strokeColor="@color/md_theme_light_onPrimary"
             app:icon="@drawable/ic_description_24dp"
-            app:iconTint="?attr/colorOnPrimary"
+            app:iconTint="@color/md_theme_light_onPrimary"
             android:text="@{toBind.partLabel}"
             android:onClick="@{() -> toBind.onChangePartClick.invoke()}"
             tools:text="E♭ Instr." />

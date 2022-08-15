@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:onClick="@{() -> toBind.onClick.invoke()}"
-        tools:background="?attr/colorPrimary">
+        tools:background="@color/md_theme_light_primary">
 
         <ImageView
             android:id="@+id/image"
@@ -46,7 +46,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{toBind.name}"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/md_theme_light_onPrimary"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/image"
@@ -63,7 +63,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/md_theme_light_onPrimary"
             android:text="@{toBind.caption}"
             android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
             app:layout_constraintBottom_toBottomOf="parent"
