@@ -1,14 +1,16 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import com.vgleadsheets.components.IconNameCaptionListModel
+import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.song.Song
 
 object SongDisplay {
     fun getListModels(
+        hudMode: HudMode,
         currentSong: Song?,
         onClick: () -> Unit
-    ) = if (currentSong != null) {
+    ) = if (currentSong != null && hudMode != HudMode.SEARCH) {
         listOf(
             IconNameCaptionListModel(
                 currentSong.id,

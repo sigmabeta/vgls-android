@@ -78,6 +78,7 @@ object MenuRenderer {
             { clicks.searchClear() },
             resources
         ) + SongDisplay.getListModels(
+            hudMode,
             currentSong,
             songDetailClickHandler,
         ) + SheetOptions.getListModels(
