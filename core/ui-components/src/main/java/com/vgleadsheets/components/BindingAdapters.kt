@@ -16,7 +16,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
 import androidx.databinding.BindingAdapter
-import com.google.android.material.color.MaterialColors
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.vgleadsheets.animation.endPulseAnimator
@@ -185,9 +184,9 @@ fun setHighlighting(
     highlighted: Boolean
 ) {
     val color = if (highlighted) {
-        MaterialColors.getColor(view, R.attr.colorTertiaryContainer)
+        ContextCompat.getColor(view.context, R.color.md_theme_light_tertiaryContainer)
     } else {
-        MaterialColors.getColor(view, R.attr.colorOnPrimary)
+        ContextCompat.getColor(view.context, R.color.md_theme_light_onPrimary)
     }
 
     view.setTextColor(color)
@@ -199,9 +198,9 @@ fun setHighlighting(
     highlighted: Boolean
 ) {
     val color = if (highlighted) {
-        MaterialColors.getColor(view, R.attr.colorTertiaryContainer)
+        ContextCompat.getColor(view.context, R.color.md_theme_light_tertiaryContainer)
     } else {
-        MaterialColors.getColor(view, R.attr.colorOnPrimary)
+        ContextCompat.getColor(view.context, R.color.md_theme_light_onPrimary)
     }
 
     view.setColorFilter(color)

@@ -18,7 +18,7 @@
         android:background="?attr/selectableItemBackground"
         android:animateLayoutChanges="true"
         android:orientation="horizontal"
-        tools:background="?attr/colorPrimary">
+        tools:background="@color/md_theme_light_primary">
 
         <ImageButton
             android:id="@+id/button_menu"
@@ -29,7 +29,7 @@
             android:onClick="@{() -> toBind.onMenuButtonClick.invoke()}"
             android:padding="@dimen/icon_padding"
             android:contentDescription="@string/cont_desc_app_menu"
-            app:tint="?attr/colorOnPrimary"
+            app:tint="@color/md_theme_light_onPrimary"
             android:src="@drawable/ic_arrow_back_black_24dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -65,7 +65,7 @@
             android:src="@drawable/ic_clear_black_24dp"
             android:contentDescription="@string/cont_desc_search_clear"
             android:onClick="@{() -> toBind.onClearClick.invoke()}"
-            app:tint="?attr/colorOnPrimary"
+            app:tint="@color/md_theme_light_onPrimary"
             tools:alpha="1.0" />
 
     </LinearLayout>

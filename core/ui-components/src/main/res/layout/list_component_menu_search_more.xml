@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/min_clickable_size"
         android:onClick="@{() -> toBind.onClick.invoke()}"
-        tools:background="?attr/colorPrimary">
+        tools:background="@color/md_theme_light_primary">
 
         <TextView
             android:id="@+id/text_header_name"
@@ -28,7 +28,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="start"
             android:text="@{toBind.text}"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/md_theme_light_onPrimary"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             tools:text="Show 37 more games..."
             tools:ignore="RtlSymmetry" />

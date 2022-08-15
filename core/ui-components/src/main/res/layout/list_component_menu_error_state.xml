@@ -16,14 +16,14 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:background="?attr/colorPrimary">
+        tools:background="@color/md_theme_light_primary">
 
         <ImageView
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@drawable/ic_error_24dp"
-            app:tint="?attr/colorOnPrimary" />
+            app:tint="@color/md_theme_light_onPrimary" />
 
         <TextView
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:text="@{toBind.errorString}"
             android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/md_theme_light_onPrimary"
             tools:text="Something bad happened! Oh noes. Fix it. Fix it fix it fix it." />
     </LinearLayout>
 </layout>

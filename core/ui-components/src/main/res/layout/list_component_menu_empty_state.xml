@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:background="?attr/colorPrimary">
+        tools:background="@color/md_theme_light_primary">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 app:drawable="@{toBind.iconId}"
-                app:tint="?attr/colorOnPrimary"
+                app:tint="@color/md_theme_light_onPrimary"
                 tools:src="@drawable/ic_album_24dp" />
 
             <ImageView
@@ -52,6 +52,6 @@
             android:text="@{toBind.explanation}"
             tools:text="We don't have sheets to display! Oh noes. Fix it. Fix it fix it fix it."
             android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-            android:textColor="?attr/colorOnPrimary" />
+            android:textColor="@color/md_theme_light_onPrimary" />
     </LinearLayout>
 </layout>
