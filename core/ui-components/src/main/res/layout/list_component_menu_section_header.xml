@@ -15,7 +15,7 @@
         android:id="@+id/component_section_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:background="?attr/colorPrimary">
+        tools:background="@color/md_theme_light_primary">
 
         <TextView
             android:id="@+id/text_header_name"
@@ -29,14 +29,14 @@
             android:textAllCaps="true"
             android:fontFamily="sans-serif-condensed"
             android:text="@{toBind.title}"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/md_theme_light_onPrimary"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             tools:text="Games" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?attr/colorOnPrimary"
+            android:background="@color/md_theme_light_onPrimary"
             android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small" />

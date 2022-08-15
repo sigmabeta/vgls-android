@@ -66,6 +66,14 @@ class HudViewModel @AssistedInject constructor(
         copy(selectedSong = null)
     }
 
+    fun setViewerScreenVisible() = setState {
+        copy(viewerScreenVisible = true)
+    }
+
+    fun setViewerScreenNotVisible() = setState {
+        copy(viewerScreenVisible = false)
+    }
+
     fun onPartSelect(apiId: String) = setState {
         storage.saveSelectedPart(apiId)
             .subscribe(

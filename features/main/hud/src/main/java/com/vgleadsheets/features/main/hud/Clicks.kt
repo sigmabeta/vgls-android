@@ -48,7 +48,6 @@ class Clicks(
         }
         HudMode.SEARCH -> {
             viewModel.toRegularMode()
-            router.back()
             true
         }
         HudMode.REGULAR -> {
@@ -156,14 +155,17 @@ class Clicks(
 
     fun songSearchResult(id: Long) {
         router.showSongViewer(id)
+        viewModel.toRegularMode()
     }
 
     fun gameSearchResult(id: Long) {
         router.showSongListForGame(id)
+        viewModel.toRegularMode()
     }
 
     fun composerSearchResult(id: Long) {
         router.showSongListForComposer(id)
+        viewModel.toRegularMode()
     }
 
     fun showMoreResults(query: String) {

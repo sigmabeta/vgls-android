@@ -83,7 +83,7 @@
         <Constraint android:id="@+id/background_status_bar">
             <CustomAttribute
                 motion:attributeName="backgroundColor"
-                motion:customColorValue="?attr/colorPrimary" />
+                motion:customColorValue="@color/md_theme_light_primary" />
         </Constraint>
 
         <Constraint
@@ -95,7 +95,7 @@
             motion:layout_constraintEnd_toEndOf="parent">
             <CustomAttribute
                 motion:attributeName="backgroundColor"
-                motion:customColorValue="?attr/colorPrimary" />
+                motion:customColorValue="@color/md_theme_light_primary" />
         </Constraint>
 
         <Constraint
@@ -108,7 +108,7 @@
 
             <CustomAttribute
                 motion:attributeName="colorFilter"
-                motion:customColorValue="?attr/colorOnPrimary" />
+                motion:customColorValue="@color/md_theme_light_onPrimary" />
 
         </Constraint>
 
@@ -136,7 +136,7 @@
             motion:layout_constraintHorizontal_bias="0.0">
             <CustomAttribute
                 motion:attributeName="textColor"
-                motion:customColorValue="?attr/colorOnPrimary" />
+                motion:customColorValue="@color/md_theme_light_onPrimary" />
         </Constraint>
 
         <Constraint
@@ -156,7 +156,7 @@
             motion:layout_constraintHorizontal_bias="0.0">
             <CustomAttribute
                 motion:attributeName="textColor"
-                motion:customColorValue="?attr/colorOnPrimary" />
+                motion:customColorValue="@color/md_theme_light_onPrimary" />
         </Constraint>
     </ConstraintSet>
 

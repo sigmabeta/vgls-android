@@ -24,7 +24,7 @@
             android:layout_height="@dimen/min_clickable_size"
             android:importantForAccessibility="no"
             android:padding="@dimen/icon_padding"
-            app:tint="?attr/colorOnPrimary"
+            app:tint="@color/md_theme_light_onPrimary"
             app:drawable="@{toBind.iconId}"
             tools:src="@drawable/ic_person_24dp" />
 
@@ -39,7 +39,7 @@
             android:maxLines="1"
             android:text="@{toBind.name}"
             android:fontFamily="sans-serif-condensed"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/md_theme_light_onPrimary"
             android:textStyle="italic"
             app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="10sp"
@@ -52,6 +52,6 @@
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/margin_medium"
-            android:indeterminateTint="?attr/colorTertiaryContainer"/>
+            android:indeterminateTint="@color/md_theme_light_tertiaryContainer" />
     </LinearLayout>
 </layout>

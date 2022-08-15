@@ -16,6 +16,7 @@ data class HudState(
     val alwaysShowBack: Boolean = false,
     val mode: HudMode = HudMode.REGULAR,
     val hudVisible: Boolean = true,
+    val viewerScreenVisible: Boolean = false,
     val searchQuery: String? = null,
     val searchResults: SearchContent = SearchContent(
         Uninitialized,
