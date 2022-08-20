@@ -3,6 +3,9 @@ package com.vgleadsheets.features.main.list
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.existingViewModel
@@ -17,7 +20,6 @@ import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.api.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.setInsetListenerForHeight
 import com.vgleadsheets.setListsSpecialInsets
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
@@ -49,7 +51,7 @@ abstract class BetterListFragment<
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         screen = FragmentListBinding.bind(view)
-        screen.backgroundStatusBar.setInsetListenerForHeight(Side.TOP)
+        screen.backgroundStatusBar.setInsetListenerForMotionLayoutChild(Side.TOP)
 
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
 
@@ -141,6 +143,36 @@ abstract class BetterListFragment<
 
         if (state.isFullyLoaded()) {
             perfTracker.onFullContentLoad(getPerfSpec())
+        }
+    }
+
+    private fun View.setInsetListenerForMotionLayoutChild(
+        side: Side,
+        offset: Int = 0
+    ) {
+        setOnApplyWindowInsetsListener { _, insets ->
+            val systemBarInsets = WindowInsetsCompat
+                .toWindowInsetsCompat(insets)
+                .getInsets(WindowInsetsCompat.Type.systemBars())
+
+            val newHeight = when (side) {
+                Side.TOP -> systemBarInsets.top
+                Side.BOTTOM -> systemBarInsets.bottom
+                Side.START -> systemBarInsets.left
+                Side.END -> systemBarInsets.right
+            } + offset
+
+            with(parent as MotionLayout) {
+                getConstraintSet(R.id.big).apply {
+                    this.constrainHeight(this@setInsetListenerForMotionLayoutChild.id, newHeight)
+                }
+
+                getConstraintSet(R.id.small).apply {
+                    this.constrainHeight(this@setInsetListenerForMotionLayoutChild.id, newHeight)
+                }
+            }
+
+            insets
         }
     }
 

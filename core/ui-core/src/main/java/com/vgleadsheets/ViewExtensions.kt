@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.marginBottom
@@ -13,6 +14,7 @@ import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import com.vgleadsheets.ui_core.R
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -97,28 +99,6 @@ fun View.setInsetForOnePadding(
         right = if (side == Side.END) systemBarInsets.right + offset else paddingEnd,
         bottom = if (side == Side.BOTTOM) systemBarInsets.bottom + offset else paddingBottom
     )
-}
-
-fun View.setInsetListenerForHeight(
-    side: Side,
-    offset: Int = 0
-) {
-    setOnApplyWindowInsetsListener { _, insets ->
-        val systemBarInsets = WindowInsetsCompat
-            .toWindowInsetsCompat(insets)
-            .getInsets(WindowInsetsCompat.Type.systemBars())
-
-        val newHeight = when (side) {
-            Side.TOP -> systemBarInsets.top
-            Side.BOTTOM -> systemBarInsets.bottom
-            Side.START -> systemBarInsets.left
-            Side.END -> systemBarInsets.right
-        }
-
-        updateLayoutParams { height = newHeight + offset }
-
-        insets
-    }
 }
 
 fun View.setInsetListenerForMinHeight(
