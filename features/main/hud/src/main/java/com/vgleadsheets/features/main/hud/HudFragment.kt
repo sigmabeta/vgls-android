@@ -28,6 +28,7 @@ import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
 import com.vgleadsheets.features.main.hud.menu.MenuRenderer
 import com.vgleadsheets.features.main.hud.menu.Shadow
+import com.vgleadsheets.insets.Insets
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOnePadding
@@ -99,6 +100,8 @@ class HudFragment : VglsFragment() {
         menuAdapter.resources = resources
 
         screen.shadowHud.setOnClickListener { clicks.shadow() }
+
+        Insets.setupInsetAnimationFor(screen.includedBottomSheet.root)
     }
 
     @Suppress("ComplexMethod", "LongMethod")

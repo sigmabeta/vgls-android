@@ -4,9 +4,9 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.metrics.performance.FrameData
 import androidx.metrics.performance.JankStats
@@ -37,6 +37,7 @@ import com.vgleadsheets.features.main.tagkeys.TagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
+import com.vgleadsheets.insets.Insets
 import com.vgleadsheets.perf.tracking.api.FrameInfo
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -78,15 +79,23 @@ class MainActivity :
 
         setContentView(R.layout.activity_main)
 
-        val toplevel = findViewById<FrameLayout>(R.id.toplevel)
-
         initializeJankStats()
+        setupEdgeToEdge()
+        printDisplayDetails()
 
-        // Configure app for edge-to-edge
-        toplevel.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        if (savedInstanceState == null) {
+            addHud()
+        }
+    }
 
+    private fun setupEdgeToEdge() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        val toplevel = findViewById<FrameLayout>(R.id.toplevel)
+        Insets.setupRootViewForInsetAnimation(toplevel)
+    }
+
+    private fun printDisplayDetails() {
         val displayMetrics = resources.displayMetrics
         val widthPixels = displayMetrics.widthPixels
         val heightPixels = displayMetrics.heightPixels
@@ -98,10 +107,6 @@ class MainActivity :
             "Device screen size (scaled): ${(widthPixels / displayMetrics.density).toInt()}" +
                 "x${(heightPixels / displayMetrics.density).toInt()}"
         )
-
-        if (savedInstanceState == null) {
-            addHud()
-        }
     }
 
     override fun onResume() {

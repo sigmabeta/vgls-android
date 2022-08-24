@@ -4,10 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentInterface
@@ -50,18 +48,16 @@ abstract class BetterListFragment<
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         screen = FragmentListBinding.bind(view)
         screen.backgroundStatusBar.setInsetListenerForMotionLayoutChild(Side.TOP)
-
-        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
-
-        val content = view.findViewById<RecyclerView>(R.id.list_content)
-        content.adapter = adapter
-        content.layoutManager = LinearLayoutManager(context)
+        screen.listContent.adapter = adapter
+        screen.listContent.layoutManager = LinearLayoutManager(context)
 
         adapter.resources = resources
 
-        content.setListsSpecialInsets(bottomOffset)
+        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
+        screen.listContent.setListsSpecialInsets(bottomOffset)
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
 

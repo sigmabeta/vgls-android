@@ -7,13 +7,16 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.vgleadsheets.insets.Insets
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
@@ -32,6 +35,8 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
     @Inject
     lateinit var repository: Repository
+
+    private lateinit var container_linear: LinearLayout
 
     private lateinit var buttonCancel: Button
 
@@ -56,8 +61,8 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.requestApplyInsets(view)
 
+        container_linear = view.findViewById(R.id.dialog_toplevel)
         buttonCancel = view.findViewById(R.id.button_cancel)
         buttonFind = view.findViewById(R.id.button_find)
         editJamName = view.findViewById(R.id.edit_jam_name)
@@ -73,6 +78,15 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
             return@setOnEditorActionListener false
         }
+
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+        val designBottomSheet = container_linear.parent
+        val coordinator = designBottomSheet.parent
+        val container = coordinator.parent
+
+        Insets.setupRootViewForInsetAnimation(container as View)
+        Insets.setupInsetAnimationFor(designBottomSheet as View)
+        Insets.setupControlFocusForInsetAnimation(editJamName)
     }
 
     override fun onStop() {
