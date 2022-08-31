@@ -6,7 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
 
-object Insets {
+object Insetup {
     fun setupRootViewForInsetAnimation(rootView: View) {
         // There are three steps to WindowInsetsAnimations:
         /**

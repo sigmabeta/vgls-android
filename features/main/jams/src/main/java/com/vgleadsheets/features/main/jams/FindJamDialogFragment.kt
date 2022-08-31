@@ -14,9 +14,10 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.core.view.WindowCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.vgleadsheets.insets.Insets
+import com.vgleadsheets.insets.CustomInset
+import com.vgleadsheets.insets.InsetOffsets
+import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
@@ -84,9 +85,9 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         val coordinator = designBottomSheet.parent
         val container = coordinator.parent
 
-        Insets.setupRootViewForInsetAnimation(container as View)
-        Insets.setupInsetAnimationFor(designBottomSheet as View)
-        Insets.setupControlFocusForInsetAnimation(editJamName)
+        Insetup.setupRootViewForInsetAnimation(container as View)
+        Insetup.setupInsetAnimationFor(designBottomSheet as View)
+        Insetup.setupControlFocusForInsetAnimation(editJamName)
     }
 
     override fun onStop() {

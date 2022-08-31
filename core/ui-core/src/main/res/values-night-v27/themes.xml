@@ -32,5 +32,9 @@
 
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:navigationBarColor">@color/md_theme_light_primary</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
     </style>
 </resources>

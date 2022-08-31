@@ -37,7 +37,7 @@ import com.vgleadsheets.features.main.tagkeys.TagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
-import com.vgleadsheets.insets.Insets
+import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.perf.tracking.api.FrameInfo
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
@@ -73,7 +73,7 @@ class MainActivity :
     override fun androidInjector() = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.VglsImmersive)
+        setTheme(R.style.VglsAppTheme)
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
@@ -90,9 +90,6 @@ class MainActivity :
 
     private fun setupEdgeToEdge() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        val toplevel = findViewById<FrameLayout>(R.id.toplevel)
-        Insets.setupRootViewForInsetAnimation(toplevel)
     }
 
     private fun printDisplayDetails() {
