@@ -15,8 +15,6 @@ import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.databinding.FragmentListBinding
 import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.insets.CustomInset
-import com.vgleadsheets.insets.InsetOffsets
 import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.api.InvalidateInfo
@@ -52,8 +50,6 @@ abstract class BetterListFragment<
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Insetup.setupRootViewForInsetAnimation(view, InsetOffsets.DEFAULT)
-        //
         screen = FragmentListBinding.bind(view)
         screen.backgroundStatusBar.setInsetListenerForMotionLayoutChild(Side.TOP)
         screen.listContent.adapter = adapter
@@ -63,6 +59,8 @@ abstract class BetterListFragment<
 
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
         screen.listContent.setListsSpecialInsets(bottomOffset)
+
+        Insetup.setupRootViewForInsetAnimation(screen.root)
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
 
