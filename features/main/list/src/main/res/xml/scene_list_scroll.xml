@@ -114,8 +114,12 @@
 
         <Constraint
             android:id="@id/icon_logo"
-            android:layout_height="48dp"
-            android:layout_width="48dp"
+            android:layout_height="144dp"
+            android:layout_width="144dp"
+            android:scaleX="0.3333"
+            android:scaleY="0.3333"
+            android:transformPivotX="0dp"
+            android:transformPivotY="72dp"
             motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
             motion:layout_constraintBottom_toBottomOf="@id/background_title"
             motion:layout_constraintStart_toEndOf="@id/button_app_menu" />
@@ -131,7 +135,7 @@
             android:transformPivotX="0dp"
             android:transformPivotY="0dp"
             motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
-            motion:layout_constraintStart_toEndOf="@id/icon_logo"
+            motion:layout_constraintStart_toEndOf="@id/spacer_logo"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintHorizontal_bias="0.0">
             <CustomAttribute
@@ -151,7 +155,7 @@
             android:layout_marginTop="-6dp"
             android:layout_marginBottom="2dp"
             motion:layout_constraintTop_toBottomOf="@id/text_title_title"
-            motion:layout_constraintStart_toEndOf="@id/icon_logo"
+            motion:layout_constraintStart_toEndOf="@id/spacer_logo"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintHorizontal_bias="0.0">
             <CustomAttribute

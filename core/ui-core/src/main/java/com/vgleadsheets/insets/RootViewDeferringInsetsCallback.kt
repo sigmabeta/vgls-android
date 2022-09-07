@@ -89,12 +89,12 @@ class RootViewDeferringInsetsCallback(
 
         // Finally we apply the resolved insets by setting them as padding
         val typeInsets = windowInsets.getInsets(types)
-        v.setPadding(typeInsets.left, typeInsets.top, typeInsets.right, typeInsets.bottom)
+        v.setPadding(typeInsets.left, 0, typeInsets.right, typeInsets.bottom)
 
         // We return the new WindowInsetsCompat.CONSUMED to stop the insets being dispatched any
         // further into the view hierarchy. This replaces the deprecated
         // WindowInsetsCompat.consumeSystemWindowInsets() and related functions.
-        return WindowInsetsCompat.CONSUMED
+        return windowInsets
     }
 
     override fun onPrepare(animation: WindowInsetsAnimationCompat) {
