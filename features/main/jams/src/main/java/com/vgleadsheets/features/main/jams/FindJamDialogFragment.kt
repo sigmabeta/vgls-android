@@ -15,8 +15,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.vgleadsheets.insets.CustomInset
-import com.vgleadsheets.insets.InsetOffsets
 import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker

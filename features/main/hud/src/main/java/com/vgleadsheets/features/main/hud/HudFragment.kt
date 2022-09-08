@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
 import com.vgleadsheets.features.main.hud.menu.MenuRenderer
 import com.vgleadsheets.features.main.hud.menu.Shadow
-import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.storage.Storage
