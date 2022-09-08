@@ -35,7 +35,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var repository: Repository
 
-    private lateinit var container_linear: LinearLayout
+    private lateinit var containerLinear: LinearLayout
 
     private lateinit var buttonCancel: Button
 
@@ -61,7 +61,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        container_linear = view.findViewById(R.id.dialog_toplevel)
+        containerLinear = view.findViewById(R.id.dialog_toplevel)
         buttonCancel = view.findViewById(R.id.button_cancel)
         buttonFind = view.findViewById(R.id.button_find)
         editJamName = view.findViewById(R.id.edit_jam_name)
@@ -79,7 +79,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         }
 
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-        val designBottomSheet = container_linear.parent
+        val designBottomSheet = containerLinear.parent
         val coordinator = designBottomSheet.parent
         val container = coordinator.parent
 
