@@ -23,6 +23,7 @@
         android:maxWidth="420dp"
         android:layout_gravity="center_horizontal"
         android:background="@color/md_theme_light_primary"
+        style="?attr/bottomSheetStyle"
         app:paddingBottomSystemWindowInsets="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
