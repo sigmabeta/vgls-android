@@ -4,33 +4,20 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.slideViewDownOffscreen
-import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
 import com.vgleadsheets.features.main.hud.menu.MenuRenderer
 import com.vgleadsheets.features.main.hud.menu.Shadow
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.setInsetListenerForOnePadding
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -68,7 +55,7 @@ class HudFragment : VglsFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): FrameLayout {
+    ): View {
         _binding = FragmentHudBinding.inflate(inflater)
         return screen.root
     }
@@ -84,17 +71,10 @@ class HudFragment : VglsFragment() {
             ""
         )
 
-        val cornerOffset = resources.getDimension(R.dimen.margin_small).toInt()
-
-        val recyclerBottom = screen.includedBottomSheet.includedBottomSheetContent.recyclerBottom
-        val cardBottomSheet = screen.includedBottomSheet.containerCard
+        val recyclerBottom = screen.recyclerBottom
 
         recyclerBottom.adapter = menuAdapter
         recyclerBottom.layoutManager = LinearLayoutManager(context)
-        recyclerBottom.setInsetListenerForOnePadding(Side.BOTTOM, offset = cornerOffset)
-        cardBottomSheet.updateLayoutParams<FrameLayout.LayoutParams> {
-            bottomMargin = -cornerOffset
-        }
 
         menuAdapter.resources = resources
 
@@ -115,8 +95,7 @@ class HudFragment : VglsFragment() {
         )
 
         if (state.mode != HudMode.SEARCH) {
-            val searchText = screen.includedBottomSheet
-                .includedBottomSheetContent
+            val searchText = screen
                 .recyclerBottom
                 .findViewById<EditText>(R.id.edit_search_query)
 
@@ -147,9 +126,11 @@ class HudFragment : VglsFragment() {
             resources
         )
 
+        menuAdapter.submitList(menuItems)
+
         menuAdapter.submitListAnimateResizeContainer(
             menuItems,
-            screen.includedBottomSheet.root as ViewGroup
+            screen.frameBottomSheet as ViewGroup
         )
 
         if (state.digest is Loading) {
@@ -168,24 +149,11 @@ class HudFragment : VglsFragment() {
     override fun getTrackingScreen() = TrackingScreen.HUD
 
     private fun showHud() {
-        screen.includedBottomSheet.containerCard.slideViewOnscreen()
-
-        view?.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            SYSTEM_UI_FLAG_LAYOUT_STABLE
+        // TODO
     }
 
     private fun hideHud() {
-        if (screen.includedBottomSheet.containerCard.visibility != GONE) {
-            screen.includedBottomSheet.containerCard.slideViewDownOffscreen()
-
-            view?.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE or
-                SYSTEM_UI_FLAG_FULLSCREEN or
-                SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                SYSTEM_UI_FLAG_LAYOUT_STABLE
-        }
+        TODO()
     }
 
     private fun hideKeyboard() {

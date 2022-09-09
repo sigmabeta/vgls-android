@@ -3,21 +3,22 @@ package com.vgleadsheets.features.main.list
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
+import com.google.android.material.appbar.AppBarLayout
 import com.vgleadsheets.FragmentInterface
-import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.databinding.FragmentListBinding
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.mvrx.MvRxViewModel
 import com.vgleadsheets.perf.tracking.api.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
-import com.vgleadsheets.setInsetListenerForHeight
 import com.vgleadsheets.setListsSpecialInsets
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
@@ -48,18 +49,19 @@ abstract class BetterListFragment<
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         screen = FragmentListBinding.bind(view)
-        screen.backgroundStatusBar.setInsetListenerForHeight(Side.TOP)
-
-        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
-
-        val content = view.findViewById<RecyclerView>(R.id.list_content)
-        content.adapter = adapter
-        content.layoutManager = LinearLayoutManager(context)
+        screen.listContent.adapter = adapter
+        screen.listContent.layoutManager = LinearLayoutManager(context)
 
         adapter.resources = resources
 
-        content.setListsSpecialInsets(bottomOffset)
+        setupAppBar()
+
+        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
+        screen.listContent.setListsSpecialInsets(bottomOffset)
+
+        Insetup.setupRootViewForInsetAnimation(screen.root)
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
 
@@ -74,13 +76,13 @@ abstract class BetterListFragment<
         super.onStart()
         val progress = this.progress
         if (progress != null) {
-            screen.moLayoutScreen.progress = progress
+            screen.moLayoutToolbar.progress = progress
         }
     }
 
     override fun onStop() {
         super.onStop()
-        progress = screen.moLayoutScreen.progress
+        progress = screen.moLayoutToolbar.progress
     }
 
     override fun invalidate() {
@@ -106,8 +108,8 @@ abstract class BetterListFragment<
                 screen.toBind = title
 
                 if (title.allowExpansion) {
-                    screen.moLayoutScreen.progress = 1.0f
-                    screen.moLayoutScreen.enableTransition(R.id.transition_scroll, false)
+                    screen.moLayoutToolbar.progress = 1.0f
+                    screen.moLayoutToolbar.enableTransition(R.id.transition_scroll, false)
                 }
 
                 val listItems = BetterLists.generateList(config, resources)
@@ -129,6 +131,36 @@ abstract class BetterListFragment<
         }
     }
 
+    private fun setupAppBar() {
+        screen.appBar.addOnOffsetChangedListener(
+            AppBarLayout.OnOffsetChangedListener { appBar, verticalOffset ->
+                val seekPosition = -verticalOffset / appBar.totalScrollRange.toFloat()
+                screen.moLayoutToolbar.progress = seekPosition
+            }
+        )
+
+        val desiredToolbarHeight = screen.moLayoutToolbar.minHeight
+
+        ViewCompat.setOnApplyWindowInsetsListener(screen.moLayoutToolbar) { _, insets: WindowInsetsCompat ->
+            val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val insetTopHeight = systemBarInsets.top
+
+            screen.moLayoutToolbar.minimumHeight = desiredToolbarHeight + insetTopHeight
+
+            val startConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.big)
+            val endConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.guideline_collapsed)
+
+            startConstraintSet.setGuidelineBegin(R.id.guideline_inset, insetTopHeight)
+            endConstraintSet.setGuidelineEnd(R.id.guideline_inset, desiredToolbarHeight)
+            endConstraintSet.setGuidelineEnd(
+                R.id.guideline_collapsed,
+                desiredToolbarHeight + insetTopHeight
+            )
+
+            insets
+        }
+    }
+
     private fun logPerfStages(state: StateType) {
         if (state.isEmpty()) {
             perfTracker.cancel(getPerfSpec())
@@ -147,9 +179,4 @@ abstract class BetterListFragment<
     override fun getLayoutId() = R.layout.fragment_list
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
-
-    companion object {
-        const val KEY_PROGRESS_HEADER_SHRINK =
-            "${BuildConfig.LIBRARY_PACKAGE_NAME}.header_shrink_progress"
-    }
 }

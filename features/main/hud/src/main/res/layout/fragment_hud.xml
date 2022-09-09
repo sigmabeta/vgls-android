@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frame_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_hud"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,8 +16,22 @@
         tools:alpha="0.3"
         tools:visibility="visible" />
 
-    <include
-        android:id="@+id/included_bottom_sheet"
-        layout="@layout/view_bottom_sheet_card" />
+    <FrameLayout
+        android:id="@+id/frame_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxWidth="420dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/md_theme_light_primary"
+        app:paddingBottomSystemWindowInsets="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/list_component_menu_item"
+            tools:showIn="@layout/fragment_hud" />
+
+    </FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -40,7 +40,6 @@ object MenuRenderer {
         clicks: Clicks,
         resources: Resources
     ): List<ListModel> {
-
         val songDetailClickHandler = {
             if (currentSong != null) {
                 router.showSheetDetail(currentSong.id)

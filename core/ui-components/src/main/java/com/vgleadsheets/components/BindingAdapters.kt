@@ -214,7 +214,7 @@ fun searchQuery(
     if (query != view.text.toString()) {
         if (query.isNullOrEmpty()) {
             view.setText(query)
-            view.postDelayed(DELAY_HALF_SECOND) {
+            view.postDelayed(DELAY_KEYBOARD_FOCUS) {
                 view.requestFocus()
 
                 val imm = ContextCompat.getSystemService(
@@ -246,7 +246,7 @@ fun searchQuery(
     )
 }
 
-const val DELAY_HALF_SECOND = 500L
+const val DELAY_KEYBOARD_FOCUS = 50L
 
 const val MULTIPLIER_LIST_POSITION = 100
 const val MAXIMUM_LOAD_OFFSET = 250
