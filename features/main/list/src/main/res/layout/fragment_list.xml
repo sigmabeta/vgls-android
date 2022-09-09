@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="com.vgleadsheets.features.main.list.R" />
 
         <variable
@@ -13,89 +14,106 @@
             type="com.vgleadsheets.components.TitleListModel" />
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
-        android:id="@+id/mo_layout_screen"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/scene_list_scroll">
-
-        <View
-            android:id="@+id/background_status_bar"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <View
-            android:id="@+id/background_title"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            tools:layout_editor_absoluteY="24dp" />
-
-        <View
-            android:id="@+id/spacer_logo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:layout_constraintTop_toTopOf="@+id/button_app_menu"
-            app:layout_constraintStart_toEndOf="@id/button_app_menu"
-            />
-
-        <ImageView
-            android:background="?attr/selectableItemBackground"
-            android:id="@+id/button_app_menu"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:padding="12dp"
-            android:contentDescription="@string/cont_desc_app_menu"
-            app:imageResource="@{toBind.shouldShowBack ? R.drawable.ic_arrow_back_black_24dp : R.drawable.ic_menu_24dp}"
-            android:onClick="@{() -> toBind.onMenuButtonClick.invoke()}" />
-
-        <ImageView
-            android:id="@+id/icon_logo"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:bigPhotoUrl="@{toBind.photoUrl}"
-            app:placeholder="@{toBind.placeholder}"
-            app:imageLoadSuccess="@{toBind.onImageLoadSuccess}"
-            app:imageLoadFail="@{toBind.onImageLoadFail}"
-            tools:src="@drawable/ic_logo"
-            android:contentDescription="@string/cont_desc_logo" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_title_title"
-            android:gravity="center"
-            android:text="@{toBind.title}"
-            android:textSize="24sp"
-            android:textColor="?attr/colorOnPrimaryContainer"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:alpha="0.0"
-            tools:text="VGLeadSheets" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_title_subtitle"
-            android:text="@{toBind.subtitle}"
-            android:textColor="?attr/colorOnPrimaryContainer"
-            android:textSize="14sp"
-            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-            android:gravity="center"
-            android:alpha="0.0"
-            tools:text="By Game" />
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_content"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
-            app:layout_constraintTop_toBottomOf="@+id/background_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/list_component_image_name_caption" />
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/mo_layout_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="72dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:layoutDescription="@xml/scene_list_scroll">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_inset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="20dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_collapsed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_end="72dp" />
+
+                <View
+                    android:id="@+id/background_title"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+                <View
+                    android:id="@+id/spacer_logo"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:layout_constraintTop_toTopOf="@+id/button_app_menu"
+                    app:layout_constraintStart_toEndOf="@id/button_app_menu" />
+
+                <ImageView
+                    android:background="?attr/selectableItemBackground"
+                    android:id="@+id/button_app_menu"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:padding="12dp"
+                    android:contentDescription="@string/cont_desc_app_menu"
+                    android:onClick="@{() -> toBind.onMenuButtonClick.invoke()}"
+                    app:imageResource="@{toBind.shouldShowBack ? R.drawable.ic_arrow_back_black_24dp : R.drawable.ic_menu_24dp}"
+                    tools:src="@drawable/ic_menu_24dp" />
+
+                <ImageView
+                    android:id="@+id/icon_logo"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:bigPhotoUrl="@{toBind.photoUrl}"
+                    app:placeholder="@{toBind.placeholder}"
+                    app:imageLoadSuccess="@{toBind.onImageLoadSuccess}"
+                    app:imageLoadFail="@{toBind.onImageLoadFail}"
+                    tools:src="@drawable/ic_logo"
+                    android:contentDescription="@string/cont_desc_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_title_title"
+                    android:gravity="center"
+                    android:text="@{toBind.title}"
+                    android:textSize="24sp"
+                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:alpha="0.0"
+                    tools:text="VGLeadSheets" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_title_subtitle"
+                    android:text="@{toBind.subtitle}"
+                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textSize="14sp"
+                    android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                    android:gravity="center"
+                    android:alpha="0.0"
+                    tools:text="By Game" />
+
+            </androidx.constraintlayout.motion.widget.MotionLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

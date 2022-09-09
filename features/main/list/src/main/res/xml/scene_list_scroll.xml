@@ -3,21 +3,15 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/big">
-        <Constraint android:id="@+id/background_status_bar">
-            <CustomAttribute
-                motion:attributeName="backgroundColor"
-                motion:customColorValue="?android:attr/colorBackground" />
-        </Constraint>
 
         <Constraint
             android:id="@+id/background_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="-16dp"
-            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toBottomOf="@id/text_title_subtitle">
+            motion:layout_constraintBottom_toBottomOf="parent">
             <CustomAttribute
                 motion:attributeName="backgroundColor"
                 motion:customColorValue="?android:attr/colorBackground" />
@@ -29,7 +23,7 @@
             android:layout_width="48dp"
             android:layout_marginTop="8dp"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/background_status_bar">
+            motion:layout_constraintTop_toBottomOf="@id/guideline_inset">
 
             <CustomAttribute
                 motion:attributeName="colorFilter"
@@ -42,7 +36,7 @@
             android:layout_height="144dp"
             android:layout_width="144dp"
             android:layout_marginTop="@dimen/margin_medium"
-            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            motion:layout_constraintTop_toBottomOf="@id/guideline_inset"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:transitionEasing="linear" />
@@ -80,19 +74,14 @@
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/small">
-        <Constraint android:id="@+id/background_status_bar">
-            <CustomAttribute
-                motion:attributeName="backgroundColor"
-                motion:customColorValue="@color/md_theme_light_primary" />
-        </Constraint>
-
         <Constraint
             android:id="@+id/background_title"
             android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent">
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent">
             <CustomAttribute
                 motion:attributeName="backgroundColor"
                 motion:customColorValue="@color/md_theme_light_primary" />
@@ -102,9 +91,9 @@
             android:id="@+id/button_app_menu"
             android:layout_height="48dp"
             android:layout_width="48dp"
-            motion:layout_constraintBottom_toBottomOf="@id/background_title"
+            motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/background_status_bar">
+            motion:layout_constraintTop_toBottomOf="@id/guideline_collapsed">
 
             <CustomAttribute
                 motion:attributeName="colorFilter"
@@ -119,22 +108,21 @@
             android:scaleX="0.3333"
             android:scaleY="0.3333"
             android:transformPivotX="0dp"
-            android:transformPivotY="72dp"
-            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
-            motion:layout_constraintBottom_toBottomOf="@id/background_title"
+            android:transformPivotY="128dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintStart_toEndOf="@id/button_app_menu" />
 
         <Constraint
             android:id="@+id/text_title_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="12dp"
             android:scaleX="0.75"
             android:scaleY="0.75"
             android:transformPivotX="0dp"
             android:transformPivotY="0dp"
-            motion:layout_constraintTop_toBottomOf="@id/background_status_bar"
+            motion:layout_constraintTop_toTopOf="@id/guideline_collapsed"
             motion:layout_constraintStart_toEndOf="@id/spacer_logo"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintHorizontal_bias="0.0">
@@ -151,11 +139,10 @@
             android:scaleY="0.9"
             android:transformPivotX="0dp"
             android:transformPivotY="0dp"
-            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="-6dp"
             android:layout_marginBottom="2dp"
             motion:layout_constraintTop_toBottomOf="@id/text_title_title"
-            motion:layout_constraintStart_toEndOf="@id/spacer_logo"
+            motion:layout_constraintStart_toStartOf="@id/text_title_title"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintHorizontal_bias="0.0">
             <CustomAttribute
@@ -167,12 +154,5 @@
     <Transition
         android:id="@+id/transition_scroll"
         motion:constraintSetStart="@id/big"
-        motion:constraintSetEnd="@id/small">
-
-        <OnSwipe
-            motion:dragDirection="dragUp"
-            motion:touchAnchorId="@id/list_content"
-            motion:touchAnchorSide="top" />
-
-    </Transition>
+        motion:constraintSetEnd="@id/small" />
 </MotionScene>

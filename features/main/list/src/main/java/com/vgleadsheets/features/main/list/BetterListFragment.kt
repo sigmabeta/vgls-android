@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
+import com.google.android.material.appbar.AppBarLayout
 import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
@@ -51,11 +53,12 @@ abstract class BetterListFragment<
         super.onViewCreated(view, savedInstanceState)
 
         screen = FragmentListBinding.bind(view)
-        screen.backgroundStatusBar.setInsetListenerForMotionLayoutChild(Side.TOP)
         screen.listContent.adapter = adapter
         screen.listContent.layoutManager = LinearLayoutManager(context)
 
         adapter.resources = resources
+
+        setupAppBar()
 
         val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
         screen.listContent.setListsSpecialInsets(bottomOffset)
@@ -75,13 +78,13 @@ abstract class BetterListFragment<
         super.onStart()
         val progress = this.progress
         if (progress != null) {
-            screen.moLayoutScreen.progress = progress
+            screen.moLayoutToolbar.progress = progress
         }
     }
 
     override fun onStop() {
         super.onStop()
-        progress = screen.moLayoutScreen.progress
+        progress = screen.moLayoutToolbar.progress
     }
 
     override fun invalidate() {
@@ -107,8 +110,8 @@ abstract class BetterListFragment<
                 screen.toBind = title
 
                 if (title.allowExpansion) {
-                    screen.moLayoutScreen.progress = 1.0f
-                    screen.moLayoutScreen.enableTransition(R.id.transition_scroll, false)
+                    screen.moLayoutToolbar.progress = 1.0f
+                    screen.moLayoutToolbar.enableTransition(R.id.transition_scroll, false)
                 }
 
                 val listItems = BetterLists.generateList(config, resources)
@@ -130,6 +133,36 @@ abstract class BetterListFragment<
         }
     }
 
+    private fun setupAppBar() {
+        screen.appBar.addOnOffsetChangedListener(
+            AppBarLayout.OnOffsetChangedListener { appBar, verticalOffset ->
+                val seekPosition = -verticalOffset / appBar.totalScrollRange.toFloat()
+                screen.moLayoutToolbar.progress = seekPosition
+            }
+        )
+
+        val desiredToolbarHeight = screen.moLayoutToolbar.minHeight
+
+        ViewCompat.setOnApplyWindowInsetsListener(screen.moLayoutToolbar) { _, insets: WindowInsetsCompat ->
+            val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val insetTopHeight = systemBarInsets.top
+
+            screen.moLayoutToolbar.minimumHeight = desiredToolbarHeight + insetTopHeight
+
+            val startConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.big)
+            val endConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.guideline_collapsed)
+
+            startConstraintSet.setGuidelineBegin(R.id.guideline_inset, insetTopHeight)
+            endConstraintSet.setGuidelineEnd(R.id.guideline_inset, desiredToolbarHeight)
+            endConstraintSet.setGuidelineEnd(
+                R.id.guideline_collapsed,
+                desiredToolbarHeight + insetTopHeight
+            )
+
+            insets
+        }
+    }
+
     private fun logPerfStages(state: StateType) {
         if (state.isEmpty()) {
             perfTracker.cancel(getPerfSpec())
@@ -145,42 +178,7 @@ abstract class BetterListFragment<
         }
     }
 
-    private fun View.setInsetListenerForMotionLayoutChild(
-        side: Side,
-        offset: Int = 0
-    ) {
-        setOnApplyWindowInsetsListener { _, insets ->
-            val systemBarInsets = WindowInsetsCompat
-                .toWindowInsetsCompat(insets)
-                .getInsets(WindowInsetsCompat.Type.systemBars())
-
-            val newHeight = when (side) {
-                Side.TOP -> systemBarInsets.top
-                Side.BOTTOM -> systemBarInsets.bottom
-                Side.START -> systemBarInsets.left
-                Side.END -> systemBarInsets.right
-            } + offset
-
-            with(parent as MotionLayout) {
-                getConstraintSet(R.id.big).apply {
-                    this.constrainHeight(this@setInsetListenerForMotionLayoutChild.id, newHeight)
-                }
-
-                getConstraintSet(R.id.small).apply {
-                    this.constrainHeight(this@setInsetListenerForMotionLayoutChild.id, newHeight)
-                }
-            }
-
-            insets
-        }
-    }
-
     override fun getLayoutId() = R.layout.fragment_list
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
-
-    companion object {
-        const val KEY_PROGRESS_HEADER_SHRINK =
-            "${BuildConfig.LIBRARY_PACKAGE_NAME}.header_shrink_progress"
-    }
 }
