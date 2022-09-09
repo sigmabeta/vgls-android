@@ -13,6 +13,8 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.animation.slideViewDownOffscreen
+import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
 import com.vgleadsheets.features.main.hud.menu.MenuRenderer
 import com.vgleadsheets.features.main.hud.menu.Shadow
@@ -149,11 +151,13 @@ class HudFragment : VglsFragment() {
     override fun getTrackingScreen() = TrackingScreen.HUD
 
     private fun showHud() {
-        // TODO
+        // TODO Bottomsheet behavior
+        screen.frameBottomSheet.slideViewOnscreen()
     }
 
     private fun hideHud() {
-        TODO()
+        // TODO Bottomsheet behavior
+        screen.frameBottomSheet.slideViewDownOffscreen()
     }
 
     private fun hideKeyboard() {
