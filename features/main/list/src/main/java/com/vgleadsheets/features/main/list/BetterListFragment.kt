@@ -3,7 +3,6 @@ package com.vgleadsheets.features.main.list
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +10,6 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.appbar.AppBarLayout
 import com.vgleadsheets.FragmentInterface
-import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
