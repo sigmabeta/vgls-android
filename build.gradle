@@ -1,13 +1,13 @@
 buildscript {
     ext {
-        kotlin_version = '1.6.21'
+        kotlin_version = '1.7.10'
         okhttp_version = '4.9.3'
         retrofit_version = '2.9.0'
         room_version = "2.4.2"
         rxjava_version = "2.2.13"
         rxandroid_version = "2.1.1"
         rxbinding_version = "3.0.0-alpha2"
-        mvrx_version = "1.5.1"
+        mavericks_version = "2.7.0"
         dagger_version = "2.41"
         assistedinject_version = "0.5.2"
         stetho_version = "1.6.0"
@@ -29,7 +29,7 @@ buildscript {
         firebase_perf_version = "20.0.6"
         simplestore_version = "0.0.7"
         leakcanary_version = "2.9.1"
-        lifecycle_version = "2.4.1"
+        lifecycle_version = "2.5.1"
     }
 
     repositories {
