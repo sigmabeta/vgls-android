@@ -141,7 +141,6 @@ class MainActivity :
     ) {
         showTopLevelFragment {
             GameListFragment.newInstance()
-
         }
     }
 

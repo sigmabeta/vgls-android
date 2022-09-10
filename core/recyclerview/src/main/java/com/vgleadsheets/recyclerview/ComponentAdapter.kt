@@ -144,7 +144,7 @@ class ComponentAdapter(val owner: String) :
             val otherItem = otherList?.get(index)
 
             if (otherItem != item) {
-                Timber.v("$owner: items at $index differ - old item ${item}; new item ${otherItem}")
+                Timber.v("$owner: items at $index differ - old item $item; new item $otherItem")
                 return false
             }
         }
@@ -163,5 +163,3 @@ class ComponentAdapter(val owner: String) :
         return false
     }
 }
-
-
