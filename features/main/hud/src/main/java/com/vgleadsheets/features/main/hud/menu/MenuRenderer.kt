@@ -2,7 +2,6 @@ package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
 import com.airbnb.mvrx.Async
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.Clicks
@@ -35,23 +34,10 @@ object MenuRenderer {
         currentSong: Song?,
         perfViewState: PerfViewState,
         baseImageUrl: String,
-        router: FragmentRouter,
         viewModel: HudViewModel,
         clicks: Clicks,
         resources: Resources
     ): List<ListModel> {
-        val songDetailClickHandler = {
-            if (currentSong != null) {
-                router.showSheetDetail(currentSong.id)
-            }
-        }
-
-        val youtubeSearchClickHandler = {
-            if (currentSong != null) {
-                router.searchYoutube(currentSong.name, currentSong.gameName)
-            }
-        }
-
         if (hudMode == HudMode.REGULAR && viewerScreenVisible) {
             viewModel.startHudTimer()
         } else {
@@ -62,9 +48,9 @@ object MenuRenderer {
             PartSelectorOption.valueOf(selectedPart.name),
             hudMode,
             resources,
-            { clicks.searchButton() },
-            { clicks.bottomMenuButton(hudMode, perfViewState.viewMode) },
-            { clicks.changePart() },
+            clicks::searchButton,
+            clicks::bottomMenuButton,
+            clicks::changePart,
         ) + Search.getListModels(
             hudMode,
             searchQuery,
@@ -73,20 +59,20 @@ object MenuRenderer {
             baseImageUrl,
             clicks,
             { text -> clicks.searchQuery(text) },
-            { clicks.bottomMenuButton(hudMode, perfViewState.viewMode) },
+            clicks::bottomMenuButton,
             { clicks.searchClear() },
             resources
         ) + SongDisplay.getListModels(
             hudMode,
             currentSong,
             viewerScreenVisible,
-            songDetailClickHandler,
+            clicks::sheetDetail,
         ) + SheetOptions.getListModels(
             hudMode,
             currentSong,
             viewerScreenVisible,
-            songDetailClickHandler,
-            youtubeSearchClickHandler,
+            clicks::sheetDetail,
+            clicks::youtubeSearch,
             resources
         ) + PartPicker.getListModels(
             hudMode == HudMode.PARTS,

@@ -29,7 +29,7 @@ object TitleBar {
     }
 
     private fun getIconId(hudMode: HudMode) = when (hudMode) {
-        HudMode.REGULAR -> R.drawable.ic_menu_24dp
+        HudMode.REGULAR, HudMode.HIDDEN -> R.drawable.ic_menu_24dp
         HudMode.PERF -> R.drawable.ic_arrow_back_black_24dp
         else -> R.drawable.ic_clear_black_24dp
     }

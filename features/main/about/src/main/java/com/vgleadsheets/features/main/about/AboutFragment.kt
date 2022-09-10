@@ -18,7 +18,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 @SuppressWarnings("TooManyFunctions")
 class AboutFragment :
     VglsFragment() {
-    private val adapter = ComponentAdapter()
+    private val adapter = ComponentAdapter(getVglsFragmentTag())
 
     private val hudViewModel: HudViewModel by existingViewModel()
 

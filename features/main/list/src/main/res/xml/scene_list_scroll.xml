@@ -27,7 +27,7 @@
 
             <CustomAttribute
                 motion:attributeName="colorFilter"
-                motion:customColorValue="?attr/colorOutline" />
+                motion:customColorValue="?attr/colorOnSurface" />
 
         </Constraint>
 
@@ -93,7 +93,7 @@
             android:layout_width="48dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/guideline_collapsed">
+            motion:layout_constraintTop_toBottomOf="@id/guideline_inset">
 
             <CustomAttribute
                 motion:attributeName="colorFilter"
@@ -116,13 +116,13 @@
             android:id="@+id/text_title_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="12dp"
             android:scaleX="0.75"
             android:scaleY="0.75"
             android:transformPivotX="0dp"
             android:transformPivotY="0dp"
-            motion:layout_constraintTop_toTopOf="@id/guideline_collapsed"
+            motion:layout_constraintTop_toTopOf="@id/guideline_inset"
             motion:layout_constraintStart_toEndOf="@id/spacer_logo"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintHorizontal_bias="0.0">

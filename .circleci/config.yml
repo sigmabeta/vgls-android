@@ -80,7 +80,7 @@ jobs:
           command: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.45.2/ktlint && chmod a+x ktlint
       - run:
           name: Run Ktlint
-          command: ./ktlint --android --reporter=html,output=ktlint.html
+          command: ./ktlint --reporter=html,output=ktlint.html
       - store_artifacts:
           path: ktlint.html
           destination: ktlint-reports

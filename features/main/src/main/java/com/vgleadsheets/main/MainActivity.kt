@@ -130,78 +130,78 @@ class MainActivity :
             return
         }
 
-        showFragmentSimple(
+        showFragmentSimple {
             SearchFragment.newInstance(NullableStringArgs(query))
-        )
+        }
     }
 
     override fun showGameList(
         fromScreen: TrackingScreen?,
         fromDetails: String?
     ) {
-        showTopLevelFragment(
+        showTopLevelFragment {
             GameListFragment.newInstance()
-        )
+        }
     }
 
     override fun showComposerList(
         fromScreen: TrackingScreen?,
         fromDetails: String?
     ) {
-        showTopLevelFragment(
+        showTopLevelFragment {
             ComposerListFragment.newInstance()
-        )
+        }
     }
 
     override fun showTagList(
         fromScreen: TrackingScreen?,
         fromDetails: String?
     ) {
-        showTopLevelFragment(
+        showTopLevelFragment {
             TagKeyListFragment.newInstance()
-        )
+        }
     }
 
     override fun showJams(
         fromScreen: TrackingScreen?,
         fromDetails: String?
     ) {
-        showTopLevelFragment(
+        showTopLevelFragment {
             JamListFragment.newInstance()
-        )
+        }
     }
 
     override fun showAllSheets(
         fromScreen: TrackingScreen?,
         fromDetails: String?
     ) {
-        showTopLevelFragment(
+        showTopLevelFragment {
             SongListFragment.newInstance()
-        )
+        }
     }
 
     override fun showSettings(
         fromScreen: TrackingScreen?,
         fromDetails: String?
     ) {
-        showFragmentSimple(
+        showFragmentSimple {
             SettingFragment.newInstance()
-        )
+        }
     }
 
     override fun showDebug(
         fromScreen: TrackingScreen?,
         fromDetails: String?
     ) {
-        showFragmentSimple(
+        showFragmentSimple {
             DebugFragment.newInstance()
-        )
+        }
     }
 
     override fun showAbout() {
-        showFragmentSimple(
+        showFragmentSimple {
             AboutFragment.newInstance()
-        )
+        }
     }
 
     override fun searchYoutube(name: String, gameName: String) {
@@ -217,9 +217,9 @@ class MainActivity :
         startActivity(launcher)
     }
 
-    override fun showLicenseScreen() = showFragmentSimple(
+    override fun showLicenseScreen() = showFragmentSimple {
         LicenseFragment.newInstance()
-    )
+    }
 
     override fun showFindJamDialog() = FindJamDialogFragment
         .newInstance()
@@ -233,46 +233,46 @@ class MainActivity :
     }
 
     override fun showSongListForGame(gameId: Long) {
-        showFragmentSimple(
+        showFragmentSimple {
             GameFragment.newInstance(IdArgs(gameId))
-        )
+        }
     }
 
     override fun showSongListForComposer(composerId: Long) {
-        showFragmentSimple(
+        showFragmentSimple {
             ComposerDetailFragment.newInstance(IdArgs(composerId))
-        )
+        }
     }
 
-    override fun showValueListForTagKey(tagKeyId: Long) = showFragmentSimple(
+    override fun showValueListForTagKey(tagKeyId: Long) = showFragmentSimple {
         TagValueFragment.newInstance(IdArgs(tagKeyId))
-    )
+    }
 
-    override fun showSongListForTagValue(tagValueId: Long) = showFragmentSimple(
+    override fun showSongListForTagValue(tagValueId: Long) = showFragmentSimple {
         TagValueSongFragment.newInstance(IdArgs(tagValueId))
-    )
+    }
 
-    override fun showSheetDetail(songId: Long) = showFragmentSimple(
+    override fun showSheetDetail(songId: Long) = showFragmentSimple {
         SongFragment.newInstance(IdArgs(songId))
-    )
+    }
 
     override fun showSongViewer(
         songId: Long
     ) {
-        showFragmentSimple(
+        showFragmentSimple {
             ViewerFragment.newInstance(ViewerArgs(songId = songId))
-        )
+        }
     }
 
     override fun showJamViewer(jamId: Long) {
-        showFragmentSimple(
+        showFragmentSimple {
             ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
-        )
+        }
     }
 
-    override fun showJamDetailViewer(jamId: Long) = showFragmentSimple(
+    override fun showJamDetailViewer(jamId: Long) = showFragmentSimple {
         JamFragment.newInstance(IdArgs(jamId))
-    )
+    }
 
     override fun onBackPressed() {
         if (!getHudFragment().onBackPress() && getDisplayedFragment()?.onBackPress() != true) {
@@ -295,29 +295,31 @@ class MainActivity :
         }
     }
 
-    private fun showFragmentSimple(
-        fragment: VglsFragment
-    ) {
-        val displayedFragment = getDisplayedFragment()
+    private fun showFragmentSimple(fragmentProvider: () -> VglsFragment) {
+        runOnUiThread {
+            val fragment = fragmentProvider.invoke()
+            val displayedFragment = getDisplayedFragment()
 
-        if (displayedFragment?.getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
-            supportFragmentManager.beginTransaction()
-                .setDefaultAnimations()
-                .replace(R.id.frame_fragment, fragment)
-                .addToBackStack(null)
-                .commit()
+            if (displayedFragment?.getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
+                supportFragmentManager.beginTransaction()
+                    .setDefaultAnimations()
+                    .replace(R.id.frame_fragment, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
     }
 
-    private fun showTopLevelFragment(
-        fragment: VglsFragment
-    ) {
-        clearBackStack()
+    private fun showTopLevelFragment(fragmentProvider: () -> VglsFragment) {
+        runOnUiThread {
+            val fragment = fragmentProvider.invoke()
+            clearBackStack()
 
-        supportFragmentManager.beginTransaction()
-            .setDefaultAnimations()
-            .replace(R.id.frame_fragment, fragment)
-            .commit()
+            supportFragmentManager.beginTransaction()
+                .setDefaultAnimations()
+                .replace(R.id.frame_fragment, fragment)
+                .commit()
+        }
     }
 
     private fun getHudFragment() =
@@ -364,10 +366,11 @@ class MainActivity :
         isJank
     )
 
-    private fun FragmentTransaction.setDefaultAnimations() = setCustomAnimations(
-        R.anim.enter,
-        R.anim.exit,
-        R.anim.enter_pop,
-        R.anim.exit_pop
-    )
+    private fun FragmentTransaction.setDefaultAnimations() =
+        setCustomAnimations(
+            R.anim.enter,
+            R.anim.exit,
+            R.anim.enter_pop,
+            R.anim.exit_pop
+        )
 }

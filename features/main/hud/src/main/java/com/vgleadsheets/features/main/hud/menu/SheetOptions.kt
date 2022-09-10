@@ -14,7 +14,7 @@ object SheetOptions {
         onDetailsClick: () -> Unit,
         onYoutubeClick: () -> Unit,
         resources: Resources,
-    ) = if (currentSong != null && hudMode == HudMode.REGULAR && viewerScreenVisible) {
+    ) = if (currentSong != null && isApplicableHudModeLol(hudMode) && viewerScreenVisible) {
         listOf(
             MenuItemListModel(
                 resources.getString(R.string.label_song_details),
@@ -32,4 +32,8 @@ object SheetOptions {
     } else {
         emptyList()
     }
+
+    private fun isApplicableHudModeLol(hudMode: HudMode) =
+        hudMode == HudMode.REGULAR ||
+            hudMode == HudMode.HIDDEN
 }

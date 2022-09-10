@@ -60,7 +60,7 @@ class ViewerFragment :
     // Keep a local copy for the fragment tag.
     private var songId: Long? = null
 
-    private val sheetsAdapter = ComponentAdapter()
+    private val sheetsAdapter = ComponentAdapter("ViewerFragment")
 
     private val timers = CompositeDisposable()
 
@@ -77,7 +77,7 @@ class ViewerFragment :
     }
 
     override fun onClicked() = withState(hudViewModel) { state ->
-        if (state.hudVisible) {
+        if (state.mode != HudMode.HIDDEN) {
             hudViewModel.hideHud()
         } else {
             hudViewModel.showHud()
@@ -179,7 +179,7 @@ class ViewerFragment :
             startScreenTimer()
         }
 
-        if (hudState.hudVisible) {
+        if (hudState.mode != HudMode.HIDDEN) {
             appButton.slideViewOnscreen()
 
             if (hudState.mode == HudMode.REGULAR) {
@@ -204,7 +204,7 @@ class ViewerFragment :
     }
 
     override fun onBackPress() = withState(hudViewModel) { hudState ->
-        if (hudState.hudVisible) {
+        if (hudState.mode != HudMode.HIDDEN) {
             return@withState false
         } else {
             hudViewModel.showHud()
@@ -299,12 +299,7 @@ class ViewerFragment :
             )
         }
 
-        if (sheetsAdapter.currentList != listComponents) {
-            sheetsAdapter.submitList(listComponents)
-            Timber.w("Lists changed, submitting.")
-        } else {
-            Timber.i("Lists equivalent, not submitting.")
-        }
+        sheetsAdapter.submitList(listComponents)
     }
 
     private fun showEmptyState() {

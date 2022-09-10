@@ -490,7 +490,7 @@ class RealRepository constructor(
             )
         }
 
-        private fun processGame(
+    private fun processGame(
         apiGame: VglsApiGame,
         composerEntities: MutableMap<Long, ComposerEntity>,
         songComposerJoins: ArrayList<SongComposerJoin>,
@@ -513,7 +513,7 @@ class RealRepository constructor(
         }
     }
 
-        private fun processSong(
+    private fun processSong(
         apiSong: ApiSong,
         apiGame: VglsApiGame,
         composerEntities: MutableMap<Long, ComposerEntity>,
@@ -588,7 +588,7 @@ class RealRepository constructor(
         }
     }
 
-        private fun joinSongToTagValue(
+    private fun joinSongToTagValue(
         key: String,
         value: String,
         tagValueEntities: HashMap<String, TagValueEntity>,

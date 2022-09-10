@@ -12,6 +12,8 @@ dependencies {
     implementation project(path: ':core:ui-core')
     implementation project(path: ':core:vectors')
 
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
     // For zoomable sheet images
     implementation "com.github.chrisbanes:PhotoView:$photoview_version"
 
