@@ -114,6 +114,5 @@
 
             </androidx.constraintlayout.motion.widget.MotionLayout>
         </com.google.android.material.appbar.AppBarLayout>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -144,18 +144,16 @@ abstract class BetterListFragment<
         ViewCompat.setOnApplyWindowInsetsListener(screen.moLayoutToolbar) { _, insets: WindowInsetsCompat ->
             val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             val insetTopHeight = systemBarInsets.top
+            val collapsedToolbarHeight = desiredToolbarHeight + insetTopHeight
 
-            screen.moLayoutToolbar.minimumHeight = desiredToolbarHeight + insetTopHeight
+            screen.moLayoutToolbar.minimumHeight = collapsedToolbarHeight
 
-            val startConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.big)
-            val endConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.guideline_collapsed)
+            val bigConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.big)
+            val smallConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.small)
 
-            startConstraintSet.setGuidelineBegin(R.id.guideline_inset, insetTopHeight)
-            endConstraintSet.setGuidelineEnd(R.id.guideline_inset, desiredToolbarHeight)
-            endConstraintSet.setGuidelineEnd(
-                R.id.guideline_collapsed,
-                desiredToolbarHeight + insetTopHeight
-            )
+            bigConstraintSet.setGuidelineBegin(R.id.guideline_inset, insetTopHeight)
+            smallConstraintSet.setGuidelineEnd(R.id.guideline_inset, desiredToolbarHeight)
+            smallConstraintSet.setGuidelineEnd(R.id.guideline_collapsed, collapsedToolbarHeight)
 
             insets
         }

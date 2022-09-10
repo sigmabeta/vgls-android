@@ -20,7 +20,7 @@
         android:layout_height="52dp"
         android:padding="12dp"
         android:contentDescription="@string/cont_desc_app_menu"
-        app:tint="?attr/colorOnPrimary"
+        app:tint="@color/md_theme_light_surface"
         android:src="@drawable/ic_arrow_back_black_24dp" />
 
 </FrameLayout>
