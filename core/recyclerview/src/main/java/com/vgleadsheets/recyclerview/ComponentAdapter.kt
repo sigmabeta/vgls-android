@@ -11,8 +11,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.vgleadsheets.components.ComponentViewHolder
 import com.vgleadsheets.components.ListModel
+import timber.log.Timber
 
-class ComponentAdapter :
+class ComponentAdapter(val owner: String) :
     ListAdapter<ListModel, ComponentViewHolder>(ComponentDiffer) {
 
     init {
@@ -54,12 +55,16 @@ class ComponentAdapter :
     override fun getItemViewType(position: Int) = getItem(position).layoutId
 
     override fun submitList(list: List<ListModel>?) {
+        if (!isNewListActuallyDifferent(list)) return
+
         checkDupes(list)
         super.submitList(list)
     }
 
     @Suppress("MagicNumber")
     fun submitListAnimateResizeContainer(list: List<ListModel>?, container: ViewGroup?) {
+        if (!isNewListActuallyDifferent(list)) return
+
         checkDupes(list)
         super.submitList(list) {
             container?.let {
@@ -91,7 +96,7 @@ class ComponentAdapter :
             .groupBy { it.dataId }
             .filter { it.value.size > 1 }
 
-        val builder = StringBuilder("Dataset contains duplicate ids!\n")
+        val builder = StringBuilder("$owner: Dataset contains duplicate ids!\n")
         duplicateModels.forEach { entry ->
             val duplicateId = entry.key
 
@@ -117,7 +122,37 @@ class ComponentAdapter :
         throw IllegalStateException(builder.toString())
     }
 
-    fun Any.doesNonNullHandlerExist(): Boolean {
+    private fun isNewListActuallyDifferent(newList: List<ListModel>?) =
+        if (!currentList.deepEquals(newList)) {
+            Timber.w("$owner: Lists changed, submitting.")
+            true
+        } else {
+            Timber.i("$owner: Lists equivalent, not submitting.")
+            false
+        }
+
+    private fun <E> List<E>?.deepEquals(otherList: List<E>?): Boolean {
+        if (this == null && otherList != null) return false
+        if (otherList == null && this != null) return false
+
+        if (otherList?.size != this?.size) {
+            Timber.v("$owner: sizes differ - old size ${this?.size ?: 0}; new size ${otherList?.size ?: 0}")
+            return false
+        }
+
+        this?.forEachIndexed { index, item ->
+            val otherItem = otherList?.get(index)
+
+            if (otherItem != item) {
+                Timber.v("$owner: items at $index differ - old item ${item}; new item ${otherItem}")
+                return false
+            }
+        }
+
+        return true
+    }
+
+    private fun Any.doesNonNullHandlerExist(): Boolean {
         val methods = javaClass.methods
         for (method in methods) {
             if (method.name == "getHandler") {
@@ -128,3 +163,5 @@ class ComponentAdapter :
         return false
     }
 }
+
+

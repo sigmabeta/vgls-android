@@ -85,13 +85,19 @@ class Clicks(
         }
     }
 
-    fun bottomMenuButton(hudMode: HudMode, perfViewMode: PerfViewMode) {
+    fun bottomMenuButton() {
         tracker.logBottomMenuButtonClick()
-        when (hudMode) {
-            HudMode.PERF -> perfBottomMenuButtonClick(perfViewMode)
-            HudMode.REGULAR -> viewModel.toMenu()
-            else -> viewModel.toRegularMode()
-        }
+        viewModel.bottomMenuButtonClick()
+    }
+
+    fun sheetDetail() {
+        // tracker.logSheetDetailClick()
+        viewModel.sheetDetailClick()
+    }
+
+    fun youtubeSearch() {
+        // tracker.logSheetDetailClick()
+        viewModel.youtubeSearchClick()
     }
 
     fun changePart() {
@@ -140,13 +146,6 @@ class Clicks(
 
     fun setPerfViewMode(mode: PerfViewMode) {
         viewModel.setPerfViewMode(mode)
-    }
-
-    private fun perfBottomMenuButtonClick(mode: PerfViewMode) {
-        when (mode) {
-            PerfViewMode.REGULAR -> viewModel.toMenu()
-            else -> viewModel.toPerf()
-        }
     }
 
     fun searchClear() {

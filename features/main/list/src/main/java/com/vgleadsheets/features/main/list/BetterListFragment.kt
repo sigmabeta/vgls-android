@@ -41,7 +41,7 @@ abstract class BetterListFragment<
 
     protected open val alwaysShowBack = true
 
-    private val adapter = ComponentAdapter()
+    private val adapter = ComponentAdapter(getVglsFragmentTag())
 
     private var progress: Float? = null
 

@@ -7,17 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vgleadsheets.VglsFragment
-import com.vgleadsheets.animation.slideViewDownOffscreen
-import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
+import com.vgleadsheets.features.main.hud.menu.HudVisibility
 import com.vgleadsheets.features.main.hud.menu.MenuRenderer
-import com.vgleadsheets.features.main.hud.menu.Shadow
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.storage.Storage
@@ -27,6 +27,8 @@ import javax.inject.Named
 
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment() {
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
+
     @Inject
     lateinit var storage: Storage
 
@@ -43,7 +45,7 @@ class HudFragment : VglsFragment() {
 
     private val viewModel: HudViewModel by activityViewModel()
 
-    private val menuAdapter = ComponentAdapter()
+    private val menuAdapter = ComponentAdapter(getVglsFragmentTag())
 
     fun onAppBarButtonClick() = withState(viewModel) {
         clicks.appBarButton(it)
@@ -73,6 +75,9 @@ class HudFragment : VglsFragment() {
             ""
         )
 
+        bottomSheetBehavior = BottomSheetBehavior.from(screen.frameBottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
         val recyclerBottom = screen.recyclerBottom
 
         recyclerBottom.adapter = menuAdapter
@@ -85,15 +90,10 @@ class HudFragment : VglsFragment() {
 
     @Suppress("ComplexMethod", "LongMethod")
     override fun invalidate() = withState(viewModel) { state ->
-        if (state.hudVisible) {
-            showHud()
-        } else {
-            hideHud()
-        }
-
-        Shadow.setToLookRightIdk(
+        HudVisibility.setToLookRightIdk(
             screen.shadowHud,
-            state.mode
+            state.mode,
+            bottomSheetBehavior
         )
 
         if (state.mode != HudMode.SEARCH) {
@@ -122,13 +122,10 @@ class HudFragment : VglsFragment() {
             state.selectedSong,
             state.perfViewState,
             baseImageUrl,
-            getFragmentRouter(),
             viewModel,
             clicks,
             resources
         )
-
-        menuAdapter.submitList(menuItems)
 
         menuAdapter.submitListAnimateResizeContainer(
             menuItems,
@@ -149,16 +146,6 @@ class HudFragment : VglsFragment() {
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 
     override fun getTrackingScreen() = TrackingScreen.HUD
-
-    private fun showHud() {
-        // TODO Bottomsheet behavior
-        screen.frameBottomSheet.slideViewOnscreen()
-    }
-
-    private fun hideHud() {
-        // TODO Bottomsheet behavior
-        screen.frameBottomSheet.slideViewDownOffscreen()
-    }
 
     private fun hideKeyboard() {
         val imm = getSystemService(requireContext(), InputMethodManager::class.java)

@@ -126,15 +126,15 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun hideHud() = withState { state ->
-        if (state.hudVisible) {
-            setState { copy(hudVisible = false) }
+        if (state.mode != HudMode.HIDDEN) {
+            setState { copy(mode = HudMode.HIDDEN) }
         }
     }
 
     fun showHud() = withState { state ->
         stopTimer()
-        if (!state.hudVisible) {
-            setState { copy(hudVisible = true) }
+        if (state.mode == HudMode.HIDDEN) {
+            setState { copy(mode = HudMode.REGULAR) }
         }
     }
 
@@ -183,6 +183,14 @@ class HudViewModel @AssistedInject constructor(
                     // showError("Failed to get a random track.")
                 }
             ).disposeOnClear()
+    }
+
+    fun bottomMenuButtonClick() = withState { state ->
+        when (state.mode) {
+            HudMode.PERF -> perfBottomMenuButtonClick(state.perfViewState.viewMode)
+            HudMode.REGULAR -> toMenu()
+            else -> toRegularMode()
+        }
     }
 
     fun toMenu() = setState {
@@ -392,6 +400,13 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
+    private fun perfBottomMenuButtonClick(mode: PerfViewMode) {
+        when (mode) {
+            PerfViewMode.REGULAR -> toMenu()
+            else -> toPerf()
+        }
+    }
+
     private fun subscribeToSearchQueryQueue() {
         searchQueryQueue
             .throttleLast(THRESHOLD_SEARCH_INPUTS, TimeUnit.MILLISECONDS)
@@ -429,6 +444,14 @@ class HudViewModel @AssistedInject constructor(
 
     private fun stopTimer() {
         timer?.dispose()
+    }
+
+    fun sheetDetailClick() = withState { state ->
+        router.showSheetDetail(state.selectedSong?.id!!)
+    }
+
+    fun youtubeSearchClick() = withState { state ->
+        router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
     }
 
     @AssistedInject.Factory

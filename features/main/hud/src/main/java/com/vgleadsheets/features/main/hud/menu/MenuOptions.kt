@@ -13,7 +13,7 @@ import java.util.Locale
 
 object MenuOptions {
     fun getListModels(
-        expanded: Boolean,
+        shouldShow: Boolean,
         refreshing: Boolean,
         updateTime: Async<Long>,
         onScreenLinkClick: (String) -> Unit,
@@ -22,7 +22,7 @@ object MenuOptions {
         onDebugClick: () -> Unit,
         onPerfClick: () -> Unit,
         resources: Resources,
-    ) = if (expanded) {
+    ) = if (shouldShow) {
         getFullOptionsList(
             refreshing,
             updateTime,

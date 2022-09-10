@@ -5,5 +5,6 @@ enum class HudMode {
     MENU,
     PARTS,
     SEARCH,
-    PERF
+    PERF,
+    HIDDEN
 }
