@@ -10,9 +10,6 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    // RxJava2 libs
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 

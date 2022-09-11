@@ -19,8 +19,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // RxJava libs
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-
+    
     // Junit libs
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation "junit:junit:$junit_version"

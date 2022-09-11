@@ -4,9 +4,6 @@ buildscript {
         okhttp_version = '4.9.3'
         retrofit_version = '2.9.0'
         room_version = "2.4.2"
-        rxjava_version = "2.2.13"
-        rxandroid_version = "2.1.1"
-        rxbinding_version = "3.0.0-alpha2"
         mavericks_version = "2.7.0"
         dagger_version = "2.41"
         assistedinject_version = "0.5.2"

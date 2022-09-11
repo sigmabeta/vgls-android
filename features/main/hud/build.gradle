@@ -17,10 +17,7 @@ dependencies {
     implementation project(path: ':core:ui-core')
     implementation project(path: ':core:vectors')
 
-    // RxJava2 libs
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-
+            
     // AndroidX libs
     implementation "androidx.room:room-runtime:$room_version"
 

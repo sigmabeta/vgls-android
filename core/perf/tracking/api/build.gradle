@@ -4,8 +4,7 @@ dependencies {
     // JankStats library
     api "androidx.metrics:metrics-performance:1.0.0-alpha01"
 
-    // RxJava2 libs
-    api "io.reactivex.rxjava2:rxjava:$rxjava_version"
+        api "io.reactivex.rxjava2:rxjava:$rxjava_version"
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

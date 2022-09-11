@@ -13,10 +13,7 @@ dependencies {
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    // RxJava2 libs
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-
+            
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 }
