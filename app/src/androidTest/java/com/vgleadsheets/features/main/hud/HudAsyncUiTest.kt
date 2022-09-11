@@ -19,7 +19,7 @@ class HudAsyncUiTest : AsyncUiTest() {
             checkViewText("Checking for updates...")
         }
 
-        updateTimeEmitTrigger.onNext(1L)
+        updateTimeEmitTrigger.emit(1L)
 
         hud(this) {
             checkViewText(R.string.label_settings)

@@ -1,8 +1,8 @@
 package com.vgleadsheets.repository
 
-import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
+import kotlinx.coroutines.flow.Flow
 
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
@@ -79,18 +79,18 @@ class DelayOrErrorRepository(
 
     override fun clearJams() = realRepository.clearJams()
 
-    private fun <EventType, RxType : Observable<EventType>> RxType.butItTakesForever() =
+    private fun <EventType, RxType : Flow<EventType>> RxType.butItTakesForever() =
         delay(
             DELAY_MINIMUM_MS + Random.nextLong(DELAY_VARIANCE_MS),
             TimeUnit.MILLISECONDS
         )
 
-    private fun <EventType, RxType : Observable<List<EventType>>> RxType.butItsAlwaysEmpty() =
+    private fun <EventType, RxType : Flow<List<EventType>>> RxType.butItsAlwaysEmpty() =
         startWith(emptyList<EventType>())
             .firstOrError()
             .toObservable()
 
-    private fun <EventType, RxType : Observable<EventType>> RxType.butItFailsEveryTime() = map {
+    private fun <EventType, RxType : Flow<EventType>> RxType.butItFailsEveryTime() = map {
         if (SHOULD_IT_FAIL) {
             error(BUT_IT_FAILS_EVERY_TIME)
         } else {

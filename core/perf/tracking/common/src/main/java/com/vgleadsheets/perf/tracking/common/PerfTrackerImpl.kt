@@ -8,13 +8,11 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.nanoseconds
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import timber.log.Timber
 
 @SuppressWarnings(
@@ -31,13 +29,13 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
 
     private val frameTimeScreens = HashMap<PerfSpec, MutableList<FrameInfo>>()
 
-    private val failureTimers = HashMap<PerfSpec, Disposable?>()
+    private val failureTimers = HashMap<PerfSpec, Job?>()
 
-    private val screenLoadSink = BehaviorSubject.create<Map<PerfSpec, ScreenLoadStatus>>()
+    private val screenLoadSink = MutableSharedFlow<Map<PerfSpec, ScreenLoadStatus>>()
 
-    private val frameTimeSink = BehaviorSubject.create<Map<PerfSpec, FrameTimeStats>>()
+    private val frameTimeSink = MutableSharedFlow<Map<PerfSpec, FrameTimeStats>>()
 
-    private val invalidateSink = BehaviorSubject.create<Map<PerfSpec, InvalidateStats>>()
+    private val invalidateSink = MutableSharedFlow<Map<PerfSpec, InvalidateStats>>()
 
     override fun screenLoadStream() = screenLoadSink
 
@@ -115,13 +113,13 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     }
 
     private fun publishScreenLoads() {
-        screenLoadSink.onNext(
+        screenLoadSink.emit(
             loadTimeScreens.toMap()
         )
     }
 
     private fun publishFrameTimes() {
-        frameTimeSink.onNext(
+        frameTimeSink.emit(
             frameTimeScreens.mapValues {
                 val frametimes = it.value.sortedBy { it.durationOnUiThreadNanos }
                 val totalFrames = frametimes.size
@@ -148,7 +146,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     }
 
     private fun publishInvalidates() {
-        invalidateSink.onNext(
+        invalidateSink.emit(
             invalidateScreens.mapValues {
                 val invalidates = it.value.sortedBy { it.durationNanos }
                 val totalInvalidates = invalidates.size

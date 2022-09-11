@@ -1,12 +1,12 @@
 package com.vgleadsheets.idling
 
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Job
 
-internal class ScheduledWorkDisposable(
+internal class ScheduledWorkJob(
     private val work: ScheduledWork,
-    private val delegate: Disposable
+    private val delegate: Job
 ) :
-    Disposable {
+    Job {
     override fun dispose() {
         work.dispose()
         delegate.dispose()

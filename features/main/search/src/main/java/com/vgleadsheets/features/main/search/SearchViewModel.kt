@@ -8,7 +8,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.CompositeJob
 import java.util.concurrent.TimeUnit
 
 class SearchViewModel @AssistedInject constructor(
@@ -23,7 +23,7 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
-    private val searchOperations = CompositeDisposable()
+    private val searchOperations = CompositeJob()
 
     fun startQuery(searchQuery: String) {
         withState { state ->

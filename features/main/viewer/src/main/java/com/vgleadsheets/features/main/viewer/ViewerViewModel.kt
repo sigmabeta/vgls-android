@@ -10,7 +10,7 @@ import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.CompositeJob
 import io.reactivex.schedulers.Schedulers
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
@@ -23,7 +23,7 @@ class ViewerViewModel @AssistedInject constructor(
     private val storage: Storage
 ) : MavericksViewModel<ViewerState>(initialState) {
 
-    private var jamDisposables = CompositeDisposable()
+    private var jamJobs = CompositeJob()
 
     init {
         checkScreenSetting()
@@ -55,11 +55,11 @@ class ViewerViewModel @AssistedInject constructor(
     fun clearCancellationReason() = setState { copy(jamCancellationReason = null) }
 
     fun unfollowJam(reason: String?) {
-        if (jamDisposables.isDisposed) {
+        if (jamJobs.isDisposed) {
             return
         }
 
-        jamDisposables.clear()
+        jamJobs.clear()
 
         if (reason != null) {
             setState { copy(jamCancellationReason = reason) }
@@ -85,7 +85,7 @@ class ViewerViewModel @AssistedInject constructor(
                 )
                 .disposeOnClear()
 
-            jamDisposables.add(jamStateObservation)
+            jamJobs.add(jamStateObservation)
 
             subscribeToJamDatabase(jamId)
         }
@@ -107,7 +107,7 @@ class ViewerViewModel @AssistedInject constructor(
             )
             .disposeOnClear()
 
-        jamDisposables.add(databaseRefresh)
+        jamJobs.add(databaseRefresh)
     }
 
     private fun subscribeToJamNetwork(jam: Jam) {
@@ -136,7 +136,7 @@ class ViewerViewModel @AssistedInject constructor(
             )
             .disposeOnClear()
 
-        jamDisposables.add(networkRefresh)
+        jamJobs.add(networkRefresh)
     }
 
     private fun removeJam(dataId: Long) {

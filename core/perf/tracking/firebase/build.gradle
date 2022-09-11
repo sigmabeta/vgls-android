@@ -9,6 +9,7 @@ dependencies {
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
     implementation project(path: ':core:di')

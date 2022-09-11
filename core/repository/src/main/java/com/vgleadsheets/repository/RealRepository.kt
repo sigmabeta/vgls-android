@@ -26,11 +26,11 @@ import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.tracking.Tracker
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.flow.Flow
 import org.threeten.bp.Duration
 
 class RealRepository constructor(
@@ -85,7 +85,7 @@ class RealRepository constructor(
 
     override fun refreshSetlist(jamId: Long, name: String) = refreshSetlistImpl(jamId, name)
 
-    override fun getGames(withSongs: Boolean): Observable<List<Game>> = gameDao.getAll()
+    override fun getGames(withSongs: Boolean): Flow<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
             gameEntities.map { gameEntity ->
                 val songs = if (withSongs) getSongsForGameEntity(gameEntity) else null
@@ -107,7 +107,7 @@ class RealRepository constructor(
 
     override fun getSongsByComposer(
         composerId: Long,
-    ): Observable<List<Song>> =
+    ): Flow<List<Song>> =
         songComposerDao
             .getSongsForComposer(composerId)
             .map { songEntities ->
@@ -128,7 +128,7 @@ class RealRepository constructor(
 
     override fun getSongsForTagValue(
         tagValueId: Long,
-    ): Observable<List<Song>> =
+    ): Flow<List<Song>> =
         songTagValueDao
             .getSongsForTagValue(tagValueId)
             .map { songEntities ->
@@ -140,7 +140,7 @@ class RealRepository constructor(
 
     override fun getTagValuesForSong(
         songId: Long
-    ): Observable<List<TagValue>> =
+    ): Flow<List<TagValue>> =
         songTagValueDao
             .getTagValuesForSong(songId)
             .map { tagValueEntities ->
@@ -161,7 +161,7 @@ class RealRepository constructor(
     override fun getSong(
         songId: Long,
         withComposers: Boolean
-    ): Observable<Song> = songDao
+    ): Flow<Song> = songDao
         .getSong(songId)
         .map {
             val composers = if (withComposers) getComposersForSong(it) else null
@@ -177,7 +177,7 @@ class RealRepository constructor(
             }
         }
 
-    override fun getComposers(withSongs: Boolean): Observable<List<Composer>> = composerDao
+    override fun getComposers(withSongs: Boolean): Flow<List<Composer>> = composerDao
         .getAll()
         .map { composerEntities ->
             composerEntities.map { composerEntity ->
@@ -214,11 +214,11 @@ class RealRepository constructor(
             }
         }
 
-    override fun getComposer(composerId: Long): Observable<Composer> = composerDao
+    override fun getComposer(composerId: Long): Flow<Composer> = composerDao
         .getComposer(composerId)
         .map { it.toComposer(null) }
 
-    override fun getGame(gameId: Long): Observable<Game> = gameDao
+    override fun getGame(gameId: Long): Flow<Game> = gameDao
         .getGame(gameId)
         .map { it.toGame(null) }
 
@@ -260,7 +260,7 @@ class RealRepository constructor(
             composers.distinctBy { it.id }
         }
 
-    override fun getLastUpdateTime(): Observable<Time> = getLastDbUpdateTime()
+    override fun getLastUpdateTime(): Flow<Time> = getLastDbUpdateTime()
 
     override fun removeJam(id: Long) = Completable
         .fromAction {

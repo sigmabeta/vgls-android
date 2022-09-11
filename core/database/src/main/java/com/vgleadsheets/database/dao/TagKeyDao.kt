@@ -4,15 +4,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.vgleadsheets.model.tag.TagKeyEntity
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TagKeyDao {
     @Query("SELECT * FROM tag_key WHERE id = :tagKeyId")
-    fun getTagKey(tagKeyId: Long): Observable<TagKeyEntity>
+    fun getTagKey(tagKeyId: Long): Flow<TagKeyEntity>
 
     @Query("SELECT * FROM tag_key ORDER BY name COLLATE NOCASE")
-    fun getAll(): Observable<List<TagKeyEntity>>
+    fun getAll(): Flow<List<TagKeyEntity>>
 
     @Insert
     fun insertAll(tagKeyEntities: List<TagKeyEntity>)

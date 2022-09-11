@@ -20,7 +20,7 @@ import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.CompositeJob
 import io.reactivex.schedulers.Schedulers
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
@@ -45,7 +45,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var progressLoading: ProgressBar
 
-    private val disposables = CompositeDisposable()
+    private val disposables = CompositeJob()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

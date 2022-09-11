@@ -5,12 +5,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vgleadsheets.model.time.TimeEntity
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DbStatisticsDao {
     @Query("SELECT * FROM time WHERE time_id = :tableId")
-    fun getTime(tableId: Int): Observable<List<TimeEntity>>
+    fun getTime(tableId: Int): Flow<List<TimeEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dbStatisticsEntity: TimeEntity)

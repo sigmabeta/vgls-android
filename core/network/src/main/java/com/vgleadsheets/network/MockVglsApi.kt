@@ -9,7 +9,6 @@ import com.vgleadsheets.model.jam.ApiSetlistEntry
 import com.vgleadsheets.model.jam.ApiSongHistoryEntry
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.time.ApiTime
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
@@ -18,6 +17,7 @@ import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
 import javax.inject.Named
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
@@ -48,8 +48,8 @@ class MockVglsApi(
     var maxTagsValues = DEFAULT_MAX_TAGS_VALUES
     var maxSongsPerGame = DEFAULT_MAX_SONGS_PER_GAME
 
-    var digestEmitTrigger: Observable<Long> = Single.just(0L).toObservable()
-    var updateTimeEmitTrigger: Observable<Long> = Single.just(0L).toObservable()
+    var digestEmitTrigger: Flow<Long> = Single.just(0L).toObservable()
+    var updateTimeEmitTrigger: Flow<Long> = Single.just(0L).toObservable()
 
     override fun getDigest() = digestEmitTrigger
         .flatMapSingle { Single.just(generateDigest()) }
@@ -122,7 +122,7 @@ class MockVglsApi(
             previousJams
         )
 
-        it.onNext(jam)
+        it.emit(jam)
     }.subscribeOn(Schedulers.io())
 
     @SuppressWarnings("MagicNumber")

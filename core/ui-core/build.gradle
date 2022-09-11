@@ -14,9 +14,6 @@ dependencies {
     // All UI features should depend on Mavericks
     api project(path: ':core:mvrx')
 
-    // RxJava bindings for Android views
-    api "com.jakewharton.rxbinding3:rxbinding:$rxbinding_version"
-
     // AndroidX libs
     api "androidx.core:core-ktx:$core_ktx_version"
     api "androidx.appcompat:appcompat:$appcompat_version"
@@ -28,6 +25,7 @@ dependencies {
 
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

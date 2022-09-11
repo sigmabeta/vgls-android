@@ -1,6 +1,6 @@
 package com.vgleadsheets.perf.tracking.api
 
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 interface PerfTracker {
     fun start(screenName: String, spec: PerfSpec)
@@ -23,11 +23,11 @@ interface PerfTracker {
 
     fun reportInvalidate(invalidate: InvalidateInfo, spec: PerfSpec)
 
-    fun screenLoadStream(): Observable<Map<PerfSpec, ScreenLoadStatus>>
+    fun screenLoadStream(): Flow<Map<PerfSpec, ScreenLoadStatus>>
 
-    fun frameTimeStream(): Observable<Map<PerfSpec, FrameTimeStats>>
+    fun frameTimeStream(): Flow<Map<PerfSpec, FrameTimeStats>>
 
-    fun invalidateStream(): Observable<Map<PerfSpec, InvalidateStats>>
+    fun invalidateStream(): Flow<Map<PerfSpec, InvalidateStats>>
 
     fun requestUpdates()
 }

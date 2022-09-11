@@ -17,12 +17,11 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.disposables.CompositeJob
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import timber.log.Timber
 
 class HudViewModel @AssistedInject constructor(
@@ -32,11 +31,11 @@ class HudViewModel @AssistedInject constructor(
     private val storage: Storage,
     private val perfTracker: PerfTracker
 ) : MavericksViewModel<HudState>(initialState) {
-    private var timer: Disposable? = null
+    private var timer: Job? = null
 
-    private val searchOperations = CompositeDisposable()
+    private val searchOperations = CompositeJob()
 
-    private val searchQueryQueue = BehaviorSubject.create<String>()
+    private val searchQueryQueue = MutableSharedFlow<String>()
 
     init {
         checkSavedPartSelection()
@@ -116,7 +115,7 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun queueSearchQuery(query: String) {
-        searchQueryQueue.onNext(query)
+        searchQueryQueue.emit(query)
     }
 
     fun hideSearch() = withState { state ->

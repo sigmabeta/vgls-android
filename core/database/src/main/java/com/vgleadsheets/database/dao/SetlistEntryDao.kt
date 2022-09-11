@@ -4,13 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.vgleadsheets.model.jam.SetlistEntryEntity
-import io.reactivex.Observable
 import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SetlistEntryDao {
     @Query("SELECT * FROM setlist_entry WHERE jam_id = :jamId")
-    fun getSetlistEntriesForJam(jamId: Long): Observable<List<SetlistEntryEntity>>
+    fun getSetlistEntriesForJam(jamId: Long): Flow<List<SetlistEntryEntity>>
 
     @Insert
     fun insertAll(setlistEntries: List<SetlistEntryEntity>): Single<List<Long>>

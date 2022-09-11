@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.jam.SongHistoryEntryEntity
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface JamDao {
@@ -15,10 +15,10 @@ interface JamDao {
     fun insert(jam: JamEntity)
 
     @Query("SELECT * FROM jam ORDER BY name COLLATE NOCASE")
-    fun getAll(): Observable<List<JamEntity>>
+    fun getAll(): Flow<List<JamEntity>>
 
     @Query("SELECT * FROM jam WHERE id = :jamId")
-    fun getJam(jamId: Long): Observable<JamEntity>
+    fun getJam(jamId: Long): Flow<JamEntity>
 
     @Query("DELETE FROM jam WHERE Id = :jamId")
     fun remove(jamId: Long)

@@ -34,9 +34,8 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOneMargin
 import com.vgleadsheets.tracking.TrackingScreen
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.CompositeJob
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
@@ -63,7 +62,7 @@ class ViewerFragment :
 
     private val sheetsAdapter = ComponentAdapter("ViewerFragment")
 
-    private val timers = CompositeDisposable()
+    private val timers = CompositeJob()
 
     private lateinit var appButton: ImageView
 
