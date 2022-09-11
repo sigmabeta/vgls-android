@@ -136,7 +136,9 @@ class ComponentAdapter(val owner: String) :
         if (otherList == null && this != null) return false
 
         if (otherList?.size != this?.size) {
-            Timber.v("$owner: sizes differ - old size ${this?.size ?: 0}; new size ${otherList?.size ?: 0}")
+            if (BuildConfig.DEBUG) {
+                Timber.v("$owner: sizes differ - old size ${this?.size ?: 0}; new size ${otherList?.size ?: 0}")
+            }
             return false
         }
 
@@ -144,7 +146,9 @@ class ComponentAdapter(val owner: String) :
             val otherItem = otherList?.get(index)
 
             if (otherItem != item) {
-                Timber.v("$owner: items at $index differ - old item $item; new item $otherItem")
+                if (BuildConfig.DEBUG) {
+                    Timber.v("$owner: items at $index differ - old item $item; new item $otherItem")
+                }
                 return false
             }
         }
