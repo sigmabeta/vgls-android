@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.jam
 
 import android.os.Bundle
 import android.view.View
-import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
@@ -58,7 +58,7 @@ class JamFragment : BetterListFragment<JamContent, JamState>() {
             val fragment = JamFragment()
 
             val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
+            args.putParcelable(Mavericks.KEY_ARG, idArgs)
             fragment.arguments = args
 
             return fragment

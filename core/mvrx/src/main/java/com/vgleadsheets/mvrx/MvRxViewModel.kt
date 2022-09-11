@@ -1,8 +1,8 @@
 package com.vgleadsheets.mvrx
 
-import com.airbnb.mvrx.BaseMvRxViewModel
-import com.airbnb.mvrx.MvRxState
+import com.airbnb.mvrx.MavericksState
+import com.airbnb.mvrx.MavericksViewModel
 
 @Suppress("UnnecessaryAbstractClass")
-abstract class MvRxViewModel<S : MvRxState>(initialState: S) :
-    BaseMvRxViewModel<S>(initialState, debugMode = BuildConfig.DEBUG)
+abstract class MavericksViewModel<S : MavericksState>(initialState: S) :
+    MavericksViewModel<S>(initialState)

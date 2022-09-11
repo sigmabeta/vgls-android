@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.args
@@ -321,7 +321,7 @@ class ViewerFragment :
             val fragment = ViewerFragment()
 
             val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, sheetArgs)
+            args.putParcelable(Mavericks.KEY_ARG, sheetArgs)
             fragment.arguments = args
 
             return fragment

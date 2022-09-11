@@ -1,17 +1,17 @@
 package com.vgleadsheets.features.main.sheet
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 
 class SongViewModel @AssistedInject constructor(
     @Assisted initialState: SongState,
     private val repository: Repository,
-) : MvRxViewModel<SongState>(initialState) {
+) : MavericksViewModel<SongState>(initialState) {
     init {
         fetchSong()
         fetchTagValues()
@@ -46,7 +46,7 @@ class SongViewModel @AssistedInject constructor(
         ): SongViewModel
     }
 
-    companion object : MvRxViewModelFactory<SongViewModel, SongState> {
+    companion object : MavericksViewModelFactory<SongViewModel, SongState> {
         const val ID_COMPOSER_MULTIPLE = Long.MAX_VALUE
 
         const val RATING_MINIMUM = 0

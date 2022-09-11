@@ -11,7 +11,7 @@ dependencies {
     // To allow features to interact with MainActivity's state.
     api project(path: ":features:main:router")
 
-    // All UI features should depend on MvRx
+    // All UI features should depend on Mavericks
     api project(path: ':core:mvrx')
 
     // RxJava bindings for Android views

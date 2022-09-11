@@ -16,7 +16,7 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.databinding.FragmentListBinding
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.insets.Insetup
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.perf.tracking.api.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
@@ -27,7 +27,7 @@ abstract class BetterListFragment<
     ContentType : ListContent,
     StateType : BetterCompositeState<ContentType>
     > : VglsFragment() {
-    abstract val viewModel: MvRxViewModel<StateType>
+    abstract val viewModel: MavericksViewModel<StateType>
 
     abstract fun generateListConfig(state: StateType, hudState: HudState): BetterListConfig
 

@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.search
 
 import android.os.Bundle
-import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.NullableStringArgs
 import com.vgleadsheets.features.main.hud.HudState
@@ -50,7 +50,7 @@ class SearchFragment : BetterListFragment<SearchContent, SearchState>() {
             val fragment = SearchFragment()
 
             val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, stringArgs)
+            args.putParcelable(Mavericks.KEY_ARG, stringArgs)
             fragment.arguments = args
 
             return fragment

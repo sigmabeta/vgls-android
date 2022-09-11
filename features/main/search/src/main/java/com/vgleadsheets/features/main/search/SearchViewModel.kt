@@ -1,12 +1,12 @@
 package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
     private val repository: Repository,
-) : MvRxViewModel<SearchState>(initialState) {
+) : MavericksViewModel<SearchState>(initialState) {
     init {
         withState {
             if (!it.initialQuery.isNullOrEmpty()) {
@@ -91,7 +91,7 @@ class SearchViewModel @AssistedInject constructor(
         ): SearchViewModel
     }
 
-    companion object : MvRxViewModelFactory<SearchViewModel, SearchState> {
+    companion object : MavericksViewModelFactory<SearchViewModel, SearchState> {
         const val RESULT_DEBOUNCE_THRESHOLD = 250L
 
         override fun create(

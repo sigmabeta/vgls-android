@@ -1,19 +1,19 @@
 package com.vgleadsheets.features.main.jam
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.features.main.list.content
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 import timber.log.Timber
 
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
     private val repository: Repository,
-) : MvRxViewModel<JamState>(initialState) {
+) : MavericksViewModel<JamState>(initialState) {
     init {
         fetchJam()
     }
@@ -96,7 +96,7 @@ class JamViewModel @AssistedInject constructor(
         ): JamViewModel
     }
 
-    companion object : MvRxViewModelFactory<JamViewModel, JamState> {
+    companion object : MavericksViewModelFactory<JamViewModel, JamState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: JamState

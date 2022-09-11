@@ -1,11 +1,11 @@
 package com.vgleadsheets.features.main.debug
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_MISC_PERF_VIEW
@@ -17,7 +17,7 @@ class DebugViewModel @AssistedInject constructor(
     @Assisted initialState: DebugState,
     private val repository: Repository,
     private val storage: Storage,
-) : MvRxViewModel<DebugState>(initialState) {
+) : MavericksViewModel<DebugState>(initialState) {
     init {
         fetchSettings()
     }
@@ -119,7 +119,7 @@ class DebugViewModel @AssistedInject constructor(
         ): DebugViewModel
     }
 
-    companion object : MvRxViewModelFactory<DebugViewModel, DebugState> {
+    companion object : MavericksViewModelFactory<DebugViewModel, DebugState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: DebugState

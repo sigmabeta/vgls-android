@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.viewer
 
 import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.MvRxState
+import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.model.song.Song
@@ -15,6 +15,6 @@ data class ViewerState(
     val activeJamId: Long? = null,
     val activeJamSheetId: Long? = null,
     val jamCancellationReason: String? = null
-) : MvRxState {
+) : MavericksState {
     constructor(viewerArgs: ViewerArgs) : this(viewerArgs.jamId, viewerArgs.songId)
 }

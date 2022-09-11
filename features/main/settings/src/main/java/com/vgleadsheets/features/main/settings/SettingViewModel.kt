@@ -1,11 +1,11 @@
 package com.vgleadsheets.features.main.settings
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
 import com.vgleadsheets.storage.Storage.Companion.KEY_SHEETS_KEEP_SCREEN_ON
@@ -14,7 +14,7 @@ import timber.log.Timber
 class SettingViewModel @AssistedInject constructor(
     @Assisted initialState: SettingState,
     private val storage: Storage,
-) : MvRxViewModel<SettingState>(initialState) {
+) : MavericksViewModel<SettingState>(initialState) {
     init {
         fetchSettings()
     }
@@ -77,7 +77,7 @@ class SettingViewModel @AssistedInject constructor(
         ): SettingViewModel
     }
 
-    companion object : MvRxViewModelFactory<SettingViewModel, SettingState> {
+    companion object : MavericksViewModelFactory<SettingViewModel, SettingState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: SettingState

@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.hud
 
 import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.MvRxState
+import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.hud.search.SearchContent
 import com.vgleadsheets.model.ApiDigest
@@ -31,4 +31,4 @@ data class HudState(
     val perfViewState: PerfViewState = PerfViewState(),
     val updateTime: Async<Long> = Uninitialized,
     val digest: Async<ApiDigest> = Uninitialized
-) : MvRxState
+) : MavericksState

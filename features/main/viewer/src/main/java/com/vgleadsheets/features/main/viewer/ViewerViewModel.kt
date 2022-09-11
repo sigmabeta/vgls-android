@@ -1,12 +1,12 @@
 package com.vgleadsheets.features.main.viewer
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.model.jam.Jam
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,7 +21,7 @@ class ViewerViewModel @AssistedInject constructor(
     @Assisted initialState: ViewerState,
     private val repository: Repository,
     private val storage: Storage
-) : MvRxViewModel<ViewerState>(initialState) {
+) : MavericksViewModel<ViewerState>(initialState) {
 
     private var jamDisposables = CompositeDisposable()
 
@@ -153,7 +153,7 @@ class ViewerViewModel @AssistedInject constructor(
         fun create(initialState: ViewerState): ViewerViewModel
     }
 
-    companion object : MvRxViewModelFactory<ViewerViewModel, ViewerState> {
+    companion object : MavericksViewModelFactory<ViewerViewModel, ViewerState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: ViewerState

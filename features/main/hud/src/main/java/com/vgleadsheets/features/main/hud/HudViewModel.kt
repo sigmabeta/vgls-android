@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.hud
 import androidx.fragment.app.FragmentActivity
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
@@ -12,7 +12,7 @@ import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
@@ -31,7 +31,7 @@ class HudViewModel @AssistedInject constructor(
     private val repository: Repository,
     private val storage: Storage,
     private val perfTracker: PerfTracker
-) : MvRxViewModel<HudState>(initialState) {
+) : MavericksViewModel<HudState>(initialState) {
     private var timer: Disposable? = null
 
     private val searchOperations = CompositeDisposable()
@@ -467,7 +467,7 @@ class HudViewModel @AssistedInject constructor(
         var hudViewModelFactory: Factory
     }
 
-    companion object : MvRxViewModelFactory<HudViewModel, HudState> {
+    companion object : MavericksViewModelFactory<HudViewModel, HudState> {
         const val TIMEOUT_HUD_VISIBLE = 3000L
 
         const val THRESHOLD_SEARCH_INPUTS = 500L
