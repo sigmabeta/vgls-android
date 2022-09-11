@@ -10,17 +10,15 @@ import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time
-import io.reactivex.Completable
-import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
-    fun checkShouldAutoUpdate(): Single<Boolean>
-    fun refresh(): Single<ApiDigest>
+    suspend fun checkShouldAutoUpdate(): Boolean
+    suspend fun refresh(): ApiDigest
 
     fun refreshJamStateContinuously(name: String): Flow<ApiJam>
-    fun refreshJamState(name: String): Single<ApiJam>
-    fun refreshSetlist(jamId: Long, name: String): Single<List<Long>>
+    suspend fun refreshJamState(name: String): ApiJam
+    suspend fun refreshSetlist(jamId: Long, name: String): List<Long>
     fun observeJamState(id: Long): Flow<Jam>
 
     // Full Lists
@@ -56,9 +54,9 @@ interface Repository {
     fun searchComposersCombined(searchQuery: String): Flow<List<Composer>>
 
     // Jam maintenance
-    fun removeJam(id: Long): Completable
+    suspend fun removeJam(id: Long)
 
     // Debug options
-    fun clearSheets(): Completable
-    fun clearJams(): Completable
+    suspend fun clearSheets()
+    suspend fun clearJams()
 }
