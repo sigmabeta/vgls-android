@@ -52,7 +52,7 @@ jobs:
             - ~/.gradle
       - run:
           name: Get all Git tags
-          command: git fetch --tags
+          command: git fetch --tags -f
       - save_cache:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
