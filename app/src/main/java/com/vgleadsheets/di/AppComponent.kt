@@ -1,6 +1,7 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.VglsApplication
+import com.vgleadsheets.coroutines.DispatcherModule
 import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
@@ -25,6 +26,7 @@ import javax.inject.Singleton
         RepositoryModule::class,
         ResourcesModule::class,
         DatabaseModule::class,
+        DispatcherModule::class,
         ImageModule::class,
         ApiModule::class,
         NetworkModule::class,

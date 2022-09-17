@@ -4,21 +4,19 @@ import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.ApiSetlist
 import com.vgleadsheets.model.time.ApiTime
-import io.reactivex.Single
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface VglsApi {
     @GET("app/digest?v3=true")
-    fun getDigest(): Single<ApiDigest>
+    suspend fun getDigest(): ApiDigest
 
     @GET("app/digest/last-updated?rfc3339=true")
-    fun getLastUpdateTime(): Single<ApiTime>
+    suspend fun getLastUpdateTime(): ApiTime
 
     @GET("conductor/{name}?jam_id=true")
-    fun getJamState(@Path("name") name: String): Flow<ApiJam>
+    suspend fun getJamState(@Path("name") name: String): ApiJam
 
     @GET("conductor/{name}/setlist")
-    fun getSetlistForJam(@Path("name") name: String): Single<ApiSetlist>
+    suspend fun getSetlistForJam(@Path("name") name: String): ApiSetlist
 }

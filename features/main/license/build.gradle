@@ -1,13 +1,11 @@
 // Uncomment whichever of these plugins you need (for a UI feature, probably both)
+apply from: "$rootProject.projectDir/core-android-module.gradle"
 apply plugin: 'kotlin-kapt'
-
 dependencies {
     implementation project(path: ':features:main:hud')
     implementation project(path: ':core:ui-core')
 
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation project(":core:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

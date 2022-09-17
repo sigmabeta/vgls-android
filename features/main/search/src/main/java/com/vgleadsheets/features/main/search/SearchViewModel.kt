@@ -8,8 +8,9 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
-import io.reactivex.disposables.CompositeJob
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.debounce
 
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
@@ -23,12 +24,17 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
-    private val searchOperations = CompositeJob()
+    private var searchOperations = Job()
+        get() {
+            if (field.isCancelled) field = Job()
+            return field
+        }
 
+    @OptIn(FlowPreview::class)
     fun startQuery(searchQuery: String) {
         withState { state ->
             if (state.query != searchQuery) {
-                searchOperations.clear()
+                searchOperations.cancel()
 
                 setState {
                     copy(
@@ -36,8 +42,8 @@ class SearchViewModel @AssistedInject constructor(
                     )
                 }
 
-                val gameSearch = repository.searchGamesCombined(searchQuery)
-                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
+                repository.searchGamesCombined(searchQuery)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD)
                     .execute { newGames ->
                         copy(
                             contentLoad = contentLoad.copy(
@@ -46,8 +52,8 @@ class SearchViewModel @AssistedInject constructor(
                         )
                     }
 
-                val songSearch = repository.searchSongs(searchQuery)
-                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
+                repository.searchSongs(searchQuery)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD)
                     .execute { newSongs ->
                         copy(
                             contentLoad = contentLoad.copy(
@@ -56,8 +62,8 @@ class SearchViewModel @AssistedInject constructor(
                         )
                     }
 
-                val composerSearch = repository.searchComposersCombined(searchQuery)
-                    .debounce(RESULT_DEBOUNCE_THRESHOLD, TimeUnit.MILLISECONDS)
+                repository.searchComposersCombined(searchQuery)
+                    .debounce(RESULT_DEBOUNCE_THRESHOLD)
                     .execute { newComposers ->
                         copy(
                             contentLoad = contentLoad.copy(
@@ -66,7 +72,8 @@ class SearchViewModel @AssistedInject constructor(
                         )
                     }
 
-                searchOperations.addAll(gameSearch, songSearch, composerSearch)
+                // TODO Figure this out
+                // searchOperations.addAll(gameSearch, songSearch, composerSearch)
             }
         }
     }

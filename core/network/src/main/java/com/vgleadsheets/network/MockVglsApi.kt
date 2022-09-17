@@ -9,15 +9,12 @@ import com.vgleadsheets.model.jam.ApiSetlistEntry
 import com.vgleadsheets.model.jam.ApiSongHistoryEntry
 import com.vgleadsheets.model.song.ApiSong
 import com.vgleadsheets.model.time.ApiTime
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
 import javax.inject.Named
-import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
@@ -29,7 +26,7 @@ import timber.log.Timber
 class MockVglsApi(
     private val random: Random,
     @Named("RngSeed") private val seed: Long,
-    private val stringGenerator: StringGenerator
+    private val stringGenerator: StringGenerator,
 ) : VglsApi {
     private var possibleTags: Map<String, List<String>>? = null
 
@@ -48,26 +45,12 @@ class MockVglsApi(
     var maxTagsValues = DEFAULT_MAX_TAGS_VALUES
     var maxSongsPerGame = DEFAULT_MAX_SONGS_PER_GAME
 
-    var digestEmitTrigger: Flow<Long> = Single.just(0L).toObservable()
-    var updateTimeEmitTrigger: Flow<Long> = Single.just(0L).toObservable()
-
-    override fun getDigest() = digestEmitTrigger
-        .flatMapSingle { Single.just(generateDigest()) }
-        .firstOrError()
-        .subscribeOn(Schedulers.io())
+    override suspend fun getDigest() = generateDigest()
 
     // TODO Fill this in
-    override fun getLastUpdateTime() = updateTimeEmitTrigger
-        .flatMapSingle {
-            Single
-                .just(
-                    ApiTime("2017-04-01T23:30:06Z")
-                )
-        }
-        .firstOrError()
-        .subscribeOn(Schedulers.io())
+    override suspend fun getLastUpdateTime() = ApiTime("2017-04-01T23:30:06Z")
 
-    override fun getJamState(name: String) = Observable.create<ApiJam> {
+    override suspend fun getJamState(name: String): ApiJam {
         if (possibleSongs == null) {
             generateGames()
         }
@@ -81,16 +64,12 @@ class MockVglsApi(
                 .toString()
                 .toResponseBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
-            it.onError(
-                HttpException(
-                    Response.error<Unit>(
-                        HttpURLConnection.HTTP_NOT_FOUND,
-                        body
-                    )
+            throw HttpException(
+                Response.error<Unit>(
+                    HttpURLConnection.HTTP_NOT_FOUND,
+                    body
                 )
             )
-
-            return@create
         }
 
         val jamSeed = name.hashCode().toLong()
@@ -117,16 +96,14 @@ class MockVglsApi(
             }
         }
 
-        val jam = ApiJam(
+        return ApiJam(
             jamId,
             previousJams
         )
-
-        it.emit(jam)
-    }.subscribeOn(Schedulers.io())
+    }
 
     @SuppressWarnings("MagicNumber")
-    override fun getSetlistForJam(name: String) = Single.create<ApiSetlist> {
+    override suspend fun getSetlistForJam(name: String): ApiSetlist {
         if (possibleSongs == null) {
             generateGames()
         }
@@ -155,12 +132,8 @@ class MockVglsApi(
             }
         }
 
-        val setlist = ApiSetlist(
-            songs
-        )
-
-        it.onSuccess(setlist)
-    }.subscribeOn(Schedulers.io())
+        return ApiSetlist(songs)
+    }
 
     private fun generateDigest(): ApiDigest {
         val games = generateGames()

@@ -30,7 +30,7 @@ class JamFragment : BetterListFragment<JamContent, JamState>() {
         super.onViewCreated(view, savedInstanceState)
 
         // Quit the screen if the jam is deleted.
-        viewModel.asyncSubscribe(
+        viewModel.onAsync(
             JamState::deletion,
             deliveryMode = uniqueOnly("deletion")
         ) {

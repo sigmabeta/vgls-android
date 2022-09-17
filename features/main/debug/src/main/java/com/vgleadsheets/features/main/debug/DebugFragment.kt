@@ -23,7 +23,7 @@ class DebugFragment : BetterListFragment<DebugContent, DebugState>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.selectSubscribe(
+        viewModel.onEach(
             DebugState::changed,
             deliveryMode = uniqueOnly("changed")
         ) { changed ->
@@ -32,14 +32,14 @@ class DebugFragment : BetterListFragment<DebugContent, DebugState>() {
             }
         }
 
-        viewModel.asyncSubscribe(
+        viewModel.onAsync(
             DebugState::jamDeletion,
             deliveryMode = uniqueOnly("jamDeletion")
         ) {
             showSnackbar("Jams cleared.")
         }
 
-        viewModel.asyncSubscribe(
+        viewModel.onAsync(
             DebugState::sheetDeletion,
             deliveryMode = uniqueOnly("sheetDeletion")
         ) {

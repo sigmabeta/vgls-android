@@ -1,9 +1,7 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.jam.ApiJam
 import com.vgleadsheets.model.jam.Jam
 import com.vgleadsheets.model.jam.SetlistEntry
 import com.vgleadsheets.model.song.Song
@@ -14,11 +12,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface Repository {
     suspend fun checkShouldAutoUpdate(): Boolean
-    suspend fun refresh(): ApiDigest
+    suspend fun refresh()
 
-    fun refreshJamStateContinuously(name: String): Flow<ApiJam>
-    suspend fun refreshJamState(name: String): ApiJam
-    suspend fun refreshSetlist(jamId: Long, name: String): List<Long>
+    fun refreshJamStateContinuously(name: String): Flow<Unit>
+    suspend fun refreshJamState(name: String)
+    suspend fun refreshSetlist(jamId: Long, name: String)
     fun observeJamState(id: Long): Flow<Jam>
 
     // Full Lists

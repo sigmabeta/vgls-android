@@ -25,6 +25,7 @@ import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.model.pages.Page
@@ -34,11 +35,10 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOneMargin
 import com.vgleadsheets.tracking.TrackingScreen
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeJob
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 class ViewerFragment :
@@ -51,6 +51,9 @@ class ViewerFragment :
     @Named("VglsImageUrl")
     lateinit var baseImageUrl: String
 
+    @Inject
+    lateinit var dispatchers: VglsDispatchers
+
     private val hudViewModel: HudViewModel by existingViewModel()
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
@@ -61,8 +64,6 @@ class ViewerFragment :
     private var songId: Long? = null
 
     private val sheetsAdapter = ComponentAdapter("ViewerFragment")
-
-    private val timers = CompositeJob()
 
     private lateinit var appButton: ImageView
 
@@ -123,7 +124,15 @@ class ViewerFragment :
 
         sheetsAdapter.resources = resources
 
-        viewModel.selectSubscribe(
+        viewModel.screenControlEvents
+            .onEach {
+                when (it) {
+                    ScreenControlEvent.TIMER_START -> setScreenOnLock()
+                    ScreenControlEvent.TIMER_EXPIRED -> clearScreenOnLock()
+                }
+            }.flowOn(dispatchers.main)
+
+        viewModel.onEach(
             ViewerState::activeJamSheetId,
             deliveryMode = uniqueOnly("sheet")
         ) {
@@ -137,13 +146,13 @@ class ViewerFragment :
             }
         }
 
-        viewModel.selectSubscribe(ViewerState::songId) {
+        viewModel.onEach(ViewerState::songId) {
             if (it != null) {
                 viewModel.fetchSong()
             }
         }
 
-        viewModel.selectSubscribe(ViewerState::jamCancellationReason) {
+        viewModel.onEach(ViewerState::jamCancellationReason) {
             if (it != null) {
                 showError("Jam unfollowed: $it")
                 viewModel.clearCancellationReason()
@@ -233,34 +242,11 @@ class ViewerFragment :
     }
 
     private fun startScreenTimer() {
-        Timber.v("Starting screen timer.")
-        val screenTimer = Observable.timer(TIMEOUT_SCREEN_OFF_MINUTES, TimeUnit.MINUTES)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    Timber.v("Screen timer expired.")
-                    clearScreenOnLock()
-                    screenOffSnack = showSnackbar(
-                        getString(R.string.snack_screen_off),
-                        onScreenOffSnackClick,
-                        R.string.cta_snack_screen_off,
-                        Snackbar.LENGTH_INDEFINITE
-                    )
-                },
-                {
-                    showError(
-                        "There was an error with the screen timer. Literally how" +
-                            "did you make this happen?"
-                    )
-                }
-            )
-
-        timers.add(screenTimer)
+        viewModel.startScreenTimer()
     }
 
     private fun stopScreenTimer() {
-        Timber.v("Clearing screen timer.")
-        timers.clear()
+        viewModel.stopScreenTimer()
     }
 
     private fun setScreenOnLock() {
@@ -271,6 +257,13 @@ class ViewerFragment :
     private fun clearScreenOnLock() {
         Timber.v("Clearing screen-on lock.")
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        screenOffSnack = showSnackbar(
+            getString(R.string.snack_screen_off),
+            onScreenOffSnackClick,
+            R.string.cta_snack_screen_off,
+            Snackbar.LENGTH_INDEFINITE
+        )
     }
 
     private fun hideScreenOffSnackbar() {
@@ -314,8 +307,6 @@ class ViewerFragment :
     }
 
     companion object {
-        const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
-
         fun newInstance(sheetArgs: ViewerArgs): ViewerFragment {
             val fragment = ViewerFragment()
 

@@ -10,8 +10,6 @@ import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_MISC_PERF_VIEW
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
-import io.reactivex.Completable
-import timber.log.Timber
 
 class DebugViewModel @AssistedInject constructor(
     @Assisted initialState: DebugState,
@@ -34,82 +32,62 @@ class DebugViewModel @AssistedInject constructor(
     }
 
     fun clearSheets() {
-        repository.clearSheets()
-            .execute {
-                copy(sheetDeletion = it)
-            }
+        suspend {
+            repository.clearSheets()
+        }.execute {
+            copy(sheetDeletion = it)
+        }
     }
 
     fun clearJams() {
-        repository.clearJams()
-            .execute {
-                copy(jamDeletion = it)
-            }
+        suspend {
+            repository.clearJams()
+        }.execute {
+            copy(jamDeletion = it)
+        }
     }
 
     private fun fetchSettings() = withState {
-        storage.getAllDebugSettings()
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        settings = it
-                    )
+        suspend {
+            storage.getAllDebugSettings()
+        }.execute {
+            copy(
+                contentLoad = contentLoad.copy(
+                    settings = it
                 )
-            }
+            )
+        }
     }
 
     @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun setBooleanSetting(settingId: String, newValue: Boolean) {
         // TODO These strings need to live in a common module
-        val settingSaveOperation = when (settingId) {
+        when (settingId) {
             KEY_DEBUG_MISC_PERF_VIEW -> storage.saveDebugSettingPerfView(newValue)
             else -> TODO("Don't know how to save setting $settingId yet!")
         }
 
-        settingSaveOperation
-            .subscribe(
-                {
-                    fetchSettings()
-                },
-                {
-                    Timber.e("Failed to update setting: ${it.message}")
-                }
-            )
-            .disposeOnClear()
+        fetchSettings()
     }
 
     @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private fun setDropdownSetting(settingId: String, newValue: Int) {
         // TODO These strings need to live in a common module
-        val settingSaveOperation = when (settingId) {
+        when (settingId) {
             KEY_DEBUG_NETWORK_ENDPOINT -> storage.saveDebugSelectedNetworkEndpoint(newValue)
             else -> throw IllegalArgumentException()
         }
 
-        settingSaveOperation
-            .subscribe(
-                {
-                    fetchSettings()
-                    clearAll()
-                    setState { copy(changed = true) }
-                },
-                {
-                    Timber.e("Failed to update setting: ${it.message}")
-                }
-            )
-            .disposeOnClear()
+        fetchSettings()
+        clearAll()
+        setState { copy(changed = true) }
     }
 
     private fun clearAll() {
-        Completable
-            .merge(
-                listOf(
-                    repository.clearSheets(),
-                    repository.clearJams()
-                )
-            )
-            .subscribe()
-            .disposeOnClear()
+        suspend {
+            repository.clearSheets()
+            repository.clearJams()
+        }.execute { this }
     }
 
     @AssistedInject.Factory

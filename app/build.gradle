@@ -1,3 +1,5 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.jaredsburrows.license'
 
@@ -32,10 +34,13 @@ def computeVersionName = { ->
 }
 
 android {
+    compileSdkVersion 33
+
     defaultConfig {
         applicationId "com.vgleadsheets"
 
         targetSdkVersion 32
+        minSdkVersion 21
 
         versionCode 1
         versionName "debug"
@@ -124,9 +129,7 @@ dependencies {
 
     androidTestImplementation project(path: ':core:common:debug-common')
 
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation project(":core:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

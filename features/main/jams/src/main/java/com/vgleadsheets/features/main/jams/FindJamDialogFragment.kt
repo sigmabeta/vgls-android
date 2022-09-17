@@ -19,12 +19,13 @@ import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeJob
-import io.reactivex.schedulers.Schedulers
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
 import javax.inject.Inject
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
 
@@ -44,8 +45,6 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
     private lateinit var editJamName: EditText
 
     private lateinit var progressLoading: ProgressBar
-
-    private val disposables = CompositeJob()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -88,11 +87,6 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         Insetup.setupControlFocusForInsetAnimation(editJamName)
     }
 
-    override fun onStop() {
-        super.onStop()
-        disposables.clear()
-    }
-
     private fun onAddClicked() {
         val jamName = editJamName.text.toString()
 
@@ -103,40 +97,40 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun findJam(jamName: String) {
         progressLoading.visibility = VISIBLE
         buttonFind.visibility = GONE
-        val find = repository.refreshJamState(jamName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    progressLoading.visibility = GONE
-                    buttonFind.visibility = VISIBLE
 
-                    dismiss()
-                },
-                {
-                    progressLoading.visibility = GONE
-                    buttonFind.visibility = VISIBLE
+        // TODO Not this
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                repository.refreshJamState(jamName)
 
-                    if (it is HttpException) {
-                        if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
-                            showError(getString(R.string.error_could_not_find_jam))
-                        } else {
-                            showError(getString(R.string.error_network))
-                        }
-                    } else if (it is UnknownHostException) {
-                        showError(getString(R.string.error_connection))
+                progressLoading.visibility = GONE
+                buttonFind.visibility = VISIBLE
+
+                dismiss()
+            } catch (it: Exception) {
+
+                progressLoading.visibility = GONE
+                buttonFind.visibility = VISIBLE
+
+                if (it is HttpException) {
+                    if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+                        showError(getString(R.string.error_could_not_find_jam))
                     } else {
-                        showError("Could not find Jam: ${it.message}")
+                        showError(getString(R.string.error_network))
                     }
-
-                    Timber.e("Error finding Jam: ${it.message}")
+                } else if (it is UnknownHostException) {
+                    showError(getString(R.string.error_connection))
+                } else {
+                    showError("Could not find Jam: ${it.message}")
                 }
-            )
 
-        disposables.add(find)
+                Timber.e("Error finding Jam: ${it.message}")
+            }
+        }
     }
 
     private fun showError(message: String) {

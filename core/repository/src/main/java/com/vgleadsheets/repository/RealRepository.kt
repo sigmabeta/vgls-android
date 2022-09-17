@@ -1,8 +1,9 @@
 package com.vgleadsheets.repository
 
 import android.annotation.SuppressLint
+import com.vgleadsheets.coroutines.CustomFlows
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.VglsDatabase
-import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.alias.ComposerAliasEntity
 import com.vgleadsheets.model.alias.GameAliasEntity
 import com.vgleadsheets.model.composer.ApiComposer
@@ -25,18 +26,19 @@ import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.tracking.Tracker
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 
 class RealRepository constructor(
     private val vglsApi: VglsApi,
     private val threeTen: ThreeTenTime,
     private val tracker: Tracker,
+    private val dispatchers: VglsDispatchers,
     database: VglsDatabase
 ) : Repository {
 
@@ -54,18 +56,28 @@ class RealRepository constructor(
     private val setlistEntryDao = database.setlistEntryDao()
     private val songHistoryEntryDao = database.songHistoryEntryDao()
 
-    override fun checkShouldAutoUpdate() = getLastCheckTime()
-        .filter { threeTen.now().toInstant().toEpochMilli() - it.time_ms > AGE_THRESHOLD }
-        .flatMapSingle { getLastApiUpdateTime() }
-        .zipWith<Time, Long>(
-            getLastDbUpdateTimeOnce()
-        ) { apiTime, dbTime ->
-            apiTime.timeMs - dbTime.timeMs
+    override suspend fun checkShouldAutoUpdate(): Boolean {
+        val lastCheckTime = withContext(dispatchers.disk) {
+            getLastCheckTime()
         }
-        .doOnSuccess { tracker.logAutoRefresh() }
-        .map { diff -> diff > 0L }
 
-    override fun refresh() = getDigest()
+        if (threeTen.now().toInstant().toEpochMilli() - lastCheckTime.time_ms <= AGE_THRESHOLD) {
+            return false
+        }
+
+        val lastApiUpdateTime = withContext(dispatchers.network) { getLastApiUpdateTime() }
+        val lastDbUpdateTime = withContext(dispatchers.disk) { getLastDbUpdateTimeOnce() }
+
+        val diff = lastApiUpdateTime.timeMs - lastDbUpdateTime.timeMs
+        if (diff <= 0L) {
+            return false
+        }
+
+        tracker.logAutoRefresh()
+        return true
+    }
+
+    override suspend fun refresh() = getDigest()
 
     override fun observeJamState(id: Long) = jamDao
         .getJam(id)
@@ -74,16 +86,14 @@ class RealRepository constructor(
             it.toJam(currentSong, null)
         }
 
-    override fun refreshJamStateContinuously(name: String) = Observable
-        .interval(
-            INTERVAL_JAM_REFRESH,
-            TimeUnit.MILLISECONDS
-        ).flatMap { refreshJamStateImpl(name) }
+    override fun refreshJamStateContinuously(name: String) =
+        CustomFlows.emitOnInterval(INTERVAL_JAM_REFRESH) {
+            refreshJamStateImpl(name)
+        }
 
-    override fun refreshJamState(name: String) = refreshJamStateImpl(name)
-        .firstOrError()
+    override suspend fun refreshJamState(name: String) = refreshJamStateImpl(name)
 
-    override fun refreshSetlist(jamId: Long, name: String) = refreshSetlistImpl(jamId, name)
+    override suspend fun refreshSetlist(jamId: Long, name: String) = refreshSetlistImpl(jamId, name)
 
     override fun getGames(withSongs: Boolean): Flow<List<Game>> = gameDao.getAll()
         .map { gameEntities ->
@@ -240,19 +250,16 @@ class RealRepository constructor(
             }
         }
 
-    override fun searchGamesCombined(searchQuery: String) = Observable
-        .combineLatest(
-            searchGames(searchQuery),
-            searchGameAliases(searchQuery)
-        ) { games: List<Game>, gameAliases: List<Game> ->
-            games + gameAliases
-        }.map { games ->
-            games.distinctBy { it.id }
-        }
+    override fun searchGamesCombined(searchQuery: String) = searchGames(searchQuery).combine(
+        searchGameAliases(searchQuery)
+    ) { games: List<Game>, gameAliases: List<Game> ->
+        games + gameAliases
+    }.map { games ->
+        games.distinctBy { it.id }
+    }
 
-    override fun searchComposersCombined(searchQuery: String) = Observable
-        .combineLatest(
-            searchComposers(searchQuery),
+    override fun searchComposersCombined(searchQuery: String) =
+        searchComposers(searchQuery).combine(
             searchComposerAliases(searchQuery)
         ) { composers: List<Composer>, composerAliases: List<Composer> ->
             composers + composerAliases
@@ -262,33 +269,30 @@ class RealRepository constructor(
 
     override fun getLastUpdateTime(): Flow<Time> = getLastDbUpdateTime()
 
-    override fun removeJam(id: Long) = Completable
-        .fromAction {
-            songHistoryEntryDao.removeAllForJam(id)
-            setlistEntryDao.removeAllForJam(id)
-            jamDao.remove(id)
-        }
+    override suspend fun removeJam(id: Long) = withContext(dispatchers.disk) {
+        songHistoryEntryDao.removeAllForJam(id)
+        setlistEntryDao.removeAllForJam(id)
+        jamDao.remove(id)
+    }
 
-    override fun clearSheets() = Completable
-        .fromAction {
-            gameDao.nukeTable()
-            songDao.nukeTable()
-            composerDao.nukeTable()
-            songComposerDao.nukeTable()
-            tagKeyDao.nukeTable()
-            tagValueDao.nukeTable()
-            songTagValueDao.nukeTable()
-            gameAliasDao.nukeTable()
-            composerAliasDao.nukeTable()
-            dbStatisticsDao.nukeTable()
-        }.subscribeOn(Schedulers.io())
+    override suspend fun clearSheets() = withContext(dispatchers.disk) {
+        gameDao.nukeTable()
+        songDao.nukeTable()
+        composerDao.nukeTable()
+        songComposerDao.nukeTable()
+        tagKeyDao.nukeTable()
+        tagValueDao.nukeTable()
+        songTagValueDao.nukeTable()
+        gameAliasDao.nukeTable()
+        composerAliasDao.nukeTable()
+        dbStatisticsDao.nukeTable()
+    }
 
-    override fun clearJams() = Completable
-        .fromAction {
-            songHistoryEntryDao.nukeTable()
-            setlistEntryDao.nukeTable()
-            jamDao.nukeTable()
-        }.subscribeOn(Schedulers.io())
+    override suspend fun clearJams() = withContext(dispatchers.disk) {
+        songHistoryEntryDao.nukeTable()
+        setlistEntryDao.nukeTable()
+        jamDao.nukeTable()
+    }
 
     @Suppress("MaxLineLength")
     private fun searchGames(searchQuery: String) = gameDao
@@ -385,110 +389,115 @@ class RealRepository constructor(
 
     private fun getSongSync(songId: Long) = songDao.getSongSync(songId)
 
-    private fun refreshJamStateImpl(name: String) = vglsApi.getJamState(name)
-        .doOnNext {
-            var songHistoryIndex = 0
-            val songHistoryEntries = it.song_history
-                .drop(1)
-                .map { songHistoryEntry ->
-                    songHistoryEntry.toSongHistoryEntryEntity(it.jam_id, songHistoryIndex++)
-                }
-
-            val jamEntity = it.toJamEntity(name.lowercase())
-
-            jamDao.upsertJam(songHistoryEntryDao, jamEntity, songHistoryEntries)
-            return@doOnNext
+    private suspend fun refreshJamStateImpl(name: String) {
+        val jam = withContext(dispatchers.network) {
+            vglsApi.getJamState(name)
         }
 
-    private fun refreshSetlistImpl(jamId: Long, name: String) = vglsApi.getSetlistForJam(name)
-        .map { it.songs }
-        .map { setlist ->
-            var setlistIndex = 0
-            setlist.map { entry ->
-                entry.toSetlistEntryEntity(jamId, setlistIndex++)
+        val songHistoryEntries = jam.song_history
+            .drop(1)
+            .mapIndexed { songHistoryIndex, songHistoryEntry ->
+                songHistoryEntry.toSongHistoryEntryEntity(jam.jam_id, songHistoryIndex)
             }
-        }
-        .doOnSuccess { setlistEntryDao.removeAllForJam(jamId) }
-        .flatMap { setlistEntryDao.insertAll(it) }
 
-    private fun getLastCheckTime() = dbStatisticsDao
+        val jamEntity = jam.toJamEntity(name.lowercase())
+
+        withContext(dispatchers.disk) {
+            jamDao.upsertJam(songHistoryEntryDao, jamEntity, songHistoryEntries)
+        }
+    }
+
+    private suspend fun refreshSetlistImpl(jamId: Long, name: String) {
+        val setlist = vglsApi.getSetlistForJam(name)
+
+        val setlistEntries = setlist.songs.mapIndexed() { setlistIndex, entry ->
+            entry.toSetlistEntryEntity(jamId, setlistIndex)
+        }
+        setlistEntryDao.removeAllForJam(jamId)
+        setlistEntryDao.insertAll(setlistEntries)
+    }
+
+    private suspend fun getLastCheckTime() = dbStatisticsDao
         .getTime(TimeType.LAST_CHECKED.ordinal)
         .map { it.firstOrNull() ?: TimeEntity(TimeType.LAST_CHECKED.ordinal, 0L) }
-        .firstOrError()
-        .subscribeOn(Schedulers.io())
+        .first()
 
     private fun getLastDbUpdateTime() = dbStatisticsDao
         .getTime(TimeType.LAST_UPDATED.ordinal)
-        .subscribeOn(Schedulers.io())
         .map { it.firstOrNull() ?: TimeEntity(TimeType.LAST_UPDATED.ordinal, 0L) }
         .map {
             it.toTime()
         }
 
-    private fun getLastDbUpdateTimeOnce(): Single<Time> = getLastDbUpdateTime().firstOrError()
+    private suspend fun getLastDbUpdateTimeOnce() = getLastDbUpdateTime().first()
 
-    private fun getLastApiUpdateTime() = vglsApi.getLastUpdateTime()
-        .map { it.toTimeEntity().toTime() }
-        .doOnSuccess() {
-            dbStatisticsDao.insert(
-                TimeEntity(TimeType.LAST_UPDATED.ordinal, it.timeMs)
-            )
-        }
+    private suspend fun getLastApiUpdateTime(): Time {
+        val lastUpdate = vglsApi.getLastUpdateTime()
+        val time = lastUpdate.toTimeEntity().toTime()
+
+        dbStatisticsDao.insert(
+            TimeEntity(TimeType.LAST_UPDATED.ordinal, time.timeMs)
+        )
+
+        return time
+    }
 
     @SuppressLint("DefaultLocale")
     @Suppress("LongMethod", "ComplexMethod")
-    private fun getDigest(): Single<ApiDigest> = vglsApi
-        .getDigest()
-        .doOnSuccess { digest ->
-            val apiComposers = digest.composers
-            val apiGames = digest.games
+    private suspend fun getDigest() {
+        val digest = withContext(dispatchers.network) {
+            vglsApi.getDigest()
+        }
 
-            val composerEntities = createComposerMap(apiComposers)
+        val apiComposers = digest.composers
+        val apiGames = digest.games
 
-            val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
+        val composerEntities = createComposerMap(apiComposers)
 
-            val songEntities = ArrayList<SongEntity>(CAPACITY)
-            val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
-            val songTagValueJoins = ArrayList<SongTagValueJoin>(CAPACITY)
+        val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
 
-            val tagKeyEntities = HashMap<String, TagKeyEntity>(CAPACITY)
-            val tagValueEntities = HashMap<String, TagValueEntity>(CAPACITY)
+        val songEntities = ArrayList<SongEntity>(CAPACITY)
+        val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
+        val songTagValueJoins = ArrayList<SongTagValueJoin>(CAPACITY)
 
-            apiGames.forEach { apiGame ->
-                processGame(
-                    apiGame,
-                    composerEntities,
-                    songComposerJoins,
-                    tagKeyEntities,
-                    tagValueEntities,
-                    songTagValueJoins,
-                    songEntities
-                )
-            }
+        val tagKeyEntities = HashMap<String, TagKeyEntity>(CAPACITY)
+        val tagValueEntities = HashMap<String, TagValueEntity>(CAPACITY)
 
-            gameDao.refreshTable(
-                gameEntities,
-                songDao,
-                composerDao,
-                songComposerDao,
-                songTagValueDao,
-                tagKeyDao,
-                tagValueDao,
-                songEntities,
-                composerEntities.values.toList(),
+        apiGames.forEach { apiGame ->
+            processGame(
+                apiGame,
+                composerEntities,
                 songComposerJoins,
+                tagKeyEntities,
+                tagValueEntities,
                 songTagValueJoins,
-                tagKeyEntities.values.toList(),
-                tagValueEntities.values.toList()
-            )
-
-            dbStatisticsDao.insert(
-                TimeEntity(
-                    TimeType.LAST_CHECKED.ordinal,
-                    threeTen.now().toInstant().toEpochMilli()
-                )
+                songEntities
             )
         }
+
+        gameDao.refreshTable(
+            gameEntities,
+            songDao,
+            composerDao,
+            songComposerDao,
+            songTagValueDao,
+            tagKeyDao,
+            tagValueDao,
+            songEntities,
+            composerEntities.values.toList(),
+            songComposerJoins,
+            songTagValueJoins,
+            tagKeyEntities.values.toList(),
+            tagValueEntities.values.toList()
+        )
+
+        dbStatisticsDao.insert(
+            TimeEntity(
+                TimeType.LAST_CHECKED.ordinal,
+                threeTen.now().toInstant().toEpochMilli()
+            )
+        )
+    }
 
     private fun processGame(
         apiGame: VglsApiGame,

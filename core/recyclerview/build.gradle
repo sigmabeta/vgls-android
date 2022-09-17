@@ -1,3 +1,5 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+
 android {
     buildFeatures {
         dataBinding true
@@ -10,9 +12,7 @@ dependencies {
     // AndroidX libs
     api "androidx.recyclerview:recyclerview:$recycler_version"
 
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation project(":core:coroutines")
 
             
     // Logging

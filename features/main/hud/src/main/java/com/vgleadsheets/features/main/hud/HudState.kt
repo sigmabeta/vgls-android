@@ -4,7 +4,6 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.hud.search.SearchContent
-import com.vgleadsheets.model.ApiDigest
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.api.FrameTimeStats
@@ -30,5 +29,5 @@ data class HudState(
     val invalidateStatsMap: Map<PerfSpec, InvalidateStats>? = null,
     val perfViewState: PerfViewState = PerfViewState(),
     val updateTime: Async<Long> = Uninitialized,
-    val digest: Async<ApiDigest> = Uninitialized
+    val digest: Async<Unit> = Uninitialized
 ) : MavericksState

@@ -1,23 +1,27 @@
 package com.vgleadsheets.repository
 
-import java.util.concurrent.TimeUnit
 import kotlin.random.Random
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
-    val realRepository: RealRepository
+    private val realRepository: RealRepository
 ) : Repository {
-    override fun checkShouldAutoUpdate() = realRepository.checkShouldAutoUpdate()
+    override suspend fun checkShouldAutoUpdate() = realRepository.checkShouldAutoUpdate()
 
-    override fun refresh() = realRepository.refresh()
+    override suspend fun refresh() = realRepository.refresh()
 
     override fun refreshJamStateContinuously(name: String) =
         realRepository.refreshJamStateContinuously(name)
 
-    override fun refreshJamState(name: String) = realRepository.refreshJamState(name)
+    override suspend fun refreshJamState(name: String) = realRepository.refreshJamState(name)
 
-    override fun refreshSetlist(jamId: Long, name: String) =
+    override suspend fun refreshSetlist(jamId: Long, name: String) =
         realRepository.refreshSetlist(jamId, name)
 
     override fun observeJamState(id: Long) = realRepository.observeJamState(id)
@@ -73,24 +77,25 @@ class DelayOrErrorRepository(
     override fun searchComposersCombined(searchQuery: String) =
         realRepository.searchComposersCombined(searchQuery)
 
-    override fun removeJam(id: Long) = realRepository.removeJam(id)
+    override suspend fun removeJam(id: Long) = realRepository.removeJam(id)
 
-    override fun clearSheets() = realRepository.clearSheets()
+    override suspend fun clearSheets() = realRepository.clearSheets()
 
-    override fun clearJams() = realRepository.clearJams()
+    override suspend fun clearJams() = realRepository.clearJams()
 
-    private fun <EventType, RxType : Flow<EventType>> RxType.butItTakesForever() =
-        delay(
-            DELAY_MINIMUM_MS + Random.nextLong(DELAY_VARIANCE_MS),
-            TimeUnit.MILLISECONDS
-        )
+    private suspend fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
+        onEach {
+            delay(
+                DELAY_MINIMUM_MS + Random.nextLong(DELAY_VARIANCE_MS),
+            )
+        }
 
-    private fun <EventType, RxType : Flow<List<EventType>>> RxType.butItsAlwaysEmpty() =
-        startWith(emptyList<EventType>())
-            .firstOrError()
-            .toObservable()
+    private suspend fun <EventType, FlowType : Flow<List<EventType>>> FlowType.butItsAlwaysEmpty() =
+        onStart {
+            emit(emptyList())
+        }.first()
 
-    private fun <EventType, RxType : Flow<EventType>> RxType.butItFailsEveryTime() = map {
+    private fun <EventType, FlowType : Flow<EventType>> FlowType.butItFailsEveryTime() = this.map {
         if (SHOULD_IT_FAIL) {
             error(BUT_IT_FAILS_EVERY_TIME)
         } else {
