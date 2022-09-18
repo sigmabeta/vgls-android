@@ -26,6 +26,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
 
@@ -107,28 +108,31 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
             try {
                 repository.refreshJamState(jamName)
 
-                progressLoading.visibility = GONE
-                buttonFind.visibility = VISIBLE
+                withContext(Dispatchers.Main) {
+                    progressLoading.visibility = GONE
+                    buttonFind.visibility = VISIBLE
 
-                dismiss()
-            } catch (it: Exception) {
-
-                progressLoading.visibility = GONE
-                buttonFind.visibility = VISIBLE
-
-                if (it is HttpException) {
-                    if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
-                        showError(getString(R.string.error_could_not_find_jam))
-                    } else {
-                        showError(getString(R.string.error_network))
-                    }
-                } else if (it is UnknownHostException) {
-                    showError(getString(R.string.error_connection))
-                } else {
-                    showError("Could not find Jam: ${it.message}")
+                    dismiss()
                 }
+            } catch (it: Exception) {
+                withContext(Dispatchers.Main) {
+                    progressLoading.visibility = GONE
+                    buttonFind.visibility = VISIBLE
 
-                Timber.e("Error finding Jam: ${it.message}")
+                    if (it is HttpException) {
+                        if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+                            showError(getString(R.string.error_could_not_find_jam))
+                        } else {
+                            showError(getString(R.string.error_network))
+                        }
+                    } else if (it is UnknownHostException) {
+                        showError(getString(R.string.error_connection))
+                    } else {
+                        showError("Could not find Jam: ${it.message}")
+                    }
+
+                    Timber.e("Error finding Jam: ${it.message}")
+                }
             }
         }
     }
