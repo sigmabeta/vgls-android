@@ -30,6 +30,7 @@ import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
@@ -102,6 +103,7 @@ class RealRepository constructor(
                 gameEntity.toGame(songs)
             }
         }
+        .flowOn(dispatchers.disk)
 
     override fun getSongsForGame(
         gameId: Long,
@@ -114,6 +116,7 @@ class RealRepository constructor(
                 songEntity.toSong(composers)
             }
         }
+        .flowOn(dispatchers.disk)
 
     override fun getSongsByComposer(
         composerId: Long,
@@ -126,6 +129,7 @@ class RealRepository constructor(
                     songEntity.toSong(composers)
                 }
             }
+            .flowOn(dispatchers.disk)
 
     override fun getTagValuesForTagKey(tagKeyId: Long, withSongs: Boolean) =
         tagValueDao.getValuesForTag(tagKeyId)
@@ -135,6 +139,7 @@ class RealRepository constructor(
                     tagValueEntity.toTagValue(songs)
                 }
             }
+            .flowOn(dispatchers.disk)
 
     override fun getSongsForTagValue(
         tagValueId: Long,
@@ -147,6 +152,7 @@ class RealRepository constructor(
                     songEntity.toSong(composers)
                 }
             }
+            .flowOn(dispatchers.disk)
 
     override fun getTagValuesForSong(
         songId: Long
@@ -158,6 +164,7 @@ class RealRepository constructor(
                     tagValueEntity.toTagValue(null)
                 }
             }
+            .flowOn(dispatchers.disk)
 
     override fun getSetlistForJam(jamId: Long) = setlistEntryDao
         .getSetlistEntriesForJam(jamId)
@@ -167,6 +174,7 @@ class RealRepository constructor(
                 entryEntity.toSetlistEntry(song)
             }
         }
+        .flowOn(dispatchers.disk)
 
     override fun getSong(
         songId: Long,
@@ -177,6 +185,7 @@ class RealRepository constructor(
             val composers = if (withComposers) getComposersForSong(it) else null
             it.toSong(composers)
         }
+        .flowOn(dispatchers.disk)
 
     override fun getAllSongs(withComposers: Boolean) = songDao
         .getAll()
@@ -186,6 +195,7 @@ class RealRepository constructor(
                 songEntity.toSong(composers)
             }
         }
+        .flowOn(dispatchers.disk)
 
     override fun getComposers(withSongs: Boolean): Flow<List<Composer>> = composerDao
         .getAll()
@@ -195,6 +205,7 @@ class RealRepository constructor(
                 composerEntity.toComposer(songs)
             }
         }
+        .flowOn(dispatchers.disk)
 
     override fun getAllTagKeys(withValues: Boolean) = tagKeyDao
         .getAll()
@@ -204,6 +215,7 @@ class RealRepository constructor(
                 it.toTagKey(values)
             }
         }
+        .flowOn(dispatchers.disk)
 
     override fun getJam(id: Long, withHistory: Boolean) = jamDao
         .getJam(id)
@@ -214,6 +226,7 @@ class RealRepository constructor(
 
             it.toJam(currentSong, songHistory)
         }
+        .flowOn(dispatchers.disk)
 
     override fun getJams() = jamDao
         .getAll()
@@ -223,22 +236,27 @@ class RealRepository constructor(
                 it.toJam(currentSong, null)
             }
         }
+        .flowOn(dispatchers.disk)
 
     override fun getComposer(composerId: Long): Flow<Composer> = composerDao
         .getComposer(composerId)
         .map { it.toComposer(null) }
+        .flowOn(dispatchers.disk)
 
     override fun getGame(gameId: Long): Flow<Game> = gameDao
         .getGame(gameId)
         .map { it.toGame(null) }
+        .flowOn(dispatchers.disk)
 
     override fun getTagKey(tagKeyId: Long) = tagKeyDao
         .getTagKey(tagKeyId)
         .map { it.toTagKey(null) }
+        .flowOn(dispatchers.disk)
 
     override fun getTagValue(tagValueId: Long) = tagValueDao
         .getTagValue(tagValueId)
         .map { it.toTagValue(null) }
+        .flowOn(dispatchers.disk)
 
     @Suppress("MaxLineLength")
     override fun searchSongs(searchQuery: String) = songDao
@@ -249,6 +267,7 @@ class RealRepository constructor(
                 it.toSong(composers)
             }
         }
+        .flowOn(dispatchers.disk)
 
     override fun searchGamesCombined(searchQuery: String) = searchGames(searchQuery).combine(
         searchGameAliases(searchQuery)
@@ -256,7 +275,7 @@ class RealRepository constructor(
         games + gameAliases
     }.map { games ->
         games.distinctBy { it.id }
-    }
+    }.flowOn(dispatchers.disk)
 
     override fun searchComposersCombined(searchQuery: String) =
         searchComposers(searchQuery).combine(
@@ -265,7 +284,7 @@ class RealRepository constructor(
             composers + composerAliases
         }.map { composers ->
             composers.distinctBy { it.id }
-        }
+        }.flowOn(dispatchers.disk)
 
     override fun getLastUpdateTime(): Flow<Time> = getLastDbUpdateTime()
 

@@ -28,37 +28,38 @@ class JamViewModel @AssistedInject constructor(
     }
 
     fun deleteJam() = withState {
-        repository.removeJam(it.jamId)
-            .execute {
-                copy(
-                    deletion = it
-                )
-            }
+        suspend {
+            repository.removeJam(it.jamId)
+        }.execute {
+            copy(
+                deletion = it
+            )
+        }
     }
 
     private fun fireJamRefreshRequest(
         name: String,
         state: JamState
     ) {
-        repository
-            .refreshJamState(name)
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        jamRefresh = it
-                    )
+        suspend {
+            repository.refreshJamState(name)
+        }.execute {
+            copy(
+                contentLoad = contentLoad.copy(
+                    jamRefresh = it
                 )
-            }
+            )
+        }
 
-        repository
-            .refreshSetlist(state.jamId, name)
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        setlistRefresh = it
-                    )
+        suspend {
+            repository.refreshSetlist(state.jamId, name)
+        }.execute {
+            copy(
+                contentLoad = contentLoad.copy(
+                    setlistRefresh = it
                 )
-            }
+            )
+        }
     }
 
     private fun fetchJam() = withState { state ->

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
+import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
@@ -34,7 +35,7 @@ class JamFragment : BetterListFragment<JamContent, JamState>() {
             JamState::deletion,
             deliveryMode = uniqueOnly("deletion")
         ) {
-            activity?.onBackPressed()
+            (activity as? FragmentRouter)?.back()
         }
     }
 

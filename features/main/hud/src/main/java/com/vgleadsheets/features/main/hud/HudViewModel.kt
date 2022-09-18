@@ -21,7 +21,6 @@ import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
@@ -47,11 +46,9 @@ class HudViewModel @AssistedInject constructor(
 ) : MavericksViewModel<HudState>(initialState) {
     private var timer: Job? = null
 
-    private var searchOperations = Job()
-        get() {
-            if (field.isCancelled) field = Job()
-            return field
-        }
+    private var gameSearch: Job? = null
+    private var composerSearch: Job? = null
+    private var songSearch: Job? = null
 
     private val searchQueryQueue = MutableSharedFlow<String>()
 
@@ -268,6 +265,14 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
+    fun sheetDetailClick() = withState { state ->
+        router.showSheetDetail(state.selectedSong?.id!!)
+    }
+
+    fun youtubeSearchClick() = withState { state ->
+        router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
+    }
+
     private fun showInitialScreen() {
         viewModelScope.launch(dispatchers.disk) {
             val selection = storage.getSavedTopLevelScreen()
@@ -330,7 +335,7 @@ class HudViewModel @AssistedInject constructor(
     private fun startSearchQuery(searchQuery: String) {
         withState { state ->
             if (state.searchQuery != searchQuery) {
-                searchOperations.cancelChildren()
+                cancelSearch()
 
                 setState {
                     copy(
@@ -341,7 +346,7 @@ class HudViewModel @AssistedInject constructor(
                     )
                 }
 
-                repository.searchGamesCombined(searchQuery)
+                gameSearch = repository.searchGamesCombined(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newGames ->
                         if (newGames is Loading) {
@@ -356,7 +361,7 @@ class HudViewModel @AssistedInject constructor(
                         )
                     }
 
-                repository.searchSongs(searchQuery)
+                songSearch = repository.searchSongs(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newSongs ->
                         if (newSongs is Loading) {
@@ -371,7 +376,7 @@ class HudViewModel @AssistedInject constructor(
                         )
                     }
 
-                repository.searchComposersCombined(searchQuery)
+                composerSearch = repository.searchComposersCombined(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newComposers ->
                         if (newComposers is Loading) {
@@ -385,20 +390,14 @@ class HudViewModel @AssistedInject constructor(
                             )
                         )
                     }
-
-                // TODO Figure this out
-                // combine(
-                //     gameSearch,
-                //     songSearch,
-                //     composerSearch
-                // ) { games, songs, composers ->
-                //     SearchContent(songs, composers, games, true)
-                // }.execute {
-                //
-                // }
-                // searchOperations.(gameSearch, songSearch, composerSearch)
             }
         }
+    }
+
+    private fun cancelSearch() {
+        gameSearch?.cancel()
+        composerSearch?.cancel()
+        songSearch?.cancel()
     }
 
     private fun perfBottomMenuButtonClick(mode: PerfViewMode) {
@@ -447,14 +446,6 @@ class HudViewModel @AssistedInject constructor(
 
     private fun stopTimer() {
         timer?.cancel()
-    }
-
-    fun sheetDetailClick() = withState { state ->
-        router.showSheetDetail(state.selectedSong?.id!!)
-    }
-
-    fun youtubeSearchClick() = withState { state ->
-        router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
     }
 
     @AssistedInject.Factory
