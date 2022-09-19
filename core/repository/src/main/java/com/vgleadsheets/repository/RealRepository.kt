@@ -57,6 +57,7 @@ class RealRepository constructor(
     private val setlistEntryDao = database.setlistEntryDao()
     private val songHistoryEntryDao = database.songHistoryEntryDao()
 
+    @Suppress("ReturnCount")
     override suspend fun checkShouldAutoUpdate(): Boolean {
         val lastCheckTime = withContext(dispatchers.disk) {
             getLastCheckTime()

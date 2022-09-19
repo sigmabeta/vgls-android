@@ -40,7 +40,7 @@ internal class FixedDelegatingScheduler(
                 val work = createWork(action, 0L, 0L)
                 val disposable = delegateWorker.schedule(work)
                 val workJob =
-                    ScheduledWorkJob(
+                    ScheduledWorkDisposable(
                         work,
                         disposable
                     )
@@ -61,7 +61,7 @@ internal class FixedDelegatingScheduler(
                     delegateWorker.schedule(work, delayTime, unit)
                 disposables.add(disposable)
                 val workJob =
-                    ScheduledWorkJob(
+                    ScheduledWorkDisposable(
                         work,
                         disposable
                     )
@@ -83,7 +83,7 @@ internal class FixedDelegatingScheduler(
                     delegateWorker.schedulePeriodically(work, initialDelay, period, unit)
                 disposables.add(disposable)
                 val workJob =
-                    ScheduledWorkJob(
+                    ScheduledWorkDisposable(
                         work,
                         disposable
                     )

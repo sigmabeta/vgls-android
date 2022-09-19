@@ -12,7 +12,6 @@ import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
-import java.time.Duration
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -117,8 +116,8 @@ class ViewerViewModel @AssistedInject constructor(
             Timber.v("Starting screen timer.")
             _screenControlEvents.emit(ScreenControlEvent.TIMER_START)
 
-            val minutes = Duration.ofMinutes(TIMEOUT_SCREEN_OFF_MINUTES)
-            delay(minutes.toMillis())
+            val minutes = TIMEOUT_SCREEN_OFF_MILLIS
+            delay(minutes)
 
             Timber.v("Screen timer expired.")
             _screenControlEvents.emit(ScreenControlEvent.TIMER_EXPIRED)
@@ -173,6 +172,7 @@ class ViewerViewModel @AssistedInject constructor(
             .launchIn(viewModelScope + jamJob)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun removeJam(dataId: Long) {
         viewModelScope.launch(dispatchers.disk) {
             try {
@@ -191,10 +191,12 @@ class ViewerViewModel @AssistedInject constructor(
     companion object : MavericksViewModelFactory<ViewerViewModel, ViewerState> {
         const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
 
+        const val TIMEOUT_SCREEN_OFF_MILLIS = TIMEOUT_SCREEN_OFF_MINUTES * 60 * 1_000L
+
         override fun create(
             viewModelContext: ViewModelContext,
             state: ViewerState
-        ): ViewerViewModel? {
+        ): ViewerViewModel {
             val fragment: ViewerFragment = (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewerViewModelFactory.create(state)
         }

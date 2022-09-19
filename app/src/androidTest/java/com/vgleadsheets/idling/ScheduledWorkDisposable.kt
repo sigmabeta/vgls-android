@@ -2,7 +2,7 @@ package com.vgleadsheets.idling
 
 import kotlinx.coroutines.Job
 
-internal class ScheduledWorkJob(
+internal class ScheduledWorkDisposable(
     private val work: ScheduledWork,
     private val delegate: Job
 ) :

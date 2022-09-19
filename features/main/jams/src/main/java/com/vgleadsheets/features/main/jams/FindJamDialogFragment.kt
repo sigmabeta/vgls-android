@@ -99,6 +99,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
+    @Suppress("TooGenericExceptionCaught")
     private fun findJam(jamName: String) {
         progressLoading.visibility = VISIBLE
         buttonFind.visibility = GONE
