@@ -12,8 +12,8 @@ interface ComposerAliasDao {
     fun getAliasesByName(name: String): Flow<List<ComposerAliasEntity>>
 
     @Insert
-    fun insertAll(aliasEntities: List<ComposerAliasEntity>)
+    suspend fun insertAll(aliasEntities: List<ComposerAliasEntity>)
 
     @Query("DELETE FROM alias_composer")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

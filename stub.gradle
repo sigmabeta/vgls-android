@@ -9,11 +9,6 @@ dependencies {
     implementation project(path: ':core:repository')
     implementation project(path: ':core:recyclerview')
     implementation project(path: ':core:ui-core')
-
-            
-    // AndroidX libs
-    implementation "androidx.room:room-runtime:$room_version"
-
     implementation project(":core:coroutines")
 
     // Logging

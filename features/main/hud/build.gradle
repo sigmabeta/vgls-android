@@ -17,11 +17,6 @@ dependencies {
     implementation project(path: ':core:storage')
     implementation project(path: ':core:ui-core')
     implementation project(path: ':core:vectors')
-
-            
-    // AndroidX libs
-    implementation "androidx.room:room-runtime:$room_version"
-
     implementation project(":core:coroutines")
 
     // Logging

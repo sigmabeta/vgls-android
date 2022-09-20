@@ -27,8 +27,8 @@ interface SongDao {
     fun searchSongsByTitle(title: String): Flow<List<SongEntity>>
 
     @Insert
-    fun insertAll(songs: List<SongEntity>)
+    suspend fun insertAll(songs: List<SongEntity>)
 
     @Query("DELETE FROM song")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

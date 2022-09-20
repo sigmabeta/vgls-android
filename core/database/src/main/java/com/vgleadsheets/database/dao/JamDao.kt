@@ -2,7 +2,7 @@ package com.vgleadsheets.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Transaction
 import com.vgleadsheets.model.jam.JamEntity
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface JamDao {
     @Insert(onConflict = REPLACE)
-    fun insert(jam: JamEntity)
+    suspend fun insert(jam: JamEntity)
 
     @Query("SELECT * FROM jam ORDER BY name COLLATE NOCASE")
     fun getAll(): Flow<List<JamEntity>>
@@ -21,10 +21,10 @@ interface JamDao {
     fun getJam(jamId: Long): Flow<JamEntity>
 
     @Query("DELETE FROM jam WHERE Id = :jamId")
-    fun remove(jamId: Long)
+    suspend fun remove(jamId: Long)
 
     @Transaction
-    fun upsertJam(
+    suspend fun upsertJam(
         songHistoryEntryDao: SongHistoryEntryDao,
         jam: JamEntity,
         songHistoryEntries: List<SongHistoryEntryEntity>
@@ -35,5 +35,5 @@ interface JamDao {
     }
 
     @Query("DELETE FROM jam")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

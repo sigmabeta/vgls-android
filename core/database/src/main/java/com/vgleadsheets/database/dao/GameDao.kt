@@ -25,13 +25,13 @@ interface GameDao {
     fun searchGamesByTitle(title: String): Flow<List<GameEntity>>
 
     @Insert
-    fun insertAll(gameEntities: List<GameEntity>)
+    suspend fun insertAll(gameEntities: List<GameEntity>)
 
     @Query("DELETE FROM game")
-    fun nukeTable()
+    suspend fun nukeTable()
 
-        @Transaction
-    fun refreshTable(
+    @Transaction
+    suspend fun refreshTable(
         gameEntities: List<GameEntity>,
         songDao: SongDao,
         composerDao: ComposerDao,

@@ -12,11 +12,6 @@ dependencies {
 
     // Viewpager2
     implementation "androidx.viewpager2:viewpager2:$viewpager_version"
-
-            
-    // AndroidX libs
-    implementation "androidx.room:room-runtime:$room_version"
-
     implementation project(":core:coroutines")
 
     // Logging

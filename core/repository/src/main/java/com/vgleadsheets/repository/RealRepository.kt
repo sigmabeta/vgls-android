@@ -433,8 +433,11 @@ class RealRepository constructor(
         val setlistEntries = setlist.songs.mapIndexed() { setlistIndex, entry ->
             entry.toSetlistEntryEntity(jamId, setlistIndex)
         }
-        setlistEntryDao.removeAllForJam(jamId)
-        setlistEntryDao.insertAll(setlistEntries)
+
+        withContext(dispatchers.disk) {
+            setlistEntryDao.removeAllForJam(jamId)
+            setlistEntryDao.insertAll(setlistEntries)
+        }
     }
 
     private suspend fun getLastCheckTime() = dbStatisticsDao
@@ -495,28 +498,30 @@ class RealRepository constructor(
             )
         }
 
-        gameDao.refreshTable(
-            gameEntities,
-            songDao,
-            composerDao,
-            songComposerDao,
-            songTagValueDao,
-            tagKeyDao,
-            tagValueDao,
-            songEntities,
-            composerEntities.values.toList(),
-            songComposerJoins,
-            songTagValueJoins,
-            tagKeyEntities.values.toList(),
-            tagValueEntities.values.toList()
-        )
-
-        dbStatisticsDao.insert(
-            TimeEntity(
-                TimeType.LAST_CHECKED.ordinal,
-                threeTen.now().toInstant().toEpochMilli()
+        withContext(dispatchers.disk) {
+            gameDao.refreshTable(
+                gameEntities,
+                songDao,
+                composerDao,
+                songComposerDao,
+                songTagValueDao,
+                tagKeyDao,
+                tagValueDao,
+                songEntities,
+                composerEntities.values.toList(),
+                songComposerJoins,
+                songTagValueJoins,
+                tagKeyEntities.values.toList(),
+                tagValueEntities.values.toList()
             )
-        )
+
+            dbStatisticsDao.insert(
+                TimeEntity(
+                    TimeType.LAST_CHECKED.ordinal,
+                    threeTen.now().toInstant().toEpochMilli()
+                )
+            )
+        }
     }
 
     private fun processGame(

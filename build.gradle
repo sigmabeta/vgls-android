@@ -4,7 +4,7 @@ buildscript {
         coroutines_version = '1.6.1'
         okhttp_version = '4.9.3'
         retrofit_version = '2.9.0'
-        room_version = "2.4.3"
+        room_version = "2.5.0-alpha03"
         mavericks_version = "2.7.0"
         dagger_version = "2.43.2"
         jupiter_version = "5.8.2"

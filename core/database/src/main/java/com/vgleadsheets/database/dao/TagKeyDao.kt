@@ -15,8 +15,8 @@ interface TagKeyDao {
     fun getAll(): Flow<List<TagKeyEntity>>
 
     @Insert
-    fun insertAll(tagKeyEntities: List<TagKeyEntity>)
+    suspend fun insertAll(tagKeyEntities: List<TagKeyEntity>)
 
     @Query("DELETE FROM tag_key")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

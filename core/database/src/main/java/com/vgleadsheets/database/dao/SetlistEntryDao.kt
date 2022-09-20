@@ -15,8 +15,8 @@ interface SetlistEntryDao {
     suspend fun insertAll(setlistEntries: List<SetlistEntryEntity>): List<Long>
 
     @Query("DELETE FROM setlist_entry WHERE jam_id = :jamId")
-    fun removeAllForJam(jamId: Long)
+    suspend fun removeAllForJam(jamId: Long)
 
     @Query("DELETE FROM setlist_entry")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

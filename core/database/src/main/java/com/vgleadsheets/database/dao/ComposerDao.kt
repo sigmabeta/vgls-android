@@ -18,8 +18,8 @@ interface ComposerDao {
     fun searchComposersByName(name: String): Flow<List<ComposerEntity>>
 
     @Insert
-    fun insertAll(composerEntities: List<ComposerEntity>)
+    suspend fun insertAll(composerEntities: List<ComposerEntity>)
 
     @Query("DELETE FROM composer")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface SongComposerDao {
     @Insert
-    fun insertAll(songComposerJoins: List<SongComposerJoin>)
+    suspend fun insertAll(songComposerJoins: List<SongComposerJoin>)
 
     @Query(
         """ 
@@ -47,5 +47,5 @@ interface SongComposerDao {
     fun getSongsForComposer(composerId: Long): Flow<List<SongEntity>>
 
     @Query("DELETE FROM song_composer_join")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

@@ -18,8 +18,8 @@ interface TagValueDao {
     fun getValuesForTagSync(tagKeyId: Long): List<TagValueEntity>
 
     @Insert
-    fun insertAll(tagValues: List<TagValueEntity>)
+    suspend fun insertAll(tagValues: List<TagValueEntity>)
 
     @Query("DELETE FROM tag_value")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

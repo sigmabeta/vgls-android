@@ -12,8 +12,8 @@ interface GameAliasDao {
     fun getAliasesByName(name: String): Flow<List<GameAliasEntity>>
 
     @Insert
-    fun insertAll(aliasEntities: List<GameAliasEntity>)
+    suspend fun insertAll(aliasEntities: List<GameAliasEntity>)
 
     @Query("DELETE FROM alias_game")
-    fun nukeTable()
+    suspend fun nukeTable()
 }
