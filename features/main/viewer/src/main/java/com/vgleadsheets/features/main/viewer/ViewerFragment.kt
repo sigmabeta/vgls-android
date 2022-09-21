@@ -38,6 +38,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
@@ -130,7 +131,9 @@ class ViewerFragment :
                     ScreenControlEvent.TIMER_START -> setScreenOnLock()
                     ScreenControlEvent.TIMER_EXPIRED -> clearScreenOnLock()
                 }
-            }.flowOn(dispatchers.main)
+            }
+            .flowOn(dispatchers.main)
+            .launchIn(viewModel.viewModelScope)
 
         viewModel.onEach(
             ViewerState::activeJamSheetId,
@@ -183,8 +186,7 @@ class ViewerFragment :
         stopScreenTimer()
         hideScreenOffSnackbar()
 
-        if (viewerState.screenOn is Success && viewerState.screenOn()?.value == true) {
-            setScreenOnLock()
+        if (viewerState.screenOn is Success && viewerState.screenOn()?.value == false) {
             startScreenTimer()
         }
 

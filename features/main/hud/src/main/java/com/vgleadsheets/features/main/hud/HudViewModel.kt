@@ -4,7 +4,6 @@ import androidx.fragment.app.FragmentActivity
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MavericksViewModelFactory
-import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
@@ -58,6 +57,7 @@ class HudViewModel @AssistedInject constructor(
         checkForUpdate()
         subscribeToSearchQueryQueue()
         subscribeToPerfUpdates()
+        showInitialScreen()
     }
 
     fun alwaysShowBack() = setState { copy(alwaysShowBack = true) }
@@ -99,11 +99,10 @@ class HudViewModel @AssistedInject constructor(
 
     fun refresh() = withState {
         if (it.digest !is Loading) {
-            setState { copy(digest = Loading()) }
             suspend {
                 repository.refresh()
             }.execute {
-                copy(digest = Success(Unit))
+                copy(digest = it)
             }
         }
     }
@@ -168,21 +167,10 @@ class HudViewModel @AssistedInject constructor(
     fun onRandomSelectClick(selectedPart: Part) = withState { _ ->
         viewModelScope.launch(dispatchers.disk) {
             val song = repository.getAllSongs()
-                .map { songs ->
-                    songs.filteredForVocals(selectedPart.apiId)
-                }
+                .map { it.filteredForVocals(selectedPart.apiId) }
                 .filter { it.isNotEmpty() }
                 .map { it.random() }
                 .firstOrNull() ?: return@launch
-
-            // TODO In one-shot stream
-            /*val transposition = state.selectedPart.apiId
-
-        tracker.logRandomSongView(
-            song.name,
-            song.gameName,
-            transposition
-        )*/
 
             router.showSongViewer(song.id)
         }
@@ -298,22 +286,20 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    private fun checkSavedPartSelection() = withState {
-        suspend {
+    private fun checkSavedPartSelection() {
+        viewModelScope.launch(dispatchers.disk) {
             val selection = storage.getSavedSelectedPart().ifEmpty { "C" }
 
-            try {
+            val part = try {
                 Part.valueOf(selection)
             } catch (ex: IllegalArgumentException) {
                 Timber.e("${ex.message}: value $selection no longer valid; defaulting to C")
                 Part.C
             }
-        }.execute {
-            copy(
-                selectedPart = selectedPart,
-            )
+            setState {
+                copy(selectedPart = part)
+            }
         }
-        showInitialScreen()
     }
 
     private fun checkLastUpdateTime() = repository.getLastUpdateTime()

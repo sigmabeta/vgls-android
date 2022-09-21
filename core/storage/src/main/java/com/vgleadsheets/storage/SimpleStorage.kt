@@ -16,7 +16,7 @@ class SimpleStorage(
     private val simpleStore: SimpleStore,
     private val dispatchers: VglsDispatchers
 ) : Storage {
-    private val storageCoroutineScope = CoroutineScope(dispatchers.computation)
+    private val storageCoroutineScope = CoroutineScope(dispatchers.disk)
 
     override suspend fun getSavedTopLevelScreen() =
         simpleStore.getString(KEY_SELECTED_TOP_LEVEL).await()

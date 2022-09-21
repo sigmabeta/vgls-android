@@ -92,7 +92,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         val jamName = editJamName.text.toString()
 
         if (jamName.isNotBlank()) {
-            findJam(jamName.lowercase())
+            findJam(jamName.trim().lowercase())
         } else {
             showError("Jam name can't be empty.")
         }
