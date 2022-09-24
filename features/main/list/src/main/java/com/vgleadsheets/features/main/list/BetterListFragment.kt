@@ -8,9 +8,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
-import com.google.android.material.appbar.AppBarLayout
 import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.databinding.FragmentListBinding
@@ -22,6 +22,10 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 abstract class BetterListFragment<
     ContentType : ListContent,
@@ -37,6 +41,9 @@ abstract class BetterListFragment<
     @Inject
     lateinit var dummyContext: Context
 
+    @Inject
+    lateinit var dispatchers: VglsDispatchers
+
     protected val hudViewModel: HudViewModel by existingViewModel()
 
     protected open val alwaysShowBack = true
@@ -46,6 +53,12 @@ abstract class BetterListFragment<
     private var progress: Float? = null
 
     private lateinit var screen: FragmentListBinding
+
+    private var configGenerationJob: Job = Job()
+        get() {
+            if (field.isCancelled) field = Job()
+            return field
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,11 +125,20 @@ abstract class BetterListFragment<
                     screen.moLayoutToolbar.enableTransition(R.id.transition_scroll, false)
                 }
 
-                val listItems = BetterLists.generateList(config, resources)
+                if (configGenerationJob.isActive) {
+                    Timber.i("${this::class.simpleName}: Canceling previous config generation job.")
+                    configGenerationJob.cancel()
+                }
 
-                adapter.submitList(
-                    listItems
-                )
+                configGenerationJob = viewModel.viewModelScope.launch(dispatchers.computation) {
+                    val listItems = BetterLists.generateList(config, resources)
+
+                    withContext(dispatchers.main) {
+                        adapter.submitList(
+                            listItems
+                        )
+                    }
+                }
             }
 
             perfTracker.reportInvalidate(
@@ -132,12 +154,10 @@ abstract class BetterListFragment<
     }
 
     private fun setupAppBar() {
-        screen.appBar.addOnOffsetChangedListener(
-            AppBarLayout.OnOffsetChangedListener { appBar, verticalOffset ->
-                val seekPosition = -verticalOffset / appBar.totalScrollRange.toFloat()
-                screen.moLayoutToolbar.progress = seekPosition
-            }
-        )
+        screen.appBar.addOnOffsetChangedListener { appBar, verticalOffset ->
+            val seekPosition = -verticalOffset / appBar.totalScrollRange.toFloat()
+            screen.moLayoutToolbar.progress = seekPosition
+        }
 
         val desiredToolbarHeight = screen.moLayoutToolbar.minHeight
 

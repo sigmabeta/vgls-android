@@ -7,6 +7,7 @@ import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -41,7 +42,7 @@ class Config(
         !state.contentLoad.isNullOrEmpty()
     ) {
         state.contentLoad.content()
-            ?.map {
+            ?.mapYielding {
                 NameCaptionListModel(
                     it.id,
                     it.name,

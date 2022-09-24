@@ -9,7 +9,7 @@ import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 
 object BetterLists {
-    fun generateList(
+    suspend fun generateList(
         config: BetterListConfig,
         resources: Resources,
     ): List<ListModel> {

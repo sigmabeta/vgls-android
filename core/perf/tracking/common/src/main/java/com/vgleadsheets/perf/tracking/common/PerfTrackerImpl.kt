@@ -29,7 +29,7 @@ class PerfTrackerImpl(
     private val perfTrackingBackend: PerfTrackingBackend,
     private val dispatchers: VglsDispatchers
 ) : PerfTracker {
-    private val perfCoroutineScope = CoroutineScope(dispatchers.computation)
+    private val perfCoroutineScope = CoroutineScope(dispatchers.main)
 
     private val loadTimeScreens = HashMap<PerfSpec, ScreenLoadStatus>()
 

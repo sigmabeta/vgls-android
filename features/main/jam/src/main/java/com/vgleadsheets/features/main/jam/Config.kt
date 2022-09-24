@@ -15,6 +15,7 @@ import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -114,7 +115,7 @@ class Config(
         }
     }
 
-    private fun setlistSection(): List<ListModel> {
+    private suspend fun setlistSection(): List<ListModel> {
         val sectionTitle = listOf(
             SectionHeaderListModel(
                 resources.getString(R.string.section_setlist)
@@ -136,11 +137,11 @@ class Config(
         } else if (setlist.isNullOrEmpty()) {
             emptyList()
         } else {
-            sectionTitle + setlist.map {
+            sectionTitle + setlist.mapYielding {
                 val song = it.song
                 ImageNameCaptionListModel(
                     it.id,
-                    song?.name ?: return@map songLoadError(),
+                    song?.name ?: return@mapYielding songLoadError(),
                     song.gameName,
                     song.thumbUrl(baseImageUrl, hudState.selectedPart),
                     R.drawable.placeholder_sheet
@@ -149,7 +150,7 @@ class Config(
         }
     }
 
-    private fun historySection(): List<ListModel> {
+    private suspend fun historySection(): List<ListModel> {
         val sectionTitle = listOf(
             SectionHeaderListModel(
                 resources.getString(R.string.section_song_history)
@@ -175,11 +176,11 @@ class Config(
             if (songHistory == null) {
                 emptyList()
             } else {
-                sectionTitle + songHistory.map { it ->
+                sectionTitle + songHistory.mapYielding { it ->
                     val song = it.song
                     ImageNameCaptionListModel(
                         it.id,
-                        song?.name ?: return@map songLoadError(),
+                        song?.name ?: return@mapYielding songLoadError(),
                         song.gameName,
                         song.thumbUrl(baseImageUrl, hudState.selectedPart),
                         R.drawable.placeholder_sheet

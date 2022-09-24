@@ -7,6 +7,7 @@ import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -50,7 +51,7 @@ class Config(
     ) {
         state.contentLoad
             .content()
-            ?.map {
+            ?.mapYielding {
                 NameCaptionListModel(
                     it.id,
                     it.name,

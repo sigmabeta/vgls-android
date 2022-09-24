@@ -6,6 +6,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
+import kotlinx.coroutines.yield
 
 fun <ContentType> Async<ContentType>.content() = invoke()
 
@@ -46,6 +47,37 @@ fun ListContent?.isNullOrEmpty(): Boolean {
 
     return this == null || this.isEmpty()
 }
+
+/**
+ * Returns a list containing the results of applying the given [transform] function
+ * to each element in the original collection. However, unlike standard `map`,
+ * yields in between each element.
+ *
+ */
+public suspend inline fun <T, R> Iterable<T>.mapYielding(transform: (T) -> R): List<R> {
+    return mapToYielding(ArrayList(collectionSizeOrDefault(10)), transform)
+}
+
+/**
+ * Applies the given [transform] function to each element of the original collection
+ * and appends the results to the given [destination]. However, unlike standard `map`,
+ * yields in between each element.
+ */
+@PublishedApi
+internal suspend inline fun <T, R, C : MutableCollection<in R>> Iterable<T>.mapToYielding(
+    destination: C,
+    transform: (T) -> R
+): C {
+    for (item in this) {
+        yield()
+        destination.add(transform(item))
+    }
+    return destination
+}
+
+@PublishedApi
+internal fun <T> Iterable<T>.collectionSizeOrDefault(default: Int): Int =
+    if (this is Collection<*>) this.size else default
 
 interface ListContent {
     fun failure(): Throwable?

@@ -9,6 +9,7 @@ import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -75,7 +76,7 @@ class Config(
         LoadingItemStyle.WITH_IMAGE
     )
 
-    private fun createSection(settings: List<Setting>, headerId: String): List<ListModel> {
+    private suspend fun createSection(settings: List<Setting>, headerId: String): List<ListModel> {
         val headerModels = listOf(
             SectionHeaderListModel(
                 getSectionHeaderString(headerId)
@@ -84,7 +85,7 @@ class Config(
 
         val settingsModels = settings
             .filter { it.settingId.startsWith(headerId) }
-            .map { setting ->
+            .mapYielding { setting ->
                 when (setting) {
                     is BooleanSetting -> CheckableListModel(
                         setting.settingId,
@@ -95,7 +96,7 @@ class Config(
                         setting.settingId,
                         resources.getString(setting.labelStringId),
                         setting.selectedPosition,
-                        setting.valueStringIds.map { resources.getString(it) }
+                        setting.valueStringIds.mapYielding { resources.getString(it) }
                     ) { selectedPos ->
                         clicks.dropdownSelection(
                             setting.settingId,
@@ -108,7 +109,7 @@ class Config(
         return headerModels + settingsModels
     }
 
-    private fun createMiscSection(settings: List<Setting>): List<ListModel> {
+    private suspend fun createMiscSection(settings: List<Setting>): List<ListModel> {
         val normalItems = createSection(settings, HEADER_ID_MISC)
         val customItems = listOf(
             SingleTextListModel(
