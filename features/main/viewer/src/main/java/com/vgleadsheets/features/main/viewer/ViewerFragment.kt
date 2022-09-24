@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -180,12 +181,14 @@ class ViewerFragment :
         }
 
         if (hudState.mode != HudMode.HIDDEN) {
+            windowInsetController?.show(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewOnscreen()
 
             if (hudState.mode == HudMode.REGULAR) {
                 hudViewModel.startHudTimer()
             }
         } else {
+            windowInsetController?.hide(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewUpOffscreen()
         }
 
@@ -219,11 +222,16 @@ class ViewerFragment :
 
     override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
 
-    override fun getDetails() = viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
+    override fun getDetails() =
+        viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
 
     override fun getPerfTrackingMinScreenHeight() = 200
 
     override fun getPerfSpec() = PerfSpec.VIEWER
+
+    override fun configureStatusBarContentColor() {
+        windowInsetController?.isAppearanceLightStatusBars = false
+    }
 
     private fun startScreenTimer() {
         Timber.v("Starting screen timer.")
