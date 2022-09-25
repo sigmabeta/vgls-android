@@ -76,6 +76,7 @@ fun bindPhoto(
     }
 }
 
+@Suppress("SwallowedException")
 @BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadSuccess", "imageLoadFail")
 fun bindBigPhoto(
     view: ImageView,
