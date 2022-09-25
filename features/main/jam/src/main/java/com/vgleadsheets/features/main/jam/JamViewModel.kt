@@ -1,19 +1,19 @@
 package com.vgleadsheets.features.main.jam
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.features.main.list.content
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 import timber.log.Timber
 
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
     private val repository: Repository,
-) : MvRxViewModel<JamState>(initialState) {
+) : MavericksViewModel<JamState>(initialState) {
     init {
         fetchJam()
     }
@@ -28,37 +28,38 @@ class JamViewModel @AssistedInject constructor(
     }
 
     fun deleteJam() = withState {
-        repository.removeJam(it.jamId)
-            .execute {
-                copy(
-                    deletion = it
-                )
-            }
+        suspend {
+            repository.removeJam(it.jamId)
+        }.execute {
+            copy(
+                deletion = it
+            )
+        }
     }
 
     private fun fireJamRefreshRequest(
         name: String,
         state: JamState
     ) {
-        repository
-            .refreshJamState(name)
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        jamRefresh = it
-                    )
+        suspend {
+            repository.refreshJamState(name)
+        }.execute {
+            copy(
+                contentLoad = contentLoad.copy(
+                    jamRefresh = it
                 )
-            }
+            )
+        }
 
-        repository
-            .refreshSetlist(state.jamId, name)
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        setlistRefresh = it
-                    )
+        suspend {
+            repository.refreshSetlist(state.jamId, name)
+        }.execute {
+            copy(
+                contentLoad = contentLoad.copy(
+                    setlistRefresh = it
                 )
-            }
+            )
+        }
     }
 
     private fun fetchJam() = withState { state ->
@@ -96,7 +97,7 @@ class JamViewModel @AssistedInject constructor(
         ): JamViewModel
     }
 
-    companion object : MvRxViewModelFactory<JamViewModel, JamState> {
+    companion object : MavericksViewModelFactory<JamViewModel, JamState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: JamState

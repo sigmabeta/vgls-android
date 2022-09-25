@@ -1,17 +1,17 @@
 package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 
 class GameListViewModel @AssistedInject constructor(
     @Assisted initialState: GameListState,
     private val repository: Repository,
-) : MvRxViewModel<GameListState>(initialState) {
+) : MavericksViewModel<GameListState>(initialState) {
     init {
         fetchGames()
     }
@@ -30,7 +30,7 @@ class GameListViewModel @AssistedInject constructor(
         ): GameListViewModel
     }
 
-    companion object : MvRxViewModelFactory<GameListViewModel, GameListState> {
+    companion object : MavericksViewModelFactory<GameListViewModel, GameListState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: GameListState

@@ -6,12 +6,12 @@ import androidx.room.Query
 import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.model.tag.TagValueEntity
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SongTagValueDao {
     @Insert
-    fun insertAll(songTagValueJoins: List<SongTagValueJoin>)
+    suspend fun insertAll(songTagValueJoins: List<SongTagValueJoin>)
 
     @Query(
         """ 
@@ -22,7 +22,7 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getTagValuesForSong(songId: Long): Observable<List<TagValueEntity>>
+    fun getTagValuesForSong(songId: Long): Flow<List<TagValueEntity>>
 
     @Query(
         """ 
@@ -44,8 +44,8 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getSongsForTagValue(tagValueId: Long): Observable<List<SongEntity>>
+    fun getSongsForTagValue(tagValueId: Long): Flow<List<SongEntity>>
 
     @Query("DELETE FROM song_tag_value_join")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

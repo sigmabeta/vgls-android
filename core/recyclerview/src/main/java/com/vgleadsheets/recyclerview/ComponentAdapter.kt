@@ -23,10 +23,6 @@ class ComponentAdapter(val owner: String) :
 
     var resources: Resources? = null
 
-    fun getFirstItem() = if (itemCount > 0) {
-        getItem(0)
-    } else null
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemBinding = DataBindingUtil.inflate<ViewDataBinding>(

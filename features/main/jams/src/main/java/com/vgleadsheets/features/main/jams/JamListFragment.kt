@@ -30,6 +30,11 @@ class JamListFragment :
         resources
     )
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.refreshJams()
+    }
+
     companion object {
         const val LOAD_OPERATION = "loadJams"
 

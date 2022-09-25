@@ -1,3 +1,5 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+
 dependencies {
     // So we don't have buggy time comparisons
     implementation "com.jakewharton.threetenabp:threetenabp:$threeten_version"
@@ -5,10 +7,5 @@ dependencies {
     // Room libs
     implementation "androidx.room:room-common:$room_version"
 
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
-    // Junit libs
-    testImplementation "androidx.room:room-testing:$room_version"
-    testImplementation "junit:junit:$junit_version"
+    implementation project(":core:coroutines")
 }

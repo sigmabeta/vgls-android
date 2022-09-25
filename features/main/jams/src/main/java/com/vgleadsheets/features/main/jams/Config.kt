@@ -7,6 +7,7 @@ import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -50,12 +51,12 @@ class Config(
     ) {
         state.contentLoad
             .content()
-            ?.map {
+            ?.mapYielding {
                 NameCaptionListModel(
                     it.id,
                     it.name,
                     it.captionText()
-                ) { clicks.jam(it.id) }
+                ) { clicks.jam(it.id, it.currentSong != null) }
             } ?: emptyList()
     }
 
@@ -85,9 +86,17 @@ class Config(
     )
 
     @Suppress("LoopWithTooManyJumpStatements")
-    private fun Jam.captionText() = resources.getString(
-        R.string.caption_jam,
-        currentSong?.name ?: "Unknown Song",
-        currentSong?.gameName ?: "Unknown Game"
-    )
+    private fun Jam.captionText(): String {
+        val song = currentSong
+
+        return if (song != null) {
+            resources.getString(
+                R.string.caption_jam,
+                song.name,
+                song.gameName
+            )
+        } else {
+            resources.getString(R.string.caption_jam_inactive)
+        }
+    }
 }

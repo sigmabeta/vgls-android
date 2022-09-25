@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.composer
 
 import android.os.Bundle
-import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
@@ -45,7 +45,7 @@ class ComposerDetailFragment : BetterListFragment<ComposerDetailContent, Compose
             val fragment = ComposerDetailFragment()
 
             val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
+            args.putParcelable(Mavericks.KEY_ARG, idArgs)
             fragment.arguments = args
 
             return fragment

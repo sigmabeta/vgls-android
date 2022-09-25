@@ -2,6 +2,7 @@ package com.vgleadsheets
 
 import android.graphics.Bitmap
 import android.os.Build
+import com.airbnb.mvrx.Mavericks
 import com.facebook.stetho.Stetho
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
@@ -22,6 +23,8 @@ class VglsApplication : DaggerApplication(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
+
+        Mavericks.initialize(this)
 
         Timber.plant(Timber.DebugTree())
         Timber.v("Starting Application.")

@@ -2,7 +2,7 @@ package com.vgleadsheets.model.song
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
+import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.game.GameEntity

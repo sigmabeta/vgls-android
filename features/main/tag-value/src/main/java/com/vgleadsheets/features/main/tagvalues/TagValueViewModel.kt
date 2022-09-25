@@ -1,17 +1,17 @@
 package com.vgleadsheets.features.main.tagvalues
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 
 class TagValueViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueState,
     private val repository: Repository,
-) : MvRxViewModel<TagValueState>(initialState) {
+) : MavericksViewModel<TagValueState>(initialState) {
     init {
         fetchTagKey()
         fetchTagValues()
@@ -46,7 +46,7 @@ class TagValueViewModel @AssistedInject constructor(
         ): TagValueViewModel
     }
 
-    companion object : MvRxViewModelFactory<TagValueViewModel, TagValueState> {
+    companion object : MavericksViewModelFactory<TagValueViewModel, TagValueState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: TagValueState

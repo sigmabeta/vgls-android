@@ -11,6 +11,7 @@ import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -124,15 +125,15 @@ class Config(
         )
     }
 
-    private fun tagValuesSection(): List<ListModel> {
+    private suspend fun tagValuesSection(): List<ListModel> {
         return listOf(
             SectionHeaderListModel(
                 resources.getString(R.string.section_header_tags)
             )
-        ) + dedupeTagValues(tagValues ?: return emptyList()).map {
+        ) + dedupeTagValues(tagValues ?: return emptyList()).mapYielding {
             val valueAsNumber = it.name.toIntOrNull() ?: -1
 
-            return@map if (valueAsNumber in RATING_MINIMUM..RATING_MAXIMUM) {
+            return@mapYielding if (valueAsNumber in RATING_MINIMUM..RATING_MAXIMUM) {
                 LabelRatingStarListModel(
                     it.tagKeyName,
                     valueAsNumber,

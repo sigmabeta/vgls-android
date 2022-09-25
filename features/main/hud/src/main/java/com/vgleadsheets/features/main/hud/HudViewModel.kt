@@ -3,40 +3,53 @@ package com.vgleadsheets.features.main.hud
 import androidx.fragment.app.FragmentActivity
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.FragmentRouter
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.BehaviorSubject
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.sample
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
+@OptIn(FlowPreview::class)
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
     @Assisted private val router: FragmentRouter,
     private val repository: Repository,
     private val storage: Storage,
-    private val perfTracker: PerfTracker
-) : MvRxViewModel<HudState>(initialState) {
-    private var timer: Disposable? = null
+    private val perfTracker: PerfTracker,
+    private val dispatchers: VglsDispatchers
+) : MavericksViewModel<HudState>(initialState) {
+    private var timer: Job? = null
 
-    private val searchOperations = CompositeDisposable()
+    private var gameSearch: Job? = null
+    private var composerSearch: Job? = null
+    private var songSearch: Job? = null
 
-    private val searchQueryQueue = BehaviorSubject.create<String>()
+    private val searchQueryQueue = MutableSharedFlow<String>()
 
     init {
         checkSavedPartSelection()
@@ -44,6 +57,7 @@ class HudViewModel @AssistedInject constructor(
         checkForUpdate()
         subscribeToSearchQueryQueue()
         subscribeToPerfUpdates()
+        showInitialScreen()
     }
 
     fun alwaysShowBack() = setState { copy(alwaysShowBack = true) }
@@ -76,12 +90,6 @@ class HudViewModel @AssistedInject constructor(
 
     fun onPartSelect(apiId: String) = setState {
         storage.saveSelectedPart(apiId)
-            .subscribe(
-                {},
-                {
-                    // showError("Failed to save part selection: ${it.message}")
-                }
-            ).disposeOnClear()
 
         copy(
             selectedPart = Part.valueOf(apiId),
@@ -91,10 +99,11 @@ class HudViewModel @AssistedInject constructor(
 
     fun refresh() = withState {
         if (it.digest !is Loading) {
-            repository.refresh()
-                .execute { digest ->
-                    copy(digest = digest)
-                }
+            suspend {
+                repository.refresh()
+            }.execute {
+                copy(digest = it)
+            }
         }
     }
 
@@ -115,8 +124,8 @@ class HudViewModel @AssistedInject constructor(
         )
     }
 
-    fun queueSearchQuery(query: String) {
-        searchQueryQueue.onNext(query)
+    fun queueSearchQuery(query: String) = viewModelScope.launch(dispatchers.computation) {
+        searchQueryQueue.emit(query)
     }
 
     fun hideSearch() = withState { state ->
@@ -141,10 +150,13 @@ class HudViewModel @AssistedInject constructor(
     fun startHudTimer() = withState { state ->
         stopTimer()
         if (state.mode == HudMode.REGULAR) {
-            timer = Observable.timer(TIMEOUT_HUD_VISIBLE, TimeUnit.MILLISECONDS)
-                .subscribe {
+            timer = viewModelScope.launch(dispatchers.computation) {
+                delay(TIMEOUT_HUD_VISIBLE)
+
+                withContext(dispatchers.main) {
                     hideHud()
-                }.disposeOnClear()
+                }
+            }
         }
     }
 
@@ -153,37 +165,15 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun onRandomSelectClick(selectedPart: Part) = withState { _ ->
-        repository
-            .getAllSongs()
-            .firstOrError()
-            .map { songs ->
-                songs.filteredForVocals(selectedPart.apiId)
-            }
-            .filter { it.isNotEmpty() }
-            .map { it.random() }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { song ->
-                    if (song == null) {
-                        // showError("Failed to get a random track.")
-                        return@subscribe
-                    }
+        viewModelScope.launch(dispatchers.disk) {
+            val song = repository.getAllSongs()
+                .map { it.filteredForVocals(selectedPart.apiId) }
+                .filter { it.isNotEmpty() }
+                .map { it.random() }
+                .firstOrNull() ?: return@launch
 
-                    // TODO In one-shot stream
-                    /*val transposition = state.selectedPart.apiId
-
-                    tracker.logRandomSongView(
-                        song.name,
-                        song.gameName,
-                        transposition
-                    )*/
-
-                    router.showSongViewer(song.id)
-                },
-                {
-                    // showError("Failed to get a random track.")
-                }
-            ).disposeOnClear()
+            router.showSongViewer(song.id)
+        }
     }
 
     fun bottomMenuButtonClick() = withState { state ->
@@ -263,21 +253,26 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    private fun showInitialScreen() {
-        storage.getSavedTopLevelScreen()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { savedId ->
-                    val selection = savedId.ifEmpty { HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT }
+    fun sheetDetailClick() = withState { state ->
+        router.showSheetDetail(state.selectedSong?.id!!)
+    }
 
-                    Timber.v("Showing screen: $selection")
-                    showScreen(selection)
-                },
-                {
-                    Timber.w("No screen ID found, going with default.")
-                    showScreen(HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT)
+    fun youtubeSearchClick() = withState { state ->
+        router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
+    }
+
+    private fun showInitialScreen() {
+        viewModelScope.launch(dispatchers.disk) {
+            val selection = storage.getSavedTopLevelScreen()
+                .ifEmpty {
+                    HudFragment.TOP_LEVEL_SCREEN_ID_DEFAULT
                 }
-            ).disposeOnClear()
+
+            withContext(dispatchers.main) {
+                Timber.v("Showing screen: $selection")
+                showScreen(selection)
+            }
+        }
     }
 
     private fun showScreen(topLevelScreenIdDefault: String) {
@@ -291,31 +286,20 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
-    private fun checkSavedPartSelection() = withState {
-        storage.getSavedSelectedPart()
-            .subscribe(
-                { partId ->
-                    val selection = partId.ifEmpty { "C" }
+    private fun checkSavedPartSelection() {
+        viewModelScope.launch(dispatchers.disk) {
+            val selection = storage.getSavedSelectedPart().ifEmpty { "C" }
 
-                    val selectedPart = try {
-                        Part.valueOf(selection)
-                    } catch (ex: IllegalArgumentException) {
-                        Timber.e("${ex.message}: value $selection no longer valid; defaulting to C")
-                        Part.C
-                    }
-
-                    setState {
-                        copy(
-                            selectedPart = selectedPart,
-                        )
-                    }
-                    showInitialScreen()
-                },
-                {
-                    Timber.w("No part selection found, going with default.")
-                    showInitialScreen()
-                }
-            ).disposeOnClear()
+            val part = try {
+                Part.valueOf(selection)
+            } catch (ex: IllegalArgumentException) {
+                Timber.e("${ex.message}: value $selection no longer valid; defaulting to C")
+                Part.C
+            }
+            setState {
+                copy(selectedPart = part)
+            }
+        }
     }
 
     private fun checkLastUpdateTime() = repository.getLastUpdateTime()
@@ -324,23 +308,20 @@ class HudViewModel @AssistedInject constructor(
             copy(updateTime = newTime)
         }
 
-    private fun checkForUpdate() = repository.checkShouldAutoUpdate()
-        .toObservable()
-        .subscribe(
-            { shouldRefresh ->
-                if (shouldRefresh) {
-                    refresh()
-                }
-            },
-            {
-                Timber.e("Failed to check update time: ${it.message}")
+    private fun checkForUpdate() {
+        viewModelScope.launch(dispatchers.disk) {
+            val shouldRefresh = repository.checkShouldAutoUpdate()
+
+            if (shouldRefresh) {
+                refresh()
             }
-        )
+        }
+    }
 
     private fun startSearchQuery(searchQuery: String) {
         withState { state ->
             if (state.searchQuery != searchQuery) {
-                searchOperations.clear()
+                cancelSearch()
 
                 setState {
                     copy(
@@ -351,8 +332,8 @@ class HudViewModel @AssistedInject constructor(
                     )
                 }
 
-                val gameSearch = repository.searchGamesCombined(searchQuery)
-                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                gameSearch = repository.searchGamesCombined(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newGames ->
                         if (newGames is Loading) {
                             return@execute this
@@ -366,8 +347,8 @@ class HudViewModel @AssistedInject constructor(
                         )
                     }
 
-                val songSearch = repository.searchSongs(searchQuery)
-                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                songSearch = repository.searchSongs(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newSongs ->
                         if (newSongs is Loading) {
                             return@execute this
@@ -381,8 +362,8 @@ class HudViewModel @AssistedInject constructor(
                         )
                     }
 
-                val composerSearch = repository.searchComposersCombined(searchQuery)
-                    .debounce(THRESHOLD_RESULT_DEBOUNCE, TimeUnit.MILLISECONDS)
+                composerSearch = repository.searchComposersCombined(searchQuery)
+                    .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newComposers ->
                         if (newComposers is Loading) {
                             return@execute this
@@ -395,10 +376,14 @@ class HudViewModel @AssistedInject constructor(
                             )
                         )
                     }
-
-                searchOperations.addAll(gameSearch, songSearch, composerSearch)
             }
         }
+    }
+
+    private fun cancelSearch() {
+        gameSearch?.cancel()
+        composerSearch?.cancel()
+        songSearch?.cancel()
     }
 
     private fun perfBottomMenuButtonClick(mode: PerfViewMode) {
@@ -410,49 +395,43 @@ class HudViewModel @AssistedInject constructor(
 
     private fun subscribeToSearchQueryQueue() {
         searchQueryQueue
-            .throttleLast(THRESHOLD_SEARCH_INPUTS, TimeUnit.MILLISECONDS)
-            .subscribe(
-                { startSearchQuery(it) },
-                { }
-            ).disposeOnClear()
+            .sample(THRESHOLD_SEARCH_INPUTS)
+            .onEach { startSearchQuery(it) }
+            .flowOn(dispatchers.computation)
+            .launchIn(viewModelScope)
     }
 
     private fun subscribeToPerfUpdates() {
         perfTracker.screenLoadStream()
-            .subscribe {
+            .onEach {
                 setState {
                     copy(loadTimeLists = it)
                 }
             }
-            .disposeOnClear()
+            .flowOn(dispatchers.computation)
+            .launchIn(viewModelScope)
 
         perfTracker.frameTimeStream()
-            .subscribe {
+            .onEach {
                 setState {
                     copy(frameTimeStatsMap = it)
                 }
             }
-            .disposeOnClear()
+            .flowOn(dispatchers.computation)
+            .launchIn(viewModelScope)
 
         perfTracker.invalidateStream()
-            .subscribe {
+            .onEach {
                 setState {
                     copy(invalidateStatsMap = it)
                 }
             }
-            .disposeOnClear()
+            .flowOn(dispatchers.computation)
+            .launchIn(viewModelScope)
     }
 
     private fun stopTimer() {
-        timer?.dispose()
-    }
-
-    fun sheetDetailClick() = withState { state ->
-        router.showSheetDetail(state.selectedSong?.id!!)
-    }
-
-    fun youtubeSearchClick() = withState { state ->
-        router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
+        timer?.cancel()
     }
 
     @AssistedInject.Factory
@@ -467,7 +446,7 @@ class HudViewModel @AssistedInject constructor(
         var hudViewModelFactory: Factory
     }
 
-    companion object : MvRxViewModelFactory<HudViewModel, HudState> {
+    companion object : MavericksViewModelFactory<HudViewModel, HudState> {
         const val TIMEOUT_HUD_VISIBLE = 3000L
 
         const val THRESHOLD_SEARCH_INPUTS = 500L

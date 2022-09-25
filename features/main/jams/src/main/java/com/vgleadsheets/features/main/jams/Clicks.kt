@@ -10,7 +10,10 @@ class Clicks(
         router.showFindJamDialog()
     }
 
-    fun jam(id: Long) {
-        router.showJamDetailViewer(id)
+    fun jam(id: Long, isJamActive: Boolean) {
+        if (isJamActive) {
+            router.showJamDetailViewer(id)
+        }
+        // TODO Else show error message, refresh
     }
 }

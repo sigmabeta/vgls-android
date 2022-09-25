@@ -1,6 +1,7 @@
 package com.vgleadsheets.repository.di
 
 import android.content.Context
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.network.VglsApi
@@ -31,8 +32,9 @@ class RepositoryModule {
         vglsApi: VglsApi,
         database: VglsDatabase,
         threeTenTime: ThreeTenTime,
-        tracker: Tracker
-    ) = RealRepository(vglsApi, threeTenTime, tracker, database)
+        tracker: Tracker,
+        dispatchers: VglsDispatchers
+    ) = RealRepository(vglsApi, threeTenTime, tracker, dispatchers, database)
 
     @Provides
     @Singleton

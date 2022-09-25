@@ -6,12 +6,12 @@ import androidx.room.Query
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.song.SongEntity
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SongComposerDao {
     @Insert
-    fun insertAll(songComposerJoins: List<SongComposerJoin>)
+    suspend fun insertAll(songComposerJoins: List<SongComposerJoin>)
 
     @Query(
         """ 
@@ -44,8 +44,8 @@ interface SongComposerDao {
             COLLATE NOCASE
             """
     )
-    fun getSongsForComposer(composerId: Long): Observable<List<SongEntity>>
+    fun getSongsForComposer(composerId: Long): Flow<List<SongEntity>>
 
     @Query("DELETE FROM song_composer_join")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

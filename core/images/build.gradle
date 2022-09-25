@@ -1,11 +1,11 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies {
     // Image Loading
     api "com.squareup.picasso:picasso:$picasso_version"
 
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation project(":core:coroutines")
 
     // Dagger (important: include all 3 of these in modules that use Dagger
     implementation project(path: ':core:di')

@@ -11,27 +11,27 @@ import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.model.tag.TagKeyEntity
 import com.vgleadsheets.model.tag.TagValueEntity
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GameDao {
     @Query("SELECT * FROM game WHERE id = :gameId")
-    fun getGame(gameId: Long): Observable<GameEntity>
+    fun getGame(gameId: Long): Flow<GameEntity>
 
     @Query("SELECT * FROM game ORDER BY name COLLATE NOCASE")
-    fun getAll(): Observable<List<GameEntity>>
+    fun getAll(): Flow<List<GameEntity>>
 
     @Query("SELECT * FROM game WHERE name LIKE :title ORDER BY name COLLATE NOCASE")
-    fun searchGamesByTitle(title: String): Observable<List<GameEntity>>
+    fun searchGamesByTitle(title: String): Flow<List<GameEntity>>
 
     @Insert
-    fun insertAll(gameEntities: List<GameEntity>)
+    suspend fun insertAll(gameEntities: List<GameEntity>)
 
     @Query("DELETE FROM game")
-    fun nukeTable()
+    suspend fun nukeTable()
 
-        @Transaction
-    fun refreshTable(
+    @Transaction
+    suspend fun refreshTable(
         gameEntities: List<GameEntity>,
         songDao: SongDao,
         composerDao: ComposerDao,

@@ -3,11 +3,10 @@ package com.vgleadsheets.idling
 import androidx.test.espresso.IdlingResource.ResourceCallback
 import com.squareup.rx2.idler.IdlingResourceScheduler
 import io.reactivex.Scheduler
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import io.reactivex.disposables.CompositeJob
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.coroutines.Job
 
 internal class FixedDelegatingScheduler(
     private val delegate: Scheduler,
@@ -32,42 +31,42 @@ internal class FixedDelegatingScheduler(
         val delegateWorker = delegate.createWorker()
         return object : Worker() {
             private val disposables =
-                CompositeDisposable(delegateWorker)
+                CompositeJob(delegateWorker)
 
-            override fun schedule(action: Runnable): Disposable {
+            override fun schedule(action: Runnable): Job {
                 if (disposables.isDisposed) {
-                    return Disposables.disposed()
+                    return Jobs.disposed()
                 }
                 val work = createWork(action, 0L, 0L)
                 val disposable = delegateWorker.schedule(work)
-                val workDisposable =
+                val workJob =
                     ScheduledWorkDisposable(
                         work,
                         disposable
                     )
-                disposables.add(workDisposable)
-                return workDisposable
+                disposables.add(workJob)
+                return workJob
             }
 
             override fun schedule(
                 action: Runnable,
                 delayTime: Long,
                 unit: TimeUnit
-            ): Disposable {
+            ): Job {
                 if (disposables.isDisposed) {
-                    return Disposables.disposed()
+                    return Jobs.disposed()
                 }
                 val work = createWork(action, delayTime, 0L)
                 val disposable =
                     delegateWorker.schedule(work, delayTime, unit)
                 disposables.add(disposable)
-                val workDisposable =
+                val workJob =
                     ScheduledWorkDisposable(
                         work,
                         disposable
                     )
-                disposables.add(workDisposable)
-                return workDisposable
+                disposables.add(workJob)
+                return workJob
             }
 
             override fun schedulePeriodically(
@@ -75,21 +74,21 @@ internal class FixedDelegatingScheduler(
                 initialDelay: Long,
                 period: Long,
                 unit: TimeUnit
-            ): Disposable {
+            ): Job {
                 if (disposables.isDisposed) {
-                    return Disposables.disposed()
+                    return Jobs.disposed()
                 }
                 val work = createWork(action, initialDelay, period)
                 val disposable =
                     delegateWorker.schedulePeriodically(work, initialDelay, period, unit)
                 disposables.add(disposable)
-                val workDisposable =
+                val workJob =
                     ScheduledWorkDisposable(
                         work,
                         disposable
                     )
-                disposables.add(workDisposable)
-                return workDisposable
+                disposables.add(workJob)
+                return workJob
             }
 
             override fun dispose() {

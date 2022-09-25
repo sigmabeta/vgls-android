@@ -1,17 +1,17 @@
 package com.vgleadsheets.features.main.composers
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 
 class ComposerListViewModel @AssistedInject constructor(
     @Assisted initialState: ComposerListState,
     private val repository: Repository,
-) : MvRxViewModel<ComposerListState>(initialState) {
+) : MavericksViewModel<ComposerListState>(initialState) {
     init {
         fetchComposers()
     }
@@ -30,7 +30,7 @@ class ComposerListViewModel @AssistedInject constructor(
         ): ComposerListViewModel
     }
 
-    companion object : MvRxViewModelFactory<ComposerListViewModel, ComposerListState> {
+    companion object : MavericksViewModelFactory<ComposerListViewModel, ComposerListState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: ComposerListState

@@ -9,6 +9,7 @@ import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -56,7 +57,7 @@ class Config(
     ) {
         tagValues
             ?.filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
-            ?.map {
+            ?.mapYielding {
                 NameCaptionListModel(
                     it.id,
                     it.name,

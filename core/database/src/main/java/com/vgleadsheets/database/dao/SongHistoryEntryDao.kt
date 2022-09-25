@@ -11,11 +11,11 @@ interface SongHistoryEntryDao {
     fun getSongHistoryEntriesForJamSync(jamId: Long): List<SongHistoryEntryEntity>
 
     @Insert
-    fun insertAll(songHistoryEntries: List<SongHistoryEntryEntity>): List<Long>
+    suspend fun insertAll(songHistoryEntries: List<SongHistoryEntryEntity>): List<Long>
 
     @Query("DELETE FROM song_history_entry WHERE jam_id = :jamId")
-    fun removeAllForJam(jamId: Long)
+    suspend fun removeAllForJam(jamId: Long)
 
     @Query("DELETE FROM song_history_entry")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

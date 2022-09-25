@@ -1,20 +1,21 @@
 buildscript {
     ext {
-        kotlin_version = '1.6.21'
+        kotlin_version = '1.7.10'
+        coroutines_version = '1.6.1'
         okhttp_version = '4.9.3'
         retrofit_version = '2.9.0'
-        room_version = "2.4.2"
-        rxjava_version = "2.2.13"
-        rxandroid_version = "2.1.1"
-        rxbinding_version = "3.0.0-alpha2"
-        mvrx_version = "1.5.1"
-        dagger_version = "2.41"
+        room_version = "2.5.0-alpha03"
+        mavericks_version = "2.7.0"
+        dagger_version = "2.43.2"
+        jupiter_version = "5.8.2"
+        mockk_version = "1.12.0"
+        threeten_version = "1.2.1"
         assistedinject_version = "0.5.2"
         stetho_version = "1.6.0"
         viewpager_version = "1.0.0"
-        core_ktx_version = "1.8.0-beta01"
-        appcompat_version = "1.5.0"
-        material_version = "1.7.0-beta01"
+        core_ktx_version = "1.9.0"
+        appcompat_version = "1.5.1"
+        material_version = "1.8.0-alpha01"
         recycler_version = "1.2.1"
         timber_version = "5.0.1"
         junit_version = "4.12"
@@ -27,9 +28,9 @@ buildscript {
         firebase_version = "20.1.2"
         crashlytics_version = "18.2.9"
         firebase_perf_version = "20.0.6"
-        simplestore_version = "0.0.7"
+        simplestore_version = "0.0.8"
         leakcanary_version = "2.9.1"
-        lifecycle_version = "2.4.1"
+        lifecycle_version = "2.5.1"
     }
 
     repositories {
@@ -51,6 +52,9 @@ buildscript {
         classpath 'com.google.firebase:perf-plugin:1.4.1'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
 
+        // JUnit 5
+        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.8.2.1")
+
         // License downloader
         classpath 'com.jaredsburrows:gradle-license-plugin:0.8.91'
 
@@ -62,6 +66,7 @@ buildscript {
 plugins {
     // Detekt
     id "io.gitlab.arturbosch.detekt" version "1.20.0"
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0' apply false
 }
 
 allprojects {
@@ -78,33 +83,6 @@ allprojects {
 
         // For PhotoView
         maven { url "https://jitpack.io" }
-    }
-}
-
-subprojects {
-    if (project.name == 'app') {
-        apply plugin: 'com.android.application'
-    } else {
-        apply plugin: 'com.android.library'
-    }
-
-    apply plugin: 'kotlin-android'
-
-    android {
-        compileSdkVersion 32
-
-        defaultConfig {
-            minSdkVersion 21
-        }
-
-        compileOptions {
-            sourceCompatibility 1.8
-            targetCompatibility 1.8
-        }
-
-        kotlinOptions {
-            jvmTarget = 1.8
-        }
     }
 
     // Treat all Kotlin warnings as errors

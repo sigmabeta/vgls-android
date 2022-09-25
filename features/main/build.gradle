@@ -1,3 +1,4 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies {
@@ -30,8 +31,7 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation project(":core:coroutines")
 
     // Dagger annotation processors
     implementation project(path: ':core:di')
