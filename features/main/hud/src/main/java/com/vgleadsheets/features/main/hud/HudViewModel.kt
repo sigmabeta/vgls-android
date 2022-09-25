@@ -159,6 +159,7 @@ class HudViewModel @AssistedInject constructor(
             .map { songs ->
                 songs.filteredForVocals(selectedPart.apiId)
             }
+            .filter { it.isNotEmpty() }
             .map { it.random() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
