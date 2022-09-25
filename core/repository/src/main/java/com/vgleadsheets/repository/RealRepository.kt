@@ -12,6 +12,7 @@ import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.GameEntity
 import com.vgleadsheets.model.game.VglsApiGame
+import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.song.ApiSong
@@ -84,7 +85,7 @@ class RealRepository constructor(
     override fun observeJamState(id: Long) = jamDao
         .getJam(id)
         .map {
-            val currentSong = getSongSync(it.currentSheetId)?.toSong(null)
+            val currentSong = it.getCurrentSong()
             it.toJam(currentSong, null)
         }
 
@@ -221,8 +222,7 @@ class RealRepository constructor(
     override fun getJam(id: Long, withHistory: Boolean) = jamDao
         .getJam(id)
         .map {
-            val currentSong = getSongSync(it.currentSheetId)?.toSong(null)
-
+            val currentSong = it.getCurrentSong()
             val songHistory = if (withHistory) getSongHistoryForJamSync(id) else null
 
             it.toJam(currentSong, songHistory)
@@ -232,9 +232,9 @@ class RealRepository constructor(
     override fun getJams() = jamDao
         .getAll()
         .map {
-            it.map {
-                val currentSong = getSongSync(it.currentSheetId)?.toSong(null)
-                it.toJam(currentSong, null)
+            it.map { jamEntity ->
+                val currentSong = jamEntity.getCurrentSong()
+                jamEntity.toJam(currentSong, null)
             }
         }
         .flowOn(dispatchers.disk)
@@ -414,11 +414,17 @@ class RealRepository constructor(
             vglsApi.getJamState(name)
         }
 
-        val songHistoryEntries = jam.song_history
-            .drop(1)
-            .mapIndexed { songHistoryIndex, songHistoryEntry ->
-                songHistoryEntry.toSongHistoryEntryEntity(jam.jam_id, songHistoryIndex)
-            }
+        val songHistory = jam.song_history
+
+        val songHistoryEntries = if (songHistory.isNotEmpty()) {
+            songHistory
+                .drop(1)
+                .mapIndexed { songHistoryIndex, songHistoryEntry ->
+                    songHistoryEntry.toSongHistoryEntryEntity(jam.jam_id, songHistoryIndex)
+                }
+        } else {
+            emptyList()
+        }
 
         val jamEntity = jam.toJamEntity(name.lowercase())
 
@@ -683,6 +689,16 @@ class RealRepository constructor(
             }
         }
 
+    private fun JamEntity.getCurrentSong(): Song? {
+        val songId = currentSheetId
+
+        return if (songId != null) {
+            getSongSync(songId)?.toSong(null)
+        } else {
+            null
+        }
+    }
+
     companion object {
         const val CAPACITY = 500
 
@@ -691,3 +707,5 @@ class RealRepository constructor(
         val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
 }
+
+

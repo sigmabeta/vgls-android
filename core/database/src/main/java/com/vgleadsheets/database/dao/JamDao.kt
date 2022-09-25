@@ -31,7 +31,10 @@ interface JamDao {
     ) {
         songHistoryEntryDao.removeAllForJam(jam.id)
         insert(jam)
-        songHistoryEntryDao.insertAll(songHistoryEntries)
+
+        if (songHistoryEntries.isNotEmpty()) {
+            songHistoryEntryDao.insertAll(songHistoryEntries)
+        }
     }
 
     @Query("DELETE FROM jam")
