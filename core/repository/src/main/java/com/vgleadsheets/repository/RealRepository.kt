@@ -71,7 +71,7 @@ class RealRepository constructor(
         val lastDbUpdateTime = withContext(dispatchers.disk) { getLastDbUpdateTimeOnce() }
 
         val diff = lastApiUpdateTime.timeMs - lastDbUpdateTime.timeMs
-        if (diff <= 0L) {
+        if (diff < 0L) {
             return false
         }
 
