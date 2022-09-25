@@ -301,6 +301,10 @@ class MainActivity :
             val displayedFragment = getDisplayedFragment()
 
             if (displayedFragment?.getVglsFragmentTag() != fragment.getVglsFragmentTag()) {
+                if (supportFragmentManager.isDestroyed) {
+                    return@runOnUiThread
+                }
+
                 supportFragmentManager.beginTransaction()
                     .setDefaultAnimations()
                     .replace(R.id.frame_fragment, fragment)
@@ -314,6 +318,10 @@ class MainActivity :
         runOnUiThread {
             val fragment = fragmentProvider.invoke()
             clearBackStack()
+
+            if (supportFragmentManager.isDestroyed) {
+                return@runOnUiThread
+            }
 
             supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
@@ -329,6 +337,10 @@ class MainActivity :
         supportFragmentManager.findFragmentById(R.id.frame_fragment) as VglsFragment?
 
     private fun addHud() {
+        if (supportFragmentManager.isDestroyed) {
+            return
+        }
+
         supportFragmentManager.beginTransaction()
             .add(R.id.frame_hud, HudFragment.newInstance())
             .commit()
