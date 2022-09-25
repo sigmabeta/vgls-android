@@ -175,6 +175,7 @@ abstract class VglsFragment : Fragment(), MavericksView {
     protected open fun configureStatusBarContentColor() {
         val darkMode = resources.getBoolean(R.bool.darkMode)
         windowInsetController?.isAppearanceLightStatusBars = !darkMode
+        windowInsetController?.isAppearanceLightNavigationBars = false
     }
 
     protected fun setPerfTransitionStart() {
