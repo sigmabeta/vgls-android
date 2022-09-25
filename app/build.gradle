@@ -148,8 +148,11 @@ dependencies {
     }
 
     // Perf tracking (only log to firebase on release builds)
-    debugImplementation project(path: ':core:perf:tracking:noop')
-    releaseImplementation project(path: ':core:perf:tracking:firebase')
+    if (checkShouldIncludeFirebase()) {
+        implementation project(path: ':core:perf:tracking:firebase')
+    } else {
+        implementation project(path: ':core:perf:tracking:noop')
+    }
 
     // Memory leak detection (Uncomment to enable)
 //    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
