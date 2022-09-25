@@ -30,7 +30,9 @@ import com.vgleadsheets.tracking.Tracker
 import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -293,6 +295,18 @@ class RealRepository constructor(
         songHistoryEntryDao.removeAllForJam(id)
         setlistEntryDao.removeAllForJam(id)
         jamDao.remove(id)
+    }
+
+    override suspend fun refreshJams() = withContext(dispatchers.network) {
+        val jams = jamDao.getAll()
+            .filter { it.isNotEmpty() }
+            .firstOrNull()
+
+        jams?.forEach {
+            refreshJamStateImpl(it.name)
+        }
+
+        return@withContext
     }
 
     override suspend fun clearSheets() = withContext(dispatchers.disk) {

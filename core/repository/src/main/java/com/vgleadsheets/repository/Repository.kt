@@ -52,6 +52,7 @@ interface Repository {
     fun searchComposersCombined(searchQuery: String): Flow<List<Composer>>
 
     // Jam maintenance
+    suspend fun refreshJams()
     suspend fun removeJam(id: Long)
 
     // Debug options

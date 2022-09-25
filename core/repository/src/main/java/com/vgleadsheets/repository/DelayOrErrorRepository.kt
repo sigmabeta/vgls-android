@@ -79,6 +79,8 @@ class DelayOrErrorRepository(
 
     override suspend fun removeJam(id: Long) = realRepository.removeJam(id)
 
+    override suspend fun refreshJams() = realRepository.refreshJams()
+
     override suspend fun clearSheets() = realRepository.clearSheets()
 
     override suspend fun clearJams() = realRepository.clearJams()

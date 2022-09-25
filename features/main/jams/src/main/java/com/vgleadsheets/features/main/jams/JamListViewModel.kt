@@ -5,15 +5,24 @@ import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
+import kotlinx.coroutines.launch
 
 class JamListViewModel @AssistedInject constructor(
     @Assisted initialState: JamListState,
     private val repository: Repository,
+    private val dispatchers: VglsDispatchers
 ) : MavericksViewModel<JamListState>(initialState) {
     init {
         fetchJams()
+    }
+
+    fun refreshJams() {
+        viewModelScope.launch(dispatchers.network) {
+            repository.refreshJams()
+        }
     }
 
     private fun fetchJams() {
