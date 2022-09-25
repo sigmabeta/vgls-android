@@ -252,13 +252,15 @@ class ViewerFragment :
     }
 
     private fun setScreenOnLock() {
+        val activity = activity ?: return
         Timber.v("Setting screen-on lock.")
-        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun clearScreenOnLock() {
+        val activity = activity ?: return
         Timber.v("Clearing screen-on lock.")
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         screenOffSnack = showSnackbar(
             getString(R.string.snack_screen_off),
