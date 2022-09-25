@@ -54,7 +54,8 @@ fun ListContent?.isNullOrEmpty(): Boolean {
  * yields in between each element.
  *
  */
-public suspend inline fun <T, R> Iterable<T>.mapYielding(transform: (T) -> R): List<R> {
+@Suppress("MagicNumber")
+suspend inline fun <T, R> Iterable<T>.mapYielding(transform: (T) -> R): List<R> {
     return mapToYielding(ArrayList(collectionSizeOrDefault(10)), transform)
 }
 
