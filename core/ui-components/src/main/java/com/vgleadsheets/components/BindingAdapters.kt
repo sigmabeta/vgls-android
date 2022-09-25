@@ -2,6 +2,7 @@
 
 package com.vgleadsheets.components
 
+import android.content.res.Resources.NotFoundException
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
@@ -22,6 +23,7 @@ import com.vgleadsheets.animation.endPulseAnimator
 import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
+import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -74,6 +76,7 @@ fun bindPhoto(
     }
 }
 
+@Suppress("SwallowedException")
 @BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadSuccess", "imageLoadFail")
 fun bindBigPhoto(
     view: ImageView,
@@ -103,7 +106,11 @@ fun bindBigPhoto(
 
         view.loadImageHighQuality(photoUrl, true, placeholder, callback)
     } else {
-        view.setImageResource(placeholder)
+        try {
+            view.setImageResource(placeholder)
+        } catch (ex: NotFoundException) {
+            Timber.e("Resource not found.")
+        }
     }
 }
 

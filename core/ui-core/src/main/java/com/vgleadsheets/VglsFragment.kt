@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.airbnb.mvrx.BaseMvRxFragment
 import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
@@ -16,12 +17,14 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
+import com.vgleadsheets.ui_core.R
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import javax.inject.Named
 import timber.log.Timber
 
 abstract class VglsFragment : BaseMvRxFragment() {
+
     @Inject
     lateinit var tracker: Tracker
 
@@ -33,6 +36,8 @@ abstract class VglsFragment : BaseMvRxFragment() {
     var isRunningTest: Boolean = false
 
     protected val idArgs: IdArgs by args()
+
+    protected var windowInsetController: WindowInsetsControllerCompat? = null
 
     private var perfTrackingStarted = false
 
@@ -137,8 +142,21 @@ abstract class VglsFragment : BaseMvRxFragment() {
         ViewCompat.requestApplyInsets(view)
     }
 
+    override fun onStart() {
+        super.onStart()
+        windowInsetController = requireActivity().run {
+            WindowInsetsControllerCompat(
+                window,
+                window.decorView
+            )
+        }
+
+        configureStatusBarContentColor()
+    }
+
     override fun onStop() {
         super.onStop()
+        windowInsetController = null
         if (perfTrackingStarted) {
             perfTracker.cancel(getPerfSpec())
         }
@@ -151,6 +169,11 @@ abstract class VglsFragment : BaseMvRxFragment() {
             perfTracker.requestUpdates()
             perfTrackingStarted = false
         }
+    }
+
+    protected open fun configureStatusBarContentColor() {
+        val darkMode = resources.getBoolean(R.bool.darkMode)
+        windowInsetController?.isAppearanceLightStatusBars = !darkMode
     }
 
     protected fun setPerfTransitionStart() {
