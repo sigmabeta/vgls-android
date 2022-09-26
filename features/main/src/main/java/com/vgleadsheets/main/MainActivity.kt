@@ -4,8 +4,11 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
+import android.view.WindowManager
+import android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentTransaction
 import androidx.metrics.performance.FrameData
 import androidx.metrics.performance.JankStats
@@ -88,6 +91,9 @@ class MainActivity :
 
     private fun setupEdgeToEdge() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.decorView.updateLayoutParams<WindowManager.LayoutParams> {
+            layoutInDisplayCutoutMode = LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+        }
     }
 
     private fun printDisplayDetails() {
