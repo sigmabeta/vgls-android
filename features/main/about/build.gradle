@@ -5,12 +5,12 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     implementation project(path: ':features:main:hud')
     implementation project(path: ':core:recyclerview')
-    implementation project(path: ':core:storage')
+    implementation project(path: ':core:android:storage')
     implementation project(path: ':core:ui-core')
     implementation project(path: ':core:ui-components')
 
-        implementation project(":core:coroutines")
-    implementation project(":core:coroutines")
+    implementation project(":core:android:coroutines")
+    implementation project(":core:android:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

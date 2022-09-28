@@ -26,15 +26,15 @@ dependencies {
 
     api project(path: ':core:ui-core')
 
-    implementation project(path: ':core:repository')
+    implementation project(path: ':core:common:repository')
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    implementation project(":core:coroutines")
+    implementation project(":core:android:coroutines")
 
     // Dagger annotation processors
-    implementation project(path: ':core:di')
+    implementation project(path: ':core:android:di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

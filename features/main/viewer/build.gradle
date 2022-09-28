@@ -4,15 +4,15 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     implementation project(path: ':features:main:hud')
 
-    implementation project(path: ':core:animation')
-    implementation project(path: ':core:repository')
+    implementation project(path: ':core:android:animation')
+    implementation project(path: ':core:common:repository')
     implementation project(path: ':core:recyclerview')
-    implementation project(path: ':core:storage')
+    implementation project(path: ':core:android:storage')
     implementation project(path: ':core:ui-core')
 
     // Viewpager2
     implementation "androidx.viewpager2:viewpager2:$viewpager_version"
-    implementation project(":core:coroutines")
+    implementation project(":core:android:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

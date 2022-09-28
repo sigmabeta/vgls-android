@@ -1,0 +1,6 @@
+apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
+
+dependencies {
+    api project(path: ':core:perf:tracking:api')
+    api project(path: ':core:common:tracking')
+}

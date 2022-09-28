@@ -25,8 +25,8 @@ import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.thumbUrl
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: SongState,

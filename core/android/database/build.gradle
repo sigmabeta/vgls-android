@@ -1,0 +1,12 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/di.gradle"
+
+dependencies {
+    // Module deps
+    api project(path: ':core:common:database')
+
+    // Room Libs
+    api "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+}

@@ -5,7 +5,7 @@ dependencies {
     implementation project(path: ':features:main:hud')
     implementation project(path: ':core:ui-core')
 
-    implementation project(":core:coroutines")
+    implementation project(":core:android:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

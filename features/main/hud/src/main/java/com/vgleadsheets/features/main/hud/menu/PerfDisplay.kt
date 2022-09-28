@@ -8,11 +8,11 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.PerfViewMode
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.perf.tracking.api.FrameTimeStats
-import com.vgleadsheets.perf.tracking.api.InvalidateStats
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfStage
-import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
+import com.vgleadsheets.perf.tracking.common.FrameTimeStats
+import com.vgleadsheets.perf.tracking.common.InvalidateStats
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfStage
+import com.vgleadsheets.perf.tracking.common.ScreenLoadStatus
 
 @Suppress("LongParameterList", "TooManyFunctions")
 object PerfDisplay {

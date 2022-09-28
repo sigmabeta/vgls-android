@@ -121,15 +121,15 @@ if (googlePlayTrack != null) {
 
 dependencies {
     // Module deps
-    implementation project(path: ':core:resources')
-    implementation project(path: ':core:repository')
+    implementation project(path: ':core:android:resources')
+    implementation project(path: ':core:common:repository')
     implementation project(path: ':features:main')
-    implementation project(path: ':core:storage')
-    implementation project(path: ':core:images')
+    implementation project(path: ':core:android:storage')
+    implementation project(path: ':core:android:images')
 
-    androidTestImplementation project(path: ':core:common:debug-common')
+    androidTestImplementation project(path: ':core:common:debug')
 
-    implementation project(":core:coroutines")
+    implementation project(":core:android:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
@@ -170,7 +170,7 @@ dependencies {
     androidTestImplementation "androidx.test:rules:$espresso_runner_version"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
-    implementation project(path: ':core:di')
+    implementation project(path: ':core:android:di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     kaptAndroidTest "com.google.dagger:dagger-android-processor:$dagger_version"

@@ -6,11 +6,11 @@ dependencies {
 
     implementation project(path: ':features:main:hud')
 
-    implementation project(path: ':core:repository')
-    implementation project(path: ':core:resources')
+    implementation project(path: ':core:common:repository')
+    implementation project(path: ':core:android:resources')
     implementation project(path: ':core:recyclerview')
     implementation project(path: ':core:ui-core')
-    implementation project(":core:coroutines")
+    implementation project(":core:android:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

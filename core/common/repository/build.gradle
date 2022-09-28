@@ -1,0 +1,13 @@
+apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
+
+dependencies {
+    // Module deps
+    implementation project(path: ':core:common:database')
+    implementation project(path: ':core:common:network')
+
+    // So we can log auto-refreshes
+    implementation project(path: ':core:common:tracking')
+
+    // So we don't have buggy time comparisons
+    implementation "com.jakewharton.threetenabp:threetenabp:$threeten_version"
+}

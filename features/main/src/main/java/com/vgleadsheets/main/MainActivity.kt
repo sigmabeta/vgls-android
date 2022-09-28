@@ -36,9 +36,9 @@ import com.vgleadsheets.features.main.tagkeys.TagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
-import com.vgleadsheets.perf.tracking.api.FrameInfo
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.FrameInfo
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector

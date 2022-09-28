@@ -2,13 +2,13 @@ apply from: "$rootProject.projectDir/core-android-module.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    implementation project(path: ':core:mvrx')
-    implementation project(path: ':core:tracking-common')
+    implementation project(path: ':core:android:mvrx')
+    implementation project(path: ':core:common:tracking')
 
     // Dagger
-    api project(path: ':core:di')
+    api project(path: ':core:android:di')
 
-    implementation project(":core:coroutines")
+    implementation project(":core:android:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

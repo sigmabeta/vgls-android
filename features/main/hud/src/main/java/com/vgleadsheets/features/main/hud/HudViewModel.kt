@@ -9,13 +9,12 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.FragmentRouter
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.storage.Storage
 import kotlinx.coroutines.FlowPreview

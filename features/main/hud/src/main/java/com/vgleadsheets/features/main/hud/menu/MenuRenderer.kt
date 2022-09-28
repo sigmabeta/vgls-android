@@ -2,20 +2,20 @@ package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
 import com.airbnb.mvrx.Async
-import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.Clicks
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.hud.PartSelectorOption
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.search.SearchContent
 import com.vgleadsheets.model.parts.Part
 import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.FrameTimeStats
-import com.vgleadsheets.perf.tracking.api.InvalidateStats
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
+import com.vgleadsheets.perf.tracking.common.FrameTimeStats
+import com.vgleadsheets.perf.tracking.common.InvalidateStats
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.ScreenLoadStatus
 
 object MenuRenderer {
     @Suppress("LongParameterList", "LongMethod")

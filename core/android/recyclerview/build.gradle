@@ -1,0 +1,20 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+
+android {
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    api project(path: ':core:ui-components')
+
+    // AndroidX libs
+    api "androidx.recyclerview:recyclerview:$recycler_version"
+
+    implementation project(":core:android:coroutines")
+
+            
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+}

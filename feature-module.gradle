@@ -28,7 +28,7 @@ android {
 
 dependencies {
     implementation project(path: ':core:ui-components')
-    implementation project(path: ':core:repository')
+    implementation project(path: ':core:common:repository')
 
     
     // Jetpack Compose

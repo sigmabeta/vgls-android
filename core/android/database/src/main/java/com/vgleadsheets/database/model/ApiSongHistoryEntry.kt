@@ -1,0 +1,16 @@
+package com.vgleadsheets.database.model
+
+@Suppress("ConstructorParameterNaming")
+data class ApiSongHistoryEntry(
+    val sheet_id: Long
+) {
+    fun toSongHistoryEntryEntity(jamId: Long, listPosition: Int) = SongHistoryEntryEntity(
+        MULTIPLIER_JAM_ID * jamId + listPosition,
+        jamId,
+        sheet_id
+    )
+
+    companion object {
+        const val MULTIPLIER_JAM_ID = 10000L
+    }
+}
