@@ -1,27 +1,3 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply plugin: 'kotlin-kapt'
+apply from: "$rootProject.projectDir/feature-module.gradle"
 
-dependencies {
-    implementation project(path: ':features:main:hud')
-
-    implementation project(path: ':core:android:animation')
-    implementation project(path: ':core:common:repository')
-    implementation project(path: ':core:recyclerview')
-    implementation project(path: ':core:android:storage')
-    implementation project(path: ':core:ui-core')
-
-    // Viewpager2
-    implementation "androidx.viewpager2:viewpager2:$viewpager_version"
-    implementation project(":core:android:coroutines")
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
-    // Dagger (important: include all 3 of these in modules that use Dagger
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-
-    // AssistedInject Annotation Processors
-    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
-    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
-}
+dependencies {}

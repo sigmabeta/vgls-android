@@ -10,8 +10,8 @@ android {
 dependencies {
     implementation project(path: ':core:android:images')
     implementation project(path: ':core:android:animation')
-    implementation project(path: ':core:ui-core')
-    implementation project(path: ':core:vectors')
+    implementation project(path: ':core:android:ui-core')
+    implementation project(path: ':core:android:vectors')
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 

@@ -1,10 +1,7 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply plugin: 'kotlin-kapt'
+apply from: "$rootProject.projectDir/di.gradle"
 
 dependencies {
-    // So ListView.kt can be found. TODO Make this not necessary
-    api project(path: ':core:recyclerview')
-
     api project(path: ':features:main:about')
     api project(path: ':features:main:composer')
     api project(path: ':features:main:composers')
@@ -23,18 +20,4 @@ dependencies {
     api project(path: ':features:main:tag-songs')
     api project(path: ':features:main:tag-value')
     api project(path: ':features:main:viewer')
-
-    api project(path: ':core:ui-core')
-
-    implementation project(path: ':core:common:repository')
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
-    implementation project(":core:android:coroutines")
-
-    // Dagger annotation processors
-    implementation project(path: ':core:android:di')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

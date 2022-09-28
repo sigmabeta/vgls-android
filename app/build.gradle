@@ -142,16 +142,16 @@ dependencies {
         implementation "com.google.firebase:firebase-analytics:$firebase_version"
         implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
 
-        implementation project(path: ':core:tracking')
+        implementation project(path: ':core:android:tracking')
     } else {
-        implementation project(path: ':core:tracking-noop')
+        implementation project(path: ':core:fake:tracking')
     }
 
     // Perf tracking (only log to firebase on release builds)
     if (checkShouldIncludeFirebase()) {
-        implementation project(path: ':core:perf:tracking:firebase')
+        implementation project(path: ':core:android:firebase')
     } else {
-        implementation project(path: ':core:perf:tracking:noop')
+        implementation project(path: ':core:fake:perf')
     }
 
     // Memory leak detection (Uncomment to enable)
