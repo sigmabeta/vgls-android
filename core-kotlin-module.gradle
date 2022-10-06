@@ -4,6 +4,8 @@ apply from: "$rootProject.projectDir/dependencies-testing.gradle"
 dependencies {
     // Kotlin libs
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    implementation project(":core:common:coroutines")
 }
 
 java {

@@ -19,6 +19,8 @@
       <module name="VGLeadSheets.core.ui-components" target="11" />
       <module name="VGLeadSheets.core.ui-core" target="11" />
       <module name="VGLeadSheets.core.vectors" target="11" />
+      <module name="VGLeadSheets.features.main.list" target="17" />
+      <module name="VGLeadSheets.features.main.router" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

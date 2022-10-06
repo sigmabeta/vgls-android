@@ -2,6 +2,7 @@ package com.vgleadsheets.storage
 
 import com.uber.simplestore.SimpleStore
 import com.vgleadsheets.common.debug.NetworkEndpoint
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_MISC_PERF_VIEW
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
 import com.vgleadsheets.storage.Storage.Companion.KEY_SELECTED_PART
@@ -54,7 +55,15 @@ class SimpleStorage(
             KEY_DEBUG_NETWORK_ENDPOINT,
             R.string.label_debug_network_endpoint,
             savedValue,
-            NetworkEndpoint.values().map { it.displayStringId }
+            NetworkEndpoint.values()
+                .map {
+                    when (it) {
+                        NetworkEndpoint.PROD -> R.string.network_endpoint_prod
+                        NetworkEndpoint.SUPER -> R.string.network_endpoint_super
+                        NetworkEndpoint.BETA -> R.string.network_endpoint_beta
+                        NetworkEndpoint.MOCK -> R.string.network_endpoint_mock
+                    }
+                }
         )
     }
 

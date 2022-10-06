@@ -1,6 +1,6 @@
 package com.vgleadsheets.model.tag
 
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Song
 
 data class TagValue(
     val id: Long,

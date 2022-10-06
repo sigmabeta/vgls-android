@@ -2,25 +2,31 @@ package com.vgleadsheets.network
 
 import com.vgleadsheets.database.model.ApiSetlistEntry
 import com.vgleadsheets.database.model.ApiSongHistoryEntry
-import com.vgleadsheets.model.ApiDigest
-import com.vgleadsheets.model.composer.ApiComposer
-import com.vgleadsheets.model.game.VglsApiGame
-import com.vgleadsheets.model.jam.ApiJam
-import com.vgleadsheets.model.jam.ApiSetlist
-import com.vgleadsheets.model.song.ApiSong
-import com.vgleadsheets.model.time.ApiTime
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.util.EmptyStackException
-import java.util.Random
-import java.util.Stack
-import javax.inject.Named
+import com.vgleadsheets.network.model.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.util.*
+import javax.inject.Named
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
+import kotlin.collections.distinctBy
+import kotlin.collections.filter
+import kotlin.collections.forEach
+import kotlin.collections.isNotEmpty
+import kotlin.collections.listOf
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
+import kotlin.collections.setOf
+import kotlin.collections.toMutableList
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
 class MockVglsApi(
@@ -79,7 +85,7 @@ class MockVglsApi(
 
         val previousJamsSize = jamRandomGenerator.nextInt(JAM_PREVIOUS_SONGS_SIZE) + 1
         val previousJams =
-            ArrayList<com.vgleadsheets.database.model.ApiSongHistoryEntry>(previousJamsSize)
+            ArrayList<ApiSongHistoryEntry>(previousJamsSize)
 
         for (entryIndex in 0 until previousJamsSize) {
             val possibleSongsSize = possibleSongs?.size ?: 0
@@ -90,7 +96,7 @@ class MockVglsApi(
             val song = possibleSongs?.get(possibleSongIndex)
 
             if (song != null) {
-                val entry = com.vgleadsheets.database.model.ApiSongHistoryEntry(song.id)
+                val entry = ApiSongHistoryEntry(song.id)
                 previousJams.add(entry)
             } else {
                 Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
@@ -117,7 +123,7 @@ class MockVglsApi(
             jamRandomGenerator.nextInt(5) + 1
         }
 
-        val songs = ArrayList<com.vgleadsheets.database.model.ApiSetlistEntry>(setlistSize)
+        val songs = ArrayList<ApiSetlistEntry>(setlistSize)
 
         for (jamIndex in 0 until setlistSize) {
             val possibleSongsSize = possibleSongs?.size ?: 0
@@ -126,7 +132,7 @@ class MockVglsApi(
             val song = possibleSongs?.get(possibleSongIndex)
 
             if (song != null) {
-                val entry = com.vgleadsheets.database.model.ApiSetlistEntry(
+                val entry = ApiSetlistEntry(
                     song.id,
                     "Mocks Don't Name Games Yet",
                     song.name

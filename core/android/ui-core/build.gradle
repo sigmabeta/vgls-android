@@ -1,6 +1,5 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
 
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
 
 dependencies {
@@ -11,7 +10,7 @@ dependencies {
     api project(path: ':core:common:perf')
 
     // To allow features to interact with MainActivity's state.
-    api project(path: ":features:main:router")
+    api project(path: ":core:android:router")
 
     // All UI features should depend on Mavericks
     api project(path: ':core:android:mvrx')
@@ -23,15 +22,8 @@ dependencies {
     api "com.google.android.material:material:$material_version"
 
     // Dagger
-    api project(path: ':core:android:di')
-
-    implementation project(":core:android:coroutines")
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
-
-    // Dagger annotation processors
-    implementation project(path: ':core:android:di')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

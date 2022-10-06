@@ -14,7 +14,7 @@ data class JamContent(
     val jamRefresh: Async<Unit> = Uninitialized,
     val jam: Async<Jam> = Uninitialized,
     val setlistRefresh: Async<Unit> = Uninitialized,
-    val setlist: Async<List<com.vgleadsheets.database.model.SetlistEntry>> = Uninitialized
+    val setlist: Async<List<SetlistEntry>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException
     override fun failure() = jam.failure() ?: setlist.failure()

@@ -1,5 +1,4 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply plugin: 'kotlin-kapt'
 
 android {
     buildFeatures {
@@ -8,8 +7,8 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':core:android:images')
     implementation project(path: ':core:android:animation')
+    implementation project(path: ':core:android:images')
     implementation project(path: ':core:android:ui-core')
     implementation project(path: ':core:android:vectors')
 
@@ -17,13 +16,4 @@ dependencies {
 
     // For zoomable sheet images
     implementation "com.github.chrisbanes:PhotoView:$photoview_version"
-
-    implementation project(":core:android:coroutines")
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
-    // Dagger (important: include all 3 of these in modules that use Dagger
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

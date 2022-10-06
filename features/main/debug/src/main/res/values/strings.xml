@@ -8,9 +8,4 @@
     <string name="label_database_clear_jams">Clear jams</string>
 
     <string name="snack_restart_on_exit">App will restart after you exit.</string>
-
-    <string name="network_endpoint_prod">Production</string>
-    <string name="network_endpoint_super">Super</string>
-    <string name="network_endpoint_beta">Beta</string>
-    <string name="network_endpoint_mock">Mock</string>
 </resources>

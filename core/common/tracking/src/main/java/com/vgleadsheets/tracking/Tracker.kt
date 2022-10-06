@@ -1,11 +1,9 @@
 package com.vgleadsheets.tracking
 
-import android.app.Activity
 
 @SuppressWarnings("TooManyFunctions")
 interface Tracker {
     fun logScreenView(
-        activity: Activity,
         screen: TrackingScreen,
         details: String,
         fromScreen: TrackingScreen,

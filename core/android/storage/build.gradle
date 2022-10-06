@@ -1,7 +1,6 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
 apply from: "$rootProject.projectDir/di.gradle"
 
-apply plugin: 'kotlin-kapt'
 
 dependencies {
     api "com.uber.simplestore:simplestore:$simplestore_version"

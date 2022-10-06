@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
 import android.content.Context
-import com.vgleadsheets.model.time.ThreeTenTime
+import com.vgleadsheets.repository.ThreeTenTime
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -16,7 +16,7 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideTime(context: Context): ThreeTenTime = ThreeTenTime.Impl(context)
+    fun provideTime(context: Context): ThreeTenTime = ThreeTenImpl(context)
 
     @Provides
     @Singleton

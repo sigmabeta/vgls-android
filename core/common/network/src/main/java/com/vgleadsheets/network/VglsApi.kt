@@ -1,9 +1,9 @@
 package com.vgleadsheets.network
 
-import com.vgleadsheets.model.ApiDigest
-import com.vgleadsheets.model.jam.ApiJam
-import com.vgleadsheets.model.jam.ApiSetlist
-import com.vgleadsheets.model.time.ApiTime
+import com.vgleadsheets.network.model.ApiDigest
+import com.vgleadsheets.network.model.ApiJam
+import com.vgleadsheets.network.model.ApiSetlist
+import com.vgleadsheets.network.model.ApiTime
 import retrofit2.http.GET
 import retrofit2.http.Path
 

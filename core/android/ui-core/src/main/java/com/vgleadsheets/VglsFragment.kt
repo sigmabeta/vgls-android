@@ -9,7 +9,6 @@ import androidx.annotation.LayoutRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
-
 import androidx.fragment.app.Fragment
 import com.airbnb.mvrx.MavericksView
 import com.airbnb.mvrx.args
@@ -21,9 +20,9 @@ import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 import com.vgleadsheets.ui_core.R
 import dagger.android.support.AndroidSupportInjection
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
-import timber.log.Timber
 
 abstract class VglsFragment : Fragment(), MavericksView {
     @Inject
@@ -117,7 +116,6 @@ abstract class VglsFragment : Fragment(), MavericksView {
 
         // TODO Resume supplying Fromscreen and Fromdetails
         tracker.logScreenView(
-            requireActivity(),
             getTrackingScreen(),
             getDetails(),
             TrackingScreen.NONE,

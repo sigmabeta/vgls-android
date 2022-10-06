@@ -1,3 +1,7 @@
 apply from: "$rootProject.projectDir/feature-module.gradle"
 
-dependencies {}
+dependencies {
+    implementation "androidx.viewpager2:viewpager2:$viewpager_version"
+
+    implementation project(path: ':core:android:ui-core')
+}

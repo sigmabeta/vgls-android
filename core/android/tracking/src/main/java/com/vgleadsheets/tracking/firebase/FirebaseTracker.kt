@@ -1,6 +1,5 @@
 package com.vgleadsheets.tracking.firebase
 
-import android.app.Activity
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.vgleadsheets.tracking.Tracker
@@ -10,7 +9,6 @@ import com.vgleadsheets.tracking.TrackingScreen
 class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracker {
 
     override fun logScreenView(
-        activity: Activity,
         screen: TrackingScreen,
         details: String,
         fromScreen: TrackingScreen,

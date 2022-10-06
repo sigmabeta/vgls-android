@@ -120,12 +120,13 @@ if (googlePlayTrack != null) {
 }
 
 dependencies {
-    // Module deps
-    implementation project(path: ':core:android:resources')
     implementation project(path: ':core:common:repository')
-    implementation project(path: ':features:main')
+
+    implementation project(path: ':core:android:resources')
     implementation project(path: ':core:android:storage')
     implementation project(path: ':core:android:images')
+
+    implementation project(path: ':features:main')
 
     androidTestImplementation project(path: ':core:common:debug')
 

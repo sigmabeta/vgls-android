@@ -1,10 +1,10 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.jam.Jam
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Jam
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.jam.SetlistEntry
-import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time

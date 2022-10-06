@@ -3,30 +3,28 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.coroutines.CustomFlows
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.ComposerAliasEntity
 import com.vgleadsheets.model.alias.GameAliasEntity
-import com.vgleadsheets.model.composer.ApiComposer
-import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.composer.ComposerEntity
-import com.vgleadsheets.model.game.Game
 import com.vgleadsheets.model.game.GameEntity
-import com.vgleadsheets.model.game.VglsApiGame
 import com.vgleadsheets.model.jam.JamEntity
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.joins.SongTagValueJoin
-import com.vgleadsheets.model.song.ApiSong
-import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.song.SongEntity
 import com.vgleadsheets.model.tag.TagKeyEntity
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.tag.TagValueEntity
-import com.vgleadsheets.model.time.ThreeTenTime
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.network.model.ApiComposer
+import com.vgleadsheets.network.model.ApiSong
+import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
-import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -36,6 +34,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
+import java.util.*
 
 class RealRepository constructor(
     private val vglsApi: VglsApi,
@@ -433,13 +432,13 @@ class RealRepository constructor(
             songHistory
                 .drop(1)
                 .mapIndexed { songHistoryIndex, songHistoryEntry ->
-                    songHistoryEntry.toSongHistoryEntryEntity(jam.jam_id, songHistoryIndex)
+                    songHistoryEntry.toEntity(jam.jam_id, songHistoryIndex)
                 }
         } else {
             emptyList()
         }
 
-        val jamEntity = jam.toJamEntity(name.lowercase())
+        val jamEntity = jam.toEntity(name.lowercase())
 
         withContext(dispatchers.disk) {
             jamDao.upsertJam(songHistoryEntryDao, jamEntity, songHistoryEntries)
@@ -450,7 +449,7 @@ class RealRepository constructor(
         val setlist = vglsApi.getSetlistForJam(name)
 
         val setlistEntries = setlist.songs.mapIndexed() { setlistIndex, entry ->
-            entry.toSetlistEntryEntity(jamId, setlistIndex)
+            entry.toEntity(jamId, setlistIndex)
         }
 
         withContext(dispatchers.disk) {
@@ -475,7 +474,7 @@ class RealRepository constructor(
 
     private suspend fun getLastApiUpdateTime(): Time {
         val lastUpdate = vglsApi.getLastUpdateTime()
-        val time = lastUpdate.toTimeEntity().toTime()
+        val time = lastUpdate.toEntity().toTime()
 
         dbStatisticsDao.insert(
             TimeEntity(TimeType.LAST_UPDATED.ordinal, time.timeMs)
@@ -495,7 +494,7 @@ class RealRepository constructor(
 
         val composerEntities = createComposerMap(apiComposers)
 
-        val gameEntities = apiGames.map { apiGame -> apiGame.toGameEntity() }
+        val gameEntities = apiGames.map { apiGame -> apiGame.toEntity() }
 
         val songEntities = ArrayList<SongEntity>(CAPACITY)
         val songComposerJoins = ArrayList<SongComposerJoin>(CAPACITY)
@@ -575,7 +574,7 @@ class RealRepository constructor(
         songTagValueJoins: ArrayList<SongTagValueJoin>,
         songEntities: ArrayList<SongEntity>
     ) {
-        val songEntity = apiSong.toSongEntity(
+        val songEntity = apiSong.toEntity(
             apiGame.game_id + VglsApiGame.ID_OFFSET,
             apiGame.game_name
         )
@@ -603,7 +602,7 @@ class RealRepository constructor(
     private fun createComposerMap(apiComposers: List<ApiComposer>): MutableMap<Long, ComposerEntity> {
         val composers = mutableMapOf<Long, ComposerEntity>()
         apiComposers.forEach { apiComposer ->
-            val entity = apiComposer.toComposerEntity(false)
+            val entity = apiComposer.toEntity(false)
             composers[entity.id] = entity
         }
         return composers
@@ -677,7 +676,7 @@ class RealRepository constructor(
     ) {
         val songComposerJoin = SongComposerJoin(
             apiSong.id,
-            apiComposer.composer_id + ApiComposer.ID_OFFSET
+            apiComposer.composer_id + ApiComposer.ID_OFFSET_COMPOSER
         )
         songComposerJoins.add(songComposerJoin)
     }
