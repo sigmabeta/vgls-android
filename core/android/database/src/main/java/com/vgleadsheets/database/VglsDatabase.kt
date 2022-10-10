@@ -2,30 +2,8 @@ package com.vgleadsheets.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.vgleadsheets.database.dao.ComposerAliasDao
-import com.vgleadsheets.database.dao.ComposerDao
-import com.vgleadsheets.database.dao.DbStatisticsDao
-import com.vgleadsheets.database.dao.GameAliasDao
-import com.vgleadsheets.database.dao.GameDao
-import com.vgleadsheets.database.dao.JamDao
-import com.vgleadsheets.database.dao.SetlistEntryDao
-import com.vgleadsheets.database.dao.SongComposerDao
-import com.vgleadsheets.database.dao.SongDao
-import com.vgleadsheets.database.dao.SongHistoryEntryDao
-import com.vgleadsheets.database.dao.SongTagValueDao
-import com.vgleadsheets.database.dao.TagKeyDao
-import com.vgleadsheets.database.dao.TagValueDao
-import com.vgleadsheets.database.model.ComposerAliasEntity
-import com.vgleadsheets.database.model.ComposerEntity
-import com.vgleadsheets.database.model.GameAliasEntity
-import com.vgleadsheets.database.model.GameEntity
-import com.vgleadsheets.database.model.JamEntity
-import com.vgleadsheets.database.model.SetlistEntryEntity
-import com.vgleadsheets.database.model.SongEntity
-import com.vgleadsheets.database.model.SongHistoryEntryEntity
-import com.vgleadsheets.database.model.TagKeyEntity
-import com.vgleadsheets.database.model.TagValueEntity
-import com.vgleadsheets.database.model.TimeEntity
+import com.vgleadsheets.database.dao.*
+import com.vgleadsheets.database.enitity.*
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.joins.SongTagValueJoin
 

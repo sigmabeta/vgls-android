@@ -1,11 +1,11 @@
-package com.vgleadsheets.database.model
+package com.vgleadsheets.database.enitity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
-import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Song
 
 @Suppress("ConstructorParameterNaming")
 @Entity(

@@ -1,9 +1,10 @@
-package com.vgleadsheets.database.model
+package com.vgleadsheets.database.enitity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.SetlistEntry
+import com.vgleadsheets.model.Song
 
 @Suppress("ConstructorParameterNaming")
 @Entity(

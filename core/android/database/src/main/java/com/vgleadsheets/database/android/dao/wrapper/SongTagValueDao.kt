@@ -1,13 +1,15 @@
-package com.vgleadsheets.database.dao
+package com.vgleadsheets.database.android.dao.wrapper
 
 import com.vgleadsheets.model.joins.SongTagValueJoin
 import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
 import kotlinx.coroutines.flow.Flow
 
-interface SongTagValueDao {
+class SongTagValueRoomDaoWrapper(
+    private val roomImpl: RoomDao
+) : Dao {
 
-    suspend fun insertAll(songTagValueJoins: List<SongTagValueJoin>)
+    override suspend fun insertAll(songTagValueJoins: List<SongTagValueJoin>)
 
     """
             SELECT * FROM tag_value INNER JOIN song_tag_value_join 
@@ -17,7 +19,7 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
+    override fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
 
     """
             SELECT * FROM song INNER JOIN song_tag_value_join 
@@ -27,7 +29,7 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getSongsForTagValueSync(tagValueId: Long): List<Song>
+    override fun getSongsForTagValueSync(tagValueId: Long): List<Song>
 
     """
             SELECT * FROM song INNER JOIN song_tag_value_join 
@@ -37,7 +39,7 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
+    override fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
 
-    suspend fun nukeTable()
+    override suspend fun nukeTable()
 }

@@ -1,42 +1,23 @@
 package com.vgleadsheets.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy.Companion.REPLACE
-import androidx.room.Query
-import androidx.room.Transaction
-import com.vgleadsheets.model.jam.JamEntity
-import com.vgleadsheets.model.jam.SongHistoryEntryEntity
+import com.vgleadsheets.model.Jam
+import com.vgleadsheets.model.SongHistoryEntry
 import kotlinx.coroutines.flow.Flow
 
-@Dao
 interface JamDao {
-    @Insert(onConflict = REPLACE)
-    suspend fun insert(jam: JamEntity)
+    suspend fun insert(jam: Jam)
 
-    @Query("SELECT * FROM jam ORDER BY name COLLATE NOCASE")
-    fun getAll(): Flow<List<JamEntity>>
+    fun getAll(): Flow<List<Jam>>
 
-    @Query("SELECT * FROM jam WHERE id = :jamId")
-    fun getJam(jamId: Long): Flow<JamEntity>
+    fun getJam(jamId: Long): Flow<Jam>
 
-    @Query("DELETE FROM jam WHERE Id = :jamId")
     suspend fun remove(jamId: Long)
 
-    @Transaction
     suspend fun upsertJam(
         songHistoryEntryDao: SongHistoryEntryDao,
-        jam: JamEntity,
-        songHistoryEntries: List<SongHistoryEntryEntity>
-    ) {
-        songHistoryEntryDao.removeAllForJam(jam.id)
-        insert(jam)
+        jam: Jam,
+        songHistoryEntries: List<SongHistoryEntry>
+    )
 
-        if (songHistoryEntries.isNotEmpty()) {
-            songHistoryEntryDao.insertAll(songHistoryEntries)
-        }
-    }
-
-    @Query("DELETE FROM jam")
     suspend fun nukeTable()
 }

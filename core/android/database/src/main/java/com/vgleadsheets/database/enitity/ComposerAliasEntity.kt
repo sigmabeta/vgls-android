@@ -1,10 +1,10 @@
-package com.vgleadsheets.database.model
+package com.vgleadsheets.database.enitity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Song
 
 @Entity(
     tableName = "alias_composer",
@@ -22,6 +22,6 @@ data class ComposerAliasEntity(
     val name: String,
     val photoUrl: String? = null,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
-) {
-    fun toComposer(songs: List<Song>?) = Composer(composerId, name, songs, photoUrl)
-}
+)
+
+fun ComposerAliasEntity.toModel(songs: List<Song>?) = Composer(composerId, name, songs, photoUrl)

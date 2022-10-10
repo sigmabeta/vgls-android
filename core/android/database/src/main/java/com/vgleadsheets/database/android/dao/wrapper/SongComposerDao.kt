@@ -1,13 +1,15 @@
-package com.vgleadsheets.database.dao
+package com.vgleadsheets.database.android.dao.wrapper
 
 import com.vgleadsheets.model.composer.Composer
 import com.vgleadsheets.model.joins.SongComposerJoin
 import com.vgleadsheets.model.song.Song
 import kotlinx.coroutines.flow.Flow
 
-interface SongComposerDao {
+class SongComposerRoomDaoWrapper(
+    private val roomImpl: RoomDao
+) : Dao {
 
-    suspend fun insertAll(songComposerJoins: List<SongComposerJoin>)
+    override suspend fun insertAll(songComposerJoins: List<SongComposerJoin>)
 
     """
             SELECT * FROM composer INNER JOIN song_composer_join 
@@ -17,7 +19,7 @@ interface SongComposerDao {
             COLLATE NOCASE
             """
     )
-    fun getComposersForSong(songId: Long): List<Composer>
+    override fun getComposersForSong(songId: Long): List<Composer>
 
     """
             SELECT * FROM song INNER JOIN song_composer_join 
@@ -27,7 +29,7 @@ interface SongComposerDao {
             COLLATE NOCASE
             """
     )
-    fun getSongsForComposerSync(composerId: Long): List<Song>
+    override fun getSongsForComposerSync(composerId: Long): List<Song>
 
     """
             SELECT * FROM song INNER JOIN song_composer_join 
@@ -37,7 +39,7 @@ interface SongComposerDao {
             COLLATE NOCASE
             """
     )
-    fun getSongsForComposer(composerId: Long): Flow<List<Song>>
+    override fun getSongsForComposer(composerId: Long): Flow<List<Song>>
 
-    suspend fun nukeTable()
+    override suspend fun nukeTable()
 }

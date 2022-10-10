@@ -1,23 +1,23 @@
-package com.vgleadsheets.model.joins
+package com.vgleadsheets.database.join
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
-import com.vgleadsheets.database.model.ComposerEntity
-import com.vgleadsheets.database.model.SongEntity
+import com.vgleadsheets.database.enitity.ComposerEntity
+import com.vgleadsheets.database.enitity.SongEntity
 
 @Entity(
     tableName = "song_composer_join",
     primaryKeys = ["songId", "composerId"],
     foreignKeys = [
         ForeignKey(
-            entity = com.vgleadsheets.database.model.SongEntity::class,
+            entity = SongEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("songId"),
             onDelete = CASCADE
         ),
         ForeignKey(
-            entity = com.vgleadsheets.database.model.ComposerEntity::class,
+            entity = ComposerEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("composerId"),
             onDelete = CASCADE

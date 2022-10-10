@@ -1,15 +1,20 @@
-package com.vgleadsheets.database.dao
+package com.vgleadsheets.database.android.dao
 
-import com.vgleadsheets.model.joins.SongTagValueJoin
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.model.tag.TagValue
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import com.vgleadsheets.database.enitity.SongEntity
+import com.vgleadsheets.database.enitity.TagValueEntity
+import com.vgleadsheets.database.join.SongTagValueJoin
 import kotlinx.coroutines.flow.Flow
 
-interface SongTagValueDao {
-
+@Dao
+interface SongTagValueRoomDao {
+    @Insert
     suspend fun insertAll(songTagValueJoins: List<SongTagValueJoin>)
 
-    """
+    @Query(
+        """ 
             SELECT * FROM tag_value INNER JOIN song_tag_value_join 
             ON tag_value.id=song_tag_value_join.tagValueId
             WHERE song_tag_value_join.songId=:songId
@@ -17,9 +22,10 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
+    fun getTagValuesForSong(songId: Long): Flow<List<TagValueEntity>>
 
-    """
+    @Query(
+        """ 
             SELECT * FROM song INNER JOIN song_tag_value_join 
             ON song.id=song_tag_value_join.songId
             WHERE song_tag_value_join.tagValueId=:tagValueId
@@ -27,9 +33,10 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getSongsForTagValueSync(tagValueId: Long): List<Song>
+    fun getSongsForTagValueSync(tagValueId: Long): List<SongEntity>
 
-    """
+    @Query(
+        """ 
             SELECT * FROM song INNER JOIN song_tag_value_join 
             ON song.id=song_tag_value_join.songId
             WHERE song_tag_value_join.tagValueId=:tagValueId
@@ -37,7 +44,8 @@ interface SongTagValueDao {
             COLLATE NOCASE
             """
     )
-    fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
+    fun getSongsForTagValue(tagValueId: Long): Flow<List<SongEntity>>
 
+    @Query("DELETE FROM song_tag_value_join")
     suspend fun nukeTable()
 }

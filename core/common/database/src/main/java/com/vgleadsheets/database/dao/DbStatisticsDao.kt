@@ -1,20 +1,13 @@
 package com.vgleadsheets.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.vgleadsheets.model.time.TimeEntity
+import com.vgleadsheets.model.time.Time
 import kotlinx.coroutines.flow.Flow
 
-@Dao
 interface DbStatisticsDao {
-    @Query("SELECT * FROM time WHERE time_id = :tableId")
-    fun getTime(tableId: Int): Flow<List<TimeEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(dbStatisticsEntity: TimeEntity)
+    fun getTime(tableId: Int): Flow<List<Time>>
 
-    @Query("DELETE FROM time")
+    suspend fun insert(dbStatistics: Time)
+
     suspend fun nukeTable()
 }

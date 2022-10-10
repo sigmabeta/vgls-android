@@ -1,22 +1,22 @@
-package com.vgleadsheets.model.joins
+package com.vgleadsheets.database.join
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import com.vgleadsheets.database.model.SongEntity
-import com.vgleadsheets.database.model.TagValueEntity
+import com.vgleadsheets.database.enitity.SongEntity
+import com.vgleadsheets.database.enitity.TagValueEntity
 
 @Entity(
     tableName = "song_tag_value_join",
     primaryKeys = ["songId", "tagValueId"],
     foreignKeys = [
         ForeignKey(
-            entity = com.vgleadsheets.database.model.SongEntity::class,
+            entity = SongEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("songId"),
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = com.vgleadsheets.database.model.TagValueEntity::class,
+            entity = TagValueEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("tagValueId"),
             onDelete = ForeignKey.CASCADE
