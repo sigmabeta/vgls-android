@@ -3,18 +3,18 @@ package com.vgleadsheets.database.enitity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.SongHistoryEntry
-import com.vgleadsheets.network.model.ApiSongHistoryEntry
+import com.vgleadsheets.database.ROW_PRIMARY_KEY_ID
+import com.vgleadsheets.database.enitity.SongHistoryEntryEntity.Companion.ROW_FOREIGN_KEY
+import com.vgleadsheets.database.enitity.SongHistoryEntryEntity.Companion.TABLE
 
 @Suppress("ConstructorParameterNaming")
 @Entity(
-    tableName = "song_history_entry",
+    tableName = TABLE,
     foreignKeys = [
         ForeignKey(
             entity = JamEntity::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("jam_id")
+            parentColumns = arrayOf(ROW_PRIMARY_KEY_ID),
+            childColumns = arrayOf(ROW_FOREIGN_KEY)
         )
     ]
 )
@@ -22,17 +22,11 @@ data class SongHistoryEntryEntity(
     @PrimaryKey val id: Long,
     val jam_id: Long,
     val song_id: Long
-)
+) {
+    companion object {
+        const val TABLE = "song_history_entry"
 
-fun SongHistoryEntryEntity.toSongHistoryEntry(song: Song?) = SongHistoryEntry(
-    id,
-    song
-)
+        const val ROW_FOREIGN_KEY = "jam_id"
+    }
+}
 
-fun ApiSongHistoryEntry.toSongHistoryEntryEntity(jamId: Long, listPosition: Int) = SongHistoryEntryEntity(
-    MULTIPLIER_JAM_ID * jamId + listPosition,
-    jamId,
-    sheet_id
-)
-
-const val MULTIPLIER_JAM_ID = 10000L

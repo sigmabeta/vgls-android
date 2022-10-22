@@ -1,12 +1,8 @@
 package com.vgleadsheets.database.dao
 
+import com.vgleadsheets.model.alias.GameAlias
 import kotlinx.coroutines.flow.Flow
 
-interface GameAliasDao {
-
-    fun getAliasesByName(name: String): Flow<List<String>>
-
-    suspend fun insertAll(aliases: Map<Long, String>)
-
-    suspend fun nukeTable()
+interface GameAliasDao : RegularDao<GameAlias> {
+    fun searchByName(name: String): Flow<List<GameAlias>>
 }

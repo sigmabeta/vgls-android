@@ -3,16 +3,17 @@ package com.vgleadsheets.database.enitity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Song
+import com.vgleadsheets.database.ROW_PRIMARY_KEY_ID
+import com.vgleadsheets.database.enitity.GameAliasEntity.Companion.ROW_FOREIGN_KEY
+import com.vgleadsheets.database.enitity.GameAliasEntity.Companion.TABLE
 
 @Entity(
-    tableName = "alias_game",
+    tableName = TABLE,
     foreignKeys = [
         ForeignKey(
             entity = GameEntity::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("gameId"),
+            parentColumns = arrayOf(ROW_PRIMARY_KEY_ID),
+            childColumns = arrayOf(ROW_FOREIGN_KEY),
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -23,5 +24,9 @@ data class GameAliasEntity(
     val photoUrl: String? = null,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
 ) {
-    fun toGame(songs: List<Song>?) = Game(gameId, name, songs, photoUrl)
+    companion object {
+        const val TABLE = "alias_game"
+
+        const val ROW_FOREIGN_KEY = "gameId"
+    }
 }

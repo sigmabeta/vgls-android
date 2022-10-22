@@ -1,12 +1,8 @@
 package com.vgleadsheets.database.dao
 
+import com.vgleadsheets.model.alias.ComposerAlias
 import kotlinx.coroutines.flow.Flow
 
-interface ComposerAliasDao {
-
-    fun getAliasesByName(name: String): Flow<List<String>>
-
-    suspend fun insertAll(aliases: Map<Long, String>)
-
-    suspend fun nukeTable()
+interface ComposerAliasDao : RegularDao<ComposerAlias> {
+    fun searchByName(name: String): Flow<List<ComposerAlias>>
 }

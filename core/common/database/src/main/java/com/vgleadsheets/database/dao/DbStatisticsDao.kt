@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface DbStatisticsDao {
 
-    fun getTime(tableId: Int): Flow<List<Time>>
+    fun getTime(tableId: Int): Flow<Time>
 
     suspend fun insert(dbStatistics: Time)
 

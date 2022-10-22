@@ -3,17 +3,18 @@ package com.vgleadsheets.database.enitity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.model.SetlistEntry
-import com.vgleadsheets.model.Song
+import com.vgleadsheets.database.ROW_PRIMARY_KEY_ID
+import com.vgleadsheets.database.enitity.SetlistEntryEntity.Companion.ROW_FOREIGN_KEY
+import com.vgleadsheets.database.enitity.SetlistEntryEntity.Companion.TABLE
 
 @Suppress("ConstructorParameterNaming")
 @Entity(
-    tableName = "setlist_entry",
+    tableName = TABLE,
     foreignKeys = [
         ForeignKey(
             entity = JamEntity::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("jam_id")
+            parentColumns = arrayOf(ROW_PRIMARY_KEY_ID),
+            childColumns = arrayOf(ROW_FOREIGN_KEY)
         )
     ]
 )
@@ -24,10 +25,9 @@ data class SetlistEntryEntity(
     val jam_id: Long,
     val song_id: Long
 ) {
-    fun toSetlistEntry(song: Song?) = SetlistEntry(
-        id,
-        game_name,
-        song_name,
-        song
-    )
+    companion object {
+        const val TABLE = "setlist_entry"
+
+        const val ROW_FOREIGN_KEY = "jam_id"
+    }
 }

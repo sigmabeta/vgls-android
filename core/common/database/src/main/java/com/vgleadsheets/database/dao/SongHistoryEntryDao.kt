@@ -1,14 +1,5 @@
 package com.vgleadsheets.database.dao
 
-import com.vgleadsheets.model.jam.SongHistoryEntry
+import com.vgleadsheets.model.SongHistoryEntry
 
-interface SongHistoryEntryDao {
-
-    fun getSongHistoryEntriesForJamSync(jamId: Long): List<SongHistoryEntry>
-
-    suspend fun insertAll(songHistoryEntries: List<SongHistoryEntry>): List<Long>
-
-    suspend fun removeAllForJam(jamId: Long)
-
-    suspend fun nukeTable()
-}
+interface SongHistoryEntryDao : RegularDao<SongHistoryEntry>

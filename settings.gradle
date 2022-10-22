@@ -22,6 +22,7 @@ rootProject.name = 'VGLeadSheets'
 include ':app',
 
         ':core:android:animation',
+        ':core:android:conversion',
         ':core:android:coroutines',
         ':core:android:database',
         ':core:android:di',

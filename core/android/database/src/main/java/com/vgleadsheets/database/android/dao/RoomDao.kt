@@ -1,5 +1,6 @@
 package com.vgleadsheets.database.android.dao
 
+import com.vgleadsheets.database.ROW_PRIMARY_KEY_ID
 import kotlinx.coroutines.flow.Flow
 
 interface RoomDao<EntityType> {
@@ -17,7 +18,7 @@ interface RoomDao<EntityType> {
         const val GET = "SELECT * FROM"
         const val DELETE = "DELETE FROM"
 
-        const val WHERE_SINGLE = "WHERE id = :id"
+        const val WHERE_SINGLE = "WHERE id = :$ROW_PRIMARY_KEY_ID"
         const val WHERE_SEARCH = "WHERE name LIKE = :name"
 
         const val OPTION_CASE_INSENSITIVE = "COLLATE NOCASE"

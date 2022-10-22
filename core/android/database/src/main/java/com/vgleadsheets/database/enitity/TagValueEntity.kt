@@ -3,17 +3,18 @@ package com.vgleadsheets.database.enitity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.database.ROW_PRIMARY_KEY_ID
+import com.vgleadsheets.database.enitity.TagValueEntity.Companion.ROW_FOREIGN_KEY
+import com.vgleadsheets.database.enitity.TagValueEntity.Companion.TABLE
 
 @Suppress("ConstructorParameterNaming")
 @Entity(
-    tableName = "tag_value",
+    tableName = TABLE,
     foreignKeys = [
         ForeignKey(
             entity = TagKeyEntity::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("tag_key_id"),
+            parentColumns = arrayOf(ROW_PRIMARY_KEY_ID),
+            childColumns = arrayOf(ROW_FOREIGN_KEY),
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -24,5 +25,9 @@ data class TagValueEntity(
     val tag_key_id: Long,
     val tag_key_name: String
 ) {
-    fun toTagValue(songs: List<Song>?) = TagValue(id, name, tag_key_name, songs)
+    companion object {
+        const val TABLE = "tag_value"
+
+        const val ROW_FOREIGN_KEY = "tag_key_id"
+    }
 }

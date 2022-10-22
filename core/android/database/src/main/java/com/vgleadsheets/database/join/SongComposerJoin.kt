@@ -3,25 +3,39 @@ package com.vgleadsheets.database.join
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
+import com.vgleadsheets.database.ROW_PRIMARY_KEY_ID
 import com.vgleadsheets.database.enitity.ComposerEntity
 import com.vgleadsheets.database.enitity.SongEntity
+import com.vgleadsheets.database.join.SongComposerJoin.Companion.ROW_FOREIGN_KEY_ONE
+import com.vgleadsheets.database.join.SongComposerJoin.Companion.ROW_FOREIGN_KEY_TWO
+import com.vgleadsheets.database.join.SongComposerJoin.Companion.TABLE
 
 @Entity(
-    tableName = "song_composer_join",
-    primaryKeys = ["songId", "composerId"],
+    tableName = TABLE,
+    primaryKeys = [ROW_FOREIGN_KEY_ONE, ROW_FOREIGN_KEY_TWO],
     foreignKeys = [
         ForeignKey(
             entity = SongEntity::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("songId"),
+            parentColumns = arrayOf(ROW_PRIMARY_KEY_ID),
+            childColumns = arrayOf(ROW_FOREIGN_KEY_ONE),
             onDelete = CASCADE
         ),
         ForeignKey(
             entity = ComposerEntity::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("composerId"),
+            parentColumns = arrayOf(ROW_PRIMARY_KEY_ID),
+            childColumns = arrayOf(ROW_FOREIGN_KEY_TWO),
             onDelete = CASCADE
         )
     ]
 )
-data class SongComposerJoin(val songId: Long, val composerId: Long)
+data class SongComposerJoin(
+    val songId: Long,
+    val composerId: Long
+) {
+    companion object {
+        const val TABLE = "song_composer_join"
+
+        const val ROW_FOREIGN_KEY_ONE = "songId"
+        const val ROW_FOREIGN_KEY_TWO = "composerId"
+    }
+}
