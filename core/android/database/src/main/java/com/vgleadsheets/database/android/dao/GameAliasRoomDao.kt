@@ -3,14 +3,14 @@ package com.vgleadsheets.database.android.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.vgleadsheets.database.ROW_PRIMARY_KEY_ID
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETICAL_ORDER
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
-import com.vgleadsheets.database.enitity.GameAliasEntity
+import com.vgleadsheets.database.android.enitity.GameAliasEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

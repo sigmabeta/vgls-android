@@ -1,0 +1,7 @@
+apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    // Dagger 2 Dependency Injection
+    api "com.google.dagger:dagger:$dagger_version"
+}

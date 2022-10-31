@@ -5,8 +5,6 @@ import com.vgleadsheets.coroutines.DispatcherModule
 import com.vgleadsheets.database.di.DatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
-import com.vgleadsheets.perf.tracking.PerfBackendModule
-import com.vgleadsheets.perf.tracking.common.PerfTrackingModule
 import com.vgleadsheets.repository.di.RepositoryModule
 import com.vgleadsheets.resources.di.ResourcesModule
 import com.vgleadsheets.storage.di.StorageModule
@@ -28,8 +26,8 @@ import javax.inject.Singleton
         DatabaseModule::class,
         DispatcherModule::class,
         ImageModule::class,
-        ApiModule::class,
-        NetworkModule::class,
+        com.vgleadsheets.di.ApiModule::class,
+        com.vgleadsheets.di.NetworkModule::class,
         StorageModule::class,
         TrackerModule::class,
         PerfTrackingModule::class,

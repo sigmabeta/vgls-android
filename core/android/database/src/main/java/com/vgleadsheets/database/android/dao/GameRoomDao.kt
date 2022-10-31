@@ -9,7 +9,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETIC
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
-import com.vgleadsheets.database.enitity.GameEntity
+import com.vgleadsheets.database.android.enitity.GameEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

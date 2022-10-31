@@ -4,7 +4,6 @@ import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.jam.SetlistEntry
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time
@@ -25,17 +24,6 @@ interface Repository {
     fun getComposers(withSongs: Boolean = true): Flow<List<Composer>>
     fun getAllTagKeys(withValues: Boolean = true): Flow<List<TagKey>>
     fun getJams(): Flow<List<Jam>>
-
-    // Filtered lists
-    fun getTagValuesForTagKey(tagKeyId: Long, withSongs: Boolean = true): Flow<List<TagValue>>
-    fun getSongsByComposer(composerId: Long): Flow<List<Song>>
-    fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
-    fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
-    fun getSetlistForJam(jamId: Long): Flow<List<SetlistEntry>>
-    fun getSongsForGame(
-        gameId: Long,
-        withComposers: Boolean = true
-    ): Flow<List<Song>>
 
     // Single items
     fun getSong(songId: Long, withComposers: Boolean = true): Flow<Song>

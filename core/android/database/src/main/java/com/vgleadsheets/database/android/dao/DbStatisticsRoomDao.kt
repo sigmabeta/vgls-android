@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.vgleadsheets.database.enitity.TimeEntity
+import com.vgleadsheets.database.android.enitity.TimeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -137,6 +137,7 @@ dependencies {
 
     // Debug helper
     implementation "com.facebook.stetho:stetho:$stetho_version"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 
     // Firebase (must be in app or else contentprovider init doesn't happen)
     if (checkShouldIncludeFirebase()) {

@@ -1,6 +1,5 @@
 package com.vgleadsheets.database.android.dao
 
-import com.vgleadsheets.database.ROW_PRIMARY_KEY_ID
 import kotlinx.coroutines.flow.Flow
 
 interface RoomDao<EntityType> {
@@ -15,6 +14,8 @@ interface RoomDao<EntityType> {
     suspend fun nukeTable()
 
     companion object {
+        const val ROW_PRIMARY_KEY_ID = "id"
+
         const val GET = "SELECT * FROM"
         const val DELETE = "DELETE FROM"
 

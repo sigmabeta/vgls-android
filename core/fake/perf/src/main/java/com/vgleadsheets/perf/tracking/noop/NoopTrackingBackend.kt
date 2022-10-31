@@ -1,6 +1,6 @@
 package com.vgleadsheets.perf.tracking.noop
 
-import com.vgleadsheets.perf.tracking.api.PerfStage
+import com.vgleadsheets.perf.tracking.common.PerfStage
 import com.vgleadsheets.perf.tracking.common.PerfTrackingBackend
 
 class NoopTrackingBackend : PerfTrackingBackend {

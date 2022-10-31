@@ -1,9 +1,10 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply from: "$rootProject.projectDir/di.gradle"
+apply from: "$rootProject.projectDir/di-android.gradle"
 
 dependencies {
+    api project(":core:common:conversion")
+
     implementation project(":core:android:database")
 
-    implementation project(":core:common:database")
     implementation project(":core:common:network")
 }

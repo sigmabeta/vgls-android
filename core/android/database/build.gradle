@@ -1,8 +1,9 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply from: "$rootProject.projectDir/di.gradle"
+apply from: "$rootProject.projectDir/di-android.gradle"
 
 dependencies {
-    implementation project(path: ':core:common:database')
+    api project(path: ':core:common:database')
+
     implementation project(path: ':core:common:network')
 
     // Room Libs

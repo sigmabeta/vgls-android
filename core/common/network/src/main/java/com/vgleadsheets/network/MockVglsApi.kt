@@ -1,32 +1,26 @@
 package com.vgleadsheets.network
 
-import com.vgleadsheets.database.model.ApiSetlistEntry
-import com.vgleadsheets.database.model.ApiSongHistoryEntry
-import com.vgleadsheets.network.model.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
-import org.json.JSONObject
-import retrofit2.HttpException
-import retrofit2.Response
-import timber.log.Timber
+import com.squareup.moshi.Moshi
+import com.vgleadsheets.network.model.ApiComposer
+import com.vgleadsheets.network.model.ApiDigest
+import com.vgleadsheets.network.model.ApiJam
+import com.vgleadsheets.network.model.ApiSetlist
+import com.vgleadsheets.network.model.ApiSetlistEntry
+import com.vgleadsheets.network.model.ApiSong
+import com.vgleadsheets.network.model.ApiSongHistoryEntry
+import com.vgleadsheets.network.model.ApiTime
+import com.vgleadsheets.network.model.VglsApiGame
 import java.io.IOException
 import java.net.HttpURLConnection
-import java.util.*
+import java.util.EmptyStackException
+import java.util.Random
+import java.util.Stack
 import javax.inject.Named
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
-import kotlin.collections.List
-import kotlin.collections.Map
-import kotlin.collections.Set
-import kotlin.collections.distinctBy
-import kotlin.collections.filter
-import kotlin.collections.forEach
-import kotlin.collections.isNotEmpty
-import kotlin.collections.listOf
-import kotlin.collections.mutableMapOf
 import kotlin.collections.set
-import kotlin.collections.setOf
-import kotlin.collections.toMutableList
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.HttpException
+import retrofit2.Response
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
 class MockVglsApi(
@@ -62,12 +56,14 @@ class MockVglsApi(
         }
 
         if (name.length % 2 > 0) {
-            val jsonObject = JSONObject()
+            val moshi: Moshi = Moshi.Builder().build()
+            val jsonAdapter = moshi.adapter(Map::class.java)
 
-            jsonObject.put("error", "Only jam names of even-numbered length are valid!")
+            val json = jsonAdapter.toJson(
+                mapOf("error" to "Only jam names of even-numbered length are valid!")
+            )
 
-            val body = jsonObject
-                .toString()
+            val body = json
                 .toResponseBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
             throw HttpException(
@@ -91,7 +87,7 @@ class MockVglsApi(
             val possibleSongsSize = possibleSongs?.size ?: 0
             val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
 
-            Timber.w("History entry $entryIndex will be possible song with index: $possibleSongIndex")
+            // Timber.w("History entry $entryIndex will be possible song with index: $possibleSongIndex")
 
             val song = possibleSongs?.get(possibleSongIndex)
 
@@ -99,7 +95,7 @@ class MockVglsApi(
                 val entry = ApiSongHistoryEntry(song.id)
                 previousJams.add(entry)
             } else {
-                Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
+                // Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
             }
         }
 
@@ -139,7 +135,7 @@ class MockVglsApi(
                 )
                 songs.add(entry)
             } else {
-                Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
+                // Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
             }
         }
 
@@ -169,7 +165,7 @@ class MockVglsApi(
         }
 
         val gameCount = random.nextInt(maxGames)
-        Timber.i("Generating $gameCount games...")
+        // Timber.i("Generating $gameCount games...")
         val games = ArrayList<VglsApiGame>(gameCount)
 
         for (gameIndex in 0 until gameCount) {
@@ -177,13 +173,13 @@ class MockVglsApi(
             games.add(game)
         }
 
-        Timber.i("Generated ${games.size} games...")
+        // Timber.i("Generated ${games.size} games...")
 
         val filteredGames = games
             .distinctBy { it.game_id }
             .filter { it.songs.isNotEmpty() }
 
-        Timber.i("Returning ${filteredGames.size} games...")
+        // Timber.i("Returning ${filteredGames.size} games...")
 
         return filteredGames
     }
@@ -224,7 +220,7 @@ class MockVglsApi(
 
     private fun generateSongs() {
         val songCount = random.nextInt(maxSongs) + 1
-        Timber.d("Generating $songCount songs...")
+        // Timber.d("Generating $songCount songs...")
 
         val songs = Stack<ApiSong>()
         val songIds = HashSet<Long>(songCount)
@@ -294,7 +290,7 @@ class MockVglsApi(
 
     private fun generateComposers() {
         val composerCount = random.nextInt(maxComposers) + 1
-        Timber.i("Generating $composerCount composers...")
+        // Timber.i("Generating $composerCount composers...")
         val composers = ArrayList<ApiComposer>(composerCount)
 
         for (composerIndex in 0 until composerCount) {
@@ -331,7 +327,7 @@ class MockVglsApi(
 
     private fun generateTags() {
         val tagCount = random.nextInt(maxTags) + 1
-        Timber.i("Generating $tagCount tags...")
+        // Timber.i("Generating $tagCount tags...")
         val tags = mutableMapOf<String, List<String>>()
 
         for (tagIndex in 0 until tagCount) {

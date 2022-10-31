@@ -14,7 +14,6 @@ class GameViewModel @AssistedInject constructor(
 ) : MavericksViewModel<GameState>(initialState) {
     init {
         fetchGame()
-        fetchSongs()
     }
 
     private fun fetchGame() = withState {
@@ -26,27 +25,16 @@ class GameViewModel @AssistedInject constructor(
                     )
                 )
             }
-    }
 
-    private fun fetchSongs() = withState {
-        repository.getSongsForGame(it.gameId)
-            .execute { songs ->
-                copy(
-                    contentLoad = contentLoad.copy(
-                        songs = songs
-                    )
-                )
-            }
-    }
 
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(
-            initialState: GameState,
-        ): GameViewModel
-    }
+        @AssistedInject.Factory
+        interface Factory {
+            fun create(
+                initialState: GameState,
+            ): GameViewModel
+        }
 
-    companion object : MavericksViewModelFactory<GameViewModel, GameState> {
+        companion object : MavericksViewModelFactory<GameViewModel, GameState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: GameState
@@ -56,4 +44,4 @@ class GameViewModel @AssistedInject constructor(
             return fragment.viewModelFactory.create(state)
         }
     }
-}
+    }

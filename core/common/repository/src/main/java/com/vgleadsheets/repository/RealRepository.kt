@@ -2,29 +2,27 @@ package com.vgleadsheets.repository
 
 import com.vgleadsheets.coroutines.CustomFlows
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.database.VglsDatabase
+import com.vgleadsheets.database.dao.ComposerAliasDataSource
+import com.vgleadsheets.database.dao.ComposerDataSource
+import com.vgleadsheets.database.dao.DbStatisticsDataSource
+import com.vgleadsheets.database.dao.GameAliasDataSource
+import com.vgleadsheets.database.dao.GameDataSource
+import com.vgleadsheets.database.dao.JamDataSource
+import com.vgleadsheets.database.dao.SetlistEntryDataSource
+import com.vgleadsheets.database.dao.SongDataSource
+import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
+import com.vgleadsheets.database.dao.TagKeyDataSource
+import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.alias.ComposerAliasEntity
-import com.vgleadsheets.model.alias.GameAliasEntity
-import com.vgleadsheets.model.composer.ComposerEntity
-import com.vgleadsheets.model.game.GameEntity
-import com.vgleadsheets.model.jam.JamEntity
-import com.vgleadsheets.model.joins.SongComposerJoin
-import com.vgleadsheets.model.joins.SongTagValueJoin
-import com.vgleadsheets.model.song.SongEntity
-import com.vgleadsheets.model.tag.TagKeyEntity
-import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.model.tag.TagValueEntity
-import com.vgleadsheets.model.time.Time
-import com.vgleadsheets.model.time.TimeEntity
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
+import java.util.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -34,30 +32,24 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
-import java.util.*
 
 class RealRepository constructor(
     private val vglsApi: VglsApi,
     private val threeTen: ThreeTenTime,
     private val tracker: Tracker,
     private val dispatchers: VglsDispatchers,
-    database: VglsDatabase
+    private val composerAliasDataSource: ComposerAliasDataSource,
+    private val composerDataSource: ComposerDataSource,
+    private val dbStatisticsDataSource: DbStatisticsDataSource,
+    private val gameAliasDataSource: GameAliasDataSource,
+    private val gameDataSource: GameDataSource,
+    private val jamDataSource: JamDataSource,
+    private val setlistEntryDataSource: SetlistEntryDataSource,
+    private val songDataSource: SongDataSource,
+    private val songHistoryEntryDataSource: SongHistoryEntryDataSource,
+    private val tagKeyDataSource: TagKeyDataSource,
+    private val tagValueDataSource: TagValueDataSource
 ) : Repository {
-
-    private val gameDao = database.gameDao()
-    private val songDao = database.songDao()
-    private val composerDao = database.composerDao()
-    private val tagKeyDao = database.tagKeyDao()
-    private val tagValueDao = database.tagValueDao()
-    private val songComposerDao = database.songComposerDao()
-    private val songTagValueDao = database.songTagValueDao()
-    private val dbStatisticsDao = database.dbStatisticsDao()
-    private val gameAliasDao = database.gameAliasDao()
-    private val composerAliasDao = database.composerAliasDao()
-    private val jamDao = database.jamDao()
-    private val setlistEntryDao = database.setlistEntryDao()
-    private val songHistoryEntryDao = database.songHistoryEntryDao()
-
     @Suppress("ReturnCount")
     override suspend fun checkShouldAutoUpdate(): Boolean {
         val lastCheckTime = withContext(dispatchers.disk) {
@@ -82,12 +74,8 @@ class RealRepository constructor(
 
     override suspend fun refresh() = getDigest()
 
-    override fun observeJamState(id: Long) = jamDao
-        .getJam(id)
-        .map {
-            val currentSong = it.getCurrentSong()
-            it.toJam(currentSong, null)
-        }
+    override fun observeJamState(id: Long) = jamDataSource
+        .getOneById(id)
 
     override fun refreshJamStateContinuously(name: String) =
         CustomFlows.emitOnInterval(INTERVAL_JAM_REFRESH) {
@@ -98,96 +86,18 @@ class RealRepository constructor(
 
     override suspend fun refreshSetlist(jamId: Long, name: String) = refreshSetlistImpl(jamId, name)
 
-    override fun getGames(withSongs: Boolean): Flow<List<Game>> = gameDao.getAll()
-        .map { gameEntities ->
-            gameEntities.map { gameEntity ->
-                val songs = if (withSongs) getSongsForGameEntity(gameEntity) else null
-                gameEntity.toGame(songs)
-            }
-        }
-        .flowOn(dispatchers.disk)
-
-    override fun getSongsForGame(
-        gameId: Long,
-        withComposers: Boolean
-    ) = songDao
-        .getSongsForGame(gameId)
-        .map { songEntities ->
-            songEntities.map { songEntity ->
-                val composers = if (withComposers) getComposersForSong(songEntity) else null
-                songEntity.toSong(composers)
-            }
-        }
-        .flowOn(dispatchers.disk)
-
-    override fun getSongsByComposer(
-        composerId: Long,
-    ): Flow<List<Song>> =
-        songComposerDao
-            .getSongsForComposer(composerId)
-            .map { songEntities ->
-                songEntities.map { songEntity ->
-                    val composers = null
-                    songEntity.toSong(composers)
-                }
-            }
-            .flowOn(dispatchers.disk)
-
-    override fun getTagValuesForTagKey(tagKeyId: Long, withSongs: Boolean) =
-        tagValueDao.getValuesForTag(tagKeyId)
-            .map { tagValueEntities ->
-                tagValueEntities.map { tagValueEntity ->
-                    val songs = if (withSongs) getSongsForTagValueSync(tagValueEntity) else null
-                    tagValueEntity.toTagValue(songs)
-                }
-            }
-            .flowOn(dispatchers.disk)
-
-    override fun getSongsForTagValue(
-        tagValueId: Long,
-    ): Flow<List<Song>> =
-        songTagValueDao
-            .getSongsForTagValue(tagValueId)
-            .map { songEntities ->
-                songEntities.map { songEntity ->
-                    val composers = null
-                    songEntity.toSong(composers)
-                }
-            }
-            .flowOn(dispatchers.disk)
-
-    override fun getTagValuesForSong(
-        songId: Long
-    ): Flow<List<TagValue>> =
-        songTagValueDao
-            .getTagValuesForSong(songId)
-            .map { tagValueEntities ->
-                tagValueEntities.map { tagValueEntity ->
-                    tagValueEntity.toTagValue(null)
-                }
-            }
-            .flowOn(dispatchers.disk)
-
-    override fun getSetlistForJam(jamId: Long) = setlistEntryDao
-        .getSetlistEntriesForJam(jamId)
-        .map { entryEntities ->
-            entryEntities.map { entryEntity ->
-                val song = getSongSync(entryEntity.song_id)?.toSong(null)
-                entryEntity.toSetlistEntry(song)
-            }
-        }
+    override fun getGames(withSongs: Boolean): Flow<List<Game>> = gameDataSource.getAll(withSongs)
         .flowOn(dispatchers.disk)
 
     override fun getSong(
         songId: Long,
         withComposers: Boolean
-    ): Flow<Song> = songDao
-        .getSong(songId)
-        .map {
-            val composers = if (withComposers) getComposersForSong(it) else null
-            it.toSong(composers)
-        }
-        .flowOn(dispatchers.disk)
+    ): Flow<Song> {
+        val flow = songDataSource
+            .get(songId)
+        return flow
+            .flowOn(dispatchers.disk)
+    }
 
     override fun getAllSongs(withComposers: Boolean) = songDao
         .getAll()
