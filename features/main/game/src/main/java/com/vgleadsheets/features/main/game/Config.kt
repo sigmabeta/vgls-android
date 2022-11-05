@@ -14,9 +14,9 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.pages.Page
-import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
@@ -97,7 +97,7 @@ class Config(
 
     private fun Song.thumbUrl() = Page.generateImageUrl(
         baseImageUrl,
-        hudState.selectedPart,
+        hudState.selectedPart.apiId,
         filename,
         1
     )

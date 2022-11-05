@@ -8,10 +8,12 @@ import com.vgleadsheets.database.android.dao.TagKeyRoomDao
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
 import com.vgleadsheets.database.android.enitity.TagKeyEntity
 import com.vgleadsheets.database.android.enitity.TagValueEntity
+import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import javax.inject.Inject
 
-class TagKeyAndroidDataSource(
+class TagKeyAndroidDataSource @Inject constructor(
     private val convert: TagKeyConverter,
     private val manyConverter: TagValueConverter,
     private val roomImpl: TagKeyRoomDao,
@@ -21,7 +23,7 @@ class TagKeyAndroidDataSource(
     manyConverter,
     roomImpl,
     relatedRoomImpl
-) {
+), TagKeyDataSource {
     fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }

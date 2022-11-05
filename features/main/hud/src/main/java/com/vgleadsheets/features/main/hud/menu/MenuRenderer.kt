@@ -10,8 +10,8 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.PartSelectorOption
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.search.SearchContent
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.perf.tracking.common.FrameTimeStats
 import com.vgleadsheets.perf.tracking.common.InvalidateStats
 import com.vgleadsheets.perf.tracking.common.PerfSpec

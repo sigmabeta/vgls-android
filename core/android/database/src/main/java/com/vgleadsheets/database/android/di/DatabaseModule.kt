@@ -19,4 +19,70 @@ class DatabaseModule {
         )
         .fallbackToDestructiveMigration()
         .build()
+
+    @Provides
+    @Singleton
+    fun composerAliasDao(
+        database: VglsDatabase
+    ) = database.composerAliasDao()
+
+    @Provides
+    @Singleton
+    fun composerDao(
+        database: VglsDatabase
+    ) = database.composerDao()
+
+    @Provides
+    @Singleton
+    fun dbStatisticsDao(
+        database: VglsDatabase
+    ) = database.dbStatisticsDao()
+
+    @Provides
+    @Singleton
+    fun gameAliasDao(
+        database: VglsDatabase
+    ) = database.gameAliasDao()
+
+    @Provides
+    @Singleton
+    fun gameDao(
+        database: VglsDatabase
+    ) = database.gameDao()
+
+    @Provides
+    @Singleton
+    fun jamDao(
+        database: VglsDatabase
+    ) = database.jamDao()
+
+    @Provides
+    @Singleton
+    fun setlistEntryDao(
+        database: VglsDatabase
+    ) = database.setlistEntryDao()
+
+    @Provides
+    @Singleton
+    fun songDao(
+        database: VglsDatabase
+    ) = database.songDao()
+
+    @Provides
+    @Singleton
+    fun songHistoryEntryDao(
+        database: VglsDatabase
+    ) = database.songHistoryEntryDao()
+
+    @Provides
+    @Singleton
+    fun tagKeyDao(
+        database: VglsDatabase
+    ) = database.tagKeyDao()
+
+    @Provides
+    @Singleton
+    fun tagValueDao(
+        database: VglsDatabase
+    ) = database.tagValueDao()
 }

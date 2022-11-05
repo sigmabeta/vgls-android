@@ -4,10 +4,10 @@ dependencies {
     // So we don't have buggy time comparisons
     api "com.jakewharton.threetenabp:threetenabp:$threeten_version"
 
-    // Module deps
-    implementation project(path: ':core:common:database')
-    implementation project(path: ':core:common:network')
+    api project(':core:common:model')
 
-    // So we can log auto-refreshes
-    implementation project(path: ':core:common:tracking')
+    implementation project(':core:common:conversion')
+    implementation project(':core:common:database')
+    implementation project(':core:common:network')
+    implementation project(':core:common:tracking')
 }

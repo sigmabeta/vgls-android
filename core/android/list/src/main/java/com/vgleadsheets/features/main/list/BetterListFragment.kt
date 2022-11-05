@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentInterface
@@ -16,16 +17,15 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.databinding.FragmentListBinding
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.insets.Insetup
-import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
+import javax.inject.Inject
+import kotlin.system.measureNanoTime
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import kotlin.system.measureNanoTime
 
 abstract class BetterListFragment<
     ContentType : ListContent,

@@ -23,7 +23,8 @@ class ComposerConverter :
         id,
         name,
         null,
-        photoUrl
+        photoUrl,
+        hasVocalSongs
     )
 
     override fun ComposerEntity.toModelWithJoinedMany(
@@ -33,7 +34,8 @@ class ComposerConverter :
         id,
         name,
         manyDao.getJoinedModels(id, converter),
-        photoUrl
+        photoUrl,
+        hasVocalSongs
     )
 
     override fun SongRoomDao.getJoinedModels(

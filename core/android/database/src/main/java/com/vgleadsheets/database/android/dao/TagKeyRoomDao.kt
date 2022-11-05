@@ -27,7 +27,7 @@ interface TagKeyRoomDao : RoomDao<TagKeyEntity> {
     override fun getAll(): Flow<List<TagKeyEntity>>
 
     @Insert
-    override suspend fun insert(models: List<TagKeyEntity>)
+    override suspend fun insert(entities: List<TagKeyEntity>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()

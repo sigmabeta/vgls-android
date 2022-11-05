@@ -3,12 +3,12 @@ apply from: "$rootProject.projectDir/di-common.gradle"
 
 dependencies {
     // Module deps
-    implementation project(path: ':core:common:model')
-    implementation project(path: ':core:common:debug')
+    implementation project(':core:common:model')
+    implementation project(':core:common:debug')
 
     // OkHttp libs
     api "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    api "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     // Retrofit libs
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

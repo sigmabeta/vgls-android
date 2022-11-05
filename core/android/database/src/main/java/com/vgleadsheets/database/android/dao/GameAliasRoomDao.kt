@@ -34,7 +34,7 @@ interface GameAliasRoomDao : ManyFromOneDao<GameAliasEntity> {
     override fun getAll(): Flow<List<GameAliasEntity>>
 
     @Insert
-    override suspend fun insert(models: List<GameAliasEntity>)
+    override suspend fun insert(entities: List<GameAliasEntity>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()

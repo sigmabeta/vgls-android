@@ -7,10 +7,12 @@ import com.vgleadsheets.database.android.dao.SetlistEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.SetlistEntryEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
+import com.vgleadsheets.database.dao.SetlistEntryDataSource
 import com.vgleadsheets.model.SetlistEntry
 import com.vgleadsheets.model.Song
+import javax.inject.Inject
 
-class SetlistEntryAndroidDataSource(
+class SetlistEntryAndroidDataSource @Inject constructor(
     private val convert: SetlistEntryConverter,
     private val foreignConverter: SongConverter,
     private val roomImpl: SetlistEntryRoomDao,
@@ -24,4 +26,5 @@ class SetlistEntryAndroidDataSource(
     SongRoomDao,
     SetlistEntryConverter,
     SongConverter
-    >(convert, foreignConverter, roomImpl, relatedRoomImpl)
+    >(convert, foreignConverter, roomImpl, relatedRoomImpl),
+    SetlistEntryDataSource

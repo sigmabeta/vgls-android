@@ -1,2 +1,6 @@
 apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
 
+dependencies {
+    api project(":core:common:model")
+    implementation project(":core:common:network")
+}

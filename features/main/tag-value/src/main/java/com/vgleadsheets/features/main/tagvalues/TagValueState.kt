@@ -8,7 +8,6 @@ data class TagValueState(
     val tagValueId: Long,
     override val contentLoad: TagValueContent = TagValueContent(
         Uninitialized,
-        Uninitialized
     ),
 ) : BetterCompositeState<TagValueContent> {
     constructor(args: IdArgs) : this(args.id)

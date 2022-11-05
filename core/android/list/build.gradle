@@ -1,13 +1,14 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/di-android.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    api project(path: ':core:android:coroutines')
-    api project(path: ':core:android:ui-core')
+    api project(':core:android:coroutines')
+    api project(':core:android:ui-core')
 
-    implementation project(path: ':core:android:recyclerview')
+    implementation project(':core:android:recyclerview')
 
-    implementation project(path: ':features:main:hud')
+    implementation project(':features:main:hud')
 
 }
 

@@ -71,6 +71,6 @@ class JamConverter :
     override fun SongHistoryEntryRoomDao.getJoinedModels(
         relationId: Long,
         converter: Converter<SongHistoryEntry, SongHistoryEntryEntity>
-    ) = getAllForJamSync(relationId)
+    ) = getEntitiesForForeignSync(relationId)
         .map { converter.entityToModel(it) }
 }

@@ -13,6 +13,7 @@
       <module name="VGLeadSheets.core.android.list" target="11" />
       <module name="VGLeadSheets.core.android.mvrx" target="11" />
       <module name="VGLeadSheets.core.android.recyclerview" target="11" />
+      <module name="VGLeadSheets.core.android.repository" target="11" />
       <module name="VGLeadSheets.core.android.resources" target="11" />
       <module name="VGLeadSheets.core.android.router" target="11" />
       <module name="VGLeadSheets.core.android.storage" target="11" />

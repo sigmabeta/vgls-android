@@ -17,12 +17,11 @@ import com.vgleadsheets.features.main.hud.Clicks
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.features.main.hud.search.SearchContent
-import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.model.thumbUrl
 import java.util.Locale
 
 object Search {
@@ -237,6 +236,7 @@ object Search {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun mapSearchResults(
         results: List<Any>,
         baseImageUrl: String,
@@ -252,7 +252,7 @@ object Search {
                             result.id,
                             result.name,
                             result.gameName,
-                            result.thumbUrl(baseImageUrl, selectedPart),
+                            null, //result.thumbUrl(baseImageUrl, selectedPart),
                             R.drawable.placeholder_sheet
                         ) {
                             clicks.songSearchResult(result.id)

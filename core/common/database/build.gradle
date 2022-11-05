@@ -2,5 +2,5 @@ apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
 
 dependencies {
     // Module deps
-    api project(path: ':core:common:model')
+    api project(':core:common:model')
 }

@@ -1,8 +1,10 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.VglsApplication
+import com.vgleadsheets.conversion.android.di.ConverterModule
+import com.vgleadsheets.conversion.android.di.DataSourceModule
 import com.vgleadsheets.coroutines.DispatcherModule
-import com.vgleadsheets.database.di.DatabaseModule
+import com.vgleadsheets.database.android.di.DatabaseModule
 import com.vgleadsheets.images.di.ImageModule
 import com.vgleadsheets.main.MainActivity
 import com.vgleadsheets.repository.di.RepositoryModule
@@ -19,15 +21,16 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         AndroidInjectionModule::class,
-        AssistedInjectionModules::class,
         ActivityBindingModule::class,
         RepositoryModule::class,
         ResourcesModule::class,
         DatabaseModule::class,
+        ConverterModule::class,
+        DataSourceModule::class,
         DispatcherModule::class,
         ImageModule::class,
-        com.vgleadsheets.di.ApiModule::class,
-        com.vgleadsheets.di.NetworkModule::class,
+        ApiModule::class,
+        NetworkModule::class,
         StorageModule::class,
         TrackerModule::class,
         PerfTrackingModule::class,

@@ -7,7 +7,7 @@ android {
 }
 
 dependencies {
-    api project(path: ':core:android:ui-components')
+    api project(':core:android:ui-components')
 
     // AndroidX libs
     api "androidx.recyclerview:recyclerview:$recycler_version"

@@ -4,8 +4,8 @@ buildscript {
         coroutines_version = '1.6.1'
         okhttp_version = '4.9.3'
         retrofit_version = '2.9.0'
-        room_version = "2.5.0-alpha03"
-        mavericks_version = "2.7.0"
+        room_version = "2.5.0-beta01"
+        mavericks_version = "3.0.1"
         dagger_version = "2.43.2"
         jupiter_version = "5.8.2"
         mockk_version = "1.12.0"
@@ -31,6 +31,7 @@ buildscript {
         simplestore_version = "0.0.8"
         leakcanary_version = "2.9.1"
         lifecycle_version = "2.5.1"
+        jank_stats_version = "1.0.0-alpha03"
     }
 
     repositories {

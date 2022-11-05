@@ -2,6 +2,7 @@ package com.vgleadsheets.database.android
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.vgleadsheets.database.TransactionRunner
 import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
 import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
@@ -26,6 +27,9 @@ import com.vgleadsheets.database.android.enitity.TagValueEntity
 import com.vgleadsheets.database.android.enitity.TimeEntity
 import com.vgleadsheets.database.android.join.SongComposerJoin
 import com.vgleadsheets.database.android.join.SongTagValueJoin
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Database(
     entities = [
@@ -45,16 +49,27 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
     ],
     version = 10
 )
-abstract class VglsDatabase : RoomDatabase() {
-    abstract fun gameDao(): GameRoomDao
-    abstract fun songDao(): SongRoomDao
-    abstract fun composerDao(): ComposerRoomDao
-    abstract fun gameAliasDao(): GameAliasRoomDao
-    abstract fun tagKeyDao(): TagKeyRoomDao
-    abstract fun tagValueDao(): TagValueRoomDao
+abstract class VglsDatabase : RoomDatabase(), TransactionRunner {
     abstract fun composerAliasDao(): ComposerAliasRoomDao
+    abstract fun composerDao(): ComposerRoomDao
+    abstract fun dbStatisticsDao(): DbStatisticsRoomDao
+    abstract fun gameAliasDao(): GameAliasRoomDao
+    abstract fun gameDao(): GameRoomDao
     abstract fun jamDao(): JamRoomDao
     abstract fun setlistEntryDao(): SetlistEntryRoomDao
+    abstract fun songDao(): SongRoomDao
     abstract fun songHistoryEntryDao(): SongHistoryEntryRoomDao
-    abstract fun dbStatisticsDao(): DbStatisticsRoomDao
+    abstract fun tagKeyDao(): TagKeyRoomDao
+    abstract fun tagValueDao(): TagValueRoomDao
+
+    @OptIn(DelicateCoroutinesApi::class)
+    override suspend fun runInTransaction(action: suspend () -> Unit) {
+        runInTransaction(
+            Runnable {
+                GlobalScope.launch {
+                    action()
+                }
+            }
+        )
+    }
 }

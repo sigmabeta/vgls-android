@@ -10,11 +10,13 @@ import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.JamEntity
 import com.vgleadsheets.database.android.enitity.SongHistoryEntryEntity
+import com.vgleadsheets.database.dao.JamDataSource
 import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.SongHistoryEntry
+import javax.inject.Inject
 import kotlinx.coroutines.flow.map
 
-class JamAndroidDataSource(
+class JamAndroidDataSource @Inject constructor(
     private val convert: JamConverter,
     private val roomImpl: JamRoomDao,
     private val otoRelatedRoomImpl: SongRoomDao,
@@ -26,8 +28,8 @@ class JamAndroidDataSource(
     songHistoryEntryConverter,
     roomImpl,
     otmRelatedRoomImpl
-) {
-    fun searchByName(name: String) = roomImpl
+), JamDataSource {
+    override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }
 

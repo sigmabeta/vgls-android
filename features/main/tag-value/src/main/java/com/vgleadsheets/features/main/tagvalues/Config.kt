@@ -33,9 +33,7 @@ class Config(
 
     private val tagKey = tagKeyLoad.content()
 
-    private val tagValuesLoad = state.contentLoad.tagValues
-
-    private val tagValues = tagValuesLoad.content()
+    private val tagValues = tagKey?.values
 
     override val titleConfig = Title.Config(
         tagKey?.name ?: resources.getString(R.string.unknown_tag_key),

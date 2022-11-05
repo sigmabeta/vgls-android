@@ -3,7 +3,7 @@ package com.vgleadsheets.database.android.enitity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.database.android.ROW_PRIMARY_KEY_ID
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
 import com.vgleadsheets.database.android.enitity.TagValueEntity.Companion.ROW_FOREIGN_KEY
 import com.vgleadsheets.database.android.enitity.TagValueEntity.Companion.TABLE
 

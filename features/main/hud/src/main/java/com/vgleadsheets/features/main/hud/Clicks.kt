@@ -8,7 +8,7 @@ import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_JAM
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_SONG
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_TAG
-import com.vgleadsheets.model.parts.Part
+import com.vgleadsheets.model.Part
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen

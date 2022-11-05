@@ -7,23 +7,21 @@ import com.vgleadsheets.features.main.list.failure
 import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
-import com.vgleadsheets.model.song.Song
 import com.vgleadsheets.model.tag.TagValue
 
 data class TagValueSongContent(
     val tagValue: Async<TagValue> = Uninitialized,
-    val songs: Async<List<Song>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException
-    override fun failure() = tagValue.failure() ?: songs.failure()
+    override fun failure() = tagValue.failure()
 
-    override fun isLoading() = songs.isLoading()
+    override fun isLoading() = tagValue.isLoading()
 
-    override fun hasFailed() = tagValue.hasFailed() || songs.hasFailed()
+    override fun hasFailed() = tagValue.hasFailed()
 
-    override fun isFullyLoaded() = tagValue.isReady() && songs.isReady()
+    override fun isFullyLoaded() = tagValue.isReady()
 
     override fun isReady() = tagValue.isReady()
 
-    override fun isEmpty() = songs()?.isEmpty() == true
+    override fun isEmpty() = tagValue()?.songs?.isEmpty() == true
 }

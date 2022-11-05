@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DbStatisticsRoomDao {
     @Query("SELECT * FROM time WHERE time_id = :tableId")
-    fun getTime(tableId: Int): Flow<TimeEntity>
+    fun getTime(tableId: Int): Flow<TimeEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(dbStatisticsEntity: TimeEntity)

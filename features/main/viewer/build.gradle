@@ -3,7 +3,14 @@ apply from: "$rootProject.projectDir/feature-module.gradle"
 dependencies {
     implementation "androidx.viewpager2:viewpager2:$viewpager_version"
 
-    implementation project(path: ':core:android:ui-core')
-    implementation project(path: ':core:android:ui-components')
-    implementation project(path: ':core:android:vectors')
+    // TODO Remove HTTPException et al from feature
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
+    implementation project(':core:android:animation')
+    implementation project(':core:android:coroutines')
+    implementation project(':core:android:images')
+    implementation project(':core:android:recyclerview')
+    implementation project(':core:android:storage')
+    implementation project(':core:android:ui-components')
+    implementation project(':core:android:vectors')
 }

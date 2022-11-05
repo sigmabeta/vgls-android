@@ -1,20 +1,20 @@
 package com.vgleadsheets.features.main.tagsongs
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.VglsRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
 class TagValueSongViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueSongState,
-    private val repository: Repository,
+    private val repository: VglsRepository,
 ) : MavericksViewModel<TagValueSongState>(initialState) {
     init {
         fetchTagValue()
-        fetchSongs()
     }
 
     private fun fetchTagValue() = withState {
@@ -28,18 +28,7 @@ class TagValueSongViewModel @AssistedInject constructor(
             }
     }
 
-    private fun fetchSongs() = withState {
-        repository.getSongsForTagValue(it.tagValueId)
-            .execute { songs ->
-                copy(
-                    contentLoad = contentLoad.copy(
-                        songs = songs
-                    )
-                )
-            }
-    }
-
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: TagValueSongState,

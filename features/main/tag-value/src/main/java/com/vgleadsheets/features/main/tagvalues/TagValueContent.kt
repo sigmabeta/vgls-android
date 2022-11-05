@@ -8,22 +8,20 @@ import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.tag.TagKey
-import com.vgleadsheets.model.tag.TagValue
 
 data class TagValueContent(
-    val tagKey: Async<TagKey> = Uninitialized,
-    val tagValues: Async<List<TagValue>> = Uninitialized
+    val tagKey: Async<TagKey> = Uninitialized
 ) : ListContent {
     // TODO CompositeException
-    override fun failure() = tagKey.failure() ?: tagValues.failure()
+    override fun failure() = tagKey.failure()
 
-    override fun isLoading() = tagValues.isLoading()
+    override fun isLoading() = tagKey.isLoading()
 
-    override fun hasFailed() = tagKey.hasFailed() || tagValues.hasFailed()
+    override fun hasFailed() = tagKey.hasFailed()
 
-    override fun isFullyLoaded() = tagKey.isReady() && tagValues.isReady()
+    override fun isFullyLoaded() = tagKey.isReady()
 
     override fun isReady() = tagKey.isReady()
 
-    override fun isEmpty() = tagValues()?.isEmpty() == true
+    override fun isEmpty() = tagKey()?.values?.isEmpty() == true
 }

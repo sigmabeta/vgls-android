@@ -22,7 +22,7 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.model.thumbUrl
+import com.vgleadsheets.images.Page
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
@@ -107,7 +107,11 @@ class Config(
                         currentSong.id,
                         currentSong.name,
                         currentSong.gameName,
-                        currentSong.thumbUrl(baseImageUrl, hudState.selectedPart),
+                        Page.generateThumbUrl(
+                            baseImageUrl,
+                            hudState.selectedPart.apiId,
+                            currentSong.filename
+                        ),
                         R.drawable.placeholder_sheet
                     ) { clicks.song(currentSong.id) }
                 )
@@ -143,7 +147,11 @@ class Config(
                     it.id,
                     song?.name ?: return@mapYielding songLoadError(),
                     song.gameName,
-                    song.thumbUrl(baseImageUrl, hudState.selectedPart),
+                    Page.generateThumbUrl(
+                        baseImageUrl,
+                        hudState.selectedPart.apiId,
+                        song.filename
+                    ),
                     R.drawable.placeholder_sheet
                 ) { clicks.song(song.id) }
             }
@@ -182,7 +190,11 @@ class Config(
                         it.id,
                         song?.name ?: return@mapYielding songLoadError(),
                         song.gameName,
-                        song.thumbUrl(baseImageUrl, hudState.selectedPart),
+                        Page.generateThumbUrl(
+                            baseImageUrl,
+                            hudState.selectedPart.apiId,
+                            song.filename
+                        ),
                         R.drawable.placeholder_sheet
                     ) { clicks.song(song.id) }
                 }

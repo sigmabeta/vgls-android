@@ -45,7 +45,10 @@ interface SongRoomDao :
     override fun getAll(): Flow<List<SongEntity>>
 
     @Insert
-    override suspend fun insert(models: List<SongEntity>)
+    override suspend fun insert(entities: List<SongEntity>)
+
+    @Insert
+    suspend fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()

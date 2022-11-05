@@ -1,4 +1,5 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply plugin: 'kotlin-kapt'
 
 android {
     buildFeatures {
@@ -7,10 +8,10 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':core:android:animation')
-    implementation project(path: ':core:android:images')
-    implementation project(path: ':core:android:ui-core')
-    implementation project(path: ':core:android:vectors')
+    implementation project(':core:android:animation')
+    implementation project(':core:android:images')
+    implementation project(':core:android:ui-core')
+    implementation project(':core:android:vectors')
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 

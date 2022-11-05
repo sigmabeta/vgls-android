@@ -9,7 +9,7 @@ import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time
 import kotlinx.coroutines.flow.Flow
 
-interface Repository {
+interface VglsRepository {
     suspend fun checkShouldAutoUpdate(): Boolean
     suspend fun refresh()
 
@@ -19,20 +19,23 @@ interface Repository {
     fun observeJamState(id: Long): Flow<Jam>
 
     // Full Lists
-    fun getGames(withSongs: Boolean = true): Flow<List<Game>>
+    fun getAllGames(withSongs: Boolean = true): Flow<List<Game>>
     fun getAllSongs(withComposers: Boolean = true): Flow<List<Song>>
-    fun getComposers(withSongs: Boolean = true): Flow<List<Composer>>
+    fun getAllComposers(withSongs: Boolean = true): Flow<List<Composer>>
     fun getAllTagKeys(withValues: Boolean = true): Flow<List<TagKey>>
-    fun getJams(): Flow<List<Jam>>
+    fun getAllJams(withHistory: Boolean): Flow<List<Jam>>
+
+    // Related Lists
+    fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
 
     // Single items
-    fun getSong(songId: Long, withComposers: Boolean = true): Flow<Song>
+    fun getSong(songId: Long): Flow<Song>
     fun getComposer(composerId: Long): Flow<Composer>
     fun getGame(gameId: Long): Flow<Game>
     fun getTagKey(tagKeyId: Long): Flow<TagKey>
     fun getTagValue(tagValueId: Long): Flow<TagValue>
-    fun getLastUpdateTime(): Flow<Time>
     fun getJam(id: Long, withHistory: Boolean): Flow<Jam>
+    fun getLastUpdateTime(): Flow<Time>
 
     // Etc
     fun searchSongs(searchQuery: String): Flow<List<Song>>

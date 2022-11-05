@@ -7,8 +7,8 @@ import com.vgleadsheets.features.main.list.failure
 import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
-import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Song
 
 data class Content(
     val game: Async<Game> = Uninitialized,

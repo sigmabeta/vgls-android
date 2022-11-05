@@ -1,15 +1,16 @@
 package com.vgleadsheets.features.main.viewer
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.model.jam.Jam
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.model.Jam
+import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.storage.Storage
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
 import kotlinx.coroutines.Job
@@ -28,7 +29,7 @@ import timber.log.Timber
 
 class ViewerViewModel @AssistedInject constructor(
     @Assisted initialState: ViewerState,
-    private val repository: Repository,
+    private val repository: VglsRepository,
     private val storage: Storage,
     private val dispatchers: VglsDispatchers
 ) : MavericksViewModel<ViewerState>(initialState) {
@@ -183,13 +184,13 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(initialState: ViewerState): ViewerViewModel
     }
 
     companion object : MavericksViewModelFactory<ViewerViewModel, ViewerState> {
-        const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
+        private const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
 
         const val TIMEOUT_SCREEN_OFF_MILLIS = TIMEOUT_SCREEN_OFF_MINUTES * 60 * 1_000L
 

@@ -8,10 +8,14 @@ import com.vgleadsheets.database.android.dao.ComposerRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
+import com.vgleadsheets.database.android.join.SongComposerJoin
+import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.relation.SongComposerRelation
+import javax.inject.Inject
 
-class ComposerAndroidDataSource(
+class ComposerAndroidDataSource @Inject constructor(
     private val convert: ComposerConverter,
     private val manyConverter: SongConverter,
     private val roomImpl: ComposerRoomDao,
@@ -21,8 +25,18 @@ class ComposerAndroidDataSource(
     manyConverter,
     roomImpl,
     relatedRoomImpl
-) {
-    fun searchByName(name: String) = roomImpl
+), ComposerDataSource {
+    override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }
+
+    override suspend fun insertRelations(relations: List<SongComposerRelation>) = roomImpl
+        .insertJoins(
+            relations.map {
+                SongComposerJoin(
+                    it.songId,
+                    it.composerId
+                )
+            }
+        )
 }

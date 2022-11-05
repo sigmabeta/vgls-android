@@ -3,9 +3,9 @@ package com.vgleadsheets.features.main.search
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.list.ListContent
-import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Song
 
 data class SearchContent(
     val songs: Async<List<Song>> = Uninitialized,

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.onStart
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
     private val realRepository: RealRepository
-) : Repository {
+) : VglsRepository {
     override suspend fun checkShouldAutoUpdate() = realRepository.checkShouldAutoUpdate()
 
     override suspend fun refresh() = realRepository.refresh()
@@ -26,36 +26,19 @@ class DelayOrErrorRepository(
 
     override fun observeJamState(id: Long) = realRepository.observeJamState(id)
 
-    override fun getGames(withSongs: Boolean) = realRepository.getGames()
+    override fun getAllGames(withSongs: Boolean) = realRepository.getAllGames()
 
     override fun getAllSongs(withComposers: Boolean) = realRepository.getAllSongs(withComposers)
 
-    override fun getComposers(withSongs: Boolean) = realRepository.getComposers(withSongs)
+    override fun getAllComposers(withSongs: Boolean) = realRepository.getAllComposers(withSongs)
 
     override fun getAllTagKeys(withValues: Boolean) = realRepository.getAllTagKeys(withValues)
 
-    override fun getJams() = realRepository.getJams()
-
-    override fun getTagValuesForTagKey(
-        tagKeyId: Long,
-        withSongs: Boolean
-    ) = realRepository.getTagValuesForTagKey(tagKeyId, withSongs)
-
-    override fun getSongsByComposer(composerId: Long) =
-        realRepository.getSongsByComposer(composerId)
-
-    override fun getSongsForTagValue(tagValueId: Long) =
-        realRepository.getSongsForTagValue(tagValueId)
+    override fun getAllJams(withHistory: Boolean) = realRepository.getAllJams(withHistory)
 
     override fun getTagValuesForSong(songId: Long) = realRepository.getTagValuesForSong(songId)
 
-    override fun getSetlistForJam(jamId: Long) = realRepository.getSetlistForJam(jamId)
-
-    override fun getSongsForGame(gameId: Long, withComposers: Boolean) =
-        realRepository.getSongsForGame(gameId, withComposers)
-
-    override fun getSong(songId: Long, withComposers: Boolean) =
-        realRepository.getSong(songId, withComposers)
+    override fun getSong(songId: Long) = realRepository.getSong(songId)
 
     override fun getComposer(composerId: Long) = realRepository.getComposer(composerId)
 

@@ -8,7 +8,6 @@ data class ComposerDetailState(
     val composerId: Long,
     override val contentLoad: ComposerDetailContent = ComposerDetailContent(
         Uninitialized,
-        Uninitialized
     ),
 ) : BetterCompositeState<ComposerDetailContent> {
     constructor(args: IdArgs) : this(args.id)

@@ -3,7 +3,7 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     // Contains the Tracker interface
-    api project(path: ':core:common:tracking')
+    api project(':core:common:tracking')
 
     // Firebase (Must be here or else we can't log events
     implementation "com.google.firebase:firebase-analytics:$firebase_version"
@@ -14,7 +14,7 @@ dependencies {
     implementation project(":core:android:coroutines")
 
     // Dagger (important: include all 3 of these in modules that use Dagger
-    implementation project(path: ':core:android:di')
+    implementation project(':core:android:di')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }

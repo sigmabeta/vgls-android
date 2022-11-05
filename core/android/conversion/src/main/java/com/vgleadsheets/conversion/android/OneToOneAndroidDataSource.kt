@@ -31,10 +31,10 @@ abstract class OneToOneAndroidDataSource<
         .getOneByIdSync(id)
         .let { convert.entityToModelWithForeignOne(it, relatedRoomImpl, foreignConverter) }
 
-    override fun getAll(withForeign: Boolean) = roomImpl
+    override fun getAll(withRelated: Boolean) = roomImpl
         .getAll()
         .mapList {
-            if (withForeign) {
+            if (withRelated) {
                 convert.entityToModelWithForeignOne(it, relatedRoomImpl, foreignConverter)
             } else {
                 convert.entityToModel(it)

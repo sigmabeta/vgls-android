@@ -1,17 +1,19 @@
 package com.vgleadsheets.features.main.jams
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.repository.VglsRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class JamListViewModel @AssistedInject constructor(
     @Assisted initialState: JamListState,
-    private val repository: Repository,
+    private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers
 ) : MavericksViewModel<JamListState>(initialState) {
     init {
@@ -25,13 +27,13 @@ class JamListViewModel @AssistedInject constructor(
     }
 
     private fun fetchJams() {
-        repository.getJams()
+        repository.getAllJams(false)
             .execute {
                 copy(contentLoad = JamListContent(it))
             }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: JamListState,

@@ -1,20 +1,21 @@
 package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.VglsRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.debounce
 
 class SearchViewModel @AssistedInject constructor(
     @Assisted initialState: SearchState,
-    private val repository: Repository,
+    private val repository: VglsRepository,
 ) : MavericksViewModel<SearchState>(initialState) {
     init {
         withState {
@@ -91,7 +92,7 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: SearchState,

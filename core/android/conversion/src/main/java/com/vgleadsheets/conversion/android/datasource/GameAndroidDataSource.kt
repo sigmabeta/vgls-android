@@ -8,10 +8,12 @@ import com.vgleadsheets.database.android.dao.GameRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.GameEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
+import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import javax.inject.Inject
 
-class GameAndroidDataSource(
+class GameAndroidDataSource @Inject constructor(
     private val convert: GameConverter,
     private val manyConverter: SongConverter,
     private val roomImpl: GameRoomDao,
@@ -21,8 +23,8 @@ class GameAndroidDataSource(
     manyConverter,
     roomImpl,
     relatedRoomImpl
-) {
-    fun searchByName(name: String) = roomImpl
+), GameDataSource {
+    override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }
 }

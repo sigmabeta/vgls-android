@@ -4,16 +4,16 @@ apply plugin: 'kotlin-parcelize'
 
 dependencies {
     // Firebase Analytics
-    api project(path: ':core:common:tracking')
+    api project(':core:common:tracking')
 
     // Perf tracking (should be disabled in debug builds, see app/build.gradle)
-    api project(path: ':core:common:perf')
+    api project(':core:common:perf')
 
     // To allow features to interact with MainActivity's state.
-    api project(path: ":core:android:router")
+    api project(":core:android:router")
 
     // All UI features should depend on Mavericks
-    api project(path: ':core:android:mvrx')
+    api project(':core:android:mvrx')
 
     // AndroidX libs
     api "androidx.core:core-ktx:$core_ktx_version"

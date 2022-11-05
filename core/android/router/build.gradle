@@ -1,23 +1,16 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/di-android.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    implementation project(path: ':core:android:mvrx')
-    implementation project(path: ':core:common:tracking')
+    implementation project(':core:android:mvrx')
+    implementation project(':core:common:tracking')
 
     // Dagger
-    api project(path: ':core:android:di')
+    api project(':core:android:di')
 
     implementation project(":core:android:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
-
-    // Dagger (important: include all 3 of these in modules that use Dagger
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-
-    // AssistedInject Annotation Processors
-    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
-    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
 }

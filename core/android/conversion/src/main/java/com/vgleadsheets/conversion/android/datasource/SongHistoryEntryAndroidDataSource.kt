@@ -7,10 +7,13 @@ import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.android.enitity.SongHistoryEntryEntity
+import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.SongHistoryEntry
+import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class SongHistoryEntryAndroidDataSource(
+class SongHistoryEntryAndroidDataSource @Inject constructor(
     private val convert: SongHistoryEntryConverter,
     private val foreignConvert: SongConverter,
     private val roomImpl: SongHistoryEntryRoomDao,
@@ -24,4 +27,8 @@ class SongHistoryEntryAndroidDataSource(
     SongRoomDao,
     SongHistoryEntryConverter,
     SongConverter
-    >(convert, foreignConvert, roomImpl, relatedRoomImpl)
+    >(convert, foreignConvert, roomImpl, relatedRoomImpl), SongHistoryEntryDataSource {
+    override fun getAll(): Flow<List<SongHistoryEntry>> {
+        TODO("Not yet implemented")
+    }
+}

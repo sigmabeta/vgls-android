@@ -7,7 +7,7 @@ import com.vgleadsheets.features.main.list.failure
 import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagValue
 
 data class SongContent(

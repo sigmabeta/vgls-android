@@ -15,7 +15,7 @@ object Page {
             pageNumber + URL_FILE_EXT_PNG
     }
 
-    fun generatTthumbUrl(
+    fun generateThumbUrl(
         baseImageUrl: String,
         selectedPartApiId: String,
         filename: String

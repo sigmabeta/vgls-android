@@ -24,12 +24,12 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.model.thumbUrl
 
 class Config(
     private val state: SearchState,
@@ -164,7 +164,11 @@ class Config(
                             result.id,
                             result.name,
                             result.gameName,
-                            result.thumbUrl(baseImageUrl, hudState.selectedPart),
+                            Page.generateThumbUrl(
+                                baseImageUrl,
+                                hudState.selectedPart.apiId,
+                                result.filename
+                            ),
                             R.drawable.placeholder_sheet
                         ) {
                             clicks.song(result.id)

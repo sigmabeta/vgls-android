@@ -15,7 +15,7 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker

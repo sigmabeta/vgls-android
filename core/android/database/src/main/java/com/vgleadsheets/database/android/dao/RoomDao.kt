@@ -9,7 +9,7 @@ interface RoomDao<EntityType> {
 
     fun getAll(): Flow<List<EntityType>>
 
-    suspend fun insert(models: List<EntityType>)
+    suspend fun insert(entities: List<@JvmSuppressWildcards EntityType>)
 
     suspend fun nukeTable()
 
@@ -20,7 +20,7 @@ interface RoomDao<EntityType> {
         const val DELETE = "DELETE FROM"
 
         const val WHERE_SINGLE = "WHERE id = :$ROW_PRIMARY_KEY_ID"
-        const val WHERE_SEARCH = "WHERE name LIKE = :name"
+        const val WHERE_SEARCH = "WHERE name LIKE :name"
 
         const val OPTION_CASE_INSENSITIVE = "COLLATE NOCASE"
         const val OPTION_ALPHABETICAL_ORDER = "ORDER BY name"

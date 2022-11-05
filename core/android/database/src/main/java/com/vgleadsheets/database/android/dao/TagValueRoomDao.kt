@@ -8,7 +8,6 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETICAL_ORDER
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
-import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
 import com.vgleadsheets.database.android.enitity.TagValueEntity
 import com.vgleadsheets.database.android.join.SongTagValueJoin
@@ -18,9 +17,6 @@ import kotlinx.coroutines.flow.Flow
 interface TagValueRoomDao :
     ManyFromOneDao<TagValueEntity>,
     ManyToManyDao<TagValueEntity, SongTagValueJoin> {
-    @Query(QUERY_SEARCH)
-    fun searchByName(name: String): Flow<List<TagValueEntity>>
-
     @Query(QUERY_RELATED)
     override fun getEntitiesForForeign(id: Long): Flow<List<TagValueEntity>>
 
@@ -43,7 +39,10 @@ interface TagValueRoomDao :
     override fun getAll(): Flow<List<TagValueEntity>>
 
     @Insert
-    override suspend fun insert(models: List<TagValueEntity>)
+    override suspend fun insert(entities: List<TagValueEntity>)
+
+    @Insert
+    suspend fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()
@@ -75,8 +74,6 @@ interface TagValueRoomDao :
 
         const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
-        const val QUERY_SEARCH =
-            "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         const val QUERY_DELETE = "$DELETE $TABLE"
     }
 }
