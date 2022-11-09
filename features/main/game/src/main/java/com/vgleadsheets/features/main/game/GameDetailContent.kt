@@ -8,22 +8,20 @@ import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Song
 
-data class Content(
+data class GameDetailContent(
     val game: Async<Game> = Uninitialized,
-    val songs: Async<List<Song>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException
-    override fun failure() = game.failure() ?: songs.failure()
+    override fun failure() = game.failure()
 
-    override fun isLoading() = songs.isLoading()
+    override fun isLoading() = game.isLoading()
 
-    override fun hasFailed() = game.hasFailed() || songs.hasFailed()
+    override fun hasFailed() = game.hasFailed()
 
-    override fun isFullyLoaded() = game.isReady() && songs.isReady()
+    override fun isFullyLoaded() = game.isReady()
 
     override fun isReady() = game.isReady()
 
-    override fun isEmpty() = songs()?.isEmpty() == true
+    override fun isEmpty() = game()?.songs?.isEmpty() == true
 }

@@ -11,7 +11,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class GameFragment : BetterListFragment<Content, GameState>() {
+class GameFragment : BetterListFragment<GameDetailContent, GameState>() {
     @Inject
     lateinit var viewModelFactory: GameViewModel.Factory
 

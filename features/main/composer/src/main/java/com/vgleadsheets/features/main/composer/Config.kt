@@ -33,9 +33,11 @@ class Config(
 
     private val composer = composerLoad.content()
 
+    private val songs = composer?.songs
+
     override val titleConfig = Title.Config(
         composer?.name ?: resources.getString(R.string.unknown_composer),
-        composer?.songs?.captionText(),
+        songs?.captionText(),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -52,9 +54,9 @@ class Config(
     override val actionsConfig = Actions.NONE
 
     override val contentConfig = Content.Config(
-        !composer?.songs.isNullOrEmpty()
+        !songs.isNullOrEmpty()
     ) {
-        composer?.songs?.filteredForVocals(hudState.selectedPart.apiId)
+        songs?.filteredForVocals(hudState.selectedPart.apiId)
             ?.mapYielding { song ->
                 ImageNameCaptionListModel(
                     song.id,
@@ -73,7 +75,7 @@ class Config(
     }
 
     override val emptyConfig = EmptyState.Config(
-        composer?.songs?.isEmpty() == true,
+        songs?.isEmpty() == true,
         R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_composer_song)
     )
