@@ -14,7 +14,7 @@ class DbStatisticsAndroidDataSource @Inject constructor(
         .getTime(tableId)
         .map { entity -> entity?.toTime() ?: Time(-1, 0L) }
 
-    override suspend fun insert(dbStatistics: Time) = roomImpl
+    override fun insert(dbStatistics: Time) = roomImpl
         .insert(
             TimeEntity(dbStatistics.id, dbStatistics.timeMs)
         )

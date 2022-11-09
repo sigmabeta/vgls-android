@@ -9,9 +9,4 @@ interface Converter<ModelType, EntityType> {
 
     fun entityToModel(entity: EntityType): ModelType =
         entity.toModel()
-
-    companion object {
-        val ID_OFFSET_COMPOSER = 1_000_000_000L
-        val ID_OFFSET_GAME = 100_000L
-    }
 }

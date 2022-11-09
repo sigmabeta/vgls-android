@@ -30,7 +30,7 @@ class ComposerAndroidDataSource @Inject constructor(
         .searchByName(name)
         .mapList { convert.entityToModel(it) }
 
-    override suspend fun insertRelations(relations: List<SongComposerRelation>) = roomImpl
+    override fun insertRelations(relations: List<SongComposerRelation>) = roomImpl
         .insertJoins(
             relations.map {
                 SongComposerJoin(

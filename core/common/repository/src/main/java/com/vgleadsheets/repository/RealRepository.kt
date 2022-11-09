@@ -1,6 +1,5 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.conversion.Converter
 import com.vgleadsheets.conversion.toModel
 import com.vgleadsheets.coroutines.CustomFlows
 import com.vgleadsheets.coroutines.VglsDispatchers
@@ -319,18 +318,24 @@ class RealRepository constructor(
             threeTen.now().toInstant().toEpochMilli()
         )
 
-        transactionRunner.runInTransaction {
-            gameDataSource.insert(games)
-            composerDataSource.insert(composers.values.toList())
-            songDataSource.insert(songs)
+        withContext(dispatchers.disk) {
+            transactionRunner.inTransaction {
+                try {
+                    gameDataSource.insert(games)
+                    composerDataSource.insert(composers.values.toList())
+                    songDataSource.insert(songs)
 
-            composerDataSource.insertRelations(songComposerRelations)
-            tagValueDataSource.insertRelations(songTagValueRelations)
+                    tagKeyDataSource.insert(tagKeys.values.toList())
+                    tagValueDataSource.insert(tagValues.values.toList())
 
-            tagKeyDataSource.insert(tagKeys.values.toList())
-            tagValueDataSource.insert(tagValues.values.toList())
+                    composerDataSource.insertRelations(songComposerRelations)
+                    tagValueDataSource.insertRelations(songTagValueRelations)
 
-            dbStatisticsDataSource.insert(dbStatistics)
+                    dbStatisticsDataSource.insert(dbStatistics)
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }
         }
     }
 
@@ -475,7 +480,7 @@ class RealRepository constructor(
     ) {
         val songComposerRelation = SongComposerRelation(
             apiSong.id,
-            apiComposer.composer_id + Converter.ID_OFFSET_COMPOSER
+            apiComposer.composer_id
         )
         songComposerRelations.add(songComposerRelation)
     }

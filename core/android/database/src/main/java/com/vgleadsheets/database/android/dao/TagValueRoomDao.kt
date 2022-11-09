@@ -39,10 +39,10 @@ interface TagValueRoomDao :
     override fun getAll(): Flow<List<TagValueEntity>>
 
     @Insert
-    override suspend fun insert(entities: List<TagValueEntity>)
+    override fun insert(entities: List<TagValueEntity>)
 
     @Insert
-    suspend fun insertJoins(joins: List<SongTagValueJoin>)
+    fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()

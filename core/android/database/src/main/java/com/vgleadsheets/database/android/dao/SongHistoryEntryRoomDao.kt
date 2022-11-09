@@ -29,7 +29,7 @@ interface SongHistoryEntryRoomDao : ManyFromOneDao<SongHistoryEntryEntity> {
     override fun getAll(): Flow<List<SongHistoryEntryEntity>>
 
     @Insert
-    override suspend fun insert(entities: List<SongHistoryEntryEntity>)
+    override fun insert(entities: List<SongHistoryEntryEntity>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()

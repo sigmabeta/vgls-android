@@ -2,7 +2,6 @@ package com.vgleadsheets.database.android
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.vgleadsheets.database.TransactionRunner
 import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
 import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
@@ -14,6 +13,7 @@ import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
+import com.vgleadsheets.database.android.dao.TransactionDao
 import com.vgleadsheets.database.android.enitity.ComposerAliasEntity
 import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.enitity.GameAliasEntity
@@ -27,9 +27,6 @@ import com.vgleadsheets.database.android.enitity.TagValueEntity
 import com.vgleadsheets.database.android.enitity.TimeEntity
 import com.vgleadsheets.database.android.join.SongComposerJoin
 import com.vgleadsheets.database.android.join.SongTagValueJoin
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @Database(
     entities = [
@@ -49,7 +46,7 @@ import kotlinx.coroutines.launch
     ],
     version = 10
 )
-abstract class VglsDatabase : RoomDatabase(), TransactionRunner {
+abstract class VglsDatabase : RoomDatabase() {
     abstract fun composerAliasDao(): ComposerAliasRoomDao
     abstract fun composerDao(): ComposerRoomDao
     abstract fun dbStatisticsDao(): DbStatisticsRoomDao
@@ -62,14 +59,5 @@ abstract class VglsDatabase : RoomDatabase(), TransactionRunner {
     abstract fun tagKeyDao(): TagKeyRoomDao
     abstract fun tagValueDao(): TagValueRoomDao
 
-    @OptIn(DelicateCoroutinesApi::class)
-    override suspend fun runInTransaction(action: suspend () -> Unit) {
-        runInTransaction(
-            Runnable {
-                GlobalScope.launch {
-                    action()
-                }
-            }
-        )
-    }
+    abstract fun transactionDao(): TransactionDao
 }

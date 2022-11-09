@@ -7,7 +7,7 @@ interface DbStatisticsDataSource {
 
     fun getTime(tableId: Int): Flow<Time>
 
-    suspend fun insert(dbStatistics: Time)
+    fun insert(dbStatistics: Time)
 
     suspend fun nukeTable()
 }

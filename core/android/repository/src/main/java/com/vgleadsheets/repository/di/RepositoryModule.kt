@@ -1,7 +1,7 @@
 package com.vgleadsheets.repository.di
 
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.database.android.VglsDatabase
+import com.vgleadsheets.database.android.dao.TransactionDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
@@ -34,7 +34,7 @@ class RepositoryModule {
     @Singleton
     fun provideRealRepository(
         vglsApi: VglsApi,
-        database: VglsDatabase,
+        transactionDao: TransactionDao,
         threeTenTime: ThreeTenTime,
         tracker: Tracker,
         dispatchers: VglsDispatchers,
@@ -51,7 +51,7 @@ class RepositoryModule {
         tagValueDataSource: TagValueDataSource
     ) = RealRepository(
         vglsApi,
-        database,
+        transactionDao,
         threeTenTime,
         tracker,
         dispatchers,

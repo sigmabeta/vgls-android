@@ -34,7 +34,7 @@ interface ComposerAliasRoomDao : ManyFromOneDao<ComposerAliasEntity> {
     override fun getAll(): Flow<List<ComposerAliasEntity>>
 
     @Insert
-    override suspend fun insert(entities: List<ComposerAliasEntity>)
+    override fun insert(entities: List<ComposerAliasEntity>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()

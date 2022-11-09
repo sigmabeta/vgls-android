@@ -7,7 +7,7 @@ interface DataSource<ModelType> {
 
     fun getOneByIdSync(id: Long): ModelType
 
-    suspend fun insert(models: List<ModelType>)
+    fun insert(models: List<ModelType>)
 
     suspend fun nukeTable()
 }

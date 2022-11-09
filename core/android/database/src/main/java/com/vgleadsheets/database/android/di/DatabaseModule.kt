@@ -11,6 +11,12 @@ import javax.inject.Singleton
 class DatabaseModule {
     @Singleton
     @Provides
+    fun providesTransactionRunner(
+        database: VglsDatabase
+    ) = database.transactionDao()
+
+    @Singleton
+    @Provides
     fun provideVglsDatabase(context: Context) = Room
         .databaseBuilder(
             context,

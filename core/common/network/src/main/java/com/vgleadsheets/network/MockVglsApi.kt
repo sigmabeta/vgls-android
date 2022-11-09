@@ -185,7 +185,8 @@ class MockVglsApi(
     }
 
     private fun generateGame(): VglsApiGame {
-        val gameId = random.nextLong()
+        val gameId = random.nextInt(1000).toLong()
+
         return VglsApiGame(
             null,
             gameId,
@@ -240,7 +241,7 @@ class MockVglsApi(
     }
 
     private fun generateSong() = ApiSong(
-        random.nextLong(),
+        random.nextInt(1000).toLong(),
         "goose",
         getParts(),
         stringGenerator.generateTitle(),
@@ -303,7 +304,7 @@ class MockVglsApi(
 
     private fun generateComposer() = ApiComposer(
         null,
-        random.nextLong(),
+        random.nextInt(1000).toLong(),
         stringGenerator.generateName(),
         null
     )

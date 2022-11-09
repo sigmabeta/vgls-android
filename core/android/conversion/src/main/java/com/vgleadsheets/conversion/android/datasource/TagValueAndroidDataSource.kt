@@ -25,7 +25,7 @@ class TagValueAndroidDataSource @Inject constructor(
     roomImpl,
     relatedRoomImpl
 ), TagValueDataSource {
-    override suspend fun insertRelations(relations: List<SongTagValueRelation>) =
+    override fun insertRelations(relations: List<SongTagValueRelation>) =
         roomImpl.insertJoins(
             relations.map {
                 SongTagValueJoin(

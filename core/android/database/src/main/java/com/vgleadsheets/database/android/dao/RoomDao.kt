@@ -9,7 +9,7 @@ interface RoomDao<EntityType> {
 
     fun getAll(): Flow<List<EntityType>>
 
-    suspend fun insert(entities: List<@JvmSuppressWildcards EntityType>)
+    fun insert(entities: List<@JvmSuppressWildcards EntityType>)
 
     suspend fun nukeTable()
 

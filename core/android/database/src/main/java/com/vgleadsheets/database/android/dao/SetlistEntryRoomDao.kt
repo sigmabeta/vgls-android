@@ -29,7 +29,7 @@ interface SetlistEntryRoomDao : OneToOneDao<SetlistEntryEntity> {
     override fun getAll(): Flow<List<SetlistEntryEntity>>
 
     @Insert
-    override suspend fun insert(entities: List<SetlistEntryEntity>)
+    override fun insert(entities: List<SetlistEntryEntity>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()

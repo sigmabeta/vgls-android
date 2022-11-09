@@ -27,7 +27,7 @@ interface JamRoomDao : RoomDao<JamEntity> {
     override fun getAll(): Flow<List<JamEntity>>
 
     @Insert
-    override suspend fun insert(entities: List<JamEntity>)
+    override fun insert(entities: List<JamEntity>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()

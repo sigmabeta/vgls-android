@@ -42,7 +42,7 @@ abstract class ManyToManyAndroidDataSource<
             }
         }
 
-    override suspend fun insert(models: List<ModelType>) = roomImpl
+    override fun insert(models: List<ModelType>) = roomImpl
         .insert(
             models.map {
                 convert.modelToEntity(it)

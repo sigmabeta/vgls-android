@@ -36,10 +36,10 @@ interface ComposerRoomDao :
     override fun getAll(): Flow<List<ComposerEntity>>
 
     @Insert
-    override suspend fun insert(entities: List<ComposerEntity>)
+    override fun insert(entities: List<ComposerEntity>)
 
     @Insert
-    suspend fun insertJoins(joins: List<SongComposerJoin>)
+    fun insertJoins(joins: List<SongComposerJoin>)
 
     @Query(QUERY_DELETE)
     override suspend fun nukeTable()
