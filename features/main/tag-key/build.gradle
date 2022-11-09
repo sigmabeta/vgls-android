@@ -1,3 +1,4 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies {
@@ -9,16 +10,7 @@ dependencies {
     implementation project(path: ':core:recyclerview')
     implementation project(path: ':core:resources')
     implementation project(path: ':core:ui-core')
-
-    // RxJava2 libs
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-
-    // AndroidX libs
-    implementation "androidx.room:room-runtime:$room_version"
-
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation project(":core:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

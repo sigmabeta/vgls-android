@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.sheet
 
 import android.os.Bundle
-import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
@@ -60,7 +60,7 @@ class SongFragment : BetterListFragment<SongContent, SongState>() {
             val fragment = SongFragment()
 
             val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
+            args.putParcelable(Mavericks.KEY_ARG, idArgs)
             fragment.arguments = args
 
             return fragment

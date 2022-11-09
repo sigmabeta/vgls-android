@@ -9,7 +9,9 @@ import androidx.annotation.LayoutRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.airbnb.mvrx.BaseMvRxFragment
+
+import androidx.fragment.app.Fragment
+import com.airbnb.mvrx.MavericksView
 import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.args.IdArgs
@@ -23,8 +25,7 @@ import javax.inject.Inject
 import javax.inject.Named
 import timber.log.Timber
 
-abstract class VglsFragment : BaseMvRxFragment() {
-
+abstract class VglsFragment : Fragment(), MavericksView {
     @Inject
     lateinit var tracker: Tracker
 
@@ -174,6 +175,7 @@ abstract class VglsFragment : BaseMvRxFragment() {
     protected open fun configureStatusBarContentColor() {
         val darkMode = resources.getBoolean(R.bool.darkMode)
         windowInsetController?.isAppearanceLightStatusBars = !darkMode
+        windowInsetController?.isAppearanceLightNavigationBars = false
     }
 
     protected fun setPerfTransitionStart() {

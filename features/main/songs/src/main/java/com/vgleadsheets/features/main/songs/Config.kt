@@ -7,6 +7,7 @@ import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isNullOrEmpty
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -47,7 +48,7 @@ class Config(
     ) {
         songsLoad.content()
             ?.filteredForVocals(hudState.selectedPart.apiId)
-            ?.map { song ->
+            ?.mapYielding { song ->
                 ImageNameCaptionListModel(
                     song.id,
                     song.name,

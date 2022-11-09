@@ -8,6 +8,7 @@ import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -46,7 +47,7 @@ class Config(
     ) {
         state.contentLoad.content()
             ?.filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
-            ?.map {
+            ?.mapYielding {
                 ImageNameCaptionListModel(
                     it.id,
                     it.name,

@@ -45,7 +45,7 @@ import com.vgleadsheets.model.time.TimeEntity
         SongHistoryEntryEntity::class,
         ComposerAliasEntity::class
     ],
-    version = 8
+    version = 9
 )
 abstract class VglsDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao

@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.game
 
 import android.os.Bundle
-import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
@@ -44,7 +44,7 @@ class GameFragment : BetterListFragment<Content, GameState>() {
             val fragment = GameFragment()
 
             val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
+            args.putParcelable(Mavericks.KEY_ARG, idArgs)
             fragment.arguments = args
 
             return fragment

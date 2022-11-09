@@ -1,5 +1,8 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+
 dependencies {
-    // MvRx - an implementation of MVI using Rx
-    api "com.airbnb.android:mvrx:$mvrx_version"
+    // Mavericks - an implementation of MVI using Flow
+    api "com.airbnb.android:mavericks:$mavericks_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 }

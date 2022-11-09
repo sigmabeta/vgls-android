@@ -7,17 +7,17 @@ import com.vgleadsheets.network.BuildConfig
 import com.vgleadsheets.storage.Storage
 import dagger.Module
 import dagger.Provides
-import java.io.File
-import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
+import kotlinx.coroutines.runBlocking
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
+import java.util.*
+import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 class NetworkModule {
@@ -33,10 +33,11 @@ class NetworkModule {
     @Provides
     @Named("NetworkEndpoint")
     @Singleton
-    internal fun provideNetworkSetting(storage: Storage) = storage
-        .getDebugSettingNetworkEndpoint()
-        .map { it.selectedPosition }
-        .blockingGet()
+    internal fun provideNetworkSetting(storage: Storage): Int {
+        return runBlocking {
+            storage.getDebugSettingNetworkEndpoint().selectedPosition
+        }
+    }
 
     @Provides
     @Named("VglsUrl")
@@ -123,10 +124,6 @@ class NetworkModule {
                 .build()
         }
     }
-
-    @Provides
-    @Singleton
-    internal fun provideCallAdapterFactory() = RxJava2CallAdapterFactory.createAsync()
 
     @Provides
     @Singleton

@@ -1,17 +1,17 @@
 package com.vgleadsheets.features.main.tagsongs
 
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MvRxViewModel
+import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.repository.Repository
 
 class TagValueSongViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueSongState,
     private val repository: Repository,
-) : MvRxViewModel<TagValueSongState>(initialState) {
+) : MavericksViewModel<TagValueSongState>(initialState) {
     init {
         fetchTagValue()
         fetchSongs()
@@ -46,7 +46,7 @@ class TagValueSongViewModel @AssistedInject constructor(
         ): TagValueSongViewModel
     }
 
-    companion object : MvRxViewModelFactory<TagValueSongViewModel, TagValueSongState> {
+    companion object : MavericksViewModelFactory<TagValueSongViewModel, TagValueSongState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: TagValueSongState

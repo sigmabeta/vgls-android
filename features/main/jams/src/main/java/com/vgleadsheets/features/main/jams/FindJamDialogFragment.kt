@@ -19,12 +19,14 @@ import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.repository.Repository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
 import javax.inject.Inject
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
 
@@ -44,8 +46,6 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
     private lateinit var editJamName: EditText
 
     private lateinit var progressLoading: ProgressBar
-
-    private val disposables = CompositeDisposable()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -88,35 +88,35 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
         Insetup.setupControlFocusForInsetAnimation(editJamName)
     }
 
-    override fun onStop() {
-        super.onStop()
-        disposables.clear()
-    }
-
     private fun onAddClicked() {
         val jamName = editJamName.text.toString()
 
         if (jamName.isNotBlank()) {
-            findJam(jamName.lowercase())
+            findJam(jamName.trim().lowercase())
         } else {
             showError("Jam name can't be empty.")
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
+    @Suppress("TooGenericExceptionCaught")
     private fun findJam(jamName: String) {
         progressLoading.visibility = VISIBLE
         buttonFind.visibility = GONE
-        val find = repository.refreshJamState(jamName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
+
+        // TODO Not this
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                repository.refreshJamState(jamName)
+
+                withContext(Dispatchers.Main) {
                     progressLoading.visibility = GONE
                     buttonFind.visibility = VISIBLE
 
                     dismiss()
-                },
-                {
+                }
+            } catch (it: Exception) {
+                withContext(Dispatchers.Main) {
                     progressLoading.visibility = GONE
                     buttonFind.visibility = VISIBLE
 
@@ -134,9 +134,8 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
                     Timber.e("Error finding Jam: ${it.message}")
                 }
-            )
-
-        disposables.add(find)
+            }
+        }
     }
 
     private fun showError(message: String) {

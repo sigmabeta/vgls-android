@@ -17,6 +17,7 @@ import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
+import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
@@ -117,7 +118,7 @@ class Config(
         LoadingItemStyle.WITH_IMAGE
     )
 
-    private fun createSectionModels(
+    private suspend fun createSectionModels(
         sectionId: Int,
         results: Async<List<Any>>,
         selectedPart: Part
@@ -131,7 +132,7 @@ class Config(
         )
     }
 
-    private fun createSectionSuccessModels(
+    private suspend fun createSectionSuccessModels(
         sectionId: Int,
         results: List<Any>,
         selectedPart: Part
@@ -152,11 +153,11 @@ class Config(
     private fun createSectionHeaderListModel(sectionId: Int) =
         listOf(SectionHeaderListModel(resources.getString(sectionId)))
 
-    private fun createSectionModels(
+    private suspend fun createSectionModels(
         results: List<Any>
     ): List<ListModel> {
         return results
-            .map { result ->
+            .mapYielding { result ->
                 when (result) {
                     is Song -> {
                         ImageNameCaptionListModel(

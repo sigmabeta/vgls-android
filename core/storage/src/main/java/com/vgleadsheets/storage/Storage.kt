@@ -1,31 +1,29 @@
 package com.vgleadsheets.storage
 
-import io.reactivex.Single
-
 interface Storage {
     // Loading Defaults
-    fun getSavedTopLevelScreen(): Single<String>
-    fun getSavedSelectedPart(): Single<String>
+    suspend fun getSavedTopLevelScreen(): String
+    suspend fun getSavedSelectedPart(): String
 
     // Saving Defaults
-    fun saveTopLevelScreen(screenId: String): Single<String>
-    fun saveSelectedPart(partId: String): Single<String>
+    fun saveTopLevelScreen(screenId: String)
+    fun saveSelectedPart(partId: String)
 
     // Loading Settings
-    fun getAllSettings(): Single<List<BooleanSetting>>
-    fun getSettingSheetScreenOn(): Single<BooleanSetting>
+    suspend fun getAllSettings(): List<BooleanSetting>
+    suspend fun getSettingSheetScreenOn(): BooleanSetting
 
     // Saving Settings
-    fun saveSettingSheetScreenOn(setting: Boolean): Single<String>
+    fun saveSettingSheetScreenOn(setting: Boolean)
 
     // Loading Debug Settings
-    fun getAllDebugSettings(): Single<List<Setting>>
-    fun getDebugSettingNetworkEndpoint(): Single<DropdownSetting>
-    fun getDebugSettingShowPerfView(): Single<BooleanSetting>
+    suspend fun getAllDebugSettings(): List<Setting>
+    suspend fun getDebugSettingNetworkEndpoint(): DropdownSetting
+    suspend fun getDebugSettingShowPerfView(): BooleanSetting
 
     // Saving Debug Settings
-    fun saveDebugSelectedNetworkEndpoint(newValue: Int): Single<String>
-    fun saveDebugSettingPerfView(newValue: Boolean): Single<String>
+    fun saveDebugSelectedNetworkEndpoint(newValue: Int)
+    fun saveDebugSettingPerfView(newValue: Boolean)
 
     companion object {
         const val KEY_SELECTED_TOP_LEVEL = "KEY_SELECTED_TOP_LEVEL"

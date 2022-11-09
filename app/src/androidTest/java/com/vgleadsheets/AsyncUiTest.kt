@@ -1,14 +1,14 @@
 package com.vgleadsheets
 
 import com.vgleadsheets.network.MockVglsApi
-import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import org.junit.Before
 import timber.log.Timber
 
 abstract class AsyncUiTest : UiTest() {
-    protected val digestEmitTrigger = BehaviorSubject.create<Long>()
+    protected val digestEmitTrigger = MutableSharedFlow<Long>()
 
-    protected val updateTimeEmitTrigger = BehaviorSubject.create<Long>()
+    protected val updateTimeEmitTrigger = MutableSharedFlow<Long>()
 
     @Before
     override fun setup() {
@@ -28,9 +28,9 @@ abstract class AsyncUiTest : UiTest() {
     }
 
     protected fun emitDataFromApi() {
-        updateTimeEmitTrigger.onNext(0L)
+        updateTimeEmitTrigger.emit(0L)
         Thread.sleep(33L)
-        digestEmitTrigger.onNext(0L)
+        digestEmitTrigger.emit(0L)
     }
 
     protected fun eraseDatabase() {

@@ -1,5 +1,6 @@
 package com.vgleadsheets.perf.tracking.common
 
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.perf.tracking.api.FrameInfo
 import com.vgleadsheets.perf.tracking.api.FrameTimeStats
 import com.vgleadsheets.perf.tracking.api.InvalidateInfo
@@ -8,13 +9,13 @@ import com.vgleadsheets.perf.tracking.api.PerfSpec
 import com.vgleadsheets.perf.tracking.api.PerfStage
 import com.vgleadsheets.perf.tracking.api.PerfTracker
 import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.BehaviorSubject
-import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.nanoseconds
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @SuppressWarnings(
@@ -24,20 +25,25 @@ import timber.log.Timber
     "SwallowedException",
     "MaxLineLength"
 )
-class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : PerfTracker {
+class PerfTrackerImpl(
+    private val perfTrackingBackend: PerfTrackingBackend,
+    private val dispatchers: VglsDispatchers
+) : PerfTracker {
+    private val perfCoroutineScope = CoroutineScope(dispatchers.main)
+
     private val loadTimeScreens = HashMap<PerfSpec, ScreenLoadStatus>()
 
     private val invalidateScreens = HashMap<PerfSpec, MutableList<InvalidateInfo>>()
 
     private val frameTimeScreens = HashMap<PerfSpec, MutableList<FrameInfo>>()
 
-    private val failureTimers = HashMap<PerfSpec, Disposable?>()
+    private val failureTimers = HashMap<PerfSpec, Job?>()
 
-    private val screenLoadSink = BehaviorSubject.create<Map<PerfSpec, ScreenLoadStatus>>()
+    private val screenLoadSink = MutableSharedFlow<Map<PerfSpec, ScreenLoadStatus>>()
 
-    private val frameTimeSink = BehaviorSubject.create<Map<PerfSpec, FrameTimeStats>>()
+    private val frameTimeSink = MutableSharedFlow<Map<PerfSpec, FrameTimeStats>>()
 
-    private val invalidateSink = BehaviorSubject.create<Map<PerfSpec, InvalidateStats>>()
+    private val invalidateSink = MutableSharedFlow<Map<PerfSpec, InvalidateStats>>()
 
     override fun screenLoadStream() = screenLoadSink
 
@@ -115,65 +121,71 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     }
 
     private fun publishScreenLoads() {
-        screenLoadSink.onNext(
-            loadTimeScreens.toMap()
-        )
+        perfCoroutineScope.launch {
+            screenLoadSink.emit(
+                loadTimeScreens.toMap()
+            )
+        }
     }
 
     private fun publishFrameTimes() {
-        frameTimeSink.onNext(
-            frameTimeScreens.mapValues {
-                val frametimes = it.value.sortedBy { it.durationOnUiThreadNanos }
-                val totalFrames = frametimes.size
+        perfCoroutineScope.launch {
+            frameTimeSink.emit(
+                frameTimeScreens.mapValues {
+                    val frametimes = it.value.sortedBy { it.durationOnUiThreadNanos }
+                    val totalFrames = frametimes.size
 
-                try {
-                    FrameTimeStats(
-                        frametimes.filter { frame -> frame.isJank }.size,
-                        totalFrames,
-                        frametimes[totalFrames / 2].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
-                        frametimes[totalFrames * 95 / 100].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
-                        frametimes[totalFrames * 99 / 100].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
-                    )
-                } catch (ex: IndexOutOfBoundsException) {
-                    FrameTimeStats(
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                    )
+                    try {
+                        FrameTimeStats(
+                            frametimes.filter { frame -> frame.isJank }.size,
+                            totalFrames,
+                            frametimes[totalFrames / 2].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
+                            frametimes[totalFrames * 95 / 100].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
+                            frametimes[totalFrames * 99 / 100].durationOnUiThreadNanos.nanoseconds.inWholeMilliseconds,
+                        )
+                    } catch (ex: IndexOutOfBoundsException) {
+                        FrameTimeStats(
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                        )
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     private fun publishInvalidates() {
-        invalidateSink.onNext(
-            invalidateScreens.mapValues {
-                val invalidates = it.value.sortedBy { it.durationNanos }
-                val totalInvalidates = invalidates.size
+        perfCoroutineScope.launch {
+            invalidateSink.emit(
+                invalidateScreens.mapValues {
+                    val invalidates = it.value.sortedBy { it.durationNanos }
+                    val totalInvalidates = invalidates.size
 
-                try {
-                    InvalidateStats(
-                        invalidates.filter { invalidate -> invalidate.durationNanos > 4L.milliseconds.inWholeNanoseconds }.size,
-                        totalInvalidates,
-                        invalidates.sumOf { invalidate -> invalidate.durationNanos }.nanoseconds.inWholeMilliseconds,
-                        invalidates[totalInvalidates / 2].durationNanos.nanoseconds.inWholeMilliseconds,
-                        invalidates[totalInvalidates * 95 / 100].durationNanos.nanoseconds.inWholeMilliseconds,
-                        invalidates[totalInvalidates * 99 / 100].durationNanos.nanoseconds.inWholeMilliseconds,
-                    )
-                } catch (ex: IndexOutOfBoundsException) {
-                    InvalidateStats(
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                    )
+                    try {
+                        InvalidateStats(
+                            invalidates.filter { invalidate -> invalidate.durationNanos > 4L.milliseconds.inWholeNanoseconds }.size,
+                            totalInvalidates,
+                            invalidates.sumOf { invalidate -> invalidate.durationNanos }.nanoseconds.inWholeMilliseconds,
+                            invalidates[totalInvalidates / 2].durationNanos.nanoseconds.inWholeMilliseconds,
+                            invalidates[totalInvalidates * 95 / 100].durationNanos.nanoseconds.inWholeMilliseconds,
+                            invalidates[totalInvalidates * 99 / 100].durationNanos.nanoseconds.inWholeMilliseconds,
+                        )
+                    } catch (ex: IndexOutOfBoundsException) {
+                        InvalidateStats(
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                        )
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     private fun cancelInternal(screen: ScreenLoadStatus, spec: PerfSpec) {
@@ -312,22 +324,22 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
     }
 
     private fun startFailureTimer(spec: PerfSpec) {
-        val timer = Observable.timer(TIMEOUT_SCREEN_LOAD, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                val screen = loadTimeScreens[spec]
-                if (screen == null) {
-                    Timber.w("Trace not found when timer went off. What?")
-                    return@subscribe
-                }
-
-                val notClearedTraces = getNotClearedTraces(screen)
-
-                perfTrackingBackend.error(
-                    "Screen ${screen.name} waited $TIMEOUT_SCREEN_LOAD ms, " +
-                        "but still missing events for: $notClearedTraces"
-                )
+        val timer = perfCoroutineScope.launch {
+            delay(TIMEOUT_SCREEN_LOAD)
+            val screen = loadTimeScreens[spec]
+            if (screen == null) {
+                Timber.w("Trace not found when timer went off. What?")
+                return@launch
             }
+
+            val notClearedTraces = getNotClearedTraces(screen)
+
+            perfTrackingBackend.error(
+                "Screen ${screen.name} waited $TIMEOUT_SCREEN_LOAD ms, " +
+                    "but still missing events for: $notClearedTraces"
+            )
+        }
+
         failureTimers[spec] = timer
     }
 
@@ -339,7 +351,7 @@ class PerfTrackerImpl(private val perfTrackingBackend: PerfTrackingBackend) : Pe
             return
         }
 
-        timer.dispose()
+        timer.cancel()
 
         failureTimers[spec] = null
     }

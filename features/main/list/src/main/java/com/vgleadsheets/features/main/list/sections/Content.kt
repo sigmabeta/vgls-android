@@ -3,9 +3,9 @@ package com.vgleadsheets.features.main.list.sections
 import com.vgleadsheets.components.ListModel
 
 object Content {
-    fun listItems(
+    suspend fun listItems(
         isDataReady: Boolean,
-        dataGenerator: (() -> List<ListModel>)
+        dataGenerator: suspend () -> List<ListModel>
     ) = if (!isDataReady) {
         emptyList()
     } else {
@@ -14,6 +14,6 @@ object Content {
 
     data class Config(
         val isDataReady: Boolean,
-        val dataGenerator: (() -> List<ListModel>)
+        val dataGenerator: suspend () -> List<ListModel>
     )
 }

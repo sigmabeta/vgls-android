@@ -2,7 +2,7 @@ package com.vgleadsheets.model.joins
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
+import androidx.room.ForeignKey.Companion.CASCADE
 import com.vgleadsheets.model.composer.ComposerEntity
 import com.vgleadsheets.model.song.SongEntity
 

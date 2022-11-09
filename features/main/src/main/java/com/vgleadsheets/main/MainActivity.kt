@@ -305,11 +305,14 @@ class MainActivity :
                     return@runOnUiThread
                 }
 
-                supportFragmentManager.beginTransaction()
+                val transaction = supportFragmentManager.beginTransaction()
                     .setDefaultAnimations()
                     .replace(R.id.frame_fragment, fragment)
                     .addToBackStack(null)
-                    .commit()
+
+                if (!supportFragmentManager.isDestroyed) {
+                    transaction.commit()
+                }
             }
         }
     }
@@ -323,10 +326,13 @@ class MainActivity :
                 return@runOnUiThread
             }
 
-            supportFragmentManager.beginTransaction()
+            val transaction = supportFragmentManager.beginTransaction()
                 .setDefaultAnimations()
                 .replace(R.id.frame_fragment, fragment)
-                .commit()
+
+            if (!supportFragmentManager.isDestroyed) {
+                transaction.commit()
+            }
         }
     }
 

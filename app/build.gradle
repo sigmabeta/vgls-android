@@ -1,3 +1,5 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.jaredsburrows.license'
 
@@ -32,10 +34,13 @@ def computeVersionName = { ->
 }
 
 android {
+    compileSdkVersion 33
+
     defaultConfig {
         applicationId "com.vgleadsheets"
 
         targetSdkVersion 32
+        minSdkVersion 21
 
         versionCode 1
         versionName "debug"
@@ -124,8 +129,7 @@ dependencies {
 
     androidTestImplementation project(path: ':core:common:debug-common')
 
-    // Kotlin libs
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation project(":core:coroutines")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
@@ -144,8 +148,11 @@ dependencies {
     }
 
     // Perf tracking (only log to firebase on release builds)
-    debugImplementation project(path: ':core:perf:tracking:noop')
-    releaseImplementation project(path: ':core:perf:tracking:firebase')
+    if (checkShouldIncludeFirebase()) {
+        implementation project(path: ':core:perf:tracking:firebase')
+    } else {
+        implementation project(path: ':core:perf:tracking:noop')
+    }
 
     // Memory leak detection (Uncomment to enable)
 //    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
@@ -161,7 +168,6 @@ dependencies {
 
     androidTestImplementation "androidx.test:runner:$espresso_runner_version"
     androidTestImplementation "androidx.test:rules:$espresso_runner_version"
-    androidTestImplementation "com.squareup.rx.idler:rx2-idler:0.10.0"
 
     // Dagger (important: include all 3 of these in modules that use Dagger
     implementation project(path: ':core:di')

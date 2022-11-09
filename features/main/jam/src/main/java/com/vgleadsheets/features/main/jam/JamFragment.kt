@@ -2,8 +2,9 @@ package com.vgleadsheets.features.main.jam
 
 import android.os.Bundle
 import android.view.View
-import com.airbnb.mvrx.MvRx
+import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
+import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
@@ -30,11 +31,11 @@ class JamFragment : BetterListFragment<JamContent, JamState>() {
         super.onViewCreated(view, savedInstanceState)
 
         // Quit the screen if the jam is deleted.
-        viewModel.asyncSubscribe(
+        viewModel.onAsync(
             JamState::deletion,
             deliveryMode = uniqueOnly("deletion")
         ) {
-            activity?.onBackPressed()
+            (activity as? FragmentRouter)?.back()
         }
     }
 
@@ -58,7 +59,7 @@ class JamFragment : BetterListFragment<JamContent, JamState>() {
             val fragment = JamFragment()
 
             val args = Bundle()
-            args.putParcelable(MvRx.KEY_ARG, idArgs)
+            args.putParcelable(Mavericks.KEY_ARG, idArgs)
             fragment.arguments = args
 
             return fragment
