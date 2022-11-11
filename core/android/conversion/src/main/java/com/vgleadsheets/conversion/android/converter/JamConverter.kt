@@ -25,7 +25,7 @@ class JamConverter :
         entity.id,
         entity.name,
         songRoomDao.getForeignModel(entity.id, converterSongs),
-        songHistoryEntryRoomDao.getJoinedModels(entity.id, converterSongHistory)
+        songHistoryEntryRoomDao.getManyModels(entity.id, converterSongHistory)
     )
 
     override fun Jam.toEntity() = JamEntity(
@@ -51,14 +51,14 @@ class JamConverter :
         null
     )
 
-    override fun JamEntity.toModelWithJoinedMany(
+    override fun JamEntity.toModelWithMany(
         manyDao: SongHistoryEntryRoomDao,
         converter: Converter<SongHistoryEntry, SongHistoryEntryEntity>
     ) = Jam(
         id,
         name,
         null,
-        manyDao.getJoinedModels(id, converter)
+        manyDao.getManyModels(id, converter)
     )
 
     override fun SongRoomDao.getForeignModel(
@@ -68,7 +68,7 @@ class JamConverter :
         getOneByIdSync(foreignId)
     )
 
-    override fun SongHistoryEntryRoomDao.getJoinedModels(
+    override fun SongHistoryEntryRoomDao.getManyModels(
         relationId: Long,
         converter: Converter<SongHistoryEntry, SongHistoryEntryEntity>
     ) = getEntitiesForForeignSync(relationId)

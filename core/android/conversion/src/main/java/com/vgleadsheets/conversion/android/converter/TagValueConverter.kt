@@ -2,14 +2,14 @@ package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
 import com.vgleadsheets.conversion.WithManyConverter
-import com.vgleadsheets.database.android.dao.SongRoomDao
+import com.vgleadsheets.database.android.dao.SongsForTagValueDao
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.android.enitity.TagValueEntity
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagValue
 
 class TagValueConverter :
-    WithManyConverter<TagValue, TagValueEntity, Song, SongEntity, SongRoomDao> {
+    WithManyConverter<TagValue, TagValueEntity, Song, SongEntity, SongsForTagValueDao> {
     override fun TagValue.toEntity() = TagValueEntity(
         id,
         name,
@@ -25,19 +25,19 @@ class TagValueConverter :
         null
     )
 
-    override fun TagValueEntity.toModelWithJoinedMany(
-        manyDao: SongRoomDao,
+    override fun TagValueEntity.toModelWithMany(
+        manyDao: SongsForTagValueDao,
         converter: Converter<Song, SongEntity>
     ): TagValue = TagValue(
         id,
         name,
         tag_key_id,
         tag_key_name,
-        manyDao.getJoinedModels(id, converter),
+        manyDao.getManyModels(id, converter),
     )
 
-    override fun SongRoomDao.getJoinedModels(
+    override fun SongsForTagValueDao.getManyModels(
         relationId: Long,
         converter: Converter<Song, SongEntity>
-    ) = getEntitiesForForeignSync(relationId).map { converter.entityToModel(it) }
+    ) = getJoinedEntitiesSync(relationId).map { converter.entityToModel(it) }
 }

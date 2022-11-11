@@ -25,17 +25,17 @@ abstract class OneToManyAndroidDataSource<
 
     override fun getOneById(id: Long) = roomImpl
         .getOneById(id)
-        .map { convert.entityToModelWithJoinedMany(it, manyRoomImpl, manyConverter) }
+        .map { convert.entityToModelWithMany(it, manyRoomImpl, manyConverter) }
 
     override fun getOneByIdSync(id: Long) = roomImpl
         .getOneByIdSync(id)
-        .let { convert.entityToModelWithJoinedMany(it, manyRoomImpl, manyConverter) }
+        .let { convert.entityToModelWithMany(it, manyRoomImpl, manyConverter) }
 
     override fun getAll(withRelated: Boolean) = roomImpl
         .getAll()
         .mapList {
             if (withRelated) {
-                convert.entityToModelWithJoinedMany(it, manyRoomImpl, manyConverter)
+                convert.entityToModelWithMany(it, manyRoomImpl, manyConverter)
             } else {
                 convert.entityToModel(it)
             }

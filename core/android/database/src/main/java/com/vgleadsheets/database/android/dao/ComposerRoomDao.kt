@@ -7,7 +7,6 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETICAL_ORDER
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
-import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
 import com.vgleadsheets.database.android.enitity.ComposerEntity
@@ -15,16 +14,9 @@ import com.vgleadsheets.database.android.join.SongComposerJoin
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ComposerRoomDao :
-    ManyToManyDao<ComposerEntity, SongComposerJoin> {
+interface ComposerRoomDao : RoomDao<ComposerEntity> {
     @Query(QUERY_SEARCH)
     fun searchByName(name: String): Flow<List<ComposerEntity>>
-
-    @Query(QUERY_JOIN)
-    override fun getJoinedEntities(id: Long): Flow<List<ComposerEntity>>
-
-    @Query(QUERY_JOIN)
-    override fun getJoinedEntitiesSync(id: Long): List<ComposerEntity>
 
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<ComposerEntity>
@@ -49,19 +41,6 @@ interface ComposerRoomDao :
         // Query Properties
 
         private const val TABLE = ComposerEntity.TABLE
-        private const val TABLE_JOIN = SongComposerJoin.TABLE
-
-        private const val ROW_JOIN_ID_LOCAL = "$TABLE_JOIN.${SongComposerJoin.ROW_FOREIGN_KEY_TWO}"
-        private const val ROW_JOIN_ID_FOREIGN =
-            "$TABLE_JOIN.${SongComposerJoin.ROW_FOREIGN_KEY_ONE}"
-
-        private const val WHERE_JOIN =
-            "INNER JOIN $TABLE_JOIN ON $TABLE.$ROW_PRIMARY_KEY_ID = $ROW_JOIN_ID_LOCAL WHERE $ROW_JOIN_ID_FOREIGN = :$ROW_PRIMARY_KEY_ID"
-
-        // Bespoke Queries
-
-        const val QUERY_JOIN =
-            "$GET $TABLE $WHERE_JOIN $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
 
         // Default Queries
 

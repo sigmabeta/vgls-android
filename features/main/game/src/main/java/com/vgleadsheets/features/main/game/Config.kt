@@ -88,8 +88,9 @@ class Config(
     )
 
     private fun Song.subtitleText() = when (composers?.size) {
-        1 -> composers?.firstOrNull()?.name
-            ?: resources.getString(R.string.subtitle_composer_unknown)
+        null -> resources.getString(R.string.subtitle_composer_unknown)
+        0 -> resources.getString(R.string.subtitle_composer_unknown)
+        1 -> composers!!.first().name
         else -> resources.getString(R.string.subtitle_composer_various)
     }
 

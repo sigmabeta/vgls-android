@@ -5,7 +5,7 @@ import com.vgleadsheets.conversion.android.converter.ComposerConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
 import com.vgleadsheets.conversion.mapList
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
-import com.vgleadsheets.database.android.dao.SongRoomDao
+import com.vgleadsheets.database.android.dao.SongsForComposerDao
 import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.android.join.SongComposerJoin
@@ -19,8 +19,8 @@ class ComposerAndroidDataSource @Inject constructor(
     private val convert: ComposerConverter,
     private val manyConverter: SongConverter,
     private val roomImpl: ComposerRoomDao,
-    private val relatedRoomImpl: SongRoomDao
-) : ManyToManyAndroidDataSource<ComposerRoomDao, Composer, ComposerEntity, Song, SongEntity, ComposerRoomDao, SongRoomDao, ComposerConverter, SongConverter>(
+    private val relatedRoomImpl: SongsForComposerDao
+) : ManyToManyAndroidDataSource<ComposerRoomDao, Composer, ComposerEntity, Song, SongEntity, ComposerRoomDao, SongsForComposerDao, ComposerConverter, SongConverter>(
     convert,
     manyConverter,
     roomImpl,

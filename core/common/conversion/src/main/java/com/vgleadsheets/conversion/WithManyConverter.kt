@@ -9,19 +9,19 @@ interface WithManyConverter<
     Converter<ModelType, EntityType> {
     fun toModelFromEntity(entity: EntityType) = entity.toModel()
 
-    fun EntityType.toModelWithJoinedMany(
+    fun EntityType.toModelWithMany(
         manyDao: ManyDaoType,
         converter: Converter<ManyModelType, ManyEntityType>
     ): ModelType
 
-    fun ManyDaoType.getJoinedModels(
+    fun ManyDaoType.getManyModels(
         relationId: Long,
         converter: Converter<ManyModelType, ManyEntityType>
     ): List<ManyModelType>
 
-    fun entityToModelWithJoinedMany(
+    fun entityToModelWithMany(
         entity: EntityType,
         joinDao: ManyDaoType,
         converter: Converter<ManyModelType, ManyEntityType>
-    ) = entity.toModelWithJoinedMany(joinDao, converter)
+    ) = entity.toModelWithMany(joinDao, converter)
 }

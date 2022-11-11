@@ -2,7 +2,7 @@ package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
 import com.vgleadsheets.conversion.WithManyConverter
-import com.vgleadsheets.database.android.dao.SongRoomDao
+import com.vgleadsheets.database.android.dao.SongsForComposerDao
 import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.model.Composer
@@ -11,7 +11,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
 
 class ComposerConverter :
-    WithManyConverter<Composer, ComposerEntity, Song, SongEntity, SongRoomDao> {
+    WithManyConverter<Composer, ComposerEntity, Song, SongEntity, SongsForComposerDao> {
     override fun Composer.toEntity() = ComposerEntity(
         id,
         name,
@@ -27,18 +27,18 @@ class ComposerConverter :
         hasVocalSongs
     )
 
-    override fun ComposerEntity.toModelWithJoinedMany(
-        manyDao: SongRoomDao,
+    override fun ComposerEntity.toModelWithMany(
+        manyDao: SongsForComposerDao,
         converter: Converter<Song, SongEntity>
     ) = Composer(
         id,
         name,
-        manyDao.getJoinedModels(id, converter),
+        manyDao.getManyModels(id, converter),
         photoUrl,
         hasVocalSongs
     )
 
-    override fun SongRoomDao.getJoinedModels(
+    override fun SongsForComposerDao.getManyModels(
         relationId: Long,
         converter: Converter<Song, SongEntity>
     ) = getJoinedEntitiesSync(relationId)

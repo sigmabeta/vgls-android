@@ -21,16 +21,16 @@ class TagKeyConverter :
         null,
     )
 
-    override fun TagKeyEntity.toModelWithJoinedMany(
+    override fun TagKeyEntity.toModelWithMany(
         manyDao: TagValueRoomDao,
         converter: Converter<TagValue, TagValueEntity>
     ): TagKey = TagKey(
         id,
         name,
-        manyDao.getJoinedModels(id, converter),
+        manyDao.getManyModels(id, converter),
     )
 
-    override fun TagValueRoomDao.getJoinedModels(
+    override fun TagValueRoomDao.getManyModels(
         relationId: Long,
         converter: Converter<TagValue, TagValueEntity>
     ) = getEntitiesForForeignSync(relationId).map { converter.entityToModel(it) }

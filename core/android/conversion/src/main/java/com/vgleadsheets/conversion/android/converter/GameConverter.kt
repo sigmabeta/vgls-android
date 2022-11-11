@@ -25,17 +25,17 @@ class GameConverter : WithManyConverter<Game, GameEntity, Song, SongEntity, Song
         photoUrl
     )
 
-    override fun GameEntity.toModelWithJoinedMany(
+    override fun GameEntity.toModelWithMany(
         manyDao: SongRoomDao,
         converter: Converter<Song, SongEntity>
     ): Game = Game(
         id,
         name,
-        manyDao.getJoinedModels(id, converter),
+        manyDao.getManyModels(id, converter),
         photoUrl
     )
 
-    override fun SongRoomDao.getJoinedModels(
+    override fun SongRoomDao.getManyModels(
         relationId: Long,
         converter: Converter<Song, SongEntity>
     ) = getEntitiesForForeignSync(relationId).map { converter.entityToModel(it) }

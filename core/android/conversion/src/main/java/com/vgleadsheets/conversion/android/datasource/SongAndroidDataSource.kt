@@ -5,9 +5,9 @@ import com.vgleadsheets.conversion.android.converter.ComposerConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
 import com.vgleadsheets.conversion.mapList
-import com.vgleadsheets.database.android.dao.ComposerRoomDao
+import com.vgleadsheets.database.android.dao.ComposersForSongDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
-import com.vgleadsheets.database.android.dao.TagValueRoomDao
+import com.vgleadsheets.database.android.dao.TagValuesForSongDao
 import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.dao.SongDataSource
@@ -20,9 +20,9 @@ class SongAndroidDataSource @Inject constructor(
     private val manyConverter: ComposerConverter,
     private val tagValueConverter: TagValueConverter,
     private val roomImpl: SongRoomDao,
-    private val relatedRoomImpl: ComposerRoomDao,
-    private val tagValueRoomImpl: TagValueRoomDao
-) : ManyToManyAndroidDataSource<SongRoomDao, Song, SongEntity, Composer, ComposerEntity, SongRoomDao, ComposerRoomDao, SongConverter, ComposerConverter>(
+    private val relatedRoomImpl: ComposersForSongDao,
+    private val tagValueRoomImpl: TagValuesForSongDao
+) : ManyToManyAndroidDataSource<SongRoomDao, Song, SongEntity, Composer, ComposerEntity, SongRoomDao, ComposersForSongDao, SongConverter, ComposerConverter>(
     convert,
     manyConverter,
     roomImpl,

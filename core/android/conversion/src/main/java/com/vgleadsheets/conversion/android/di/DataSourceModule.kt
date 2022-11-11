@@ -23,6 +23,7 @@ import com.vgleadsheets.conversion.android.datasource.TagKeyAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.TagValueAndroidDataSource
 import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
+import com.vgleadsheets.database.android.dao.ComposersForSongDao
 import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
 import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.dao.GameRoomDao
@@ -30,8 +31,11 @@ import com.vgleadsheets.database.android.dao.JamRoomDao
 import com.vgleadsheets.database.android.dao.SetlistEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
+import com.vgleadsheets.database.android.dao.SongsForComposerDao
+import com.vgleadsheets.database.android.dao.SongsForTagValueDao
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
+import com.vgleadsheets.database.android.dao.TagValuesForSongDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
@@ -65,7 +69,7 @@ class DataSourceModule {
         convert: ComposerConverter,
         manyConverter: SongConverter,
         roomImpl: ComposerRoomDao,
-        relatedRoomImpl: SongRoomDao
+        relatedRoomImpl: SongsForComposerDao
     ): ComposerDataSource = ComposerAndroidDataSource(
         convert,
         manyConverter,
@@ -144,8 +148,8 @@ class DataSourceModule {
         manyConverter: ComposerConverter,
         tagValueConverter: TagValueConverter,
         roomImpl: SongRoomDao,
-        relatedRoomImpl: ComposerRoomDao,
-        tagValueRoomImpl: TagValueRoomDao
+        relatedRoomImpl: ComposersForSongDao,
+        tagValueRoomImpl: TagValuesForSongDao
     ): SongDataSource = SongAndroidDataSource(
         convert,
         manyConverter,
@@ -189,7 +193,7 @@ class DataSourceModule {
         convert: TagValueConverter,
         manyConverter: SongConverter,
         roomImpl: TagValueRoomDao,
-        relatedRoomImpl: SongRoomDao
+        relatedRoomImpl: SongsForTagValueDao
     ): TagValueDataSource = TagValueAndroidDataSource(
         convert,
         manyConverter,
