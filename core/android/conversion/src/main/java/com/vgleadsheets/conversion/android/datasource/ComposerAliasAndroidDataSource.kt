@@ -9,7 +9,7 @@ import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.model.alias.ComposerAlias
 import javax.inject.Inject
 
-class ComposerAliasAndroidDataSource @Inject constructor(
+class ComposerAliasAndroidDataSource(
     private val convert: ComposerAliasConverter,
     private val roomImpl: ComposerAliasRoomDao
 ) : RegularAndroidDataSource<ComposerAliasRoomDao, ComposerAlias, ComposerAliasEntity, ComposerAliasConverter>(

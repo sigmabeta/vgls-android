@@ -12,7 +12,7 @@ import com.vgleadsheets.model.SetlistEntry
 import com.vgleadsheets.model.Song
 import javax.inject.Inject
 
-class SetlistEntryAndroidDataSource @Inject constructor(
+class SetlistEntryAndroidDataSource(
     private val convert: SetlistEntryConverter,
     private val foreignConverter: SongConverter,
     private val roomImpl: SetlistEntryRoomDao,

@@ -40,18 +40,21 @@ class SongConverter :
     override fun SongEntity.toModelWithMany(
         manyDao: ComposersForSongDao,
         converter: Converter<Composer, ComposerEntity>
-    ) = Song(
-        id,
-        name,
-        filename,
-        game_id,
-        gameName,
-        hasVocals,
-        pageCount,
-        lyricPageCount,
-        manyDao.getManyModels(id, converter),
-        playCount
-    )
+    ): Song {
+        val composers = manyDao.getManyModels(id, converter)
+        return Song(
+            id,
+            name,
+            filename,
+            game_id,
+            gameName,
+            hasVocals,
+            pageCount,
+            lyricPageCount,
+            composers,
+            playCount
+        )
+    }
 
     override fun ComposersForSongDao.getManyModels(
         relationId: Long,

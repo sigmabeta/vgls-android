@@ -13,7 +13,7 @@ import com.vgleadsheets.model.SongHistoryEntry
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-class SongHistoryEntryAndroidDataSource @Inject constructor(
+class SongHistoryEntryAndroidDataSource(
     private val convert: SongHistoryEntryConverter,
     private val foreignConvert: SongConverter,
     private val roomImpl: SongHistoryEntryRoomDao,

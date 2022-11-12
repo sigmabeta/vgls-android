@@ -33,7 +33,9 @@ class Config(
 
     private val game = gameLoad.content()
 
-    private val songs = game?.songs
+    private val songsLoad = state.contentLoad.songs
+
+    private val songs = songsLoad.content()
 
     override val titleConfig = Title.Config(
         game?.name ?: resources.getString(R.string.unknown_game),

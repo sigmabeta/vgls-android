@@ -14,7 +14,7 @@ import com.vgleadsheets.model.relation.SongTagValueRelation
 import com.vgleadsheets.model.tag.TagValue
 import javax.inject.Inject
 
-class TagValueAndroidDataSource @Inject constructor(
+class TagValueAndroidDataSource(
     private val convert: TagValueConverter,
     private val manyConverter: SongConverter,
     private val roomImpl: TagValueRoomDao,

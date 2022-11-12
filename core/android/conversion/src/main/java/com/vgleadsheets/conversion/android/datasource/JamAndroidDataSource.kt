@@ -16,7 +16,7 @@ import com.vgleadsheets.model.SongHistoryEntry
 import javax.inject.Inject
 import kotlinx.coroutines.flow.map
 
-class JamAndroidDataSource @Inject constructor(
+class JamAndroidDataSource(
     private val convert: JamConverter,
     private val roomImpl: JamRoomDao,
     private val otoRelatedRoomImpl: SongRoomDao,

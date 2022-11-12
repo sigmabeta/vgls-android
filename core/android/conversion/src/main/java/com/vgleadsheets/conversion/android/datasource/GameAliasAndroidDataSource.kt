@@ -9,7 +9,7 @@ import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.model.alias.GameAlias
 import javax.inject.Inject
 
-class GameAliasAndroidDataSource @Inject constructor(
+class GameAliasAndroidDataSource(
     private val convert: GameAliasConverter,
     private val roomImpl: GameAliasRoomDao,
 ) : RegularAndroidDataSource<GameAliasRoomDao, GameAlias, GameAliasEntity, GameAliasConverter>(

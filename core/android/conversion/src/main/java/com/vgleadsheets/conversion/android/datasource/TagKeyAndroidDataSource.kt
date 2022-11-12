@@ -13,7 +13,7 @@ import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import javax.inject.Inject
 
-class TagKeyAndroidDataSource @Inject constructor(
+class TagKeyAndroidDataSource(
     private val convert: TagKeyConverter,
     private val manyConverter: TagValueConverter,
     private val roomImpl: TagKeyRoomDao,

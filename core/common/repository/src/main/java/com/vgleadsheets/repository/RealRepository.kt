@@ -114,6 +114,10 @@ class RealRepository constructor(
         .getAll(withHistory)
         .flowOn(dispatchers.disk)
 
+    override fun getSongsForGame(gameId: Long, withComposers: Boolean) = gameDataSource
+        .getSongsForGame(gameId, withComposers)
+        .flowOn(dispatchers.disk)
+
     override fun getTagValuesForSong(songId: Long) = songDataSource
         .getTagValuesForSong(songId)
         .flowOn(dispatchers.disk)

@@ -15,7 +15,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.relation.SongComposerRelation
 import javax.inject.Inject
 
-class ComposerAndroidDataSource @Inject constructor(
+class ComposerAndroidDataSource(
     private val convert: ComposerConverter,
     private val manyConverter: SongConverter,
     private val roomImpl: ComposerRoomDao,

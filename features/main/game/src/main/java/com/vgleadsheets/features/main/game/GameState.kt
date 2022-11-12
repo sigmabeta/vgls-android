@@ -8,6 +8,7 @@ data class GameState(
     val gameId: Long,
     override val contentLoad: GameDetailContent = GameDetailContent(
         Uninitialized,
+        Uninitialized
     )
 ) : BetterCompositeState<GameDetailContent> {
     constructor(args: IdArgs) : this(args.id)

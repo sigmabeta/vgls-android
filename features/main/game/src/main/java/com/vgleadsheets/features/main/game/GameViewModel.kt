@@ -15,6 +15,7 @@ class GameViewModel @AssistedInject constructor(
 ) : MavericksViewModel<GameState>(initialState) {
     init {
         fetchGame()
+        fetchSongs()
     }
 
     private fun fetchGame() = withState {
@@ -23,6 +24,17 @@ class GameViewModel @AssistedInject constructor(
                 copy(
                     contentLoad = contentLoad.copy(
                         game = it
+                    )
+                )
+            }
+    }
+
+    private fun fetchSongs() = withState {
+        repository.getSongsForGame(it.gameId)
+            .execute { songs ->
+                copy(
+                    contentLoad = contentLoad.copy(
+                        songs = songs
                     )
                 )
             }

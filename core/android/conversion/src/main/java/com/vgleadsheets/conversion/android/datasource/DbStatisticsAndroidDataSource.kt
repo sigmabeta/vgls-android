@@ -7,7 +7,7 @@ import com.vgleadsheets.model.time.Time
 import javax.inject.Inject
 import kotlinx.coroutines.flow.map
 
-class DbStatisticsAndroidDataSource @Inject constructor(
+class DbStatisticsAndroidDataSource(
     private val roomImpl: DbStatisticsRoomDao
 ) : DbStatisticsDataSource {
     override fun getTime(tableId: Int) = roomImpl

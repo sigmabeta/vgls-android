@@ -1,9 +1,11 @@
 package com.vgleadsheets.conversion.android.datasource
 
 import com.vgleadsheets.conversion.android.OneToManyAndroidDataSource
+import com.vgleadsheets.conversion.android.converter.ComposerConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
 import com.vgleadsheets.conversion.mapList
+import com.vgleadsheets.database.android.dao.ComposersForSongDao
 import com.vgleadsheets.database.android.dao.GameRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.GameEntity
@@ -13,11 +15,13 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import javax.inject.Inject
 
-class GameAndroidDataSource @Inject constructor(
+class GameAndroidDataSource(
     private val convert: GameConverter,
     private val manyConverter: SongConverter,
     private val roomImpl: GameRoomDao,
-    private val relatedRoomImpl: SongRoomDao
+    private val relatedRoomImpl: SongRoomDao,
+    private val composersForSongDao: ComposersForSongDao,
+    private val composerConverter: ComposerConverter
 ) : OneToManyAndroidDataSource<GameRoomDao, Game, GameEntity, Song, SongEntity, SongRoomDao, GameConverter, SongConverter>(
     convert,
     manyConverter,
@@ -27,4 +31,18 @@ class GameAndroidDataSource @Inject constructor(
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }
+
+    override fun getSongsForGame(gameId: Long, withComposers: Boolean) = relatedRoomImpl
+        .getEntitiesForForeign(gameId)
+        .mapList {
+            if (withComposers) {
+                manyConverter.entityToModelWithMany(
+                    it,
+                    composersForSongDao,
+                    composerConverter
+                )
+            } else {
+                manyConverter.entityToModel(it)
+            }
+        }
 }

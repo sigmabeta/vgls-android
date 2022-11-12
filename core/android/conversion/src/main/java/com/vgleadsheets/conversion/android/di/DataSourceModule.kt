@@ -101,12 +101,16 @@ class DataSourceModule {
         convert: GameConverter,
         manyConverter: SongConverter,
         roomImpl: GameRoomDao,
-        relatedRoomImpl: SongRoomDao
+        relatedRoomImpl: SongRoomDao,
+        composersForSongDao: ComposersForSongDao,
+        composerConverter: ComposerConverter
     ): GameDataSource = GameAndroidDataSource(
         convert,
         manyConverter,
         roomImpl,
-        relatedRoomImpl
+        relatedRoomImpl,
+        composersForSongDao,
+        composerConverter,
     )
 
     @Provides
