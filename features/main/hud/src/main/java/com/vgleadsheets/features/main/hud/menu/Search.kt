@@ -17,6 +17,7 @@ import com.vgleadsheets.features.main.hud.Clicks
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.features.main.hud.search.SearchContent
+import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Part
@@ -252,7 +253,11 @@ object Search {
                             result.id,
                             result.name,
                             result.gameName,
-                            null, //result.thumbUrl(baseImageUrl, selectedPart),
+                            Page.generateThumbUrl(
+                                baseImageUrl,
+                                selectedPart.apiId,
+                                result.filename
+                            ),
                             R.drawable.placeholder_sheet
                         ) {
                             clicks.songSearchResult(result.id)
@@ -387,6 +392,9 @@ object Search {
         return builder.toString()
     }
 
-    const val MAX_LENGTH_SUBTITLE_CHARS = 20
-    const val MAX_LENGTH_SUBTITLE_ITEMS = 6
+    private const val MAX_LENGTH_SUBTITLE_CHARS = 20
+    private const val MAX_LENGTH_SUBTITLE_ITEMS = 6
+
+    private const val ID_OFFSET_GAME = 1_000L
+    private const val ID_OFFSET_COMPOSER = 1_000_000L
 }

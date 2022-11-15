@@ -176,7 +176,7 @@ class Config(
                     }
 
                     is Game -> ImageNameCaptionListModel(
-                        result.id,
+                        result.id + ID_OFFSET_GAME,
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
@@ -184,7 +184,7 @@ class Config(
                     ) { clicks.game(result.id) }
 
                     is Composer -> ImageNameCaptionListModel(
-                        result.id,
+                        result.id + ID_OFFSET_COMPOSER,
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
@@ -292,5 +292,10 @@ class Config(
         }
 
         return builder.toString()
+    }
+
+    companion object {
+        private const val ID_OFFSET_GAME = 1_000L
+        private const val ID_OFFSET_COMPOSER = 1_000_000L
     }
 }

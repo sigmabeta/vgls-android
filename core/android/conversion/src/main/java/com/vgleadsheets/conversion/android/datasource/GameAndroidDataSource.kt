@@ -13,7 +13,6 @@ import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import javax.inject.Inject
 
 class GameAndroidDataSource(
     private val convert: GameConverter,
@@ -30,7 +29,7 @@ class GameAndroidDataSource(
 ), GameDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
-        .mapList { convert.entityToModel(it) }
+        .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }
 
     override fun getSongsForGame(gameId: Long, withComposers: Boolean) = relatedRoomImpl
         .getEntitiesForForeign(gameId)

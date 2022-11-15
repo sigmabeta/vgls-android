@@ -12,6 +12,7 @@ dependencies {
     implementation project(':core:common:repository')
 
     implementation project(':core:android:animation')
+    implementation project(':core:android:images')
     implementation project(':core:android:recyclerview')
     implementation project(':core:android:storage')
     implementation project(':core:android:ui-core')

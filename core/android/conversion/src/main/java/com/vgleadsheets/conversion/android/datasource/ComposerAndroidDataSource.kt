@@ -13,7 +13,6 @@ import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.relation.SongComposerRelation
-import javax.inject.Inject
 
 class ComposerAndroidDataSource(
     private val convert: ComposerConverter,
@@ -28,7 +27,7 @@ class ComposerAndroidDataSource(
 ), ComposerDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
-        .mapList { convert.entityToModel(it) }
+        .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }
 
     override fun insertRelations(relations: List<SongComposerRelation>) = roomImpl
         .insertJoins(
