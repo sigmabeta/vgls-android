@@ -203,7 +203,7 @@ class MainActivity :
     }
 
     override fun searchYoutube(name: String, gameName: String) {
-        val query = "$gameName - $name"
+        val query = "$gameName - $name music"
         val youtubeUrl = getYoutubeSearchUrlForQuery(query)
 
         goToWebUrl(youtubeUrl)
