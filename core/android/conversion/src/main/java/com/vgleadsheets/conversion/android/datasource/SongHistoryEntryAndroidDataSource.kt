@@ -3,6 +3,7 @@ package com.vgleadsheets.conversion.android.datasource
 import com.vgleadsheets.conversion.android.OneToOneAndroidDataSource
 import com.vgleadsheets.conversion.android.converter.SongConverter
 import com.vgleadsheets.conversion.android.converter.SongHistoryEntryConverter
+import com.vgleadsheets.conversion.mapList
 import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.SongEntity
@@ -10,7 +11,6 @@ import com.vgleadsheets.database.android.enitity.SongHistoryEntryEntity
 import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.SongHistoryEntry
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 class SongHistoryEntryAndroidDataSource(
@@ -31,4 +31,16 @@ class SongHistoryEntryAndroidDataSource(
     override fun getAll(): Flow<List<SongHistoryEntry>> {
         TODO("Not yet implemented")
     }
+
+    override fun removeForJam(id: Long) = roomImpl.removeForJam(id)
+
+    override fun getSongHistoryEntriesForJam(jamId: Long) = roomImpl
+        .getSongHistoryEntriesForJam(jamId)
+        .mapList {
+            convert.entityToModelWithForeignOne(
+                it,
+                relatedRoomImpl,
+                foreignConvert
+            )
+        }
 }

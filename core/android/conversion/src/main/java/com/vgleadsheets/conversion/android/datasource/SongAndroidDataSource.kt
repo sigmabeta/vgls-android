@@ -13,7 +13,6 @@ import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Song
-import javax.inject.Inject
 
 class SongAndroidDataSource(
     private val convert: SongConverter,

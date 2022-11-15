@@ -13,6 +13,12 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SetlistEntryRoomDao : OneToOneDao<SetlistEntryEntity> {
+    @Query("$DELETE $TABLE $WHERE_FOREIGN")
+    fun removeForJam(id: Long)
+
+    @Query(QUERY_RELATED)
+    fun getSetlistEntriesForJam(id: Long): Flow<List<SetlistEntryEntity>>
+
     @Query(QUERY_FOREIGN)
     override fun getForeignEntity(id: Long): Flow<SetlistEntryEntity>
 
@@ -45,10 +51,16 @@ interface SetlistEntryRoomDao : OneToOneDao<SetlistEntryEntity> {
 
         private const val OPTION_ORDER_ID = "ORDER BY $ROW_PRIMARY_KEY_ID"
 
+        private const val ROW_MANY_KEY = SetlistEntryEntity.ROW_FOREIGN_KEY
+
+        private const val WHERE_MANY = "WHERE $ROW_MANY_KEY = :$ROW_PRIMARY_KEY_ID"
+
         // Bespoke Queries
 
         const val QUERY_FOREIGN =
             "$GET $TABLE $WHERE_FOREIGN $OPTION_ORDER_ID $OPTION_CASE_INSENSITIVE"
+        const val QUERY_RELATED =
+            "$GET $TABLE $WHERE_MANY"
 
         // Default Queries
 

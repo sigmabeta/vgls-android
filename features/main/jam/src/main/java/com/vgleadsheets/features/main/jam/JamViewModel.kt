@@ -81,14 +81,23 @@ class JamViewModel @AssistedInject constructor(
                 )
             }
 
-        // repository.getSetlistForJam(jamId)
-        //     .execute {
-        //         copy(
-        //             contentLoad = contentLoad.copy(
-        //                 setlist = it
-        //             )
-        //         )
-        //     }
+        repository.getSetlistEntriesForJam(jamId)
+            .execute {
+                copy(
+                    contentLoad = contentLoad.copy(
+                        setlist = it
+                    )
+                )
+            }
+
+        repository.getSongHistoryForJam(jamId)
+            .execute {
+                copy(
+                    contentLoad = contentLoad.copy(
+                        songHistory = it
+                    )
+                )
+            }
     }
 
     @AssistedFactory

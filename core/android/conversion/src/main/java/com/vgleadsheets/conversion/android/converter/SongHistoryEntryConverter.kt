@@ -13,11 +13,12 @@ class SongHistoryEntryConverter :
     override fun SongHistoryEntry.toEntity() = SongHistoryEntryEntity(
         id,
         jamId,
-        song!!.id
+        songId
     )
 
     override fun SongHistoryEntryEntity.toModel() = SongHistoryEntry(
         id,
+        song_id,
         jam_id,
         null
     )
@@ -27,6 +28,7 @@ class SongHistoryEntryConverter :
         converter: Converter<Song, SongEntity>
     ) = SongHistoryEntry(
         id,
+        song_id,
         jam_id,
         foreignDao.getForeignModel(song_id, converter)
     )

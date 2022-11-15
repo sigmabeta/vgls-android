@@ -2,43 +2,36 @@ package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
 import com.vgleadsheets.conversion.OneToOneConverter
-import com.vgleadsheets.conversion.WithManyConverter
-import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.JamEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
-import com.vgleadsheets.database.android.enitity.SongHistoryEntryEntity
 import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.SongHistoryEntry
 
 class JamConverter :
-    OneToOneConverter<Jam, JamEntity, Song, SongEntity, SongRoomDao>,
-    WithManyConverter<Jam, JamEntity, SongHistoryEntry, SongHistoryEntryEntity, SongHistoryEntryRoomDao> {
+    OneToOneConverter<Jam, JamEntity, Song, SongEntity, SongRoomDao> {
     fun toModelFull(
         entity: JamEntity,
         songRoomDao: SongRoomDao,
-        songHistoryEntryRoomDao: SongHistoryEntryRoomDao,
         converterSongs: Converter<Song, SongEntity>,
-        converterSongHistory: Converter<SongHistoryEntry, SongHistoryEntryEntity>
     ) = Jam(
         entity.id,
         entity.name,
-        songRoomDao.getForeignModel(entity.id, converterSongs),
-        songHistoryEntryRoomDao.getManyModels(entity.id, converterSongHistory)
+        entity.currentSheetId,
+        songRoomDao.getForeignModel(entity.currentSheetId ?: -1L, converterSongs)
     )
 
     override fun Jam.toEntity() = JamEntity(
         id,
         name,
-        currentSong?.id
+        currentSongId
     )
 
     override fun JamEntity.toModel() = Jam(
         id,
         name,
+        currentSheetId,
         null,
-        null
     )
 
     override fun JamEntity.toModelWithRelatedOne(
@@ -47,18 +40,8 @@ class JamConverter :
     ) = Jam(
         id,
         name,
-        foreignDao.getForeignModel(id, converter),
-        null
-    )
-
-    override fun JamEntity.toModelWithMany(
-        manyDao: SongHistoryEntryRoomDao,
-        converter: Converter<SongHistoryEntry, SongHistoryEntryEntity>
-    ) = Jam(
-        id,
-        name,
-        null,
-        manyDao.getManyModels(id, converter)
+        currentSheetId,
+        foreignDao.getForeignModel(currentSheetId ?: -1L, converter),
     )
 
     override fun SongRoomDao.getForeignModel(
@@ -67,10 +50,4 @@ class JamConverter :
     ) = converter.entityToModel(
         getOneByIdSync(foreignId)
     )
-
-    override fun SongHistoryEntryRoomDao.getManyModels(
-        relationId: Long,
-        converter: Converter<SongHistoryEntry, SongHistoryEntryEntity>
-    ) = getEntitiesForForeignSync(relationId)
-        .map { converter.entityToModel(it) }
 }

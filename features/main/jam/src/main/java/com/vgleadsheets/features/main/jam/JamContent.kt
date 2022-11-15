@@ -9,12 +9,15 @@ import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.SetlistEntry
+import com.vgleadsheets.model.SongHistoryEntry
 
 data class JamContent(
     val jamRefresh: Async<Unit> = Uninitialized,
     val jam: Async<Jam> = Uninitialized,
     val setlistRefresh: Async<Unit> = Uninitialized,
-    val setlist: Async<List<SetlistEntry>> = Uninitialized
+    val setlist: Async<List<SetlistEntry>> = Uninitialized,
+    val songHistoryRefresh: Async<Unit> = Uninitialized,
+    val songHistory: Async<List<SongHistoryEntry>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException
     override fun failure() = jam.failure() ?: setlist.failure()

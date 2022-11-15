@@ -14,4 +14,3 @@ data class JamEntity(
         const val TABLE = "jam"
     }
 }
-

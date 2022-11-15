@@ -43,6 +43,10 @@ class Config(
 
     private val setlist = setlistLoad.content()
 
+    private val songHistoryLoad = state.contentLoad.songHistory
+
+    private val songHistory = songHistoryLoad.content()
+
     override val titleConfig = Title.Config(
         jam?.name ?: resources.getString(R.string.unknown_jam),
         resources.getString(R.string.subtitle_jam),
@@ -143,9 +147,11 @@ class Config(
         } else {
             sectionTitle + setlist.mapYielding {
                 val song = it.song
+                val dataId = it.id + ID_OFFSET_SETLIST
+
                 ImageNameCaptionListModel(
-                    it.id,
-                    song?.name ?: return@mapYielding songLoadError(),
+                    dataId,
+                    song?.name ?: return@mapYielding songLoadError(dataId),
                     song.gameName,
                     Page.generateThumbUrl(
                         baseImageUrl,
@@ -165,10 +171,10 @@ class Config(
             )
         )
 
-        return if (state.contentLoad.setlistRefresh is Loading) {
-            sectionTitle + listOf(NetworkRefreshingListModel("history"))
+        return sectionTitle + if (state.contentLoad.setlistRefresh is Loading) {
+            listOf(NetworkRefreshingListModel("history"))
         } else if (jamLoad.isLoading()) {
-            sectionTitle + buildList<ListModel> {
+            buildList {
                 repeat(2) {
                     add(
                         LoadingImageNameCaptionListModel(
@@ -179,26 +185,22 @@ class Config(
                 }
             }
         } else {
-            val songHistory = jam?.songHistory
+            songHistory?.mapYielding {
+                val song = it.song
+                val dataId = it.id + ID_OFFSET_SONG_HISTORY
 
-            if (songHistory == null) {
-                emptyList()
-            } else {
-                sectionTitle + songHistory.mapYielding { it ->
-                    val song = it.song
-                    ImageNameCaptionListModel(
-                        it.id,
-                        song?.name ?: return@mapYielding songLoadError(),
-                        song.gameName,
-                        Page.generateThumbUrl(
-                            baseImageUrl,
-                            hudState.selectedPart.apiId,
-                            song.filename
-                        ),
-                        R.drawable.placeholder_sheet
-                    ) { clicks.song(song.id) }
-                }
-            }
+                ImageNameCaptionListModel(
+                    dataId,
+                    song?.name ?: return@mapYielding songLoadError(dataId),
+                    song.gameName,
+                    Page.generateThumbUrl(
+                        baseImageUrl,
+                        hudState.selectedPart.apiId,
+                        song.filename
+                    ),
+                    R.drawable.placeholder_sheet
+                ) { clicks.song(song.id) }
+            } ?: emptyList()
         }
     }
 
@@ -220,12 +222,17 @@ class Config(
         LoadingItemStyle.WITH_IMAGE
     )
 
-    private fun songLoadError() = ImageNameCaptionListModel(
-        -1L,
+    private fun songLoadError(id: Long) = ImageNameCaptionListModel(
+        id,
         resources.getString(R.string.unknown_song),
         resources.getString(R.string.error_song),
         null,
         R.drawable.ic_error_24dp,
         onClick = NO_ACTION
     )
+
+    companion object {
+        private const val ID_OFFSET_SETLIST = 1_000L
+        private const val ID_OFFSET_SONG_HISTORY = 1_000_000L
+    }
 }

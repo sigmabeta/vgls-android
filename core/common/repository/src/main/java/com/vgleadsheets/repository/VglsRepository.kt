@@ -3,7 +3,9 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Jam
+import com.vgleadsheets.model.SetlistEntry
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.SongHistoryEntry
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time
@@ -28,6 +30,8 @@ interface VglsRepository {
     // Related Lists
     fun getSongsForGame(gameId: Long, withComposers: Boolean = true): Flow<List<Song>>
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
+    fun getSetlistEntriesForJam(jamId: Long): Flow<List<SetlistEntry>>
+    fun getSongHistoryForJam(jamId: Long): Flow<List<SongHistoryEntry>>
 
     // Single items
     fun getSong(songId: Long): Flow<Song>

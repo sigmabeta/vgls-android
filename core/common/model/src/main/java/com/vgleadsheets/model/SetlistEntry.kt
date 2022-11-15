@@ -5,5 +5,6 @@ data class SetlistEntry(
     val jamId: Long,
     val gameName: String,
     val songName: String,
+    val songId: Long,
     val song: Song?
 )

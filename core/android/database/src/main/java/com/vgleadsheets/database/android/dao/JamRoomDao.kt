@@ -2,6 +2,7 @@ package com.vgleadsheets.database.android.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
@@ -17,6 +18,9 @@ interface JamRoomDao : RoomDao<JamEntity> {
     @Query(QUERY_SEARCH)
     fun searchByName(name: String): Flow<List<JamEntity>>
 
+    @Query("$DELETE $TABLE $WHERE_SINGLE")
+    fun remove(id: Long)
+
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<JamEntity>
 
@@ -26,7 +30,7 @@ interface JamRoomDao : RoomDao<JamEntity> {
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<JamEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     override fun insert(entities: List<JamEntity>)
 
     @Query(QUERY_DELETE)

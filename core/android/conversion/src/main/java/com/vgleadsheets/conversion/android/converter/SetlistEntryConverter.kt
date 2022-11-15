@@ -15,7 +15,7 @@ class SetlistEntryConverter :
         gameName,
         songName,
         jamId,
-        song!!.id
+        songId
     )
 
     override fun SetlistEntryEntity.toModel() = SetlistEntry(
@@ -23,6 +23,7 @@ class SetlistEntryConverter :
         jam_id,
         game_name,
         song_name,
+        song_id,
         null
     )
 
@@ -34,6 +35,7 @@ class SetlistEntryConverter :
         jam_id,
         game_name,
         song_name,
+        song_id,
         foreignDao.getForeignModel(song_id, converter)
     )
 

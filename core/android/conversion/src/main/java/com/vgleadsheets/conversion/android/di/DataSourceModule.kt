@@ -118,17 +118,13 @@ class DataSourceModule {
     fun jamDataSource(
         convert: JamConverter,
         otoRelatedRoomImpl: SongRoomDao,
-        otmRelatedRoomImpl: SongHistoryEntryRoomDao,
         roomImpl: JamRoomDao,
         songConverter: SongConverter,
-        songHistoryEntryConverter: SongHistoryEntryConverter
     ): JamDataSource = JamAndroidDataSource(
         convert,
         roomImpl,
         otoRelatedRoomImpl,
-        otmRelatedRoomImpl,
         songConverter,
-        songHistoryEntryConverter
     )
 
     @Provides
