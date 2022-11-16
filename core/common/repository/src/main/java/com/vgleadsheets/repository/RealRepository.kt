@@ -246,37 +246,41 @@ class RealRepository constructor(
         }
 
     private suspend fun refreshJamStateImpl(name: String) {
-        // Perform network requests first
-        val apiJam = withContext(dispatchers.network) {
-            vglsApi.getJamState(name)
-        }
+        try {
+            // Perform network requests first
+            val apiJam = withContext(dispatchers.network) {
+                vglsApi.getJamState(name)
+            }
 
-        val setlist = withContext(dispatchers.network) {
-            vglsApi.getSetlistForJam(name)
-        }
+            val setlist = withContext(dispatchers.network) {
+                vglsApi.getSetlistForJam(name)
+            }
 
-        // Then pull the data out all at once
-        val jam = Jam(
-            apiJam.jam_id,
-            name.lowercase(Locale.getDefault()),
-            apiJam.song_history.firstOrNull()?.sheet_id,
-            null,
-        )
+            // Then pull the data out all at once
+            val jam = Jam(
+                apiJam.jam_id,
+                name.lowercase(Locale.getDefault()),
+                apiJam.song_history.firstOrNull()?.sheet_id,
+                null,
+            )
 
-        val songHistoryEntries = songHistoryEntriesFromApiJam(apiJam.song_history, apiJam)
-        val setlistEntries = setlistEntriesFromApiJam(setlist, apiJam)
+            val songHistoryEntries = songHistoryEntriesFromApiJam(apiJam.song_history, apiJam)
+            val setlistEntries = setlistEntriesFromApiJam(setlist, apiJam)
 
-        // Then stuff that data into storage
-        withContext(dispatchers.disk) {
-            transactionRunner.inTransaction {
-                try {
-                    jamDataSource.insert(listOf(jam))
-                    songHistoryEntryDataSource.insert(songHistoryEntries)
-                    setlistEntryDataSource.insert(setlistEntries)
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
+            // Then stuff that data into storage
+            withContext(dispatchers.disk) {
+                transactionRunner.inTransaction {
+                    try {
+                        jamDataSource.insert(listOf(jam))
+                        songHistoryEntryDataSource.insert(songHistoryEntries)
+                        setlistEntryDataSource.insert(setlistEntries)
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                    }
                 }
             }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
     }
 
@@ -322,75 +326,86 @@ class RealRepository constructor(
     private suspend fun getLastDbUpdateTimeOnce() = getLastDbUpdateTime().first()
 
     private suspend fun getLastApiUpdateTime(): Time {
-        val lastUpdate = vglsApi.getLastUpdateTime()
+        try {
+            val lastUpdate = vglsApi.getLastUpdateTime()
 
-        val time = Time(
-            TimeType.LAST_UPDATED.ordinal,
-            Instant.parse(lastUpdate.last_updated).toEpochMilli()
-        )
+            val time = Time(
+                TimeType.LAST_UPDATED.ordinal,
+                Instant.parse(lastUpdate.last_updated).toEpochMilli()
+            )
 
-        dbStatisticsDataSource.insert(time)
-        return time
+            dbStatisticsDataSource.insert(time)
+            return time
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+
+        return Time(-1, 0L)
     }
 
     @Suppress("DefaultLocale", "LongMethod", "ComplexMethod")
     private suspend fun getDigest() {
-        val digest = withContext(dispatchers.network) {
-            vglsApi.getDigest()
-        }
+        try {
+            val digest = withContext(dispatchers.network) {
+                vglsApi.getDigest()
+            }
 
-        val apiComposers = digest.composers
-        val apiGames = digest.games
+            val apiComposers = digest.composers
+            val apiGames = digest.games
 
-        val composers = createComposerMap(apiComposers)
+            val composers = createComposerMap(apiComposers)
 
-        val games = apiGames.map { apiGame -> apiGame.toModel() }
+            val games = apiGames.map { apiGame -> apiGame.toModel() }
 
-        val songs = mutableListOf<Song>()
-        val songComposerRelations = mutableListOf<SongComposerRelation>()
-        val songTagValueRelations = mutableListOf<SongTagValueRelation>()
+            val songs = mutableListOf<Song>()
+            val songComposerRelations = mutableListOf<SongComposerRelation>()
+            val songTagValueRelations = mutableListOf<SongTagValueRelation>()
 
-        val tagKeys = mutableMapOf<String, TagKey>()
-        val tagValues = mutableMapOf<String, TagValue>()
+            val tagKeys = mutableMapOf<String, TagKey>()
+            val tagValues = mutableMapOf<String, TagValue>()
 
-        apiGames.forEach { apiGame ->
-            processGame(
-                apiGame,
-                composers,
-                songComposerRelations,
-                tagKeys,
-                tagValues,
-                songTagValueRelations,
-                songs
+            apiGames.forEach { apiGame ->
+                processGame(
+                    apiGame,
+                    composers,
+                    songComposerRelations,
+                    tagKeys,
+                    tagValues,
+                    songTagValueRelations,
+                    songs
+                )
+            }
+
+            val dbStatistics = Time(
+                TimeType.LAST_CHECKED.ordinal,
+                threeTen.now().toInstant().toEpochMilli()
             )
-        }
 
-        val dbStatistics = Time(
-            TimeType.LAST_CHECKED.ordinal,
-            threeTen.now().toInstant().toEpochMilli()
-        )
+            withContext(dispatchers.disk) {
+                transactionRunner.inTransaction {
+                    try {
+                        clearSheets()
 
-        withContext(dispatchers.disk) {
+                        gameDataSource.insert(games)
+                        composerDataSource.insert(composers.values.toList())
+                        songDataSource.insert(songs)
 
-            transactionRunner.inTransaction {
-                try {
-                    clearSheets()
+                        tagKeyDataSource.insert(tagKeys.values.toList())
+                        tagValueDataSource.insert(tagValues.values.toList())
 
-                    gameDataSource.insert(games)
-                    composerDataSource.insert(composers.values.toList())
-                    songDataSource.insert(songs)
+                        composerDataSource.insertRelations(songComposerRelations)
+                        tagValueDataSource.insertRelations(songTagValueRelations)
 
-                    tagKeyDataSource.insert(tagKeys.values.toList())
-                    tagValueDataSource.insert(tagValues.values.toList())
-
-                    composerDataSource.insertRelations(songComposerRelations)
-                    tagValueDataSource.insertRelations(songTagValueRelations)
-
-                    dbStatisticsDataSource.insert(dbStatistics)
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
+                        dbStatisticsDataSource.insert(dbStatistics)
+                    } catch (ex: Exception) {
+                        // Something in the storage write operation failed.
+                        ex.printStackTrace()
+                    }
                 }
             }
+        } catch (ex: Exception) {
+            // Something in the non-storage part of this function failed.
+            ex.printStackTrace()
         }
     }
 
