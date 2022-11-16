@@ -9,7 +9,6 @@ import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.tag.TagValue
 
 data class GameDetailContent(
     val game: Async<Game> = Uninitialized,

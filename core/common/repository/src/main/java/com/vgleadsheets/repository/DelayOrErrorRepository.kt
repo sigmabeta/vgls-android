@@ -38,6 +38,12 @@ class DelayOrErrorRepository(
 
     override fun getTagValuesForSong(songId: Long) = realRepository.getTagValuesForSong(songId)
 
+    override fun getSongsForTagValue(tagValueId: Long) =
+        realRepository.getSongsForTagValue(tagValueId)
+
+    override fun getTagValuesForTagKey(tagKeyId: Long) =
+        realRepository.getTagValuesForTagKey(tagKeyId)
+
     override fun getSetlistEntriesForJam(jamId: Long) =
         realRepository.getSetlistEntriesForJam(jamId)
 

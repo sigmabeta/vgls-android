@@ -33,7 +33,9 @@ class Config(
 
     private val tagValue = tagValueLoad.content()
 
-    private val songs = tagValue?.songs
+    private val songLoad = state.contentLoad.songs
+
+    private val songs = songLoad.content()
 
     override val titleConfig = Title.Config(
         resources.getString(

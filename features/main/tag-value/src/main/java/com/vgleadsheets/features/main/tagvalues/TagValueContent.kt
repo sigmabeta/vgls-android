@@ -8,9 +8,11 @@ import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.tag.TagKey
+import com.vgleadsheets.model.tag.TagValue
 
 data class TagValueContent(
-    val tagKey: Async<TagKey> = Uninitialized
+    val tagKey: Async<TagKey> = Uninitialized,
+    val tagValues: Async<List<TagValue>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException
     override fun failure() = tagKey.failure()

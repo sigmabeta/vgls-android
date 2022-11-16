@@ -8,6 +8,7 @@ import com.vgleadsheets.repository.VglsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import timber.log.Timber
 
 class TagValueViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueState,
@@ -15,14 +16,27 @@ class TagValueViewModel @AssistedInject constructor(
 ) : MavericksViewModel<TagValueState>(initialState) {
     init {
         fetchTagKey()
+        fetchTagValues()
     }
 
     private fun fetchTagKey() = withState {
-        repository.getTagKey(it.tagValueId)
+        repository.getTagKey(it.tagKeyId)
             .execute {
+                Timber.w("Tag Values: ${it()?.values?.size}")
                 copy(
                     contentLoad = contentLoad.copy(
                         tagKey = it
+                    )
+                )
+            }
+    }
+
+    private fun fetchTagValues() = withState {
+        repository.getTagValuesForTagKey(it.tagKeyId)
+            .execute { tagValues ->
+                copy(
+                    contentLoad = contentLoad.copy(
+                        tagValues = tagValues
                     )
                 )
             }

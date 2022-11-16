@@ -179,12 +179,16 @@ class DataSourceModule {
         convert: TagKeyConverter,
         manyConverter: TagValueConverter,
         roomImpl: TagKeyRoomDao,
-        relatedRoomImpl: TagValueRoomDao
+        relatedRoomImpl: TagValueRoomDao,
+        songsForTagValueDao: SongsForTagValueDao,
+        songConverter: SongConverter
     ): TagKeyDataSource = TagKeyAndroidDataSource(
         convert,
         manyConverter,
         roomImpl,
-        relatedRoomImpl
+        relatedRoomImpl,
+        songsForTagValueDao,
+        songConverter,
     )
 
     @Provides

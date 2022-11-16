@@ -15,6 +15,7 @@ class TagValueSongViewModel @AssistedInject constructor(
 ) : MavericksViewModel<TagValueSongState>(initialState) {
     init {
         fetchTagValue()
+        fetchSongs()
     }
 
     private fun fetchTagValue() = withState {
@@ -23,6 +24,17 @@ class TagValueSongViewModel @AssistedInject constructor(
                 copy(
                     contentLoad = contentLoad.copy(
                         tagValue = tagValue
+                    )
+                )
+            }
+    }
+
+    private fun fetchSongs() = withState {
+        repository.getSongsForTagValue(it.tagValueId)
+            .execute { songs ->
+                copy(
+                    contentLoad = contentLoad.copy(
+                        songs = songs
                     )
                 )
             }

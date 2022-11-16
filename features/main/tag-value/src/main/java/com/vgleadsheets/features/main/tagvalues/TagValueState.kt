@@ -5,9 +5,10 @@ import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.list.BetterCompositeState
 
 data class TagValueState(
-    val tagValueId: Long,
+    val tagKeyId: Long,
     override val contentLoad: TagValueContent = TagValueContent(
         Uninitialized,
+        Uninitialized
     ),
 ) : BetterCompositeState<TagValueContent> {
     constructor(args: IdArgs) : this(args.id)
