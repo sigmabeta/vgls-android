@@ -20,9 +20,9 @@ import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 import com.vgleadsheets.ui_core.R
 import dagger.android.support.AndroidSupportInjection
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
+import timber.log.Timber
 
 abstract class VglsFragment : Fragment(), MavericksView {
     @Inject

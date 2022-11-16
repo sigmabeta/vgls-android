@@ -1,6 +1,5 @@
 package com.vgleadsheets.tracking
 
-
 @SuppressWarnings("TooManyFunctions")
 interface Tracker {
     fun logScreenView(

@@ -1,6 +1,11 @@
 package com.vgleadsheets.features.main.list
 
-import com.vgleadsheets.features.main.list.sections.*
+import com.vgleadsheets.features.main.list.sections.Actions
+import com.vgleadsheets.features.main.list.sections.Content
+import com.vgleadsheets.features.main.list.sections.EmptyState
+import com.vgleadsheets.features.main.list.sections.ErrorState
+import com.vgleadsheets.features.main.list.sections.LoadingState
+import com.vgleadsheets.features.main.list.sections.Title
 
 interface BetterListConfig {
     val titleConfig: Title.Config

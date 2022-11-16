@@ -2,7 +2,11 @@ package com.vgleadsheets.features.main.list
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.features.main.list.sections.*
+import com.vgleadsheets.features.main.list.sections.Actions
+import com.vgleadsheets.features.main.list.sections.Content
+import com.vgleadsheets.features.main.list.sections.EmptyState
+import com.vgleadsheets.features.main.list.sections.ErrorState
+import com.vgleadsheets.features.main.list.sections.LoadingState
 
 object BetterLists {
     suspend fun generateList(

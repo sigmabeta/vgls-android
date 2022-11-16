@@ -4,9 +4,9 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
-import kotlinx.coroutines.yield
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
+import kotlinx.coroutines.yield
 
 fun <ContentType> Async<ContentType>.content() = invoke()
 

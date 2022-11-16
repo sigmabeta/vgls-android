@@ -7,7 +7,6 @@ import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.enitity.GameAliasEntity
 import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.model.alias.GameAlias
-import javax.inject.Inject
 
 class GameAliasAndroidDataSource(
     private val convert: GameAliasConverter,

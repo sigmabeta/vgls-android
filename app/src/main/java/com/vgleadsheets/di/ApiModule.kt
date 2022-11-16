@@ -15,7 +15,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class ApiModule {
     @Provides
     @Singleton
-        fun provideVglsApi(
+    fun provideVglsApi(
         @Named("VglsApiUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,
         converterFactory: MoshiConverterFactory,
