@@ -31,4 +31,3 @@ data class SongHistoryEntryEntity(
         const val ROW_FOREIGN_KEY = "jam_id"
     }
 }
-

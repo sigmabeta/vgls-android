@@ -39,4 +39,3 @@ data class SongTagValueJoin(
         const val ROW_FOREIGN_KEY_TWO = "tagValueId"
     }
 }
-

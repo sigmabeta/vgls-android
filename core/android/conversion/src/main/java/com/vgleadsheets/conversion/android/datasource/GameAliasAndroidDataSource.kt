@@ -14,7 +14,8 @@ class GameAliasAndroidDataSource(
 ) : RegularAndroidDataSource<GameAliasRoomDao, GameAlias, GameAliasEntity, GameAliasConverter>(
     convert,
     roomImpl
-), GameAliasDataSource {
+),
+    GameAliasDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }

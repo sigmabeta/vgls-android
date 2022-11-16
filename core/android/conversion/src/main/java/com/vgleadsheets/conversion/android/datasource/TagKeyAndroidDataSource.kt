@@ -26,7 +26,8 @@ class TagKeyAndroidDataSource(
     manyConverter,
     roomImpl,
     relatedRoomImpl
-), TagKeyDataSource {
+),
+    TagKeyDataSource {
     fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }

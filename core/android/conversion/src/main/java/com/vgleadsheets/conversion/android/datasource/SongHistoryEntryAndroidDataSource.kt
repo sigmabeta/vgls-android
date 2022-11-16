@@ -27,7 +27,8 @@ class SongHistoryEntryAndroidDataSource(
     SongRoomDao,
     SongHistoryEntryConverter,
     SongConverter
-    >(convert, foreignConvert, roomImpl, relatedRoomImpl), SongHistoryEntryDataSource {
+    >(convert, foreignConvert, roomImpl, relatedRoomImpl),
+    SongHistoryEntryDataSource {
     override fun getAll(): Flow<List<SongHistoryEntry>> {
         TODO("Not yet implemented")
     }

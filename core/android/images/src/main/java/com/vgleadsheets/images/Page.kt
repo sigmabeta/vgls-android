@@ -30,4 +30,3 @@ object Page {
     private const val URL_SEPARATOR_NUMBER = "-"
     private const val URL_FILE_EXT_PNG = ".png"
 }
-

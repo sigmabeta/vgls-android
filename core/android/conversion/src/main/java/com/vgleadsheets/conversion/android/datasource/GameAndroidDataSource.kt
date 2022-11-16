@@ -26,7 +26,8 @@ class GameAndroidDataSource(
     manyConverter,
     roomImpl,
     relatedRoomImpl
-), GameDataSource {
+),
+    GameDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }

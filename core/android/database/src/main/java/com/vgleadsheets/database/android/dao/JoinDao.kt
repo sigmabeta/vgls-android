@@ -7,4 +7,3 @@ interface JoinDao<EntityType> {
 
     fun getJoinedEntitiesSync(id: Long): List<EntityType>
 }
-

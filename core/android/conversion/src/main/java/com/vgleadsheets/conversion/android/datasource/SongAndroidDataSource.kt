@@ -26,7 +26,8 @@ class SongAndroidDataSource(
     manyConverter,
     roomImpl,
     relatedRoomImpl
-), SongDataSource {
+),
+    SongDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.toModelFromEntity(it) }

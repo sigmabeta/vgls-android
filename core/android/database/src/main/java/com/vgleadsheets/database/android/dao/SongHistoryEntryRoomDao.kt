@@ -64,4 +64,3 @@ interface SongHistoryEntryRoomDao : ManyFromOneDao<SongHistoryEntryEntity> {
         const val QUERY_DELETE = "$DELETE $TABLE"
     }
 }
-

@@ -14,7 +14,8 @@ class ComposerAliasAndroidDataSource(
 ) : RegularAndroidDataSource<ComposerAliasRoomDao, ComposerAlias, ComposerAliasEntity, ComposerAliasConverter>(
     convert,
     roomImpl
-), ComposerAliasDataSource {
+),
+    ComposerAliasDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }

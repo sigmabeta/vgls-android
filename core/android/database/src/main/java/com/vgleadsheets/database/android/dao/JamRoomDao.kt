@@ -52,4 +52,3 @@ interface JamRoomDao : RoomDao<JamEntity> {
         const val QUERY_DELETE = "$DELETE $TABLE"
     }
 }
-

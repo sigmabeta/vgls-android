@@ -24,7 +24,8 @@ class ComposerAndroidDataSource(
     manyConverter,
     roomImpl,
     relatedRoomImpl
-), ComposerDataSource {
+),
+    ComposerDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }

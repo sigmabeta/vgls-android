@@ -24,7 +24,8 @@ class TagValueAndroidDataSource(
     manyConverter,
     roomImpl,
     relatedRoomImpl
-), TagValueDataSource {
+),
+    TagValueDataSource {
     override fun insertRelations(relations: List<SongTagValueRelation>) =
         roomImpl.insertJoins(
             relations.map {
