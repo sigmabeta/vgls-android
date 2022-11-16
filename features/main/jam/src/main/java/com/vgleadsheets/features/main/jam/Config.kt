@@ -25,6 +25,7 @@ import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
+import timber.log.Timber
 
 class Config(
     private val state: JamState,
@@ -129,7 +130,11 @@ class Config(
                 resources.getString(R.string.section_setlist)
             )
         )
+
+        Timber.i("Setlist: ${setlist?.size} items")
+
         return if (state.contentLoad.setlistRefresh is Loading) {
+            Timber.i("Showing setlist refresh")
             sectionTitle + listOf(NetworkRefreshingListModel("setlist"))
         } else if (setlistLoad.isLoading()) {
             sectionTitle + buildList<ListModel> {
@@ -143,8 +148,11 @@ class Config(
                 }
             }
         } else if (setlist.isNullOrEmpty()) {
+            Timber.i("Showing setlist empty")
             emptyList()
         } else {
+            Timber.i("Showing setlist content")
+
             sectionTitle + setlist.mapYielding {
                 val song = it.song
                 val dataId = it.id + ID_OFFSET_SETLIST

@@ -13,9 +13,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SongHistoryEntryRoomDao : ManyFromOneDao<SongHistoryEntryEntity> {
-    @Query("$DELETE $TABLE $WHERE_MANY")
-    fun removeForJam(id: Long)
-
     @Query(QUERY_RELATED)
     fun getSongHistoryEntriesForJam(id: Long): Flow<List<SongHistoryEntryEntity>>
 

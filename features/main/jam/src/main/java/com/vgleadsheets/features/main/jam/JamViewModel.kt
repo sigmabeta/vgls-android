@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.jam
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.repository.VglsRepository
@@ -45,13 +46,22 @@ class JamViewModel @AssistedInject constructor(
         suspend {
             repository.refreshJamState(name)
         }.execute {
+            if (it is Success) {
+                fireSetlistRefreshRequest(state, name)
+            }
+
             copy(
                 contentLoad = contentLoad.copy(
                     jamRefresh = it
                 )
             )
         }
+    }
 
+    private fun fireSetlistRefreshRequest(
+        state: JamState,
+        name: String
+    ) {
         suspend {
             repository.refreshSetlist(state.jamId, name)
         }.execute {
@@ -83,6 +93,10 @@ class JamViewModel @AssistedInject constructor(
 
         repository.getSetlistEntriesForJam(jamId)
             .execute {
+                val setlist = it()
+
+                Timber.i("Setlist: ${setlist?.size} items")
+
                 copy(
                     contentLoad = contentLoad.copy(
                         setlist = it

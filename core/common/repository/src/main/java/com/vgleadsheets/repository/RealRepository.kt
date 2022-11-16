@@ -267,12 +267,7 @@ class RealRepository constructor(
         withContext(dispatchers.disk) {
             transactionRunner.inTransaction {
                 try {
-                    songHistoryEntryDataSource.removeForJam(jam.id)
-
-                    jamDataSource.insert(
-                        listOf(jam)
-                    )
-
+                    jamDataSource.insert(listOf(jam))
                     songHistoryEntryDataSource.insert(songHistoryEntries)
                 } catch (ex: Exception) {
                     ex.printStackTrace()
@@ -298,7 +293,6 @@ class RealRepository constructor(
         withContext(dispatchers.disk) {
             transactionRunner.inTransaction {
                 try {
-                    setlistEntryDataSource.removeForJam(jamId)
                     setlistEntryDataSource.insert(setlistEntries)
                 } catch (ex: Exception) {
                     ex.printStackTrace()

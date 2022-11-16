@@ -28,8 +28,6 @@ class SetlistEntryAndroidDataSource(
     SongConverter
     >(convert, foreignConverter, roomImpl, relatedRoomImpl),
     SetlistEntryDataSource {
-    override fun removeForJam(id: Long) = roomImpl.removeForJam(id)
-
     override fun getSetlistEntriesForJam(jamId: Long) = roomImpl
         .getSetlistEntriesForJam(jamId)
         .mapList {

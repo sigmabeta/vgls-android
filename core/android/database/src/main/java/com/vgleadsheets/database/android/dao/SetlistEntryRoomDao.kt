@@ -13,9 +13,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SetlistEntryRoomDao : OneToOneDao<SetlistEntryEntity> {
-    @Query("$DELETE $TABLE $WHERE_FOREIGN")
-    fun removeForJam(id: Long)
-
     @Query(QUERY_RELATED)
     fun getSetlistEntriesForJam(id: Long): Flow<List<SetlistEntryEntity>>
 
