@@ -17,7 +17,6 @@ interface VglsRepository {
 
     fun refreshJamStateContinuously(name: String): Flow<Unit>
     suspend fun refreshJamState(name: String)
-    suspend fun refreshSetlist(jamId: Long, name: String)
     fun observeJamState(id: Long): Flow<Jam>
 
     // Full Lists

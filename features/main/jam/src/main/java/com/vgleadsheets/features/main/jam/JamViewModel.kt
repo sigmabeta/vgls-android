@@ -3,7 +3,6 @@ package com.vgleadsheets.features.main.jam
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
-import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.repository.VglsRepository
@@ -26,7 +25,7 @@ class JamViewModel @AssistedInject constructor(
         Timber.i("Refreshing jam...")
 
         val name = state.contentLoad.jam()?.name ?: return@withState
-        fireJamRefreshRequest(name, state)
+        fireJamRefreshRequest(name)
     }
 
     fun deleteJam() = withState {
@@ -39,35 +38,13 @@ class JamViewModel @AssistedInject constructor(
         }
     }
 
-    private fun fireJamRefreshRequest(
-        name: String,
-        state: JamState
-    ) {
+    private fun fireJamRefreshRequest(name: String) {
         suspend {
             repository.refreshJamState(name)
         }.execute {
-            if (it is Success) {
-                fireSetlistRefreshRequest(state, name)
-            }
-
             copy(
                 contentLoad = contentLoad.copy(
                     jamRefresh = it
-                )
-            )
-        }
-    }
-
-    private fun fireSetlistRefreshRequest(
-        state: JamState,
-        name: String
-    ) {
-        suspend {
-            repository.refreshSetlist(state.jamId, name)
-        }.execute {
-            copy(
-                contentLoad = contentLoad.copy(
-                    setlistRefresh = it
                 )
             )
         }
@@ -80,7 +57,7 @@ class JamViewModel @AssistedInject constructor(
             .execute {
                 val jamName = it.content()?.name
                 if (jamName != null && firstRefresh) {
-                    fireJamRefreshRequest(jamName, this)
+                    fireJamRefreshRequest(jamName)
                     firstRefresh = false
                 }
 

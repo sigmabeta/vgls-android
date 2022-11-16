@@ -14,9 +14,7 @@ import com.vgleadsheets.model.SongHistoryEntry
 data class JamContent(
     val jamRefresh: Async<Unit> = Uninitialized,
     val jam: Async<Jam> = Uninitialized,
-    val setlistRefresh: Async<Unit> = Uninitialized,
     val setlist: Async<List<SetlistEntry>> = Uninitialized,
-    val songHistoryRefresh: Async<Unit> = Uninitialized,
     val songHistory: Async<List<SongHistoryEntry>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException

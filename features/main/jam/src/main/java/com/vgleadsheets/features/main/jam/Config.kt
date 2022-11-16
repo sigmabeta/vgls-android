@@ -92,7 +92,7 @@ class Config(
             )
         )
 
-        return if (state.contentLoad.setlistRefresh is Loading) {
+        return if (state.contentLoad.jamRefresh is Loading) {
             sectionTitle + listOf(NetworkRefreshingListModel("currentSong"))
         } else if (jamLoad.isLoading()) {
             sectionTitle + listOf(
@@ -133,7 +133,7 @@ class Config(
 
         Timber.i("Setlist: ${setlist?.size} items")
 
-        return if (state.contentLoad.setlistRefresh is Loading) {
+        return if (state.contentLoad.jamRefresh is Loading) {
             Timber.i("Showing setlist refresh")
             sectionTitle + listOf(NetworkRefreshingListModel("setlist"))
         } else if (setlistLoad.isLoading()) {
@@ -179,7 +179,7 @@ class Config(
             )
         )
 
-        return sectionTitle + if (state.contentLoad.setlistRefresh is Loading) {
+        return sectionTitle + if (state.contentLoad.jamRefresh is Loading) {
             listOf(NetworkRefreshingListModel("history"))
         } else if (jamLoad.isLoading()) {
             buildList {

@@ -21,9 +21,6 @@ class DelayOrErrorRepository(
 
     override suspend fun refreshJamState(name: String) = realRepository.refreshJamState(name)
 
-    override suspend fun refreshSetlist(jamId: Long, name: String) =
-        realRepository.refreshSetlist(jamId, name)
-
     override fun observeJamState(id: Long) = realRepository.observeJamState(id)
 
     override fun getAllGames(withSongs: Boolean) = realRepository.getAllGames()

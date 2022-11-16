@@ -29,7 +29,10 @@ import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.model.ApiComposer
+import com.vgleadsheets.network.model.ApiJam
+import com.vgleadsheets.network.model.ApiSetlist
 import com.vgleadsheets.network.model.ApiSong
+import com.vgleadsheets.network.model.ApiSongHistoryEntry
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
 import java.util.Locale
@@ -94,8 +97,6 @@ class RealRepository constructor(
         }
 
     override suspend fun refreshJamState(name: String) = refreshJamStateImpl(name)
-
-    override suspend fun refreshSetlist(jamId: Long, name: String) = refreshSetlistImpl(jamId, name)
 
     override fun getAllGames(withSongs: Boolean) = gameDataSource.getAll(withSongs)
         .flowOn(dispatchers.disk)
@@ -237,26 +238,16 @@ class RealRepository constructor(
         }
 
     private suspend fun refreshJamStateImpl(name: String) {
+        // Perform network requests first
         val apiJam = withContext(dispatchers.network) {
             vglsApi.getJamState(name)
         }
 
-        val songHistory = apiJam.song_history
-        val songHistoryEntries = if (songHistory.isNotEmpty()) {
-            songHistory
-                .drop(1)
-                .mapIndexed { songHistoryIndex, songHistoryEntry ->
-                    SongHistoryEntry(
-                        MULTIPLIER_JAM_ID * apiJam.jam_id + songHistoryIndex,
-                        songHistoryEntry.sheet_id,
-                        apiJam.jam_id,
-                        null
-                    )
-                }
-        } else {
-            emptyList()
+        val setlist = withContext(dispatchers.network) {
+            vglsApi.getSetlistForJam(name)
         }
 
+        // Then pull the data out all at once
         val jam = Jam(
             apiJam.jam_id,
             name.lowercase(Locale.getDefault()),
@@ -264,11 +255,16 @@ class RealRepository constructor(
             null,
         )
 
+        val songHistoryEntries = songHistoryEntriesFromApiJam(apiJam.song_history, apiJam)
+        val setlistEntries = setlistEntriesFromApiJam(setlist, apiJam)
+
+        // Then stuff that data into storage
         withContext(dispatchers.disk) {
             transactionRunner.inTransaction {
                 try {
                     jamDataSource.insert(listOf(jam))
                     songHistoryEntryDataSource.insert(songHistoryEntries)
+                    setlistEntryDataSource.insert(setlistEntries)
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }
@@ -276,29 +272,36 @@ class RealRepository constructor(
         }
     }
 
-    private suspend fun refreshSetlistImpl(jamId: Long, name: String) {
+    private fun setlistEntriesFromApiJam(
+        setlist: ApiSetlist,
+        apiJam: ApiJam
+    ) = setlist.songs.mapIndexed { setlistIndex, entry ->
+        SetlistEntry(
+            MULTIPLIER_JAM_ID * apiJam.jam_id + setlistIndex,
+            apiJam.jam_id,
+            entry.game_name,
+            entry.song_name,
+            entry.id,
+            null
+        )
+    }
 
-        val setlist = vglsApi.getSetlistForJam(name)
-
-        val setlistEntries = setlist.songs.mapIndexed { setlistIndex, entry ->
-            SetlistEntry(
-                MULTIPLIER_JAM_ID * jamId + setlistIndex,
-                jamId,
-                entry.game_name,
-                entry.song_name,
-                entry.id,
-                null
-            )
-        }
-        withContext(dispatchers.disk) {
-            transactionRunner.inTransaction {
-                try {
-                    setlistEntryDataSource.insert(setlistEntries)
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
-                }
+    private fun songHistoryEntriesFromApiJam(
+        songHistory: List<ApiSongHistoryEntry>,
+        apiJam: ApiJam
+    ) = if (songHistory.isNotEmpty()) {
+        songHistory
+            .drop(1)
+            .mapIndexed { songHistoryIndex, songHistoryEntry ->
+                SongHistoryEntry(
+                    MULTIPLIER_JAM_ID * apiJam.jam_id + songHistoryIndex,
+                    songHistoryEntry.sheet_id,
+                    apiJam.jam_id,
+                    null
+                )
             }
-        }
+    } else {
+        emptyList()
     }
 
     private suspend fun getLastCheckTime() = dbStatisticsDataSource
