@@ -35,7 +35,7 @@ interface SongHistoryEntryRoomDao : ManyFromOneDao<SongHistoryEntryEntity> {
     override fun insert(entities: List<SongHistoryEntryEntity>)
 
     @Query(QUERY_DELETE)
-    override suspend fun nukeTable()
+    override fun nukeTable()
 
     companion object {
 

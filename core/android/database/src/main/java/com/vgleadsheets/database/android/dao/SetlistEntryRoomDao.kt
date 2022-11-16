@@ -35,7 +35,7 @@ interface SetlistEntryRoomDao : OneToOneDao<SetlistEntryEntity> {
     override fun insert(entities: List<SetlistEntryEntity>)
 
     @Query(QUERY_DELETE)
-    override suspend fun nukeTable()
+    override fun nukeTable()
 
     companion object {
 

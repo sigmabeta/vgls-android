@@ -48,5 +48,5 @@ abstract class OneToManyAndroidDataSource<
             }
         )
 
-    override suspend fun nukeTable() = roomImpl.nukeTable()
+    override fun nukeTable() = roomImpl.nukeTable()
 }

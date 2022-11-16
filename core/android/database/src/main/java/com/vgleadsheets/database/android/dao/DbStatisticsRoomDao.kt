@@ -16,5 +16,5 @@ interface DbStatisticsRoomDao {
     fun insert(dbStatisticsEntity: TimeEntity)
 
     @Query("DELETE FROM time")
-    suspend fun nukeTable()
+    fun nukeTable()
 }

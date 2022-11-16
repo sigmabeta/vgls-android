@@ -30,7 +30,7 @@ interface GameRoomDao : RoomDao<GameEntity> {
     override fun insert(entities: List<GameEntity>)
 
     @Query(QUERY_DELETE)
-    override suspend fun nukeTable()
+    override fun nukeTable()
 
     companion object {
         private const val TABLE = GameEntity.TABLE

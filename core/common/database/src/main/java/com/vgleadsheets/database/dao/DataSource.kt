@@ -9,5 +9,5 @@ interface DataSource<ModelType> {
 
     fun insert(models: List<ModelType>)
 
-    suspend fun nukeTable()
+    fun nukeTable()
 }

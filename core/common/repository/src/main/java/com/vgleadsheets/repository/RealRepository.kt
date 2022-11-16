@@ -206,7 +206,7 @@ class RealRepository constructor(
         Unit
     }
 
-    override suspend fun clearSheets() = withContext(dispatchers.disk) {
+    override fun clearSheets() {
         gameDataSource.nukeTable()
         songDataSource.nukeTable()
         composerDataSource.nukeTable()
@@ -371,8 +371,11 @@ class RealRepository constructor(
         )
 
         withContext(dispatchers.disk) {
+
             transactionRunner.inTransaction {
                 try {
+                    clearSheets()
+
                     gameDataSource.insert(games)
                     composerDataSource.insert(composers.values.toList())
                     songDataSource.insert(songs)

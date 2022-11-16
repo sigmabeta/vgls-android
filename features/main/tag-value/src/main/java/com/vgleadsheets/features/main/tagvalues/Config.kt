@@ -16,6 +16,7 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.perf.tracking.common.PerfSpec
@@ -40,7 +41,7 @@ class Config(
 
     override val titleConfig = Title.Config(
         tagKey?.name ?: resources.getString(R.string.unknown_tag_key),
-        tagValues?.captionText(),
+        tagValues?.subtitleText(),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -63,7 +64,9 @@ class Config(
                 NameCaptionListModel(
                     it.id,
                     it.name,
-                    it.captionText()
+                    it.songs
+                        ?.filteredForVocals(hudState.selectedPart.apiId)
+                        ?.captionText() ?: "Error: no values found."
                 ) { clicks.tagValue(it.id) }
             } ?: emptyList()
     }
@@ -87,9 +90,9 @@ class Config(
     )
 
     @Suppress("LoopWithTooManyJumpStatements")
-    private fun TagValue.captionText(): String {
-        val items = songs
-        if (items.isNullOrEmpty()) return "Error: no values found."
+    private fun List<Song>.captionText(): String {
+        val items = this
+        if (items.isEmpty()) return "Error: no values found."
 
         val builder = StringBuilder()
         var numberOfOthers = items.size
@@ -123,7 +126,7 @@ class Config(
         return builder.toString()
     }
 
-    private fun List<TagValue>.captionText() = resources.getString(
+    private fun List<TagValue>.subtitleText() = resources.getString(
         R.string.subtitle_options_count,
         size
     )

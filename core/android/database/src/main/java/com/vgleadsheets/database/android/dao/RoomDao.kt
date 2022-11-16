@@ -11,7 +11,7 @@ interface RoomDao<EntityType> {
 
     fun insert(entities: List<@JvmSuppressWildcards EntityType>)
 
-    suspend fun nukeTable()
+    fun nukeTable()
 
     companion object {
         const val ROW_PRIMARY_KEY_ID = "id"

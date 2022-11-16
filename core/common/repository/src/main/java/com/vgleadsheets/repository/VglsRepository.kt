@@ -53,6 +53,6 @@ interface VglsRepository {
     suspend fun removeJam(id: Long)
 
     // Debug options
-    suspend fun clearSheets()
+    fun clearSheets()
     suspend fun clearJams()
 }

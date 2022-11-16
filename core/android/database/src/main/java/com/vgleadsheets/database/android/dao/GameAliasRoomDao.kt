@@ -37,7 +37,7 @@ interface GameAliasRoomDao : ManyFromOneDao<GameAliasEntity> {
     override fun insert(entities: List<GameAliasEntity>)
 
     @Query(QUERY_DELETE)
-    override suspend fun nukeTable()
+    override fun nukeTable()
 
     companion object {
 

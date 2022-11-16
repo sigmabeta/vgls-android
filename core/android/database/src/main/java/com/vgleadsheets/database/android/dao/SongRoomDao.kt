@@ -42,7 +42,7 @@ interface SongRoomDao :
     fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_DELETE)
-    override suspend fun nukeTable()
+    override fun nukeTable()
 
     companion object {
 

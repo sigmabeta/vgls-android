@@ -34,7 +34,7 @@ interface JamRoomDao : RoomDao<JamEntity> {
     override fun insert(entities: List<JamEntity>)
 
     @Query(QUERY_DELETE)
-    override suspend fun nukeTable()
+    override fun nukeTable()
 
     companion object {
 

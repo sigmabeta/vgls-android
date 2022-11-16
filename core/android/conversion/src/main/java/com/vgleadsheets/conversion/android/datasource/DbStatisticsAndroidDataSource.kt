@@ -4,7 +4,6 @@ import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
 import com.vgleadsheets.database.android.enitity.TimeEntity
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import com.vgleadsheets.model.time.Time
-import javax.inject.Inject
 import kotlinx.coroutines.flow.map
 
 class DbStatisticsAndroidDataSource(
@@ -19,5 +18,5 @@ class DbStatisticsAndroidDataSource(
             TimeEntity(dbStatistics.id, dbStatistics.timeMs)
         )
 
-    override suspend fun nukeTable() = roomImpl.nukeTable()
+    override fun nukeTable() = roomImpl.nukeTable()
 }

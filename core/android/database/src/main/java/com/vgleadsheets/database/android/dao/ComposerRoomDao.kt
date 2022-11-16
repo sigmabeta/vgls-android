@@ -34,7 +34,7 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     fun insertJoins(joins: List<SongComposerJoin>)
 
     @Query(QUERY_DELETE)
-    override suspend fun nukeTable()
+    override fun nukeTable()
 
     companion object {
 

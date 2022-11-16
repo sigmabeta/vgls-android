@@ -9,5 +9,5 @@ interface DbStatisticsDataSource {
 
     fun insert(dbStatistics: Time)
 
-    suspend fun nukeTable()
+    fun nukeTable()
 }

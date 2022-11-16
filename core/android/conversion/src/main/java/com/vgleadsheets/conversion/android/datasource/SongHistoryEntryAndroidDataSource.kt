@@ -32,8 +32,6 @@ class SongHistoryEntryAndroidDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun removeForJam(id: Long) = roomImpl.removeForJam(id)
-
     override fun getSongHistoryEntriesForJam(jamId: Long) = roomImpl
         .getSongHistoryEntriesForJam(jamId)
         .mapList {

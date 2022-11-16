@@ -35,5 +35,5 @@ abstract class RegularAndroidDataSource<
             }
         )
 
-    override suspend fun nukeTable() = roomImpl.nukeTable()
+    override fun nukeTable() = roomImpl.nukeTable()
 }
