@@ -8,4 +8,4 @@ insert_final_newline = true
 # it's automatically set to 100 on `ktlint --android ...` (per Android Kotlin Style Guide)
 max_line_length = off
 
-ktlint_disabled_rules = trailing-comma, import-ordering, indent
+ktlint_disabled_rules = trailing-comma, import-ordering, indent, annotation
