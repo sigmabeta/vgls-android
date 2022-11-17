@@ -41,9 +41,6 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
       - checkout
-      - run:
-          name: Setup Google Services JSON
-          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -104,6 +101,9 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Setup Google Services JSON
+          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
       - run:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
@@ -166,6 +166,9 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - restore_cache:
           key: build-cache-v1-{{ .Revision }}
+      - run:
+          name: Setup Google Services JSON
+          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
       - run:
           name: Run Android Lint checks
           command: ./gradlew :app:lintRelease --no-configuration-cache --no-daemon --max-workers=4
