@@ -1,19 +1,20 @@
 package com.vgleadsheets.features.main.debug
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_MISC_PERF_VIEW
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
 class DebugViewModel @AssistedInject constructor(
     @Assisted initialState: DebugState,
-    private val repository: Repository,
+    private val repository: VglsRepository,
     private val storage: Storage,
 ) : MavericksViewModel<DebugState>(initialState) {
     init {
@@ -90,7 +91,7 @@ class DebugViewModel @AssistedInject constructor(
         }.execute { this }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: DebugState,

@@ -1,45 +1,34 @@
 package com.vgleadsheets.features.main.composer
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.VglsRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
 class ComposerDetailViewModel @AssistedInject constructor(
     @Assisted initialState: ComposerDetailState,
-    private val repository: Repository,
+    private val repository: VglsRepository,
 ) : MavericksViewModel<ComposerDetailState>(initialState) {
     init {
         fetchComposer()
-        fetchSongs()
     }
 
-    private fun fetchComposer() = withState {
-        repository.getComposer(it.composerId)
-            .execute {
+    private fun fetchComposer() = withState { state ->
+        repository.getComposer(state.composerId)
+            .execute { composer ->
                 copy(
                     contentLoad = contentLoad.copy(
-                        composer = it
+                        composer = composer
                     )
                 )
             }
     }
 
-    private fun fetchSongs() = withState {
-        repository.getSongsByComposer(it.composerId)
-            .execute {
-                copy(
-                    contentLoad = contentLoad.copy(
-                        songs = it
-                    )
-                )
-            }
-    }
-
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: ComposerDetailState

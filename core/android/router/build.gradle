@@ -1,0 +1,20 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/di-android.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation project(':core:android:mvrx')
+    implementation project(':core:common:tracking')
+
+    // Dagger
+    api project(':core:android:di')
+
+    implementation project(":core:android:coroutines")
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+}
+
+android {
+    namespace 'com.vgleadsheets.router'
+}

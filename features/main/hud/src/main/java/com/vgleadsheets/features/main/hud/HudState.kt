@@ -4,12 +4,12 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.features.main.hud.search.SearchContent
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.FrameTimeStats
-import com.vgleadsheets.perf.tracking.api.InvalidateStats
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.ScreenLoadStatus
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.perf.tracking.common.FrameTimeStats
+import com.vgleadsheets.perf.tracking.common.InvalidateStats
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.ScreenLoadStatus
 
 data class HudState(
     val alwaysShowBack: Boolean = false,

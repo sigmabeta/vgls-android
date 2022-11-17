@@ -1,5 +1,3 @@
-apply plugin: 'de.mannodermaus.android-junit5'
-
 dependencies {
     // Junit5 / Jupiter unit testing
     testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiter_version"

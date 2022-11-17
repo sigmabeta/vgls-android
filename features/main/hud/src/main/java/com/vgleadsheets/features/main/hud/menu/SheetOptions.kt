@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Song
 
 object SheetOptions {
     fun getListModels(

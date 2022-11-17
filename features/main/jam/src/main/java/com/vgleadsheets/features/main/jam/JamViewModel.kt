@@ -1,18 +1,19 @@
 package com.vgleadsheets.features.main.jam
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.features.main.list.content
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.VglsRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import timber.log.Timber
 
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
-    private val repository: Repository,
+    private val repository: VglsRepository,
 ) : MavericksViewModel<JamState>(initialState) {
     init {
         fetchJam()
@@ -24,7 +25,7 @@ class JamViewModel @AssistedInject constructor(
         Timber.i("Refreshing jam...")
 
         val name = state.contentLoad.jam()?.name ?: return@withState
-        fireJamRefreshRequest(name, state)
+        fireJamRefreshRequest(name)
     }
 
     fun deleteJam() = withState {
@@ -37,26 +38,13 @@ class JamViewModel @AssistedInject constructor(
         }
     }
 
-    private fun fireJamRefreshRequest(
-        name: String,
-        state: JamState
-    ) {
+    private fun fireJamRefreshRequest(name: String) {
         suspend {
             repository.refreshJamState(name)
         }.execute {
             copy(
                 contentLoad = contentLoad.copy(
                     jamRefresh = it
-                )
-            )
-        }
-
-        suspend {
-            repository.refreshSetlist(state.jamId, name)
-        }.execute {
-            copy(
-                contentLoad = contentLoad.copy(
-                    setlistRefresh = it
                 )
             )
         }
@@ -69,7 +57,7 @@ class JamViewModel @AssistedInject constructor(
             .execute {
                 val jamName = it.content()?.name
                 if (jamName != null && firstRefresh) {
-                    fireJamRefreshRequest(jamName, this)
+                    fireJamRefreshRequest(jamName)
                     firstRefresh = false
                 }
 
@@ -80,17 +68,30 @@ class JamViewModel @AssistedInject constructor(
                 )
             }
 
-        repository.getSetlistForJam(jamId)
+        repository.getSetlistEntriesForJam(jamId)
             .execute {
+                val setlist = it()
+
+                Timber.i("Setlist: ${setlist?.size} items")
+
                 copy(
                     contentLoad = contentLoad.copy(
                         setlist = it
                     )
                 )
             }
+
+        repository.getSongHistoryForJam(jamId)
+            .execute {
+                copy(
+                    contentLoad = contentLoad.copy(
+                        songHistory = it
+                    )
+                )
+            }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: JamState,

@@ -22,9 +22,10 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
-import com.vgleadsheets.model.thumbUrl
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.images.Page
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
+import timber.log.Timber
 
 class Config(
     private val state: JamState,
@@ -42,6 +43,10 @@ class Config(
     private val setlistLoad = state.contentLoad.setlist
 
     private val setlist = setlistLoad.content()
+
+    private val songHistoryLoad = state.contentLoad.songHistory
+
+    private val songHistory = songHistoryLoad.content()
 
     override val titleConfig = Title.Config(
         jam?.name ?: resources.getString(R.string.unknown_jam),
@@ -87,7 +92,7 @@ class Config(
             )
         )
 
-        return if (state.contentLoad.setlistRefresh is Loading) {
+        return if (state.contentLoad.jamRefresh is Loading) {
             sectionTitle + listOf(NetworkRefreshingListModel("currentSong"))
         } else if (jamLoad.isLoading()) {
             sectionTitle + listOf(
@@ -107,7 +112,11 @@ class Config(
                         currentSong.id,
                         currentSong.name,
                         currentSong.gameName,
-                        currentSong.thumbUrl(baseImageUrl, hudState.selectedPart),
+                        Page.generateThumbUrl(
+                            baseImageUrl,
+                            hudState.selectedPart.apiId,
+                            currentSong.filename
+                        ),
                         R.drawable.placeholder_sheet
                     ) { clicks.song(currentSong.id) }
                 )
@@ -121,7 +130,11 @@ class Config(
                 resources.getString(R.string.section_setlist)
             )
         )
-        return if (state.contentLoad.setlistRefresh is Loading) {
+
+        Timber.i("Setlist: ${setlist?.size} items")
+
+        return if (state.contentLoad.jamRefresh is Loading) {
+            Timber.i("Showing setlist refresh")
             sectionTitle + listOf(NetworkRefreshingListModel("setlist"))
         } else if (setlistLoad.isLoading()) {
             sectionTitle + buildList<ListModel> {
@@ -135,15 +148,24 @@ class Config(
                 }
             }
         } else if (setlist.isNullOrEmpty()) {
+            Timber.i("Showing setlist empty")
             emptyList()
         } else {
+            Timber.i("Showing setlist content")
+
             sectionTitle + setlist.mapYielding {
                 val song = it.song
+                val dataId = it.id + ID_OFFSET_SETLIST
+
                 ImageNameCaptionListModel(
-                    it.id,
-                    song?.name ?: return@mapYielding songLoadError(),
+                    dataId,
+                    song?.name ?: return@mapYielding songLoadError(dataId),
                     song.gameName,
-                    song.thumbUrl(baseImageUrl, hudState.selectedPart),
+                    Page.generateThumbUrl(
+                        baseImageUrl,
+                        hudState.selectedPart.apiId,
+                        song.filename
+                    ),
                     R.drawable.placeholder_sheet
                 ) { clicks.song(song.id) }
             }
@@ -157,10 +179,10 @@ class Config(
             )
         )
 
-        return if (state.contentLoad.setlistRefresh is Loading) {
-            sectionTitle + listOf(NetworkRefreshingListModel("history"))
+        return sectionTitle + if (state.contentLoad.jamRefresh is Loading) {
+            listOf(NetworkRefreshingListModel("history"))
         } else if (jamLoad.isLoading()) {
-            sectionTitle + buildList<ListModel> {
+            buildList {
                 repeat(2) {
                     add(
                         LoadingImageNameCaptionListModel(
@@ -171,22 +193,22 @@ class Config(
                 }
             }
         } else {
-            val songHistory = jam?.songHistory
+            songHistory?.mapYielding {
+                val song = it.song
+                val dataId = it.id + ID_OFFSET_SONG_HISTORY
 
-            if (songHistory == null) {
-                emptyList()
-            } else {
-                sectionTitle + songHistory.mapYielding { it ->
-                    val song = it.song
-                    ImageNameCaptionListModel(
-                        it.id,
-                        song?.name ?: return@mapYielding songLoadError(),
-                        song.gameName,
-                        song.thumbUrl(baseImageUrl, hudState.selectedPart),
-                        R.drawable.placeholder_sheet
-                    ) { clicks.song(song.id) }
-                }
-            }
+                ImageNameCaptionListModel(
+                    dataId,
+                    song?.name ?: return@mapYielding songLoadError(dataId),
+                    song.gameName,
+                    Page.generateThumbUrl(
+                        baseImageUrl,
+                        hudState.selectedPart.apiId,
+                        song.filename
+                    ),
+                    R.drawable.placeholder_sheet
+                ) { clicks.song(song.id) }
+            } ?: emptyList()
         }
     }
 
@@ -208,12 +230,17 @@ class Config(
         LoadingItemStyle.WITH_IMAGE
     )
 
-    private fun songLoadError() = ImageNameCaptionListModel(
-        -1L,
+    private fun songLoadError(id: Long) = ImageNameCaptionListModel(
+        id,
         resources.getString(R.string.unknown_song),
         resources.getString(R.string.error_song),
         null,
         R.drawable.ic_error_24dp,
         onClick = NO_ACTION
     )
+
+    companion object {
+        private const val ID_OFFSET_SETLIST = 1_000L
+        private const val ID_OFFSET_SONG_HISTORY = 1_000_000L
+    }
 }

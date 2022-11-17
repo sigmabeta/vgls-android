@@ -8,7 +8,7 @@ import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.perf.tracking.api.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named

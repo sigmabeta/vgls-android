@@ -1,26 +1,9 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply plugin: 'kotlin-kapt'
+apply from: "$rootProject.projectDir/feature-module.gradle"
 
 dependencies {
-    api project(path: ':features:main:list')
+    implementation project(":core:android:list")
+}
 
-    implementation project(path: ':features:main:hud')
-
-    implementation project(path: ':core:repository')
-    implementation project(path: ':core:resources')
-    implementation project(path: ':core:recyclerview')
-    implementation project(path: ':core:ui-core')
-    implementation project(":core:coroutines")
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
-    // Dagger (important: include all 3 of these in modules that use Dagger
-    implementation project(path: ':core:di')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-
-    // AssistedInject Annotation Processors
-    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
-    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
+android {
+    namespace 'com.vgleadsheets.features.main.search'
 }

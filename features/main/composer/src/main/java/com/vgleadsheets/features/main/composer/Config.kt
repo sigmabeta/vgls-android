@@ -14,11 +14,11 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.model.thumbUrl
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: ComposerDetailState,
@@ -33,9 +33,7 @@ class Config(
 
     private val composer = composerLoad.content()
 
-    private val songsLoad = state.contentLoad.songs
-
-    private val songs = songsLoad.content()
+    private val songs = composer?.songs
 
     override val titleConfig = Title.Config(
         composer?.name ?: resources.getString(R.string.unknown_composer),
@@ -64,7 +62,11 @@ class Config(
                     song.id,
                     song.name,
                     song.captionText(),
-                    song.thumbUrl(baseImageUrl, hudState.selectedPart),
+                    Page.generateThumbUrl(
+                        baseImageUrl,
+                        hudState.selectedPart.apiId,
+                        song.filename
+                    ),
                     R.drawable.placeholder_sheet
                 ) {
                     clicks.song(song.id)

@@ -1,0 +1,13 @@
+apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
+
+dependencies {
+    // So we don't have buggy time comparisons
+    api "com.jakewharton.threetenabp:threetenabp:$threeten_version"
+
+    api project(':core:common:model')
+
+    implementation project(':core:common:conversion')
+    implementation project(':core:common:database')
+    implementation project(':core:common:network')
+    implementation project(':core:common:tracking')
+}

@@ -1,0 +1,12 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    // Dagger 2 Dependency Injection
+    api "com.google.dagger:dagger:$dagger_version"
+    api "com.google.dagger:dagger-android-support:$dagger_version"
+}
+
+android {
+    namespace 'com.vgleadsheets.di'
+}

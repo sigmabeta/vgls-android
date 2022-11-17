@@ -1,0 +1,21 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    // Contains the PerfTracker interface
+    api project(':core:common:perf')
+
+    // Firebase Perf
+    api "com.google.firebase:firebase-perf:$firebase_perf_version"
+
+    implementation project(":core:android:coroutines")
+
+    // Dagger (important: include all 3 of these in modules that use Dagger
+    implementation project(':core:android:di')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+}
+
+android {
+    namespace 'com.vgleadsheets.perf.tracking.firebase'
+}

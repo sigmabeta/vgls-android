@@ -6,7 +6,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.NullableStringArgs
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
-import com.vgleadsheets.perf.tracking.api.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named

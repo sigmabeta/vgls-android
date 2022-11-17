@@ -21,12 +21,12 @@ import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.features.main.sheet.SongViewModel.Companion.ID_COMPOSER_MULTIPLE
 import com.vgleadsheets.features.main.sheet.SongViewModel.Companion.RATING_MAXIMUM
 import com.vgleadsheets.features.main.sheet.SongViewModel.Companion.RATING_MINIMUM
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.model.thumbUrl
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: SongState,
@@ -54,7 +54,11 @@ class Config(
             perfTracker.onTransitionStarted(perfSpec)
         },
         { },
-        song?.thumbUrl(baseImageUrl, hudState.selectedPart),
+        Page.generateThumbUrl(
+            baseImageUrl,
+            hudState.selectedPart.apiId,
+            song?.filename ?: ""
+        ),
         R.drawable.placeholder_sheet,
         true,
         songLoad.isLoading()
@@ -94,13 +98,13 @@ class Config(
                 resources.getString(R.string.label_detail_composer),
                 composer,
                 { clicks.composer(composerId) },
-                composerId
+                composerId + ID_OFFSET_COMPOSER
             ),
             LabelValueListModel(
                 resources.getString(R.string.label_detail_game),
                 song.gameName,
                 { clicks.game(song.gameId) },
-                song.gameId
+                song.gameId + ID_OFFSET_GAME
             )
         )
     }
@@ -138,14 +142,14 @@ class Config(
                     it.tagKeyName,
                     valueAsNumber,
                     { clicks.tagValue(it.id) },
-                    it.id
+                    it.id + ID_OFFSET_TAG_VALUE
                 )
             } else {
                 LabelValueListModel(
                     it.tagKeyName,
                     it.name,
                     { clicks.tagValue(it.id) },
-                    it.id
+                    it.id + ID_OFFSET_TAG_VALUE
                 )
             }
         }.sortedBy { it.javaClass.simpleName }
@@ -178,6 +182,7 @@ class Config(
                     TagValue(
                         originalValue.id,
                         originalValue.name,
+                        originalValue.tagKeyId,
                         "${originalValue.tagKeyName} ${index + 1}",
                         originalValue.songs
                     )
@@ -198,4 +203,10 @@ class Config(
             pageCount
         }
     )
+
+    companion object {
+        private const val ID_OFFSET_GAME = 1_000L
+        private const val ID_OFFSET_COMPOSER = 1_000_000L
+        private const val ID_OFFSET_TAG_VALUE = 1_000_000_000L
+    }
 }

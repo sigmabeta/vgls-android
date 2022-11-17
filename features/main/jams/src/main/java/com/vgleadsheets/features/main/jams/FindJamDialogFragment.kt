@@ -16,7 +16,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vgleadsheets.insets.Insetup
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
 import java.net.HttpURLConnection
@@ -35,7 +35,7 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
     lateinit var tracker: Tracker
 
     @Inject
-    lateinit var repository: Repository
+    lateinit var repository: VglsRepository
 
     private lateinit var containerLinear: LinearLayout
 

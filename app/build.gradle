@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.jaredsburrows.license'
 
+apply from: "$rootProject.projectDir/di-android.gradle"
+
 if (checkShouldIncludeFirebase()) {
     apply plugin: 'com.google.firebase.firebase-perf'
     apply plugin: 'com.google.firebase.crashlytics'
@@ -107,6 +109,7 @@ android {
         checkDependencies true
         ignoreTestSources true
     }
+    namespace 'com.vgleadsheets'
 }
 
 def googlePlayTrack = System.getenv("TRACK")
@@ -120,38 +123,44 @@ if (googlePlayTrack != null) {
 }
 
 dependencies {
-    // Module deps
-    implementation project(path: ':core:resources')
-    implementation project(path: ':core:repository')
-    implementation project(path: ':features:main')
-    implementation project(path: ':core:storage')
-    implementation project(path: ':core:images')
+    // DI dependencies only
+    implementation project(":core:android:conversion")
+    implementation project(":core:android:database")
+    implementation project(":core:android:images")
+    implementation project(":core:android:list")
+    implementation project(':core:android:ui-core')
+    implementation project(':core:android:ui-components')
 
-    androidTestImplementation project(path: ':core:common:debug-common')
+    implementation project(":core:android:coroutines")
+    implementation project(':core:android:images')
+    implementation project(':core:android:repository')
+    implementation project(':core:android:resources')
+    implementation project(':core:android:storage')
 
-    implementation project(":core:coroutines")
+    implementation project(':features:main')
+
+    implementation project(":core:common:debug")
+    implementation project(":core:common:network")
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Debug helper
     implementation "com.facebook.stetho:stetho:$stetho_version"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 
-    // Firebase (must be in app or else contentprovider init doesn't happen)
-    if (checkShouldIncludeFirebase()) {
+    def shouldIncludeFirebase = checkShouldIncludeFirebase()
+    logger.quiet("Including firebase: $shouldIncludeFirebase")
+    if (shouldIncludeFirebase) {
+        // Analytics ust be in this module, or else contentprovider init doesn't happen
         implementation "com.google.firebase:firebase-analytics:$firebase_version"
         implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
 
-        implementation project(path: ':core:tracking')
+        implementation project(':core:android:firebase')
+        implementation project(':core:android:tracking')
     } else {
-        implementation project(path: ':core:tracking-noop')
-    }
-
-    // Perf tracking (only log to firebase on release builds)
-    if (checkShouldIncludeFirebase()) {
-        implementation project(path: ':core:perf:tracking:firebase')
-    } else {
-        implementation project(path: ':core:perf:tracking:noop')
+        implementation project(':core:fake:perf')
+        implementation project(':core:fake:tracking')
     }
 
     // Memory leak detection (Uncomment to enable)
@@ -168,16 +177,6 @@ dependencies {
 
     androidTestImplementation "androidx.test:runner:$espresso_runner_version"
     androidTestImplementation "androidx.test:rules:$espresso_runner_version"
-
-    // Dagger (important: include all 3 of these in modules that use Dagger
-    implementation project(path: ':core:di')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-    kaptAndroidTest "com.google.dagger:dagger-android-processor:$dagger_version"
-
-    // AssistedInject Annotation Processors
-    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedinject_version"
-    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedinject_version"
 }
 
 // Firebase (they said to put it at the bottom)

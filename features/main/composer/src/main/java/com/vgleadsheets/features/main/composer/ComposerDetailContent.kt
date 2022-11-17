@@ -7,23 +7,20 @@ import com.vgleadsheets.features.main.list.failure
 import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
-import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Composer
 
 data class ComposerDetailContent(
     val composer: Async<Composer> = Uninitialized,
-    val songs: Async<List<Song>> = Uninitialized
 ) : ListContent {
-    // TODO CompositeException
-    override fun failure() = composer.failure() ?: songs.failure()
+    override fun failure() = composer.failure()
 
-    override fun isLoading() = songs.isLoading()
+    override fun isLoading() = composer.isLoading()
 
-    override fun hasFailed() = composer.hasFailed() || songs.hasFailed()
+    override fun hasFailed() = composer.hasFailed()
 
-    override fun isFullyLoaded() = composer.isReady() && songs.isReady()
+    override fun isFullyLoaded() = composer.isReady()
 
     override fun isReady() = composer.isReady()
 
-    override fun isEmpty() = songs()?.isEmpty() == true
+    override fun isEmpty() = composer()?.songs?.isEmpty() == true
 }
