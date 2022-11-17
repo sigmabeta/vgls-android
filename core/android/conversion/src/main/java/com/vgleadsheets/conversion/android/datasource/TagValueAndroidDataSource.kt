@@ -19,7 +19,14 @@ class TagValueAndroidDataSource(
     private val manyConverter: SongConverter,
     private val roomImpl: TagValueRoomDao,
     private val relatedRoomImpl: SongsForTagValueDao
-) : OneToManyAndroidDataSource<TagValueRoomDao, TagValue, TagValueEntity, Song, SongEntity, SongsForTagValueDao, TagValueConverter, SongConverter>(
+) : OneToManyAndroidDataSource<TagValueRoomDao,
+    TagValue,
+    TagValueEntity,
+    Song,
+    SongEntity,
+    SongsForTagValueDao,
+    TagValueConverter,
+    SongConverter>(
     convert,
     manyConverter,
     roomImpl,

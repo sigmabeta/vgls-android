@@ -19,7 +19,16 @@ class ComposerAndroidDataSource(
     private val manyConverter: SongConverter,
     private val roomImpl: ComposerRoomDao,
     private val relatedRoomImpl: SongsForComposerDao
-) : ManyToManyAndroidDataSource<ComposerRoomDao, Composer, ComposerEntity, Song, SongEntity, ComposerRoomDao, SongsForComposerDao, ComposerConverter, SongConverter>(
+) : ManyToManyAndroidDataSource<
+    ComposerRoomDao,
+    Composer,
+    ComposerEntity,
+    Song,
+    SongEntity,
+    ComposerRoomDao,
+    SongsForComposerDao,
+    ComposerConverter,
+    SongConverter>(
     convert,
     manyConverter,
     roomImpl,

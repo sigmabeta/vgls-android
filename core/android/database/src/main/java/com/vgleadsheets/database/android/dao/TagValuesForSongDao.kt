@@ -29,7 +29,8 @@ interface TagValuesForSongDao : JoinDao<TagValueEntity> {
         private const val ROW_JOIN_ID_MANY = "$TABLE_JOIN.${SongTagValueJoin.ROW_FOREIGN_KEY_TWO}"
 
         private const val WHERE_JOIN =
-            "INNER JOIN $TABLE_JOIN ON $TABLE.$ROW_PRIMARY_KEY_ID = $ROW_JOIN_ID_MANY WHERE $ROW_JOIN_ID_ONE = :$ROW_PRIMARY_KEY_ID"
+            "INNER JOIN $TABLE_JOIN ON $TABLE.$ROW_PRIMARY_KEY_ID = $ROW_JOIN_ID_MANY " +
+                "WHERE $ROW_JOIN_ID_ONE = :$ROW_PRIMARY_KEY_ID"
 
         // Bespoke Queries
 

@@ -21,7 +21,14 @@ class GameAndroidDataSource(
     private val relatedRoomImpl: SongRoomDao,
     private val composersForSongDao: ComposersForSongDao,
     private val composerConverter: ComposerConverter
-) : OneToManyAndroidDataSource<GameRoomDao, Game, GameEntity, Song, SongEntity, SongRoomDao, GameConverter, SongConverter>(
+) : OneToManyAndroidDataSource<GameRoomDao,
+    Game,
+    GameEntity,
+    Song,
+    SongEntity,
+    SongRoomDao,
+    GameConverter,
+    SongConverter>(
     convert,
     manyConverter,
     roomImpl,

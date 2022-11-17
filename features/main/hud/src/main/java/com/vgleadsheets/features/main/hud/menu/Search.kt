@@ -265,7 +265,7 @@ object Search {
                     }
 
                     is Game -> SearchResultListModel(
-                        result.id,
+                        result.id + ID_OFFSET_GAME,
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
@@ -273,7 +273,7 @@ object Search {
                     ) { clicks.gameSearchResult(result.id) }
 
                     is Composer -> SearchResultListModel(
-                        result.id,
+                        result.id + ID_OFFSET_COMPOSER,
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,

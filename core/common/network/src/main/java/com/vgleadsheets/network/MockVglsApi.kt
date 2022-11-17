@@ -94,8 +94,6 @@ class MockVglsApi(
             if (song != null) {
                 val entry = ApiSongHistoryEntry(song.id)
                 previousJams.add(entry)
-            } else {
-                // Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
             }
         }
 
@@ -134,8 +132,6 @@ class MockVglsApi(
                     song.name
                 )
                 songs.add(entry)
-            } else {
-                // Timber.e("Invalid song with index $possibleSongIndex our of possible song list size $possibleSongsSize")
             }
         }
 
@@ -185,7 +181,7 @@ class MockVglsApi(
     }
 
     private fun generateGame(): VglsApiGame {
-        val gameId = random.nextInt(1000).toLong()
+        val gameId = random.nextLong()
 
         return VglsApiGame(
             null,
@@ -241,7 +237,7 @@ class MockVglsApi(
     }
 
     private fun generateSong() = ApiSong(
-        random.nextInt(1000).toLong(),
+        random.nextLong(),
         "goose",
         getParts(),
         stringGenerator.generateTitle(),
@@ -304,7 +300,7 @@ class MockVglsApi(
 
     private fun generateComposer() = ApiComposer(
         null,
-        random.nextInt(1000).toLong(),
+        random.nextLong(),
         stringGenerator.generateName(),
         null
     )
