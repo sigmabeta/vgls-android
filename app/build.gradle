@@ -149,21 +149,18 @@ dependencies {
     implementation "com.facebook.stetho:stetho:$stetho_version"
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 
-    // Firebase (must be in app or else contentprovider init doesn't happen)
-    if (checkShouldIncludeFirebase()) {
+    def shouldIncludeFirebase = checkShouldIncludeFirebase()
+    logger.quiet("Including firebase: $shouldIncludeFirebase")
+    if (shouldIncludeFirebase) {
+        // Analytics ust be in this module, or else contentprovider init doesn't happen
         implementation "com.google.firebase:firebase-analytics:$firebase_version"
         implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
 
+        implementation project(':core:android:firebase')
         implementation project(':core:android:tracking')
     } else {
-        implementation project(':core:fake:tracking')
-    }
-
-    // Perf tracking (only log to firebase on release builds)
-    if (checkShouldIncludeFirebase()) {
-        implementation project(':core:android:firebase')
-    } else {
         implementation project(':core:fake:perf')
+        implementation project(':core:fake:tracking')
     }
 
     // Memory leak detection (Uncomment to enable)
