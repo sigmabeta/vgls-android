@@ -102,6 +102,9 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
+          name: Setup Google Services JSON
+          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
+      - run:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
       - run:
