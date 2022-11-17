@@ -77,10 +77,10 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Download Ktlint
-          command: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.45.2/ktlint && chmod a+x ktlint
+          command: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.47.1/ktlint && chmod a+x ktlint
       - run:
           name: Run Ktlint
-          command: ./ktlint --reporter=html,output=ktlint.html
+          command: ./ktlint --android --reporter=html,output=ktlint.html
       - store_artifacts:
           path: ktlint.html
           destination: ktlint-reports
