@@ -14,3 +14,7 @@ dependencies {
     // So we don't have buggy time comparisons
     api "com.jakewharton.threetenabp:threetenabp:$threeten_version"
 }
+
+android {
+    namespace 'com.vgleadsheets.repository'
+}

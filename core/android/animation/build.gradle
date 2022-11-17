@@ -3,3 +3,7 @@ apply from: "$rootProject.projectDir/core-android-module.gradle"
 dependencies {
     implementation project(":core:android:coroutines")
 }
+
+android {
+    namespace 'com.vgleadsheets.animation'
+}

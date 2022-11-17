@@ -4,3 +4,7 @@ dependencies {
     implementation project(":core:android:list")
     implementation project(':core:android:storage')
 }
+
+android {
+    namespace 'com.vgleadsheets.features.main.settings'
+}

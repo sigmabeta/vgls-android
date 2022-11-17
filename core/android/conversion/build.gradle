@@ -8,3 +8,7 @@ dependencies {
 
     implementation project(":core:common:network")
 }
+
+android {
+    namespace 'com.vgleadsheets.conversion'
+}

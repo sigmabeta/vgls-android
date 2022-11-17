@@ -11,3 +11,7 @@ dependencies {
     // Common dependencies
     implementation project(":core:common:debug")
 }
+
+android {
+    namespace 'com.vgleadsheets.storage'
+}

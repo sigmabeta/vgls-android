@@ -109,6 +109,7 @@ android {
         checkDependencies true
         ignoreTestSources true
     }
+    namespace 'com.vgleadsheets'
 }
 
 def googlePlayTrack = System.getenv("TRACK")

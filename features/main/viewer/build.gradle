@@ -14,3 +14,7 @@ dependencies {
     implementation project(':core:android:ui-components')
     implementation project(':core:android:vectors')
 }
+
+android {
+    namespace 'com.vgleadsheets.features.main.viewer'
+}

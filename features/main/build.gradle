@@ -28,3 +28,7 @@ dependencies {
     implementation project(":core:android:ui-core")
     implementation project(":core:android:ui-components")
 }
+
+android {
+    namespace 'com.vgleadsheets.main'
+}

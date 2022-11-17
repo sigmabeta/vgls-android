@@ -4,3 +4,7 @@ apply from: "$rootProject.projectDir/di-android.gradle"
 dependencies {
     api project(":core:common:coroutines")
 }
+
+android {
+    namespace 'com.vgleadsheets.coroutines'
+}

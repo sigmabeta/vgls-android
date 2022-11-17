@@ -27,3 +27,7 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 }
+
+android {
+    namespace 'com.vgleadsheets.ui_core'
+}

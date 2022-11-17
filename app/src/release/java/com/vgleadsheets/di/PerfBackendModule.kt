@@ -1,4 +1,4 @@
-package com.vgleadsheets.perf.tracking
+package com.vgleadsheets.di
 
 import com.google.firebase.perf.FirebasePerformance
 import com.vgleadsheets.perf.tracking.common.PerfTrackingBackend

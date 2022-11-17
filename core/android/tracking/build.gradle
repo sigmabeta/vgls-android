@@ -19,3 +19,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
 
+android {
+    namespace 'com.vgleadsheets.tracking'
+}
+

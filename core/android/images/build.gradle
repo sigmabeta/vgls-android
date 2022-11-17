@@ -5,3 +5,7 @@ dependencies {
     // Image Loading
     api "com.squareup.picasso:picasso:$picasso_version"
 }
+
+android {
+    namespace 'com.vgleadsheets.images'
+}

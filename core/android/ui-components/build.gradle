@@ -5,6 +5,7 @@ android {
     buildFeatures {
         dataBinding true
     }
+    namespace 'com.vgleadsheets.components'
 }
 
 dependencies {
