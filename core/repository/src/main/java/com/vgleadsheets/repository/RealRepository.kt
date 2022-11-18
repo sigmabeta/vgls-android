@@ -38,6 +38,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 
+@Suppress("TooGenericExceptionCaught", "PrintStackTrace")
 class RealRepository constructor(
     private val vglsApi: VglsApi,
     private val threeTen: ThreeTenTime,
