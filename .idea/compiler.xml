@@ -2,8 +2,28 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
+      <module name="VGLeadSheets.app" target="17" />
+      <module name="VGLeadSheets.core.android.animation" target="17" />
+      <module name="VGLeadSheets.core.android.conversion" target="17" />
+      <module name="VGLeadSheets.core.android.coroutines" target="17" />
+      <module name="VGLeadSheets.core.android.database" target="17" />
+      <module name="VGLeadSheets.core.android.di" target="17" />
+      <module name="VGLeadSheets.core.android.firebase" target="17" />
+      <module name="VGLeadSheets.core.android.images" target="17" />
+      <module name="VGLeadSheets.core.android.list" target="17" />
+      <module name="VGLeadSheets.core.android.mvrx" target="17" />
+      <module name="VGLeadSheets.core.android.recyclerview" target="17" />
+      <module name="VGLeadSheets.core.android.repository" target="17" />
+      <module name="VGLeadSheets.core.android.resources" target="17" />
+      <module name="VGLeadSheets.core.android.router" target="17" />
+      <module name="VGLeadSheets.core.android.storage" target="17" />
+      <module name="VGLeadSheets.core.android.tracking" target="17" />
+      <module name="VGLeadSheets.core.android.ui-components" target="17" />
+      <module name="VGLeadSheets.core.android.ui-core" target="17" />
+      <module name="VGLeadSheets.core.android.vectors" target="17" />
       <module name="VGLeadSheets.core.coroutines" target="11" />
       <module name="VGLeadSheets.core.di" target="11" />
+      <module name="VGLeadSheets.core.fake.tracking" target="17" />
       <module name="VGLeadSheets.core.images" target="11" />
       <module name="VGLeadSheets.core.model" target="11" />
       <module name="VGLeadSheets.core.mvrx" target="11" />
@@ -19,8 +39,27 @@
       <module name="VGLeadSheets.core.ui-components" target="11" />
       <module name="VGLeadSheets.core.ui-core" target="11" />
       <module name="VGLeadSheets.core.vectors" target="11" />
+      <module name="VGLeadSheets.features.main" target="17" />
+      <module name="VGLeadSheets.features.main.about" target="17" />
+      <module name="VGLeadSheets.features.main.composer" target="17" />
+      <module name="VGLeadSheets.features.main.composers" target="17" />
+      <module name="VGLeadSheets.features.main.debug" target="17" />
+      <module name="VGLeadSheets.features.main.game" target="17" />
+      <module name="VGLeadSheets.features.main.games" target="17" />
+      <module name="VGLeadSheets.features.main.hud" target="17" />
+      <module name="VGLeadSheets.features.main.jam" target="17" />
+      <module name="VGLeadSheets.features.main.jams" target="17" />
+      <module name="VGLeadSheets.features.main.license" target="17" />
       <module name="VGLeadSheets.features.main.list" target="17" />
       <module name="VGLeadSheets.features.main.router" target="17" />
+      <module name="VGLeadSheets.features.main.search" target="17" />
+      <module name="VGLeadSheets.features.main.settings" target="17" />
+      <module name="VGLeadSheets.features.main.sheet" target="17" />
+      <module name="VGLeadSheets.features.main.songs" target="17" />
+      <module name="VGLeadSheets.features.main.tag-key" target="17" />
+      <module name="VGLeadSheets.features.main.tag-songs" target="17" />
+      <module name="VGLeadSheets.features.main.tag-value" target="17" />
+      <module name="VGLeadSheets.features.main.viewer" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
