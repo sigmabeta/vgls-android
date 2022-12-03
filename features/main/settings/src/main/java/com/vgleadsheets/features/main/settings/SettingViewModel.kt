@@ -1,14 +1,15 @@
 package com.vgleadsheets.features.main.settings
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MavericksViewModel
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.storage.Storage.Companion.KEY_DEBUG_NETWORK_ENDPOINT
 import com.vgleadsheets.storage.Storage.Companion.KEY_SHEETS_KEEP_SCREEN_ON
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
 class SettingViewModel @AssistedInject constructor(
     @Assisted initialState: SettingState,
@@ -48,7 +49,7 @@ class SettingViewModel @AssistedInject constructor(
         }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: SettingState,

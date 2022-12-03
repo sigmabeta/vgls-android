@@ -1,75 +1,13 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: "de.mannodermaus.android-junit5"
-
-apply from: "$rootProject.projectDir/dependencies-testing.gradle"
-
-android {
-    compileSdkVersion 31
-
-    compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
-    }
-
-    kotlinOptions {
-        jvmTarget = 1.8
-    }
-
-    buildFeatures {
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion "$compose_version"
-    }
-}
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/di-android.gradle"
 
 dependencies {
-    implementation project(path: ':core:ui-components')
-    implementation project(path: ':core:repository')
+    implementation project(':features:main:hud')
 
-    
-    // Jetpack Compose
-//    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation project(':core:android:images')
+    implementation project(':core:android:recyclerview')
+    implementation project(':core:android:ui-components')
+    implementation project(':core:android:ui-core')
 
-    // Tooling support (Previews, etc.)
-//    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-//    implementation "androidx.compose.foundation:foundation:$compose_version"
-
-    // Material Design
-//    implementation "androidx.compose.material:material:$compose_version"
-
-    // Material design icons
-//    implementation "androidx.compose.material:material-icons-core:$compose_version"
-//    implementation "androidx.compose.material:material-icons-extended:$compose_version"
-
-    // Navigation
-//    implementation "androidx.navigation:navigation-compose:$compose_nav_version"
-//    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-alpha02"
-
-    // Insets
-    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
-
-    // For Lifecycle-aware Flows
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-
-    // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-
-    // Jetpack Compose Integration for ViewModel
-//    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha05"
-
-    // Integration with observables
-//    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
-    // Compose support in Layout Inspector
-//    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-//    debugImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation project(':core:common:repository')
 }

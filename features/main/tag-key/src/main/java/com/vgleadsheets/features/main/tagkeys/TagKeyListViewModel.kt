@@ -1,16 +1,17 @@
 package com.vgleadsheets.features.main.tagkeys
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.repository.VglsRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
 class TagKeyListViewModel @AssistedInject constructor(
     @Assisted initialState: TagKeyListState,
-    private val repository: Repository,
+    private val repository: VglsRepository,
 ) : MavericksViewModel<TagKeyListState>(initialState) {
     init {
         fetchTagKeys()
@@ -23,7 +24,7 @@ class TagKeyListViewModel @AssistedInject constructor(
             }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: TagKeyListState,

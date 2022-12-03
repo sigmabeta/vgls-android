@@ -1,0 +1,25 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/di-android.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    api project(':core:android:coroutines')
+    api project(':core:android:ui-core')
+
+    implementation project(':core:android:recyclerview')
+
+    implementation project(':features:main:hud')
+
+}
+
+android {
+    buildFeatures {
+        dataBinding true
+    }
+    namespace 'com.vgleadsheets.features.main.list'
+
+    kotlinOptions {
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+    }
+}
+

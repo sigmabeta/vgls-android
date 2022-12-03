@@ -14,11 +14,11 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.pages.Page
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: GameState,
@@ -90,14 +90,15 @@ class Config(
     )
 
     private fun Song.subtitleText() = when (composers?.size) {
-        1 -> composers?.firstOrNull()?.name
-            ?: resources.getString(R.string.subtitle_composer_unknown)
+        null -> resources.getString(R.string.subtitle_composer_unknown)
+        0 -> resources.getString(R.string.subtitle_composer_unknown)
+        1 -> composers!!.first().name
         else -> resources.getString(R.string.subtitle_composer_various)
     }
 
     private fun Song.thumbUrl() = Page.generateImageUrl(
         baseImageUrl,
-        hudState.selectedPart,
+        hudState.selectedPart.apiId,
         filename,
         1
     )

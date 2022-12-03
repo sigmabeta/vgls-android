@@ -66,3 +66,6 @@ fastlane/readme.md
 
 # Gradle Build Cache
 build-cache
+
+ktlint
+ktlint.html

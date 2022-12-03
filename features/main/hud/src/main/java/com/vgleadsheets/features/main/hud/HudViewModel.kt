@@ -3,21 +3,21 @@ package com.vgleadsheets.features.main.hud
 import androidx.fragment.app.FragmentActivity
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.mvrx.MavericksViewModel
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
-import com.vgleadsheets.repository.Repository
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.storage.Storage
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -38,7 +38,7 @@ import timber.log.Timber
 class HudViewModel @AssistedInject constructor(
     @Assisted initialState: HudState,
     @Assisted private val router: FragmentRouter,
-    private val repository: Repository,
+    private val repository: com.vgleadsheets.repository.VglsRepository,
     private val storage: Storage,
     private val perfTracker: PerfTracker,
     private val dispatchers: VglsDispatchers
@@ -434,7 +434,7 @@ class HudViewModel @AssistedInject constructor(
         timer?.cancel()
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: HudState,

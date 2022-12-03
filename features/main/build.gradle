@@ -1,40 +1,34 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply plugin: 'kotlin-kapt'
+apply from: "$rootProject.projectDir/di-android.gradle"
 
 dependencies {
-    // So ListView.kt can be found. TODO Make this not necessary
-    api project(path: ':core:recyclerview')
+    implementation "androidx.metrics:metrics-performance:$jank_stats_version"
 
-    api project(path: ':features:main:about')
-    api project(path: ':features:main:composer')
-    api project(path: ':features:main:composers')
-    api project(path: ':features:main:debug')
-    api project(path: ':features:main:hud')
-    api project(path: ':features:main:game')
-    api project(path: ':features:main:games')
-    api project(path: ':features:main:jam')
-    api project(path: ':features:main:jams')
-    api project(path: ':features:main:license')
-    api project(path: ':features:main:search')
-    api project(path: ':features:main:settings')
-    api project(path: ':features:main:sheet')
-    api project(path: ':features:main:songs')
-    api project(path: ':features:main:tag-key')
-    api project(path: ':features:main:tag-songs')
-    api project(path: ':features:main:tag-value')
-    api project(path: ':features:main:viewer')
+    api project(':features:main:about')
+    api project(':features:main:composer')
+    api project(':features:main:composers')
+    api project(':features:main:debug')
+    api project(':features:main:hud')
+    api project(':features:main:game')
+    api project(':features:main:games')
+    api project(':features:main:jam')
+    api project(':features:main:jams')
+    api project(':features:main:license')
+    api project(':features:main:search')
+    api project(':features:main:settings')
+    api project(':features:main:sheet')
+    api project(':features:main:songs')
+    api project(':features:main:tag-key')
+    api project(':features:main:tag-songs')
+    api project(':features:main:tag-value')
+    api project(':features:main:viewer')
 
-    api project(path: ':core:ui-core')
+    implementation project(":core:android:list")
+    implementation project(":core:android:router")
+    implementation project(":core:android:ui-core")
+    implementation project(":core:android:ui-components")
+}
 
-    implementation project(path: ':core:repository')
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
-    implementation project(":core:coroutines")
-
-    // Dagger annotation processors
-    implementation project(path: ':core:di')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+android {
+    namespace 'com.vgleadsheets.main'
 }

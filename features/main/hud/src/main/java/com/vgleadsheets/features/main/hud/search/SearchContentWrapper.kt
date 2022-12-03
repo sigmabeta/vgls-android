@@ -1,8 +1,8 @@
 package com.vgleadsheets.features.main.hud.search
 
-import com.vgleadsheets.model.composer.Composer
-import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Song
 
 data class SearchContentWrapper(
     val songs: List<Song>,

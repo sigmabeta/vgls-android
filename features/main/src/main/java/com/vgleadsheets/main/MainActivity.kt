@@ -36,16 +36,14 @@ import com.vgleadsheets.features.main.tagkeys.TagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
-import com.vgleadsheets.perf.tracking.api.FrameInfo
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.FrameInfo
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.tracking.TrackingScreen
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asExecutor
 import timber.log.Timber
 
 @Suppress("TooManyFunctions", "Deprecation")
@@ -66,7 +64,7 @@ class MainActivity :
 
     private var jankStats: JankStats? = null
 
-    private var metricsStateHolder: PerformanceMetricsState.MetricsStateHolder? = null
+    private var metricsStateHolder: PerformanceMetricsState.Holder? = null
 
     override fun androidInjector() = androidInjector
 
@@ -115,7 +113,7 @@ class MainActivity :
     }
 
     override fun setPerfSpec(specName: String) {
-        metricsStateHolder?.state?.addState(PerfSpec.toString(), specName)
+        metricsStateHolder?.state?.putState(PerfSpec.toString(), specName)
     }
 
     override fun onAppBarButtonClick() {
@@ -205,7 +203,7 @@ class MainActivity :
     }
 
     override fun searchYoutube(name: String, gameName: String) {
-        val query = "$gameName - $name"
+        val query = "$gameName - $name music"
         val youtubeUrl = getYoutubeSearchUrlForQuery(query)
 
         goToWebUrl(youtubeUrl)
@@ -360,20 +358,19 @@ class MainActivity :
         Timber.i("Initializing JankStats.")
 
         jankStats = JankStats.createAndTrack(
-            window,
-            Dispatchers.Default.asExecutor(),
+            window
         ) {
             val spec = it
                 .states
-                .firstOrNull { state -> state.stateName == PerfSpec.toString() }
-                ?.let { state -> PerfSpec.valueOf(state.state) }
+                .firstOrNull { state -> state.key == PerfSpec.toString() }
+                ?.let { state -> PerfSpec.valueOf(state.value) }
 
             if (spec != null) {
                 perfTracker.reportFrame(it.toFrameInfo(), spec)
             }
         }
 
-        metricsStateHolder = PerformanceMetricsState.getForHierarchy(
+        metricsStateHolder = PerformanceMetricsState.getHolderForHierarchy(
             window.findViewById(R.id.frame_fragment)
         )
     }

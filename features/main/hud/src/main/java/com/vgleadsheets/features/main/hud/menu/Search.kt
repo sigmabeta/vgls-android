@@ -17,12 +17,12 @@ import com.vgleadsheets.features.main.hud.Clicks
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.features.main.hud.search.SearchContent
-import com.vgleadsheets.model.composer.Composer
+import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.game.Game
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.model.thumbUrl
 import java.util.Locale
 
 object Search {
@@ -237,6 +237,7 @@ object Search {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun mapSearchResults(
         results: List<Any>,
         baseImageUrl: String,
@@ -252,7 +253,11 @@ object Search {
                             result.id,
                             result.name,
                             result.gameName,
-                            result.thumbUrl(baseImageUrl, selectedPart),
+                            Page.generateThumbUrl(
+                                baseImageUrl,
+                                selectedPart.apiId,
+                                result.filename
+                            ),
                             R.drawable.placeholder_sheet
                         ) {
                             clicks.songSearchResult(result.id)
@@ -260,7 +265,7 @@ object Search {
                     }
 
                     is Game -> SearchResultListModel(
-                        result.id,
+                        result.id + ID_OFFSET_GAME,
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
@@ -268,7 +273,7 @@ object Search {
                     ) { clicks.gameSearchResult(result.id) }
 
                     is Composer -> SearchResultListModel(
-                        result.id,
+                        result.id + ID_OFFSET_COMPOSER,
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
@@ -387,6 +392,9 @@ object Search {
         return builder.toString()
     }
 
-    const val MAX_LENGTH_SUBTITLE_CHARS = 20
-    const val MAX_LENGTH_SUBTITLE_ITEMS = 6
+    private const val MAX_LENGTH_SUBTITLE_CHARS = 20
+    private const val MAX_LENGTH_SUBTITLE_ITEMS = 6
+
+    private const val ID_OFFSET_GAME = 1_000L
+    private const val ID_OFFSET_COMPOSER = 1_000_000L
 }

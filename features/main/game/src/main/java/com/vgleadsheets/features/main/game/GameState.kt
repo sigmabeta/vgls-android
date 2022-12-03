@@ -6,10 +6,10 @@ import com.vgleadsheets.features.main.list.BetterCompositeState
 
 data class GameState(
     val gameId: Long,
-    override val contentLoad: Content = Content(
+    override val contentLoad: GameDetailContent = GameDetailContent(
         Uninitialized,
         Uninitialized
     )
-) : BetterCompositeState<Content> {
+) : BetterCompositeState<GameDetailContent> {
     constructor(args: IdArgs) : this(args.id)
 }

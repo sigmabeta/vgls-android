@@ -4,9 +4,9 @@ import androidx.test.espresso.IdlingResource.ResourceCallback
 import com.squareup.rx2.idler.IdlingResourceScheduler
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeJob
-import kotlinx.coroutines.Job
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.coroutines.Job
 
 internal class FixedDelegatingScheduler(
     private val delegate: Scheduler,

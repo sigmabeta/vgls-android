@@ -18,7 +18,7 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
 import com.vgleadsheets.features.main.hud.menu.HudVisibility
 import com.vgleadsheets.features.main.hud.menu.MenuRenderer
-import com.vgleadsheets.perf.tracking.api.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen

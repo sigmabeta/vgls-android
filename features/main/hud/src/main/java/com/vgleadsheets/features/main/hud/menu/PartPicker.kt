@@ -1,10 +1,10 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
-import com.vgleadsheets.common.parts.PartSelectorOption
 import com.vgleadsheets.components.MenuItemListModel
+import com.vgleadsheets.features.main.hud.PartSelectorOption
 import com.vgleadsheets.features.main.hud.R
-import com.vgleadsheets.model.parts.Part
+import com.vgleadsheets.model.Part
 
 object PartPicker {
     fun getListModels(

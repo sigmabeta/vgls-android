@@ -7,7 +7,7 @@ import com.vgleadsheets.features.main.list.failure
 import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
-import com.vgleadsheets.model.song.Song
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagValue
 
 data class TagValueSongContent(
@@ -17,7 +17,7 @@ data class TagValueSongContent(
     // TODO CompositeException
     override fun failure() = tagValue.failure() ?: songs.failure()
 
-    override fun isLoading() = songs.isLoading()
+    override fun isLoading() = tagValue.isLoading()
 
     override fun hasFailed() = tagValue.hasFailed() || songs.hasFailed()
 
@@ -25,5 +25,5 @@ data class TagValueSongContent(
 
     override fun isReady() = tagValue.isReady()
 
-    override fun isEmpty() = songs()?.isEmpty() == true
+    override fun isEmpty() = tagValue()?.songs?.isEmpty() == true
 }

@@ -1,0 +1,6 @@
+apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
+
+dependencies {
+    // So we don't have buggy time comparisons
+    implementation "com.jakewharton.threetenabp:threetenabp:$threeten_version"
+}

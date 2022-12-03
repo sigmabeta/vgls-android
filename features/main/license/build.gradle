@@ -1,16 +1,9 @@
-// Uncomment whichever of these plugins you need (for a UI feature, probably both)
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply plugin: 'kotlin-kapt'
+apply from: "$rootProject.projectDir/feature-module.gradle"
+
 dependencies {
-    implementation project(path: ':features:main:hud')
-    implementation project(path: ':core:ui-core')
+    implementation project(":core:android:list")
+}
 
-    implementation project(":core:coroutines")
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
-    // Dagger (important: include all 3 of these in modules that use Dagger
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+android {
+    namespace 'com.vgleadsheets.features.main.license'
 }

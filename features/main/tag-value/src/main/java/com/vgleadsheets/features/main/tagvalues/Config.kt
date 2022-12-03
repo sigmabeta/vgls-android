@@ -16,10 +16,12 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
+import timber.log.Timber
 
 class Config(
     private val state: TagValueState,
@@ -33,13 +35,13 @@ class Config(
 
     private val tagKey = tagKeyLoad.content()
 
-    private val tagValuesLoad = state.contentLoad.tagValues
+    private val tagValueLoad = state.contentLoad.tagValues
 
-    private val tagValues = tagValuesLoad.content()
+    private val tagValues = tagValueLoad.content()
 
     override val titleConfig = Title.Config(
         tagKey?.name ?: resources.getString(R.string.unknown_tag_key),
-        tagValues?.captionText(),
+        tagValues?.subtitleText(),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -55,13 +57,16 @@ class Config(
     override val contentConfig = Content.Config(
         !tagValues.isNullOrEmpty()
     ) {
+        Timber.w("Tag Values: ${tagValues?.size}")
         tagValues
             ?.filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
             ?.mapYielding {
                 NameCaptionListModel(
                     it.id,
                     it.name,
-                    it.captionText()
+                    it.songs
+                        ?.filteredForVocals(hudState.selectedPart.apiId)
+                        ?.captionText() ?: "Error: no values found."
                 ) { clicks.tagValue(it.id) }
             } ?: emptyList()
     }
@@ -85,9 +90,9 @@ class Config(
     )
 
     @Suppress("LoopWithTooManyJumpStatements")
-    private fun TagValue.captionText(): String {
-        val items = songs
-        if (items.isNullOrEmpty()) return "Error: no values found."
+    private fun List<Song>.captionText(): String {
+        val items = this
+        if (items.isEmpty()) return "Error: no values found."
 
         val builder = StringBuilder()
         var numberOfOthers = items.size
@@ -121,7 +126,7 @@ class Config(
         return builder.toString()
     }
 
-    private fun List<TagValue>.captionText() = resources.getString(
+    private fun List<TagValue>.subtitleText() = resources.getString(
         R.string.subtitle_options_count,
         size
     )

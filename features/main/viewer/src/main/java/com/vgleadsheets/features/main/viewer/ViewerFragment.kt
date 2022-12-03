@@ -28,10 +28,10 @@ import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.model.pages.Page
-import com.vgleadsheets.model.parts.Part
-import com.vgleadsheets.model.song.Song
-import com.vgleadsheets.perf.tracking.api.PerfSpec
+import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOneMargin
 import com.vgleadsheets.tracking.TrackingScreen
@@ -295,7 +295,7 @@ class ViewerFragment :
             SheetListModel(
                 Page.generateImageUrl(
                     baseImageUrl,
-                    selectedPart,
+                    selectedPart.apiId,
                     song.filename,
                     pageNumber
                 ),

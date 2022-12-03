@@ -14,10 +14,10 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.filteredForVocals
-import com.vgleadsheets.model.thumbUrl
-import com.vgleadsheets.perf.tracking.api.PerfSpec
-import com.vgleadsheets.perf.tracking.api.PerfTracker
+import com.vgleadsheets.perf.tracking.common.PerfSpec
+import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: SongListState,
@@ -53,7 +53,11 @@ class Config(
                     song.id,
                     song.name,
                     song.gameName,
-                    song.thumbUrl(baseImageUrl, hudState.selectedPart),
+                    Page.generateThumbUrl(
+                        baseImageUrl,
+                        hudState.selectedPart.apiId,
+                        song.filename
+                    ),
                     R.drawable.placeholder_sheet
                 ) { clicks.song(song.id) }
             } ?: emptyList()
