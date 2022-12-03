@@ -11,8 +11,8 @@ import com.vgleadsheets.di.DaggerAppComponent
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 class VglsApplication : DaggerApplication(), HasAndroidInjector {
     @Inject

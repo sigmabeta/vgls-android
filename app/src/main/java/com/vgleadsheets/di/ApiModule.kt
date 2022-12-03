@@ -4,12 +4,12 @@ import com.vgleadsheets.network.MockVglsApi
 import com.vgleadsheets.network.StringGenerator
 import com.vgleadsheets.network.VglsApi
 import dagger.Provides
-import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
+import javax.inject.Named
+import javax.inject.Singleton
 
 @dagger.Module
 class ApiModule {
