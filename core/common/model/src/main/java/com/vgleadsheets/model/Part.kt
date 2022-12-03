@@ -7,6 +7,7 @@ enum class Part(
     B("Bb"),
     E("Eb"),
     F("F"),
+    G("G"),
     ALTO("Alto"),
     BASS("Bass"),
     VOCAL("Vocals")
