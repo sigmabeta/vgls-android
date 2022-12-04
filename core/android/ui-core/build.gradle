@@ -3,6 +3,10 @@ apply from: "$rootProject.projectDir/core-android-module.gradle"
 apply plugin: 'kotlin-parcelize'
 
 dependencies {
+    // Theming
+    api project(':core:android:ui:colors')
+    api project(':core:android:ui:themes')
+
     // Firebase Analytics
     api project(':core:common:tracking')
 
