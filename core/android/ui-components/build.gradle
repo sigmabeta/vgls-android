@@ -1,11 +1,18 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/compose-module.gradle"
 apply plugin: 'kotlin-kapt'
 
 android {
     buildFeatures {
         dataBinding true
+        compose true
     }
+
     namespace 'com.vgleadsheets.components'
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.0"
+    }
 }
 
 dependencies {

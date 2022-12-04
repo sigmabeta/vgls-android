@@ -37,6 +37,8 @@ include ':app',
         ':core:android:tracking',
         ':core:android:ui-core',
         ':core:android:ui-components',
+        ':core:android:ui:colors',
+        ':core:android:ui:themes',
         ':core:android:vectors',
 
         ':core:common:conversion',
