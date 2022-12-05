@@ -2,8 +2,10 @@ apply from: "$rootProject.projectDir/core-android-module.gradle"
 apply from: "$rootProject.projectDir/di-android.gradle"
 
 dependencies {
-    // Image Loading
     api "com.squareup.picasso:picasso:$picasso_version"
+
+    api "io.coil-kt:coil:$coil_version"
+    api "io.coil-kt:coil-compose:2.2.2"
 }
 
 android {
