@@ -117,7 +117,7 @@ class Config(
                             hudState.selectedPart.apiId,
                             currentSong.filename
                         ),
-                        R.drawable.placeholder_sheet
+                        R.drawable.ic_description_24dp
                     ) { clicks.song(currentSong.id) }
                 )
             }
@@ -166,7 +166,7 @@ class Config(
                         hudState.selectedPart.apiId,
                         song.filename
                     ),
-                    R.drawable.placeholder_sheet
+                    R.drawable.ic_description_24dp
                 ) { clicks.song(song.id) }
             }
         }
@@ -206,7 +206,7 @@ class Config(
                         hudState.selectedPart.apiId,
                         song.filename
                     ),
-                    R.drawable.placeholder_sheet
+                    R.drawable.ic_description_24dp
                 ) { clicks.song(song.id) }
             } ?: emptyList()
         }

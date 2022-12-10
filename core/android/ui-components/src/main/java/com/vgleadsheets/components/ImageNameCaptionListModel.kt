@@ -1,6 +1,8 @@
 package com.vgleadsheets.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Composable
+import com.vgleadsheets.composables.ImageNameCaptionListItem
 
 data class ImageNameCaptionListModel(
     override val dataId: Long,
@@ -10,6 +12,10 @@ data class ImageNameCaptionListModel(
     @DrawableRes val imagePlaceholder: Int,
     val actionableId: Long? = null,
     val onClick: () -> Unit
-) : ListModel {
-    override val layoutId = R.layout.list_component_image_name_caption
+) : ListModel, ComposableModel {
+    override val layoutId = R.layout.composable_image_name_caption
+    @Composable
+    override fun Content() {
+        ImageNameCaptionListItem(model = this)
+    }
 }

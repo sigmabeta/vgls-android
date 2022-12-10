@@ -258,7 +258,7 @@ object Search {
                                 selectedPart.apiId,
                                 result.filename
                             ),
-                            R.drawable.placeholder_sheet
+                            R.drawable.ic_description_24dp
                         ) {
                             clicks.songSearchResult(result.id)
                         }
@@ -269,7 +269,7 @@ object Search {
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
-                        R.drawable.placeholder_game
+                        R.drawable.ic_album_24dp
                     ) { clicks.gameSearchResult(result.id) }
 
                     is Composer -> SearchResultListModel(
@@ -277,7 +277,7 @@ object Search {
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
-                        R.drawable.placeholder_composer
+                        R.drawable.ic_person_24dp
                     ) { clicks.composerSearchResult(result.id) }
 
                     else -> throw IllegalArgumentException(

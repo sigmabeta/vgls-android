@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.compose.ui.platform.ComposeView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
@@ -23,6 +24,7 @@ import com.vgleadsheets.animation.endPulseAnimator
 import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
+import com.vgleadsheets.themes.VglsMaterial
 import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
@@ -251,6 +253,15 @@ fun searchQuery(
             }
         }
     )
+}
+
+@BindingAdapter("composableModel")
+fun composeView(view: ComposeView, composableModel: ComposableModel) {
+    view.setContent {
+        VglsMaterial {
+            composableModel.Content()
+        }
+    }
 }
 
 const val DELAY_KEYBOARD_FOCUS = 50L
