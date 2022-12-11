@@ -13,7 +13,7 @@ data class ImageNameCaptionListModel(
     val actionableId: Long? = null,
     val onClick: () -> Unit
 ) : ListModel, ComposableModel {
-    override val layoutId = R.layout.composable_image_name_caption
+    override val layoutId = R.layout.composable_list_item
     @Composable
     override fun Content() {
         ImageNameCaptionListItem(model = this)

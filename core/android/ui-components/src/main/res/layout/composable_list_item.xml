@@ -6,7 +6,7 @@
 
         <variable
             name="toBind"
-            type="com.vgleadsheets.components.ImageNameCaptionListModel" />
+            type="com.vgleadsheets.components.ComposableModel" />
     </data>
 
     <androidx.compose.ui.platform.ComposeView
