@@ -30,7 +30,7 @@ fun Flasher(
         targetValue = 0.1f,
         animationSpec = infiniteRepeatable(
             animation = tween(
-                durationMillis = 500 - (startDelay / 10),
+                durationMillis = 500 - (startDelay / 3),
                 delayMillis = startDelay,
                 easing = LinearEasing
             ),

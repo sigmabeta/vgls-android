@@ -26,7 +26,10 @@ import com.vgleadsheets.themes.VglsMaterial
 import kotlin.random.Random
 
 @Composable
-fun LoadingListItem(seed: Long) {
+fun LoadingListItem(
+    withImage: Boolean,
+    seed: Long
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,32 +38,35 @@ fun LoadingListItem(seed: Long) {
                 horizontal = dimensionResource(id = R.dimen.margin_side)
             )
     ) {
-        ElevatedCircle(
-            Modifier
-                .size(48.dp)
-                .align(Alignment.CenterVertically)
-        ) {
-            Flasher()
-        }
+        val randomizer = Random(seed)
+        val randomDelay = randomizer.nextInt(200)
 
-        Spacer(
-            modifier = Modifier.width(8.dp)
-        )
+        if (withImage) {
+            ElevatedCircle(
+                Modifier
+                    .size(48.dp)
+                    .align(Alignment.CenterVertically)
+            ) {
+                Flasher(startDelay = randomDelay)
+            }
+
+            Spacer(
+                modifier = Modifier.width(8.dp)
+            )
+        }
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            val widthRandomizer = Random(seed)
-
             ElevatedPill(
                 modifier = Modifier
                     .padding(top = 12.dp)
                     .height(12.dp)
-                    .fillMaxWidth(widthRandomizer.next())
+                    .fillMaxWidth(randomizer.next())
             ) {
-                Flasher(startDelay = 100)
+                Flasher(startDelay = randomDelay + 100)
             }
 
             Spacer(
@@ -71,9 +77,9 @@ fun LoadingListItem(seed: Long) {
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 12.dp)
                     .height(10.dp)
-                    .fillMaxWidth(widthRandomizer.next())
+                    .fillMaxWidth(randomizer.next())
             ) {
-                Flasher(startDelay = 200)
+                Flasher(startDelay = randomDelay + 200)
             }
         }
     }
@@ -83,28 +89,16 @@ private fun Random.next() = nextFloat().coerceAtLeast(0.3f)
 
 @Preview
 @Composable
-private fun LightOne() {
+private fun Light() {
     VglsMaterial(useDarkTheme = false) {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            Sample(1845L)
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun LightTwo() {
-    VglsMaterial(useDarkTheme = false) {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
+            Sample(
+                1845L
             )
-        ) {
-            Sample(5678L)
         }
     }
 }
@@ -123,7 +117,46 @@ private fun Dark() {
     }
 }
 
+@Preview
+@Composable
+private fun LightWithImage() {
+    VglsMaterial(useDarkTheme = false) {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleWithImage(5678L)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun DarkWithImage() {
+    VglsMaterial(useDarkTheme = true) {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleWithImage(2345L)
+        }
+    }
+}
+
 @Composable
 private fun Sample(seed: Long) {
-    LoadingListItem(seed)
+    LoadingListItem(
+        withImage = false,
+        seed = seed
+    )
+}
+
+@Composable
+private fun SampleWithImage(seed: Long) {
+    LoadingListItem(
+        withImage = true,
+        seed = seed
+    )
 }
