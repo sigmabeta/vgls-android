@@ -56,9 +56,7 @@ fun MenuItem(
         }
 
         Icon(
-            painterResource(
-                id = model.iconId,
-            ),
+            painterResource(id = model.iconId,),
             tint = color,
             contentDescription = null,
             modifier = Modifier
