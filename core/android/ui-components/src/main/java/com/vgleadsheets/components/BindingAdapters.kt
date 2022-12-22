@@ -25,6 +25,7 @@ import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
 import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.themes.VglsMaterialMenu
 import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
@@ -260,6 +261,15 @@ fun composeView(view: ComposeView, composableModel: ComposableModel) {
     view.setContent {
         VglsMaterial {
             composableModel.Content()
+        }
+    }
+}
+
+@BindingAdapter("composableMenuModel")
+fun composeViewInMenu(view: ComposeView, composableMenuModel: ComposableModel) {
+    view.setContent {
+        VglsMaterialMenu {
+            composableMenuModel.Content()
         }
     }
 }
