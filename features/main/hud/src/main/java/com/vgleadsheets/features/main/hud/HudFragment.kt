@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -97,14 +96,7 @@ class HudFragment : VglsFragment() {
         )
 
         if (state.mode != HudMode.SEARCH) {
-            val searchText = screen
-                .recyclerBottom
-                .findViewById<EditText>(R.id.edit_search_query)
-
-            if (searchText != null) {
-                searchText.clearFocus()
-                hideKeyboard()
-            }
+            hideKeyboard()
         }
 
         val menuItems = MenuRenderer.renderMenu(
