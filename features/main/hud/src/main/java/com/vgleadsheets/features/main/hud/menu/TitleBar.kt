@@ -19,7 +19,7 @@ object TitleBar {
     } else {
         listOf(
             MenuTitleBarListModel(
-                resources.getString(selectedPart.midLengthResId),
+                resources.getString(selectedPart.longResId),
                 getIconId(hudMode),
                 onSearchButtonClick,
                 onMenuClick,
