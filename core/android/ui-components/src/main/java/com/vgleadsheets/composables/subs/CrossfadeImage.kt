@@ -114,10 +114,14 @@ fun DarkGame() {
 
 @Composable
 private fun Sample() {
-    CrossfadeImage(
-        imageUrl = "doesn't matter",
-        imagePlaceholder = R.drawable.ic_person_24dp,
-    )
+    ElevatedCircle(
+        Modifier.size(64.dp)
+    ) {
+        CrossfadeImage(
+            imageUrl = "doesn't matter",
+            imagePlaceholder = R.drawable.ic_person_24dp,
+        )
+    }
 }
 
 @Composable
