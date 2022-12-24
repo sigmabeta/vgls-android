@@ -59,7 +59,7 @@ class Config(
             hudState.selectedPart.apiId,
             song?.filename ?: ""
         ),
-        R.drawable.placeholder_sheet,
+        R.drawable.ic_description_24dp,
         true,
         songLoad.isLoading()
     )

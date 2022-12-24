@@ -169,7 +169,7 @@ class Config(
                                 hudState.selectedPart.apiId,
                                 result.filename
                             ),
-                            R.drawable.placeholder_sheet
+                            R.drawable.ic_description_24dp
                         ) {
                             clicks.song(result.id)
                         }
@@ -180,7 +180,7 @@ class Config(
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
-                        R.drawable.placeholder_game
+                        R.drawable.ic_album_24dp
                     ) { clicks.game(result.id) }
 
                     is Composer -> ImageNameCaptionListModel(
@@ -188,7 +188,7 @@ class Config(
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
-                        R.drawable.placeholder_composer
+                        R.drawable.ic_person_24dp
                     ) { clicks.composer(result.id) }
 
                     else -> throw IllegalArgumentException(

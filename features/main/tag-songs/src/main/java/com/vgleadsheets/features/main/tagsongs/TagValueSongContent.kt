@@ -17,7 +17,7 @@ data class TagValueSongContent(
     // TODO CompositeException
     override fun failure() = tagValue.failure() ?: songs.failure()
 
-    override fun isLoading() = tagValue.isLoading()
+    override fun isLoading() = songs.isLoading()
 
     override fun hasFailed() = tagValue.hasFailed() || songs.hasFailed()
 

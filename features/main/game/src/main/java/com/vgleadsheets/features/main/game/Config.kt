@@ -47,7 +47,7 @@ class Config(
         },
         { },
         game?.photoUrl,
-        R.drawable.placeholder_game,
+        R.drawable.ic_album_24dp,
         true,
         gameLoad.isLoading()
     )
@@ -64,7 +64,7 @@ class Config(
                     song.name,
                     song.subtitleText(),
                     song.thumbUrl(),
-                    R.drawable.placeholder_game
+                    R.drawable.ic_album_24dp
                 ) {
                     clicks.song(song.id)
                 }

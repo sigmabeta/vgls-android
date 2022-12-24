@@ -10,27 +10,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.components.ImageNameCaptionListModel
+import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.R
-import com.vgleadsheets.composables.subs.CrossfadeImage
-import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.themes.VglsMaterial
 
 @Composable
-fun ImageNameCaptionListItem(
-    model: ImageNameCaptionListModel
+fun NameCaptionListItem(
+    model: NameCaptionListModel
 ) {
     Row(
         modifier = Modifier
@@ -43,21 +38,6 @@ fun ImageNameCaptionListItem(
                 onClick = model.onClick,
             )
     ) {
-        ElevatedCircle(
-            modifier = Modifier
-                .size(48.dp)
-                .align(Alignment.CenterVertically)
-        ) {
-            CrossfadeImage(
-                imageUrl = model.imageUrl,
-                imagePlaceholder = model.imagePlaceholder,
-            )
-        }
-
-        Spacer(
-            modifier = Modifier.width(8.dp)
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,14 +102,11 @@ private fun Dark() {
 
 @Composable
 private fun Sample() {
-    ImageNameCaptionListItem(
-        ImageNameCaptionListModel(
+    NameCaptionListItem(
+        NameCaptionListModel(
             1234L,
             "Xenoblade Chronicles 3",
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
-            "https://randomfox.ca/images/12.jpg",
-            R.drawable.ic_person_24dp,
-            null,
             {}
         )
     )

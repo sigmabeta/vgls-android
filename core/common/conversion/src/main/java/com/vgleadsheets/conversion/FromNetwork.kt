@@ -31,6 +31,6 @@ fun ApiComposer.toModel() = Composer(
     composer_id,
     composer_name ?: "Unknown Composer",
     null,
-    null,
+    image_url,
     false
 )

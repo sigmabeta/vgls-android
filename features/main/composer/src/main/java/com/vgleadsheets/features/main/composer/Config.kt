@@ -45,7 +45,7 @@ class Config(
         },
         { },
         composer?.photoUrl,
-        R.drawable.placeholder_composer,
+        R.drawable.ic_person_24dp,
         true,
         composerLoad.isLoading(),
         onMenuButtonClick = { clicks.menu() }
@@ -67,7 +67,7 @@ class Config(
                         hudState.selectedPart.apiId,
                         song.filename
                     ),
-                    R.drawable.placeholder_sheet
+                    R.drawable.ic_description_24dp
                 ) {
                     clicks.song(song.id)
                 }

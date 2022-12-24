@@ -1,7 +1,6 @@
 package com.vgleadsheets.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,28 +8,27 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.R
-import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
+import com.vgleadsheets.composables.subs.ElevatedPill
+import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.themes.VglsMaterial
+import kotlin.random.Random
 
 @Composable
-fun ImageNameCaptionListItem(
-    model: ImageNameCaptionListModel
+fun LoadingListItem(
+    withImage: Boolean,
+    seed: Long
 ) {
     Row(
         modifier = Modifier
@@ -39,58 +37,55 @@ fun ImageNameCaptionListItem(
             .padding(
                 horizontal = dimensionResource(id = R.dimen.margin_side)
             )
-            .clickable(
-                onClick = model.onClick,
-            )
     ) {
-        ElevatedCircle(
-            modifier = Modifier
-                .size(48.dp)
-                .align(Alignment.CenterVertically)
-        ) {
-            CrossfadeImage(
-                imageUrl = model.imageUrl,
-                imagePlaceholder = model.imagePlaceholder,
+        val randomizer = Random(seed)
+        val randomDelay = randomizer.nextInt(200)
+
+        if (withImage) {
+            ElevatedCircle(
+                Modifier
+                    .size(48.dp)
+                    .align(Alignment.CenterVertically)
+            ) {
+                Flasher(startDelay = randomDelay)
+            }
+
+            Spacer(
+                modifier = Modifier.width(8.dp)
             )
         }
-
-        Spacer(
-            modifier = Modifier.width(8.dp)
-        )
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            Text(
-                text = model.name,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+            ElevatedPill(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .paddingFromBaseline(top = 24.dp)
-            )
+                    .padding(top = 12.dp)
+                    .height(12.dp)
+                    .fillMaxWidth(randomizer.next())
+            ) {
+                Flasher(startDelay = randomDelay + 100)
+            }
 
             Spacer(
                 modifier = Modifier.height(4.dp)
             )
 
-            Text(
-                text = model.caption,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+            ElevatedPill(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .paddingFromBaseline(bottom = 12.dp)
-            )
+                    .padding(top = 4.dp, bottom = 12.dp)
+                    .height(10.dp)
+                    .fillMaxWidth(randomizer.next())
+            ) {
+                Flasher(startDelay = randomDelay + 200)
+            }
         }
     }
 }
+
+private fun Random.next() = nextFloat().coerceAtLeast(0.3f)
 
 @Preview
 @Composable
@@ -101,7 +96,9 @@ private fun Light() {
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            Sample()
+            Sample(
+                1845L
+            )
         }
     }
 }
@@ -115,22 +112,51 @@ private fun Dark() {
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            Sample()
+            Sample(2345L)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun LightWithImage() {
+    VglsMaterial(useDarkTheme = false) {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleWithImage(5678L)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun DarkWithImage() {
+    VglsMaterial(useDarkTheme = true) {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleWithImage(2345L)
         }
     }
 }
 
 @Composable
-private fun Sample() {
-    ImageNameCaptionListItem(
-        ImageNameCaptionListModel(
-            1234L,
-            "Xenoblade Chronicles 3",
-            "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
-            "https://randomfox.ca/images/12.jpg",
-            R.drawable.ic_person_24dp,
-            null,
-            {}
-        )
+private fun Sample(seed: Long) {
+    LoadingListItem(
+        withImage = false,
+        seed = seed
+    )
+}
+
+@Composable
+private fun SampleWithImage(seed: Long) {
+    LoadingListItem(
+        withImage = true,
+        seed = seed
     )
 }

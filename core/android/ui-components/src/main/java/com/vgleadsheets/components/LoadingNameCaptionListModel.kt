@@ -1,9 +1,20 @@
 package com.vgleadsheets.components
 
+import androidx.compose.runtime.Composable
+import com.vgleadsheets.composables.LoadingListItem
+
 data class LoadingNameCaptionListModel(
     val loadOperationName: String,
     val loadPositionOffset: Int
-) : ListModel {
+) : ListModel, ComposableModel {
     override val dataId = loadOperationName.hashCode().toLong() + loadPositionOffset
-    override val layoutId = R.layout.list_component_loading_name_caption
+    override val layoutId = R.layout.composable_list_item
+
+    @Composable
+    override fun Content() {
+        LoadingListItem(
+            withImage = false,
+            seed = dataId
+        )
+    }
 }
