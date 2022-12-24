@@ -24,13 +24,45 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.R
+import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.themes.VglsMaterialMenu
 
 @Composable
 fun ImageNameCaptionListItem(
     model: ImageNameCaptionListModel
+) {
+    ImageNameCaptionListItem(
+        model.name,
+        model.caption,
+        model.imageUrl,
+        model.imagePlaceholder,
+        model.onClick
+    )
+}
+
+@Composable
+fun ImageNameCaptionListItem(
+    model: SearchResultListModel
+) {
+    ImageNameCaptionListItem(
+        model.name,
+        model.caption,
+        model.imageUrl,
+        model.imagePlaceholder,
+        model.onClick
+    )
+}
+
+@Composable
+fun ImageNameCaptionListItem(
+    name: String,
+    caption: String,
+    imageUrl: String?,
+    imagePlaceholder: Int,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -40,7 +72,7 @@ fun ImageNameCaptionListItem(
                 horizontal = dimensionResource(id = R.dimen.margin_side)
             )
             .clickable(
-                onClick = model.onClick,
+                onClick = onClick,
             )
     ) {
         ElevatedCircle(
@@ -49,8 +81,8 @@ fun ImageNameCaptionListItem(
                 .align(Alignment.CenterVertically)
         ) {
             CrossfadeImage(
-                imageUrl = model.imageUrl,
-                imagePlaceholder = model.imagePlaceholder,
+                imageUrl = imageUrl,
+                imagePlaceholder = imagePlaceholder,
             )
         }
 
@@ -64,7 +96,7 @@ fun ImageNameCaptionListItem(
                 .wrapContentHeight()
         ) {
             Text(
-                text = model.name,
+                text = name,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
@@ -79,7 +111,7 @@ fun ImageNameCaptionListItem(
             )
 
             Text(
-                text = model.caption,
+                text = caption,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
@@ -110,6 +142,20 @@ private fun Light() {
 @Composable
 private fun Dark() {
     VglsMaterial(useDarkTheme = true) {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            Sample()
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Menu() {
+    VglsMaterialMenu() {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

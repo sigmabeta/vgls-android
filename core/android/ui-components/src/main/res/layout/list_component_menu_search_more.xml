@@ -13,7 +13,7 @@
     <FrameLayout
         android:paddingStart="@dimen/margin_side"
         android:paddingEnd="@dimen/margin_side"
-        android:id="@+id/component_section_header"
+        android:id="@+id/component_menu_search_more"
         android:layout_width="match_parent"
         android:layout_height="@dimen/min_clickable_size"
         android:onClick="@{() -> toBind.onClick.invoke()}"
