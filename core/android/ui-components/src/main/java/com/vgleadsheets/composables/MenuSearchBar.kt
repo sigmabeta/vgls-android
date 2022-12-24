@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.MenuSearchListModel
-import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.composables.subs.MenuActionIcon
 import com.vgleadsheets.themes.VglsMaterialMenu
@@ -107,7 +106,7 @@ private fun SampleEmpty() {
 private fun SampleText() {
     MenuSearchBar(
         MenuSearchListModel(
-            "Kenji Hiramatsu",
+            "all the bops",
             {},
             {},
             {}
