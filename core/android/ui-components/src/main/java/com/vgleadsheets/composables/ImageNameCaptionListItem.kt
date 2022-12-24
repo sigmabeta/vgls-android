@@ -68,11 +68,9 @@ fun ImageNameCaptionListItem(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .clickable(onClick = onClick)
             .padding(
                 horizontal = dimensionResource(id = R.dimen.margin_side)
-            )
-            .clickable(
-                onClick = onClick,
             )
     ) {
         ElevatedCircle(
