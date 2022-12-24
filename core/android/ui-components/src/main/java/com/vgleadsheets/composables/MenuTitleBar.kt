@@ -47,7 +47,7 @@ fun MenuTitleBar(model: MenuTitleBarListModel) {
 
 @Preview
 @Composable
-private fun Selected() {
+private fun Default() {
     VglsMaterialMenu {
         Box(
             modifier = Modifier.background(
