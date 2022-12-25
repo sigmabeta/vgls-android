@@ -153,6 +153,20 @@ private fun Menu() {
     }
 }
 
+@Preview
+@Composable
+private fun MenuNoCross() {
+    VglsMaterialMenu {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleMenuNoCross()
+        }
+    }
+}
+
 @Composable
 private fun SampleNotMenu() {
     EmptyListIndicator(
@@ -171,6 +185,17 @@ private fun SampleMenu() {
             R.drawable.ic_person_24dp,
             "You hear that, Noah? Lanz wants something a little meatier.",
             showCrossOut = true
+        )
+    )
+}
+
+@Composable
+private fun SampleMenuNoCross() {
+    EmptyListIndicator(
+        MenuEmptyStateListModel(
+            R.drawable.ic_search_black_24dp,
+            "I'm the girl with the gall.",
+            showCrossOut = false
         )
     )
 }
