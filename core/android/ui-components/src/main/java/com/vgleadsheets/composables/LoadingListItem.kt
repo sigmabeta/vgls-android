@@ -1,5 +1,6 @@
 package com.vgleadsheets.composables
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -90,7 +91,7 @@ private fun Random.next() = nextFloat().coerceAtLeast(0.3f)
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial(useDarkTheme = false) {
+    VglsMaterial {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -103,10 +104,10 @@ private fun Light() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial(useDarkTheme = true) {
+    VglsMaterial {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -120,7 +121,7 @@ private fun Dark() {
 @Preview
 @Composable
 private fun LightWithImage() {
-    VglsMaterial(useDarkTheme = false) {
+    VglsMaterial {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -131,10 +132,10 @@ private fun LightWithImage() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DarkWithImage() {
-    VglsMaterial(useDarkTheme = true) {
+    VglsMaterial {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

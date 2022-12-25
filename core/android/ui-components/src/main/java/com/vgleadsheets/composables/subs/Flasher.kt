@@ -1,5 +1,6 @@
 package com.vgleadsheets.composables.subs
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -49,7 +50,7 @@ fun Flasher(
 @Preview
 @Composable
 private fun LightCircle() {
-    VglsMaterial(useDarkTheme = false) {
+    VglsMaterial {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -60,10 +61,10 @@ private fun LightCircle() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DarkCircle() {
-    VglsMaterial(useDarkTheme = true) {
+    VglsMaterial {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

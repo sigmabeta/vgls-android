@@ -9,10 +9,9 @@ import com.vgleadsheets.colors.VglsMenu
 
 @Composable
 fun VglsMaterial(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (!useDarkTheme) {
+    val colors = if (!isSystemInDarkTheme()) {
         VglsLight
     } else {
         VglsDark
