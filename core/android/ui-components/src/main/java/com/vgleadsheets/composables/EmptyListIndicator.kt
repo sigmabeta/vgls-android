@@ -19,11 +19,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.MenuEmptyStateListModel
+import com.vgleadsheets.components.MenuErrorStateListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterial
 import com.vgleadsheets.themes.VglsMaterialMenu
 
+
+@Composable
+fun EmptyListIndicator(
+    model: ErrorStateListModel,
+) {
+    EmptyListIndicator(
+        explanation = model.errorString,
+        iconId = R.drawable.ic_error_24dp,
+        showCrossOut = false,
+        menu = false
+    )
+}
+
+@Composable
+fun EmptyListIndicator(
+    model: MenuErrorStateListModel,
+) {
+    EmptyListIndicator(
+        explanation = model.errorString,
+        iconId = R.drawable.ic_error_24dp,
+        showCrossOut = false,
+        menu = true
+    )
+}
 
 @Composable
 fun EmptyListIndicator(
@@ -155,6 +181,48 @@ private fun Menu() {
 
 @Preview
 @Composable
+private fun NotMenuError() {
+    VglsMaterial {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleErrorNotMenu()
+        }
+    }
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun NotMenuDarkError() {
+    VglsMaterial {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleErrorNotMenu()
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun MenuError() {
+    VglsMaterialMenu {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleErrorMenu()
+        }
+    }
+}
+
+@Preview
+@Composable
 private fun MenuNoCross() {
     VglsMaterialMenu {
         Box(
@@ -185,6 +253,27 @@ private fun SampleMenu() {
             R.drawable.ic_person_24dp,
             "You hear that, Noah? Lanz wants something a little meatier.",
             showCrossOut = true
+        )
+    )
+}
+
+
+@Composable
+private fun SampleErrorNotMenu() {
+    EmptyListIndicator(
+        ErrorStateListModel(
+            "oops",
+            "Enemy's broken away from me!"
+        )
+    )
+}
+
+@Composable
+private fun SampleErrorMenu() {
+    EmptyListIndicator(
+        MenuErrorStateListModel(
+            "oooops",
+            "Queeen's wiiiings!"
         )
     )
 }
