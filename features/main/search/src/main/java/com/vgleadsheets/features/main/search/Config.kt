@@ -150,7 +150,7 @@ class Config(
         }
     }
 
-    private fun createSectionHeaderListModel(sectionId: Int) =
+    private fun createSectionHeaderListModel(sectionId: Int): List<ListModel> =
         listOf(SectionHeaderListModel(resources.getString(sectionId)))
 
     private suspend fun createSectionModels(
