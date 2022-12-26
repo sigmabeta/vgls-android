@@ -35,7 +35,6 @@ import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.ApiSongHistoryEntry
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
-import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -45,6 +44,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import java.util.Locale
 
 @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
 class RealRepository constructor(
@@ -215,7 +215,6 @@ class RealRepository constructor(
         tagValueDataSource.nukeTable()
         gameAliasDataSource.nukeTable()
         composerAliasDataSource.nukeTable()
-        dbStatisticsDataSource.nukeTable()
     }
 
     override suspend fun clearJams() = withContext(dispatchers.disk) {
@@ -377,7 +376,7 @@ class RealRepository constructor(
                 )
             }
 
-            val dbStatistics = Time(
+            val lastChecked = Time(
                 TimeType.LAST_CHECKED.ordinal,
                 threeTen.now().toInstant().toEpochMilli()
             )
@@ -397,7 +396,7 @@ class RealRepository constructor(
                         composerDataSource.insertRelations(songComposerRelations)
                         tagValueDataSource.insertRelations(songTagValueRelations)
 
-                        dbStatisticsDataSource.insert(dbStatistics)
+                        dbStatisticsDataSource.insert(lastChecked)
                     } catch (ex: Exception) {
                         // Something in the storage write operation failed.
                         ex.printStackTrace()
