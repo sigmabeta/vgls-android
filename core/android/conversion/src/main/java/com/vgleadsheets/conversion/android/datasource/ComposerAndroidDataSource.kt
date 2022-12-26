@@ -35,6 +35,10 @@ class ComposerAndroidDataSource(
     relatedRoomImpl
 ),
     ComposerDataSource {
+    override fun getFavorites() = roomImpl
+        .getFavorites()
+        .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }
+
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }
@@ -48,4 +52,16 @@ class ComposerAndroidDataSource(
                 )
             }
         )
+
+    override fun getSongsForComposer(composerId: Long) = relatedRoomImpl
+        .getJoinedEntities(composerId)
+        .mapList {
+            manyConverter.entityToModel(it)
+        }
+
+    override fun incrementSheetsPlayed(composerId: Long) = roomImpl.incrementSheetsPlayed(composerId)
+
+    override fun toggleFavorite(composerId: Long) = roomImpl.toggleFavorite(composerId)
+
+    override fun toggleOffline(composerId: Long) = roomImpl.toggleOffline(composerId)
 }

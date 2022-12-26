@@ -35,12 +35,6 @@ interface Tracker {
         fromDetails: String
     )
 
-    fun logJamFollow(
-        id: Long,
-        fromScreen: TrackingScreen,
-        fromDetails: String
-    )
-
     fun logWebLaunch(
         url: String,
         fromScreen: TrackingScreen,

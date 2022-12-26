@@ -6,7 +6,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vgleadsheets.animation.fadeInSlightly
 import com.vgleadsheets.animation.fadeOutGone
 import com.vgleadsheets.features.main.hud.HudMode
-import timber.log.Timber
 
 object HudVisibility {
     fun setToLookRightIdk(
@@ -17,7 +16,7 @@ object HudVisibility {
         when (hudMode) {
             HudMode.REGULAR -> handleRegularHud(shadow, bottomSheet)
             HudMode.HIDDEN -> handleHiddenHud(shadow, bottomSheet)
-            else -> handleOtherHudStatesLol(hudMode, shadow, bottomSheet)
+            else -> handleOtherHudStatesLol(shadow, bottomSheet)
         }
     }
 
@@ -25,7 +24,6 @@ object HudVisibility {
         shadow: View,
         bottomSheet: BottomSheetBehavior<FrameLayout>
     ) {
-        Timber.w("Showing hud regular")
         shadow.fadeOutGone()
         bottomSheet.unhide()
     }
@@ -34,19 +32,14 @@ object HudVisibility {
         shadow: View,
         bottomSheet: BottomSheetBehavior<FrameLayout>
     ) {
-        Timber.w("Showing hud hidden")
-
         shadow.fadeOutGone()
         bottomSheet.hide()
     }
 
     private fun handleOtherHudStatesLol(
-        hudMode: HudMode,
         shadow: View,
         bottomSheet: BottomSheetBehavior<FrameLayout>
     ) {
-        Timber.w("Showing hud $hudMode")
-
         shadow.fadeInSlightly()
         bottomSheet.expand()
     }

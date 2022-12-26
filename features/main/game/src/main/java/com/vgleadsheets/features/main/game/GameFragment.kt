@@ -31,6 +31,7 @@ class GameFragment : BetterListFragment<GameDetailContent, GameState>() {
         baseImageUrl,
         Clicks(
             getFragmentRouter(),
+            viewModel
         ),
         perfTracker,
         getPerfSpec(),

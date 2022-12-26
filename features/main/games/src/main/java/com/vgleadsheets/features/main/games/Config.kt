@@ -1,11 +1,14 @@
 package com.vgleadsheets.features.main.games
 
 import android.content.res.Resources
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
+import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
 import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
+import com.vgleadsheets.features.main.list.BetterListConfig.Companion.OFFSET_FAVORITE
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
 import com.vgleadsheets.features.main.list.mapYielding
@@ -44,17 +47,62 @@ class Config(
     override val contentConfig = Content.Config(
         !state.contentLoad.isNullOrEmpty()
     ) {
-        state.contentLoad.content()
+        val filteredGames = state.contentLoad.content()
             ?.filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
-            ?.mapYielding {
+
+        if (filteredGames.isNullOrEmpty()) {
+            return@Config listOf(
+                EmptyStateListModel(
+                    R.drawable.ic_album_24dp,
+                    resources.getString(R.string.empty_transposition),
+                )
+            )
+        }
+
+        val onlyTheHits = filteredGames
+            .filter { it.isFavorite }
+            .mapYielding {
                 ImageNameCaptionListModel(
-                    it.id,
+                    it.id + OFFSET_FAVORITE,
                     it.name,
                     it.captionText(),
                     it.photoUrl,
                     R.drawable.placeholder_game
                 ) { clicks.game(it.id) }
-            } ?: emptyList()
+            }
+
+        val filteredGameItems = filteredGames.mapYielding {
+            ImageNameCaptionListModel(
+                it.id,
+                it.name,
+                it.captionText(),
+                it.photoUrl,
+                R.drawable.placeholder_game
+            ) { clicks.game(it.id) }
+        }
+
+        val favoriteSection = if (onlyTheHits.isNotEmpty()) {
+            listOf(
+                SectionHeaderListModel(
+                    resources.getString(R.string.section_header_favorites)
+                )
+            ) + onlyTheHits
+        } else {
+            emptyList()
+        }
+
+        val restOfThem = if (favoriteSection.isEmpty()) {
+            emptyList()
+        } else {
+            listOf(
+                SectionHeaderListModel(
+                    resources.getString(R.string.section_header_all_games)
+                )
+
+            )
+        } + filteredGameItems
+
+        return@Config favoriteSection + restOfThem
     }
 
     override val emptyConfig = EmptyState.Config(

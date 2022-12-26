@@ -34,7 +34,8 @@ import javax.inject.Singleton
         StorageModule::class,
         TrackerModule::class,
         PerfTrackingModule::class,
-        PerfBackendModule::class
+        PerfBackendModule::class,
+        LoggingModule::class
     ]
 )
 interface AppComponent : AndroidInjector<VglsApplication> {

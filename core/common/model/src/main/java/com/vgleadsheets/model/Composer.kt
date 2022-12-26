@@ -5,5 +5,8 @@ data class Composer(
     val name: String,
     val songs: List<Song>?,
     val photoUrl: String?,
-    val hasVocalSongs: Boolean
+    val hasVocalSongs: Boolean,
+    val sheetsPlayed: Int,
+    val isFavorite: Boolean,
+    val isAvailableOffline: Boolean,
 )

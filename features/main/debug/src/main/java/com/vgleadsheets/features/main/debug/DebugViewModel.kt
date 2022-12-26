@@ -40,14 +40,6 @@ class DebugViewModel @AssistedInject constructor(
         }
     }
 
-    fun clearJams() {
-        suspend {
-            repository.clearJams()
-        }.execute {
-            copy(jamDeletion = it)
-        }
-    }
-
     private fun fetchSettings() = withState {
         suspend {
             storage.getAllDebugSettings()
@@ -87,7 +79,6 @@ class DebugViewModel @AssistedInject constructor(
     private fun clearAll() {
         suspend {
             repository.clearSheets()
-            repository.clearJams()
         }.execute { this }
     }
 

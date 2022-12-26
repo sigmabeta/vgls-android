@@ -2,8 +2,8 @@ package com.vgleadsheets.coroutines
 
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
 
 @Module
 class DispatcherModule {

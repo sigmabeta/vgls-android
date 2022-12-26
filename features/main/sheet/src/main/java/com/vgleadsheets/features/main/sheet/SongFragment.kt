@@ -3,7 +3,6 @@ package com.vgleadsheets.features.main.sheet
 import android.os.Bundle
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListFragment
@@ -26,22 +25,13 @@ class SongFragment : BetterListFragment<SongContent, SongState>() {
 
     override val viewModel: SongViewModel by fragmentViewModel()
 
-    override fun invalidate() {
-        withState(viewModel) {
-            val song = it.contentLoad.song()
-            if (song != null) {
-                hudViewModel.setSelectedSong(song)
-            }
-        }
-        super.invalidate()
-    }
-
     override fun generateListConfig(state: SongState, hudState: HudState) = Config(
         state,
         hudState,
         baseImageUrl,
         Clicks(
-            getFragmentRouter()
+            getFragmentRouter(),
+            viewModel
         ),
         perfTracker,
         getPerfSpec(),

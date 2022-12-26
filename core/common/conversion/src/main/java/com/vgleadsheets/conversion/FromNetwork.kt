@@ -7,14 +7,28 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 
-fun VglsApiGame.toModel() = Game(
+fun VglsApiGame.toModel(
+    sheetsPlayed: Int,
+    isFavorite: Boolean,
+    isAvailableOffline: Boolean
+) = Game(
     game_id,
     game_name,
     null,
-    image_url
+    image_url,
+    sheetsPlayed,
+    isFavorite,
+    isAvailableOffline
 )
 
-fun ApiSong.toModel(gameId: Long, gameName: String) = Song(
+fun ApiSong.toModel(
+    gameId: Long,
+    gameName: String,
+    playCount: Int,
+    isFavorite: Boolean,
+    isAvailableOffline: Boolean,
+    isAltSelected: Boolean
+) = Song(
     id,
     name,
     filename,
@@ -22,15 +36,26 @@ fun ApiSong.toModel(gameId: Long, gameName: String) = Song(
     gameName,
     lyricsPageCount > 0,
     pageCount,
+    altPageCount,
     lyricsPageCount,
     null,
-    0
+    playCount,
+    isFavorite,
+    isAvailableOffline,
+    isAltSelected
 )
 
-fun ApiComposer.toModel() = Composer(
+fun ApiComposer.toModel(
+    sheetsPlayed: Int,
+    isFavorite: Boolean,
+    isAvailableOffline: Boolean
+) = Composer(
     composer_id,
     composer_name ?: "Unknown Composer",
     null,
     image_url,
-    false
+    false,
+    sheetsPlayed,
+    isFavorite,
+    isAvailableOffline
 )

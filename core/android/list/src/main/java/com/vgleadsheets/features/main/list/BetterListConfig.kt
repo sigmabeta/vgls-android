@@ -18,5 +18,7 @@ interface BetterListConfig {
     companion object {
         const val MAX_LENGTH_SUBTITLE_CHARS = 20
         const val MAX_LENGTH_SUBTITLE_ITEMS = 6
+
+        const val OFFSET_FAVORITE = 10_000_000L
     }
 }

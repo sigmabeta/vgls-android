@@ -23,7 +23,6 @@ import com.vgleadsheets.animation.endPulseAnimator
 import com.vgleadsheets.animation.pulseAnimator
 import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
-import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -108,9 +107,7 @@ fun bindBigPhoto(
     } else {
         try {
             view.setImageResource(placeholder)
-        } catch (ex: NotFoundException) {
-            Timber.e("Resource not found.")
-        }
+        } catch (_: NotFoundException) { }
     }
 }
 

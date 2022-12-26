@@ -1,9 +1,0 @@
-apply from: "$rootProject.projectDir/feature-module.gradle"
-
-dependencies {
-    implementation project(":core:android:list")
-}
-
-android {
-    namespace 'com.vgleadsheets.features.main.jam'
-}

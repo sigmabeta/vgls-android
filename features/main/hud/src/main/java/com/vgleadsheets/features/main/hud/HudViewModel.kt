@@ -9,6 +9,7 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
@@ -32,7 +33,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 @OptIn(FlowPreview::class)
 class HudViewModel @AssistedInject constructor(
@@ -41,9 +41,10 @@ class HudViewModel @AssistedInject constructor(
     private val repository: com.vgleadsheets.repository.VglsRepository,
     private val storage: Storage,
     private val perfTracker: PerfTracker,
-    private val dispatchers: VglsDispatchers
+    private val dispatchers: VglsDispatchers,
+    private val hatchet: Hatchet
 ) : MavericksViewModel<HudState>(initialState) {
-    private var timer: Job? = null
+    private var hudVisibilityTimer: Job? = null
 
     private var gameSearch: Job? = null
     private var composerSearch: Job? = null
@@ -80,14 +81,6 @@ class HudViewModel @AssistedInject constructor(
         copy(selectedSong = null)
     }
 
-    fun setViewerScreenVisible() = setState {
-        copy(viewerScreenVisible = true)
-    }
-
-    fun setViewerScreenNotVisible() = setState {
-        copy(viewerScreenVisible = false)
-    }
-
     fun onPartSelect(apiId: String) = setState {
         storage.saveSelectedPart(apiId)
 
@@ -99,11 +92,10 @@ class HudViewModel @AssistedInject constructor(
 
     fun refresh() = withState {
         if (it.digest !is Loading) {
-            suspend {
-                repository.refresh()
-            }.execute {
-                copy(digest = it)
-            }
+            repository.refresh()
+                .execute {
+                    copy(digest = it)
+                }
         }
     }
 
@@ -135,33 +127,37 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun hideHud() = withState { state ->
+        stopHudVisibilityTimer()
         if (state.mode != HudMode.HIDDEN) {
             setState { copy(mode = HudMode.HIDDEN) }
         }
     }
 
     fun showHud() = withState { state ->
-        stopTimer()
+        stopHudVisibilityTimer()
         if (state.mode == HudMode.HIDDEN) {
             setState { copy(mode = HudMode.REGULAR) }
         }
     }
 
-    fun startHudTimer() = withState { state ->
-        stopTimer()
+    fun startHudVisibilityTimer() = withState { state ->
+        stopHudVisibilityTimer()
         if (state.mode == HudMode.REGULAR) {
-            timer = viewModelScope.launch(dispatchers.computation) {
+            hudVisibilityTimer = viewModelScope.launch(dispatchers.computation) {
+                hatchet.v(this.javaClass.simpleName, "Starting hud visibility timer.")
                 delay(TIMEOUT_HUD_VISIBLE)
 
+                hatchet.v(this.javaClass.simpleName, "Hud visibility timer expired.")
                 withContext(dispatchers.main) {
                     hideHud()
                 }
+                hudVisibilityTimer = null
             }
         }
     }
 
     fun stopHudTimer() {
-        stopTimer()
+        stopHudVisibilityTimer()
     }
 
     fun onRandomSelectClick(selectedPart: Part) = withState { _ ->
@@ -261,6 +257,30 @@ class HudViewModel @AssistedInject constructor(
         router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
     }
 
+    fun favoritesClick() = withState { state ->
+        state.selectedSong?.let {
+            viewModelScope.launch(dispatchers.disk) {
+                repository.toggleFavoriteSong(it.id)
+            }
+        }
+    }
+
+    fun alternateSheetClick() = withState { state ->
+        state.selectedSong?.let {
+            viewModelScope.launch(dispatchers.disk) {
+                repository.toggleAlternate(it.id)
+            }
+        }
+    }
+
+    fun offlineClick() = withState { state ->
+        state.selectedSong?.let {
+            viewModelScope.launch(dispatchers.disk) {
+                repository.toggleOfflineSong(it.id)
+            }
+        }
+    }
+
     private fun showInitialScreen() {
         viewModelScope.launch(dispatchers.disk) {
             val selection = storage.getSavedTopLevelScreen()
@@ -269,7 +289,7 @@ class HudViewModel @AssistedInject constructor(
                 }
 
             withContext(dispatchers.main) {
-                Timber.v("Showing screen: $selection")
+                hatchet.v(this.javaClass.simpleName, "Showing screen: $selection")
                 showScreen(selection)
             }
         }
@@ -277,9 +297,9 @@ class HudViewModel @AssistedInject constructor(
 
     private fun showScreen(topLevelScreenIdDefault: String) {
         when (topLevelScreenIdDefault) {
+            HudFragment.TOP_LEVEL_SCREEN_ID_FAVORITES -> router.showFavorites()
             HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList()
             HudFragment.TOP_LEVEL_SCREEN_ID_GAME -> router.showGameList()
-            HudFragment.TOP_LEVEL_SCREEN_ID_JAM -> router.showJams()
             HudFragment.TOP_LEVEL_SCREEN_ID_SONG -> router.showAllSheets()
             HudFragment.TOP_LEVEL_SCREEN_ID_TAG -> router.showTagList()
             else -> router.showGameList()
@@ -293,7 +313,10 @@ class HudViewModel @AssistedInject constructor(
             val part = try {
                 Part.valueOf(selection)
             } catch (ex: IllegalArgumentException) {
-                Timber.e("${ex.message}: value $selection no longer valid; defaulting to C")
+                hatchet.e(
+                    this.javaClass.simpleName,
+                    "${ex.message}: value $selection no longer valid; defaulting to C"
+                )
                 Part.C
             }
             setState {
@@ -347,7 +370,7 @@ class HudViewModel @AssistedInject constructor(
                         )
                     }
 
-                songSearch = repository.searchSongs(searchQuery)
+                songSearch = repository.searchSongsCombined(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newSongs ->
                         if (newSongs is Loading) {
@@ -430,8 +453,12 @@ class HudViewModel @AssistedInject constructor(
             .launchIn(viewModelScope)
     }
 
-    private fun stopTimer() {
-        timer?.cancel()
+    private fun stopHudVisibilityTimer() {
+        if (hudVisibilityTimer != null) {
+            hatchet.v(this.javaClass.simpleName, "Clearing hud visibility timer.")
+            hudVisibilityTimer?.cancel()
+            hudVisibilityTimer = null
+        }
     }
 
     @AssistedFactory

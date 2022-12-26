@@ -167,6 +167,7 @@ class Config(
                             Page.generateThumbUrl(
                                 baseImageUrl,
                                 hudState.selectedPart.apiId,
+                                result.isAltSelected,
                                 result.filename
                             ),
                             R.drawable.placeholder_sheet

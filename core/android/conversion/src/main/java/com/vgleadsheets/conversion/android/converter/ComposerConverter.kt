@@ -16,7 +16,10 @@ class ComposerConverter :
         id,
         name,
         songs?.filteredForVocals(Part.VOCAL.apiId)?.isNotEmpty() ?: false,
-        photoUrl
+        photoUrl,
+        sheetsPlayed,
+        isFavorite,
+        isAvailableOffline
     )
 
     override fun ComposerEntity.toModel() = Composer(
@@ -24,7 +27,10 @@ class ComposerConverter :
         name,
         null,
         photoUrl,
-        hasVocalSongs
+        hasVocalSongs,
+        sheetsPlayed,
+        isFavorite,
+        isAvailableOffline,
     )
 
     override fun ComposerEntity.toModelWithMany(
@@ -35,7 +41,10 @@ class ComposerConverter :
         name,
         manyDao.getManyModels(id, converter),
         photoUrl,
-        hasVocalSongs
+        hasVocalSongs,
+        sheetsPlayed,
+        isFavorite,
+        isAvailableOffline,
     )
 
     override fun SongsForComposerDao.getManyModels(

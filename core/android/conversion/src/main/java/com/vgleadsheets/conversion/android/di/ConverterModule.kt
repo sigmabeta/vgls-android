@@ -4,10 +4,8 @@ import com.vgleadsheets.conversion.android.converter.ComposerAliasConverter
 import com.vgleadsheets.conversion.android.converter.ComposerConverter
 import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
-import com.vgleadsheets.conversion.android.converter.JamConverter
-import com.vgleadsheets.conversion.android.converter.SetlistEntryConverter
+import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
-import com.vgleadsheets.conversion.android.converter.SongHistoryEntryConverter
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
 import dagger.Module
@@ -34,19 +32,7 @@ class ConverterModule {
 
     @Provides
     @Singleton
-    fun composerJamConverter() = JamConverter()
-
-    @Provides
-    @Singleton
-    fun composerSetlistEntryConverter() = SetlistEntryConverter()
-
-    @Provides
-    @Singleton
     fun composerSongConverter() = SongConverter()
-
-    @Provides
-    @Singleton
-    fun composerSongHistoryEntryConverter() = SongHistoryEntryConverter()
 
     @Provides
     @Singleton
@@ -55,4 +41,8 @@ class ConverterModule {
     @Provides
     @Singleton
     fun composerTagValueConverter() = TagValueConverter()
+
+    @Provides
+    @Singleton
+    fun composerSongAliasConverter() = SongAliasConverter()
 }
