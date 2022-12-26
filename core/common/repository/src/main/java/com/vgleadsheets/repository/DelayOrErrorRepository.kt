@@ -1,12 +1,12 @@
 package com.vgleadsheets.repository
 
-import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlin.random.Random
 
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
@@ -63,13 +63,13 @@ class DelayOrErrorRepository(
 
     override fun getJam(id: Long, withHistory: Boolean) = realRepository.getJam(id, withHistory)
 
-    override fun searchSongs(searchQuery: String) = realRepository.searchSongs(searchQuery)
+    override fun searchSongs(searchQuery: String) = realRepository.searchSongs(searchQuery).butItTakesForever()
 
     override fun searchGamesCombined(searchQuery: String) =
-        realRepository.searchGamesCombined(searchQuery)
+        realRepository.searchGamesCombined(searchQuery).butItTakesForever()
 
     override fun searchComposersCombined(searchQuery: String) =
-        realRepository.searchComposersCombined(searchQuery)
+        realRepository.searchComposersCombined(searchQuery).butItTakesForever()
 
     override suspend fun removeJam(id: Long) = realRepository.removeJam(id)
 
@@ -79,7 +79,7 @@ class DelayOrErrorRepository(
 
     override suspend fun clearJams() = realRepository.clearJams()
 
-    private suspend fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
+    private fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
         onEach {
             delay(
                 DELAY_MINIMUM_MS + Random.nextLong(DELAY_VARIANCE_MS),

@@ -154,7 +154,7 @@ private fun Dark() {
 @Preview
 @Composable
 private fun Menu() {
-    VglsMaterialMenu() {
+    VglsMaterialMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

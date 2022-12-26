@@ -14,6 +14,7 @@ import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.repository.DelayOrErrorRepository
 import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.repository.VglsRepository
@@ -28,7 +29,7 @@ class RepositoryModule {
     @Singleton
     fun provideRepository(
         realRepository: RealRepository
-    ): VglsRepository = realRepository
+    ): VglsRepository = DelayOrErrorRepository(realRepository)
 
     @Provides
     @Singleton
