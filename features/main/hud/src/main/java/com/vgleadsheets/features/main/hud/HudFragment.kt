@@ -45,7 +45,7 @@ class HudFragment : VglsFragment() {
 
     private val viewModel: HudViewModel by activityViewModel()
 
-    private val menuAdapter = ComponentAdapter(getVglsFragmentTag())
+    private lateinit var menuAdapter: ComponentAdapter
 
     fun onAppBarButtonClick() = withState(viewModel) {
         clicks.appBarButton(it)
@@ -80,6 +80,7 @@ class HudFragment : VglsFragment() {
 
         val recyclerBottom = screen.recyclerBottom
 
+        menuAdapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
         recyclerBottom.adapter = menuAdapter
         recyclerBottom.layoutManager = LinearLayoutManager(context)
 
@@ -111,7 +112,6 @@ class HudFragment : VglsFragment() {
             state.mode,
             state.searchQuery,
             state.searchResults,
-            state.viewerScreenVisible,
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
             state.loadTimeLists,
@@ -153,11 +153,11 @@ class HudFragment : VglsFragment() {
     }
 
     companion object {
+        const val TOP_LEVEL_SCREEN_ID_FAVORITES = "FAVORITES"
         const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
         const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"
         const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"
         const val TOP_LEVEL_SCREEN_ID_TAG = "TAG"
-        const val TOP_LEVEL_SCREEN_ID_JAM = "JAM"
 
         const val TOP_LEVEL_SCREEN_ID_DEFAULT = TOP_LEVEL_SCREEN_ID_GAME
 

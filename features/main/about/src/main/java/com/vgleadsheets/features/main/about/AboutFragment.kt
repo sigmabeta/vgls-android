@@ -18,7 +18,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 @SuppressWarnings("TooManyFunctions")
 class AboutFragment :
     VglsFragment() {
-    private val adapter = ComponentAdapter(getVglsFragmentTag())
+    private lateinit var adapter: ComponentAdapter
 
     private val hudViewModel: HudViewModel by existingViewModel()
 
@@ -32,6 +32,8 @@ class AboutFragment :
             resources.getDimension(R.dimen.margin_medium).toInt()
 
         val content = view.findViewById<RecyclerView>(R.id.list_content)
+        adapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
+
         content.adapter = adapter
         content.layoutManager = LinearLayoutManager(context)
         content.setInsetListenerForPadding(

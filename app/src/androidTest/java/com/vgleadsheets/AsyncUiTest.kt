@@ -3,7 +3,6 @@ package com.vgleadsheets
 import com.vgleadsheets.network.MockVglsApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.junit.Before
-import timber.log.Timber
 
 abstract class AsyncUiTest : UiTest() {
     protected val digestEmitTrigger = MutableSharedFlow<Long>()
@@ -34,7 +33,7 @@ abstract class AsyncUiTest : UiTest() {
     }
 
     protected fun eraseDatabase() {
-        Timber.d("Erasing contents of database.")
+        hatchet.d(this.javaClass.simpleName, "Erasing contents of database.")
 
         vglsDatabase.composerDao().nukeTable()
         vglsDatabase.composerAliasDao().nukeTable()
@@ -43,7 +42,6 @@ abstract class AsyncUiTest : UiTest() {
         vglsDatabase.gameDao().nukeTable()
         vglsDatabase.songHistoryEntryDao().nukeTable()
         vglsDatabase.setlistEntryDao().nukeTable()
-        vglsDatabase.jamDao().nukeTable()
         vglsDatabase.songComposerDao().nukeTable()
         vglsDatabase.songDao().nukeTable()
         vglsDatabase.songTagValueDao().nukeTable()

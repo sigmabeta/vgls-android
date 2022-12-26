@@ -36,6 +36,10 @@ class SongAndroidDataSource(
     relatedRoomImpl
 ),
     SongDataSource {
+    override fun getFavorites() = roomImpl
+        .getFavorites()
+        .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }
+
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.toModelFromEntity(it) }
@@ -45,4 +49,12 @@ class SongAndroidDataSource(
         .mapList {
             tagValueConverter.entityToModel(it)
         }
+
+    override fun incrementPlayCount(songId: Long) = roomImpl.incrementPlayCount(songId)
+
+    override fun toggleFavorite(songId: Long) = roomImpl.toggleFavorite(songId)
+
+    override fun toggleOffline(songId: Long) = roomImpl.toggleOffline(songId)
+
+    override fun toggleAlternate(songId: Long) = roomImpl.toggleAlternate(songId)
 }

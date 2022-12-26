@@ -25,5 +25,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Logging
-    api "com.jakewharton.timber:timber:$timber_version"
+    implementation project(":core:common:logging")
 }

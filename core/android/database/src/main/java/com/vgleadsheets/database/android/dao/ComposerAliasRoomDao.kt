@@ -1,6 +1,7 @@
 package com.vgleadsheets.database.android.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
@@ -11,6 +12,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_I
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
 import com.vgleadsheets.database.android.enitity.ComposerAliasEntity
+import com.vgleadsheets.database.android.enitity.DeletionId
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -35,6 +37,9 @@ interface ComposerAliasRoomDao : ManyFromOneDao<ComposerAliasEntity> {
 
     @Insert
     override fun insert(entities: List<ComposerAliasEntity>)
+
+    @Delete(entity = ComposerAliasEntity::class)
+    override fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_DELETE)
     override fun nukeTable()

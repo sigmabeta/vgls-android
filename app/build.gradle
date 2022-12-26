@@ -128,6 +128,7 @@ dependencies {
     implementation project(":core:android:database")
     implementation project(":core:android:images")
     implementation project(":core:android:list")
+    implementation project(":core:android:logging")
     implementation project(':core:android:ui-core')
     implementation project(':core:android:ui-components')
 
@@ -141,9 +142,6 @@ dependencies {
 
     implementation project(":core:common:debug")
     implementation project(":core:common:network")
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Debug helper
     implementation "com.facebook.stetho:stetho:$stetho_version"

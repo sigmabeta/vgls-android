@@ -9,6 +9,9 @@ android {
 }
 
 dependencies {
+    // TODO Remove HTTPException et al from feature
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
     implementation project(':core:common:model')
     implementation project(':core:common:repository')
 
@@ -20,7 +23,4 @@ dependencies {
     implementation project(':core:android:vectors')
 
     implementation project(":core:android:coroutines")
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
 }

@@ -1,5 +1,6 @@
 package com.vgleadsheets.database.android.dao
 
+import com.vgleadsheets.database.android.enitity.DeletionId
 import kotlinx.coroutines.flow.Flow
 
 interface RoomDao<EntityType> {
@@ -11,6 +12,8 @@ interface RoomDao<EntityType> {
 
     fun insert(entities: List<@JvmSuppressWildcards EntityType>)
 
+    fun remove(ids: List<DeletionId>)
+
     fun nukeTable()
 
     companion object {
@@ -18,6 +21,7 @@ interface RoomDao<EntityType> {
 
         const val GET = "SELECT * FROM"
         const val DELETE = "DELETE FROM"
+        const val DROP = "DROP TABLE"
 
         const val WHERE_SINGLE = "WHERE id = :$ROW_PRIMARY_KEY_ID"
         const val WHERE_SEARCH = "WHERE name LIKE :name"

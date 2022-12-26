@@ -21,7 +21,6 @@ import com.vgleadsheets.database.android.enitity.GameAliasEntity.Companion.TABLE
 data class GameAliasEntity(
     val gameId: Long,
     val name: String,
-    val photoUrl: String? = null,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
 ) {
     companion object {

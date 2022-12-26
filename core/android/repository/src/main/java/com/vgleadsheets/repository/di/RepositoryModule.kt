@@ -7,12 +7,11 @@ import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.database.dao.GameDataSource
-import com.vgleadsheets.database.dao.JamDataSource
-import com.vgleadsheets.database.dao.SetlistEntryDataSource
+import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
-import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.ThreeTenTime
@@ -38,32 +37,30 @@ class RepositoryModule {
         threeTenTime: ThreeTenTime,
         tracker: Tracker,
         dispatchers: VglsDispatchers,
+        hatchet: Hatchet,
         composerAliasDataSource: ComposerAliasDataSource,
         composerDataSource: ComposerDataSource,
         dbStatisticsDataSource: DbStatisticsDataSource,
         gameAliasDataSource: GameAliasDataSource,
         gameDataSource: GameDataSource,
-        jamDataSource: JamDataSource,
-        setlistEntryDataSource: SetlistEntryDataSource,
         songDataSource: SongDataSource,
-        songHistoryEntryDataSource: SongHistoryEntryDataSource,
         tagKeyDataSource: TagKeyDataSource,
-        tagValueDataSource: TagValueDataSource
+        tagValueDataSource: TagValueDataSource,
+        songAliasDataSource: SongAliasDataSource
     ) = RealRepository(
         vglsApi,
         transactionDao,
         threeTenTime,
         tracker,
         dispatchers,
+        hatchet,
         composerAliasDataSource,
         composerDataSource,
         dbStatisticsDataSource,
         gameAliasDataSource,
         gameDataSource,
-        jamDataSource,
-        setlistEntryDataSource,
         songDataSource,
-        songHistoryEntryDataSource,
+        songAliasDataSource,
         tagKeyDataSource,
         tagValueDataSource,
     )

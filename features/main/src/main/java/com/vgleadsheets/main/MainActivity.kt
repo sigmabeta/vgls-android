@@ -20,13 +20,11 @@ import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.debug.DebugFragment
+import com.vgleadsheets.features.main.favorites.FavoriteListFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.features.main.jam.JamFragment
-import com.vgleadsheets.features.main.jams.FindJamDialogFragment
-import com.vgleadsheets.features.main.jams.JamListFragment
 import com.vgleadsheets.features.main.license.LicenseFragment
 import com.vgleadsheets.features.main.search.SearchFragment
 import com.vgleadsheets.features.main.settings.SettingFragment
@@ -36,6 +34,7 @@ import com.vgleadsheets.features.main.tagkeys.TagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.perf.tracking.common.FrameInfo
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
@@ -44,7 +43,6 @@ import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
-import timber.log.Timber
 
 @Suppress("TooManyFunctions", "Deprecation")
 class MainActivity :
@@ -61,6 +59,9 @@ class MainActivity :
 
     @Inject
     lateinit var perfTracker: PerfTracker
+
+    @Inject
+    lateinit var hatchet: Hatchet
 
     private var jankStats: JankStats? = null
 
@@ -93,10 +94,14 @@ class MainActivity :
         val widthPixels = displayMetrics.widthPixels
         val heightPixels = displayMetrics.heightPixels
 
-        Timber.v("Device screen DPI: ${displayMetrics.densityDpi}")
-        Timber.v("Device screen scaling factor: ${displayMetrics.density}")
-        Timber.v("Device screen size: ${widthPixels}x$heightPixels")
-        Timber.v(
+        hatchet.v(this.javaClass.simpleName, "Device screen DPI: ${displayMetrics.densityDpi}")
+        hatchet.v(
+            this.javaClass.simpleName,
+            "Device screen scaling factor: ${displayMetrics.density}"
+        )
+        hatchet.v(this.javaClass.simpleName, "Device screen size: ${widthPixels}x$heightPixels")
+        hatchet.v(
+            this.javaClass.simpleName,
             "Device screen size (scaled): ${(widthPixels / displayMetrics.density).toInt()}" +
                 "x${(heightPixels / displayMetrics.density).toInt()}"
         )
@@ -133,6 +138,15 @@ class MainActivity :
         }
     }
 
+    override fun showFavorites(
+        fromScreen: TrackingScreen?,
+        fromDetails: String?
+    ) {
+        showTopLevelFragment {
+            FavoriteListFragment.newInstance()
+        }
+    }
+
     override fun showGameList(
         fromScreen: TrackingScreen?,
         fromDetails: String?
@@ -157,15 +171,6 @@ class MainActivity :
     ) {
         showTopLevelFragment {
             TagKeyListFragment.newInstance()
-        }
-    }
-
-    override fun showJams(
-        fromScreen: TrackingScreen?,
-        fromDetails: String?
-    ) {
-        showTopLevelFragment {
-            JamListFragment.newInstance()
         }
     }
 
@@ -219,13 +224,6 @@ class MainActivity :
         LicenseFragment.newInstance()
     }
 
-    override fun showFindJamDialog() = FindJamDialogFragment
-        .newInstance()
-        .show(
-            supportFragmentManager,
-            FindJamDialogFragment::class.java.simpleName
-        )
-
     override fun back() {
         supportFragmentManager.popBackStack()
     }
@@ -254,22 +252,10 @@ class MainActivity :
         SongFragment.newInstance(IdArgs(songId))
     }
 
-    override fun showSongViewer(
-        songId: Long
-    ) {
+    override fun showSongViewer(songId: Long?) {
         showFragmentSimple {
             ViewerFragment.newInstance(ViewerArgs(songId = songId))
         }
-    }
-
-    override fun showJamViewer(jamId: Long) {
-        showFragmentSimple {
-            ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
-        }
-    }
-
-    override fun showJamDetailViewer(jamId: Long) = showFragmentSimple {
-        JamFragment.newInstance(IdArgs(jamId))
     }
 
     override fun onBackPressed() {
@@ -355,7 +341,7 @@ class MainActivity :
             return
         }
 
-        Timber.i("Initializing JankStats.")
+        hatchet.i(this.javaClass.simpleName, "Initializing JankStats.")
 
         jankStats = JankStats.createAndTrack(
             window

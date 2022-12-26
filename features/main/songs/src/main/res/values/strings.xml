@@ -1,9 +1,11 @@
 <resources>
+    <string name="section_header_all_songs">All Songs</string>
+
     <string name="sample_text_sheet">Baden National Golf Course</string>
     <string name="sample_text_page_count">3 pages</string>
     <string name="sample_text_composer">Takushi Hiyamuta</string>
 
-    <string name="subtitle_all_sheets">All Sheets</string>
+    <string name="subtitle_all_songs">All Songs</string>
     <string name="subtitle_sheets_count">%1$d Sheets</string>
 
     <string name="missing_thing_song">songs</string>

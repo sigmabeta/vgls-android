@@ -41,6 +41,10 @@ class Config(
 
     private val song = songLoad.content()
 
+    private val songAliasesLoad = state.contentLoad.songAliases
+
+    private val songAliases = songAliasesLoad.content()
+
     private val tagValuesLoad = state.contentLoad.tagValues
 
     private val tagValues = tagValuesLoad.content()
@@ -57,6 +61,7 @@ class Config(
         Page.generateThumbUrl(
             baseImageUrl,
             hudState.selectedPart.apiId,
+            song?.isAltSelected ?: false,
             song?.filename ?: ""
         ),
         R.drawable.placeholder_sheet,
@@ -64,12 +69,30 @@ class Config(
         songLoad.isLoading()
     )
 
-    override val actionsConfig = Actions.NONE
+    override val actionsConfig = Actions.Config(
+        song != null,
+        listOf(
+            CtaListModel(
+                if (song?.isFavorite == true) {
+                    R.drawable.ic_jam_filled
+                } else {
+                    R.drawable.ic_jam_unfilled
+                },
+                resources.getString(
+                    if (song?.isFavorite == true) {
+                        R.string.label_unfavorite
+                    } else {
+                        R.string.label_favorite
+                    }
+                )
+            ) { clicks.onFavoriteClick() }
+        )
+    )
 
     override val contentConfig = Content.Config(
         !tagValues.isNullOrEmpty()
     ) {
-        ctaSection() + detailsSection() + tagValuesSection()
+        ctaSection() + detailsSection() + akaSection() + tagValuesSection()
     }
 
     override val emptyConfig = EmptyState.Config(
@@ -84,6 +107,17 @@ class Config(
         SongFragment.LOAD_OPERATION,
         state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
     )
+
+    private fun akaSection(): List<ListModel> {
+        return songAliases?.map {
+            LabelValueListModel(
+                resources.getString(R.string.label_detail_aka),
+                it.name,
+                { },
+                (it.id ?: 0L) + ID_OFFSET_ALIAS
+            )
+        } ?: emptyList()
+    }
 
     private fun detailsSection(): List<ListModel> {
         val composer = (song ?: return emptyList())
@@ -207,6 +241,7 @@ class Config(
     companion object {
         private const val ID_OFFSET_GAME = 1_000L
         private const val ID_OFFSET_COMPOSER = 1_000_000L
-        private const val ID_OFFSET_TAG_VALUE = 1_000_000_000L
+        private const val ID_OFFSET_ALIAS = 1_000_000_000L
+        private const val ID_OFFSET_TAG_VALUE = 1_000_000_000_000L
     }
 }

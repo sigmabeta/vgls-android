@@ -25,11 +25,15 @@ data class SongEntity(
     val name: String,
     val filename: String,
     val pageCount: Int,
+    val altPageCount: Int,
     val lyricPageCount: Int,
     val gameName: String,
     val game_id: Long,
     val hasVocals: Boolean,
-    val playCount: Int = 0
+    val playCount: Int,
+    val isFavorite: Boolean,
+    val isAvailableOffline: Boolean,
+    val isAltSelected: Boolean,
 ) {
     companion object {
         const val TABLE = "song"

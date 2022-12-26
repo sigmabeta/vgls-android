@@ -35,6 +35,10 @@ class GameAndroidDataSource(
     relatedRoomImpl
 ),
     GameDataSource {
+    override fun getFavorites() = roomImpl
+        .getFavorites()
+        .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }
+
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }
@@ -52,4 +56,10 @@ class GameAndroidDataSource(
                 manyConverter.entityToModel(it)
             }
         }
+
+    override fun incrementSheetsPlayed(gameId: Long) = roomImpl.incrementSheetsPlayed(gameId)
+
+    override fun toggleFavorite(gameId: Long) = roomImpl.toggleFavorite(gameId)
+
+    override fun toggleOffline(gameId: Long) = roomImpl.toggleOffline(gameId)
 }

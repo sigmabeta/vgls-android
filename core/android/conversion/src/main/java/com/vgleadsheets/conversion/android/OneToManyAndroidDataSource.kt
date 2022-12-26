@@ -4,6 +4,7 @@ import com.vgleadsheets.conversion.Converter
 import com.vgleadsheets.conversion.WithManyConverter
 import com.vgleadsheets.conversion.mapList
 import com.vgleadsheets.database.android.dao.RoomDao
+import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.dao.OneToManyDataSource
 import kotlinx.coroutines.flow.map
 
@@ -46,6 +47,11 @@ abstract class OneToManyAndroidDataSource<
             models.map {
                 convert.modelToEntity(it)
             }
+        )
+
+    override fun remove(ids: List<Long>) = roomImpl
+        .remove(
+            ids.map { DeletionId(it) }
         )
 
     override fun nukeTable() = roomImpl.nukeTable()

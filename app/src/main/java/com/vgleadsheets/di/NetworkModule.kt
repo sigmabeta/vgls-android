@@ -92,7 +92,7 @@ class NetworkModule {
     @Named("HttpLoggingInterceptor")
     internal fun provideHttpLoggingInterceptor(): Interceptor {
         val logger = HttpLoggingInterceptor()
-        logger.level = HttpLoggingInterceptor.Level.BODY
+        logger.level = HttpLoggingInterceptor.Level.BASIC
         return logger
     }
 

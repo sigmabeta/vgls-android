@@ -23,7 +23,6 @@ object MenuRenderer {
         hudMode: HudMode,
         searchQuery: String?,
         searchResults: SearchContent,
-        viewerScreenVisible: Boolean,
         showVocalsOption: Boolean,
         selectedPart: Part,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
@@ -38,8 +37,8 @@ object MenuRenderer {
         clicks: Clicks,
         resources: Resources
     ): List<ListModel> {
-        if (hudMode == HudMode.REGULAR && viewerScreenVisible) {
-            viewModel.startHudTimer()
+        if (hudMode == HudMode.REGULAR && currentSong != null) {
+            viewModel.startHudVisibilityTimer()
         } else {
             viewModel.stopHudTimer()
         }
@@ -65,14 +64,15 @@ object MenuRenderer {
         ) + SongDisplay.getListModels(
             hudMode,
             currentSong,
-            viewerScreenVisible,
             clicks::sheetDetail,
-        ) + SheetOptions.getListModels(
+        ) + SongOptions.getListModels(
             hudMode,
             currentSong,
-            viewerScreenVisible,
             clicks::sheetDetail,
             clicks::youtubeSearch,
+            clicks::favorite,
+            // clicks::offline,
+            clicks::alternateSheet,
             resources
         ) + PartPicker.getListModels(
             hudMode == HudMode.PARTS,

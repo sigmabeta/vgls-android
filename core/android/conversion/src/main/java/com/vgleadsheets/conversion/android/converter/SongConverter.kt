@@ -17,11 +17,15 @@ class SongConverter :
         name,
         filename,
         pageCount,
+        altPageCount,
         lyricPageCount,
         gameName,
         gameId,
         hasVocals,
-        playCount
+        playCount,
+        isFavorite,
+        isAvailableOffline,
+        isAltSelected
     )
 
     override fun SongEntity.toModel() = Song(
@@ -32,9 +36,13 @@ class SongConverter :
         gameName,
         hasVocals,
         pageCount,
+        altPageCount,
         lyricPageCount,
         null,
-        playCount
+        playCount,
+        isFavorite,
+        isAvailableOffline,
+        isAltSelected
     )
 
     override fun SongEntity.toModelWithMany(
@@ -50,9 +58,13 @@ class SongConverter :
             gameName,
             hasVocals,
             pageCount,
+            altPageCount,
             lyricPageCount,
             composers,
-            playCount
+            playCount,
+            isFavorite,
+            isAvailableOffline,
+            isAltSelected,
         )
     }
 
