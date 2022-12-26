@@ -99,9 +99,6 @@ object MenuRenderer {
             { clicks.perfScreenSelection(it) },
             { clicks.setPerfViewMode(it) },
             resources,
-        ) + RefreshIndicator.getListModels(
-            refreshing,
-            resources,
         )
 
         return menuItems

@@ -140,7 +140,10 @@ object MenuOptions {
             )
         )
     } else {
-        emptyList()
+        RefreshIndicator.getListModels(
+            refreshing,
+            resources,
+        )
     }
 
     private fun Resources.getUpdateTimeString(updateTime: Async<Long>): String {

@@ -24,6 +24,7 @@ import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.themes.VglsMaterialMenu
 import kotlin.random.Random
 
 @Composable
@@ -142,6 +143,20 @@ private fun DarkWithImage() {
             )
         ) {
             SampleWithImage(2345L)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Menu() {
+    VglsMaterialMenu {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            SampleWithImage(5678L)
         }
     }
 }

@@ -339,7 +339,9 @@ object Search {
         emptyList()
     } else {
         listOf(
-            MenuSearchMoreListModel(resources.getString(R.string.search_now_loading)) {}
+            MenuSearchMoreListModel(
+                resources.getString(R.string.search_now_loading)
+            ) {}
         )
     }
 
