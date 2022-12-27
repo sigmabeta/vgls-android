@@ -64,14 +64,17 @@ object PerfDisplay {
                 onPerfCategoryClicked,
                 resources
             )
+
             PerfViewMode.LOAD_TIMES -> loadTimesForScreen(
                 loadTimes,
                 resources
             )
+
             PerfViewMode.FRAME_TIMES -> frameTimesForScreen(
                 frameTimeStats,
                 resources
             )
+
             PerfViewMode.INVALIDATES -> invalidatesForScreen(
                 invalidateStats,
                 resources
@@ -85,7 +88,7 @@ object PerfDisplay {
         invalidateStats: InvalidateStats?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
-    ) = listOf(
+    ): List<ListModel> = listOf(
         SectionHeaderListModel(resources.getString(R.string.label_perf_summary)),
         loadTimeSummary(perfScreenStatus, resources, onPerfCategoryClicked),
         frameTimeSummary(frameTimeStats, resources, onPerfCategoryClicked),
@@ -173,7 +176,7 @@ object PerfDisplay {
     private fun loadTimesForScreen(
         loadTimes: ScreenLoadStatus?,
         resources: Resources
-    ) = loadTimeHeader(resources) + loadTimeContent(loadTimes, resources)
+    ): List<ListModel> = loadTimeHeader(resources) + loadTimeContent(loadTimes, resources)
 
     private fun loadTimeHeader(resources: Resources) = listOf(
         SectionHeaderListModel(
@@ -198,7 +201,7 @@ object PerfDisplay {
     private fun frameTimesForScreen(
         frameTimeStats: FrameTimeStats?,
         resources: Resources
-    ) = if (frameTimeStats != null) {
+    ): List<ListModel> = if (frameTimeStats != null) {
         listOf(
             SectionHeaderListModel(
                 resources.getString(R.string.label_perf_frame_times)
@@ -238,7 +241,7 @@ object PerfDisplay {
     private fun invalidatesForScreen(
         invalidateStats: InvalidateStats?,
         resources: Resources
-    ) = if (invalidateStats != null) {
+    ): List<ListModel> = if (invalidateStats != null) {
         listOf(
             SectionHeaderListModel(
                 resources.getString(R.string.label_perf_invalidates)
