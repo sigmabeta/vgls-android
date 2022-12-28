@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +39,10 @@ fun LabelValueListItem(model: LabelValueListModel) {
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .padding(vertical = 16.dp)
+                .weight(1.0f)
         )
+
+        Spacer(modifier = Modifier.width(8.dp))
 
         Text(
             text = model.value,
@@ -48,7 +53,6 @@ fun LabelValueListItem(model: LabelValueListModel) {
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .padding(vertical = 16.dp)
-                .weight(1.0f)
         )
     }
 }
