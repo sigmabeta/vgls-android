@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
 import com.airbnb.mvrx.Async
-import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.ComposableModel
 import com.vgleadsheets.features.main.hud.Clicks
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudMode
@@ -37,7 +37,7 @@ object MenuRenderer {
         viewModel: HudViewModel,
         clicks: Clicks,
         resources: Resources
-    ): List<ListModel> {
+    ): List<ComposableModel> {
         if (hudMode == HudMode.REGULAR && viewerScreenVisible) {
             viewModel.startHudTimer()
         } else {

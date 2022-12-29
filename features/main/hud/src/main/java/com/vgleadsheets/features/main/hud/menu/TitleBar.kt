@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
+import com.vgleadsheets.components.ComposableModel
 import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.PartSelectorOption
@@ -14,7 +15,7 @@ object TitleBar {
         onSearchButtonClick: () -> Unit,
         onMenuClick: () -> Unit,
         onChangePartClick: () -> Unit,
-    ) = if (hudMode == HudMode.SEARCH) {
+    ): List<ComposableModel> = if (hudMode == HudMode.SEARCH) {
         emptyList()
     } else {
         listOf(

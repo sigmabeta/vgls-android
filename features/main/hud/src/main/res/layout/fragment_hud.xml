@@ -27,8 +27,8 @@
         app:paddingBottomSystemWindowInsets="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_bottom"
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/compose_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/list_component_menu_item"

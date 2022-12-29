@@ -11,7 +11,7 @@ data class MenuItemListModel(
     val selected: Boolean = false
 ) : ListModel, ComposableModel {
     override val dataId = name.hashCode().toLong()
-    override val layoutId = R.layout.composable_menu_item
+    override val layoutId = R.layout.list_component_menu_item
 
     @Composable
     override fun Content() {

@@ -11,7 +11,7 @@ data class MenuEmptyStateListModel(
     val showCrossOut: Boolean = true
 ) : ListModel, ComposableModel {
     override val dataId = explanation.hashCode().toLong()
-    override val layoutId = R.layout.composable_menu_item
+    override val layoutId = R.layout.list_component_empty_state
 
     @Composable
     override fun Content() {

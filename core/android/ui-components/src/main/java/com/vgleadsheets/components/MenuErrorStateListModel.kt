@@ -8,7 +8,7 @@ data class MenuErrorStateListModel(
     val errorString: String,
 ) : ListModel, ComposableModel {
     override val dataId = errorString.hashCode().toLong()
-    override val layoutId = R.layout.composable_list_item
+    override val layoutId = R.layout.list_component_error_state
 
     @Composable
     override fun Content() {

@@ -6,7 +6,7 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.ComposableModel
 import com.vgleadsheets.components.MenuEmptyStateListModel
 import com.vgleadsheets.components.MenuErrorStateListModel
 import com.vgleadsheets.components.MenuSearchListModel
@@ -37,7 +37,7 @@ object Search {
         onMenuButtonClick: () -> Unit,
         onClearClick: () -> Unit,
         resources: Resources
-    ) = if (hudMode == HudMode.SEARCH) {
+    ): List<ComposableModel>  = if (hudMode == HudMode.SEARCH) {
         searchResults(
             searchQuery,
             contentLoad,
@@ -65,7 +65,7 @@ object Search {
         baseImageUrl: String,
         clicks: Clicks,
         resources: Resources
-    ): List<ListModel> {
+    ): List<ComposableModel> {
         if (query.isNullOrEmpty()) {
             return listOf(
                 MenuEmptyStateListModel(
@@ -165,7 +165,7 @@ object Search {
         selectedPart: Part,
         clicks: Clicks,
         resources: Resources
-    ): List<ListModel> {
+    ): List<ComposableModel> {
         return if (results.isEmpty()) {
             emptyList()
         } else {
@@ -219,7 +219,7 @@ object Search {
         selectedPart: Part,
         clicks: Clicks,
         resources: Resources
-    ): List<ListModel> {
+    ): List<ComposableModel> {
         return mapSearchResults(
             filteredResults.take(maxResults),
             baseImageUrl,
@@ -244,7 +244,7 @@ object Search {
         selectedPart: Part,
         clicks: Clicks,
         resources: Resources
-    ): List<ListModel> {
+    ): List<ComposableModel> {
         return results
             .map { result ->
                 when (result) {

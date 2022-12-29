@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
+import com.vgleadsheets.components.ComposableModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
@@ -14,7 +15,7 @@ object SheetOptions {
         onDetailsClick: () -> Unit,
         onYoutubeClick: () -> Unit,
         resources: Resources,
-    ) = if (currentSong != null && isApplicableHudModeLol(hudMode) && viewerScreenVisible) {
+    ): List<ComposableModel>  = if (currentSong != null && isApplicableHudModeLol(hudMode) && viewerScreenVisible) {
         listOf(
             MenuItemListModel(
                 resources.getString(R.string.label_song_details),

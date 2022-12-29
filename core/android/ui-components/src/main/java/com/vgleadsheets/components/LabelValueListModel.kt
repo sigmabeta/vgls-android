@@ -9,7 +9,7 @@ data class LabelValueListModel(
     val onClick: () -> Unit,
     override val dataId: Long = label.hashCode().toLong()
 ) : ListModel, ComposableModel {
-    override val layoutId = R.layout.composable_menu_item
+    override val layoutId = R.layout.list_component_label_value
 
     @Composable
     override fun Content() {

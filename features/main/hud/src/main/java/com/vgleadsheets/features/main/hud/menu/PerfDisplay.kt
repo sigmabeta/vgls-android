@@ -1,9 +1,9 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
+import com.vgleadsheets.components.ComposableModel
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.LabelValueListModel
-import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.PerfViewMode
 import com.vgleadsheets.features.main.hud.PerfViewState
@@ -25,7 +25,7 @@ object PerfDisplay {
         onScreenSelected: (PerfSpec) -> Unit,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
-    ) = if (visible) {
+    ): List<ComposableModel>  = if (visible) {
         screenPicker(
             perfViewState.selectedScreen,
             onScreenSelected,
@@ -51,7 +51,7 @@ object PerfDisplay {
         invalidateStatsMap: Map<PerfSpec, InvalidateStats>?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
-    ): List<ListModel> {
+    ): List<ComposableModel> {
         val loadTimes = loadTimeLists?.get(selectedScreen)
         val frameTimeStats = frameTimeStatsMap?.get(selectedScreen)
         val invalidateStats = invalidateStatsMap?.get(selectedScreen)
@@ -88,7 +88,7 @@ object PerfDisplay {
         invalidateStats: InvalidateStats?,
         onPerfCategoryClicked: (PerfViewMode) -> Unit,
         resources: Resources
-    ): List<ListModel> = listOf(
+    ): List<ComposableModel> = listOf(
         SectionHeaderListModel(resources.getString(R.string.label_perf_summary)),
         loadTimeSummary(perfScreenStatus, resources, onPerfCategoryClicked),
         frameTimeSummary(frameTimeStats, resources, onPerfCategoryClicked),
@@ -161,7 +161,7 @@ object PerfDisplay {
         selectedScreen: PerfSpec,
         onScreenSelected: (PerfSpec) -> Unit,
         resources: Resources
-    ): List<ListModel> {
+    ): List<ComposableModel> {
         val perfSpecs = PerfSpec.values().toList()
         return listOf(
             DropdownSettingListModel(
@@ -176,7 +176,7 @@ object PerfDisplay {
     private fun loadTimesForScreen(
         loadTimes: ScreenLoadStatus?,
         resources: Resources
-    ): List<ListModel> = loadTimeHeader(resources) + loadTimeContent(loadTimes, resources)
+    ): List<ComposableModel> = loadTimeHeader(resources) + loadTimeContent(loadTimes, resources)
 
     private fun loadTimeHeader(resources: Resources) = listOf(
         SectionHeaderListModel(
@@ -201,7 +201,7 @@ object PerfDisplay {
     private fun frameTimesForScreen(
         frameTimeStats: FrameTimeStats?,
         resources: Resources
-    ): List<ListModel> = if (frameTimeStats != null) {
+    ): List<ComposableModel> = if (frameTimeStats != null) {
         listOf(
             SectionHeaderListModel(
                 resources.getString(R.string.label_perf_frame_times)
@@ -241,7 +241,7 @@ object PerfDisplay {
     private fun invalidatesForScreen(
         invalidateStats: InvalidateStats?,
         resources: Resources
-    ): List<ListModel> = if (invalidateStats != null) {
+    ): List<ComposableModel> = if (invalidateStats != null) {
         listOf(
             SectionHeaderListModel(
                 resources.getString(R.string.label_perf_invalidates)
