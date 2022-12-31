@@ -1,6 +1,7 @@
 package com.vgleadsheets.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.vgleadsheets.composables.MenuItem
 
 data class MenuItemListModel(
@@ -14,7 +15,10 @@ data class MenuItemListModel(
     override val layoutId = R.layout.list_component_menu_item
 
     @Composable
-    override fun Content() {
-        MenuItem(model = this)
+    override fun Content(modifier: Modifier) {
+        MenuItem(
+            model = this,
+            modifier = modifier
+        )
     }
 }

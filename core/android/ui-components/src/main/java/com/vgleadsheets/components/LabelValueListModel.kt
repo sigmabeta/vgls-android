@@ -1,6 +1,7 @@
 package com.vgleadsheets.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.vgleadsheets.composables.LabelValueListItem
 
 data class LabelValueListModel(
@@ -12,7 +13,10 @@ data class LabelValueListModel(
     override val layoutId = R.layout.list_component_label_value
 
     @Composable
-    override fun Content() {
-        LabelValueListItem(model = this)
+    override fun Content(modifier: Modifier) {
+        LabelValueListItem(
+            model = this,
+            modifier = modifier
+        )
     }
 }

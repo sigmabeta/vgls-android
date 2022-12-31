@@ -26,10 +26,11 @@ import com.vgleadsheets.themes.VglsMaterial
 
 @Composable
 fun NameCaptionListItem(
-    model: NameCaptionListModel
+    model: NameCaptionListModel,
+    modifier: Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
@@ -109,6 +110,7 @@ private fun Sample() {
             "Xenoblade Chronicles 3",
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
             {}
-        )
+        ),
+        Modifier
     )
 }

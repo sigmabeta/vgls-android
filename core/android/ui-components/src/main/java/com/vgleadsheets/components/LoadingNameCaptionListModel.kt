@@ -1,6 +1,7 @@
 package com.vgleadsheets.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.vgleadsheets.composables.LoadingListItem
 
 data class LoadingNameCaptionListModel(
@@ -11,10 +12,11 @@ data class LoadingNameCaptionListModel(
     override val layoutId = R.layout.list_component_loading_name_caption
 
     @Composable
-    override fun Content() {
+    override fun Content(modifier: Modifier) {
         LoadingListItem(
             withImage = false,
-            seed = dataId
+            seed = dataId,
+            modifier = modifier
         )
     }
 }

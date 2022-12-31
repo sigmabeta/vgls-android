@@ -25,10 +25,11 @@ import com.vgleadsheets.themes.VglsMaterialMenu
 @Composable
 fun SectionHeader(
     name: String,
-    menu: Boolean
+    menu: Boolean,
+    modifier: Modifier,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
@@ -112,13 +113,16 @@ private fun Menu() {
 private fun SampleNotMenu() {
     SectionHeader(
         "Sick new skills",
-        true
+        true,
+        modifier = Modifier
     )
 }
+
 @Composable
 private fun SampleMenu() {
     SectionHeader(
         "Paths to the future",
-        true
+        true,
+        modifier = Modifier
     )
 }

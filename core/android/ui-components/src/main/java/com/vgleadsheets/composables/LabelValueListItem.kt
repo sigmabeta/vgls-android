@@ -24,9 +24,12 @@ import com.vgleadsheets.themes.VglsMaterial
 import com.vgleadsheets.themes.VglsMaterialMenu
 
 @Composable
-fun LabelValueListItem(model: LabelValueListModel) {
+fun LabelValueListItem(
+    model: LabelValueListModel,
+    modifier: Modifier,
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = model.onClick)
             .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
@@ -106,7 +109,8 @@ private fun Sample() {
             "Days which are training days",
             "Every",
             {}
-        )
+        ),
+        Modifier
     )
 }
 

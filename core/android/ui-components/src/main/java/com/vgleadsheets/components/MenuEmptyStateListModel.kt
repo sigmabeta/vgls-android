@@ -2,6 +2,7 @@ package com.vgleadsheets.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.vgleadsheets.composables.EmptyListIndicator
 
 data class MenuEmptyStateListModel(
@@ -14,9 +15,10 @@ data class MenuEmptyStateListModel(
     override val layoutId = R.layout.list_component_empty_state
 
     @Composable
-    override fun Content() {
+    override fun Content(modifier: Modifier) {
         EmptyListIndicator(
-            model = this
+            model = this,
+            modifier = modifier
         )
     }
 }

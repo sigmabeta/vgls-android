@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat.getSystemService
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
@@ -79,6 +82,7 @@ class HudFragment : VglsFragment() {
         screen.shadowHud.setOnClickListener { clicks.shadow() }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Suppress("ComplexMethod", "LongMethod")
     override fun invalidate() = withState(viewModel) { state ->
         HudVisibility.setToLookRightIdk(
@@ -113,13 +117,18 @@ class HudFragment : VglsFragment() {
 
         screen.composeBottom.setContent {
             VglsMaterialMenu {
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier
+                        .animateContentSize()
+                ) {
                     items(
                         items = menuItems.toTypedArray(),
                         key = { it.dataId },
                         contentType = { it.layoutId }
                     ) {
-                        it.Content()
+                        it.Content(
+                            modifier = Modifier.animateItemPlacement()
+                        )
                     }
                 }
             }

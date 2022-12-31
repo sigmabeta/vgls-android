@@ -1,6 +1,7 @@
 package com.vgleadsheets.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.vgleadsheets.composables.IconNameCaptionListItem
 
 data class IconNameCaptionListModel(
@@ -13,7 +14,10 @@ data class IconNameCaptionListModel(
     override val layoutId = R.layout.list_component_now_playing
 
     @Composable
-    override fun Content() {
-        IconNameCaptionListItem(model = this)
+    override fun Content(modifier: Modifier) {
+        IconNameCaptionListItem(
+            model = this,
+            modifier = modifier
+        )
     }
 }

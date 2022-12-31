@@ -1,6 +1,7 @@
 package com.vgleadsheets.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.vgleadsheets.composables.LabelDropdownListItem
 
 data class DropdownSettingListModel(
@@ -14,7 +15,10 @@ data class DropdownSettingListModel(
     override val layoutId = R.layout.list_component_dropdown
 
     @Composable
-    override fun Content() {
-        LabelDropdownListItem(model = this)
+    override fun Content(modifier: Modifier) {
+        LabelDropdownListItem(
+            model = this,
+            modifier = modifier
+        )
     }
 }

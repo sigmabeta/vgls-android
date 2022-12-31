@@ -38,11 +38,12 @@ import com.vgleadsheets.themes.VglsMaterialMenu
 @Composable
 fun LabelDropdownListItem(
     model: DropdownSettingListModel,
-    defaultExpansion: Boolean = false
+    defaultExpansion: Boolean = false,
+    modifier: Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
     ) {
@@ -217,7 +218,6 @@ private fun MenuExpanded() {
 private fun Sample(expanded: Boolean) {
     var selectedPosition by remember { mutableStateOf(3) }
     LabelDropdownListItem(
-        defaultExpansion = expanded,
         model = DropdownSettingListModel(
             "",
             "Who the bus is",
@@ -230,6 +230,8 @@ private fun Sample(expanded: Boolean) {
                 "Mio",
                 "Sena",
             )
-        ) { selectedPosition = it }
+        ) { selectedPosition = it },
+        defaultExpansion = expanded,
+        modifier = Modifier
     )
 }

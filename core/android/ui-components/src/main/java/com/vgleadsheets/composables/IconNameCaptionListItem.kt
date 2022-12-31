@@ -31,12 +31,14 @@ import com.vgleadsheets.themes.VglsMaterialMenu
 
 @Composable
 fun IconNameCaptionListItem(
-    model: IconNameCaptionListModel
+    model: IconNameCaptionListModel,
+    modifier: Modifier
 ) {
     IconNameCaptionListItem(
         model.name,
         model.caption,
         model.iconId,
+        modifier,
         model.onClick
     )
 }
@@ -46,10 +48,11 @@ fun IconNameCaptionListItem(
     name: String,
     caption: String,
     iconId: Int,
+    modifier: Modifier,
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable(onClick = onClick)
@@ -150,8 +153,8 @@ private fun Sample() {
             1234L,
             "Moebius Battle",
             "ACE+",
-            R.drawable.ic_baseline_music_note_24,
-            {}
-        )
+            R.drawable.ic_baseline_music_note_24
+        ) {},
+        Modifier
     )
 }

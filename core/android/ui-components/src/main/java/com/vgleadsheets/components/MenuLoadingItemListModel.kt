@@ -1,6 +1,7 @@
 package com.vgleadsheets.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.vgleadsheets.composables.MoreResultsLink
 
 data class MenuLoadingItemListModel(
@@ -12,8 +13,9 @@ data class MenuLoadingItemListModel(
     override val layoutId = R.layout.list_component_menu_loading
 
     @Composable
-    override fun Content() {
+    override fun Content(modifier: Modifier) {
         MoreResultsLink(
+            modifier = modifier,
             model = MenuSearchMoreListModel(
                 name
             ) {}
