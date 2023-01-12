@@ -35,12 +35,11 @@ import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOneMargin
 import com.vgleadsheets.tracking.TrackingScreen
-import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Named
 
 class ViewerFragment :
     VglsFragment(),
@@ -64,7 +63,7 @@ class ViewerFragment :
     // Keep a local copy for the fragment tag.
     private var songId: Long? = null
 
-    private val sheetsAdapter = ComponentAdapter("ViewerFragment")
+    private lateinit var sheetsAdapter: ComponentAdapter
 
     private lateinit var appButton: ImageView
 
@@ -114,6 +113,7 @@ class ViewerFragment :
         val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
         val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
 
+        sheetsAdapter = ComponentAdapter("ViewerFragment", hatchet)
         sheetsAsPager?.adapter = sheetsAdapter
 
         sheetsAsScrollingList?.adapter = sheetsAdapter
@@ -253,13 +253,13 @@ class ViewerFragment :
 
     private fun setScreenOnLock() {
         val activity = activity ?: return
-        Timber.v("Setting screen-on lock.")
+        hatchet.v(this.javaClass.simpleName, "Setting screen-on lock.")
         activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun clearScreenOnLock() {
         val activity = activity ?: return
-        Timber.v("Clearing screen-on lock.")
+        hatchet.v(this.javaClass.simpleName, "Clearing screen-on lock.")
         activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         screenOffSnack = showSnackbar(

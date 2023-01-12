@@ -5,14 +5,13 @@ import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Jam
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.storage.Storage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import java.net.HttpURLConnection
-import java.net.UnknownHostException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,13 +24,15 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import retrofit2.HttpException
-import timber.log.Timber
+import java.net.HttpURLConnection
+import java.net.UnknownHostException
 
 class ViewerViewModel @AssistedInject constructor(
     @Assisted initialState: ViewerState,
     private val repository: VglsRepository,
     private val storage: Storage,
-    private val dispatchers: VglsDispatchers
+    private val dispatchers: VglsDispatchers,
+    private val hatchet: Hatchet
 ) : MavericksViewModel<ViewerState>(initialState) {
     // Card shark
     private var jamJob = Job()
@@ -57,7 +58,7 @@ class ViewerViewModel @AssistedInject constructor(
         val songId = state.songId
 
         if (songId != null) {
-            Timber.i("Fetching song.")
+                hatchet.i(this.javaClass.simpleName, "Fetching song.")
             repository.getSong(songId)
                 .execute { data ->
                     copy(song = data)
@@ -97,11 +98,11 @@ class ViewerViewModel @AssistedInject constructor(
         if (jamId != null) {
             // I'm pretty sure what this means is that cancelling jamJob will cancel this job.
             viewModelScope.launch(dispatchers.disk + jamJob) {
-                Timber.i("Following jam.")
+                hatchet.i(this.javaClass.simpleName, "Following jam.")
                 repository.getJam(jamId, false)
                     .catch {
                         val message = "Failed to get Jam from database: ${it.message}"
-                        Timber.e(message)
+                        hatchet.e(this.javaClass.simpleName, message)
                         setState { copy(jamCancellationReason = message) }
                     }
                     .onEach { subscribeToJamNetwork(it) }
@@ -114,24 +115,24 @@ class ViewerViewModel @AssistedInject constructor(
 
     fun startScreenTimer() {
         viewModelScope.launch(dispatchers.computation + timer) {
-            Timber.v("Starting screen timer.")
+            hatchet.v(this.javaClass.simpleName, "Starting screen timer.")
             _screenControlEvents.emit(ScreenControlEvent.TIMER_START)
 
             val minutes = TIMEOUT_SCREEN_OFF_MILLIS
             delay(minutes)
 
-            Timber.v("Screen timer expired.")
+            hatchet.v(this.javaClass.simpleName, "Screen timer expired.")
             _screenControlEvents.emit(ScreenControlEvent.TIMER_EXPIRED)
         }
     }
 
     fun stopScreenTimer() {
-        Timber.v("Clearing screen timer.")
+        hatchet.v(this.javaClass.simpleName, "Clearing screen timer.")
         timer.cancel()
     }
 
     private fun subscribeToJamDatabase(jamId: Long) {
-        Timber.i("Subscribing to jam $jamId in the database.")
+        hatchet.i(this.javaClass.simpleName, "Subscribing to jam $jamId in the database.")
         repository.observeJamState(jamId)
             .onEach {
                 setState {
@@ -140,7 +141,7 @@ class ViewerViewModel @AssistedInject constructor(
                 }
             }.catch {
                 val message = "Error observing Jam: ${it.message}"
-                Timber.e(message)
+                hatchet.e(this.javaClass.simpleName, message)
                 setState { copy(jamCancellationReason = message) }
             }
             .flowOn(dispatchers.computation)
@@ -148,7 +149,7 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun subscribeToJamNetwork(jam: Jam) {
-        Timber.i("Subscribing to jam ${jam.id} on the network.")
+        hatchet.i(this.javaClass.simpleName, "Subscribing to jam ${jam.id} on the network.")
         repository.refreshJamStateContinuously(jam.name)
             .onEach { }
             .catch {
@@ -166,7 +167,7 @@ class ViewerViewModel @AssistedInject constructor(
                     message = "Error communicating with Jam server."
                 }
 
-                Timber.e(message)
+                hatchet.e(this.javaClass.simpleName, message)
                 setState { copy(jamCancellationReason = message) }
             }
             .flowOn(dispatchers.computation)
@@ -179,7 +180,7 @@ class ViewerViewModel @AssistedInject constructor(
             try {
                 repository.removeJam(dataId)
             } catch (ex: Exception) {
-                Timber.e("Error removing Jam: ${ex.message}")
+                hatchet.e(this.javaClass.simpleName, "Error removing Jam: ${ex.message}")
             }
         }
     }

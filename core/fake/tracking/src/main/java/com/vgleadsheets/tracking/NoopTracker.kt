@@ -1,45 +1,48 @@
 package com.vgleadsheets.tracking
 
-import timber.log.Timber
+import com.vgleadsheets.logging.Hatchet
+
 
 @SuppressWarnings("TooManyFunctions")
-class NoopTracker : Tracker {
+class NoopTracker(
+    private val hatchet: Hatchet
+) : Tracker {
     override fun logRefreshClick() {
-        Timber.d("Refresh forced.")
+        hatchet.d(this.javaClass.simpleName, "Refresh forced.")
     }
 
     override fun logAutoRefresh() {
-        Timber.d("Refresh performed automatically.")
+        hatchet.d(this.javaClass.simpleName, "Refresh performed automatically.")
     }
 
     override fun logStickerBr() {
-        Timber.d("Stickerbr search detected.")
+        hatchet.d(this.javaClass.simpleName, "Stickerbr search detected.")
     }
 
     override fun logSearch(query: String) {
-        Timber.d("Searching for: $query")
+        hatchet.d(this.javaClass.simpleName, "Searching for: $query")
     }
 
     override fun logPartSelect(transposition: String) {
-        Timber.d("Transposition selected: $transposition")
+        hatchet.d(this.javaClass.simpleName, "Transposition selected: $transposition")
     }
 
     override fun logRandomSongView(songName: String, gameName: String, transposition: String) {
-        Timber.d("Random song loaded: $gameName - $songName; for $transposition")
+        hatchet.d(this.javaClass.simpleName, "Random song loaded: $gameName - $songName; for $transposition")
     }
 
     override fun logJamFollow(id: Long, fromScreen: TrackingScreen, fromDetails: String) {
-        Timber.d("Jam $id followed from screen: $fromScreen:$fromDetails")
+        hatchet.d(this.javaClass.simpleName, "Jam $id followed from screen: $fromScreen:$fromDetails")
     }
 
     override fun logError(message: String) = Unit
 
     override fun logWebLaunch(url: String, fromScreen: TrackingScreen, fromDetails: String) {
-        Timber.d("Web browser launched with url $url from screen: $fromScreen:$fromDetails")
+        hatchet.d(this.javaClass.simpleName, "Web browser launched with url $url from screen: $fromScreen:$fromDetails")
     }
 
     override fun logSearchSuccess(query: String, toScreen: TrackingScreen, toDetails: String) {
-        Timber.d("Search result clicked: $toScreen:$toDetails from query $query")
+        hatchet.d(this.javaClass.simpleName, "Search result clicked: $toScreen:$toDetails from query $query")
     }
 
     override fun logScreenView(
@@ -48,7 +51,7 @@ class NoopTracker : Tracker {
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        Timber.v("Screen view: $screen:$details from screen: $fromScreen:$fromDetails")
+        hatchet.v(this.javaClass.simpleName, "Screen view: $screen:$details from screen: $fromScreen:$fromDetails")
     }
 
     override fun logGameView(
@@ -56,7 +59,7 @@ class NoopTracker : Tracker {
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        Timber.d("Game $gameName viewed from screen: $fromScreen:$fromDetails")
+        hatchet.d(this.javaClass.simpleName, "Game $gameName viewed from screen: $fromScreen:$fromDetails")
     }
 
     override fun logComposerView(
@@ -64,7 +67,7 @@ class NoopTracker : Tracker {
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        Timber.d("Composer $composerName viewed from screen: $fromScreen:$fromDetails")
+        hatchet.d(this.javaClass.simpleName, "Composer $composerName viewed from screen: $fromScreen:$fromDetails")
     }
 
     override fun logSongView(
@@ -75,27 +78,27 @@ class NoopTracker : Tracker {
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        Timber.i("Song $gameName - $songName, for $transposition; viewed from screen: $fromScreen:$fromDetails")
+        hatchet.i(this.javaClass.simpleName, "Song $gameName - $songName, for $transposition; viewed from screen: $fromScreen:$fromDetails")
     }
 
     override fun logShadowClick() {
-        Timber.d("Shadow clicked.")
+        hatchet.d(this.javaClass.simpleName, "Shadow clicked.")
     }
 
     override fun logSearchButtonClick() {
-        Timber.d("Search button clicked.")
+        hatchet.d(this.javaClass.simpleName, "Search button clicked.")
     }
 
     override fun logAppBarButtonClick() {
-        Timber.d("App bar button clicked.")
+        hatchet.d(this.javaClass.simpleName, "App bar button clicked.")
     }
 
     override fun logBottomMenuButtonClick() {
-        Timber.d("Bottom Menu button clicked.")
+        hatchet.d(this.javaClass.simpleName, "Bottom Menu button clicked.")
     }
 
     override fun logChangePartClick() {
-        Timber.d("Change part button clicked.")
+        hatchet.d(this.javaClass.simpleName, "Change part button clicked.")
     }
 
     override fun logScreenLinkClick(
@@ -103,10 +106,10 @@ class NoopTracker : Tracker {
         fromScreen: TrackingScreen,
         trackingDetails: String
     ) {
-        Timber.d("Screen link to $screenId clicked.")
+        hatchet.d(this.javaClass.simpleName, "Screen link to $screenId clicked.")
     }
 
     override fun logRandomClick() {
-        Timber.d("Random select button clicked.")
+        hatchet.d(this.javaClass.simpleName, "Random select button clicked.")
     }
 }

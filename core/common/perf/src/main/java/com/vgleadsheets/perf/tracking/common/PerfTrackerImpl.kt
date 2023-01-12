@@ -1,13 +1,13 @@
 package com.vgleadsheets.perf.tracking.common
 
 import com.vgleadsheets.coroutines.VglsDispatchers
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.nanoseconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.nanoseconds
 
 @SuppressWarnings(
     "TooManyFunctions",
@@ -56,7 +56,7 @@ class PerfTrackerImpl(
         perfTrackingBackend.startScreen(screenName)
         val startTimeNanos = System.nanoTime()
 
-        // Timber.d("Starting timing for $screenName...")
+        // hatchet.d(this.javaClass.simpleName, "Starting timing for $screenName...")
 
         publishScreenLoads()
 
@@ -89,7 +89,7 @@ class PerfTrackerImpl(
     }
 
     override fun cancelAll() {
-        // Timber.w("Canceling all screen timers.")
+        // hatchet.w(this.javaClass.simpleName, "Canceling all screen timers.")
 
         loadTimeScreens.forEach { entry ->
             cancelInternal(entry.value, entry.key)
@@ -193,7 +193,7 @@ class PerfTrackerImpl(
             .nanoseconds
             .inWholeMilliseconds
 
-        // Timber.i("Cancelling timing for ${screen.name} after $durationMillis ms.")
+        // hatchet.i(this.javaClass.simpleName, "Cancelling timing for ${screen.name} after $durationMillis ms.")
 
         loadTimeScreens[spec] = screen.copy(
             stageDurationMillis = screen.stageDurationMillis + (PerfStage.CANCELLATION to durationMillis)
@@ -221,11 +221,11 @@ class PerfTrackerImpl(
             return
         }
 
-        // Timber.i("Clearing ${screen.name} from traces list.")
+        // hatchet.i(this.javaClass.simpleName, "Clearing ${screen.name} from traces list.")
 
         val timer = failureTimers[spec]
         if (timer != null) {
-            // Timber.w("Timer for ${screen.name} was not previously cleared.")
+            // hatchet.w(this.javaClass.simpleName, "Timer for ${screen.name} was not previously cleared.")
             stopFailureTimer(spec)
         }
 
@@ -260,7 +260,7 @@ class PerfTrackerImpl(
             stageDurationMillis = screen.stageDurationMillis + (perfStage to durationMillis)
         )
 
-        // Timber.v("Duration for ${screen.name}:$perfStage: $durationMillis ms ")
+        // hatchet.v(this.javaClass.simpleName, "Duration for ${screen.name}:$perfStage: $durationMillis ms ")
 
         synchronized(loadTimeScreens) {
             loadTimeScreens[spec] = updatedScreen
@@ -304,7 +304,7 @@ class PerfTrackerImpl(
             return
         }
 
-        // Timber.d("Successful load of ${screen.name} in $duration ms!")
+        // hatchet.d(this.javaClass.simpleName, "Successful load of ${screen.name} in $duration ms!")
 
         loadTimeScreens[spec] = screen.copy(
             stageDurationMillis = screen.stageDurationMillis + (PerfStage.COMPLETION to duration)
@@ -319,7 +319,7 @@ class PerfTrackerImpl(
             delay(TIMEOUT_SCREEN_LOAD)
             val screen = loadTimeScreens[spec]
             if (screen == null) {
-                // Timber.w("Trace not found when timer went off. What?")
+                // hatchet.w(this.javaClass.simpleName, "Trace not found when timer went off. What?")
                 return@launch
             }
 
@@ -338,7 +338,7 @@ class PerfTrackerImpl(
         val timer = failureTimers[spec]
 
         if (timer == null) {
-            // Timber.w("Failure timer for $spec has already been stopped!")
+            // hatchet.w(this.javaClass.simpleName, "Failure timer for $spec has already been stopped!")
             return
         }
 

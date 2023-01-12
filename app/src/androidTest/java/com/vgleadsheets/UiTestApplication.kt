@@ -8,12 +8,12 @@ import com.squareup.picasso.Picasso
 import com.vgleadsheets.di.DaggerUiTestAppComponent
 import com.vgleadsheets.di.TestAppModule
 import com.vgleadsheets.di.UiTestAppComponent
+import com.vgleadsheets.logging.Hatchet
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
-import timber.log.Timber
 
 class UiTestApplication : DaggerApplication(), HasAndroidInjector {
     lateinit var testComponent: UiTestAppComponent
@@ -24,17 +24,18 @@ class UiTestApplication : DaggerApplication(), HasAndroidInjector {
     @Inject
     lateinit var okHttp3Downloader: OkHttp3Downloader
 
+    @Inject
+    lateinit var hatchet: Hatchet
+
     override fun onCreate() {
         super.onCreate()
 
-        Timber.plant(Timber.DebugTree())
-        Timber.v("Starting Test Application.")
-        Timber.v("Build type: %s", BuildConfig.BUILD_TYPE)
+        hatchet.v(this.javaClass.simpleName, "Starting Application.")
+        hatchet.v(this.javaClass.simpleName, "Build type: ${BuildConfig.BUILD_TYPE}")
 
-        Timber.v("Android version: %s", Build.VERSION.RELEASE)
-        Timber.v("Device manufacturer: %s", Build.MANUFACTURER)
-        Timber.v("Device model: %s", Build.MODEL)
-
+        hatchet.v(this.javaClass.simpleName, "Android version: ${Build.VERSION.RELEASE}")
+        hatchet.v(this.javaClass.simpleName, "Device manufacturer: ${Build.MANUFACTURER}")
+        hatchet.v(this.javaClass.simpleName, "Device model: ${Build.MODEL}")
         Stetho.initializeWithDefaults(this)
 
         val picasso = Picasso.Builder(this)

@@ -11,9 +11,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.vgleadsheets.components.ComponentViewHolder
 import com.vgleadsheets.components.ListModel
-import timber.log.Timber
+import com.vgleadsheets.logging.Hatchet
 
-class ComponentAdapter(val owner: String) :
+class ComponentAdapter(
+    private val owner: String,
+    private val hatchet: Hatchet
+) :
     ListAdapter<ListModel, ComponentViewHolder>(ComponentDiffer) {
 
     init {
@@ -120,10 +123,10 @@ class ComponentAdapter(val owner: String) :
 
     private fun isNewListActuallyDifferent(newList: List<ListModel>?) =
         if (!currentList.deepEquals(newList)) {
-            Timber.w("$owner: Lists changed, submitting.")
+            hatchet.w(this.javaClass.simpleName, "$owner: Lists changed, submitting.")
             true
         } else {
-            Timber.i("$owner: Lists equivalent, not submitting.")
+            hatchet.i(this.javaClass.simpleName, "$owner: Lists equivalent, not submitting.")
             false
         }
 
@@ -133,7 +136,7 @@ class ComponentAdapter(val owner: String) :
 
         if (otherList?.size != this?.size) {
             if (BuildConfig.DEBUG) {
-                Timber.v("$owner: sizes differ - old size ${this?.size ?: 0}; new size ${otherList?.size ?: 0}")
+                hatchet.v(this?.javaClass?.simpleName ?: "Unknown", "$owner: sizes differ - old size ${this?.size ?: 0}; new size ${otherList?.size ?: 0}")
             }
             return false
         }
@@ -143,7 +146,7 @@ class ComponentAdapter(val owner: String) :
 
             if (otherItem != item) {
                 if (BuildConfig.DEBUG) {
-                    Timber.v("$owner: items at $index differ - old item $item; new item $otherItem")
+                    hatchet.v(this.javaClass.simpleName, "$owner: items at $index differ - old item $item; new item $otherItem")
                 }
                 return false
             }

@@ -49,7 +49,8 @@ class JamFragment : BetterListFragment<JamContent, JamState>() {
         ),
         perfTracker,
         getPerfSpec(),
-        resources
+        resources,
+        hatchet
     )
 
     companion object {

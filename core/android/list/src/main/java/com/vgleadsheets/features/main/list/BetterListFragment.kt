@@ -20,12 +20,11 @@ import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
-import javax.inject.Inject
-import kotlin.system.measureNanoTime
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import javax.inject.Inject
+import kotlin.system.measureNanoTime
 
 abstract class BetterListFragment<
     ContentType : ListContent,
@@ -48,7 +47,7 @@ abstract class BetterListFragment<
 
     protected open val alwaysShowBack = true
 
-    private val adapter = ComponentAdapter(getVglsFragmentTag())
+    private lateinit var adapter: ComponentAdapter
 
     private var progress: Float? = null
 
@@ -62,6 +61,7 @@ abstract class BetterListFragment<
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
 
         screen = FragmentListBinding.bind(view)
         screen.listContent.adapter = adapter
@@ -126,7 +126,7 @@ abstract class BetterListFragment<
                 }
 
                 if (configGenerationJob.isActive) {
-                    Timber.i("${this::class.simpleName}: Canceling previous config generation job.")
+                    hatchet.i(this.javaClass.simpleName, "${this::class.simpleName}: Canceling previous config generation job.")
                     configGenerationJob.cancel()
                 }
 

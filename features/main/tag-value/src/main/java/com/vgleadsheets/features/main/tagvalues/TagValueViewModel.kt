@@ -4,16 +4,17 @@ import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.repository.VglsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import timber.log.Timber
 
 class TagValueViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueState,
     private val repository: VglsRepository,
-) : MavericksViewModel<TagValueState>(initialState) {
+    private val hatchet: Hatchet,
+    ) : MavericksViewModel<TagValueState>(initialState) {
     init {
         fetchTagKey()
         fetchTagValues()
@@ -22,7 +23,7 @@ class TagValueViewModel @AssistedInject constructor(
     private fun fetchTagKey() = withState {
         repository.getTagKey(it.tagKeyId)
             .execute {
-                Timber.w("Tag Values: ${it()?.values?.size}")
+                hatchet.w(this.javaClass.simpleName, "Tag Values: ${it()?.values?.size}")
                 copy(
                     contentLoad = contentLoad.copy(
                         tagKey = it

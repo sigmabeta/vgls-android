@@ -36,6 +36,7 @@ import com.vgleadsheets.features.main.tagkeys.TagKeyListFragment
 import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.perf.tracking.common.FrameInfo
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
@@ -44,7 +45,6 @@ import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
-import timber.log.Timber
 
 @Suppress("TooManyFunctions", "Deprecation")
 class MainActivity :
@@ -61,6 +61,9 @@ class MainActivity :
 
     @Inject
     lateinit var perfTracker: PerfTracker
+
+    @Inject
+    lateinit var hatchet: Hatchet
 
     private var jankStats: JankStats? = null
 
@@ -93,10 +96,10 @@ class MainActivity :
         val widthPixels = displayMetrics.widthPixels
         val heightPixels = displayMetrics.heightPixels
 
-        Timber.v("Device screen DPI: ${displayMetrics.densityDpi}")
-        Timber.v("Device screen scaling factor: ${displayMetrics.density}")
-        Timber.v("Device screen size: ${widthPixels}x$heightPixels")
-        Timber.v(
+        hatchet.v(this.javaClass.simpleName, "Device screen DPI: ${displayMetrics.densityDpi}")
+        hatchet.v(this.javaClass.simpleName, "Device screen scaling factor: ${displayMetrics.density}")
+        hatchet.v(this.javaClass.simpleName, "Device screen size: ${widthPixels}x$heightPixels")
+        hatchet.v(this.javaClass.simpleName, 
             "Device screen size (scaled): ${(widthPixels / displayMetrics.density).toInt()}" +
                 "x${(heightPixels / displayMetrics.density).toInt()}"
         )
@@ -355,7 +358,7 @@ class MainActivity :
             return
         }
 
-        Timber.i("Initializing JankStats.")
+        hatchet.i(this.javaClass.simpleName, "Initializing JankStats.")
 
         jankStats = JankStats.createAndTrack(
             window
