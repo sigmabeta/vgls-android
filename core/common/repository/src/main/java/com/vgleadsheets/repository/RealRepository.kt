@@ -15,6 +15,7 @@ import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Jam
@@ -39,8 +40,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
@@ -53,6 +56,7 @@ class RealRepository constructor(
     private val threeTen: ThreeTenTime,
     private val tracker: Tracker,
     private val dispatchers: VglsDispatchers,
+    private val hatchet: Hatchet,
     private val composerAliasDataSource: ComposerAliasDataSource,
     private val composerDataSource: ComposerDataSource,
     private val dbStatisticsDataSource: DbStatisticsDataSource,
@@ -65,6 +69,7 @@ class RealRepository constructor(
     private val tagKeyDataSource: TagKeyDataSource,
     private val tagValueDataSource: TagValueDataSource
 ) : VglsRepository {
+
     @Suppress("ReturnCount")
     override suspend fun checkShouldAutoUpdate(): Boolean {
         val lastCheckTime = withContext(dispatchers.disk) {
@@ -87,7 +92,7 @@ class RealRepository constructor(
         return true
     }
 
-    override suspend fun refresh() = getDigest()
+    override fun refresh() = refreshInternal()
 
     override fun observeJamState(id: Long) = jamDataSource
         .getOneById(id)
@@ -344,70 +349,86 @@ class RealRepository constructor(
     }
 
     @Suppress("DefaultLocale", "LongMethod", "ComplexMethod")
-    private suspend fun getDigest() {
-        try {
-            val digest = withContext(dispatchers.network) {
-                vglsApi.getDigest()
-            }
+    private fun refreshInternal() = combine(
+        getDigest(),
+        getAllGames(false).take(1),
+        getAllComposers(false).take(1),
+        getAllSongs(false).take(1)
+    ) { digest, dbGames, dbComposers, dbSongs ->
+        val apiComposers = digest.composers
+        val apiGames = digest.games
 
-            val apiComposers = digest.composers
-            val apiGames = digest.games
+        val dbGamesMap = dbGames.associateBy { it.id }
+        val dbComposerMap = dbComposers.associateBy { it.id }
+        val dbSongMap = dbSongs.associateBy { it.id }
 
-            val composers = createComposerMap(apiComposers)
+        val games = apiGames.map { apiGame ->
+            val dbGame = dbGamesMap[apiGame.game_id]
+            apiGame.toModel(dbGame?.sheetsPlayed ?: 0)
+        }
 
-            val games = apiGames.map { apiGame -> apiGame.toModel() }
+        val composerMap = apiComposers.associate {
+            val dbComposer = dbComposerMap[it.composer_id]
+            it.composer_id to it.toModel(dbComposer?.sheetsPlayed ?: 0)
+        }.toMutableMap()
 
-            val songs = mutableListOf<Song>()
-            val songComposerRelations = mutableListOf<SongComposerRelation>()
-            val songTagValueRelations = mutableListOf<SongTagValueRelation>()
+        val songs = mutableListOf<Song>()
+        val songComposerRelations = mutableListOf<SongComposerRelation>()
+        val songTagValueRelations = mutableListOf<SongTagValueRelation>()
 
-            val tagKeys = mutableMapOf<String, TagKey>()
-            val tagValues = mutableMapOf<String, TagValue>()
+        val tagKeys = mutableMapOf<String, TagKey>()
+        val tagValues = mutableMapOf<String, TagValue>()
 
-            apiGames.forEach { apiGame ->
-                processGame(
-                    apiGame,
-                    composers,
-                    songComposerRelations,
-                    tagKeys,
-                    tagValues,
-                    songTagValueRelations,
-                    songs
-                )
-            }
-
-            val lastChecked = Time(
-                TimeType.LAST_CHECKED.ordinal,
-                threeTen.now().toInstant().toEpochMilli()
+        apiGames.forEach { apiGame ->
+            processGame(
+                apiGame,
+                composerMap,
+                songComposerRelations,
+                tagKeys,
+                tagValues,
+                songTagValueRelations,
+                songs,
+                dbSongMap
             )
+        }
 
-            withContext(dispatchers.disk) {
-                transactionRunner.inTransaction {
-                    try {
-                        clearSheets()
+        val lastChecked = Time(
+            TimeType.LAST_CHECKED.ordinal,
+            threeTen.now().toInstant().toEpochMilli()
+        )
 
-                        gameDataSource.insert(games)
-                        composerDataSource.insert(composers.values.toList())
-                        songDataSource.insert(songs)
+        withContext(dispatchers.disk) {
+            transactionRunner.inTransaction {
+                try {
+                    tagKeyDataSource.nukeTable()
+                    tagValueDataSource.nukeTable()
+                    gameAliasDataSource.nukeTable()
+                    composerAliasDataSource.nukeTable()
 
-                        tagKeyDataSource.insert(tagKeys.values.toList())
-                        tagValueDataSource.insert(tagValues.values.toList())
+                    gameDataSource.insert(games)
+                    composerDataSource.insert(composerMap.values.toList())
+                    songDataSource.insert(songs)
 
-                        composerDataSource.insertRelations(songComposerRelations)
-                        tagValueDataSource.insertRelations(songTagValueRelations)
+                    tagKeyDataSource.insert(tagKeys.values.toList())
+                    tagValueDataSource.insert(tagValues.values.toList())
 
-                        dbStatisticsDataSource.insert(lastChecked)
-                    } catch (ex: Exception) {
-                        // Something in the storage write operation failed.
-                        ex.printStackTrace()
-                    }
+                    composerDataSource.insertRelations(songComposerRelations)
+                    tagValueDataSource.insertRelations(songTagValueRelations)
+
+                    dbStatisticsDataSource.insert(lastChecked)
+                } catch (ex: Exception) {
+                    // Something in the storage write operation failed.
+                    hatchet.e(this.javaClass.simpleName,"Error updating database: $ex.message")
                 }
             }
-        } catch (ex: Exception) {
-            // Something in the non-storage part of this function failed.
-            ex.printStackTrace()
         }
     }
+
+    private fun getDigest() = flow {
+        val digest = vglsApi.getDigest()
+        emit(digest)
+    }
+
 
     private fun processGame(
         apiGame: VglsApiGame,
@@ -416,7 +437,8 @@ class RealRepository constructor(
         tagKeys: MutableMap<String, TagKey>,
         tagValues: MutableMap<String, TagValue>,
         songTagValueRelations: MutableList<SongTagValueRelation>,
-        songs: MutableList<Song>
+        songs: MutableList<Song>,
+        dbSongsMap: Map<Long, Song>
     ) {
         apiGame.songs.forEach { apiSong ->
             processSong(
@@ -427,7 +449,8 @@ class RealRepository constructor(
                 tagKeys,
                 tagValues,
                 songTagValueRelations,
-                songs
+                songs,
+                dbSongsMap
             )
         }
     }
@@ -440,11 +463,14 @@ class RealRepository constructor(
         tagKeys: MutableMap<String, TagKey>,
         tagValues: MutableMap<String, TagValue>,
         songTagValueRelations: MutableList<SongTagValueRelation>,
-        songs: MutableList<Song>
+        songs: MutableList<Song>,
+        dbSongsMap: Map<Long, Song>
     ) {
+        val dbSong = dbSongsMap[apiSong.id]
         val song = apiSong.toModel(
             apiGame.game_id,
-            apiGame.game_name
+            apiGame.game_name,
+            dbSong?.playCount ?: 0
         )
 
         apiSong.composers.forEach { apiComposer ->
@@ -470,15 +496,6 @@ class RealRepository constructor(
         }
 
         songs.add(song)
-    }
-
-    private fun createComposerMap(apiComposers: List<ApiComposer>): MutableMap<Long, Composer> {
-        val composers = mutableMapOf<Long, Composer>()
-        apiComposers.forEach { apiComposer ->
-            val entity = apiComposer.toModel()
-            composers[entity.id] = entity
-        }
-        return composers
     }
 
     private fun processTag(

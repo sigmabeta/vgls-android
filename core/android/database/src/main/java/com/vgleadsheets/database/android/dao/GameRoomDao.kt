@@ -2,6 +2,7 @@ package com.vgleadsheets.database.android.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
@@ -26,7 +27,7 @@ interface GameRoomDao : RoomDao<GameEntity> {
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<GameEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     override fun insert(entities: List<GameEntity>)
 
     @Query(QUERY_DELETE)

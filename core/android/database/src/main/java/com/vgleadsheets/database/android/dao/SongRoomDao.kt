@@ -2,6 +2,7 @@ package com.vgleadsheets.database.android.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
@@ -38,7 +39,7 @@ interface SongRoomDao :
     @Insert
     override fun insert(entities: List<SongEntity>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_DELETE)

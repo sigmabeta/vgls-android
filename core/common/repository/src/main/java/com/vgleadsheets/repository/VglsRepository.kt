@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface VglsRepository {
     suspend fun checkShouldAutoUpdate(): Boolean
-    suspend fun refresh()
+    fun refresh(): Flow<Unit>
 
     fun refreshJamStateContinuously(name: String): Flow<Unit>
     suspend fun refreshJamState(name: String)

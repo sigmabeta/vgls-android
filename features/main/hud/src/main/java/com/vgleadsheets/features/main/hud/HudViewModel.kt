@@ -100,11 +100,10 @@ class HudViewModel @AssistedInject constructor(
 
     fun refresh() = withState {
         if (it.digest !is Loading) {
-            suspend {
-                repository.refresh()
-            }.execute {
-                copy(digest = it)
-            }
+            repository.refresh()
+                .execute {
+                    copy(digest = it)
+                }
         }
     }
 
@@ -294,7 +293,10 @@ class HudViewModel @AssistedInject constructor(
             val part = try {
                 Part.valueOf(selection)
             } catch (ex: IllegalArgumentException) {
-                hatchet.e(this.javaClass.simpleName, "${ex.message}: value $selection no longer valid; defaulting to C")
+                hatchet.e(
+                    this.javaClass.simpleName,
+                    "${ex.message}: value $selection no longer valid; defaulting to C"
+                )
                 Part.C
             }
             setState {

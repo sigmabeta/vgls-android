@@ -2,15 +2,15 @@ package com.vgleadsheets.di
 
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import dagger.Provides
-import java.io.File
-import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
+import java.util.Random
+import javax.inject.Named
+import javax.inject.Singleton
 
 @dagger.Module
 class NetworkModule {
@@ -92,7 +92,7 @@ class NetworkModule {
     @Named("HttpLoggingInterceptor")
     internal fun provideHttpLoggingInterceptor(): Interceptor {
         val logger = HttpLoggingInterceptor()
-        logger.level = HttpLoggingInterceptor.Level.BODY
+        logger.level = HttpLoggingInterceptor.Level.BASIC
         return logger
     }
 
