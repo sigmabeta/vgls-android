@@ -8,10 +8,12 @@ import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
 
 data class SongContent(
     val song: Async<Song> = Uninitialized,
+    val songAliases: Async<List<SongAlias>> = Uninitialized,
     val tagValues: Async<List<TagValue>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException

@@ -6,6 +6,7 @@ import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.SetlistEntry
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.SongHistoryEntry
+import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time
@@ -33,6 +34,7 @@ interface VglsRepository {
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
     fun getSetlistEntriesForJam(jamId: Long): Flow<List<SetlistEntry>>
     fun getSongHistoryForJam(jamId: Long): Flow<List<SongHistoryEntry>>
+    fun getAliasesForSong(songId: Long): Flow<List<SongAlias>>
 
     // Single items
     fun getSong(songId: Long): Flow<Song>

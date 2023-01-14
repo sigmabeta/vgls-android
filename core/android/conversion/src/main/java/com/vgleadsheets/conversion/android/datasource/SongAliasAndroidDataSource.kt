@@ -42,4 +42,12 @@ class SongAliasAndroidDataSource(
                 songConverter
             )
         }
+
+    override fun getAliasesForSong(songId: Long) = roomImpl
+        .getEntitiesForForeign(songId)
+        .mapList {
+            convert.entityToModel(
+                it,
+            )
+        }
 }

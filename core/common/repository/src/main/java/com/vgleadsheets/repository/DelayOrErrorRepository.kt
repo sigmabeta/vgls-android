@@ -49,6 +49,8 @@ class DelayOrErrorRepository(
 
     override fun getSongHistoryForJam(jamId: Long) = realRepository.getSongHistoryForJam(jamId)
 
+    override fun getAliasesForSong(songId: Long) = realRepository.getAliasesForSong(songId)
+
     override fun getSong(songId: Long) = realRepository.getSong(songId)
 
     override fun getComposer(composerId: Long) = realRepository.getComposer(composerId)

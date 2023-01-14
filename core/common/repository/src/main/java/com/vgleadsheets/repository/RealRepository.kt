@@ -152,6 +152,10 @@ class RealRepository constructor(
         .getSongHistoryEntriesForJam(jamId)
         .flowOn(dispatchers.disk)
 
+    override fun getAliasesForSong(songId: Long)= songAliasDataSource
+        .getAliasesForSong(songId)
+        .flowOn(dispatchers.disk)
+
     override fun getSong(
         songId: Long
     ) = songDataSource
