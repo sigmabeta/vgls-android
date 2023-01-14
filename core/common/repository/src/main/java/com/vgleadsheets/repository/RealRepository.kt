@@ -256,7 +256,14 @@ class RealRepository constructor(
     private fun searchComposerAliases(searchQuery: String) = composerAliasDataSource
         .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .map { list ->
-            list.mapNotNull { it.composer }
+            list.mapNotNull {
+                it.composer?.copy(
+                    name = it.name,
+                    songs = composerDataSource
+                        .getSongsForComposer(it.composer!!.id)
+                        .first()
+                )
+            }
         }
 
     private suspend fun refreshJamStateImpl(name: String) {

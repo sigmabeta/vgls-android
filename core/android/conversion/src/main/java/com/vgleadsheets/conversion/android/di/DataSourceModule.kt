@@ -58,9 +58,13 @@ class DataSourceModule {
     fun composerAliasDataSource(
         convert: ComposerAliasConverter,
         roomImpl: ComposerAliasRoomDao,
+        otoRelatedRoomImpl: ComposerRoomDao,
+        composerConverter: ComposerConverter,
     ): ComposerAliasDataSource = ComposerAliasAndroidDataSource(
         convert,
-        roomImpl
+        roomImpl,
+        otoRelatedRoomImpl,
+        composerConverter,
     )
 
     @Provides
