@@ -22,6 +22,8 @@ import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.SetlistEntry
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.SongHistoryEntry
+import com.vgleadsheets.model.alias.ComposerAlias
+import com.vgleadsheets.model.alias.GameAlias
 import com.vgleadsheets.model.relation.SongComposerRelation
 import com.vgleadsheets.model.relation.SongTagValueRelation
 import com.vgleadsheets.model.tag.TagKey
@@ -240,7 +242,14 @@ class RealRepository constructor(
     private fun searchGameAliases(searchQuery: String) = gameAliasDataSource
         .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .map { list ->
-            list.mapNotNull { it.game }
+            list.mapNotNull {
+                it.game?.copy(
+                    name = it.name,
+                    songs = gameDataSource
+                        .getSongsForGame(it.game!!.id, false)
+                        .first()
+                )
+            }
         }
 
     @Suppress("MaxLineLength")
@@ -379,6 +388,23 @@ class RealRepository constructor(
         val tagKeys = mutableMapOf<String, TagKey>()
         val tagValues = mutableMapOf<String, TagValue>()
 
+        val composerAliases = mutableListOf<ComposerAlias>()
+
+        apiComposers.forEach { composer ->
+            composerAliases.addAll(
+                composer.aliases?.map {
+                    ComposerAlias(
+                        id = null,
+                        composer.composer_id,
+                        name = it,
+                        composer = null
+                    )
+                } ?: emptyList()
+            )
+        }
+
+        val gameAliases = mutableListOf<GameAlias>()
+
         apiGames.forEach { apiGame ->
             processGame(
                 apiGame,
@@ -388,7 +414,8 @@ class RealRepository constructor(
                 tagValues,
                 songTagValueRelations,
                 songs,
-                dbSongMap
+                dbSongMap,
+                gameAliases,
             )
         }
 
@@ -400,17 +427,22 @@ class RealRepository constructor(
         withContext(dispatchers.disk) {
             transactionRunner.inTransaction {
                 try {
-                    tagKeyDataSource.nukeTable()
-                    tagValueDataSource.nukeTable()
-                    gameAliasDataSource.nukeTable()
-                    composerAliasDataSource.nukeTable()
 
                     gameDataSource.insert(games)
                     composerDataSource.insert(composerMap.values.toList())
                     songDataSource.insert(songs)
 
+                    tagKeyDataSource.nukeTable()
                     tagKeyDataSource.insert(tagKeys.values.toList())
+
+                    tagValueDataSource.nukeTable()
                     tagValueDataSource.insert(tagValues.values.toList())
+
+                    gameAliasDataSource.nukeTable()
+                    gameAliasDataSource.insert(gameAliases)
+
+                    composerAliasDataSource.nukeTable()
+                    composerAliasDataSource.insert(composerAliases)
 
                     composerDataSource.insertRelations(songComposerRelations)
                     tagValueDataSource.insertRelations(songTagValueRelations)
@@ -429,7 +461,6 @@ class RealRepository constructor(
         emit(digest)
     }
 
-
     private fun processGame(
         apiGame: VglsApiGame,
         composers: MutableMap<Long, Composer>,
@@ -438,7 +469,8 @@ class RealRepository constructor(
         tagValues: MutableMap<String, TagValue>,
         songTagValueRelations: MutableList<SongTagValueRelation>,
         songs: MutableList<Song>,
-        dbSongsMap: Map<Long, Song>
+        dbSongsMap: Map<Long, Song>,
+        gameAliases: MutableList<GameAlias>
     ) {
         apiGame.songs.forEach { apiSong ->
             processSong(
@@ -453,6 +485,17 @@ class RealRepository constructor(
                 dbSongsMap
             )
         }
+
+        gameAliases.addAll(
+            apiGame.aliases?.map {
+                GameAlias(
+                    id = null,
+                    apiGame.game_id,
+                    name = it,
+                    game = null
+                )
+            } ?: emptyList()
+        )
     }
 
     private fun processSong(

@@ -90,9 +90,13 @@ class DataSourceModule {
     fun gameAliasDataSource(
         convert: GameAliasConverter,
         roomImpl: GameAliasRoomDao,
+        otoRelatedRoomImpl: GameRoomDao,
+        gameConverter: GameConverter,
     ): GameAliasDataSource = GameAliasAndroidDataSource(
         convert,
         roomImpl,
+        otoRelatedRoomImpl,
+        gameConverter,
     )
 
     @Provides

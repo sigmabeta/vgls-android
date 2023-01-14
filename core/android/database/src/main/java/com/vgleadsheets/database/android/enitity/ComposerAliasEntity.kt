@@ -21,7 +21,6 @@ import com.vgleadsheets.database.android.enitity.ComposerAliasEntity.Companion.T
 data class ComposerAliasEntity(
     val composerId: Long,
     val name: String,
-    val photoUrl: String? = null,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
 ) {
     companion object {

@@ -23,8 +23,7 @@ class JamAndroidDataSource(
     songConverter,
     roomImpl,
     otoRelatedRoomImpl
-),
-    JamDataSource {
+), JamDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.entityToModel(it) }
