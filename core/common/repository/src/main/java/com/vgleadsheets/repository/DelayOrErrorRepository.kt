@@ -63,7 +63,8 @@ class DelayOrErrorRepository(
 
     override fun getJam(id: Long, withHistory: Boolean) = realRepository.getJam(id, withHistory)
 
-    override fun searchSongs(searchQuery: String) = realRepository.searchSongs(searchQuery)
+    override fun searchSongsCombined(searchQuery: String) =
+        realRepository.searchSongsCombined(searchQuery)
 
     override fun searchGamesCombined(searchQuery: String) =
         realRepository.searchGamesCombined(searchQuery)

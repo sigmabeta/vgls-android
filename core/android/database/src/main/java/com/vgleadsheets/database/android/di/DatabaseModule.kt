@@ -79,6 +79,12 @@ class DatabaseModule {
 
     @Provides
     @Singleton
+    fun songAliasDao(
+        database: VglsDatabase
+    ) = database.songAliasDao()
+
+    @Provides
+    @Singleton
     fun songHistoryEntryDao(
         database: VglsDatabase
     ) = database.songHistoryEntryDao()

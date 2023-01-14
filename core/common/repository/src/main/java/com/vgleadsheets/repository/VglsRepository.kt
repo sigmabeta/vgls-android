@@ -44,7 +44,7 @@ interface VglsRepository {
     fun getLastUpdateTime(): Flow<Time>
 
     // Etc
-    fun searchSongs(searchQuery: String): Flow<List<Song>>
+    fun searchSongsCombined(searchQuery: String): Flow<List<Song>>
     fun searchGamesCombined(searchQuery: String): Flow<List<Game>>
     fun searchComposersCombined(searchQuery: String): Flow<List<Composer>>
 

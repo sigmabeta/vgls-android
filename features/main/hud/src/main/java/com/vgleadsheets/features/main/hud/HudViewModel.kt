@@ -350,7 +350,7 @@ class HudViewModel @AssistedInject constructor(
                         )
                     }
 
-                songSearch = repository.searchSongs(searchQuery)
+                songSearch = repository.searchSongsCombined(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newSongs ->
                         if (newSongs is Loading) {

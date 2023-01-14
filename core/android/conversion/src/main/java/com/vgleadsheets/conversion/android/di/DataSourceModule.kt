@@ -6,6 +6,7 @@ import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.android.converter.JamConverter
 import com.vgleadsheets.conversion.android.converter.SetlistEntryConverter
+import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
 import com.vgleadsheets.conversion.android.converter.SongHistoryEntryConverter
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
@@ -17,6 +18,7 @@ import com.vgleadsheets.conversion.android.datasource.GameAliasAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.GameAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.JamAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SetlistEntryAndroidDataSource
+import com.vgleadsheets.conversion.android.datasource.SongAliasAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SongAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SongHistoryEntryAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.TagKeyAndroidDataSource
@@ -29,6 +31,7 @@ import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.dao.GameRoomDao
 import com.vgleadsheets.database.android.dao.JamRoomDao
 import com.vgleadsheets.database.android.dao.SetlistEntryRoomDao
+import com.vgleadsheets.database.android.dao.SongAliasRoomDao
 import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.dao.SongsForComposerDao
@@ -43,6 +46,7 @@ import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.JamDataSource
 import com.vgleadsheets.database.dao.SetlistEntryDataSource
+import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
@@ -147,6 +151,20 @@ class DataSourceModule {
         foreignConverter,
         roomImpl,
         relatedRoomImpl
+    )
+    
+    @Provides
+    @Singleton
+    fun songAliasDataSource(
+        convert: SongAliasConverter,
+        roomImpl: SongAliasRoomDao,
+        otoRelatedRoomImpl: SongRoomDao,
+        songConverter: SongConverter,
+    ): SongAliasDataSource = SongAliasAndroidDataSource(
+        convert,
+        roomImpl,
+        otoRelatedRoomImpl,
+        songConverter,
     )
 
     @Provides

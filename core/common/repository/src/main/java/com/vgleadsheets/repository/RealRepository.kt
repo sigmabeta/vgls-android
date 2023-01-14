@@ -11,6 +11,7 @@ import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.JamDataSource
 import com.vgleadsheets.database.dao.SetlistEntryDataSource
+import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
@@ -24,6 +25,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.SongHistoryEntry
 import com.vgleadsheets.model.alias.ComposerAlias
 import com.vgleadsheets.model.alias.GameAlias
+import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.relation.SongComposerRelation
 import com.vgleadsheets.model.relation.SongTagValueRelation
 import com.vgleadsheets.model.tag.TagKey
@@ -67,6 +69,7 @@ class RealRepository constructor(
     private val jamDataSource: JamDataSource,
     private val setlistEntryDataSource: SetlistEntryDataSource,
     private val songDataSource: SongDataSource,
+    private val songAliasDataSource: SongAliasDataSource,
     private val songHistoryEntryDataSource: SongHistoryEntryDataSource,
     private val tagKeyDataSource: TagKeyDataSource,
     private val tagValueDataSource: TagValueDataSource
@@ -177,12 +180,8 @@ class RealRepository constructor(
 
     override fun getLastUpdateTime(): Flow<Time> = getLastDbUpdateTime()
 
-    @Suppress("MaxLineLength")
-    override fun searchSongs(searchQuery: String) = songDataSource
-        .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .flowOn(dispatchers.disk)
-
-    override fun searchGamesCombined(searchQuery: String) = searchGames(searchQuery).combine(
+    override fun searchGamesCombined(searchQuery: String) = combine(
+        searchGames(searchQuery),
         searchGameAliases(searchQuery)
     ) { games: List<Game>, gameAliases: List<Game> ->
         games + gameAliases
@@ -190,14 +189,23 @@ class RealRepository constructor(
         games.distinctBy { it.id }
     }.flowOn(dispatchers.disk)
 
-    override fun searchComposersCombined(searchQuery: String) =
-        searchComposers(searchQuery).combine(
-            searchComposerAliases(searchQuery)
-        ) { composers: List<Composer>, composerAliases: List<Composer> ->
-            composers + composerAliases
-        }.map { composers ->
-            composers.distinctBy { it.id }
-        }.flowOn(dispatchers.disk)
+    override fun searchComposersCombined(searchQuery: String) = combine(
+        searchComposers(searchQuery),
+        searchComposerAliases(searchQuery)
+    ) { composers: List<Composer>, composerAliases: List<Composer> ->
+        composers + composerAliases
+    }.map { composers ->
+        composers.distinctBy { it.id }
+    }.flowOn(dispatchers.disk)
+
+    override fun searchSongsCombined(searchQuery: String) = combine(
+        searchSongs(searchQuery),
+        searchSongAliases(searchQuery)
+    ) { songs: List<Song>, songAliases: List<Song> ->
+        songs + songAliases
+    }.map { songs ->
+        songs.distinctBy { it.id }
+    }.flowOn(dispatchers.disk)
 
     override suspend fun removeJam(id: Long) = withContext(dispatchers.disk) {
         jamDataSource.remove(id)
@@ -222,6 +230,7 @@ class RealRepository constructor(
         tagValueDataSource.nukeTable()
         gameAliasDataSource.nukeTable()
         composerAliasDataSource.nukeTable()
+        songAliasDataSource.nukeTable()
     }
 
     override suspend fun clearJams() = withContext(dispatchers.disk) {
@@ -237,6 +246,11 @@ class RealRepository constructor(
     @Suppress("MaxLineLength")
     private fun searchComposers(searchQuery: String) = composerDataSource
         .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+
+    @Suppress("MaxLineLength")
+    private fun searchSongs(searchQuery: String) = songDataSource
+        .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .flowOn(dispatchers.disk)
 
     @Suppress("MaxLineLength")
     private fun searchGameAliases(searchQuery: String) = gameAliasDataSource
@@ -262,6 +276,17 @@ class RealRepository constructor(
                     songs = composerDataSource
                         .getSongsForComposer(it.composer!!.id)
                         .first()
+                )
+            }
+        }
+
+    @Suppress("MaxLineLength")
+    private fun searchSongAliases(searchQuery: String) = songAliasDataSource
+        .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
+        .map { list ->
+            list.mapNotNull {
+                it.song?.copy(
+                    name = it.name,
                 )
             }
         }
@@ -396,6 +421,7 @@ class RealRepository constructor(
         val tagValues = mutableMapOf<String, TagValue>()
 
         val composerAliases = mutableListOf<ComposerAlias>()
+        val songAliases = mutableListOf<SongAlias>()
 
         apiComposers.forEach { composer ->
             composerAliases.addAll(
@@ -423,6 +449,7 @@ class RealRepository constructor(
                 songs,
                 dbSongMap,
                 gameAliases,
+                songAliases
             )
         }
 
@@ -451,13 +478,16 @@ class RealRepository constructor(
                     composerAliasDataSource.nukeTable()
                     composerAliasDataSource.insert(composerAliases)
 
+                    songAliasDataSource.nukeTable()
+                    songAliasDataSource.insert(songAliases)
+
                     composerDataSource.insertRelations(songComposerRelations)
                     tagValueDataSource.insertRelations(songTagValueRelations)
 
                     dbStatisticsDataSource.insert(lastChecked)
                 } catch (ex: Exception) {
                     // Something in the storage write operation failed.
-                    hatchet.e(this.javaClass.simpleName,"Error updating database: $ex.message")
+                    hatchet.e(this.javaClass.simpleName, "Error updating database: $ex.message")
                 }
             }
         }
@@ -477,7 +507,8 @@ class RealRepository constructor(
         songTagValueRelations: MutableList<SongTagValueRelation>,
         songs: MutableList<Song>,
         dbSongsMap: Map<Long, Song>,
-        gameAliases: MutableList<GameAlias>
+        gameAliases: MutableList<GameAlias>,
+        songAliases: MutableList<SongAlias>
     ) {
         apiGame.songs.forEach { apiSong ->
             processSong(
@@ -489,7 +520,8 @@ class RealRepository constructor(
                 tagValues,
                 songTagValueRelations,
                 songs,
-                dbSongsMap
+                dbSongsMap,
+                songAliases
             )
         }
 
@@ -514,7 +546,8 @@ class RealRepository constructor(
         tagValues: MutableMap<String, TagValue>,
         songTagValueRelations: MutableList<SongTagValueRelation>,
         songs: MutableList<Song>,
-        dbSongsMap: Map<Long, Song>
+        dbSongsMap: Map<Long, Song>,
+        songAliases: MutableList<SongAlias>
     ) {
         val dbSong = dbSongsMap[apiSong.id]
         val song = apiSong.toModel(
@@ -544,6 +577,17 @@ class RealRepository constructor(
                 songTagValueRelations
             )
         }
+
+        songAliases.addAll(
+            apiSong.aliases?.map {
+                SongAlias(
+                    id = null,
+                    apiSong.id,
+                    name = it,
+                    song = null
+                )
+            } ?: emptyList()
+        )
 
         songs.add(song)
     }

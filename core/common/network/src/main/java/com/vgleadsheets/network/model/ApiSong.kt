@@ -8,5 +8,6 @@ data class ApiSong(
     val pageCount: Int,
     val lyricsPageCount: Int,
     val composers: List<ApiComposer>,
-    val tags: Map<String, List<String>>
+    val tags: Map<String, List<String>>,
+    val aliases: List<String>?
 )
