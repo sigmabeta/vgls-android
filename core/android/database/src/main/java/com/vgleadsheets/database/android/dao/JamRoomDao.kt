@@ -1,6 +1,7 @@
 package com.vgleadsheets.database.android.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -10,6 +11,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETIC
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
+import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.android.enitity.JamEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -32,6 +34,9 @@ interface JamRoomDao : RoomDao<JamEntity> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     override fun insert(entities: List<JamEntity>)
+
+    @Delete(entity = JamEntity::class)
+    override fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_DELETE)
     override fun nukeTable()

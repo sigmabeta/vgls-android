@@ -1,6 +1,7 @@
 package com.vgleadsheets.network
 
 import com.squareup.moshi.Moshi
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiDigest
 import com.vgleadsheets.network.model.ApiJam
@@ -27,6 +28,7 @@ class MockVglsApi(
     private val random: Random,
     @Named("RngSeed") private val seed: Long,
     private val stringGenerator: StringGenerator,
+    private val hatchet: Hatchet,
 ) : VglsApi {
     private var possibleTags: Map<String, List<String>>? = null
 
@@ -161,7 +163,7 @@ class MockVglsApi(
         }
 
         val gameCount = random.nextInt(maxGames)
-        // hatchet.i(this.javaClass.simpleName, "Generating $gameCount games...")
+         hatchet.i(this.javaClass.simpleName, "Generating $gameCount games...")
         val games = ArrayList<VglsApiGame>(gameCount)
 
         for (gameIndex in 0 until gameCount) {
@@ -169,13 +171,13 @@ class MockVglsApi(
             games.add(game)
         }
 
-        // hatchet.i(this.javaClass.simpleName, "Generated ${games.size} games...")
+         hatchet.i(this.javaClass.simpleName, "Generated ${games.size} games...")
 
         val filteredGames = games
             .distinctBy { it.game_id }
             .filter { it.songs.isNotEmpty() }
 
-        // hatchet.i(this.javaClass.simpleName, "Returning ${filteredGames.size} games...")
+         hatchet.i(this.javaClass.simpleName, "Returning ${filteredGames.size} games...")
 
         return filteredGames
     }
@@ -244,7 +246,8 @@ class MockVglsApi(
         random.nextInt(MAX_PAGE_COUNT) + 1,
         random.nextInt(MAX_PAGE_COUNT) + 1,
         getComposersForSong(),
-        getTags()
+        getTags(),
+        listOf()
     )
 
     @Suppress("MagicNumber")

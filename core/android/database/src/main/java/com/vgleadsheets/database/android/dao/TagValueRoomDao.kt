@@ -1,6 +1,7 @@
 package com.vgleadsheets.database.android.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
@@ -9,6 +10,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETIC
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
+import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.android.enitity.TagValueEntity
 import com.vgleadsheets.database.android.join.SongTagValueJoin
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +35,9 @@ interface TagValueRoomDao :
 
     @Insert
     override fun insert(entities: List<TagValueEntity>)
+
+    @Delete(entity = TagValueEntity::class)
+    override fun remove(ids: List<DeletionId>)
 
     @Insert
     fun insertJoins(joins: List<SongTagValueJoin>)

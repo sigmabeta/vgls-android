@@ -1,6 +1,7 @@
 package com.vgleadsheets.database.android.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -11,6 +12,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSEN
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
+import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.android.join.SongTagValueJoin
 import kotlinx.coroutines.flow.Flow
@@ -38,6 +40,9 @@ interface SongRoomDao :
 
     @Insert
     override fun insert(entities: List<SongEntity>)
+
+    @Delete(entity = SongEntity::class)
+    override fun remove(ids: List<DeletionId>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJoins(joins: List<SongTagValueJoin>)

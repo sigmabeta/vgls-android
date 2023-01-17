@@ -152,7 +152,7 @@ class RealRepository constructor(
         .getSongHistoryEntriesForJam(jamId)
         .flowOn(dispatchers.disk)
 
-    override fun getAliasesForSong(songId: Long)= songAliasDataSource
+    override fun getAliasesForSong(songId: Long) = songAliasDataSource
         .getAliasesForSong(songId)
         .flowOn(dispatchers.disk)
 
@@ -226,7 +226,7 @@ class RealRepository constructor(
         Unit
     }
 
-    override fun clearSheets() {
+    override suspend fun clearSheets() = withContext(dispatchers.disk) {
         gameDataSource.nukeTable()
         songDataSource.nukeTable()
         composerDataSource.nukeTable()
@@ -462,9 +462,16 @@ class RealRepository constructor(
             threeTen.now().toInstant().toEpochMilli()
         )
 
+        val removedSongs = dbSongs.asIdSet { it.id } - songs.asIdSet { it.id }
+        val removedGames = dbGames.asIdSet { it.id } - games.asIdSet { it.id }
+        val removedComposers = dbComposerMap.values.asIdSet { it.id } - composerMap.values.asIdSet { it.id }
+
         withContext(dispatchers.disk) {
             transactionRunner.inTransaction {
                 try {
+                    songDataSource.remove(removedSongs.toList())
+                    gameDataSource.remove(removedGames.toList())
+                    composerDataSource.remove(removedComposers.toList())
 
                     gameDataSource.insert(games)
                     composerDataSource.insert(composerMap.values.toList())
@@ -688,6 +695,9 @@ class RealRepository constructor(
                 it
             }
         }
+
+    private fun <ModelType> Collection<ModelType>.asIdSet(idExtractor: (ModelType) -> Long) =
+        map(idExtractor).toSet()
 
     companion object {
         const val INTERVAL_JAM_REFRESH = 5000L
