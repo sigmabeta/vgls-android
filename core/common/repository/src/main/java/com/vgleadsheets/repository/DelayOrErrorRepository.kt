@@ -78,6 +78,8 @@ class DelayOrErrorRepository(
 
     override suspend fun refreshJams() = realRepository.refreshJams()
 
+    override suspend fun incrementViewCounter(songId: Long) = realRepository.incrementViewCounter(songId)
+
     override suspend fun clearSheets() = realRepository.clearSheets()
 
     override suspend fun clearJams() = realRepository.clearJams()

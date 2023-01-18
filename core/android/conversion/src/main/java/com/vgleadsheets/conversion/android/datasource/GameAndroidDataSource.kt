@@ -52,4 +52,6 @@ class GameAndroidDataSource(
                 manyConverter.entityToModel(it)
             }
         }
+
+    override fun incrementSheetsPlayed(gameId: Long) = roomImpl.incrementSheetsPlayed(gameId)
 }

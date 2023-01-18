@@ -54,4 +54,6 @@ class ComposerAndroidDataSource(
         .mapList {
             manyConverter.entityToModel(it)
         }
+
+    override fun incrementSheetsPlayed(composerId: Long) = roomImpl.incrementSheetsPlayed(composerId)
 }

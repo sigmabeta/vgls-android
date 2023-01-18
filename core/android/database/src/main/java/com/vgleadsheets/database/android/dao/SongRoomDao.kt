@@ -44,6 +44,9 @@ interface SongRoomDao :
     @Delete(entity = SongEntity::class)
     override fun remove(ids: List<DeletionId>)
 
+    @Query(QUERY_INCREMENT)
+    fun incrementPlayCount(id: Long)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJoins(joins: List<SongTagValueJoin>)
 
@@ -62,6 +65,9 @@ interface SongRoomDao :
 
         private const val OPTION_ORDER_CUSTOM = "ORDER BY name, gameName"
 
+        private const val COLUMN_INCREMENTABLE = "playCount"
+        private const val SET_INCREMENT = "SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
+
         // Bespoke Queries
 
         const val QUERY_MANY = "$GET $TABLE $WHERE_MANY $OPTION_ORDER_CUSTOM"
@@ -73,5 +79,6 @@ interface SongRoomDao :
         const val QUERY_SEARCH =
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         const val QUERY_DELETE = "$DELETE $TABLE"
+        const val QUERY_INCREMENT = "UPDATE $TABLE $SET_INCREMENT $WHERE_SINGLE"
     }
 }

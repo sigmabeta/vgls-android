@@ -47,6 +47,8 @@ class ViewerViewModel @AssistedInject constructor(
             return field
         }
 
+    private var viewReportTimer: Job? = null
+
     private val _screenControlEvents = MutableSharedFlow<ScreenControlEvent>()
     val screenControlEvents = _screenControlEvents.asSharedFlow()
 
@@ -58,10 +60,13 @@ class ViewerViewModel @AssistedInject constructor(
         val songId = state.songId
 
         if (songId != null) {
-                hatchet.i(this.javaClass.simpleName, "Fetching song.")
+            hatchet.i(this.javaClass.simpleName, "Fetching song.")
             repository.getSong(songId)
                 .execute { data ->
-                    copy(song = data)
+                    copy(
+                        song = data,
+                        hasViewBeenReported = false
+                    )
                 }
         }
     }
@@ -111,6 +116,37 @@ class ViewerViewModel @AssistedInject constructor(
 
             subscribeToJamDatabase(jamId)
         }
+    }
+
+    fun startReportTimer() = withState {state ->
+        if (state.hasViewBeenReported) {
+            return@withState
+        }
+
+        if (viewReportTimer?.isActive == true) {
+            return@withState
+        }
+
+        val song = state.song() ?: return@withState
+
+        viewReportTimer = viewModelScope.launch(dispatchers.computation) {
+            hatchet.v(this.javaClass.simpleName, "Starting view report timer for ${song.name}")
+            delay(TIMER_VIEW_REPORT_MILLIS)
+
+            hatchet.v(this.javaClass.simpleName, "Reporting song ${song.name} to db.")
+            repository.incrementViewCounter(song.id)
+
+            setState {
+                copy(
+                    hasViewBeenReported = true
+                )
+            }
+            viewReportTimer = null
+        }
+    }
+
+    fun stopReportTimer() {
+        viewReportTimer?.cancel()
     }
 
     fun startScreenTimer() {
@@ -191,8 +227,9 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     companion object : MavericksViewModelFactory<ViewerViewModel, ViewerState> {
-        private const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
+        private const val TIMER_VIEW_REPORT_MILLIS = 10_000L
 
+        private const val TIMEOUT_SCREEN_OFF_MINUTES = 10L
         const val TIMEOUT_SCREEN_OFF_MILLIS = TIMEOUT_SCREEN_OFF_MINUTES * 60 * 1_000L
 
         override fun create(

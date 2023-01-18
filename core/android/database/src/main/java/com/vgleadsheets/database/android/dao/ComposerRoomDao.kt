@@ -36,6 +36,9 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     @Delete(entity = ComposerEntity::class)
     override fun remove(ids: List<DeletionId>)
 
+    @Query(QUERY_INCREMENT)
+    fun incrementSheetsPlayed(id: Long)
+
     @Insert
     fun insertJoins(joins: List<SongComposerJoin>)
 
@@ -47,6 +50,9 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
         // Query Properties
 
         private const val TABLE = ComposerEntity.TABLE
+        private const val COLUMN_INCREMENTABLE = "sheetsPlayed"
+
+        private const val SET_INCREMENT = "SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
 
         // Default Queries
 
@@ -55,5 +61,6 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
         const val QUERY_SEARCH =
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         const val QUERY_DELETE = "$DELETE $TABLE"
+        const val QUERY_INCREMENT = "UPDATE $TABLE $SET_INCREMENT $WHERE_SINGLE"
     }
 }

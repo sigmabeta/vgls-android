@@ -175,6 +175,7 @@ class ViewerFragment :
         hudViewModel.showHud()
         hudViewModel.stopHudTimer()
         viewModel.unfollowJam(null)
+        viewModel.stopReportTimer()
 
         hudViewModel.clearSelectedSong()
         hudViewModel.setViewerScreenNotVisible()
@@ -280,6 +281,8 @@ class ViewerFragment :
             showEmptyState()
             return
         }
+
+        viewModel.startReportTimer()
 
         hudViewModel.setSelectedSong(song)
         hudViewModel.setViewerScreenVisible()

@@ -156,7 +156,7 @@ class MockVglsApi(
         remainingSongs = null
         possibleSongs = null
 
-        random.setSeed(seed)
+//        random.setSeed(seed)
 
         if (generateEmptyState) {
             throw IOException("Arbitrarily failed a network request!")

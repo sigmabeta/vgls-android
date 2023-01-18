@@ -226,6 +226,17 @@ class RealRepository constructor(
         Unit
     }
 
+    override suspend fun incrementViewCounter(songId: Long) {
+        val song = songDataSource.getOneByIdSync(songId)
+
+        songDataSource.incrementPlayCount(song.id)
+        gameDataSource.incrementSheetsPlayed(song.gameId)
+
+        song.composers?.forEach {
+            composerDataSource.incrementSheetsPlayed(it.id)
+        }
+    }
+
     override suspend fun clearSheets() = withContext(dispatchers.disk) {
         gameDataSource.nukeTable()
         songDataSource.nukeTable()

@@ -11,4 +11,6 @@ interface ComposerDataSource : OneToManyDataSource<Composer> {
     fun insertRelations(relations: List<SongComposerRelation>)
 
     fun getSongsForComposer(composerId: Long): Flow<List<Song>>
+
+    fun incrementSheetsPlayed(composerId: Long)
 }

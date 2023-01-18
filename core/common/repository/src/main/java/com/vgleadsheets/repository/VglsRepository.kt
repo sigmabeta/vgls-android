@@ -54,6 +54,9 @@ interface VglsRepository {
     suspend fun refreshJams()
     suspend fun removeJam(id: Long)
 
+    // User data
+    suspend fun incrementViewCounter(songId: Long)
+
     // Debug options
     suspend fun clearSheets()
     suspend fun clearJams()
