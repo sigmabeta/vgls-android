@@ -1,5 +1,6 @@
 package com.vgleadsheets.database.android.dao
 
+import com.vgleadsheets.database.android.enitity.DeletionId
 import kotlinx.coroutines.flow.Flow
 
 interface RoomDao<EntityType> {
@@ -10,6 +11,8 @@ interface RoomDao<EntityType> {
     fun getAll(): Flow<List<EntityType>>
 
     fun insert(entities: List<@JvmSuppressWildcards EntityType>)
+
+    fun remove(ids: List<DeletionId>)
 
     fun nukeTable()
 

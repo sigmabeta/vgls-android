@@ -1,7 +1,9 @@
 package com.vgleadsheets.database.android.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
@@ -10,6 +12,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSEN
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
+import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.android.join.SongTagValueJoin
 import kotlinx.coroutines.flow.Flow
@@ -38,7 +41,13 @@ interface SongRoomDao :
     @Insert
     override fun insert(entities: List<SongEntity>)
 
-    @Insert
+    @Delete(entity = SongEntity::class)
+    override fun remove(ids: List<DeletionId>)
+
+    @Query(QUERY_INCREMENT)
+    fun incrementPlayCount(id: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_DELETE)
@@ -56,6 +65,9 @@ interface SongRoomDao :
 
         private const val OPTION_ORDER_CUSTOM = "ORDER BY name, gameName"
 
+        private const val COLUMN_INCREMENTABLE = "playCount"
+        private const val SET_INCREMENT = "SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
+
         // Bespoke Queries
 
         const val QUERY_MANY = "$GET $TABLE $WHERE_MANY $OPTION_ORDER_CUSTOM"
@@ -67,5 +79,6 @@ interface SongRoomDao :
         const val QUERY_SEARCH =
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         const val QUERY_DELETE = "$DELETE $TABLE"
+        const val QUERY_INCREMENT = "UPDATE $TABLE $SET_INCREMENT $WHERE_SINGLE"
     }
 }

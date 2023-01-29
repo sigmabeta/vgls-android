@@ -27,9 +27,6 @@ dependencies {
 
     // Dagger
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
 }
 
 android {

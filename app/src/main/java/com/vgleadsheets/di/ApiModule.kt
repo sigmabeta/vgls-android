@@ -1,5 +1,6 @@
 package com.vgleadsheets.di
 
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.MockVglsApi
 import com.vgleadsheets.network.StringGenerator
 import com.vgleadsheets.network.VglsApi
@@ -21,7 +22,8 @@ class ApiModule {
         converterFactory: MoshiConverterFactory,
         random: Random,
         @Named("RngSeed") seed: Long,
-        stringGenerator: StringGenerator
+        stringGenerator: StringGenerator,
+        hatchet: Hatchet
     ) = if (baseUrl != null) {
         Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -30,6 +32,6 @@ class ApiModule {
             .build()
             .create(VglsApi::class.java)
     } else {
-        MockVglsApi(random, seed, stringGenerator)
+        MockVglsApi(random, seed, stringGenerator, hatchet)
     }
 }

@@ -53,7 +53,7 @@ class SearchViewModel @AssistedInject constructor(
                         )
                     }
 
-                repository.searchSongs(searchQuery)
+                repository.searchSongsCombined(searchQuery)
                     .debounce(RESULT_DEBOUNCE_THRESHOLD)
                     .execute { newSongs ->
                         copy(

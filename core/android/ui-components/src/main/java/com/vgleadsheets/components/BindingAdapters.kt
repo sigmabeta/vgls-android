@@ -26,7 +26,6 @@ import com.vgleadsheets.images.loadImageHighQuality
 import com.vgleadsheets.images.loadImageLowQuality
 import com.vgleadsheets.themes.VglsMaterial
 import com.vgleadsheets.themes.VglsMaterialMenu
-import timber.log.Timber
 
 @BindingAdapter("sheetUrl", "listener")
 fun bindSheetImage(
@@ -111,9 +110,7 @@ fun bindBigPhoto(
     } else {
         try {
             view.setImageResource(placeholder)
-        } catch (ex: NotFoundException) {
-            Timber.e("Resource not found.")
-        }
+        } catch (_: NotFoundException) { }
     }
 }
 

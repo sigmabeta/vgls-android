@@ -17,7 +17,6 @@ buildscript {
         appcompat_version = "1.5.1"
         material_version = "1.8.0-alpha01"
         recycler_version = "1.2.1"
-        timber_version = "5.0.1"
         junit_version = "4.12"
         espresso_runner_version = "1.4.0"
         espresso_core_version = "3.4.0"

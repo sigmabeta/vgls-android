@@ -2,6 +2,7 @@ package com.vgleadsheets.database.android.di
 
 import android.content.Context
 import androidx.room.Room
+import com.vgleadsheets.database.android.DatabaseVersions
 import com.vgleadsheets.database.android.VglsDatabase
 import dagger.Module
 import dagger.Provides
@@ -17,14 +18,17 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideVglsDatabase(context: Context) = Room
-        .databaseBuilder(
-            context,
-            VglsDatabase::class.java,
-            "vgls-database"
-        )
-        .fallbackToDestructiveMigration()
-        .build()
+    @Suppress("SpreadOperator")
+    fun provideVglsDatabase(context: Context): VglsDatabase {
+        return Room
+            .databaseBuilder(
+                context,
+                VglsDatabase::class.java,
+                "vgls-database"
+            )
+            .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
+            .build()
+    }
 
     @Provides
     @Singleton
@@ -73,6 +77,12 @@ class DatabaseModule {
     fun songDao(
         database: VglsDatabase
     ) = database.songDao()
+
+    @Provides
+    @Singleton
+    fun songAliasDao(
+        database: VglsDatabase
+    ) = database.songAliasDao()
 
     @Provides
     @Singleton

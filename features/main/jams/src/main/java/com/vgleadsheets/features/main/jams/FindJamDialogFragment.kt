@@ -16,19 +16,19 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vgleadsheets.insets.Insetup
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
-import java.net.HttpURLConnection
-import java.net.UnknownHostException
-import javax.inject.Inject
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import timber.log.Timber
+import java.net.HttpURLConnection
+import java.net.UnknownHostException
+import javax.inject.Inject
 
 class FindJamDialogFragment : BottomSheetDialogFragment() {
     @Inject
@@ -36,6 +36,9 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
 
     @Inject
     lateinit var repository: VglsRepository
+
+    @Inject
+    lateinit var hatchet: Hatchet
 
     private lateinit var containerLinear: LinearLayout
 
@@ -132,14 +135,14 @@ class FindJamDialogFragment : BottomSheetDialogFragment() {
                         showError("Could not find Jam: ${it.message}")
                     }
 
-                    Timber.e("Error finding Jam: ${it.message}")
+                    hatchet.e(this.javaClass.simpleName, "Error finding Jam: ${it.message}")
                 }
             }
         }
     }
 
     private fun showError(message: String) {
-        Timber.e("Displayed error: $message")
+        hatchet.e(this.javaClass.simpleName, "Displayed error: $message")
         tracker.logError(message)
         showToast(message)
     }

@@ -23,9 +23,9 @@ import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.images.Page
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
-import timber.log.Timber
 
 class Config(
     private val state: JamState,
@@ -34,7 +34,8 @@ class Config(
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
-    private val resources: Resources
+    private val resources: Resources,
+    private val hatchet: Hatchet,
 ) : BetterListConfig {
     private val jamLoad = state.contentLoad.jam
 
@@ -131,10 +132,10 @@ class Config(
             )
         )
 
-        Timber.i("Setlist: ${setlist?.size} items")
+        hatchet.i(this.javaClass.simpleName, "Setlist: ${setlist?.size} items")
 
         return if (state.contentLoad.jamRefresh is Loading) {
-            Timber.i("Showing setlist refresh")
+            hatchet.i(this.javaClass.simpleName, "Showing setlist refresh")
             sectionTitle + listOf(NetworkRefreshingListModel("setlist"))
         } else if (setlistLoad.isLoading()) {
             sectionTitle + buildList<ListModel> {
@@ -148,10 +149,10 @@ class Config(
                 }
             }
         } else if (setlist.isNullOrEmpty()) {
-            Timber.i("Showing setlist empty")
+            hatchet.i(this.javaClass.simpleName, "Showing setlist empty")
             emptyList()
         } else {
-            Timber.i("Showing setlist content")
+            hatchet.i(this.javaClass.simpleName, "Showing setlist content")
 
             sectionTitle + setlist.mapYielding {
                 val song = it.song

@@ -15,6 +15,7 @@ class SongViewModel @AssistedInject constructor(
 ) : MavericksViewModel<SongState>(initialState) {
     init {
         fetchSong()
+        fetchAliases()
         fetchTagValues()
     }
 
@@ -24,6 +25,17 @@ class SongViewModel @AssistedInject constructor(
                 copy(
                     contentLoad = contentLoad.copy(
                         song = it
+                    )
+                )
+            }
+    }
+
+    private fun fetchAliases() = withState {
+        repository.getAliasesForSong(it.songId)
+            .execute {
+                copy(
+                    contentLoad = contentLoad.copy(
+                        songAliases = it
                     )
                 )
             }

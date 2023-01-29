@@ -44,7 +44,7 @@ class HudFragment : VglsFragment() {
 
     private val viewModel: HudViewModel by activityViewModel()
 
-    private val menuAdapter = ComponentAdapter(getVglsFragmentTag())
+    private lateinit var menuAdapter: ComponentAdapter
 
     fun onAppBarButtonClick() = withState(viewModel) {
         clicks.appBarButton(it)
@@ -79,6 +79,7 @@ class HudFragment : VglsFragment() {
 
         val recyclerBottom = screen.recyclerBottom
 
+        menuAdapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
         recyclerBottom.adapter = menuAdapter
         recyclerBottom.layoutManager = LinearLayoutManager(context)
 

@@ -5,9 +5,6 @@ dependencies {
     // Contains the Tracker interface
     api project(':core:common:tracking')
 
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
-
     implementation project(":core:android:coroutines")
 
     // Dagger (important: include all 3 of these in modules that use Dagger

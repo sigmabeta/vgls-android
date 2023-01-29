@@ -14,7 +14,7 @@ class DelayOrErrorRepository(
 ) : VglsRepository {
     override suspend fun checkShouldAutoUpdate() = realRepository.checkShouldAutoUpdate()
 
-    override suspend fun refresh() = realRepository.refresh()
+    override fun refresh() = realRepository.refresh()
 
     override fun refreshJamStateContinuously(name: String) =
         realRepository.refreshJamStateContinuously(name)
@@ -49,6 +49,8 @@ class DelayOrErrorRepository(
 
     override fun getSongHistoryForJam(jamId: Long) = realRepository.getSongHistoryForJam(jamId)
 
+    override fun getAliasesForSong(songId: Long) = realRepository.getAliasesForSong(songId)
+
     override fun getSong(songId: Long) = realRepository.getSong(songId)
 
     override fun getComposer(composerId: Long) = realRepository.getComposer(composerId)
@@ -63,7 +65,8 @@ class DelayOrErrorRepository(
 
     override fun getJam(id: Long, withHistory: Boolean) = realRepository.getJam(id, withHistory)
 
-    override fun searchSongs(searchQuery: String) = realRepository.searchSongs(searchQuery).butItTakesForever()
+    override fun searchSongsCombined(searchQuery: String) =
+        realRepository.searchSongsCombined(searchQuery)
 
     override fun searchGamesCombined(searchQuery: String) =
         realRepository.searchGamesCombined(searchQuery).butItTakesForever()
@@ -75,7 +78,9 @@ class DelayOrErrorRepository(
 
     override suspend fun refreshJams() = realRepository.refreshJams()
 
-    override fun clearSheets() = realRepository.clearSheets()
+    override suspend fun incrementViewCounter(songId: Long) = realRepository.incrementViewCounter(songId)
+
+    override suspend fun clearSheets() = realRepository.clearSheets()
 
     override suspend fun clearJams() = realRepository.clearJams()
 

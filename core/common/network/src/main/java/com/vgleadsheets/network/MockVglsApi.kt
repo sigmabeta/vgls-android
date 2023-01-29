@@ -1,6 +1,7 @@
 package com.vgleadsheets.network
 
 import com.squareup.moshi.Moshi
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiDigest
 import com.vgleadsheets.network.model.ApiJam
@@ -10,6 +11,10 @@ import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.ApiSongHistoryEntry
 import com.vgleadsheets.network.model.ApiTime
 import com.vgleadsheets.network.model.VglsApiGame
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.util.EmptyStackException
@@ -17,16 +22,13 @@ import java.util.Random
 import java.util.Stack
 import javax.inject.Named
 import kotlin.collections.set
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.HttpException
-import retrofit2.Response
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
 class MockVglsApi(
     private val random: Random,
     @Named("RngSeed") private val seed: Long,
     private val stringGenerator: StringGenerator,
+    private val hatchet: Hatchet,
 ) : VglsApi {
     private var possibleTags: Map<String, List<String>>? = null
 
@@ -87,7 +89,10 @@ class MockVglsApi(
             val possibleSongsSize = possibleSongs?.size ?: 0
             val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
 
-            // Timber.w("History entry $entryIndex will be possible song with index: $possibleSongIndex")
+            // hatchet.w(
+            // this.javaClass.simpleName,
+            // "History entry $entryIndex will be possible song with index: $possibleSongIndex"
+            // )
 
             val song = possibleSongs?.get(possibleSongIndex)
 
@@ -154,14 +159,14 @@ class MockVglsApi(
         remainingSongs = null
         possibleSongs = null
 
-        random.setSeed(seed)
+//        random.setSeed(seed)
 
         if (generateEmptyState) {
             throw IOException("Arbitrarily failed a network request!")
         }
 
         val gameCount = random.nextInt(maxGames)
-        // Timber.i("Generating $gameCount games...")
+        hatchet.i(this.javaClass.simpleName, "Generating $gameCount games...")
         val games = ArrayList<VglsApiGame>(gameCount)
 
         for (gameIndex in 0 until gameCount) {
@@ -169,13 +174,13 @@ class MockVglsApi(
             games.add(game)
         }
 
-        // Timber.i("Generated ${games.size} games...")
+        hatchet.i(this.javaClass.simpleName, "Generated ${games.size} games...")
 
         val filteredGames = games
             .distinctBy { it.game_id }
             .filter { it.songs.isNotEmpty() }
 
-        // Timber.i("Returning ${filteredGames.size} games...")
+        hatchet.i(this.javaClass.simpleName, "Returning ${filteredGames.size} games...")
 
         return filteredGames
     }
@@ -217,7 +222,7 @@ class MockVglsApi(
 
     private fun generateSongs() {
         val songCount = random.nextInt(maxSongs) + 1
-        // Timber.d("Generating $songCount songs...")
+        // hatchet.d(this.javaClass.simpleName, "Generating $songCount songs...")
 
         val songs = Stack<ApiSong>()
         val songIds = HashSet<Long>(songCount)
@@ -244,7 +249,8 @@ class MockVglsApi(
         random.nextInt(MAX_PAGE_COUNT) + 1,
         random.nextInt(MAX_PAGE_COUNT) + 1,
         getComposersForSong(),
-        getTags()
+        getTags(),
+        listOf()
     )
 
     @Suppress("MagicNumber")
@@ -287,7 +293,7 @@ class MockVglsApi(
 
     private fun generateComposers() {
         val composerCount = random.nextInt(maxComposers) + 1
-        // Timber.i("Generating $composerCount composers...")
+        // hatchet.i(this.javaClass.simpleName, "Generating $composerCount composers...")
         val composers = ArrayList<ApiComposer>(composerCount)
 
         for (composerIndex in 0 until composerCount) {
@@ -324,7 +330,7 @@ class MockVglsApi(
 
     private fun generateTags() {
         val tagCount = random.nextInt(maxTags) + 1
-        // Timber.i("Generating $tagCount tags...")
+        // hatchet.i(this.javaClass.simpleName, "Generating $tagCount tags...")
         val tags = mutableMapOf<String, List<String>>()
 
         for (tagIndex in 0 until tagCount) {

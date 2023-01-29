@@ -5,15 +5,16 @@ import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.features.main.list.content
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.repository.VglsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import timber.log.Timber
 
 class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
     private val repository: VglsRepository,
+    private val hatchet: Hatchet,
 ) : MavericksViewModel<JamState>(initialState) {
     init {
         fetchJam()
@@ -22,7 +23,7 @@ class JamViewModel @AssistedInject constructor(
     private var firstRefresh = true
 
     fun refreshJam() = withState { state ->
-        Timber.i("Refreshing jam...")
+        hatchet.i(this.javaClass.simpleName, "Refreshing jam...")
 
         val name = state.contentLoad.jam()?.name ?: return@withState
         fireJamRefreshRequest(name)
@@ -72,7 +73,7 @@ class JamViewModel @AssistedInject constructor(
             .execute {
                 val setlist = it()
 
-                Timber.i("Setlist: ${setlist?.size} items")
+                hatchet.i(this.javaClass.simpleName, "Setlist: ${setlist?.size} items")
 
                 copy(
                     contentLoad = contentLoad.copy(

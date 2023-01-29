@@ -11,7 +11,8 @@ data class ComposerEntity(
     @PrimaryKey val id: Long,
     val name: String,
     val hasVocalSongs: Boolean = false,
-    val photoUrl: String? = null
+    val photoUrl: String? = null,
+    val sheetsPlayed: Int
 ) {
     companion object {
         const val TABLE = "composer"

@@ -10,7 +10,4 @@ dependencies {
     
     implementation project(':core:ui-core')
     implementation project(":core:android:coroutines")
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
 }

@@ -8,4 +8,6 @@ interface SongDataSource : OneToManyDataSource<Song> {
     fun searchByName(name: String): Flow<List<Song>>
 
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
+
+    fun incrementPlayCount(songId: Long)
 }

@@ -134,6 +134,7 @@ class Clicks(
     fun refresh() {
         tracker.logRefreshClick()
         viewModel.refresh()
+        viewModel.toRegularMode()
     }
 
     fun perf() {

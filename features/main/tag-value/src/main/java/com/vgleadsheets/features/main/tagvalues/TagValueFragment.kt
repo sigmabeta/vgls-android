@@ -33,7 +33,8 @@ class TagValueFragment : BetterListFragment<TagValueContent, TagValueState>() {
         ),
         perfTracker,
         getPerfSpec(),
-        resources
+        resources,
+        hatchet
     )
 
     companion object {
