@@ -20,7 +20,4 @@ dependencies {
     implementation project(':core:android:vectors')
 
     implementation project(":core:android:coroutines")
-
-    // Logging
-    implementation "com.jakewharton.timber:timber:$timber_version"
 }

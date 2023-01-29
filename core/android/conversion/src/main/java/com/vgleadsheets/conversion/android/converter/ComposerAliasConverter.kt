@@ -11,16 +11,15 @@ import com.vgleadsheets.model.alias.ComposerAlias
 class ComposerAliasConverter :
     OneToOneConverter<ComposerAlias, ComposerAliasEntity, Composer, ComposerEntity, ComposerRoomDao> {
     override fun ComposerAlias.toEntity() = ComposerAliasEntity(
-        id,
+        composerId,
         name,
-        photoUrl
+        id
     )
 
     override fun ComposerAliasEntity.toModel() = ComposerAlias(
         id ?: -1L,
         composerId,
         name,
-        photoUrl,
         null
     )
 
@@ -31,7 +30,6 @@ class ComposerAliasConverter :
         id ?: -1L,
         composerId,
         name,
-        photoUrl,
         foreignDao.getForeignModel(composerId, converter)
     )
 

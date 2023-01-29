@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
+      <module name="VGLeadSheets.core.android.ui.colors" target="17" />
+      <module name="VGLeadSheets.core.android.ui.themes" target="17" />
       <module name="VGLeadSheets.core.coroutines" target="11" />
       <module name="VGLeadSheets.core.di" target="11" />
       <module name="VGLeadSheets.core.images" target="11" />

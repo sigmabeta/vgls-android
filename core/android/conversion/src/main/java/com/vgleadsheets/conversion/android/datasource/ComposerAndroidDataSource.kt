@@ -48,4 +48,12 @@ class ComposerAndroidDataSource(
                 )
             }
         )
+
+    override fun getSongsForComposer(composerId: Long) = relatedRoomImpl
+        .getJoinedEntities(composerId)
+        .mapList {
+            manyConverter.entityToModel(it)
+        }
+
+    override fun incrementSheetsPlayed(composerId: Long) = roomImpl.incrementSheetsPlayed(composerId)
 }

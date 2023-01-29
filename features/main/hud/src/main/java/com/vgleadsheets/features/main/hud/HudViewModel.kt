@@ -9,6 +9,7 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
@@ -32,7 +33,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 @OptIn(FlowPreview::class)
 class HudViewModel @AssistedInject constructor(
@@ -41,7 +41,8 @@ class HudViewModel @AssistedInject constructor(
     private val repository: com.vgleadsheets.repository.VglsRepository,
     private val storage: Storage,
     private val perfTracker: PerfTracker,
-    private val dispatchers: VglsDispatchers
+    private val dispatchers: VglsDispatchers,
+    private val hatchet: Hatchet
 ) : MavericksViewModel<HudState>(initialState) {
     private var timer: Job? = null
 
@@ -99,11 +100,10 @@ class HudViewModel @AssistedInject constructor(
 
     fun refresh() = withState {
         if (it.digest !is Loading) {
-            suspend {
-                repository.refresh()
-            }.execute {
-                copy(digest = it)
-            }
+            repository.refresh()
+                .execute {
+                    copy(digest = it)
+                }
         }
     }
 
@@ -269,7 +269,7 @@ class HudViewModel @AssistedInject constructor(
                 }
 
             withContext(dispatchers.main) {
-                Timber.v("Showing screen: $selection")
+                hatchet.v(this.javaClass.simpleName, "Showing screen: $selection")
                 showScreen(selection)
             }
         }
@@ -293,7 +293,10 @@ class HudViewModel @AssistedInject constructor(
             val part = try {
                 Part.valueOf(selection)
             } catch (ex: IllegalArgumentException) {
-                Timber.e("${ex.message}: value $selection no longer valid; defaulting to C")
+                hatchet.e(
+                    this.javaClass.simpleName,
+                    "${ex.message}: value $selection no longer valid; defaulting to C"
+                )
                 Part.C
             }
             setState {
@@ -347,7 +350,7 @@ class HudViewModel @AssistedInject constructor(
                         )
                     }
 
-                songSearch = repository.searchSongs(searchQuery)
+                songSearch = repository.searchSongsCombined(searchQuery)
                     .debounce(THRESHOLD_RESULT_DEBOUNCE)
                     .execute { newSongs ->
                         if (newSongs is Loading) {

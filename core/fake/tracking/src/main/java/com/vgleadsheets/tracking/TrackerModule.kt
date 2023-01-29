@@ -1,5 +1,6 @@
 package com.vgleadsheets.tracking
 
+import com.vgleadsheets.logging.Hatchet
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -8,5 +9,5 @@ import javax.inject.Singleton
 class TrackerModule {
     @Provides
     @Singleton
-    fun provideTracker(): Tracker = NoopTracker()
+    fun provideTracker(hatchet: Hatchet): Tracker = NoopTracker(hatchet)
 }

@@ -6,6 +6,7 @@ import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.SetlistEntry
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.SongHistoryEntry
+import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.model.time.Time
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface VglsRepository {
     suspend fun checkShouldAutoUpdate(): Boolean
-    suspend fun refresh()
+    fun refresh(): Flow<Unit>
 
     fun refreshJamStateContinuously(name: String): Flow<Unit>
     suspend fun refreshJamState(name: String)
@@ -33,6 +34,7 @@ interface VglsRepository {
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
     fun getSetlistEntriesForJam(jamId: Long): Flow<List<SetlistEntry>>
     fun getSongHistoryForJam(jamId: Long): Flow<List<SongHistoryEntry>>
+    fun getAliasesForSong(songId: Long): Flow<List<SongAlias>>
 
     // Single items
     fun getSong(songId: Long): Flow<Song>
@@ -44,7 +46,7 @@ interface VglsRepository {
     fun getLastUpdateTime(): Flow<Time>
 
     // Etc
-    fun searchSongs(searchQuery: String): Flow<List<Song>>
+    fun searchSongsCombined(searchQuery: String): Flow<List<Song>>
     fun searchGamesCombined(searchQuery: String): Flow<List<Game>>
     fun searchComposersCombined(searchQuery: String): Flow<List<Composer>>
 
@@ -52,7 +54,10 @@ interface VglsRepository {
     suspend fun refreshJams()
     suspend fun removeJam(id: Long)
 
+    // User data
+    suspend fun incrementViewCounter(songId: Long)
+
     // Debug options
-    fun clearSheets()
+    suspend fun clearSheets()
     suspend fun clearJams()
 }

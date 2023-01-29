@@ -11,16 +11,15 @@ import com.vgleadsheets.model.alias.GameAlias
 class GameAliasConverter :
     OneToOneConverter<GameAlias, GameAliasEntity, Game, GameEntity, GameRoomDao> {
     override fun GameAlias.toEntity() = GameAliasEntity(
-        id,
+        gameId,
         name,
-        photoUrl
+        id
     )
 
     override fun GameAliasEntity.toModel() = GameAlias(
         id ?: -1L,
         gameId,
         name,
-        photoUrl,
         null
     )
 
@@ -31,7 +30,6 @@ class GameAliasConverter :
         id ?: -1L,
         gameId,
         name,
-        photoUrl,
         foreignDao.getForeignModel(gameId, converter)
     )
 

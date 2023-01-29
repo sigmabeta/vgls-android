@@ -45,4 +45,6 @@ class SongAndroidDataSource(
         .mapList {
             tagValueConverter.entityToModel(it)
         }
+
+    override fun incrementPlayCount(songId: Long) = roomImpl.incrementPlayCount(songId)
 }

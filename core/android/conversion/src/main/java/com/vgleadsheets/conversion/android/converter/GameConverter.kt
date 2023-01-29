@@ -15,14 +15,16 @@ class GameConverter : WithManyConverter<Game, GameEntity, Song, SongEntity, Song
         id,
         name,
         songs?.filteredForVocals(Part.VOCAL.apiId)?.isNotEmpty() ?: false,
-        photoUrl
+        photoUrl,
+        sheetsPlayed
     )
 
     override fun GameEntity.toModel() = Game(
         id,
         name,
         null,
-        photoUrl
+        photoUrl,
+        sheetsPlayed
     )
 
     override fun GameEntity.toModelWithMany(
@@ -32,7 +34,8 @@ class GameConverter : WithManyConverter<Game, GameEntity, Song, SongEntity, Song
         id,
         name,
         manyDao.getManyModels(id, converter),
-        photoUrl
+        photoUrl,
+        sheetsPlayed
     )
 
     override fun SongRoomDao.getManyModels(

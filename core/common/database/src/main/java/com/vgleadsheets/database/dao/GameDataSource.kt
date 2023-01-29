@@ -8,4 +8,6 @@ interface GameDataSource : OneToManyDataSource<Game> {
     fun searchByName(name: String): Flow<List<Game>>
 
     fun getSongsForGame(gameId: Long, withComposers: Boolean): Flow<List<Song>>
+
+    fun incrementSheetsPlayed(gameId: Long)
 }

@@ -6,6 +6,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation project(":core:common:coroutines")
+    implementation project(":core:common:logging")
 }
 
 java {

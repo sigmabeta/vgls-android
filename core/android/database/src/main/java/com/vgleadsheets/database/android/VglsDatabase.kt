@@ -10,6 +10,7 @@ import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.dao.GameRoomDao
 import com.vgleadsheets.database.android.dao.JamRoomDao
 import com.vgleadsheets.database.android.dao.SetlistEntryRoomDao
+import com.vgleadsheets.database.android.dao.SongAliasRoomDao
 import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.dao.SongsForComposerDao
@@ -24,6 +25,7 @@ import com.vgleadsheets.database.android.enitity.GameAliasEntity
 import com.vgleadsheets.database.android.enitity.GameEntity
 import com.vgleadsheets.database.android.enitity.JamEntity
 import com.vgleadsheets.database.android.enitity.SetlistEntryEntity
+import com.vgleadsheets.database.android.enitity.SongAliasEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.android.enitity.SongHistoryEntryEntity
 import com.vgleadsheets.database.android.enitity.TagKeyEntity
@@ -39,6 +41,7 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
         ComposerEntity::class,
         SongComposerJoin::class,
         SongTagValueJoin::class,
+        SongAliasEntity::class,
         TimeEntity::class,
         GameAliasEntity::class,
         TagKeyEntity::class,
@@ -48,7 +51,7 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
         SongHistoryEntryEntity::class,
         ComposerAliasEntity::class
     ],
-    version = 10
+    version = DatabaseVersions.ADDED_PLAY_COUNTS
 )
 abstract class VglsDatabase : RoomDatabase() {
     abstract fun composerAliasDao(): ComposerAliasRoomDao
@@ -60,6 +63,7 @@ abstract class VglsDatabase : RoomDatabase() {
     abstract fun jamDao(): JamRoomDao
     abstract fun setlistEntryDao(): SetlistEntryRoomDao
     abstract fun songDao(): SongRoomDao
+    abstract fun songAliasDao(): SongAliasRoomDao
     abstract fun songForComposerDao(): SongsForComposerDao
     abstract fun songForTagValueDao(): SongsForTagValueDao
     abstract fun songHistoryEntryDao(): SongHistoryEntryRoomDao

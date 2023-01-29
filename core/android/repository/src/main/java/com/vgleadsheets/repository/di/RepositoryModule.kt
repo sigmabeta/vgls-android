@@ -9,10 +9,12 @@ import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.JamDataSource
 import com.vgleadsheets.database.dao.SetlistEntryDataSource
+import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.ThreeTenTime
@@ -38,6 +40,7 @@ class RepositoryModule {
         threeTenTime: ThreeTenTime,
         tracker: Tracker,
         dispatchers: VglsDispatchers,
+        hatchet: Hatchet,
         composerAliasDataSource: ComposerAliasDataSource,
         composerDataSource: ComposerDataSource,
         dbStatisticsDataSource: DbStatisticsDataSource,
@@ -48,13 +51,15 @@ class RepositoryModule {
         songDataSource: SongDataSource,
         songHistoryEntryDataSource: SongHistoryEntryDataSource,
         tagKeyDataSource: TagKeyDataSource,
-        tagValueDataSource: TagValueDataSource
+        tagValueDataSource: TagValueDataSource,
+        songAliasDataSource: SongAliasDataSource
     ) = RealRepository(
         vglsApi,
         transactionDao,
         threeTenTime,
         tracker,
         dispatchers,
+        hatchet,
         composerAliasDataSource,
         composerDataSource,
         dbStatisticsDataSource,
@@ -63,6 +68,7 @@ class RepositoryModule {
         jamDataSource,
         setlistEntryDataSource,
         songDataSource,
+        songAliasDataSource,
         songHistoryEntryDataSource,
         tagKeyDataSource,
         tagValueDataSource,

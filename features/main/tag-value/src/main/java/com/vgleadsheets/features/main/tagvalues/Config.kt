@@ -16,12 +16,12 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
-import timber.log.Timber
 
 class Config(
     private val state: TagValueState,
@@ -29,7 +29,8 @@ class Config(
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
-    private val resources: Resources
+    private val resources: Resources,
+    private val hatchet: Hatchet,
 ) : BetterListConfig {
     private val tagKeyLoad = state.contentLoad.tagKey
 
@@ -57,7 +58,7 @@ class Config(
     override val contentConfig = Content.Config(
         !tagValues.isNullOrEmpty()
     ) {
-        Timber.w("Tag Values: ${tagValues?.size}")
+        hatchet.w(this.javaClass.simpleName, "Tag Values: ${tagValues?.size}")
         tagValues
             ?.filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
             ?.mapYielding {

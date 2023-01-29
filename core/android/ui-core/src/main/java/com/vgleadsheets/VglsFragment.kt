@@ -14,6 +14,7 @@ import com.airbnb.mvrx.MavericksView
 import com.airbnb.mvrx.args
 import com.google.android.material.snackbar.Snackbar
 import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.tracking.Tracker
@@ -22,7 +23,6 @@ import com.vgleadsheets.ui_core.R
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import javax.inject.Named
-import timber.log.Timber
 
 abstract class VglsFragment : Fragment(), MavericksView {
     @Inject
@@ -30,6 +30,9 @@ abstract class VglsFragment : Fragment(), MavericksView {
 
     @Inject
     lateinit var perfTracker: PerfTracker
+
+    @Inject
+    lateinit var hatchet: Hatchet
 
     @JvmField
     @field:[Inject Named("RunningTest")]
@@ -89,12 +92,18 @@ abstract class VglsFragment : Fragment(), MavericksView {
         super.onCreate(savedInstanceState)
 
         if (disablePerfTracking() || isRunningTest) {
-            Timber.d("Not starting perf tracker: Perf tracking is disabled for screen ${getPerfScreenName()}.")
+            hatchet.d(
+                this.javaClass.simpleName,
+                "Not starting perf tracker: Perf tracking is disabled for screen ${getPerfScreenName()}."
+            )
             return
         }
 
         if (savedInstanceState != null) {
-            Timber.i("Not starting perf tracker: Screen ${getPerfScreenName()} was recreated.")
+            hatchet.i(
+                this.javaClass.simpleName,
+                "Not starting perf tracker: Screen ${getPerfScreenName()} was recreated."
+            )
             return
         }
 
@@ -104,7 +113,8 @@ abstract class VglsFragment : Fragment(), MavericksView {
         val minHeightDp = getPerfTrackingMinScreenHeight()
 
         if (heightDp < minHeightDp) {
-            Timber.i(
+            hatchet.i(
+                this.javaClass.simpleName,
                 "Not starting perf tracker: Screen height $heightDp dp too small " +
                     "for screen ${getPerfScreenName()} (min height $minHeightDp dp)."
             )
@@ -202,7 +212,7 @@ abstract class VglsFragment : Fragment(), MavericksView {
         action: View.OnClickListener? = null,
         actionLabel: Int = 0
     ) {
-        Timber.e("Displayed error: $message")
+        hatchet.e(this.javaClass.simpleName, "Displayed error: $message")
         tracker.logError(message)
         showSnackbar(message, action, actionLabel)
     }
