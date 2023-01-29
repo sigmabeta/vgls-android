@@ -15,7 +15,7 @@ class JamViewModel @AssistedInject constructor(
     @Assisted initialState: JamState,
     private val repository: VglsRepository,
     private val hatchet: Hatchet,
-    ) : MavericksViewModel<JamState>(initialState) {
+) : MavericksViewModel<JamState>(initialState) {
     init {
         fetchJam()
     }

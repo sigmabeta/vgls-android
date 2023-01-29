@@ -2,7 +2,7 @@ package com.vgleadsheets.logging
 
 import android.util.Log
 
-class AndroidHatchet: Hatchet {
+class AndroidHatchet : Hatchet {
     override fun v(tag: String, message: String) {
         Log.v(tag, message)
     }

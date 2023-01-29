@@ -18,6 +18,7 @@ class DatabaseModule {
 
     @Singleton
     @Provides
+    @Suppress("SpreadOperator")
     fun provideVglsDatabase(context: Context): VglsDatabase {
         return Room
             .databaseBuilder(

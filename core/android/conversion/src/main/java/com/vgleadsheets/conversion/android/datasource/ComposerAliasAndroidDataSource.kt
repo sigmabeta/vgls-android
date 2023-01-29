@@ -12,6 +12,7 @@ import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.alias.ComposerAlias
 
+@Suppress("MaxLineLength")
 class ComposerAliasAndroidDataSource(
     private val convert: ComposerAliasConverter,
     private val roomImpl: ComposerAliasRoomDao,
@@ -22,7 +23,8 @@ class ComposerAliasAndroidDataSource(
     composerConverter,
     roomImpl,
     otoRelatedRoomImpl
-), ComposerAliasDataSource {
+),
+    ComposerAliasDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList {

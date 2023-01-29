@@ -99,7 +99,8 @@ class MainActivity :
         hatchet.v(this.javaClass.simpleName, "Device screen DPI: ${displayMetrics.densityDpi}")
         hatchet.v(this.javaClass.simpleName, "Device screen scaling factor: ${displayMetrics.density}")
         hatchet.v(this.javaClass.simpleName, "Device screen size: ${widthPixels}x$heightPixels")
-        hatchet.v(this.javaClass.simpleName, 
+        hatchet.v(
+            this.javaClass.simpleName,
             "Device screen size (scaled): ${(widthPixels / displayMetrics.density).toInt()}" +
                 "x${(heightPixels / displayMetrics.density).toInt()}"
         )

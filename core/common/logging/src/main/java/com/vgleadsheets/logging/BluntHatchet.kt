@@ -3,7 +3,7 @@ package com.vgleadsheets.logging
 /**
  * A Hatchet that doesn't do anything. Use in production.
  */
-class BluntHatchet: Hatchet {
+class BluntHatchet : Hatchet {
     override fun v(tag: String, message: String) = Unit
 
     override fun d(tag: String, message: String) = Unit

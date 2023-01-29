@@ -92,12 +92,18 @@ abstract class VglsFragment : Fragment(), MavericksView {
         super.onCreate(savedInstanceState)
 
         if (disablePerfTracking() || isRunningTest) {
-            hatchet.d(this.javaClass.simpleName, "Not starting perf tracker: Perf tracking is disabled for screen ${getPerfScreenName()}.")
+            hatchet.d(
+                this.javaClass.simpleName,
+                "Not starting perf tracker: Perf tracking is disabled for screen ${getPerfScreenName()}."
+            )
             return
         }
 
         if (savedInstanceState != null) {
-            hatchet.i(this.javaClass.simpleName, "Not starting perf tracker: Screen ${getPerfScreenName()} was recreated.")
+            hatchet.i(
+                this.javaClass.simpleName,
+                "Not starting perf tracker: Screen ${getPerfScreenName()} was recreated."
+            )
             return
         }
 
@@ -107,7 +113,8 @@ abstract class VglsFragment : Fragment(), MavericksView {
         val minHeightDp = getPerfTrackingMinScreenHeight()
 
         if (heightDp < minHeightDp) {
-            hatchet.i(this.javaClass.simpleName, 
+            hatchet.i(
+                this.javaClass.simpleName,
                 "Not starting perf tracker: Screen height $heightDp dp too small " +
                     "for screen ${getPerfScreenName()} (min height $minHeightDp dp)."
             )

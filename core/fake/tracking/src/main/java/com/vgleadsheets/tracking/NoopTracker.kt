@@ -2,7 +2,6 @@ package com.vgleadsheets.tracking
 
 import com.vgleadsheets.logging.Hatchet
 
-
 @SuppressWarnings("TooManyFunctions")
 class NoopTracker(
     private val hatchet: Hatchet
@@ -78,7 +77,10 @@ class NoopTracker(
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        hatchet.i(this.javaClass.simpleName, "Song $gameName - $songName, for $transposition; viewed from screen: $fromScreen:$fromDetails")
+        hatchet.i(
+            this.javaClass.simpleName,
+            "Song $gameName - $songName, for $transposition; viewed from screen: $fromScreen:$fromDetails"
+        )
     }
 
     override fun logShadowClick() {

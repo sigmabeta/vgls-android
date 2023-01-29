@@ -126,7 +126,10 @@ abstract class BetterListFragment<
                 }
 
                 if (configGenerationJob.isActive) {
-                    hatchet.i(this.javaClass.simpleName, "${this::class.simpleName}: Canceling previous config generation job.")
+                    hatchet.i(
+                        this.javaClass.simpleName,
+                        "${this::class.simpleName}: Canceling previous config generation job."
+                    )
                     configGenerationJob.cancel()
                 }
 

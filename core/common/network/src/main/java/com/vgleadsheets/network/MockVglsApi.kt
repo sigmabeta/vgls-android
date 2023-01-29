@@ -89,7 +89,10 @@ class MockVglsApi(
             val possibleSongsSize = possibleSongs?.size ?: 0
             val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
 
-            // hatchet.w(this.javaClass.simpleName, "History entry $entryIndex will be possible song with index: $possibleSongIndex")
+            // hatchet.w(
+            // this.javaClass.simpleName,
+            // "History entry $entryIndex will be possible song with index: $possibleSongIndex"
+            // )
 
             val song = possibleSongs?.get(possibleSongIndex)
 
@@ -163,7 +166,7 @@ class MockVglsApi(
         }
 
         val gameCount = random.nextInt(maxGames)
-         hatchet.i(this.javaClass.simpleName, "Generating $gameCount games...")
+        hatchet.i(this.javaClass.simpleName, "Generating $gameCount games...")
         val games = ArrayList<VglsApiGame>(gameCount)
 
         for (gameIndex in 0 until gameCount) {
@@ -171,13 +174,13 @@ class MockVglsApi(
             games.add(game)
         }
 
-         hatchet.i(this.javaClass.simpleName, "Generated ${games.size} games...")
+        hatchet.i(this.javaClass.simpleName, "Generated ${games.size} games...")
 
         val filteredGames = games
             .distinctBy { it.game_id }
             .filter { it.songs.isNotEmpty() }
 
-         hatchet.i(this.javaClass.simpleName, "Returning ${filteredGames.size} games...")
+        hatchet.i(this.javaClass.simpleName, "Returning ${filteredGames.size} games...")
 
         return filteredGames
     }

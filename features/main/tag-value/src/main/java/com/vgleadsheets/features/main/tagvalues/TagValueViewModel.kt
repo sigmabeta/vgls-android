@@ -14,7 +14,7 @@ class TagValueViewModel @AssistedInject constructor(
     @Assisted initialState: TagValueState,
     private val repository: VglsRepository,
     private val hatchet: Hatchet,
-    ) : MavericksViewModel<TagValueState>(initialState) {
+) : MavericksViewModel<TagValueState>(initialState) {
     init {
         fetchTagKey()
         fetchTagValues()

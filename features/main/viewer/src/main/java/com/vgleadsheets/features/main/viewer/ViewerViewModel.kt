@@ -118,7 +118,7 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    fun startReportTimer() = withState {state ->
+    fun startReportTimer() = withState { state ->
         if (state.hasViewBeenReported) {
             return@withState
         }

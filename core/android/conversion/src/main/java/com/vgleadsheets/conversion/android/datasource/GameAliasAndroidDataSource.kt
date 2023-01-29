@@ -12,6 +12,7 @@ import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.alias.GameAlias
 
+@Suppress("MaxLineLength")
 class GameAliasAndroidDataSource(
     private val convert: GameAliasConverter,
     private val roomImpl: GameAliasRoomDao,
@@ -22,7 +23,8 @@ class GameAliasAndroidDataSource(
     gameConverter,
     roomImpl,
     otoRelatedRoomImpl
-), GameAliasDataSource {
+),
+    GameAliasDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList {

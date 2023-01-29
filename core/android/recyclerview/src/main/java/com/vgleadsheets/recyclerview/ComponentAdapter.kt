@@ -136,7 +136,10 @@ class ComponentAdapter(
 
         if (otherList?.size != this?.size) {
             if (BuildConfig.DEBUG) {
-                hatchet.v(this?.javaClass?.simpleName ?: "Unknown", "$owner: sizes differ - old size ${this?.size ?: 0}; new size ${otherList?.size ?: 0}")
+                hatchet.v(
+                    this?.javaClass?.simpleName ?: "Unknown",
+                    "$owner: sizes differ - old size ${this?.size ?: 0}; new size ${otherList?.size ?: 0}"
+                )
             }
             return false
         }
@@ -146,7 +149,10 @@ class ComponentAdapter(
 
             if (otherItem != item) {
                 if (BuildConfig.DEBUG) {
-                    hatchet.v(this.javaClass.simpleName, "$owner: items at $index differ - old item $item; new item $otherItem")
+                    hatchet.v(
+                        this.javaClass.simpleName,
+                        "$owner: items at $index differ - old item $item; new item $otherItem"
+                    )
                 }
                 return false
             }

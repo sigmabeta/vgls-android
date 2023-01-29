@@ -152,7 +152,7 @@ class DataSourceModule {
         roomImpl,
         relatedRoomImpl
     )
-    
+
     @Provides
     @Singleton
     fun songAliasDataSource(
