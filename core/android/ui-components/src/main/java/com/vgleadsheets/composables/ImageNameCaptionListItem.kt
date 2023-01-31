@@ -33,26 +33,30 @@ import com.vgleadsheets.themes.VglsMaterialMenu
 
 @Composable
 fun ImageNameCaptionListItem(
-    model: ImageNameCaptionListModel
+    model: ImageNameCaptionListModel,
+    modifier: Modifier
 ) {
     ImageNameCaptionListItem(
         model.name,
         model.caption,
         model.imageUrl,
         model.imagePlaceholder,
+        modifier,
         model.onClick
     )
 }
 
 @Composable
 fun ImageNameCaptionListItem(
-    model: SearchResultListModel
+    model: SearchResultListModel,
+    modifier: Modifier
 ) {
     ImageNameCaptionListItem(
         model.name,
         model.caption,
         model.imageUrl,
         model.imagePlaceholder,
+        modifier,
         model.onClick
     )
 }
@@ -63,10 +67,11 @@ fun ImageNameCaptionListItem(
     caption: String,
     imageUrl: String?,
     imagePlaceholder: Int,
+    modifier: Modifier,
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable(onClick = onClick)
@@ -176,6 +181,7 @@ private fun Sample() {
             R.drawable.ic_person_24dp,
             null,
             {}
-        )
+        ),
+        Modifier
     )
 }

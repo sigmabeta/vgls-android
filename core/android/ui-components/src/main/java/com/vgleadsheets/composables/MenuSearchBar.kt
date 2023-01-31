@@ -27,9 +27,12 @@ import com.vgleadsheets.themes.VglsMaterialMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuSearchBar(model: MenuSearchListModel) {
+fun MenuSearchBar(
+    model: MenuSearchListModel,
+    modifier: Modifier,
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -98,7 +101,8 @@ private fun SampleEmpty() {
             {},
             {},
             {}
-        )
+        ),
+        Modifier
     )
 }
 
@@ -110,6 +114,7 @@ private fun SampleText() {
             {},
             {},
             {}
-        )
+        ),
+        Modifier
     )
 }

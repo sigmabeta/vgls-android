@@ -30,10 +30,11 @@ import kotlin.random.Random
 @Composable
 fun LoadingListItem(
     withImage: Boolean,
-    seed: Long
+    seed: Long,
+    modifier: Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
@@ -165,7 +166,8 @@ private fun Menu() {
 private fun Sample(seed: Long) {
     LoadingListItem(
         withImage = false,
-        seed = seed
+        seed = seed,
+        modifier = Modifier
     )
 }
 
@@ -173,6 +175,7 @@ private fun Sample(seed: Long) {
 private fun SampleWithImage(seed: Long) {
     LoadingListItem(
         withImage = true,
-        seed = seed
+        seed = seed,
+        modifier = Modifier
     )
 }

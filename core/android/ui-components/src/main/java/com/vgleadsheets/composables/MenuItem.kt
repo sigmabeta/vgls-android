@@ -35,10 +35,11 @@ import com.vgleadsheets.themes.VglsMaterialMenu
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun MenuItem(
-    model: MenuItemListModel
+    model: MenuItemListModel,
+    modifier: Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
@@ -144,7 +145,8 @@ private fun Sample(selected: Boolean) {
             R.drawable.ic_refresh_24dp,
             {},
             selected
-        )
+        ),
+        Modifier
     )
 }
 

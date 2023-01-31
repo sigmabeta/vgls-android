@@ -1,5 +1,6 @@
 package com.vgleadsheets.features.main.hud.menu
 
+import com.vgleadsheets.components.ComposableModel
 import com.vgleadsheets.components.IconNameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
@@ -11,7 +12,7 @@ object SongDisplay {
         currentSong: Song?,
         viewerScreenVisible: Boolean,
         onClick: () -> Unit
-    ) = if (currentSong != null && hudMode != HudMode.SEARCH && viewerScreenVisible) {
+    ): List<ComposableModel> = if (currentSong != null && hudMode != HudMode.SEARCH && viewerScreenVisible) {
         listOf(
             IconNameCaptionListModel(
                 currentSong.id,

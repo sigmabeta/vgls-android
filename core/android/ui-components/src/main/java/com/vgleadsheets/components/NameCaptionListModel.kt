@@ -1,6 +1,7 @@
 package com.vgleadsheets.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.vgleadsheets.composables.NameCaptionListItem
 
 data class NameCaptionListModel(
@@ -9,10 +10,13 @@ data class NameCaptionListModel(
     val caption: String,
     val onClick: () -> Unit,
 ) : ListModel, ComposableModel {
-    override val layoutId = R.layout.composable_list_item
+    override val layoutId = R.layout.list_component_name_caption
 
     @Composable
-    override fun Content() {
-        NameCaptionListItem(model = this)
+    override fun Content(modifier: Modifier) {
+        NameCaptionListItem(
+            model = this,
+            modifier = modifier
+        )
     }
 }

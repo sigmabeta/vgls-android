@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -257,7 +258,7 @@ fun searchQuery(
 fun composeView(view: ComposeView, composableModel: ComposableModel) {
     view.setContent {
         VglsMaterial {
-            composableModel.Content()
+            composableModel.Content(modifier = Modifier)
         }
     }
 }
@@ -266,7 +267,7 @@ fun composeView(view: ComposeView, composableModel: ComposableModel) {
 fun composeViewInMenu(view: ComposeView, composableMenuModel: ComposableModel) {
     view.setContent {
         VglsMaterialMenu {
-            composableMenuModel.Content()
+            composableMenuModel.Content(modifier = Modifier)
         }
     }
 }

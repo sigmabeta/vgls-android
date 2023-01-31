@@ -3,6 +3,7 @@ package com.vgleadsheets.features.main.hud.menu
 import android.content.res.Resources
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Success
+import com.vgleadsheets.components.ComposableModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.features.main.hud.BuildConfig
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -22,7 +23,7 @@ object MenuOptions {
         onDebugClick: () -> Unit,
         onPerfClick: () -> Unit,
         resources: Resources,
-    ) = if (shouldShow) {
+    ): List<ComposableModel>  = if (shouldShow) {
         getFullOptionsList(
             refreshing,
             updateTime,

@@ -19,9 +19,12 @@ import com.vgleadsheets.composables.subs.MenuButton
 import com.vgleadsheets.themes.VglsMaterialMenu
 
 @Composable
-fun MenuTitleBar(model: MenuTitleBarListModel) {
+fun MenuTitleBar(
+    model: MenuTitleBarListModel,
+    modifier: Modifier,
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         MenuActionIcon(
@@ -63,11 +66,12 @@ private fun Default() {
 private fun Sample() {
     MenuTitleBar(
         MenuTitleBarListModel(
-            "E♭ Instr.",
+            "E♭ Instruments",
             R.drawable.ic_menu_24dp,
             {},
             {},
             {}
-        )
+        ),
+        Modifier
     )
 }

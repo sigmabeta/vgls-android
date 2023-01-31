@@ -26,52 +26,59 @@ import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterial
 import com.vgleadsheets.themes.VglsMaterialMenu
 
-
 @Composable
 fun EmptyListIndicator(
     model: ErrorStateListModel,
-) {
+    modifier: Modifier,
+    ) {
     EmptyListIndicator(
         explanation = model.errorString,
         iconId = R.drawable.ic_error_24dp,
         showCrossOut = false,
-        menu = false
+        menu = false,
+        modifier
     )
 }
 
 @Composable
 fun EmptyListIndicator(
     model: MenuErrorStateListModel,
+    modifier: Modifier,
 ) {
     EmptyListIndicator(
         explanation = model.errorString,
         iconId = R.drawable.ic_error_24dp,
         showCrossOut = false,
-        menu = true
+        menu = true,
+        modifier = modifier
     )
 }
 
 @Composable
 fun EmptyListIndicator(
     model: EmptyStateListModel,
+    modifier: Modifier,
 ) {
     EmptyListIndicator(
         explanation = model.explanation,
         iconId = model.iconId,
         showCrossOut = model.showCrossOut,
-        menu = false
+        menu = false,
+        modifier = modifier
     )
 }
 
 @Composable
 fun EmptyListIndicator(
     model: MenuEmptyStateListModel,
+    modifier: Modifier,
 ) {
     EmptyListIndicator(
         explanation = model.explanation,
         iconId = model.iconId,
         showCrossOut = model.showCrossOut,
-        menu = true
+        menu = true,
+        modifier = modifier
     )
 }
 
@@ -80,7 +87,8 @@ private fun EmptyListIndicator(
     explanation: String,
     iconId: Int,
     showCrossOut: Boolean,
-    menu: Boolean
+    menu: Boolean,
+    modifier: Modifier,
 ) {
     val color = if (menu) {
         MaterialTheme.colorScheme.onPrimary
@@ -90,7 +98,7 @@ private fun EmptyListIndicator(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Box(
             modifier = Modifier
@@ -242,7 +250,8 @@ private fun SampleNotMenu() {
             R.drawable.ic_album_24dp,
             "It's all part of the protocol, innit?",
             showCrossOut = true
-        )
+        ),
+        Modifier
     )
 }
 
@@ -253,7 +262,8 @@ private fun SampleMenu() {
             R.drawable.ic_person_24dp,
             "You hear that, Noah? Lanz wants something a little meatier.",
             showCrossOut = true
-        )
+        ),
+        Modifier
     )
 }
 
@@ -264,7 +274,8 @@ private fun SampleErrorNotMenu() {
         ErrorStateListModel(
             "oops",
             "Enemy's broken away from me!"
-        )
+        ),
+        Modifier
     )
 }
 
@@ -274,7 +285,8 @@ private fun SampleErrorMenu() {
         MenuErrorStateListModel(
             "oooops",
             "Queeen's wiiiings!"
-        )
+        ),
+        Modifier
     )
 }
 
@@ -284,8 +296,9 @@ private fun SampleMenuNoCross() {
         MenuEmptyStateListModel(
             R.drawable.ic_search_black_24dp,
             "I'm the girl with the gall.",
-            showCrossOut = false
-        )
+            showCrossOut = false,
+        ),
+        Modifier
     )
 }
 

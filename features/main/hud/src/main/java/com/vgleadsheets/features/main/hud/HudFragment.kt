@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
@@ -18,8 +22,8 @@ import com.vgleadsheets.features.main.hud.databinding.FragmentHudBinding
 import com.vgleadsheets.features.main.hud.menu.HudVisibility
 import com.vgleadsheets.features.main.hud.menu.MenuRenderer
 import com.vgleadsheets.perf.tracking.common.PerfSpec
-import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.storage.Storage
+import com.vgleadsheets.themes.VglsMaterialMenu
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
@@ -43,8 +47,6 @@ class HudFragment : VglsFragment() {
         get() = _binding!!
 
     private val viewModel: HudViewModel by activityViewModel()
-
-    private lateinit var menuAdapter: ComponentAdapter
 
     fun onAppBarButtonClick() = withState(viewModel) {
         clicks.appBarButton(it)
@@ -77,17 +79,10 @@ class HudFragment : VglsFragment() {
         bottomSheetBehavior = BottomSheetBehavior.from(screen.frameBottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        val recyclerBottom = screen.recyclerBottom
-
-        menuAdapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
-        recyclerBottom.adapter = menuAdapter
-        recyclerBottom.layoutManager = LinearLayoutManager(context)
-
-        menuAdapter.resources = resources
-
         screen.shadowHud.setOnClickListener { clicks.shadow() }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Suppress("ComplexMethod", "LongMethod")
     override fun invalidate() = withState(viewModel) { state ->
         HudVisibility.setToLookRightIdk(
@@ -120,10 +115,24 @@ class HudFragment : VglsFragment() {
             resources
         )
 
-        menuAdapter.submitListAnimateResizeContainer(
-            menuItems,
-            screen.frameBottomSheet as ViewGroup
-        )
+        screen.composeBottom.setContent {
+            VglsMaterialMenu {
+                LazyColumn(
+                    modifier = Modifier
+                        .animateContentSize()
+                ) {
+                    items(
+                        items = menuItems.toTypedArray(),
+                        key = { it.dataId },
+                        contentType = { it.layoutId }
+                    ) {
+                        it.Content(
+                            modifier = Modifier.animateItemPlacement()
+                        )
+                    }
+                }
+            }
+        }
 
         if (state.digest is Loading) {
             perfTracker.cancelAll()

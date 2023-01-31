@@ -11,42 +11,72 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.components.IconNameCaptionListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.themes.VglsMaterialMenu
 
 @Composable
-fun NameCaptionListItem(
-    model: NameCaptionListModel,
+fun IconNameCaptionListItem(
+    model: IconNameCaptionListModel,
+    modifier: Modifier
+) {
+    IconNameCaptionListItem(
+        model.name,
+        model.caption,
+        model.iconId,
+        modifier,
+        model.onClick
+    )
+}
+
+@Composable
+fun IconNameCaptionListItem(
+    name: String,
+    caption: String,
+    iconId: Int,
     modifier: Modifier,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .clickable(onClick = onClick)
             .padding(
                 horizontal = dimensionResource(id = R.dimen.margin_side)
             )
-            .clickable(
-                onClick = model.onClick,
-            )
     ) {
+        Icon(
+            painter = painterResource(id = iconId),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier
+                .size(48.dp)
+                .padding(8.dp)
+                .align(Alignment.CenterVertically)
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
             Text(
-                text = model.name,
+                text = name,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
@@ -61,7 +91,7 @@ fun NameCaptionListItem(
             )
 
             Text(
-                text = model.caption,
+                text = caption,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
@@ -102,15 +132,29 @@ private fun Dark() {
     }
 }
 
+@Preview
+@Composable
+private fun Menu() {
+    VglsMaterialMenu {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            Sample()
+        }
+    }
+}
+
 @Composable
 private fun Sample() {
-    NameCaptionListItem(
-        NameCaptionListModel(
+    IconNameCaptionListItem(
+        IconNameCaptionListModel(
             1234L,
-            "Xenoblade Chronicles 3",
-            "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
-            {}
-        ),
+            "Moebius Battle",
+            "ACE+",
+            R.drawable.ic_baseline_music_note_24
+        ) {},
         Modifier
     )
 }

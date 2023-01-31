@@ -18,12 +18,15 @@ import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterialMenu
 
 @Composable
-fun MoreResultsLink(model: MenuSearchMoreListModel) {
+fun MoreResultsLink(
+    model: MenuSearchMoreListModel,
+    modifier: Modifier,
+) {
     Text(
         text = model.text,
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.onPrimary,
-        modifier = Modifier
+        modifier = modifier
             .clickable(onClick = model.onClick)
             .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
             .padding(start = 56.dp)
@@ -50,7 +53,8 @@ private fun Default() {
                     R.drawable.ic_person_24dp,
                     null,
                     {}
-                )
+                ),
+                Modifier
             )
             Sample()
         }
@@ -63,6 +67,7 @@ private fun Sample() {
         MenuSearchMoreListModel(
             "Show 69 more games...",
             {}
-        )
+        ),
+        Modifier
     )
 }
