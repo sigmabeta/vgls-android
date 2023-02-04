@@ -29,8 +29,10 @@ import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.R
+import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.composables.LabelCheckboxItem
 import com.vgleadsheets.composables.LabelDropdownListItem
+import com.vgleadsheets.composables.LabelNoThingyItem
 import com.vgleadsheets.composables.LabelRatingListItem
 import com.vgleadsheets.composables.LabelValueListItem
 import com.vgleadsheets.themes.VglsMaterial
@@ -112,6 +114,15 @@ private fun Menu() {
 @Composable
 private fun Sample() {
     Column {
+        LabelNoThingyItem(
+            model = SingleTextListModel(
+                1234L,
+                "Paths to the future",
+                {}
+            ),
+            modifier = Modifier
+        )
+
         LabelValueListItem(
             LabelValueListModel(
                 "Days which are training days",

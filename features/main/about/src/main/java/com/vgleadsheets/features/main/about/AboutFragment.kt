@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.existingViewModel
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
@@ -54,7 +55,7 @@ class AboutFragment :
 
     override fun getTrackingScreen() = TrackingScreen.ABOUT
 
-    private fun constructList() = listOf(
+    private fun constructList(): List<ListModel> = listOf(
         SectionHeaderListModel(
             getString(R.string.label_section_about_app)
         ),
