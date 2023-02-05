@@ -11,7 +11,6 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -147,12 +146,6 @@ fun bindImageNameCaptionLoading(view: ConstraintLayout, model: LoadingImageNameC
 @BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
     view.pulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
-        .start()
-}
-
-@BindingAdapter("model")
-fun bindCheckableLoading(view: LinearLayout, model: LoadingCheckableListModel) {
-    view.pulseAnimator(model.loadPositionOffset * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
 
