@@ -23,8 +23,9 @@ import com.vgleadsheets.themes.VglsMaterial
 fun CrossfadeImage(
     imageUrl: String?,
     imagePlaceholder: Int,
+    modifier: Modifier
 ) {
-    val bgModifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
+    val bgModifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)
 
     if (imageUrl == null) {
         Image(
@@ -87,7 +88,7 @@ private fun Dark() {
 
 @Preview
 @Composable
-fun LightGame() {
+private fun LightGame() {
     VglsMaterial {
         Box(
             modifier = Modifier.background(
@@ -101,7 +102,7 @@ fun LightGame() {
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun DarkGame() {
+private fun DarkGame() {
     VglsMaterial {
         Box(
             modifier = Modifier.background(
@@ -121,6 +122,7 @@ private fun Sample() {
         CrossfadeImage(
             imageUrl = "doesn't matter",
             imagePlaceholder = R.drawable.ic_person_24dp,
+            modifier = Modifier,
         )
     }
 }
@@ -132,7 +134,8 @@ private fun SampleGame() {
     ) {
         CrossfadeImage(
             imageUrl = "doesn't matter",
-            imagePlaceholder = R.drawable.img_preview_game
+            imagePlaceholder = R.drawable.img_preview_game,
+            modifier = Modifier,
         )
     }
 }

@@ -31,7 +31,7 @@ import com.vgleadsheets.themes.VglsMaterialMenu
 fun bindSheetImage(
     view: ImageView,
     sheetUrl: String,
-    listener: SheetListModel.ImageListener
+    listener: SheetPageListModel.ImageListener
 ) {
     view.setOnClickListener { listener.onClicked() }
 

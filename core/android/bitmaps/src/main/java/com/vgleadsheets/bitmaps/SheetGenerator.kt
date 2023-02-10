@@ -1,0 +1,227 @@
+package com.vgleadsheets.bitmaps
+
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
+import androidx.core.content.res.ResourcesCompat
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
+
+@Singleton
+class SheetGenerator @Inject constructor(
+    private val context: Context,
+    @Named("WindowWidth") private val windowWidth: Int,
+    @Named("VglsUrl") private val vglsUrl: String
+) {
+    private val textPaint =
+        Paint().apply {
+            isAntiAlias = true
+            color = android.graphics.Color.BLACK
+        }
+
+    fun generateLoadingSheet(
+        title: String,
+        transposition: String,
+        gameName: String,
+        composers: List<String>,
+    ): Bitmap {
+        val scalingFactor = windowWidth / DEFAULT_SHEET_WIDTH
+        val scaledHeight = scalingFactor * DEFAULT_SHEET_HEIGHT
+
+        val bitmap = Bitmap.createBitmap(
+            windowWidth,
+            scaledHeight.toInt(),
+            Bitmap.Config.ARGB_8888
+        )
+
+        renderLoadingImage(
+            context,
+            bitmap,
+            scalingFactor,
+            title,
+            gameName,
+            composers,
+            transposition,
+        )
+
+        return bitmap
+    }
+
+    private fun renderLoadingImage(
+        context: Context,
+        bitmap: Bitmap,
+        scalingFactor: Float,
+        title: String,
+        gameName: String,
+        composers: List<String>,
+        transposition: String,
+    ) {
+        val canvas = Canvas(bitmap)
+        val centerXpos = (canvas.width / 2) / scalingFactor
+
+        textPaint.typeface = ResourcesCompat.getFont(context, R.font.musejazz_text)
+
+        canvas.drawText(
+            text = title,
+            xPos = centerXpos,
+            yPos = Y_POS_SHEET_TITLE,
+            scalingFactor = scalingFactor,
+            textSize = TEXT_SIZE_SHEET_TITLE,
+            textAlign = Paint.Align.CENTER
+        )
+
+        canvas.drawText(
+            text = gameName.prependIndent(PREFIX_GAME_NAME),
+            xPos = centerXpos,
+            yPos = Y_POS_GAME_NAME,
+            scalingFactor = scalingFactor,
+            textSize = TEXT_SIZE_GAME_NAME,
+            textAlign = Paint.Align.CENTER
+        )
+
+        canvas.drawText(
+            text = transposition,
+            xPos = X_POS_TRANSPOSITION,
+            yPos = Y_POS_TRANSPOSITION,
+            scalingFactor = scalingFactor,
+            textSize = TEXT_SIZE_TRANSPOSITION,
+            textAlign = Paint.Align.LEFT
+        )
+
+        canvas.drawText(
+            text = composers
+                .take(2)
+                .joinToString(", ")
+                .prependIndent(PREFIX_COMPOSERS),
+            xPos = X_POS_COMPOSERS,
+            yPos = Y_POS_COMPOSERS,
+            scalingFactor = scalingFactor,
+            textSize = TEXT_SIZE_COMPOSERS,
+            textAlign = Paint.Align.RIGHT
+        )
+
+        canvas.drawText(
+            text = TEXT_NOW_LOADING,
+            xPos = X_POS_COMPOSERS,
+            yPos = Y_POS_TRANSCRIBER,
+            scalingFactor = scalingFactor,
+            textSize = TEXT_SIZE_COMPOSERS,
+            textAlign = Paint.Align.RIGHT
+        )
+
+        canvas.drawText(
+            text = vglsUrl,
+            xPos = centerXpos,
+            yPos = Y_POS_COPYRIGHT,
+            scalingFactor = scalingFactor,
+            textSize = TEXT_SIZE_COPYRIGHT,
+            textAlign = Paint.Align.CENTER
+        )
+
+        renderBlankStaves(
+            canvas,
+            scalingFactor
+        )
+    }
+
+    private fun renderBlankStaves(
+        canvas: Canvas,
+        scalingFactor: Float
+    ) {
+        val blankStaffBitmap = BitmapFactory.decodeResource(
+            context.resources,
+            R.drawable.img_leadsheet_single_system_blank,
+            BitmapFactory.Options().apply {
+                inScaled = false
+            }
+        )
+
+        val firstStaffXPosition = (X_POS_FIRST_STAFF * scalingFactor).toInt()
+        val firstStaffYPosition = (Y_POS_FIRST_STAFF * scalingFactor).toInt()
+        val staffYDisplacement = (Y_DISPLACEMENT_STAFF * scalingFactor).toInt()
+
+        val scaledStaffWidth = (WIDTH_STAFF * scalingFactor).toInt()
+        val scaledStaffHeight = (HEIGHT_STAFF * scalingFactor).toInt()
+
+        for (staffNumber in 0 until 10) {
+            val staffYPos = firstStaffYPosition + (staffNumber * staffYDisplacement)
+
+            val destRect = Rect(
+                firstStaffXPosition,
+                staffYPos,
+                (firstStaffXPosition + scaledStaffWidth),
+                (staffYPos + scaledStaffHeight)
+            )
+
+            canvas.drawBitmap(
+                blankStaffBitmap,
+                null,
+                destRect,
+                null
+            )
+        }
+    }
+
+    private fun Canvas.drawText(
+        text: String,
+        xPos: Float,
+        yPos: Float,
+        scalingFactor: Float,
+        textSize: Float,
+        textAlign: Paint.Align
+    ) {
+        textPaint.textSize = textSize * scalingFactor
+        textPaint.textAlign = textAlign
+
+        drawText(
+            text,
+            xPos * scalingFactor,
+            yPos * scalingFactor,
+            textPaint
+        )
+    }
+
+    companion object {
+        const val PREFIX_GAME_NAME = "from "
+        const val PREFIX_COMPOSERS = "Composed by "
+
+        const val TEXT_NOW_LOADING = "Please wait, now loading..."
+
+        const val DEFAULT_SHEET_WIDTH = 2550.0f
+        const val DEFAULT_SHEET_HEIGHT = 3300.0f
+
+        // const val
+
+        const val TEXT_SIZE_SHEET_TITLE = 116.0f
+        const val TEXT_SIZE_GAME_NAME = 58.0f
+        const val TEXT_SIZE_TRANSPOSITION = 80.0f
+
+        const val TEXT_SIZE_COMPOSERS = 50.0f
+        const val TEXT_SIZE_COPYRIGHT = 34.0f
+
+        const val Y_POS_SHEET_TITLE = 210.0f
+        const val Y_POS_GAME_NAME = 282.0f
+        const val Y_POS_TRANSPOSITION = 175.0f
+
+        const val Y_POS_COMPOSERS = 360.0f
+        const val Y_POS_TRANSCRIBER = 435.0f
+        const val Y_POS_COPYRIGHT = 3232.0f
+
+        const val X_POS_COMPOSERS = 2430.0f
+        const val X_POS_TRANSPOSITION = 120.0f
+
+        const val X_POS_FIRST_STAFF = 118.0f
+        const val Y_POS_FIRST_STAFF = 540.0f
+
+        const val Y_DISPLACEMENT_STAFF = 270
+
+        const val WIDTH_STAFF = 2313
+        const val HEIGHT_STAFF = 178
+    }
+}
+
+

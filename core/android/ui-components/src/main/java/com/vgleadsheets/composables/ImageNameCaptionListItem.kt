@@ -87,6 +87,7 @@ fun ImageNameCaptionListItem(
             CrossfadeImage(
                 imageUrl = imageUrl,
                 imagePlaceholder = imagePlaceholder,
+                modifier = modifier
             )
         }
 

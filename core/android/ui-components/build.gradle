@@ -12,6 +12,7 @@ android {
 
 dependencies {
     implementation project(':core:android:animation')
+    implementation project(':core:android:bitmaps')
     implementation project(':core:android:images')
     implementation project(':core:android:ui-core')
     implementation project(':core:android:vectors')

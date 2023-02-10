@@ -26,7 +26,11 @@ import dagger.android.ContributesAndroidInjector
 @Module
 internal abstract class ActivityBindingModule {
     @ActivityScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(
+        modules = [
+            DisplayMetricsModule::class
+        ]
+    )
     internal abstract fun contributeMainActivityInjector(): MainActivity
 
     @FragmentScope

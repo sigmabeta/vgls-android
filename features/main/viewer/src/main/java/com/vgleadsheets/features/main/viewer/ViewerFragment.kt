@@ -24,7 +24,7 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
-import com.vgleadsheets.components.SheetListModel
+import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -43,7 +43,7 @@ import javax.inject.Named
 
 class ViewerFragment :
     VglsFragment(),
-    SheetListModel.ImageListener {
+    SheetPageListModel.ImageListener {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
@@ -295,13 +295,19 @@ class ViewerFragment :
         }
 
         val listComponents = (1..pageCount).map { pageNumber ->
-            SheetListModel(
+            SheetPageListModel(
                 Page.generateImageUrl(
                     baseImageUrl,
                     selectedPart.apiId,
                     song.filename,
                     pageNumber
                 ),
+                pageNumber,
+                song.name,
+                selectedPart.apiId,
+                song.gameName,
+                song.composers?.map { it.name },
+                song.id,
                 this
             )
         }

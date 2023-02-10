@@ -143,6 +143,8 @@ dependencies {
     implementation project(":core:common:debug")
     implementation project(":core:common:network")
 
+    implementation "androidx.window:window:$window_version"
+
     // Debug helper
     implementation "com.facebook.stetho:stetho:$stetho_version"
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"

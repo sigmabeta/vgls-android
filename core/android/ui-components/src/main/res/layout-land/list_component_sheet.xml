@@ -6,7 +6,7 @@
 
         <variable
             name="toBind"
-            type="com.vgleadsheets.components.SheetListModel" />
+            type="com.vgleadsheets.components.SheetPageListModel" />
 
     </data>
 
