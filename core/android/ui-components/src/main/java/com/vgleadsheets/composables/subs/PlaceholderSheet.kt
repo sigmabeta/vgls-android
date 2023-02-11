@@ -1,6 +1,5 @@
 package com.vgleadsheets.composables.subs
 
-import android.graphics.Bitmap
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -19,21 +18,23 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.vgleadsheets.bitmaps.SheetGenerator
+import com.vgleadsheets.components.SheetPageListModel
+import com.vgleadsheets.images.PagePreview
 import com.vgleadsheets.themes.VglsMaterial
 
 @Composable
 @Suppress("UNUSED_PARAMETER")
 fun PlaceholderSheet(
-    bitmap: Bitmap,
+    pagePreview: PagePreview,
     seed: Long,
-    modifier: Modifier
+    modifier: Modifier,
+    eventListener: SheetPageListModel.ImageListener
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val animatedAlphaValue by infiniteTransition.animateFloat(
@@ -61,8 +62,8 @@ fun PlaceholderSheet(
                 .aspectRatio(0.77272f)
                 .background(Color.White)
         ) {
-            Image(
-                bitmap = bitmap.asImageBitmap(),
+            AsyncImage(
+                model = pagePreview,
                 contentScale = ContentScale.Fit,
                 contentDescription = null,
                 modifier = modifier
@@ -159,55 +160,35 @@ private fun PortraitLoadingArms() {
 
 @Composable
 private fun SampleLoadingKirby() {
-    val dm = LocalContext.current.resources.displayMetrics
-    val widthPixels = dm.widthPixels
-
-    val generator = SheetGenerator(
-        LocalContext.current,
-        widthPixels,
-        "https://www.vgleadsheets.com"
-    )
-
-    val bitmap = generator.generateLoadingSheet(
-        title = "A Trip to Alivel Mall",
-        transposition = "C",
-        gameName = "Kirby and the Forgotten Land",
-        composers = listOf(
-            "Hirokazu Ando",
-        ),
-    )
-
     PlaceholderSheet(
-        bitmap = bitmap,
+        pagePreview = PagePreview(
+            "A Trip to Alivel Mall",
+            "C",
+            "Kirby and the Forgotten Land",
+            listOf(
+                "Hirokazu Ando",
+            )
+        ),
         seed = 1234L,
         modifier = Modifier,
+        eventListener = NOOP_LISTENER,
     )
 }
 
 @Composable
 private fun SampleLoadingArms() {
-    val dm = LocalContext.current.resources.displayMetrics
-    val widthPixels = dm.widthPixels
-
-    val generator = SheetGenerator(
-        LocalContext.current,
-        widthPixels,
-        "https://www.vgleadsheets.com"
-    )
-
-    val bitmap = generator.generateLoadingSheet(
-        title = "Grand Prix (Title)",
-        transposition = "Vocals",
-        gameName = "Arms",
-        composers = listOf(
-            "Atsuko Asahi",
-            "Yasuaki Iwata"
-        ),
-    )
-
     PlaceholderSheet(
-        bitmap = bitmap,
+        pagePreview = PagePreview(
+            "Grand Prix (Title)",
+            "Vocals",
+            "Arms",
+            listOf(
+                "Atsuko Asahi",
+                "Yasuaki Iwata"
+            )
+        ),
         seed = 1234L,
         modifier = Modifier,
+        eventListener = NOOP_LISTENER,
     )
 }

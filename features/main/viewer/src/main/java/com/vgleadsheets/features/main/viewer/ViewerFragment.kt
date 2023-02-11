@@ -87,10 +87,10 @@ class ViewerFragment :
 
     override fun onLoadStarted() {
         perfTracker.onTitleLoaded(getPerfSpec())
+        perfTracker.onTransitionStarted(getPerfSpec())
     }
 
     override fun onLoadComplete() {
-        perfTracker.onTransitionStarted(getPerfSpec())
         perfTracker.onPartialContentLoad(getPerfSpec())
         perfTracker.onFullContentLoad(getPerfSpec())
     }
@@ -211,6 +211,7 @@ class ViewerFragment :
             is Fail -> showError(
                 song.error.message ?: song.error::class.simpleName ?: "Unknown Error"
             )
+
             is Success -> showSong(viewerState.song(), selectedPart)
             is Loading -> Unit
             Uninitialized -> Unit
@@ -306,7 +307,7 @@ class ViewerFragment :
                 song.name,
                 selectedPart.apiId,
                 song.gameName,
-                song.composers?.map { it.name },
+                song.composers?.map { it.name } ?: listOf("Unknown"),
                 song.id,
                 this
             )

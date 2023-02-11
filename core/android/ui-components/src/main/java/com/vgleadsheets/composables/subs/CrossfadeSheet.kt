@@ -1,65 +1,77 @@
 package com.vgleadsheets.composables.subs
 
-import android.graphics.Bitmap
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.vgleadsheets.bitmaps.SheetGenerator
-import com.vgleadsheets.components.R
+import coil.size.Size
+import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.components.SheetPageListModel
+import com.vgleadsheets.composables.EmptyListIndicator
+import com.vgleadsheets.images.PagePreview
 import com.vgleadsheets.themes.VglsMaterial
 
 @Composable
 fun CrossfadeSheet(
     imageUrl: String,
-    loadingBitmap: Bitmap,
+    pagePreview: PagePreview,
     sheetId: Long,
-    imagePlaceholder: Int? = null,
-    forceLoadingState: Boolean = false,
-    onClick: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    eventListener: SheetPageListModel.ImageListener
 ) {
-    Crossfade(targetState = forceLoadingState) {
-        if (it) {
-            PlaceholderSheet(
-                loadingBitmap,
-                sheetId,
-                modifier.clickable(onClick = onClick),
-            )
-        } else {
-            val painter = rememberAsyncImagePainter(
-                model = with(ImageRequest.Builder(LocalContext.current)) {
-                    if (imagePlaceholder != null) {
-                        placeholder(imagePlaceholder)
-                    }
-                    data(imageUrl)
-                    build()
+    eventListener.onLoadStarted()
+    val painter = rememberAsyncImagePainter(
+        model = with(ImageRequest.Builder(LocalContext.current)) {
+            data(imageUrl)
+            size(Size.ORIGINAL)
+            build()
+        }
+    )
 
-                }
-            )
+    Crossfade(targetState = painter.state) {
 
-            Image(
-                painter = painter,
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = modifier
-                    .fillMaxSize()
-                    .clickable(onClick = onClick),
-            )
+        when (it) {
+            is AsyncImagePainter.State.Loading ->
+                PlaceholderSheet(
+                    pagePreview = pagePreview,
+                    seed = sheetId,
+                    eventListener = eventListener,
+                    modifier = modifier,
+                )
+
+            is AsyncImagePainter.State.Success -> {
+                eventListener.onLoadComplete()
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = modifier
+                        .fillMaxSize(),
+                )
+            }
+
+            is AsyncImagePainter.State.Error -> {
+                println("Failed to load image: ${(painter.state as AsyncImagePainter.State.Error).result.throwable.message}")
+                EmptyListIndicator(
+                    ErrorStateListModel(
+                        imageUrl,
+                        "Unable loading this sheet. Check your network connection and try again?"
+                    ),
+                    modifier
+                )
+            }
+
+            else -> {}
         }
     }
 }
@@ -94,64 +106,43 @@ private fun PortraitLoading() {
 
 @Composable
 private fun SampleLoading() {
-    var loading by remember { mutableStateOf(true) }
-
-    val dm = LocalContext.current.resources.displayMetrics
-    val widthPixels = dm.widthPixels
-
-    val generator = SheetGenerator(
-        LocalContext.current,
-        widthPixels,
-        "https://www.vgleadsheets.com"
-    )
-
-    val bitmap = generator.generateLoadingSheet(
-        title = "A Trip to Alivel Mall",
-        transposition = "C",
-        gameName = "Kirby and the Forgotten Land",
-        composers = listOf(
-            "Hirokazu Ando",
-        ),
-    )
-
     CrossfadeSheet(
         imageUrl = "Doesn't matter",
-        loadingBitmap = bitmap,
-        imagePlaceholder = R.drawable.img_preview_sheet_kirby,
+        pagePreview = PagePreview(
+            "A Trip to Alivel Mall",
+            "C",
+            "Kirby and the Forgotten Land",
+            listOf(
+                "Hirokazu Ando",
+            )
+        ),
         sheetId = 1234L,
-        forceLoadingState = loading,
-        onClick = { loading = !loading },
         modifier = Modifier,
+        eventListener = NOOP_LISTENER,
     )
 }
 
 @Composable
 private fun SampleSheet() {
-    val dm = LocalContext.current.resources.displayMetrics
-    val widthPixels = dm.widthPixels
-
-    val generator = SheetGenerator(
-        LocalContext.current,
-        widthPixels,
-        "https://www.vgleadsheets.com"
-    )
-
-    val bitmap = generator.generateLoadingSheet(
-        title = "A Trip to Alivel Mall",
-        transposition = "C",
-        gameName = "Kirby and the Forgotten Land",
-        composers = listOf(
-            "Hirokazu Ando",
-        ),
-    )
-
     CrossfadeSheet(
         imageUrl = "nope",
-        loadingBitmap = bitmap,
-        imagePlaceholder = R.drawable.img_preview_sheet_kirby,
+        pagePreview = PagePreview(
+            "A Trip to Alivel Mall",
+            "C",
+            "Kirby and the Forgotten Land",
+            listOf(
+                "Hirokazu Ando",
+            )
+        ),
         sheetId = 1234L,
-        forceLoadingState = false,
-        onClick = { },
         modifier = Modifier,
+        eventListener = NOOP_LISTENER,
     )
+}
+
+internal val NOOP_LISTENER = object : SheetPageListModel.ImageListener {
+    override fun onClicked() {}
+    override fun onLoadStarted() {}
+    override fun onLoadComplete() {}
+    override fun onLoadFailed(imageUrl: String, ex: Exception?) {}
 }

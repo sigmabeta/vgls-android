@@ -15,7 +15,6 @@ data class ViewerState(
     val activeJamId: Long? = null,
     val activeJamSheetId: Long? = null,
     val jamCancellationReason: String? = null,
-    val hasViewBeenReported: Boolean = false,
 ) : MavericksState {
     constructor(viewerArgs: ViewerArgs) : this(viewerArgs.jamId, viewerArgs.songId)
 }

@@ -6,6 +6,10 @@ dependencies {
 
     api "io.coil-kt:coil:$coil_version"
     api "io.coil-kt:coil-compose:2.2.2"
+
+    api project(":core:android:bitmaps")
+
+    implementation project(":core:common:model")
 }
 
 android {

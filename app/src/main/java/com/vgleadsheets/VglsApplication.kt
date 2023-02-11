@@ -2,19 +2,24 @@ package com.vgleadsheets
 
 import android.graphics.Bitmap
 import android.os.Build
+import coil.ImageLoader
+import coil.ImageLoaderFactory
 import com.airbnb.mvrx.Mavericks
 import com.facebook.stetho.Stetho
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import com.vgleadsheets.di.AppModule
 import com.vgleadsheets.di.DaggerAppComponent
+import com.vgleadsheets.images.SheetPreviewFetcher
 import com.vgleadsheets.logging.Hatchet
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class VglsApplication : DaggerApplication(), HasAndroidInjector {
+class VglsApplication : DaggerApplication(),
+    HasAndroidInjector,
+    ImageLoaderFactory {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
@@ -23,6 +28,9 @@ class VglsApplication : DaggerApplication(), HasAndroidInjector {
 
     @Inject
     lateinit var hatchet: Hatchet
+
+    @Inject
+    lateinit var sheetPreviewFetcherFactory: SheetPreviewFetcher.Factory
 
     override fun onCreate() {
         super.onCreate()
@@ -52,4 +60,10 @@ class VglsApplication : DaggerApplication(), HasAndroidInjector {
         .create(AppModule(this))
 
     override fun androidInjector() = dispatchingAndroidInjector
+
+    override fun newImageLoader() = ImageLoader.Builder(this)
+        .components {
+            add(sheetPreviewFetcherFactory)
+        }
+        .build()
 }

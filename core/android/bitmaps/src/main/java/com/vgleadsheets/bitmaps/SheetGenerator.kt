@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @Singleton
 class SheetGenerator @Inject constructor(
     private val context: Context,
-    @Named("WindowWidth") private val windowWidth: Int,
     @Named("VglsUrl") private val vglsUrl: String
 ) {
     private val textPaint =
@@ -24,16 +23,17 @@ class SheetGenerator @Inject constructor(
         }
 
     fun generateLoadingSheet(
+        width: Int,
         title: String,
         transposition: String,
         gameName: String,
         composers: List<String>,
     ): Bitmap {
-        val scalingFactor = windowWidth / DEFAULT_SHEET_WIDTH
+        val scalingFactor = width / DEFAULT_SHEET_WIDTH
         val scaledHeight = scalingFactor * DEFAULT_SHEET_HEIGHT
 
         val bitmap = Bitmap.createBitmap(
-            windowWidth,
+            width,
             scaledHeight.toInt(),
             Bitmap.Config.ARGB_8888
         )
