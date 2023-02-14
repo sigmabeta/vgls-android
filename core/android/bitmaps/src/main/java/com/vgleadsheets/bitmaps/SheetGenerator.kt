@@ -7,20 +7,34 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import androidx.core.content.res.ResourcesCompat
+import com.vgleadsheets.logging.Hatchet
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlin.system.measureTimeMillis
 
 @Singleton
 class SheetGenerator @Inject constructor(
     private val context: Context,
+    private val hatchet: Hatchet,
     @Named("VglsUrl") private val vglsUrl: String
 ) {
     private val textPaint =
         Paint().apply {
             isAntiAlias = true
             color = android.graphics.Color.BLACK
+            typeface = ResourcesCompat.getFont(context, R.font.musejazz_text)
         }
+
+    private val blankStaffBitmap by lazy {
+        BitmapFactory.decodeResource(
+            context.resources,
+            R.drawable.img_leadsheet_single_system_blank,
+            BitmapFactory.Options().apply {
+                inScaled = false
+            }
+        )
+    }
 
     fun generateLoadingSheet(
         width: Int,
@@ -38,16 +52,19 @@ class SheetGenerator @Inject constructor(
             Bitmap.Config.ARGB_8888
         )
 
-        renderLoadingImage(
-            context,
-            bitmap,
-            scalingFactor,
-            title,
-            gameName,
-            composers,
-            transposition,
-        )
+        val millis = measureTimeMillis {
+            renderLoadingImage(
+                context,
+                bitmap,
+                scalingFactor,
+                title,
+                gameName,
+                composers,
+                transposition,
+            )
+        }
 
+        hatchet.v(this.javaClass.simpleName, "Bitmap generation took $millis ms")
         return bitmap
     }
 
@@ -63,83 +80,80 @@ class SheetGenerator @Inject constructor(
         val canvas = Canvas(bitmap)
         val centerXpos = (canvas.width / 2) / scalingFactor
 
-        textPaint.typeface = ResourcesCompat.getFont(context, R.font.musejazz_text)
+        val textRenderingMillis = measureTimeMillis {
+            canvas.drawText(
+                text = title,
+                xPos = centerXpos,
+                yPos = Y_POS_SHEET_TITLE,
+                scalingFactor = scalingFactor,
+                textSize = TEXT_SIZE_SHEET_TITLE,
+                textAlign = Paint.Align.CENTER
+            )
 
-        canvas.drawText(
-            text = title,
-            xPos = centerXpos,
-            yPos = Y_POS_SHEET_TITLE,
-            scalingFactor = scalingFactor,
-            textSize = TEXT_SIZE_SHEET_TITLE,
-            textAlign = Paint.Align.CENTER
-        )
+            canvas.drawText(
+                text = gameName.prependIndent(PREFIX_GAME_NAME),
+                xPos = centerXpos,
+                yPos = Y_POS_GAME_NAME,
+                scalingFactor = scalingFactor,
+                textSize = TEXT_SIZE_GAME_NAME,
+                textAlign = Paint.Align.CENTER
+            )
 
-        canvas.drawText(
-            text = gameName.prependIndent(PREFIX_GAME_NAME),
-            xPos = centerXpos,
-            yPos = Y_POS_GAME_NAME,
-            scalingFactor = scalingFactor,
-            textSize = TEXT_SIZE_GAME_NAME,
-            textAlign = Paint.Align.CENTER
-        )
+            canvas.drawText(
+                text = transposition,
+                xPos = X_POS_TRANSPOSITION,
+                yPos = Y_POS_TRANSPOSITION,
+                scalingFactor = scalingFactor,
+                textSize = TEXT_SIZE_TRANSPOSITION,
+                textAlign = Paint.Align.LEFT
+            )
 
-        canvas.drawText(
-            text = transposition,
-            xPos = X_POS_TRANSPOSITION,
-            yPos = Y_POS_TRANSPOSITION,
-            scalingFactor = scalingFactor,
-            textSize = TEXT_SIZE_TRANSPOSITION,
-            textAlign = Paint.Align.LEFT
-        )
+            canvas.drawText(
+                text = composers
+                    .take(2)
+                    .joinToString(", ")
+                    .prependIndent(PREFIX_COMPOSERS),
+                xPos = X_POS_COMPOSERS,
+                yPos = Y_POS_COMPOSERS,
+                scalingFactor = scalingFactor,
+                textSize = TEXT_SIZE_COMPOSERS,
+                textAlign = Paint.Align.RIGHT
+            )
 
-        canvas.drawText(
-            text = composers
-                .take(2)
-                .joinToString(", ")
-                .prependIndent(PREFIX_COMPOSERS),
-            xPos = X_POS_COMPOSERS,
-            yPos = Y_POS_COMPOSERS,
-            scalingFactor = scalingFactor,
-            textSize = TEXT_SIZE_COMPOSERS,
-            textAlign = Paint.Align.RIGHT
-        )
+            canvas.drawText(
+                text = TEXT_NOW_LOADING,
+                xPos = X_POS_COMPOSERS,
+                yPos = Y_POS_TRANSCRIBER,
+                scalingFactor = scalingFactor,
+                textSize = TEXT_SIZE_COMPOSERS,
+                textAlign = Paint.Align.RIGHT
+            )
 
-        canvas.drawText(
-            text = TEXT_NOW_LOADING,
-            xPos = X_POS_COMPOSERS,
-            yPos = Y_POS_TRANSCRIBER,
-            scalingFactor = scalingFactor,
-            textSize = TEXT_SIZE_COMPOSERS,
-            textAlign = Paint.Align.RIGHT
-        )
+            canvas.drawText(
+                text = vglsUrl,
+                xPos = centerXpos,
+                yPos = Y_POS_COPYRIGHT,
+                scalingFactor = scalingFactor,
+                textSize = TEXT_SIZE_COPYRIGHT,
+                textAlign = Paint.Align.CENTER
+            )
+        }
 
-        canvas.drawText(
-            text = vglsUrl,
-            xPos = centerXpos,
-            yPos = Y_POS_COPYRIGHT,
-            scalingFactor = scalingFactor,
-            textSize = TEXT_SIZE_COPYRIGHT,
-            textAlign = Paint.Align.CENTER
-        )
+        val stavesRenderingMillis = measureTimeMillis {
+            renderBlankStaves(
+                canvas,
+                scalingFactor
+            )
+        }
 
-        renderBlankStaves(
-            canvas,
-            scalingFactor
-        )
+        hatchet.v(this.javaClass.simpleName, "Text rendering took $textRenderingMillis ms")
+        hatchet.v(this.javaClass.simpleName, "Staff rendering took $stavesRenderingMillis ms")
     }
 
     private fun renderBlankStaves(
         canvas: Canvas,
         scalingFactor: Float
     ) {
-        val blankStaffBitmap = BitmapFactory.decodeResource(
-            context.resources,
-            R.drawable.img_leadsheet_single_system_blank,
-            BitmapFactory.Options().apply {
-                inScaled = false
-            }
-        )
-
         val firstStaffXPosition = (X_POS_FIRST_STAFF * scalingFactor).toInt()
         val firstStaffYPosition = (Y_POS_FIRST_STAFF * scalingFactor).toInt()
         val staffYDisplacement = (Y_DISPLACEMENT_STAFF * scalingFactor).toInt()
