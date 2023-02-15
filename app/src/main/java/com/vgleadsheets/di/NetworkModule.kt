@@ -1,6 +1,7 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.common.debug.NetworkEndpoint
+import com.vgleadsheets.logging.Hatchet
 import dagger.Provides
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -89,10 +90,13 @@ class NetworkModule {
     }
 
     @Provides
+    fun provideHatchetLogger(hatchet: Hatchet) = HatchetOkHttpLogger(hatchet)
+
+    @Provides
     @Named("HttpLoggingInterceptor")
-    internal fun provideHttpLoggingInterceptor(): Interceptor {
-        val logger = HttpLoggingInterceptor()
-        logger.level = HttpLoggingInterceptor.Level.BASIC
+    internal fun provideHttpLoggingInterceptor(hatchetOkHttpLogger: HatchetOkHttpLogger): Interceptor {
+        val logger = HttpLoggingInterceptor(hatchetOkHttpLogger)
+        logger.level = HttpLoggingInterceptor.Level.HEADERS
         return logger
     }
 

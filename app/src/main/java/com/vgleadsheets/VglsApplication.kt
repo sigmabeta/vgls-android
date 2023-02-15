@@ -4,13 +4,13 @@ import android.graphics.Bitmap
 import android.os.Build
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import coil.util.DebugLogger
 import com.airbnb.mvrx.Mavericks
 import com.facebook.stetho.Stetho
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import com.vgleadsheets.di.AppModule
 import com.vgleadsheets.di.DaggerAppComponent
+import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.SheetPreviewFetcher
 import com.vgleadsheets.logging.Hatchet
 import dagger.android.DaggerApplication
@@ -35,6 +35,9 @@ class VglsApplication : DaggerApplication(),
 
     @Inject
     lateinit var hatchet: Hatchet
+
+    @Inject
+    lateinit var coilLogger: HatchetCoilLogger
 
     @Inject
     lateinit var sheetPreviewFetcherFactory: SheetPreviewFetcher.Factory
@@ -69,7 +72,7 @@ class VglsApplication : DaggerApplication(),
     override fun androidInjector() = dispatchingAndroidInjector
 
     override fun newImageLoader() = ImageLoader.Builder(this)
-        .logger(DebugLogger())
+        .logger(coilLogger)
         .okHttpClient(okHttpClient)
         .components {
             add(sheetPreviewFetcherFactory)

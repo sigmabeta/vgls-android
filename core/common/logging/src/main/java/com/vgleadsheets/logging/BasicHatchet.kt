@@ -10,4 +10,6 @@ class BasicHatchet: Hatchet {
     override fun w(tag: String, message: String) = println("W: $tag | $message")
 
     override fun e(tag: String, message: String) = println("E: $tag | $message")
+
+    override fun log(severity: Int, tag: String, message: String) = println("$severity: $tag | $message")
 }

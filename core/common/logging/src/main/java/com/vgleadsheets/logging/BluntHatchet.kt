@@ -13,4 +13,6 @@ class BluntHatchet : Hatchet {
     override fun w(tag: String, message: String) = Unit
 
     override fun e(tag: String, message: String) = Unit
+
+    override fun log(severity: Int, tag: String, message: String) = Unit
 }

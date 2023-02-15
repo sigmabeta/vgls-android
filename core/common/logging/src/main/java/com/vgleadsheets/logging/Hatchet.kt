@@ -10,4 +10,5 @@ interface Hatchet {
     fun w(tag: String, message: String)
 
     fun e(tag: String, message: String)
+    fun log(severity: Int, tag: String, message: String)
 }
