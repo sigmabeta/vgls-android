@@ -46,7 +46,7 @@ fun CrossfadeSheet(
                     pagePreview = pagePreview,
                     seed = sheetId,
                     eventListener = eventListener,
-                    modifier = modifier,
+                    modifier = modifier.fillMaxSize(),
                 )
 
             is AsyncImagePainter.State.Success -> {

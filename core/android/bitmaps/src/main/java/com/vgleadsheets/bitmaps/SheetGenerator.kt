@@ -4,7 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import androidx.core.content.res.ResourcesCompat
 import com.vgleadsheets.logging.Hatchet
@@ -22,9 +25,12 @@ class SheetGenerator @Inject constructor(
     private val textPaint =
         Paint().apply {
             isAntiAlias = true
-            color = android.graphics.Color.BLACK
+            color = Color.BLACK
             typeface = ResourcesCompat.getFont(context, R.font.musejazz_text)
         }
+
+    private val clearPaint =
+        Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
     private val blankStaffBitmap by lazy {
         BitmapFactory.decodeResource(
@@ -36,6 +42,10 @@ class SheetGenerator @Inject constructor(
         )
     }
 
+    private var prevWidth = 0
+
+    private var prevBitmap: Bitmap? = null
+
     fun generateLoadingSheet(
         width: Int,
         title: String,
@@ -43,18 +53,22 @@ class SheetGenerator @Inject constructor(
         gameName: String,
         composers: List<String>,
     ): Bitmap {
+        hatchet.v(
+            this.javaClass.simpleName,
+            "Generating $width px wide loading image for song $title from $gameName"
+        )
+
         val scalingFactor = width / DEFAULT_SHEET_WIDTH
         val scaledHeight = scalingFactor * DEFAULT_SHEET_HEIGHT
 
-        val bitmap = Bitmap.createBitmap(
-            width,
-            scaledHeight.toInt(),
-            Bitmap.Config.ARGB_8888
-        )
+        if (width != prevWidth) {
+            prevWidth = width
+            prevBitmap = createNewTemplateBitmap(width, scaledHeight, scalingFactor)
+        }
 
-        val millis = measureTimeMillis {
-            renderLoadingImage(
-                context,
+        val bitmap = prevBitmap!!
+        val uniqueText = measureTimeMillis {
+            renderUniqueText(
                 bitmap,
                 scalingFactor,
                 title,
@@ -64,12 +78,46 @@ class SheetGenerator @Inject constructor(
             )
         }
 
-        hatchet.v(this.javaClass.simpleName, "Bitmap generation took $millis ms")
+        hatchet.v(this.javaClass.simpleName, "Unique text rendering took $uniqueText ms")
         return bitmap
     }
 
-    private fun renderLoadingImage(
-        context: Context,
+    private fun createNewTemplateBitmap(
+        width: Int,
+        scaledHeight: Float,
+        scalingFactor: Float
+    ): Bitmap? {
+        val newBitmap = Bitmap.createBitmap(
+            width,
+            scaledHeight.toInt(),
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(newBitmap)
+        val centerXpos = (canvas.width / 2) / scalingFactor
+
+        val stavesRenderingMillis = measureTimeMillis {
+            renderBlankStaves(
+                canvas,
+                scalingFactor
+            )
+        }
+
+        val commonTextRenderingMillis = measureTimeMillis {
+            renderCommonText(
+                canvas,
+                scalingFactor,
+                centerXpos
+            )
+        }
+
+        val tag = this.javaClass.simpleName
+        hatchet.v(tag, "Common text rendering took $commonTextRenderingMillis ms")
+        hatchet.v(tag, "Staff rendering took $stavesRenderingMillis ms")
+        return newBitmap
+    }
+
+    private fun renderUniqueText(
         bitmap: Bitmap,
         scalingFactor: Float,
         title: String,
@@ -81,6 +129,16 @@ class SheetGenerator @Inject constructor(
         val centerXpos = (canvas.width / 2) / scalingFactor
 
         val textRenderingMillis = measureTimeMillis {
+            canvas.drawRect(
+                Rect(
+                    (LEFT_CLEAR_BOX * scalingFactor).toInt(),
+                    (TOP_CLEAR_BOX * scalingFactor).toInt(),
+                    (RIGHT_CLEAR_BOX * scalingFactor).toInt(),
+                    (BOTTOM_CLEAR_BOX * scalingFactor).toInt(),
+                ),
+                clearPaint
+            )
+
             canvas.drawText(
                 text = title,
                 xPos = centerXpos,
@@ -119,35 +177,33 @@ class SheetGenerator @Inject constructor(
                 textSize = TEXT_SIZE_COMPOSERS,
                 textAlign = Paint.Align.RIGHT
             )
-
-            canvas.drawText(
-                text = TEXT_NOW_LOADING,
-                xPos = X_POS_COMPOSERS,
-                yPos = Y_POS_TRANSCRIBER,
-                scalingFactor = scalingFactor,
-                textSize = TEXT_SIZE_COMPOSERS,
-                textAlign = Paint.Align.RIGHT
-            )
-
-            canvas.drawText(
-                text = vglsUrl,
-                xPos = centerXpos,
-                yPos = Y_POS_COPYRIGHT,
-                scalingFactor = scalingFactor,
-                textSize = TEXT_SIZE_COPYRIGHT,
-                textAlign = Paint.Align.CENTER
-            )
-        }
-
-        val stavesRenderingMillis = measureTimeMillis {
-            renderBlankStaves(
-                canvas,
-                scalingFactor
-            )
         }
 
         hatchet.v(this.javaClass.simpleName, "Text rendering took $textRenderingMillis ms")
-        hatchet.v(this.javaClass.simpleName, "Staff rendering took $stavesRenderingMillis ms")
+    }
+
+    private fun renderCommonText(
+        canvas: Canvas,
+        scalingFactor: Float,
+        centerXpos: Float
+    ) {
+        canvas.drawText(
+            text = TEXT_NOW_LOADING,
+            xPos = X_POS_COMPOSERS,
+            yPos = Y_POS_TRANSCRIBER,
+            scalingFactor = scalingFactor,
+            textSize = TEXT_SIZE_COMPOSERS,
+            textAlign = Paint.Align.RIGHT
+        )
+
+        canvas.drawText(
+            text = vglsUrl,
+            xPos = centerXpos,
+            yPos = Y_POS_COPYRIGHT,
+            scalingFactor = scalingFactor,
+            textSize = TEXT_SIZE_COPYRIGHT,
+            textAlign = Paint.Align.CENTER
+        )
     }
 
     private fun renderBlankStaves(
@@ -216,6 +272,11 @@ class SheetGenerator @Inject constructor(
 
         const val TEXT_SIZE_COMPOSERS = 50.0f
         const val TEXT_SIZE_COPYRIGHT = 34.0f
+
+        const val LEFT_CLEAR_BOX = 100
+        const val TOP_CLEAR_BOX = 100
+        const val RIGHT_CLEAR_BOX = 2442
+        const val BOTTOM_CLEAR_BOX = 380
 
         const val Y_POS_SHEET_TITLE = 210.0f
         const val Y_POS_GAME_NAME = 282.0f

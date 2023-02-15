@@ -1,13 +1,13 @@
 package com.vgleadsheets.composables.subs
 
 import android.content.Context
-import android.util.Log.VERBOSE
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -19,17 +19,16 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import coil.ImageLoader
 import coil.compose.AsyncImage
-import coil.util.Logger
 import com.vgleadsheets.bitmaps.SheetGenerator
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.previews.FullscreenBlack
 import com.vgleadsheets.images.PagePreview
-import com.vgleadsheets.images.SheetPreviewFetcher
 import com.vgleadsheets.logging.BasicHatchet
 
 @Composable
@@ -37,7 +36,7 @@ import com.vgleadsheets.logging.BasicHatchet
 fun PlaceholderSheet(
     pagePreview: PagePreview,
     seed: Long,
-    isInPreviewView: Boolean = false,
+    previewBitmap: ImageBitmap? = null,
     eventListener: SheetPageListModel.ImageListener,
     modifier: Modifier,
 ) {
@@ -55,12 +54,10 @@ fun PlaceholderSheet(
     )
 
     Page(modifier) {
-        if (isInPreviewView) {
-            val loader = createImageLoader(LocalContext.current)
-            AsyncImage(
-                imageLoader = loader,
-                model = pagePreview,
-                contentScale = ContentScale.Fit,
+        if (previewBitmap != null) {
+            Image(
+                bitmap = previewBitmap,
+                contentScale = ContentScale.FillWidth,
                 contentDescription = null,
                 modifier = modifier
                     .alpha(animatedAlphaValue)
@@ -93,7 +90,12 @@ private fun Page(
     )
 }
 
-private fun createImageLoader(context: Context): ImageLoader {
+private fun createImageBitmap(
+    context: Context,
+    pagePreview: PagePreview,
+): ImageBitmap {
+    println("Generating...")
+
     val hatchet = BasicHatchet()
     val generator = SheetGenerator(
         context,
@@ -101,32 +103,15 @@ private fun createImageLoader(context: Context): ImageLoader {
         "https://jetpackcompose.com"
     )
 
-    val sheetPreviewFetcherFactory = SheetPreviewFetcher.Factory(generator)
+    val bitmap = generator.generateLoadingSheet(
+        1000,
+        pagePreview.title,
+        pagePreview.transposition,
+        pagePreview.gameName,
+        pagePreview.composers
+    )
 
-    val coilLogger = object : Logger {
-        override var level = VERBOSE
-
-        override fun log(
-            tag: String,
-            priority: Int,
-            message: String?,
-            throwable: Throwable?
-        ) {
-            if (throwable != null) {
-                hatchet.e(tag, "Message: $message Error: $throwable")
-            } else {
-                hatchet.i(tag, message ?: "Blank message")
-            }
-        }
-    }
-
-    return ImageLoader.Builder(context)
-        .networkObserverEnabled(false)
-        .components {
-            add(sheetPreviewFetcherFactory)
-        }
-        .logger(coilLogger)
-        .build()
+    return bitmap.asImageBitmap()
 }
 
 @Preview
@@ -155,17 +140,18 @@ private fun PortraitLoadingArms() {
 
 @Composable
 private fun SampleLoadingKirby() {
+    val pagePreview = PagePreview(
+        "A Trip to Alivel Mall",
+        "C",
+        "Kirby and the Forgotten Land",
+        listOf(
+            "Hirokazu Ando",
+        )
+    )
     PlaceholderSheet(
-        pagePreview = PagePreview(
-            "A Trip to Alivel Mall",
-            "C",
-            "Kirby and the Forgotten Land",
-            listOf(
-                "Hirokazu Ando",
-            )
-        ),
+        pagePreview = pagePreview,
         seed = 1234L,
-        isInPreviewView = true,
+        previewBitmap = createImageBitmap(LocalContext.current, pagePreview),
         eventListener = NOOP_LISTENER,
         modifier = Modifier,
     )
@@ -173,18 +159,19 @@ private fun SampleLoadingKirby() {
 
 @Composable
 private fun SampleLoadingArms() {
+    val pagePreview = PagePreview(
+        "Grand Prix (Title)",
+        "Vocals",
+        "Arms",
+        listOf(
+            "Atsuko Asahi",
+            "Yasuaki Iwata"
+        )
+    )
     PlaceholderSheet(
-        pagePreview = PagePreview(
-            "Grand Prix (Title)",
-            "Vocals",
-            "Arms",
-            listOf(
-                "Atsuko Asahi",
-                "Yasuaki Iwata"
-            )
-        ),
+        pagePreview = pagePreview,
         seed = 1234L,
-        isInPreviewView = true,
+        previewBitmap = createImageBitmap(LocalContext.current, pagePreview),
         eventListener = NOOP_LISTENER,
         modifier = Modifier,
     )

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.os.Build
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import coil.util.DebugLogger
 import com.airbnb.mvrx.Mavericks
 import com.facebook.stetho.Stetho
 import com.squareup.picasso.OkHttp3Downloader
@@ -15,13 +16,19 @@ import com.vgleadsheets.logging.Hatchet
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import okhttp3.OkHttpClient
 import javax.inject.Inject
+import javax.inject.Named
 
 class VglsApplication : DaggerApplication(),
     HasAndroidInjector,
     ImageLoaderFactory {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    @Inject
+    @Named("VglsOkHttp")
+    lateinit var okHttpClient: OkHttpClient
 
     @Inject
     lateinit var okHttp3Downloader: OkHttp3Downloader
@@ -47,7 +54,7 @@ class VglsApplication : DaggerApplication(),
         Stetho.initializeWithDefaults(this)
 
         val picasso = Picasso.Builder(this)
-            .downloader(okHttp3Downloader)
+            // .downloader(okHttp3Downloader)
             .indicatorsEnabled(BuildConfig.DEBUG)
             .defaultBitmapConfig(Bitmap.Config.RGB_565)
             .build()
@@ -62,6 +69,8 @@ class VglsApplication : DaggerApplication(),
     override fun androidInjector() = dispatchingAndroidInjector
 
     override fun newImageLoader() = ImageLoader.Builder(this)
+        .logger(DebugLogger())
+        .okHttpClient(okHttpClient)
         .components {
             add(sheetPreviewFetcherFactory)
         }
