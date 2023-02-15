@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
-import com.vgleadsheets.components.ComposableModel
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.MenuLoadingItemListModel
 import com.vgleadsheets.features.main.hud.R
 
@@ -9,7 +9,7 @@ object RefreshIndicator {
     fun getListModels(
         refreshing: Boolean,
         resources: Resources
-    ): List<ComposableModel> = if (refreshing) {
+    ): List<ListModel> = if (refreshing) {
         getRefreshIndicatorListModels(resources)
     } else {
         emptyList()

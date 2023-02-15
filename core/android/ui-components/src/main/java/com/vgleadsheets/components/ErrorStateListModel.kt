@@ -7,7 +7,7 @@ import com.vgleadsheets.composables.EmptyListIndicator
 data class ErrorStateListModel(
     val failedOperationName: String,
     val errorString: String,
-) : ListModel, ComposableModel {
+) : ListModel {
     override val dataId = errorString.hashCode().toLong()
     override val layoutId = R.layout.list_component_error_state
 

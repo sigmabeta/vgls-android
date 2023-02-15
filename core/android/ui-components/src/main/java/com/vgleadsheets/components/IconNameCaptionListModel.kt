@@ -10,7 +10,7 @@ data class IconNameCaptionListModel(
     val caption: String,
     val iconId: Int,
     val onClick: () -> Unit
-) : ListModel, ComposableModel {
+) : ListModel {
     override val layoutId = R.layout.list_component_now_playing
 
     @Composable

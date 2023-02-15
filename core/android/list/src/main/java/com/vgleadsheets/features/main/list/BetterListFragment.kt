@@ -3,6 +3,11 @@ package com.vgleadsheets.features.main.list
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,16 +15,20 @@ import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentInterface
+import com.vgleadsheets.IsComposeEnabled
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.features.main.list.databinding.FragmentListBinding
+import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
+import com.vgleadsheets.features.main.list.databinding.FragmentListRecyclerBinding
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
+import com.vgleadsheets.themes.VglsMaterial
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -51,7 +60,8 @@ abstract class BetterListFragment<
 
     private var progress: Float? = null
 
-    private lateinit var screen: FragmentListBinding
+    private lateinit var screenLegacy: FragmentListRecyclerBinding
+    private lateinit var screenCompose: FragmentListComposeBinding
 
     private var configGenerationJob: Job = Job()
         get() {
@@ -63,39 +73,36 @@ abstract class BetterListFragment<
         super.onViewCreated(view, savedInstanceState)
         adapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
 
-        screen = FragmentListBinding.bind(view)
-        screen.listContent.adapter = adapter
-        screen.listContent.layoutManager = LinearLayoutManager(context)
-
-        adapter.resources = resources
-
-        setupAppBar()
-
-        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
-        screen.listContent.setListsSpecialInsets(bottomOffset)
-
-        Insetup.setupRootViewForInsetAnimation(screen.root)
-
-        hudViewModel.setPerfSelectedScreen(getPerfSpec())
+        if (IsComposeEnabled.WELL_IS_IT) {
+            setupCompose(view)
+        } else {
+            setupRecycler(view)
+            setupAppBar()
+            Insetup.setupRootViewForInsetAnimation(screenLegacy.root)
+        }
 
         if (alwaysShowBack) {
             hudViewModel.alwaysShowBack()
         } else {
             hudViewModel.dontAlwaysShowBack()
         }
+
+        hudViewModel.setPerfSelectedScreen(getPerfSpec())
     }
 
     override fun onStart() {
         super.onStart()
         val progress = this.progress
-        if (progress != null) {
-            screen.moLayoutToolbar.progress = progress
+        if (progress != null && !IsComposeEnabled.WELL_IS_IT) {
+            screenLegacy.moLayoutToolbar.progress = progress
         }
     }
 
     override fun onStop() {
         super.onStop()
-        progress = screen.moLayoutToolbar.progress
+        if (!IsComposeEnabled.WELL_IS_IT) {
+            progress = screenLegacy.moLayoutToolbar.progress
+        }
     }
 
     override fun invalidate() {
@@ -118,11 +125,15 @@ abstract class BetterListFragment<
                     config.titleConfig.titleGenerator,
                 )
 
-                screen.toBind = title
+                if (IsComposeEnabled.WELL_IS_IT) {
+                    // Render title in compose lol
+                } else {
+                    screenLegacy.toBind = title
 
-                if (title.allowExpansion) {
-                    screen.moLayoutToolbar.progress = 1.0f
-                    screen.moLayoutToolbar.enableTransition(R.id.transition_scroll, false)
+                    if (title.allowExpansion) {
+                        screenLegacy.moLayoutToolbar.progress = 1.0f
+                        screenLegacy.moLayoutToolbar.enableTransition(R.id.transition_scroll, false)
+                    }
                 }
 
                 if (configGenerationJob.isActive) {
@@ -137,9 +148,11 @@ abstract class BetterListFragment<
                     val listItems = BetterLists.generateList(config, resources)
 
                     withContext(dispatchers.main) {
-                        adapter.submitList(
-                            listItems
-                        )
+                        if (IsComposeEnabled.WELL_IS_IT) {
+                            renderContentInCompose(listItems)
+                        } else {
+                            renderContentInRecyclerView(listItems)
+                        }
                     }
                 }
             }
@@ -156,23 +169,66 @@ abstract class BetterListFragment<
         }
     }
 
+    private fun setupCompose(view: View) {
+        screenCompose = FragmentListComposeBinding.bind(view)
+    }
+
+    private fun setupRecycler(view: View) {
+        screenLegacy = FragmentListRecyclerBinding.bind(view)
+        screenLegacy.listContent.adapter = adapter
+        screenLegacy.listContent.layoutManager = LinearLayoutManager(context)
+
+        adapter.resources = resources
+
+        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
+        screenLegacy.listContent.setListsSpecialInsets(bottomOffset)
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    private fun renderContentInCompose(listItems: List<ListModel>) {
+        screenCompose.composeContent.setContent {
+            VglsMaterial {
+                LazyColumn(
+                    modifier = Modifier
+                        .animateContentSize()
+                ) {
+                    items(
+                        items = listItems.toTypedArray(),
+                        key = { it.dataId },
+                        contentType = { it.layoutId }
+                    ) {
+                        it.Content(
+                            modifier = Modifier.animateItemPlacement()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun renderContentInRecyclerView(listItems: List<ListModel>) {
+        adapter.submitList(
+            listItems
+        )
+    }
+
     private fun setupAppBar() {
-        screen.appBar.addOnOffsetChangedListener { appBar, verticalOffset ->
+        screenLegacy.appBar.addOnOffsetChangedListener { appBar, verticalOffset ->
             val seekPosition = -verticalOffset / appBar.totalScrollRange.toFloat()
-            screen.moLayoutToolbar.progress = seekPosition
+            screenLegacy.moLayoutToolbar.progress = seekPosition
         }
 
-        val desiredToolbarHeight = screen.moLayoutToolbar.minHeight
+        val desiredToolbarHeight = screenLegacy.moLayoutToolbar.minHeight
 
-        ViewCompat.setOnApplyWindowInsetsListener(screen.moLayoutToolbar) { _, insets: WindowInsetsCompat ->
+        ViewCompat.setOnApplyWindowInsetsListener(screenLegacy.moLayoutToolbar) { _, insets: WindowInsetsCompat ->
             val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             val insetTopHeight = systemBarInsets.top
             val collapsedToolbarHeight = desiredToolbarHeight + insetTopHeight
 
-            screen.moLayoutToolbar.minimumHeight = collapsedToolbarHeight
+            screenLegacy.moLayoutToolbar.minimumHeight = collapsedToolbarHeight
 
-            val bigConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.big)
-            val smallConstraintSet = screen.moLayoutToolbar.getConstraintSet(R.id.small)
+            val bigConstraintSet = screenLegacy.moLayoutToolbar.getConstraintSet(R.id.big)
+            val smallConstraintSet = screenLegacy.moLayoutToolbar.getConstraintSet(R.id.small)
 
             bigConstraintSet.setGuidelineBegin(R.id.guideline_inset, insetTopHeight)
             smallConstraintSet.setGuidelineEnd(R.id.guideline_inset, desiredToolbarHeight)
@@ -197,7 +253,11 @@ abstract class BetterListFragment<
         }
     }
 
-    override fun getLayoutId() = R.layout.fragment_list
+    override fun getLayoutId() = if (IsComposeEnabled.WELL_IS_IT) {
+        R.layout.fragment_list_compose
+    } else {
+        R.layout.fragment_list_recycler
+    }
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 }

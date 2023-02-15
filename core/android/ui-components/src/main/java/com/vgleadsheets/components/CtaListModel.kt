@@ -8,9 +8,9 @@ data class CtaListModel(
     val iconId: Int,
     val name: String,
     val onClick: () -> Unit,
-) : ListModel, ComposableModel {
+) : ListModel {
     override val dataId = name.hashCode().toLong()
-    override val layoutId = R.layout.composable_list_item
+    override val layoutId = R.layout.list_component_cta
 
     @Composable
     override fun Content(modifier: Modifier) {

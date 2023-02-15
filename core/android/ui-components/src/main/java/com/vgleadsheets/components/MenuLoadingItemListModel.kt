@@ -7,7 +7,7 @@ import com.vgleadsheets.composables.MoreResultsLink
 data class MenuLoadingItemListModel(
     val name: String,
     val iconId: Int
-) : ListModel, ComposableModel {
+) : ListModel {
     override val dataId = iconId.toLong()
 
     override val layoutId = R.layout.list_component_menu_loading

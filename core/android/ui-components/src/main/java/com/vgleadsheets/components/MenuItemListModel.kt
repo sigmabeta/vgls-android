@@ -10,7 +10,7 @@ data class MenuItemListModel(
     val iconId: Int,
     val onClick: () -> Unit,
     val selected: Boolean = false
-) : ListModel, ComposableModel {
+) : ListModel {
     override val dataId = name.hashCode().toLong()
     override val layoutId = R.layout.list_component_menu_item
 

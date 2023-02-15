@@ -9,9 +9,9 @@ data class CheckableListModel(
     val name: String,
     val checked: Boolean,
     val onClick: () -> Unit,
-) : ListModel, ComposableModel {
+) : ListModel {
     override val dataId: Long = settingId.hashCode().toLong()
-    override val layoutId = R.layout.composable_list_item
+    override val layoutId = R.layout.list_component_checkable
 
     @Composable
     override fun Content(modifier: Modifier) {

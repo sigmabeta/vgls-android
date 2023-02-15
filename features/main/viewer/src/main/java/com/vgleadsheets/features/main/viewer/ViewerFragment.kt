@@ -95,7 +95,7 @@ class ViewerFragment :
         perfTracker.onFullContentLoad(getPerfSpec())
     }
 
-    override fun onLoadFailed(imageUrl: String, ex: Exception?) {
+    override fun onLoadFailed(imageUrl: String, ex: Throwable?) {
         perfTracker.cancel(getPerfSpec())
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
     }

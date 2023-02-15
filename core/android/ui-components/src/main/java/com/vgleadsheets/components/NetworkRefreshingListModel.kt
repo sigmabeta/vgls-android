@@ -6,7 +6,7 @@ import com.vgleadsheets.composables.LoadingListItem
 
 data class NetworkRefreshingListModel(
     val refreshType: String
-) : ListModel, ComposableModel {
+) : ListModel {
     override val dataId = refreshType.hashCode().toLong()
     override val layoutId = R.layout.composable_list_item
 

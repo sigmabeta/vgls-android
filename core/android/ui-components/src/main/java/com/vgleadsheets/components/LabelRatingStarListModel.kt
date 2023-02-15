@@ -9,8 +9,8 @@ data class LabelRatingStarListModel(
     val value: Int,
     val onClick: () -> Unit,
     override val dataId: Long = label.hashCode().toLong()
-) : ListModel, ComposableModel {
-    override val layoutId = R.layout.composable_list_item
+) : ListModel {
+    override val layoutId = R.layout.list_component_label_rating
 
     @Composable
     override fun Content(modifier: Modifier) {

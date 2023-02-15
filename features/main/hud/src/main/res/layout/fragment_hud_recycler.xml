@@ -27,12 +27,11 @@
         app:paddingBottomSystemWindowInsets="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/compose_bottom"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/list_component_menu_item"
-            tools:showIn="@layout/fragment_hud" />
+            tools:listitem="@layout/list_component_menu_item" />
 
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

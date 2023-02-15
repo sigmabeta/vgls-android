@@ -248,7 +248,7 @@ fun searchQuery(
 }
 
 @BindingAdapter("composableModel")
-fun composeView(view: ComposeView, composableModel: ComposableModel) {
+fun composeView(view: ComposeView, composableModel: ListModel) {
     view.setContent {
         VglsMaterial {
             composableModel.Content(modifier = Modifier)
@@ -257,7 +257,7 @@ fun composeView(view: ComposeView, composableModel: ComposableModel) {
 }
 
 @BindingAdapter("composableMenuModel")
-fun composeViewInMenu(view: ComposeView, composableMenuModel: ComposableModel) {
+fun composeViewInMenu(view: ComposeView, composableMenuModel: ListModel) {
     view.setContent {
         VglsMaterialMenu {
             composableMenuModel.Content(modifier = Modifier)

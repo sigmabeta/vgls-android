@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
-import com.vgleadsheets.components.ComposableModel
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.features.main.hud.PartSelectorOption
 import com.vgleadsheets.features.main.hud.R
@@ -14,7 +14,7 @@ object PartPicker {
         onPartClick: (Part) -> Unit,
         resources: Resources,
         selectedPartId: String
-    ): List<ComposableModel>  = if (expanded) {
+    ): List<ListModel> = if (expanded) {
         generatePartPickerItems(showVocalOption)
             .map {
                 MenuItemListModel(

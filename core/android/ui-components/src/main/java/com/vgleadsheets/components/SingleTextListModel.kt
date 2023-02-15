@@ -8,7 +8,7 @@ data class SingleTextListModel(
     override val dataId: Long,
     val name: String,
     val onClick: () -> Unit,
-) : ListModel, ComposableModel {
+) : ListModel {
     override val layoutId = R.layout.composable_list_item
 
     @Composable

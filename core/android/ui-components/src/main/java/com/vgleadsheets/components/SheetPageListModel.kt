@@ -2,6 +2,7 @@ package com.vgleadsheets.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.vgleadsheets.IsComposeEnabled
 import com.vgleadsheets.composables.SheetPageItem
 
 data class SheetPageListModel(
@@ -14,14 +15,18 @@ data class SheetPageListModel(
     val songId: Long, // NOT the id of this page!
     val listener: ImageListener,
     override val dataId: Long = sheetUrl.hashCode().toLong()
-) : ListModel, ComposableModel {
-    override val layoutId = R.layout.composable_viewpager_item
-    
+) : ListModel {
+    override val layoutId = if (IsComposeEnabled.WELL_IS_IT) {
+        R.layout.composable_viewpager_item
+    } else {
+        R.layout.list_component_sheet
+    }
+
     interface ImageListener {
         fun onClicked()
         fun onLoadStarted()
         fun onLoadComplete()
-        fun onLoadFailed(imageUrl: String, ex: Exception?)
+        fun onLoadFailed(imageUrl: String, ex: Throwable?)
     }
 
     @Composable

@@ -13,7 +13,7 @@ data class SearchResultListModel(
     @DrawableRes val imagePlaceholder: Int,
     val actionableId: Long? = null,
     val onClick: () -> Unit
-) : ListModel, ComposableModel {
+) : ListModel {
     override val layoutId = R.layout.list_component_search_result
 
     @Composable

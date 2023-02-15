@@ -9,7 +9,7 @@ data class NameCaptionListModel(
     val name: String,
     val caption: String,
     val onClick: () -> Unit,
-) : ListModel, ComposableModel {
+) : ListModel {
     override val layoutId = R.layout.list_component_name_caption
 
     @Composable

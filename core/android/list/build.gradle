@@ -1,4 +1,5 @@
 apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/compose-module.gradle"
 apply from: "$rootProject.projectDir/di-android.gradle"
 apply plugin: 'kotlin-kapt'
 

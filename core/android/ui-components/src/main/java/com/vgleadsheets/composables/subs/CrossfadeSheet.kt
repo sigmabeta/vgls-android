@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -61,13 +62,16 @@ fun CrossfadeSheet(
             }
 
             is AsyncImagePainter.State.Error -> {
-                println("Failed to load image: ${(painter.state as AsyncImagePainter.State.Error).result.throwable.message}")
+                eventListener.onLoadFailed(
+                    imageUrl,
+                    (painter.state as AsyncImagePainter.State.Error).result.throwable
+                )
                 EmptyListIndicator(
                     ErrorStateListModel(
                         imageUrl,
-                        "Unable loading this sheet. Check your network connection and try again?"
+                        "Can't load this sheet. Check your network connection and try again?"
                     ),
-                    modifier
+                    modifier.fillMaxHeight()
                 )
             }
 
@@ -144,5 +148,5 @@ internal val NOOP_LISTENER = object : SheetPageListModel.ImageListener {
     override fun onClicked() {}
     override fun onLoadStarted() {}
     override fun onLoadComplete() {}
-    override fun onLoadFailed(imageUrl: String, ex: Exception?) {}
+    override fun onLoadFailed(imageUrl: String, ex: Throwable?) {}
 }

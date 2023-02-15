@@ -1,5 +1,9 @@
 package com.vgleadsheets.components
 
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+
 data class TitleListModel(
     val title: String,
     val subtitle: String,
@@ -13,6 +17,13 @@ data class TitleListModel(
     val placeholder: Int? = R.drawable.ic_logo,
     val shouldSetMinHeightOnly: Boolean? = true,
 ) : ListModel {
+    @Composable
+    override fun Content(modifier: Modifier) {
+        Text(
+            text = "Lol $title"
+        )
+    }
+
     override val dataId = R.string.cont_desc_logo.toLong()
     override val layoutId = R.string.cont_desc_logo
 

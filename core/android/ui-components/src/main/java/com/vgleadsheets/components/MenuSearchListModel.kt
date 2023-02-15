@@ -9,7 +9,7 @@ data class MenuSearchListModel(
     val onTextEntered: (String) -> Unit,
     val onMenuButtonClick: () -> Unit,
     val onClearClick: () -> Unit
-) : ListModel, ComposableModel {
+) : ListModel {
 
     override val dataId = javaClass.simpleName.hashCode().toLong()
 

@@ -10,7 +10,7 @@ data class MenuTitleBarListModel(
     val onSearchButtonClick: () -> Unit,
     val onMenuButtonClick: () -> Unit,
     val onChangePartClick: () -> Unit
-) : ListModel, ComposableModel {
+) : ListModel {
 
     override val dataId = javaClass.simpleName.hashCode().toLong()
 

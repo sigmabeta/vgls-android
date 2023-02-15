@@ -53,6 +53,8 @@
             android:layout_weight="1"
             android:onClick="@{() -> toBind.onChangePartClick.invoke()}"
             android:text="@{toBind.partLabel}"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/md_theme_light_onPrimary"
             app:icon="@drawable/ic_description_24dp"
             app:iconTint="@color/md_theme_light_onPrimary"

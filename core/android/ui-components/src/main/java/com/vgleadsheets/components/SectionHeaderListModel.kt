@@ -6,7 +6,7 @@ import com.vgleadsheets.composables.SectionHeader
 
 data class SectionHeaderListModel(
     val title: String
-) : ListModel, ComposableModel {
+) : ListModel {
     override val dataId = title.hashCode().toLong()
     override val layoutId = R.layout.composable_list_item
 

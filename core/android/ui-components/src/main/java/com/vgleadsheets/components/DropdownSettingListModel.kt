@@ -10,7 +10,7 @@ data class DropdownSettingListModel(
     val selectedPosition: Int,
     val settingsLabels: List<String>,
     val onNewOptionSelected: (Int) -> Unit,
-) : ListModel, ComposableModel {
+) : ListModel {
     override val dataId: Long = settingId.hashCode().toLong()
     override val layoutId = R.layout.list_component_dropdown
 
