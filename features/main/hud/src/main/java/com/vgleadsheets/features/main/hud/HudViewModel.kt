@@ -10,6 +10,7 @@ import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
@@ -23,6 +24,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
@@ -32,7 +34,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
+import java.net.HttpURLConnection
+import java.net.UnknownHostException
 
 @OptIn(FlowPreview::class)
 class HudViewModel @AssistedInject constructor(
@@ -44,7 +50,14 @@ class HudViewModel @AssistedInject constructor(
     private val dispatchers: VglsDispatchers,
     private val hatchet: Hatchet
 ) : MavericksViewModel<HudState>(initialState) {
-    private var timer: Job? = null
+    private var hudVisibilityTimer: Job? = null
+
+    // Card shark
+    private var jamJob = Job()
+        get() {
+            if (field.isCancelled) field = Job()
+            return field
+        }
 
     private var gameSearch: Job? = null
     private var composerSearch: Job? = null
@@ -59,6 +72,33 @@ class HudViewModel @AssistedInject constructor(
         subscribeToSearchQueryQueue()
         subscribeToPerfUpdates()
         showInitialScreen()
+    }
+
+    fun followJam(jamId: Long) {
+        unfollowJam()
+
+        // I'm pretty sure what this means is that cancelling jamJob will cancel this job.
+        viewModelScope.launch(dispatchers.disk + jamJob) {
+            hatchet.i(this.javaClass.simpleName, "Following jam.")
+            repository.getJam(jamId, false)
+                .catch {
+                    val message = "Failed to get Jam from database: ${it.message}"
+                    hatchet.e(this.javaClass.simpleName, message)
+                }
+                .onEach { subscribeToJamNetwork(it) }
+                .firstOrNull()
+        }
+
+        subscribeToJamDatabase(jamId)
+    }
+
+    fun unfollowJam() {
+        if (jamJob.isCancelled) {
+            return
+        }
+
+        jamJob.cancel()
+        setState { copy(activeJam = null) }
     }
 
     fun alwaysShowBack() = setState { copy(alwaysShowBack = true) }
@@ -150,7 +190,7 @@ class HudViewModel @AssistedInject constructor(
     fun startHudTimer() = withState { state ->
         stopTimer()
         if (state.mode == HudMode.REGULAR) {
-            timer = viewModelScope.launch(dispatchers.computation) {
+            hudVisibilityTimer = viewModelScope.launch(dispatchers.computation) {
                 delay(TIMEOUT_HUD_VISIBLE)
 
                 withContext(dispatchers.main) {
@@ -434,7 +474,61 @@ class HudViewModel @AssistedInject constructor(
     }
 
     private fun stopTimer() {
-        timer?.cancel()
+        hudVisibilityTimer?.cancel()
+    }
+
+    // Jam management
+
+    private fun subscribeToJamDatabase(jamId: Long) {
+        hatchet.i(this.javaClass.simpleName, "Subscribing to jam $jamId in the database.")
+        repository.observeJamState(jamId)
+            .onEach {
+                setState {
+                    // TODO Do more than a null check here; should we report an error if the *song* is null?
+                    copy(activeJam = it)
+                }
+            }.catch {
+                val message = "Error observing Jam: ${it.message}"
+                hatchet.e(this.javaClass.simpleName, message)
+            }
+            .flowOn(dispatchers.computation)
+            .launchIn(viewModelScope + jamJob)
+    }
+
+    private fun subscribeToJamNetwork(jam: Jam) {
+        hatchet.i(this.javaClass.simpleName, "Subscribing to jam ${jam.id} on the network.")
+        repository.refreshJamStateContinuously(jam.name)
+            .onEach { }
+            .catch {
+                val message: String
+                if (it is HttpException) {
+                    if (it.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+                        message = "Jam has been deleted from server."
+                        removeJam(jam.id)
+                    } else {
+                        message = "Error communicating with Jam server."
+                    }
+                } else if (it is UnknownHostException) {
+                    message = "Can't reach Jam server. Check connection and try again."
+                } else {
+                    message = "Error communicating with Jam server."
+                }
+
+                hatchet.e(this.javaClass.simpleName, message)
+            }
+            .flowOn(dispatchers.computation)
+            .launchIn(viewModelScope + jamJob)
+    }
+
+    @Suppress("TooGenericExceptionCaught")
+    private fun removeJam(dataId: Long) {
+        viewModelScope.launch(dispatchers.disk) {
+            try {
+                repository.removeJam(dataId)
+            } catch (ex: Exception) {
+                hatchet.e(this.javaClass.simpleName, "Error removing Jam: ${ex.message}")
+            }
+        }
     }
 
     @AssistedFactory

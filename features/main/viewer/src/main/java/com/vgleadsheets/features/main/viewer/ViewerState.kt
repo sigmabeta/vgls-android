@@ -11,10 +11,7 @@ data class ViewerState(
     val jamId: Long?,
     val songId: Long?,
     val song: Async<Song> = Uninitialized,
-    val screenOn: Async<BooleanSetting> = Uninitialized,
-    val activeJamId: Long? = null,
-    val activeJamSheetId: Long? = null,
-    val jamCancellationReason: String? = null,
+    val keepScreenOnSetting: Async<BooleanSetting> = Uninitialized,
     val hasViewBeenReported: Boolean = false,
 ) : MavericksState {
     constructor(viewerArgs: ViewerArgs) : this(viewerArgs.jamId, viewerArgs.songId)

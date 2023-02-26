@@ -135,30 +135,9 @@ class ViewerFragment :
             .flowOn(dispatchers.main)
             .launchIn(viewModel.viewModelScope)
 
-        viewModel.onEach(
-            ViewerState::activeJamSheetId,
-            deliveryMode = uniqueOnly("sheet")
-        ) {
-            if (it != null) {
-                if (songId != null) {
-                    showSnackbar(
-                        getString(R.string.jam_updating_sheet)
-                    )
-                }
-                updateSongId(it)
-            }
-        }
-
         viewModel.onEach(ViewerState::songId) {
             if (it != null) {
                 viewModel.fetchSong()
-            }
-        }
-
-        viewModel.onEach(ViewerState::jamCancellationReason) {
-            if (it != null) {
-                showError("Jam unfollowed: $it")
-                viewModel.clearCancellationReason()
             }
         }
     }
@@ -166,7 +145,6 @@ class ViewerFragment :
     override fun onStart() {
         super.onStart()
         viewModel.checkScreenSetting()
-        viewModel.followJam()
     }
 
     override fun onStop() {
@@ -174,7 +152,6 @@ class ViewerFragment :
         stopScreenTimer()
         hudViewModel.showHud()
         hudViewModel.stopHudTimer()
-        viewModel.unfollowJam(null)
         viewModel.stopReportTimer()
 
         hudViewModel.clearSelectedSong()
@@ -187,7 +164,7 @@ class ViewerFragment :
         stopScreenTimer()
         hideScreenOffSnackbar()
 
-        if (viewerState.screenOn is Success && viewerState.screenOn()?.value == false) {
+        if (viewerState.keepScreenOnSetting is Success && viewerState.keepScreenOnSetting()?.value == false) {
             startScreenTimer()
         }
 

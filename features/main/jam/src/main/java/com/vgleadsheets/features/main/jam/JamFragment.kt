@@ -45,6 +45,7 @@ class JamFragment : BetterListFragment<JamContent, JamState>() {
         baseImageUrl,
         Clicks(
             getFragmentRouter(),
+            hudViewModel,
             viewModel
         ),
         perfTracker,
