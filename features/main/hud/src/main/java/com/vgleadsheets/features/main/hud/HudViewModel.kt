@@ -121,14 +121,6 @@ class HudViewModel @AssistedInject constructor(
         copy(selectedSong = null)
     }
 
-    fun setViewerScreenVisible() = setState {
-        copy(viewerScreenVisible = true)
-    }
-
-    fun setViewerScreenNotVisible() = setState {
-        copy(viewerScreenVisible = false)
-    }
-
     fun onPartSelect(apiId: String) = setState {
         storage.saveSelectedPart(apiId)
 
@@ -295,6 +287,11 @@ class HudViewModel @AssistedInject constructor(
 
     fun sheetDetailClick() = withState { state ->
         router.showSheetDetail(state.selectedSong?.id!!)
+    }
+
+
+    fun jamDetailClick() = withState { state ->
+        router.showJamDetailViewer(state.activeJam?.id!!)
     }
 
     fun youtubeSearchClick() = withState { state ->

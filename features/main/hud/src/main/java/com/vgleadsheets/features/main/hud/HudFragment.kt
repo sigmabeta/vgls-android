@@ -91,13 +91,6 @@ class HudFragment : VglsFragment() {
 
     @Suppress("ComplexMethod", "LongMethod")
     override fun invalidate() = withState(viewModel) { state ->
-        if (state.activeJam != null) {
-            hatchet.i(
-                this.javaClass.simpleName,
-                "Active jam name: ${state.activeJam.name}, song ${state.activeJam.currentSong?.name}"
-            )
-        }
-
         HudVisibility.setToLookRightIdk(
             screen.shadowHud,
             state.mode,
@@ -119,7 +112,7 @@ class HudFragment : VglsFragment() {
             state.mode,
             state.searchQuery,
             state.searchResults,
-            state.viewerScreenVisible,
+            state.activeJam,
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
             state.loadTimeLists,

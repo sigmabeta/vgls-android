@@ -95,6 +95,10 @@ class Clicks(
         viewModel.sheetDetailClick()
     }
 
+    fun jamDetail() {
+        viewModel.jamDetailClick()
+    }
+
     fun youtubeSearch() {
         // tracker.logSheetDetailClick()
         viewModel.youtubeSearchClick()

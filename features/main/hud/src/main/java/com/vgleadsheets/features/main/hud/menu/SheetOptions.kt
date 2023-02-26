@@ -10,11 +10,10 @@ object SheetOptions {
     fun getListModels(
         hudMode: HudMode,
         currentSong: Song?,
-        viewerScreenVisible: Boolean,
         onDetailsClick: () -> Unit,
         onYoutubeClick: () -> Unit,
         resources: Resources,
-    ) = if (currentSong != null && isApplicableHudModeLol(hudMode) && viewerScreenVisible) {
+    ) = if (currentSong != null && isApplicableHudModeLol(hudMode)) {
         listOf(
             MenuItemListModel(
                 resources.getString(R.string.label_song_details),

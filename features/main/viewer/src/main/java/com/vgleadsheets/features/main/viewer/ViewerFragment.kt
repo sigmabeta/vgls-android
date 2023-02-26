@@ -155,7 +155,6 @@ class ViewerFragment :
         viewModel.stopReportTimer()
 
         hudViewModel.clearSelectedSong()
-        hudViewModel.setViewerScreenNotVisible()
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
@@ -262,7 +261,6 @@ class ViewerFragment :
         viewModel.startReportTimer()
 
         hudViewModel.setSelectedSong(song)
-        hudViewModel.setViewerScreenVisible()
 
         // Meaningless comment indicating a bugfix
         val pageCount = if (selectedPart == Part.VOCAL) {
