@@ -13,6 +13,10 @@
 
     <string name="label_song_details">Show Details</string>
     <string name="label_youtube">Find On YouTube</string>
+    <string name="label_jam_name">Following Jam: %1$s</string>
+    <string name="label_jam_no_song">No song selected</string>
+    <string name="label_jam_current_song">Go to current song</string>
+    <string name="label_jam_unfollow">Unfollow Jam</string>
 
     <string name="date_never">Never</string>
     <string name="label_settings">Settings</string>

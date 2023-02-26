@@ -6,7 +6,7 @@ import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.Song
 
-object SheetOptions {
+object SongOptions {
     fun getListModels(
         hudMode: HudMode,
         currentSong: Song?,

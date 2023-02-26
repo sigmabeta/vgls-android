@@ -176,4 +176,12 @@ class Clicks(
         router.showSearch(query)
         viewModel.toRegularMode()
     }
+
+    fun jamSong() {
+        viewModel.jamSongClick()
+    }
+
+    fun jamUnfollow() {
+        viewModel.unfollowJam()
+    }
 }

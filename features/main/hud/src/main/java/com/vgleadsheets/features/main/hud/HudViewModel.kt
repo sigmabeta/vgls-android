@@ -289,13 +289,34 @@ class HudViewModel @AssistedInject constructor(
         router.showSheetDetail(state.selectedSong?.id!!)
     }
 
+    fun youtubeSearchClick() = withState { state ->
+        router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
+    }
 
     fun jamDetailClick() = withState { state ->
         router.showJamDetailViewer(state.activeJam?.id!!)
     }
 
-    fun youtubeSearchClick() = withState { state ->
-        router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
+    fun jamSongClick() = withState {
+        val activeJam = it.activeJam ?: return@withState
+        val jamSongId = activeJam.currentSongId ?: return@withState
+
+        if (it.selectedSong == null) {
+            router.showSongViewer(jamSongId)
+            return@withState
+        }
+
+        if (it.selectedSong.id == jamSongId) {
+            viewModelScope.launch(dispatchers.network) {
+                repository.refreshJamState(activeJam.name)
+            }
+            return@withState
+        }
+
+        // If we get here, we're looking at a song but
+        // it's not the one associated with this jam.
+        // TODO Update viewer instead of launching a new one
+        router.showSongViewer(jamSongId)
     }
 
     private fun showInitialScreen() {
