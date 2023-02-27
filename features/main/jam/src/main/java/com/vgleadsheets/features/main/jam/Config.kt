@@ -65,10 +65,17 @@ class Config(
     override val actionsConfig = Actions.Config(
         jamLoad.isReady(),
         listOf(
-            CtaListModel(
-                R.drawable.ic_playlist_play_black_24dp,
-                resources.getString(R.string.cta_follow_jam)
-            ) { clicks.follow(state.jamId) },
+            if (hudState.activeJam?.id != state.jamId) {
+                CtaListModel(
+                    R.drawable.ic_playlist_play_black_24dp,
+                    resources.getString(R.string.cta_follow_jam)
+                ) { clicks.follow(state.jamId) }
+            } else {
+                CtaListModel(
+                    R.drawable.ic_baseline_logout_24,
+                    resources.getString(R.string.cta_unfollow_jam)
+                ) { clicks.unfollow() }
+            },
             CtaListModel(
                 R.drawable.ic_refresh_24dp,
                 resources.getString(R.string.cta_refresh_jam),

@@ -13,6 +13,10 @@ class Clicks(
         hudViewModel.followJam(jamId)
     }
 
+    fun unfollow() {
+        hudViewModel.unfollowJam()
+    }
+
     fun refresh() {
         viewModel.refreshJam()
     }
