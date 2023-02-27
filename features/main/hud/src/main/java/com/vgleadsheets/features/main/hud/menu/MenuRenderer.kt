@@ -73,6 +73,7 @@ object MenuRenderer {
         ) + SongDisplay.getListModels(
             hudMode,
             currentSong,
+            activeJam,
             clicks::sheetDetail,
         ) + SongOptions.getListModels(
             hudMode,

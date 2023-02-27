@@ -42,7 +42,7 @@ object JamDisplay {
             MenuItemListModel(
                 resources.getString(R.string.label_jam_unfollow),
                 "",
-                R.drawable.ic_clear_black_24dp,
+                R.drawable.ic_baseline_logout_24,
                 onUnfollowClick,
             )
         )
