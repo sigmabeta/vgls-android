@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="label_by_game">Browse by Game</string>
-    <string name="label_by_composer">Browse by Composer</string>
-    <string name="label_all_sheets">Browse All Sheets</string>
-    <string name="label_by_tag">Browse by Tag</string>
-    <string name="label_random">Random Select</string>
+    <string name="label_by_game">Browse by game</string>
+    <string name="label_by_composer">Browse by composer</string>
+    <string name="label_all_sheets">Browse all sheets</string>
+    <string name="label_by_tag">Browse by tag</string>
+    <string name="label_random">Random select</string>
     <string name="label_random_loading">Finding a random sheet...</string>
-    <string name="label_jams">Jam Sessions</string>
-    <string name="label_refresh">Check For Updates</string>
+    <string name="label_jams">Jam sessions</string>
+    <string name="label_refresh">Check for updates</string>
     <string name="label_refresh_loading">Checking for updates...</string>
     <string name="label_refresh_date">Updated %1$s</string>
 
-    <string name="label_song_details">Show Details</string>
-    <string name="label_youtube">Find On YouTube</string>
+    <string name="label_song_details">Show song details</string>
+    <string name="label_youtube">Find song on YouTube</string>
     <string name="label_jam_name">Following Jam: %1$s</string>
     <string name="label_jam_no_song">No song selected</string>
     <string name="label_jam_current_song">Go to current song</string>

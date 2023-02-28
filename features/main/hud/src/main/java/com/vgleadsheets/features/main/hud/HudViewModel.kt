@@ -183,11 +183,14 @@ class HudViewModel @AssistedInject constructor(
         stopTimer()
         if (state.mode == HudMode.REGULAR) {
             hudVisibilityTimer = viewModelScope.launch(dispatchers.computation) {
+                hatchet.v(this.javaClass.simpleName, "Starting hud visibility timer.")
                 delay(TIMEOUT_HUD_VISIBLE)
 
+                hatchet.v(this.javaClass.simpleName, "Hud visibility timer expired.")
                 withContext(dispatchers.main) {
                     hideHud()
                 }
+                hudVisibilityTimer = null
             }
         }
     }
@@ -492,7 +495,11 @@ class HudViewModel @AssistedInject constructor(
     }
 
     private fun stopTimer() {
-        hudVisibilityTimer?.cancel()
+        if (hudVisibilityTimer != null) {
+            hatchet.v(this.javaClass.simpleName, "Clearing hud visibility timer.")
+            hudVisibilityTimer?.cancel()
+            hudVisibilityTimer = null
+        }
     }
 
     // Jam management

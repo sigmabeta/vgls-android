@@ -26,11 +26,7 @@ class ViewerViewModel @AssistedInject constructor(
     private val hatchet: Hatchet
 ) : MavericksViewModel<ViewerState>(initialState) {
 
-    private var timer = Job()
-        get() {
-            if (field.isCancelled) field = Job()
-            return field
-        }
+    private var screenLockTimer: Job? = null
 
     private var viewReportTimer: Job? = null
 
@@ -48,6 +44,10 @@ class ViewerViewModel @AssistedInject constructor(
             repository.getSong(songId)
                 .take(1)
                 .execute { data ->
+                    if (data()?.id != state.song()?.id) {
+                        stopReportTimer()
+                        startReportTimer()
+                    }
                     copy(
                         song = data,
                         hasViewBeenReported = false
@@ -96,31 +96,36 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     fun stopReportTimer() {
-        hatchet.v(this.javaClass.simpleName, "Stopping view report timer.")
-        viewReportTimer?.cancel()
+        if (viewReportTimer != null) {
+            hatchet.v(this.javaClass.simpleName, "Stopping view report timer.")
+            viewReportTimer?.cancel()
+            viewReportTimer = null
+        }
     }
 
     fun startScreenTimer() {
-        viewModelScope.launch(dispatchers.computation + timer) {
+        screenLockTimer = viewModelScope.launch(dispatchers.computation) {
             hatchet.v(this.javaClass.simpleName, "Starting screen timer.")
             _screenControlEvents.emit(ScreenControlEvent.TIMER_START)
 
-            val minutes = TIMEOUT_SCREEN_OFF_MILLIS
-            delay(minutes)
+            delay(TIMEOUT_SCREEN_OFF_MILLIS)
 
             hatchet.v(this.javaClass.simpleName, "Screen timer expired.")
             _screenControlEvents.emit(ScreenControlEvent.TIMER_EXPIRED)
+            screenLockTimer = null
         }
     }
 
     fun stopScreenTimer() {
-        hatchet.v(this.javaClass.simpleName, "Clearing screen timer.")
-        timer.cancel()
+        if (screenLockTimer != null) {
+            hatchet.v(this.javaClass.simpleName, "Clearing screen timer.")
+            screenLockTimer?.cancel()
+            screenLockTimer = null
+        }
     }
 
     fun onNewJamSong(newSongId: Long) {
         setState {
-            stopReportTimer()
             copy(songId = newSongId)
         }
     }

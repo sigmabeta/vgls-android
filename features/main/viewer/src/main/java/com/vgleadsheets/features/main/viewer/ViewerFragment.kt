@@ -157,13 +157,13 @@ class ViewerFragment :
         super.onStop()
         stopScreenTimer()
         hudViewModel.showHud()
-        hudViewModel.stopHudTimer()
         viewModel.stopReportTimer()
 
         hudViewModel.clearSelectedSong()
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
+        hatchet.v(this.javaClass.simpleName, "Viewer lifecycle state: ${lifecycle.currentState}")
         hudViewModel.alwaysShowBack()
 
         stopScreenTimer()
@@ -176,10 +176,6 @@ class ViewerFragment :
         if (hudState.mode != HudMode.HIDDEN) {
             windowInsetController?.show(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewOnscreen()
-
-            if (hudState.mode == HudMode.REGULAR) {
-                hudViewModel.startHudTimer()
-            }
         } else {
             windowInsetController?.hide(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewUpOffscreen()
@@ -193,6 +189,7 @@ class ViewerFragment :
             is Fail -> showError(
                 song.error.message ?: song.error::class.simpleName ?: "Unknown Error"
             )
+
             is Success -> showSong(viewerState.song(), selectedPart)
             is Loading -> Unit
             Uninitialized -> Unit
@@ -262,9 +259,6 @@ class ViewerFragment :
             showEmptyState()
             return
         }
-
-        viewModel.stopReportTimer()
-        viewModel.startReportTimer()
 
         hudViewModel.setSelectedSong(song)
 
