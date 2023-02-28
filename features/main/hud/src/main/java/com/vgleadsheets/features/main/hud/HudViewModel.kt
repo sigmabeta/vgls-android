@@ -302,7 +302,7 @@ class HudViewModel @AssistedInject constructor(
         val jamSongId = activeJam.currentSongId ?: return@withState
 
         if (it.selectedSong == null) {
-            router.showSongViewer(jamSongId)
+            router.showSongViewer(null)
             return@withState
         }
 

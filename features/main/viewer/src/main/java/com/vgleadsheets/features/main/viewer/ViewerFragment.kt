@@ -13,6 +13,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
@@ -27,6 +28,7 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudMode
+import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Part
@@ -110,6 +112,10 @@ class ViewerFragment :
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
 
+        if (viewerArgs.songId == null) {
+            subscribeToJam()
+        }
+
         val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
         val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
 
@@ -135,7 +141,7 @@ class ViewerFragment :
             .flowOn(dispatchers.main)
             .launchIn(viewModel.viewModelScope)
 
-        viewModel.onEach(ViewerState::songId) {
+        viewModel.onEach(ViewerState::songId, deliveryMode = UniqueOnly("jamscription")) {
             if (it != null) {
                 viewModel.fetchSong()
             }
@@ -209,8 +215,7 @@ class ViewerFragment :
 
     override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
 
-    override fun getDetails() =
-        viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
+    override fun getDetails() = viewerArgs.songId?.toString() ?: ""
 
     override fun getPerfTrackingMinScreenHeight() = 200
 
@@ -258,6 +263,7 @@ class ViewerFragment :
             return
         }
 
+        viewModel.stopReportTimer()
         viewModel.startReportTimer()
 
         hudViewModel.setSelectedSong(song)
@@ -282,6 +288,18 @@ class ViewerFragment :
         }
 
         sheetsAdapter.submitList(listComponents)
+    }
+
+    private fun subscribeToJam() {
+        hudViewModel.onEach(
+            HudState::activeJam,
+            deliveryMode = UniqueOnly("jam subscription"),
+        ) {
+            val newSongId = it?.currentSong?.id
+            if (newSongId != null) {
+                viewModel.onNewJamSong(newSongId)
+            }
+        }
     }
 
     private fun showEmptyState() {

@@ -15,6 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class ViewerViewModel @AssistedInject constructor(
@@ -44,8 +45,8 @@ class ViewerViewModel @AssistedInject constructor(
         val songId = state.songId
 
         if (songId != null) {
-            hatchet.i(this.javaClass.simpleName, "Fetching song.")
             repository.getSong(songId)
+                .take(1)
                 .execute { data ->
                     copy(
                         song = data,
@@ -95,6 +96,7 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     fun stopReportTimer() {
+        hatchet.v(this.javaClass.simpleName, "Stopping view report timer.")
         viewReportTimer?.cancel()
     }
 
@@ -114,6 +116,13 @@ class ViewerViewModel @AssistedInject constructor(
     fun stopScreenTimer() {
         hatchet.v(this.javaClass.simpleName, "Clearing screen timer.")
         timer.cancel()
+    }
+
+    fun onNewJamSong(newSongId: Long) {
+        setState {
+            stopReportTimer()
+            copy(songId = newSongId)
+        }
     }
 
     @AssistedFactory

@@ -258,17 +258,9 @@ class MainActivity :
         SongFragment.newInstance(IdArgs(songId))
     }
 
-    override fun showSongViewer(
-        songId: Long
-    ) {
+    override fun showSongViewer(songId: Long?) {
         showFragmentSimple {
             ViewerFragment.newInstance(ViewerArgs(songId = songId))
-        }
-    }
-
-    override fun showJamViewer(jamId: Long) {
-        showFragmentSimple {
-            ViewerFragment.newInstance(ViewerArgs(jamId = jamId))
         }
     }
 

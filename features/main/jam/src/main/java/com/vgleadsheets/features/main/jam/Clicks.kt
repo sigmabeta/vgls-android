@@ -11,6 +11,7 @@ class Clicks(
 ) : ListItemClicks {
     fun follow(jamId: Long) {
         hudViewModel.followJam(jamId)
+        router.showSongViewer(null)
     }
 
     fun unfollow() {

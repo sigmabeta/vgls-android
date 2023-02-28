@@ -8,11 +8,10 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.storage.BooleanSetting
 
 data class ViewerState(
-    val jamId: Long?,
     val songId: Long?,
     val song: Async<Song> = Uninitialized,
     val keepScreenOnSetting: Async<BooleanSetting> = Uninitialized,
     val hasViewBeenReported: Boolean = false,
 ) : MavericksState {
-    constructor(viewerArgs: ViewerArgs) : this(viewerArgs.jamId, viewerArgs.songId)
+    constructor(viewerArgs: ViewerArgs) : this(viewerArgs.songId)
 }
