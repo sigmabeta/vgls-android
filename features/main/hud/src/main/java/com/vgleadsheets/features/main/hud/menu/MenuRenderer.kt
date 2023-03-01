@@ -40,7 +40,7 @@ object MenuRenderer {
         resources: Resources
     ): List<ListModel> {
         if (hudMode == HudMode.REGULAR && currentSong != null) {
-            viewModel.startHudTimer()
+            viewModel.startHudVisibilityTimer()
         } else {
             viewModel.stopHudTimer()
         }

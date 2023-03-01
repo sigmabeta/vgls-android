@@ -167,20 +167,21 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun hideHud() = withState { state ->
+        stopHudVisibilityTimer()
         if (state.mode != HudMode.HIDDEN) {
             setState { copy(mode = HudMode.HIDDEN) }
         }
     }
 
     fun showHud() = withState { state ->
-        stopTimer()
+        stopHudVisibilityTimer()
         if (state.mode == HudMode.HIDDEN) {
             setState { copy(mode = HudMode.REGULAR) }
         }
     }
 
-    fun startHudTimer() = withState { state ->
-        stopTimer()
+    fun startHudVisibilityTimer() = withState { state ->
+        stopHudVisibilityTimer()
         if (state.mode == HudMode.REGULAR) {
             hudVisibilityTimer = viewModelScope.launch(dispatchers.computation) {
                 hatchet.v(this.javaClass.simpleName, "Starting hud visibility timer.")
@@ -196,7 +197,7 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun stopHudTimer() {
-        stopTimer()
+        stopHudVisibilityTimer()
     }
 
     fun onRandomSelectClick(selectedPart: Part) = withState { _ ->
@@ -494,7 +495,7 @@ class HudViewModel @AssistedInject constructor(
             .launchIn(viewModelScope)
     }
 
-    private fun stopTimer() {
+    private fun stopHudVisibilityTimer() {
         if (hudVisibilityTimer != null) {
             hatchet.v(this.javaClass.simpleName, "Clearing hud visibility timer.")
             hudVisibilityTimer?.cancel()

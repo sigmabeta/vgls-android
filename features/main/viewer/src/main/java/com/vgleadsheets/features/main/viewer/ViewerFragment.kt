@@ -75,10 +75,6 @@ class ViewerFragment :
         postInvalidate()
     }
 
-    fun updateSongId(songId: Long) {
-        viewModel.updateSongId(songId)
-    }
-
     override fun onClicked() = withState(hudViewModel) { state ->
         if (state.mode != HudMode.HIDDEN) {
             hudViewModel.hideHud()

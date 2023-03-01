@@ -56,10 +56,6 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    fun updateSongId(newSheetId: Long) {
-        setState { copy(songId = newSheetId) }
-    }
-
     fun checkScreenSetting() {
         suspend {
             storage.getSettingSheetScreenOn()
