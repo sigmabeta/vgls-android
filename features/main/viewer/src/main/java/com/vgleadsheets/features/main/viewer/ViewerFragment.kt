@@ -31,6 +31,7 @@ import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.perf.tracking.common.PerfSpec
@@ -137,6 +138,7 @@ class ViewerFragment :
             .flowOn(dispatchers.main)
             .launchIn(viewModel.viewModelScope)
 
+        // TODO Move this out of fragment
         viewModel.onEach(ViewerState::songId, deliveryMode = UniqueOnly("jamscription")) {
             if (it != null) {
                 viewModel.fetchSong()
@@ -159,7 +161,6 @@ class ViewerFragment :
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
-        hatchet.v(this.javaClass.simpleName, "Viewer lifecycle state: ${lifecycle.currentState}")
         hudViewModel.alwaysShowBack()
 
         stopScreenTimer()
@@ -281,15 +282,27 @@ class ViewerFragment :
     }
 
     private fun subscribeToJam() {
-        hudViewModel.onEach(
-            HudState::activeJam,
-            deliveryMode = UniqueOnly("jam subscription"),
-        ) {
+        // Define what to do when a jam is active.
+        val onJamUpdate: (Jam?) -> Unit = {
             val newSongId = it?.currentSong?.id
+
             if (newSongId != null) {
+                hatchet.v(this.javaClass.simpleName, "Jam updated! New song id: $newSongId")
                 viewModel.onNewJamSong(newSongId)
             }
         }
+
+        //  Try to do that thing once on screen launch, just in case.
+        withState(hudViewModel) {
+            it.activeJam?.let(onJamUpdate)
+        }
+
+        // Set up to do it every time the jam is updated.
+        hudViewModel.onEach(
+            prop1 = HudState::activeJam,
+            deliveryMode = UniqueOnly("jam subscription"),
+            action = onJamUpdate,
+        )
     }
 
     private fun showEmptyState() {
