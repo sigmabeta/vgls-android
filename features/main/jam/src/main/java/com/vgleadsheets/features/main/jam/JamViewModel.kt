@@ -71,10 +71,6 @@ class JamViewModel @AssistedInject constructor(
 
         repository.getSetlistEntriesForJam(jamId)
             .execute {
-                val setlist = it()
-
-                hatchet.i(this.javaClass.simpleName, "Setlist: ${setlist?.size} items")
-
                 copy(
                     contentLoad = contentLoad.copy(
                         setlist = it

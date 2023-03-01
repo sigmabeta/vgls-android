@@ -95,6 +95,10 @@ class Clicks(
         viewModel.sheetDetailClick()
     }
 
+    fun jamDetail() {
+        viewModel.jamDetailClick()
+    }
+
     fun youtubeSearch() {
         // tracker.logSheetDetailClick()
         viewModel.youtubeSearchClick()
@@ -171,5 +175,13 @@ class Clicks(
     fun showMoreResults(query: String) {
         router.showSearch(query)
         viewModel.toRegularMode()
+    }
+
+    fun jamSong() {
+        viewModel.jamSongClick()
+    }
+
+    fun jamUnfollow() {
+        viewModel.unfollowJam()
     }
 }

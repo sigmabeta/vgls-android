@@ -6,15 +6,14 @@ import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.Song
 
-object SheetOptions {
+object SongOptions {
     fun getListModels(
         hudMode: HudMode,
         currentSong: Song?,
-        viewerScreenVisible: Boolean,
         onDetailsClick: () -> Unit,
         onYoutubeClick: () -> Unit,
         resources: Resources,
-    ) = if (currentSong != null && isApplicableHudModeLol(hudMode) && viewerScreenVisible) {
+    ) = if (currentSong != null && isApplicableHudModeLol(hudMode)) {
         listOf(
             MenuItemListModel(
                 resources.getString(R.string.label_song_details),

@@ -10,6 +10,7 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.PartSelectorOption
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.search.SearchContent
+import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.perf.tracking.common.FrameTimeStats
@@ -23,7 +24,7 @@ object MenuRenderer {
         hudMode: HudMode,
         searchQuery: String?,
         searchResults: SearchContent,
-        viewerScreenVisible: Boolean,
+        activeJam: Jam?,
         showVocalsOption: Boolean,
         selectedPart: Part,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
@@ -38,8 +39,8 @@ object MenuRenderer {
         clicks: Clicks,
         resources: Resources
     ): List<ListModel> {
-        if (hudMode == HudMode.REGULAR && viewerScreenVisible) {
-            viewModel.startHudTimer()
+        if (hudMode == HudMode.REGULAR && currentSong != null) {
+            viewModel.startHudVisibilityTimer()
         } else {
             viewModel.stopHudTimer()
         }
@@ -62,15 +63,21 @@ object MenuRenderer {
             clicks::bottomMenuButton,
             { clicks.searchClear() },
             resources
+        ) + JamDisplay.getListModels(
+            hudMode,
+            activeJam,
+            clicks::jamDetail,
+            clicks::jamSong,
+            clicks::jamUnfollow,
+            resources,
         ) + SongDisplay.getListModels(
             hudMode,
             currentSong,
-            viewerScreenVisible,
+            activeJam,
             clicks::sheetDetail,
-        ) + SheetOptions.getListModels(
+        ) + SongOptions.getListModels(
             hudMode,
             currentSong,
-            viewerScreenVisible,
             clicks::sheetDetail,
             clicks::youtubeSearch,
             resources

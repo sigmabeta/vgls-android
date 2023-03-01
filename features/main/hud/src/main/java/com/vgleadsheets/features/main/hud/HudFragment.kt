@@ -112,7 +112,7 @@ class HudFragment : VglsFragment() {
             state.mode,
             state.searchQuery,
             state.searchResults,
-            state.viewerScreenVisible,
+            state.activeJam,
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
             state.loadTimeLists,

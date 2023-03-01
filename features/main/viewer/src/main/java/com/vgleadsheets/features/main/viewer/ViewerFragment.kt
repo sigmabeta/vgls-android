@@ -13,6 +13,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
@@ -27,8 +28,10 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudMode
+import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.images.Page
+import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.perf.tracking.common.PerfSpec
@@ -73,10 +76,6 @@ class ViewerFragment :
         postInvalidate()
     }
 
-    fun updateSongId(songId: Long) {
-        viewModel.updateSongId(songId)
-    }
-
     override fun onClicked() = withState(hudViewModel) { state ->
         if (state.mode != HudMode.HIDDEN) {
             hudViewModel.hideHud()
@@ -110,6 +109,10 @@ class ViewerFragment :
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
 
+        if (viewerArgs.songId == null) {
+            subscribeToJam()
+        }
+
         val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
         val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
 
@@ -135,30 +138,10 @@ class ViewerFragment :
             .flowOn(dispatchers.main)
             .launchIn(viewModel.viewModelScope)
 
-        viewModel.onEach(
-            ViewerState::activeJamSheetId,
-            deliveryMode = uniqueOnly("sheet")
-        ) {
-            if (it != null) {
-                if (songId != null) {
-                    showSnackbar(
-                        getString(R.string.jam_updating_sheet)
-                    )
-                }
-                updateSongId(it)
-            }
-        }
-
-        viewModel.onEach(ViewerState::songId) {
+        // TODO Move this out of fragment
+        viewModel.onEach(ViewerState::songId, deliveryMode = UniqueOnly("jamscription")) {
             if (it != null) {
                 viewModel.fetchSong()
-            }
-        }
-
-        viewModel.onEach(ViewerState::jamCancellationReason) {
-            if (it != null) {
-                showError("Jam unfollowed: $it")
-                viewModel.clearCancellationReason()
             }
         }
     }
@@ -166,19 +149,15 @@ class ViewerFragment :
     override fun onStart() {
         super.onStart()
         viewModel.checkScreenSetting()
-        viewModel.followJam()
     }
 
     override fun onStop() {
         super.onStop()
         stopScreenTimer()
         hudViewModel.showHud()
-        hudViewModel.stopHudTimer()
-        viewModel.unfollowJam(null)
         viewModel.stopReportTimer()
 
         hudViewModel.clearSelectedSong()
-        hudViewModel.setViewerScreenNotVisible()
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
@@ -187,17 +166,13 @@ class ViewerFragment :
         stopScreenTimer()
         hideScreenOffSnackbar()
 
-        if (viewerState.screenOn is Success && viewerState.screenOn()?.value == false) {
+        if (viewerState.keepScreenOnSetting is Success && viewerState.keepScreenOnSetting()?.value == false) {
             startScreenTimer()
         }
 
         if (hudState.mode != HudMode.HIDDEN) {
             windowInsetController?.show(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewOnscreen()
-
-            if (hudState.mode == HudMode.REGULAR) {
-                hudViewModel.startHudTimer()
-            }
         } else {
             windowInsetController?.hide(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewUpOffscreen()
@@ -211,6 +186,7 @@ class ViewerFragment :
             is Fail -> showError(
                 song.error.message ?: song.error::class.simpleName ?: "Unknown Error"
             )
+
             is Success -> showSong(viewerState.song(), selectedPart)
             is Loading -> Unit
             Uninitialized -> Unit
@@ -233,8 +209,7 @@ class ViewerFragment :
 
     override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
 
-    override fun getDetails() =
-        viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
+    override fun getDetails() = viewerArgs.songId?.toString() ?: ""
 
     override fun getPerfTrackingMinScreenHeight() = 200
 
@@ -282,10 +257,7 @@ class ViewerFragment :
             return
         }
 
-        viewModel.startReportTimer()
-
         hudViewModel.setSelectedSong(song)
-        hudViewModel.setViewerScreenVisible()
 
         // Meaningless comment indicating a bugfix
         val pageCount = if (selectedPart == Part.VOCAL) {
@@ -307,6 +279,30 @@ class ViewerFragment :
         }
 
         sheetsAdapter.submitList(listComponents)
+    }
+
+    private fun subscribeToJam() {
+        // Define what to do when a jam is active.
+        val onJamUpdate: (Jam?) -> Unit = {
+            val newSongId = it?.currentSong?.id
+
+            if (newSongId != null) {
+                hatchet.v(this.javaClass.simpleName, "Jam updated! New song id: $newSongId")
+                viewModel.onNewJamSong(newSongId)
+            }
+        }
+
+        //  Try to do that thing once on screen launch, just in case.
+        withState(hudViewModel) {
+            it.activeJam?.let(onJamUpdate)
+        }
+
+        // Set up to do it every time the jam is updated.
+        hudViewModel.onEach(
+            prop1 = HudState::activeJam,
+            deliveryMode = UniqueOnly("jam subscription"),
+            action = onJamUpdate,
+        )
     }
 
     private fun showEmptyState() {

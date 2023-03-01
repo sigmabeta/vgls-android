@@ -5,6 +5,7 @@
     <string name="section_setlist">Setlist</string>
     <string name="section_song_history">Previously Jammed Sheets</string>
     <string name="cta_follow_jam">Follow Jam</string>
+    <string name="cta_unfollow_jam">Unfollow Jam</string>
     <string name="cta_refresh_jam">Refresh Jam</string>
     <string name="cta_delete_jam">Forget Jam</string>
     <string name="empty_setlist">This Jam\'s setlist is empty.</string>
