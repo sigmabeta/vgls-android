@@ -3,6 +3,7 @@ package com.vgleadsheets.database.android.di
 import android.content.Context
 import androidx.room.Room
 import com.vgleadsheets.database.android.DatabaseVersions
+import com.vgleadsheets.database.android.Migrations
 import com.vgleadsheets.database.android.VglsDatabase
 import dagger.Module
 import dagger.Provides
@@ -26,6 +27,7 @@ class DatabaseModule {
                 VglsDatabase::class.java,
                 "vgls-database"
             )
+            .addMigrations(Migrations.AddFavorites)
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }
