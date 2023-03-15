@@ -80,6 +80,18 @@ class DelayOrErrorRepository(
 
     override suspend fun incrementViewCounter(songId: Long) = realRepository.incrementViewCounter(songId)
 
+    override suspend fun toggleFavoriteSong(songId: Long) = realRepository.toggleFavoriteSong(songId)
+
+    override suspend fun toggleFavoriteGame(gameId: Long)  = realRepository.toggleFavoriteGame(gameId)
+
+    override suspend fun toggleFavoriteComposer(composerId: Long)  = realRepository.toggleFavoriteComposer(composerId)
+
+    override suspend fun toggleOfflineSong(songId: Long)  = realRepository.toggleOfflineSong(songId)
+
+    override suspend fun toggleOfflineGame(gameId: Long) = realRepository.toggleOfflineGame(gameId)
+
+    override suspend fun toggleOfflineComposer(composerId: Long)  = realRepository.toggleOfflineComposer(composerId)
+
     override suspend fun clearSheets() = realRepository.clearSheets()
 
     override suspend fun clearJams() = realRepository.clearJams()

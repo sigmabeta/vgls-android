@@ -10,4 +10,8 @@ interface GameDataSource : OneToManyDataSource<Game> {
     fun getSongsForGame(gameId: Long, withComposers: Boolean): Flow<List<Song>>
 
     fun incrementSheetsPlayed(gameId: Long)
+
+    fun toggleFavorite(gameId: Long)
+
+    fun toggleOffline(gameId: Long)
 }

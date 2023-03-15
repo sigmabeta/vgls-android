@@ -56,4 +56,8 @@ class ComposerAndroidDataSource(
         }
 
     override fun incrementSheetsPlayed(composerId: Long) = roomImpl.incrementSheetsPlayed(composerId)
+
+    override fun toggleFavorite(composerId: Long) = roomImpl.toggleFavorite(composerId)
+
+    override fun toggleOffline(composerId: Long) = roomImpl.toggleOffline(composerId)
 }

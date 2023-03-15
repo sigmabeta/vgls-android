@@ -237,6 +237,30 @@ class RealRepository constructor(
         }
     }
 
+    override suspend fun toggleFavoriteSong(songId: Long) {
+        songDataSource.toggleFavorite(songId)
+    }
+
+    override suspend fun toggleFavoriteGame(gameId: Long) {
+        gameDataSource.toggleFavorite(gameId)
+    }
+
+    override suspend fun toggleFavoriteComposer(composerId: Long) {
+        composerDataSource.toggleFavorite(composerId)
+    }
+
+    override suspend fun toggleOfflineSong(songId: Long) {
+        songDataSource.toggleOffline(songId)
+    }
+
+    override suspend fun toggleOfflineGame(gameId: Long) {
+        gameDataSource.toggleOffline(gameId)
+    }
+
+    override suspend fun toggleOfflineComposer(composerId: Long) {
+        composerDataSource.toggleOffline(composerId)
+    }
+
     override suspend fun clearSheets() = withContext(dispatchers.disk) {
         gameDataSource.nukeTable()
         songDataSource.nukeTable()

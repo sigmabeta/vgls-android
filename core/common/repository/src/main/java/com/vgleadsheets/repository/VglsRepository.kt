@@ -56,6 +56,12 @@ interface VglsRepository {
 
     // User data
     suspend fun incrementViewCounter(songId: Long)
+    suspend fun toggleFavoriteSong(songId: Long)
+    suspend fun toggleFavoriteGame(gameId: Long)
+    suspend fun toggleFavoriteComposer(composerId: Long)
+    suspend fun toggleOfflineSong(songId: Long)
+    suspend fun toggleOfflineGame(gameId: Long)
+    suspend fun toggleOfflineComposer(composerId: Long)
 
     // Debug options
     suspend fun clearSheets()

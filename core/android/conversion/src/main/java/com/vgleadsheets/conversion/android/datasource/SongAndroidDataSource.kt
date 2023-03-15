@@ -47,4 +47,8 @@ class SongAndroidDataSource(
         }
 
     override fun incrementPlayCount(songId: Long) = roomImpl.incrementPlayCount(songId)
+
+    override fun toggleFavorite(songId: Long) = roomImpl.toggleFavorite(songId)
+
+    override fun toggleOffline(songId: Long) = roomImpl.toggleOffline(songId)
 }

@@ -54,4 +54,8 @@ class GameAndroidDataSource(
         }
 
     override fun incrementSheetsPlayed(gameId: Long) = roomImpl.incrementSheetsPlayed(gameId)
+
+    override fun toggleFavorite(gameId: Long) = roomImpl.toggleFavorite(gameId)
+
+    override fun toggleOffline(gameId: Long) = roomImpl.toggleOffline(gameId)
 }

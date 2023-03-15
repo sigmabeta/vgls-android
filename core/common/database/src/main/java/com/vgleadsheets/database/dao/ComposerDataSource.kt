@@ -13,4 +13,8 @@ interface ComposerDataSource : OneToManyDataSource<Composer> {
     fun getSongsForComposer(composerId: Long): Flow<List<Song>>
 
     fun incrementSheetsPlayed(composerId: Long)
+
+    fun toggleFavorite(composerId: Long)
+
+    fun toggleOffline(composerId: Long)
 }

@@ -10,4 +10,8 @@ interface SongDataSource : OneToManyDataSource<Song> {
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
 
     fun incrementPlayCount(songId: Long)
+
+    fun toggleFavorite(songId: Long)
+
+    fun toggleOffline(songId: Long)
 }
