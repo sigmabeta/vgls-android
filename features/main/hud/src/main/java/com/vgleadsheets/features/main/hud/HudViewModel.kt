@@ -323,6 +323,22 @@ class HudViewModel @AssistedInject constructor(
         router.showSongViewer(jamSongId)
     }
 
+    fun favoritesClick() = withState { state ->
+        state.selectedSong?.let {
+            viewModelScope.launch(dispatchers.disk) {
+                repository.toggleFavoriteSong(it.id)
+            }
+        }
+    }
+
+    fun offlineClick() = withState { state ->
+        state.selectedSong?.let {
+            viewModelScope.launch(dispatchers.disk) {
+                repository.toggleOfflineSong(it.id)
+            }
+        }
+    }
+
     private fun showInitialScreen() {
         viewModelScope.launch(dispatchers.disk) {
             val selection = storage.getSavedTopLevelScreen()

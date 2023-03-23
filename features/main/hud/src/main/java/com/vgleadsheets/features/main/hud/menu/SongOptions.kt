@@ -12,6 +12,8 @@ object SongOptions {
         currentSong: Song?,
         onDetailsClick: () -> Unit,
         onYoutubeClick: () -> Unit,
+        onFavoriteClick: () -> Unit,
+        onOfflineClick: () -> Unit,
         resources: Resources,
     ) = if (currentSong != null && isApplicableHudModeLol(hudMode)) {
         listOf(
@@ -26,7 +28,39 @@ object SongOptions {
                 "",
                 R.drawable.ic_play_circle_filled_24,
                 onYoutubeClick,
-            )
+            ),
+            MenuItemListModel(
+                resources.getString(
+                    if (currentSong.isFavorite) {
+                        R.string.label_song_unfavorite
+                    } else {
+                        R.string.label_song_favorite
+                    }
+                ),
+                "",
+                if (currentSong.isFavorite) {
+                    R.drawable.ic_jam_filled
+                } else {
+                    R.drawable.ic_jam_unfilled
+                },
+                onFavoriteClick,
+            ),
+            MenuItemListModel(
+                resources.getString(
+                    if (currentSong.isAvailableOffline) {
+                        R.string.label_song_remove_offline
+                    } else {
+                        R.string.label_song_add_offline
+                    }
+                ),
+                "",
+                if (currentSong.isAvailableOffline) {
+                    R.drawable.ic_offline_pin_24
+                } else {
+                    R.drawable.ic_make_offline_24
+                },
+                onOfflineClick,
+            ),
         )
     } else {
         emptyList()

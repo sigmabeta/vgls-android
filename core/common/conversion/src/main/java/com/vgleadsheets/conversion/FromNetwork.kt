@@ -18,7 +18,9 @@ fun VglsApiGame.toModel(sheetsPlayed: Int) = Game(
 fun ApiSong.toModel(
     gameId: Long,
     gameName: String,
-    playCount: Int
+    playCount: Int,
+    isFavorite: Boolean,
+    isAvailableOffline: Boolean
 ) = Song(
     id,
     name,
@@ -29,7 +31,9 @@ fun ApiSong.toModel(
     pageCount,
     lyricsPageCount,
     null,
-    playCount
+    playCount,
+    isFavorite,
+    isAvailableOffline
 )
 
 fun ApiComposer.toModel(sheetsPlayed: Int) = Composer(

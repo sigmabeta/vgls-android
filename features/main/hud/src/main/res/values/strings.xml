@@ -17,6 +17,10 @@
     <string name="label_jam_no_song">No song selected</string>
     <string name="label_jam_current_song">Go to current song</string>
     <string name="label_jam_unfollow">Unfollow Jam</string>
+    <string name="label_song_favorite">Add to Favorites</string>
+    <string name="label_song_unfavorite">Remove from Favorites</string>
+    <string name="label_song_add_offline">Make Available Offline</string>
+    <string name="label_song_remove_offline">Available Offline</string>
 
     <string name="date_never">Never</string>
     <string name="label_settings">Settings</string>

@@ -599,7 +599,9 @@ class RealRepository constructor(
         val song = apiSong.toModel(
             apiGame.game_id,
             apiGame.game_name,
-            dbSong?.playCount ?: 0
+            dbSong?.playCount ?: 0,
+            dbSong?.isFavorite ?: false,
+            dbSong?.isAvailableOffline ?: false,
         )
 
         apiSong.composers.forEach { apiComposer ->

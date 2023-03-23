@@ -104,6 +104,14 @@ class Clicks(
         viewModel.youtubeSearchClick()
     }
 
+    fun favorite() {
+        viewModel.favoritesClick()
+    }
+
+    fun offline() {
+        viewModel.offlineClick()
+    }
+
     fun changePart() {
         tracker.logChangePartClick()
         viewModel.onChangePartClick()

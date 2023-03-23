@@ -10,5 +10,7 @@ data class Song(
     val pageCount: Int,
     val lyricPageCount: Int,
     val composers: List<Composer>?,
-    val playCount: Int
+    val playCount: Int,
+    val isFavorite: Boolean,
+    val isAvailableOffline: Boolean,
 )
