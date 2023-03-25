@@ -4,8 +4,13 @@ import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
 
 class Clicks(
-    private val router: FragmentRouter
+    private val router: FragmentRouter,
+    private val viewModel: SongViewModel,
 ) : ListItemClicks {
+    fun onFavoriteClick() {
+        viewModel.onFavoriteClick()
+    }
+
     fun composer(composerId: Long) {
         router.showSongListForComposer(composerId)
     }

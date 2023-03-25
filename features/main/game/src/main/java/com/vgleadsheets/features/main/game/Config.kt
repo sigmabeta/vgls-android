@@ -58,15 +58,15 @@ class Config(
         listOf(
             CtaListModel(
                 if (game?.isFavorite == true) {
-                    com.vgleadsheets.features.main.hud.R.drawable.ic_jam_filled
+                    R.drawable.ic_jam_filled
                 } else {
-                    com.vgleadsheets.features.main.hud.R.drawable.ic_jam_unfilled
+                    R.drawable.ic_jam_unfilled
                 },
                 resources.getString(
                     if (game?.isFavorite == true) {
-                        com.vgleadsheets.features.main.hud.R.string.label_song_unfavorite
+                        R.string.label_unfavorite
                     } else {
-                        com.vgleadsheets.features.main.hud.R.string.label_song_favorite
+                        R.string.label_favorite
                     }
                 )
             ) { clicks.onFavoriteClick() }

@@ -32,9 +32,9 @@ object SongOptions {
             MenuItemListModel(
                 resources.getString(
                     if (currentSong.isFavorite) {
-                        R.string.label_song_unfavorite
+                        R.string.label_unfavorite
                     } else {
-                        R.string.label_song_favorite
+                        R.string.label_favorite
                     }
                 ),
                 "",
@@ -48,9 +48,9 @@ object SongOptions {
             MenuItemListModel(
                 resources.getString(
                     if (currentSong.isAvailableOffline) {
-                        R.string.label_song_remove_offline
+                        R.string.label_remove_offline
                     } else {
-                        R.string.label_song_add_offline
+                        R.string.label_add_offline
                     }
                 ),
                 "",
