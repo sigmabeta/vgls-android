@@ -5,5 +5,8 @@ data class Game(
     val name: String,
     val songs: List<Song>?,
     val photoUrl: String?,
-    val sheetsPlayed: Int
-)
+    val sheetsPlayed: Int,
+    val isFavorite: Boolean,
+    val isAvailableOffline: Boolean,
+) {
+}

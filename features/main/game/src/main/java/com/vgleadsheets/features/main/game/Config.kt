@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.game
 
 import android.content.res.Resources
+import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
@@ -52,7 +53,25 @@ class Config(
         gameLoad.isLoading()
     )
 
-    override val actionsConfig = Actions.NONE
+    override val actionsConfig = Actions.Config(
+        game != null,
+        listOf(
+            CtaListModel(
+                if (game?.isFavorite == true) {
+                    com.vgleadsheets.features.main.hud.R.drawable.ic_jam_filled
+                } else {
+                    com.vgleadsheets.features.main.hud.R.drawable.ic_jam_unfilled
+                },
+                resources.getString(
+                    if (game?.isFavorite == true) {
+                        com.vgleadsheets.features.main.hud.R.string.label_song_unfavorite
+                    } else {
+                        com.vgleadsheets.features.main.hud.R.string.label_song_favorite
+                    }
+                )
+            ) { clicks.onFavoriteClick() }
+        )
+    )
 
     override val contentConfig = Content.Config(
         !songs.isNullOrEmpty()

@@ -5,10 +5,15 @@ import com.vgleadsheets.features.main.list.ListItemClicks
 
 class Clicks(
     private val router: FragmentRouter,
+    private val viewModel: GameViewModel,
 //    private val tracker: Tracker
 ) : ListItemClicks {
     fun song(id: Long) {
 //        tracker.logSongClick(id)
         router.showSongViewer(id)
+    }
+
+    fun onFavoriteClick() {
+        viewModel.onFavoriteClick()
     }
 }

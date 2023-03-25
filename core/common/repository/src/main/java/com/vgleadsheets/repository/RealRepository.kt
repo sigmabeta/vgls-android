@@ -444,7 +444,11 @@ class RealRepository constructor(
 
         val games = apiGames.map { apiGame ->
             val dbGame = dbGamesMap[apiGame.game_id]
-            apiGame.toModel(dbGame?.sheetsPlayed ?: 0)
+            apiGame.toModel(
+                dbGame?.sheetsPlayed ?: 0,
+                dbGame?.isFavorite ?: false,
+                dbGame?.isAvailableOffline ?: false,
+            )
         }
 
         val composerMap = apiComposers.associate {

@@ -7,12 +7,18 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 
-fun VglsApiGame.toModel(sheetsPlayed: Int) = Game(
+fun VglsApiGame.toModel(
+    sheetsPlayed: Int,
+    isFavorite: Boolean,
+    isAvailableOffline: Boolean
+) = Game(
     game_id,
     game_name,
     null,
     image_url,
-    sheetsPlayed
+    sheetsPlayed,
+    isFavorite,
+    isAvailableOffline
 )
 
 fun ApiSong.toModel(
