@@ -81,7 +81,7 @@ object MenuRenderer {
             clicks::sheetDetail,
             clicks::youtubeSearch,
             clicks::favorite,
-            clicks::offline,
+            // clicks::offline,
             resources
         ) + PartPicker.getListModels(
             hudMode == HudMode.PARTS,

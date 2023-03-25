@@ -453,7 +453,11 @@ class RealRepository constructor(
 
         val composerMap = apiComposers.associate {
             val dbComposer = dbComposerMap[it.composer_id]
-            it.composer_id to it.toModel(dbComposer?.sheetsPlayed ?: 0)
+            it.composer_id to it.toModel(
+                dbComposer?.sheetsPlayed ?: 0,
+                dbComposer?.isFavorite ?: false,
+                dbComposer?.isAvailableOffline ?: false,
+            )
         }.toMutableMap()
 
         val songs = mutableListOf<Song>()

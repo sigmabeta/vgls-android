@@ -13,7 +13,7 @@ object SongOptions {
         onDetailsClick: () -> Unit,
         onYoutubeClick: () -> Unit,
         onFavoriteClick: () -> Unit,
-        onOfflineClick: () -> Unit,
+        // onOfflineClick: () -> Unit,
         resources: Resources,
     ) = if (currentSong != null && isApplicableHudModeLol(hudMode)) {
         listOf(
@@ -45,22 +45,22 @@ object SongOptions {
                 },
                 onFavoriteClick,
             ),
-            MenuItemListModel(
-                resources.getString(
-                    if (currentSong.isAvailableOffline) {
-                        R.string.label_remove_offline
-                    } else {
-                        R.string.label_add_offline
-                    }
-                ),
-                "",
-                if (currentSong.isAvailableOffline) {
-                    R.drawable.ic_offline_pin_24
-                } else {
-                    R.drawable.ic_make_offline_24
-                },
-                onOfflineClick,
-            ),
+            // MenuItemListModel(
+            //     resources.getString(
+            //         if (currentSong.isAvailableOffline) {
+            //             R.string.label_remove_offline
+            //         } else {
+            //             R.string.label_add_offline
+            //         }
+            //     ),
+            //     "",
+            //     if (currentSong.isAvailableOffline) {
+            //         R.drawable.ic_offline_pin_24
+            //     } else {
+            //         R.drawable.ic_make_offline_24
+            //     },
+            //     onOfflineClick,
+            // ),
         )
     } else {
         emptyList()

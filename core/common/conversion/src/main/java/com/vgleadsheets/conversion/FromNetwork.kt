@@ -42,11 +42,17 @@ fun ApiSong.toModel(
     isAvailableOffline
 )
 
-fun ApiComposer.toModel(sheetsPlayed: Int) = Composer(
+fun ApiComposer.toModel(
+    sheetsPlayed: Int,
+    isFavorite: Boolean,
+    isAvailableOffline: Boolean
+) = Composer(
     composer_id,
     composer_name ?: "Unknown Composer",
     null,
     image_url,
     false,
-    sheetsPlayed
+    sheetsPlayed,
+    isFavorite,
+    isAvailableOffline
 )
