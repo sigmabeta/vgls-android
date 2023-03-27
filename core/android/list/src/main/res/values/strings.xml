@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="section_header_songs">Songs</string>
+
     <string name="empty">No %1$s available. Try refreshing.</string>
+    <string name="empty_transposition">No songs available. Try a different transposition.</string>
+
     <string name="error">Failed to load content for this screen. Try again later?</string>
 
     <string name="error_dev_unknown">Unknown error.</string>
