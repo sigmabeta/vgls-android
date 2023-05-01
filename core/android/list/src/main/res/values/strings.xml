@@ -9,4 +9,6 @@
 
     <string name="error_dev_unknown">Unknown error.</string>
     <string name="loading">Now Loading…</string>
+
+    <string name="section_header_favorites">Favorites</string>
 </resources>
