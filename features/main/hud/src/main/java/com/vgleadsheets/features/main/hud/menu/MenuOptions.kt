@@ -67,7 +67,7 @@ object MenuOptions {
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_TAG) }
         ),
         MenuItemListModel(
-            resources.getString(R.string.label_all_sheets),
+            resources.getString(R.string.label_all_songs),
             null,
             R.drawable.ic_description_24dp,
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_SONG) }
