@@ -12,7 +12,7 @@ object SongDisplay {
         currentSong: Song?,
         onClick: () -> Unit
     ): List<ListModel> =
-        if (currentSong != null && hudMode != HudMode.SEARCH && viewerScreenVisible) {
+        if (currentSong != null && hudMode != HudMode.SEARCH) {
             listOf(
                 IconNameCaptionListModel(
                     currentSong.id,
