@@ -25,4 +25,3 @@ data class FavoriteListContent(
 
     override fun isEmpty() = false
 }
-

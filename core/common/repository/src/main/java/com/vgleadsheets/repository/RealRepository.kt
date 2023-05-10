@@ -40,6 +40,7 @@ import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.ApiSongHistoryEntry
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
+import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -51,7 +52,6 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
-import java.util.Locale
 
 @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
 class RealRepository constructor(
@@ -517,7 +517,8 @@ class RealRepository constructor(
 
         val removedSongs = dbSongs.asIdSet { it.id } - songs.asIdSet { it.id }
         val removedGames = dbGames.asIdSet { it.id } - games.asIdSet { it.id }
-        val removedComposers = dbComposerMap.values.asIdSet { it.id } - composerMap.values.asIdSet { it.id }
+        val removedComposers =
+            dbComposerMap.values.asIdSet { it.id } - composerMap.values.asIdSet { it.id }
 
         withContext(dispatchers.disk) {
             transactionRunner.inTransaction {

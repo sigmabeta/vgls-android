@@ -11,10 +11,6 @@ import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.ApiSongHistoryEntry
 import com.vgleadsheets.network.model.ApiTime
 import com.vgleadsheets.network.model.VglsApiGame
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.util.EmptyStackException
@@ -22,6 +18,10 @@ import java.util.Random
 import java.util.Stack
 import javax.inject.Named
 import kotlin.collections.set
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.HttpException
+import retrofit2.Response
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
 class MockVglsApi(

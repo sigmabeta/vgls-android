@@ -20,11 +20,11 @@ import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
+import javax.inject.Inject
+import kotlin.system.measureNanoTime
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import kotlin.system.measureNanoTime
 
 abstract class BetterListFragment<
     ContentType : ListContent,

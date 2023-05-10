@@ -8,5 +8,4 @@ data class Game(
     val sheetsPlayed: Int,
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,
-) {
-}
+)

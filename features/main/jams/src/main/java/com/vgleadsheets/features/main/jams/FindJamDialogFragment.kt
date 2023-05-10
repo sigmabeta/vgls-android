@@ -20,15 +20,15 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.tracking.Tracker
 import dagger.android.support.AndroidSupportInjection
+import java.net.HttpURLConnection
+import java.net.UnknownHostException
+import javax.inject.Inject
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import java.net.HttpURLConnection
-import java.net.UnknownHostException
-import javax.inject.Inject
 
 class FindJamDialogFragment : BottomSheetDialogFragment() {
     @Inject

@@ -38,11 +38,11 @@ import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOneMargin
 import com.vgleadsheets.tracking.TrackingScreen
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
-import javax.inject.Named
 
 class ViewerFragment :
     VglsFragment(),

@@ -1,13 +1,13 @@
 package com.vgleadsheets.perf.tracking.common
 
 import com.vgleadsheets.coroutines.VglsDispatchers
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.nanoseconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.nanoseconds
 
 @SuppressWarnings(
     "TooManyFunctions",

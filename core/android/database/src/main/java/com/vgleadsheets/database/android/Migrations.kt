@@ -9,7 +9,7 @@ import com.vgleadsheets.database.android.enitity.GameEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
 
 object Migrations {
-    object AddFavorites: Migration(
+    object AddFavorites : Migration(
         DatabaseVersions.ADDED_PLAY_COUNTS,
         DatabaseVersions.ADDED_FAVORITES,
     ) {

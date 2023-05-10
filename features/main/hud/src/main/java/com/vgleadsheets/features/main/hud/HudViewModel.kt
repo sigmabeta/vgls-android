@@ -20,6 +20,8 @@ import com.vgleadsheets.storage.Storage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import java.net.HttpURLConnection
+import java.net.UnknownHostException
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -37,8 +39,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import java.net.HttpURLConnection
-import java.net.UnknownHostException
 
 @OptIn(FlowPreview::class)
 class HudViewModel @AssistedInject constructor(
