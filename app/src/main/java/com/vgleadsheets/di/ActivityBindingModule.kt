@@ -4,6 +4,7 @@ import com.vgleadsheets.features.main.about.AboutFragment
 import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.debug.DebugFragment
+import com.vgleadsheets.features.main.favorites.FavoriteListFragment
 import com.vgleadsheets.features.main.game.GameFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
@@ -44,6 +45,10 @@ internal abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeAddJamFragmentInjector(): FindJamDialogFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeBetterFavoriteFragmentInjector(): FavoriteListFragment
 
     @FragmentScope
     @ContributesAndroidInjector

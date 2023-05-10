@@ -24,6 +24,7 @@ interface RoomDao<EntityType> {
         const val UPDATE = "UPDATE"
         const val SET = "SET"
         const val WHERE_SINGLE = "WHERE id = :$ROW_PRIMARY_KEY_ID"
+        const val WHERE_FAVORITE = "WHERE isFavorite = 1"
         const val WHERE_SEARCH = "WHERE name LIKE :name"
 
         const val OPTION_CASE_INSENSITIVE = "COLLATE NOCASE"

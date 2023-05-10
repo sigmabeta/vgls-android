@@ -33,6 +33,14 @@ class DelayOrErrorRepository(
 
     override fun getAllJams(withHistory: Boolean) = realRepository.getAllJams(withHistory)
 
+    override fun getFavoriteGames(withSongs: Boolean) = realRepository.getFavoriteGames(withSongs)
+
+    override fun getFavoriteSongs(withComposers: Boolean) =
+        realRepository.getFavoriteSongs(withComposers)
+
+    override fun getFavoriteComposers(withSongs: Boolean) =
+        realRepository.getFavoriteComposers(withSongs)
+
     override fun getSongsForGame(gameId: Long, withComposers: Boolean) =
         realRepository.getSongsForGame(gameId)
 
@@ -78,19 +86,24 @@ class DelayOrErrorRepository(
 
     override suspend fun refreshJams() = realRepository.refreshJams()
 
-    override suspend fun incrementViewCounter(songId: Long) = realRepository.incrementViewCounter(songId)
+    override suspend fun incrementViewCounter(songId: Long) =
+        realRepository.incrementViewCounter(songId)
 
-    override suspend fun toggleFavoriteSong(songId: Long) = realRepository.toggleFavoriteSong(songId)
+    override suspend fun toggleFavoriteSong(songId: Long) =
+        realRepository.toggleFavoriteSong(songId)
 
-    override suspend fun toggleFavoriteGame(gameId: Long)  = realRepository.toggleFavoriteGame(gameId)
+    override suspend fun toggleFavoriteGame(gameId: Long) =
+        realRepository.toggleFavoriteGame(gameId)
 
-    override suspend fun toggleFavoriteComposer(composerId: Long)  = realRepository.toggleFavoriteComposer(composerId)
+    override suspend fun toggleFavoriteComposer(composerId: Long) =
+        realRepository.toggleFavoriteComposer(composerId)
 
-    override suspend fun toggleOfflineSong(songId: Long)  = realRepository.toggleOfflineSong(songId)
+    override suspend fun toggleOfflineSong(songId: Long) = realRepository.toggleOfflineSong(songId)
 
     override suspend fun toggleOfflineGame(gameId: Long) = realRepository.toggleOfflineGame(gameId)
 
-    override suspend fun toggleOfflineComposer(composerId: Long)  = realRepository.toggleOfflineComposer(composerId)
+    override suspend fun toggleOfflineComposer(composerId: Long) =
+        realRepository.toggleOfflineComposer(composerId)
 
     override suspend fun clearSheets() = realRepository.clearSheets()
 

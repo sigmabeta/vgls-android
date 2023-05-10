@@ -154,6 +154,7 @@ class HudFragment : VglsFragment() {
     }
 
     companion object {
+        const val TOP_LEVEL_SCREEN_ID_FAVORITES = "FAVORITES"
         const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
         const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"
         const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"

@@ -6,6 +6,8 @@ import com.vgleadsheets.model.relation.SongComposerRelation
 import kotlinx.coroutines.flow.Flow
 
 interface ComposerDataSource : OneToManyDataSource<Composer> {
+    fun getFavorites(): Flow<List<Composer>>
+
     fun searchByName(name: String): Flow<List<Composer>>
 
     fun insertRelations(relations: List<SongComposerRelation>)

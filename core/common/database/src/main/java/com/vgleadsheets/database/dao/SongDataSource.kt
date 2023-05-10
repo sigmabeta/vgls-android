@@ -5,6 +5,8 @@ import com.vgleadsheets.model.tag.TagValue
 import kotlinx.coroutines.flow.Flow
 
 interface SongDataSource : OneToManyDataSource<Song> {
+    fun getFavorites(): Flow<List<Song>>
+
     fun searchByName(name: String): Flow<List<Song>>
 
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>

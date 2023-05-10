@@ -1,4 +1,6 @@
 <resources>
+    <string name="section_header_all_games">All Games</string>
+
     <string name="label_sheet_count">%1$d Sheets</string>
 
     <string name="subtitle_game">By Game</string>
@@ -7,7 +9,4 @@
     <string name="subtitle_separator">", "</string>
 
     <string name="missing_thing_game">games</string>
-
-    <string name="section_header_games">All Games</string>
-
 </resources>

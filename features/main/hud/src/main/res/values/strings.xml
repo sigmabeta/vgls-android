@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="label_favorites">Favorites</string>
     <string name="label_by_game">Browse by game</string>
     <string name="label_by_composer">Browse by composer</string>
     <string name="label_all_songs">Browse all songs</string>

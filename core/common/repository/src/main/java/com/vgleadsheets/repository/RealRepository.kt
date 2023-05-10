@@ -109,7 +109,8 @@ class RealRepository constructor(
 
     override suspend fun refreshJamState(name: String) = refreshJamStateImpl(name)
 
-    override fun getAllGames(withSongs: Boolean) = gameDataSource.getAll(withSongs)
+    override fun getAllGames(withSongs: Boolean) = gameDataSource
+        .getAll(withSongs)
         .flowOn(dispatchers.disk)
 
     override fun getAllSongs(withComposers: Boolean) = songDataSource
@@ -119,6 +120,15 @@ class RealRepository constructor(
     override fun getAllComposers(withSongs: Boolean) = composerDataSource
         .getAll(withSongs)
         .flowOn(dispatchers.disk)
+
+    override fun getFavoriteGames(withSongs: Boolean) =
+        gameDataSource.getFavorites().flowOn(dispatchers.disk)
+
+    override fun getFavoriteSongs(withComposers: Boolean) =
+        songDataSource.getFavorites().flowOn(dispatchers.disk)
+
+    override fun getFavoriteComposers(withSongs: Boolean) =
+        composerDataSource.getFavorites().flowOn(dispatchers.disk)
 
     override fun getAllTagKeys(withValues: Boolean) = tagKeyDataSource
         .getAll(withValues)

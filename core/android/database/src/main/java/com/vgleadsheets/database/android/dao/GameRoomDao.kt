@@ -13,6 +13,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.SET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.TOGGLE_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.TOGGLE_OFFLINE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.UPDATE
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
 import com.vgleadsheets.database.android.enitity.DeletionId
@@ -39,6 +40,9 @@ interface GameRoomDao : RoomDao<GameEntity> {
     @Delete(entity = GameEntity::class)
     override fun remove(ids: List<DeletionId>)
 
+    @Query(QUERY_FAVORITES)
+    fun getFavorites(): Flow<List<GameEntity>>
+
     @Query(QUERY_INCREMENT)
     fun incrementSheetsPlayed(id: Long)
 
@@ -63,6 +67,8 @@ interface GameRoomDao : RoomDao<GameEntity> {
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         const val QUERY_DELETE = "$DELETE $TABLE"
         const val QUERY_UPDATE = "$UPDATE $TABLE"
+        const val QUERY_FAVORITES =
+            "$GET $TABLE $WHERE_FAVORITE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
 
         const val QUERY_INCREMENT = "$UPDATE $TABLE $SET_INCREMENT $WHERE_SINGLE"
 

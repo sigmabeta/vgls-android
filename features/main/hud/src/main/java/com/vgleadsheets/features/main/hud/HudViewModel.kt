@@ -355,6 +355,7 @@ class HudViewModel @AssistedInject constructor(
 
     private fun showScreen(topLevelScreenIdDefault: String) {
         when (topLevelScreenIdDefault) {
+            HudFragment.TOP_LEVEL_SCREEN_ID_FAVORITES -> router.showFavorites()
             HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList()
             HudFragment.TOP_LEVEL_SCREEN_ID_GAME -> router.showGameList()
             HudFragment.TOP_LEVEL_SCREEN_ID_JAM -> router.showJams()

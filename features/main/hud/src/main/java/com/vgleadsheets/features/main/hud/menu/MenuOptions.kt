@@ -49,6 +49,12 @@ object MenuOptions {
         resources: Resources,
     ) = listOf(
         MenuItemListModel(
+            resources.getString(R.string.label_favorites),
+            null,
+            R.drawable.ic_jam_filled,
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_FAVORITES) }
+        ),
+        MenuItemListModel(
             resources.getString(R.string.label_by_game),
             null,
             R.drawable.ic_album_24dp,

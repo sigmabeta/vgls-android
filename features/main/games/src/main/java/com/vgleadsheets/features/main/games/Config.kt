@@ -91,11 +91,16 @@ class Config(
             emptyList()
         }
 
-        val restOfThem = listOf(
-            SectionHeaderListModel(
-                resources.getString(R.string.section_header_games)
+        val restOfThem = if (favoriteSection.isEmpty()) {
+            emptyList()
+        } else {
+            listOf(
+                SectionHeaderListModel(
+                    resources.getString(R.string.section_header_all_games)
+                )
+
             )
-        ) + filteredGameItems
+        } + filteredGameItems
 
         return@Config favoriteSection + restOfThem
     }

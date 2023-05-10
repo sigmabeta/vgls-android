@@ -29,8 +29,6 @@ class Config(
     private val perfSpec: PerfSpec,
     private val resources: Resources
 ) : BetterListConfig {
-    private val songsLoad = state.contentLoad.songsLoad
-
     override val titleConfig = Title.Config(
         resources.getString(R.string.app_name),
         resources.getString(R.string.subtitle_all_songs),
@@ -99,11 +97,15 @@ class Config(
             emptyList()
         }
 
-        val restOfThem = listOf(
-            SectionHeaderListModel(
-                resources.getString(R.string.section_header_all_songs)
+        val restOfThem = if (favoriteSection.isEmpty()) {
+            emptyList()
+        } else {
+            listOf(
+                SectionHeaderListModel(
+                    resources.getString(R.string.section_header_all_songs)
+                )
             )
-        ) + filteredGameItems
+        } + filteredGameItems
 
         return@Config favoriteSection + restOfThem
     }

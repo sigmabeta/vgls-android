@@ -36,6 +36,10 @@ class SongAndroidDataSource(
     relatedRoomImpl
 ),
     SongDataSource {
+    override fun getFavorites() = roomImpl
+        .getFavorites()
+        .mapList { convert.entityToModelWithMany(it, relatedRoomImpl, manyConverter) }
+
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapList { convert.toModelFromEntity(it) }

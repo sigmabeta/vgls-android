@@ -14,6 +14,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.SET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.TOGGLE_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.TOGGLE_OFFLINE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.UPDATE
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
 import com.vgleadsheets.database.android.enitity.DeletionId
@@ -47,6 +48,9 @@ interface SongRoomDao :
 
     @Delete(entity = SongEntity::class)
     override fun remove(ids: List<DeletionId>)
+
+    @Query(QUERY_FAVORITES)
+    fun getFavorites(): Flow<List<SongEntity>>
 
     @Query(QUERY_INCREMENT)
     fun incrementPlayCount(id: Long)
@@ -90,6 +94,8 @@ interface SongRoomDao :
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         const val QUERY_DELETE = "$DELETE $TABLE"
         const val QUERY_UPDATE = "$UPDATE $TABLE"
+        const val QUERY_FAVORITES =
+            "$GET $TABLE $WHERE_FAVORITE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
 
         const val QUERY_INCREMENT = "$QUERY_UPDATE $SET_INCREMENT $WHERE_SINGLE"
 

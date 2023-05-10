@@ -27,6 +27,13 @@ interface VglsRepository {
     fun getAllTagKeys(withValues: Boolean = true): Flow<List<TagKey>>
     fun getAllJams(withHistory: Boolean): Flow<List<Jam>>
 
+    // Favorites
+    fun getFavoriteGames(withSongs: Boolean = true): Flow<List<Game>>
+
+    fun getFavoriteSongs(withComposers: Boolean = true): Flow<List<Song>>
+
+    fun getFavoriteComposers(withSongs: Boolean = true): Flow<List<Composer>>
+
     // Related Lists
     fun getSongsForGame(gameId: Long, withComposers: Boolean = true): Flow<List<Song>>
     fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
