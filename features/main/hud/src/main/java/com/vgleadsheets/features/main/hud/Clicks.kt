@@ -5,7 +5,6 @@ import com.vgleadsheets.features.main.hud.HudFragment.Companion.MODAL_SCREEN_ID_
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.MODAL_SCREEN_ID_SETTINGS
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_COMPOSER
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_GAME
-import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_JAM
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_SONG
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_TAG
 import com.vgleadsheets.model.Part
@@ -46,13 +45,16 @@ class Clicks(
             }
             true
         }
+
         HudMode.SEARCH -> {
             viewModel.toRegularMode()
             true
         }
+
         HudMode.REGULAR -> {
             false
         }
+
         else -> {
             viewModel.toRegularMode()
             true
@@ -75,6 +77,7 @@ class Clicks(
                     viewModel.toMenu()
                 }
             }
+
             else -> {
                 if (state.alwaysShowBack) {
                     router.back()
@@ -93,10 +96,6 @@ class Clicks(
     fun sheetDetail() {
         // tracker.logSheetDetailClick()
         viewModel.sheetDetailClick()
-    }
-
-    fun jamDetail() {
-        viewModel.jamDetailClick()
     }
 
     fun youtubeSearch() {
@@ -122,7 +121,6 @@ class Clicks(
             TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList(fromScreen, trackingDetails)
             TOP_LEVEL_SCREEN_ID_TAG -> router.showTagList(fromScreen, trackingDetails)
             TOP_LEVEL_SCREEN_ID_SONG -> router.showAllSheets(fromScreen, trackingDetails)
-            TOP_LEVEL_SCREEN_ID_JAM -> router.showJams(fromScreen, trackingDetails)
             MODAL_SCREEN_ID_SETTINGS -> router.showSettings(fromScreen, trackingDetails)
             MODAL_SCREEN_ID_DEBUG -> router.showDebug(fromScreen, trackingDetails)
             else -> router.showGameList(fromScreen, trackingDetails)
@@ -175,13 +173,5 @@ class Clicks(
     fun showMoreResults(query: String) {
         router.showSearch(query)
         viewModel.toRegularMode()
-    }
-
-    fun jamSong() {
-        viewModel.jamSongClick()
-    }
-
-    fun jamUnfollow() {
-        viewModel.unfollowJam()
     }
 }

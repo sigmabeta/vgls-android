@@ -30,10 +30,6 @@ class NoopTracker(
         hatchet.d(this.javaClass.simpleName, "Random song loaded: $gameName - $songName; for $transposition")
     }
 
-    override fun logJamFollow(id: Long, fromScreen: TrackingScreen, fromDetails: String) {
-        hatchet.d(this.javaClass.simpleName, "Jam $id followed from screen: $fromScreen:$fromDetails")
-    }
-
     override fun logError(message: String) = Unit
 
     override fun logWebLaunch(url: String, fromScreen: TrackingScreen, fromDetails: String) {

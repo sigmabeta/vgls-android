@@ -15,8 +15,6 @@ interface FragmentRouter {
 
     fun showSheetDetail(songId: Long)
 
-    fun showJamDetailViewer(jamId: Long)
-
     fun showSearch(query: String?)
 
     fun showSongListForComposer(composerId: Long)
@@ -29,11 +27,6 @@ interface FragmentRouter {
     )
 
     fun showTagList(
-        fromScreen: TrackingScreen? = null,
-        fromDetails: String? = null
-    )
-
-    fun showJams(
         fromScreen: TrackingScreen? = null,
         fromDetails: String? = null
     )
@@ -60,8 +53,6 @@ interface FragmentRouter {
     fun searchYoutube(name: String, gameName: String)
 
     fun showLicenseScreen()
-
-    fun showFindJamDialog()
 
     fun back()
 

@@ -11,8 +11,6 @@ dependencies {
     api project(':features:main:hud')
     api project(':features:main:game')
     api project(':features:main:games')
-    api project(':features:main:jam')
-    api project(':features:main:jams')
     api project(':features:main:license')
     api project(':features:main:search')
     api project(':features:main:settings')
