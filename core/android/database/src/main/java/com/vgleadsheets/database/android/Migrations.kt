@@ -13,6 +13,7 @@ object Migrations {
         DatabaseVersions.ADDED_PLAY_COUNTS,
         DatabaseVersions.ADDED_FAVORITES,
     ) {
+        @Suppress("MaxLineLength")
         override fun migrate(database: SupportSQLiteDatabase) {
             database.execSQL("ALTER TABLE ${GameEntity.TABLE} ADD COLUMN $COLUMN_FAVORITE INTEGER NOT NULL DEFAULT 0")
             database.execSQL("ALTER TABLE ${GameEntity.TABLE} ADD COLUMN $COLUMN_OFFLINE INTEGER NOT NULL DEFAULT 0")
