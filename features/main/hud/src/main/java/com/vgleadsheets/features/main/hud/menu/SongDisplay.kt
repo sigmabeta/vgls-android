@@ -10,7 +10,6 @@ object SongDisplay {
     fun getListModels(
         hudMode: HudMode,
         currentSong: Song?,
-        viewerScreenVisible: Boolean,
         onClick: () -> Unit
     ): List<ListModel> =
         if (currentSong != null && hudMode != HudMode.SEARCH && viewerScreenVisible) {

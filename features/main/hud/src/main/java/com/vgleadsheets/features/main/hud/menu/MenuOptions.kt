@@ -79,13 +79,12 @@ object MenuOptions {
             R.drawable.ic_shuffle_24dp,
             { onRandomClick() }
         ),
-        MenuItemListModel(
-            resources.getString(R.string.label_jams),
-            null,
-            R.drawable.ic_queue_music_black_24dp,
-            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_JAM) }
-        ),
-
+//        MenuItemListModel(
+//            resources.getString(R.string.label_jams),
+//            null,
+//            R.drawable.ic_queue_music_black_24dp,
+//            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_JAM) }
+//        ),
         MenuItemListModel(
             resources.getString(R.string.label_settings),
             null,

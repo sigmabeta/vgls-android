@@ -44,7 +44,7 @@ class HudViewModel @AssistedInject constructor(
     private val dispatchers: VglsDispatchers,
     private val hatchet: Hatchet
 ) : MavericksViewModel<HudState>(initialState) {
-    private var timer: Job? = null
+    private var hudVisibilityTimer: Job? = null
 
     private var gameSearch: Job? = null
     private var composerSearch: Job? = null
@@ -79,14 +79,6 @@ class HudViewModel @AssistedInject constructor(
 
     fun clearSelectedSong() = setState {
         copy(selectedSong = null)
-    }
-
-    fun setViewerScreenVisible() = setState {
-        copy(viewerScreenVisible = true)
-    }
-
-    fun setViewerScreenNotVisible() = setState {
-        copy(viewerScreenVisible = false)
     }
 
     fun onPartSelect(apiId: String) = setState {
@@ -135,33 +127,37 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun hideHud() = withState { state ->
+        stopHudVisibilityTimer()
         if (state.mode != HudMode.HIDDEN) {
             setState { copy(mode = HudMode.HIDDEN) }
         }
     }
 
     fun showHud() = withState { state ->
-        stopTimer()
+        stopHudVisibilityTimer()
         if (state.mode == HudMode.HIDDEN) {
             setState { copy(mode = HudMode.REGULAR) }
         }
     }
 
-    fun startHudTimer() = withState { state ->
-        stopTimer()
+    fun startHudVisibilityTimer() = withState { state ->
+        stopHudVisibilityTimer()
         if (state.mode == HudMode.REGULAR) {
-            timer = viewModelScope.launch(dispatchers.computation) {
+            hudVisibilityTimer = viewModelScope.launch(dispatchers.computation) {
+                hatchet.v(this.javaClass.simpleName, "Starting hud visibility timer.")
                 delay(TIMEOUT_HUD_VISIBLE)
 
+                hatchet.v(this.javaClass.simpleName, "Hud visibility timer expired.")
                 withContext(dispatchers.main) {
                     hideHud()
                 }
+                hudVisibilityTimer = null
             }
         }
     }
 
     fun stopHudTimer() {
-        stopTimer()
+        stopHudVisibilityTimer()
     }
 
     fun onRandomSelectClick(selectedPart: Part) = withState { _ ->
@@ -279,7 +275,6 @@ class HudViewModel @AssistedInject constructor(
         when (topLevelScreenIdDefault) {
             HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList()
             HudFragment.TOP_LEVEL_SCREEN_ID_GAME -> router.showGameList()
-            HudFragment.TOP_LEVEL_SCREEN_ID_JAM -> router.showJams()
             HudFragment.TOP_LEVEL_SCREEN_ID_SONG -> router.showAllSheets()
             HudFragment.TOP_LEVEL_SCREEN_ID_TAG -> router.showTagList()
             else -> router.showGameList()
@@ -433,8 +428,12 @@ class HudViewModel @AssistedInject constructor(
             .launchIn(viewModelScope)
     }
 
-    private fun stopTimer() {
-        timer?.cancel()
+    private fun stopHudVisibilityTimer() {
+        if (hudVisibilityTimer != null) {
+            hatchet.v(this.javaClass.simpleName, "Clearing hud visibility timer.")
+            hudVisibilityTimer?.cancel()
+            hudVisibilityTimer = null
+        }
     }
 
     @AssistedFactory

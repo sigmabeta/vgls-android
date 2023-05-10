@@ -3,9 +3,6 @@ apply from: "$rootProject.projectDir/feature-module.gradle"
 dependencies {
     implementation "androidx.viewpager2:viewpager2:$viewpager_version"
 
-    // TODO Remove HTTPException et al from feature
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-
     implementation project(':core:android:animation')
     implementation project(':core:android:coroutines')
     implementation project(':core:android:images')

@@ -11,6 +11,9 @@ android {
 }
 
 dependencies {
+    // TODO Remove HTTPException et al from feature
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
     implementation project(':core:common:model')
     implementation project(':core:common:repository')
 

@@ -16,8 +16,4 @@ class Clicks(
     fun clearSheets() {
         viewModel.clearSheets()
     }
-
-    fun clearJams() {
-        viewModel.clearJams()
-    }
 }

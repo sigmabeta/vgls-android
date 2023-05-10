@@ -13,6 +13,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.UniqueOnly
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
@@ -35,11 +36,11 @@ import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOneMargin
 import com.vgleadsheets.tracking.TrackingScreen
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
-import javax.inject.Named
 
 class ViewerFragment :
     VglsFragment(),
@@ -71,10 +72,6 @@ class ViewerFragment :
 
     private val onScreenOffSnackClick = View.OnClickListener {
         postInvalidate()
-    }
-
-    fun updateSongId(songId: Long) {
-        viewModel.updateSongId(songId)
     }
 
     override fun onClicked() = withState(hudViewModel) { state ->
@@ -135,30 +132,10 @@ class ViewerFragment :
             .flowOn(dispatchers.main)
             .launchIn(viewModel.viewModelScope)
 
-        viewModel.onEach(
-            ViewerState::activeJamSheetId,
-            deliveryMode = uniqueOnly("sheet")
-        ) {
-            if (it != null) {
-                if (songId != null) {
-                    showSnackbar(
-                        getString(R.string.jam_updating_sheet)
-                    )
-                }
-                updateSongId(it)
-            }
-        }
-
-        viewModel.onEach(ViewerState::songId) {
+        // TODO Move this out of fragment
+        viewModel.onEach(ViewerState::songId, deliveryMode = UniqueOnly("jamscription")) {
             if (it != null) {
                 viewModel.fetchSong()
-            }
-        }
-
-        viewModel.onEach(ViewerState::jamCancellationReason) {
-            if (it != null) {
-                showError("Jam unfollowed: $it")
-                viewModel.clearCancellationReason()
             }
         }
     }
@@ -166,19 +143,15 @@ class ViewerFragment :
     override fun onStart() {
         super.onStart()
         viewModel.checkScreenSetting()
-        viewModel.followJam()
     }
 
     override fun onStop() {
         super.onStop()
         stopScreenTimer()
         hudViewModel.showHud()
-        hudViewModel.stopHudTimer()
-        viewModel.unfollowJam(null)
         viewModel.stopReportTimer()
 
         hudViewModel.clearSelectedSong()
-        hudViewModel.setViewerScreenNotVisible()
     }
 
     override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
@@ -187,17 +160,13 @@ class ViewerFragment :
         stopScreenTimer()
         hideScreenOffSnackbar()
 
-        if (viewerState.screenOn is Success && viewerState.screenOn()?.value == false) {
+        if (viewerState.keepScreenOnSetting is Success && viewerState.keepScreenOnSetting()?.value == false) {
             startScreenTimer()
         }
 
         if (hudState.mode != HudMode.HIDDEN) {
             windowInsetController?.show(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewOnscreen()
-
-            if (hudState.mode == HudMode.REGULAR) {
-                hudViewModel.startHudTimer()
-            }
         } else {
             windowInsetController?.hide(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewUpOffscreen()
@@ -234,8 +203,7 @@ class ViewerFragment :
 
     override fun getTrackingScreen() = TrackingScreen.SHEET_VIEWER
 
-    override fun getDetails() =
-        viewerArgs.songId?.toString() ?: viewerArgs.jamId?.toString() ?: ""
+    override fun getDetails() = viewerArgs.songId?.toString() ?: ""
 
     override fun getPerfTrackingMinScreenHeight() = 200
 
@@ -283,10 +251,7 @@ class ViewerFragment :
             return
         }
 
-        viewModel.startReportTimer()
-
         hudViewModel.setSelectedSong(song)
-        hudViewModel.setViewerScreenVisible()
 
         // Meaningless comment indicating a bugfix
         val pageCount = if (selectedPart == Part.VOCAL) {
