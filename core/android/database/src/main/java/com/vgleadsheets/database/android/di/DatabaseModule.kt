@@ -2,7 +2,6 @@ package com.vgleadsheets.database.android.di
 
 import android.content.Context
 import androidx.room.Room
-import com.vgleadsheets.database.Migrations
 import com.vgleadsheets.database.android.DatabaseVersions
 import com.vgleadsheets.database.android.Migrations
 import com.vgleadsheets.database.android.VglsDatabase
@@ -29,7 +28,7 @@ class DatabaseModule {
                 "vgls-database"
             )
             .addMigrations(
-                Migrations.REMOVED_JAMS,
+                Migrations.RemovedJams,
                 Migrations.AddFavorites,
             )
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)

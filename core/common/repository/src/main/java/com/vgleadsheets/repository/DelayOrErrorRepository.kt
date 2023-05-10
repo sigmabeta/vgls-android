@@ -24,8 +24,6 @@ class DelayOrErrorRepository(
 
     override fun getAllTagKeys(withValues: Boolean) = realRepository.getAllTagKeys(withValues)
 
-    override fun getAllJams(withHistory: Boolean) = realRepository.getAllJams(withHistory)
-
     override fun getFavoriteGames(withSongs: Boolean) = realRepository.getFavoriteGames(withSongs)
 
     override fun getFavoriteSongs(withComposers: Boolean) =
