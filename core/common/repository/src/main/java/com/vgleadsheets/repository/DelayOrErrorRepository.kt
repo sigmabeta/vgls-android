@@ -62,8 +62,6 @@ class DelayOrErrorRepository(
 
     override suspend fun clearSheets() = realRepository.clearSheets()
 
-    private suspend fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
-
     private fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
         onEach {
             delay(
