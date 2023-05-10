@@ -2,6 +2,7 @@ package com.vgleadsheets.database.android.di
 
 import android.content.Context
 import androidx.room.Room
+import com.vgleadsheets.database.Migrations
 import com.vgleadsheets.database.android.DatabaseVersions
 import com.vgleadsheets.database.android.Migrations
 import com.vgleadsheets.database.android.VglsDatabase
@@ -27,7 +28,10 @@ class DatabaseModule {
                 VglsDatabase::class.java,
                 "vgls-database"
             )
-            .addMigrations(Migrations.AddFavorites)
+            .addMigrations(
+                Migrations.REMOVED_JAMS,
+                Migrations.AddFavorites,
+            )
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }
@@ -64,18 +68,6 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun jamDao(
-        database: VglsDatabase
-    ) = database.jamDao()
-
-    @Provides
-    @Singleton
-    fun setlistEntryDao(
-        database: VglsDatabase
-    ) = database.setlistEntryDao()
-
-    @Provides
-    @Singleton
     fun songDao(
         database: VglsDatabase
     ) = database.songDao()
@@ -85,12 +77,6 @@ class DatabaseModule {
     fun songAliasDao(
         database: VglsDatabase
     ) = database.songAliasDao()
-
-    @Provides
-    @Singleton
-    fun songHistoryEntryDao(
-        database: VglsDatabase
-    ) = database.songHistoryEntryDao()
 
     @Provides
     @Singleton

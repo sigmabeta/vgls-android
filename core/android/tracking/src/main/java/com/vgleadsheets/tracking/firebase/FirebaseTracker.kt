@@ -77,16 +77,6 @@ class FirebaseTracker(private val firebaseAnalytics: FirebaseAnalytics) : Tracke
         firebaseAnalytics.logEvent(EVENT_SONG_VIEW, details)
     }
 
-    override fun logJamFollow(id: Long, fromScreen: TrackingScreen, fromDetails: String) {
-        val details = Bundle()
-
-        details.putString(PARAM_ID, id.toString())
-        details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
-        details.putString(PARAM_FROM_DETAILS, fromDetails)
-
-        firebaseAnalytics.logEvent(EVENT_JAM_FOLLOW, details)
-    }
-
     override fun logWebLaunch(
         url: String,
         fromScreen: TrackingScreen,

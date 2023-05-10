@@ -117,10 +117,6 @@ class Config(
                 R.string.label_database_clear_sheets.toLong(),
                 resources.getString(R.string.label_database_clear_sheets)
             ) { clicks.clearSheets() },
-            SingleTextListModel(
-                R.string.label_database_clear_jams.toLong(),
-                resources.getString(R.string.label_database_clear_jams),
-            ) { clicks.clearJams() }
         )
 
         return normalItems + customItems

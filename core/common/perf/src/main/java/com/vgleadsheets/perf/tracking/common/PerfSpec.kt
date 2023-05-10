@@ -10,8 +10,6 @@ enum class PerfSpec(val completionTargetTime: Long) {
     GAME(1000L),
     GAMES(TARGET_COMPLETION_LIST_MS),
     HUD(TARGET_COMPLETION_NONE_MS),
-    JAM(500L),
-    JAMS(1000L),
     LICENSE(-1L),
     SEARCH(-1L),
     SETTINGS(500L),

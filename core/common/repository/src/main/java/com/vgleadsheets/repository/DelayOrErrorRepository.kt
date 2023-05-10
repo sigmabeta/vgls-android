@@ -16,13 +16,6 @@ class DelayOrErrorRepository(
 
     override fun refresh() = realRepository.refresh()
 
-    override fun refreshJamStateContinuously(name: String) =
-        realRepository.refreshJamStateContinuously(name)
-
-    override suspend fun refreshJamState(name: String) = realRepository.refreshJamState(name)
-
-    override fun observeJamState(id: Long) = realRepository.observeJamState(id)
-
     override fun getAllGames(withSongs: Boolean) = realRepository.getAllGames()
 
     override fun getAllSongs(withComposers: Boolean) = realRepository.getAllSongs(withComposers)
@@ -52,11 +45,6 @@ class DelayOrErrorRepository(
     override fun getTagValuesForTagKey(tagKeyId: Long) =
         realRepository.getTagValuesForTagKey(tagKeyId)
 
-    override fun getSetlistEntriesForJam(jamId: Long) =
-        realRepository.getSetlistEntriesForJam(jamId)
-
-    override fun getSongHistoryForJam(jamId: Long) = realRepository.getSongHistoryForJam(jamId)
-
     override fun getAliasesForSong(songId: Long) = realRepository.getAliasesForSong(songId)
 
     override fun getSong(songId: Long) = realRepository.getSong(songId)
@@ -71,8 +59,6 @@ class DelayOrErrorRepository(
 
     override fun getLastUpdateTime() = realRepository.getLastUpdateTime()
 
-    override fun getJam(id: Long, withHistory: Boolean) = realRepository.getJam(id, withHistory)
-
     override fun searchSongsCombined(searchQuery: String) =
         realRepository.searchSongsCombined(searchQuery)
 
@@ -81,10 +67,6 @@ class DelayOrErrorRepository(
 
     override fun searchComposersCombined(searchQuery: String) =
         realRepository.searchComposersCombined(searchQuery)
-
-    override suspend fun removeJam(id: Long) = realRepository.removeJam(id)
-
-    override suspend fun refreshJams() = realRepository.refreshJams()
 
     override suspend fun incrementViewCounter(songId: Long) =
         realRepository.incrementViewCounter(songId)
@@ -106,8 +88,6 @@ class DelayOrErrorRepository(
         realRepository.toggleOfflineComposer(composerId)
 
     override suspend fun clearSheets() = realRepository.clearSheets()
-
-    override suspend fun clearJams() = realRepository.clearJams()
 
     private suspend fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
         onEach {

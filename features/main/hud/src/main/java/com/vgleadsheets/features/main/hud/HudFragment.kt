@@ -112,7 +112,6 @@ class HudFragment : VglsFragment() {
             state.mode,
             state.searchQuery,
             state.searchResults,
-            state.activeJam,
             state.selectedSong?.hasVocals ?: true,
             state.selectedPart,
             state.loadTimeLists,
@@ -159,7 +158,6 @@ class HudFragment : VglsFragment() {
         const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"
         const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"
         const val TOP_LEVEL_SCREEN_ID_TAG = "TAG"
-        const val TOP_LEVEL_SCREEN_ID_JAM = "JAM"
 
         const val TOP_LEVEL_SCREEN_ID_DEFAULT = TOP_LEVEL_SCREEN_ID_GAME
 

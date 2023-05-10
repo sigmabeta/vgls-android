@@ -23,6 +23,8 @@ interface RoomDao<EntityType> {
         const val DELETE = "DELETE FROM"
         const val UPDATE = "UPDATE"
         const val SET = "SET"
+        const val DROP = "DROP TABLE"
+
         const val WHERE_SINGLE = "WHERE id = :$ROW_PRIMARY_KEY_ID"
         const val WHERE_FAVORITE = "WHERE isFavorite = 1"
         const val WHERE_SEARCH = "WHERE name LIKE :name"

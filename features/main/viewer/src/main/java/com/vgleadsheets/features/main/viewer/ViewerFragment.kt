@@ -28,10 +28,8 @@ import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudMode
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.images.Page
-import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.perf.tracking.common.PerfSpec
@@ -108,10 +106,6 @@ class ViewerFragment :
         appButton.setOnClickListener { (activity as FragmentInterface).onAppBarButtonClick() }
 
         hudViewModel.setPerfSelectedScreen(getPerfSpec())
-
-        if (viewerArgs.songId == null) {
-            subscribeToJam()
-        }
 
         val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
         val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
@@ -279,30 +273,6 @@ class ViewerFragment :
         }
 
         sheetsAdapter.submitList(listComponents)
-    }
-
-    private fun subscribeToJam() {
-        // Define what to do when a jam is active.
-        val onJamUpdate: (Jam?) -> Unit = {
-            val newSongId = it?.currentSong?.id
-
-            if (newSongId != null) {
-                hatchet.v(this.javaClass.simpleName, "Jam updated! New song id: $newSongId")
-                viewModel.onNewJamSong(newSongId)
-            }
-        }
-
-        //  Try to do that thing once on screen launch, just in case.
-        withState(hudViewModel) {
-            it.activeJam?.let(onJamUpdate)
-        }
-
-        // Set up to do it every time the jam is updated.
-        hudViewModel.onEach(
-            prop1 = HudState::activeJam,
-            deliveryMode = UniqueOnly("jam subscription"),
-            action = onJamUpdate,
-        )
     }
 
     private fun showEmptyState() {
