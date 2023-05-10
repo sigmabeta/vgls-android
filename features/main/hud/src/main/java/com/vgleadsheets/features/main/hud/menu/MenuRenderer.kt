@@ -10,7 +10,6 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.PartSelectorOption
 import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.search.SearchContent
-import com.vgleadsheets.model.Jam
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.perf.tracking.common.FrameTimeStats
@@ -24,7 +23,6 @@ object MenuRenderer {
         hudMode: HudMode,
         searchQuery: String?,
         searchResults: SearchContent,
-        activeJam: Jam?,
         showVocalsOption: Boolean,
         selectedPart: Part,
         loadTimeLists: Map<PerfSpec, ScreenLoadStatus>?,
@@ -63,17 +61,9 @@ object MenuRenderer {
             clicks::bottomMenuButton,
             { clicks.searchClear() },
             resources
-        ) + JamDisplay.getListModels(
-            hudMode,
-            activeJam,
-            clicks::jamDetail,
-            clicks::jamSong,
-            clicks::jamUnfollow,
-            resources,
         ) + SongDisplay.getListModels(
             hudMode,
             currentSong,
-            activeJam,
             clicks::sheetDetail,
         ) + SongOptions.getListModels(
             hudMode,

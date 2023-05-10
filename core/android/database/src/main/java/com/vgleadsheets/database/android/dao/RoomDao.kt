@@ -21,6 +21,7 @@ interface RoomDao<EntityType> {
 
         const val GET = "SELECT * FROM"
         const val DELETE = "DELETE FROM"
+        const val DROP = "DROP TABLE"
 
         const val WHERE_SINGLE = "WHERE id = :$ROW_PRIMARY_KEY_ID"
         const val WHERE_SEARCH = "WHERE name LIKE :name"

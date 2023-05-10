@@ -1,7 +1,6 @@
 package com.vgleadsheets.repository
 
 import com.vgleadsheets.conversion.toModel
-import com.vgleadsheets.coroutines.CustomFlows
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.TransactionRunner
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
@@ -9,20 +8,14 @@ import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.database.dao.GameDataSource
-import com.vgleadsheets.database.dao.JamDataSource
-import com.vgleadsheets.database.dao.SetlistEntryDataSource
 import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
-import com.vgleadsheets.database.dao.SongHistoryEntryDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Jam
-import com.vgleadsheets.model.SetlistEntry
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.SongHistoryEntry
 import com.vgleadsheets.model.alias.ComposerAlias
 import com.vgleadsheets.model.alias.GameAlias
 import com.vgleadsheets.model.alias.SongAlias
@@ -34,16 +27,13 @@ import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.model.ApiComposer
-import com.vgleadsheets.network.model.ApiJam
-import com.vgleadsheets.network.model.ApiSetlist
 import com.vgleadsheets.network.model.ApiSong
-import com.vgleadsheets.network.model.ApiSongHistoryEntry
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
+import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -51,7 +41,6 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
-import java.util.Locale
 
 @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
 class RealRepository constructor(
@@ -66,11 +55,8 @@ class RealRepository constructor(
     private val dbStatisticsDataSource: DbStatisticsDataSource,
     private val gameAliasDataSource: GameAliasDataSource,
     private val gameDataSource: GameDataSource,
-    private val jamDataSource: JamDataSource,
-    private val setlistEntryDataSource: SetlistEntryDataSource,
     private val songDataSource: SongDataSource,
     private val songAliasDataSource: SongAliasDataSource,
-    private val songHistoryEntryDataSource: SongHistoryEntryDataSource,
     private val tagKeyDataSource: TagKeyDataSource,
     private val tagValueDataSource: TagValueDataSource
 ) : VglsRepository {
@@ -99,16 +85,6 @@ class RealRepository constructor(
 
     override fun refresh() = refreshInternal()
 
-    override fun observeJamState(id: Long) = jamDataSource
-        .getOneById(id)
-
-    override fun refreshJamStateContinuously(name: String) =
-        CustomFlows.emitOnInterval(INTERVAL_JAM_REFRESH) {
-            refreshJamStateImpl(name)
-        }
-
-    override suspend fun refreshJamState(name: String) = refreshJamStateImpl(name)
-
     override fun getAllGames(withSongs: Boolean) = gameDataSource.getAll(withSongs)
         .flowOn(dispatchers.disk)
 
@@ -122,10 +98,6 @@ class RealRepository constructor(
 
     override fun getAllTagKeys(withValues: Boolean) = tagKeyDataSource
         .getAll(withValues)
-        .flowOn(dispatchers.disk)
-
-    override fun getAllJams(withHistory: Boolean) = jamDataSource
-        .getAll(withHistory)
         .flowOn(dispatchers.disk)
 
     override fun getSongsForGame(gameId: Long, withComposers: Boolean) = gameDataSource
@@ -142,14 +114,6 @@ class RealRepository constructor(
 
     override fun getTagValuesForSong(songId: Long) = songDataSource
         .getTagValuesForSong(songId)
-        .flowOn(dispatchers.disk)
-
-    override fun getSetlistEntriesForJam(jamId: Long) = setlistEntryDataSource
-        .getSetlistEntriesForJam(jamId)
-        .flowOn(dispatchers.disk)
-
-    override fun getSongHistoryForJam(jamId: Long) = songHistoryEntryDataSource
-        .getSongHistoryEntriesForJam(jamId)
         .flowOn(dispatchers.disk)
 
     override fun getAliasesForSong(songId: Long) = songAliasDataSource
@@ -176,10 +140,6 @@ class RealRepository constructor(
 
     override fun getTagValue(tagValueId: Long) = tagValueDataSource
         .getOneById(tagValueId)
-        .flowOn(dispatchers.disk)
-
-    override fun getJam(id: Long, withHistory: Boolean) = jamDataSource
-        .getOneById(id)
         .flowOn(dispatchers.disk)
 
     override fun getLastUpdateTime(): Flow<Time> = getLastDbUpdateTime()
@@ -211,21 +171,6 @@ class RealRepository constructor(
         songs.distinctBy { it.id }
     }.flowOn(dispatchers.disk)
 
-    override suspend fun removeJam(id: Long) = withContext(dispatchers.disk) {
-        jamDataSource.remove(id)
-    }
-
-    override suspend fun refreshJams() = withContext(dispatchers.network) {
-        val jams = jamDataSource.getAll(false)
-            .firstOrNull()
-
-        jams?.forEach {
-            refreshJamStateImpl(it.name)
-        }
-
-        Unit
-    }
-
     override suspend fun incrementViewCounter(songId: Long) {
         val song = songDataSource.getOneByIdSync(songId)
 
@@ -246,12 +191,6 @@ class RealRepository constructor(
         gameAliasDataSource.nukeTable()
         composerAliasDataSource.nukeTable()
         songAliasDataSource.nukeTable()
-    }
-
-    override suspend fun clearJams() = withContext(dispatchers.disk) {
-        songHistoryEntryDataSource.nukeTable()
-        setlistEntryDataSource.nukeTable()
-        jamDataSource.nukeTable()
     }
 
     @Suppress("MaxLineLength")
@@ -305,77 +244,6 @@ class RealRepository constructor(
                 )
             }
         }
-
-    private suspend fun refreshJamStateImpl(name: String) {
-        try {
-            // Perform network requests first
-            val apiJam = withContext(dispatchers.network) {
-                vglsApi.getJamState(name)
-            }
-
-            val setlist = withContext(dispatchers.network) {
-                vglsApi.getSetlistForJam(name)
-            }
-
-            // Then pull the data out all at once
-            val jam = Jam(
-                apiJam.jam_id,
-                name.lowercase(Locale.getDefault()),
-                apiJam.song_history.firstOrNull()?.sheet_id,
-                null,
-            )
-
-            val songHistoryEntries = songHistoryEntriesFromApiJam(apiJam.song_history, apiJam)
-            val setlistEntries = setlistEntriesFromApiJam(setlist, apiJam)
-
-            // Then stuff that data into storage
-            withContext(dispatchers.disk) {
-                transactionRunner.inTransaction {
-                    try {
-                        jamDataSource.insert(listOf(jam))
-                        songHistoryEntryDataSource.insert(songHistoryEntries)
-                        setlistEntryDataSource.insert(setlistEntries)
-                    } catch (ex: Exception) {
-                        ex.printStackTrace()
-                    }
-                }
-            }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-    }
-
-    private fun setlistEntriesFromApiJam(
-        setlist: ApiSetlist,
-        apiJam: ApiJam
-    ) = setlist.songs.mapIndexed { setlistIndex, entry ->
-        SetlistEntry(
-            MULTIPLIER_JAM_ID * apiJam.jam_id + setlistIndex,
-            apiJam.jam_id,
-            entry.game_name,
-            entry.song_name,
-            entry.id,
-            null
-        )
-    }
-
-    private fun songHistoryEntriesFromApiJam(
-        songHistory: List<ApiSongHistoryEntry>,
-        apiJam: ApiJam
-    ) = if (songHistory.isNotEmpty()) {
-        songHistory
-            .drop(1)
-            .mapIndexed { songHistoryIndex, songHistoryEntry ->
-                SongHistoryEntry(
-                    MULTIPLIER_JAM_ID * apiJam.jam_id + songHistoryIndex,
-                    songHistoryEntry.sheet_id,
-                    apiJam.jam_id,
-                    null
-                )
-            }
-    } else {
-        emptyList()
-    }
 
     private suspend fun getLastCheckTime() = dbStatisticsDataSource
         .getTime(TimeType.LAST_CHECKED.ordinal)
@@ -475,7 +343,8 @@ class RealRepository constructor(
 
         val removedSongs = dbSongs.asIdSet { it.id } - songs.asIdSet { it.id }
         val removedGames = dbGames.asIdSet { it.id } - games.asIdSet { it.id }
-        val removedComposers = dbComposerMap.values.asIdSet { it.id } - composerMap.values.asIdSet { it.id }
+        val removedComposers =
+            dbComposerMap.values.asIdSet { it.id } - composerMap.values.asIdSet { it.id }
 
         withContext(dispatchers.disk) {
             transactionRunner.inTransaction {

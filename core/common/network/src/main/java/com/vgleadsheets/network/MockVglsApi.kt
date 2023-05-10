@@ -1,22 +1,12 @@
 package com.vgleadsheets.network
 
-import com.squareup.moshi.Moshi
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiDigest
-import com.vgleadsheets.network.model.ApiJam
-import com.vgleadsheets.network.model.ApiSetlist
-import com.vgleadsheets.network.model.ApiSetlistEntry
 import com.vgleadsheets.network.model.ApiSong
-import com.vgleadsheets.network.model.ApiSongHistoryEntry
 import com.vgleadsheets.network.model.ApiTime
 import com.vgleadsheets.network.model.VglsApiGame
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
-import java.net.HttpURLConnection
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
@@ -51,97 +41,6 @@ class MockVglsApi(
 
     // TODO Fill this in
     override suspend fun getLastUpdateTime() = ApiTime("2017-04-01T23:30:06Z")
-
-    override suspend fun getJamState(name: String): ApiJam {
-        if (possibleSongs == null) {
-            generateGames()
-        }
-
-        if (name.length % 2 > 0) {
-            val moshi: Moshi = Moshi.Builder().build()
-            val jsonAdapter = moshi.adapter(Map::class.java)
-
-            val json = jsonAdapter.toJson(
-                mapOf("error" to "Only jam names of even-numbered length are valid!")
-            )
-
-            val body = json
-                .toResponseBody("application/json; charset=utf-8".toMediaTypeOrNull())
-
-            throw HttpException(
-                Response.error<Unit>(
-                    HttpURLConnection.HTTP_NOT_FOUND,
-                    body
-                )
-            )
-        }
-
-        val jamSeed = name.hashCode().toLong()
-
-        val jamRandomGenerator = Random(jamSeed)
-        val jamId = jamRandomGenerator.nextLong()
-
-        val previousJamsSize = jamRandomGenerator.nextInt(JAM_PREVIOUS_SONGS_SIZE) + 1
-        val previousJams =
-            ArrayList<ApiSongHistoryEntry>(previousJamsSize)
-
-        for (entryIndex in 0 until previousJamsSize) {
-            val possibleSongsSize = possibleSongs?.size ?: 0
-            val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
-
-            // hatchet.w(
-            // this.javaClass.simpleName,
-            // "History entry $entryIndex will be possible song with index: $possibleSongIndex"
-            // )
-
-            val song = possibleSongs?.get(possibleSongIndex)
-
-            if (song != null) {
-                val entry = ApiSongHistoryEntry(song.id)
-                previousJams.add(entry)
-            }
-        }
-
-        return ApiJam(
-            jamId,
-            previousJams
-        )
-    }
-
-    @SuppressWarnings("MagicNumber")
-    override suspend fun getSetlistForJam(name: String): ApiSetlist {
-        if (possibleSongs == null) {
-            generateGames()
-        }
-
-        val jamRandomGenerator = Random(name.hashCode().toLong())
-
-        val setlistSize = if (name.length % 4 > 0) {
-            0
-        } else {
-            jamRandomGenerator.nextInt(5) + 1
-        }
-
-        val songs = ArrayList<ApiSetlistEntry>(setlistSize)
-
-        for (jamIndex in 0 until setlistSize) {
-            val possibleSongsSize = possibleSongs?.size ?: 0
-            val possibleSongIndex = jamRandomGenerator.nextInt(possibleSongsSize)
-
-            val song = possibleSongs?.get(possibleSongIndex)
-
-            if (song != null) {
-                val entry = ApiSetlistEntry(
-                    song.id,
-                    "Mocks Don't Name Games Yet",
-                    song.name
-                )
-                songs.add(entry)
-            }
-        }
-
-        return ApiSetlist(songs)
-    }
 
     private fun generateDigest(): ApiDigest {
         val games = generateGames()
