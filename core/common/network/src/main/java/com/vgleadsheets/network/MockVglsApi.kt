@@ -12,10 +12,6 @@ import java.util.Random
 import java.util.Stack
 import javax.inject.Named
 import kotlin.collections.set
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.HttpException
-import retrofit2.Response
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
 class MockVglsApi(
