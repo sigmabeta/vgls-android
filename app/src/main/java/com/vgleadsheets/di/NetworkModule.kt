@@ -3,15 +3,15 @@ package com.vgleadsheets.di
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.logging.Hatchet
 import dagger.Provides
+import java.io.File
+import java.util.Random
+import javax.inject.Named
+import javax.inject.Singleton
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.io.File
-import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
 
 @dagger.Module
 class NetworkModule {

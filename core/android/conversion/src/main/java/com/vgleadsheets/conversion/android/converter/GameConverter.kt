@@ -24,7 +24,9 @@ class GameConverter : WithManyConverter<Game, GameEntity, Song, SongEntity, Song
         name,
         null,
         photoUrl,
-        sheetsPlayed
+        sheetsPlayed,
+        isFavorite,
+        isAvailableOffline,
     )
 
     override fun GameEntity.toModelWithMany(
@@ -35,7 +37,9 @@ class GameConverter : WithManyConverter<Game, GameEntity, Song, SongEntity, Song
         name,
         manyDao.getManyModels(id, converter),
         photoUrl,
-        sheetsPlayed
+        sheetsPlayed,
+        isFavorite,
+        isAvailableOffline,
     )
 
     override fun SongRoomDao.getManyModels(

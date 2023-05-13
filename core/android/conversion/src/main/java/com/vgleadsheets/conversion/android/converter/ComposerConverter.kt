@@ -26,7 +26,9 @@ class ComposerConverter :
         null,
         photoUrl,
         hasVocalSongs,
-        sheetsPlayed
+        sheetsPlayed,
+        isFavorite,
+        isAvailableOffline,
     )
 
     override fun ComposerEntity.toModelWithMany(
@@ -38,7 +40,9 @@ class ComposerConverter :
         manyDao.getManyModels(id, converter),
         photoUrl,
         hasVocalSongs,
-        sheetsPlayed
+        sheetsPlayed,
+        isFavorite,
+        isAvailableOffline,
     )
 
     override fun SongsForComposerDao.getManyModels(

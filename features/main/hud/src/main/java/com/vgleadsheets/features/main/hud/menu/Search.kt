@@ -256,6 +256,7 @@ object Search {
                             Page.generateThumbUrl(
                                 baseImageUrl,
                                 selectedPart.apiId,
+                                result.isAltSelected,
                                 result.filename
                             ),
                             R.drawable.ic_description_24dp

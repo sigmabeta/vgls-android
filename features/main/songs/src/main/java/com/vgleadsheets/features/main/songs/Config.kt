@@ -1,11 +1,12 @@
 package com.vgleadsheets.features.main.songs
 
 import android.content.res.Resources
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
+import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
-import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isNullOrEmpty
 import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
@@ -28,11 +29,9 @@ class Config(
     private val perfSpec: PerfSpec,
     private val resources: Resources
 ) : BetterListConfig {
-    private val songsLoad = state.contentLoad.songsLoad
-
     override val titleConfig = Title.Config(
         resources.getString(R.string.app_name),
-        resources.getString(R.string.subtitle_all_sheets),
+        resources.getString(R.string.subtitle_all_songs),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -46,21 +45,71 @@ class Config(
     override val contentConfig = Content.Config(
         !state.contentLoad.isNullOrEmpty()
     ) {
-        songsLoad.content()
+        val filteredGames = state.contentLoad.content()
             ?.filteredForVocals(hudState.selectedPart.apiId)
-            ?.mapYielding { song ->
+
+        if (filteredGames.isNullOrEmpty()) {
+            return@Config listOf(
+                EmptyStateListModel(
+                    R.drawable.ic_album_24dp,
+                    resources.getString(R.string.empty_transposition),
+                )
+            )
+        }
+
+        val onlyTheHits = filteredGames
+            .filter { it.isFavorite }
+            .mapYielding {
                 ImageNameCaptionListModel(
-                    song.id,
-                    song.name,
-                    song.gameName,
+                    it.id + BetterListConfig.OFFSET_FAVORITE,
+                    it.name,
+                    it.gameName,
                     Page.generateThumbUrl(
                         baseImageUrl,
                         hudState.selectedPart.apiId,
-                        song.filename
+                        it.isAltSelected,
+                        it.filename
                     ),
-                    R.drawable.ic_description_24dp
-                ) { clicks.song(song.id) }
-            } ?: emptyList()
+                    R.drawable.placeholder_sheet
+                ) { clicks.song(it.id) }
+            }
+
+        val filteredGameItems = filteredGames.mapYielding {
+            ImageNameCaptionListModel(
+                it.id,
+                it.name,
+                it.gameName,
+                Page.generateThumbUrl(
+                    baseImageUrl,
+                    hudState.selectedPart.apiId,
+                    it.isAltSelected,
+                    it.filename
+                ),
+                R.drawable.placeholder_sheet
+            ) { clicks.song(it.id) }
+        }
+
+        val favoriteSection = if (onlyTheHits.isNotEmpty()) {
+            listOf(
+                SectionHeaderListModel(
+                    resources.getString(R.string.section_header_favorites)
+                )
+            ) + onlyTheHits
+        } else {
+            emptyList()
+        }
+
+        val restOfThem = if (favoriteSection.isEmpty()) {
+            emptyList()
+        } else {
+            listOf(
+                SectionHeaderListModel(
+                    resources.getString(R.string.section_header_all_songs)
+                )
+            )
+        } + filteredGameItems
+
+        return@Config favoriteSection + restOfThem
     }
 
     override val emptyConfig = EmptyState.Config(

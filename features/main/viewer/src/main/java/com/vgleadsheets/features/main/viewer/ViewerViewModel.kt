@@ -15,7 +15,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class ViewerViewModel @AssistedInject constructor(
@@ -45,7 +44,6 @@ class ViewerViewModel @AssistedInject constructor(
 
         if (songId != null) {
             repository.getSong(songId)
-                .take(1)
                 .execute { data ->
                     if (data()?.id != state.song()?.id) {
                         stopReportTimer()

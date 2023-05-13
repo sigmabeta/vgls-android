@@ -3,11 +3,6 @@ package com.vgleadsheets
 import com.vgleadsheets.tracking.TrackingScreen
 
 interface FragmentRouter {
-    fun showGameList(
-        fromScreen: TrackingScreen? = null,
-        fromDetails: String? = null
-    )
-
     fun showSongListForGame(gameId: Long)
 
     @SuppressWarnings("LongParameterList")
@@ -20,6 +15,16 @@ interface FragmentRouter {
     fun showSongListForComposer(composerId: Long)
 
     fun showSongListForTagValue(tagValueId: Long)
+
+    fun showFavorites(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
+
+    fun showGameList(
+        fromScreen: TrackingScreen? = null,
+        fromDetails: String? = null
+    )
 
     fun showComposerList(
         fromScreen: TrackingScreen? = null,

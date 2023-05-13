@@ -4,6 +4,7 @@ import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.MODAL_SCREEN_ID_DEBUG
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.MODAL_SCREEN_ID_SETTINGS
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_COMPOSER
+import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_FAVORITES
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_GAME
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_SONG
 import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_TAG
@@ -103,6 +104,18 @@ class Clicks(
         viewModel.youtubeSearchClick()
     }
 
+    fun favorite() {
+        viewModel.favoritesClick()
+    }
+
+    fun alternateSheet() {
+        viewModel.alternateSheetClick()
+    }
+
+    fun offline() {
+        viewModel.offlineClick()
+    }
+
     fun changePart() {
         tracker.logChangePartClick()
         viewModel.onChangePartClick()
@@ -117,6 +130,7 @@ class Clicks(
         viewModel.saveTopLevelScreen(screenId)
 
         when (screenId) {
+            TOP_LEVEL_SCREEN_ID_FAVORITES -> router.showFavorites(fromScreen, trackingDetails)
             TOP_LEVEL_SCREEN_ID_GAME -> router.showGameList(fromScreen, trackingDetails)
             TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList(fromScreen, trackingDetails)
             TOP_LEVEL_SCREEN_ID_TAG -> router.showTagList(fromScreen, trackingDetails)

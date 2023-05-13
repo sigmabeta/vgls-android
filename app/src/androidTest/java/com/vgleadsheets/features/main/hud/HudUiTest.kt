@@ -40,9 +40,9 @@ class HudUiTest : UiTest() {
     @Test
     fun navigateToSongList() {
         checkNavigationButton(
-            R.string.label_all_sheets,
+            R.string.label_all_songs,
             R.string.app_name,
-            R.string.subtitle_all_sheets
+            R.string.subtitle_all_songs
         )
     }
 
@@ -60,7 +60,7 @@ class HudUiTest : UiTest() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
 
         hud(this) {
-            checkTopLevelScreen(R.string.app_name, R.string.subtitle_all_sheets)
+            checkTopLevelScreen(R.string.app_name, R.string.subtitle_all_songs)
         }
 
         checkNavigationButton(

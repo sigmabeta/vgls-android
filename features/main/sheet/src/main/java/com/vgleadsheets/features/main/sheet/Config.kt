@@ -61,6 +61,7 @@ class Config(
         Page.generateThumbUrl(
             baseImageUrl,
             hudState.selectedPart.apiId,
+            song?.isAltSelected ?: false,
             song?.filename ?: ""
         ),
         R.drawable.ic_description_24dp,
@@ -68,7 +69,25 @@ class Config(
         songLoad.isLoading()
     )
 
-    override val actionsConfig = Actions.NONE
+    override val actionsConfig = Actions.Config(
+        song != null,
+        listOf(
+            CtaListModel(
+                if (song?.isFavorite == true) {
+                    R.drawable.ic_jam_filled
+                } else {
+                    R.drawable.ic_jam_unfilled
+                },
+                resources.getString(
+                    if (song?.isFavorite == true) {
+                        R.string.label_unfavorite
+                    } else {
+                        R.string.label_favorite
+                    }
+                )
+            ) { clicks.onFavoriteClick() }
+        )
+    )
 
     override val contentConfig = Content.Config(
         !tagValues.isNullOrEmpty()

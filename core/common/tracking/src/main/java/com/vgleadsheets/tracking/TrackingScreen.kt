@@ -4,6 +4,7 @@ enum class TrackingScreen {
     // WARNING: do NOT reorder these! These are used for tracking and
     // you could screw that up!!!
     HUD,
+    LIST_FAVORITE,
     LIST_GAME,
     LIST_COMPOSER,
     LIST_SHEET,

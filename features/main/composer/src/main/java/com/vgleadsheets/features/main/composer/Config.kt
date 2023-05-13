@@ -1,7 +1,10 @@
 package com.vgleadsheets.features.main.composer
 
 import android.content.res.Resources
+import com.vgleadsheets.components.CtaListModel
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
+import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.BetterListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
@@ -48,15 +51,32 @@ class Config(
         R.drawable.ic_person_24dp,
         true,
         composerLoad.isLoading(),
-        onMenuButtonClick = { clicks.menu() }
     )
 
-    override val actionsConfig = Actions.NONE
+    override val actionsConfig = Actions.Config(
+        composer != null,
+        listOf(
+            CtaListModel(
+                if (composer?.isFavorite == true) {
+                    R.drawable.ic_jam_filled
+                } else {
+                    R.drawable.ic_jam_unfilled
+                },
+                resources.getString(
+                    if (composer?.isFavorite == true) {
+                        R.string.label_unfavorite
+                    } else {
+                        R.string.label_favorite
+                    }
+                )
+            ) { clicks.onFavoriteClick() }
+        )
+    )
 
     override val contentConfig = Content.Config(
         !songs.isNullOrEmpty()
     ) {
-        songs?.filteredForVocals(hudState.selectedPart.apiId)
+        val filteredSongs = songs?.filteredForVocals(hudState.selectedPart.apiId)
             ?.mapYielding { song ->
                 ImageNameCaptionListModel(
                     song.id,
@@ -65,13 +85,27 @@ class Config(
                     Page.generateThumbUrl(
                         baseImageUrl,
                         hudState.selectedPart.apiId,
+                        song.isAltSelected,
                         song.filename
                     ),
                     R.drawable.ic_description_24dp
                 ) {
                     clicks.song(song.id)
                 }
-            } ?: emptyList()
+            }
+
+        if (filteredSongs.isNullOrEmpty()) {
+            return@Config listOf(
+                EmptyStateListModel(
+                    R.drawable.ic_album_24dp,
+                    resources.getString(R.string.empty_transposition),
+                )
+            )
+        }
+
+        listOf(
+            SectionHeaderListModel(resources.getString(R.string.section_header_songs))
+        ) + filteredSongs
     }
 
     override val emptyConfig = EmptyState.Config(

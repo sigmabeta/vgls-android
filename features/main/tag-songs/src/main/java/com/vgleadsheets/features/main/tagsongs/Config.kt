@@ -68,6 +68,7 @@ class Config(
                     Page.generateThumbUrl(
                         baseImageUrl,
                         hudState.selectedPart.apiId,
+                        song.isAltSelected,
                         song.filename
                     ),
                     R.drawable.ic_description_24dp

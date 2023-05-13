@@ -10,7 +10,9 @@ data class GameEntity(
     val name: String,
     val hasVocalSongs: Boolean,
     val photoUrl: String? = null,
-    val sheetsPlayed: Int
+    val sheetsPlayed: Int = 0,
+    val isFavorite: Boolean = false,
+    val isAvailableOffline: Boolean = false,
 ) {
     companion object {
         const val TABLE = "game"

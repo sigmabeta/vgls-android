@@ -33,7 +33,7 @@ class AppSmokeTest : UiTest() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
         launchScreen()
 
-        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_all_sheets)
+        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_all_songs)
     }
 
     @Test

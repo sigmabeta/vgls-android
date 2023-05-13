@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="label_favorites">Favorites</string>
     <string name="label_by_game">Browse by game</string>
     <string name="label_by_composer">Browse by composer</string>
-    <string name="label_all_sheets">Browse all sheets</string>
+    <string name="label_all_songs">Browse all songs</string>
     <string name="label_by_tag">Browse by tag</string>
     <string name="label_random">Random select</string>
     <string name="label_random_loading">Finding a random sheet...</string>
@@ -17,6 +18,12 @@
     <string name="label_jam_no_song">No song selected</string>
     <string name="label_jam_current_song">Go to current song</string>
     <string name="label_jam_unfollow">Unfollow Jam</string>
+    <string name="label_favorite">Add to Favorites</string>
+    <string name="label_unfavorite">Remove from Favorites</string>
+    <string name="label_add_offline">Make Available Offline</string>
+    <string name="label_remove_offline">Available Offline</string>
+    <string name="label_show_alt">Show musician-friendly sheet</string>
+    <string name="label_hide_alt">Show standard sheet</string>
 
     <string name="date_never">Never</string>
     <string name="label_settings">Settings</string>
