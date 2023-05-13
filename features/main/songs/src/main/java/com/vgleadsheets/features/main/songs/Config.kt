@@ -67,6 +67,7 @@ class Config(
                     Page.generateThumbUrl(
                         baseImageUrl,
                         hudState.selectedPart.apiId,
+                        it.isAltSelected,
                         it.filename
                     ),
                     R.drawable.placeholder_sheet
@@ -81,6 +82,7 @@ class Config(
                 Page.generateThumbUrl(
                     baseImageUrl,
                     hudState.selectedPart.apiId,
+                    it.isAltSelected,
                     it.filename
                 ),
                 R.drawable.placeholder_sheet

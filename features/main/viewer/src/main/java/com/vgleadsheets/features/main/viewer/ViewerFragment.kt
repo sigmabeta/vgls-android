@@ -266,6 +266,7 @@ class ViewerFragment :
                     baseImageUrl,
                     selectedPart.apiId,
                     song.filename,
+                    song.isAltSelected,
                     pageNumber
                 ),
                 this

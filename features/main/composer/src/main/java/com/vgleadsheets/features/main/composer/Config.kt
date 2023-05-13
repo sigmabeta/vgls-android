@@ -85,6 +85,7 @@ class Config(
                     Page.generateThumbUrl(
                         baseImageUrl,
                         hudState.selectedPart.apiId,
+                        song.isAltSelected,
                         song.filename
                     ),
                     R.drawable.placeholder_sheet

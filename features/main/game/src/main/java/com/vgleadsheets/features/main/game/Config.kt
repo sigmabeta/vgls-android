@@ -134,6 +134,7 @@ class Config(
         baseImageUrl,
         hudState.selectedPart.apiId,
         filename,
+        isAltSelected,
         1
     )
 

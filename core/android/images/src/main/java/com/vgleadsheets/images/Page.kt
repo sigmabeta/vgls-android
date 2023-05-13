@@ -7,24 +7,31 @@ object Page {
         baseImageUrl: String,
         partApiId: String,
         filename: String,
+        isAlternateEnabled: Boolean,
         pageNumber: Int
     ): String {
         return baseImageUrl +
             partApiId + URL_SEPARATOR_FOLDER +
-            Uri.encode(filename) + URL_SEPARATOR_NUMBER +
+            Uri.encode(filename) +
+            (if (isAlternateEnabled) IDENTIFIER_ALT else "") +
+            URL_SEPARATOR_NUMBER +
             pageNumber + URL_FILE_EXT_PNG
     }
 
     fun generateThumbUrl(
         baseImageUrl: String,
         selectedPartApiId: String,
+        isAlternateEnabled: Boolean,
         filename: String
     ) = generateImageUrl(
         baseImageUrl,
         selectedPartApiId,
         filename,
+        isAlternateEnabled,
         1
     )
+
+    private const val IDENTIFIER_ALT = " [ALT]"
 
     private const val URL_SEPARATOR_FOLDER = "/"
     private const val URL_SEPARATOR_NUMBER = "-"
