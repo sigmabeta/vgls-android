@@ -34,7 +34,9 @@ class SongConverter :
         pageCount,
         lyricPageCount,
         null,
-        playCount
+        playCount,
+        isFavorite,
+        isAvailableOffline
     )
 
     override fun SongEntity.toModelWithMany(
@@ -52,7 +54,9 @@ class SongConverter :
             pageCount,
             lyricPageCount,
             composers,
-            playCount
+            playCount,
+            isFavorite,
+            isAvailableOffline
         )
     }
 

@@ -49,6 +49,12 @@ object MenuOptions {
         resources: Resources,
     ) = listOf(
         MenuItemListModel(
+            resources.getString(R.string.label_favorites),
+            null,
+            R.drawable.ic_jam_filled,
+            { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_FAVORITES) }
+        ),
+        MenuItemListModel(
             resources.getString(R.string.label_by_game),
             null,
             R.drawable.ic_album_24dp,
@@ -67,7 +73,7 @@ object MenuOptions {
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_TAG) }
         ),
         MenuItemListModel(
-            resources.getString(R.string.label_all_sheets),
+            resources.getString(R.string.label_all_songs),
             null,
             R.drawable.ic_description_24dp,
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_SONG) }

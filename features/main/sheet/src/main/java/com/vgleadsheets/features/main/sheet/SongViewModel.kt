@@ -4,19 +4,30 @@ import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.repository.VglsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.launch
 
 class SongViewModel @AssistedInject constructor(
     @Assisted initialState: SongState,
     private val repository: VglsRepository,
+    private val dispatchers: VglsDispatchers,
 ) : MavericksViewModel<SongState>(initialState) {
     init {
         fetchSong()
         fetchAliases()
         fetchTagValues()
+    }
+
+    fun onFavoriteClick() = withState { state ->
+        viewModelScope.launch(dispatchers.disk) {
+            repository.toggleFavoriteSong(
+                state.songId
+            )
+        }
     }
 
     private fun fetchSong() = withState {

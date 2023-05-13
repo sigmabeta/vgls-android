@@ -85,7 +85,8 @@ class RealRepository constructor(
 
     override fun refresh() = refreshInternal()
 
-    override fun getAllGames(withSongs: Boolean) = gameDataSource.getAll(withSongs)
+    override fun getAllGames(withSongs: Boolean) = gameDataSource
+        .getAll(withSongs)
         .flowOn(dispatchers.disk)
 
     override fun getAllSongs(withComposers: Boolean) = songDataSource
@@ -95,6 +96,15 @@ class RealRepository constructor(
     override fun getAllComposers(withSongs: Boolean) = composerDataSource
         .getAll(withSongs)
         .flowOn(dispatchers.disk)
+
+    override fun getFavoriteGames(withSongs: Boolean) =
+        gameDataSource.getFavorites().flowOn(dispatchers.disk)
+
+    override fun getFavoriteSongs(withComposers: Boolean) =
+        songDataSource.getFavorites().flowOn(dispatchers.disk)
+
+    override fun getFavoriteComposers(withSongs: Boolean) =
+        composerDataSource.getFavorites().flowOn(dispatchers.disk)
 
     override fun getAllTagKeys(withValues: Boolean) = tagKeyDataSource
         .getAll(withValues)
@@ -180,6 +190,30 @@ class RealRepository constructor(
         song.composers?.forEach {
             composerDataSource.incrementSheetsPlayed(it.id)
         }
+    }
+
+    override suspend fun toggleFavoriteSong(songId: Long) {
+        songDataSource.toggleFavorite(songId)
+    }
+
+    override suspend fun toggleFavoriteGame(gameId: Long) {
+        gameDataSource.toggleFavorite(gameId)
+    }
+
+    override suspend fun toggleFavoriteComposer(composerId: Long) {
+        composerDataSource.toggleFavorite(composerId)
+    }
+
+    override suspend fun toggleOfflineSong(songId: Long) {
+        songDataSource.toggleOffline(songId)
+    }
+
+    override suspend fun toggleOfflineGame(gameId: Long) {
+        gameDataSource.toggleOffline(gameId)
+    }
+
+    override suspend fun toggleOfflineComposer(composerId: Long) {
+        composerDataSource.toggleOffline(composerId)
     }
 
     override suspend fun clearSheets() = withContext(dispatchers.disk) {
@@ -288,12 +322,20 @@ class RealRepository constructor(
 
         val games = apiGames.map { apiGame ->
             val dbGame = dbGamesMap[apiGame.game_id]
-            apiGame.toModel(dbGame?.sheetsPlayed ?: 0)
+            apiGame.toModel(
+                dbGame?.sheetsPlayed ?: 0,
+                dbGame?.isFavorite ?: false,
+                dbGame?.isAvailableOffline ?: false,
+            )
         }
 
         val composerMap = apiComposers.associate {
             val dbComposer = dbComposerMap[it.composer_id]
-            it.composer_id to it.toModel(dbComposer?.sheetsPlayed ?: 0)
+            it.composer_id to it.toModel(
+                dbComposer?.sheetsPlayed ?: 0,
+                dbComposer?.isFavorite ?: false,
+                dbComposer?.isAvailableOffline ?: false,
+            )
         }.toMutableMap()
 
         val songs = mutableListOf<Song>()
@@ -444,7 +486,9 @@ class RealRepository constructor(
         val song = apiSong.toModel(
             apiGame.game_id,
             apiGame.game_name,
-            dbSong?.playCount ?: 0
+            dbSong?.playCount ?: 0,
+            dbSong?.isFavorite ?: false,
+            dbSong?.isAvailableOffline ?: false,
         )
 
         apiSong.composers.forEach { apiComposer ->

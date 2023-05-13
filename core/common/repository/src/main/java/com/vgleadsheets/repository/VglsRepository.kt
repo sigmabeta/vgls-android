@@ -19,6 +19,13 @@ interface VglsRepository {
     fun getAllComposers(withSongs: Boolean = true): Flow<List<Composer>>
     fun getAllTagKeys(withValues: Boolean = true): Flow<List<TagKey>>
 
+    // Favorites
+    fun getFavoriteGames(withSongs: Boolean = true): Flow<List<Game>>
+
+    fun getFavoriteSongs(withComposers: Boolean = true): Flow<List<Song>>
+
+    fun getFavoriteComposers(withSongs: Boolean = true): Flow<List<Composer>>
+
     // Related Lists
     fun getSongsForGame(gameId: Long, withComposers: Boolean = true): Flow<List<Song>>
     fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
@@ -41,6 +48,12 @@ interface VglsRepository {
 
     // User data
     suspend fun incrementViewCounter(songId: Long)
+    suspend fun toggleFavoriteSong(songId: Long)
+    suspend fun toggleFavoriteGame(gameId: Long)
+    suspend fun toggleFavoriteComposer(composerId: Long)
+    suspend fun toggleOfflineSong(songId: Long)
+    suspend fun toggleOfflineGame(gameId: Long)
+    suspend fun toggleOfflineComposer(composerId: Long)
 
     // Debug options
     suspend fun clearSheets()

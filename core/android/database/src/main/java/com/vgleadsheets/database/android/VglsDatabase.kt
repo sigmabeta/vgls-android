@@ -42,7 +42,7 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
         TagValueEntity::class,
         ComposerAliasEntity::class
     ],
-    version = DatabaseVersions.REMOVED_JAMS
+    version = DatabaseVersions.ADDED_FAVORITES,
 )
 abstract class VglsDatabase : RoomDatabase() {
     abstract fun composerAliasDao(): ComposerAliasRoomDao

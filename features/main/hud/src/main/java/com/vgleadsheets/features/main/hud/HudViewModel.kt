@@ -257,6 +257,22 @@ class HudViewModel @AssistedInject constructor(
         router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
     }
 
+    fun favoritesClick() = withState { state ->
+        state.selectedSong?.let {
+            viewModelScope.launch(dispatchers.disk) {
+                repository.toggleFavoriteSong(it.id)
+            }
+        }
+    }
+
+    fun offlineClick() = withState { state ->
+        state.selectedSong?.let {
+            viewModelScope.launch(dispatchers.disk) {
+                repository.toggleOfflineSong(it.id)
+            }
+        }
+    }
+
     private fun showInitialScreen() {
         viewModelScope.launch(dispatchers.disk) {
             val selection = storage.getSavedTopLevelScreen()
@@ -273,6 +289,7 @@ class HudViewModel @AssistedInject constructor(
 
     private fun showScreen(topLevelScreenIdDefault: String) {
         when (topLevelScreenIdDefault) {
+            HudFragment.TOP_LEVEL_SCREEN_ID_FAVORITES -> router.showFavorites()
             HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList()
             HudFragment.TOP_LEVEL_SCREEN_ID_GAME -> router.showGameList()
             HudFragment.TOP_LEVEL_SCREEN_ID_SONG -> router.showAllSheets()
