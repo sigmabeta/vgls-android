@@ -35,7 +35,7 @@ fun ActionItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
-                horizontal = dimensionResource(id = R.dimen.margin_small)
+                horizontal = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.margin_small)
             )
             .clickable(
                 onClick = model.onClick,

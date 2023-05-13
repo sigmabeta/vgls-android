@@ -37,7 +37,7 @@ fun MenuSearchBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         MenuActionIcon(
-            iconId = R.drawable.ic_arrow_back_black_24dp,
+            iconId = com.vgleadsheets.vectors.R.drawable.ic_arrow_back_black_24dp,
             onClick = model.onMenuButtonClick
         )
 
@@ -60,7 +60,7 @@ fun MenuSearchBar(
                 text = ""
                 model.onClearClick()
             },
-            iconId = R.drawable.ic_clear_black_24dp
+            iconId = com.vgleadsheets.vectors.R.drawable.ic_clear_black_24dp
         )
     }
 }

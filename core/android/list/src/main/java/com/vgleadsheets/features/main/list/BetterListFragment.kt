@@ -180,7 +180,9 @@ abstract class BetterListFragment<
 
         adapter.resources = resources
 
-        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt()
+        val bottomOffset =
+            resources.getDimension(com.vgleadsheets.ui_core.R.dimen.height_bottom_sheet_peek)
+                .toInt()
         screenLegacy.listContent.setListsSpecialInsets(bottomOffset)
     }
 

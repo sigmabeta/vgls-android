@@ -64,7 +64,7 @@ class Config(
             song?.isAltSelected ?: false,
             song?.filename ?: ""
         ),
-        R.drawable.ic_description_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
         true,
         songLoad.isLoading()
     )
@@ -74,15 +74,15 @@ class Config(
         listOf(
             CtaListModel(
                 if (song?.isFavorite == true) {
-                    R.drawable.ic_jam_filled
+                    com.vgleadsheets.vectors.R.drawable.ic_jam_filled
                 } else {
-                    R.drawable.ic_jam_unfilled
+                    com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
                 },
                 resources.getString(
                     if (song?.isFavorite == true) {
-                        R.string.label_unfavorite
+                        com.vgleadsheets.features.main.hud.R.string.label_unfavorite
                     } else {
-                        R.string.label_favorite
+                        com.vgleadsheets.features.main.hud.R.string.label_favorite
                     }
                 )
             ) { clicks.onFavoriteClick() }
@@ -105,7 +105,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         SongFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     private fun akaSection(): List<ListModel> {
@@ -153,11 +154,11 @@ class Config(
 
         return listOf(
             CtaListModel(
-                R.drawable.ic_description_24dp,
+                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
                 resources.getString(R.string.cta_view_sheet)
             ) { clicks.viewSheet(song.id) },
             CtaListModel(
-                R.drawable.ic_play_circle_filled_24,
+                com.vgleadsheets.vectors.R.drawable.ic_play_circle_filled_24,
                 resources.getString(R.string.cta_youtube)
             ) { clicks.searchYoutube(song.name, song.gameName) }
         )

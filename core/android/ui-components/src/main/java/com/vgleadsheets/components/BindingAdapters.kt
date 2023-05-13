@@ -58,8 +58,8 @@ fun bindSheetImage(
 
     Picasso.get()
         .load(sheetUrl)
-        .placeholder(R.drawable.ic_description_white_24dp)
-        .error(R.drawable.ic_error_white_24dp)
+        .placeholder(com.vgleadsheets.vectors.R.drawable.ic_description_white_24dp)
+        .error(com.vgleadsheets.vectors.R.drawable.ic_error_white_24dp)
         .into(view, callback)
 }
 
@@ -87,7 +87,7 @@ fun bindBigPhoto(
     imageLoadSuccess: (() -> Unit)?,
     imageLoadFail: ((Exception) -> Unit)?
 ) {
-    if (placeholder != R.drawable.ic_logo) {
+    if (placeholder != com.vgleadsheets.ui_core.R.drawable.ic_logo) {
         view.clipToOutline = true
         view.setBackgroundResource(R.drawable.background_image_circle)
     } else {
@@ -121,9 +121,9 @@ fun bindStarFilling(
     stars: Int
 ) {
     val starResource = if (stars >= starFillThreshold) {
-        R.drawable.ic_jam_filled
+        com.vgleadsheets.vectors.R.drawable.ic_jam_filled
     } else {
-        R.drawable.ic_jam_unfilled
+        com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
     }
 
     view.setImageResource(starResource)
@@ -185,9 +185,15 @@ fun setHighlighting(
     highlighted: Boolean
 ) {
     val color = if (highlighted) {
-        ContextCompat.getColor(view.context, R.color.md_theme_light_tertiaryContainer)
+        ContextCompat.getColor(
+            view.context,
+            com.vgleadsheets.colors.R.color.md_theme_light_tertiaryContainer
+        )
     } else {
-        ContextCompat.getColor(view.context, R.color.md_theme_light_onPrimary)
+        ContextCompat.getColor(
+            view.context,
+            com.vgleadsheets.colors.R.color.md_theme_light_onPrimary
+        )
     }
 
     view.setTextColor(color)
@@ -199,9 +205,15 @@ fun setHighlighting(
     highlighted: Boolean
 ) {
     val color = if (highlighted) {
-        ContextCompat.getColor(view.context, R.color.md_theme_light_tertiaryContainer)
+        ContextCompat.getColor(
+            view.context,
+            com.vgleadsheets.colors.R.color.md_theme_light_tertiaryContainer
+        )
     } else {
-        ContextCompat.getColor(view.context, R.color.md_theme_light_onPrimary)
+        ContextCompat.getColor(
+            view.context,
+            com.vgleadsheets.colors.R.color.md_theme_light_onPrimary
+        )
     }
 
     view.setColorFilter(color)

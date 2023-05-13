@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterial
 import com.vgleadsheets.themes.VglsMaterialMenu
 
@@ -24,9 +23,9 @@ fun Rating(
     ) {
         for (index in 1..5) {
             val iconId = if (score >= index) {
-                R.drawable.ic_jam_filled
+                com.vgleadsheets.vectors.R.drawable.ic_jam_filled
             } else {
-                R.drawable.ic_jam_unfilled
+                com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
             }
 
             Icon(

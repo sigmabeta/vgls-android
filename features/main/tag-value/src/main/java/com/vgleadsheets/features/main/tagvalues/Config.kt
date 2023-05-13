@@ -74,7 +74,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         tagValues?.isEmpty() == true,
-        R.drawable.ic_album_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_tag_value_key)
     )
 
@@ -82,7 +82,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         TagValueFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(

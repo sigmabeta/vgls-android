@@ -21,7 +21,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterial
 
 @Composable
@@ -34,7 +33,7 @@ fun NameCaptionListItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
-                horizontal = dimensionResource(id = R.dimen.margin_side)
+                horizontal = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.margin_side)
             )
             .clickable(
                 onClick = model.onClick,

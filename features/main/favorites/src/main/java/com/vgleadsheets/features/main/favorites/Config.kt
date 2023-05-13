@@ -44,8 +44,8 @@ class Config(
     private val resources: Resources
 ) : BetterListConfig {
     override val titleConfig = Title.Config(
-        resources.getString(R.string.app_name),
-        resources.getString(R.string.label_favorites),
+        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
+        resources.getString(com.vgleadsheets.features.main.hud.R.string.label_favorites),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -80,7 +80,7 @@ class Config(
         return@Config listModels.ifEmpty {
             listOf(
                 EmptyStateListModel(
-                    R.drawable.ic_jam_filled,
+                    com.vgleadsheets.vectors.R.drawable.ic_jam_filled,
                     resources.getString(R.string.empty_no_favorites),
                 )
             )
@@ -89,7 +89,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         state.isEmpty(),
-        R.drawable.ic_album_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_favorite)
     )
 
@@ -97,7 +97,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         FavoriteListFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(
@@ -157,7 +158,7 @@ class Config(
                                 result.isAltSelected,
                                 result.filename
                             ),
-                            R.drawable.ic_description_24dp
+                            com.vgleadsheets.vectors.R.drawable.ic_description_24dp
                         ) {
                             clicks.song(result.id)
                         }
@@ -168,7 +169,7 @@ class Config(
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
-                        R.drawable.ic_album_24dp
+                        com.vgleadsheets.vectors.R.drawable.ic_album_24dp
                     ) { clicks.game(result.id) }
 
                     is Composer -> ImageNameCaptionListModel(
@@ -176,7 +177,7 @@ class Config(
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
-                        R.drawable.ic_person_24dp
+                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp
                     ) { clicks.composer(result.id) }
 
                     else -> throw IllegalArgumentException(

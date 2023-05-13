@@ -13,15 +13,24 @@ object SearchIcon {
     }
 
     private fun ImageButton.showMenuButton() {
-        setIconAndContentDesc(R.drawable.ic_menu_24dp, R.string.cd_search_menu)
+        setIconAndContentDesc(
+            com.vgleadsheets.vectors.R.drawable.ic_menu_24dp,
+            R.string.cd_search_menu
+        )
     }
 
     private fun ImageButton.showBackButton() {
-        setIconAndContentDesc(R.drawable.ic_arrow_back_black_24dp, R.string.cd_search_back)
+        setIconAndContentDesc(
+            com.vgleadsheets.vectors.R.drawable.ic_arrow_back_black_24dp,
+            R.string.cd_search_back
+        )
     }
 
     private fun ImageButton.showCloseButton() {
-        setIconAndContentDesc(R.drawable.ic_clear_black_24dp, R.string.cd_search_close)
+        setIconAndContentDesc(
+            com.vgleadsheets.vectors.R.drawable.ic_clear_black_24dp,
+            R.string.cd_search_close
+        )
     }
 
     private fun ImageButton.setIconAndContentDesc(

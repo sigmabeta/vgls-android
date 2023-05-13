@@ -32,8 +32,8 @@ class Config(
     private val resources: Resources
 ) : BetterListConfig {
     override val titleConfig = Title.Config(
-        resources.getString(R.string.app_name),
-        resources.getString(R.string.label_by_game),
+        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
+        resources.getString(com.vgleadsheets.features.main.hud.R.string.label_by_game),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -53,8 +53,8 @@ class Config(
         if (filteredGames.isNullOrEmpty()) {
             return@Config listOf(
                 EmptyStateListModel(
-                    R.drawable.ic_album_24dp,
-                    resources.getString(R.string.empty_transposition),
+                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+                    resources.getString(com.vgleadsheets.features.main.list.R.string.empty_transposition),
                 )
             )
         }
@@ -67,7 +67,7 @@ class Config(
                     it.name,
                     it.captionText(),
                     it.photoUrl,
-                    R.drawable.ic_album_24dp
+                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp
                 ) { clicks.game(it.id) }
             }
 
@@ -77,14 +77,14 @@ class Config(
                 it.name,
                 it.captionText(),
                 it.photoUrl,
-                R.drawable.ic_album_24dp
+                com.vgleadsheets.vectors.R.drawable.ic_album_24dp
             ) { clicks.game(it.id) }
         }
 
         val favoriteSection = if (onlyTheHits.isNotEmpty()) {
             listOf(
                 SectionHeaderListModel(
-                    resources.getString(R.string.section_header_favorites)
+                    resources.getString(com.vgleadsheets.features.main.list.R.string.section_header_favorites)
                 )
             ) + onlyTheHits
         } else {
@@ -107,7 +107,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         state.isEmpty(),
-        R.drawable.ic_album_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_game)
     )
 
@@ -115,7 +115,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         GameListFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(

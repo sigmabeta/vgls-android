@@ -29,7 +29,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.MenuItemListModel
-import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterialMenu
 
 @OptIn(ExperimentalTextApi::class)
@@ -43,7 +42,7 @@ fun MenuItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
-                horizontal = dimensionResource(id = R.dimen.margin_small)
+                horizontal = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.margin_small)
             )
             .clickable(
                 onClick = model.onClick,
@@ -142,7 +141,7 @@ private fun Sample(selected: Boolean) {
         MenuItemListModel(
             "Check for updates...",
             "Last updated Feb 3, 1963",
-            R.drawable.ic_refresh_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_refresh_24dp,
             {},
             selected
         ),

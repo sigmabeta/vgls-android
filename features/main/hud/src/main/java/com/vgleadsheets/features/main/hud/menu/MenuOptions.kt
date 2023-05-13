@@ -52,37 +52,37 @@ object MenuOptions {
         MenuItemListModel(
             resources.getString(R.string.label_favorites),
             null,
-            R.drawable.ic_jam_filled,
+            com.vgleadsheets.vectors.R.drawable.ic_jam_filled,
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_FAVORITES) }
         ),
         MenuItemListModel(
             resources.getString(R.string.label_by_game),
             null,
-            R.drawable.ic_album_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_GAME) }
         ),
         MenuItemListModel(
             resources.getString(R.string.label_by_composer),
             null,
-            R.drawable.ic_person_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER) }
         ),
         MenuItemListModel(
             resources.getString(R.string.label_by_tag),
             null,
-            R.drawable.ic_tag_black_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_tag_black_24dp,
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_TAG) }
         ),
         MenuItemListModel(
             resources.getString(R.string.label_all_songs),
             null,
-            R.drawable.ic_description_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
             { onScreenLinkClick(HudFragment.TOP_LEVEL_SCREEN_ID_SONG) }
         ),
         MenuItemListModel(
             resources.getString(R.string.label_random),
             null,
-            R.drawable.ic_shuffle_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_shuffle_24dp,
             { onRandomClick() }
         ),
 //        MenuItemListModel(
@@ -94,7 +94,7 @@ object MenuOptions {
         MenuItemListModel(
             resources.getString(R.string.label_settings),
             null,
-            R.drawable.ic_settings_black_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_settings_black_24dp,
             { onScreenLinkClick(HudFragment.MODAL_SCREEN_ID_SETTINGS) }
         )
     ) + getRefreshOptionListModels(
@@ -117,13 +117,13 @@ object MenuOptions {
             MenuItemListModel(
                 resources.getString(R.string.label_perf),
                 null,
-                R.drawable.ic_baseline_speed_24,
+                com.vgleadsheets.vectors.R.drawable.ic_baseline_speed_24,
                 onPerfClick,
             ),
             MenuItemListModel(
                 resources.getString(R.string.label_debug),
                 null,
-                R.drawable.ic_baseline_warning_24,
+                com.vgleadsheets.vectors.R.drawable.ic_baseline_warning_24,
                 onDebugClick,
             )
         )
@@ -141,7 +141,7 @@ object MenuOptions {
             MenuItemListModel(
                 resources.getString(R.string.label_refresh),
                 resources.getUpdateTimeString(updateTime),
-                R.drawable.ic_refresh_24dp,
+                com.vgleadsheets.vectors.R.drawable.ic_refresh_24dp,
                 { onRefreshClick() }
             )
         )

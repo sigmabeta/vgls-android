@@ -42,7 +42,7 @@ fun MenuTitleBar(
         MenuButton(
             onClick = model.onChangePartClick,
             label = model.partLabel,
-            iconId = R.drawable.ic_description_24dp,
+            iconId = com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
             modifier = Modifier.padding(end = 32.dp)
         )
     }
@@ -67,7 +67,7 @@ private fun Sample() {
     MenuTitleBar(
         MenuTitleBarListModel(
             "E♭ Instruments",
-            R.drawable.ic_menu_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_menu_24dp,
             {},
             {},
             {}

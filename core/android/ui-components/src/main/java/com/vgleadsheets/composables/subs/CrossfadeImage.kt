@@ -121,7 +121,7 @@ private fun Sample() {
     ) {
         CrossfadeImage(
             imageUrl = "doesn't matter",
-            imagePlaceholder = R.drawable.ic_person_24dp,
+            imagePlaceholder = com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
             modifier = Modifier,
         )
     }

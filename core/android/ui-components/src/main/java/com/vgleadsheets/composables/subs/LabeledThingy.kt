@@ -28,7 +28,6 @@ import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
-import com.vgleadsheets.components.R
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.composables.LabelCheckboxItem
 import com.vgleadsheets.composables.LabelDropdownListItem
@@ -49,7 +48,7 @@ fun LabeledThingy(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_side)),
+            .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.margin_side)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(

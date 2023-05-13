@@ -25,6 +25,6 @@ object RefreshIndicator {
         resources: Resources,
     ) = MenuLoadingItemListModel(
         resources.getString(R.string.label_refresh_loading),
-        R.drawable.ic_refresh_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_refresh_24dp,
     )
 }

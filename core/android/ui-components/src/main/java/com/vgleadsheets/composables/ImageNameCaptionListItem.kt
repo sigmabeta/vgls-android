@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.components.R
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
@@ -76,7 +75,7 @@ fun ImageNameCaptionListItem(
             .wrapContentHeight()
             .clickable(onClick = onClick)
             .padding(
-                horizontal = dimensionResource(id = R.dimen.margin_side)
+                horizontal = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.margin_side)
             )
     ) {
         ElevatedCircle(
@@ -179,7 +178,7 @@ private fun Sample() {
             "Xenoblade Chronicles 3",
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
             "https://randomfox.ca/images/12.jpg",
-            R.drawable.ic_person_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
             null,
             {}
         ),

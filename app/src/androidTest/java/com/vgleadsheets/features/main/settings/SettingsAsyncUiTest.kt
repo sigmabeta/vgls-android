@@ -1,7 +1,6 @@
 package com.vgleadsheets.features.main.settings
 
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import com.vgleadsheets.R
 import com.vgleadsheets.features.main.ListUiTest
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.hud
@@ -87,11 +86,11 @@ class SettingsAsyncUiTest : ListUiTest() {
         hud(this) {
             checkSearchButtonIsHamburger()
 
-            clickView(R.id.button_menu)
+            clickView(com.vgleadsheets.components.R.id.button_menu)
 
             checkSearchButtonIsCross()
 
-            clickViewWithText(R.string.label_settings)
+            clickViewWithText(com.vgleadsheets.features.main.hud.R.string.label_settings)
             checkSearchButtonIsBackArrow()
         }
     }

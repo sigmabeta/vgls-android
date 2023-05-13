@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.IconNameCaptionListModel
-import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterial
 import com.vgleadsheets.themes.VglsMaterialMenu
 
@@ -57,7 +56,7 @@ fun IconNameCaptionListItem(
             .wrapContentHeight()
             .clickable(onClick = onClick)
             .padding(
-                horizontal = dimensionResource(id = R.dimen.margin_side)
+                horizontal = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.margin_side)
             )
     ) {
         Icon(
@@ -153,7 +152,7 @@ private fun Sample() {
             1234L,
             "Moebius Battle",
             "ACE+",
-            R.drawable.ic_baseline_music_note_24
+            com.vgleadsheets.vectors.R.drawable.ic_baseline_music_note_24
         ) {},
         Modifier
     )

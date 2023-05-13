@@ -50,7 +50,7 @@ class Config(
         },
         { },
         game?.photoUrl,
-        R.drawable.ic_album_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
         true,
         gameLoad.isLoading()
     )
@@ -60,15 +60,15 @@ class Config(
         listOf(
             CtaListModel(
                 if (game?.isFavorite == true) {
-                    R.drawable.ic_jam_filled
+                    com.vgleadsheets.vectors.R.drawable.ic_jam_filled
                 } else {
-                    R.drawable.ic_jam_unfilled
+                    com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
                 },
                 resources.getString(
                     if (game?.isFavorite == true) {
-                        R.string.label_unfavorite
+                        com.vgleadsheets.features.main.hud.R.string.label_unfavorite
                     } else {
-                        R.string.label_favorite
+                        com.vgleadsheets.features.main.hud.R.string.label_favorite
                     }
                 )
             ) { clicks.onFavoriteClick() }
@@ -85,7 +85,7 @@ class Config(
                     song.name,
                     song.subtitleText(),
                     song.thumbUrl(),
-                    R.drawable.ic_album_24dp
+                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp
                 ) {
                     clicks.song(song.id)
                 }
@@ -94,20 +94,20 @@ class Config(
         if (filteredSongs.isNullOrEmpty()) {
             return@Config listOf(
                 EmptyStateListModel(
-                    R.drawable.ic_album_24dp,
-                    resources.getString(R.string.empty_transposition),
+                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+                    resources.getString(com.vgleadsheets.features.main.list.R.string.empty_transposition),
                 )
             )
         }
 
         listOf(
-            SectionHeaderListModel(resources.getString(R.string.section_header_songs))
+            SectionHeaderListModel(resources.getString(com.vgleadsheets.features.main.list.R.string.section_header_songs))
         ) + filteredSongs
     }
 
     override val emptyConfig = EmptyState.Config(
         songs?.isEmpty() == true,
-        R.drawable.ic_album_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_game_song)
     )
 
@@ -115,7 +115,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         GameFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(

@@ -17,7 +17,7 @@ class HudRobot(test: UiTest) : Robot(test) {
             ViewMatchers.withId(R.id.button_search_menu_back)
         ).check(
             ViewAssertions.matches(
-                ViewMatchers.withContentDescription(R.string.cd_search_back)
+                ViewMatchers.withContentDescription(com.vgleadsheets.features.main.hud.R.string.cd_search_back)
             )
         )
     }
@@ -27,7 +27,7 @@ class HudRobot(test: UiTest) : Robot(test) {
             ViewMatchers.withId(R.id.button_search_menu_back)
         ).check(
             ViewAssertions.matches(
-                ViewMatchers.withContentDescription(R.string.cd_search_close)
+                ViewMatchers.withContentDescription(com.vgleadsheets.features.main.hud.R.string.cd_search_close)
             )
         )
     }
@@ -37,7 +37,7 @@ class HudRobot(test: UiTest) : Robot(test) {
             ViewMatchers.withId(R.id.button_search_menu_back)
         ).check(
             ViewAssertions.matches(
-                ViewMatchers.withContentDescription(R.string.cd_search_menu)
+                ViewMatchers.withContentDescription(com.vgleadsheets.features.main.hud.R.string.cd_search_menu)
             )
         )
     }

@@ -23,15 +23,15 @@ object SongOptions {
                 MenuItemListModel(
                     resources.getString(R.string.label_song_details),
                     "",
-                    R.drawable.ic_details_24,
+                    com.vgleadsheets.vectors.R.drawable.ic_details_24,
                     onDetailsClick,
                 ),
                 MenuItemListModel(
                     resources.getString(R.string.label_youtube),
                     "",
-                R.drawable.ic_play_circle_filled_24,
-                onYoutubeClick,
-            ),
+                    com.vgleadsheets.vectors.R.drawable.ic_play_circle_filled_24,
+                    onYoutubeClick,
+                ),
             MenuItemListModel(
                 resources.getString(
                     if (currentSong.isFavorite) {
@@ -42,9 +42,9 @@ object SongOptions {
                 ),
                 "",
                 if (currentSong.isFavorite) {
-                    R.drawable.ic_jam_filled
+                    com.vgleadsheets.vectors.R.drawable.ic_jam_filled
                 } else {
-                    R.drawable.ic_jam_unfilled
+                    com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
                 },
                 onFavoriteClick,
             ),
@@ -75,7 +75,7 @@ object SongOptions {
                         }
                     ),
                     "",
-                    R.drawable.ic_description_24dp,
+                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
                     onAltClick,
                 ),
             )

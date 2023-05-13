@@ -26,7 +26,7 @@ class SheetGenerator @Inject constructor(
         Paint().apply {
             isAntiAlias = true
             color = Color.BLACK
-            typeface = ResourcesCompat.getFont(context, R.font.musejazz_text)
+            typeface = ResourcesCompat.getFont(context, com.vgleadsheets.fonts.R.font.musejazz_text)
         }
 
     private val clearPaint =

@@ -29,8 +29,10 @@ class AboutFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
-            resources.getDimension(R.dimen.margin_medium).toInt()
+        val bottomOffset =
+            resources.getDimension(com.vgleadsheets.ui_core.R.dimen.height_bottom_sheet_peek)
+                .toInt() +
+                resources.getDimension(com.vgleadsheets.ui_core.R.dimen.margin_medium).toInt()
 
         val content = view.findViewById<RecyclerView>(R.id.list_content)
         adapter = ComponentAdapter(getVglsFragmentTag(), hatchet)

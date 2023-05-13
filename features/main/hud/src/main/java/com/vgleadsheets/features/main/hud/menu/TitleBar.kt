@@ -5,7 +5,6 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.PartSelectorOption
-import com.vgleadsheets.features.main.hud.R
 
 object TitleBar {
     fun getListModels(
@@ -30,8 +29,8 @@ object TitleBar {
     }
 
     private fun getIconId(hudMode: HudMode) = when (hudMode) {
-        HudMode.REGULAR, HudMode.HIDDEN -> R.drawable.ic_menu_24dp
-        HudMode.PERF -> R.drawable.ic_arrow_back_black_24dp
-        else -> R.drawable.ic_clear_black_24dp
+        HudMode.REGULAR, HudMode.HIDDEN -> com.vgleadsheets.vectors.R.drawable.ic_menu_24dp
+        HudMode.PERF -> com.vgleadsheets.vectors.R.drawable.ic_arrow_back_black_24dp
+        else -> com.vgleadsheets.vectors.R.drawable.ic_clear_black_24dp
     }
 }

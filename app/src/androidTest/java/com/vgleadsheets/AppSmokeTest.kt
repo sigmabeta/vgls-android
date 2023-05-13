@@ -17,7 +17,10 @@ class AppSmokeTest : UiTest() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_GAME
         launchScreen()
 
-        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_game)
+        checkSuccessfulLaunch(
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.games.R.string.subtitle_game
+        )
     }
 
     @Test
@@ -25,7 +28,10 @@ class AppSmokeTest : UiTest() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_COMPOSER
         launchScreen()
 
-        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_composer)
+        checkSuccessfulLaunch(
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.composers.R.string.subtitle_composer
+        )
     }
 
     @Test
@@ -33,7 +39,10 @@ class AppSmokeTest : UiTest() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
         launchScreen()
 
-        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_all_songs)
+        checkSuccessfulLaunch(
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.songs.R.string.subtitle_all_songs
+        )
     }
 
     @Test
@@ -41,7 +50,10 @@ class AppSmokeTest : UiTest() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_TAG
         launchScreen()
 
-        checkSuccessfulLaunch(R.string.app_name, R.string.subtitle_tags)
+        checkSuccessfulLaunch(
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.tagkeys.R.string.subtitle_tags
+        )
     }
 
     @Test
@@ -54,13 +66,16 @@ class AppSmokeTest : UiTest() {
 
     private fun checkSuccessfulLaunch(titleStringId: Int, subtitleStringId: Int?) {
         hud(this) {
-            checkViewVisible(R.id.text_title_title)
-            checkViewVisible(R.id.text_title_subtitle)
+            checkViewVisible(com.vgleadsheets.features.main.list.R.id.text_title_title)
+            checkViewVisible(com.vgleadsheets.features.main.list.R.id.text_title_subtitle)
 
-            checkViewText(R.id.text_title_title, titleStringId)
+            checkViewText(com.vgleadsheets.features.main.list.R.id.text_title_title, titleStringId)
 
             if (subtitleStringId != null) {
-                checkViewText(R.id.text_title_subtitle, subtitleStringId)
+                checkViewText(
+                    com.vgleadsheets.features.main.list.R.id.text_title_subtitle,
+                    subtitleStringId
+                )
             }
         }
     }

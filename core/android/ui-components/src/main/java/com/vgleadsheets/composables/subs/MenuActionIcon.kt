@@ -25,8 +25,8 @@ fun MenuActionIcon(
         modifier = Modifier
             .clickable(onClick = onClick)
             .defaultMinSize(
-                minHeight = dimensionResource(id = R.dimen.min_clickable_size),
-                minWidth = dimensionResource(id = R.dimen.min_clickable_size),
+                minHeight = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.min_clickable_size),
+                minWidth = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.min_clickable_size),
             )
             .padding(vertical = 12.dp)
     )

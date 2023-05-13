@@ -33,7 +33,7 @@ fun EmptyListIndicator(
     ) {
     EmptyListIndicator(
         explanation = model.errorString,
-        iconId = R.drawable.ic_error_24dp,
+        iconId = com.vgleadsheets.vectors.R.drawable.ic_error_24dp,
         showCrossOut = false,
         menu = false,
         modifier
@@ -47,7 +47,7 @@ fun EmptyListIndicator(
 ) {
     EmptyListIndicator(
         explanation = model.errorString,
-        iconId = R.drawable.ic_error_24dp,
+        iconId = com.vgleadsheets.vectors.R.drawable.ic_error_24dp,
         showCrossOut = false,
         menu = true,
         modifier = modifier
@@ -108,9 +108,9 @@ private fun EmptyListIndicator(
                 )
         ) {
             val crossOutResource = if (menu) {
-                R.drawable.ic_cross_out_menu_24dp
+                com.vgleadsheets.vectors.R.drawable.ic_cross_out_menu_24dp
             } else {
-                R.drawable.ic_cross_out_24dp
+                com.vgleadsheets.vectors.R.drawable.ic_cross_out_24dp
             }
 
             Icon(
@@ -247,7 +247,7 @@ private fun MenuNoCross() {
 private fun SampleNotMenu() {
     EmptyListIndicator(
         EmptyStateListModel(
-            R.drawable.ic_album_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
             "It's all part of the protocol, innit?",
             showCrossOut = true
         ),
@@ -259,7 +259,7 @@ private fun SampleNotMenu() {
 private fun SampleMenu() {
     EmptyListIndicator(
         MenuEmptyStateListModel(
-            R.drawable.ic_person_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
             "You hear that, Noah? Lanz wants something a little meatier.",
             showCrossOut = true
         ),

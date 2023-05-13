@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.MenuSearchMoreListModel
-import com.vgleadsheets.components.R
 import com.vgleadsheets.themes.VglsMaterialMenu
 
 @Composable
@@ -28,7 +27,7 @@ fun MoreResultsLink(
         color = MaterialTheme.colorScheme.onPrimary,
         modifier = modifier
             .clickable(onClick = model.onClick)
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
+            .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.margin_side))
             .padding(start = 56.dp)
             .padding(vertical = 16.dp)
             .fillMaxWidth()
@@ -50,7 +49,7 @@ private fun Default() {
                     "Xenoblade Chronicles 3",
                     "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
                     "https://randomfox.ca/images/12.jpg",
-                    R.drawable.ic_person_24dp,
+                    com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
                     null,
                     {}
                 ),

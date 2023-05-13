@@ -69,8 +69,8 @@ object Search {
         if (query.isNullOrEmpty()) {
             return listOf(
                 MenuEmptyStateListModel(
-                    R.drawable.ic_search_black_24dp,
-                    resources.getString(R.string.search_empty_no_query),
+                    com.vgleadsheets.components.R.drawable.ic_search_black_24dp,
+                    resources.getString(com.vgleadsheets.components.R.string.search_empty_no_query),
                     showCrossOut = false
                 )
             )
@@ -125,7 +125,7 @@ object Search {
         return listModels.ifEmpty {
             listOf(
                 MenuEmptyStateListModel(
-                    R.drawable.ic_description_24dp,
+                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
                     resources.getString(R.string.search_empty_search_no_results),
                 )
             )
@@ -259,7 +259,7 @@ object Search {
                                 result.isAltSelected,
                                 result.filename
                             ),
-                            R.drawable.ic_description_24dp
+                            com.vgleadsheets.vectors.R.drawable.ic_description_24dp
                         ) {
                             clicks.songSearchResult(result.id)
                         }
@@ -270,7 +270,7 @@ object Search {
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
-                        R.drawable.ic_album_24dp
+                        com.vgleadsheets.vectors.R.drawable.ic_album_24dp
                     ) { clicks.gameSearchResult(result.id) }
 
                     is Composer -> SearchResultListModel(
@@ -278,7 +278,7 @@ object Search {
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
-                        R.drawable.ic_person_24dp
+                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp
                     ) { clicks.composerSearchResult(result.id) }
 
                     else -> throw IllegalArgumentException(
