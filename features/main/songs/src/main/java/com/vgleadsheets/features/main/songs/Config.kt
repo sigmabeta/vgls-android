@@ -70,7 +70,7 @@ class Config(
                         it.isAltSelected,
                         it.filename
                     ),
-                    R.drawable.placeholder_sheet
+                    R.drawable.ic_description_24dp
                 ) { clicks.song(it.id) }
             }
 
@@ -85,7 +85,7 @@ class Config(
                     it.isAltSelected,
                     it.filename
                 ),
-                R.drawable.placeholder_sheet
+                R.drawable.ic_description_24dp
             ) { clicks.song(it.id) }
         }
 

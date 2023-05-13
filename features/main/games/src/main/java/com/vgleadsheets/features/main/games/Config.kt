@@ -77,7 +77,7 @@ class Config(
                 it.name,
                 it.captionText(),
                 it.photoUrl,
-                R.drawable.placeholder_game
+                R.drawable.ic_album_24dp
             ) { clicks.game(it.id) }
         }
 

@@ -77,7 +77,7 @@ class Config(
                 it.name,
                 it.captionText(),
                 it.photoUrl,
-                R.drawable.placeholder_composer
+                R.drawable.ic_person_24dp
             ) { clicks.composer(it.id) }
         }
 

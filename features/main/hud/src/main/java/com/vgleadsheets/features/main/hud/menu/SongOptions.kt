@@ -18,7 +18,7 @@ object SongOptions {
         onAltClick: () -> Unit,
         resources: Resources,
     ): List<ListModel> =
-        if (currentSong != null && isApplicableHudModeLol(hudMode) && viewerScreenVisible) {
+        if (currentSong != null && isApplicableHudModeLol(hudMode)) {
             listOf(
                 MenuItemListModel(
                     resources.getString(R.string.label_song_details),
