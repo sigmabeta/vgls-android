@@ -55,4 +55,6 @@ class SongAndroidDataSource(
     override fun toggleFavorite(songId: Long) = roomImpl.toggleFavorite(songId)
 
     override fun toggleOffline(songId: Long) = roomImpl.toggleOffline(songId)
+
+    override fun toggleAlternate(songId: Long) = roomImpl.toggleAlternate(songId)
 }

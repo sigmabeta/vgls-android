@@ -108,6 +108,10 @@ class Clicks(
         viewModel.favoritesClick()
     }
 
+    fun alternateSheet() {
+        viewModel.alternateSheetClick()
+    }
+
     fun offline() {
         viewModel.offlineClick()
     }

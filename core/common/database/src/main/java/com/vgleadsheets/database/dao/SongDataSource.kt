@@ -16,4 +16,6 @@ interface SongDataSource : OneToManyDataSource<Song> {
     fun toggleFavorite(songId: Long)
 
     fun toggleOffline(songId: Long)
+
+    fun toggleAlternate(songId: Long)
 }

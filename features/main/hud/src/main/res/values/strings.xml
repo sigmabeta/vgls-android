@@ -22,6 +22,8 @@
     <string name="label_unfavorite">Remove from Favorites</string>
     <string name="label_add_offline">Make Available Offline</string>
     <string name="label_remove_offline">Available Offline</string>
+    <string name="label_show_alt">Show musician-friendly sheet</string>
+    <string name="label_hide_alt">Show standard sheet</string>
 
     <string name="date_never">Never</string>
     <string name="label_settings">Settings</string>

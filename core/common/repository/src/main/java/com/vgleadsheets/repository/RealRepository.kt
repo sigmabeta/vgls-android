@@ -216,6 +216,10 @@ class RealRepository constructor(
         composerDataSource.toggleOffline(composerId)
     }
 
+    override suspend fun toggleAlternate(songId: Long) {
+        songDataSource.toggleAlternate(songId)
+    }
+
     override suspend fun clearSheets() = withContext(dispatchers.disk) {
         gameDataSource.nukeTable()
         songDataSource.nukeTable()

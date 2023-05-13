@@ -265,6 +265,14 @@ class HudViewModel @AssistedInject constructor(
         }
     }
 
+    fun alternateSheetClick() = withState { state ->
+        state.selectedSong?.let {
+            viewModelScope.launch(dispatchers.disk) {
+                repository.toggleAlternate(it.id)
+            }
+        }
+    }
+
     fun offlineClick() = withState { state ->
         state.selectedSong?.let {
             viewModelScope.launch(dispatchers.disk) {
