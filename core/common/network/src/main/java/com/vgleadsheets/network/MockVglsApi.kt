@@ -147,6 +147,7 @@ class MockVglsApi(
         stringGenerator.generateTitle(),
         random.nextInt(MAX_PAGE_COUNT) + 1,
         random.nextInt(MAX_PAGE_COUNT) + 1,
+        random.nextInt(MAX_PAGE_COUNT) + 1,
         getComposersForSong(),
         getTags(),
         listOf()

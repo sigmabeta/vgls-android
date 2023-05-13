@@ -489,6 +489,7 @@ class RealRepository constructor(
             dbSong?.playCount ?: 0,
             dbSong?.isFavorite ?: false,
             dbSong?.isAvailableOffline ?: false,
+            dbSong?.isAltSelected ?: false,
         )
 
         apiSong.composers.forEach { apiComposer ->

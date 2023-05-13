@@ -8,9 +8,11 @@ data class Song(
     val gameName: String,
     val hasVocals: Boolean,
     val pageCount: Int,
+    val altPageCount: Int,
     val lyricPageCount: Int,
     val composers: List<Composer>?,
     val playCount: Int,
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,
+    val isAltSelected: Boolean,
 )

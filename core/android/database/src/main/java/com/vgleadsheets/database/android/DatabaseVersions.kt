@@ -24,6 +24,12 @@ object DatabaseVersions {
      */
     const val ADDED_FAVORITES = 13
 
+    /**
+     *  - Added "altPageCount" to songs.
+     *  - Added "isAltSelected" to songs.
+     */
+    const val ADDED_ALTERNATES = 14
+
     // Doesn't need to be changed.
     val WITHOUT_MIGRATION = (1 until ADDED_PLAY_COUNTS).toList().toIntArray()
 }

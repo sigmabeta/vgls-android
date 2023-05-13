@@ -28,8 +28,9 @@ class DatabaseModule {
                 "vgls-database"
             )
             .addMigrations(
-                Migrations.RemovedJams,
+                Migrations.RemoveJams,
                 Migrations.AddFavorites,
+                Migrations.AddAlternates,
             )
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
