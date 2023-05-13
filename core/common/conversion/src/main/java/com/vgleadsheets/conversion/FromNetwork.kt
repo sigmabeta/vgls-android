@@ -26,7 +26,8 @@ fun ApiSong.toModel(
     gameName: String,
     playCount: Int,
     isFavorite: Boolean,
-    isAvailableOffline: Boolean
+    isAvailableOffline: Boolean,
+    isAltSelected: Boolean
 ) = Song(
     id,
     name,
@@ -35,11 +36,13 @@ fun ApiSong.toModel(
     gameName,
     lyricsPageCount > 0,
     pageCount,
+    altPageCount,
     lyricsPageCount,
     null,
     playCount,
     isFavorite,
-    isAvailableOffline
+    isAvailableOffline,
+    isAltSelected
 )
 
 fun ApiComposer.toModel(

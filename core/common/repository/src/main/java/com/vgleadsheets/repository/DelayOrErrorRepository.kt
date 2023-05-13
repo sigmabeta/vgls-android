@@ -85,6 +85,8 @@ class DelayOrErrorRepository(
     override suspend fun toggleOfflineComposer(composerId: Long) =
         realRepository.toggleOfflineComposer(composerId)
 
+    override suspend fun toggleAlternate(songId: Long) = realRepository.toggleAlternate(songId)
+
     override suspend fun clearSheets() = realRepository.clearSheets()
 
     private suspend fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =

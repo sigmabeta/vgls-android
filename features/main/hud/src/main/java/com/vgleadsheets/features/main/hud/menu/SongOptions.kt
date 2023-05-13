@@ -14,6 +14,7 @@ object SongOptions {
         onYoutubeClick: () -> Unit,
         onFavoriteClick: () -> Unit,
         // onOfflineClick: () -> Unit,
+        onAltClick: () -> Unit,
         resources: Resources,
     ) = if (currentSong != null && isApplicableHudModeLol(hudMode)) {
         listOf(
@@ -61,7 +62,24 @@ object SongOptions {
             //     },
             //     onOfflineClick,
             // ),
-        )
+        ) + if (currentSong.altPageCount > 0) {
+            listOf(
+                MenuItemListModel(
+                    resources.getString(
+                        if (currentSong.isAltSelected) {
+                            R.string.label_hide_alt
+                        } else {
+                            R.string.label_show_alt
+                        }
+                    ),
+                    "",
+                    R.drawable.ic_description_24dp,
+                    onAltClick,
+                ),
+            )
+        } else {
+            emptyList()
+        }
     } else {
         emptyList()
     }

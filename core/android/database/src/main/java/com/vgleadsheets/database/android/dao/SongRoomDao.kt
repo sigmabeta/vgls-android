@@ -61,6 +61,9 @@ interface SongRoomDao :
     @Query(QUERY_TOGGLE_OFFLINE)
     fun toggleOffline(id: Long)
 
+    @Query(QUERY_TOGGLE_ALTERNATE)
+    fun toggleAlternate(id: Long)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJoins(joins: List<SongTagValueJoin>)
 
@@ -70,7 +73,6 @@ interface SongRoomDao :
     companion object {
 
         // Query Properties
-
         private const val TABLE = SongEntity.TABLE
 
         private const val ROW_MANY_KEY = SongEntity.ROW_FOREIGN_KEY
@@ -80,7 +82,11 @@ interface SongRoomDao :
         private const val OPTION_ORDER_CUSTOM = "ORDER BY name, gameName"
 
         private const val COLUMN_INCREMENTABLE = "playCount"
+        private const val COLUMN_ALTERNATE = "isAltSelected"
+
         private const val SET_INCREMENT = "$SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
+
+        private const val TOGGLE_ALTERNATE = "$SET $COLUMN_ALTERNATE = (1 - $COLUMN_ALTERNATE)"
 
         // Bespoke Queries
 
@@ -101,5 +107,6 @@ interface SongRoomDao :
 
         const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
         const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
+        const val QUERY_TOGGLE_ALTERNATE = "$QUERY_UPDATE $TOGGLE_ALTERNATE $WHERE_SINGLE"
     }
 }

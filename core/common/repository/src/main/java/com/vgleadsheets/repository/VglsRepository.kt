@@ -55,6 +55,8 @@ interface VglsRepository {
     suspend fun toggleOfflineGame(gameId: Long)
     suspend fun toggleOfflineComposer(composerId: Long)
 
+    suspend fun toggleAlternate(songId: Long)
+
     // Debug options
     suspend fun clearSheets()
 }
