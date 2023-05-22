@@ -30,10 +30,10 @@ data class SongEntity(
     val gameName: String,
     val game_id: Long,
     val hasVocals: Boolean,
-    val playCount: Int = 0,
-    val isFavorite: Boolean = false,
-    val isAvailableOffline: Boolean = false,
-    val isAltSelected: Boolean = false,
+    val playCount: Int,
+    val isFavorite: Boolean,
+    val isAvailableOffline: Boolean,
+    val isAltSelected: Boolean,
 ) {
     companion object {
         const val TABLE = "song"

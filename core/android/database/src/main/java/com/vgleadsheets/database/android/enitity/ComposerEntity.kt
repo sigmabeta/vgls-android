@@ -12,9 +12,9 @@ data class ComposerEntity(
     val name: String,
     val hasVocalSongs: Boolean = false,
     val photoUrl: String? = null,
-    val sheetsPlayed: Int = 0,
-    val isFavorite: Boolean = false,
-    val isAvailableOffline: Boolean = false,
+    val sheetsPlayed: Int,
+    val isFavorite: Boolean,
+    val isAvailableOffline: Boolean,
 ) {
     companion object {
         const val TABLE = "composer"

@@ -16,7 +16,9 @@ class GameConverter : WithManyConverter<Game, GameEntity, Song, SongEntity, Song
         name,
         songs?.filteredForVocals(Part.VOCAL.apiId)?.isNotEmpty() ?: false,
         photoUrl,
-        sheetsPlayed
+        sheetsPlayed,
+        isFavorite,
+        isAvailableOffline
     )
 
     override fun GameEntity.toModel() = Game(

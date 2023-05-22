@@ -23,6 +23,9 @@ class SongConverter :
         gameId,
         hasVocals,
         playCount,
+        isFavorite,
+        isAvailableOffline,
+        isAltSelected
     )
 
     override fun SongEntity.toModel() = Song(
