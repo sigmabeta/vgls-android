@@ -2,14 +2,14 @@ package com.vgleadsheets.features.main.songs
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.ViewListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
 class SongListFragment :
-    BetterListFragment<SongListContent, SongListState>() {
+    ViewListFragment<SongListContent, SongListState>() {
     @Inject
     lateinit var viewModelFactory: SongListViewModel.Factory
 

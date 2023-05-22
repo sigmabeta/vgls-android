@@ -5,12 +5,12 @@ import android.view.View
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.ComposeListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class DebugFragment : BetterListFragment<DebugContent, DebugState>() {
+class DebugFragment : ComposeListFragment<DebugContent, DebugState>() {
     @Inject
     lateinit var viewModelFactory: DebugViewModel.Factory
 

@@ -3,9 +3,9 @@ package com.vgleadsheets.features.main.tagvalues
 import android.content.res.Resources
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
+import com.vgleadsheets.features.main.list.ListConfig
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
@@ -31,7 +31,7 @@ class Config(
     private val perfSpec: PerfSpec,
     private val resources: Resources,
     private val hatchet: Hatchet,
-) : BetterListConfig {
+) : ListConfig {
     private val tagKeyLoad = state.contentLoad.tagKey
 
     private val tagKey = tagKeyLoad.content()

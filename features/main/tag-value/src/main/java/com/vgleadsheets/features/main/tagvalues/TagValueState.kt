@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.tagvalues
 
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.features.main.list.BetterCompositeState
+import com.vgleadsheets.features.main.list.CompositeState
 
 data class TagValueState(
     val tagKeyId: Long,
@@ -10,6 +10,6 @@ data class TagValueState(
         Uninitialized,
         Uninitialized
     ),
-) : BetterCompositeState<TagValueContent> {
+) : CompositeState<TagValueContent> {
     constructor(args: IdArgs) : this(args.id)
 }

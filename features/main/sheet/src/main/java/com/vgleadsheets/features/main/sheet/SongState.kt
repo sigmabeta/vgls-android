@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.sheet
 
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.features.main.list.BetterCompositeState
+import com.vgleadsheets.features.main.list.CompositeState
 
 data class SongState(
     val songId: Long,
@@ -10,6 +10,6 @@ data class SongState(
         Uninitialized,
         Uninitialized
     ),
-) : BetterCompositeState<SongContent> {
+) : CompositeState<SongContent> {
     constructor(args: IdArgs) : this(args.id)
 }

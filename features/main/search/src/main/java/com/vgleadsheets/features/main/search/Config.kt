@@ -13,9 +13,9 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
+import com.vgleadsheets.features.main.list.ListConfig
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
@@ -37,7 +37,7 @@ class Config(
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val resources: Resources,
-) : BetterListConfig {
+) : ListConfig {
 
     override val titleConfig = Title.Config(
         resources.getString(com.vgleadsheets.ui_core.R.string.app_name),

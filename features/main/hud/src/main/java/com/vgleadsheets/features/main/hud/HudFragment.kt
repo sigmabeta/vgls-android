@@ -17,7 +17,6 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.vgleadsheets.IsComposeEnabled
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudComposeBinding
@@ -76,11 +75,7 @@ class HudFragment : VglsFragment() {
             ""
         )
 
-        if (IsComposeEnabled.WELL_IS_IT) {
-            setupCompose(view)
-        } else {
-            setupRecycler(view)
-        }
+        setupRecycler(view)
 
         bottomSheetBehavior = BottomSheetBehavior.from(frameBottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -118,11 +113,8 @@ class HudFragment : VglsFragment() {
             resources
         )
 
-        if (IsComposeEnabled.WELL_IS_IT) {
-            renderContentInCompose(menuItems)
-        } else {
-            renderContentInRecyclerView(menuItems)
-        }
+
+        renderContentInRecyclerView(menuItems)
 
         if (state.digest is Loading) {
             perfTracker.cancelAll()
@@ -140,11 +132,7 @@ class HudFragment : VglsFragment() {
         return@withState clicks.back(it)
     }
 
-    override fun getLayoutId() = if (IsComposeEnabled.WELL_IS_IT) {
-        R.layout.fragment_hud_compose
-    } else {
-        R.layout.fragment_hud_recycler
-    }
+    override fun getLayoutId() = R.layout.fragment_hud_recycler
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 

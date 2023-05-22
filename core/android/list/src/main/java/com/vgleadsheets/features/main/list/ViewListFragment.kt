@@ -15,7 +15,6 @@ import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentInterface
-import com.vgleadsheets.IsComposeEnabled
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
@@ -35,13 +34,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class BetterListFragment<
+abstract class ViewListFragment<
     ContentType : ListContent,
-    StateType : BetterCompositeState<ContentType>
+    StateType : CompositeState<ContentType>
     > : VglsFragment() {
     abstract val viewModel: MavericksViewModel<StateType>
 
-    abstract fun generateListConfig(state: StateType, hudState: HudState): BetterListConfig
+    abstract fun generateListConfig(state: StateType, hudState: HudState): ListConfig
 
     // THIS IS A DUMMY INJECTION. If this isn't here, ListFragment_MembersInjector.java
     // doesn't get generated, which causes it to get generated multiple times in children
@@ -73,13 +72,9 @@ abstract class BetterListFragment<
         super.onViewCreated(view, savedInstanceState)
         adapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
 
-        if (IsComposeEnabled.WELL_IS_IT) {
-            setupCompose(view)
-        } else {
-            setupRecycler(view)
-            setupAppBar()
-            Insetup.setupRootViewForInsetAnimation(screenLegacy.root)
-        }
+        setupRecycler(view)
+        setupAppBar()
+        Insetup.setupRootViewForInsetAnimation(screenLegacy.root)
 
         if (alwaysShowBack) {
             hudViewModel.alwaysShowBack()
@@ -93,16 +88,14 @@ abstract class BetterListFragment<
     override fun onStart() {
         super.onStart()
         val progress = this.progress
-        if (progress != null && !IsComposeEnabled.WELL_IS_IT) {
+        if (progress != null) {
             screenLegacy.moLayoutToolbar.progress = progress
         }
     }
 
     override fun onStop() {
         super.onStop()
-        if (!IsComposeEnabled.WELL_IS_IT) {
-            progress = screenLegacy.moLayoutToolbar.progress
-        }
+        progress = screenLegacy.moLayoutToolbar.progress
     }
 
     override fun invalidate() {
@@ -125,15 +118,11 @@ abstract class BetterListFragment<
                     config.titleConfig.titleGenerator,
                 )
 
-                if (IsComposeEnabled.WELL_IS_IT) {
-                    // Render title in compose lol
-                } else {
-                    screenLegacy.toBind = title
+                screenLegacy.toBind = title
 
-                    if (title.allowExpansion) {
-                        screenLegacy.moLayoutToolbar.progress = 1.0f
-                        screenLegacy.moLayoutToolbar.enableTransition(R.id.transition_scroll, false)
-                    }
+                if (title.allowExpansion) {
+                    screenLegacy.moLayoutToolbar.progress = 1.0f
+                    screenLegacy.moLayoutToolbar.enableTransition(R.id.transition_scroll, false)
                 }
 
                 if (configGenerationJob.isActive) {
@@ -145,14 +134,10 @@ abstract class BetterListFragment<
                 }
 
                 configGenerationJob = viewModel.viewModelScope.launch(dispatchers.computation) {
-                    val listItems = BetterLists.generateList(config, resources)
+                    val listItems = Lists.generateList(config, resources)
 
                     withContext(dispatchers.main) {
-                        if (IsComposeEnabled.WELL_IS_IT) {
-                            renderContentInCompose(listItems)
-                        } else {
-                            renderContentInRecyclerView(listItems)
-                        }
+                        renderContentInRecyclerView(listItems)
                     }
                 }
             }
@@ -255,11 +240,7 @@ abstract class BetterListFragment<
         }
     }
 
-    override fun getLayoutId() = if (IsComposeEnabled.WELL_IS_IT) {
-        R.layout.fragment_list_compose
-    } else {
-        R.layout.fragment_list_recycler
-    }
+    override fun getLayoutId() = R.layout.fragment_list_recycler
 
     override fun getVglsFragmentTag() = this.javaClass.simpleName
 }

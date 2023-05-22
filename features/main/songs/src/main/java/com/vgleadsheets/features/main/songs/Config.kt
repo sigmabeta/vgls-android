@@ -5,7 +5,7 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
+import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
 import com.vgleadsheets.features.main.list.mapYielding
@@ -28,7 +28,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig {
+) : ListConfig {
     override val titleConfig = Title.Config(
         resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
         resources.getString(R.string.subtitle_all_songs),
@@ -61,7 +61,7 @@ class Config(
             .filter { it.isFavorite }
             .mapYielding {
                 ImageNameCaptionListModel(
-                    it.id + BetterListConfig.OFFSET_FAVORITE,
+                    it.id + ListConfig.OFFSET_FAVORITE,
                     it.name,
                     it.gameName,
                     Page.generateThumbUrl(

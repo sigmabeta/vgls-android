@@ -5,10 +5,10 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.OFFSET_FAVORITE
+import com.vgleadsheets.features.main.list.ListConfig
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
+import com.vgleadsheets.features.main.list.ListConfig.Companion.OFFSET_FAVORITE
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
 import com.vgleadsheets.features.main.list.mapYielding
@@ -30,7 +30,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig {
+) : ListConfig {
     override val titleConfig = Title.Config(
         resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
         resources.getString(com.vgleadsheets.features.main.hud.R.string.label_by_game),

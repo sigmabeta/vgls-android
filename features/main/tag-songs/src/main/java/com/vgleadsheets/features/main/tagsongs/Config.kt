@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.tagsongs
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
+import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
@@ -28,7 +28,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig {
+) : ListConfig {
     private val tagValueLoad = state.contentLoad.tagValue
 
     private val tagValue = tagValueLoad.content()

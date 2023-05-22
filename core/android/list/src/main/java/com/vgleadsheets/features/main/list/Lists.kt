@@ -8,9 +8,9 @@ import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 
-object BetterLists {
+object Lists {
     suspend fun generateList(
-        config: BetterListConfig,
+        config: ListConfig,
         resources: Resources,
     ): List<ListModel> {
         return listOf(

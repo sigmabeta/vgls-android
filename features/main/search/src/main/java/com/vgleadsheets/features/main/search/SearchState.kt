@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.search
 
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.NullableStringArgs
-import com.vgleadsheets.features.main.list.BetterCompositeState
+import com.vgleadsheets.features.main.list.CompositeState
 
 data class SearchState(
     val initialQuery: String? = null,
@@ -12,6 +12,6 @@ data class SearchState(
         Uninitialized,
         Uninitialized
     ),
-) : BetterCompositeState<SearchContent> {
+) : CompositeState<SearchContent> {
     constructor(args: NullableStringArgs) : this(args.input)
 }

@@ -7,7 +7,7 @@ import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 
-interface BetterListConfig {
+interface ListConfig {
     val titleConfig: Title.Config
     val actionsConfig: Actions.Config
     val contentConfig: Content.Config

@@ -6,6 +6,7 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     api project(':core:android:coroutines')
     api project(':core:android:ui-core')
+    api project(':core:android:vectors')
 
     implementation project(':core:android:recyclerview')
 

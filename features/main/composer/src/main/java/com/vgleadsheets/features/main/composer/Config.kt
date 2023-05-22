@@ -6,7 +6,7 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
+import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
@@ -31,7 +31,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig {
+) : ListConfig {
     private val composerLoad = state.contentLoad.composer
 
     private val composer = composerLoad.content()

@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.list
 
 import com.airbnb.mvrx.MavericksState
 
-interface BetterCompositeState<CompositeContentType : ListContent> : MavericksState {
+interface CompositeState<CompositeContentType : ListContent> : MavericksState {
     val contentLoad: CompositeContentType
 
     fun content() = contentLoad

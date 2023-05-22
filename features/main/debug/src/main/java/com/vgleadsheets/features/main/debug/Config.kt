@@ -6,7 +6,7 @@ import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.features.main.list.BetterListConfig
+import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.mapYielding
@@ -28,7 +28,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig {
+) : ListConfig {
     private val settingsLoad = state.contentLoad.settings
 
     private val settings = settingsLoad.content()

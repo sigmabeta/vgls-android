@@ -2,13 +2,13 @@ package com.vgleadsheets.features.main.settings
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.ComposeListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class SettingFragment : BetterListFragment<SettingContent, SettingState>() {
+class SettingFragment : ComposeListFragment<SettingContent, SettingState>() {
     @Inject
     lateinit var viewModelFactory: SettingViewModel.Factory
 
