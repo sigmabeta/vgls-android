@@ -253,8 +253,9 @@ class ViewerFragment :
 
         hudViewModel.setSelectedSong(song)
 
-        // Meaningless comment indicating a bugfix
-        val pageCount = if (selectedPart == Part.VOCAL) {
+        val pageCount = if (song.isAltSelected) {
+            song.altPageCount
+        } else if (selectedPart == Part.VOCAL) {
             song.lyricPageCount
         } else {
             song.pageCount

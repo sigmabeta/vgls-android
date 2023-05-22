@@ -45,10 +45,9 @@ class ViewerViewModel @AssistedInject constructor(
         if (songId != null) {
             repository.getSong(songId)
                 .execute { data ->
-                    if (data()?.id != state.song()?.id) {
-                        stopReportTimer()
-                        startReportTimer()
-                    }
+                    stopReportTimer()
+                    startReportTimer()
+
                     copy(
                         song = data,
                     )
