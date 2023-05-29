@@ -11,15 +11,15 @@ import androidx.compose.ui.Modifier
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
+import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
-import com.vgleadsheets.features.main.list.databinding.FragmentListRecyclerBinding
+import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
-import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.themes.VglsMaterial
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
@@ -48,11 +48,8 @@ abstract class ComposeListFragment<
 
     protected open val alwaysShowBack = true
 
-    private lateinit var adapter: ComponentAdapter
-
     private var progress: Float? = null
 
-    private lateinit var screenLegacy: FragmentListRecyclerBinding
     private lateinit var screenCompose: FragmentListComposeBinding
 
     private var configGenerationJob: Job = Job()
@@ -63,7 +60,6 @@ abstract class ComposeListFragment<
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
 
         setupCompose(view)
 
@@ -81,20 +77,20 @@ abstract class ComposeListFragment<
             val invalidateStartNanos = System.nanoTime()
             val invalidateDurationNanos = measureNanoTime {
                 val config = generateListConfig(state, hudState)
-                // val title = Title.model(
-                //     config.titleConfig.title,
-                //     config.titleConfig.subtitle,
-                //     hudState.alwaysShowBack,
-                //     config.titleConfig.onImageLoadSuccess,
-                //     config.titleConfig.onImageLoadFail,
-                //     resources,
-                //     { (activity as FragmentInterface).onAppBarButtonClick() },
-                //     config.titleConfig.photoUrl,
-                //     config.titleConfig.placeholder,
-                //     config.titleConfig.allowExpansion,
-                //     config.titleConfig.isLoading,
-                //     config.titleConfig.titleGenerator,
-                // )
+                val title = Title.model(
+                    config.titleConfig.title,
+                    config.titleConfig.subtitle,
+                    hudState.alwaysShowBack,
+                    config.titleConfig.onImageLoadSuccess,
+                    config.titleConfig.onImageLoadFail,
+                    resources,
+                    { (activity as FragmentInterface).onAppBarButtonClick() },
+                    config.titleConfig.photoUrl,
+                    config.titleConfig.placeholder,
+                    config.titleConfig.allowExpansion,
+                    config.titleConfig.isLoading,
+                    config.titleConfig.titleGenerator,
+                )
 
                 // TODO Render title in compose lol
 
@@ -151,12 +147,6 @@ abstract class ComposeListFragment<
                 }
             }
         }
-    }
-
-    private fun renderContentInRecyclerView(listItems: List<ListModel>) {
-        adapter.submitList(
-            listItems
-        )
     }
 
     private fun logPerfStages(state: StateType) {

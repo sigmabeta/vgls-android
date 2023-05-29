@@ -3,11 +3,6 @@ package com.vgleadsheets.features.main.list
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,14 +15,12 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
 import com.vgleadsheets.features.main.list.databinding.FragmentListRecyclerBinding
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.insets.Insetup
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setListsSpecialInsets
-import com.vgleadsheets.themes.VglsMaterial
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
 import kotlinx.coroutines.Job
@@ -60,7 +53,6 @@ abstract class ViewListFragment<
     private var progress: Float? = null
 
     private lateinit var screenLegacy: FragmentListRecyclerBinding
-    private lateinit var screenCompose: FragmentListComposeBinding
 
     private var configGenerationJob: Job = Job()
         get() {
@@ -154,10 +146,6 @@ abstract class ViewListFragment<
         }
     }
 
-    private fun setupCompose(view: View) {
-        screenCompose = FragmentListComposeBinding.bind(view)
-    }
-
     private fun setupRecycler(view: View) {
         screenLegacy = FragmentListRecyclerBinding.bind(view)
         screenLegacy.listContent.adapter = adapter
@@ -169,28 +157,6 @@ abstract class ViewListFragment<
             resources.getDimension(com.vgleadsheets.ui_core.R.dimen.height_bottom_sheet_peek)
                 .toInt()
         screenLegacy.listContent.setListsSpecialInsets(bottomOffset)
-    }
-
-    @OptIn(ExperimentalFoundationApi::class)
-    private fun renderContentInCompose(listItems: List<ListModel>) {
-        screenCompose.composeContent.setContent {
-            VglsMaterial {
-                LazyColumn(
-                    modifier = Modifier
-                        .animateContentSize()
-                ) {
-                    items(
-                        items = listItems.toTypedArray(),
-                        key = { it.dataId },
-                        contentType = { it.layoutId }
-                    ) {
-                        it.Content(
-                            modifier = Modifier.animateItemPlacement()
-                        )
-                    }
-                }
-            }
-        }
     }
 
     private fun renderContentInRecyclerView(listItems: List<ListModel>) {
