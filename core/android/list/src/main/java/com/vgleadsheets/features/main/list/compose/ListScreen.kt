@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.components.TitleListModel
+import com.vgleadsheets.composables.BigImage
 import com.vgleadsheets.themes.VglsMaterial
 
 @Composable
@@ -78,6 +79,22 @@ fun ListScreen(
                     modifier = Modifier
                         .animateContentSize()
                 ) {
+                    val imageUrl = title.photoUrl
+
+                    if (imageUrl != null) {
+                        item(
+                            key = imageUrl.hashCode(),
+                            contentType = com.vgleadsheets.features.main.list.R.layout.fragment_list_compose
+                        ) {
+                            BigImage(
+                                imageUrl = imageUrl,
+                                imagePlaceholder = title.placeholder
+                                    ?: com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                                modifier = Modifier
+                            )
+                        }
+                    }
+
                     items(
                         items = listItems.toTypedArray(),
                         key = { it.dataId },

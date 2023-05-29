@@ -23,7 +23,8 @@ import com.vgleadsheets.themes.VglsMaterial
 fun CrossfadeImage(
     imageUrl: String?,
     imagePlaceholder: Int,
-    modifier: Modifier
+    modifier: Modifier,
+    contentScale: ContentScale? = null
 ) {
     val bgModifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)
 
@@ -53,7 +54,7 @@ fun CrossfadeImage(
     Image(
         painter = painter,
         contentDescription = null,
-        contentScale = ContentScale.Crop,
+        contentScale = contentScale ?: ContentScale.Crop,
         modifier = imageModifier
     )
 }
