@@ -3,24 +3,20 @@ package com.vgleadsheets.features.main.list
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.Modifier
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.features.main.list.compose.ListScreen
 import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
-import com.vgleadsheets.themes.VglsMaterial
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
 import kotlinx.coroutines.Job
@@ -106,7 +102,10 @@ abstract class ComposeListFragment<
                     val listItems = Lists.generateList(config, resources)
 
                     withContext(dispatchers.main) {
-                        renderContentInCompose(listItems)
+                        renderContentInCompose(
+                            title,
+                            listItems
+                        )
                     }
                 }
             }
@@ -127,25 +126,12 @@ abstract class ComposeListFragment<
         screenCompose = FragmentListComposeBinding.bind(view)
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
-    private fun renderContentInCompose(listItems: List<ListModel>) {
+    private fun renderContentInCompose(
+        title: TitleListModel,
+        listItems: List<ListModel>
+    ) {
         screenCompose.composeContent.setContent {
-            VglsMaterial {
-                LazyColumn(
-                    modifier = Modifier
-                        .animateContentSize()
-                ) {
-                    items(
-                        items = listItems.toTypedArray(),
-                        key = { it.dataId },
-                        contentType = { it.layoutId }
-                    ) {
-                        it.Content(
-                            modifier = Modifier.animateItemPlacement()
-                        )
-                    }
-                }
-            }
+            ListScreen(title, listItems)
         }
     }
 
