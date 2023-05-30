@@ -81,10 +81,6 @@
                     android:id="@+id/icon_logo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:bigPhotoUrl="@{toBind.photoUrl}"
-                    app:placeholder="@{toBind.placeholder}"
-                    app:imageLoadSuccess="@{toBind.onImageLoadSuccess}"
-                    app:imageLoadFail="@{toBind.onImageLoadFail}"
                     tools:src="@drawable/ic_logo"
                     android:contentDescription="@string/cont_desc_logo" />
 

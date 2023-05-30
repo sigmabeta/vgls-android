@@ -2,7 +2,6 @@
 
 package com.vgleadsheets.components
 
-import android.content.res.Resources.NotFoundException
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
@@ -18,101 +17,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
 import androidx.databinding.BindingAdapter
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
-import com.vgleadsheets.animation.endPulseAnimator
 import com.vgleadsheets.animation.pulseAnimator
-import com.vgleadsheets.images.loadImageHighQuality
-import com.vgleadsheets.images.loadImageLowQuality
 import com.vgleadsheets.themes.VglsMaterial
 import com.vgleadsheets.themes.VglsMaterialMenu
-
-@BindingAdapter("sheetUrl", "listener")
-fun bindSheetImage(
-    view: ImageView,
-    sheetUrl: String,
-    listener: SheetPageListModel.ImageListener
-) {
-    view.setOnClickListener { listener.onClicked() }
-
-    val pulseAnimator = view.pulseAnimator(
-        sheetUrl.hashCode() % MAXIMUM_LOAD_OFFSET
-    )
-    pulseAnimator.start()
-
-    listener.onLoadStarted()
-
-    val callback = object : Callback {
-        override fun onSuccess() {
-            listener.onLoadComplete()
-            pulseAnimator.cancel()
-            view.endPulseAnimator().start()
-        }
-
-        override fun onError(e: Exception?) {
-            pulseAnimator.cancel()
-            view.endPulseAnimator().start()
-            listener.onLoadFailed(sheetUrl, e)
-        }
-    }
-
-    Picasso.get()
-        .load(sheetUrl)
-        .placeholder(com.vgleadsheets.vectors.R.drawable.ic_description_white_24dp)
-        .error(com.vgleadsheets.vectors.R.drawable.ic_error_white_24dp)
-        .into(view, callback)
-}
-
-@BindingAdapter("photoUrl", "placeholder")
-fun bindPhoto(
-    view: ImageView,
-    photoUrl: String?,
-    placeholder: Int
-) {
-    view.clipToOutline = true
-
-    if (photoUrl != null) {
-        view.loadImageLowQuality(photoUrl, true, placeholder)
-    } else {
-        view.setImageResource(placeholder)
-    }
-}
-
-@Suppress("SwallowedException")
-@BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadSuccess", "imageLoadFail")
-fun bindBigPhoto(
-    view: ImageView,
-    photoUrl: String?,
-    placeholder: Int,
-    imageLoadSuccess: (() -> Unit)?,
-    imageLoadFail: ((Exception) -> Unit)?
-) {
-    if (placeholder != com.vgleadsheets.ui_core.R.drawable.ic_logo) {
-        view.clipToOutline = true
-        view.setBackgroundResource(R.drawable.background_image_circle)
-    } else {
-        view.clipToOutline = false
-        view.setBackgroundResource(0)
-    }
-
-    if (photoUrl != null) {
-        val callback = object : Callback {
-            override fun onSuccess() {
-                imageLoadSuccess?.invoke()
-            }
-
-            override fun onError(e: Exception) {
-                imageLoadFail?.invoke(e)
-            }
-        }
-
-        view.loadImageHighQuality(photoUrl, true, placeholder, callback)
-    } else {
-        try {
-            view.setImageResource(placeholder)
-        } catch (_: NotFoundException) { }
-    }
-}
 
 @BindingAdapter("starFillThreshold", "stars")
 fun bindStarFilling(

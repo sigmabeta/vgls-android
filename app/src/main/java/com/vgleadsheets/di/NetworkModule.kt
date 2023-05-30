@@ -3,11 +3,9 @@ package com.vgleadsheets.di
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.logging.Hatchet
 import dagger.Provides
-import java.io.File
 import java.util.Random
 import javax.inject.Named
 import javax.inject.Singleton
-import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -70,26 +68,6 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
-    @Named("PicassoOkHttp")
-    internal fun providePicassoOkClient(
-        @Named("IsDebugBuild") isDebug: Boolean,
-        @Named("CachePath") cachePath: String,
-        @Named("HttpLoggingInterceptor") logger: Interceptor,
-        @Named("StethoInterceptor") debugger: Interceptor,
-        @Named("CacheInterceptor") cacher: Interceptor
-    ) = if (isDebug) {
-        OkHttpClient.Builder()
-            .cache(Cache(File(cachePath, "okhttp"), CACHE_SIZE_BYTES))
-            .addNetworkInterceptor(logger)
-            .addNetworkInterceptor(debugger)
-            .addNetworkInterceptor(cacher)
-            .build()
-    } else {
-        OkHttpClient()
-    }
-
-    @Provides
     fun provideHatchetLogger(hatchet: Hatchet) = HatchetOkHttpLogger(hatchet)
 
     @Provides
@@ -114,7 +92,6 @@ class NetworkModule {
     internal fun provideConverterFactory() = MoshiConverterFactory.create()
 
     companion object {
-        const val CACHE_SIZE_BYTES = 100000000L
         const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
 
         const val SEED_RANDOM_NUMBER_GENERATOR = 123456L

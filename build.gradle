@@ -20,7 +20,6 @@ buildscript {
         junit_version = "4.12"
         espresso_runner_version = "1.4.0"
         espresso_core_version = "3.4.0"
-        picasso_version = "2.8"
         coil_version = "2.2.2"
         constraint_version = "2.1.4"
         threeten_version = "1.4.0"

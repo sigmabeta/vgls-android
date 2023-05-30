@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -18,10 +17,7 @@
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/image_sheet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@{toBind.sheetUrl}"
-            app:listener="@{toBind.listener}"
-            app:sheetUrl="@{toBind.sheetUrl}" />
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 </layout>

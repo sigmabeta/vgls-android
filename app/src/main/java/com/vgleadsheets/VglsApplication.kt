@@ -1,13 +1,10 @@
 package com.vgleadsheets
 
-import android.graphics.Bitmap
 import android.os.Build
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.airbnb.mvrx.Mavericks
 import com.facebook.stetho.Stetho
-import com.squareup.picasso.OkHttp3Downloader
-import com.squareup.picasso.Picasso
 import com.vgleadsheets.di.AppModule
 import com.vgleadsheets.di.DaggerAppComponent
 import com.vgleadsheets.images.HatchetCoilLogger
@@ -16,9 +13,9 @@ import com.vgleadsheets.logging.Hatchet
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import okhttp3.OkHttpClient
 import javax.inject.Inject
 import javax.inject.Named
+import okhttp3.OkHttpClient
 
 class VglsApplication : DaggerApplication(),
     HasAndroidInjector,
@@ -29,9 +26,6 @@ class VglsApplication : DaggerApplication(),
     @Inject
     @Named("VglsOkHttp")
     lateinit var okHttpClient: OkHttpClient
-
-    @Inject
-    lateinit var okHttp3Downloader: OkHttp3Downloader
 
     @Inject
     lateinit var hatchet: Hatchet
@@ -55,14 +49,6 @@ class VglsApplication : DaggerApplication(),
         hatchet.v(this.javaClass.simpleName, "Device model: ${Build.MODEL}")
 
         Stetho.initializeWithDefaults(this)
-
-        val picasso = Picasso.Builder(this)
-            // .downloader(okHttp3Downloader)
-            .indicatorsEnabled(BuildConfig.DEBUG)
-            .defaultBitmapConfig(Bitmap.Config.RGB_565)
-            .build()
-
-        Picasso.setSingletonInstance(picasso)
     }
 
     override fun applicationInjector() = DaggerAppComponent
@@ -74,8 +60,6 @@ class VglsApplication : DaggerApplication(),
     override fun newImageLoader() = ImageLoader.Builder(this)
         .logger(coilLogger)
         .okHttpClient(okHttpClient)
-        .components {
-            add(sheetPreviewFetcherFactory)
-        }
+        .components { add(sheetPreviewFetcherFactory) }
         .build()
 }
