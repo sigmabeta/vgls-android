@@ -629,10 +629,6 @@ class RealRepository constructor(
         map(idExtractor).toSet()
 
     companion object {
-        const val INTERVAL_JAM_REFRESH = 5000L
-
-        const val MULTIPLIER_JAM_ID = 10_000L
-
         val AGE_THRESHOLD = Duration.ofHours(4).toMillis()
     }
 }

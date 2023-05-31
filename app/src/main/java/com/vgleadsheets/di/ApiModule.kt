@@ -1,8 +1,7 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.network.MockVglsApi
-import com.vgleadsheets.network.StringGenerator
+import com.vgleadsheets.network.FakeModelGenerator
+import com.vgleadsheets.network.FakeVglsApi
 import com.vgleadsheets.network.VglsApi
 import dagger.Provides
 import java.util.*
@@ -20,10 +19,7 @@ class ApiModule {
         @Named("VglsApiUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,
         converterFactory: MoshiConverterFactory,
-        random: Random,
-        @Named("RngSeed") seed: Long,
-        stringGenerator: StringGenerator,
-        hatchet: Hatchet
+        fakeModelGenerator: FakeModelGenerator
     ) = if (baseUrl != null) {
         Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -32,6 +28,6 @@ class ApiModule {
             .build()
             .create(VglsApi::class.java)
     } else {
-        MockVglsApi(random, seed, stringGenerator, hatchet)
+        FakeVglsApi(fakeModelGenerator)
     }
 }

@@ -4,7 +4,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.vgleadsheets.database.VglsDatabase
 import com.vgleadsheets.main.MainActivity
-import com.vgleadsheets.network.MockVglsApi
+import com.vgleadsheets.network.FakeVglsApi
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.storage.Storage
 import javax.inject.Inject
@@ -38,7 +38,7 @@ abstract class UiTest {
 
         component.inject(this)
 
-        val api = vglsApi as MockVglsApi
+        val api = vglsApi as FakeVglsApi
         api.maxSongs = 50
     }
 
@@ -53,6 +53,6 @@ abstract class UiTest {
     }
 
     protected fun setApiToReturnBlank() {
-        (vglsApi as MockVglsApi).generateEmptyState = true
+        (vglsApi as FakeVglsApi).generateEmptyState = true
     }
 }

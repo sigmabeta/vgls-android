@@ -1,6 +1,6 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.network.MockVglsApi
+import com.vgleadsheets.network.FakeVglsApi
 import com.vgleadsheets.network.StringGenerator
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
@@ -17,5 +17,5 @@ class MockApiModule {
         random: Random,
         @Named("RngSeed") seed: Long,
         stringGenerator: StringGenerator
-    ): VglsApi = MockVglsApi(random, seed, stringGenerator)
+    ): VglsApi = FakeVglsApi(random, seed, stringGenerator)
 }

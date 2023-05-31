@@ -2,63 +2,73 @@ package com.vgleadsheets.network
 
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.model.ApiComposer
-import com.vgleadsheets.network.model.ApiDigest
 import com.vgleadsheets.network.model.ApiSong
-import com.vgleadsheets.network.model.ApiTime
 import com.vgleadsheets.network.model.VglsApiGame
 import java.io.IOException
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
+import javax.inject.Inject
 import javax.inject.Named
-import kotlin.collections.set
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
-class MockVglsApi(
+class FakeModelGenerator @Inject constructor(
     private val random: Random,
     @Named("RngSeed") private val seed: Long,
     private val stringGenerator: StringGenerator,
     private val hatchet: Hatchet,
-) : VglsApi {
-    private var possibleTags: Map<String, List<String>>? = null
+) {
+    var possibleTags: Map<String, List<String>>? = null
+        get() {
+            if (field == null) {
+                generateModels()
+            }
+            return field
+        }
 
-    private var possibleComposers: List<ApiComposer>? = null
+    var possibleSongs: List<ApiSong>? = null
+        get() {
+            if (field == null) {
+                generateModels()
+            }
+            return field
+        }
 
-    private var remainingSongs: Stack<ApiSong>? = null
+    var possibleComposers: List<ApiComposer>? = null
+        get() {
+            if (field == null) {
+                generateModels()
+            }
+            return field
+        }
 
-    private var possibleSongs: List<ApiSong>? = null
+    var possibleGames: List<VglsApiGame>? = null
+        get() {
+            if (field == null) {
+                generateModels()
+            }
+            return field
+        }
 
     var generateEmptyState = false
 
     var maxSongs = DEFAULT_MAX_SONGS
+
     var maxGames = DEFAULT_MAX_GAMES
     var maxComposers = DEFAULT_MAX_COMPOSERS
     var maxTags = DEFAULT_MAX_TAGS
     var maxTagsValues = DEFAULT_MAX_TAGS_VALUES
     var maxSongsPerGame = DEFAULT_MAX_SONGS_PER_GAME
 
-    override suspend fun getDigest() = generateDigest()
+    private var remainingSongs: Stack<ApiSong>? = null
 
-    // TODO Fill this in
-    override suspend fun getLastUpdateTime() = ApiTime("2017-04-01T23:30:06Z")
-
-    private fun generateDigest(): ApiDigest {
-        val games = generateGames()
-        val composers = possibleComposers!!
-
-        return ApiDigest(
-            composers,
-            games
-        )
-    }
-
-    private fun generateGames(): List<VglsApiGame> {
+    private fun generateModels() {
         possibleTags = null
         possibleComposers = null
         remainingSongs = null
         possibleSongs = null
 
-//        random.setSeed(seed)
+        random.setSeed(seed)
 
         if (generateEmptyState) {
             throw IOException("Arbitrarily failed a network request!")
@@ -80,8 +90,7 @@ class MockVglsApi(
             .filter { it.songs.isNotEmpty() }
 
         hatchet.i(this.javaClass.simpleName, "Returning ${filteredGames.size} games...")
-
-        return filteredGames
+        possibleGames = filteredGames
     }
 
     private fun generateGame(): VglsApiGame {
@@ -264,8 +273,6 @@ class MockVglsApi(
         const val DEFAULT_MAX_TAGS = 20
         const val DEFAULT_MAX_TAGS_VALUES = 10
         const val DEFAULT_MAX_SONGS_PER_GAME = 10
-
-        const val JAM_PREVIOUS_SONGS_SIZE = 10
 
         const val MAX_WORDS_PER_TITLE = 5
         const val MAX_PAGE_COUNT = 2

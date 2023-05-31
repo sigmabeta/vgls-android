@@ -1,6 +1,6 @@
 package com.vgleadsheets
 
-import com.vgleadsheets.network.MockVglsApi
+import com.vgleadsheets.network.FakeVglsApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.junit.Before
 
@@ -15,7 +15,7 @@ abstract class AsyncUiTest : UiTest() {
 
         eraseDatabase()
 
-        val api = vglsApi as MockVglsApi
+        val api = vglsApi as FakeVglsApi
 
         api.digestEmitTrigger = digestEmitTrigger
         api.updateTimeEmitTrigger = updateTimeEmitTrigger

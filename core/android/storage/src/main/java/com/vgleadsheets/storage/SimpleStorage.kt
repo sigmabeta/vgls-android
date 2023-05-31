@@ -61,7 +61,7 @@ class SimpleStorage(
                         NetworkEndpoint.PROD -> R.string.network_endpoint_prod
                         NetworkEndpoint.SUPER -> R.string.network_endpoint_super
                         NetworkEndpoint.BETA -> R.string.network_endpoint_beta
-                        NetworkEndpoint.MOCK -> R.string.network_endpoint_mock
+                        NetworkEndpoint.FAKE -> R.string.network_endpoint_fake
                     }
                 }
         )

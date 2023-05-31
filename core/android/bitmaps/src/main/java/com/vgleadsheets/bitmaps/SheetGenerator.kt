@@ -20,7 +20,7 @@ import kotlin.system.measureTimeMillis
 class SheetGenerator @Inject constructor(
     private val context: Context,
     private val hatchet: Hatchet,
-    @Named("VglsUrl") private val vglsUrl: String
+    @Named("VglsUrl") private val vglsUrl: String?
 ) {
     private val textPaint =
         Paint().apply {
@@ -197,7 +197,7 @@ class SheetGenerator @Inject constructor(
         )
 
         canvas.drawText(
-            text = vglsUrl,
+            text = vglsUrl ?: "Fake VGLS Api",
             xPos = centerXpos,
             yPos = Y_POS_COPYRIGHT,
             scalingFactor = scalingFactor,
