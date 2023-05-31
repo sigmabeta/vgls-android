@@ -2,13 +2,12 @@ package com.vgleadsheets.features.main.composers
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.ViewListFragment
+import com.vgleadsheets.features.main.list.ComposeListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class ComposerListFragment :
-    ViewListFragment<ComposerListContent, ComposerListState>() {
+class ComposerListFragment : ComposeListFragment<ComposerListContent, ComposerListState>() {
     @Inject
     lateinit var viewModelFactory: ComposerListViewModel.Factory
 

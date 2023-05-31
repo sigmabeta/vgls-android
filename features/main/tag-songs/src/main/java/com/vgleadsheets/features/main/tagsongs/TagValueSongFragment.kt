@@ -5,14 +5,14 @@ import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.ViewListFragment
+import com.vgleadsheets.features.main.list.ComposeListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
 class TagValueSongFragment :
-    ViewListFragment<TagValueSongContent, TagValueSongState>() {
+    ComposeListFragment<TagValueSongContent, TagValueSongState>() {
     @Inject
     lateinit var viewModelFactory: TagValueSongViewModel.Factory
 

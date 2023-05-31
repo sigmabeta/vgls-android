@@ -2,13 +2,13 @@ package com.vgleadsheets.features.main.tagkeys
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.ViewListFragment
+import com.vgleadsheets.features.main.list.ComposeListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 class TagKeyListFragment :
-    ViewListFragment<TagKeyListContent, TagKeyListState>() {
+    ComposeListFragment<TagKeyListContent, TagKeyListState>() {
     @Inject
     lateinit var viewModelFactory: TagKeyListViewModel.Factory
 
