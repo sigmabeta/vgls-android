@@ -15,7 +15,7 @@ object Title {
         resources: Resources,
         onMenuButtonClick: (() -> Unit) = Common.noop(),
         photoUrl: String? = null,
-        placeholder: Int? = R.drawable.ic_logo,
+        placeholder: Int? = com.vgleadsheets.ui_core.R.drawable.ic_logo,
         allowExpansion: Boolean = true,
         isLoading: Boolean = false,
         titleGenerator: (() -> TitleListModel)? = null
@@ -27,7 +27,7 @@ object Title {
         }
 
         TitleListModel(
-            title ?: resources.getString(R.string.app_name),
+            title ?: resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
             if (isLoading) {
                 resources.getString(R.string.loading)
             } else {
@@ -51,7 +51,7 @@ object Title {
         val onImageLoadSuccess: (() -> Unit)?,
         val onImageLoadFail: ((Exception) -> Unit)?,
         val photoUrl: String? = null,
-        val placeholder: Int? = R.drawable.ic_logo,
+        val placeholder: Int? = com.vgleadsheets.ui_core.R.drawable.ic_logo,
         val allowExpansion: Boolean = true,
         val isLoading: Boolean = false,
         val titleGenerator: (() -> TitleListModel)? = null,

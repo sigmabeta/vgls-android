@@ -61,10 +61,10 @@ class DelayOrErrorRepository(
         realRepository.searchSongsCombined(searchQuery)
 
     override fun searchGamesCombined(searchQuery: String) =
-        realRepository.searchGamesCombined(searchQuery)
+        realRepository.searchGamesCombined(searchQuery).butItTakesForever()
 
     override fun searchComposersCombined(searchQuery: String) =
-        realRepository.searchComposersCombined(searchQuery)
+        realRepository.searchComposersCombined(searchQuery).butItTakesForever()
 
     override suspend fun incrementViewCounter(songId: Long) =
         realRepository.incrementViewCounter(songId)
@@ -89,7 +89,7 @@ class DelayOrErrorRepository(
 
     override suspend fun clearSheets() = realRepository.clearSheets()
 
-    private suspend fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
+    private fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
         onEach {
             delay(
                 DELAY_MINIMUM_MS + Random.nextLong(DELAY_VARIANCE_MS),

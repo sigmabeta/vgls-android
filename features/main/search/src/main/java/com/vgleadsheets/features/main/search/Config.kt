@@ -13,9 +13,9 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
+import com.vgleadsheets.features.main.list.ListConfig
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.mapYielding
 import com.vgleadsheets.features.main.list.sections.Actions
@@ -37,11 +37,11 @@ class Config(
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val resources: Resources,
-) : BetterListConfig {
+) : ListConfig {
 
     override val titleConfig = Title.Config(
-        resources.getString(R.string.app_name),
-        resources.getString(R.string.label_search),
+        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
+        resources.getString(com.vgleadsheets.components.R.string.label_search),
         resources,
         { },
         { },
@@ -58,8 +58,8 @@ class Config(
         if (query.isNullOrEmpty()) {
             return@Config listOf(
                 EmptyStateListModel(
-                    R.drawable.ic_search_black_24dp,
-                    resources.getString(R.string.search_empty_no_query)
+                    com.vgleadsheets.components.R.drawable.ic_search_black_24dp,
+                    resources.getString(com.vgleadsheets.components.R.string.search_empty_no_query)
                 )
             )
         }
@@ -93,7 +93,7 @@ class Config(
         return@Config listModels.ifEmpty {
             listOf(
                 EmptyStateListModel(
-                    R.drawable.ic_description_24dp,
+                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
                     resources.getString(R.string.empty_search_no_results),
                 )
             )
@@ -110,7 +110,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         SearchFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(
@@ -150,7 +151,7 @@ class Config(
         }
     }
 
-    private fun createSectionHeaderListModel(sectionId: Int) =
+    private fun createSectionHeaderListModel(sectionId: Int): List<ListModel> =
         listOf(SectionHeaderListModel(resources.getString(sectionId)))
 
     private suspend fun createSectionModels(
@@ -170,7 +171,7 @@ class Config(
                                 result.isAltSelected,
                                 result.filename
                             ),
-                            R.drawable.placeholder_sheet
+                            com.vgleadsheets.vectors.R.drawable.ic_description_24dp
                         ) {
                             clicks.song(result.id)
                         }
@@ -181,7 +182,7 @@ class Config(
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
-                        R.drawable.placeholder_game
+                        com.vgleadsheets.vectors.R.drawable.ic_album_24dp
                     ) { clicks.game(result.id) }
 
                     is Composer -> ImageNameCaptionListModel(
@@ -189,7 +190,7 @@ class Config(
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
-                        R.drawable.placeholder_composer
+                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp
                     ) { clicks.composer(result.id) }
 
                     else -> throw IllegalArgumentException(

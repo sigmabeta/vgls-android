@@ -1,0 +1,10 @@
+apply from: "$rootProject.projectDir/core-android-module.gradle"
+apply from: "$rootProject.projectDir/di-android.gradle"
+
+dependencies {
+    implementation project(':core:android:ui:fonts')
+}
+
+android {
+    namespace 'com.vgleadsheets.bitmaps'
+}

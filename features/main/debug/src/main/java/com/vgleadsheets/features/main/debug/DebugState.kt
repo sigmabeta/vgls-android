@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.debug
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Uninitialized
-import com.vgleadsheets.features.main.list.BetterCompositeState
+import com.vgleadsheets.features.main.list.CompositeState
 
 data class DebugState(
     val changed: Boolean = false,
@@ -11,4 +11,4 @@ data class DebugState(
     override val contentLoad: DebugContent = DebugContent(
         Uninitialized
     ),
-) : BetterCompositeState<DebugContent>
+) : CompositeState<DebugContent>

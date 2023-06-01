@@ -6,7 +6,7 @@ import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.features.main.list.BetterListConfig
+import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.mapYielding
@@ -28,14 +28,14 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig {
+) : ListConfig {
     private val settingsLoad = state.contentLoad.settings
 
     private val settings = settingsLoad.content()
 
     override val titleConfig = Title.Config(
-        resources.getString(R.string.app_name),
-        resources.getString(R.string.label_debug),
+        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
+        resources.getString(com.vgleadsheets.features.main.hud.R.string.label_debug),
         resources,
         { },
         { },
@@ -69,7 +69,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         DebugFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(

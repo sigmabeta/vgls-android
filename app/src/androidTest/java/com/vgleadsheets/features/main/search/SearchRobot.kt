@@ -8,12 +8,15 @@ import com.vgleadsheets.features.main.ListUiTest
 
 class SearchRobot(test: ListUiTest) : ListRobot(test) {
     init {
-        checkViewWithIdAndTextVisible(R.id.text_empty_state_search, R.string.search_empty_no_query)
+        checkViewWithIdAndTextVisible(
+            com.vgleadsheets.components.R.id.text_empty_state_search,
+            com.vgleadsheets.components.R.string.search_empty_no_query
+        )
     }
 
     fun typeInSearchBox(text: String) {
         onView(
-            withId(R.id.edit_search_query)
+            withId(com.vgleadsheets.components.R.id.edit_search_query)
         ).perform(
             typeText(
                 text

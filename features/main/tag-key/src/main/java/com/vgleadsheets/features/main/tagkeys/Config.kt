@@ -2,9 +2,9 @@ package com.vgleadsheets.features.main.tagkeys
 
 import android.content.res.Resources
 import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.features.main.list.BetterListConfig
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
-import com.vgleadsheets.features.main.list.BetterListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
+import com.vgleadsheets.features.main.list.ListConfig
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
+import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
 import com.vgleadsheets.features.main.list.mapYielding
@@ -24,10 +24,10 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig {
+) : ListConfig {
     override val titleConfig = Title.Config(
-        resources.getString(R.string.app_name),
-        resources.getString(R.string.label_by_tag),
+        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
+        resources.getString(com.vgleadsheets.features.main.hud.R.string.label_by_tag),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -53,7 +53,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         state.isEmpty(),
-        R.drawable.ic_album_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_tag_Key)
     )
 
@@ -61,7 +61,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         TagKeyListFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(

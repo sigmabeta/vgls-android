@@ -15,7 +15,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.vgleadsheets.R
 import com.vgleadsheets.RecyclerViewMatcher
 import com.vgleadsheets.Robot
 import com.vgleadsheets.components.ComponentViewHolder
@@ -51,16 +50,16 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         scrollHelper(scrollPosition) {
             onView(
                 allOf(
-                    withId(R.id.component_image_name_caption),
+                    withId(com.vgleadsheets.components.R.id.component_image_name_caption),
                     withChild(
                         allOf(
-                            withId(R.id.text_name),
+                            withId(com.vgleadsheets.components.R.id.text_name),
                             withText(title)
                         )
                     ),
                     withChild(
                         allOf(
-                            withId(R.id.text_caption),
+                            withId(com.vgleadsheets.components.R.id.text_caption),
                             withText(subtitle)
                         )
                     )
@@ -75,67 +74,76 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
 
     fun clickSheetWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_image_name_caption, title)
+            clickComponentWithTitle(
+                com.vgleadsheets.components.R.id.component_image_name_caption,
+                title
+            )
         }
     }
 
     fun clickJamWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_name_caption, title)
+            clickComponentWithTitle(com.vgleadsheets.components.R.id.component_name_caption, title)
         }
     }
 
     fun clickCtaWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_cta, title)
+            clickComponentWithTitle(com.vgleadsheets.components.R.id.component_cta, title)
         }
     }
 
     fun clickLabelValueWithLabel(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_label_value, title)
+            clickComponentWithTitle(com.vgleadsheets.components.R.id.component_label_value, title)
         }
     }
 
     fun clickRatingWithLabel(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_label_rating, title)
+            clickComponentWithTitle(com.vgleadsheets.components.R.id.component_label_rating, title)
         }
     }
 
     fun clickComposerWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_image_name_caption, title)
+            clickComponentWithTitle(
+                com.vgleadsheets.components.R.id.component_image_name_caption,
+                title
+            )
         }
     }
 
     fun clickGameWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_image_name_caption, title)
+            clickComponentWithTitle(
+                com.vgleadsheets.components.R.id.component_image_name_caption,
+                title
+            )
         }
     }
 
     fun clickTagWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_name_caption, title)
+            clickComponentWithTitle(com.vgleadsheets.components.R.id.component_name_caption, title)
         }
     }
 
     fun clickCheckboxWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_checkable, title)
+            clickComponentWithTitle(com.vgleadsheets.components.R.id.component_checkable, title)
         }
     }
 
     fun clickLinkWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_single_line, title)
+            clickComponentWithTitle(com.vgleadsheets.components.R.id.component_single_line, title)
         }
     }
 
     fun clickTwoLineLinkWithTitle(title: String, scrollPosition: Int? = null) {
         scrollHelper(scrollPosition) {
-            clickComponentWithTitle(R.id.component_name_caption, title)
+            clickComponentWithTitle(com.vgleadsheets.components.R.id.component_name_caption, title)
         }
     }
 
@@ -175,7 +183,7 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
                         withChild(
                             allOf(
                                 withId(
-                                    R.id.text_name
+                                    com.vgleadsheets.components.R.id.text_name
                                 ),
                                 withText(
                                     title
@@ -184,7 +192,7 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
                         )
                     ),
                     withId(
-                        R.id.checkbox_setting
+                        com.vgleadsheets.components.R.id.checkbox_setting
                     )
                 )
             )
@@ -211,7 +219,7 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
                 withId(componentType),
                 withChild(
                     allOf(
-                        withId(R.id.text_name),
+                        withId(com.vgleadsheets.components.R.id.text_name),
                         withText(title)
                     )
                 )
@@ -257,7 +265,7 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         onView(
             allOf(
                 withId(
-                    R.id.text_header_name
+                    com.vgleadsheets.components.R.id.text_header_name
                 ),
                 withText(
                     text
@@ -274,7 +282,7 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
         onView(
             allOf(
                 withId(
-                    R.id.text_name
+                    com.vgleadsheets.components.R.id.text_name
                 ),
                 withText(
                     text
@@ -299,7 +307,7 @@ abstract class ListRobot(test: ListUiTest) : Robot(test) {
     private fun scrollTo(scrollPosition: Int) {
         onView(
             withId(
-                R.id.list_content
+                com.vgleadsheets.features.main.about.R.id.list_content
             )
         ).perform(
             RecyclerViewActions.scrollToPosition<ComponentViewHolder>(scrollPosition)

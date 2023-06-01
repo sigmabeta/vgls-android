@@ -5,13 +5,13 @@ import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.NullableStringArgs
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.ComposeListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class SearchFragment : BetterListFragment<SearchContent, SearchState>() {
+class SearchFragment : ComposeListFragment<SearchContent, SearchState>() {
     @Inject
     lateinit var viewModelFactory: SearchViewModel.Factory
 

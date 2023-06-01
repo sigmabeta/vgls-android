@@ -36,7 +36,10 @@ class ViewerViewModel @AssistedInject constructor(
         checkScreenSetting()
     }
 
+    private var hasViewBeenReported: Boolean = false
+
     fun fetchSong() = withState { state ->
+        hasViewBeenReported = false
         val songId = state.songId
 
         if (songId != null) {
@@ -61,7 +64,7 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     fun startReportTimer() = withState { state ->
-        if (state.hasViewBeenReported) {
+        if (hasViewBeenReported) {
             return@withState
         }
 
@@ -75,14 +78,11 @@ class ViewerViewModel @AssistedInject constructor(
             hatchet.v(this.javaClass.simpleName, "Starting view report timer for ${song.name}")
             delay(TIMER_VIEW_REPORT_MILLIS)
 
+            hasViewBeenReported = true
+
             hatchet.v(this.javaClass.simpleName, "Reporting song ${song.name} to db.")
             repository.incrementViewCounter(song.id)
 
-            setState {
-                copy(
-                    hasViewBeenReported = true
-                )
-            }
             viewReportTimer = null
         }
     }

@@ -25,7 +25,7 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.slideViewOnscreen
 import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
-import com.vgleadsheets.components.SheetListModel
+import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -44,7 +44,7 @@ import kotlinx.coroutines.flow.onEach
 
 class ViewerFragment :
     VglsFragment(),
-    SheetListModel.ImageListener {
+    SheetPageListModel.ImageListener {
     @Inject
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
@@ -84,15 +84,15 @@ class ViewerFragment :
 
     override fun onLoadStarted() {
         perfTracker.onTitleLoaded(getPerfSpec())
+        perfTracker.onTransitionStarted(getPerfSpec())
     }
 
     override fun onLoadComplete() {
-        perfTracker.onTransitionStarted(getPerfSpec())
         perfTracker.onPartialContentLoad(getPerfSpec())
         perfTracker.onFullContentLoad(getPerfSpec())
     }
 
-    override fun onLoadFailed(imageUrl: String, ex: Exception?) {
+    override fun onLoadFailed(imageUrl: String, ex: Throwable?) {
         perfTracker.cancel(getPerfSpec())
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
     }
@@ -262,7 +262,7 @@ class ViewerFragment :
         }
 
         val listComponents = (1..pageCount).map { pageNumber ->
-            SheetListModel(
+            SheetPageListModel(
                 Page.generateImageUrl(
                     baseImageUrl,
                     selectedPart.apiId,
@@ -270,6 +270,12 @@ class ViewerFragment :
                     song.isAltSelected,
                     pageNumber
                 ),
+                pageNumber,
+                song.name,
+                selectedPart.apiId,
+                song.gameName,
+                song.composers?.map { it.name } ?: listOf("Unknown"),
+                song.id,
                 this
             )
         }

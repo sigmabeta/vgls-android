@@ -1,5 +1,9 @@
 package com.vgleadsheets.components
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.vgleadsheets.composables.MenuTitleBar
+
 data class MenuTitleBarListModel(
     val partLabel: String,
     val iconId: Int,
@@ -11,4 +15,12 @@ data class MenuTitleBarListModel(
     override val dataId = javaClass.simpleName.hashCode().toLong()
 
     override val layoutId = R.layout.list_component_menu_title_bar
+
+    @Composable
+    override fun Content(modifier: Modifier) {
+        MenuTitleBar(
+            model = this,
+            modifier = modifier
+        )
+    }
 }

@@ -42,7 +42,7 @@ abstract class UiTest {
         api.maxSongs = 50
     }
 
-    open val startingTopLevelScreenTitleId: Int? = R.string.app_name
+    open val startingTopLevelScreenTitleId: Int? = com.vgleadsheets.ui_core.R.string.app_name
 
     open fun launchScreen() {
         if (screenLaunched) return

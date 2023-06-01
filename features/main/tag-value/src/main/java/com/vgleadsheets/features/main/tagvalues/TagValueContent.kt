@@ -17,7 +17,7 @@ data class TagValueContent(
     // TODO CompositeException
     override fun failure() = tagKey.failure()
 
-    override fun isLoading() = tagKey.isLoading()
+    override fun isLoading() = tagValues.isLoading()
 
     override fun hasFailed() = tagKey.hasFailed()
 

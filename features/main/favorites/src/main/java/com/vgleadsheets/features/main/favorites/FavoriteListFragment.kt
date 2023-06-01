@@ -2,14 +2,14 @@ package com.vgleadsheets.features.main.favorites
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.ViewListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
 class FavoriteListFragment :
-    BetterListFragment<FavoriteListContent, FavoriteListState>() {
+    ViewListFragment<FavoriteListContent, FavoriteListState>() {
     @Inject
     lateinit var viewModelFactory: FavoriteListViewModel.Factory
 

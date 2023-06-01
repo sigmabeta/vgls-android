@@ -3,7 +3,7 @@ package com.vgleadsheets.features.main.tagsongs
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListConfig
+import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
 import com.vgleadsheets.features.main.list.isLoading
@@ -28,7 +28,7 @@ class Config(
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
-) : BetterListConfig {
+) : ListConfig {
     private val tagValueLoad = state.contentLoad.tagValue
 
     private val tagValue = tagValueLoad.content()
@@ -71,7 +71,7 @@ class Config(
                         song.isAltSelected,
                         song.filename
                     ),
-                    R.drawable.placeholder_sheet
+                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp
                 ) {
                     clicks.song(song.id)
                 }
@@ -80,7 +80,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         songs?.isEmpty() == true,
-        R.drawable.ic_album_24dp,
+        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_tag_value_song)
     )
 
@@ -88,7 +88,8 @@ class Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
         TagValueSongFragment.LOAD_OPERATION,
-        state.failure()?.message ?: resources.getString(R.string.error_dev_unknown)
+        state.failure()?.message
+            ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )
 
     override val loadingConfig = LoadingState.Config(

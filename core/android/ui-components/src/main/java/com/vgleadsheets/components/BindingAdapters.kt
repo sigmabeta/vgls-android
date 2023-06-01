@@ -2,7 +2,6 @@
 
 package com.vgleadsheets.components
 
-import android.content.res.Resources.NotFoundException
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
@@ -11,105 +10,16 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
 import androidx.databinding.BindingAdapter
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
-import com.vgleadsheets.animation.endPulseAnimator
 import com.vgleadsheets.animation.pulseAnimator
-import com.vgleadsheets.images.loadImageHighQuality
-import com.vgleadsheets.images.loadImageLowQuality
-
-@BindingAdapter("sheetUrl", "listener")
-fun bindSheetImage(
-    view: ImageView,
-    sheetUrl: String,
-    listener: SheetListModel.ImageListener
-) {
-    view.setOnClickListener { listener.onClicked() }
-
-    val pulseAnimator = view.pulseAnimator(
-        sheetUrl.hashCode() % MAXIMUM_LOAD_OFFSET
-    )
-    pulseAnimator.start()
-
-    listener.onLoadStarted()
-
-    val callback = object : Callback {
-        override fun onSuccess() {
-            listener.onLoadComplete()
-            pulseAnimator.cancel()
-            view.endPulseAnimator().start()
-        }
-
-        override fun onError(e: Exception?) {
-            pulseAnimator.cancel()
-            view.endPulseAnimator().start()
-            listener.onLoadFailed(sheetUrl, e)
-        }
-    }
-
-    Picasso.get()
-        .load(sheetUrl)
-        .placeholder(R.drawable.ic_description_white_24dp)
-        .error(R.drawable.ic_error_white_24dp)
-        .into(view, callback)
-}
-
-@BindingAdapter("photoUrl", "placeholder")
-fun bindPhoto(
-    view: ImageView,
-    photoUrl: String?,
-    placeholder: Int
-) {
-    view.clipToOutline = true
-
-    if (photoUrl != null) {
-        view.loadImageLowQuality(photoUrl, true, placeholder)
-    } else {
-        view.setImageResource(placeholder)
-    }
-}
-
-@Suppress("SwallowedException")
-@BindingAdapter("bigPhotoUrl", "placeholder", "imageLoadSuccess", "imageLoadFail")
-fun bindBigPhoto(
-    view: ImageView,
-    photoUrl: String?,
-    placeholder: Int,
-    imageLoadSuccess: (() -> Unit)?,
-    imageLoadFail: ((Exception) -> Unit)?
-) {
-    if (placeholder != R.drawable.ic_logo) {
-        view.clipToOutline = true
-        view.setBackgroundResource(R.drawable.background_image_circle)
-    } else {
-        view.clipToOutline = false
-        view.setBackgroundResource(0)
-    }
-
-    if (photoUrl != null) {
-        val callback = object : Callback {
-            override fun onSuccess() {
-                imageLoadSuccess?.invoke()
-            }
-
-            override fun onError(e: Exception) {
-                imageLoadFail?.invoke(e)
-            }
-        }
-
-        view.loadImageHighQuality(photoUrl, true, placeholder, callback)
-    } else {
-        try {
-            view.setImageResource(placeholder)
-        } catch (_: NotFoundException) { }
-    }
-}
+import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.themes.VglsMaterialMenu
 
 @BindingAdapter("starFillThreshold", "stars")
 fun bindStarFilling(
@@ -118,9 +28,9 @@ fun bindStarFilling(
     stars: Int
 ) {
     val starResource = if (stars >= starFillThreshold) {
-        R.drawable.ic_jam_filled
+        com.vgleadsheets.vectors.R.drawable.ic_jam_filled
     } else {
-        R.drawable.ic_jam_unfilled
+        com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
     }
 
     view.setImageResource(starResource)
@@ -143,12 +53,6 @@ fun bindImageNameCaptionLoading(view: ConstraintLayout, model: LoadingImageNameC
 @BindingAdapter("model")
 fun bindNameCaptionLoading(view: ConstraintLayout, model: LoadingNameCaptionListModel) {
     view.pulseAnimator(model.dataId.toInt() * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
-        .start()
-}
-
-@BindingAdapter("model")
-fun bindCheckableLoading(view: LinearLayout, model: LoadingCheckableListModel) {
-    view.pulseAnimator(model.loadPositionOffset * MULTIPLIER_LIST_POSITION % MAXIMUM_LOAD_OFFSET)
         .start()
 }
 
@@ -188,9 +92,15 @@ fun setHighlighting(
     highlighted: Boolean
 ) {
     val color = if (highlighted) {
-        ContextCompat.getColor(view.context, R.color.md_theme_light_tertiaryContainer)
+        ContextCompat.getColor(
+            view.context,
+            com.vgleadsheets.colors.R.color.md_theme_light_tertiaryContainer
+        )
     } else {
-        ContextCompat.getColor(view.context, R.color.md_theme_light_onPrimary)
+        ContextCompat.getColor(
+            view.context,
+            com.vgleadsheets.colors.R.color.md_theme_light_onPrimary
+        )
     }
 
     view.setTextColor(color)
@@ -202,9 +112,15 @@ fun setHighlighting(
     highlighted: Boolean
 ) {
     val color = if (highlighted) {
-        ContextCompat.getColor(view.context, R.color.md_theme_light_tertiaryContainer)
+        ContextCompat.getColor(
+            view.context,
+            com.vgleadsheets.colors.R.color.md_theme_light_tertiaryContainer
+        )
     } else {
-        ContextCompat.getColor(view.context, R.color.md_theme_light_onPrimary)
+        ContextCompat.getColor(
+            view.context,
+            com.vgleadsheets.colors.R.color.md_theme_light_onPrimary
+        )
     }
 
     view.setColorFilter(color)
@@ -248,6 +164,24 @@ fun searchQuery(
             }
         }
     )
+}
+
+@BindingAdapter("composableModel")
+fun composeView(view: ComposeView, composableModel: ListModel) {
+    view.setContent {
+        VglsMaterial {
+            composableModel.Content(modifier = Modifier)
+        }
+    }
+}
+
+@BindingAdapter("composableMenuModel")
+fun composeViewInMenu(view: ComposeView, composableMenuModel: ListModel) {
+    view.setContent {
+        VglsMaterialMenu {
+            composableMenuModel.Content(modifier = Modifier)
+        }
+    }
 }
 
 const val DELAY_KEYBOARD_FOCUS = 50L

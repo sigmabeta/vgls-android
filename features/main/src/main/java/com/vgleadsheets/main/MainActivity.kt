@@ -70,7 +70,7 @@ class MainActivity :
     override fun androidInjector() = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.VglsAppTheme)
+        setTheme(com.vgleadsheets.ui_core.R.style.VglsAppTheme)
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 

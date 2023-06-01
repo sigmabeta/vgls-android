@@ -4,7 +4,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.vgleadsheets.R
 import com.vgleadsheets.features.main.ListRobot
 import com.vgleadsheets.features.main.ListUiTest
 
@@ -15,7 +14,7 @@ class AboutRobot(test: ListUiTest) : ListRobot(test) {
 
     fun checkLicenseViewIsVisible() {
         onView(
-            withId(R.id.web_license)
+            withId(com.vgleadsheets.features.main.license.R.id.web_license)
         ).check(
             matches(
                 isDisplayed()

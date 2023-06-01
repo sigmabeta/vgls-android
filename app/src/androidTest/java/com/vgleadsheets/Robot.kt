@@ -111,18 +111,21 @@ abstract class Robot(val test: UiTest) {
     }
 
     open fun checkScreenHeader(title: String, subtitle: String) {
-        checkViewText(R.id.text_title_title, title)
-        checkViewText(R.id.text_title_subtitle, subtitle)
+        checkViewText(com.vgleadsheets.features.main.list.R.id.text_title_title, title)
+        checkViewText(com.vgleadsheets.features.main.list.R.id.text_title_subtitle, subtitle)
     }
 
     fun checkTopLevelScreen(titleStringId: Int, subtitleStringId: Int?) {
-        checkViewVisible(R.id.text_title_title)
-        checkViewVisible(R.id.text_title_subtitle)
+        checkViewVisible(com.vgleadsheets.features.main.list.R.id.text_title_title)
+        checkViewVisible(com.vgleadsheets.features.main.list.R.id.text_title_subtitle)
 
-        checkViewText(R.id.text_title_title, titleStringId)
+        checkViewText(com.vgleadsheets.features.main.list.R.id.text_title_title, titleStringId)
 
         if (subtitleStringId != null) {
-            checkViewText(R.id.text_title_subtitle, subtitleStringId)
+            checkViewText(
+                com.vgleadsheets.features.main.list.R.id.text_title_subtitle,
+                subtitleStringId
+            )
         }
     }
 

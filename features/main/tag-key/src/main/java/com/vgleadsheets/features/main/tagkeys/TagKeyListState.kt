@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.tagkeys
 
-import com.vgleadsheets.features.main.list.BetterCompositeState
+import com.vgleadsheets.features.main.list.CompositeState
 
 data class TagKeyListState(
     override val contentLoad: TagKeyListContent = TagKeyListContent(),
-) : BetterCompositeState<TagKeyListContent>
+) : CompositeState<TagKeyListContent>

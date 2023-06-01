@@ -12,7 +12,7 @@ class HudUiTest : UiTest() {
     fun openAndCloseMenuFromTopBar() {
         hud(this) {
             clickView(R.id.button_search_menu_back)
-            checkViewText(R.string.label_settings)
+            checkViewText(com.vgleadsheets.features.main.hud.R.string.label_settings)
 
             clickView(R.id.button_search_menu_back)
             checkSearchButtonIsHamburger()
@@ -22,34 +22,34 @@ class HudUiTest : UiTest() {
     @Test
     fun navigateToComposerList() {
         checkNavigationButton(
-            R.string.label_by_composer,
-            R.string.app_name,
-            R.string.subtitle_composer
+            com.vgleadsheets.features.main.hud.R.string.label_by_composer,
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.composers.R.string.subtitle_composer
         )
     }
 
     @Test
     fun navigateToTagList() {
         checkNavigationButton(
-            R.string.label_by_tag,
-            R.string.app_name,
-            R.string.subtitle_tags
+            com.vgleadsheets.features.main.hud.R.string.label_by_tag,
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.tagkeys.R.string.subtitle_tags
         )
     }
 
     @Test
     fun navigateToSongList() {
         checkNavigationButton(
-            R.string.label_all_songs,
-            R.string.app_name,
-            R.string.subtitle_all_songs
+            com.vgleadsheets.features.main.hud.R.string.label_all_songs,
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.songs.R.string.subtitle_all_songs
         )
     }
 
     @Test
     fun navigateToJamList() {
         checkNavigationButton(
-            R.string.label_jams,
+            com.vgleadsheets.features.main.hud.R.string.label_jams,
             R.string.title_jams,
             null
         )
@@ -60,28 +60,31 @@ class HudUiTest : UiTest() {
         (storage as MockStorage).savedTopLevelScreen = HudFragment.TOP_LEVEL_SCREEN_ID_SONG
 
         hud(this) {
-            checkTopLevelScreen(R.string.app_name, R.string.subtitle_all_songs)
+            checkTopLevelScreen(
+                com.vgleadsheets.ui_core.R.string.app_name,
+                com.vgleadsheets.features.main.songs.R.string.subtitle_all_songs
+            )
         }
 
         checkNavigationButton(
-            R.string.label_by_game,
-            R.string.app_name,
-            R.string.subtitle_game
+            com.vgleadsheets.features.main.hud.R.string.label_by_game,
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.games.R.string.subtitle_game
         )
     }
 
     @Test
     fun navigateToJamListThenBackToGameList() {
         checkNavigationButton(
-            R.string.label_jams,
+            com.vgleadsheets.features.main.hud.R.string.label_jams,
             R.string.title_jams,
             null
         )
 
         checkNavigationButton(
-            R.string.label_by_game,
-            R.string.app_name,
-            R.string.subtitle_game
+            com.vgleadsheets.features.main.hud.R.string.label_by_game,
+            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.features.main.games.R.string.subtitle_game
         )
     }
 
@@ -92,12 +95,12 @@ class HudUiTest : UiTest() {
         hud(this) {
             checkSearchButtonIsHamburger()
 
-            clickView(R.id.button_menu)
-            checkViewText(R.string.label_settings)
+            clickView(com.vgleadsheets.components.R.id.button_menu)
+            checkViewText(com.vgleadsheets.features.main.hud.R.string.label_settings)
 
-            clickViewWithText(R.string.label_settings)
+            clickViewWithText(com.vgleadsheets.features.main.hud.R.string.label_settings)
 
-            checkViewVisible(R.id.checkbox_setting)
+            checkViewVisible(com.vgleadsheets.components.R.id.checkbox_setting)
             checkSearchButtonIsBackArrow()
         }
     }
@@ -109,13 +112,13 @@ class HudUiTest : UiTest() {
         hud(this) {
             checkSearchButtonIsHamburger()
 
-            clickView(R.id.button_menu)
+            clickView(com.vgleadsheets.components.R.id.button_menu)
 
-            clickViewWithText(R.string.label_debug)
+            clickViewWithText(com.vgleadsheets.features.main.hud.R.string.label_debug)
 
             checkViewWithIdAndTextVisible(
-                R.id.text_name,
-                R.string.label_debug_network_endpoint
+                com.vgleadsheets.components.R.id.text_name,
+                com.vgleadsheets.storage.R.string.label_debug_network_endpoint
             )
 
             checkSearchButtonIsBackArrow()
@@ -128,8 +131,8 @@ class HudUiTest : UiTest() {
         subtitleStringId: Int?
     ) {
         hud(this) {
-            clickView(R.id.button_menu)
-            checkViewText(R.string.label_settings)
+            clickView(com.vgleadsheets.components.R.id.button_menu)
+            checkViewText(com.vgleadsheets.features.main.hud.R.string.label_settings)
 
             clickViewWithText(buttonTextId)
             checkSearchButtonIsHamburger()

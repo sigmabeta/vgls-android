@@ -2,7 +2,7 @@ package com.vgleadsheets.features.main.game
 
 import com.airbnb.mvrx.Uninitialized
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.features.main.list.BetterCompositeState
+import com.vgleadsheets.features.main.list.CompositeState
 
 data class GameState(
     val gameId: Long,
@@ -10,6 +10,6 @@ data class GameState(
         Uninitialized,
         Uninitialized
     )
-) : BetterCompositeState<GameDetailContent> {
+) : CompositeState<GameDetailContent> {
     constructor(args: IdArgs) : this(args.id)
 }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.existingViewModel
 import com.vgleadsheets.VglsFragment
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
@@ -28,8 +29,10 @@ class AboutFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bottomOffset = resources.getDimension(R.dimen.height_bottom_sheet_peek).toInt() +
-            resources.getDimension(R.dimen.margin_medium).toInt()
+        val bottomOffset =
+            resources.getDimension(com.vgleadsheets.ui_core.R.dimen.height_bottom_sheet_peek)
+                .toInt() +
+                resources.getDimension(com.vgleadsheets.ui_core.R.dimen.margin_medium).toInt()
 
         val content = view.findViewById<RecyclerView>(R.id.list_content)
         adapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
@@ -54,7 +57,7 @@ class AboutFragment :
 
     override fun getTrackingScreen() = TrackingScreen.ABOUT
 
-    private fun constructList() = listOf(
+    private fun constructList(): List<ListModel> = listOf(
         SectionHeaderListModel(
             getString(R.string.label_section_about_app)
         ),

@@ -1,7 +1,7 @@
 package com.vgleadsheets.features.main.favorites
 
-import com.vgleadsheets.features.main.list.BetterCompositeState
+import com.vgleadsheets.features.main.list.CompositeState
 
 data class FavoriteListState(
     override val contentLoad: FavoriteListContent = FavoriteListContent(),
-) : BetterCompositeState<FavoriteListContent>
+) : CompositeState<FavoriteListContent>

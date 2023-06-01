@@ -5,13 +5,13 @@ import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.BetterListFragment
+import com.vgleadsheets.features.main.list.ComposeListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class GameFragment : BetterListFragment<GameDetailContent, GameState>() {
+class GameFragment : ComposeListFragment<GameDetailContent, GameState>() {
     @Inject
     lateinit var viewModelFactory: GameViewModel.Factory
 

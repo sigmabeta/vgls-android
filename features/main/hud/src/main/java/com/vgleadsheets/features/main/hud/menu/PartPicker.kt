@@ -1,9 +1,9 @@
 package com.vgleadsheets.features.main.hud.menu
 
 import android.content.res.Resources
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.features.main.hud.PartSelectorOption
-import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.Part
 
 object PartPicker {
@@ -13,13 +13,13 @@ object PartPicker {
         onPartClick: (Part) -> Unit,
         resources: Resources,
         selectedPartId: String
-    ) = if (expanded) {
+    ): List<ListModel> = if (expanded) {
         generatePartPickerItems(showVocalOption)
             .map {
                 MenuItemListModel(
                     resources.getString(it.longResId),
                     null,
-                    R.drawable.ic_description_24dp,
+                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
                     { onPartClick(Part.valueOf(it.name)) },
                     it.apiId == selectedPartId
                 )
