@@ -6,11 +6,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun ElevatedRoundRect(
     modifier: Modifier = Modifier,
+    cornerRadius: Dp = 16.dp,
     content: @Composable () -> Unit
 ) {
     Surface(
@@ -18,7 +20,7 @@ fun ElevatedRoundRect(
             .padding(horizontal = 4.dp)
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(cornerRadius)
             ),
         content = content
     )

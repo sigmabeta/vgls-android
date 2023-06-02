@@ -46,7 +46,7 @@ fun CrossfadeImage(
     )
 
     val imageModifier = if (painter.state is AsyncImagePainter.State.Success) {
-        Modifier
+        modifier
     } else {
         bgModifier
     }
