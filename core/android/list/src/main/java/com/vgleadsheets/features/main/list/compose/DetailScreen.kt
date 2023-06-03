@@ -30,10 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -48,6 +44,7 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
+import com.vgleadsheets.composables.DetailHeader
 import com.vgleadsheets.composables.HeaderImage
 import com.vgleadsheets.composables.utils.partialLerpAfter
 import com.vgleadsheets.composables.utils.partialLerpUntil
@@ -83,6 +80,51 @@ fun DetailScreen(
                     (diff / HEIGHT_VARIANCE_RANGE.toPx()).coerceIn(0.0f, 1.0f)
                 }
 
+                HeaderImage(
+                    imageUrl = title.photoUrl,
+                    imagePlaceholder = com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                    modifier = Modifier
+                        .height(HEIGHT_HEADER_MAX)
+                        .fillMaxWidth()
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .height(HEIGHT_HEADER_MIN)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                ) {
+                    IconButton(onClick = title.onMenuButtonClick) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = stringResource(id = R.string.cont_desc_app_back),
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
+
+                    Spacer(
+                        modifier = Modifier
+                            .weight(1.0f)
+                    )
+
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "choose part",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
+
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = stringResource(id = R.string.label_search),
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
+                }
+
                 LazyColumn(
                     contentPadding = PaddingValues(top = HEIGHT_HEADER_MIN),
                     state = listState,
@@ -97,6 +139,13 @@ fun DetailScreen(
                         Spacer(modifier = Modifier.height(HEIGHT_VARIANCE_RANGE))
                     }
 
+                    item(
+                        key = Long.MAX_VALUE - 1,
+                        contentType = Long.MAX_VALUE - 1,
+                    ) {
+                        DetailHeader(model = title, modifier = Modifier)
+                    }
+
                     items(
                         items = listItems.toTypedArray(),
                         key = { it.dataId },
@@ -104,105 +153,6 @@ fun DetailScreen(
                     ) {
                         it.Content(
                             modifier = Modifier.animateItemPlacement()
-                        )
-                    }
-                }
-
-                val appBarHeight = lerp(HEIGHT_HEADER_MIN, HEIGHT_HEADER_MAX, expandRatio)
-                val imageAlpha = MathUtils.lerp(0.2f, 1.0f, expandRatio)
-                val bigTextAlpha = partialLerpUntil(0.0f, 1.0f, expandRatio, 0.5f)
-                val smallTextAlpha = partialLerpAfter(1.0f, 0.0f, expandRatio, 0.5f)
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(appBarHeight)
-                        .background(MaterialTheme.colorScheme.primary),
-                ) {
-                    HeaderImage(
-                        imageUrl = title.photoUrl,
-                        imagePlaceholder = com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .alpha(imageAlpha)
-                    )
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .height(HEIGHT_HEADER_MIN)
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        IconButton(onClick = title.onMenuButtonClick) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = stringResource(id = R.string.cont_desc_app_back),
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                            )
-                        }
-
-                        Text(
-                            text = title.title,
-                            textAlign = TextAlign.Start,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .weight(1.0f)
-                                .alpha(smallTextAlpha)
-                        )
-
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                imageVector = Icons.Filled.Menu,
-                                contentDescription = "choose part",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                            )
-                        }
-
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                imageVector = Icons.Filled.Search,
-                                contentDescription = stringResource(id = R.string.label_search),
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                            )
-                        }
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .alpha(bigTextAlpha)
-                            .fillMaxWidth()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(0, 0, 0, 0),
-                                        Color(0, 0, 0, 32),
-                                        Color(0, 0, 0, 64),
-                                        Color(0, 0, 0, 112),
-                                        Color(0, 0, 0, 160),
-                                    )
-                                )
-                            )
-                            .align(Alignment.BottomCenter)
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = title.title,
-                            textAlign = TextAlign.End,
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                shadow = Shadow(
-                                    color = Color.Black,
-                                    offset = Offset(4f, 4f),
-                                    blurRadius = 8f
-                                )
-                            ),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
                         )
                     }
                 }

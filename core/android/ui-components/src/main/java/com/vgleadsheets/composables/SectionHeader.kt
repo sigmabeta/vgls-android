@@ -30,6 +30,7 @@ fun SectionHeader(
 ) {
     Column(
         modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
