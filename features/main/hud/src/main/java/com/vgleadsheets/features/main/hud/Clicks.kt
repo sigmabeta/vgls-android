@@ -175,7 +175,7 @@ class Clicks(
     }
 
     fun gameSearchResult(id: Long) {
-        router.showSongListForGame(id)
+        router.showGameDetail(id)
         viewModel.toRegularMode()
     }
 

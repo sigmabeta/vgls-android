@@ -104,7 +104,7 @@ class Config(
         }
 
         listOf(
-            SectionHeaderListModel(resources.getString(com.vgleadsheets.features.main.list.R.string.section_header_songs))
+            SectionHeaderListModel(resources.getString(R.string.section_header_songs))
         ) + filteredSongs
     }
 

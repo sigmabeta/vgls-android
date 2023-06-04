@@ -7,12 +7,14 @@ import com.vgleadsheets.features.main.list.failure
 import com.vgleadsheets.features.main.list.hasFailed
 import com.vgleadsheets.features.main.list.isLoading
 import com.vgleadsheets.features.main.list.isReady
+import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 
 data class GameDetailContent(
     val game: Async<Game> = Uninitialized,
-    val songs: Async<List<Song>> = Uninitialized
+    val songs: Async<List<Song>> = Uninitialized,
+    val composers: Async<List<Composer>> = Uninitialized
 ) : ListContent {
     // TODO CompositeException
     override fun failure() = game.failure() ?: songs.failure()

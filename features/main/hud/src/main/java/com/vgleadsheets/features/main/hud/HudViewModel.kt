@@ -250,7 +250,7 @@ class HudViewModel @AssistedInject constructor(
     }
 
     fun sheetDetailClick() = withState { state ->
-        router.showSheetDetail(state.selectedSong?.id!!)
+        router.showSongDetail(state.selectedSong?.id!!)
     }
 
     fun youtubeSearchClick() = withState { state ->

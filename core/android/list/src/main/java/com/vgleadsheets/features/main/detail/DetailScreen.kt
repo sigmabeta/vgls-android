@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.list.compose
+package com.vgleadsheets.features.main.detail
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,22 +22,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
-import com.google.android.material.math.MathUtils
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
@@ -46,8 +37,6 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.composables.DetailHeader
 import com.vgleadsheets.composables.HeaderImage
-import com.vgleadsheets.composables.utils.partialLerpAfter
-import com.vgleadsheets.composables.utils.partialLerpUntil
 import com.vgleadsheets.themes.VglsMaterial
 
 private val HEIGHT_HEADER_MAX = 256.dp
@@ -67,18 +56,7 @@ fun DetailScreen(
                     .fillMaxSize()
             ) {
                 val listState = rememberLazyListState()
-                val firstVisibleItemIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
-
-                val expandRatio = if (firstVisibleItemIndex > 0) {
-                    0.0f
-                } else {
-                    val firstVisibleItemScrollOffset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
-                    val fullCollapsePixels = HEIGHT_VARIANCE_RANGE.toPx()
-
-                    val diff = fullCollapsePixels - firstVisibleItemScrollOffset
-
-                    (diff / HEIGHT_VARIANCE_RANGE.toPx()).coerceIn(0.0f, 1.0f)
-                }
+                // val firstVisibleItemIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
 
                 HeaderImage(
                     imageUrl = title.photoUrl,

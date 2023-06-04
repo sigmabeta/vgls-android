@@ -21,7 +21,7 @@ class Clicks(
 
     fun game(id: Long) {
         hudViewModel.hideSearch()
-        router.showSongListForGame(id)
+        router.showGameDetail(id)
     }
 
     fun composer(id: Long) {

@@ -4,16 +4,16 @@ import android.os.Bundle
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.features.main.detail.DetailFragment
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.ComposeDetailFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class GameFragment : ComposeDetailFragment<GameDetailContent, GameState>() {
+class GameDetailFragment : DetailFragment<GameDetailContent, GameDetailState>() {
     @Inject
-    lateinit var viewModelFactory: GameViewModel.Factory
+    lateinit var viewModelFactory: GameDetailViewModel.Factory
 
     @Inject
     @Named("VglsImageUrl")
@@ -23,9 +23,9 @@ class GameFragment : ComposeDetailFragment<GameDetailContent, GameState>() {
 
     override fun getPerfSpec() = PerfSpec.GAME
 
-    override val viewModel: GameViewModel by fragmentViewModel()
+    override val viewModel: GameDetailViewModel by fragmentViewModel()
 
-    override fun generateListConfig(state: GameState, hudState: HudState) = Config(
+    override fun generateListConfig(state: GameDetailState, hudState: HudState) = Config(
         state,
         hudState,
         baseImageUrl,
@@ -41,8 +41,8 @@ class GameFragment : ComposeDetailFragment<GameDetailContent, GameState>() {
     companion object {
         const val LOAD_OPERATION = "loadGame"
 
-        fun newInstance(idArgs: IdArgs): GameFragment {
-            val fragment = GameFragment()
+        fun newInstance(idArgs: IdArgs): GameDetailFragment {
+            val fragment = GameDetailFragment()
 
             val args = Bundle()
             args.putParcelable(Mavericks.KEY_ARG, idArgs)

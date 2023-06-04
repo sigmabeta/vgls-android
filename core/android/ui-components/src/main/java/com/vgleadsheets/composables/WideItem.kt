@@ -32,6 +32,8 @@ fun WideItem(
 ) {
     Row(
         modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(8.dp)
             .height(64.dp)
             .aspectRatio(2.8f)
             .shadow(

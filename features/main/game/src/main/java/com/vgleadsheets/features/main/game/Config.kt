@@ -4,7 +4,9 @@ import android.content.res.Resources
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
@@ -24,7 +26,7 @@ import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
-    private val state: GameState,
+    private val state: GameDetailState,
     private val hudState: HudState,
     private val baseImageUrl: String,
     private val clicks: Clicks,
@@ -39,6 +41,10 @@ class Config(
     private val songsLoad = state.contentLoad.songs
 
     private val songs = songsLoad.content()
+
+    private val composerLoad = state.contentLoad.composers
+
+    private val composers = composerLoad.content()
 
     override val titleConfig = Title.Config(
         game?.name ?: resources.getString(R.string.unknown_game),
@@ -78,6 +84,7 @@ class Config(
     override val contentConfig = Content.Config(
         !songs.isNullOrEmpty()
     ) {
+
         val filteredSongs = songs?.filteredForVocals(hudState.selectedPart.apiId)
             ?.mapYielding { song ->
                 ImageNameCaptionListModel(
@@ -91,8 +98,37 @@ class Config(
                 }
             }
 
-        if (filteredSongs.isNullOrEmpty()) {
-            return@Config listOf(
+        val composerModels = composers?.mapYielding { composer ->
+            WideItemListModel(
+                composer.id,
+                composer.name,
+                composer.photoUrl,
+                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                composer.id,
+            ) {
+                clicks.composer(composer.id)
+            }
+        }
+
+        val contentModels = mutableListOf<ListModel>()
+
+        if (!composerModels.isNullOrEmpty()) {
+            contentModels.add(
+                SectionHeaderListModel(resources.getString(R.string.section_header_composers))
+            )
+            contentModels.addAll(composerModels)
+        }
+
+        contentModels.add(
+            SectionHeaderListModel(resources.getString(R.string.section_header_songs))
+        )
+
+        if (!filteredSongs.isNullOrEmpty()) {
+            contentModels.addAll(
+                filteredSongs
+            )
+        } else {
+            contentModels.add(
                 EmptyStateListModel(
                     com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
                     resources.getString(com.vgleadsheets.features.main.list.R.string.empty_transposition),
@@ -100,9 +136,7 @@ class Config(
             )
         }
 
-        listOf(
-            SectionHeaderListModel(resources.getString(com.vgleadsheets.features.main.list.R.string.section_header_songs))
-        ) + filteredSongs
+        return@Config contentModels
     }
 
     override val emptyConfig = EmptyState.Config(
@@ -114,7 +148,7 @@ class Config(
     override val errorConfig = ErrorState.Config(
         state.hasFailed(),
         BuildConfig.DEBUG, // TODO inject this
-        GameFragment.LOAD_OPERATION,
+        GameDetailFragment.LOAD_OPERATION,
         state.failure()?.message
             ?: resources.getString(com.vgleadsheets.features.main.list.R.string.error_dev_unknown)
     )

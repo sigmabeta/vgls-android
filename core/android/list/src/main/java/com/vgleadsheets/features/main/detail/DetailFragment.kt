@@ -1,4 +1,4 @@
-package com.vgleadsheets.features.main.list
+package com.vgleadsheets.features.main.detail
 
 import android.content.Context
 import android.os.Bundle
@@ -6,16 +6,19 @@ import android.view.View
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
-import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.features.main.list.compose.DetailScreen
+import com.vgleadsheets.features.main.list.CompositeState
+import com.vgleadsheets.features.main.list.ListConfig
+import com.vgleadsheets.features.main.list.ListContent
+import com.vgleadsheets.features.main.list.R
 import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
-import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.features.main.util.ListModelGenerator
+import com.vgleadsheets.features.main.util.TitleModelGenerator
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
@@ -23,7 +26,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class ComposeDetailFragment<
+abstract class DetailFragment<
     ContentType : ListContent,
     StateType : CompositeState<ContentType>
     > : VglsFragment() {
@@ -48,7 +51,7 @@ abstract class ComposeDetailFragment<
 
     private lateinit var screenCompose: FragmentListComposeBinding
 
-    private var configGenerationJob: Job = Job()
+    private var listModelGenerationJob: Job = Job()
         get() {
             if (field.isCancelled) field = Job()
             return field
@@ -73,33 +76,23 @@ abstract class ComposeDetailFragment<
             val invalidateStartNanos = System.nanoTime()
             val invalidateDurationNanos = measureNanoTime {
                 val config = generateListConfig(state, hudState)
-                val title = Title.model(
-                    config.titleConfig.title,
-                    config.titleConfig.subtitle,
+                val title = TitleModelGenerator.generateUsingConfig(
+                    config.titleConfig,
                     hudState.alwaysShowBack,
-                    config.titleConfig.onImageLoadSuccess,
-                    config.titleConfig.onImageLoadFail,
                     resources,
-                    { (activity as FragmentInterface).onAppBarButtonClick() },
-                    config.titleConfig.photoUrl,
-                    config.titleConfig.placeholder,
-                    config.titleConfig.allowExpansion,
-                    config.titleConfig.isLoading,
-                    config.titleConfig.titleGenerator,
+                    onAppBarButtonClick
                 )
 
-                // TODO Render title in compose lol
-
-                if (configGenerationJob.isActive) {
+                if (listModelGenerationJob.isActive) {
                     hatchet.i(
                         this.javaClass.simpleName,
                         "${this::class.simpleName}: Canceling previous config generation job."
                     )
-                    configGenerationJob.cancel()
+                    listModelGenerationJob.cancel()
                 }
 
-                configGenerationJob = viewModel.viewModelScope.launch(dispatchers.computation) {
-                    val listItems = Lists.generateList(config, resources)
+                listModelGenerationJob = viewModel.viewModelScope.launch(dispatchers.computation) {
+                    val listItems = ListModelGenerator.generateUsingConfig(config, resources)
 
                     withContext(dispatchers.main) {
                         renderContentInCompose(

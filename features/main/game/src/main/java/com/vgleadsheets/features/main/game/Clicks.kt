@@ -5,10 +5,14 @@ import com.vgleadsheets.features.main.list.ListItemClicks
 
 class Clicks(
     private val router: FragmentRouter,
-    private val viewModel: GameViewModel,
+    private val viewModel: GameDetailViewModel,
 ) : ListItemClicks {
     fun song(id: Long) {
         router.showSongViewer(id)
+    }
+
+    fun composer(id: Long) {
+        router.showSongListForComposer(id)
     }
 
     fun onFavoriteClick() {

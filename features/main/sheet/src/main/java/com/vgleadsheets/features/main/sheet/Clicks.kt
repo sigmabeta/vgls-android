@@ -16,7 +16,7 @@ class Clicks(
     }
 
     fun game(gameId: Long) {
-        router.showSongListForGame(gameId)
+        router.showGameDetail(gameId)
     }
 
     fun viewSheet(id: Long) {

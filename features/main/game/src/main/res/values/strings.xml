@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="section_header_composers">Composers for this game</string>
+    <string name="section_header_songs">Songs in this game</string>
+
     <string name="subtitle_sheets_count">%1$d Sheets</string>
 
     <string name="subtitle_composer_unknown">Unknown Composer</string>

@@ -42,6 +42,8 @@ abstract class VglsFragment : Fragment(), MavericksView {
 
     protected var windowInsetController: WindowInsetsControllerCompat? = null
 
+    protected val onAppBarButtonClick = { (activity as FragmentInterface).onAppBarButtonClick() }
+
     private var perfTrackingStarted = false
 
     @LayoutRes

@@ -7,6 +7,6 @@ class Clicks(
     private val router: FragmentRouter
 ) : ListItemClicks {
     fun game(id: Long) {
-        router.showSongListForGame(id)
+        router.showGameDetail(id)
     }
 }

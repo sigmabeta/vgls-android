@@ -16,6 +16,7 @@ import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.compose.ListScreen
 import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
 import com.vgleadsheets.features.main.list.sections.Title
+import com.vgleadsheets.features.main.util.ListModelGenerator
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
@@ -99,7 +100,7 @@ abstract class ComposeListFragment<
                 }
 
                 configGenerationJob = viewModel.viewModelScope.launch(dispatchers.computation) {
-                    val listItems = Lists.generateList(config, resources)
+                    val listItems = ListModelGenerator.generateUsingConfig(config, resources)
 
                     withContext(dispatchers.main) {
                         renderContentInCompose(

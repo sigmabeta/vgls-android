@@ -1,8 +1,12 @@
 package com.vgleadsheets.features.main.game
 
+import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.repository.VglsRepository
@@ -11,14 +15,14 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
-class GameViewModel @AssistedInject constructor(
-    @Assisted initialState: GameState,
+class GameDetailViewModel @AssistedInject constructor(
+    @Assisted initialState: GameDetailState,
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
-) : MavericksViewModel<GameState>(initialState) {
+) : MavericksViewModel<GameDetailState>(initialState) {
     init {
         fetchGame()
-        fetchSongs()
+        fetchSongsAndComposers()
     }
 
     fun onFavoriteClick() = withState { state ->
@@ -40,12 +44,26 @@ class GameViewModel @AssistedInject constructor(
             }
     }
 
-    private fun fetchSongs() = withState {
-        repository.getSongsForGame(it.gameId)
+    private fun fetchSongsAndComposers() = withState { state ->
+        repository.getSongsForGame(state.gameId, withComposers = true)
             .execute { songs ->
+                val composers = when (songs) {
+                    is Uninitialized -> Uninitialized
+                    is Fail -> Fail(songs.error)
+                    is Loading -> Loading()
+                    is Success -> {
+                        Success(
+                            songs()
+                                .flatMap { it.composers.orEmpty() }
+                                .distinctBy { it.id }
+                        )
+                    }
+                }
+
                 copy(
                     contentLoad = contentLoad.copy(
-                        songs = songs
+                        songs = songs,
+                        composers = composers
                     )
                 )
             }
@@ -54,16 +72,16 @@ class GameViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(
-            initialState: GameState,
-        ): GameViewModel
+            initialState: GameDetailState,
+        ): GameDetailViewModel
     }
 
-    companion object : MavericksViewModelFactory<GameViewModel, GameState> {
+    companion object : MavericksViewModelFactory<GameDetailViewModel, GameDetailState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: GameState
-        ): GameViewModel {
-            val fragment: GameFragment =
+            state: GameDetailState
+        ): GameDetailViewModel {
+            val fragment: GameDetailFragment =
                 (viewModelContext as FragmentViewModelContext).fragment()
             return fragment.viewModelFactory.create(state)
         }

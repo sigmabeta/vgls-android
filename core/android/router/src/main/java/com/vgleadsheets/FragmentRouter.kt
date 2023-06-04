@@ -3,12 +3,12 @@ package com.vgleadsheets
 import com.vgleadsheets.tracking.TrackingScreen
 
 interface FragmentRouter {
-    fun showSongListForGame(gameId: Long)
+    fun showGameDetail(gameId: Long)
 
     @SuppressWarnings("LongParameterList")
     fun showSongViewer(songId: Long?)
 
-    fun showSheetDetail(songId: Long)
+    fun showSongDetail(songId: Long)
 
     fun showSearch(query: String?)
 

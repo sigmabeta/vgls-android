@@ -21,7 +21,7 @@ import com.vgleadsheets.features.main.composer.ComposerDetailFragment
 import com.vgleadsheets.features.main.composers.ComposerListFragment
 import com.vgleadsheets.features.main.debug.DebugFragment
 import com.vgleadsheets.features.main.favorites.FavoriteListFragment
-import com.vgleadsheets.features.main.game.GameFragment
+import com.vgleadsheets.features.main.game.GameDetailFragment
 import com.vgleadsheets.features.main.games.GameListFragment
 import com.vgleadsheets.features.main.hud.HudFragment
 import com.vgleadsheets.features.main.hud.HudViewModel
@@ -228,9 +228,9 @@ class MainActivity :
         supportFragmentManager.popBackStack()
     }
 
-    override fun showSongListForGame(gameId: Long) {
+    override fun showGameDetail(gameId: Long) {
         showFragmentSimple {
-            GameFragment.newInstance(IdArgs(gameId))
+            GameDetailFragment.newInstance(IdArgs(gameId))
         }
     }
 
@@ -248,7 +248,7 @@ class MainActivity :
         TagValueSongFragment.newInstance(IdArgs(tagValueId))
     }
 
-    override fun showSheetDetail(songId: Long) = showFragmentSimple {
+    override fun showSongDetail(songId: Long) = showFragmentSimple {
         SongFragment.newInstance(IdArgs(songId))
     }
 

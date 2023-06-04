@@ -1,15 +1,16 @@
-package com.vgleadsheets.features.main.list
+package com.vgleadsheets.features.main.util
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.sections.Actions
 import com.vgleadsheets.features.main.list.sections.Content
 import com.vgleadsheets.features.main.list.sections.EmptyState
 import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 
-object Lists {
-    suspend fun generateList(
+object ListModelGenerator {
+    suspend fun generateUsingConfig(
         config: ListConfig,
         resources: Resources,
     ): List<ListModel> {
