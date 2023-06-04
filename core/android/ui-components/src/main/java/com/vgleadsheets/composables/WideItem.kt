@@ -4,75 +4,62 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.components.SquareItemListModel
+import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.themes.VglsMaterial
 
 @Composable
-fun SquareItem(
-    model: SquareItemListModel,
+fun WideItem(
+    model: WideItemListModel,
     modifier: Modifier
 ) {
-    Box(
+    Row(
         modifier = modifier
-            .height(192.dp)
-            .aspectRatio(1.0f)
-            .padding(8.dp)
+            .height(64.dp)
+            .aspectRatio(2.8f)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)
             )
             .clickable(onClick = model.onClick)
+            .background(MaterialTheme.colorScheme.surface)
     ) {
         CrossfadeImage(
             imageUrl = model.imageUrl,
             imagePlaceholder = model.imagePlaceholder,
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxHeight()
+                .aspectRatio(1.0f)
         )
 
         Text(
             text = model.name,
-            color = Color.White,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                shadow = Shadow(
-                    color = Color.Black,
-                    offset = Offset(4f, 4f),
-                    blurRadius = 8f
-                )
-            ),
+            textAlign = TextAlign.Start,
+            maxLines = 2,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyMedium,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0, 0, 0, 0),
-                            Color(0, 0, 0, 64),
-                            Color(0, 0, 0, 160),
-                        )
-                    )
-                )
+                .weight(1.0f)
                 .padding(8.dp)
-                .padding(top = 8.dp) // For extra scrim
+                .align(CenterVertically)
         )
     }
 }
@@ -87,6 +74,7 @@ private fun Light() {
                 .background(
                     color = MaterialTheme.colorScheme.background
                 )
+                .padding(16.dp)
         ) {
             Sample()
         }
@@ -103,6 +91,7 @@ private fun Dark() {
                 .background(
                     color = MaterialTheme.colorScheme.background
                 )
+                .padding(16.dp)
         ) {
             Sample()
         }
@@ -111,12 +100,12 @@ private fun Dark() {
 
 @Composable
 private fun Sample() {
-    SquareItem(
-        SquareItemListModel(
+    WideItem(
+        WideItemListModel(
             1234L,
-            "Xenoblade Chronicles 3",
+            "Konami Kukeiha Club",
             "https://randomfox.ca/images/12.jpg",
-            com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+            com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
             null,
             {}
         ),
