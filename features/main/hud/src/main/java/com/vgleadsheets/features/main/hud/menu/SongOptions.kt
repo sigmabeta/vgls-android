@@ -12,6 +12,7 @@ object SongOptions {
         currentSong: Song?,
         onDetailsClick: () -> Unit,
         onYoutubeClick: () -> Unit,
+        onShareClick: () -> Unit,
         onFavoriteClick: () -> Unit,
         // onOfflineClick: () -> Unit,
         onAltClick: () -> Unit,
@@ -29,6 +30,12 @@ object SongOptions {
                 "",
                 R.drawable.ic_play_circle_filled_24,
                 onYoutubeClick,
+            ),
+            MenuItemListModel(
+                resources.getString(R.string.label_share),
+                "",
+                R.drawable.baseline_share_24,
+                onShareClick,
             ),
             MenuItemListModel(
                 resources.getString(

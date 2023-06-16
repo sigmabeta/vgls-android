@@ -104,6 +104,10 @@ class Clicks(
         viewModel.youtubeSearchClick()
     }
 
+    fun share() {
+        viewModel.shareClick()
+    }
+
     fun favorite() {
         viewModel.favoritesClick()
     }

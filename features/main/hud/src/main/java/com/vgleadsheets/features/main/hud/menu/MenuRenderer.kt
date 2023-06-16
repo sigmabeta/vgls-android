@@ -70,6 +70,7 @@ object MenuRenderer {
             currentSong,
             clicks::sheetDetail,
             clicks::youtubeSearch,
+            clicks::share,
             clicks::favorite,
             // clicks::offline,
             clicks::alternateSheet,

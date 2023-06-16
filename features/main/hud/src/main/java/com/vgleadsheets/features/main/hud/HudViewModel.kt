@@ -257,6 +257,30 @@ class HudViewModel @AssistedInject constructor(
         router.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
     }
 
+
+    // Where would be a good place to put this?
+    fun processUrl(urlToProcess: String) = urlToProcess
+            .replace(" ", "-")
+            .replace("é", "")
+            .replace("&", "")
+            .replace("'", "")
+            .replace(",","")
+            .replace("!", "")
+            .replace(".", "")
+            .replace(":", "")
+            .replace("--", "-")
+
+    fun shareClick() = withState { state ->
+        val gameName = state.selectedSong?.gameName
+        val songName = state.selectedSong?.name
+
+        if (gameName == null || songName == null) {
+            return@withState
+        }
+
+        val url = "https://www.vgleadsheets.com/view/" + processUrl(gameName) + "/" + processUrl(songName)
+    }
+
     fun favoritesClick() = withState { state ->
         state.selectedSong?.let {
             viewModelScope.launch(dispatchers.disk) {

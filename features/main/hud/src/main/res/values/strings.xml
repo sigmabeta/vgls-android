@@ -14,6 +14,7 @@
 
     <string name="label_song_details">Show song details</string>
     <string name="label_youtube">Find song on YouTube</string>
+    <string name="label_share">Share this sheet</string>
     <string name="label_jam_name">Following Jam: %1$s</string>
     <string name="label_jam_no_song">No song selected</string>
     <string name="label_jam_current_song">Go to current song</string>
