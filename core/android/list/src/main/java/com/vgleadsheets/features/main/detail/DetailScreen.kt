@@ -18,14 +18,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,7 +32,10 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.SubsectionHeaderListModel
+import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.TitleListModel
+import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.DetailHeader
 import com.vgleadsheets.composables.HeaderImage
 import com.vgleadsheets.themes.VglsMaterial
@@ -44,95 +45,99 @@ private val HEIGHT_HEADER_MIN = 72.dp
 private val HEIGHT_VARIANCE_RANGE = HEIGHT_HEADER_MAX - HEIGHT_HEADER_MIN
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 fun DetailScreen(
     title: TitleListModel,
-    listItems: List<ListModel>
+    listItems: List<ListModel>,
 ) {
     VglsMaterial {
-        with(LocalDensity.current) {
-            Box(
+        Box(
+            modifier = Modifier
+                .padding(bottom = 72.dp)
+                .fillMaxSize()
+        ) {
+            val listState = rememberLazyListState()
+            // val firstVisibleItemIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
+
+            HeaderImage(
+                imageUrl = title.photoUrl,
+                imagePlaceholder = com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .height(HEIGHT_HEADER_MAX)
+                    .fillMaxWidth()
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .height(HEIGHT_HEADER_MIN)
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
             ) {
-                val listState = rememberLazyListState()
-                // val firstVisibleItemIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
-
-                HeaderImage(
-                    imageUrl = title.photoUrl,
-                    imagePlaceholder = com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
-                    modifier = Modifier
-                        .height(HEIGHT_HEADER_MAX)
-                        .fillMaxWidth()
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .height(HEIGHT_HEADER_MIN)
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp)
-                ) {
-                    IconButton(onClick = title.onMenuButtonClick) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.cont_desc_app_back),
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    }
-
-                    Spacer(
-                        modifier = Modifier
-                            .weight(1.0f)
+                IconButton(onClick = title.onMenuButtonClick) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(id = R.string.cont_desc_app_back),
+                        tint = MaterialTheme.colorScheme.onPrimary,
                     )
-
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "choose part",
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    }
-
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = stringResource(id = R.string.label_search),
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    }
                 }
 
-                LazyColumn(
-                    contentPadding = PaddingValues(top = HEIGHT_HEADER_MIN),
-                    state = listState,
+                Spacer(
                     modifier = Modifier
-                        .animateContentSize()
-                        .fillMaxSize()
+                        .weight(1.0f)
+                )
+
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.Menu,
+                        contentDescription = "choose part",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                }
+
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = stringResource(id = R.string.label_search),
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                }
+            }
+
+            LazyColumn(
+                contentPadding = PaddingValues(top = HEIGHT_HEADER_MIN),
+                state = listState,
+                modifier = Modifier
+                    .animateContentSize()
+                    .fillMaxSize()
+            ) {
+                item(
+                    key = Long.MAX_VALUE,
+                    contentType = Long.MAX_VALUE,
                 ) {
-                    item(
-                        key = Long.MAX_VALUE,
-                        contentType = Long.MAX_VALUE,
-                    ) {
-                        Spacer(modifier = Modifier.height(HEIGHT_VARIANCE_RANGE))
-                    }
+                    Spacer(modifier = Modifier.height(HEIGHT_VARIANCE_RANGE))
+                }
 
-                    item(
-                        key = Long.MAX_VALUE - 1,
-                        contentType = Long.MAX_VALUE - 1,
-                    ) {
-                        DetailHeader(model = title, modifier = Modifier)
-                    }
+                item(
+                    key = TitleListModel::class.simpleName,
+                    contentType = TitleListModel::class.simpleName.hashCode(),
+                ) {
+                    DetailHeader(
+                        model = title,
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                    )
+                }
 
-                    items(
-                        items = listItems.toTypedArray(),
-                        key = { it.dataId },
-                        contentType = { it.layoutId }
-                    ) {
-                        it.Content(
-                            modifier = Modifier.animateItemPlacement()
-                        )
-                    }
+                items(
+                    items = listItems.toTypedArray(),
+                    key = { it.dataId },
+                    contentType = { it::class.simpleName }
+                ) {
+                    it.Content(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .animateItemPlacement()
+                    )
                 }
             }
         }
@@ -171,6 +176,46 @@ private fun Sample() {
                 com.vgleadsheets.vectors.R.drawable.ic_jam_filled,
                 "Remove from favorites",
                 onClick = { },
+            ),
+            SubsectionListModel(
+                1234L,
+                SubsectionHeaderListModel(
+                    "Composers for this game",
+                ),
+                listOf(
+                    WideItemListModel(
+                        1234L,
+                        "Kenji Hiramatsu",
+                        null,
+                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                        actionableId = null,
+                        onClick = { },
+                    ),
+                    WideItemListModel(
+                        2345L,
+                        "Manami Kiyota",
+                        null,
+                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                        actionableId = null,
+                        onClick = { },
+                    ),
+                    WideItemListModel(
+                        3456L,
+                        "Yasunori Mitsuda",
+                        null,
+                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                        actionableId = null,
+                        onClick = { },
+                    ),
+                    WideItemListModel(
+                        4567L,
+                        "ACE+",
+                        null,
+                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                        actionableId = null,
+                        onClick = { },
+                    ),
+                )
             ),
             SectionHeaderListModel(
                 "Songs"

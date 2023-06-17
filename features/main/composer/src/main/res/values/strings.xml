@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="section_header_songs">Songs by this composer</string>
+    <string name="section_header_songs_by_composer">Songs by this composer</string>
 
     <string name="subtitle_sheets_count">%1$d Songs</string>
 

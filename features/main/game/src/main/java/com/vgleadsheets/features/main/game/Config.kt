@@ -3,9 +3,12 @@ package com.vgleadsheets.features.main.game
 import android.content.res.Resources
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.SubsectionHeaderListModel
+import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
@@ -113,14 +116,30 @@ class Config(
         val contentModels = mutableListOf<ListModel>()
 
         if (!composerModels.isNullOrEmpty()) {
-            contentModels.add(
-                SectionHeaderListModel(resources.getString(R.string.section_header_composers))
-            )
-            contentModels.addAll(composerModels)
+            if (composerModels.size == 1) {
+                val composerModel = composerModels.first()
+
+                val imageUrl = composerModel.imageUrl
+
+                if (imageUrl != null) {
+                    contentModels.add(
+                        HeroImageListModel(
+                            imageUrl,
+                            composerModel.imagePlaceholder,
+                            composerModel.name,
+                            resources.getString(R.string.subtitle_composer_one)
+                        )
+                    )
+                } else {
+                    contentModels.addComposersSubsection(composerModels)
+                }
+            } else {
+                contentModels.addComposersSubsection(composerModels)
+            }
         }
 
         contentModels.add(
-            SectionHeaderListModel(resources.getString(R.string.section_header_songs))
+            SectionHeaderListModel(resources.getString(R.string.section_header_songs_from_game))
         )
 
         if (!filteredSongs.isNullOrEmpty()) {
@@ -137,6 +156,20 @@ class Config(
         }
 
         return@Config contentModels
+    }
+
+    private fun MutableList<ListModel>.addComposersSubsection(
+        composerModels: List<WideItemListModel>
+    ) {
+        add(
+            SubsectionListModel(
+                id = R.string.section_header_composers.toLong(),
+                titleModel = SubsectionHeaderListModel(
+                    resources.getString(R.string.section_header_composers)
+                ),
+                children = composerModels
+            )
+        )
     }
 
     override val emptyConfig = EmptyState.Config(

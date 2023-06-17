@@ -3,8 +3,8 @@ package com.vgleadsheets.composables
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,16 +26,15 @@ import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.themes.VglsMaterial
 
 @Composable
-fun WideItem(
+fun RowScope.WideItem(
     model: WideItemListModel,
     modifier: Modifier
 ) {
     Row(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
-            .padding(8.dp)
-            .height(64.dp)
-            .aspectRatio(2.8f)
+            .padding(vertical = 4.dp)
+            .height(54.dp)
+            .weight(1.0f)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)
@@ -56,7 +55,7 @@ fun WideItem(
             textAlign = TextAlign.Start,
             maxLines = 2,
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .weight(1.0f)
@@ -70,7 +69,7 @@ fun WideItem(
 @Composable
 private fun Light() {
     VglsMaterial {
-        Box(
+        Row(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
@@ -87,7 +86,7 @@ private fun Light() {
 @Composable
 private fun Dark() {
     VglsMaterial {
-        Box(
+        Row(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
@@ -101,7 +100,7 @@ private fun Dark() {
 }
 
 @Composable
-private fun Sample() {
+private fun RowScope.Sample() {
     WideItem(
         WideItemListModel(
             1234L,

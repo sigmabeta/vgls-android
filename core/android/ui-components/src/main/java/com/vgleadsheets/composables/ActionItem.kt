@@ -32,7 +32,6 @@ fun ActionItem(
 ) {
     Row(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(

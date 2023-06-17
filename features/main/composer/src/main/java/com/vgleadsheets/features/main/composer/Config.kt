@@ -104,7 +104,7 @@ class Config(
         }
 
         listOf(
-            SectionHeaderListModel(resources.getString(R.string.section_header_songs))
+            SectionHeaderListModel(resources.getString(R.string.section_header_songs_by_composer))
         ) + filteredSongs
     }
 

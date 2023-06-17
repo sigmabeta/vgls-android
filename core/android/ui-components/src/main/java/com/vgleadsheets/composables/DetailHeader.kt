@@ -32,7 +32,6 @@ fun DetailHeader(
 ) {
     Box(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
     ) {
         IconButton(

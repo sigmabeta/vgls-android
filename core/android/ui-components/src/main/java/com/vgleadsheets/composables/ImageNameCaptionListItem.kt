@@ -71,7 +71,6 @@ fun ImageNameCaptionListItem(
 ) {
     Row(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable(onClick = onClick)

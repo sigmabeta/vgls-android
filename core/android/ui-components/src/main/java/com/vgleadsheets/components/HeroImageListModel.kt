@@ -7,6 +7,8 @@ import com.vgleadsheets.composables.BigImage
 data class HeroImageListModel(
     val imageUrl: String,
     val imagePlaceholder: Int,
+    val name: String? = null,
+    val caption: String? = null,
 ) : ListModel {
     override val dataId = imageUrl.hashCode().toLong()
     override val layoutId = R.layout.list_component_cta
