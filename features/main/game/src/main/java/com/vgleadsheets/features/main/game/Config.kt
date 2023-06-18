@@ -127,8 +127,10 @@ class Config(
                             imageUrl,
                             composerModel.imagePlaceholder,
                             composerModel.name,
-                            resources.getString(R.string.subtitle_composer_one)
-                        )
+                            resources.getString(R.string.subtitle_composer_one),
+                        ) {
+                            clicks.composer(composerModel.dataId)
+                        }
                     )
                 } else {
                     contentModels.addComposersSubsection(composerModels)

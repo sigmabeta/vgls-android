@@ -1,6 +1,7 @@
 package com.vgleadsheets.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +34,8 @@ fun BigImage(
         modifier = modifier
             .padding(dimensionResource(id = com.vgleadsheets.ui_core.R.dimen.margin_side))
             .height(320.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(onClick = model.onClick),
         cornerRadius = 16.dp,
     ) {
         CrossfadeImage(
@@ -98,7 +100,7 @@ private fun LoadingGame() {
         HeroImageListModel(
             imageUrl = "whatever",
             imagePlaceholder = com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
-        ),
+        ) { },
         modifier = Modifier
     )
 }
@@ -110,7 +112,7 @@ private fun SuccessGame() {
         HeroImageListModel(
             imageUrl = "whatever",
             imagePlaceholder = R.drawable.img_preview_game,
-        ),
+        ) { },
         modifier = Modifier
     )
 }
@@ -124,7 +126,7 @@ private fun SuccessGameWithLabel() {
             imagePlaceholder = R.drawable.img_preview_game,
             name = "Xenoblade Chronicles 3",
             caption = "Pretty awesome game tbh"
-        ),
+        ) { },
         modifier = Modifier
     )
 }

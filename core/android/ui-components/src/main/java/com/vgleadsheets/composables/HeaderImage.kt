@@ -42,7 +42,7 @@ private fun LoadingGame() {
         HeroImageListModel(
             imageUrl = "whatever",
             imagePlaceholder = com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
-        ),
+        ) { },
         modifier = Modifier
             .height(320.dp)
             .fillMaxWidth(),
@@ -56,7 +56,7 @@ private fun SuccessGame() {
         HeroImageListModel(
             imageUrl = "whatever",
             imagePlaceholder = R.drawable.img_preview_game,
-        ),
+        ) { },
         modifier = Modifier
             .fillMaxWidth(),
     )

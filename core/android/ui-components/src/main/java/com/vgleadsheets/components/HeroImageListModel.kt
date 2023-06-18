@@ -9,6 +9,7 @@ data class HeroImageListModel(
     val imagePlaceholder: Int,
     val name: String? = null,
     val caption: String? = null,
+    val onClick: () -> Unit
 ) : ListModel {
     override val dataId = imageUrl.hashCode().toLong()
     override val layoutId = R.layout.list_component_cta

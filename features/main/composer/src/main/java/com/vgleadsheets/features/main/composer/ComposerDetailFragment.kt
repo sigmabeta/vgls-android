@@ -4,14 +4,14 @@ import android.os.Bundle
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
+import com.vgleadsheets.features.main.detail.DetailFragment
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.ComposeListFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class ComposerDetailFragment : ComposeListFragment<ComposerDetailContent, ComposerDetailState>() {
+class ComposerDetailFragment : DetailFragment<ComposerDetailContent, ComposerDetailState>() {
     @Inject
     lateinit var viewModelFactory: ComposerDetailViewModel.Factory
 
