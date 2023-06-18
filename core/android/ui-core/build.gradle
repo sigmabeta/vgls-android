@@ -22,6 +22,7 @@ dependencies {
     // AndroidX libs
     api "androidx.core:core-ktx:$core_ktx_version"
     api "androidx.appcompat:appcompat:$appcompat_version"
+    api "androidx.lifecycle:lifecycle-common:$lifecycle_version"
     api "androidx.constraintlayout:constraintlayout:$constraint_version"
     api "com.google.android.material:material:$material_version"
 
