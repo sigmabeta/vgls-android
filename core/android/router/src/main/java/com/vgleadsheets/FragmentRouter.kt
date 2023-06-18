@@ -67,4 +67,6 @@ interface FragmentRouter {
     fun restartApp()
 
     fun goToWebUrl(url: String)
+
+    fun launchShareSheet(toShare: String)
 }

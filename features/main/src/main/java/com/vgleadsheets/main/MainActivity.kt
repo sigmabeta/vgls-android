@@ -220,6 +220,16 @@ class MainActivity :
         startActivity(launcher)
     }
 
+    override fun launchShareSheet(toShare: String) {
+        val shareSheetLauncher = Intent(Intent.ACTION_SEND)
+
+        shareSheetLauncher.putExtra(Intent.EXTRA_TEXT, toShare)
+        shareSheetLauncher.type = TYPE_TEXT_PLAIN
+
+        val shareSheet = Intent.createChooser(shareSheetLauncher, null)
+        startActivity(shareSheet)
+    }
+
     override fun showLicenseScreen() = showFragmentSimple {
         LicenseFragment.newInstance()
     }
@@ -374,4 +384,8 @@ class MainActivity :
             R.anim.enter_pop,
             R.anim.exit_pop
         )
+
+    companion object {
+        const val TYPE_TEXT_PLAIN = "text/plain"
+    }
 }

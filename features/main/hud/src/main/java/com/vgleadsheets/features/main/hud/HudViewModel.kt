@@ -278,7 +278,10 @@ class HudViewModel @AssistedInject constructor(
             return@withState
         }
 
-        val url = "https://www.vgleadsheets.com/view/" + processUrl(gameName) + "/" + processUrl(songName)
+        val url = "https://www.vgleadsheets.com/view/${processUrl(gameName)}/${processUrl(songName)}"
+        val toShare = "Here's the lead sheet for $songName from $gameName: $url"
+        router.launchShareSheet(toShare)
+
     }
 
     fun favoritesClick() = withState { state ->
