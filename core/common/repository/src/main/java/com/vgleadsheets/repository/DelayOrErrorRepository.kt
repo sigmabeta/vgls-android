@@ -35,6 +35,9 @@ class DelayOrErrorRepository(
     override fun getSongsForGame(gameId: Long) =
         realRepository.getSongsForGame(gameId)
 
+    override fun getSongsForGameSync(gameId: Long) =
+        realRepository.getSongsForGameSync(gameId)
+
     override fun getTagValuesForSong(songId: Long) = realRepository.getTagValuesForSong(songId)
 
     override fun getSongsForTagValue(tagValueId: Long) =

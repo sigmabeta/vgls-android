@@ -27,6 +27,10 @@ class SongAndroidDataSource(
         .getForGame(gameId)
         .mapList { convert.entityToModel(it) }
 
+    override fun getSongsForGameSync(gameId: Long) = roomImpl
+        .getForGameSync(gameId)
+        .map { convert.entityToModel(it) }
+
     override fun getSongsForComposer(composerId: Long) = roomImpl
         .getForComposer(composerId)
         .mapList { convert.entityToModel(it) }

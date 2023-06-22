@@ -4,9 +4,11 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.yield
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
-import kotlinx.coroutines.yield
 
 fun <ContentType> Async<ContentType>.content() = invoke()
 
@@ -57,6 +59,14 @@ fun ListContent?.isNullOrEmpty(): Boolean {
 @Suppress("MagicNumber")
 suspend inline fun <T, R> Iterable<T>.mapYielding(transform: (T) -> R): List<R> {
     return mapToYielding(ArrayList(collectionSizeOrDefault(10)), transform)
+}
+
+fun <ListType, ReturnType> Flow<List<ListType>>.mapList(
+    mapper: (ListType) -> ReturnType
+): Flow<List<ReturnType>> {
+    return map { list ->
+        list.map(mapper)
+    }
 }
 
 /**

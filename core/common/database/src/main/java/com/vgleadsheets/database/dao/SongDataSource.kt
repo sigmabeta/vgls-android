@@ -10,6 +10,8 @@ interface SongDataSource : DataSource<Song> {
 
     fun getSongsForGame(gameId: Long): Flow<List<Song>>
 
+    fun getSongsForGameSync(gameId: Long): List<Song>
+
     fun getSongsForComposer(composerId: Long): Flow<List<Song>>
 
     fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>

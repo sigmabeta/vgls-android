@@ -114,6 +114,9 @@ class RealRepository (
         .getSongsForGame(gameId)
         .flowOn(dispatchers.disk)
 
+    override fun getSongsForGameSync(gameId: Long) = songDataSource
+        .getSongsForGameSync(gameId)
+
     override fun getSongsForTagValue(tagValueId: Long) = songDataSource
         .getSongsForTagValue(tagValueId)
         .flowOn(dispatchers.disk)
