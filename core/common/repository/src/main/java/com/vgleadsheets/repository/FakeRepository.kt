@@ -21,7 +21,7 @@ class FakeRepository(
     override suspend fun checkShouldAutoUpdate() = false
 
     override fun refresh() = flow { emit(Unit) }
-    override fun getAllGames(withSongs: Boolean) = flow {
+    override fun getAllGames() = flow {
         val games = fakeModelGenerator.possibleGames
             ?.map {
                 it.toModel(
@@ -35,7 +35,7 @@ class FakeRepository(
         emit(games)
     }.flowOn(dispatchers.disk)
 
-    override fun getAllSongs(withComposers: Boolean) = flow {
+    override fun getAllSongs() = flow {
         val songs = fakeModelGenerator.possibleGames
             ?.map { apiGame ->
                 apiGame.songs.map { apiSong ->
@@ -55,7 +55,7 @@ class FakeRepository(
         emit(songs)
     }.flowOn(dispatchers.disk)
 
-    override fun getAllComposers(withSongs: Boolean) = flow {
+    override fun getAllComposers() = flow {
         val composers = fakeModelGenerator.possibleComposers
             ?.map { apiComposer ->
                 apiComposer.toModel(
@@ -69,23 +69,23 @@ class FakeRepository(
         emit(composers)
     }.flowOn(dispatchers.disk)
 
-    override fun getAllTagKeys(withValues: Boolean): Flow<List<TagKey>> {
+    override fun getAllTagKeys(): Flow<List<TagKey>> {
         TODO("Not yet implemented")
     }
 
-    override fun getFavoriteGames(withSongs: Boolean): Flow<List<Game>> {
+    override fun getFavoriteGames(): Flow<List<Game>> {
         TODO("Not yet implemented")
     }
 
-    override fun getFavoriteSongs(withComposers: Boolean): Flow<List<Song>> {
+    override fun getFavoriteSongs(): Flow<List<Song>> {
         TODO("Not yet implemented")
     }
 
-    override fun getFavoriteComposers(withSongs: Boolean): Flow<List<Composer>> {
+    override fun getFavoriteComposers(): Flow<List<Composer>> {
         TODO("Not yet implemented")
     }
 
-    override fun getSongsForGame(gameId: Long, withComposers: Boolean): Flow<List<Song>> {
+    override fun getSongsForGame(gameId: Long, ): Flow<List<Song>> {
         TODO("Not yet implemented")
     }
 

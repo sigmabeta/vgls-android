@@ -1,12 +1,12 @@
 package com.vgleadsheets.repository
 
-import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlin.random.Random
 
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
@@ -16,23 +16,23 @@ class DelayOrErrorRepository(
 
     override fun refresh() = realRepository.refresh()
 
-    override fun getAllGames(withSongs: Boolean) = realRepository.getAllGames()
+    override fun getAllGames() = realRepository.getAllGames()
 
-    override fun getAllSongs(withComposers: Boolean) = realRepository.getAllSongs(withComposers)
+    override fun getAllSongs() = realRepository.getAllSongs()
 
-    override fun getAllComposers(withSongs: Boolean) = realRepository.getAllComposers(withSongs)
+    override fun getAllComposers() = realRepository.getAllComposers()
 
-    override fun getAllTagKeys(withValues: Boolean) = realRepository.getAllTagKeys(withValues)
+    override fun getAllTagKeys() = realRepository.getAllTagKeys()
 
-    override fun getFavoriteGames(withSongs: Boolean) = realRepository.getFavoriteGames(withSongs)
+    override fun getFavoriteGames() = realRepository.getFavoriteGames()
 
-    override fun getFavoriteSongs(withComposers: Boolean) =
-        realRepository.getFavoriteSongs(withComposers)
+    override fun getFavoriteSongs() =
+        realRepository.getFavoriteSongs()
 
-    override fun getFavoriteComposers(withSongs: Boolean) =
-        realRepository.getFavoriteComposers(withSongs)
+    override fun getFavoriteComposers() =
+        realRepository.getFavoriteComposers()
 
-    override fun getSongsForGame(gameId: Long, withComposers: Boolean) =
+    override fun getSongsForGame(gameId: Long) =
         realRepository.getSongsForGame(gameId)
 
     override fun getTagValuesForSong(songId: Long) = realRepository.getTagValuesForSong(songId)

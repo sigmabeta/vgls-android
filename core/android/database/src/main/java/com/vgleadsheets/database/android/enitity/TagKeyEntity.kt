@@ -11,5 +11,7 @@ data class TagKeyEntity(
 ) {
     companion object {
         const val TABLE = "tag_key"
+
+        const val COLUMN_FOREIGN_KEY = "tag_key_id"
     }
 }

@@ -18,7 +18,7 @@ class SongListViewModel @AssistedInject constructor(
     }
 
     private fun fetchSongs() {
-        repository.getAllSongs(false)
+        repository.getAllSongs()
             .execute {
                 copy(contentLoad = SongListContent(it))
             }

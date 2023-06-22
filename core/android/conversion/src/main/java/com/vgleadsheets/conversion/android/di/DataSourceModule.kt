@@ -19,17 +19,13 @@ import com.vgleadsheets.conversion.android.datasource.TagKeyAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.TagValueAndroidDataSource
 import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
-import com.vgleadsheets.database.android.dao.ComposersForSongDao
 import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
 import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.dao.GameRoomDao
 import com.vgleadsheets.database.android.dao.SongAliasRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
-import com.vgleadsheets.database.android.dao.SongsForComposerDao
-import com.vgleadsheets.database.android.dao.SongsForTagValueDao
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
-import com.vgleadsheets.database.android.dao.TagValuesForSongDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
@@ -63,14 +59,10 @@ class DataSourceModule {
     @Singleton
     fun composerDataSource(
         convert: ComposerConverter,
-        manyConverter: SongConverter,
         roomImpl: ComposerRoomDao,
-        relatedRoomImpl: SongsForComposerDao
     ): ComposerDataSource = ComposerAndroidDataSource(
         convert,
-        manyConverter,
         roomImpl,
-        relatedRoomImpl
     )
 
     @Provides
@@ -86,31 +78,19 @@ class DataSourceModule {
     fun gameAliasDataSource(
         convert: GameAliasConverter,
         roomImpl: GameAliasRoomDao,
-        otoRelatedRoomImpl: GameRoomDao,
-        gameConverter: GameConverter,
     ): GameAliasDataSource = GameAliasAndroidDataSource(
         convert,
         roomImpl,
-        otoRelatedRoomImpl,
-        gameConverter,
     )
 
     @Provides
     @Singleton
     fun gameDataSource(
         convert: GameConverter,
-        manyConverter: SongConverter,
         roomImpl: GameRoomDao,
-        relatedRoomImpl: SongRoomDao,
-        composersForSongDao: ComposersForSongDao,
-        composerConverter: ComposerConverter
     ): GameDataSource = GameAndroidDataSource(
         convert,
-        manyConverter,
         roomImpl,
-        relatedRoomImpl,
-        composersForSongDao,
-        composerConverter,
     )
 
     @Provides
@@ -118,62 +98,38 @@ class DataSourceModule {
     fun songAliasDataSource(
         convert: SongAliasConverter,
         roomImpl: SongAliasRoomDao,
-        otoRelatedRoomImpl: SongRoomDao,
-        songConverter: SongConverter,
     ): SongAliasDataSource = SongAliasAndroidDataSource(
         convert,
         roomImpl,
-        otoRelatedRoomImpl,
-        songConverter,
     )
 
     @Provides
     @Singleton
     fun songDataSource(
         convert: SongConverter,
-        manyConverter: ComposerConverter,
-        tagValueConverter: TagValueConverter,
         roomImpl: SongRoomDao,
-        relatedRoomImpl: ComposersForSongDao,
-        tagValueRoomImpl: TagValuesForSongDao
     ): SongDataSource = SongAndroidDataSource(
         convert,
-        manyConverter,
-        tagValueConverter,
         roomImpl,
-        relatedRoomImpl,
-        tagValueRoomImpl
     )
 
     @Provides
     @Singleton
     fun tagKeyDataSource(
         convert: TagKeyConverter,
-        manyConverter: TagValueConverter,
         roomImpl: TagKeyRoomDao,
-        relatedRoomImpl: TagValueRoomDao,
-        songsForTagValueDao: SongsForTagValueDao,
-        songConverter: SongConverter
     ): TagKeyDataSource = TagKeyAndroidDataSource(
         convert,
-        manyConverter,
         roomImpl,
-        relatedRoomImpl,
-        songsForTagValueDao,
-        songConverter,
     )
 
     @Provides
     @Singleton
     fun tagValueDataSource(
         convert: TagValueConverter,
-        manyConverter: SongConverter,
         roomImpl: TagValueRoomDao,
-        relatedRoomImpl: SongsForTagValueDao
     ): TagValueDataSource = TagValueAndroidDataSource(
         convert,
-        manyConverter,
         roomImpl,
-        relatedRoomImpl
     )
 }

@@ -89,28 +89,4 @@ class DatabaseModule {
     fun tagValueDao(
         database: VglsDatabase
     ) = database.tagValueDao()
-
-    @Provides
-    @Singleton
-    fun composerForSongDao(
-        database: VglsDatabase
-    ) = database.composerForSongDao()
-
-    @Provides
-    @Singleton
-    fun songForComposerDao(
-        database: VglsDatabase
-    ) = database.songForComposerDao()
-
-    @Provides
-    @Singleton
-    fun songForTagValueDao(
-        database: VglsDatabase
-    ) = database.songForTagValueDao()
-
-    @Provides
-    @Singleton
-    fun tagValueForSongDao(
-        database: VglsDatabase
-    ) = database.tagValueForSongDao()
 }

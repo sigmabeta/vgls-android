@@ -4,27 +4,29 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_PRIMARY_KEY_ID
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETICAL_ORDER
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
-import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
 import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.android.enitity.GameAliasEntity
+import com.vgleadsheets.database.android.enitity.GameEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface GameAliasRoomDao : ManyFromOneDao<GameAliasEntity> {
+interface GameAliasRoomDao : RoomDao<GameAliasEntity> {
     @Query(QUERY_SEARCH)
     fun searchByName(name: String): Flow<List<GameAliasEntity>>
 
-    @Query(QUERY_MANY)
-    override fun getEntitiesForForeign(id: Long): Flow<List<GameAliasEntity>>
+    @Query(QUERY_GAME)
+    fun getForGame(id: Long): Flow<List<GameAliasEntity>>
 
-    @Query(QUERY_MANY)
-    override fun getEntitiesForForeignSync(id: Long): List<GameAliasEntity>
+    @Query(QUERY_GAME)
+    fun getForGameSync(id: Long): List<GameAliasEntity>
 
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<GameAliasEntity>
@@ -50,13 +52,13 @@ interface GameAliasRoomDao : ManyFromOneDao<GameAliasEntity> {
 
         private const val TABLE = GameAliasEntity.TABLE
 
-        private const val ROW_MANY_KEY = GameAliasEntity.ROW_FOREIGN_KEY
-        private const val WHERE_MANY = "WHERE $ROW_MANY_KEY = :$ROW_PRIMARY_KEY_ID"
+        private const val COLUMN_FOREIGN_KEY_GAME = GameEntity.COLUMN_FOREIGN_KEY_ALIAS
+        private const val WHERE_GAME = "$WHERE $COLUMN_FOREIGN_KEY_GAME = :$COLUMN_PRIMARY_KEY_ID"
 
         // Bespoke Queries
 
-        const val QUERY_MANY =
-            "$GET $TABLE $WHERE_MANY $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
+        const val QUERY_GAME =
+            "$GET $TABLE $WHERE_GAME $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
 
         // Default Queries
 

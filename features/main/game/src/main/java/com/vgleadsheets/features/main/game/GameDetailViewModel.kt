@@ -45,7 +45,7 @@ class GameDetailViewModel @AssistedInject constructor(
     }
 
     private fun fetchSongsAndComposers() = withState { state ->
-        repository.getSongsForGame(state.gameId, withComposers = true)
+        repository.getSongsForGame(state.gameId)
             .execute { songs ->
                 val composers = when (songs) {
                     is Uninitialized -> Uninitialized

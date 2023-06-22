@@ -7,6 +7,8 @@ interface DataSource<ModelType> {
 
     fun getOneByIdSync(id: Long): ModelType
 
+    fun getAll(): Flow<List<ModelType>>
+
     fun remove(ids: List<Long>)
 
     fun insert(models: List<ModelType>)

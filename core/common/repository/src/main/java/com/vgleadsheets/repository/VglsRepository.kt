@@ -14,20 +14,20 @@ interface VglsRepository {
     fun refresh(): Flow<Unit>
 
     // Full Lists
-    fun getAllGames(withSongs: Boolean = true): Flow<List<Game>>
-    fun getAllSongs(withComposers: Boolean = true): Flow<List<Song>>
-    fun getAllComposers(withSongs: Boolean = true): Flow<List<Composer>>
-    fun getAllTagKeys(withValues: Boolean = true): Flow<List<TagKey>>
+    fun getAllGames(): Flow<List<Game>>
+    fun getAllSongs(): Flow<List<Song>>
+    fun getAllComposers(): Flow<List<Composer>>
+    fun getAllTagKeys(): Flow<List<TagKey>>
 
     // Favorites
-    fun getFavoriteGames(withSongs: Boolean = true): Flow<List<Game>>
+    fun getFavoriteGames(): Flow<List<Game>>
 
-    fun getFavoriteSongs(withComposers: Boolean = true): Flow<List<Song>>
+    fun getFavoriteSongs(): Flow<List<Song>>
 
-    fun getFavoriteComposers(withSongs: Boolean = true): Flow<List<Composer>>
+    fun getFavoriteComposers(): Flow<List<Composer>>
 
     // Related Lists
-    fun getSongsForGame(gameId: Long, withComposers: Boolean = true): Flow<List<Song>>
+    fun getSongsForGame(gameId: Long): Flow<List<Song>>
     fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
     fun getTagValuesForTagKey(tagKeyId: Long): Flow<List<TagValue>>
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>

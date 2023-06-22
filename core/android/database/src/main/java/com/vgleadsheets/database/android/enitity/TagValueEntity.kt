@@ -3,8 +3,8 @@ package com.vgleadsheets.database.android.enitity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
-import com.vgleadsheets.database.android.enitity.TagValueEntity.Companion.ROW_FOREIGN_KEY
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_PRIMARY_KEY_ID
+import com.vgleadsheets.database.android.enitity.TagValueEntity.Companion.COLUMN_FOREIGN_KEY
 import com.vgleadsheets.database.android.enitity.TagValueEntity.Companion.TABLE
 
 @Suppress("ConstructorParameterNaming")
@@ -13,8 +13,8 @@ import com.vgleadsheets.database.android.enitity.TagValueEntity.Companion.TABLE
     foreignKeys = [
         ForeignKey(
             entity = TagKeyEntity::class,
-            parentColumns = arrayOf(ROW_PRIMARY_KEY_ID),
-            childColumns = arrayOf(ROW_FOREIGN_KEY),
+            parentColumns = arrayOf(COLUMN_PRIMARY_KEY_ID),
+            childColumns = arrayOf(COLUMN_FOREIGN_KEY),
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -28,6 +28,6 @@ data class TagValueEntity(
     companion object {
         const val TABLE = "tag_value"
 
-        const val ROW_FOREIGN_KEY = "tag_key_id"
+        const val COLUMN_FOREIGN_KEY = "tag_key_id"
     }
 }

@@ -1,12 +1,13 @@
 package com.vgleadsheets.database.dao
 
-import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.relation.SongTagValueRelation
 import com.vgleadsheets.model.tag.TagValue
 import kotlinx.coroutines.flow.Flow
 
-interface TagValueDataSource : OneToManyDataSource<TagValue> {
+interface TagValueDataSource : DataSource<TagValue> {
     fun insertRelations(relations: List<SongTagValueRelation>)
 
-    fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
+    fun getTagValuesForTagKey(tagKeyId: Long): Flow<List<TagValue>>
+
+    fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
 }

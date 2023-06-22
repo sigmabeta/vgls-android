@@ -30,7 +30,6 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
-import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -41,9 +40,10 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import java.util.Locale
 
 @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
-class RealRepository constructor(
+class RealRepository (
     private val vglsApi: VglsApi,
     private val transactionRunner: TransactionRunner,
     private val threeTen: ThreeTenTime,
@@ -85,44 +85,44 @@ class RealRepository constructor(
 
     override fun refresh() = refreshInternal()
 
-    override fun getAllGames(withSongs: Boolean) = gameDataSource
-        .getAll(withSongs)
+    override fun getAllGames() = gameDataSource
+        .getAll()
         .flowOn(dispatchers.disk)
 
-    override fun getAllSongs(withComposers: Boolean) = songDataSource
-        .getAll(withComposers)
+    override fun getAllSongs() = songDataSource
+        .getAll()
         .flowOn(dispatchers.disk)
 
-    override fun getAllComposers(withSongs: Boolean) = composerDataSource
-        .getAll(withSongs)
+    override fun getAllComposers() = composerDataSource
+        .getAll()
         .flowOn(dispatchers.disk)
 
-    override fun getFavoriteGames(withSongs: Boolean) =
+    override fun getFavoriteGames() =
         gameDataSource.getFavorites().flowOn(dispatchers.disk)
 
-    override fun getFavoriteSongs(withComposers: Boolean) =
+    override fun getFavoriteSongs() =
         songDataSource.getFavorites().flowOn(dispatchers.disk)
 
-    override fun getFavoriteComposers(withSongs: Boolean) =
+    override fun getFavoriteComposers() =
         composerDataSource.getFavorites().flowOn(dispatchers.disk)
 
-    override fun getAllTagKeys(withValues: Boolean) = tagKeyDataSource
-        .getAll(withValues)
+    override fun getAllTagKeys() = tagKeyDataSource
+        .getAll()
         .flowOn(dispatchers.disk)
 
-    override fun getSongsForGame(gameId: Long, withComposers: Boolean) = gameDataSource
-        .getSongsForGame(gameId, withComposers)
+    override fun getSongsForGame(gameId: Long) = songDataSource
+        .getSongsForGame(gameId)
         .flowOn(dispatchers.disk)
 
-    override fun getSongsForTagValue(tagValueId: Long) = tagValueDataSource
+    override fun getSongsForTagValue(tagValueId: Long) = songDataSource
         .getSongsForTagValue(tagValueId)
         .flowOn(dispatchers.disk)
 
-    override fun getTagValuesForTagKey(tagKeyId: Long) = tagKeyDataSource
+    override fun getTagValuesForTagKey(tagKeyId: Long) = tagValueDataSource
         .getTagValuesForTagKey(tagKeyId)
         .flowOn(dispatchers.disk)
 
-    override fun getTagValuesForSong(songId: Long) = songDataSource
+    override fun getTagValuesForSong(songId: Long) = tagValueDataSource
         .getTagValuesForSong(songId)
         .flowOn(dispatchers.disk)
 
@@ -251,8 +251,8 @@ class RealRepository constructor(
             list.mapNotNull {
                 it.game?.copy(
                     name = it.name,
-                    songs = gameDataSource
-                        .getSongsForGame(it.game!!.id, false)
+                    songs = songDataSource
+                        .getSongsForGame(it.game!!.id)
                         .first()
                 )
             }
@@ -265,7 +265,7 @@ class RealRepository constructor(
             list.mapNotNull {
                 it.composer?.copy(
                     name = it.name,
-                    songs = composerDataSource
+                    songs = songDataSource
                         .getSongsForComposer(it.composer!!.id)
                         .first()
                 )
@@ -313,9 +313,9 @@ class RealRepository constructor(
     @Suppress("DefaultLocale", "LongMethod", "ComplexMethod")
     private fun refreshInternal() = combine(
         getDigest(),
-        getAllGames(false).take(1),
-        getAllComposers(false).take(1),
-        getAllSongs(false).take(1)
+        getAllGames().take(1),
+        getAllComposers().take(1),
+        getAllSongs().take(1)
     ) { digest, dbGames, dbComposers, dbSongs ->
         val apiComposers = digest.composers
         val apiGames = digest.games

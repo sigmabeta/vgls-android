@@ -1,17 +1,12 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.conversion.WithManyConverter
-import com.vgleadsheets.database.android.dao.SongsForComposerDao
 import com.vgleadsheets.database.android.enitity.ComposerEntity
-import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Part
-import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
 
-class ComposerConverter :
-    WithManyConverter<Composer, ComposerEntity, Song, SongEntity, SongsForComposerDao> {
+class ComposerConverter : Converter<Composer, ComposerEntity> {
     override fun Composer.toEntity() = ComposerEntity(
         id,
         name,
@@ -32,24 +27,4 @@ class ComposerConverter :
         isFavorite,
         isAvailableOffline,
     )
-
-    override fun ComposerEntity.toModelWithMany(
-        manyDao: SongsForComposerDao,
-        converter: Converter<Song, SongEntity>
-    ) = Composer(
-        id,
-        name,
-        manyDao.getManyModels(id, converter),
-        photoUrl,
-        hasVocalSongs,
-        sheetsPlayed,
-        isFavorite,
-        isAvailableOffline,
-    )
-
-    override fun SongsForComposerDao.getManyModels(
-        relationId: Long,
-        converter: Converter<Song, SongEntity>
-    ) = getJoinedEntitiesSync(relationId)
-        .map { converter.entityToModel(it) }
 }

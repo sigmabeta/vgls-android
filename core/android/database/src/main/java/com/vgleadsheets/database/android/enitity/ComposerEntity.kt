@@ -18,5 +18,7 @@ data class ComposerEntity(
 ) {
     companion object {
         const val TABLE = "composer"
+
+        const val COLUMN_FOREIGN_KEY = "composerId"
     }
 }

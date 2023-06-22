@@ -16,5 +16,11 @@ data class GameEntity(
 ) {
     companion object {
         const val TABLE = "game"
+
+        const val COLUMN_FOREIGN_KEY = "game_id"
+
+        // GameAliases do not use a matching column name. oops.
+        const val COLUMN_FOREIGN_KEY_ALIAS = "gameId"
+
     }
 }
