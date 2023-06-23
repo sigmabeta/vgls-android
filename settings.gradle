@@ -52,6 +52,7 @@ include ':app',
         ':core:common:perf',
         ':core:common:repository',
         ':core:common:tracking',
+        ':core:common:url',
 
         ':core:fake:perf',
         ':core:fake:tracking',

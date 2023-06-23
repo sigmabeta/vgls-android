@@ -86,7 +86,7 @@ allprojects {
     }
 
     // Treat all Kotlin warnings as errors
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions.allWarningsAsErrors = true
     }
 }

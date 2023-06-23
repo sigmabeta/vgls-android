@@ -1,6 +1,6 @@
 package com.vgleadsheets.images
 
-import android.net.Uri
+import com.vgleadsheets.url.UrlGenerator
 
 object Page {
     fun generateImageUrl(
@@ -9,31 +9,24 @@ object Page {
         filename: String,
         isAlternateEnabled: Boolean,
         pageNumber: Int
-    ): String {
-        return baseImageUrl +
-            partApiId + URL_SEPARATOR_FOLDER +
-            Uri.encode(filename) +
-            (if (isAlternateEnabled) IDENTIFIER_ALT else "") +
-            URL_SEPARATOR_NUMBER +
-            pageNumber + URL_FILE_EXT_PNG
-    }
+    ) = UrlGenerator.generateSongPageImageUrl(
+        baseImageUrl,
+        partApiId,
+        filename,
+        isAlternateEnabled,
+        pageNumber,
+    )
 
     fun generateThumbUrl(
         baseImageUrl: String,
         selectedPartApiId: String,
         isAlternateEnabled: Boolean,
         filename: String
-    ) = generateImageUrl(
+    ) = UrlGenerator.generateSongPageImageUrl(
         baseImageUrl,
         selectedPartApiId,
         filename,
         isAlternateEnabled,
         1
     )
-
-    private const val IDENTIFIER_ALT = " [ALT]"
-
-    private const val URL_SEPARATOR_FOLDER = "/"
-    private const val URL_SEPARATOR_NUMBER = "-"
-    private const val URL_FILE_EXT_PNG = ".png"
 }

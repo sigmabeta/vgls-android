@@ -4,6 +4,8 @@ apply from: "$rootProject.projectDir/di-android.gradle"
 dependencies {
     // Image Loading
     api "com.squareup.picasso:picasso:$picasso_version"
+
+    implementation project(":core:common:url")
 }
 
 android {
