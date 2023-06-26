@@ -1,21 +1,21 @@
 package com.vgleadsheets.features.main.list
 
-import com.airbnb.mvrx.MavericksState
+import com.vgleadsheets.mvrx.VglsState
 
-interface CompositeState<CompositeContentType : ListContent> : MavericksState {
+interface CompositeState<CompositeContentType : ListContent> : VglsState {
     val contentLoad: CompositeContentType
 
     fun content() = contentLoad
 
-    fun failure() = contentLoad.failure()
+    override fun failure() = contentLoad.failure()
 
-    fun isLoading() = contentLoad.isLoading()
+    override fun isLoading() = contentLoad.isLoading()
 
-    fun hasFailed() = contentLoad.hasFailed()
+    override fun hasFailed() = contentLoad.hasFailed()
 
-    fun isEmpty() = contentLoad.isEmpty()
+    override fun isEmpty() = contentLoad.isEmpty()
 
-    fun isReady() = contentLoad.isReady()
+    override fun isReady() = contentLoad.isReady()
 
-    fun isFullyLoaded() = contentLoad.isFullyLoaded()
+    override fun isFullyLoaded() = contentLoad.isFullyLoaded()
 }

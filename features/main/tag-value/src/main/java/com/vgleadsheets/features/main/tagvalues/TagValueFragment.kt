@@ -11,7 +11,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class TagValueFragment : ComposeListFragment<TagValueContent, TagValueState>() {
+class TagValueFragment : ComposeListFragment<TagValueState>() {
     @Inject
     lateinit var viewModelFactory: TagValueViewModel.Factory
 

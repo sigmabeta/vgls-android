@@ -93,6 +93,10 @@ class FakeRepository(
         TODO("Not yet implemented")
     }
 
+    override fun getSongsForComposer(composerId: Long): Flow<List<Song>> {
+        TODO("Not yet implemented")
+    }
+
     override fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>> {
         TODO("Not yet implemented")
     }

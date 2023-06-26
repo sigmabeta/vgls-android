@@ -7,7 +7,7 @@ import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class ComposerListFragment : ComposeListFragment<ComposerListContent, ComposerListState>() {
+class ComposerListFragment : ComposeListFragment<ComposerListState>() {
     @Inject
     lateinit var viewModelFactory: ComposerListViewModel.Factory
 
@@ -21,7 +21,6 @@ class ComposerListFragment : ComposeListFragment<ComposerListContent, ComposerLi
 
     override fun generateListConfig(state: ComposerListState, hudState: HudState) = Config(
         state,
-        hudState,
         Clicks(
             getFragmentRouter(),
             hudViewModel

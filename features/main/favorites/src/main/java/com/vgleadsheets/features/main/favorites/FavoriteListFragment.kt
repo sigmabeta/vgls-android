@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class FavoriteListFragment :
-    ComposeListFragment<FavoriteListContent, FavoriteListState>() {
+    ComposeListFragment<FavoriteListState>() {
     @Inject
     lateinit var viewModelFactory: FavoriteListViewModel.Factory
 

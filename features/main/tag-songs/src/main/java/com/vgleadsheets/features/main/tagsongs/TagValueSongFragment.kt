@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class TagValueSongFragment :
-    ComposeListFragment<TagValueSongContent, TagValueSongState>() {
+    ComposeListFragment<TagValueSongState>() {
     @Inject
     lateinit var viewModelFactory: TagValueSongViewModel.Factory
 

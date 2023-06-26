@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class SongListFragment :
-    ComposeListFragment<SongListContent, SongListState>() {
+    ComposeListFragment<SongListState>() {
     @Inject
     lateinit var viewModelFactory: SongListViewModel.Factory
 

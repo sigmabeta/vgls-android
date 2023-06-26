@@ -11,7 +11,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class SongFragment : ComposeListFragment<SongContent, SongState>() {
+class SongFragment : ComposeListFragment<SongState>() {
     @Inject
     lateinit var viewModelFactory: SongViewModel.Factory
 

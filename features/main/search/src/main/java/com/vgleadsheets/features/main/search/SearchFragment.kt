@@ -11,7 +11,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class SearchFragment : ComposeListFragment<SearchContent, SearchState>() {
+class SearchFragment : ComposeListFragment<SearchState>() {
     @Inject
     lateinit var viewModelFactory: SearchViewModel.Factory
 

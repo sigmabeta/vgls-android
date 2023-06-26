@@ -8,7 +8,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
 class TagKeyListFragment :
-    ComposeListFragment<TagKeyListContent, TagKeyListState>() {
+    ComposeListFragment<TagKeyListState>() {
     @Inject
     lateinit var viewModelFactory: TagKeyListViewModel.Factory
 

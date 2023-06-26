@@ -8,7 +8,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class SettingFragment : ComposeListFragment<SettingContent, SettingState>() {
+class SettingFragment : ComposeListFragment<SettingState>() {
     @Inject
     lateinit var viewModelFactory: SettingViewModel.Factory
 

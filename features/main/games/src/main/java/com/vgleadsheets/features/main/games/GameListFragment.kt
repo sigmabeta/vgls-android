@@ -7,7 +7,7 @@ import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class GameListFragment : ComposeListFragment<GameListContent, GameListState>() {
+class GameListFragment : ComposeListFragment<GameListState>() {
     @Inject
     lateinit var viewModelFactory: GameListViewModel.Factory
 

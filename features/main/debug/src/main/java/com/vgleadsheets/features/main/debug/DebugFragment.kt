@@ -10,7 +10,7 @@ import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class DebugFragment : ComposeListFragment<DebugContent, DebugState>() {
+class DebugFragment : ComposeListFragment<DebugState>() {
     @Inject
     lateinit var viewModelFactory: DebugViewModel.Factory
 

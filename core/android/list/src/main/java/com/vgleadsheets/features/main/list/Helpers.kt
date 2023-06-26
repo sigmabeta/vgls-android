@@ -86,6 +86,8 @@ internal suspend inline fun <T, R, C : MutableCollection<in R>> Iterable<T>.mapT
     return destination
 }
 
+fun <K, V> Map<K, V>.copyWith(key: K, value: V) = toMutableMap().apply { put(key, value) }
+
 @PublishedApi
 internal fun <T> Iterable<T>.collectionSizeOrDefault(default: Int): Int =
     if (this is Collection<*>) this.size else default
