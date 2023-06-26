@@ -5,6 +5,7 @@ import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.coroutines.joinOrCancel
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.repository.VglsRepository
 import dagger.assisted.Assisted
@@ -52,7 +53,7 @@ class ComposerListViewModel @AssistedInject constructor(
                 .associate { it }
         }.execute {
             copy(composerToSongListMap = it)
-        }
+        }.joinOrCancel()
     }
 
     @AssistedFactory
