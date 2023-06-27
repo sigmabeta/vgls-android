@@ -16,6 +16,7 @@ import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.storage.Storage
+import com.vgleadsheets.url.UrlGenerator
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -258,17 +259,7 @@ class HudViewModel @AssistedInject constructor(
     }
 
 
-    // Where would be a good place to put this?
-    fun processUrl(urlToProcess: String) = urlToProcess
-            .replace(" ", "-")
-            .replace("é", "")
-            .replace("&", "")
-            .replace("'", "")
-            .replace(",","")
-            .replace("!", "")
-            .replace(".", "")
-            .replace(":", "")
-            .replace("--", "-")
+
 
     fun shareClick() = withState { state ->
         val gameName = state.selectedSong?.gameName
@@ -277,9 +268,9 @@ class HudViewModel @AssistedInject constructor(
         if (gameName == null || songName == null) {
             return@withState
         }
-
-        val url = "https://www.vgleadsheets.com/view/${processUrl(gameName)}/${processUrl(songName)}"
+        val url = UrlGenerator.generateSongLinkUrl(gameName, songName)
         val toShare = "Here's the lead sheet for $songName from $gameName: $url"
+
         router.launchShareSheet(toShare)
 
     }
