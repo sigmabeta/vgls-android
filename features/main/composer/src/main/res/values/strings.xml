@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="section_header_games">This composer\'s games on VGLS</string>
     <string name="section_header_songs_by_composer">Songs by this composer</string>
 
     <string name="subtitle_sheets_count">%1$d Songs</string>
+    <string name="subtitle_game_one">This composer\'s game on VGLS</string>
 
     <string name="missing_thing_composer_song">songs for this composer</string>
 

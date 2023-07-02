@@ -2,7 +2,7 @@ package com.vgleadsheets.conversion.android.datasource
 
 import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
-import com.vgleadsheets.conversion.mapList
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
 import com.vgleadsheets.database.android.enitity.TagValueEntity
 import com.vgleadsheets.database.android.join.SongTagValueJoin
@@ -29,9 +29,9 @@ class TagValueAndroidDataSource(
 
     override fun getTagValuesForTagKey(tagKeyId: Long) = roomImpl
         .getForTagKey(tagKeyId)
-        .mapList { convert.entityToModel(it) }
+        .mapListTo { convert.entityToModel(it) }
 
     override fun getTagValuesForSong(songId: Long) = roomImpl
         .getForSong(songId)
-        .mapList { convert.entityToModel(it) }
+        .mapListTo { convert.entityToModel(it) }
 }

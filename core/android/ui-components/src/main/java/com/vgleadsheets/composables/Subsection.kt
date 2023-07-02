@@ -100,7 +100,7 @@ private fun Sample() {
         SubsectionListModel(
             1234L,
             SubsectionHeaderListModel(
-                "Composers for this game",
+                "Composers for this game on VGLS",
             ),
             listOf(
                 WideItemListModel(

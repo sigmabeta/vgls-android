@@ -19,6 +19,6 @@ class Clicks(
     ) {
 /*        tracker.logComposerClick(id, trackingDetails)*/
 
-        router.showSongListForComposer(id)
+        router.showComposerDetail(id)
     }
 }

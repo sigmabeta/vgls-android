@@ -11,7 +11,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class GameDetailFragment : DetailFragment<GameDetailContent, GameDetailState>() {
+class GameDetailFragment : DetailFragment<GameDetailState>() {
     @Inject
     lateinit var viewModelFactory: GameDetailViewModel.Factory
 

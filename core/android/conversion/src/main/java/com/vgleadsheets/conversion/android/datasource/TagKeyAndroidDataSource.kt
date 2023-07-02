@@ -2,7 +2,7 @@ package com.vgleadsheets.conversion.android.datasource
 
 import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
-import com.vgleadsheets.conversion.mapList
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
 import com.vgleadsheets.database.android.enitity.TagKeyEntity
 import com.vgleadsheets.database.dao.TagKeyDataSource
@@ -17,5 +17,5 @@ class TagKeyAndroidDataSource(
 ), TagKeyDataSource {
     fun searchByName(name: String) = roomImpl
         .searchByName(name)
-        .mapList { convert.entityToModel(it) }
+        .mapListTo { convert.entityToModel(it) }
 }

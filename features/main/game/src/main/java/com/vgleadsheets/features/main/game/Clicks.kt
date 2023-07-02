@@ -12,7 +12,7 @@ class Clicks(
     }
 
     fun composer(id: Long) {
-        router.showSongListForComposer(id)
+        router.showComposerDetail(id)
     }
 
     fun onFavoriteClick() {

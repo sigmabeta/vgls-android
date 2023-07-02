@@ -180,7 +180,7 @@ class Clicks(
     }
 
     fun composerSearchResult(id: Long) {
-        router.showSongListForComposer(id)
+        router.showComposerDetail(id)
         viewModel.toRegularMode()
     }
 

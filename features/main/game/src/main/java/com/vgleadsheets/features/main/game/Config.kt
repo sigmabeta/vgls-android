@@ -37,15 +37,15 @@ class Config(
     private val perfSpec: PerfSpec,
     private val resources: Resources
 ) : ListConfig {
-    private val gameLoad = state.contentLoad.game
+    private val gameLoad = state.game
 
     private val game = gameLoad.content()
 
-    private val songsLoad = state.contentLoad.songs
+    private val songsLoad = state.songs
 
     private val songs = songsLoad.content()
 
-    private val composerLoad = state.contentLoad.composers
+    private val composerLoad = state.composers
 
     private val composers = composerLoad.content()
 
@@ -118,7 +118,6 @@ class Config(
         if (!composerModels.isNullOrEmpty()) {
             if (composerModels.size == 1) {
                 val composerModel = composerModels.first()
-
                 val imageUrl = composerModel.imageUrl
 
                 if (imageUrl != null) {
@@ -160,20 +159,6 @@ class Config(
         return@Config contentModels
     }
 
-    private fun MutableList<ListModel>.addComposersSubsection(
-        composerModels: List<WideItemListModel>
-    ) {
-        add(
-            SubsectionListModel(
-                id = R.string.section_header_composers.toLong(),
-                titleModel = SubsectionHeaderListModel(
-                    resources.getString(R.string.section_header_composers)
-                ),
-                children = composerModels
-            )
-        )
-    }
-
     override val emptyConfig = EmptyState.Config(
         songs?.isEmpty() == true,
         com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
@@ -192,6 +177,20 @@ class Config(
         state.isLoading(),
         LoadingItemStyle.WITH_IMAGE
     )
+
+    private fun MutableList<ListModel>.addComposersSubsection(
+        composerModels: List<WideItemListModel>
+    ) {
+        add(
+            SubsectionListModel(
+                id = R.string.section_header_composers.toLong(),
+                titleModel = SubsectionHeaderListModel(
+                    resources.getString(R.string.section_header_composers)
+                ),
+                children = composerModels
+            )
+        )
+    }
 
     private fun Song.subtitleText() = when (composers?.size) {
         null -> resources.getString(R.string.subtitle_composer_unknown)

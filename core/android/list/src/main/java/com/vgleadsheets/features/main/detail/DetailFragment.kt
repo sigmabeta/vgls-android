@@ -12,13 +12,12 @@ import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.hud.HudViewModel
-import com.vgleadsheets.features.main.list.CompositeState
 import com.vgleadsheets.features.main.list.ListConfig
-import com.vgleadsheets.features.main.list.ListContent
 import com.vgleadsheets.features.main.list.R
 import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
 import com.vgleadsheets.features.main.util.ListModelGenerator
 import com.vgleadsheets.features.main.util.TitleModelGenerator
+import com.vgleadsheets.mvrx.VglsState
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
@@ -26,10 +25,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class DetailFragment<
-    ContentType : ListContent,
-    StateType : CompositeState<ContentType>
-    > : VglsFragment() {
+abstract class DetailFragment<StateType : VglsState> : VglsFragment() {
     abstract val viewModel: MavericksViewModel<StateType>
 
     abstract fun generateListConfig(state: StateType, hudState: HudState): ListConfig

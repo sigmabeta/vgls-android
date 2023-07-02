@@ -18,4 +18,8 @@ class Clicks(
     fun onFavoriteClick() {
         viewModel.onFavoriteClick()
     }
+
+    fun game(id: Long) {
+        router.showGameDetail(id)
+    }
 }

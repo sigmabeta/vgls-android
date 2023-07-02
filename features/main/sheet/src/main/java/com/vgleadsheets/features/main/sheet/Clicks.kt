@@ -12,7 +12,7 @@ class Clicks(
     }
 
     fun composer(composerId: Long) {
-        router.showSongListForComposer(composerId)
+        router.showComposerDetail(composerId)
     }
 
     fun game(gameId: Long) {

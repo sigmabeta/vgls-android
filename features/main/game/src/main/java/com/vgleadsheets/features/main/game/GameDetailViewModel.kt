@@ -37,9 +37,7 @@ class GameDetailViewModel @AssistedInject constructor(
         repository.getGame(it.gameId)
             .execute {
                 copy(
-                    contentLoad = contentLoad.copy(
-                        game = it
-                    )
+                    game = it
                 )
             }
     }
@@ -61,10 +59,8 @@ class GameDetailViewModel @AssistedInject constructor(
                 }
 
                 copy(
-                    contentLoad = contentLoad.copy(
-                        songs = songs,
-                        composers = composers
-                    )
+                    songs = songs,
+                    composers = composers
                 )
             }
     }

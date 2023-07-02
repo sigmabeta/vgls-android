@@ -11,7 +11,7 @@ import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 import javax.inject.Named
 
-class ComposerDetailFragment : DetailFragment<ComposerDetailContent, ComposerDetailState>() {
+class ComposerDetailFragment : DetailFragment<ComposerDetailState>() {
     @Inject
     lateinit var viewModelFactory: ComposerDetailViewModel.Factory
 

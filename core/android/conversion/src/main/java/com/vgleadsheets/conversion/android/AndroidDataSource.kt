@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.conversion.mapList
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.RoomDao
 import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.dao.DataSource
@@ -27,7 +27,7 @@ abstract class AndroidDataSource<
 
     override fun getAll() = roomImpl
         .getAll()
-        .mapList { convert.entityToModel(it) }
+        .mapListTo { convert.entityToModel(it) }
 
     override fun insert(models: List<ModelType>) = roomImpl
         .insert(

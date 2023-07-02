@@ -7,7 +7,7 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 
-fun VglsApiGame.toModel(
+fun VglsApiGame.asModel(
     sheetsPlayed: Int,
     isFavorite: Boolean,
     isAvailableOffline: Boolean
@@ -21,7 +21,7 @@ fun VglsApiGame.toModel(
     isAvailableOffline
 )
 
-fun ApiSong.toModel(
+fun ApiSong.asModel(
     gameId: Long,
     gameName: String,
     playCount: Int,
@@ -45,7 +45,7 @@ fun ApiSong.toModel(
     isAltSelected
 )
 
-fun ApiComposer.toModel(
+fun ApiComposer.asModel(
     sheetsPlayed: Int,
     isFavorite: Boolean,
     isAvailableOffline: Boolean
