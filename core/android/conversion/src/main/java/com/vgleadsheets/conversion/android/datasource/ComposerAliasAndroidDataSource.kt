@@ -3,7 +3,7 @@ package com.vgleadsheets.conversion.android.datasource
 import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.ComposerAliasConverter
 import com.vgleadsheets.conversion.android.converter.ComposerConverter
-import com.vgleadsheets.conversion.mapList
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
 import com.vgleadsheets.database.android.enitity.ComposerAliasEntity
@@ -23,13 +23,13 @@ class ComposerAliasAndroidDataSource(
     ComposerAliasDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
-        .mapList {
+        .mapListTo {
             convert.entityToModel(it)
         }
 
     override fun getAll() = roomImpl
         .getAll()
-        .mapList {
-            convert.entityToModel(it,)
+        .mapListTo {
+            convert.entityToModel(it)
         }
 }

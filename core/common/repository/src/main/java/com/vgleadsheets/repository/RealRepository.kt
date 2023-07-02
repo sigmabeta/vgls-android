@@ -1,6 +1,6 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.conversion.toModel
+import com.vgleadsheets.conversion.asModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.TransactionRunner
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
@@ -30,6 +30,7 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
+import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -40,7 +41,6 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
-import java.util.Locale
 
 @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
 class RealRepository (
@@ -333,7 +333,7 @@ class RealRepository (
 
         val games = apiGames.map { apiGame ->
             val dbGame = dbGamesMap[apiGame.game_id]
-            apiGame.toModel(
+            apiGame.asModel(
                 dbGame?.sheetsPlayed ?: 0,
                 dbGame?.isFavorite ?: false,
                 dbGame?.isAvailableOffline ?: false,
@@ -342,7 +342,7 @@ class RealRepository (
 
         val composerMap = apiComposers.associate {
             val dbComposer = dbComposerMap[it.composer_id]
-            it.composer_id to it.toModel(
+            it.composer_id to it.asModel(
                 dbComposer?.sheetsPlayed ?: 0,
                 dbComposer?.isFavorite ?: false,
                 dbComposer?.isAvailableOffline ?: false,
@@ -494,7 +494,7 @@ class RealRepository (
         songAliases: MutableList<SongAlias>
     ) {
         val dbSong = dbSongsMap[apiSong.id]
-        val song = apiSong.toModel(
+        val song = apiSong.asModel(
             apiGame.game_id,
             apiGame.game_name,
             dbSong?.playCount ?: 0,

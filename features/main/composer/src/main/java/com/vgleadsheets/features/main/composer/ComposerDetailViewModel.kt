@@ -32,9 +32,7 @@ class ComposerDetailViewModel @AssistedInject constructor(
         repository.getComposer(state.composerId)
             .execute { composer ->
                 copy(
-                    contentLoad = contentLoad.copy(
-                        composer = composer
-                    )
+                    composer = composer,
                 )
             }
     }

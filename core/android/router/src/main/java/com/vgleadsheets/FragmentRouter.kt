@@ -12,7 +12,7 @@ interface FragmentRouter {
 
     fun showSearch(query: String?)
 
-    fun showSongListForComposer(composerId: Long)
+    fun showComposerDetail(composerId: Long)
 
     fun showSongListForTagValue(tagValueId: Long)
 

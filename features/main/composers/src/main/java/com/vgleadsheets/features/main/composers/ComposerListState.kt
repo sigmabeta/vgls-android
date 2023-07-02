@@ -14,7 +14,7 @@ data class ComposerListState(
     val composers: Async<List<Composer>> = Uninitialized,
     val composerToSongListMap: Async<Map<Composer, List<Song>>> = Uninitialized
 ) : VglsState {
-    override fun failure() = composers.failure() ?: composerToSongListMap.failure()
+    override fun failure() = composers.failure()
 
     override fun isLoading() = composers is Loading
 

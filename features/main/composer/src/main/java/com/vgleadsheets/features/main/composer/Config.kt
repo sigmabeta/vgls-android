@@ -3,8 +3,13 @@ package com.vgleadsheets.features.main.composer
 import android.content.res.Resources
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.SquareItemListModel
+import com.vgleadsheets.components.SubsectionHeaderListModel
+import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
@@ -32,11 +37,15 @@ class Config(
     private val perfSpec: PerfSpec,
     private val resources: Resources
 ) : ListConfig {
-    private val composerLoad = state.contentLoad.composer
+    private val composerLoad = state.composer
 
     private val composer = composerLoad.content()
 
     private val songs = composer?.songs
+
+    private val gameLoad = state.games
+
+    private val games = gameLoad.content()
 
     override val titleConfig = Title.Config(
         composer?.name ?: resources.getString(R.string.unknown_composer),
@@ -94,8 +103,54 @@ class Config(
                 }
             }
 
-        if (filteredSongs.isNullOrEmpty()) {
-            return@Config listOf(
+        val gameModels = games?.mapYielding { game ->
+            SquareItemListModel(
+                game.id,
+                game.name,
+                game.photoUrl,
+                com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+                game.id,
+            ) {
+                clicks.game(game.id)
+            }
+        }
+
+        val contentModels = mutableListOf<ListModel>()
+
+        if (!gameModels.isNullOrEmpty()) {
+            if (gameModels.size == 1) {
+                val gameModel = gameModels.first()
+                val imageUrl = gameModel.imageUrl
+
+                if (imageUrl != null) {
+                    contentModels.add(
+                        HeroImageListModel(
+                            imageUrl,
+                            gameModel.imagePlaceholder,
+                            gameModel.name,
+                            resources.getString(R.string.subtitle_game_one),
+                        ) {
+                            clicks.game(gameModel.dataId)
+                        }
+                    )
+                } else {
+                    contentModels.addGamesSubsection(gameModels)
+                }
+            } else {
+                contentModels.addGamesSubsection(gameModels)
+            }
+        }
+
+        contentModels.add(
+            SectionHeaderListModel(resources.getString(R.string.section_header_songs_by_composer))
+        )
+
+        if (!filteredSongs.isNullOrEmpty()) {
+            contentModels.addAll(
+                filteredSongs
+            )
+        } else {
+            contentModels.add(
                 EmptyStateListModel(
                     com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
                     resources.getString(com.vgleadsheets.features.main.list.R.string.empty_transposition),
@@ -103,9 +158,7 @@ class Config(
             )
         }
 
-        listOf(
-            SectionHeaderListModel(resources.getString(R.string.section_header_songs_by_composer))
-        ) + filteredSongs
+        return@Config contentModels
     }
 
     override val emptyConfig = EmptyState.Config(
@@ -126,6 +179,20 @@ class Config(
         state.isLoading(),
         LoadingItemStyle.WITH_IMAGE
     )
+
+    private fun MutableList<ListModel>.addGamesSubsection(
+        gameModels: List<SquareItemListModel>
+    ) {
+        add(
+            SubsectionListModel(
+                id = R.string.section_header_games.toLong(),
+                titleModel = SubsectionHeaderListModel(
+                    resources.getString(R.string.section_header_games)
+                ),
+                children = gameModels
+            )
+        )
+    }
 
     private fun Song.captionText() = gameName
 

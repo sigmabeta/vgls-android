@@ -72,6 +72,43 @@ fun DetailScreen(
                     .fillMaxWidth()
             )
 
+            LazyColumn(
+                contentPadding = PaddingValues(top = HEIGHT_HEADER_MIN),
+                state = listState,
+                modifier = Modifier
+                    .animateContentSize()
+                    .fillMaxSize()
+            ) {
+                item(
+                    key = Long.MAX_VALUE,
+                    contentType = Long.MAX_VALUE,
+                ) {
+                    Spacer(modifier = Modifier.height(HEIGHT_VARIANCE_RANGE))
+                }
+
+                item(
+                    key = TitleListModel::class.simpleName,
+                    contentType = TitleListModel::class.simpleName.hashCode(),
+                ) {
+                    DetailHeader(
+                        model = title,
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                    )
+                }
+
+                items(
+                    items = listItems.toTypedArray(),
+                    key = { it.dataId },
+                    contentType = { it::class.simpleName }
+                ) {
+                    it.Content(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .animateItemPlacement()
+                    )
+                }
+            }
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -118,43 +155,6 @@ fun DetailScreen(
                     )
                 }
             }
-
-            LazyColumn(
-                contentPadding = PaddingValues(top = HEIGHT_HEADER_MIN),
-                state = listState,
-                modifier = Modifier
-                    .animateContentSize()
-                    .fillMaxSize()
-            ) {
-                item(
-                    key = Long.MAX_VALUE,
-                    contentType = Long.MAX_VALUE,
-                ) {
-                    Spacer(modifier = Modifier.height(HEIGHT_VARIANCE_RANGE))
-                }
-
-                item(
-                    key = TitleListModel::class.simpleName,
-                    contentType = TitleListModel::class.simpleName.hashCode(),
-                ) {
-                    DetailHeader(
-                        model = title,
-                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
-                    )
-                }
-
-                items(
-                    items = listItems.toTypedArray(),
-                    key = { it.dataId },
-                    contentType = { it::class.simpleName }
-                ) {
-                    it.Content(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .animateItemPlacement()
-                    )
-                }
-            }
         }
     }
 }
@@ -195,7 +195,7 @@ private fun Sample() {
             SubsectionListModel(
                 1234L,
                 SubsectionHeaderListModel(
-                    "Composers for this game",
+                    "Composers for this game on VGLS",
                 ),
                 listOf(
                     WideItemListModel(

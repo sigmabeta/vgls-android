@@ -2,7 +2,7 @@ package com.vgleadsheets.conversion.android.datasource
 
 import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
-import com.vgleadsheets.conversion.mapList
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.SongAliasRoomDao
 import com.vgleadsheets.database.android.enitity.SongAliasEntity
 import com.vgleadsheets.database.dao.SongAliasDataSource
@@ -19,19 +19,19 @@ class SongAliasAndroidDataSource(
     SongAliasDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
-        .mapList {
+        .mapListTo {
             convert.entityToModel(it)
         }
 
     override fun getAll() = roomImpl
         .getAll()
-        .mapList {
+        .mapListTo {
             convert.entityToModel(it)
         }
 
     override fun getAliasesForSong(songId: Long) = roomImpl
         .getForSong(songId)
-        .mapList {
+        .mapListTo {
             convert.entityToModel(it)
         }
 }

@@ -1,6 +1,6 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.conversion.toModel
+import com.vgleadsheets.conversion.asModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
@@ -24,7 +24,7 @@ class FakeRepository(
     override fun getAllGames() = flow {
         val games = fakeModelGenerator.possibleGames
             ?.map {
-                it.toModel(
+                it.asModel(
                     0,
                     isFavorite = false,
                     isAvailableOffline = false
@@ -39,7 +39,7 @@ class FakeRepository(
         val songs = fakeModelGenerator.possibleGames
             ?.map { apiGame ->
                 apiGame.songs.map { apiSong ->
-                    apiSong.toModel(
+                    apiSong.asModel(
                         apiGame.game_id,
                         apiGame.game_name,
                         playCount = 0,
@@ -58,7 +58,7 @@ class FakeRepository(
     override fun getAllComposers() = flow {
         val composers = fakeModelGenerator.possibleComposers
             ?.map { apiComposer ->
-                apiComposer.toModel(
+                apiComposer.asModel(
                     sheetsPlayed = 0,
                     isFavorite = false,
                     isAvailableOffline = false,

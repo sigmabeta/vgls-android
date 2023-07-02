@@ -234,7 +234,7 @@ class MainActivity :
         }
     }
 
-    override fun showSongListForComposer(composerId: Long) {
+    override fun showComposerDetail(composerId: Long) {
         showFragmentSimple {
             ComposerDetailFragment.newInstance(IdArgs(composerId))
         }

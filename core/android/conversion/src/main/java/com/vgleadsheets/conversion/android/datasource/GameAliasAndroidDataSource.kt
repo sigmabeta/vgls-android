@@ -2,7 +2,7 @@ package com.vgleadsheets.conversion.android.datasource
 
 import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.GameAliasConverter
-import com.vgleadsheets.conversion.mapList
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.enitity.GameAliasEntity
 import com.vgleadsheets.database.dao.GameAliasDataSource
@@ -19,13 +19,13 @@ class GameAliasAndroidDataSource(
     GameAliasDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
-        .mapList {
+        .mapListTo {
             convert.entityToModel(it)
         }
 
     override fun getAll() = roomImpl
         .getAll()
-        .mapList {
-            convert.entityToModel(it,)
+        .mapListTo {
+            convert.entityToModel(it)
         }
 }

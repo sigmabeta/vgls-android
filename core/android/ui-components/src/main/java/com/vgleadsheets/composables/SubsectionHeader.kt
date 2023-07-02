@@ -30,7 +30,7 @@ fun SubsectionHeader(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        val color = MaterialTheme.colorScheme.outline
+        val color = MaterialTheme.colorScheme.onPrimaryContainer
 
         Text(
             text = model.title.uppercase(),
@@ -58,7 +58,7 @@ private fun Light() {
     VglsMaterial {
         Box(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
         ) {
             Sample()
         }
@@ -71,7 +71,7 @@ private fun Dark() {
     VglsMaterial {
         Box(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
         ) {
             Sample()
         }
