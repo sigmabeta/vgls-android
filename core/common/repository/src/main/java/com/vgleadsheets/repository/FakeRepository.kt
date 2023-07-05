@@ -85,7 +85,7 @@ class FakeRepository(
         TODO("Not yet implemented")
     }
 
-    override fun getSongsForGame(gameId: Long, ): Flow<List<Song>> {
+    override fun getSongsForGame(gameId: Long): Flow<List<Song>> {
         TODO("Not yet implemented")
     }
 
@@ -94,6 +94,14 @@ class FakeRepository(
     }
 
     override fun getSongsForComposer(composerId: Long): Flow<List<Song>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getComposersForSong(composerId: Long): Flow<List<Composer>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getComposersForSongSync(composerId: Long): List<Composer> {
         TODO("Not yet implemented")
     }
 

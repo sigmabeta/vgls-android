@@ -13,6 +13,8 @@ interface ComposerDataSource : DataSource<Composer> {
 
     fun getComposersForSong(songId: Long): Flow<List<Composer>>
 
+    fun getComposersForSongSync(songId: Long): List<Composer>
+
     fun incrementSheetsPlayed(composerId: Long)
 
     fun toggleFavorite(composerId: Long)
