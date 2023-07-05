@@ -9,10 +9,12 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.features.main.list.mapList
 import com.vgleadsheets.repository.VglsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class GameDetailViewModel @AssistedInject constructor(
@@ -43,7 +45,10 @@ class GameDetailViewModel @AssistedInject constructor(
     }
 
     private fun fetchSongsAndComposers() = withState { state ->
-        repository.getSongsForGame(state.gameId)
+        repository
+            .getSongsForGame(state.gameId)
+            .mapList { it.copy(composers = repository.getComposersForSongSync(it.id)) }
+            .flowOn(dispatchers.disk)
             .execute { songs ->
                 val composers = when (songs) {
                     is Uninitialized -> Uninitialized
