@@ -4,7 +4,6 @@
     <bytecodeTargetLevel target="17">
       <module name="VGLeadSheets.core.coroutines" target="11" />
       <module name="VGLeadSheets.core.di" target="11" />
-      <module name="VGLeadSheets.core.fake.tracking" target="17" />
       <module name="VGLeadSheets.core.images" target="11" />
       <module name="VGLeadSheets.core.model" target="11" />
       <module name="VGLeadSheets.core.mvrx" target="11" />
@@ -20,26 +19,8 @@
       <module name="VGLeadSheets.core.ui-components" target="11" />
       <module name="VGLeadSheets.core.ui-core" target="11" />
       <module name="VGLeadSheets.core.vectors" target="11" />
-      <module name="VGLeadSheets.features.main" target="17" />
-      <module name="VGLeadSheets.features.main.about" target="17" />
-      <module name="VGLeadSheets.features.main.composer" target="17" />
-      <module name="VGLeadSheets.features.main.composers" target="17" />
-      <module name="VGLeadSheets.features.main.debug" target="17" />
-      <module name="VGLeadSheets.features.main.favorites" target="17" />
-      <module name="VGLeadSheets.features.main.game" target="17" />
-      <module name="VGLeadSheets.features.main.games" target="17" />
-      <module name="VGLeadSheets.features.main.hud" target="17" />
-      <module name="VGLeadSheets.features.main.license" target="17" />
       <module name="VGLeadSheets.features.main.list" target="17" />
       <module name="VGLeadSheets.features.main.router" target="17" />
-      <module name="VGLeadSheets.features.main.search" target="17" />
-      <module name="VGLeadSheets.features.main.settings" target="17" />
-      <module name="VGLeadSheets.features.main.sheet" target="17" />
-      <module name="VGLeadSheets.features.main.songs" target="17" />
-      <module name="VGLeadSheets.features.main.tag-key" target="17" />
-      <module name="VGLeadSheets.features.main.tag-songs" target="17" />
-      <module name="VGLeadSheets.features.main.tag-value" target="17" />
-      <module name="VGLeadSheets.features.main.viewer" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

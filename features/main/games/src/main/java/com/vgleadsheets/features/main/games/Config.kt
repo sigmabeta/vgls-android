@@ -2,8 +2,8 @@ package com.vgleadsheets.features.main.games
 
 import android.content.res.Resources
 import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
@@ -19,7 +19,6 @@ import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
@@ -47,10 +46,9 @@ class Config(
     override val contentConfig = Content.Config(
         !state.contentLoad.isNullOrEmpty()
     ) {
-        val filteredGames = state.contentLoad.content()
-            ?.filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
+        val games = state.contentLoad.content()
 
-        if (filteredGames.isNullOrEmpty()) {
+        if (games.isNullOrEmpty()) {
             return@Config listOf(
                 EmptyStateListModel(
                     com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
@@ -59,23 +57,21 @@ class Config(
             )
         }
 
-        val onlyTheHits = filteredGames
+        val onlyTheHits = games
             .filter { it.isFavorite }
             .mapYielding {
-                ImageNameCaptionListModel(
+                SquareItemListModel(
                     it.id + OFFSET_FAVORITE,
                     it.name,
-                    it.captionText(),
                     it.photoUrl,
                     com.vgleadsheets.vectors.R.drawable.ic_album_24dp
                 ) { clicks.game(it.id) }
             }
 
-        val filteredGameItems = filteredGames.mapYielding {
-            ImageNameCaptionListModel(
+        val gameItems = games.mapYielding {
+            SquareItemListModel(
                 it.id,
                 it.name,
-                it.captionText(),
                 it.photoUrl,
                 com.vgleadsheets.vectors.R.drawable.ic_album_24dp
             ) { clicks.game(it.id) }
@@ -100,7 +96,7 @@ class Config(
                 )
 
             )
-        } + filteredGameItems
+        } + gameItems
 
         return@Config favoriteSection + restOfThem
     }
