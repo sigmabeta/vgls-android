@@ -3,6 +3,7 @@ package com.vgleadsheets.components
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.vgleadsheets.composables.WideItem
 
 data class WideItemListModel(
     override val dataId: Long,
@@ -16,9 +17,9 @@ data class WideItemListModel(
 
     @Composable
     override fun Content(modifier: Modifier) {
-        // WideItem(
-        //     model = this,
-        //     modifier = modifier
-        // )
+         WideItem(
+             model = this,
+             modifier = modifier
+         )
     }
 }

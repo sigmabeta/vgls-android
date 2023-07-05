@@ -5,18 +5,10 @@ import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.coroutines.joinOrCancel
-import com.vgleadsheets.model.Composer
 import com.vgleadsheets.repository.VglsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.flatMapMerge
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.toList
 
 class ComposerListViewModel @AssistedInject constructor(
     @Assisted initialState: ComposerListState,
@@ -32,28 +24,6 @@ class ComposerListViewModel @AssistedInject constructor(
             .execute {
                 copy(composers = it)
             }
-
-        onAsync(
-            ComposerListState::composers,
-            onSuccess = ::fetchSongsForComposers
-        )
-    }
-
-    @OptIn(FlowPreview::class)
-    private suspend fun fetchSongsForComposers(composers: List<Composer>) {
-        suspend {
-            composers
-                .asFlow()
-                .flatMapMerge { composer ->
-                    repository.getSongsForComposer(composer.id)
-                        .map { composer to it }
-                        .take(1)
-                }
-                .toList()
-                .associate { it }
-        }.execute {
-            copy(composerToSongListMap = it)
-        }.joinOrCancel()
     }
 
     @AssistedFactory
