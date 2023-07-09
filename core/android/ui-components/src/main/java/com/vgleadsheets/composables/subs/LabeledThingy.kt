@@ -34,8 +34,8 @@ import com.vgleadsheets.composables.LabelDropdownListItem
 import com.vgleadsheets.composables.LabelNoThingyItem
 import com.vgleadsheets.composables.LabelRatingListItem
 import com.vgleadsheets.composables.LabelValueListItem
-import com.vgleadsheets.themes.VglsMaterial
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabeledThingy(

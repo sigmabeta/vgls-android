@@ -17,7 +17,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.vgleadsheets.components.R
-import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun CrossfadeImage(

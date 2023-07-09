@@ -18,8 +18,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.themes.VglsMaterial
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @OptIn(ExperimentalTextApi::class)
 @Composable

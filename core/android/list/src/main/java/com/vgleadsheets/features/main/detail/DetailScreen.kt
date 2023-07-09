@@ -42,7 +42,7 @@ import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.DetailHeader
 import com.vgleadsheets.composables.HeaderImage
-import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterial
 
 private val HEIGHT_HEADER_MAX = 256.dp
 private val HEIGHT_HEADER_MIN = 72.dp

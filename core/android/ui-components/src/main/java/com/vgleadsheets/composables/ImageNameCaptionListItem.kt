@@ -27,8 +27,8 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
-import com.vgleadsheets.themes.VglsMaterial
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun ImageNameCaptionListItem(

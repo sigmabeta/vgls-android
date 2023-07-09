@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)

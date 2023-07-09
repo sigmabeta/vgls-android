@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
-import com.vgleadsheets.themes.VglsMaterial
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelCheckboxItem(

@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
-import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun RowScope.WideItem(

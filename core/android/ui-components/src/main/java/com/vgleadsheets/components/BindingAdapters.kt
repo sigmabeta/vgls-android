@@ -18,8 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.postDelayed
 import androidx.databinding.BindingAdapter
 import com.vgleadsheets.animation.pulseAnimator
-import com.vgleadsheets.themes.VglsMaterial
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @BindingAdapter("starFillThreshold", "stars")
 fun bindStarFilling(

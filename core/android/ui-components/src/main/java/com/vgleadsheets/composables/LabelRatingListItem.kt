@@ -10,8 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
-import com.vgleadsheets.themes.VglsMaterial
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelRatingListItem(

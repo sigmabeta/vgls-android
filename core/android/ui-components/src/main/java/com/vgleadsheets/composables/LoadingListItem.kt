@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
-import com.vgleadsheets.themes.VglsMaterial
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 import kotlin.random.Random
 
 @Composable

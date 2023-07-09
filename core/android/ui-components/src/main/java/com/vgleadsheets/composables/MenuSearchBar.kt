@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.MenuSearchListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.composables.subs.MenuActionIcon
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

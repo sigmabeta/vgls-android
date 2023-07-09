@@ -20,7 +20,7 @@ import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.images.PagePreview
-import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun CrossfadeSheet(

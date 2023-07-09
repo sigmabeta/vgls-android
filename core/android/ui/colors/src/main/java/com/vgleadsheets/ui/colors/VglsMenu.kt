@@ -1,4 +1,4 @@
-package com.vgleadsheets.colors
+package com.vgleadsheets.ui.colors
 
 import androidx.compose.material3.darkColorScheme
 

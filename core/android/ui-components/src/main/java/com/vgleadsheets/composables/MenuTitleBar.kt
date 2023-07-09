@@ -16,7 +16,7 @@ import com.vgleadsheets.components.MenuTitleBarListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.composables.subs.MenuActionIcon
 import com.vgleadsheets.composables.subs.MenuButton
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun MenuTitleBar(

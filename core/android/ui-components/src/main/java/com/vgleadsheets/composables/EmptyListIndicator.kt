@@ -23,8 +23,8 @@ import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.MenuEmptyStateListModel
 import com.vgleadsheets.components.MenuErrorStateListModel
 import com.vgleadsheets.components.R
-import com.vgleadsheets.themes.VglsMaterial
-import com.vgleadsheets.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun EmptyListIndicator(
