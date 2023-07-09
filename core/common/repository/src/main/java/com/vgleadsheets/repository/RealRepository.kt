@@ -154,9 +154,12 @@ class RealRepository (
         .getOneById(composerId)
         .flowOn(dispatchers.disk)
 
-    override fun getGame(gameId: Long): Flow<Game> = gameDataSource
+    override fun getGame(gameId: Long) = gameDataSource
         .getOneById(gameId)
         .flowOn(dispatchers.disk)
+
+    override fun getGameSync(gameId: Long) = gameDataSource
+        .getOneByIdSync(gameId)
 
     override fun getTagKey(tagKeyId: Long) = tagKeyDataSource
         .getOneById(tagKeyId)

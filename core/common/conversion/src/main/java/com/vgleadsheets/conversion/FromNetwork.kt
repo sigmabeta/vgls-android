@@ -34,6 +34,7 @@ fun ApiSong.asModel(
     filename,
     gameId,
     gameName,
+    null,
     lyricsPageCount > 0,
     pageCount,
     altPageCount,

@@ -24,7 +24,6 @@ import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
@@ -41,7 +40,9 @@ class Config(
 
     private val composer = composerLoad.content()
 
-    private val songs = composer?.songs
+    private val songsLoad = state.songs
+
+    private val songs = songsLoad.content()
 
     private val gameLoad = state.games
 
@@ -85,7 +86,7 @@ class Config(
     override val contentConfig = Content.Config(
         !songs.isNullOrEmpty()
     ) {
-        val filteredSongs = songs?.filteredForVocals(hudState.selectedPart.apiId)
+        val songModels = songs
             ?.mapYielding { song ->
                 ImageNameCaptionListModel(
                     song.id,
@@ -145,9 +146,9 @@ class Config(
             SectionHeaderListModel(resources.getString(R.string.section_header_songs_by_composer))
         )
 
-        if (!filteredSongs.isNullOrEmpty()) {
+        if (!songModels.isNullOrEmpty()) {
             contentModels.addAll(
-                filteredSongs
+                songModels
             )
         } else {
             contentModels.add(

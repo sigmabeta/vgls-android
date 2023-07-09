@@ -63,6 +63,8 @@ class DelayOrErrorRepository(
 
     override fun getGame(gameId: Long) = realRepository.getGame(gameId)
 
+    override fun getGameSync(gameId: Long) = realRepository.getGameSync(gameId)
+
     override fun getTagKey(tagKeyId: Long) = realRepository.getTagKey(tagKeyId)
 
     override fun getTagValue(tagValueId: Long) = realRepository.getTagValue(tagValueId)

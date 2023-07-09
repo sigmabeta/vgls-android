@@ -41,6 +41,7 @@ interface VglsRepository {
     fun getSong(songId: Long): Flow<Song>
     fun getComposer(composerId: Long): Flow<Composer>
     fun getGame(gameId: Long): Flow<Game>
+    fun getGameSync(gameId: Long): Game
     fun getTagKey(tagKeyId: Long): Flow<TagKey>
     fun getTagValue(tagValueId: Long): Flow<TagValue>
     fun getLastUpdateTime(): Flow<Time>

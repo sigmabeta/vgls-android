@@ -6,6 +6,7 @@ data class Song(
     val filename: String,
     val gameId: Long,
     val gameName: String,
+    val game: Game?,
     val hasVocals: Boolean,
     val pageCount: Int,
     val altPageCount: Int,

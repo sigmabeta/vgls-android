@@ -27,6 +27,7 @@ class SongConverter : Converter<Song, SongEntity> {
         filename,
         game_id,
         gameName,
+        null,
         hasVocals,
         pageCount,
         altPageCount,

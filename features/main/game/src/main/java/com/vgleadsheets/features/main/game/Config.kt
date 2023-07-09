@@ -24,7 +24,6 @@ import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
@@ -87,19 +86,17 @@ class Config(
     override val contentConfig = Content.Config(
         !songs.isNullOrEmpty()
     ) {
-
-        val filteredSongs = songs?.filteredForVocals(hudState.selectedPart.apiId)
-            ?.mapYielding { song ->
-                ImageNameCaptionListModel(
-                    song.id,
-                    song.name,
-                    song.subtitleText(),
-                    song.thumbUrl(),
-                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp
-                ) {
-                    clicks.song(song.id)
-                }
+        val songModels = songs?.mapYielding { song ->
+            ImageNameCaptionListModel(
+                song.id,
+                song.name,
+                song.subtitleText(),
+                song.thumbUrl(),
+                com.vgleadsheets.vectors.R.drawable.ic_album_24dp
+            ) {
+                clicks.song(song.id)
             }
+        }
 
         val composerModels = composers?.mapYielding { composer ->
             WideItemListModel(
@@ -143,9 +140,9 @@ class Config(
             SectionHeaderListModel(resources.getString(R.string.section_header_songs_from_game))
         )
 
-        if (!filteredSongs.isNullOrEmpty()) {
+        if (!songModels.isNullOrEmpty()) {
             contentModels.addAll(
-                filteredSongs
+                songModels
             )
         } else {
             contentModels.add(

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
@@ -46,10 +46,17 @@ fun Subsection(
         )
 
         model.children.forEach {
-            WideItem(
-                model = it as WideItemListModel,
-                modifier = Modifier,
-            )
+            when (it) {
+                is WideItemListModel -> WideItem(
+                    model = it,
+                    modifier = Modifier,
+                )
+
+                is SquareItemListModel -> SquareItem(
+                    model = it,
+                    modifier = Modifier
+                )
+            }
         }
 
         val spacerCount = model.children.size % maxItemsInEachRow
@@ -62,40 +69,70 @@ fun Subsection(
 
 @Preview
 @Composable
-private fun Light() {
+private fun LightWide() {
     VglsMaterial {
         Box(
             modifier = Modifier
-                .fillMaxSize()
                 .background(
                     color = MaterialTheme.colorScheme.background
                 )
                 .padding(16.dp)
         ) {
-            Sample()
+            SampleWide()
         }
     }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun Dark() {
+private fun DarkWide() {
     VglsMaterial {
         Box(
             modifier = Modifier
-                .fillMaxSize()
                 .background(
                     color = MaterialTheme.colorScheme.background
                 )
                 .padding(16.dp)
         ) {
-            Sample()
+            SampleWide()
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun LightSquare() {
+    VglsMaterial {
+        Box(
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.background
+                )
+                .padding(16.dp)
+        ) {
+            SampleSquare()
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun DarkSquare() {
+    VglsMaterial {
+        Box(
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.background
+                )
+                .padding(16.dp)
+        ) {
+            SampleSquare()
         }
     }
 }
 
 @Composable
-private fun Sample() {
+private fun SampleWide() {
     Subsection(
         SubsectionListModel(
             1234L,
@@ -120,6 +157,45 @@ private fun Sample() {
                     onClick = { },
                 ),
                 WideItemListModel(
+                    4567L,
+                    "ACE+",
+                    null,
+                    R.drawable.ic_person_24dp,
+                    actionableId = null,
+                    onClick = { },
+                ),
+            )
+        ),
+        Modifier,
+    )
+}
+
+@Composable
+private fun SampleSquare() {
+    Subsection(
+        SubsectionListModel(
+            1234L,
+            SubsectionHeaderListModel(
+                "Composers for this game on VGLS",
+            ),
+            listOf(
+                SquareItemListModel(
+                    2345L,
+                    "Manami Kiyota",
+                    null,
+                    R.drawable.ic_person_24dp,
+                    actionableId = null,
+                    onClick = { },
+                ),
+                SquareItemListModel(
+                    3456L,
+                    "Yasunori Mitsuda",
+                    null,
+                    R.drawable.ic_person_24dp,
+                    actionableId = null,
+                    onClick = { },
+                ),
+                SquareItemListModel(
                     4567L,
                     "ACE+",
                     null,

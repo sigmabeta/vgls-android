@@ -133,6 +133,10 @@ class FakeRepository(
         TODO("Not yet implemented")
     }
 
+    override fun getGameSync(gameId: Long): Game {
+        TODO("Not yet implemented")
+    }
+
     override fun getTagKey(tagKeyId: Long): Flow<TagKey> {
         TODO("Not yet implemented")
     }
