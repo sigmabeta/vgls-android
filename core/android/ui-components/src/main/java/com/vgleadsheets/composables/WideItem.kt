@@ -25,6 +25,46 @@ import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.ui.themes.VglsMaterial
 
+
+@Composable
+fun WideItem(
+    model: WideItemListModel,
+    modifier: Modifier
+) {
+    Row(
+        modifier = modifier
+            .padding(vertical = 4.dp)
+            .height(54.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clickable(onClick = model.onClick)
+            .background(MaterialTheme.colorScheme.surface)
+    ) {
+        CrossfadeImage(
+            imageUrl = model.imageUrl,
+            imagePlaceholder = model.imagePlaceholder,
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1.0f)
+        )
+
+        Text(
+            text = model.name,
+            textAlign = TextAlign.Start,
+            maxLines = 2,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodySmall,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .weight(1.0f)
+                .padding(8.dp)
+                .align(CenterVertically)
+        )
+    }
+}
+
 @Composable
 fun RowScope.WideItem(
     model: WideItemListModel,

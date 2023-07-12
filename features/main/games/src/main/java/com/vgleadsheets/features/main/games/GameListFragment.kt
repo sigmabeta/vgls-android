@@ -2,12 +2,12 @@ package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.list.ComposeListFragment
+import com.vgleadsheets.features.main.list.ComposeGridFragment
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
 
-class GameListFragment : ComposeListFragment<GameListState>() {
+class GameListFragment : ComposeGridFragment<GameListState>() {
     @Inject
     lateinit var viewModelFactory: GameListViewModel.Factory
 
