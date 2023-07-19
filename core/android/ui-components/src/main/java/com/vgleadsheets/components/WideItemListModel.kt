@@ -17,9 +17,9 @@ data class WideItemListModel(
 
     @Composable
     override fun Content(modifier: Modifier) {
-         WideItem(
-             model = this,
-             modifier = modifier
-         )
+        WideItem(
+            model = this,
+            modifier = modifier
+        )
     }
 }

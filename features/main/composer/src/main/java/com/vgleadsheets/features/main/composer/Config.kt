@@ -8,8 +8,6 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.components.SubsectionHeaderListModel
-import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
@@ -125,11 +123,16 @@ class Config(
 
                 if (imageUrl != null) {
                     contentModels.add(
+                        SectionHeaderListModel(
+                            resources.getString(R.string.section_header_games)
+                        )
+                    )
+
+                    contentModels.add(
                         HeroImageListModel(
                             imageUrl,
                             gameModel.imagePlaceholder,
                             gameModel.name,
-                            resources.getString(R.string.subtitle_game_one),
                         ) {
                             clicks.game(gameModel.dataId)
                         }
@@ -185,14 +188,12 @@ class Config(
         gameModels: List<SquareItemListModel>
     ) {
         add(
-            SubsectionListModel(
-                id = R.string.section_header_games.toLong(),
-                titleModel = SubsectionHeaderListModel(
-                    resources.getString(R.string.section_header_games)
-                ),
-                children = gameModels
+            SectionHeaderListModel(
+                resources.getString(R.string.section_header_games)
             )
         )
+
+        addAll(gameModels)
     }
 
     private fun Song.captionText() = gameName

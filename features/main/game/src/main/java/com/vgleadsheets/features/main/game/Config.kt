@@ -7,8 +7,6 @@ import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.components.SubsectionHeaderListModel
-import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
@@ -119,11 +117,16 @@ class Config(
 
                 if (imageUrl != null) {
                     contentModels.add(
+                        SectionHeaderListModel(
+                            resources.getString(R.string.section_header_composers)
+                        )
+                    )
+
+                    contentModels.add(
                         HeroImageListModel(
                             imageUrl,
                             composerModel.imagePlaceholder,
                             composerModel.name,
-                            resources.getString(R.string.subtitle_composer_one),
                         ) {
                             clicks.composer(composerModel.dataId)
                         }
@@ -179,14 +182,12 @@ class Config(
         composerModels: List<WideItemListModel>
     ) {
         add(
-            SubsectionListModel(
-                id = R.string.section_header_composers.toLong(),
-                titleModel = SubsectionHeaderListModel(
-                    resources.getString(R.string.section_header_composers)
-                ),
-                children = composerModels
+            SectionHeaderListModel(
+                resources.getString(R.string.section_header_composers)
             )
         )
+
+        addAll(composerModels)
     }
 
     private fun Song.subtitleText() = when (composers?.size) {

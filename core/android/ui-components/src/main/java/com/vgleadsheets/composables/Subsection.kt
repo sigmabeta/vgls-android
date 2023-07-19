@@ -49,7 +49,7 @@ fun Subsection(
             when (it) {
                 is WideItemListModel -> WideItem(
                     model = it,
-                    modifier = Modifier,
+                    modifier = Modifier.weight(1.0f),
                 )
 
                 is SquareItemListModel -> SquareItem(

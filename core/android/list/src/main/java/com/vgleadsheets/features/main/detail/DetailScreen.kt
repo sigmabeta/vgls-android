@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -32,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.CtaListModel
+import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.R
@@ -61,7 +64,7 @@ fun DetailScreen(
                 .navigationBarsPadding()
                 .fillMaxSize()
         ) {
-            val listState = rememberLazyListState()
+            val listState = rememberLazyGridState()
             // val firstVisibleItemIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
 
             HeaderImage(
@@ -72,8 +75,9 @@ fun DetailScreen(
                     .fillMaxWidth()
             )
 
-            LazyColumn(
+            LazyVerticalGrid(
                 contentPadding = PaddingValues(top = HEIGHT_HEADER_MIN),
+                columns = GridCells.Adaptive(160.dp),
                 state = listState,
                 modifier = Modifier
                     .animateContentSize()
@@ -82,6 +86,7 @@ fun DetailScreen(
                 item(
                     key = Long.MAX_VALUE,
                     contentType = Long.MAX_VALUE,
+                    span = { GridItemSpan(maxLineSpan) }
                 ) {
                     Spacer(modifier = Modifier.height(HEIGHT_VARIANCE_RANGE))
                 }
@@ -89,6 +94,7 @@ fun DetailScreen(
                 item(
                     key = TitleListModel::class.simpleName,
                     contentType = TitleListModel::class.simpleName.hashCode(),
+                    span = { GridItemSpan(maxLineSpan) }
                 ) {
                     DetailHeader(
                         model = title,
@@ -97,9 +103,20 @@ fun DetailScreen(
                 }
 
                 items(
-                    items = listItems.toTypedArray(),
+                    items = listItems,
                     key = { it.dataId },
-                    contentType = { it::class.simpleName }
+                    span = {
+                        GridItemSpan(
+                            when (it.javaClass.simpleName) {
+                                SectionHeaderListModel::class.java.simpleName -> maxLineSpan
+                                HeroImageListModel::class.java.simpleName -> maxLineSpan
+                                CtaListModel::class.java.simpleName -> maxLineSpan
+                                ImageNameCaptionListModel::class.java.simpleName -> maxLineSpan
+                                else -> 1
+                            }
+                        )
+                    },
+                    contentType = { it.javaClass.simpleName },
                 ) {
                     it.Content(
                         modifier = Modifier

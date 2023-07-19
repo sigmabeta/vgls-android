@@ -25,8 +25,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.R
+import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
-import com.vgleadsheets.themes.VglsMaterial
+import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -85,7 +86,14 @@ fun GridScreen(
                     items(
                         items = listItems,
                         key = { it.dataId },
-                        span = { GridItemSpan(1) },
+                        span = {
+                            GridItemSpan(
+                                when (it.javaClass.simpleName) {
+                                    SectionHeaderListModel::class.java.simpleName -> maxLineSpan
+                                    else -> 1
+                                }
+                            )
+                        },
                         contentType = { it.layoutId },
                     ) {
                         it.Content(

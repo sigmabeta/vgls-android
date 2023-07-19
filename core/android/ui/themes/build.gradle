@@ -8,4 +8,5 @@ android {
 dependencies {
     // Theming
     implementation project(':core:android:ui:colors')
+    api project(':core:android:ui:fonts')
 }
