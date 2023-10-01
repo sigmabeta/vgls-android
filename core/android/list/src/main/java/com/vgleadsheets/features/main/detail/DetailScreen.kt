@@ -4,7 +4,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,12 +38,9 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.R
 import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.components.SubsectionHeaderListModel
-import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.DetailHeader
-import com.vgleadsheets.composables.HeaderImage
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 private val HEIGHT_HEADER_MAX = 256.dp
@@ -65,32 +61,14 @@ fun DetailScreen(
                 .fillMaxSize()
         ) {
             val listState = rememberLazyGridState()
-            // val firstVisibleItemIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
-
-            HeaderImage(
-                imageUrl = title.photoUrl,
-                imagePlaceholder = com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
-                modifier = Modifier
-                    .height(HEIGHT_HEADER_MAX)
-                    .fillMaxWidth()
-            )
 
             LazyVerticalGrid(
-                contentPadding = PaddingValues(top = HEIGHT_HEADER_MIN),
                 columns = GridCells.Adaptive(160.dp),
                 state = listState,
                 modifier = Modifier
                     .animateContentSize()
                     .fillMaxSize()
             ) {
-                item(
-                    key = Long.MAX_VALUE,
-                    contentType = Long.MAX_VALUE,
-                    span = { GridItemSpan(maxLineSpan) }
-                ) {
-                    Spacer(modifier = Modifier.height(HEIGHT_VARIANCE_RANGE))
-                }
-
                 item(
                     key = TitleListModel::class.simpleName,
                     contentType = TitleListModel::class.simpleName.hashCode(),
@@ -209,51 +187,46 @@ private fun Sample() {
                 "Remove from favorites",
                 onClick = { },
             ),
-            SubsectionListModel(
+            SectionHeaderListModel(
+                "Composers on VGLS",
+            ),
+            WideItemListModel(
                 1234L,
-                SubsectionHeaderListModel(
-                    "Composers for this game on VGLS",
-                ),
-                listOf(
-                    WideItemListModel(
-                        1234L,
-                        "Kenji Hiramatsu",
-                        null,
-                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
-                        actionableId = null,
-                        onClick = { },
-                    ),
-                    WideItemListModel(
-                        2345L,
-                        "Manami Kiyota",
-                        null,
-                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
-                        actionableId = null,
-                        onClick = { },
-                    ),
-                    WideItemListModel(
-                        3456L,
-                        "Yasunori Mitsuda",
-                        null,
-                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
-                        actionableId = null,
-                        onClick = { },
-                    ),
-                    WideItemListModel(
-                        4567L,
-                        "ACE+",
-                        null,
-                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
-                        actionableId = null,
-                        onClick = { },
-                    ),
-                )
+                "Kenji Hiramatsu",
+                null,
+                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                actionableId = null,
+                onClick = { },
+            ),
+            WideItemListModel(
+                2345L,
+                "Manami Kiyota",
+                null,
+                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                actionableId = null,
+                onClick = { },
+            ),
+            WideItemListModel(
+                3456L,
+                "Yasunori Mitsuda",
+                null,
+                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                actionableId = null,
+                onClick = { },
+            ),
+            WideItemListModel(
+                4567L,
+                "ACE+",
+                null,
+                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                actionableId = null,
+                onClick = { },
             ),
             SectionHeaderListModel(
                 "Songs"
             ),
             ImageNameCaptionListModel(
-                1234L,
+                12345L,
                 "Chain Attack",
                 "Kenji Hiramatsu",
                 null,
@@ -262,7 +235,7 @@ private fun Sample() {
                 onClick = { },
             ),
             ImageNameCaptionListModel(
-                2345L,
+                23456L,
                 "Iris Network",
                 "Manami Kiyota",
                 null,
@@ -271,7 +244,7 @@ private fun Sample() {
                 onClick = { },
             ),
             ImageNameCaptionListModel(
-                3456L,
+                34567L,
                 "Origin",
                 "Yasunori Mitsuda",
                 null,
@@ -280,7 +253,7 @@ private fun Sample() {
                 onClick = { },
             ),
             ImageNameCaptionListModel(
-                4567L,
+                45678L,
                 "Moebius Battle",
                 "ACE+",
                 null,

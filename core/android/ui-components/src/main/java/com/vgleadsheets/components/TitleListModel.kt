@@ -14,7 +14,7 @@ data class TitleListModel(
     val onImageLoadSuccess: (() -> Unit),
     val onImageLoadFail: ((Exception) -> Unit),
     val photoUrl: String? = null,
-    val placeholder: Int? = com.vgleadsheets.ui_core.R.drawable.ic_logo,
+    val placeholder: Int = com.vgleadsheets.ui_core.R.drawable.ic_logo,
     val shouldSetMinHeightOnly: Boolean? = true,
 ) : ListModel {
     @Composable
