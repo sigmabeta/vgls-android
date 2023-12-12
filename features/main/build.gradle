@@ -1,33 +1,36 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply from: "$rootProject.projectDir/di-android.gradle"
+plugins {
+    alias(libs.plugins.vgls.feature.android)
+    alias(libs.plugins.vgls.di.android)
+}
 
 dependencies {
-    implementation "androidx.metrics:metrics-performance:$jank_stats_version"
+    implementation(libs.androidx.jankstats)
 
-    api project(':features:main:about')
-    api project(':features:main:composer')
-    api project(':features:main:composers')
-    api project(':features:main:debug')
-    api project(':features:main:hud')
-    api project(':features:main:game')
-    api project(':features:main:favorites')
-    api project(':features:main:games')
-    api project(':features:main:license')
-    api project(':features:main:search')
-    api project(':features:main:settings')
-    api project(':features:main:sheet')
-    api project(':features:main:songs')
-    api project(':features:main:tag-key')
-    api project(':features:main:tag-songs')
-    api project(':features:main:tag-value')
-    api project(':features:main:viewer')
 
-    implementation project(":core:android:list")
-    implementation project(":core:android:router")
-    implementation project(":core:android:ui-core")
-    implementation project(":core:android:ui-components")
+    api(projects.features.main.about)
+    api(projects.features.main.composer)
+    api(projects.features.main.composers)
+    api(projects.features.main.debug)
+    api(projects.features.main.game)
+    api(projects.features.main.favorites)
+    api(projects.features.main.games)
+    api(projects.features.main.hud)
+    api(projects.features.main.license)
+    api(projects.features.main.search)
+    api(projects.features.main.settings)
+    api(projects.features.main.sheet)
+    api(projects.features.main.songs)
+    api(projects.features.main.tagKey)
+    api(projects.features.main.tagSongs)
+    api(projects.features.main.tagValue)
+    api(projects.features.main.viewer)
+
+    implementation(projects.core.android.list)
+    implementation(projects.core.android.nav)
+    implementation(projects.core.android.ui.core)
+    implementation(projects.core.android.ui.components)
 }
 
 android {
-    namespace 'com.vgleadsheets.main'
+    namespace = "com.vgleadsheets.main"
 }

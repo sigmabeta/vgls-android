@@ -24,8 +24,8 @@ class Config(
     private val resources: Resources
 ) : ListConfig {
     override val titleConfig = Title.Config(
-        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
-        resources.getString(com.vgleadsheets.features.main.hud.R.string.label_by_composer),
+        resources.getString(com.vgleadsheets.ui.strings.R.string.app_name),
+        resources.getString(R.string.subtitle_composer),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -45,7 +45,7 @@ class Config(
         if (composers.isNullOrEmpty()) {
             return@Config listOf(
                 EmptyStateListModel(
-                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
                     resources.getString(com.vgleadsheets.features.main.list.R.string.empty_transposition),
                 )
             )
@@ -58,7 +58,7 @@ class Config(
                     it.id + ListConfig.OFFSET_FAVORITE,
                     it.name,
                     it.photoUrl,
-                    com.vgleadsheets.vectors.R.drawable.ic_person_24dp
+                    com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp
                 ) { clicks.composer(it.id) }
             }
 
@@ -67,7 +67,7 @@ class Config(
                 it.id,
                 it.name,
                 it.photoUrl,
-                com.vgleadsheets.vectors.R.drawable.ic_person_24dp
+                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp
             ) { clicks.composer(it.id) }
         }
 
@@ -96,7 +96,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         state.isEmpty(),
-        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_composer)
     )
 

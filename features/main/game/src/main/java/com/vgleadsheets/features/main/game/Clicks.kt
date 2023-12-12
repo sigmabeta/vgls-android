@@ -1,18 +1,18 @@
 package com.vgleadsheets.features.main.game
 
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.Navigator
 
 class Clicks(
-    private val router: FragmentRouter,
+    private val navigator: Navigator,
     private val viewModel: GameDetailViewModel,
 ) : ListItemClicks {
     fun song(id: Long) {
-        router.showSongViewer(id)
+        navigator.showSongViewer(id)
     }
 
     fun composer(id: Long) {
-        router.showComposerDetail(id)
+        navigator.showComposerDetail(id)
     }
 
     fun onFavoriteClick() {

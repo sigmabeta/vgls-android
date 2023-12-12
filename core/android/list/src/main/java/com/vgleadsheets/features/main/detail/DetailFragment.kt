@@ -10,14 +10,14 @@ import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.R
 import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
 import com.vgleadsheets.features.main.util.ListModelGenerator
 import com.vgleadsheets.features.main.util.TitleModelGenerator
 import com.vgleadsheets.mvrx.VglsState
+import com.vgleadsheets.nav.NavState
+import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
 import javax.inject.Inject
 import kotlin.system.measureNanoTime
@@ -28,7 +28,7 @@ import kotlinx.coroutines.withContext
 abstract class DetailFragment<StateType : VglsState> : VglsFragment() {
     abstract val viewModel: MavericksViewModel<StateType>
 
-    abstract fun generateListConfig(state: StateType, hudState: HudState): ListConfig
+    abstract fun generateListConfig(state: StateType, navState: NavState): ListConfig
 
     // THIS IS A DUMMY INJECTION. If this isn't here, ListFragment_MembersInjector.java
     // doesn't get generated, which causes it to get generated multiple times in children
@@ -39,7 +39,7 @@ abstract class DetailFragment<StateType : VglsState> : VglsFragment() {
     @Inject
     lateinit var dispatchers: VglsDispatchers
 
-    protected val hudViewModel: HudViewModel by existingViewModel()
+    protected val navViewModel: NavViewModel by existingViewModel()
 
     protected open val alwaysShowBack = true
 
@@ -59,16 +59,16 @@ abstract class DetailFragment<StateType : VglsState> : VglsFragment() {
         setupCompose(view)
 
         if (alwaysShowBack) {
-            hudViewModel.alwaysShowBack()
+            navViewModel.alwaysShowBack()
         } else {
-            hudViewModel.dontAlwaysShowBack()
+            navViewModel.dontAlwaysShowBack()
         }
 
-        hudViewModel.setPerfSelectedScreen(getPerfSpec())
+        navViewModel.setPerfSelectedScreen(getPerfSpec())
     }
 
     override fun invalidate() {
-        withState(viewModel, hudViewModel) { state, hudState ->
+        withState(viewModel, navViewModel) { state, hudState ->
             val invalidateStartNanos = System.nanoTime()
             val invalidateDurationNanos = measureNanoTime {
                 val config = generateListConfig(state, hudState)

@@ -19,7 +19,7 @@ object PartPicker {
                 MenuItemListModel(
                     resources.getString(it.longResId),
                     null,
-                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                     { onPartClick(Part.valueOf(it.name)) },
                     it.apiId == selectedPartId
                 )

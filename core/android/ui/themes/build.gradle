@@ -1,12 +1,14 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply from: "$rootProject.projectDir/compose-module.gradle"
+plugins {
+    alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.vgls.compose.android.module)
+}
 
 android {
-    namespace 'com.vgleadsheets.themes'
+    namespace = "com.vgleadsheets.themes"
 }
 
 dependencies {
     // Theming
-    implementation project(':core:android:ui:colors')
-    api project(':core:android:ui:fonts')
+    implementation(projects.core.android.ui.colors)
+    api(projects.core.android.ui.fonts)
 }

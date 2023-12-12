@@ -4,8 +4,8 @@ import android.os.Bundle
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ComposeListFragment
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -25,9 +25,9 @@ class SongFragment : ComposeListFragment<SongState>() {
 
     override val viewModel: SongViewModel by fragmentViewModel()
 
-    override fun generateListConfig(state: SongState, hudState: HudState) = Config(
+    override fun generateListConfig(state: SongState, navState: NavState) = Config(
         state,
-        hudState,
+        navState,
         baseImageUrl,
         Clicks(
             getFragmentRouter(),
@@ -40,7 +40,8 @@ class SongFragment : ComposeListFragment<SongState>() {
 
     override fun onStop() {
         super.onStop()
-        hudViewModel.clearSelectedSong()
+        navViewModel
+            .clearSelectedSong()
     }
 
     companion object {

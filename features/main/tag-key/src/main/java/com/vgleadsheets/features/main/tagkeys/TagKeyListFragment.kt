@@ -1,8 +1,8 @@
 package com.vgleadsheets.features.main.tagkeys
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ComposeListFragment
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -20,7 +20,7 @@ class TagKeyListFragment :
 
     override val viewModel: TagKeyListViewModel by fragmentViewModel()
 
-    override fun generateListConfig(state: TagKeyListState, hudState: HudState) = Config(
+    override fun generateListConfig(state: TagKeyListState, navState: NavState) = Config(
         state,
         Clicks(getFragmentRouter()),
         perfTracker,

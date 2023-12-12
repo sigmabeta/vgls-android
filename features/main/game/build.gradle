@@ -1,9 +1,11 @@
-apply from: "$rootProject.projectDir/feature-module.gradle"
+plugins {
+    alias(libs.plugins.vgls.feature.android)
+}
 
 dependencies {
-    implementation project(":core:android:list")
+    implementation(projects.core.android.list)
 }
 
 android {
-    namespace 'com.vgleadsheets.features.main.game'
+    namespace = "com.vgleadsheets.features.main.game"
 }

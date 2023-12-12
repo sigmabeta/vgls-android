@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ComposeListFragment
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -47,7 +47,7 @@ class DebugFragment : ComposeListFragment<DebugState>() {
         }
     }
 
-    override fun generateListConfig(state: DebugState, hudState: HudState) = Config(
+    override fun generateListConfig(state: DebugState, navState: NavState) = Config(
         state,
         Clicks(viewModel),
         perfTracker,

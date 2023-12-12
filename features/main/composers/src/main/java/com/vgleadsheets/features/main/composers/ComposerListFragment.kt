@@ -1,8 +1,8 @@
 package com.vgleadsheets.features.main.composers
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ComposeGridFragment
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -19,11 +19,11 @@ class ComposerListFragment : ComposeGridFragment<ComposerListState>() {
 
     override val viewModel: ComposerListViewModel by fragmentViewModel()
 
-    override fun generateListConfig(state: ComposerListState, hudState: HudState) = Config(
+    override fun generateListConfig(state: ComposerListState, navState: NavState) = Config(
         state,
         Clicks(
             getFragmentRouter(),
-            hudViewModel
+            navViewModel
         ),
         perfTracker,
         getPerfSpec(),

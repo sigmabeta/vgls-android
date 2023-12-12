@@ -42,12 +42,12 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies --no-configuration-cache --no-daemon --max-workers=1
       - save_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
           paths:
             - ~/.gradle
       - run:
@@ -74,7 +74,7 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - run:
           name: Run Ktlint
           command: ./ktlint-check.sh
@@ -100,7 +100,7 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - run:
           name: Setup Google Services JSON
           command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
@@ -135,7 +135,7 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           key: build-cache-v1-{{ .Revision }}
       - run:
@@ -163,7 +163,7 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           key: build-cache-v1-{{ .Revision }}
       - run:
@@ -194,7 +194,7 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           key: build-cache-v1-{{ .Revision }}
       - run:

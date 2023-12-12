@@ -5,7 +5,7 @@ import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.features.main.detail.DetailFragment
-import com.vgleadsheets.features.main.hud.HudState
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -25,9 +25,9 @@ class ComposerDetailFragment : DetailFragment<ComposerDetailState>() {
 
     override val viewModel: ComposerDetailViewModel by fragmentViewModel()
 
-    override fun generateListConfig(state: ComposerDetailState, hudState: HudState) = Config(
+    override fun generateListConfig(state: ComposerDetailState, navState: NavState) = Config(
         state,
-        hudState,
+        navState,
         baseImageUrl,
         Clicks(
             getFragmentRouter(),

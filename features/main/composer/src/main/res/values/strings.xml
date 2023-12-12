@@ -8,4 +8,7 @@
     <string name="missing_thing_composer_song">songs for this composer</string>
 
     <string name="unknown_composer">Unknown Composer</string>
+
+    <string name="label_favorite">Add to Favorites</string>
+    <string name="label_unfavorite">Remove from Favorites</string>
 </resources>

@@ -2,6 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="17">
+      <module name="VGLeadSheets.core.android.hud" target="17" />
+      <module name="VGLeadSheets.core.android.router" target="17" />
+      <module name="VGLeadSheets.core.android.vectors" target="17" />
       <module name="VGLeadSheets.core.coroutines" target="11" />
       <module name="VGLeadSheets.core.di" target="11" />
       <module name="VGLeadSheets.core.images" target="11" />

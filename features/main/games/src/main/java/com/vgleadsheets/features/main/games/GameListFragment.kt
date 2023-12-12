@@ -1,8 +1,8 @@
 package com.vgleadsheets.features.main.games
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ComposeGridFragment
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -19,9 +19,9 @@ class GameListFragment : ComposeGridFragment<GameListState>() {
 
     override val viewModel: GameListViewModel by fragmentViewModel()
 
-    override fun generateListConfig(state: GameListState, hudState: HudState) = Config(
+    override fun generateListConfig(state: GameListState, navState: NavState) = Config(
         state,
-        hudState,
+        navState,
         Clicks(getFragmentRouter()),
         perfTracker,
         getPerfSpec(),

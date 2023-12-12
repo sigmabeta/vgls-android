@@ -1,15 +1,17 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply from: "$rootProject.projectDir/di-android.gradle"
+plugins {
+    alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.vgls.di.android)
+}
 
 dependencies {
-    api "io.coil-kt:coil:$coil_version"
-    api "io.coil-kt:coil-compose:2.2.2"
+    api(libs.coil.kt)
+    api(libs.coil.kt.compose)
 
-    api project(":core:android:bitmaps")
+    api(projects.core.android.bitmaps)
 
-    implementation project(":core:common:model")
+    implementation(projects.core.common.model)
 }
 
 android {
-    namespace 'com.vgleadsheets.images'
+    namespace = "com.vgleadsheets.images"
 }

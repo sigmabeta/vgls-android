@@ -1,32 +1,31 @@
 package com.vgleadsheets.features.main.hud
 
-import com.vgleadsheets.FragmentRouter
-import com.vgleadsheets.features.main.hud.HudFragment.Companion.MODAL_SCREEN_ID_DEBUG
-import com.vgleadsheets.features.main.hud.HudFragment.Companion.MODAL_SCREEN_ID_SETTINGS
-import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_COMPOSER
-import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_FAVORITES
-import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_GAME
-import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_SONG
-import com.vgleadsheets.features.main.hud.HudFragment.Companion.TOP_LEVEL_SCREEN_ID_TAG
 import com.vgleadsheets.model.Part
+import com.vgleadsheets.nav.HudMode
+import com.vgleadsheets.nav.Modal
+import com.vgleadsheets.nav.NavState
+import com.vgleadsheets.nav.NavViewModel
+import com.vgleadsheets.nav.Navigator
+import com.vgleadsheets.nav.PerfViewMode
+import com.vgleadsheets.nav.TopLevel
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 
 class Clicks(
-    private val viewModel: HudViewModel,
-    private val router: FragmentRouter,
+    private val hudViewModel: HudViewModel,
+    private val navViewModel: NavViewModel,
+    private val navigator: Navigator,
     private val tracker: Tracker,
     private val trackingDetails: String
 ) {
     fun shadow() {
         tracker.logShadowClick()
-        viewModel.toRegularMode()
     }
 
     fun searchButton() {
         tracker.logSearchButtonClick()
-        viewModel.showSearch()
+        navViewModel.showSearch()
     }
 
     fun searchQuery(query: String) {
@@ -34,21 +33,21 @@ class Clicks(
 
         if (trimmedQuery.length > 2) {
             tracker.logSearch(trimmedQuery)
-            viewModel.queueSearchQuery(trimmedQuery)
+            hudViewModel.queueSearchQuery(trimmedQuery)
         }
     }
 
-    fun back(hudState: HudState) = when (hudState.mode) {
+    fun back(navState: NavState) = when (navState.hudMode) {
         HudMode.PERF -> {
-            when (hudState.perfViewState.viewMode) {
-                PerfViewMode.REGULAR -> viewModel.toMenu()
-                else -> viewModel.toPerf()
+            when (navState.perfViewState.viewMode) {
+                PerfViewMode.REGULAR -> navViewModel.toMenu()
+                else -> navViewModel.toPerf()
             }
             true
         }
 
         HudMode.SEARCH -> {
-            viewModel.toRegularMode()
+            navViewModel.toRegularMode()
             true
         }
 
@@ -57,33 +56,33 @@ class Clicks(
         }
 
         else -> {
-            viewModel.toRegularMode()
+            navViewModel.toRegularMode()
             true
         }
     }
 
     fun part(name: String) {
         tracker.logPartSelect(name)
-        viewModel.onPartSelect(name)
+        navViewModel.onPartSelect(name)
     }
 
-    fun appBarButton(state: HudState) {
+    fun appBarButton(state: NavState) {
         tracker.logAppBarButtonClick()
-        when (state.mode) {
-            HudMode.SEARCH -> viewModel.toRegularMode()
+        when (state.hudMode) {
+            HudMode.SEARCH -> navViewModel.toRegularMode()
             HudMode.REGULAR -> {
                 if (state.alwaysShowBack) {
-                    router.back()
+                    navigator.back()
                 } else {
-                    viewModel.toMenu()
+                    navViewModel.toMenu()
                 }
             }
 
             else -> {
                 if (state.alwaysShowBack) {
-                    router.back()
+                    navigator.back()
                 } else {
-                    viewModel.toRegularMode()
+                    navViewModel.toRegularMode()
                 }
             }
         }
@@ -91,101 +90,103 @@ class Clicks(
 
     fun bottomMenuButton() {
         tracker.logBottomMenuButtonClick()
-        viewModel.bottomMenuButtonClick()
+        navViewModel.bottomMenuButtonClick()
     }
 
     fun sheetDetail() {
         // tracker.logSheetDetailClick()
-        viewModel.sheetDetailClick()
+        navViewModel.sheetDetailClick()
     }
 
     fun youtubeSearch() {
         // tracker.logSheetDetailClick()
-        viewModel.youtubeSearchClick()
+        navViewModel.youtubeSearchClick()
     }
 
     fun favorite() {
-        viewModel.favoritesClick()
+        navViewModel.favoritesClick()
     }
 
     fun alternateSheet() {
-        viewModel.alternateSheetClick()
+        navViewModel.alternateSheetClick()
     }
 
     fun offline() {
-        viewModel.offlineClick()
+        navViewModel.offlineClick()
     }
 
     fun changePart() {
         tracker.logChangePartClick()
-        viewModel.onChangePartClick()
+        navViewModel.onChangePartClick()
     }
 
-    fun screenLink(screenId: String) {
+    fun topLevelScreenLink(screen: TopLevel) {
         val fromScreen = TrackingScreen.HUD
 
-        tracker.logScreenLinkClick(screenId, fromScreen, trackingDetails)
+        tracker.logScreenLinkClick(screen.name, fromScreen, trackingDetails)
 
-        viewModel.toRegularMode()
-        viewModel.saveTopLevelScreen(screenId)
+        when (screen) {
+            TopLevel.FAVORITE -> navigator.showFavorites(fromScreen, trackingDetails)
+            TopLevel.GAME -> navigator.showGameList(fromScreen, trackingDetails)
+            TopLevel.COMPOSER -> navigator.showComposerList(fromScreen, trackingDetails)
+            TopLevel.TAG -> navigator.showTagList(fromScreen, trackingDetails)
+            TopLevel.SONG -> navigator.showAllSheets(fromScreen, trackingDetails)
+            else -> navigator.showGameList(fromScreen, trackingDetails)
+        }
+    }
 
-        when (screenId) {
-            TOP_LEVEL_SCREEN_ID_FAVORITES -> router.showFavorites(fromScreen, trackingDetails)
-            TOP_LEVEL_SCREEN_ID_GAME -> router.showGameList(fromScreen, trackingDetails)
-            TOP_LEVEL_SCREEN_ID_COMPOSER -> router.showComposerList(fromScreen, trackingDetails)
-            TOP_LEVEL_SCREEN_ID_TAG -> router.showTagList(fromScreen, trackingDetails)
-            TOP_LEVEL_SCREEN_ID_SONG -> router.showAllSheets(fromScreen, trackingDetails)
-            MODAL_SCREEN_ID_SETTINGS -> router.showSettings(fromScreen, trackingDetails)
-            MODAL_SCREEN_ID_DEBUG -> router.showDebug(fromScreen, trackingDetails)
-            else -> router.showGameList(fromScreen, trackingDetails)
+    fun modalScreenLink(screen: Modal) {
+        val fromScreen = TrackingScreen.HUD
+
+        tracker.logScreenLinkClick(screen.name, fromScreen, trackingDetails)
+
+        when (screen) {
+            Modal.SETTINGS -> navigator.showSettings(fromScreen, trackingDetails)
+            Modal.DEBUG_MENU -> navigator.showDebug(fromScreen, trackingDetails)
+            else -> navigator.showGameList(fromScreen, trackingDetails)
         }
     }
 
     fun randomSelect(selectedPart: Part) {
         tracker.logRandomClick()
-        viewModel.toRegularMode()
-        viewModel.onRandomSelectClick(selectedPart)
+        navViewModel.onRandomSelectClick(selectedPart)
     }
 
     fun refresh() {
         tracker.logRefreshClick()
-        viewModel.refresh()
-        viewModel.toRegularMode()
+        navViewModel.refresh()
     }
 
     fun perf() {
-        viewModel.toPerf()
+        navViewModel.toPerf()
     }
 
     fun perfScreenSelection(screen: PerfSpec) {
-        viewModel.setPerfSelectedScreen(screen)
+        navViewModel.setPerfSelectedScreen(screen)
     }
 
     fun setPerfViewMode(mode: PerfViewMode) {
-        viewModel.setPerfViewMode(mode)
+        navViewModel.setPerfViewMode(mode)
     }
 
     fun searchClear() {
-        viewModel.clearSearchQuery()
+        hudViewModel
+            .clearSearchQuery()
     }
 
     fun songSearchResult(id: Long) {
-        router.showSongViewer(id)
-        viewModel.toRegularMode()
+        navigator.showSongViewer(id)
     }
 
     fun gameSearchResult(id: Long) {
-        router.showGameDetail(id)
-        viewModel.toRegularMode()
+        navigator.showGameDetail(id)
     }
 
     fun composerSearchResult(id: Long) {
-        router.showComposerDetail(id)
-        viewModel.toRegularMode()
+        navigator.showComposerDetail(id)
     }
 
     fun showMoreResults(query: String) {
-        router.showSearch(query)
-        viewModel.toRegularMode()
+        navigator.showSearch(query)
     }
 }

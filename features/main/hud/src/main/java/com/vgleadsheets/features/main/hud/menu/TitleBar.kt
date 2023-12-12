@@ -3,8 +3,8 @@ package com.vgleadsheets.features.main.hud.menu
 import android.content.res.Resources
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.MenuTitleBarListModel
-import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.PartSelectorOption
+import com.vgleadsheets.nav.HudMode
 
 object TitleBar {
     fun getListModels(
@@ -29,8 +29,8 @@ object TitleBar {
     }
 
     private fun getIconId(hudMode: HudMode) = when (hudMode) {
-        HudMode.REGULAR, HudMode.HIDDEN -> com.vgleadsheets.vectors.R.drawable.ic_menu_24dp
-        HudMode.PERF -> com.vgleadsheets.vectors.R.drawable.ic_arrow_back_black_24dp
-        else -> com.vgleadsheets.vectors.R.drawable.ic_clear_black_24dp
+        HudMode.REGULAR, HudMode.HIDDEN -> com.vgleadsheets.ui.icons.R.drawable.ic_menu_24dp
+        HudMode.PERF -> com.vgleadsheets.ui.icons.R.drawable.ic_arrow_back_black_24dp
+        else -> com.vgleadsheets.ui.icons.R.drawable.ic_clear_black_24dp
     }
 }

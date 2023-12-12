@@ -10,8 +10,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.metrics.performance.FrameData
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
-import com.vgleadsheets.FragmentInterface
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.args.IdArgs
 import com.vgleadsheets.args.NullableStringArgs
@@ -35,6 +33,8 @@ import com.vgleadsheets.features.main.tagsongs.TagValueSongFragment
 import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.nav.BackHandler
+import com.vgleadsheets.nav.Navigator
 import com.vgleadsheets.perf.tracking.common.FrameInfo
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
@@ -48,8 +48,8 @@ import javax.inject.Inject
 class MainActivity :
     AppCompatActivity(),
     HasAndroidInjector,
-    FragmentRouter,
-    FragmentInterface,
+    Navigator,
+    BackHandler,
     HudViewModel.HudViewModelFactoryProvider {
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -70,7 +70,7 @@ class MainActivity :
     override fun androidInjector() = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(com.vgleadsheets.ui_core.R.style.VglsAppTheme)
+        setTheme(com.vgleadsheets.ui.core.R.style.VglsAppTheme)
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
@@ -271,6 +271,10 @@ class MainActivity :
 
         finish()
         Runtime.getRuntime().exit(0)
+    }
+
+    override fun toMenu() {
+        TODO("Not yet implemented")
     }
 
     private fun clearBackStack() {

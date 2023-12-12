@@ -1,8 +1,8 @@
 package com.vgleadsheets.features.main.favorites
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ComposeListFragment
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -25,13 +25,12 @@ class FavoriteListFragment :
 
     override val viewModel: FavoriteListViewModel by fragmentViewModel()
 
-    override fun generateListConfig(state: FavoriteListState, hudState: HudState) = Config(
+    override fun generateListConfig(state: FavoriteListState, navState: NavState) = Config(
         state,
-        hudState,
+        navState,
         baseImageUrl,
         Clicks(
             getFragmentRouter(),
-            hudViewModel
         ),
         perfTracker,
         getPerfSpec(),

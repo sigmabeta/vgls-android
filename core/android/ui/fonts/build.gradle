@@ -1,6 +1,0 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply from: "$rootProject.projectDir/compose-module.gradle"
-
-android {
-    namespace 'com.vgleadsheets.fonts'
-}

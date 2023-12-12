@@ -1,10 +1,10 @@
 package com.vgleadsheets.features.main.tagsongs
 
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.Navigator
 
-class Clicks(val router: FragmentRouter) : ListItemClicks {
+class Clicks(val navigator: Navigator) : ListItemClicks {
     fun song(id: Long) {
-        router.showSongViewer(id)
+        navigator.showSongViewer(id)
     }
 }

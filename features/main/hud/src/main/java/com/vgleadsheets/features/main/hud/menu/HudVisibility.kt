@@ -5,7 +5,7 @@ import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vgleadsheets.animation.fadeInSlightly
 import com.vgleadsheets.animation.fadeOutGone
-import com.vgleadsheets.features.main.hud.HudMode
+import com.vgleadsheets.nav.HudMode
 
 object HudVisibility {
     fun setToLookRightIdk(
@@ -16,7 +16,7 @@ object HudVisibility {
         when (hudMode) {
             HudMode.REGULAR -> handleRegularHud(shadow, bottomSheet)
             HudMode.HIDDEN -> handleHiddenHud(shadow, bottomSheet)
-            else -> handleOtherHudStatesLol(shadow, bottomSheet)
+            else -> handleOthernavStatesLol(shadow, bottomSheet)
         }
     }
 
@@ -36,7 +36,7 @@ object HudVisibility {
         bottomSheet.hide()
     }
 
-    private fun handleOtherHudStatesLol(
+    private fun handleOthernavStatesLol(
         shadow: View,
         bottomSheet: BottomSheetBehavior<FrameLayout>
     ) {

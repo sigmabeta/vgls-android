@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="title_debug">Debug Menu</string>
+
     <string name="section_network">Network</string>
     <string name="section_database">Database</string>
     <string name="section_misc">Misc</string>

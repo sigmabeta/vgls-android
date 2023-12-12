@@ -24,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.R
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -53,10 +52,10 @@ fun GridScreen(
                     navigationIcon = {
                         val (icon, description) = if (title.shouldShowBack) {
                             Icons.Filled.ArrowBack to
-                                stringResource(id = R.string.cont_desc_app_back)
+                                stringResource(id = com.vgleadsheets.ui.components.R.string.cont_desc_app_back)
                         } else {
                             Icons.Filled.Menu to
-                                stringResource(id = R.string.cont_desc_app_menu)
+                                stringResource(id = com.vgleadsheets.ui.components.R.string.cont_desc_app_menu)
                         }
 
                         IconButton(onClick = title.onMenuButtonClick) {

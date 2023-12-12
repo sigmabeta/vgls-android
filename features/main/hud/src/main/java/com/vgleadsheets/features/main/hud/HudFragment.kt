@@ -1,6 +1,7 @@
 package com.vgleadsheets.features.main.hud
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vgleadsheets.VglsFragment
@@ -23,6 +25,8 @@ import com.vgleadsheets.features.main.hud.databinding.FragmentHudComposeBinding
 import com.vgleadsheets.features.main.hud.databinding.FragmentHudRecyclerBinding
 import com.vgleadsheets.features.main.hud.menu.HudVisibility
 import com.vgleadsheets.features.main.hud.menu.MenuRenderer
+import com.vgleadsheets.nav.HudMode
+import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.storage.Storage
@@ -33,6 +37,12 @@ import javax.inject.Named
 
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment() {
+    // THIS IS A DUMMY INJECTION. If this isn't here, ListFragment_MembersInjector.java
+    // doesn't get generated, which causes it to get generated multiple times in children
+    // modules, which causes R8 to fail.
+    @Inject
+    lateinit var dummyContext: Context
+
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     @Inject
@@ -42,7 +52,7 @@ class HudFragment : VglsFragment() {
     @Named("VglsImageUrl")
     lateinit var baseImageUrl: String
 
-    internal lateinit var clicks: Clicks
+    private lateinit var clicks: Clicks
 
     private lateinit var screenRecycler: FragmentHudRecyclerBinding
 
@@ -54,9 +64,11 @@ class HudFragment : VglsFragment() {
 
     private val viewModel: HudViewModel by activityViewModel()
 
+    private val navViewModel: NavViewModel by existingViewModel()
+
     private lateinit var menuAdapter: ComponentAdapter
 
-    fun onAppBarButtonClick() = withState(viewModel) {
+    fun onAppBarButtonClick() = withState(navViewModel) {
         clicks.appBarButton(it)
     }
 
@@ -70,6 +82,7 @@ class HudFragment : VglsFragment() {
 
         clicks = Clicks(
             viewModel,
+            navViewModel,
             getFragmentRouter(),
             tracker,
             ""
@@ -83,32 +96,32 @@ class HudFragment : VglsFragment() {
     }
 
     @Suppress("ComplexMethod", "LongMethod")
-    override fun invalidate() = withState(viewModel) { state ->
+    override fun invalidate() = withState(viewModel, navViewModel) { state, navState ->
         HudVisibility.setToLookRightIdk(
             shadowHud,
-            state.mode,
+            navState.hudMode,
             bottomSheetBehavior
         )
 
-        if (state.mode != HudMode.SEARCH) {
+        if (navState.hudMode != HudMode.SEARCH) {
             hideKeyboard()
         }
 
         val menuItems = MenuRenderer.renderMenu(
-            state.mode,
+            navState.hudMode,
             state.searchQuery,
             state.searchResults,
-            state.selectedSong?.hasVocals ?: true,
-            state.selectedPart,
-            state.loadTimeLists,
-            state.frameTimeStatsMap,
-            state.invalidateStatsMap,
-            state.digest is Loading,
-            state.updateTime,
-            state.selectedSong,
-            state.perfViewState,
+            navState.selectedSong?.hasVocals ?: true,
+            navState.selectedPart,
+            navState.loadTimeLists,
+            navState.frameTimeStatsMap,
+            navState.invalidateStatsMap,
+            navState.digest is Loading,
+            navState.updateTime,
+            navState.selectedSong,
+            navState.perfViewState,
             baseImageUrl,
-            viewModel,
+            navViewModel,
             clicks,
             resources
         )
@@ -116,7 +129,7 @@ class HudFragment : VglsFragment() {
 
         renderContentInRecyclerView(menuItems)
 
-        if (state.digest is Loading) {
+        if (navState.digest is Loading) {
             perfTracker.cancelAll()
         }
     }
@@ -128,7 +141,7 @@ class HudFragment : VglsFragment() {
         )
     }
 
-    override fun onBackPress() = withState(viewModel) {
+    override fun onBackPress() = withState(navViewModel) {
         return@withState clicks.back(it)
     }
 
@@ -186,17 +199,6 @@ class HudFragment : VglsFragment() {
     }
 
     companion object {
-        const val TOP_LEVEL_SCREEN_ID_FAVORITES = "FAVORITES"
-        const val TOP_LEVEL_SCREEN_ID_GAME = "GAME"
-        const val TOP_LEVEL_SCREEN_ID_COMPOSER = "COMPOSER"
-        const val TOP_LEVEL_SCREEN_ID_SONG = "SONG"
-        const val TOP_LEVEL_SCREEN_ID_TAG = "TAG"
-
-        const val TOP_LEVEL_SCREEN_ID_DEFAULT = TOP_LEVEL_SCREEN_ID_GAME
-
-        const val MODAL_SCREEN_ID_SETTINGS = "SETTINGS"
-        const val MODAL_SCREEN_ID_DEBUG = "DEBUG"
-
         fun newInstance() = HudFragment()
     }
 }

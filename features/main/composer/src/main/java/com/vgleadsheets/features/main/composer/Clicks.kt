@@ -1,16 +1,16 @@
 package com.vgleadsheets.features.main.composer
 
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.Navigator
 
 class Clicks(
-    private val router: FragmentRouter,
+    private val navigator: Navigator,
     private val viewModel: ComposerDetailViewModel,
 ) : ListItemClicks {
     fun song(
         id: Long
     ) {
-        router.showSongViewer(
+        navigator.showSongViewer(
             id
         )
     }
@@ -20,6 +20,6 @@ class Clicks(
     }
 
     fun game(id: Long) {
-        router.showGameDetail(id)
+        navigator.showGameDetail(id)
     }
 }

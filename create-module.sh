@@ -3,7 +3,7 @@
 # Dear user: please replace the following variable with the root package of your project.
 ROOT_PACKAGE=com.vgleadsheets
 
-# Dear user: please replace the following with a path to a stub build.gradle you want 
+# Dear user: please replace the following with a path to a stub build.gradle.kts you want
 # to use for this new module.
 STUB_GRADLE=./stub.gradle
 
@@ -54,7 +54,7 @@ mkdir -p $LAYOUT_SRC_PATH
 # echo "Module package name: $MODULE_PACKAGE"
 # echo "Manifest location: $MANIFEST_PATH"
 # echo "Source location: $KT_SRC_PATH"
-# echo "build.gradle location: $BUILD_GRADLE_PATH"
+# echo "build.gradle.kts location: $BUILD_GRADLE_PATH"
 # echo ""
 # echo ""
 

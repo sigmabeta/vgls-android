@@ -1,10 +1,10 @@
 package com.vgleadsheets.features.main.tagkeys
 
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.Navigator
 
-class Clicks(private val router: FragmentRouter) : ListItemClicks {
+class Clicks(private val navigator: Navigator) : ListItemClicks {
     fun tagKey(id: Long) {
-        router.showValueListForTagKey(id)
+        navigator.showValueListForTagKey(id)
     }
 }

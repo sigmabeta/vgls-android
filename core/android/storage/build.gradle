@@ -1,17 +1,18 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply from: "$rootProject.projectDir/di-android.gradle"
-
+plugins {
+    alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.vgls.di.android)
+}
 
 dependencies {
-    api "com.uber.simplestore:simplestore:$simplestore_version"
+    api(libs.simplestore)
 
-    implementation project(":core:android:coroutines")
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-guava:$coroutines_version"
+    implementation(projects.core.android.coroutines)
+    implementation(libs.kotlinx.coroutines.guava)
 
     // Common dependencies
-    implementation project(":core:common:debug")
+    implementation(projects.core.common.debug)
 }
 
 android {
-    namespace 'com.vgleadsheets.storage'
+    namespace = "com.vgleadsheets.storage"
 }

@@ -5,9 +5,9 @@ import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.features.main.hud.PerfViewMode
-import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.R
+import com.vgleadsheets.nav.PerfViewMode
+import com.vgleadsheets.nav.PerfViewState
 import com.vgleadsheets.perf.tracking.common.FrameTimeStats
 import com.vgleadsheets.perf.tracking.common.InvalidateStats
 import com.vgleadsheets.perf.tracking.common.PerfSpec

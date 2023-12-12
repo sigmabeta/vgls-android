@@ -1,13 +1,15 @@
-apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
-
+plugins {
+    alias(libs.plugins.vgls.core.jvm)
+}
 dependencies {
-    // So we don't have buggy time comparisons
-    api "com.jakewharton.threetenabp:threetenabp:$threeten_version"
+    // So we don"t have buggy time comparisons
+    api(libs.threeten)
 
-    api project(':core:common:model')
+    api(projects.core.common.model)
 
-    implementation project(':core:common:conversion')
-    implementation project(':core:common:database')
-    implementation project(':core:common:network')
-    implementation project(':core:common:tracking')
+    implementation(projects.core.common.conversion)
+    implementation(projects.core.common.database)
+    implementation(projects.core.common.logging)
+    implementation(projects.core.common.network)
+    implementation(projects.core.common.tracking)
 }

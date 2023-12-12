@@ -1,1 +1,3 @@
-apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
+plugins {
+    alias(libs.plugins.vgls.core.jvm)
+}

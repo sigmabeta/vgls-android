@@ -26,8 +26,8 @@ class Config(
     private val resources: Resources
 ) : ListConfig {
     override val titleConfig = Title.Config(
-        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
-        resources.getString(com.vgleadsheets.features.main.hud.R.string.label_by_tag),
+        resources.getString(com.vgleadsheets.ui.strings.R.string.app_name),
+        resources.getString(R.string.subtitle_tags),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -53,7 +53,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         state.isEmpty(),
-        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_tag_Key)
     )
 

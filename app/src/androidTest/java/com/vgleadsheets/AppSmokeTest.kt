@@ -18,7 +18,7 @@ class AppSmokeTest : UiTest() {
         launchScreen()
 
         checkSuccessfulLaunch(
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.games.R.string.subtitle_game
         )
     }
@@ -29,7 +29,7 @@ class AppSmokeTest : UiTest() {
         launchScreen()
 
         checkSuccessfulLaunch(
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.composers.R.string.subtitle_composer
         )
     }
@@ -40,7 +40,7 @@ class AppSmokeTest : UiTest() {
         launchScreen()
 
         checkSuccessfulLaunch(
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.songs.R.string.subtitle_all_songs
         )
     }
@@ -51,7 +51,7 @@ class AppSmokeTest : UiTest() {
         launchScreen()
 
         checkSuccessfulLaunch(
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.tagkeys.R.string.subtitle_tags
         )
     }

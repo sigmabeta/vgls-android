@@ -1,12 +1,12 @@
 package com.vgleadsheets.features.main.tagvalues
 
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.Navigator
 
 class Clicks(
-    private val router: FragmentRouter,
+    private val navigator: Navigator,
 ) : ListItemClicks {
     fun tagValue(id: Long) {
-        router.showSongListForTagValue(id)
+        navigator.showSongListForTagValue(id)
     }
 }

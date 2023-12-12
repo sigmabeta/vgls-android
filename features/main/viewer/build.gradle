@@ -1,17 +1,19 @@
-apply from: "$rootProject.projectDir/feature-module.gradle"
+plugins {
+    alias(libs.plugins.vgls.feature.android)
+}
 
 dependencies {
-    implementation "androidx.viewpager2:viewpager2:$viewpager_version"
+    implementation(libs.androidx.viewpager)
 
-    implementation project(':core:android:animation')
-    implementation project(':core:android:coroutines')
-    implementation project(':core:android:images')
-    implementation project(':core:android:recyclerview')
-    implementation project(':core:android:storage')
-    implementation project(':core:android:ui-components')
-    implementation project(':core:android:vectors')
+    implementation(projects.core.android.animation)
+    implementation(projects.core.android.coroutines)
+    implementation(projects.core.android.images)
+    implementation(projects.core.android.recyclerview)
+    implementation(projects.core.android.storage)
+    implementation(projects.core.android.ui.components)
+    implementation(projects.core.android.ui.icons)
 }
 
 android {
-    namespace 'com.vgleadsheets.features.main.viewer'
+    namespace = "com.vgleadsheets.features.main.viewer"
 }

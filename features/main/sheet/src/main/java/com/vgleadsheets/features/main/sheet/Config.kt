@@ -6,7 +6,6 @@ import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
@@ -25,12 +24,13 @@ import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: SongState,
-    private val hudState: HudState,
+    private val navState: NavState,
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
@@ -60,11 +60,11 @@ class Config(
         { },
         Page.generateThumbUrl(
             baseImageUrl,
-            hudState.selectedPart.apiId,
+            navState.selectedPart.apiId,
             song?.isAltSelected ?: false,
             song?.filename ?: ""
         ),
-        com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
         true,
         songLoad.isLoading()
     )
@@ -74,15 +74,15 @@ class Config(
         listOf(
             CtaListModel(
                 if (song?.isFavorite == true) {
-                    com.vgleadsheets.vectors.R.drawable.ic_jam_filled
+                    com.vgleadsheets.ui.icons.R.drawable.ic_jam_filled
                 } else {
-                    com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
+                    com.vgleadsheets.ui.icons.R.drawable.ic_jam_unfilled
                 },
                 resources.getString(
                     if (song?.isFavorite == true) {
-                        com.vgleadsheets.features.main.hud.R.string.label_unfavorite
+                        R.string.label_unfavorite
                     } else {
-                        com.vgleadsheets.features.main.hud.R.string.label_favorite
+                        R.string.label_favorite
                     }
                 )
             ) { clicks.onFavoriteClick() }
@@ -154,11 +154,11 @@ class Config(
 
         return listOf(
             CtaListModel(
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 resources.getString(R.string.cta_view_sheet)
             ) { clicks.viewSheet(song.id) },
             CtaListModel(
-                com.vgleadsheets.vectors.R.drawable.ic_play_circle_filled_24,
+                com.vgleadsheets.ui.icons.R.drawable.ic_play_circle_filled_24,
                 resources.getString(R.string.cta_youtube)
             ) { clicks.searchYoutube(song.name, song.gameName) }
         )
@@ -232,7 +232,7 @@ class Config(
 
     private fun Song.captionText() = resources.getString(
         R.string.subtitle_pages,
-        if (hudState.selectedPart == Part.VOCAL) {
+        if (navState.selectedPart == Part.VOCAL) {
             lyricPageCount
         } else {
             pageCount

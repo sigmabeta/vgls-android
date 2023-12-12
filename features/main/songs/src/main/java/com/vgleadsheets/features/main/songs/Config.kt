@@ -4,7 +4,6 @@ import android.content.res.Resources
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.isNullOrEmpty
@@ -17,12 +16,13 @@ import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.filteredForVocals
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: SongListState,
-    private val hudState: HudState,
+    private val navState: NavState,
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
@@ -30,7 +30,7 @@ class Config(
     private val resources: Resources
 ) : ListConfig {
     override val titleConfig = Title.Config(
-        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
+        resources.getString(com.vgleadsheets.ui.strings.R.string.app_name),
         resources.getString(R.string.subtitle_all_songs),
         resources,
         {
@@ -46,12 +46,12 @@ class Config(
         !state.contentLoad.isNullOrEmpty()
     ) {
         val filteredGames = state.contentLoad.content()
-            ?.filteredForVocals(hudState.selectedPart.apiId)
+            ?.filteredForVocals(navState.selectedPart.apiId)
 
         if (filteredGames.isNullOrEmpty()) {
             return@Config listOf(
                 EmptyStateListModel(
-                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
                     resources.getString(com.vgleadsheets.features.main.list.R.string.empty_transposition),
                 )
             )
@@ -66,11 +66,11 @@ class Config(
                     it.gameName,
                     Page.generateThumbUrl(
                         baseImageUrl,
-                        hudState.selectedPart.apiId,
+                        navState.selectedPart.apiId,
                         it.isAltSelected,
                         it.filename
                     ),
-                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp
+                    com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp
                 ) { clicks.song(it.id) }
             }
 
@@ -81,11 +81,11 @@ class Config(
                 it.gameName,
                 Page.generateThumbUrl(
                     baseImageUrl,
-                    hudState.selectedPart.apiId,
+                    navState.selectedPart.apiId,
                     it.isAltSelected,
                     it.filename
                 ),
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp
             ) { clicks.song(it.id) }
         }
 
@@ -114,7 +114,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         state.isEmpty(),
-        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_song)
     )
 

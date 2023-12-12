@@ -14,21 +14,21 @@ object SearchIcon {
 
     private fun ImageButton.showMenuButton() {
         setIconAndContentDesc(
-            com.vgleadsheets.vectors.R.drawable.ic_menu_24dp,
+            com.vgleadsheets.ui.icons.R.drawable.ic_menu_24dp,
             R.string.cd_search_menu
         )
     }
 
     private fun ImageButton.showBackButton() {
         setIconAndContentDesc(
-            com.vgleadsheets.vectors.R.drawable.ic_arrow_back_black_24dp,
+            com.vgleadsheets.ui.icons.R.drawable.ic_arrow_back_black_24dp,
             R.string.cd_search_back
         )
     }
 
     private fun ImageButton.showCloseButton() {
         setIconAndContentDesc(
-            com.vgleadsheets.vectors.R.drawable.ic_clear_black_24dp,
+            com.vgleadsheets.ui.icons.R.drawable.ic_clear_black_24dp,
             R.string.cd_search_close
         )
     }

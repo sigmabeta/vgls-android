@@ -1,25 +1,28 @@
 package com.vgleadsheets.features.main.search
 
-import com.vgleadsheets.FragmentRouter
-import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.NavViewModel
+import com.vgleadsheets.nav.Navigator
 
 class Clicks(
-    private val router: FragmentRouter,
-    private val hudViewModel: HudViewModel
+    private val navigator: Navigator,
+    private val navViewModel: NavViewModel
 ) : ListItemClicks {
     fun song(id: Long) {
-        hudViewModel.hideSearch()
-        router.showSongViewer(id)
+        navViewModel
+            .hideSearch()
+        navigator.showSongViewer(id)
     }
 
     fun game(id: Long) {
-        hudViewModel.hideSearch()
-        router.showGameDetail(id)
+        navViewModel
+            .hideSearch()
+        navigator.showGameDetail(id)
     }
 
     fun composer(id: Long) {
-        hudViewModel.hideSearch()
-        router.showComposerDetail(id)
+        navViewModel
+            .hideSearch()
+        navigator.showComposerDetail(id)
     }
 }

@@ -1,31 +1,24 @@
 package com.vgleadsheets.features.main.favorites
 
-import com.vgleadsheets.FragmentRouter
-import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.Navigator
 
 class Clicks(
-    private val router: FragmentRouter,
-    private val hudViewModel: HudViewModel
-    /*private val tracker: Tracker,
-    private val trackingDetails: String*/
+    private val navigator: Navigator,
 ) : ListItemClicks {
     fun menu() {
-        hudViewModel.toMenu()
+        navigator.toMenu()
     }
 
     fun song(id: Long) {
-        hudViewModel.hideSearch()
-        router.showSongViewer(id)
+        navigator.showSongViewer(id)
     }
 
     fun game(id: Long) {
-        hudViewModel.hideSearch()
-        router.showGameDetail(id)
+        navigator.showGameDetail(id)
     }
 
     fun composer(id: Long) {
-        hudViewModel.hideSearch()
-        router.showComposerDetail(id)
+        navigator.showComposerDetail(id)
     }
 }

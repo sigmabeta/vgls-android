@@ -16,12 +16,12 @@ class LicenseFragment : VglsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topOffset =
-            resources.getDimension(com.vgleadsheets.ui_core.R.dimen.height_search_bar).toInt() +
-                resources.getDimension(com.vgleadsheets.ui_core.R.dimen.margin_large).toInt()
+            resources.getDimension(com.vgleadsheets.ui.core.R.dimen.height_search_bar).toInt() +
+                resources.getDimension(com.vgleadsheets.ui.core.R.dimen.margin_large).toInt()
         val bottomOffset =
-            resources.getDimension(com.vgleadsheets.ui_core.R.dimen.height_bottom_sheet_peek)
+            resources.getDimension(com.vgleadsheets.ui.core.R.dimen.height_bottom_sheet_peek)
                 .toInt() +
-                resources.getDimension(com.vgleadsheets.ui_core.R.dimen.margin_medium).toInt()
+                resources.getDimension(com.vgleadsheets.ui.core.R.dimen.margin_medium).toInt()
 
         val webview = view.findViewById<WebView>(R.id.web_license)
         webview.setOnApplyWindowInsetsListener { _, insets ->

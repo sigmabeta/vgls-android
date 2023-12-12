@@ -19,7 +19,6 @@ import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.snackbar.Snackbar
-import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.Side
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.animation.slideViewOnscreen
@@ -27,11 +26,12 @@ import com.vgleadsheets.animation.slideViewUpOffscreen
 import com.vgleadsheets.args.ViewerArgs
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.features.main.hud.HudMode
-import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.nav.BackHandler
+import com.vgleadsheets.nav.HudMode
+import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForOneMargin
@@ -55,7 +55,7 @@ class ViewerFragment :
     @Inject
     lateinit var dispatchers: VglsDispatchers
 
-    private val hudViewModel: HudViewModel by existingViewModel()
+    private val navViewModel: NavViewModel by existingViewModel()
 
     private val viewModel: ViewerViewModel by fragmentViewModel()
 
@@ -74,11 +74,11 @@ class ViewerFragment :
         postInvalidate()
     }
 
-    override fun onClicked() = withState(hudViewModel) { state ->
-        if (state.mode != HudMode.HIDDEN) {
-            hudViewModel.hideHud()
+    override fun onClicked() = withState(navViewModel) { state ->
+        if (state.hudMode != HudMode.HIDDEN) {
+            navViewModel.hideHud()
         } else {
-            hudViewModel.showHud()
+            navViewModel.showHud()
         }
     }
 
@@ -103,9 +103,9 @@ class ViewerFragment :
         appButton = view.findViewById(R.id.button_app_menu)
 
         appButton.setInsetListenerForOneMargin(Side.TOP)
-        appButton.setOnClickListener { (activity as FragmentInterface).onAppBarButtonClick() }
+        appButton.setOnClickListener { (activity as BackHandler).onAppBarButtonClick() }
 
-        hudViewModel.setPerfSelectedScreen(getPerfSpec())
+        navViewModel.setPerfSelectedScreen(getPerfSpec())
 
         val sheetsAsPager = view.findViewById<ViewPager2>(R.id.pager_sheets)
         val sheetsAsScrollingList = view.findViewById<RecyclerView>(R.id.list_sheets)
@@ -148,14 +148,14 @@ class ViewerFragment :
     override fun onStop() {
         super.onStop()
         stopScreenTimer()
-        hudViewModel.showHud()
+        navViewModel.showHud()
         viewModel.stopReportTimer()
 
-        hudViewModel.clearSelectedSong()
+        navViewModel.clearSelectedSong()
     }
 
-    override fun invalidate() = withState(hudViewModel, viewModel) { hudState, viewerState ->
-        hudViewModel.alwaysShowBack()
+    override fun invalidate() = withState(navViewModel, viewModel) { navState, viewerState ->
+        navViewModel.alwaysShowBack()
 
         stopScreenTimer()
         hideScreenOffSnackbar()
@@ -164,7 +164,7 @@ class ViewerFragment :
             startScreenTimer()
         }
 
-        if (hudState.mode != HudMode.HIDDEN) {
+        if (navState.hudMode != HudMode.HIDDEN) {
             windowInsetController?.show(WindowInsetsCompat.Type.systemBars())
             appButton.slideViewOnscreen()
         } else {
@@ -172,7 +172,7 @@ class ViewerFragment :
             appButton.slideViewUpOffscreen()
         }
 
-        val selectedPart = hudState.selectedPart
+        val selectedPart = navState.selectedPart
 
         songId = viewerState.songId
 
@@ -187,11 +187,11 @@ class ViewerFragment :
         }
     }
 
-    override fun onBackPress() = withState(hudViewModel) { hudState ->
-        if (hudState.mode != HudMode.HIDDEN) {
+    override fun onBackPress() = withState(navViewModel) { navState ->
+        if (navState.hudMode != HudMode.HIDDEN) {
             return@withState false
         } else {
-            hudViewModel.showHud()
+            navViewModel.showHud()
             return@withState true
         }
     }
@@ -251,7 +251,7 @@ class ViewerFragment :
             return
         }
 
-        hudViewModel.setSelectedSong(song)
+        navViewModel.setSelectedSong(song)
 
         val pageCount = if (song.isAltSelected) {
             song.altPageCount

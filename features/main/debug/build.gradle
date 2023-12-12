@@ -1,10 +1,13 @@
-apply from: "$rootProject.projectDir/feature-module.gradle"
+plugins {
+    alias(libs.plugins.vgls.feature.android)
+}
 
 dependencies {
-    implementation project(":core:android:list")
-    implementation project(':core:android:storage')
+    implementation(projects.core.android.list)
+    implementation(projects.core.android.storage)
+    implementation(projects.core.android.ui.strings)
 }
 
 android {
-    namespace 'com.vgleadsheets.features.main.debug'
+    namespace = "com.vgleadsheets.features.main.debug"
 }

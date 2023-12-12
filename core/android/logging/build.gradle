@@ -1,9 +1,0 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-
-dependencies {
-    api project(":core:common:logging")
-}
-
-android {
-    namespace 'com.vgleadsheets.logging'
-}

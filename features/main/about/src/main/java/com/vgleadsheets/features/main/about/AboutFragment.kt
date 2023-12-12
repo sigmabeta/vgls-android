@@ -10,7 +10,7 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.features.main.hud.HudViewModel
+import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.setInsetListenerForPadding
@@ -21,7 +21,7 @@ class AboutFragment :
     VglsFragment() {
     private lateinit var adapter: ComponentAdapter
 
-    private val hudViewModel: HudViewModel by existingViewModel()
+    private val navViewModel: NavViewModel by existingViewModel()
 
     override fun disablePerfTracking() = true
 
@@ -30,9 +30,9 @@ class AboutFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bottomOffset =
-            resources.getDimension(com.vgleadsheets.ui_core.R.dimen.height_bottom_sheet_peek)
+            resources.getDimension(com.vgleadsheets.ui.core.R.dimen.height_bottom_sheet_peek)
                 .toInt() +
-                resources.getDimension(com.vgleadsheets.ui_core.R.dimen.margin_medium).toInt()
+                resources.getDimension(com.vgleadsheets.ui.core.R.dimen.margin_medium).toInt()
 
         val content = view.findViewById<RecyclerView>(R.id.list_content)
         adapter = ComponentAdapter(getVglsFragmentTag(), hatchet)
@@ -45,7 +45,8 @@ class AboutFragment :
     }
 
     override fun invalidate() {
-        hudViewModel.alwaysShowBack()
+        navViewModel
+            .alwaysShowBack()
 
         val listModels = constructList()
         adapter.submitList(listModels)

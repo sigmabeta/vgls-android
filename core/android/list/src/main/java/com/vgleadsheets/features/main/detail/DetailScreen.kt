@@ -36,7 +36,6 @@ import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.R
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.components.WideItemListModel
@@ -124,7 +123,7 @@ fun DetailScreen(
                 IconButton(onClick = title.onMenuButtonClick) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.cont_desc_app_back),
+                        contentDescription = stringResource(id = com.vgleadsheets.ui.components.R.string.cont_desc_app_back),
                         tint = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
@@ -145,7 +144,7 @@ fun DetailScreen(
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = stringResource(id = R.string.label_search),
+                        contentDescription = stringResource(id = com.vgleadsheets.ui.components.R.string.label_search),
                         tint = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
@@ -176,14 +175,14 @@ private fun Sample() {
             true,
             true,
             photoUrl = "https://randomfox.ca/images/96.jpg",
-            placeholder = R.drawable.img_preview_game,
+            placeholder = com.vgleadsheets.ui.components.R.drawable.img_preview_game,
             onMenuButtonClick = { },
             onImageLoadSuccess = { },
             onImageLoadFail = { },
         ),
         listItems = listOf(
             CtaListModel(
-                com.vgleadsheets.vectors.R.drawable.ic_jam_filled,
+                com.vgleadsheets.ui.icons.R.drawable.ic_jam_filled,
                 "Remove from favorites",
                 onClick = { },
             ),
@@ -194,7 +193,7 @@ private fun Sample() {
                 1234L,
                 "Kenji Hiramatsu",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -202,7 +201,7 @@ private fun Sample() {
                 2345L,
                 "Manami Kiyota",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -210,7 +209,7 @@ private fun Sample() {
                 3456L,
                 "Yasunori Mitsuda",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -218,7 +217,7 @@ private fun Sample() {
                 4567L,
                 "ACE+",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -230,7 +229,7 @@ private fun Sample() {
                 "Chain Attack",
                 "Kenji Hiramatsu",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -239,7 +238,7 @@ private fun Sample() {
                 "Iris Network",
                 "Manami Kiyota",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -248,7 +247,7 @@ private fun Sample() {
                 "Origin",
                 "Yasunori Mitsuda",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -257,7 +256,7 @@ private fun Sample() {
                 "Moebius Battle",
                 "ACE+",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -266,7 +265,7 @@ private fun Sample() {
                 "Chain Attack",
                 "Kenji Hiramatsu",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -275,7 +274,7 @@ private fun Sample() {
                 "Iris Network",
                 "Manami Kiyota",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -284,7 +283,7 @@ private fun Sample() {
                 "Origin",
                 "Yasunori Mitsuda",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -293,7 +292,7 @@ private fun Sample() {
                 "Moebius Battle",
                 "ACE+",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -302,7 +301,7 @@ private fun Sample() {
                 "Chain Attack",
                 "Kenji Hiramatsu",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -311,7 +310,7 @@ private fun Sample() {
                 "Iris Network",
                 "Manami Kiyota",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -320,7 +319,7 @@ private fun Sample() {
                 "Origin",
                 "Yasunori Mitsuda",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),
@@ -329,7 +328,7 @@ private fun Sample() {
                 "Moebius Battle",
                 "ACE+",
                 null,
-                com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 actionableId = null,
                 onClick = { },
             ),

@@ -1,22 +1,19 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply plugin: 'kotlin-kapt'
+plugins {
+    alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.vgls.di.android)
+}
 
 dependencies {
     // Contains the Tracker interface
-    api project(':core:common:tracking')
+    api(projects.core.common.tracking)
 
-    // Firebase (Must be here or else we can't log events
-    implementation "com.google.firebase:firebase-analytics:$firebase_version"
+    // Firebase (Must be here or else we can"t log events
+    implementation(libs.firebase.analytics)
 
-    implementation project(":core:android:coroutines")
-
-    // Dagger (important: include all 3 of these in modules that use Dagger
-    implementation project(':core:android:di')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    implementation(projects.core.android.coroutines)
 }
 
 android {
-    namespace 'com.vgleadsheets.tracking'
+    namespace = "com.vgleadsheets.tracking"
 }
 

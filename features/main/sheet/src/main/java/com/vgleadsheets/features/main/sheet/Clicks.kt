@@ -1,10 +1,10 @@
 package com.vgleadsheets.features.main.sheet
 
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.Navigator
 
 class Clicks(
-    private val router: FragmentRouter,
+    private val navigator: Navigator,
     private val viewModel: SongViewModel,
 ) : ListItemClicks {
     fun onFavoriteClick() {
@@ -12,22 +12,22 @@ class Clicks(
     }
 
     fun composer(composerId: Long) {
-        router.showComposerDetail(composerId)
+        navigator.showComposerDetail(composerId)
     }
 
     fun game(gameId: Long) {
-        router.showGameDetail(gameId)
+        navigator.showGameDetail(gameId)
     }
 
     fun viewSheet(id: Long) {
-        router.showSongViewer(id)
+        navigator.showSongViewer(id)
     }
 
     fun searchYoutube(name: String, gameName: String) {
-        router.searchYoutube(name, gameName)
+        navigator.searchYoutube(name, gameName)
     }
 
     fun tagValue(id: Long) {
-        router.showSongListForTagValue(id)
+        navigator.showSongListForTagValue(id)
     }
 }

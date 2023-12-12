@@ -4,14 +4,14 @@ import android.content.res.Resources
 import com.airbnb.mvrx.Async
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.features.main.hud.Clicks
-import com.vgleadsheets.features.main.hud.HudFragment
-import com.vgleadsheets.features.main.hud.HudMode
-import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.hud.PartSelectorOption
-import com.vgleadsheets.features.main.hud.PerfViewState
 import com.vgleadsheets.features.main.hud.search.SearchContent
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.nav.HudMode
+import com.vgleadsheets.nav.Modal
+import com.vgleadsheets.nav.NavViewModel
+import com.vgleadsheets.nav.PerfViewState
 import com.vgleadsheets.perf.tracking.common.FrameTimeStats
 import com.vgleadsheets.perf.tracking.common.InvalidateStats
 import com.vgleadsheets.perf.tracking.common.PerfSpec
@@ -33,14 +33,14 @@ object MenuRenderer {
         currentSong: Song?,
         perfViewState: PerfViewState,
         baseImageUrl: String,
-        viewModel: HudViewModel,
+        navViewModel: NavViewModel,
         clicks: Clicks,
         resources: Resources
     ): List<ListModel> {
         if (hudMode == HudMode.REGULAR && currentSong != null) {
-            viewModel.startHudVisibilityTimer()
+            navViewModel.startHudVisibilityTimer()
         } else {
-            viewModel.stopHudTimer()
+            navViewModel.stopHudTimer()
         }
 
         val menuItems = TitleBar.getListModels(
@@ -84,10 +84,11 @@ object MenuRenderer {
             hudMode == HudMode.MENU,
             refreshing,
             updateTime,
-            { clicks.screenLink(it) },
+            { clicks.topLevelScreenLink(it) },
+            { clicks.modalScreenLink(it) },
             { clicks.randomSelect(selectedPart) },
             { clicks.refresh() },
-            { clicks.screenLink(HudFragment.MODAL_SCREEN_ID_DEBUG) },
+            { clicks.modalScreenLink(Modal.DEBUG_MENU) },
             { clicks.perf() },
             resources,
         ) + PerfDisplay.getListModels(

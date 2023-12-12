@@ -3,9 +3,9 @@ package com.vgleadsheets.features.main.hud.menu
 import android.content.res.Resources
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.MenuItemListModel
-import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.nav.HudMode
 
 object SongOptions {
     fun getListModels(
@@ -23,13 +23,13 @@ object SongOptions {
                 MenuItemListModel(
                     resources.getString(R.string.label_song_details),
                     "",
-                    com.vgleadsheets.vectors.R.drawable.ic_details_24,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_details_24,
                     onDetailsClick,
                 ),
                 MenuItemListModel(
                     resources.getString(R.string.label_youtube),
                     "",
-                    com.vgleadsheets.vectors.R.drawable.ic_play_circle_filled_24,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_play_circle_filled_24,
                     onYoutubeClick,
                 ),
             MenuItemListModel(
@@ -42,9 +42,9 @@ object SongOptions {
                 ),
                 "",
                 if (currentSong.isFavorite) {
-                    com.vgleadsheets.vectors.R.drawable.ic_jam_filled
+                    com.vgleadsheets.ui.icons.R.drawable.ic_jam_filled
                 } else {
-                    com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
+                    com.vgleadsheets.ui.icons.R.drawable.ic_jam_unfilled
                 },
                 onFavoriteClick,
             ),
@@ -75,7 +75,7 @@ object SongOptions {
                         }
                     ),
                     "",
-                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                     onAltClick,
                 ),
             )

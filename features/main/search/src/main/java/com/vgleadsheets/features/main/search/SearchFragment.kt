@@ -4,8 +4,8 @@ import android.os.Bundle
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.fragmentViewModel
 import com.vgleadsheets.args.NullableStringArgs
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ComposeListFragment
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -32,13 +32,14 @@ class SearchFragment : ComposeListFragment<SearchState>() {
         viewModel.startQuery(query)
     }
 
-    override fun generateListConfig(state: SearchState, hudState: HudState) = Config(
+    override fun generateListConfig(state: SearchState, navState: NavState) = Config(
         state,
-        hudState,
+        navState,
         baseImageUrl,
         Clicks(
             getFragmentRouter(),
-            hudViewModel
+            navViewModel
+
         ),
         resources
     )

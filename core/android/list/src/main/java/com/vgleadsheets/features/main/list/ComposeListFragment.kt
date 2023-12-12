@@ -6,29 +6,29 @@ import android.view.View
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
-import com.vgleadsheets.FragmentInterface
 import com.vgleadsheets.VglsFragment
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.features.main.hud.HudState
-import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.compose.ListScreen
 import com.vgleadsheets.features.main.list.databinding.FragmentListComposeBinding
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.features.main.util.ListModelGenerator
 import com.vgleadsheets.mvrx.VglsState
+import com.vgleadsheets.nav.BackHandler
+import com.vgleadsheets.nav.NavState
+import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.perf.tracking.common.InvalidateInfo
+import javax.inject.Inject
+import kotlin.system.measureNanoTime
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import kotlin.system.measureNanoTime
 
 abstract class ComposeListFragment<StateType : VglsState> : VglsFragment() {
     abstract val viewModel: MavericksViewModel<StateType>
 
-    abstract fun generateListConfig(state: StateType, hudState: HudState): ListConfig
+    abstract fun generateListConfig(state: StateType, navState: NavState): ListConfig
 
     // THIS IS A DUMMY INJECTION. If this isn't here, ListFragment_MembersInjector.java
     // doesn't get generated, which causes it to get generated multiple times in children
@@ -39,7 +39,7 @@ abstract class ComposeListFragment<StateType : VglsState> : VglsFragment() {
     @Inject
     lateinit var dispatchers: VglsDispatchers
 
-    protected val hudViewModel: HudViewModel by existingViewModel()
+    protected val navViewModel: NavViewModel by existingViewModel()
 
     protected open val alwaysShowBack = true
 
@@ -59,27 +59,27 @@ abstract class ComposeListFragment<StateType : VglsState> : VglsFragment() {
         setupCompose(view)
 
         if (alwaysShowBack) {
-            hudViewModel.alwaysShowBack()
+            navViewModel.alwaysShowBack()
         } else {
-            hudViewModel.dontAlwaysShowBack()
+            navViewModel.dontAlwaysShowBack()
         }
 
-        hudViewModel.setPerfSelectedScreen(getPerfSpec())
+        navViewModel.setPerfSelectedScreen(getPerfSpec())
     }
 
     override fun invalidate() {
-        withState(viewModel, hudViewModel) { state, hudState ->
+        withState(viewModel, navViewModel) { state, navState ->
             val invalidateStartNanos = System.nanoTime()
             val invalidateDurationNanos = measureNanoTime {
-                val config = generateListConfig(state, hudState)
+                val config = generateListConfig(state, navState)
                 val title = Title.model(
                     config.titleConfig.title,
                     config.titleConfig.subtitle,
-                    hudState.alwaysShowBack,
+                    navState.alwaysShowBack,
                     config.titleConfig.onImageLoadSuccess,
                     config.titleConfig.onImageLoadFail,
                     resources,
-                    { (activity as FragmentInterface).onAppBarButtonClick() },
+                    { (activity as BackHandler).onAppBarButtonClick() },
                     config.titleConfig.photoUrl,
                     config.titleConfig.placeholder,
                     config.titleConfig.allowExpansion,

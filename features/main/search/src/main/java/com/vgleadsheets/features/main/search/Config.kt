@@ -12,7 +12,6 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingImageNameCaptionListModel
 import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
 import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
@@ -30,18 +29,19 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
+import com.vgleadsheets.nav.NavState
 
 class Config(
     private val state: SearchState,
-    private val hudState: HudState,
+    private val navState: NavState,
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val resources: Resources,
 ) : ListConfig {
 
     override val titleConfig = Title.Config(
-        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
-        resources.getString(com.vgleadsheets.components.R.string.label_search),
+        resources.getString(com.vgleadsheets.ui.strings.R.string.app_name),
+        resources.getString(R.string.subtitle_search),
         resources,
         { },
         { },
@@ -58,8 +58,8 @@ class Config(
         if (query.isNullOrEmpty()) {
             return@Config listOf(
                 EmptyStateListModel(
-                    com.vgleadsheets.components.R.drawable.ic_search_black_24dp,
-                    resources.getString(com.vgleadsheets.components.R.string.search_empty_no_query)
+                    com.vgleadsheets.ui.icons.R.drawable.ic_search_black_24dp,
+                    resources.getString(R.string.empty_no_query)
                 )
             )
         }
@@ -76,24 +76,24 @@ class Config(
         val songModels = createSectionModels(
             R.string.section_header_songs,
             state.contentLoad.songs,
-            hudState.selectedPart
+            navState.selectedPart
         )
         val gameModels = createSectionModels(
             R.string.section_header_games,
             state.contentLoad.games,
-            hudState.selectedPart
+            navState.selectedPart
         )
         val composerModels = createSectionModels(
             R.string.section_header_composers,
             state.contentLoad.composers,
-            hudState.selectedPart
+            navState.selectedPart
         )
 
         val listModels = songModels + gameModels + composerModels
         return@Config listModels.ifEmpty {
             listOf(
                 EmptyStateListModel(
-                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                     resources.getString(R.string.empty_search_no_results),
                 )
             )
@@ -167,11 +167,11 @@ class Config(
                             result.gameName,
                             Page.generateThumbUrl(
                                 baseImageUrl,
-                                hudState.selectedPart.apiId,
+                                navState.selectedPart.apiId,
                                 result.isAltSelected,
                                 result.filename
                             ),
-                            com.vgleadsheets.vectors.R.drawable.ic_description_24dp
+                            com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp
                         ) {
                             clicks.song(result.id)
                         }
@@ -182,7 +182,7 @@ class Config(
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
-                        com.vgleadsheets.vectors.R.drawable.ic_album_24dp
+                        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp
                     ) { clicks.game(result.id) }
 
                     is Composer -> ImageNameCaptionListModel(
@@ -190,7 +190,7 @@ class Config(
                         result.name,
                         generateSubtitleText(result.songs),
                         result.photoUrl,
-                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp
+                        com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp
                     ) { clicks.composer(result.id) }
 
                     else -> throw IllegalArgumentException(

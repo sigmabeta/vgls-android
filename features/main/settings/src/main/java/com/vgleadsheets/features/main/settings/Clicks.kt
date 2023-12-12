@@ -1,11 +1,11 @@
 package com.vgleadsheets.features.main.settings
 
-import com.vgleadsheets.FragmentRouter
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.Navigator
 
 class Clicks(
     private val viewModel: SettingViewModel,
-    private val router: FragmentRouter
+    private val navigator: Navigator
 ) : ListItemClicks {
     fun boolean(settingId: String, newValue: Boolean) {
         viewModel.setBooleanSetting(settingId, newValue)
@@ -16,6 +16,6 @@ class Clicks(
     }
 
     fun about() {
-        router.showAbout()
+        navigator.showAbout()
     }
 }

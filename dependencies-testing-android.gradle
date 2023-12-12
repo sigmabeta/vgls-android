@@ -1,3 +1,0 @@
-apply plugin: 'de.mannodermaus.android-junit5'
-apply from: "$rootProject.projectDir/dependencies-testing.gradle"
-

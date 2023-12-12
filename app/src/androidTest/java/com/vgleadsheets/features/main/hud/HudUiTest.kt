@@ -23,7 +23,7 @@ class HudUiTest : UiTest() {
     fun navigateToComposerList() {
         checkNavigationButton(
             com.vgleadsheets.features.main.hud.R.string.label_by_composer,
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.composers.R.string.subtitle_composer
         )
     }
@@ -32,7 +32,7 @@ class HudUiTest : UiTest() {
     fun navigateToTagList() {
         checkNavigationButton(
             com.vgleadsheets.features.main.hud.R.string.label_by_tag,
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.tagkeys.R.string.subtitle_tags
         )
     }
@@ -41,7 +41,7 @@ class HudUiTest : UiTest() {
     fun navigateToSongList() {
         checkNavigationButton(
             com.vgleadsheets.features.main.hud.R.string.label_all_songs,
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.songs.R.string.subtitle_all_songs
         )
     }
@@ -61,14 +61,14 @@ class HudUiTest : UiTest() {
 
         hud(this) {
             checkTopLevelScreen(
-                com.vgleadsheets.ui_core.R.string.app_name,
+                com.vgleadsheets.ui.core.R.string.app_name,
                 com.vgleadsheets.features.main.songs.R.string.subtitle_all_songs
             )
         }
 
         checkNavigationButton(
             com.vgleadsheets.features.main.hud.R.string.label_by_game,
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.games.R.string.subtitle_game
         )
     }
@@ -83,7 +83,7 @@ class HudUiTest : UiTest() {
 
         checkNavigationButton(
             com.vgleadsheets.features.main.hud.R.string.label_by_game,
-            com.vgleadsheets.ui_core.R.string.app_name,
+            com.vgleadsheets.ui.core.R.string.app_name,
             com.vgleadsheets.features.main.games.R.string.subtitle_game
         )
     }

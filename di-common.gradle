@@ -1,6 +1,5 @@
-apply plugin: 'kotlin-kapt'
 
 dependencies {
-    api project(':core:common:di')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    api(projects.core.common.di)
+    kapt "com.google.dagger.dagger-compiler.$dagger_version"
 }

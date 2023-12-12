@@ -10,4 +10,7 @@
     <string name="missing_thing_game_song">songs for this game</string>
 
     <string name="unknown_game">Unknown Game</string>
+
+    <string name="label_favorite">Add to Favorites</string>
+    <string name="label_unfavorite">Remove from Favorites</string>
 </resources>

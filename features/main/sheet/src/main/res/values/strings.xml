@@ -7,6 +7,8 @@
     <string name="label_detail_composer">Composer</string>
     <string name="label_detail_game">Game</string>
     <string name="label_detail_aka">Also Known As</string>
+    <string name="label_favorite">Add to Favorites</string>
+    <string name="label_unfavorite">Remove from Favorites</string>
 
     <string name="section_header_tags">Tags</string>
     <string name="subtitle_pages">%1$d pages</string>

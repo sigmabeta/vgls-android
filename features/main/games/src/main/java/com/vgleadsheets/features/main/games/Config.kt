@@ -4,7 +4,6 @@ import android.content.res.Resources
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
 import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
@@ -19,20 +18,21 @@ import com.vgleadsheets.features.main.list.sections.ErrorState
 import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.model.Game
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: GameListState,
-    private val hudState: HudState,
+    private val navState: NavState,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
     private val resources: Resources
 ) : ListConfig {
     override val titleConfig = Title.Config(
-        resources.getString(com.vgleadsheets.ui_core.R.string.app_name),
-        resources.getString(com.vgleadsheets.features.main.hud.R.string.label_by_game),
+        resources.getString(com.vgleadsheets.ui.strings.R.string.app_name),
+        resources.getString(R.string.subtitle_game),
         resources,
         {
             perfTracker.onTitleLoaded(perfSpec)
@@ -51,7 +51,7 @@ class Config(
         if (games.isNullOrEmpty()) {
             return@Config listOf(
                 EmptyStateListModel(
-                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
                     resources.getString(com.vgleadsheets.features.main.list.R.string.empty_transposition),
                 )
             )
@@ -64,7 +64,7 @@ class Config(
                     it.id + OFFSET_FAVORITE,
                     it.name,
                     it.photoUrl,
-                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp
+                    com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp
                 ) { clicks.game(it.id) }
             }
 
@@ -73,7 +73,7 @@ class Config(
                 it.id,
                 it.name,
                 it.photoUrl,
-                com.vgleadsheets.vectors.R.drawable.ic_album_24dp
+                com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp
             ) { clicks.game(it.id) }
         }
 
@@ -103,7 +103,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         state.isEmpty(),
-        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_game)
     )
 

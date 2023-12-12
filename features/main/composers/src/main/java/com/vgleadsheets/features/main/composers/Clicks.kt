@@ -1,17 +1,18 @@
 package com.vgleadsheets.features.main.composers
 
-import com.vgleadsheets.FragmentRouter
-import com.vgleadsheets.features.main.hud.HudViewModel
 import com.vgleadsheets.features.main.list.ListItemClicks
+import com.vgleadsheets.nav.NavViewModel
+import com.vgleadsheets.nav.Navigator
 
 class Clicks(
-    private val router: FragmentRouter,
-    private val hudViewModel: HudViewModel
+    private val navigator: Navigator,
+    private val navViewModel: NavViewModel
     /*private val tracker: Tracker,
     private val trackingDetails: String*/
 ) : ListItemClicks {
     fun menu() {
-        hudViewModel.toMenu()
+        navViewModel
+            .toMenu()
     }
 
     fun composer(
@@ -19,6 +20,6 @@ class Clicks(
     ) {
 /*        tracker.logComposerClick(id, trackingDetails)*/
 
-        router.showComposerDetail(id)
+        navigator.showComposerDetail(id)
     }
 }

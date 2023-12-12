@@ -1,10 +1,11 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
+plugins {
+    alias(libs.plugins.vgls.core.android)
+}
 
 dependencies {
-    // Mavericks - an implementation of MVI using Flow
-    api "com.airbnb.android:mavericks:$mavericks_version"
+    api(libs.mavericks)
 }
 
 android {
-    namespace 'com.vgleadsheets.mvrx'
+    namespace = "com.vgleadsheets.mvrx"
 }

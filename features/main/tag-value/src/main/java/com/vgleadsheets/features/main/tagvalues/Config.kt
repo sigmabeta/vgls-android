@@ -2,7 +2,6 @@ package com.vgleadsheets.features.main.tagvalues
 
 import android.content.res.Resources
 import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_CHARS
 import com.vgleadsheets.features.main.list.ListConfig.Companion.MAX_LENGTH_SUBTITLE_ITEMS
@@ -20,12 +19,13 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: TagValueState,
-    private val hudState: HudState,
+    private val navState: NavState,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
@@ -60,13 +60,13 @@ class Config(
     ) {
         hatchet.w(this.javaClass.simpleName, "Tag Values: ${tagValues?.size}")
         tagValues
-            ?.filter { !it.songs?.filteredForVocals(hudState.selectedPart.apiId).isNullOrEmpty() }
+            ?.filter { !it.songs?.filteredForVocals(navState.selectedPart.apiId).isNullOrEmpty() }
             ?.mapYielding {
                 NameCaptionListModel(
                     it.id,
                     it.name,
                     it.songs
-                        ?.filteredForVocals(hudState.selectedPart.apiId)
+                        ?.filteredForVocals(navState.selectedPart.apiId)
                         ?.captionText() ?: "Error: no values found."
                 ) { clicks.tagValue(it.id) }
             } ?: emptyList()
@@ -74,7 +74,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         tagValues?.isEmpty() == true,
-        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_tag_value_key)
     )
 

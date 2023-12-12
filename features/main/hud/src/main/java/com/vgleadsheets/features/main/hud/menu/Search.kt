@@ -14,7 +14,6 @@ import com.vgleadsheets.components.MenuSearchMoreListModel
 import com.vgleadsheets.components.MenuSectionHeaderListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.features.main.hud.Clicks
-import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.features.main.hud.R
 import com.vgleadsheets.features.main.hud.search.SearchContent
 import com.vgleadsheets.images.Page
@@ -23,6 +22,7 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
+import com.vgleadsheets.nav.HudMode
 import java.util.Locale
 
 object Search {
@@ -69,8 +69,8 @@ object Search {
         if (query.isNullOrEmpty()) {
             return listOf(
                 MenuEmptyStateListModel(
-                    com.vgleadsheets.components.R.drawable.ic_search_black_24dp,
-                    resources.getString(com.vgleadsheets.components.R.string.search_empty_no_query),
+                    com.vgleadsheets.ui.icons.R.drawable.ic_search_black_24dp,
+                    resources.getString(R.string.search_empty_no_query),
                     showCrossOut = false
                 )
             )
@@ -125,7 +125,7 @@ object Search {
         return listModels.ifEmpty {
             listOf(
                 MenuEmptyStateListModel(
-                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                     resources.getString(R.string.search_empty_search_no_results),
                 )
             )
@@ -259,7 +259,7 @@ object Search {
                                 result.isAltSelected,
                                 result.filename
                             ),
-                            com.vgleadsheets.vectors.R.drawable.ic_description_24dp
+                            com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp
                         ) {
                             clicks.songSearchResult(result.id)
                         }
@@ -270,7 +270,7 @@ object Search {
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
-                        com.vgleadsheets.vectors.R.drawable.ic_album_24dp
+                        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp
                     ) { clicks.gameSearchResult(result.id) }
 
                     is Composer -> SearchResultListModel(
@@ -278,7 +278,7 @@ object Search {
                         result.name,
                         generateSubtitleText(result.songs, resources),
                         result.photoUrl,
-                        com.vgleadsheets.vectors.R.drawable.ic_person_24dp
+                        com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp
                     ) { clicks.composerSearchResult(result.id) }
 
                     else -> throw IllegalArgumentException(

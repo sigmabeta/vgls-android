@@ -1,8 +1,8 @@
 package com.vgleadsheets.features.main.settings
 
 import com.airbnb.mvrx.fragmentViewModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ComposeListFragment
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.tracking.TrackingScreen
 import javax.inject.Inject
@@ -22,7 +22,7 @@ class SettingFragment : ComposeListFragment<SettingState>() {
 
     override val viewModel: SettingViewModel by fragmentViewModel()
 
-    override fun generateListConfig(state: SettingState, hudState: HudState) = Config(
+    override fun generateListConfig(state: SettingState, navState: NavState) = Config(
         state,
         Clicks(
             viewModel,

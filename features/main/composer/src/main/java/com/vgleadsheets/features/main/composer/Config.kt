@@ -8,7 +8,6 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
@@ -22,12 +21,13 @@ import com.vgleadsheets.features.main.list.sections.LoadingState
 import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: ComposerDetailState,
-    private val hudState: HudState,
+    private val navState: NavState,
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
@@ -56,7 +56,7 @@ class Config(
         },
         { },
         composer?.photoUrl,
-        com.vgleadsheets.vectors.R.drawable.ic_person_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
         true,
         composerLoad.isLoading(),
     )
@@ -66,15 +66,15 @@ class Config(
         listOf(
             CtaListModel(
                 if (composer?.isFavorite == true) {
-                    com.vgleadsheets.vectors.R.drawable.ic_jam_filled
+                    com.vgleadsheets.ui.icons.R.drawable.ic_jam_filled
                 } else {
-                    com.vgleadsheets.vectors.R.drawable.ic_jam_unfilled
+                    com.vgleadsheets.ui.icons.R.drawable.ic_jam_unfilled
                 },
                 resources.getString(
                     if (composer?.isFavorite == true) {
-                        com.vgleadsheets.features.main.hud.R.string.label_unfavorite
+                        R.string.label_unfavorite
                     } else {
-                        com.vgleadsheets.features.main.hud.R.string.label_favorite
+                        R.string.label_favorite
                     }
                 )
             ) { clicks.onFavoriteClick() }
@@ -92,11 +92,11 @@ class Config(
                     song.captionText(),
                     Page.generateThumbUrl(
                         baseImageUrl,
-                        hudState.selectedPart.apiId,
+                        navState.selectedPart.apiId,
                         song.isAltSelected,
                         song.filename
                     ),
-                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp
+                    com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp
                 ) {
                     clicks.song(song.id)
                 }
@@ -107,7 +107,7 @@ class Config(
                 game.id,
                 game.name,
                 game.photoUrl,
-                com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+                com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
                 game.id,
             ) {
                 clicks.game(game.id)
@@ -156,7 +156,7 @@ class Config(
         } else {
             contentModels.add(
                 EmptyStateListModel(
-                    com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
                     resources.getString(com.vgleadsheets.features.main.list.R.string.empty_transposition),
                 )
             )
@@ -167,7 +167,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         songs?.isEmpty() == true,
-        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_composer_song)
     )
 

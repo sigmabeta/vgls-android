@@ -1,7 +1,7 @@
-apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
-apply plugin: 'kotlin-kapt'
+plugins {
+    alias(libs.plugins.vgls.core.jvm)
+}
 
 dependencies {
-    // Dagger 2 Dependency Injection
-    api "com.google.dagger:dagger:$dagger_version"
+    api(libs.dagger)
 }

@@ -2,7 +2,6 @@ package com.vgleadsheets.features.main.tagsongs
 
 import android.content.res.Resources
 import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.features.main.hud.HudState
 import com.vgleadsheets.features.main.list.ListConfig
 import com.vgleadsheets.features.main.list.LoadingItemStyle
 import com.vgleadsheets.features.main.list.content
@@ -17,12 +16,13 @@ import com.vgleadsheets.features.main.list.sections.Title
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.filteredForVocals
+import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 
 class Config(
     private val state: TagValueSongState,
-    private val hudState: HudState,
+    private val navState: NavState,
     private val baseImageUrl: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
@@ -59,7 +59,7 @@ class Config(
     override val contentConfig = Content.Config(
         !songs.isNullOrEmpty()
     ) {
-        songs?.filteredForVocals(hudState.selectedPart.apiId)
+        songs?.filteredForVocals(navState.selectedPart.apiId)
             ?.mapYielding { song ->
                 ImageNameCaptionListModel(
                     song.id,
@@ -67,11 +67,11 @@ class Config(
                     song.captionText(),
                     Page.generateThumbUrl(
                         baseImageUrl,
-                        hudState.selectedPart.apiId,
+                        navState.selectedPart.apiId,
                         song.isAltSelected,
                         song.filename
                     ),
-                    com.vgleadsheets.vectors.R.drawable.ic_description_24dp
+                    com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp
                 ) {
                     clicks.song(song.id)
                 }
@@ -80,7 +80,7 @@ class Config(
 
     override val emptyConfig = EmptyState.Config(
         songs?.isEmpty() == true,
-        com.vgleadsheets.vectors.R.drawable.ic_album_24dp,
+        com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
         resources.getString(R.string.missing_thing_tag_value_song)
     )
 

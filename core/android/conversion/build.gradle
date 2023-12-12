@@ -1,14 +1,16 @@
-apply from: "$rootProject.projectDir/core-android-module.gradle"
-apply from: "$rootProject.projectDir/di-android.gradle"
+plugins {
+    alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.vgls.di.android)
+}
 
 dependencies {
-    api project(":core:common:conversion")
+    api(projects.core.common.conversion)
 
-    implementation project(":core:android:database")
+    implementation(projects.core.android.database)
 
-    implementation project(":core:common:network")
+    implementation(projects.core.common.network)
 }
 
 android {
-    namespace 'com.vgleadsheets.conversion'
+    namespace = "com.vgleadsheets.conversion"
 }

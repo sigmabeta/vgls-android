@@ -2,8 +2,8 @@ package com.vgleadsheets.features.main.hud.menu
 
 import com.vgleadsheets.components.IconNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.features.main.hud.HudMode
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.nav.HudMode
 
 object SongDisplay {
     fun getListModels(
@@ -17,7 +17,7 @@ object SongDisplay {
                     currentSong.id,
                     currentSong.name,
                     currentSong.gameName,
-                    com.vgleadsheets.vectors.R.drawable.ic_baseline_music_note_24,
+                    com.vgleadsheets.ui.icons.R.drawable.ic_baseline_music_note_24,
                     onClick
                 ),
             )
