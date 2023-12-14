@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.vgls.feature.android)
+    alias(libs.plugins.vgls.di.android)
 }
 
 dependencies {

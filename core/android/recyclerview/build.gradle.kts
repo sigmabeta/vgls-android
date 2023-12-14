@@ -11,7 +11,7 @@ dependencies {
 
 android {
     buildFeatures {
-        dataBinding true
+        dataBinding = true
     }
     namespace = "com.vgleadsheets.recyclerview"
 }

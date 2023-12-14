@@ -34,6 +34,7 @@ import com.vgleadsheets.features.main.tagvalues.TagValueFragment
 import com.vgleadsheets.features.main.viewer.ViewerFragment
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.BackHandler
+import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.nav.Navigator
 import com.vgleadsheets.perf.tracking.common.FrameInfo
 import com.vgleadsheets.perf.tracking.common.PerfSpec
@@ -50,9 +51,13 @@ class MainActivity :
     HasAndroidInjector,
     Navigator,
     BackHandler,
-    HudViewModel.HudViewModelFactoryProvider {
+    HudViewModel.HudViewModelFactoryProvider,
+    NavViewModel.NavViewModelFactoryProvider {
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    @Inject
+    override lateinit var navViewModelFactory: NavViewModel.Factory
 
     @Inject
     override lateinit var hudViewModelFactory: HudViewModel.Factory

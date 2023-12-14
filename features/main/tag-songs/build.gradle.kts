@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.vgls.feature.android)
+    alias(libs.plugins.vgls.di.android)
 }
 
 dependencies {
@@ -7,5 +8,5 @@ dependencies {
 }
 
 android {
-    namespace = "com.vgleadsheets.features.main.composer"
+    namespace = "com.vgleadsheets.features.main.tagsongs"
 }

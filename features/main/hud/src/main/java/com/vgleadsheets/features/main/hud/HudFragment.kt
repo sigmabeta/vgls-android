@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
-import com.airbnb.mvrx.existingViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vgleadsheets.VglsFragment
@@ -64,7 +63,7 @@ class HudFragment : VglsFragment() {
 
     private val viewModel: HudViewModel by activityViewModel()
 
-    private val navViewModel: NavViewModel by existingViewModel()
+    private val navViewModel: NavViewModel by activityViewModel()
 
     private lateinit var menuAdapter: ComponentAdapter
 

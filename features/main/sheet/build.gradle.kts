@@ -1,12 +1,12 @@
 plugins {
     alias(libs.plugins.vgls.feature.android)
+    alias(libs.plugins.vgls.di.android)
 }
 
 dependencies {
-    implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.list)
 }
 
 android {
-    namespace = "com.vgleadsheets.features.main.songs"
+    namespace = "com.vgleadsheets.features.main.sheet"
 }
