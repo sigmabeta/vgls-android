@@ -6,10 +6,13 @@ import com.vgleadsheets.perf.tracking.firebase.FirebasePerfBackend
 import com.vgleadsheets.tracking.Tracker
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-class PerfBackendModule {
+object PerfBackendModule {
     @Provides
     @Singleton
     fun provideFirebasePerfInstance(): FirebasePerformance = FirebasePerformance.getInstance()

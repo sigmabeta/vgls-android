@@ -11,11 +11,11 @@ class VglsDiJvmModulePlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("implementation", project(":core:common:di"))
+                add("implementation", libs.findLibrary("hilt-core").get())
 
-                "kapt"(libs.findLibrary("dagger.compiler").get())
-                "kapt"(libs.findLibrary("dagger.android.processor").get())
+                "kapt"(libs.findLibrary("hilt.compiler").get())
             }
         }
     }
 }
+

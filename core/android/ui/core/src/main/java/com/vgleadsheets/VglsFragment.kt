@@ -1,6 +1,5 @@
 package com.vgleadsheets
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +21,11 @@ import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.tracking.Tracker
 import com.vgleadsheets.tracking.TrackingScreen
 import com.vgleadsheets.ui.core.R
-import dagger.android.support.AndroidSupportInjection
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
 
+@AndroidEntryPoint
 abstract class VglsFragment : Fragment(), MavericksView {
     @Inject
     lateinit var tracker: Tracker
@@ -85,11 +85,6 @@ abstract class VglsFragment : Fragment(), MavericksView {
     open fun disablePerfTracking() = false
 
     open fun getPerfTrackingMinScreenHeight() = 580
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
 
     @SuppressWarnings("ReturnCount")
     override fun onCreate(savedInstanceState: Bundle?) {

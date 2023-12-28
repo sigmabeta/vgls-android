@@ -2,26 +2,26 @@ package com.vgleadsheets.di
 
 import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.storage.Storage
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 
+@InstallIn(SingletonComponent::class)
 @Module
-class AppModule(private val context: Context) {
-
-    @Provides
-    @Singleton
-    fun provideContext() = context
-
+object AppModule {
     @Provides
     @Singleton
     @Named("CachePath") // Oh I love that app, it lets you send money to ppl
-    fun provideCachePath(context: Context) = context.cacheDir.absolutePath
+    fun provideCachePath(@ApplicationContext context: Context) = context.cacheDir.absolutePath
 
     @Provides
     @Singleton
@@ -34,7 +34,7 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideTime(context: Context): ThreeTenTime = ThreeTenImpl(context)
+    fun provideTime(@ApplicationContext context: Context): ThreeTenTime = ThreeTenImpl(context)
 
     @Provides
     @Named("NetworkEndpoint")

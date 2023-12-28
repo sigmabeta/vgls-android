@@ -2,7 +2,10 @@ package com.vgleadsheets.di
 
 import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.logging.Hatchet
+import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import java.util.Random
 import javax.inject.Named
 import javax.inject.Singleton
@@ -11,8 +14,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-@dagger.Module
-class NetworkModule {
+@InstallIn(SingletonComponent::class)
+@Module
+object NetworkModule {
     @Provides
     @Singleton
     @Named("RngSeed")
@@ -91,9 +95,7 @@ class NetworkModule {
     @Singleton
     internal fun provideConverterFactory() = MoshiConverterFactory.create()
 
-    companion object {
-        const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
+    const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
 
-        const val SEED_RANDOM_NUMBER_GENERATOR = 123456L
-    }
+    const val SEED_RANDOM_NUMBER_GENERATOR = 123456L
 }

@@ -10,10 +10,13 @@ import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-class ConverterModule {
+object ConverterModule {
     @Provides
     @Singleton
     fun composerAliasConverter() = ComposerAliasConverter()

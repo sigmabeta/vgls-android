@@ -8,13 +8,13 @@ class VglsDiAndroidModulePlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("kotlin-kapt")
+                apply("com.google.dagger.hilt.android")
             }
 
             dependencies {
-                add("implementation", project(":core:android:di"))
+                add("implementation", libs.findLibrary("hilt").get())
 
-                "kapt"(libs.findLibrary("dagger.compiler").get())
-                "kapt"(libs.findLibrary("dagger.android.processor").get())
+                "kapt"(libs.findLibrary("hilt.compiler").get())
             }
         }
     }

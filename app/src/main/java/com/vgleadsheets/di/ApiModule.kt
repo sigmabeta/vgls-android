@@ -3,16 +3,19 @@ package com.vgleadsheets.di
 import com.vgleadsheets.network.FakeModelGenerator
 import com.vgleadsheets.network.FakeVglsApi
 import com.vgleadsheets.network.VglsApi
+import dagger.Module
 import dagger.Provides
-import java.util.*
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-@dagger.Module
-class ApiModule {
+@InstallIn(SingletonComponent::class)
+@Module
+object ApiModule {
     @Provides
     @Singleton
     fun provideVglsApi(

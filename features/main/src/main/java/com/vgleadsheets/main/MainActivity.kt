@@ -40,21 +40,17 @@ import com.vgleadsheets.perf.tracking.common.FrameInfo
 import com.vgleadsheets.perf.tracking.common.PerfSpec
 import com.vgleadsheets.perf.tracking.common.PerfTracker
 import com.vgleadsheets.tracking.TrackingScreen
-import dagger.android.AndroidInjection
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions", "Deprecation")
+@AndroidEntryPoint
 class MainActivity :
     AppCompatActivity(),
-    HasAndroidInjector,
     Navigator,
     BackHandler,
     HudViewModel.HudViewModelFactoryProvider,
     NavViewModel.NavViewModelFactoryProvider {
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     @Inject
     override lateinit var navViewModelFactory: NavViewModel.Factory
@@ -72,11 +68,8 @@ class MainActivity :
 
     private var metricsStateHolder: PerformanceMetricsState.Holder? = null
 
-    override fun androidInjector() = androidInjector
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(com.vgleadsheets.ui.core.R.style.VglsAppTheme)
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)

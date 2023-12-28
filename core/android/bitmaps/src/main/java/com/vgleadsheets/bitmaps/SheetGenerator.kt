@@ -11,6 +11,7 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import androidx.core.content.res.ResourcesCompat
 import com.vgleadsheets.logging.Hatchet
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -18,7 +19,7 @@ import kotlin.system.measureTimeMillis
 
 @Singleton
 class SheetGenerator @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     private val hatchet: Hatchet,
     @Named("VglsUrl") private val vglsUrl: String?
 ) {

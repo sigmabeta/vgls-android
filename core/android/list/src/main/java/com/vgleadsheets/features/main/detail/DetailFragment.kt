@@ -1,6 +1,5 @@
 package com.vgleadsheets.features.main.detail
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.airbnb.mvrx.MavericksViewModel
@@ -29,12 +28,6 @@ abstract class DetailFragment<StateType : VglsState> : VglsFragment() {
     abstract val viewModel: MavericksViewModel<StateType>
 
     abstract fun generateListConfig(state: StateType, navState: NavState): ListConfig
-
-    // THIS IS A DUMMY INJECTION. If this isn't here, ListFragment_MembersInjector.java
-    // doesn't get generated, which causes it to get generated multiple times in children
-    // modules, which causes R8 to fail.
-    @Inject
-    lateinit var dummyContext: Context
 
     @Inject
     lateinit var dispatchers: VglsDispatchers

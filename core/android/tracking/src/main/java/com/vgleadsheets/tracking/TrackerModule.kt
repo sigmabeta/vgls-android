@@ -5,10 +5,13 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.vgleadsheets.tracking.firebase.FirebaseTracker
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-class TrackerModule {
+object TrackerModule {
     @Provides
     @Singleton
     fun provideFirebaseAnalytics(context: Context) = FirebaseAnalytics.getInstance(context)

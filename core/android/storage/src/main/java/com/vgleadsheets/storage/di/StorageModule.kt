@@ -8,13 +8,19 @@ import com.vgleadsheets.storage.SimpleStorage
 import com.vgleadsheets.storage.Storage
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-class StorageModule {
+object StorageModule {
     @Singleton
     @Provides
-    fun provideSimpleStore(context: Context) = SimpleStoreFactory.create(
+    fun provideSimpleStore(
+        @ApplicationContext context: Context
+    ) = SimpleStoreFactory.create(
         context,
         "vgls-store"
     )

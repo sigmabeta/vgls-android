@@ -2,11 +2,14 @@ package com.vgleadsheets.coroutines
 
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 
+@InstallIn(SingletonComponent::class)
 @Module
-class DispatcherModule {
+object DispatcherModule {
     @Singleton
     @Provides
     fun provideDispatchers() =

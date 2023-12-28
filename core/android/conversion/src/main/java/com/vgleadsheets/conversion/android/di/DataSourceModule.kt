@@ -37,10 +37,13 @@ import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-class DataSourceModule {
+object DataSourceModule {
     @Provides
     @Singleton
     fun composerAliasDataSource(

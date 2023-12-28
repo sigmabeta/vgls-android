@@ -7,10 +7,14 @@ import com.vgleadsheets.database.android.Migrations
 import com.vgleadsheets.database.android.VglsDatabase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-class DatabaseModule {
+object DatabaseModule {
     @Singleton
     @Provides
     fun providesTransactionRunner(
@@ -20,7 +24,7 @@ class DatabaseModule {
     @Singleton
     @Provides
     @Suppress("SpreadOperator")
-    fun provideVglsDatabase(context: Context): VglsDatabase {
+    fun provideVglsDatabase(@ApplicationContext context: Context): VglsDatabase {
         return Room
             .databaseBuilder(
                 context,

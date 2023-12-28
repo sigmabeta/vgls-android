@@ -30,9 +30,6 @@ abstract class ComposeListFragment<StateType : VglsState> : VglsFragment() {
 
     abstract fun generateListConfig(state: StateType, navState: NavState): ListConfig
 
-    // THIS IS A DUMMY INJECTION. If this isn't here, ListFragment_MembersInjector.java
-    // doesn't get generated, which causes it to get generated multiple times in children
-    // modules, which causes R8 to fail.
     @Inject
     lateinit var dummyContext: Context
 

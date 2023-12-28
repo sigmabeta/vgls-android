@@ -5,9 +5,6 @@ plugins {
 }
 
 dependencies {
-    // DI Support
-    api(projects.core.android.di)
-
     // Theming
     api(projects.core.android.ui.colors)
     api(projects.core.android.ui.themes)

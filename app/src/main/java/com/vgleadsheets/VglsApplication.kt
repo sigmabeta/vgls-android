@@ -1,28 +1,22 @@
 package com.vgleadsheets
 
+import android.app.Application
 import android.os.Build
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.airbnb.mvrx.Mavericks
 import com.facebook.stetho.Stetho
-import com.vgleadsheets.di.AppModule
-import com.vgleadsheets.di.DaggerAppComponent
 import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.SheetPreviewFetcher
 import com.vgleadsheets.logging.Hatchet
-import dagger.android.DaggerApplication
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import javax.inject.Named
 import okhttp3.OkHttpClient
 
-class VglsApplication : DaggerApplication(),
-    HasAndroidInjector,
+@HiltAndroidApp
+class VglsApplication : Application(),
     ImageLoaderFactory {
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-
     @Inject
     @Named("VglsOkHttp")
     lateinit var okHttpClient: OkHttpClient
@@ -50,12 +44,6 @@ class VglsApplication : DaggerApplication(),
 
         Stetho.initializeWithDefaults(this)
     }
-
-    override fun applicationInjector() = DaggerAppComponent
-        .factory()
-        .create(AppModule(this))
-
-    override fun androidInjector() = dispatchingAndroidInjector
 
     override fun newImageLoader() = ImageLoader.Builder(this)
         .logger(coilLogger)

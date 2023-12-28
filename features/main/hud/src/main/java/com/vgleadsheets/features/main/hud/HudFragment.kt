@@ -1,7 +1,6 @@
 package com.vgleadsheets.features.main.hud
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -31,17 +30,13 @@ import com.vgleadsheets.recyclerview.ComponentAdapter
 import com.vgleadsheets.storage.Storage
 import com.vgleadsheets.tracking.TrackingScreen
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
 
+@AndroidEntryPoint
 @Suppress("TooManyFunctions", "DEPRECATION")
 class HudFragment : VglsFragment() {
-    // THIS IS A DUMMY INJECTION. If this isn't here, ListFragment_MembersInjector.java
-    // doesn't get generated, which causes it to get generated multiple times in children
-    // modules, which causes R8 to fail.
-    @Inject
-    lateinit var dummyContext: Context
-
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     @Inject
