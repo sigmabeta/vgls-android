@@ -44,6 +44,7 @@ rootProject.name = "VGLeadSheets"
 include(
     ":app",
 
+    ":core:android:activity",
     ":core:android:animation",
     ":core:android:bitmaps",
     ":core:android:conversion",

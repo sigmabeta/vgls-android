@@ -106,7 +106,7 @@ dependencies {
     implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.ui.components)
 
-    implementation(projects.features.main)
+    implementation(projects.core.android.activity)
 
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
@@ -134,16 +134,6 @@ dependencies {
 
     // Junit libs
     testImplementation(libs.junit4)
-
-    // UI Test libs
-    // androidTestImplementation(Espresso.Core.library)
-    // androidTestImplementation(Espresso.Core.library)
-    // androidTestImplementation(Espresso.Contrib.library)
-    // androidTestImplementation(Espresso.Intents.library)
-    // androidTestImplementation(Espresso.JUnit.library)
-
-    // androidTestImplementation(Espresso.Runner.library)
-    // androidTestImplementation(Espresso.Rules.library)
 }
 
 fun checkShouldIncludeFirebase(): Boolean {
