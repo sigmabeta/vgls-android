@@ -59,6 +59,7 @@ include(
     ":core:android:recyclerview",
     ":core:android:repository",
     ":core:android:resources",
+    ":core:android:scaffold",
     ":core:android:storage",
     ":core:android:tracking",
     ":core:android:ui:core",

@@ -6,9 +6,9 @@ plugins {
 
 dependencies {
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.navigation.compose)
 
-    implementation(projects.core.android.ui.components)
+    implementation(projects.core.android.scaffold)
+    implementation(projects.core.android.ui.themes)
 }
 
 android {

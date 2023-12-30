@@ -3,6 +3,7 @@
     <application>
         <activity
             android:name="com.vgleadsheets.remaster.RemasteredActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
