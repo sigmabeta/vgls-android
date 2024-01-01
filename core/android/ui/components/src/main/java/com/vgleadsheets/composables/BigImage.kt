@@ -110,7 +110,7 @@ private fun SuccessGame() {
     BigImage(
         HeroImageListModel(
             imageUrl = "whatever",
-            imagePlaceholder = R.drawable.img_preview_game,
+            imagePlaceholder = 0,
         ) { },
         modifier = Modifier
     )
@@ -122,7 +122,7 @@ private fun SuccessGameWithLabel() {
     BigImage(
         HeroImageListModel(
             imageUrl = "whatever",
-            imagePlaceholder = R.drawable.img_preview_game,
+            imagePlaceholder = 0,
             name = "Xenoblade Chronicles 3",
             caption = "Pretty awesome game tbh"
         ) { },

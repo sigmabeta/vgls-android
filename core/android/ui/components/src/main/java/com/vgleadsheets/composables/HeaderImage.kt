@@ -55,7 +55,7 @@ private fun SuccessGame() {
     HeaderImage(
         HeroImageListModel(
             imageUrl = "whatever",
-            imagePlaceholder = R.drawable.img_preview_game,
+            imagePlaceholder = 0,
         ) { },
         modifier = Modifier
             .fillMaxWidth(),

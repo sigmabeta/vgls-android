@@ -135,7 +135,7 @@ private fun SampleGame() {
     ) {
         CrossfadeImage(
             imageUrl = "doesn't matter",
-            imagePlaceholder = R.drawable.img_preview_game,
+            imagePlaceholder = 0,
             modifier = Modifier,
         )
     }

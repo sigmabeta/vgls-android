@@ -69,6 +69,7 @@ include(
     ":core:android:ui:fonts",
     ":core:android:ui:strings",
     ":core:android:ui:themes",
+    ":core:android:viewmodel",
 
     ":core:common:conversion",
     ":core:common:coroutines",
@@ -101,5 +102,8 @@ include(
     ":features:main:tag-key",
     ":features:main:tag-songs",
     ":features:main:tag-value",
-    ":features:main:viewer"
+    ":features:main:viewer",
+
+    ":features:remaster:bottombar",
+    ":features:remaster:topbar"
 )

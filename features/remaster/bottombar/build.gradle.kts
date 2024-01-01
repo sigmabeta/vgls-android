@@ -7,11 +7,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(projects.core.android.ui.components)
-
-    implementation(projects.features.remaster.bottombar)
-    implementation(projects.features.remaster.topbar)
+    implementation(projects.core.android.ui.themes)
 }
 
 android {
-    namespace = "com.vgleadsheets.scaffold"
+    namespace = "com.vgleadsheets.bottombar"
 }

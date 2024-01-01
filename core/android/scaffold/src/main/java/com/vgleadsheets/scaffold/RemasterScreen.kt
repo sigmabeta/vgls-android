@@ -1,57 +1,42 @@
 package com.vgleadsheets.scaffold
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.vgleadsheets.bottombar.RemasterBottomBar
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.composables.NameCaptionListItem
+import com.vgleadsheets.topbar.RemasterTopBar
+import com.vgleadsheets.topbar.TopBarViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RemasterScreen(
     modifier: Modifier
 ) {
+    val navController = rememberNavController()
+
+    val topBarViewModel: TopBarViewModel = viewModel()
+
+    val titleUpdater = { title: String -> topBarViewModel.updateTitle(title) }
+    val subtitleUpdater = { subtitle: String -> topBarViewModel.updateSubtitle(subtitle) }
+
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("Top app bar")
-                }
-            )
+            val topBarState by topBarViewModel.uiState.collectAsState()
+            RemasterTopBar(topBarState)
         },
         bottomBar = {
-            BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = "Bottom app bar",
-                )
-            }
+            RemasterBottomBar(navController)
         },
     ) { innerPadding ->
-        val navController = rememberNavController()
-
         NavHost(
             navController = navController,
             modifier = Modifier.padding(innerPadding),

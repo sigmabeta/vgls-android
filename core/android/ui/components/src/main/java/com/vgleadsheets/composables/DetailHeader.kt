@@ -113,7 +113,7 @@ private fun Sample() {
             true,
             true,
             photoUrl = "https://randomfox.ca/images/96.jpg",
-            placeholder = com.vgleadsheets.ui.components.R.drawable.img_preview_game,
+            placeholder = 0,
             onMenuButtonClick = { },
             onImageLoadSuccess = { },
             onImageLoadFail = { },
