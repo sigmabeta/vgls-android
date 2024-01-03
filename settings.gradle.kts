@@ -43,6 +43,7 @@ rootProject.name = "VGLeadSheets"
 
 include(
     ":app",
+    ":app:viewmodel",
 
     ":core:android:activity",
     ":core:android:animation",
@@ -105,5 +106,7 @@ include(
     ":features:main:viewer",
 
     ":features:remaster:bottombar",
+    ":features:remaster:game",
+    ":features:remaster:home",
     ":features:remaster:topbar"
 )

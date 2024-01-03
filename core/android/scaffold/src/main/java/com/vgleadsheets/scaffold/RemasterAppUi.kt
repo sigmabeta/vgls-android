@@ -6,18 +6,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.bottombar.RemasterBottomBar
-import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.composables.NameCaptionListItem
+import com.vgleadsheets.remaster.game.GameScreen
+import com.vgleadsheets.remaster.game.GameViewModel
+import com.vgleadsheets.remaster.game.gameViewModel
+import com.vgleadsheets.remaster.home.HomeScreen
+import com.vgleadsheets.remaster.home.HomeViewModel
 import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarViewModel
 
 @Composable
-fun RemasterScreen(
+fun RemasterAppUi(
     modifier: Modifier
 ) {
     val navController = rememberNavController()
@@ -43,15 +47,17 @@ fun RemasterScreen(
             startDestination = "home"
         ) {
             composable("home") {
-                NameCaptionListItem(
-                    model = NameCaptionListModel(
-                        dataId = 1234L,
-                        name = "Just a home screen",
-                        caption = "Nothing to see here",
-                        onClick = { }
-                    ),
-                    modifier = Modifier
-                )
+                val viewModel: HomeViewModel = hiltViewModel()
+                val homeState by viewModel.uiState.collectAsState()
+
+                HomeScreen(homeState)
+            }
+
+            composable("browse") {
+                val viewModel: GameViewModel = gameViewModel(gameId = 8)
+                val gameState by viewModel.uiState.collectAsState()
+
+                GameScreen(gameState)
             }
         }
     }

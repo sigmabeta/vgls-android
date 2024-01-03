@@ -7,14 +7,13 @@ plugins {
 dependencies {
     implementation(libs.androidx.navigation.compose)
 
-    implementation(projects.core.common.repository)
-
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.themes)
+    implementation(projects.core.android.viewmodel)
 
-    api(projects.core.android.viewmodel)
+    implementation(projects.core.common.repository)
 }
 
 android {
-    namespace = "com.vgleadsheets.topbar"
+    namespace = "com.vgleadsheets.game"
 }

@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.scaffold.RemasterScreen
+import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.ui.themes.VglsMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class RemasteredActivity :
 
         setContent {
             VglsMaterial {
-                RemasterScreen(modifier = Modifier)
+                RemasterAppUi(modifier = Modifier)
             }
         }
     }

@@ -111,6 +111,8 @@ dependencies {
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
 
+    implementation(projects.features.remaster.home)
+
     // Debug helper
     implementation(libs.stetho)
     implementation(libs.stetho.okhttp)
