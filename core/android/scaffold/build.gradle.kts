@@ -9,6 +9,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(projects.core.android.ui.components)
+    implementation(projects.core.android.viewmodel)
 
     implementation(projects.features.remaster.bottombar)
     implementation(projects.features.remaster.topbar)
