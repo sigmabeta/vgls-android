@@ -12,9 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.bottombar.RemasterBottomBar
-import com.vgleadsheets.remaster.game.GameScreen
-import com.vgleadsheets.remaster.game.GameViewModel
-import com.vgleadsheets.remaster.game.gameViewModel
+import com.vgleadsheets.remaster.browse.BrowseScreen
+import com.vgleadsheets.remaster.browse.BrowseViewModel
 import com.vgleadsheets.remaster.home.HomeScreen
 import com.vgleadsheets.remaster.home.HomeViewModel
 import com.vgleadsheets.topbar.RemasterTopBar
@@ -54,10 +53,10 @@ fun RemasterAppUi(
             }
 
             composable("browse") {
-                val viewModel: GameViewModel = gameViewModel(gameId = 8)
-                val gameState by viewModel.uiState.collectAsState()
+                val viewModel: BrowseViewModel = hiltViewModel()
+                val browseState by viewModel.uiState.collectAsState()
 
-                GameScreen(gameState)
+                BrowseScreen(browseState)
             }
         }
     }

@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.features.remaster.bottombar)
     implementation(projects.features.remaster.topbar)
 
+    implementation(projects.features.remaster.browse)
     implementation(projects.features.remaster.game)
     implementation(projects.features.remaster.home)
 }

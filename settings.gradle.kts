@@ -106,6 +106,7 @@ include(
     ":features:main:viewer",
 
     ":features:remaster:bottombar",
+    ":features:remaster:browse",
     ":features:remaster:game",
     ":features:remaster:home",
     ":features:remaster:topbar"
