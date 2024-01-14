@@ -6,5 +6,5 @@ plugins {
 dependencies { }
 
 android {
-    namespace = "com.vgleadsheets.game"
+    namespace = "com.vgleadsheets.games.list"
 }

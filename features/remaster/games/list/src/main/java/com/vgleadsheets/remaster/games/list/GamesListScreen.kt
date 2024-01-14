@@ -1,4 +1,4 @@
-package com.vgleadsheets.remaster.game
+package com.vgleadsheets.remaster.games.list
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -6,8 +6,9 @@ import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.composables.NameCaptionListItem
 
 @Composable
-fun GameScreen(
-    state: GameState
+fun GamesListScreen(
+    state: State,
+    modifier: Modifier
 ) {
     NameCaptionListItem(
         model = NameCaptionListModel(
@@ -16,6 +17,6 @@ fun GameScreen(
             caption = state.subtitle,
             onClick = { }
         ),
-        modifier = Modifier
+        modifier = modifier
     )
 }

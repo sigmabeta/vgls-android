@@ -107,7 +107,7 @@ include(
 
     ":features:remaster:bottombar",
     ":features:remaster:browse",
-    ":features:remaster:game",
+    ":features:remaster:games:list",
     ":features:remaster:home",
     ":features:remaster:topbar"
 )

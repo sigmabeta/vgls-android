@@ -1,4 +1,4 @@
-package com.vgleadsheets.remaster.game
+package com.vgleadsheets.remaster.home
 
 import android.app.Activity
 import androidx.compose.runtime.Composable
@@ -14,34 +14,34 @@ import dagger.hilt.android.components.ActivityComponent
 
 @AssistedFactory
 internal interface Factory {
-    fun create(gameId: Long): GameViewModel
+    fun create(navigateTo: (String) -> Unit): ViewModelImpl
 }
 
 @EntryPoint
 @InstallIn(ActivityComponent::class)
 internal interface Provider {
-    fun gameViewModelFactory(): Factory
+    fun homeViewModelFactory(): Factory
 }
 
 @Suppress("UNCHECKED_CAST")
 internal fun provideFactory(
     assistedFactory: Factory,
-    gameId: Long,
+    navigateTo: (String) -> Unit
 ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return assistedFactory.create(gameId) as T
+        return assistedFactory.create(navigateTo) as T
     }
 }
 
 @Composable
-fun gameViewModel(gameId: Long): GameViewModel {
+fun homeViewModel(navigateTo: (String) -> Unit): ViewModelImpl {
     val activity = LocalContext.current as Activity
     val entryPoint = EntryPointAccessors.fromActivity(activity, Provider::class.java)
-    val factory = entryPoint.gameViewModelFactory()
+    val factory = entryPoint.homeViewModelFactory()
 
     return viewModel(
         factory = provideFactory(
-            factory, gameId
+            factory, navigateTo
         )
     )
 }

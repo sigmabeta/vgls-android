@@ -1,5 +1,5 @@
 package com.vgleadsheets.remaster.browse
 
-enum class BrowseEvent {
+enum class Event {
     NONE,
 }

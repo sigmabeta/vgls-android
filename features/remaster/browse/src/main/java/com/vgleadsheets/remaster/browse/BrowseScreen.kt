@@ -7,9 +7,12 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun BrowseScreen(
-    state: BrowseState
+    state: State,
+    modifier: Modifier
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier
+    ) {
         items(
             items = state.items,
             key = { it.dataId },

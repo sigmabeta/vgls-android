@@ -1,21 +1,19 @@
 package com.vgleadsheets.scaffold
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.bottombar.RemasterBottomBar
-import com.vgleadsheets.remaster.browse.BrowseScreen
-import com.vgleadsheets.remaster.browse.BrowseViewModel
-import com.vgleadsheets.remaster.home.HomeScreen
-import com.vgleadsheets.remaster.home.HomeViewModel
+import com.vgleadsheets.remaster.browse.browseScreenEntry
+import com.vgleadsheets.remaster.games.list.gamesListScreenEntry
+import com.vgleadsheets.remaster.home.homeScreenEntry
 import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarViewModel
 
@@ -45,19 +43,14 @@ fun RemasterAppUi(
             modifier = Modifier.padding(innerPadding),
             startDestination = "home"
         ) {
-            composable("home") {
-                val viewModel: HomeViewModel = hiltViewModel()
-                val homeState by viewModel.uiState.collectAsState()
-
-                HomeScreen(homeState)
+            val globalModifier = Modifier.fillMaxSize()
+            val navigationAction = { linkUri: String ->
+                navController.navigate(linkUri)
             }
 
-            composable("browse") {
-                val viewModel: BrowseViewModel = hiltViewModel()
-                val browseState by viewModel.uiState.collectAsState()
-
-                BrowseScreen(browseState)
-            }
+            homeScreenEntry(navigationAction, globalModifier)
+            browseScreenEntry(navigationAction, globalModifier)
+            gamesListScreenEntry(navigationAction, globalModifier)
         }
     }
 }

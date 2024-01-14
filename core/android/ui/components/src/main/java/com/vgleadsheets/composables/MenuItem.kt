@@ -1,5 +1,6 @@
 package com.vgleadsheets.composables
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.MenuItemListModel
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.themes.VglsMaterial
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -50,9 +51,9 @@ fun MenuItem(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         val color = if (model.selected) {
-            MaterialTheme.colorScheme.onTertiaryContainer
+            MaterialTheme.colorScheme.primary
         } else {
-            MaterialTheme.colorScheme.onPrimary
+            MaterialTheme.colorScheme.onBackground
         }
 
         Icon(
@@ -110,7 +111,7 @@ fun MenuItem(
 @Preview
 @Composable
 private fun Selected() {
-    VglsMaterialMenu {
+    VglsMaterial {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -124,7 +125,35 @@ private fun Selected() {
 @Preview
 @Composable
 private fun NotSelected() {
-    VglsMaterialMenu {
+    VglsMaterial {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            Sample(false)
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun SelectedDark() {
+    VglsMaterial {
+        Box(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.background
+            )
+        ) {
+            Sample(true)
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun NotSelectedDark() {
+    VglsMaterial {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

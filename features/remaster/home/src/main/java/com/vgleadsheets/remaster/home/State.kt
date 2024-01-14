@@ -1,6 +1,6 @@
-package com.vgleadsheets.remaster.game
+package com.vgleadsheets.remaster.home
 
-data class GameState(
+data class State(
     val title: String = "",
     val subtitle: String = "",
 )

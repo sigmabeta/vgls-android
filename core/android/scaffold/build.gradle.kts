@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.features.remaster.topbar)
 
     implementation(projects.features.remaster.browse)
-    implementation(projects.features.remaster.game)
+    implementation(projects.features.remaster.games.list)
     implementation(projects.features.remaster.home)
 }
 

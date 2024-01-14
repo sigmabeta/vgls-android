@@ -1,5 +1,5 @@
 package com.vgleadsheets.remaster.home
 
-enum class HomeEvent {
+enum class Event {
     NONE,
 }
