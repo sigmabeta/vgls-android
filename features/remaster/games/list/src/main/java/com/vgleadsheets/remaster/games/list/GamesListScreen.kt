@@ -2,21 +2,17 @@ package com.vgleadsheets.remaster.games.list
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.composables.NameCaptionListItem
+import androidx.compose.ui.unit.dp
+import com.vgleadsheets.ui.list.GridScreen
 
 @Composable
 fun GamesListScreen(
     state: State,
     modifier: Modifier
 ) {
-    NameCaptionListItem(
-        model = NameCaptionListModel(
-            dataId = 1234L,
-            name = state.title,
-            caption = state.subtitle,
-            onClick = { }
-        ),
-        modifier = modifier
+    GridScreen(
+        items = state.listItems,
+        modifier = modifier,
+        minSize = 160.dp
     )
 }

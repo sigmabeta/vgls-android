@@ -12,10 +12,9 @@ data class MenuTitleBarListModel(
     val onMenuButtonClick: () -> Unit,
     val onChangePartClick: () -> Unit
 ) : ListModel {
-
     override val dataId = javaClass.simpleName.hashCode().toLong()
-
     override val layoutId = R.layout.list_component_menu_title_bar
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

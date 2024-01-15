@@ -12,6 +12,7 @@ data class SubsectionListModel(
 ) : ListModel {
     override val dataId = titleModel.hashCode().toLong()
     override val layoutId = R.layout.composable_list_item
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

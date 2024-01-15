@@ -10,6 +10,7 @@ data class MenuSectionHeaderListModel(
 ) : ListModel {
     override val dataId = title.hashCode().toLong()
     override val layoutId = R.layout.list_component_menu_section_header
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

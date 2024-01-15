@@ -16,6 +16,7 @@ data class ImageNameCaptionListModel(
     val onClick: () -> Unit
 ) : ListModel {
     override val layoutId = R.layout.list_component_image_name_caption
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

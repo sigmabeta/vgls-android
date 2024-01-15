@@ -11,10 +11,9 @@ data class MenuSearchListModel(
     val onMenuButtonClick: () -> Unit,
     val onClearClick: () -> Unit
 ) : ListModel {
-
     override val dataId = javaClass.simpleName.hashCode().toLong()
-
     override val layoutId = R.layout.list_component_menu_search_bar
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

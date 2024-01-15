@@ -10,8 +10,8 @@ data class MenuSearchMoreListModel(
     val onClick: () -> Unit,
 ) : ListModel {
     override val dataId = text.hashCode().toLong()
-
     override val layoutId = R.layout.list_component_menu_search_more
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

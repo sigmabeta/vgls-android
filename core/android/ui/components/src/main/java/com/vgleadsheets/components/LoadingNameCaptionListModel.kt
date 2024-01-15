@@ -11,6 +11,7 @@ data class LoadingNameCaptionListModel(
 ) : ListModel {
     override val dataId = loadOperationName.hashCode().toLong() + loadPositionOffset
     override val layoutId = R.layout.list_component_loading_name_caption
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

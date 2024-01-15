@@ -15,6 +15,7 @@ class VglsFeatureAndroidComposeModulePlugin : Plugin<Project> {
 
             dependencies {
                 add("implementation", libs.findLibrary("androidx.navigation.compose").get())
+                add("implementation", libs.findLibrary("kotlinx.collections.immutable").get())
             }
 
             val extension = extensions.getByType<LibraryExtension>()

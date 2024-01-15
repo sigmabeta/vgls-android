@@ -17,6 +17,7 @@ data class SheetPageListModel(
     override val dataId: Long = sheetUrl.hashCode().toLong()
 ) : ListModel {
     override val layoutId = R.layout.composable_viewpager_item
+    override val columns = ListModel.COLUMNS_ALL
 
     interface ImageListener {
         fun onClicked()

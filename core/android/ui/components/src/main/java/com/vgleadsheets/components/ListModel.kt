@@ -9,4 +9,9 @@ interface ListModel {
 
     val dataId: Long
     val layoutId: Int
+    val columns: Int
+
+    companion object {
+        const val COLUMNS_ALL = -1
+    }
 }

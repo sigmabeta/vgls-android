@@ -5,6 +5,7 @@ import com.vgleadsheets.ui.icons.R
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.collections.immutable.persistentListOf
 
 class ViewModelImpl @AssistedInject constructor(
     @Assisted navigateTo: (String) -> Unit,
@@ -13,7 +14,7 @@ class ViewModelImpl @AssistedInject constructor(
 )
 
 private fun createInitialState(navigateTo: (String) -> Unit) = State(
-    items = listOf(
+    items = persistentListOf(
         MenuItemListModel(
             name = "Favorites",
             caption = null,

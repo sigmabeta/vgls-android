@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(projects.core.android.ui.icons)
+    implementation(projects.core.android.ui.list)
 }
 
 android {
