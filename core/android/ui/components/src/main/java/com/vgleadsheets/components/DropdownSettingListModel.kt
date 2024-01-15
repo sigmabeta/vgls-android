@@ -14,6 +14,7 @@ data class DropdownSettingListModel(
 ) : ListModel {
     override val dataId: Long = settingId.hashCode().toLong()
     override val layoutId = R.layout.list_component_dropdown
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

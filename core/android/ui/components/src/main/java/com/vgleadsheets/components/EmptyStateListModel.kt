@@ -13,6 +13,7 @@ data class EmptyStateListModel(
 ) : ListModel {
     override val dataId = explanation.hashCode().toLong()
     override val layoutId = R.layout.list_component_empty_state
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

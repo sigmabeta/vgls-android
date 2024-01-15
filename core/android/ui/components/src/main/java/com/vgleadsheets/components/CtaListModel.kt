@@ -12,6 +12,7 @@ data class CtaListModel(
 ) : ListModel {
     override val dataId = name.hashCode().toLong()
     override val layoutId = R.layout.list_component_cta
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

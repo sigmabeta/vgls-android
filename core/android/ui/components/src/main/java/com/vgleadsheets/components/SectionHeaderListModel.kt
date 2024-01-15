@@ -10,6 +10,7 @@ data class SectionHeaderListModel(
 ) : ListModel {
     override val dataId = title.hashCode().toLong()
     override val layoutId = R.layout.composable_list_item
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

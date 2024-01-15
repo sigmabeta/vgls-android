@@ -1,24 +1,16 @@
 package com.vgleadsheets.remaster.browse
 
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.vgleadsheets.ui.list.ListScreen
 
 @Composable
 fun BrowseScreen(
     state: State,
     modifier: Modifier
 ) {
-    LazyColumn(
+    ListScreen(
+        state.items,
         modifier = modifier
-    ) {
-        items(
-            items = state.items,
-            key = { it.dataId },
-            contentType = { it.layoutId }
-        ) {
-            it.Content(modifier = Modifier)
-        }
-    }
+    )
 }

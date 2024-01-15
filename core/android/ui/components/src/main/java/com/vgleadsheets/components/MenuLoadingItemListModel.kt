@@ -10,8 +10,8 @@ data class MenuLoadingItemListModel(
     val iconId: Int
 ) : ListModel {
     override val dataId = iconId.toLong()
-
     override val layoutId = R.layout.list_component_menu_loading
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

@@ -14,6 +14,7 @@ data class HeroImageListModel(
 ) : ListModel {
     override val dataId = imageUrl.hashCode().toLong()
     override val layoutId = R.layout.list_component_cta
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

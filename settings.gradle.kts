@@ -68,6 +68,7 @@ include(
     ":core:android:ui:colors",
     ":core:android:ui:icons",
     ":core:android:ui:fonts",
+    ":core:android:ui:list",
     ":core:android:ui:strings",
     ":core:android:ui:themes",
     ":core:android:viewmodel",

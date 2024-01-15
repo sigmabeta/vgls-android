@@ -13,6 +13,7 @@ data class CheckableListModel(
 ) : ListModel {
     override val dataId: Long = settingId.hashCode().toLong()
     override val layoutId = R.layout.list_component_checkable
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

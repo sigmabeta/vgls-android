@@ -14,6 +14,7 @@ data class WideItemListModel(
     val onClick: () -> Unit
 ) : ListModel {
     override val layoutId = this::class.simpleName.hashCode()
+    override val columns = 1
 
     @Composable
     override fun Content(modifier: Modifier) {

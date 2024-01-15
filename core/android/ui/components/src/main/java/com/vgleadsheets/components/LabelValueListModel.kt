@@ -12,6 +12,7 @@ data class LabelValueListModel(
     override val dataId: Long = label.hashCode().toLong()
 ) : ListModel {
     override val layoutId = R.layout.list_component_label_value
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

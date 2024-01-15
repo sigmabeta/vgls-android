@@ -27,6 +27,7 @@ data class TitleListModel(
 
     override val dataId = R.string.cont_desc_logo.toLong()
     override val layoutId = R.string.cont_desc_logo
+    override val columns = ListModel.COLUMNS_ALL
 
     override fun hashCode(): Int {
         return title.hashCode() + subtitle.hashCode() + photoUrl.hashCode() + placeholder.hashCode()

@@ -11,6 +11,7 @@ data class MenuErrorStateListModel(
 ) : ListModel {
     override val dataId = errorString.hashCode().toLong()
     override val layoutId = R.layout.list_component_error_state
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

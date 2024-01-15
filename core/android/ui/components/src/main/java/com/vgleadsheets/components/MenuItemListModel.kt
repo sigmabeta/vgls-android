@@ -14,6 +14,7 @@ data class MenuItemListModel(
 ) : ListModel {
     override val dataId = name.hashCode().toLong()
     override val layoutId = R.layout.list_component_menu_item
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {

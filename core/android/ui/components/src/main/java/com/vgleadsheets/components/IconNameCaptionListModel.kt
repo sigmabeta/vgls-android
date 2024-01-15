@@ -13,6 +13,7 @@ data class IconNameCaptionListModel(
     val onClick: () -> Unit
 ) : ListModel {
     override val layoutId = R.layout.list_component_now_playing
+    override val columns = ListModel.COLUMNS_ALL
 
     @Composable
     override fun Content(modifier: Modifier) {
