@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.bottombar.RemasterBottomBar
 import com.vgleadsheets.remaster.browse.browseScreenEntry
 import com.vgleadsheets.remaster.composers.list.composersListScreenEntry
+import com.vgleadsheets.remaster.games.detail.gamesDetailScreenEntry
 import com.vgleadsheets.remaster.games.list.gamesListScreenEntry
 import com.vgleadsheets.remaster.home.homeScreenEntry
 import com.vgleadsheets.topbar.RemasterTopBar
@@ -52,6 +53,7 @@ fun RemasterAppUi(
             homeScreenEntry(navigationAction, globalModifier)
             browseScreenEntry(navigationAction, globalModifier)
             gamesListScreenEntry(navigationAction, globalModifier)
+            gamesDetailScreenEntry(navigationAction, globalModifier)
             composersListScreenEntry(navigationAction, globalModifier)
         }
     }
