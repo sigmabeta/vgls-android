@@ -108,6 +108,7 @@ include(
 
     ":features:remaster:bottombar",
     ":features:remaster:browse",
+    ":features:remaster:composers:list",
     ":features:remaster:games:list",
     ":features:remaster:home",
     ":features:remaster:topbar"
