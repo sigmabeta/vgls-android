@@ -1,9 +1,9 @@
-package com.vgleadsheets.remaster.games.list
+package com.vgleadsheets.remaster.composers.list
 
 import androidx.lifecycle.viewModelScope
-import com.vgleadsheets.components.SquareItemListModel
+import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Composer
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
@@ -23,23 +23,23 @@ class ViewModelImpl @AssistedInject constructor(
     initialState = State(persistentListOf())
 ) {
     init {
-        repository.getAllGames()
-            .onEach(::onGamesLoaded)
+        repository.getAllComposers()
+            .onEach(::onComposersLoaded)
             .flowOn(dispatchers.disk)
             .launchIn(viewModelScope)
     }
 
-    private fun onGamesLoaded(games: List<Game>) {
+    private fun onComposersLoaded(composers: List<Composer>) {
         _uiState.update {
             it.copy(
-                listItems = games
-                    .map { game ->
-                        SquareItemListModel(
-                            dataId = game.id,
-                            name = game.name,
-                            imageUrl = game.photoUrl,
-                            imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
-                            onClick = { navigateTo("games/${game.id}") }
+                listItems = composers
+                    .map { composer ->
+                        WideItemListModel(
+                            dataId = composer.id,
+                            name = composer.name,
+                            imageUrl = composer.photoUrl,
+                            imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                            onClick = { navigateTo("composers/${composer.id}") }
                         )
                     }
                     .toPersistentList()
