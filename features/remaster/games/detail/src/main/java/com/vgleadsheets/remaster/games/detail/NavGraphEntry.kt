@@ -3,6 +3,7 @@ package com.vgleadsheets.remaster.games.detail
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -25,6 +26,10 @@ fun NavGraphBuilder.gamesDetailScreenEntry(navigationAction: (String) -> Unit, g
         )
         val state by viewModel.uiState.collectAsState()
 
-        GamesDetailScreen(state, globalModifier)
+        GamesDetailScreen(
+            state,
+            LocalContext.current.resources,
+            globalModifier,
+        )
     }
 }
