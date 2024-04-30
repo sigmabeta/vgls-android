@@ -57,6 +57,7 @@ class ViewModelImpl @AssistedInject constructor(
             .map { state -> state.songs }
             .mapList { song -> repository.getComposersForSongSync(song.id) }
             .map { it.flatten() }
+            .map { it.distinct() }
             .onEach { composers ->
                 _uiState.update {
                     it.copy(

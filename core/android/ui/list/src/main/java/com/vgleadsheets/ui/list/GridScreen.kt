@@ -1,6 +1,7 @@
 package com.vgleadsheets.ui.list
 
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
@@ -23,7 +24,14 @@ fun GridScreen(
         items(
             items = items,
             key = { it.dataId },
-            contentType = { it.layoutId }
+            contentType = { it.layoutId },
+            span = {
+                if (it.columns < 1) {
+                    GridItemSpan(maxLineSpan)
+                } else {
+                    GridItemSpan(it.columns)
+                }
+            }
         ) {
             it.Content(modifier = Modifier)
         }
