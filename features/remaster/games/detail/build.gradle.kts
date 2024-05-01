@@ -7,7 +7,7 @@ dependencies {
     implementation(projects.core.android.ui.icons)
     implementation(projects.core.android.ui.list)
 
-    implementation(projects.core.common.environment)
+    implementation(projects.core.common.settings.environment)
 }
 
 android {

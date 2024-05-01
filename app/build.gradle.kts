@@ -90,26 +90,28 @@ android {
 
 
 dependencies {
-    // DI dependencies only
+    // DI dependencies
     implementation(projects.core.android.coroutines)
     implementation(projects.core.android.conversion)
     implementation(projects.core.android.database)
-    implementation(projects.core.android.environment)
-    implementation(projects.core.common.debug)
     implementation(projects.core.android.images)
     implementation(projects.core.android.list)
     implementation(projects.core.android.logging)
-    implementation(projects.core.common.network)
     implementation(projects.core.android.repository)
     implementation(projects.core.android.resources)
+    implementation(projects.core.android.settings.common)
     implementation(projects.core.android.storage)
     implementation(projects.core.android.ui.core)
     implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.ui.components)
 
+    implementation(projects.core.common.debug)
+    implementation(projects.core.common.network)
+    implementation(projects.core.common.settings.environment)
+    // End DI dependencies
+
     implementation(projects.core.android.activity)
 
-    implementation(libs.androidx.dataStore.preferences)
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
 

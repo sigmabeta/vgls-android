@@ -2,8 +2,8 @@ package com.vgleadsheets.remaster.games.detail
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.environment.EnvironmentManager
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 class ViewModelImpl @AssistedInject constructor(
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
-    @Named("EnvironmentDataStore") private val environmentManager: EnvironmentManager,
+    @Named("EnvironmentManager") private val environmentManager: EnvironmentManager,
     @Assisted private val navigateTo: (String) -> Unit,
     @Assisted gameId: Long,
 ) : VglsViewModel<State, Event>(

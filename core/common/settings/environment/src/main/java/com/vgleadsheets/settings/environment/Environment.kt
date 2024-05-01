@@ -1,4 +1,4 @@
-package com.vgleadsheets.environment
+package com.vgleadsheets.settings.environment
 
 enum class Environment(
     val url: String?
