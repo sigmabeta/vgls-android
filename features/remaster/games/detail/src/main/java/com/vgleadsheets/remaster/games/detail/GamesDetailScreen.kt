@@ -3,8 +3,7 @@ package com.vgleadsheets.remaster.games.detail
 import android.content.res.Resources
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.vgleadsheets.ui.list.GridScreen
+import com.vgleadsheets.ui.list.ListScreen
 
 @Composable
 fun GamesDetailScreen(
@@ -12,9 +11,8 @@ fun GamesDetailScreen(
     resources: Resources,
     modifier: Modifier
 ) {
-    GridScreen(
+    ListScreen(
         items = state.toListItems(resources),
         modifier = modifier,
-        minSize = 160.dp
     )
 }

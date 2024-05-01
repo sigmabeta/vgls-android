@@ -2,6 +2,7 @@ package com.vgleadsheets.remaster.games.detail
 
 import android.content.res.Resources
 import com.vgleadsheets.components.HeroImageListModel
+import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
@@ -30,16 +31,20 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
         listOf(
             SectionHeaderListModel(
                 resources.getString(R.string.section_header_composers)
+            ),
+            HorizontalScrollerListModel(
+                dataId = R.string.section_header_composers + ID_PREFIX_SCROLLER_CONTENT,
+                scrollingItems = composers.map { composer ->
+                    WideItemListModel(
+                        dataId = composer.id + ID_PREFIX_COMPOSERS,
+                        name = composer.name,
+                        imageUrl = composer.photoUrl,
+                        imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                        onClick = { }
+                    )
+                }
             )
-        ) + composers.map { composer ->
-            WideItemListModel(
-                dataId = composer.id + ID_PREFIX_COMPOSERS,
-                name = composer.name,
-                imageUrl = composer.photoUrl,
-                imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
-                onClick = { }
-            )
-        }
+        )
     } else {
         emptyList()
     }
@@ -81,3 +86,4 @@ private fun List<Song>.captionText(resources: Resources) = resources.getString(
 
 private const val ID_PREFIX_COMPOSERS = 1_000_000L
 private const val ID_PREFIX_SONGS = 1_000_000_000L
+private const val ID_PREFIX_SCROLLER_CONTENT = 1_000_000_000_000L

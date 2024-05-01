@@ -164,9 +164,9 @@ private fun Sample() {
     ImageNameListItem(
         ImageNameListModel(
             1234L,
-            "Xenoblade Chronicles 3: Future Redeemed",
+            "Carrying the Weight of Life",
             "https://randomfox.ca/images/12.jpg",
-            com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+            com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
             null,
             {}
         ),

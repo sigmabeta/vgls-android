@@ -16,7 +16,6 @@ data class MenuSectionHeaderListModel(
     override fun Content(modifier: Modifier) {
         SectionHeader(
             name = title,
-            menu = true,
             modifier = modifier
         )
     }

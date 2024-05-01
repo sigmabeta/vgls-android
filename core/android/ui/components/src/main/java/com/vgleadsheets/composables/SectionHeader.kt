@@ -11,33 +11,26 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.ui.core.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun SectionHeader(
     name: String,
-    menu: Boolean,
     modifier: Modifier,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp
-            )
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
+            .padding(bottom = 8.dp, top = 16.dp)
     ) {
-        val color = if (menu) {
-            MaterialTheme.colorScheme.onBackground
-        } else {
-            MaterialTheme.colorScheme.outline
-        }
+        val color = MaterialTheme.colorScheme.onBackground
 
         Text(
             text = name,
@@ -99,7 +92,6 @@ private fun Menu() {
 private fun SampleNotMenu() {
     SectionHeader(
         "Sick new skills",
-        true,
         modifier = Modifier
     )
 }
@@ -108,7 +100,6 @@ private fun SampleNotMenu() {
 private fun SampleMenu() {
     SectionHeader(
         "Paths to the future",
-        true,
         modifier = Modifier
     )
 }

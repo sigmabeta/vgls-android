@@ -33,9 +33,8 @@ fun SquareItem(
 ) {
     Box(
         modifier = modifier
-            .height(192.dp)
+            .height(208.dp)
             .aspectRatio(1.0f)
-            .padding(8.dp)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)

@@ -4,12 +4,12 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,7 +33,8 @@ fun WideItem(
     Row(
         modifier = modifier
             .padding(vertical = 4.dp)
-            .height(54.dp)
+            .defaultMinSize(minWidth = 192.dp)
+            .height(64.dp)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)
@@ -54,10 +55,9 @@ fun WideItem(
             textAlign = TextAlign.Start,
             maxLines = 2,
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.titleMedium,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
-                .weight(1.0f)
                 .padding(8.dp)
                 .align(CenterVertically)
         )
@@ -68,16 +68,7 @@ fun WideItem(
 @Composable
 private fun Light() {
     VglsMaterial {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = MaterialTheme.colorScheme.background
-                )
-                .padding(16.dp)
-        ) {
-            Sample()
-        }
+        Sample()
     }
 }
 
@@ -85,30 +76,42 @@ private fun Light() {
 @Composable
 private fun Dark() {
     VglsMaterial {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = MaterialTheme.colorScheme.background
-                )
-                .padding(16.dp)
-        ) {
-            Sample()
-        }
+        Sample()
     }
 }
 
 @Composable
-private fun RowScope.Sample() {
-    WideItem(
-        WideItemListModel(
-            1234L,
-            "Konami Kukeiha Club",
-            "https://randomfox.ca/images/12.jpg",
-            com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
-            null,
-            {}
-        ),
-        Modifier
-    )
+private fun Sample() {
+    Row(
+        modifier = Modifier
+            .wrapContentSize()
+            .background(
+                color = MaterialTheme.colorScheme.background
+            )
+            .padding(16.dp)
+    ) {
+        WideItem(
+            WideItemListModel(
+                1234L,
+                "Konami Kukeiha Club",
+                "https://randomfox.ca/images/12.jpg",
+                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                null,
+                {}
+            ),
+            modifier = Modifier
+        )
+
+        WideItem(
+            WideItemListModel(
+                1234L,
+                "Masayoshi Soken",
+                "https://randomfox.ca/images/12.jpg",
+                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                null,
+                {}
+            ),
+            modifier = Modifier
+        )
+    }
 }
