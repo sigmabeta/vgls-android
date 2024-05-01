@@ -5,11 +5,16 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 @InstallIn(SingletonComponent::class)
 @Module
-object DispatcherModule {
+object CoroutinesModule {
+    @Singleton
+    @Provides
+    fun provideCoroutineScope(vglsDispatchers: VglsDispatchers) = CoroutineScope(vglsDispatchers.computation)
+
     @Singleton
     @Provides
     fun provideDispatchers() =

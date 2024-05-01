@@ -1,8 +1,14 @@
 package com.vgleadsheets.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vgleadsheets.BuildConfig
+import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.environment.EnvironmentDataStore
+import com.vgleadsheets.environment.EnvironmentManager
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.storage.Storage
 import dagger.Module
@@ -12,6 +18,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 
@@ -43,6 +50,33 @@ object AppModule {
         return runBlocking {
             storage.getDebugSettingNetworkEndpoint().selectedPosition
         }
+    }
+
+    private val Context.debugDataStore by preferencesDataStore(name = "debug")
+
+    @Provides
+    @Named("DebugDataStore")
+    @Singleton
+    internal fun provideDebugDataStore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> {
+        return context.debugDataStore
+    }
+
+    // TODO this should only happen in debug builds; in release builds it should be a no-op
+    @Provides
+    @Named("EnvironmentDataStore")
+    @Singleton
+    internal fun provideEnvironmentManager(
+        @Named("DebugDataStore") dataStore: DataStore<Preferences>,
+        coroutineScope: CoroutineScope,
+        dispatchers: VglsDispatchers
+    ): EnvironmentManager {
+        return EnvironmentDataStore(
+            dataStore = dataStore,
+            coroutineScope = coroutineScope,
+            dispatchers = dispatchers,
+        )
     }
 
     @Provides

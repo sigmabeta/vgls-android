@@ -94,6 +94,7 @@ dependencies {
     implementation(projects.core.android.coroutines)
     implementation(projects.core.android.conversion)
     implementation(projects.core.android.database)
+    implementation(projects.core.android.environment)
     implementation(projects.core.common.debug)
     implementation(projects.core.android.images)
     implementation(projects.core.android.list)
@@ -108,6 +109,7 @@ dependencies {
 
     implementation(projects.core.android.activity)
 
+    implementation(libs.androidx.dataStore.preferences)
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
 

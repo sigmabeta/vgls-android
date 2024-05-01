@@ -2,7 +2,7 @@ package com.vgleadsheets.di
 
 import com.vgleadsheets.conversion.android.di.ConverterModule
 import com.vgleadsheets.conversion.android.di.DataSourceModule
-import com.vgleadsheets.coroutines.DispatcherModule
+import com.vgleadsheets.coroutines.CoroutinesModule
 import com.vgleadsheets.database.android.di.DatabaseModule
 import com.vgleadsheets.repository.di.RepositoryModule
 import com.vgleadsheets.resources.di.ResourcesModule
@@ -18,7 +18,7 @@ import dagger.Component
         DatabaseModule::class,
         ConverterModule::class,
         DataSourceModule::class,
-        DispatcherModule::class,
+        CoroutinesModule::class,
         ApiModule::class,
         NetworkModule::class,
         StorageModule::class,

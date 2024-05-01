@@ -2,10 +2,12 @@ package com.vgleadsheets.remaster.games.detail
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.environment.EnvironmentManager
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import javax.inject.Named
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -15,15 +17,29 @@ import kotlinx.coroutines.flow.update
 class ViewModelImpl @AssistedInject constructor(
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
+    @Named("EnvironmentDataStore") private val environmentManager: EnvironmentManager,
     @Assisted private val navigateTo: (String) -> Unit,
     @Assisted gameId: Long,
 ) : VglsViewModel<State, Event>(
     initialState = State()
 ) {
     init {
+        fetchBaseImageUrl()
         fetchGame(gameId)
         fetchSongs(gameId)
         fetchComposers()
+    }
+
+    private fun fetchBaseImageUrl() {
+        environmentManager
+            .selectedEnvironmentFlow()
+            .onEach { env ->
+                _uiState.update {
+                    it.copy(baseImageUrl = env.url)
+                }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(viewModelScope)
     }
 
     private fun fetchGame(gameId: Long) {

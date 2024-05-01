@@ -11,7 +11,7 @@ androidxComposeRuntimeTracing = "1.0.0-beta01"
 androidxCore = "1.12.0"
 androidxCoreSplashscreen = "1.0.1"
 androidxConstraint = "2.1.4"
-androidxDataStore = "1.0.0"
+androidxDataStore = "1.1.1"
 androidxEspresso = "3.5.1"
 androidxHiltNavigationCompose = "1.1.0"
 androidxLifecycle = "2.6.2"
@@ -93,6 +93,7 @@ androidx-constraint-layout = { group = "androidx.constraintlayout", name = "cons
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
+androidx-dataStore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDataStore" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 androidx-jankstats = { group = "androidx.metrics", name = "metrics-performance", version.ref = "jankStatsVersion" }
 androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "androidxLifecycle" }
