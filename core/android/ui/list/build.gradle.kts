@@ -9,4 +9,5 @@ android {
 
 dependencies {
     implementation(projects.core.android.ui.components)
+    implementation(projects.core.android.ui.core)
 }
