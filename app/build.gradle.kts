@@ -2,14 +2,14 @@ plugins {
     alias(libs.plugins.vgls.android.app)
     alias(libs.plugins.vgls.compose.android.app)
     alias(libs.plugins.vgls.di.android)
+
+    alias(libs.plugins.licenses)
 }
 
 if (checkShouldIncludeFirebase()) {
-    plugins {
-        id("com.google.firebase.firebase-perf")
-        id("com.google.firebase.crashlytics")
-        id("com.google.gms.google-services")
-    }
+    apply(plugin = "com.google.firebase.firebase-perf")
+    apply(plugin = "com.google.firebase.crashlytics")
+    apply(plugin = "com.google.gms.google-services")
 }
 
 android {
