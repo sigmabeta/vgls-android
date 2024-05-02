@@ -124,6 +124,8 @@ dependencies {
     val shouldIncludeFirebase = checkShouldIncludeFirebase()
     logger.quiet("Including firebase: $shouldIncludeFirebase")
     if (shouldIncludeFirebase) {
+        implementation(libs.firebase.bom)
+
         // Analytics must be in this module, or else contentprovider init doesn"t happen
         implementation(libs.firebase.analytics)
         implementation(libs.firebase.crashlytics)
