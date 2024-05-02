@@ -29,7 +29,7 @@ jobs:
     resource_class: small
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -61,7 +61,7 @@ jobs:
 
   kt-lint:
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       JVM_OPTS: -Xmx2048m
@@ -86,7 +86,7 @@ jobs:
     resource_class: large
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       # Start off with a 4GB heap size; expand up to 6GB
@@ -122,7 +122,7 @@ jobs:
     resource_class: medium
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -149,7 +149,7 @@ jobs:
     resource_class: large
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       # Start off with a 4GB heap size; expand up to 6GB
@@ -180,7 +180,7 @@ jobs:
     resource_class: large
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       # Start off with a 4GB heap size; expand up to 6GB
