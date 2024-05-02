@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.vgls.di.android)
 
     alias(libs.plugins.detekt)
+    alias(libs.plugins.gradle.publisher)
     alias(libs.plugins.licenses)
 }
 
@@ -11,6 +12,16 @@ if (checkShouldIncludeFirebase()) {
     apply(plugin = "com.google.firebase.firebase-perf")
     apply(plugin = "com.google.firebase.crashlytics")
     apply(plugin = "com.google.gms.google-services")
+}
+
+val googlePlayTrack = System.getenv("TRACK")
+if (googlePlayTrack != null) {
+    apply(plugin = "com.github.triplet.play")
+
+    play {
+        track.set(googlePlayTrack)
+        artifactDir.set(file("build/outputs/bundle/release/"))
+    }
 }
 
 android {
