@@ -8,7 +8,7 @@ dependencies {
     api(projects.core.common.tracking)
 
     // Firebase (Must be here or else we can"t log events
-    implementation(libs.firebase.bom)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
 
     implementation(projects.core.android.coroutines)
