@@ -29,4 +29,3 @@ object DisplayMetricsModule {
     @Named("WindowWidth")
     fun provideWindowWidth(metrics: WindowMetrics) = metrics.bounds.width()
 }
-

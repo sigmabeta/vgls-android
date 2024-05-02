@@ -14,7 +14,8 @@ class TagKeyAndroidDataSource(
 ) : AndroidDataSource<TagKeyRoomDao, TagKey, TagKeyEntity, TagKeyConverter>(
     convert,
     roomImpl,
-), TagKeyDataSource {
+),
+TagKeyDataSource {
     fun searchByName(name: String) = roomImpl
         .searchByName(name)
         .mapListTo { convert.entityToModel(it) }

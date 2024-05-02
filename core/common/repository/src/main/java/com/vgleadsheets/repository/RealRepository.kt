@@ -30,7 +30,6 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
-import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -41,9 +40,10 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import java.util.Locale
 
 @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
-class RealRepository (
+class RealRepository(
     private val vglsApi: VglsApi,
     private val transactionRunner: TransactionRunner,
     private val threeTen: ThreeTenTime,

@@ -88,7 +88,6 @@ android {
     }
 }
 
-
 dependencies {
     // DI dependencies
     implementation(projects.core.android.coroutines)

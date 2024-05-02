@@ -21,6 +21,5 @@ data class GameEntity(
 
         // GameAliases do not use a matching column name. oops.
         const val COLUMN_FOREIGN_KEY_ALIAS = "gameId"
-
     }
 }

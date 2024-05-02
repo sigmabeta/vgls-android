@@ -104,7 +104,6 @@ fun MenuItem(
                     end = 8.dp
                 )
         )
-
     }
 }
 
@@ -177,4 +176,3 @@ private fun Sample(selected: Boolean) {
         Modifier
     )
 }
-

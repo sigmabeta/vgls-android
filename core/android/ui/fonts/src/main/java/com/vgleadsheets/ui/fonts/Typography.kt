@@ -26,4 +26,3 @@ val VglsTypography = Typography(
     labelMedium = VglsTypographyTokens.LabelMedium,
     labelSmall = VglsTypographyTokens.LabelSmall,
 )
-

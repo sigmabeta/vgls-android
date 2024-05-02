@@ -14,7 +14,8 @@ class SongAndroidDataSource(
 ) : AndroidDataSource<SongRoomDao, Song, SongEntity, SongConverter>(
     convert,
     roomImpl,
-), SongDataSource {
+),
+SongDataSource {
     override fun getFavorites() = roomImpl
         .getFavorites()
         .mapListTo { convert.entityToModel(it) }

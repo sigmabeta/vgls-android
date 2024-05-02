@@ -89,7 +89,6 @@ fun ImageNameListItem(
             modifier = Modifier.width(8.dp)
         )
 
-
         Text(
             text = name,
             style = MaterialTheme.typography.titleMedium,

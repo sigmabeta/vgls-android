@@ -41,7 +41,8 @@ fun browseViewModel(navigateTo: (String) -> Unit): ViewModelImpl {
 
     return viewModel(
         factory = provideFactory(
-            factory, navigateTo
+            factory,
+            navigateTo
         )
     )
 }

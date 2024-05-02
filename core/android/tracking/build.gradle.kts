@@ -17,4 +17,3 @@ dependencies {
 android {
     namespace = "com.vgleadsheets.tracking"
 }
-

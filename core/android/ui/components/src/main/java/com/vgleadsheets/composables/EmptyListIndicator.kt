@@ -266,7 +266,6 @@ private fun SampleMenu() {
     )
 }
 
-
 @Composable
 private fun SampleErrorNotMenu() {
     EmptyListIndicator(
@@ -300,4 +299,3 @@ private fun SampleMenuNoCross() {
         Modifier
     )
 }
-

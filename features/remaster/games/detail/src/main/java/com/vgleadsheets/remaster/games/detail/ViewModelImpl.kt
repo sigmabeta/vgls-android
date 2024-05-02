@@ -7,12 +7,12 @@ import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import javax.inject.Named
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import javax.inject.Named
 
 class ViewModelImpl @AssistedInject constructor(
     private val repository: VglsRepository,
@@ -65,7 +65,6 @@ class ViewModelImpl @AssistedInject constructor(
             }
             .flowOn(dispatchers.disk)
             .launchIn(viewModelScope)
-
     }
 
     private fun fetchComposers() {

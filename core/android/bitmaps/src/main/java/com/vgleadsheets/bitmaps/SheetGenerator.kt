@@ -299,5 +299,3 @@ class SheetGenerator @Inject constructor(
         const val HEIGHT_STAFF = 178
     }
 }
-
-

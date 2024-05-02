@@ -120,7 +120,6 @@ class HudFragment : VglsFragment() {
             resources
         )
 
-
         renderContentInRecyclerView(menuItems)
 
         if (navState.digest is Loading) {

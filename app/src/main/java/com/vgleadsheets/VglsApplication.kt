@@ -10,12 +10,13 @@ import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.SheetPreviewFetcher
 import com.vgleadsheets.logging.Hatchet
 import dagger.hilt.android.HiltAndroidApp
+import okhttp3.OkHttpClient
 import javax.inject.Inject
 import javax.inject.Named
-import okhttp3.OkHttpClient
 
 @HiltAndroidApp
-class VglsApplication : Application(),
+class VglsApplication :
+    Application(),
     ImageLoaderFactory {
     @Inject
     @Named("VglsOkHttp")

@@ -40,7 +40,6 @@ fun CrossfadeSheet(
     )
 
     Crossfade(targetState = painter.state) {
-
         when (it) {
             is AsyncImagePainter.State.Loading ->
                 PlaceholderSheet(

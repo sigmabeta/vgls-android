@@ -11,4 +11,3 @@ interface Storage {
 
     fun savedIntFlow(key: String): Flow<Int?>
 }
-

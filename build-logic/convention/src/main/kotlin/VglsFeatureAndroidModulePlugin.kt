@@ -10,7 +10,6 @@ class VglsFeatureAndroidModulePlugin : Plugin<Project> {
             }
 
             dependencies {
-
                 add("implementation", project(":core:android:images"))
                 add("implementation", project(":core:android:nav"))
                 add("implementation", project(":core:android:recyclerview"))

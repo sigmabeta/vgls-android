@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 
-abstract class VglsViewModel<StateType, EventType>(initialState: StateType): ViewModel() {
+abstract class VglsViewModel<StateType, EventType>(initialState: StateType) : ViewModel() {
     protected val _uiState = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
 

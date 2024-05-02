@@ -14,7 +14,8 @@ class GameAndroidDataSource(
 ) : AndroidDataSource<GameRoomDao, Game, GameEntity, GameConverter>(
     convert,
     roomImpl,
-), GameDataSource {
+),
+GameDataSource {
     override fun getFavorites() = roomImpl
         .getFavorites()
         .mapListTo { convert.entityToModel(it) }

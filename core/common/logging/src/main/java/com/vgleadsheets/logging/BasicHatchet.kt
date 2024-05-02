@@ -1,6 +1,6 @@
 package com.vgleadsheets.logging
 
-class BasicHatchet: Hatchet {
+class BasicHatchet : Hatchet {
     override fun v(tag: String, message: String) = println("V: $tag | $message")
 
     override fun d(tag: String, message: String) = println("D: $tag | $message")

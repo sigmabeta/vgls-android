@@ -27,4 +27,3 @@ android {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 }
-

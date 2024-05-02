@@ -6,7 +6,6 @@ plugins {
 dependencies {
     implementation(libs.androidx.jankstats)
 
-
     api(projects.features.main.about)
     api(projects.features.main.composer)
     api(projects.features.main.composers)

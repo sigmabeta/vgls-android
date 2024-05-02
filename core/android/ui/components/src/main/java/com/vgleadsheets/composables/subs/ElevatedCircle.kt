@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 fun ElevatedCircle(
     modifier: Modifier = Modifier,
