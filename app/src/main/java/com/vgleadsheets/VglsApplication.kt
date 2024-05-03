@@ -39,6 +39,9 @@ class VglsApplication :
         hatchet.v(this.javaClass.simpleName, "Starting Application.")
         hatchet.v(this.javaClass.simpleName, "Build type: ${BuildConfig.BUILD_TYPE}")
 
+        hatchet.v(this.javaClass.simpleName, "App version name: ${BuildConfig.VERSION_NAME}")
+        hatchet.v(this.javaClass.simpleName, "App version code: ${BuildConfig.VERSION_CODE}")
+
         hatchet.v(this.javaClass.simpleName, "Android version: ${Build.VERSION.RELEASE}")
         hatchet.v(this.javaClass.simpleName, "Device manufacturer: ${Build.MANUFACTURER}")
         hatchet.v(this.javaClass.simpleName, "Device model: ${Build.MODEL}")
