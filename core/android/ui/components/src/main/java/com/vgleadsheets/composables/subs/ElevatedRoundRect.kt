@@ -1,9 +1,8 @@
 package com.vgleadsheets.composables.subs
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -14,9 +13,9 @@ import androidx.compose.ui.unit.dp
 fun ElevatedRoundRect(
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 16.dp,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable () -> Unit
 ) {
-    Box(
+    Surface(
         modifier = modifier
             .padding(horizontal = 4.dp)
             .shadow(

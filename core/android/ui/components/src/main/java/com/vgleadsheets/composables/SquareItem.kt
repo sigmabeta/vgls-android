@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +32,7 @@ fun SquareItem(
     model: SquareItemListModel,
     modifier: Modifier
 ) {
-    Box(
+    Surface(
         modifier = modifier
             .defaultMinSize(minHeight = 160.dp)
             .aspectRatio(1.0f)
@@ -41,38 +42,40 @@ fun SquareItem(
             )
             .clickable(onClick = model.onClick)
     ) {
-        CrossfadeImage(
-            imageUrl = model.imageUrl,
-            imagePlaceholder = model.imagePlaceholder,
-            modifier = Modifier
-                .fillMaxSize()
-        )
+        Box {
+            CrossfadeImage(
+                imageUrl = model.imageUrl,
+                imagePlaceholder = model.imagePlaceholder,
+                modifier = Modifier
+                    .fillMaxSize()
+            )
 
-        Text(
-            text = model.name,
-            color = Color.White,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                shadow = Shadow(
-                    color = Color.Black,
-                    offset = Offset(4f, 4f),
-                    blurRadius = 8f
-                )
-            ),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0, 0, 0, 0),
-                            Color(0, 0, 0, 64),
-                            Color(0, 0, 0, 160),
+            Text(
+                text = model.name,
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(4f, 4f),
+                        blurRadius = 8f
+                    )
+                ),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0, 0, 0, 0),
+                                Color(0, 0, 0, 64),
+                                Color(0, 0, 0, 160),
+                            )
                         )
                     )
-                )
-                .padding(8.dp)
-                .padding(top = 8.dp) // For extra scrim
-        )
+                    .padding(8.dp)
+                    .padding(top = 8.dp) // For extra scrim
+            )
+        }
     }
 }
 

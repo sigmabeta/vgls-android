@@ -2,6 +2,7 @@ package com.vgleadsheets.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
-import com.vgleadsheets.ui.components.R
 
 @Composable
 fun BigImage(
@@ -44,48 +44,50 @@ fun BigImage(
         )
 
         if (model.name != null || model.caption != null) {
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color(0, 0, 0, 0),
-                                Color(0, 0, 0, 64),
-                                Color(0, 0, 0, 160),
+            Box {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0, 0, 0, 0),
+                                    Color(0, 0, 0, 64),
+                                    Color(0, 0, 0, 160),
+                                )
                             )
                         )
-                    )
-                    .padding(16.dp)
-                    .padding(top = 8.dp) // For extra scrim
-            ) {
-                if (model.name != null) {
-                    Text(
-                        text = model.name,
-                        color = Color.White,
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            shadow = Shadow(
-                                color = Color.Black,
-                                offset = Offset(4f, 4f),
-                                blurRadius = 8f
-                            )
-                        ),
-                    )
-                }
+                        .padding(16.dp)
+                        .padding(top = 8.dp) // For extra scrim
+                ) {
+                    if (model.name != null) {
+                        Text(
+                            text = model.name,
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                shadow = Shadow(
+                                    color = Color.Black,
+                                    offset = Offset(4f, 4f),
+                                    blurRadius = 8f
+                                )
+                            ),
+                        )
+                    }
 
-                if (model.caption != null) {
-                    Text(
-                        text = model.caption,
-                        color = Color.White,
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            shadow = Shadow(
-                                color = Color.Black,
-                                offset = Offset(4f, 4f),
-                                blurRadius = 8f
-                            )
-                        ),
-                    )
+                    if (model.caption != null) {
+                        Text(
+                            text = model.caption,
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                shadow = Shadow(
+                                    color = Color.Black,
+                                    offset = Offset(4f, 4f),
+                                    blurRadius = 8f
+                                )
+                            ),
+                        )
+                    }
                 }
             }
         }

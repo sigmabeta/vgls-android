@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -28,8 +29,25 @@ fun CrossfadeSheet(
     pagePreview: PagePreview,
     sheetId: Long,
     modifier: Modifier,
-    eventListener: SheetPageListModel.ImageListener
+    eventListener: SheetPageListModel.ImageListener,
+    simulateError: Boolean = false
 ) {
+    if (simulateError) {
+        Box(
+            modifier = modifier.fillMaxSize()
+        ) {
+            EmptyListIndicator(
+                model = ErrorStateListModel(
+                    imageUrl,
+                    "Can't load this sheet. Check your network connection and try again?"
+                ),
+                modifier = modifier
+                    .align(Alignment.Center)
+            )
+        }
+        return
+    }
+
     eventListener.onLoadStarted()
     val painter = rememberAsyncImagePainter(
         model = with(ImageRequest.Builder(LocalContext.current)) {
@@ -107,6 +125,20 @@ private fun PortraitLoading() {
     }
 }
 
+@Preview
+@Composable
+private fun PortraitError() {
+    VglsMaterial {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.Black)
+        ) {
+            SampleError()
+        }
+    }
+}
+
 @Composable
 private fun SampleLoading() {
     CrossfadeSheet(
@@ -140,6 +172,25 @@ private fun SampleSheet() {
         sheetId = 1234L,
         modifier = Modifier,
         eventListener = NOOP_LISTENER,
+    )
+}
+
+@Composable
+private fun SampleError() {
+    CrossfadeSheet(
+        imageUrl = "nope",
+        pagePreview = PagePreview(
+            "A Trip to Alivel Mall",
+            "C",
+            "Kirby and the Forgotten Land",
+            listOf(
+                "Hirokazu Ando",
+            )
+        ),
+        sheetId = 1234L,
+        modifier = Modifier,
+        eventListener = NOOP_LISTENER,
+        simulateError = true,
     )
 }
 

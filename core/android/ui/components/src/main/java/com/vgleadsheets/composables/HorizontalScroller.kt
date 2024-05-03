@@ -24,6 +24,7 @@ import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.ui.themes.VglsMaterial
+import java.util.Random
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -78,16 +79,18 @@ private fun Sample() {
                 color = MaterialTheme.colorScheme.background
             )
     ) {
-        SquareItemSection()
-        WideItemSection()
-        VerticalSection()
-        SquareItemSection()
-        VerticalSection()
+        val rng = Random("HorizontalScroller".hashCode().toLong())
+
+        SquareItemSection(rng)
+        WideItemSection(rng)
+        VerticalSection(rng)
+        SquareItemSection(rng)
+        VerticalSection(rng)
     }
 }
 
 @Composable
-private fun SquareItemSection() {
+private fun SquareItemSection(rng: Random) {
     SectionHeader(
         name = "Square Items",
         modifier = Modifier
@@ -100,7 +103,7 @@ private fun SquareItemSection() {
                 SquareItemListModel(
                     dataId = index.toLong(),
                     name = "Square #$index",
-                    null,
+                    imageUrl = rng.nextInt().toString(),
                     com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
                     null,
                 ) { }
@@ -111,7 +114,7 @@ private fun SquareItemSection() {
 }
 
 @Composable
-private fun WideItemSection() {
+private fun WideItemSection(rng: Random) {
     SectionHeader(
         name = "Wide Items",
         modifier = Modifier
@@ -124,7 +127,7 @@ private fun WideItemSection() {
                 WideItemListModel(
                     dataId = index.toLong(),
                     name = "Wide Item #$index",
-                    null,
+                    imageUrl = rng.nextInt().toString(),
                     com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
                     null,
                 ) { }
@@ -135,7 +138,7 @@ private fun WideItemSection() {
 }
 
 @Composable
-private fun VerticalSection() {
+private fun VerticalSection(rng: Random) {
     SectionHeader(
         name = "Vertically Scrolling Items",
         modifier = Modifier
@@ -146,7 +149,7 @@ private fun VerticalSection() {
             model = ImageNameListModel(
                 dataId = index.toLong(),
                 name = "Wide Item #$index",
-                null,
+                imageUrl = rng.nextInt().toString(),
                 com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
                 null,
             ) { },

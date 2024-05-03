@@ -3,20 +3,24 @@ package com.vgleadsheets.composables.subs
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.vgleadsheets.ui.components.R
+import com.vgleadsheets.images.BitmapGenerator
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -24,7 +28,8 @@ fun CrossfadeImage(
     imageUrl: String?,
     imagePlaceholder: Int,
     modifier: Modifier,
-    contentScale: ContentScale? = null
+    contentScale: ContentScale? = null,
+    forceGenBitmap: Boolean = LocalInspectionMode.current
 ) {
     val bgModifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)
 
@@ -37,25 +42,32 @@ fun CrossfadeImage(
         return
     }
 
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .placeholder(imagePlaceholder)
-            .crossfade(true)
-            .build()
-    )
-
-    val imageModifier = if (painter.state is AsyncImagePainter.State.Success) {
-        modifier
+    val (painter, imageModifier) = if (forceGenBitmap) {
+        BitmapPainter(
+            image = BitmapGenerator.generateBitmap(imageUrl),
+            filterQuality = FilterQuality.None
+        ) to modifier
     } else {
-        bgModifier
+        val asyncPainter = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .placeholder(imagePlaceholder)
+                .crossfade(true)
+                .build()
+        )
+
+        asyncPainter to if (asyncPainter.state is AsyncImagePainter.State.Success) {
+            modifier
+        } else {
+            bgModifier
+        }
     }
 
     Image(
         painter = painter,
         contentDescription = null,
         contentScale = contentScale ?: ContentScale.Crop,
-        modifier = imageModifier
+        modifier = imageModifier,
     )
 }
 
@@ -63,13 +75,7 @@ fun CrossfadeImage(
 @Composable
 private fun Light() {
     VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            Sample()
-        }
+        Sample()
     }
 }
 
@@ -77,66 +83,61 @@ private fun Light() {
 @Composable
 private fun Dark() {
     VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            Sample()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun LightGame() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            SampleGame()
-        }
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun DarkGame() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            SampleGame()
-        }
+        Sample()
     }
 }
 
 @Composable
 private fun Sample() {
-    ElevatedCircle(
-        Modifier.size(64.dp)
-    ) {
-        CrossfadeImage(
-            imageUrl = "doesn't matter",
-            imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
-            modifier = Modifier,
+    Column(
+        modifier = Modifier.background(
+            color = MaterialTheme.colorScheme.background
         )
-    }
-}
+    ) {
+        Row {
+            ElevatedRoundRect(
+                modifier = Modifier.size(64.dp),
+                cornerRadius = 4.dp
+            ) {
+                CrossfadeImage(
+                    imageUrl = null,
+                    imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    modifier = Modifier,
+                )
+            }
 
-@Composable
-private fun SampleGame() {
-    ElevatedCircle(
-        Modifier.size(64.dp)
-    ) {
-        CrossfadeImage(
-            imageUrl = "doesn't matter",
-            imagePlaceholder = 0,
-            modifier = Modifier,
-        )
+            ElevatedRoundRect(
+                modifier = Modifier.size(64.dp),
+                cornerRadius = 4.dp
+            ) {
+                CrossfadeImage(
+                    imageUrl = "doesn't matter",
+                    imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    modifier = Modifier,
+                )
+            }
+        }
+
+        Row {
+            ElevatedCircle(
+                Modifier.size(64.dp)
+            ) {
+                CrossfadeImage(
+                    imageUrl = null,
+                    imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    modifier = Modifier,
+                )
+            }
+
+            ElevatedCircle(
+                Modifier.size(64.dp)
+            ) {
+                CrossfadeImage(
+                    imageUrl = "doesn't matter",
+                    imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    modifier = Modifier,
+                )
+            }
+        }
     }
 }
