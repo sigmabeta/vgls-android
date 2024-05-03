@@ -209,6 +209,9 @@ jobs:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
       - run:
+          name: Setup Google Services JSON
+          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
+      - run:
           name: Build Release
           command: ./gradlew :app:assembleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
       - save_cache:
@@ -240,9 +243,6 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           key: build-cache-v1-{{ .Revision }}
-      - run:
-          name: Setup Google Services JSON
-          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
       - run:
           name: Set target Google Play Track
           command: ./set-track-name.sh
