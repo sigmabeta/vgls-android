@@ -1,4 +1,4 @@
-package com.vgleadsheets.remaster.games.detail
+package com.vgleadsheets.remaster.composers.detail
 
 import android.content.res.Resources
 import androidx.compose.runtime.Composable
@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import com.vgleadsheets.ui.list.ListScreen
 
 @Composable
-fun GamesDetailScreen(
+fun ComposerDetailScreen(
     state: State,
     resources: Resources,
     modifier: Modifier
