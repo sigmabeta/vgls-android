@@ -86,7 +86,9 @@ include(
     ":core:common:repository",
     ":core:common:settings:common",
     ":core:common:settings:environment",
+    ":core:common:settings:part",
     ":core:common:tracking",
+    ":core:common:urlinfo",
 
     ":core:fake:perf",
     ":core:fake:tracking",

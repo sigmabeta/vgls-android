@@ -3,9 +3,12 @@ package com.vgleadsheets.di
 import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vgleadsheets.BuildConfig
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.settings.common.Storage
 import com.vgleadsheets.settings.environment.EnvironmentManager
+import com.vgleadsheets.settings.part.SelectedPartManager
+import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,8 +16,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -48,7 +53,6 @@ object AppModule {
 
     // TODO this should only happen in debug builds; in release builds it should be a no-op
     @Provides
-    @Named("EnvironmentManager")
     @Singleton
     internal fun provideEnvironmentManager(
         storage: Storage
@@ -57,6 +61,34 @@ object AppModule {
             storage = storage
         )
     }
+
+    @Provides
+    @Singleton
+    internal fun provideSelectedPartManager(
+        storage: Storage
+    ): SelectedPartManager {
+        return SelectedPartManager(
+            storage = storage
+        )
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideConverterFactory() = MoshiConverterFactory.create()
+
+    @Provides
+    @Singleton
+    internal fun provideUrlInfoProvider(
+        environmentManager: EnvironmentManager,
+        partManager: SelectedPartManager,
+        coroutineScope: CoroutineScope,
+        dispatchers: VglsDispatchers
+    ) = UrlInfoProvider(
+        environmentManager,
+        partManager,
+        coroutineScope,
+        dispatchers,
+    )
 
     @Provides
     @Singleton

@@ -120,6 +120,7 @@ dependencies {
     implementation(projects.core.common.debug)
     implementation(projects.core.common.network)
     implementation(projects.core.common.settings.environment)
+    implementation(projects.core.common.urlinfo)
     // End DI dependencies
 
     implementation(projects.core.android.activity)

@@ -9,7 +9,6 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.games.detail.R
 import com.vgleadsheets.images.Page
-import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -55,7 +54,7 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
                 resources.getString(R.string.section_header_songs_from_game)
             )
         ) + songs.map { song ->
-            val imageUrl = song.thumbUrl(baseImageUrl, selectedPart)
+            val imageUrl = song.thumbUrl(sheetUrlInfo.baseUrl, sheetUrlInfo.partId)
             println("Rendering image url: $imageUrl")
             ImageNameListModel(
                 song.id + ID_PREFIX_SONGS,
@@ -71,10 +70,10 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
     return (gameModels + composerModels + songModels).toPersistentList()
 }
 
-private fun Song.thumbUrl(baseImageUrl: String?, selectedPart: Part?): String? {
+private fun Song.thumbUrl(baseImageUrl: String?, selectedPart: String?): String? {
     return Page.generateImageUrl(
         baseImageUrl ?: return null,
-        selectedPart?.apiId ?: return null,
+        selectedPart ?: return null,
         filename,
         isAltSelected,
         1

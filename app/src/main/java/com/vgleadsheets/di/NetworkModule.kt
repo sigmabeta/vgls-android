@@ -12,7 +12,6 @@ import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -90,10 +89,6 @@ object NetworkModule {
             .header("Cache-Control", "max-age=$CACHE_MAX_AGE")
             .build()
     }
-
-    @Provides
-    @Singleton
-    internal fun provideConverterFactory() = MoshiConverterFactory.create()
 
     const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
 

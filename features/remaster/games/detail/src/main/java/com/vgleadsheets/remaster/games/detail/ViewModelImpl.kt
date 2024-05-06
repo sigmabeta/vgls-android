@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.games.detail
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.repository.VglsRepository
-import com.vgleadsheets.settings.environment.EnvironmentManager
+import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -12,30 +12,29 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import javax.inject.Named
 
 class ViewModelImpl @AssistedInject constructor(
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
-    @Named("EnvironmentManager") private val environmentManager: EnvironmentManager,
+    private val urlInfoProvider: UrlInfoProvider,
     @Assisted private val navigateTo: (String) -> Unit,
     @Assisted gameId: Long,
 ) : VglsViewModel<State, Event>(
     initialState = State()
 ) {
     init {
-        fetchBaseImageUrl()
+        fetchUrlInfo()
         fetchGame(gameId)
         fetchSongs(gameId)
         fetchComposers()
     }
 
-    private fun fetchBaseImageUrl() {
-        environmentManager
-            .selectedEnvironmentFlow()
-            .onEach { env ->
+    private fun fetchUrlInfo() {
+        urlInfoProvider
+            .urlInfoFlow
+            .onEach { urlInfo ->
                 _uiState.update {
-                    it.copy(baseImageUrl = env.url)
+                    it.copy(sheetUrlInfo = urlInfo)
                 }
             }
             .flowOn(dispatchers.disk)
