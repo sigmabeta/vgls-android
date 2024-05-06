@@ -27,12 +27,20 @@ class UrlInfoProvider(
         ) { env, part ->
             _urlInfoFlow.update {
                 UrlInfo(
-                    env.url,
-                    part.apiId
+                    baseBaseUrl = env.url,
+                    apiBaseUrl = prependIfNotNull(env.url, "api/app/"),
+                    imageBaseUrl = prependIfNotNull(env.url, "assets/sheets/png/"),
+                    partId = part.apiId
                 )
             }
         }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
+    }
+
+    private fun prependIfNotNull(prefix: String?, suffix: String): String? {
+        prefix ?: return null
+
+        return prefix + suffix
     }
 }
