@@ -30,6 +30,8 @@ fun NavGraphBuilder.gamesDetailScreenEntry(navigationAction: (String) -> Unit, g
             state,
             LocalContext.current.resources,
             globalModifier,
+            ,
+            ,
         )
     }
 }

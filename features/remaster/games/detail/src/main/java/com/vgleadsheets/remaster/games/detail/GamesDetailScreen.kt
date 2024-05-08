@@ -9,10 +9,16 @@ import com.vgleadsheets.ui.list.ListScreen
 fun GamesDetailScreen(
     state: State,
     resources: Resources,
-    modifier: Modifier
+    modifier: Modifier,
+    onComposerClick: (Long) -> Unit,
+    onSongClick: (Long) -> Unit
 ) {
     ListScreen(
-        items = state.toListItems(resources),
+        items = state.toListItems(
+            resources = resources,
+            onComposerClick = onSongClick,
+            onSongClick = onComposerClick,
+        ),
         modifier = modifier,
     )
 }

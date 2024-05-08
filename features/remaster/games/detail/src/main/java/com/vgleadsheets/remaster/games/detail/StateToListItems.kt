@@ -13,7 +13,11 @@ import com.vgleadsheets.model.Song
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
-fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
+fun State.toListItems(
+    resources: Resources,
+    onComposerClick: (Long) -> Unit,
+    onSongClick: (Long) -> Unit,
+): ImmutableList<ListModel> {
     val gameModels = if (game?.photoUrl != null) {
         listOf<ListModel>(
             HeroImageListModel(
@@ -39,7 +43,7 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
                         name = composer.name,
                         imageUrl = composer.photoUrl,
                         imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
-                        onClick = { }
+                        onClick = { onComposerClick(composer.id) }
                     )
                 }
             )
@@ -57,11 +61,12 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
             val imageUrl = song.thumbUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
             println("Rendering image url: $imageUrl")
             ImageNameListModel(
-                song.id + ID_PREFIX_SONGS,
-                song.name,
-                imageUrl,
-                com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp
-            ) { }
+                dataId = song.id + ID_PREFIX_SONGS,
+                name = song.name,
+                imageUrl = imageUrl,
+                imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
+                onClick = { onSongClick(song.id) }
+            )
         }
     } else {
         emptyList()

@@ -5,4 +5,4 @@ import kotlinx.collections.immutable.ImmutableList
 
 data class State(
     val listItems: ImmutableList<ListModel>
-)
+) : ListState
