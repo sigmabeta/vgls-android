@@ -1,8 +1,7 @@
 package com.vgleadsheets.remaster.composers.list
 
-import com.vgleadsheets.components.ListModel
-import kotlinx.collections.immutable.ImmutableList
+import com.vgleadsheets.model.Composer
 
 data class State(
-    val listItems: ImmutableList<ListModel>
+    val composers: List<Composer>
 )
