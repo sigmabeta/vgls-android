@@ -1,7 +1,6 @@
 package com.vgleadsheets.remaster.games.list
 
 import androidx.lifecycle.viewModelScope
-import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.repository.VglsRepository
@@ -9,7 +8,6 @@ import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,17 +30,7 @@ class ViewModelImpl @AssistedInject constructor(
     private fun onGamesLoaded(games: List<Game>) {
         _uiState.update {
             it.copy(
-                listItems = games
-                    .map { game ->
-                        SquareItemListModel(
-                            dataId = game.id,
-                            name = game.name,
-                            imageUrl = game.photoUrl,
-                            imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
-                            onClick = { navigateTo("games/${game.id}") }
-                        )
-                    }
-                    .toPersistentList()
+                games = games
             )
         }
     }

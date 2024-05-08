@@ -27,11 +27,12 @@ fun NavGraphBuilder.gameDetailScreenEntry(navigationAction: (String) -> Unit, gl
         val state by viewModel.uiState.collectAsState()
 
         GameDetailScreen(
-            state,
-            LocalContext.current.resources,
-            globalModifier,
-            ,
-            ,
+            state.toListItems(
+                resources = LocalContext.current.resources,
+                onComposerClick = { navigationAction("composers/$it") },
+                onSongClick = { navigationAction(TODO()) }
+            ),
+            Modifier,
         )
     }
 }

@@ -1,24 +1,18 @@
 package com.vgleadsheets.remaster.games.detail
 
-import android.content.res.Resources
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.ui.list.ListScreen
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun GameDetailScreen(
-    state: State,
-    resources: Resources,
+    listItems: ImmutableList<ListModel>,
     modifier: Modifier,
-    onComposerClick: (Long) -> Unit,
-    onSongClick: (Long) -> Unit
 ) {
     ListScreen(
-        items = state.toListItems(
-            resources = resources,
-            onComposerClick = onSongClick,
-            onSongClick = onComposerClick,
-        ),
+        items = listItems,
         modifier = modifier,
     )
 }

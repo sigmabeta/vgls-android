@@ -10,4 +10,4 @@ data class State(
     val game: Game? = null,
     val songs: List<Song> = emptyList(),
     val composers: List<Composer> = emptyList(),
-) : ListState
+)

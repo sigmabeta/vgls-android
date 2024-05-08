@@ -1,8 +1,7 @@
 package com.vgleadsheets.remaster.games.list
 
-import com.vgleadsheets.components.ListModel
-import kotlinx.collections.immutable.ImmutableList
+import com.vgleadsheets.model.Game
 
 data class State(
-    val listItems: ImmutableList<ListModel>
-) : ListState
+    val games: List<Game>
+) 
