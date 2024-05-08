@@ -18,6 +18,7 @@ class VglsFeatureAndroidModulePlugin : Plugin<Project> {
                 add("implementation", project(":core:android:viewmodel"))
 
                 add("implementation", project(":core:common:coroutines"))
+                add("implementation", project(":core:common:nav"))
                 add("implementation", project(":core:common:repository"))
             }
         }

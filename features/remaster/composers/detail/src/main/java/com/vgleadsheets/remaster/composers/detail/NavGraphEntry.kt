@@ -8,16 +8,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.vgleadsheets.nav.ARG_DEST_ID
+import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.composerDetailScreenEntry(navigationAction: (String) -> Unit, globalModifier: Modifier) {
     composable(
-        route = "composers/{composerId}",
+        route = Destination.COMPOSER_DETAIL.idTemplate(),
         arguments = listOf(
-            navArgument("composerId") { type = NavType.LongType }
+            navArgument(ARG_DEST_ID) { type = NavType.LongType }
         )
     ) {
-        val composerId = it.arguments?.getLong("composerId") ?: throw IllegalArgumentException(
-            "composerId is required"
+        val composerId = it.arguments?.getLong(ARG_DEST_ID) ?: throw IllegalArgumentException(
+            "$ARG_DEST_ID is required"
         )
 
         val viewModel = composerDetailViewModel(

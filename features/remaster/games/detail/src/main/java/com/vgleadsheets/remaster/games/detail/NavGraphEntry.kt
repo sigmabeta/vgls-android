@@ -8,16 +8,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.vgleadsheets.nav.ARG_DEST_ID
+import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.gameDetailScreenEntry(navigationAction: (String) -> Unit, globalModifier: Modifier) {
     composable(
-        route = "games/{gameId}",
+        route = Destination.GAME_DETAIL.idTemplate(),
         arguments = listOf(
-            navArgument("gameId") { type = NavType.LongType }
+            navArgument(ARG_DEST_ID) { type = NavType.LongType }
         )
     ) {
-        val gameId = it.arguments?.getLong("gameId") ?: throw IllegalArgumentException(
-            "gameId is required"
+        val gameId = it.arguments?.getLong(ARG_DEST_ID) ?: throw IllegalArgumentException(
+            "$ARG_DEST_ID is required"
         )
 
         val viewModel = gameDetailViewModel(
@@ -29,8 +31,8 @@ fun NavGraphBuilder.gameDetailScreenEntry(navigationAction: (String) -> Unit, gl
         GameDetailScreen(
             state.toListItems(
                 resources = LocalContext.current.resources,
-                onComposerClick = { navigationAction("composers/$it") },
-                onSongClick = { navigationAction(TODO()) }
+                onComposerClick = { clickedId -> navigationAction(Destination.COMPOSER_DETAIL.forId(clickedId)) },
+                onSongClick = { clickedId -> navigationAction(Destination.SONG_VIEWER.forId(clickedId)) },
             ),
             Modifier,
         )

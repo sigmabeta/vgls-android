@@ -81,6 +81,7 @@ include(
     ":core:common:debug",
     ":core:common:logging",
     ":core:common:model",
+    ":core:common:nav",
     ":core:common:network",
     ":core:common:perf",
     ":core:common:repository",
