@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import com.vgleadsheets.ui.list.ListScreen
 
 @Composable
-fun GamesDetailScreen(
+fun GameDetailScreen(
     state: State,
     resources: Resources,
     modifier: Modifier,

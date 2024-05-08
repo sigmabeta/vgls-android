@@ -114,6 +114,7 @@ include(
 
     ":features:remaster:bottombar",
     ":features:remaster:browse",
+    ":features:remaster:composers:detail",
     ":features:remaster:composers:list",
     ":features:remaster:games:detail",
     ":features:remaster:games:list",

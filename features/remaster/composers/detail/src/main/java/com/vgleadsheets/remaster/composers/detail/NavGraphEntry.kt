@@ -1,4 +1,4 @@
-package com.vgleadsheets.remaster.games.detail
+package com.vgleadsheets.remaster.composers.detail
 
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -9,29 +9,27 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 
-fun NavGraphBuilder.gameDetailScreenEntry(navigationAction: (String) -> Unit, globalModifier: Modifier) {
+fun NavGraphBuilder.composerDetailScreenEntry(navigationAction: (String) -> Unit, globalModifier: Modifier) {
     composable(
-        route = "games/{gameId}",
+        route = "composers/{composerId}",
         arguments = listOf(
-            navArgument("gameId") { type = NavType.LongType }
+            navArgument("composerId") { type = NavType.LongType }
         )
     ) {
-        val gameId = it.arguments?.getLong("gameId") ?: throw IllegalArgumentException(
-            "gameId is required"
+        val composerId = it.arguments?.getLong("composerId") ?: throw IllegalArgumentException(
+            "composerId is required"
         )
 
-        val viewModel = gameDetailViewModel(
-            gameId = gameId,
+        val viewModel = composerDetailViewModel(
+            composerId = composerId,
             navigationAction,
         )
         val state by viewModel.uiState.collectAsState()
 
-        GameDetailScreen(
+        ComposerDetailScreen(
             state,
             LocalContext.current.resources,
             globalModifier,
-            ,
-            ,
         )
     }
 }

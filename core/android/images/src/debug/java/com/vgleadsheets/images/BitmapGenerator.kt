@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import kotlin.random.Random
 
-
 object BitmapGenerator {
     fun generateBitmap(
         url: String,
@@ -76,7 +75,7 @@ object BitmapGenerator {
             val leftVertLine = (width.toFloat() / 3) - 1
             val rightVertLine = (2 * width.toFloat() / 3)
 
-            canvas.drawLine(leftVertLine, 0.0f,leftVertLine, height.toFloat(), paint)
+            canvas.drawLine(leftVertLine, 0.0f, leftVertLine, height.toFloat(), paint)
             canvas.drawLine(rightVertLine, 0.0f, rightVertLine, height.toFloat(), paint)
 
             val topHorizLine = (height.toFloat() / 3) - 1

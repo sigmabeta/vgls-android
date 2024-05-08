@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.features.remaster.topbar)
 
     implementation(projects.features.remaster.browse)
+    implementation(projects.features.remaster.composers.detail)
     implementation(projects.features.remaster.composers.list)
     implementation(projects.features.remaster.games.detail)
     implementation(projects.features.remaster.games.list)
