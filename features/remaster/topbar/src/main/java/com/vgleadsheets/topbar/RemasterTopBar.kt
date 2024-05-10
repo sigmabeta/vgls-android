@@ -4,7 +4,6 @@ package com.vgleadsheets.topbar
 
 import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,7 +36,6 @@ fun RemasterTopBar(
             Crossfade(
                 targetState = state.title,
                 label = "Title Animation",
-                animationSpec = tween(durationMillis = 100)
             ) {
                 Text(
                     text = it ?: resources.getString(R.string.title_default_top_app_bar),

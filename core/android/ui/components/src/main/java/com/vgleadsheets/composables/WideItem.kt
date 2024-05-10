@@ -35,7 +35,6 @@ fun WideItem(
 ) {
     Row(
         modifier = modifier
-            .padding(vertical = 4.dp)
             .defaultMinSize(minWidth = 192.dp)
             .height(64.dp)
             .shadow(
