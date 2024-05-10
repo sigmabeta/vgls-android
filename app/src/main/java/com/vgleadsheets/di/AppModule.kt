@@ -27,7 +27,7 @@ object AppModule {
     @Provides
     @Singleton
     @Named("CachePath") // Oh I love that app, it lets you send money to ppl
-    fun provideCachePath(@ApplicationContext context: Context) = context.cacheDir.absolutePath
+    fun provideCachePath(@ApplicationContext context: Context): String = context.cacheDir.absolutePath
 
     @Provides
     @Singleton

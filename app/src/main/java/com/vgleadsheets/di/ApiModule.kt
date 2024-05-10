@@ -23,7 +23,7 @@ object ApiModule {
         @Named("VglsOkHttp") client: OkHttpClient,
         converterFactory: MoshiConverterFactory,
         fakeModelGenerator: FakeModelGenerator
-    ) = if (baseUrl != null) {
+    ): VglsApi = if (baseUrl != null) {
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)

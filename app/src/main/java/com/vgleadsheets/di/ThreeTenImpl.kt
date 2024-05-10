@@ -28,7 +28,7 @@ class ThreeTenImpl(private val context: Context) : ThreeTenTime {
 
     override fun now(): ZonedDateTime = initialized { ZonedDateTime.now() }
 
-    override fun parse(textToParse: String, formatter: DateTimeFormatter) = initialized {
+    override fun parse(textToParse: String, formatter: DateTimeFormatter): ZonedDateTime = initialized {
         ZonedDateTime.parse(textToParse, formatter)
     }
 
