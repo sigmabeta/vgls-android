@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
@@ -16,10 +17,18 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun GridScreen(
+    title: String?,
     items: ImmutableList<ListModel>,
+    titleUpdater: (String?) -> Unit,
     modifier: Modifier,
     minSize: Dp = 128.dp
 ) {
+    if (title != null) {
+        LaunchedEffect(Unit) {
+            titleUpdater(title)
+        }
+    }
+
     LazyVerticalGrid(
         contentPadding = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)),
         columns = GridCells.Adaptive(minSize),

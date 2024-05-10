@@ -6,19 +6,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.vgleadsheets.games.list.R
 import com.vgleadsheets.nav.Destination
 
-fun NavGraphBuilder.gamesListScreenEntry(navigationAction: (String) -> Unit, globalModifier: Modifier) {
+fun NavGraphBuilder.gamesListScreenEntry(
+    navigationAction: (String) -> Unit,
+    titleUpdater: (String?) -> Unit,
+    globalModifier: Modifier
+) {
     composable(Destination.GAMES_LIST.noArgs()) {
-        val viewModel = gameListViewModel(navigationAction)
+        val resources = LocalContext.current.resources
+        val viewModel = gameListViewModel(
+            navigationAction,
+        )
         val state by viewModel.uiState.collectAsState()
 
         GamesListScreen(
-            state.toListItems(
+            title = resources.getString(R.string.title_list_games),
+            listItems = state.toListItems(
                 resources = LocalContext.current.resources,
                 onGameClick = { clickedId -> navigationAction(Destination.GAME_DETAIL.forId(clickedId)) }
             ),
-            globalModifier
+            titleUpdater = titleUpdater,
+            modifier = globalModifier
         )
     }
 }

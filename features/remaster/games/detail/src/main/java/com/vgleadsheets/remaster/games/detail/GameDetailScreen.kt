@@ -8,11 +8,15 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun GameDetailScreen(
+    title: String?,
     listItems: ImmutableList<ListModel>,
+    titleUpdater: (String?) -> Unit,
     modifier: Modifier,
 ) {
     ListScreen(
+        title = title,
         items = listItems,
+        titleUpdater = titleUpdater,
         modifier = modifier,
     )
 }

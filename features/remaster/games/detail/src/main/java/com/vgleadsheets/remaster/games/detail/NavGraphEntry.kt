@@ -11,30 +11,37 @@ import androidx.navigation.navArgument
 import com.vgleadsheets.nav.ARG_DEST_ID
 import com.vgleadsheets.nav.Destination
 
-fun NavGraphBuilder.gameDetailScreenEntry(navigationAction: (String) -> Unit, globalModifier: Modifier) {
+fun NavGraphBuilder.gameDetailScreenEntry(
+    navigationAction: (String) -> Unit,
+    titleUpdater: (String?) -> Unit,
+    globalModifier: Modifier
+) {
     composable(
         route = Destination.GAME_DETAIL.idTemplate(),
         arguments = listOf(
             navArgument(ARG_DEST_ID) { type = NavType.LongType }
         )
     ) {
+        val resources = LocalContext.current.resources
         val gameId = it.arguments?.getLong(ARG_DEST_ID) ?: throw IllegalArgumentException(
             "$ARG_DEST_ID is required"
         )
 
         val viewModel = gameDetailViewModel(
             gameId = gameId,
-            navigationAction,
+            navigateTo = navigationAction,
         )
         val state by viewModel.uiState.collectAsState()
 
         GameDetailScreen(
-            state.toListItems(
-                resources = LocalContext.current.resources,
+            title = state.title,
+            listItems = state.toListItems(
+                resources = resources,
                 onComposerClick = { clickedId -> navigationAction(Destination.COMPOSER_DETAIL.forId(clickedId)) },
                 onSongClick = { clickedId -> navigationAction(Destination.SONG_VIEWER.forId(clickedId)) },
             ),
-            Modifier,
+            titleUpdater = titleUpdater,
+            modifier = globalModifier,
         )
     }
 }

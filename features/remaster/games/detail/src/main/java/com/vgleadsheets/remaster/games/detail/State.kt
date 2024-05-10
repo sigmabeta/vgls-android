@@ -6,6 +6,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.urlinfo.UrlInfo
 
 data class State(
+    val title: String? = null,
     val sheetUrlInfo: UrlInfo = UrlInfo(),
     val game: Game? = null,
     val songs: List<Song> = emptyList(),

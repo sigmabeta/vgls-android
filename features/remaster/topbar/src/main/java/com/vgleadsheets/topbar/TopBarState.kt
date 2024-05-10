@@ -1,6 +1,6 @@
 package com.vgleadsheets.topbar
 
 data class TopBarState(
-    val title: String,
+    val title: String? = null,
     val subtitle: String? = null,
 )

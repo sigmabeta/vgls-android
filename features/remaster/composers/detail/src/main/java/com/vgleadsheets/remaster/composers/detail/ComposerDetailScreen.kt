@@ -1,18 +1,22 @@
 package com.vgleadsheets.remaster.composers.detail
 
-import android.content.res.Resources
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.ui.list.ListScreen
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ComposerDetailScreen(
-    state: State,
-    resources: Resources,
+    title: String?,
+    listItems: ImmutableList<ListModel>,
+    titleUpdater: (String?) -> Unit,
     modifier: Modifier
 ) {
     ListScreen(
-        items = state.toListItems(resources),
+        title = title,
+        items = listItems,
+        titleUpdater = titleUpdater,
         modifier = modifier,
     )
 }

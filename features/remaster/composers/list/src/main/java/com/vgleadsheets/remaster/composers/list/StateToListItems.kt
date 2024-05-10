@@ -23,4 +23,3 @@ fun State.toListItems(
         }
         .toPersistentList()
 }
-

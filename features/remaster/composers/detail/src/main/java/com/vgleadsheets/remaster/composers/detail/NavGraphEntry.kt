@@ -11,7 +11,11 @@ import androidx.navigation.navArgument
 import com.vgleadsheets.nav.ARG_DEST_ID
 import com.vgleadsheets.nav.Destination
 
-fun NavGraphBuilder.composerDetailScreenEntry(navigationAction: (String) -> Unit, globalModifier: Modifier) {
+fun NavGraphBuilder.composerDetailScreenEntry(
+    navigationAction: (String) -> Unit,
+    titleUpdater: (String?) -> Unit,
+    globalModifier: Modifier
+) {
     composable(
         route = Destination.COMPOSER_DETAIL.idTemplate(),
         arguments = listOf(
@@ -24,14 +28,15 @@ fun NavGraphBuilder.composerDetailScreenEntry(navigationAction: (String) -> Unit
 
         val viewModel = composerDetailViewModel(
             composerId = composerId,
-            navigationAction,
+            navigateTo = navigationAction,
         )
         val state by viewModel.uiState.collectAsState()
 
         ComposerDetailScreen(
-            state,
-            LocalContext.current.resources,
-            globalModifier,
+            title = state.title,
+            listItems = state.toListItems(LocalContext.current.resources),
+            titleUpdater = titleUpdater,
+            modifier = globalModifier,
         )
     }
 }

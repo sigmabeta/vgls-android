@@ -45,7 +45,10 @@ class ViewModelImpl @AssistedInject constructor(
         repository.getGame(gameId)
             .onEach { game ->
                 _uiState.update {
-                    it.copy(game = game)
+                    it.copy(
+                        title = game.name,
+                        game = game,
+                    )
                 }
             }
             .flowOn(dispatchers.disk)

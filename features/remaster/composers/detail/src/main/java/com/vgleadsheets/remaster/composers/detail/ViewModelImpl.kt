@@ -44,7 +44,10 @@ class ViewModelImpl @AssistedInject constructor(
         repository.getComposer(composerId)
             .onEach { composer ->
                 _uiState.update {
-                    it.copy(composer = composer)
+                    it.copy(
+                        title = composer.name,
+                        composer = composer,
+                    )
                 }
             }
             .flowOn(dispatchers.disk)

@@ -9,11 +9,15 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun GamesListScreen(
+    title: String?,
     listItems: ImmutableList<ListModel>,
-    modifier: Modifier
+    titleUpdater: (String?) -> Unit,
+    modifier: Modifier,
 ) {
     GridScreen(
+        title = title,
         items = listItems,
+        titleUpdater = titleUpdater,
         modifier = modifier,
         minSize = 160.dp
     )

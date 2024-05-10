@@ -14,7 +14,9 @@ import dagger.hilt.android.components.ActivityComponent
 
 @AssistedFactory
 internal interface Factory {
-    fun create(navigateTo: (String) -> Unit): ViewModelImpl
+    fun create(
+        navigateTo: (String) -> Unit,
+    ): ViewModelImpl
 }
 
 @EntryPoint
@@ -29,12 +31,16 @@ internal fun provideFactory(
     navigateTo: (String) -> Unit
 ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return assistedFactory.create(navigateTo) as T
+        return assistedFactory.create(
+            navigateTo,
+        ) as T
     }
 }
 
 @Composable
-fun gameListViewModel(navigateTo: (String) -> Unit): ViewModelImpl {
+fun gameListViewModel(
+    navigateTo: (String) -> Unit,
+): ViewModelImpl {
     val activity = LocalContext.current as Activity
     val entryPoint = EntryPointAccessors.fromActivity(activity, Provider::class.java)
     val factory = entryPoint.gameListViewModelFactory()

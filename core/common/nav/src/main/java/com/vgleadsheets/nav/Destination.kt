@@ -16,8 +16,7 @@ enum class Destination(
 
     fun noArgs() = destName
     fun idTemplate() = destName.replace(ARG, "/{$ARG_DEST_ID}")
-    fun forId(id: Long) = destName.replace(ARG, "/$id" )
-
+    fun forId(id: Long) = destName.replace(ARG, "/$id")
 }
 
 private val ARG = "/replaceme"

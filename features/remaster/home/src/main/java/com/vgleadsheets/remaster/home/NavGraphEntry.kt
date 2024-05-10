@@ -7,7 +7,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.vgleadsheets.nav.Destination
 
-fun NavGraphBuilder.homeScreenEntry(navigationAction: (String) -> Unit, globalModifier: Modifier) {
+fun NavGraphBuilder.homeScreenEntry(
+    navigationAction: (String) -> Unit,
+    titleUpdater: (String?) -> Unit,
+    globalModifier: Modifier
+) {
     composable(Destination.HOME.noArgs()) {
         val viewModel = homeViewModel(navigationAction)
         val state by viewModel.uiState.collectAsState()
