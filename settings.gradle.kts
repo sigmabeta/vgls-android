@@ -11,6 +11,24 @@ pluginManagement {
     }
 }
 
+plugins {
+    id("com.gradle.develocity") version "3.17.3"
+}
+
+develocity {
+    buildScan {
+        termsOfUseUrl = "https://gradle.com/terms-of-service"
+        termsOfUseAgree = "yes"
+    }
+}
+
+buildCache {
+    local {
+        directory = File(rootDir, "build-cache")
+        removeUnusedEntriesAfterDays = 30
+    }
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -21,23 +39,6 @@ dependencyResolutionManagement {
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-// plugins {
-//     id("com.gradle.enterprise") version("3.15")
-// }
-//
-// gradleEnterprise {
-//     buildScan {
-//         termsOfServiceUrl = "https://gradle.com/terms-of-service"
-//         termsOfServiceAgree = "yes"
-//     }
-// }
-//
-// buildCache {
-//     local {
-//         removeUnusedEntriesAfterDays = 30
-//     }
-// }
 
 rootProject.name = "VGLeadSheets"
 
