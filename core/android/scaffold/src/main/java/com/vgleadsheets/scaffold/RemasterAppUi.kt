@@ -34,7 +34,6 @@ fun RemasterAppUi(
     val topBarViewModel: TopBarViewModel = viewModel()
 
     val titleUpdater = { title: String? ->
-        println("updating title: $title")
         topBarViewModel.updateTitle(title)
     }
     val subtitleUpdater = { subtitle: String? -> topBarViewModel.updateSubtitle(subtitle) }

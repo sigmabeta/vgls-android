@@ -55,7 +55,6 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
             )
         ) + songs.map { song ->
             val imageUrl = song.thumbUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
-            println("Rendering image url: $imageUrl")
             ImageNameListModel(
                 song.id + ID_PREFIX_SONGS,
                 song.name,

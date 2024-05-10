@@ -59,7 +59,6 @@ fun State.toListItems(
             )
         ) + songs.map { song ->
             val imageUrl = song.thumbUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
-            println("Rendering image url: $imageUrl")
             ImageNameListModel(
                 dataId = song.id + ID_PREFIX_SONGS,
                 name = song.name,
