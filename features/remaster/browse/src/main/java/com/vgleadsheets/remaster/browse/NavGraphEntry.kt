@@ -10,13 +10,13 @@ import com.vgleadsheets.browse.R
 import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.browseScreenEntry(
-    navigationAction: (String) -> Unit,
+    navigateTo: (String) -> Unit,
     titleUpdater: (String?) -> Unit,
     globalModifier: Modifier
 ) {
     composable(Destination.BROWSE.noArgs()) {
         val resources = LocalContext.current.resources
-        val viewModel = browseViewModel(navigationAction)
+        val viewModel = browseViewModel(navigateTo)
         val browseState by viewModel.uiState.collectAsState()
 
         BrowseScreen(

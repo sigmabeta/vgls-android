@@ -12,7 +12,7 @@ import com.vgleadsheets.nav.ARG_DEST_ID
 import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.composerDetailScreenEntry(
-    navigationAction: (String) -> Unit,
+    navigateTo: (String) -> Unit,
     titleUpdater: (String?) -> Unit,
     globalModifier: Modifier
 ) {
@@ -28,7 +28,7 @@ fun NavGraphBuilder.composerDetailScreenEntry(
 
         val viewModel = composerDetailViewModel(
             composerId = composerId,
-            navigateTo = navigationAction,
+            navigateTo = navigateTo,
         )
         val state by viewModel.uiState.collectAsState()
 

@@ -12,7 +12,7 @@ import com.vgleadsheets.nav.ARG_DEST_ID
 import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.gameDetailScreenEntry(
-    navigationAction: (String) -> Unit,
+    navigateTo: (String) -> Unit,
     titleUpdater: (String?) -> Unit,
     globalModifier: Modifier
 ) {
@@ -29,7 +29,7 @@ fun NavGraphBuilder.gameDetailScreenEntry(
 
         val viewModel = gameDetailViewModel(
             gameId = gameId,
-            navigateTo = navigationAction,
+            navigateTo = navigateTo,
         )
         val state by viewModel.uiState.collectAsState()
 
@@ -37,8 +37,8 @@ fun NavGraphBuilder.gameDetailScreenEntry(
             title = state.title,
             listItems = state.toListItems(
                 resources = resources,
-                onComposerClick = { clickedId -> navigationAction(Destination.COMPOSER_DETAIL.forId(clickedId)) },
-                onSongClick = { clickedId -> navigationAction(Destination.SONG_VIEWER.forId(clickedId)) },
+                onComposerClick = { clickedId -> navigateTo(Destination.COMPOSER_DETAIL.forId(clickedId)) },
+                onSongClick = { clickedId -> navigateTo(Destination.SONG_VIEWER.forId(clickedId)) },
             ),
             titleUpdater = titleUpdater,
             modifier = globalModifier,

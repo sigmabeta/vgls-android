@@ -8,14 +8,14 @@ import androidx.navigation.compose.composable
 import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.homeScreenEntry(
-    navigationAction: (String) -> Unit,
+    navigateTo: (String) -> Unit,
     titleUpdater: (String?) -> Unit,
     globalModifier: Modifier
 ) {
     composable(Destination.HOME.noArgs()) {
-        val viewModel = homeViewModel(navigationAction)
+        val viewModel = homeViewModel(navigateTo)
         val state by viewModel.uiState.collectAsState()
 
-        HomeScreen(state, navigationAction, globalModifier)
+        HomeScreen(state, navigateTo, globalModifier)
     }
 }

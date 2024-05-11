@@ -10,14 +10,14 @@ import com.vgleadsheets.composers.list.R
 import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.composersListScreenEntry(
-    navigationAction: (String) -> Unit,
+    navigateTo: (String) -> Unit,
     titleUpdater: (String?) -> Unit,
     globalModifier: Modifier
 ) {
     composable(Destination.COMPOSERS_LIST.noArgs()) {
         val resources = LocalContext.current.resources
         val viewModel = composerListViewModel(
-            navigateTo = navigationAction
+            navigateTo = navigateTo
         )
         val state by viewModel.uiState.collectAsState()
 
@@ -25,7 +25,7 @@ fun NavGraphBuilder.composersListScreenEntry(
             title = resources.getString(R.string.title_list_composers),
             listItems = state.toListItems(
                 resources = resources,
-                onComposerClick = { clickedId -> navigationAction(Destination.COMPOSER_DETAIL.forId(clickedId)) }
+                onComposerClick = { clickedId -> navigateTo(Destination.COMPOSER_DETAIL.forId(clickedId)) }
             ),
             titleUpdater = titleUpdater,
             modifier = globalModifier,
