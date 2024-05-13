@@ -1,13 +1,10 @@
 plugins {
-    alias(libs.plugins.vgls.feature.compose.android)
-    alias(libs.plugins.vgls.di.android)
+    alias(libs.plugins.vgls.core.jvm)
+    alias(libs.plugins.vgls.di.jvm)
 }
 
 dependencies {
-    implementation(projects.core.android.ui.icons)
-    implementation(projects.core.android.ui.list)
-}
-
-android {
-    namespace = "com.vgleadsheets.browse"
+    api(projects.core.common.list)
+    api(projects.core.common.nav)
+    api(projects.core.common.ui.components)
 }

@@ -3,6 +3,7 @@ package com.vgleadsheets.remaster.composers.detail
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.state.VglsState
 import com.vgleadsheets.urlinfo.UrlInfo
 
 data class State(
@@ -11,4 +12,4 @@ data class State(
     val composer: Composer? = null,
     val songs: List<Song> = emptyList(),
     val games: List<Game> = emptyList(),
-)
+) : VglsState

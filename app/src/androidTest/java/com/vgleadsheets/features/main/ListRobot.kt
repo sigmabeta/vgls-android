@@ -17,7 +17,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.vgleadsheets.RecyclerViewMatcher
 import com.vgleadsheets.Robot
-import com.vgleadsheets.components.ComponentViewHolder
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.core.android.ui.core)
+    implementation(projects.core.common.ui.icons)
 }
 
 android {

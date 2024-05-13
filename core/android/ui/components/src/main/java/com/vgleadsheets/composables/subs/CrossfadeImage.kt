@@ -21,12 +21,14 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.vgleadsheets.images.BitmapGenerator
+import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun CrossfadeImage(
     imageUrl: String?,
-    imagePlaceholder: Int,
+    imagePlaceholder: Icon,
     modifier: Modifier,
     contentScale: ContentScale? = null,
     forceGenBitmap: Boolean = LocalInspectionMode.current
@@ -35,7 +37,7 @@ fun CrossfadeImage(
 
     if (imageUrl == null) {
         Image(
-            painter = painterResource(id = imagePlaceholder),
+            painter = painterResource(id = imagePlaceholder.id()),
             contentDescription = null,
             modifier = bgModifier
         )
@@ -51,7 +53,7 @@ fun CrossfadeImage(
         val asyncPainter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
-                .placeholder(imagePlaceholder)
+                .placeholder(imagePlaceholder.id())
                 .crossfade(true)
                 .build()
         )
@@ -101,7 +103,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     imageUrl = null,
-                    imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
             }
@@ -112,7 +114,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     imageUrl = "doesn't matter",
-                    imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
             }
@@ -124,7 +126,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     imageUrl = null,
-                    imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
             }
@@ -134,7 +136,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     imageUrl = "doesn't matter",
-                    imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
             }

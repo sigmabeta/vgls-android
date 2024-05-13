@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
+import com.vgleadsheets.ui.Icon
 
 @Composable
 fun BigImage(
@@ -63,7 +64,7 @@ fun BigImage(
                 ) {
                     if (model.name != null) {
                         Text(
-                            text = model.name,
+                            text = model.name!!,
                             color = Color.White,
                             style = MaterialTheme.typography.titleLarge.copy(
                                 shadow = Shadow(
@@ -77,7 +78,7 @@ fun BigImage(
 
                     if (model.caption != null) {
                         Text(
-                            text = model.caption,
+                            text = model.caption!!,
                             color = Color.White,
                             style = MaterialTheme.typography.titleSmall.copy(
                                 shadow = Shadow(
@@ -100,7 +101,7 @@ private fun LoadingGame() {
     BigImage(
         HeroImageListModel(
             imageUrl = "whatever",
-            imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
+            imagePlaceholder = Icon.ALBUM,
         ) { },
         modifier = Modifier
     )
@@ -112,7 +113,7 @@ private fun SuccessGame() {
     BigImage(
         HeroImageListModel(
             imageUrl = "whatever",
-            imagePlaceholder = 0,
+            imagePlaceholder = Icon.DESCRIPTION,
         ) { },
         modifier = Modifier
     )
@@ -124,7 +125,7 @@ private fun SuccessGameWithLabel() {
     BigImage(
         HeroImageListModel(
             imageUrl = "whatever",
-            imagePlaceholder = 0,
+            imagePlaceholder = Icon.DESCRIPTION,
             name = "Xenoblade Chronicles 3",
             caption = "Pretty awesome game tbh"
         ) { },

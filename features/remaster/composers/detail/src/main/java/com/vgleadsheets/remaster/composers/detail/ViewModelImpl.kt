@@ -18,9 +18,7 @@ class ViewModelImpl @AssistedInject constructor(
     private val urlInfoProvider: UrlInfoProvider,
     @Assisted private val navigateTo: (String) -> Unit,
     @Assisted composerId: Long,
-) : VglsViewModel<State, Event>(
-    initialState = State()
-) {
+) : VglsViewModel<State, Event>() {
     init {
         fetchUrlInfo()
         fetchComposer(composerId)
@@ -28,11 +26,13 @@ class ViewModelImpl @AssistedInject constructor(
 //        fetchGames()
     }
 
+    override fun initialState() = State()
+
     private fun fetchUrlInfo() {
         urlInfoProvider
             .urlInfoFlow
             .onEach { urlInfo ->
-                _uiState.update {
+                internalUiState.update {
                     it.copy(sheetUrlInfo = urlInfo)
                 }
             }
@@ -43,7 +43,7 @@ class ViewModelImpl @AssistedInject constructor(
     private fun fetchComposer(composerId: Long) {
         repository.getComposer(composerId)
             .onEach { composer ->
-                _uiState.update {
+                internalUiState.update {
                     it.copy(
                         title = composer.name,
                         composer = composer,
@@ -58,7 +58,7 @@ class ViewModelImpl @AssistedInject constructor(
         repository
             .getSongsForComposer(composerId)
             .onEach { songs ->
-                _uiState.update {
+                internalUiState.update {
                     it.copy(
                         songs = songs,
                     )
@@ -75,7 +75,7 @@ class ViewModelImpl @AssistedInject constructor(
 //            .map { it.flatten() }
 //            .map { it.distinct() }
 //            .onEach { games ->
-//                _uiState.update {
+//                internalUiState.update {
 //                    it.copy(
 //                        games = games,
 //                    )

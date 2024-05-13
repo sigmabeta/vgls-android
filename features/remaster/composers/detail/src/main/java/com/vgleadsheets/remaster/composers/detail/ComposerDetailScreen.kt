@@ -18,5 +18,6 @@ fun ComposerDetailScreen(
         items = listItems,
         titleUpdater = titleUpdater,
         modifier = modifier,
+        stateSource = viewModel.uiState,
     )
 }

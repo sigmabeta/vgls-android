@@ -27,6 +27,7 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
@@ -61,11 +62,11 @@ fun ImageNameCaptionListItem(
 }
 
 @Composable
-fun ImageNameCaptionListItem(
+private fun ImageNameCaptionListItem(
     name: String,
     caption: String,
     imageUrl: String?,
-    imagePlaceholder: Int,
+    imagePlaceholder: Icon,
     modifier: Modifier,
     onClick: () -> Unit
 ) {
@@ -178,7 +179,7 @@ private fun Sample() {
             "Xenoblade Chronicles 3",
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
             "https://randomfox.ca/images/12.jpg",
-            com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+            Icon.PERSON,
             null,
             {}
         ),

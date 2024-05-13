@@ -175,7 +175,7 @@ class HudFragment : VglsFragment() {
                     items(
                         items = menuItems.toTypedArray(),
                         key = { it.dataId },
-                        contentType = { it.layoutId }
+                        contentType = { it.layoutId() }
                     ) {
                         it.Content(
                             modifier = Modifier.animateItemPlacement()

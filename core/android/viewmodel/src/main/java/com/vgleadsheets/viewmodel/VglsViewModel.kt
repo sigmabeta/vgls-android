@@ -1,19 +1,20 @@
 package com.vgleadsheets.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.vgleadsheets.state.VglsState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 
-abstract class VglsViewModel<StateType, EventType>(initialState: StateType) : ViewModel() {
-    protected val _uiState = MutableStateFlow(initialState)
-    val uiState = _uiState.asStateFlow()
+abstract class VglsViewModel<StateType: VglsState, EventType>() : ViewModel() {
+    protected val internalUiState = MutableStateFlow(initialState())
+    val uiState = internalUiState.asStateFlow()
 
-    protected val _uiEvents = MutableSharedFlow<EventType>()
-    val uiEvents = _uiEvents.asSharedFlow()
+    val uiEvents = MutableSharedFlow<EventType>()
+
+    abstract fun initialState(): StateType
 
     protected fun <ListType, ReturnType> Flow<List<ListType>>.mapList(
         mapper: (ListType) -> ReturnType

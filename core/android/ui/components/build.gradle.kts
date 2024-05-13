@@ -5,6 +5,8 @@ plugins {
 }
 
 dependencies {
+    api(projects.core.common.ui.components)
+
     implementation(projects.core.android.animation)
     implementation(projects.core.android.bitmaps)
     implementation(projects.core.android.images)
@@ -18,9 +20,5 @@ dependencies {
 }
 
 android {
-    buildFeatures {
-        dataBinding = true
-    }
-
     namespace = "com.vgleadsheets.ui.components"
 }

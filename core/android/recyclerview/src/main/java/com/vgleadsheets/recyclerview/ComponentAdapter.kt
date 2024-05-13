@@ -9,7 +9,6 @@ import android.view.animation.DecelerateInterpolator
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
-import com.vgleadsheets.components.ComponentViewHolder
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.logging.Hatchet
 
@@ -51,7 +50,7 @@ class ComponentAdapter(
 
     override fun getItemId(position: Int) = getItem(position).dataId
 
-    override fun getItemViewType(position: Int) = getItem(position).layoutId
+    override fun getItemViewType(position: Int) = getItem(position).layoutId()
 
     override fun submitList(list: List<ListModel>?) {
         if (!isNewListActuallyDifferent(list)) return

@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.composers.list
 import android.content.res.Resources
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.WideItemListModel
-import com.vgleadsheets.ui.icons.R
+import com.vgleadsheets.ui.Icon
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -17,7 +17,7 @@ fun State.toListItems(
                 dataId = composer.id,
                 name = composer.name,
                 imageUrl = composer.photoUrl,
-                imagePlaceholder = R.drawable.ic_person_24dp,
+                imagePlaceholder = Icon.PERSON,
                 onClick = { onComposerClick(composer.id) }
             )
         }

@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.MenuSearchMoreListModel
-import com.vgleadsheets.ui.icons.R
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
@@ -50,7 +50,7 @@ private fun Default() {
                     "Xenoblade Chronicles 3",
                     "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
                     "https://randomfox.ca/images/12.jpg",
-                    R.drawable.ic_person_24dp,
+                    Icon.PERSON,
                     null,
                     {}
                 ),

@@ -15,14 +15,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.bottombar.RemasterBottomBar
-import com.vgleadsheets.remaster.browse.browseScreenEntry
-import com.vgleadsheets.remaster.composers.detail.composerDetailScreenEntry
-import com.vgleadsheets.remaster.composers.list.composersListScreenEntry
-import com.vgleadsheets.remaster.games.detail.gameDetailScreenEntry
-import com.vgleadsheets.remaster.games.list.gamesListScreenEntry
-import com.vgleadsheets.remaster.home.homeScreenEntry
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarViewModel
+import com.vgleadsheets.ui.list.listScreenEntry
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,19 +49,21 @@ fun RemasterAppUi(
         NavHost(
             navController = navController,
             modifier = Modifier.padding(innerPadding),
-            startDestination = "home"
+            startDestination = Destination.HOME.template()
         ) {
             val globalModifier = Modifier.fillMaxSize()
             val navigationAction = { linkUri: String ->
                 navController.navigate(linkUri)
             }
 
-            homeScreenEntry(navigationAction, titleUpdater, globalModifier)
-            browseScreenEntry(navigationAction, titleUpdater, globalModifier)
-            gamesListScreenEntry(navigationAction, titleUpdater, globalModifier)
-            gameDetailScreenEntry(navigationAction, titleUpdater, globalModifier)
-            composersListScreenEntry(navigationAction, titleUpdater, globalModifier)
-            composerDetailScreenEntry(navigationAction, titleUpdater, globalModifier)
+            Destination.entries.forEach { destination ->
+                listScreenEntry(
+                    destination = destination,
+                    navigateTo = navigationAction,
+                    titleUpdater = titleUpdater,
+                    globalModifier = globalModifier
+                )
+            }
         }
     }
 }

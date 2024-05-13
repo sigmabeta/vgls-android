@@ -80,7 +80,7 @@ fun ListScreen(
                     items(
                         items = listItems.toTypedArray(),
                         key = { it.dataId },
-                        contentType = { it.layoutId }
+                        contentType = { it.layoutId() }
                     ) {
                         it.Content(
                             modifier = Modifier.animateItemPlacement()

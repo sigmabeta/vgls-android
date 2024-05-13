@@ -9,14 +9,15 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(projects.core.android.ui.components)
+    implementation(projects.core.android.ui.list)
     implementation(projects.core.android.viewmodel)
 
     implementation(projects.features.remaster.bottombar)
     implementation(projects.features.remaster.topbar)
 
     implementation(projects.features.remaster.browse)
-    implementation(projects.features.remaster.composers.detail)
-    implementation(projects.features.remaster.composers.list)
+//    implementation(projects.features.remaster.composers.detail)
+//    implementation(projects.features.remaster.composers.list)
     implementation(projects.features.remaster.games.detail)
     implementation(projects.features.remaster.games.list)
     implementation(projects.features.remaster.home)

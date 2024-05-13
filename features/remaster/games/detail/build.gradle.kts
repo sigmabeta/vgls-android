@@ -1,16 +1,14 @@
 plugins {
-    alias(libs.plugins.vgls.feature.compose.android)
-    alias(libs.plugins.vgls.di.android)
+    alias(libs.plugins.vgls.core.jvm)
+    alias(libs.plugins.vgls.di.jvm)
 }
 
 dependencies {
-    implementation(projects.core.android.ui.icons)
-    implementation(projects.core.android.ui.list)
-
-    implementation(projects.core.common.settings.environment)
-    implementation(projects.core.common.urlinfo)
-}
-
-android {
-    namespace = "com.vgleadsheets.games.detail"
+    api(projects.core.common.images)
+    api(projects.core.common.list)
+    api(projects.core.common.model)
+    api(projects.core.common.nav)
+    api(projects.core.common.repository)
+    api(projects.core.common.ui.components)
+    api(projects.core.common.urlinfo)
 }

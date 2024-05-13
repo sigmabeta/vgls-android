@@ -8,12 +8,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
-import com.vgleadsheets.ui.components.R
+import com.vgleadsheets.ui.Icon
 
 @Composable
 fun HeaderImage(
     imageUrl: String? = null,
-    imagePlaceholder: Int,
+    imagePlaceholder: Icon,
     modifier: Modifier
 ) {
     CrossfadeImage(
@@ -41,7 +41,7 @@ private fun LoadingGame() {
     HeaderImage(
         HeroImageListModel(
             imageUrl = "whatever",
-            imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
+            imagePlaceholder = Icon.ALBUM,
         ) { },
         modifier = Modifier
             .height(320.dp)
@@ -55,7 +55,7 @@ private fun SuccessGame() {
     HeaderImage(
         HeroImageListModel(
             imageUrl = "whatever",
-            imagePlaceholder = 0,
+            imagePlaceholder = Icon.DESCRIPTION,
         ) { },
         modifier = Modifier
             .fillMaxWidth(),

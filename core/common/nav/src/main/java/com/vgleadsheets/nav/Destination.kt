@@ -1,23 +1,32 @@
 package com.vgleadsheets.nav
 
 enum class Destination(
-    private val destName: String,
+    val destName: String,
+    val argType: ArgType,
+    val renderAsGrid: Boolean = false,
 ) {
-    HOME("home"),
-    BROWSE("browse"),
-    GAMES_LIST("games"),
-    GAME_DETAIL("games" + ARG),
-    COMPOSERS_LIST("composers"),
-    COMPOSER_DETAIL("composers" + ARG),
-    SONGS_LIST("songs"),
-    SONG_DETAIL("songs" + ARG),
-    SONG_VIEWER("songs/viewer" + ARG),
+    HOME("home", ArgType.NONE),
+    BROWSE("browse", ArgType.NONE),
+    GAME_DETAIL("games", ArgType.LONG),
+    GAMES_LIST("games", ArgType.NONE, renderAsGrid = true),
+    COMPOSER_DETAIL("composers", ArgType.LONG),
+    COMPOSERS_LIST("composers", ArgType.NONE, renderAsGrid = true),
+    SONG_VIEWER("songs/viewer", ArgType.LONG),
+    SONG_DETAIL("songs", ArgType.LONG),
+    SONGS_LIST("songs", ArgType.NONE),
+    TAGS_LIST("tags", ArgType.NONE),
+    FAVORITES("favorites", ArgType.NONE),
     ;
 
-    fun noArgs() = destName
-    fun idTemplate() = destName.replace(ARG, "/{$ARG_DEST_ID}")
-    fun forId(id: Long) = destName.replace(ARG, "/$id")
+    fun forId(id: Long) = "$destName/$id"
+    fun forString(arg: String) = "$destName/$arg"
+    fun template(): String {
+        return if (argType == ArgType.NONE) {
+            destName
+        } else {
+            "$destName/{$ARG_TEMPLATE}"
+        }
+    }
 }
 
-private val ARG = "/replaceme"
-val ARG_DEST_ID = "destId"
+const val ARG_TEMPLATE = "replaceme"

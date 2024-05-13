@@ -3,17 +3,17 @@ package com.vgleadsheets.topbar
 import com.vgleadsheets.viewmodel.VglsViewModel
 import kotlinx.coroutines.flow.update
 
-class TopBarViewModel(
-    initialState: TopBarState = TopBarState()
-) : VglsViewModel<TopBarState, TopBarEvent>(initialState) {
+class TopBarViewModel : VglsViewModel<TopBarState, TopBarEvent>() {
+    override fun initialState() = TopBarState()
+
     fun updateTitle(title: String?) {
-        _uiState.update {
+        internalUiState.update {
             it.copy(title = title)
         }
     }
 
     fun updateSubtitle(subtitle: String?) {
-        _uiState.update {
+        internalUiState.update {
             it.copy(subtitle = subtitle)
         }
     }

@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">VGLeadSheets</string>
 
-    <string name="sample_text_game">Neo Turf Masters</string>
-    <string name="sample_text_sheet_count">4 sheets</string>
+    <string name="screen_title_browse">Browse</string>
+    <string name="screen_title_games">Browse by Game</string>
+    <string name="screen_title_composers">Browse by Composer</string>
+    <string name="screen_title_tags">Browse by Tag</string>
+    <string name="screen_title_all">Browse All Sheets</string>
+    <string name="screen_title_favorites">Browse Favorites </string>
+    <string name="screen_title_search">Search</string>
+
+    <string name="section_header_composers_from_game">Composers on VGLS</string>
+    <string name="section_header_songs_from_game">Sheets on VGLS</string>
+    <string name="section_header_songs_from_composer">Sheets on VGLS</string>
 </resources>

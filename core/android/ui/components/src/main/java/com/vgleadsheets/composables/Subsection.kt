@@ -20,7 +20,7 @@ import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
-import com.vgleadsheets.ui.icons.R
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -56,6 +56,8 @@ fun Subsection(
                     model = it,
                     modifier = Modifier
                 )
+
+                else -> TODO()
             }
         }
 
@@ -144,7 +146,7 @@ private fun SampleWide() {
                     2345L,
                     "Manami Kiyota",
                     null,
-                    R.drawable.ic_person_24dp,
+                    Icon.PERSON,
                     actionableId = null,
                     onClick = { },
                 ),
@@ -152,7 +154,7 @@ private fun SampleWide() {
                     3456L,
                     "Yasunori Mitsuda",
                     null,
-                    R.drawable.ic_person_24dp,
+                    Icon.PERSON,
                     actionableId = null,
                     onClick = { },
                 ),
@@ -160,7 +162,7 @@ private fun SampleWide() {
                     4567L,
                     "ACE+",
                     null,
-                    R.drawable.ic_person_24dp,
+                    Icon.PERSON,
                     actionableId = null,
                     onClick = { },
                 ),
@@ -183,7 +185,7 @@ private fun SampleSquare() {
                     2345L,
                     "Manami Kiyota",
                     null,
-                    R.drawable.ic_person_24dp,
+                    Icon.PERSON,
                     actionableId = null,
                     onClick = { },
                 ),
@@ -191,7 +193,7 @@ private fun SampleSquare() {
                     3456L,
                     "Yasunori Mitsuda",
                     null,
-                    R.drawable.ic_person_24dp,
+                    Icon.PERSON,
                     actionableId = null,
                     onClick = { },
                 ),
@@ -199,7 +201,7 @@ private fun SampleSquare() {
                     4567L,
                     "ACE+",
                     null,
-                    R.drawable.ic_person_24dp,
+                    Icon.PERSON,
                     actionableId = null,
                     onClick = { },
                 ),

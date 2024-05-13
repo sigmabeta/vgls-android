@@ -87,10 +87,6 @@ android {
         }
     }
 
-    buildFeatures {
-        dataBinding = true
-    }
-
     testOptions {
         animationsDisabled = true
     }
@@ -107,7 +103,6 @@ dependencies {
     implementation(projects.core.android.conversion)
     implementation(projects.core.android.database)
     implementation(projects.core.android.images)
-    implementation(projects.core.android.list)
     implementation(projects.core.android.logging)
     implementation(projects.core.android.repository)
     implementation(projects.core.android.resources)
@@ -123,12 +118,10 @@ dependencies {
     implementation(projects.core.common.urlinfo)
     // End DI dependencies
 
-    implementation(projects.core.android.activity)
+    implementation(projects.features.remaster.all)
 
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
-
-    implementation(projects.features.remaster.home)
 
     // Debug helper
     implementation(libs.stetho)

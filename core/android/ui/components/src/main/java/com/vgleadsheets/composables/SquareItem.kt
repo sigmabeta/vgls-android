@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -118,7 +119,7 @@ private fun Sample() {
             1234L,
             "Xenoblade Chronicles 3",
             "https://randomfox.ca/images/12.jpg",
-            com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
+            Icon.ALBUM,
             null,
             {}
         ),

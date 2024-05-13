@@ -10,10 +10,6 @@ dependencies {
     api(projects.core.android.ui.icons)
     api(projects.core.android.ui.components)
     api(projects.core.android.ui.strings)
-
-    implementation(projects.core.android.recyclerview)
-
-//    implementation(projects.features.main.hud)
 }
 
 android {

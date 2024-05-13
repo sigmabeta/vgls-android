@@ -23,6 +23,7 @@ import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import java.util.Random
 
@@ -104,7 +105,7 @@ private fun SquareItemSection(rng: Random) {
                     dataId = index.toLong(),
                     name = "Square #$index",
                     imageUrl = rng.nextInt().toString(),
-                    com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
+                    imagePlaceholder = Icon.ALBUM,
                     null,
                 ) { }
             }
@@ -128,7 +129,7 @@ private fun WideItemSection(rng: Random) {
                     dataId = index.toLong(),
                     name = "Wide Item #$index",
                     imageUrl = rng.nextInt().toString(),
-                    com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                    Icon.PERSON,
                     null,
                 ) { }
             }
@@ -150,7 +151,7 @@ private fun VerticalSection(rng: Random) {
                 dataId = index.toLong(),
                 name = "Wide Item #$index",
                 imageUrl = rng.nextInt().toString(),
-                com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
+                Icon.DESCRIPTION,
                 null,
             ) { },
             modifier = Modifier,

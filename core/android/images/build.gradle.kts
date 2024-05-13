@@ -9,6 +9,7 @@ dependencies {
 
     api(projects.core.android.bitmaps)
 
+    implementation(projects.core.common.images)
     implementation(projects.core.common.model)
 }
 

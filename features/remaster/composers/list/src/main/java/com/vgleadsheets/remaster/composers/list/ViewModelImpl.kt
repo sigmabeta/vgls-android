@@ -7,7 +7,6 @@ import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -17,9 +16,7 @@ class ViewModelImpl @AssistedInject constructor(
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
     @Assisted private val navigateTo: (String) -> Unit,
-) : VglsViewModel<State, Event>(
-    initialState = State(persistentListOf())
-) {
+) : VglsViewModel<State, Event>() {
     init {
         repository.getAllComposers()
             .onEach(::onComposersLoaded)
@@ -27,8 +24,10 @@ class ViewModelImpl @AssistedInject constructor(
             .launchIn(viewModelScope)
     }
 
+    override fun initialState() = State()
+
     private fun onComposersLoaded(composers: List<Composer>) {
-        _uiState.update {
+        internalUiState.update {
             it.copy(
                 composers = composers
             )

@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.MenuItemListModel
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @OptIn(ExperimentalTextApi::class)
@@ -57,7 +58,7 @@ fun MenuItem(
         }
 
         Icon(
-            painterResource(id = model.iconId),
+            painterResource(id = model.icon.id()),
             tint = color,
             contentDescription = null,
             modifier = Modifier
@@ -167,11 +168,11 @@ private fun NotSelectedDark() {
 private fun Sample(selected: Boolean) {
     MenuItem(
         MenuItemListModel(
-            "Check for updates...",
-            "Last updated Feb 3, 1963",
-            com.vgleadsheets.ui.icons.R.drawable.ic_refresh_24dp,
-            {},
-            selected
+            name = "Check for updates...",
+            caption = "Last updated Feb 3, 1963",
+            icon = com.vgleadsheets.ui.Icon.REFRESH,
+            onClick = {},
+            selected = selected
         ),
         Modifier
     )

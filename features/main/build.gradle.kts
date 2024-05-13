@@ -13,7 +13,6 @@ dependencies {
     api(projects.features.main.game)
     api(projects.features.main.favorites)
     api(projects.features.main.games)
-    api(projects.features.main.hud)
     api(projects.features.main.license)
     api(projects.features.main.search)
     api(projects.features.main.settings)
@@ -22,9 +21,7 @@ dependencies {
     api(projects.features.main.tagKey)
     api(projects.features.main.tagSongs)
     api(projects.features.main.tagValue)
-    api(projects.features.main.viewer)
 
-    implementation(projects.core.android.list)
     implementation(projects.core.android.nav)
     implementation(projects.core.android.ui.core)
     implementation(projects.core.android.ui.components)

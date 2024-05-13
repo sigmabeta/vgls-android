@@ -8,8 +8,8 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composers.detail.R
-import com.vgleadsheets.images.Page
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.ui.Icon
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -18,7 +18,7 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
         listOf<ListModel>(
             HeroImageListModel(
                 imageUrl = composer.photoUrl!!,
-                imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
+                imagePlaceholder = Icon.PERSON,
                 name = composer.name,
             ) { }
         )
@@ -38,7 +38,7 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
                         dataId = composer.id + ID_PREFIX_GAMES,
                         name = composer.name,
                         imageUrl = composer.photoUrl,
-                        imagePlaceholder = com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                        imagePlaceholder = Icon.ALBUM,
                         onClick = { }
                     )
                 }
@@ -59,7 +59,7 @@ fun State.toListItems(resources: Resources): ImmutableList<ListModel> {
                 song.id + ID_PREFIX_SONGS,
                 song.name,
                 imageUrl,
-                com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp
+                Icon.PERSON
             ) { }
         }
     } else {

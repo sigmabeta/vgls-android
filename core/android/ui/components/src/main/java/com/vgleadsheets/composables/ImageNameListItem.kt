@@ -24,6 +24,7 @@ import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
@@ -59,7 +60,7 @@ fun ImageNameListItem(
 fun ImageNameListItem(
     name: String,
     imageUrl: String?,
-    imagePlaceholder: Int,
+    imagePlaceholder: Icon,
     modifier: Modifier,
     onClick: () -> Unit
 ) {
@@ -165,7 +166,7 @@ private fun Sample() {
             1234L,
             "Carrying the Weight of Life",
             "https://randomfox.ca/images/12.jpg",
-            com.vgleadsheets.ui.icons.R.drawable.ic_description_24dp,
+            Icon.DESCRIPTION,
             null,
             {}
         ),

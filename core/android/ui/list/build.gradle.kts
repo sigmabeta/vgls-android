@@ -8,6 +8,11 @@ android {
 }
 
 dependencies {
+    api(libs.androidx.navigation.compose)
+    api(libs.androidx.lifecycle.runtimeCompose)
+
+    api(projects.core.common.nav)
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.core)
+    implementation(projects.core.android.viewmodel)
 }

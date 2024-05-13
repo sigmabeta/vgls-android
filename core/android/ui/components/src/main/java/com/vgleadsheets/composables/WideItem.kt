@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -99,7 +100,7 @@ private fun Sample() {
                 1234L,
                 "Konami Kukeiha Club",
                 "https://randomfox.ca/images/12.jpg",
-                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                Icon.PERSON,
                 null,
                 {}
             ),
@@ -111,7 +112,7 @@ private fun Sample() {
                 1234L,
                 "Masayoshi Soken",
                 "https://randomfox.ca/images/12.jpg",
-                com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
+                Icon.PERSON,
                 null,
                 {}
             ),

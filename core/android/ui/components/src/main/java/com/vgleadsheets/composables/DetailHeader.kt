@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -113,7 +114,7 @@ private fun Sample() {
             true,
             true,
             photoUrl = "https://randomfox.ca/images/96.jpg",
-            placeholder = 0,
+            placeholder = Icon.ALBUM,
             onMenuButtonClick = { },
             onImageLoadSuccess = { },
             onImageLoadFail = { },

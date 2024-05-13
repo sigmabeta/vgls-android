@@ -1,5 +1,7 @@
 package com.vgleadsheets.remaster.games.list
 
-enum class Event {
-    NONE,
+import com.vgleadsheets.list.ListEvent
+
+sealed class Event : ListEvent() {
+
 }
