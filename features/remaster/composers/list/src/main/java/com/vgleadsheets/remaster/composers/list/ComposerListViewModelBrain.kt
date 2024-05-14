@@ -17,7 +17,7 @@ class ComposerListViewModelBrain(
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
-    ): ListViewModelBrain() {
+    ) : ListViewModelBrain() {
     override fun initialState() = State()
 
     override fun handleAction(action: ListAction) {

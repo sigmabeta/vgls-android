@@ -29,7 +29,7 @@ data class State(
 ) : ListState() {
     override fun title() = game?.name
 
-    override fun toListItems(stringProvider: StringProvider, actionHandler: (ListAction) -> Unit) : ImmutableList<ListModel> {
+    override fun toListItems(stringProvider: StringProvider, actionHandler: (ListAction) -> Unit): ImmutableList<ListModel> {
         val gameModels = if (game?.photoUrl != null) {
             listOf<ListModel>(
                 HeroImageListModel(

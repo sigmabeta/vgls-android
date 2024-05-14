@@ -7,4 +7,3 @@ dependencies {
 
     api(projects.core.common.ui.icons)
 }
-

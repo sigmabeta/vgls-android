@@ -1,6 +1,5 @@
 package com.vgleadsheets.components
 
-
 data class ErrorStateListModel(
     val failedOperationName: String,
     val errorString: String,

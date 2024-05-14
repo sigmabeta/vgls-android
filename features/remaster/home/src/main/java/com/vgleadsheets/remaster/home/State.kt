@@ -10,14 +10,13 @@ import kotlinx.collections.immutable.persistentListOf
 
 data object State : ListState() {
     override fun title() = null
-    
+
     override fun toListItems(stringProvider: StringProvider, actionHandler: (ListAction) -> Unit): ImmutableList<ListModel> = persistentListOf(
         NameCaptionListModel(
             1234L,
             "Home Screen",
             "To Be Continued"
         ) {
-
         }
     )
 }

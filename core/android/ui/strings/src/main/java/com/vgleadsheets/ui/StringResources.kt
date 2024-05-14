@@ -4,6 +4,6 @@ import android.content.res.Resources
 
 class StringResources(
     private val resources: Resources,
-): StringProvider {
+) : StringProvider {
     override fun getString(string: StringId) = resources.getString(string.id())
 }

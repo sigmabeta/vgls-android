@@ -12,7 +12,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 data object State : ListState() {
     override fun title() = "Browse"
-    
+
     override fun toListItems(stringProvider: StringProvider, actionHandler: (ListAction) -> Unit): ImmutableList<ListModel> = persistentListOf(
         MenuItemListModel(
             name = "Favorites",

@@ -1,6 +1,5 @@
 package com.vgleadsheets.components
 
-
 data class EmptyStateListModel(
     val iconId: Int,
     val explanation: String,

@@ -18,7 +18,7 @@ class FeatureDirectory(
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
     private val urlInfoProvider: UrlInfoProvider,
-): BrainProvider {
+) : BrainProvider {
     override fun provideBrain(
         destination: Destination,
         coroutineScope: CoroutineScope

@@ -2,7 +2,6 @@ package com.vgleadsheets.components
 
 import com.vgleadsheets.ui.Icon
 
-
 data class HeroImageListModel(
     val imageUrl: String,
     val imagePlaceholder: Icon,
