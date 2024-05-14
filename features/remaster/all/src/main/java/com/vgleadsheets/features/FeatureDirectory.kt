@@ -5,6 +5,8 @@ import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
+import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
+import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
 import com.vgleadsheets.remaster.games.detail.GameDetailViewModelBrain
 import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeViewModelBrain
@@ -35,8 +37,17 @@ class FeatureDirectory(
                 dispatchers,
                 coroutineScope
             )
-            Destination.COMPOSER_DETAIL -> TODO()
-            Destination.COMPOSERS_LIST -> TODO()
+            Destination.COMPOSER_DETAIL -> ComposerDetailViewModelBrain(
+                repository,
+                dispatchers,
+                coroutineScope,
+                urlInfoProvider
+            )
+            Destination.COMPOSERS_LIST -> ComposerListViewModelBrain(
+                repository,
+                dispatchers,
+                coroutineScope
+            )
             Destination.SONG_VIEWER -> TODO()
             Destination.SONG_DETAIL -> TODO()
             Destination.SONGS_LIST -> TODO()

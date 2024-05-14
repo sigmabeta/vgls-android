@@ -3,6 +3,8 @@ plugins {
 }
 
 dependencies {
+    api(libs.kotlinx.collections.immutable)
+
     api(projects.core.common.ui.icons)
 }
 

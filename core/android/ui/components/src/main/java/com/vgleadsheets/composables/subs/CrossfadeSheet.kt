@@ -22,6 +22,7 @@ import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.images.PagePreview
 import com.vgleadsheets.ui.themes.VglsMaterial
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CrossfadeSheet(
@@ -149,7 +150,7 @@ private fun SampleLoading() {
             "Kirby and the Forgotten Land",
             listOf(
                 "Hirokazu Ando",
-            )
+            ).toImmutableList()
         ),
         sheetId = 1234L,
         modifier = Modifier,
@@ -167,7 +168,7 @@ private fun SampleSheet() {
             "Kirby and the Forgotten Land",
             listOf(
                 "Hirokazu Ando",
-            )
+            ).toImmutableList()
         ),
         sheetId = 1234L,
         modifier = Modifier,
@@ -185,7 +186,7 @@ private fun SampleError() {
             "Kirby and the Forgotten Land",
             listOf(
                 "Hirokazu Ando",
-            )
+            ).toImmutableList()
         ),
         sheetId = 1234L,
         modifier = Modifier,

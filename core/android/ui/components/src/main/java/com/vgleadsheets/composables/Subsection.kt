@@ -22,6 +22,7 @@ import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
+import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -166,7 +167,7 @@ private fun SampleWide() {
                     actionableId = null,
                     onClick = { },
                 ),
-            )
+            ).toImmutableList()
         ),
         Modifier,
     )
@@ -205,7 +206,7 @@ private fun SampleSquare() {
                     actionableId = null,
                     onClick = { },
                 ),
-            )
+            ).toImmutableList()
         ),
         Modifier,
     )

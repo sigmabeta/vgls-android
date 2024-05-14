@@ -14,6 +14,8 @@ dependencies {
     api(projects.features.remaster.browse)
     api(projects.features.remaster.games.list)
     api(projects.features.remaster.games.detail)
+    api(projects.features.remaster.composers.list)
+    api(projects.features.remaster.composers.detail)
 }
 
 android {

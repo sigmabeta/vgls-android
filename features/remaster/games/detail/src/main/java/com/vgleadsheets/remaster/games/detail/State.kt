@@ -17,6 +17,7 @@ import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 data class State(
@@ -56,7 +57,7 @@ data class State(
                             imagePlaceholder = Icon.PERSON,
                             onClick = { actionHandler(Action.ComposerClicked(composer.id)) }
                         )
-                    }
+                    }.toImmutableList()
                 )
             )
         } else {

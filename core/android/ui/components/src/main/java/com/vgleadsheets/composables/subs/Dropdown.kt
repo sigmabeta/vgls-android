@@ -21,12 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun Dropdown(
     defaultExpansion: Boolean = false,
     selectedPosition: Int,
-    settingsLabels: List<String>,
+    settingsLabels: ImmutableList<String>,
     onNewOptionSelected: (Int) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(defaultExpansion) }

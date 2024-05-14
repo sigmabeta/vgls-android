@@ -6,6 +6,7 @@ plugins {
 dependencies {
     api(libs.coil.kt)
     api(libs.coil.kt.compose)
+    api(libs.kotlinx.collections.immutable)
 
     api(projects.core.android.bitmaps)
 

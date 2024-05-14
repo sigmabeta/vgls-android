@@ -36,6 +36,7 @@ import com.vgleadsheets.composables.LabelRatingListItem
 import com.vgleadsheets.composables.LabelValueListItem
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun LabeledThingy(
@@ -163,7 +164,7 @@ private fun Sample() {
                     "Eunie",
                     "Mio",
                     "Sena",
-                )
+                ).toImmutableList()
             ) { selectedPosition = it },
             defaultExpansion = false,
             modifier = Modifier

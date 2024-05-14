@@ -9,6 +9,7 @@ android {
 
 dependencies {
     // Theming
+    api(libs.material)
     api(projects.core.android.ui.colors)
     api(projects.core.android.ui.fonts)
 }

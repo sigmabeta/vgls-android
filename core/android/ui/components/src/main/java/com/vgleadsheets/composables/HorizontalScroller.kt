@@ -25,6 +25,7 @@ import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
+import kotlinx.collections.immutable.toImmutableList
 import java.util.Random
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -108,7 +109,7 @@ private fun SquareItemSection(rng: Random) {
                     imagePlaceholder = Icon.ALBUM,
                     null,
                 ) { }
-            }
+            }.toImmutableList()
         ),
         modifier = Modifier
     )
@@ -132,7 +133,7 @@ private fun WideItemSection(rng: Random) {
                     Icon.PERSON,
                     null,
                 ) { }
-            }
+            }.toImmutableList()
         ),
         modifier = Modifier
     )

@@ -16,6 +16,7 @@ import com.vgleadsheets.composables.subs.Dropdown
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun LabelDropdownListItem(
@@ -137,7 +138,7 @@ private fun Sample(expanded: Boolean) {
                 "Eunie",
                 "Mio",
                 "Sena",
-            )
+            ).toImmutableList()
         ) { selectedPosition = it },
         defaultExpansion = expanded,
         modifier = Modifier

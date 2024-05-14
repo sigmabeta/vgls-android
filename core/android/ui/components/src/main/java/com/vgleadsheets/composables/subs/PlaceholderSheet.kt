@@ -7,7 +7,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -22,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.vgleadsheets.bitmaps.SheetGenerator
@@ -30,13 +28,13 @@ import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.previews.FullscreenBlack
 import com.vgleadsheets.images.PagePreview
 import com.vgleadsheets.logging.BasicHatchet
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @Suppress("UNUSED_PARAMETER")
 fun PlaceholderSheet(
     pagePreview: PagePreview,
     seed: Long,
-    previewBitmap: ImageBitmap? = null,
     eventListener: SheetPageListModel.ImageListener,
     modifier: Modifier,
 ) {
@@ -54,25 +52,14 @@ fun PlaceholderSheet(
     )
 
     Page(modifier) {
-        if (previewBitmap != null) {
-            Image(
-                bitmap = previewBitmap,
-                contentScale = ContentScale.FillWidth,
-                contentDescription = null,
-                modifier = modifier
-                    .alpha(animatedAlphaValue)
-                    .fillMaxWidth(),
-            )
-        } else {
-            AsyncImage(
-                model = pagePreview,
-                contentScale = ContentScale.Fit,
-                contentDescription = null,
-                modifier = modifier
-                    .alpha(animatedAlphaValue)
-                    .fillMaxWidth(),
-            )
-        }
+        AsyncImage(
+            model = pagePreview,
+            contentScale = ContentScale.Fit,
+            contentDescription = null,
+            modifier = modifier
+                .alpha(animatedAlphaValue)
+                .fillMaxWidth(),
+        )
     }
 }
 
@@ -146,12 +133,11 @@ private fun SampleLoadingKirby() {
         "Kirby and the Forgotten Land",
         listOf(
             "Hirokazu Ando",
-        )
+        ).toImmutableList()
     )
     PlaceholderSheet(
         pagePreview = pagePreview,
         seed = 1234L,
-        previewBitmap = createImageBitmap(LocalContext.current, pagePreview),
         eventListener = NOOP_LISTENER,
         modifier = Modifier,
     )
@@ -166,12 +152,11 @@ private fun SampleLoadingArms() {
         listOf(
             "Atsuko Asahi",
             "Yasuaki Iwata"
-        )
+        ).toImmutableList()
     )
     PlaceholderSheet(
         pagePreview = pagePreview,
         seed = 1234L,
-        previewBitmap = createImageBitmap(LocalContext.current, pagePreview),
         eventListener = NOOP_LISTENER,
         modifier = Modifier,
     )

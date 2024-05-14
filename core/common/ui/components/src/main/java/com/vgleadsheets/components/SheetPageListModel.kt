@@ -1,12 +1,14 @@
 package com.vgleadsheets.components
 
+import kotlinx.collections.immutable.ImmutableList
+
 data class SheetPageListModel(
     val sheetUrl: String,
     val pageNumber: Int,
     val title: String,
     val transposition: String,
     val gameName: String,
-    val composers: List<String>,
+    val composers: ImmutableList<String>,
     val songId: Long, // NOT the id of this page!
     val listener: ImageListener,
     override val dataId: Long = sheetUrl.hashCode().toLong()

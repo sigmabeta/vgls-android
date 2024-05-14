@@ -12,4 +12,5 @@
     <string name="section_header_composers_from_game">Composers on VGLS</string>
     <string name="section_header_songs_from_game">Sheets on VGLS</string>
     <string name="section_header_songs_from_composer">Sheets on VGLS</string>
+    <string name="section_header_games_from_composer">Games on VGLS</string>
 </resources>
