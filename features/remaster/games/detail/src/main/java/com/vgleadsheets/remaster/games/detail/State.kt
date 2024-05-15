@@ -76,7 +76,7 @@ data class State(
                     dataId = song.id + ID_PREFIX_SONGS,
                     name = song.name,
                     imageUrl = imageUrl,
-                    imagePlaceholder = Icon.ALBUM,
+                    imagePlaceholder = Icon.DESCRIPTION,
                     clickAction = Action.SongClicked(song.id)
                 )
             }

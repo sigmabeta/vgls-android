@@ -25,6 +25,7 @@ class UrlInfoProvider(
             environmentManager.selectedEnvironmentFlow(),
             partManager.selectedPartFlow()
         ) { env, part ->
+            println("Url info: $env | $part")
             _urlInfoFlow.update {
                 UrlInfo(
                     baseBaseUrl = env.url,

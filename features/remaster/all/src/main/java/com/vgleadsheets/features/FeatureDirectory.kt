@@ -10,6 +10,7 @@ import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
 import com.vgleadsheets.remaster.games.detail.GameDetailViewModelBrain
 import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeViewModelBrain
+import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
@@ -50,7 +51,12 @@ class FeatureDirectory(
             )
             Destination.SONG_VIEWER -> TODO()
             Destination.SONG_DETAIL -> TODO()
-            Destination.SONGS_LIST -> TODO()
+            Destination.SONGS_LIST -> SongListViewModelBrain(
+                repository,
+                dispatchers,
+                coroutineScope,
+                urlInfoProvider,
+            )
             Destination.TAGS_LIST -> TODO()
             Destination.FAVORITES -> TODO()
         }

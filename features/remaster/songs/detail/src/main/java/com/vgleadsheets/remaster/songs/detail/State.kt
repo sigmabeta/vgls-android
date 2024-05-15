@@ -1,4 +1,4 @@
-package com.vgleadsheets.remaster.composers.detail
+package com.vgleadsheets.remaster.songs.detail
 
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel
@@ -18,23 +18,24 @@ import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 data class State(
     val title: String? = null,
     val sheetUrlInfo: UrlInfo = UrlInfo(),
-    val composer: Composer? = null,
+    val game: Game? = null,
     val songs: List<Song> = emptyList(),
-    val games: List<Game> = emptyList(),
+    val composers: List<Composer> = emptyList(),
 ) : ListState() {
-    override fun title() = composer?.name
+    override fun title() = game?.name
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        val composerModel = if (composer?.photoUrl != null) {
+        val gameModels = if (game?.photoUrl != null) {
             listOf<ListModel>(
                 HeroImageListModel(
-                    imageUrl = composer.photoUrl!!,
-                    imagePlaceholder = Icon.PERSON,
-                    name = composer.name,
+                    imageUrl = game.photoUrl!!,
+                    imagePlaceholder = Icon.ALBUM,
+                    name = game.name,
                     clickAction = VglsAction.Noop,
                 )
             )
@@ -42,20 +43,20 @@ data class State(
             emptyList()
         }
 
-        val gameModels = if (games.isNotEmpty()) {
+        val composerModels = if (composers.isNotEmpty()) {
             listOf(
                 SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_COMPOSER)
+                    stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_GAME)
                 ),
                 HorizontalScrollerListModel(
-                    dataId = StringId.SECTION_HEADER_GAMES_FROM_COMPOSER.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
-                    scrollingItems = games.map { game ->
+                    dataId = StringId.SECTION_HEADER_COMPOSERS_FROM_GAME.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
+                    scrollingItems = composers.map { composer ->
                         WideItemListModel(
-                            dataId = game.id + ID_PREFIX_GAMES,
-                            name = game.name,
-                            imageUrl = game.photoUrl,
-                            imagePlaceholder = Icon.ALBUM,
-                            clickAction = Action.GameClicked(game.id),
+                            dataId = composer.id + ID_PREFIX_COMPOSERS,
+                            name = composer.name,
+                            imageUrl = composer.photoUrl,
+                            imagePlaceholder = Icon.PERSON,
+                            clickAction = Action.ComposerClicked(composer.id)
                         )
                     }.toImmutableList()
                 )
@@ -67,7 +68,7 @@ data class State(
         val songModels = if (songs.isNotEmpty()) {
             listOf(
                 SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_COMPOSER)
+                    stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_GAME)
                 )
             ) + songs.map { song ->
                 val imageUrl = song.thumbUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
@@ -75,29 +76,29 @@ data class State(
                     dataId = song.id + ID_PREFIX_SONGS,
                     name = song.name,
                     imageUrl = imageUrl,
-                    imagePlaceholder = Icon.DESCRIPTION,
-                    clickAction = Action.SongClicked(song.id)
+                    imagePlaceholder = Icon.ALBUM,
+                    clickAction = Action.GameClicked(song.id)
                 )
             }
         } else {
             emptyList()
         }
 
-        return (composerModel + gameModels + songModels).toImmutableList()
+        return (gameModels + composerModels + songModels).toPersistentList()
     }
 
     private fun Song.thumbUrl(baseImageUrl: String?, selectedPart: String?): String? {
         return Page.generateImageUrl(
-            baseImageUrl ?: return null,
-            selectedPart ?: return null,
-            filename,
-            isAltSelected,
-            1
+            baseImageUrl = baseImageUrl ?: return null,
+            partApiId = selectedPart ?: return null,
+            filename = filename,
+            isAlternateEnabled = isAltSelected,
+            pageNumber = 1
         )
     }
 
     companion object {
-        private const val ID_PREFIX_GAMES = 1_000_000L
+        private const val ID_PREFIX_COMPOSERS = 1_000_000L
         private const val ID_PREFIX_SONGS = 1_000_000_000L
         private const val ID_PREFIX_SCROLLER_CONTENT = 1_000_000_000_000L
     }

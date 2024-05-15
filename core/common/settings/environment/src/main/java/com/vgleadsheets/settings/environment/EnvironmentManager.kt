@@ -22,7 +22,7 @@ class EnvironmentManager(
         }
 
     companion object {
-        private val ENVIRONMENT_DEFAULT = Environment.FAKE
+        private val ENVIRONMENT_DEFAULT = Environment.PROD
         private const val SETTING_ENVIRONMENT = "setting.debug.environment"
     }
 }
