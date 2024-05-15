@@ -34,6 +34,7 @@ import com.vgleadsheets.composables.LabelDropdownListItem
 import com.vgleadsheets.composables.LabelNoThingyItem
 import com.vgleadsheets.composables.LabelRatingListItem
 import com.vgleadsheets.composables.LabelValueListItem
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 import kotlinx.collections.immutable.toImmutableList
@@ -118,7 +119,7 @@ private fun Sample() {
             model = SingleTextListModel(
                 1234L,
                 "Paths to the future",
-                {}
+                VglsAction.Noop
             ),
             modifier = Modifier
         )
@@ -127,8 +128,9 @@ private fun Sample() {
             LabelValueListModel(
                 "Days which are training days",
                 "Every",
-                {}
+                VglsAction.Noop
             ),
+            {},
             Modifier
         )
 
@@ -136,8 +138,9 @@ private fun Sample() {
             LabelRatingStarListModel(
                 "Meatiness of current thing",
                 3,
-                {}
+                VglsAction.Noop,
             ),
+            {},
             Modifier
         )
 
@@ -146,8 +149,10 @@ private fun Sample() {
             CheckableListModel(
                 "someId",
                 "Sena seen in action",
-                isChecked
-            ) { isChecked = !isChecked },
+                checked = isChecked,
+                clickAction = VglsAction.Noop
+            ),
+            { isChecked = !isChecked },
             Modifier
         )
 

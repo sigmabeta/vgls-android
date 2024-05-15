@@ -8,8 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.list.ListAction
 import com.vgleadsheets.list.ListState
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.flow.StateFlow
 
@@ -17,14 +17,14 @@ import kotlinx.coroutines.flow.StateFlow
 fun ListScreen(
     stateSource: StateFlow<ListState>,
     stringProvider: StringProvider,
-    actionHandler: (ListAction) -> Unit,
     titleUpdater: (String?) -> Unit,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     val state by stateSource.collectAsStateWithLifecycle()
 
     val title = state.title()
-    val items = state.toListItems(stringProvider, actionHandler)
+    val items = state.toListItems(stringProvider)
 
     if (title != null) {
         LaunchedEffect(Unit) {
@@ -40,7 +40,10 @@ fun ListScreen(
             key = { it.dataId },
             contentType = { it.layoutId() }
         ) {
-            it.Content(modifier = Modifier)
+            it.Content(
+                actionHandler = actionHandler,
+                modifier = Modifier
+            )
         }
     }
 }

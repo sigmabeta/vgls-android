@@ -10,18 +10,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.TextValue
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelValueListItem(
     model: LabelValueListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier,
 ) {
     LabeledThingy(
         label = model.label,
         thingy = { TextValue(value = model.value) },
-        onClick = model.onClick,
+        onClick = { actionHandler(model.clickAction) },
         modifier = modifier
     )
 }
@@ -74,8 +76,9 @@ private fun Sample() {
         LabelValueListModel(
             "Days which are training days",
             "Every",
-            {}
+            VglsAction.Noop
         ),
+        {},
         Modifier
     )
 }

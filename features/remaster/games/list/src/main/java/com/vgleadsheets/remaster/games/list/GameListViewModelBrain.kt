@@ -1,12 +1,12 @@
 package com.vgleadsheets.remaster.games.list
 
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.list.ListAction
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.state.VglsAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -20,9 +20,9 @@ class GameListViewModelBrain(
     ) : ListViewModelBrain() {
     override fun initialState() = State()
 
-    override fun handleAction(action: ListAction) {
+    override fun handleAction(action: VglsAction) {
         when (action) {
-            is ListAction.InitNoArgs -> collectGames()
+            is VglsAction.InitNoArgs -> collectGames()
             is Action.GameClicked -> onGameClicked(action.id)
         }
     }

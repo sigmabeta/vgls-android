@@ -21,11 +21,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.NameCaptionListModel
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun NameCaptionListItem(
     model: NameCaptionListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier,
 ) {
     Row(
@@ -35,9 +37,7 @@ fun NameCaptionListItem(
             .padding(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
             )
-            .clickable(
-                onClick = model.onClick,
-            )
+            .clickable { actionHandler(model.clickAction) }
     ) {
         Column(
             modifier = Modifier
@@ -108,8 +108,9 @@ private fun Sample() {
             1234L,
             "Xenoblade Chronicles 3",
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
-            {}
+            VglsAction.Noop,
         ),
+        {},
         Modifier
     )
 }

@@ -7,11 +7,11 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.images.Page
-import com.vgleadsheets.list.ListAction
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -29,14 +29,15 @@ data class State(
 ) : ListState() {
     override fun title() = game?.name
 
-    override fun toListItems(stringProvider: StringProvider, actionHandler: (ListAction) -> Unit): ImmutableList<ListModel> {
+    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val gameModels = if (game?.photoUrl != null) {
             listOf<ListModel>(
                 HeroImageListModel(
                     imageUrl = game.photoUrl!!,
                     imagePlaceholder = Icon.ALBUM,
                     name = game.name,
-                ) { }
+                    clickAction = VglsAction.Noop,
+                )
             )
         } else {
             emptyList()
@@ -55,7 +56,7 @@ data class State(
                             name = composer.name,
                             imageUrl = composer.photoUrl,
                             imagePlaceholder = Icon.PERSON,
-                            onClick = { actionHandler(Action.ComposerClicked(composer.id)) }
+                            clickAction = Action.ComposerClicked(composer.id)
                         )
                     }.toImmutableList()
                 )
@@ -76,7 +77,7 @@ data class State(
                     name = song.name,
                     imageUrl = imageUrl,
                     imagePlaceholder = Icon.ALBUM,
-                    onClick = { actionHandler(Action.SongClicked(song.id)) }
+                    clickAction = Action.SongClicked(song.id)
                 )
             }
         } else {

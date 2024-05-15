@@ -4,11 +4,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.vgleadsheets.list.ListAction
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.nav.ARG_TEMPLATE
 import com.vgleadsheets.nav.ArgType
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.viewmodel.list.listViewModel
 
 fun NavGraphBuilder.listScreenEntry(
@@ -32,7 +32,7 @@ fun NavGraphBuilder.listScreenEntry(
             stringArg = it.arguments?.getString(ARG_TEMPLATE)
         )
 
-        val actionHandler: (ListAction) -> Unit = { action ->
+        val actionHandler: (VglsAction) -> Unit = { action ->
             println("Handling action: $action")
             viewModel.handleAction(action)
         }

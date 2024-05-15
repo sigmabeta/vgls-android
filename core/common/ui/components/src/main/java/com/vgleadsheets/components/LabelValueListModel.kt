@@ -1,9 +1,11 @@
 package com.vgleadsheets.components
 
+import com.vgleadsheets.state.VglsAction
+
 data class LabelValueListModel(
     val label: String,
     val value: String,
-    val onClick: () -> Unit,
+    val clickAction: VglsAction,
     override val dataId: Long = label.hashCode().toLong()
 ) : ListModel() {
     override val columns = ListModel.COLUMNS_ALL

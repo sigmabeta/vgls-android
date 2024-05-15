@@ -23,6 +23,7 @@ import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
@@ -32,6 +33,7 @@ import java.util.Random
 @Composable
 fun HorizontalScroller(
     model: HorizontalScrollerListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     LazyRow(
@@ -47,6 +49,7 @@ fun HorizontalScroller(
             contentType = { it.javaClass.simpleName },
         ) {
             it.Content(
+                actionHandler = actionHandler,
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
                     .animateItemPlacement()
@@ -108,10 +111,12 @@ private fun SquareItemSection(rng: Random) {
                     imageUrl = rng.nextInt().toString(),
                     imagePlaceholder = Icon.ALBUM,
                     null,
-                ) { }
+                    clickAction = VglsAction.Noop,
+                )
             }.toImmutableList()
         ),
-        modifier = Modifier
+        { },
+        modifier = Modifier,
     )
 }
 
@@ -132,10 +137,12 @@ private fun WideItemSection(rng: Random) {
                     imageUrl = rng.nextInt().toString(),
                     Icon.PERSON,
                     null,
-                ) { }
+                    clickAction = VglsAction.Noop
+                )
             }.toImmutableList()
         ),
-        modifier = Modifier
+        { },
+        modifier = Modifier,
     )
 }
 
@@ -154,7 +161,9 @@ private fun VerticalSection(rng: Random) {
                 imageUrl = rng.nextInt().toString(),
                 Icon.DESCRIPTION,
                 null,
-            ) { },
+                clickAction = VglsAction.Noop
+            ),
+            { },
             modifier = Modifier,
         )
     }

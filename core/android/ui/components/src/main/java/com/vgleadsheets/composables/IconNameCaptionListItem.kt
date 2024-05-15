@@ -25,20 +25,23 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.IconNameCaptionListModel
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun IconNameCaptionListItem(
     model: IconNameCaptionListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     IconNameCaptionListItem(
         model.name,
         model.caption,
         model.iconId,
+        model.clickAction,
+        actionHandler,
         modifier,
-        model.onClick
     )
 }
 
@@ -47,14 +50,15 @@ fun IconNameCaptionListItem(
     name: String,
     caption: String,
     iconId: Int,
+    clickAction: VglsAction,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier,
-    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable(onClick = onClick)
+            .clickable { actionHandler(clickAction) }
             .padding(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
             )
@@ -152,8 +156,10 @@ private fun Sample() {
             1234L,
             "Moebius Battle",
             "ACE+",
-            com.vgleadsheets.ui.icons.R.drawable.ic_baseline_music_note_24
-        ) {},
+            com.vgleadsheets.ui.icons.R.drawable.ic_baseline_music_note_24,
+            clickAction = VglsAction.Noop,
+        ),
+        {},
         Modifier
     )
 }

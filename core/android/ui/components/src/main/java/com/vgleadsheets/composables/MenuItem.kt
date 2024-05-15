@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.MenuItemListModel
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
@@ -37,6 +38,7 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 @Composable
 fun MenuItem(
     model: MenuItemListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier,
 ) {
     Row(
@@ -46,9 +48,7 @@ fun MenuItem(
             .padding(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_small)
             )
-            .clickable(
-                onClick = model.onClick,
-            ),
+            .clickable { actionHandler(model.clickAction) },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         val color = if (model.selected) {
@@ -171,9 +171,10 @@ private fun Sample(selected: Boolean) {
             name = "Check for updates...",
             caption = "Last updated Feb 3, 1963",
             icon = com.vgleadsheets.ui.Icon.REFRESH,
-            onClick = {},
-            selected = selected
+            selected = selected,
+            clickAction = VglsAction.Noop
         ),
+        {},
         Modifier
     )
 }

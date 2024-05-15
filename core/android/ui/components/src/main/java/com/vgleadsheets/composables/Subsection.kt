@@ -20,6 +20,7 @@ import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
@@ -28,6 +29,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun Subsection(
     model: SubsectionListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     val maxItemsInEachRow = 2
@@ -50,11 +52,13 @@ fun Subsection(
             when (it) {
                 is WideItemListModel -> WideItem(
                     model = it,
+                    actionHandler = actionHandler,
                     modifier = Modifier.weight(1.0f),
                 )
 
                 is SquareItemListModel -> SquareItem(
                     model = it,
+                    actionHandler = actionHandler,
                     modifier = Modifier
                 )
 
@@ -149,7 +153,7 @@ private fun SampleWide() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    onClick = { },
+                    clickAction = VglsAction.Noop,
                 ),
                 WideItemListModel(
                     3456L,
@@ -157,7 +161,7 @@ private fun SampleWide() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    onClick = { },
+                    clickAction = VglsAction.Noop,
                 ),
                 WideItemListModel(
                     4567L,
@@ -165,10 +169,11 @@ private fun SampleWide() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    onClick = { },
+                    clickAction = VglsAction.Noop,
                 ),
             ).toImmutableList()
         ),
+        { },
         Modifier,
     )
 }
@@ -188,7 +193,7 @@ private fun SampleSquare() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    onClick = { },
+                    clickAction = VglsAction.Noop,
                 ),
                 SquareItemListModel(
                     3456L,
@@ -196,7 +201,7 @@ private fun SampleSquare() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    onClick = { },
+                    clickAction = VglsAction.Noop,
                 ),
                 SquareItemListModel(
                     4567L,
@@ -204,10 +209,11 @@ private fun SampleSquare() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    onClick = { },
+                    clickAction = VglsAction.Noop,
                 ),
             ).toImmutableList()
         ),
+        { },
         Modifier,
     )
 }

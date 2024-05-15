@@ -26,12 +26,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun WideItem(
     model: WideItemListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     Row(
@@ -42,7 +44,7 @@ fun WideItem(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)
             )
-            .clickable(onClick = model.onClick)
+            .clickable { actionHandler(model.clickAction) }
             .background(MaterialTheme.colorScheme.surface)
     ) {
         CrossfadeImage(
@@ -102,8 +104,9 @@ private fun Sample() {
                 "https://randomfox.ca/images/12.jpg",
                 Icon.PERSON,
                 null,
-                {}
+                VglsAction.Noop
             ),
+            {},
             modifier = Modifier
         )
 
@@ -114,8 +117,9 @@ private fun Sample() {
                 "https://randomfox.ca/images/12.jpg",
                 Icon.PERSON,
                 null,
-                {}
+                VglsAction.Noop
             ),
+            {},
             modifier = Modifier
         )
     }

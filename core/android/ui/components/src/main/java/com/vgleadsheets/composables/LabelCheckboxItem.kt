@@ -14,12 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelCheckboxItem(
     model: CheckableListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     LabeledThingy(
@@ -27,10 +29,10 @@ fun LabelCheckboxItem(
         thingy = {
             Checkbox(
                 model.checked,
-                { model.onClick() }
+                { actionHandler(model.clickAction) }
             )
         },
-        onClick = model.onClick,
+        onClick = { actionHandler(model.clickAction) },
         modifier = modifier
     )
 }
@@ -85,8 +87,10 @@ private fun Sample() {
         CheckableListModel(
             "someId",
             "Sena seen in action",
-            isChecked
-        ) { isChecked = !isChecked },
+            isChecked,
+            clickAction = VglsAction.Noop,
+        ),
+        { isChecked = !isChecked },
         Modifier
     )
 }

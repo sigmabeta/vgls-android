@@ -8,6 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 
 @Composable
@@ -42,7 +43,8 @@ private fun LoadingGame() {
         HeroImageListModel(
             imageUrl = "whatever",
             imagePlaceholder = Icon.ALBUM,
-        ) { },
+            clickAction = VglsAction.Noop,
+        ),
         modifier = Modifier
             .height(320.dp)
             .fillMaxWidth(),
@@ -56,7 +58,8 @@ private fun SuccessGame() {
         HeroImageListModel(
             imageUrl = "whatever",
             imagePlaceholder = Icon.DESCRIPTION,
-        ) { },
+            clickAction = VglsAction.Noop,
+        ),
         modifier = Modifier
             .fillMaxWidth(),
     )

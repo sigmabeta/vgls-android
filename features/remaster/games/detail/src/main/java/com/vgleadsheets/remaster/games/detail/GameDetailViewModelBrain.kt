@@ -1,11 +1,11 @@
 package com.vgleadsheets.remaster.games.detail
 
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.list.ListAction
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
@@ -22,9 +22,9 @@ class GameDetailViewModelBrain(
 ) : ListViewModelBrain() {
     override fun initialState() = State()
 
-    override fun handleAction(action: ListAction) {
+    override fun handleAction(action: VglsAction) {
         when (action) {
-            is ListAction.InitWithId -> startLoading(action.id)
+            is VglsAction.InitWithId -> startLoading(action.id)
             is Action.SongClicked -> onSongClicked(action.id)
             is Action.ComposerClicked -> onComposerClicked(action.id)
         }

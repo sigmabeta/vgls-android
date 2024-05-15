@@ -25,12 +25,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun SquareItem(
     model: SquareItemListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     Surface(
@@ -41,7 +43,7 @@ fun SquareItem(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)
             )
-            .clickable(onClick = model.onClick)
+            .clickable { actionHandler(model.clickAction) }
     ) {
         Box {
             CrossfadeImage(
@@ -121,8 +123,9 @@ private fun Sample() {
             "https://randomfox.ca/images/12.jpg",
             Icon.ALBUM,
             null,
-            {}
+            VglsAction.Noop
         ),
+        {},
         Modifier
     )
 }

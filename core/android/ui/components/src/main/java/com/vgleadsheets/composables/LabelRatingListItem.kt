@@ -10,12 +10,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelRatingListItem(
     model: LabelRatingStarListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier,
 ) {
     LabeledThingy(
@@ -26,7 +28,7 @@ fun LabelRatingListItem(
                 modifier = Modifier
             )
         },
-        onClick = model.onClick,
+        onClick = { actionHandler(model.clickAction) },
         modifier = modifier
     )
 }
@@ -79,8 +81,9 @@ private fun Sample() {
         LabelRatingStarListModel(
             "Days which are training days",
             3,
-            {}
+            VglsAction.Noop
         ),
+        {},
         Modifier
     )
 }

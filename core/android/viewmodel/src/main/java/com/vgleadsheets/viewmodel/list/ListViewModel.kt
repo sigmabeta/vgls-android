@@ -3,10 +3,10 @@ package com.vgleadsheets.viewmodel.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.list.BrainProvider
-import com.vgleadsheets.list.ListAction
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -31,9 +31,9 @@ class ListViewModel @AssistedInject constructor(
 
     init {
         val initAction = when {
-            (idArg > 0L) -> ListAction.InitWithId(idArg)
-            stringArg != null -> ListAction.InitWithString(stringArg)
-            else -> ListAction.InitNoArgs
+            (idArg > 0L) -> VglsAction.InitWithId(idArg)
+            stringArg != null -> VglsAction.InitWithString(stringArg)
+            else -> VglsAction.InitNoArgs
         }
 
         handleAction(initAction)
@@ -42,5 +42,5 @@ class ListViewModel @AssistedInject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun handleAction(action: ListAction) = brain.handleAction(action)
+    fun handleAction(action: VglsAction) = brain.handleAction(action)
 }

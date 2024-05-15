@@ -23,11 +23,13 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 
 @Composable
 fun BigImage(
     model: HeroImageListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     ElevatedRoundRect(
@@ -35,7 +37,7 @@ fun BigImage(
             .padding(dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             .height(320.dp)
             .fillMaxWidth()
-            .clickable(onClick = model.onClick),
+            .clickable(onClick = { actionHandler(model.clickAction) }),
         cornerRadius = 16.dp,
     ) {
         CrossfadeImage(
@@ -102,7 +104,9 @@ private fun LoadingGame() {
         HeroImageListModel(
             imageUrl = "whatever",
             imagePlaceholder = Icon.ALBUM,
-        ) { },
+            clickAction = VglsAction.Noop,
+        ),
+        { },
         modifier = Modifier
     )
 }
@@ -114,7 +118,9 @@ private fun SuccessGame() {
         HeroImageListModel(
             imageUrl = "whatever",
             imagePlaceholder = Icon.DESCRIPTION,
-        ) { },
+            clickAction = VglsAction.Noop,
+        ),
+        { },
         modifier = Modifier
     )
 }
@@ -127,8 +133,10 @@ private fun SuccessGameWithLabel() {
             imageUrl = "whatever",
             imagePlaceholder = Icon.DESCRIPTION,
             name = "Xenoblade Chronicles 3",
-            caption = "Pretty awesome game tbh"
-        ) { },
+            caption = "Pretty awesome game tbh",
+            clickAction = VglsAction.Noop,
+        ),
+        { },
         modifier = Modifier
     )
 }

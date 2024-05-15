@@ -7,11 +7,11 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.images.Page
-import com.vgleadsheets.list.ListAction
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -28,14 +28,15 @@ data class State(
 ) : ListState() {
     override fun title() = composer?.name
 
-    override fun toListItems(stringProvider: StringProvider, actionHandler: (ListAction) -> Unit): ImmutableList<ListModel> {
+    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val composerModel = if (composer?.photoUrl != null) {
             listOf<ListModel>(
                 HeroImageListModel(
                     imageUrl = composer.photoUrl!!,
                     imagePlaceholder = Icon.PERSON,
                     name = composer.name,
-                ) { }
+                    clickAction = VglsAction.Noop,
+                )
             )
         } else {
             emptyList()
@@ -54,7 +55,7 @@ data class State(
                             name = game.name,
                             imageUrl = game.photoUrl,
                             imagePlaceholder = Icon.ALBUM,
-                            onClick = { actionHandler(Action.GameClicked(game.id))}
+                            clickAction = Action.GameClicked(game.id),
                         )
                     }.toImmutableList()
                 )
@@ -71,11 +72,12 @@ data class State(
             ) + songs.map { song ->
                 val imageUrl = song.thumbUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
                 ImageNameListModel(
-                    song.id + ID_PREFIX_SONGS,
-                    song.name,
-                    imageUrl,
-                    Icon.PERSON
-                ) { actionHandler(Action.SongClicked(song.id)) }
+                    dataId = song.id + ID_PREFIX_SONGS,
+                    name = song.name,
+                    imageUrl = imageUrl,
+                    imagePlaceholder = Icon.PERSON,
+                    clickAction = Action.SongClicked(song.id)
+                )
             }
         } else {
             emptyList()

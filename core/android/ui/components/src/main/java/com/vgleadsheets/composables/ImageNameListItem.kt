@@ -24,6 +24,7 @@ import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
+import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
@@ -31,28 +32,32 @@ import com.vgleadsheets.ui.themes.VglsMaterialMenu
 @Composable
 fun ImageNameListItem(
     model: ImageNameListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     ImageNameListItem(
         model.name,
         model.imageUrl,
         model.imagePlaceholder,
+        model.clickAction,
+        actionHandler,
         modifier,
-        model.onClick
     )
 }
 
 @Composable
 fun ImageNameListItem(
     model: SearchResultListModel,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
     ImageNameListItem(
         model.name,
         model.imageUrl,
         model.imagePlaceholder,
+        model.clickAction,
+        actionHandler,
         modifier,
-        model.onClick
     )
 }
 
@@ -61,14 +66,15 @@ fun ImageNameListItem(
     name: String,
     imageUrl: String?,
     imagePlaceholder: Icon,
+    clickAction: VglsAction,
+    actionHandler: (VglsAction) -> Unit,
     modifier: Modifier,
-    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable(onClick = onClick)
+            .clickable { actionHandler(clickAction) }
             .padding(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side),
                 vertical = 4.dp
@@ -168,8 +174,9 @@ private fun Sample() {
             "https://randomfox.ca/images/12.jpg",
             Icon.DESCRIPTION,
             null,
-            {}
+            clickAction = VglsAction.Noop,
         ),
+        {},
         Modifier
     )
 }

@@ -28,32 +28,36 @@ import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.state.VglsAction
 
 @Composable
-fun ListModel.Content(modifier: Modifier) {
+fun ListModel.Content(
+    actionHandler: (VglsAction) -> Unit,
+    modifier: Modifier,
+) {
     when (this) {
-        is CheckableListModel -> LabelCheckboxItem(model = this, modifier = modifier)
-        is CtaListModel -> ActionItem(model = this, modifier = modifier)
+        is CheckableListModel -> LabelCheckboxItem(model = this, actionHandler = actionHandler, modifier = modifier)
+        is CtaListModel -> ActionItem(model = this, actionHandler = actionHandler, modifier = modifier)
         is DropdownSettingListModel -> LabelDropdownListItem(model = this, modifier = modifier)
         is EmptyStateListModel -> EmptyListIndicator(model = this, modifier = modifier)
         is ErrorStateListModel -> EmptyListIndicator(model = this, modifier = modifier)
-        is HeroImageListModel -> BigImage(model = this, modifier = modifier)
-        is HorizontalScrollerListModel -> HorizontalScroller(model = this, modifier = modifier)
-        is IconNameCaptionListModel -> IconNameCaptionListItem(model = this, modifier = modifier)
-        is ImageNameCaptionListModel -> ImageNameCaptionListItem(model = this, modifier = modifier)
-        is ImageNameListModel -> ImageNameListItem(model = this, modifier = modifier)
-        is LabelRatingStarListModel -> LabelRatingListItem(model = this, modifier = modifier)
-        is LabelValueListModel -> LabelValueListItem(model = this, modifier = modifier)
-        is MenuItemListModel -> MenuItem(model = this, modifier = modifier)
-        is NameCaptionListModel -> NameCaptionListItem(model = this, modifier = modifier)
-        is SearchResultListModel -> ImageNameCaptionListItem(model = this, modifier = modifier)
+        is HeroImageListModel -> BigImage(model = this, actionHandler = actionHandler, modifier = modifier)
+        is HorizontalScrollerListModel -> HorizontalScroller(model = this, actionHandler = actionHandler, modifier = modifier,)
+        is IconNameCaptionListModel -> IconNameCaptionListItem(model = this, actionHandler = actionHandler, modifier = modifier)
+        is ImageNameCaptionListModel -> ImageNameCaptionListItem(model = this, actionHandler = actionHandler, modifier = modifier)
+        is ImageNameListModel -> ImageNameListItem(model = this, actionHandler = actionHandler, modifier = modifier)
+        is LabelRatingStarListModel -> LabelRatingListItem(model = this, actionHandler = actionHandler, modifier = modifier)
+        is LabelValueListModel -> LabelValueListItem(model = this, actionHandler = actionHandler, modifier = modifier)
+        is MenuItemListModel -> MenuItem(model = this, actionHandler = actionHandler, modifier = modifier)
+        is NameCaptionListModel -> NameCaptionListItem(model = this, actionHandler = actionHandler, modifier = modifier)
+        is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionHandler = actionHandler, modifier = modifier)
         is SectionHeaderListModel -> SectionHeader(name = title, modifier = modifier)
         is SheetPageListModel -> SheetPageItem(model = this)
         is SingleTextListModel -> LabelNoThingyItem(model = this, modifier = modifier)
-        is SquareItemListModel -> SquareItem(model = this, modifier = modifier)
+        is SquareItemListModel -> SquareItem(model = this, actionHandler = actionHandler, modifier = modifier)
         is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = modifier)
-        is SubsectionListModel -> Subsection(model = this, modifier = modifier)
-        is WideItemListModel -> WideItem(model = this, modifier = modifier)
+        is SubsectionListModel -> Subsection(model = this, actionHandler = actionHandler, modifier = modifier)
+        is WideItemListModel -> WideItem(model = this, actionHandler = actionHandler, modifier = modifier)
         is LoadingImageNameCaptionListModel -> LoadingListItem(
             withImage = true,
             seed = dataId,
