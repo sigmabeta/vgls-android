@@ -44,17 +44,17 @@ data class State(
         val gameModels = if (games.isNotEmpty()) {
             listOf(
                 SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_GAME)
+                    stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_COMPOSER)
                 ),
                 HorizontalScrollerListModel(
                     dataId = StringId.SECTION_HEADER_GAMES_FROM_COMPOSER.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
-                    scrollingItems = games.map { composer ->
+                    scrollingItems = games.map { game ->
                         WideItemListModel(
-                            dataId = composer.id + ID_PREFIX_GAMES,
-                            name = composer.name,
-                            imageUrl = composer.photoUrl,
+                            dataId = game.id + ID_PREFIX_GAMES,
+                            name = game.name,
+                            imageUrl = game.photoUrl,
                             imagePlaceholder = Icon.ALBUM,
-                            onClick = { }
+                            onClick = { actionHandler(Action.GameClicked(game.id))}
                         )
                     }.toImmutableList()
                 )
@@ -75,7 +75,7 @@ data class State(
                     song.name,
                     imageUrl,
                     Icon.PERSON
-                ) { }
+                ) { actionHandler(Action.SongClicked(song.id)) }
             }
         } else {
             emptyList()

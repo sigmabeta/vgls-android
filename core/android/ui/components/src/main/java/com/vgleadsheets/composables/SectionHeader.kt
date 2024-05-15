@@ -28,7 +28,7 @@ fun SectionHeader(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
-            .padding(bottom = 8.dp, top = 16.dp)
+            .padding(bottom = 16.dp, top = 16.dp)
     ) {
         val color = MaterialTheme.colorScheme.onBackground
 
