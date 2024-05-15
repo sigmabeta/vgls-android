@@ -13,15 +13,16 @@ class EnvironmentManager(
     fun selectedEnvironmentFlow() = storage.savedIntFlow(SETTING_ENVIRONMENT)
         .map {
             if (it == null) {
-                Environment.PROD
+                ENVIRONMENT_DEFAULT
             } else if (it < 0 || it >= Environment.entries.size) {
-                Environment.PROD
+                ENVIRONMENT_DEFAULT
             } else {
                 Environment.entries[it]
             }
         }
 
     companion object {
+        private val ENVIRONMENT_DEFAULT = Environment.FAKE
         private const val SETTING_ENVIRONMENT = "setting.debug.environment"
     }
 }
