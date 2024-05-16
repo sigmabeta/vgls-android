@@ -15,15 +15,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.list.ListState
+import com.vgleadsheets.list.ListStateActual
 import com.vgleadsheets.state.VglsAction
-import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun GridScreen(
-    stateSource: StateFlow<ListState>,
-    stringProvider: StringProvider,
+    stateSource: StateFlow<ListStateActual>,
     actionHandler: (VglsAction) -> Unit,
     titleUpdater: (String?) -> Unit,
     modifier: Modifier,
@@ -31,8 +29,8 @@ fun GridScreen(
 ) {
     val state by stateSource.collectAsStateWithLifecycle()
 
-    val title = state.title()
-    val items = state.toListItems(stringProvider)
+    val title = state.title
+    val items = state.listItems
 
     if (title != null) {
         LaunchedEffect(Unit) {

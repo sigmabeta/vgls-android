@@ -3,8 +3,9 @@ package com.vgleadsheets.remaster.browse
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.ui.StringProvider
 
-class BrowseViewModelBrain : ListViewModelBrain() {
+class BrowseViewModelBrain(stringProvider: StringProvider) : ListViewModelBrain(stringProvider) {
     override fun initialState() = State
 
     override fun handleAction(action: VglsAction) {

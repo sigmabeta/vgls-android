@@ -6,20 +6,21 @@ import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 
 class ComposerDetailViewModelBrain(
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val urlInfoProvider: UrlInfoProvider,
-) : ListViewModelBrain() {
+    stringProvider: StringProvider,
+) : ListViewModelBrain(stringProvider) {
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {
@@ -41,7 +42,7 @@ class ComposerDetailViewModelBrain(
         urlInfoProvider
             .urlInfoFlow
             .onEach { urlInfo ->
-                internalUiState.update {
+                updateState {
                     (it as State).copy(sheetUrlInfo = urlInfo)
                 }
             }
@@ -52,7 +53,7 @@ class ComposerDetailViewModelBrain(
     private fun fetchComposer(composerId: Long) {
         repository.getComposer(composerId)
             .onEach { composer ->
-                internalUiState.update {
+                updateState {
                     (it as State).copy(
                         title = composer.name,
                         composer = composer,
@@ -67,7 +68,7 @@ class ComposerDetailViewModelBrain(
         repository
             .getSongsForComposer(composerId)
             .onEach { songs ->
-                internalUiState.update {
+                updateState {
                     (it as State).copy(
                         songs = songs,
                     )
@@ -78,13 +79,13 @@ class ComposerDetailViewModelBrain(
     }
 
     private fun fetchGames() {
-        uiState
+        internalUiState
             .map { it as State }
             .map { state -> state.songs }
             .mapList { song -> repository.getGameSync(song.gameId) }
             .map { it.distinct() }
             .onEach { games ->
-                internalUiState.update {
+                updateState {
                     (it as State).copy(
                         games = games,
                     )

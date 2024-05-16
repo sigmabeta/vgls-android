@@ -7,19 +7,20 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 
 class SongListViewModelBrain(
     private val repository: VglsRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val urlInfoProvider: UrlInfoProvider,
-    ) : ListViewModelBrain() {
+    stringProvider: StringProvider,
+    ) : ListViewModelBrain(stringProvider) {
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {
@@ -38,7 +39,7 @@ class SongListViewModelBrain(
         urlInfoProvider
             .urlInfoFlow
             .onEach { urlInfo ->
-                internalUiState.update {
+                updateState {
                     (it as State).copy(sheetUrlInfo = urlInfo)
                 }
             }
@@ -54,7 +55,7 @@ class SongListViewModelBrain(
     }
 
     private fun onSongsLoaded(songs: List<Song>) {
-        internalUiState.update {
+        updateState {
             (it as State).copy(
                 songs = songs
             )

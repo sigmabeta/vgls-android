@@ -1,6 +1,7 @@
 package com.vgleadsheets.list
 
 import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -9,7 +10,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 
-abstract class ListViewModelBrain {
+abstract class ListViewModelBrain(
+    private val stringProvider: StringProvider,
+) {
     abstract fun initialState(): ListState
 
     abstract fun handleAction(action: VglsAction)
@@ -21,7 +24,17 @@ abstract class ListViewModelBrain {
     val uiEvents = internalUiEvents.asSharedFlow()
 
     protected val internalUiState = MutableStateFlow(initialState())
-    val uiState = internalUiState.asStateFlow()
+    private val internalUiStateActual = MutableStateFlow(initialState().toActual(stringProvider))
+    val uiStateActual = internalUiStateActual
+        .asStateFlow()
+
+    protected fun updateState(updater: (ListState) -> ListState) {
+        val oldState = internalUiState.value
+        val newState = updater(oldState)
+
+        internalUiState.value = newState
+        internalUiStateActual.value = newState.toActual(stringProvider)
+    }
 
     protected fun emitEvent(event: ListEvent) {
         internalUiEvents.tryEmit(event)

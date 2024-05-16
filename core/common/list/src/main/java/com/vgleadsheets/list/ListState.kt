@@ -9,4 +9,10 @@ abstract class ListState : VglsState {
     abstract fun title(): String?
     abstract fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel>
     open val renderAsGrid = false
+
+    fun toActual(stringProvider: StringProvider): ListStateActual { return ListStateActual(
+            title = title(),
+            listItems = toListItems(stringProvider),
+        )
+    }
 }

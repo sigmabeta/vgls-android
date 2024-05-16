@@ -26,7 +26,12 @@ class ListViewModel @AssistedInject constructor(
         viewModelScope,
     )
 
-    val uiState = brain.uiState
+    val actionHandler: (VglsAction) -> Unit = { action ->
+        println("Handling action: $action")
+        handleAction(action)
+    }
+
+    val uiState = brain.uiStateActual
     private val uiEvents = brain.uiEvents
 
     init {

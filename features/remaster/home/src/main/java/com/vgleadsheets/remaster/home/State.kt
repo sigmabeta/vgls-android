@@ -11,12 +11,14 @@ import kotlinx.collections.immutable.persistentListOf
 data object State : ListState() {
     override fun title() = null
 
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> = persistentListOf(
-        NameCaptionListModel(
-            1234L,
-            "Home Screen",
-            "To Be Continued",
-            clickAction = VglsAction.Resume
+    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
+        return persistentListOf(
+            NameCaptionListModel(
+                1234L,
+                "Home Screen",
+                "To Be Continued",
+                clickAction = VglsAction.Resume
+            )
         )
-    )
+    }
 }
