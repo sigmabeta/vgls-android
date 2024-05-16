@@ -16,6 +16,9 @@ dependencies {
     // Retrofit libs
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.moshi)
+
+    // Moshi code-gen
+    kapt(libs.moshi.codegen)
 }
 
 // See previous versions of this file for "GiantBombApiKey"

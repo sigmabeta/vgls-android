@@ -57,7 +57,7 @@
 # Moshi
 
 # Don't obfuscate models because they're used for JSON parsing.
--keep class com.vgleadsheets.model.** { <fields>; }
+-keep class com.vgleadsheets.network.model.** { <fields>; }
 
 # JSR 305 annotations are for embedding nullability information.
 -dontwarn javax.annotation.**

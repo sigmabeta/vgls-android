@@ -14,12 +14,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
-import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Named
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -71,10 +70,6 @@ object AppModule {
             storage = storage
         )
     }
-
-    @Provides
-    @Singleton
-    internal fun provideConverterFactory() = MoshiConverterFactory.create()
 
     @Provides
     @Singleton
