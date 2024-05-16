@@ -20,8 +20,7 @@ import javax.inject.Singleton
 object ApiModule {
     @Provides
     @Singleton
-    internal fun provideMoshi(
-    ): Moshi = Moshi
+    internal fun provideMoshi(): Moshi = Moshi
         .Builder()
         .build()
 
