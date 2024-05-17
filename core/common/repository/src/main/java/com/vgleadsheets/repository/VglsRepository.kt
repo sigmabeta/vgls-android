@@ -31,7 +31,7 @@ interface VglsRepository {
     fun getSongsForGameSync(gameId: Long): List<Song>
     fun getSongsForComposer(composerId: Long): Flow<List<Song>>
     fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
-    fun getComposersForSong(composerId: Long): Flow<List<Composer>>
+    fun getComposersForSong(songId: Long): Flow<List<Composer>>
     fun getComposersForSongSync(composerId: Long): List<Composer>
     fun getTagValuesForTagKey(tagKeyId: Long): Flow<List<TagValue>>
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>

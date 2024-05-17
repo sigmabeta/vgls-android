@@ -1,12 +1,12 @@
 package com.vgleadsheets.repository
 
-import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlin.random.Random
 
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
@@ -41,8 +41,8 @@ class DelayOrErrorRepository(
     override fun getSongsForComposer(composerId: Long) =
         realRepository.getSongsForComposer(composerId)
 
-    override fun getComposersForSong(composerId: Long) =
-        realRepository.getComposersForSong(composerId)
+    override fun getComposersForSong(songId: Long) =
+        realRepository.getComposersForSong(songId)
 
     override fun getComposersForSongSync(composerId: Long) =
         realRepository.getComposersForSongSync(composerId)

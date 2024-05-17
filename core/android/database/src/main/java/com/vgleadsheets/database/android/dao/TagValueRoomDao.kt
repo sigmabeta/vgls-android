@@ -62,8 +62,8 @@ interface TagValueRoomDao : RoomDao<TagValueEntity> {
         private const val TABLE_SONG = SongTagValueJoin.TABLE
 
         private const val COLUMN_FOREIGN_KEY_TAG_KEY = TagKeyEntity.COLUMN_FOREIGN_KEY
-        private const val COLUMN_FOREIGN_KEY_SONG = SongTagValueJoin.COLUMN_FOREIGN_KEY_TWO
-        private const val COLUMN_FOREIGN_KEY_SONG_JOIN = SongTagValueJoin.COLUMN_FOREIGN_KEY_ONE
+        private const val COLUMN_FOREIGN_KEY_SONG = SongTagValueJoin.COLUMN_FOREIGN_KEY_ONE
+        private const val COLUMN_FOREIGN_KEY_SONG_JOIN = SongTagValueJoin.COLUMN_FOREIGN_KEY_TWO
 
         private const val WHERE_TAG_KEY =
             "WHERE $COLUMN_FOREIGN_KEY_TAG_KEY = :$COLUMN_PRIMARY_KEY_ID"

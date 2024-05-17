@@ -34,7 +34,7 @@ fun BigImage(
 ) {
     ElevatedRoundRect(
         modifier = modifier
-            .padding(dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
+            .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             .height(320.dp)
             .fillMaxWidth()
             .clickable(onClick = { actionHandler(model.clickAction) }),

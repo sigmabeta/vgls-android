@@ -9,6 +9,8 @@ import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -26,16 +28,20 @@ class SongDetailViewModelBrain(
     override fun handleAction(action: VglsAction) {
         when (action) {
             is VglsAction.InitWithId -> startLoading(action.id)
-            is Action.GameClicked -> onSongClicked(action.id)
+            is Action.SongThumbnailClicked -> onSongThumbnailClicked(action.id)
+            is Action.GameClicked -> onGameClicked(action.id)
             is Action.ComposerClicked -> onComposerClicked(action.id)
+            is Action.TagValueClicked -> onTagValueClicked(action.id)
         }
     }
 
     private fun startLoading(id: Long) {
         fetchUrlInfo()
-        fetchGame(id)
-        fetchSongs(id)
-        fetchComposers()
+        fetchSong(id)
+        fetchComposers(id)
+        collectGames()
+        fetchAliases(id)
+        fetchTagValues(id)
     }
 
     private fun fetchUrlInfo() {
@@ -50,57 +56,81 @@ class SongDetailViewModelBrain(
             .launchIn(coroutineScope)
     }
 
-    private fun fetchGame(gameId: Long) {
-        repository.getGame(gameId)
-            .onEach { game ->
-                updateState {
-                    (it as State).copy(
-                        title = game.name,
-                        game = game,
-                    )
-                }
-            }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
-    }
-
-    private fun fetchSongs(gameId: Long) {
+    private fun fetchSong(id: Long) {
         repository
-            .getSongsForGame(gameId)
-            .onEach { songs ->
+            .getSong(id)
+            .onEach { song ->
                 updateState {
-                    (it as State).copy(
-                        songs = songs,
-                    )
+                    (it as State).copy(song = song)
                 }
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
     }
 
-    private fun fetchComposers() {
-        internalUiState
-            .map { it as State }
-            .map { state -> state.songs }
-            .mapList { song -> repository.getComposersForSongSync(song.id) }
-            .map { it.flatten() }
-            .map { it.distinct() }
+    private fun fetchComposers(songId: Long) {
+        repository
+            .getComposersForSong(songId)
             .onEach { composers ->
                 updateState {
-                    (it as State).copy(
-                        composers = composers,
-                    )
+                    (it as State).copy(composers = composers)
                 }
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
     }
 
-    private fun onSongClicked(id: Long) {
+    private fun fetchAliases(id: Long) {
+        repository
+            .getAliasesForSong(id)
+            .onEach { songAliases ->
+                updateState {
+                    (it as State).copy(songAliases = songAliases)
+                }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
+    }
+
+    private fun fetchTagValues(id: Long) {
+        repository
+            .getTagValuesForSong(id)
+            .onEach { tagValues ->
+                updateState {
+                    (it as State).copy(tagValues = tagValues)
+                }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
+    }
+
+    private fun collectGames() {
+        internalUiState
+            .map { (it as State).song?.gameId }
+            .filterNotNull()
+            .flatMapConcat { repository.getGame(it) }
+            .onEach { game ->
+                updateState {
+                    (it as State).copy(game = game)
+                }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
+    }
+
+    private fun onSongThumbnailClicked(id: Long) {
         emitEvent(ListEvent.NavigateTo(Destination.SONG_VIEWER.forId(id)))
+    }
+
+    private fun onGameClicked(id: Long) {
+        emitEvent(ListEvent.NavigateTo(Destination.GAME_DETAIL.forId(id)))
     }
 
     private fun onComposerClicked(id: Long) {
         emitEvent(ListEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(id)))
+    }
+
+    private fun onTagValueClicked(id: Long) {
+        emitEvent(ListEvent.NavigateTo(Destination.TAGS_VALUES_SONG_LIST.forId(id)))
     }
 }

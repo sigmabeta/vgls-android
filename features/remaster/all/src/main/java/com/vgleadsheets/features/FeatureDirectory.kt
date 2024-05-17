@@ -10,6 +10,7 @@ import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
 import com.vgleadsheets.remaster.games.detail.GameDetailViewModelBrain
 import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeViewModelBrain
+import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.ui.StringProvider
@@ -56,7 +57,13 @@ class FeatureDirectory(
                 stringProvider,
             )
             Destination.SONG_VIEWER -> TODO()
-            Destination.SONG_DETAIL -> TODO()
+            Destination.SONG_DETAIL -> SongDetailViewModelBrain(
+                repository,
+                dispatchers,
+                coroutineScope,
+                urlInfoProvider,
+                stringProvider,
+            )
             Destination.SONGS_LIST -> SongListViewModelBrain(
                 repository,
                 dispatchers,
@@ -65,8 +72,10 @@ class FeatureDirectory(
                 stringProvider,
             )
 
-            Destination.TAGS_LIST -> TODO()
             Destination.FAVORITES -> TODO()
+            Destination.TAGS_LIST -> TODO()
+            Destination.TAGS_VALUES_LIST -> TODO()
+            Destination.TAGS_VALUES_SONG_LIST -> TODO()
         }
     }
 }

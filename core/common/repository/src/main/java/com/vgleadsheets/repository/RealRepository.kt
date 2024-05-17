@@ -133,8 +133,8 @@ class RealRepository(
         .getTagValuesForSong(songId)
         .flowOn(dispatchers.disk)
 
-    override fun getComposersForSong(composerId: Long) = composerDataSource
-        .getComposersForSong(composerId)
+    override fun getComposersForSong(songId: Long) = composerDataSource
+        .getComposersForSong(songId)
         .flowOn(dispatchers.disk)
 
     override fun getComposersForSongSync(composerId: Long) = composerDataSource

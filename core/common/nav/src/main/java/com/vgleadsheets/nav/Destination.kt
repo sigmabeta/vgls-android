@@ -15,6 +15,8 @@ enum class Destination(
     SONG_DETAIL("songs", ArgType.LONG),
     SONGS_LIST("songs", ArgType.NONE),
     TAGS_LIST("tags", ArgType.NONE),
+    TAGS_VALUES_LIST("tags", ArgType.LONG),
+    TAGS_VALUES_SONG_LIST("tags/value", ArgType.LONG),
     FAVORITES("favorites", ArgType.NONE),
     ;
 

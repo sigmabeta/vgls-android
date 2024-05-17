@@ -9,8 +9,14 @@
     <string name="screen_title_favorites">Browse Favorites </string>
     <string name="screen_title_search">Search</string>
 
+    <string name="section_header_composers_from_song">Composed by</string>
     <string name="section_header_composers_from_game">Composers on VGLS</string>
     <string name="section_header_songs_from_game">Sheets on VGLS</string>
     <string name="section_header_songs_from_composer">Sheets on VGLS</string>
+    <string name="section_header_games_from_song">From the Game</string>
     <string name="section_header_games_from_composer">Games on VGLS</string>
+    <string name="section_header_difficulty_for_song">Difficulty</string>
+    <string name="section_header_about_song">Details</string>
+
+    <string name="label_song_also_known_as">Also Known As</string>
 </resources>
