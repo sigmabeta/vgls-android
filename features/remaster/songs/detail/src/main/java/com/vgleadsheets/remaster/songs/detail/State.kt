@@ -41,8 +41,8 @@ data class State(
                 HeroImageListModel(
                     imageUrl = imageUrl,
                     imagePlaceholder = Icon.ALBUM,
-                    name = song!!.name,
-                    clickAction = Action.SongThumbnailClicked(song.id),
+                    name = "",
+                    clickAction = Action.SongThumbnailClicked(song!!.id),
                 )
             )
         } else {
