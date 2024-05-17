@@ -1,7 +1,5 @@
 package com.vgleadsheets.images
 
-import java.net.URLEncoder
-
 object Page {
     fun generateImageUrl(
         baseImageUrl: String,
@@ -12,7 +10,7 @@ object Page {
     ): String {
         return baseImageUrl +
             partApiId + URL_SEPARATOR_FOLDER +
-            URLEncoder.encode(filename, "UTF-8") +
+            filename.replace(" ", "%20") +
             (if (isAlternateEnabled) IDENTIFIER_ALT else "") +
             URL_SEPARATOR_NUMBER +
             pageNumber + URL_FILE_EXT_PNG
