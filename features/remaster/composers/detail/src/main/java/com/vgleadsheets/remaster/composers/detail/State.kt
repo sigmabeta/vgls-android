@@ -2,7 +2,7 @@ package com.vgleadsheets.remaster.composers.detail
 
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel
-import com.vgleadsheets.components.ImageNameListModel
+import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.WideItemListModel
@@ -71,9 +71,10 @@ data class State(
                 )
             ) + songs.map { song ->
                 val imageUrl = song.thumbUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
-                ImageNameListModel(
+                ImageNameCaptionListModel(
                     dataId = song.id + ID_PREFIX_SONGS,
                     name = song.name,
+                    caption = song.gameName,
                     imageUrl = imageUrl,
                     imagePlaceholder = Icon.DESCRIPTION,
                     clickAction = Action.SongClicked(song.id)
