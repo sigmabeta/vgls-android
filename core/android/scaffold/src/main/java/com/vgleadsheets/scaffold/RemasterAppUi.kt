@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.bottombar.RemasterBottomBar
+import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarViewModel
@@ -29,18 +30,23 @@ fun RemasterAppUi(
 
     val topBarViewModel: TopBarViewModel = viewModel()
 
-    val titleUpdater = { title: String? ->
+    val titleUpdater = { title: TitleBarModel ->
         topBarViewModel.updateTitle(title)
     }
-    val subtitleUpdater = { subtitle: String? -> topBarViewModel.updateSubtitle(subtitle) }
 
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val topBarState = rememberTopAppBarState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            val topBarState by topBarViewModel.uiState.collectAsState()
-            RemasterTopBar(topBarState, scrollBehavior)
+            val state by topBarViewModel.uiState.collectAsState()
+            RemasterTopBar(
+                state,
+                scrollBehavior,
+            ) { action ->
+                topBarViewModel.handleAction(action)
+            }
         },
         bottomBar = {
             RemasterBottomBar(navController)
@@ -61,6 +67,7 @@ fun RemasterAppUi(
                     destination = destination,
                     navigateTo = navigationAction,
                     titleUpdater = titleUpdater,
+                    topBarState = topBarState,
                     globalModifier = globalModifier
                 )
             }

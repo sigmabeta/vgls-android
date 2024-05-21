@@ -14,6 +14,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.list.ListStateActual
 import com.vgleadsheets.state.VglsAction
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun GridScreen(
     stateSource: StateFlow<ListStateActual>,
     actionHandler: (VglsAction) -> Unit,
-    titleUpdater: (String?) -> Unit,
+    titleUpdater: (TitleBarModel) -> Unit,
     modifier: Modifier,
     minSize: Dp = 128.dp
 ) {

@@ -8,9 +8,11 @@ class HomeViewModelBrain(stringProvider: StringProvider) : ListViewModelBrain(st
     override fun initialState() = State
 
     override fun handleAction(action: VglsAction) {
-        if (action is VglsAction.InitNoArgs) {
-            return
+        when (action) {
+            is VglsAction.InitNoArgs -> return
+            is VglsAction.Resume -> return
+
+            else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
-        throw IllegalArgumentException("Invalid action for this screen.")
     }
 }

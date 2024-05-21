@@ -2,15 +2,20 @@ package com.vgleadsheets.remaster.browse
 
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.MenuItemListModel
+import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data object State : ListState() {
-    override fun title() = "Browse"
+    override fun title(stringProvider: StringProvider) = TitleBarModel(
+        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE),
+        shouldShowBack = false
+    )
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> = persistentListOf(
         MenuItemListModel(

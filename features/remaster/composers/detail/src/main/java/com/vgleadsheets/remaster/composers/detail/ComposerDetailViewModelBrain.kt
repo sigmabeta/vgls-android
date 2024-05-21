@@ -96,7 +96,7 @@ class ComposerDetailViewModelBrain(
     }
 
     private fun onSongClicked(id: Long) {
-        emitEvent(ListEvent.NavigateTo(Destination.SONG_VIEWER.forId(id)))
+        emitEvent(ListEvent.NavigateTo(Destination.SONG_DETAIL.forId(id)))
     }
 
     private fun onGameClicked(id: Long) {

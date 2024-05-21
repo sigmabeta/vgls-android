@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.list.ListStateActual
 import com.vgleadsheets.state.VglsAction
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun ListScreen(
     stateSource: StateFlow<ListStateActual>,
-    titleUpdater: (String?) -> Unit,
+    titleUpdater: (TitleBarModel) -> Unit,
     actionHandler: (VglsAction) -> Unit,
     modifier: Modifier
 ) {
@@ -24,10 +25,8 @@ fun ListScreen(
     val title = state.title
     val items = state.listItems
 
-    if (title != null) {
-        LaunchedEffect(Unit) {
-            titleUpdater(title)
-        }
+    LaunchedEffect(Unit) {
+        titleUpdater(title)
     }
 
     LazyColumn(

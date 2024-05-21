@@ -6,6 +6,7 @@ import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.list.ListState
@@ -32,7 +33,10 @@ data class State(
     val songAliases: List<SongAlias> = emptyList(),
     val tagValues: List<TagValue> = emptyList(),
 ) : ListState() {
-    override fun title() = song?.name
+    override fun title(stringProvider: StringProvider) = TitleBarModel(
+        title = song?.name,
+        subtitle = song?.gameName,
+    )
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val imageUrl = song?.imageUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)

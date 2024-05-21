@@ -10,7 +10,8 @@ class BrowseViewModelBrain(stringProvider: StringProvider) : ListViewModelBrain(
 
     override fun handleAction(action: VglsAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> {}
+            is VglsAction.InitNoArgs -> return
+            is VglsAction.Resume -> return
             is Action.DestinationClicked -> onDestinationClicked(action.destination)
             else -> throw IllegalArgumentException("Invalid action for this screen.")
         }

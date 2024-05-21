@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">VGLeadSheets</string>
 
+    <string name="cont_desc_app_menu">Open Menu</string>
+    <string name="cont_desc_app_back">Go Back</string>
+
     <string name="screen_title_browse">Browse</string>
     <string name="screen_title_games">Browse by Game</string>
     <string name="screen_title_composers">Browse by Composer</string>

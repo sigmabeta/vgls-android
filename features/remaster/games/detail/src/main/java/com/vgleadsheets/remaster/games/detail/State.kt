@@ -5,6 +5,7 @@ import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.images.Page
 import com.vgleadsheets.list.ListState
@@ -27,7 +28,10 @@ data class State(
     val songs: List<Song> = emptyList(),
     val composers: List<Composer> = emptyList(),
 ) : ListState() {
-    override fun title() = game?.name
+    override fun title(stringProvider: StringProvider) = TitleBarModel(
+        title = game?.name,
+        imageUrl = game?.photoUrl
+    )
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val gameModels = if (game?.photoUrl != null) {

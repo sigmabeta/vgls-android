@@ -3,7 +3,9 @@ plugins {
     alias(libs.plugins.vgls.di.android)
 }
 
-dependencies { }
+dependencies {
+    api(projects.core.android.ui.strings)
+}
 
 android {
     namespace = "com.vgleadsheets.topbar"
