@@ -33,7 +33,7 @@ fun GridScreen(
     val title = state.title
     val items = state.listItems
 
-    if (title != null) {
+    if (title.title != null) {
         LaunchedEffect(Unit) {
             titleUpdater(title)
         }

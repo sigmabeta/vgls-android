@@ -38,7 +38,7 @@ data class State(
                 HeroImageListModel(
                     imageUrl = composer.photoUrl!!,
                     imagePlaceholder = Icon.PERSON,
-                    name = composer.name,
+                    name = null,
                     clickAction = VglsAction.Noop,
                 )
             )

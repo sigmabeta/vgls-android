@@ -26,7 +26,9 @@ class SongDetailViewModelBrain(
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
-    hatchet
+    hatchet,
+    dispatchers,
+    coroutineScope
 ) {
     override fun initialState() = State()
 

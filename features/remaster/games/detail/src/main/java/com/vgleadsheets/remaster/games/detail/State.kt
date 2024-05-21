@@ -39,7 +39,7 @@ data class State(
                 HeroImageListModel(
                     imageUrl = game.photoUrl!!,
                     imagePlaceholder = Icon.ALBUM,
-                    name = game.name,
+                    name = null,
                     clickAction = VglsAction.Noop,
                 )
             )

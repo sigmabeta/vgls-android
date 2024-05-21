@@ -46,7 +46,7 @@ fun BigImage(
             modifier = Modifier.fillMaxSize(),
         )
 
-        if (model.name != null || model.caption != null) {
+        if (!model.name.isNullOrEmpty() || !model.caption.isNullOrEmpty()) {
             Box {
                 Column(
                     modifier = Modifier
@@ -64,7 +64,7 @@ fun BigImage(
                         .padding(16.dp)
                         .padding(top = 8.dp) // For extra scrim
                 ) {
-                    if (model.name != null) {
+                    if (model.name.isNullOrEmpty()) {
                         Text(
                             text = model.name!!,
                             color = Color.White,

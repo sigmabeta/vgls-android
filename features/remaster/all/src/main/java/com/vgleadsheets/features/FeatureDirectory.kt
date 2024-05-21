@@ -30,8 +30,20 @@ class FeatureDirectory(
         coroutineScope: CoroutineScope
     ): ListViewModelBrain {
         return when (destination) {
-            Destination.HOME -> HomeViewModelBrain(stringProvider, hatchet)
-            Destination.BROWSE -> BrowseViewModelBrain(stringProvider, hatchet)
+            Destination.HOME -> HomeViewModelBrain(
+                stringProvider,
+                hatchet,
+                dispatchers,
+                coroutineScope,
+            )
+
+            Destination.BROWSE -> BrowseViewModelBrain(
+                stringProvider,
+                hatchet,
+                dispatchers,
+                coroutineScope,
+            )
+
             Destination.GAME_DETAIL -> GameDetailViewModelBrain(
                 repository,
                 dispatchers,
@@ -40,6 +52,7 @@ class FeatureDirectory(
                 stringProvider,
                 hatchet,
             )
+
             Destination.GAMES_LIST -> GameListViewModelBrain(
                 repository,
                 dispatchers,
@@ -47,6 +60,7 @@ class FeatureDirectory(
                 stringProvider,
                 hatchet,
             )
+
             Destination.COMPOSER_DETAIL -> ComposerDetailViewModelBrain(
                 repository,
                 dispatchers,
@@ -55,6 +69,7 @@ class FeatureDirectory(
                 stringProvider,
                 hatchet,
             )
+
             Destination.COMPOSERS_LIST -> ComposerListViewModelBrain(
                 repository,
                 dispatchers,
@@ -62,6 +77,7 @@ class FeatureDirectory(
                 stringProvider,
                 hatchet,
             )
+
             Destination.SONG_VIEWER -> TODO()
             Destination.SONG_DETAIL -> SongDetailViewModelBrain(
                 repository,
@@ -71,6 +87,7 @@ class FeatureDirectory(
                 stringProvider,
                 hatchet,
             )
+
             Destination.SONGS_LIST -> SongListViewModelBrain(
                 repository,
                 dispatchers,

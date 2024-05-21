@@ -25,8 +25,10 @@ fun ListScreen(
     val title = state.title
     val items = state.listItems
 
-    LaunchedEffect(Unit) {
-        titleUpdater(title)
+    if (title.title != null) {
+        LaunchedEffect(Unit) {
+            titleUpdater(title)
+        }
     }
 
     LazyColumn(
