@@ -12,7 +12,8 @@ import kotlinx.collections.immutable.persistentListOf
 
 data object State : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.APP_NAME)
+        title = stringProvider.getString(StringId.APP_NAME),
+        shouldShowBack = false,
     )
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {

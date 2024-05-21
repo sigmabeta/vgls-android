@@ -10,6 +10,7 @@ open class VglsAction {
     data object Resume : VglsAction()
 
     data object Menu : VglsAction()
+    data object OpenPartPicker : VglsAction()
     data object AppBack : VglsAction()
     data object DeviceBack : VglsAction()
 }

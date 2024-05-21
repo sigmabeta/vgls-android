@@ -12,6 +12,8 @@
     <string name="screen_title_favorites">Browse Favorites </string>
     <string name="screen_title_search">Search</string>
 
+    <string name="screen_subtitle_song_detail">from %1$s</string>
+
     <string name="section_header_composers_from_song">Composed by</string>
     <string name="section_header_composers_from_game">Composers on VGLS</string>
     <string name="section_header_songs_from_game">Sheets on VGLS</string>

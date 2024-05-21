@@ -33,10 +33,13 @@ data class State(
     val songAliases: List<SongAlias> = emptyList(),
     val tagValues: List<TagValue> = emptyList(),
 ) : ListState() {
-    override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = song?.name,
-        subtitle = song?.gameName,
-    )
+    override fun title(stringProvider: StringProvider): TitleBarModel {
+        val gameName = song?.gameName
+        return TitleBarModel(
+            title = song?.name,
+            subtitle = gameName?.let { stringProvider.getStringOneArg(StringId.SCREEN_SUBTITLE_SONG_DETAIL, it) } ?: "",
+        )
+    }
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val imageUrl = song?.imageUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
@@ -83,7 +86,7 @@ data class State(
                 HeroImageListModel(
                     imageUrl = game.photoUrl ?: "",
                     imagePlaceholder = Icon.ALBUM,
-                    name = game?.name,
+                    name = game.name,
                     clickAction = Action.GameClicked(game.id),
                 )
             )
