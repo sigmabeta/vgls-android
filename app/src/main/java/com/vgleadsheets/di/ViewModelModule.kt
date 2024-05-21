@@ -3,6 +3,7 @@ package com.vgleadsheets.di
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -22,11 +23,13 @@ class ViewModelModule {
         dispatchers: VglsDispatchers,
         urlInfoProvider: UrlInfoProvider,
         stringProvider: StringProvider,
+        hatchet: Hatchet,
     ): BrainProvider =
         FeatureDirectory(
             repository = repository,
             dispatchers = dispatchers,
             urlInfoProvider = urlInfoProvider,
             stringProvider = stringProvider,
+            hatchet = hatchet,
         )
 }

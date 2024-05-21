@@ -3,6 +3,7 @@ package com.vgleadsheets.features
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
@@ -22,26 +23,29 @@ class FeatureDirectory(
     private val dispatchers: VglsDispatchers,
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
+    private val hatchet: Hatchet,
 ) : BrainProvider {
     override fun provideBrain(
         destination: Destination,
         coroutineScope: CoroutineScope
     ): ListViewModelBrain {
         return when (destination) {
-            Destination.HOME -> HomeViewModelBrain(stringProvider)
-            Destination.BROWSE -> BrowseViewModelBrain(stringProvider)
+            Destination.HOME -> HomeViewModelBrain(stringProvider, hatchet)
+            Destination.BROWSE -> BrowseViewModelBrain(stringProvider, hatchet)
             Destination.GAME_DETAIL -> GameDetailViewModelBrain(
                 repository,
                 dispatchers,
                 coroutineScope,
                 urlInfoProvider,
                 stringProvider,
+                hatchet,
             )
             Destination.GAMES_LIST -> GameListViewModelBrain(
                 repository,
                 dispatchers,
                 coroutineScope,
                 stringProvider,
+                hatchet,
             )
             Destination.COMPOSER_DETAIL -> ComposerDetailViewModelBrain(
                 repository,
@@ -49,12 +53,14 @@ class FeatureDirectory(
                 coroutineScope,
                 urlInfoProvider,
                 stringProvider,
+                hatchet,
             )
             Destination.COMPOSERS_LIST -> ComposerListViewModelBrain(
                 repository,
                 dispatchers,
                 coroutineScope,
                 stringProvider,
+                hatchet,
             )
             Destination.SONG_VIEWER -> TODO()
             Destination.SONG_DETAIL -> SongDetailViewModelBrain(
@@ -63,6 +69,7 @@ class FeatureDirectory(
                 coroutineScope,
                 urlInfoProvider,
                 stringProvider,
+                hatchet,
             )
             Destination.SONGS_LIST -> SongListViewModelBrain(
                 repository,
@@ -70,6 +77,7 @@ class FeatureDirectory(
                 coroutineScope,
                 urlInfoProvider,
                 stringProvider,
+                hatchet,
             )
 
             Destination.FAVORITES -> TODO()

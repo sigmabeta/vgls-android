@@ -3,6 +3,7 @@ package com.vgleadsheets.remaster.composers.list
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
@@ -18,7 +19,11 @@ class ComposerListViewModelBrain(
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     stringProvider: StringProvider,
-    ) : ListViewModelBrain(stringProvider) {
+    hatchet: Hatchet,
+) : ListViewModelBrain(
+    stringProvider,
+    hatchet
+) {
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

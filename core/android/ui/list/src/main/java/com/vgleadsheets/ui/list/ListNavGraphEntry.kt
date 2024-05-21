@@ -66,7 +66,6 @@ private fun eventHandler(
     navigateTo: (String) -> Unit
 ): (ListEvent) -> Unit {
     return { event ->
-        println("Handling event: $event")
         when (event) {
             is ListEvent.NavigateTo -> navigateTo(event.destination)
         }

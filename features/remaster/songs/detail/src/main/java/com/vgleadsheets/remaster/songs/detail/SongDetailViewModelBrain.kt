@@ -3,6 +3,7 @@ package com.vgleadsheets.remaster.songs.detail
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.state.VglsAction
@@ -22,7 +23,11 @@ class SongDetailViewModelBrain(
     private val coroutineScope: CoroutineScope,
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
-) : ListViewModelBrain(stringProvider) {
+    hatchet: Hatchet,
+) : ListViewModelBrain(
+    stringProvider,
+    hatchet
+) {
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {
@@ -39,7 +44,7 @@ class SongDetailViewModelBrain(
         fetchUrlInfo()
         fetchSong(id)
         fetchComposers(id)
-        collectGames()
+        fetchGame()
         fetchAliases(id)
         fetchTagValues(id)
     }
@@ -104,7 +109,7 @@ class SongDetailViewModelBrain(
             .launchIn(coroutineScope)
     }
 
-    private fun collectGames() {
+    private fun fetchGame() {
         internalUiState
             .map { (it as State).song?.gameId }
             .filterNotNull()

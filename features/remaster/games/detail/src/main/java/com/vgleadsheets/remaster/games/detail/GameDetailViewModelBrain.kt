@@ -3,6 +3,7 @@ package com.vgleadsheets.remaster.games.detail
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.state.VglsAction
@@ -20,7 +21,11 @@ class GameDetailViewModelBrain(
     private val coroutineScope: CoroutineScope,
     private val urlInfoProvider: UrlInfoProvider,
     stringProvider: StringProvider,
-) : ListViewModelBrain(stringProvider) {
+    hatchet: Hatchet,
+) : ListViewModelBrain(
+    stringProvider,
+    hatchet
+) {
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

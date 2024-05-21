@@ -2,10 +2,17 @@ package com.vgleadsheets.remaster.browse
 
 import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 
-class BrowseViewModelBrain(stringProvider: StringProvider) : ListViewModelBrain(stringProvider) {
+class BrowseViewModelBrain(
+    stringProvider: StringProvider,
+    hatchet: Hatchet,
+) : ListViewModelBrain(
+    stringProvider,
+    hatchet
+) {
     override fun initialState() = State
 
     override fun handleAction(action: VglsAction) {
