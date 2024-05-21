@@ -28,7 +28,7 @@ class TopBarViewModel @Inject constructor(
     }
 
     fun updateTitle(title: TitleBarModel) {
-        hatchet.v(this.javaClass.simpleName, "Updating title: $title")
+        hatchet.v("Updating title: $title")
         internalUiState.update {
             it.copy(model = title)
         }

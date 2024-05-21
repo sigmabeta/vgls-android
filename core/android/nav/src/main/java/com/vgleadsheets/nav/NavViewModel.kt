@@ -101,10 +101,10 @@ class NavViewModel @AssistedInject constructor(
         stopHudVisibilityTimer()
         if (state.hudMode == HudMode.REGULAR) {
             hudVisibilityTimer = viewModelScope.launch(dispatchers.computation) {
-                hatchet.v(this.javaClass.simpleName, "Starting hud visibility timer.")
+                hatchet.v("Starting hud visibility timer.")
                 delay(TIMEOUT_HUD_VISIBLE)
 
-                hatchet.v(this.javaClass.simpleName, "Hud visibility timer expired.")
+                hatchet.v("Hud visibility timer expired.")
                 withContext(dispatchers.main) {
                     hideHud()
                 }
@@ -254,12 +254,12 @@ class NavViewModel @AssistedInject constructor(
             val selection = try {
                 TopLevel.valueOf(selectionString)
             } catch (ex: IllegalArgumentException) {
-                hatchet.e(this.javaClass.simpleName, "Invalid default screen: $selectionString")
+                hatchet.e("Invalid default screen: $selectionString")
                 TopLevel.GAME
             }
 
             withContext(dispatchers.main) {
-                hatchet.v(this.javaClass.simpleName, "Showing screen: $selection")
+                hatchet.v("Showing screen: $selection")
                 showTopLevelScreen(selection)
             }
         }
@@ -283,7 +283,7 @@ class NavViewModel @AssistedInject constructor(
                 Part.valueOf(selection)
             } catch (ex: IllegalArgumentException) {
                 hatchet.e(
-                    this.javaClass.simpleName,
+
                     "${ex.message}: value $selection no longer valid; defaulting to C"
                 )
                 Part.C
@@ -348,7 +348,7 @@ class NavViewModel @AssistedInject constructor(
 
     private fun stopHudVisibilityTimer() {
         if (hudVisibilityTimer != null) {
-            hatchet.v(this.javaClass.simpleName, "Clearing hud visibility timer.")
+            hatchet.v("Clearing hud visibility timer.")
             hudVisibilityTimer?.cancel()
             hudVisibilityTimer = null
         }

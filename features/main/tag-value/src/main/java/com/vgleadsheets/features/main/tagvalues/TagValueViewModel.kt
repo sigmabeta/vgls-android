@@ -23,7 +23,7 @@ class TagValueViewModel @AssistedInject constructor(
     private fun fetchTagKey() = withState {
         repository.getTagKey(it.tagKeyId)
             .execute {
-                hatchet.w(this.javaClass.simpleName, "Tag Values: ${it()?.values?.size}")
+                hatchet.w("Tag Values: ${it()?.values?.size}")
                 copy(
                     contentLoad = contentLoad.copy(
                         tagKey = it

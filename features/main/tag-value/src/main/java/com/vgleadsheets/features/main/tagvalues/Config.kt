@@ -58,7 +58,7 @@ class Config(
     override val contentConfig = Content.Config(
         !tagValues.isNullOrEmpty()
     ) {
-        hatchet.w(this.javaClass.simpleName, "Tag Values: ${tagValues?.size}")
+        hatchet.w("Tag Values: ${tagValues?.size}")
         tagValues
             ?.filter { !it.songs?.filteredForVocals(navState.selectedPart.apiId).isNullOrEmpty() }
             ?.mapYielding {

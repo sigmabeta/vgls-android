@@ -30,6 +30,7 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.tracking.Tracker
+import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -40,7 +41,6 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
-import java.util.Locale
 
 @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
 class RealRepository(
@@ -441,7 +441,7 @@ class RealRepository(
                     dbStatisticsDataSource.insert(lastChecked)
                 } catch (ex: Exception) {
                     // Something in the storage write operation failed.
-                    hatchet.e(this.javaClass.simpleName, "Error updating database: $ex.message")
+                    hatchet.e("Error updating database: $ex.message")
                 }
             }
         }

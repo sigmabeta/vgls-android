@@ -30,12 +30,12 @@ class UiTestApplication : DaggerApplication(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
 
-        hatchet.v(this.javaClass.simpleName, "Starting Application.")
-        hatchet.v(this.javaClass.simpleName, "Build type: ${BuildConfig.BUILD_TYPE}")
+        hatchet.v("Starting Application.")
+        hatchet.v("Build type: ${BuildConfig.BUILD_TYPE}")
 
-        hatchet.v(this.javaClass.simpleName, "Android version: ${Build.VERSION.RELEASE}")
-        hatchet.v(this.javaClass.simpleName, "Device manufacturer: ${Build.MANUFACTURER}")
-        hatchet.v(this.javaClass.simpleName, "Device model: ${Build.MODEL}")
+        hatchet.v("Android version: ${Build.VERSION.RELEASE}")
+        hatchet.v("Device manufacturer: ${Build.MANUFACTURER}")
+        hatchet.v("Device model: ${Build.MODEL}")
         Stetho.initializeWithDefaults(this)
 
         val picasso = Picasso.Builder(this)

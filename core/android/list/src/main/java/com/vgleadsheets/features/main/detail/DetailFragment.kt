@@ -74,7 +74,7 @@ abstract class DetailFragment<StateType : VglsState> : VglsFragment() {
 
                 if (listModelGenerationJob.isActive) {
                     hatchet.i(
-                        this.javaClass.simpleName,
+
                         "${this::class.simpleName}: Canceling previous config generation job."
                     )
                     listModelGenerationJob.cancel()

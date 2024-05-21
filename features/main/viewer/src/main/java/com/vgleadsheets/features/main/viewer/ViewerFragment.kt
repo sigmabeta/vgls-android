@@ -223,13 +223,13 @@ class ViewerFragment :
 
     private fun setScreenOnLock() {
         val activity = activity ?: return
-        hatchet.v(this.javaClass.simpleName, "Setting screen-on lock.")
+        hatchet.v("Setting screen-on lock.")
         activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun clearScreenOnLock() {
         val activity = activity ?: return
-        hatchet.v(this.javaClass.simpleName, "Clearing screen-on lock.")
+        hatchet.v("Clearing screen-on lock.")
         activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         screenOffSnack = showSnackbar(

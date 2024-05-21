@@ -75,7 +75,7 @@ class FakeModelGenerator @Inject constructor(
         }
 
         val gameCount = random.nextInt(maxGames)
-        hatchet.i(this.javaClass.simpleName, "Generating $gameCount games...")
+        hatchet.i("Generating $gameCount games...")
         val games = ArrayList<VglsApiGame>(gameCount)
 
         for (gameIndex in 0 until gameCount) {
@@ -83,13 +83,13 @@ class FakeModelGenerator @Inject constructor(
             games.add(game)
         }
 
-        hatchet.i(this.javaClass.simpleName, "Generated ${games.size} games...")
+        hatchet.i("Generated ${games.size} games...")
 
         val filteredGames = games
             .distinctBy { it.game_id }
             .filter { it.songs.isNotEmpty() }
 
-        hatchet.i(this.javaClass.simpleName, "Returning ${filteredGames.size} games...")
+        hatchet.i("Returning ${filteredGames.size} games...")
         possibleGames = filteredGames
     }
 
@@ -130,7 +130,7 @@ class FakeModelGenerator @Inject constructor(
 
     private fun generateSongs() {
         val songCount = random.nextInt(maxSongs) + 1
-        // hatchet.d(this.javaClass.simpleName, "Generating $songCount songs...")
+        // hatchet.d("Generating $songCount songs...")
 
         val songs = Stack<ApiSong>()
         val songIds = HashSet<Long>(songCount)
@@ -202,7 +202,7 @@ class FakeModelGenerator @Inject constructor(
 
     private fun generateComposers() {
         val composerCount = random.nextInt(maxComposers) + 1
-        // hatchet.i(this.javaClass.simpleName, "Generating $composerCount composers...")
+        // hatchet.i("Generating $composerCount composers...")
         val composers = ArrayList<ApiComposer>(composerCount)
 
         for (composerIndex in 0 until composerCount) {
@@ -239,7 +239,7 @@ class FakeModelGenerator @Inject constructor(
 
     private fun generateTags() {
         val tagCount = random.nextInt(maxTags) + 1
-        // hatchet.i(this.javaClass.simpleName, "Generating $tagCount tags...")
+        // hatchet.i("Generating $tagCount tags...")
         val tags = mutableMapOf<String, List<String>>()
 
         for (tagIndex in 0 until tagCount) {

@@ -55,7 +55,6 @@ class SheetGenerator @Inject constructor(
         composers: List<String>,
     ): Bitmap {
         hatchet.v(
-            this.javaClass.simpleName,
             "Generating $width px wide loading image for song $title from $gameName"
         )
 
@@ -79,7 +78,7 @@ class SheetGenerator @Inject constructor(
             )
         }
 
-        hatchet.v(this.javaClass.simpleName, "Unique text rendering took $uniqueText ms")
+        hatchet.v("Unique text rendering took $uniqueText ms")
         return bitmap
     }
 
@@ -112,9 +111,8 @@ class SheetGenerator @Inject constructor(
             )
         }
 
-        val tag = this.javaClass.simpleName
-        hatchet.v(tag, "Common text rendering took $commonTextRenderingMillis ms")
-        hatchet.v(tag, "Staff rendering took $stavesRenderingMillis ms")
+        hatchet.v("Common text rendering took $commonTextRenderingMillis ms")
+        hatchet.v("Staff rendering took $stavesRenderingMillis ms")
         return newBitmap
     }
 
@@ -180,7 +178,7 @@ class SheetGenerator @Inject constructor(
             )
         }
 
-        hatchet.v(this.javaClass.simpleName, "Text rendering took $textRenderingMillis ms")
+        hatchet.v("Text rendering took $textRenderingMillis ms")
     }
 
     private fun renderCommonText(

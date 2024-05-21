@@ -33,7 +33,7 @@ abstract class AsyncUiTest : UiTest() {
     }
 
     protected fun eraseDatabase() {
-        hatchet.d(this.javaClass.simpleName, "Erasing contents of database.")
+        hatchet.d("Erasing contents of database.")
 
         vglsDatabase.composerDao().nukeTable()
         vglsDatabase.composerAliasDao().nukeTable()

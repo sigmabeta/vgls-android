@@ -75,12 +75,12 @@ class ViewerViewModel @AssistedInject constructor(
         val song = state.song() ?: return@withState
 
         viewReportTimer = viewModelScope.launch(dispatchers.computation) {
-            hatchet.v(this.javaClass.simpleName, "Starting view report timer for ${song.name}")
+            hatchet.v("Starting view report timer for ${song.name}")
             delay(TIMER_VIEW_REPORT_MILLIS)
 
             hasViewBeenReported = true
 
-            hatchet.v(this.javaClass.simpleName, "Reporting song ${song.name} to db.")
+            hatchet.v("Reporting song ${song.name} to db.")
             repository.incrementViewCounter(song.id)
 
             viewReportTimer = null
@@ -89,7 +89,7 @@ class ViewerViewModel @AssistedInject constructor(
 
     fun stopReportTimer() {
         if (viewReportTimer != null) {
-            hatchet.v(this.javaClass.simpleName, "Stopping view report timer.")
+            hatchet.v("Stopping view report timer.")
             viewReportTimer?.cancel()
             viewReportTimer = null
         }
@@ -97,12 +97,12 @@ class ViewerViewModel @AssistedInject constructor(
 
     fun startScreenTimer() {
         screenLockTimer = viewModelScope.launch(dispatchers.computation) {
-            hatchet.v(this.javaClass.simpleName, "Starting screen timer.")
+            hatchet.v("Starting screen timer.")
             _screenControlEvents.emit(ScreenControlEvent.TIMER_START)
 
             delay(TIMEOUT_SCREEN_OFF_MILLIS)
 
-            hatchet.v(this.javaClass.simpleName, "Screen timer expired.")
+            hatchet.v("Screen timer expired.")
             _screenControlEvents.emit(ScreenControlEvent.TIMER_EXPIRED)
             screenLockTimer = null
         }
@@ -110,7 +110,7 @@ class ViewerViewModel @AssistedInject constructor(
 
     fun stopScreenTimer() {
         if (screenLockTimer != null) {
-            hatchet.v(this.javaClass.simpleName, "Clearing screen timer.")
+            hatchet.v("Clearing screen timer.")
             screenLockTimer?.cancel()
             screenLockTimer = null
         }

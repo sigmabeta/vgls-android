@@ -122,10 +122,10 @@ class ComponentAdapter(
 
     private fun isNewListActuallyDifferent(newList: List<ListModel>?) =
         if (!currentList.deepEquals(newList)) {
-            hatchet.w(this.javaClass.simpleName, "$owner: Lists changed, submitting.")
+            hatchet.w("$owner: Lists changed, submitting.")
             true
         } else {
-            hatchet.i(this.javaClass.simpleName, "$owner: Lists equivalent, not submitting.")
+            hatchet.i("$owner: Lists equivalent, not submitting.")
             false
         }
 
@@ -149,7 +149,7 @@ class ComponentAdapter(
             if (otherItem != item) {
                 if (BuildConfig.DEBUG) {
                     hatchet.v(
-                        this.javaClass.simpleName,
+
                         "$owner: items at $index differ - old item $item; new item $otherItem"
                     )
                 }

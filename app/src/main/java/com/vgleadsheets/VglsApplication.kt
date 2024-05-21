@@ -10,9 +10,9 @@ import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.SheetPreviewFetcher
 import com.vgleadsheets.logging.Hatchet
 import dagger.hilt.android.HiltAndroidApp
-import okhttp3.OkHttpClient
 import javax.inject.Inject
 import javax.inject.Named
+import okhttp3.OkHttpClient
 
 @HiltAndroidApp
 class VglsApplication :
@@ -36,15 +36,15 @@ class VglsApplication :
 
         Mavericks.initialize(this)
 
-        hatchet.v(this.javaClass.simpleName, "Starting Application.")
-        hatchet.v(this.javaClass.simpleName, "Build type: ${BuildConfig.BUILD_TYPE}")
+        hatchet.v("Starting Application.")
+        hatchet.v("Build type: ${BuildConfig.BUILD_TYPE}")
 
-        hatchet.v(this.javaClass.simpleName, "App version name: ${BuildConfig.VERSION_NAME}")
-        hatchet.v(this.javaClass.simpleName, "App version code: ${BuildConfig.VERSION_CODE}")
+        hatchet.v("App version name: ${BuildConfig.VERSION_NAME}")
+        hatchet.v("App version code: ${BuildConfig.VERSION_CODE}")
 
-        hatchet.v(this.javaClass.simpleName, "Android version: ${Build.VERSION.RELEASE}")
-        hatchet.v(this.javaClass.simpleName, "Device manufacturer: ${Build.MANUFACTURER}")
-        hatchet.v(this.javaClass.simpleName, "Device model: ${Build.MODEL}")
+        hatchet.v("Android version: ${Build.VERSION.RELEASE}")
+        hatchet.v("Device manufacturer: ${Build.MANUFACTURER}")
+        hatchet.v("Device model: ${Build.MODEL}")
 
         Stetho.initializeWithDefaults(this)
     }

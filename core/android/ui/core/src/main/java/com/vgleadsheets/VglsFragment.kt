@@ -92,7 +92,7 @@ abstract class VglsFragment : Fragment(), MavericksView {
 
         if (disablePerfTracking() || isRunningTest) {
             hatchet.d(
-                this.javaClass.simpleName,
+
                 "Not starting perf tracker: Perf tracking is disabled for screen ${getPerfScreenName()}."
             )
             return
@@ -100,7 +100,7 @@ abstract class VglsFragment : Fragment(), MavericksView {
 
         if (savedInstanceState != null) {
             hatchet.i(
-                this.javaClass.simpleName,
+
                 "Not starting perf tracker: Screen ${getPerfScreenName()} was recreated."
             )
             return
@@ -113,7 +113,7 @@ abstract class VglsFragment : Fragment(), MavericksView {
 
         if (heightDp < minHeightDp) {
             hatchet.i(
-                this.javaClass.simpleName,
+
                 "Not starting perf tracker: Screen height $heightDp dp too small " +
                     "for screen ${getPerfScreenName()} (min height $minHeightDp dp)."
             )
@@ -211,7 +211,7 @@ abstract class VglsFragment : Fragment(), MavericksView {
         action: View.OnClickListener? = null,
         actionLabel: Int = 0
     ) {
-        hatchet.e(this.javaClass.simpleName, "Displayed error: $message")
+        hatchet.e("Displayed error: $message")
         tracker.logError(message)
         showSnackbar(message, action, actionLabel)
     }
