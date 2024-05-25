@@ -1,8 +1,7 @@
 package com.vgleadsheets.appcomm
 
-
 class EventDispatcher(
-    private val navigateTo: (String)-> Unit,
+    private val navigateTo: (String) -> Unit,
     private val navigateBack: () -> Unit,
 ) {
     private val eventSinks = mutableSetOf<EventSink>()

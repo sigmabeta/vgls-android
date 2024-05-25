@@ -1,6 +1,5 @@
 package com.vgleadsheets.appcomm
 
-
 open class VglsEvent {
     data object NavigateBack : VglsEvent()
     data class NavigateTo(val destination: String) : VglsEvent()
