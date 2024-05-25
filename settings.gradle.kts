@@ -75,6 +75,7 @@ include(
     ":core:android:ui:themes",
     ":core:android:viewmodel",
 
+    ":core:common:appcomm",
     ":core:common:conversion",
     ":core:common:coroutines",
     ":core:common:database",
@@ -90,7 +91,6 @@ include(
     ":core:common:settings:common",
     ":core:common:settings:environment",
     ":core:common:settings:part",
-    ":core:common:state",
     ":core:common:tracking",
     ":core:common:ui:components",
     ":core:common:ui:icons",

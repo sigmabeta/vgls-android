@@ -16,11 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
@@ -29,7 +31,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun Subsection(
     model: SubsectionListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     val maxItemsInEachRow = 2
@@ -52,13 +54,13 @@ fun Subsection(
             when (it) {
                 is WideItemListModel -> WideItem(
                     model = it,
-                    actionHandler = actionHandler,
+                    actionSink = actionSink,
                     modifier = Modifier.weight(1.0f),
                 )
 
                 is SquareItemListModel -> SquareItem(
                     model = it,
-                    actionHandler = actionHandler,
+                    actionSink = actionSink,
                     modifier = Modifier
                 )
 
@@ -173,7 +175,7 @@ private fun SampleWide() {
                 ),
             ).toImmutableList()
         ),
-        { },
+        PreviewActionSink { },
         Modifier,
     )
 }
@@ -213,7 +215,7 @@ private fun SampleSquare() {
                 ),
             ).toImmutableList()
         ),
-        { },
+        PreviewActionSink { },
         Modifier,
     )
 }

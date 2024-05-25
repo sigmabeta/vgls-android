@@ -12,16 +12,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.MenuSearchMoreListModel
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun MoreResultsLink(
     model: MenuSearchMoreListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     Text(
@@ -29,7 +31,7 @@ fun MoreResultsLink(
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.onPrimary,
         modifier = modifier
-            .clickable { actionHandler(model.clickAction) }
+            .clickable { actionSink.sendAction(model.clickAction) }
             .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             .padding(start = 56.dp)
             .padding(vertical = 16.dp)
@@ -56,7 +58,7 @@ private fun Default() {
                     null,
                     VglsAction.Noop
                 ),
-                {},
+                PreviewActionSink {},
                 Modifier
             )
             Sample()
@@ -71,7 +73,7 @@ private fun Sample() {
             "Show 69 more games...",
             VglsAction.Noop,
         ),
-        {},
+        PreviewActionSink {},
         Modifier
     )
 }

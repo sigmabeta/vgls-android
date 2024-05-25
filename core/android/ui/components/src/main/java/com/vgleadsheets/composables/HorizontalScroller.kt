@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.WideItemListModel
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
@@ -33,7 +35,7 @@ import java.util.Random
 @Composable
 fun HorizontalScroller(
     model: HorizontalScrollerListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     LazyRow(
@@ -49,7 +51,7 @@ fun HorizontalScroller(
             contentType = { it.javaClass.simpleName },
         ) {
             it.Content(
-                actionHandler = actionHandler,
+                actionSink = actionSink,
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
                     .animateItemPlacement()
@@ -115,7 +117,7 @@ private fun SquareItemSection(rng: Random) {
                 )
             }.toImmutableList()
         ),
-        { },
+        PreviewActionSink { },
         modifier = Modifier,
     )
 }
@@ -141,7 +143,7 @@ private fun WideItemSection(rng: Random) {
                 )
             }.toImmutableList()
         ),
-        { },
+        PreviewActionSink { },
         modifier = Modifier,
     )
 }
@@ -163,7 +165,7 @@ private fun VerticalSection(rng: Random) {
                 null,
                 clickAction = VglsAction.Noop
             ),
-            { },
+            PreviewActionSink { },
             modifier = Modifier,
         )
     }

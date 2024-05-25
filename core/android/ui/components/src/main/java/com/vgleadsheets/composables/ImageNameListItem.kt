@@ -20,11 +20,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SearchResultListModel
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
@@ -32,7 +34,7 @@ import com.vgleadsheets.ui.themes.VglsMaterialMenu
 @Composable
 fun ImageNameListItem(
     model: ImageNameListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     ImageNameListItem(
@@ -40,7 +42,7 @@ fun ImageNameListItem(
         model.imageUrl,
         model.imagePlaceholder,
         model.clickAction,
-        actionHandler,
+        actionSink,
         modifier,
     )
 }
@@ -48,7 +50,7 @@ fun ImageNameListItem(
 @Composable
 fun ImageNameListItem(
     model: SearchResultListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     ImageNameListItem(
@@ -56,7 +58,7 @@ fun ImageNameListItem(
         model.imageUrl,
         model.imagePlaceholder,
         model.clickAction,
-        actionHandler,
+        actionSink,
         modifier,
     )
 }
@@ -67,14 +69,14 @@ fun ImageNameListItem(
     imageUrl: String?,
     imagePlaceholder: Icon,
     clickAction: VglsAction,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable { actionHandler(clickAction) }
+            .clickable { actionSink.sendAction(clickAction) }
             .padding(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side),
                 vertical = 4.dp
@@ -176,7 +178,7 @@ private fun Sample() {
             null,
             clickAction = VglsAction.Noop,
         ),
-        {},
+        PreviewActionSink { },
         Modifier
     )
 }

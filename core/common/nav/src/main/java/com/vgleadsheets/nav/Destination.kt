@@ -7,6 +7,8 @@ enum class Destination(
 ) {
     HOME("home", ArgType.NONE),
     BROWSE("browse", ArgType.NONE),
+    MENU("menu", ArgType.NONE),
+    PART_PICKER("parts", ArgType.NONE),
     GAME_DETAIL("games", ArgType.LONG),
     GAMES_LIST("games", ArgType.NONE, renderAsGrid = true),
     COMPOSER_DETAIL("composers", ArgType.LONG),
@@ -20,6 +22,7 @@ enum class Destination(
     FAVORITES("favorites", ArgType.NONE),
     ;
 
+    fun noArgs() = destName
     fun forId(id: Long) = "$destName/$id"
     fun forString(arg: String) = "$destName/$arg"
     fun template(): String {

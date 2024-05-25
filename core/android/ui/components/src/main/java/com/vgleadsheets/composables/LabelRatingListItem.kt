@@ -7,17 +7,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.LabelRatingStarListModel
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelRatingListItem(
     model: LabelRatingStarListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     LabeledThingy(
@@ -28,7 +30,7 @@ fun LabelRatingListItem(
                 modifier = Modifier
             )
         },
-        onClick = { actionHandler(model.clickAction) },
+        onClick = { actionSink.sendAction(model.clickAction) },
         modifier = modifier
     )
 }
@@ -83,7 +85,7 @@ private fun Sample() {
             3,
             VglsAction.Noop
         ),
-        {},
+        PreviewActionSink { },
         Modifier
     )
 }

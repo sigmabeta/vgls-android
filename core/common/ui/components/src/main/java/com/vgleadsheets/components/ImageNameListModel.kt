@@ -1,6 +1,6 @@
 package com.vgleadsheets.components
 
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.ui.Icon
 
 data class ImageNameListModel(

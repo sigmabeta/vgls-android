@@ -1,9 +1,9 @@
 package com.vgleadsheets.remaster.home
 
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 

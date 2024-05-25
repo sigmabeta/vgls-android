@@ -44,6 +44,8 @@ class FeatureDirectory(
                 coroutineScope,
             )
 
+            Destination.PART_PICKER -> TODO()
+
             Destination.GAME_DETAIL -> GameDetailViewModelBrain(
                 repository,
                 dispatchers,
@@ -101,6 +103,7 @@ class FeatureDirectory(
             Destination.TAGS_LIST -> TODO()
             Destination.TAGS_VALUES_LIST -> TODO()
             Destination.TAGS_VALUES_SONG_LIST -> TODO()
+            Destination.MENU -> throw IllegalArgumentException("Not a list view.")
         }
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.LabelRatingStarListModel
@@ -34,7 +35,7 @@ import com.vgleadsheets.composables.LabelDropdownListItem
 import com.vgleadsheets.composables.LabelNoThingyItem
 import com.vgleadsheets.composables.LabelRatingListItem
 import com.vgleadsheets.composables.LabelValueListItem
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 import kotlinx.collections.immutable.toImmutableList
@@ -130,7 +131,7 @@ private fun Sample() {
                 "Every",
                 VglsAction.Noop
             ),
-            {},
+            PreviewActionSink {},
             Modifier
         )
 
@@ -140,7 +141,7 @@ private fun Sample() {
                 3,
                 VglsAction.Noop,
             ),
-            {},
+            PreviewActionSink {},
             Modifier
         )
 
@@ -152,7 +153,7 @@ private fun Sample() {
                 checked = isChecked,
                 clickAction = VglsAction.Noop
             ),
-            { isChecked = !isChecked },
+            PreviewActionSink { isChecked = !isChecked },
             Modifier
         )
 

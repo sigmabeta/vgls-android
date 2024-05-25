@@ -33,8 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -87,9 +87,9 @@ fun RemasterTopBar(
         },
         navigationIcon = {
             val (vector, stringId, action) = if (state.model.shouldShowBack) {
-                Triple(Icons.AutoMirrored.Default.ArrowBack, com.vgleadsheets.ui.strings.R.string.cont_desc_app_back, VglsAction.AppBack)
+                Triple(Icons.AutoMirrored.Default.ArrowBack, com.vgleadsheets.ui.strings.R.string.cont_desc_app_back, TopBarAction.AppBack)
             } else {
-                Triple(Icons.Default.Menu, com.vgleadsheets.ui.strings.R.string.cont_desc_app_menu, VglsAction.Menu)
+                Triple(Icons.Default.Menu, com.vgleadsheets.ui.strings.R.string.cont_desc_app_menu, TopBarAction.Menu)
             }
 
             IconButton(
@@ -109,7 +109,7 @@ fun RemasterTopBar(
                     .padding(end = 4.dp)
                     .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
                     .clip(CircleShape)
-                    .clickable { handleAction(VglsAction.OpenPartPicker) }
+                    .clickable { handleAction(TopBarAction.OpenPartPicker) }
             ) {
                 Text(
                     text = state.selectedPart ?: "",

@@ -1,5 +1,6 @@
 package com.vgleadsheets.topbar
 
-enum class TopBarEvent {
-    NONE
+import com.vgleadsheets.appcomm.VglsEvent
+
+sealed class TopBarEvent : VglsEvent() {
 }

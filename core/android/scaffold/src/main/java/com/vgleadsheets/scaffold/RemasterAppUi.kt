@@ -9,16 +9,17 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.bottombar.RemasterBottomBar
-import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarViewModel
+import com.vgleadsheets.topbar.topBarViewModel
 import com.vgleadsheets.ui.list.listScreenEntry
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,11 +29,11 @@ fun RemasterAppUi(
 ) {
     val navController = rememberNavController()
 
-    val topBarViewModel: TopBarViewModel = hiltViewModel()
+    val navFunction = { destination: String -> navController.navigate(destination) }
+    val navBack: () -> Unit = { navController.popBackStack() }
+    val eventDispatcher = remember { EventDispatcher(navFunction, navBack) }
 
-    val titleUpdater = { title: TitleBarModel ->
-        topBarViewModel.updateTitle(title)
-    }
+    val topBarViewModel: TopBarViewModel = topBarViewModel(eventDispatcher)
 
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
@@ -42,11 +43,10 @@ fun RemasterAppUi(
         topBar = {
             val state by topBarViewModel.uiState.collectAsState()
             RemasterTopBar(
-                state,
-                scrollBehavior,
-            ) { action ->
-                topBarViewModel.handleAction(action)
-            }
+                state = state,
+                scrollBehavior = scrollBehavior,
+                handleAction = { action -> topBarViewModel.sendAction(action) },
+            )
         },
         bottomBar = {
             RemasterBottomBar(navController)
@@ -58,17 +58,13 @@ fun RemasterAppUi(
             startDestination = Destination.HOME.template()
         ) {
             val globalModifier = Modifier.fillMaxSize()
-            val navigationAction = { linkUri: String ->
-                navController.navigate(linkUri)
-            }
 
             Destination.entries.forEach { destination ->
                 listScreenEntry(
                     destination = destination,
-                    navigateTo = navigationAction,
-                    titleUpdater = titleUpdater,
+                    eventDispatcher = eventDispatcher,
                     topBarState = topBarState,
-                    globalModifier = globalModifier
+                    globalModifier = globalModifier,
                 )
             }
         }

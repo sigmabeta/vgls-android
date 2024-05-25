@@ -29,8 +29,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.MenuItemListModel
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
@@ -38,7 +40,7 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 @Composable
 fun MenuItem(
     model: MenuItemListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     Row(
@@ -48,7 +50,7 @@ fun MenuItem(
             .padding(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_small)
             )
-            .clickable { actionHandler(model.clickAction) },
+            .clickable { actionSink.sendAction(model.clickAction) },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         val color = if (model.selected) {
@@ -174,7 +176,7 @@ private fun Sample(selected: Boolean) {
             selected = selected,
             clickAction = VglsAction.Noop
         ),
-        {},
+        PreviewActionSink {},
         Modifier
     )
 }

@@ -24,16 +24,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun WideItem(
     model: WideItemListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     Row(
@@ -44,7 +46,7 @@ fun WideItem(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)
             )
-            .clickable { actionHandler(model.clickAction) }
+            .clickable { actionSink.sendAction(model.clickAction) }
             .background(MaterialTheme.colorScheme.surface)
     ) {
         CrossfadeImage(
@@ -106,7 +108,7 @@ private fun Sample() {
                 null,
                 VglsAction.Noop
             ),
-            {},
+            PreviewActionSink {},
             modifier = Modifier
         )
 
@@ -119,7 +121,7 @@ private fun Sample() {
                 null,
                 VglsAction.Noop
             ),
-            {},
+            PreviewActionSink {},
             modifier = Modifier
         )
     }

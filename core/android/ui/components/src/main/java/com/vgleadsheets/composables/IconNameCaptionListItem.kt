@@ -24,15 +24,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.IconNameCaptionListModel
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun IconNameCaptionListItem(
     model: IconNameCaptionListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     IconNameCaptionListItem(
@@ -40,7 +42,7 @@ fun IconNameCaptionListItem(
         model.caption,
         model.iconId,
         model.clickAction,
-        actionHandler,
+        actionSink,
         modifier,
     )
 }
@@ -51,14 +53,14 @@ fun IconNameCaptionListItem(
     caption: String,
     iconId: Int,
     clickAction: VglsAction,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable { actionHandler(clickAction) }
+            .clickable { actionSink.sendAction(clickAction) }
             .padding(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
             )
@@ -159,7 +161,7 @@ private fun Sample() {
             com.vgleadsheets.ui.icons.R.drawable.ic_baseline_music_note_24,
             clickAction = VglsAction.Noop,
         ),
-        {},
+        PreviewActionSink { },
         Modifier
     )
 }

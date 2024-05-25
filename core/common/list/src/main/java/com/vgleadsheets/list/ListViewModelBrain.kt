@@ -1,8 +1,9 @@
 package com.vgleadsheets.list
 
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
@@ -22,9 +23,13 @@ abstract class ListViewModelBrain(
 ) {
     abstract fun initialState(): ListState
 
-    abstract fun handleAction(action: VglsAction)
+    protected abstract fun handleAction(action: VglsAction)
 
-    protected val internalUiEvents = MutableSharedFlow<ListEvent>(
+    protected open fun handleEvent(event: VglsEvent) { }
+
+    open val handlesBack: Boolean = false
+
+    protected val internalUiEvents = MutableSharedFlow<VglsEvent>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
@@ -34,6 +39,28 @@ abstract class ListViewModelBrain(
     private val internalUiStateActual = MutableStateFlow(initialState().toActual(stringProvider))
     val uiStateActual = internalUiStateActual
         .asStateFlow()
+
+    fun sendAction(action: VglsAction) {
+        val state = internalUiState.value
+        val titleModel = state.title(stringProvider)
+
+        if (action is VglsAction.Resume) {
+            emitEvent(
+                VglsEvent.UpdateTitle(
+                    title = titleModel.title,
+                    subtitle = titleModel.subtitle,
+                    imageUrl = titleModel.imageUrl,
+                    shouldShowBack = titleModel.shouldShowBack
+                )
+            )
+        }
+
+        handleAction(action)
+    }
+
+    fun sendEvent(event: VglsEvent) {
+        handleEvent(event)
+    }
 
     protected fun updateState(updater: (ListState) -> ListState) {
         coroutineScope.launch(dispatchers.main) {
@@ -47,7 +74,7 @@ abstract class ListViewModelBrain(
         }
     }
 
-    protected fun emitEvent(event: ListEvent) {
+    protected fun emitEvent(event: VglsEvent) {
         coroutineScope.launch(dispatchers.main) {
             hatchet.d("Emitting event: $event")
             internalUiEvents.tryEmit(event)

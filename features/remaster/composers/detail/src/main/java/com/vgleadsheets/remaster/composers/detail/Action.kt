@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.composers.detail
 
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.appcomm.VglsAction
 
 sealed class Action : VglsAction() {
     data class GameClicked(val id: Long) : Action()

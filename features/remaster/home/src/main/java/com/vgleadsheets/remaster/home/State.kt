@@ -1,10 +1,10 @@
 package com.vgleadsheets.remaster.home
 
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList

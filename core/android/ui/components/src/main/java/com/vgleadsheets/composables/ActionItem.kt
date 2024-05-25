@@ -20,15 +20,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.CtaListModel
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun ActionItem(
     model: CtaListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     Row(
@@ -39,7 +41,7 @@ fun ActionItem(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_small)
             )
             .clickable(
-                onClick = { actionHandler(model.clickAction) },
+                onClick = { actionSink.sendAction(model.clickAction) },
             )
     ) {
         Icon(
@@ -107,7 +109,7 @@ private fun Sample() {
             "Find a path to the future",
             VglsAction.Noop,
         ),
-        { },
+        PreviewActionSink { },
         Modifier
     )
 }

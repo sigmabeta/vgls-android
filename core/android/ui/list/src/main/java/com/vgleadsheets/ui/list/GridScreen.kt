@@ -14,17 +14,16 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.list.ListStateActual
-import com.vgleadsheets.state.VglsAction
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun GridScreen(
     stateSource: StateFlow<ListStateActual>,
-    actionHandler: (VglsAction) -> Unit,
-    titleUpdater: (TitleBarModel) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
     minSize: Dp = 128.dp
 ) {
@@ -35,7 +34,7 @@ fun GridScreen(
 
     if (title.title != null) {
         LaunchedEffect(Unit) {
-            titleUpdater(title)
+            actionSink.sendAction(VglsAction.Resume)
         }
     }
 
@@ -59,7 +58,7 @@ fun GridScreen(
             }
         ) {
             it.Content(
-                actionHandler = actionHandler,
+                actionSink = actionSink,
                 modifier = Modifier
             )
         }

@@ -7,23 +7,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.LabelValueListModel
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.TextValue
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelValueListItem(
     model: LabelValueListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     LabeledThingy(
         label = model.label,
         thingy = { TextValue(value = model.value) },
-        onClick = { actionHandler(model.clickAction) },
+        onClick = { actionSink.sendAction(model.clickAction) },
         modifier = modifier
     )
 }
@@ -78,7 +80,7 @@ private fun Sample() {
             "Every",
             VglsAction.Noop
         ),
-        {},
+        PreviewActionSink {},
         Modifier
     )
 }

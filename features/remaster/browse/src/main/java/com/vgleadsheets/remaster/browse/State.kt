@@ -22,35 +22,35 @@ data object State : ListState() {
             name = "Favorites",
             caption = null,
             icon = Icon.JAM_FILLED,
-            clickAction = Action.DestinationClicked(Destination.FAVORITES.destName),
+            clickAction = Action.DestinationClicked(Destination.FAVORITES.noArgs()),
             selected = false
         ),
         MenuItemListModel(
             name = "By Game",
             caption = null,
             icon = Icon.ALBUM,
-            clickAction = Action.DestinationClicked(Destination.GAMES_LIST.destName),
+            clickAction = Action.DestinationClicked(Destination.GAMES_LIST.noArgs()),
             selected = false
         ),
         MenuItemListModel(
             name = "By Composer",
             caption = null,
             icon = Icon.PERSON,
-            clickAction = Action.DestinationClicked(Destination.COMPOSERS_LIST.destName),
+            clickAction = Action.DestinationClicked(Destination.COMPOSERS_LIST.noArgs()),
             selected = false
         ),
         MenuItemListModel(
             name = "By Tag",
             caption = null,
             icon = Icon.TAG,
-            clickAction = Action.DestinationClicked(Destination.TAGS_LIST.destName),
+            clickAction = Action.DestinationClicked(Destination.TAGS_LIST.noArgs()),
             selected = false
         ),
         MenuItemListModel(
             name = "All Sheets",
             caption = null,
             icon = Icon.DESCRIPTION,
-            clickAction = Action.DestinationClicked(Destination.SONGS_LIST.destName),
+            clickAction = Action.DestinationClicked(Destination.SONGS_LIST.noArgs()),
             selected = false
         ),
     )

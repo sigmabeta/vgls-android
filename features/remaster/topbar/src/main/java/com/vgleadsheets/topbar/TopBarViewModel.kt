@@ -1,43 +1,52 @@
 package com.vgleadsheets.topbar
 
+import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-@HiltViewModel
-class TopBarViewModel @Inject constructor(
+class TopBarViewModel @AssistedInject constructor(
     private val selectedPartManager: SelectedPartManager,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val hatchet: Hatchet,
-) : VglsViewModel<TopBarState, TopBarEvent>() {
+    @Assisted private val eventDispatcher: EventDispatcher,
+) : VglsViewModel<TopBarState, VglsEvent>() {
     override fun initialState() = TopBarState()
 
     init {
+        eventDispatcher.addEventSink(this)
         loadSelectedPart()
+
+        uiEvents
+            .onEach {
+                hatchet.d("Handling event: $it")
+                eventDispatcher.sendEvent(it)
+            }
+            .launchIn(viewModelScope)
     }
 
-    fun updateTitle(title: TitleBarModel) {
+    override fun sendAction(action: VglsAction) = handleAction(action)
+
+    override fun sendEvent(event: VglsEvent) = handleEvent(event)
+
+    private fun updateTitle(title: TitleBarModel) {
         hatchet.v("Updating title: $title")
         internalUiState.update {
             it.copy(model = title)
-        }
-    }
-
-    fun handleAction(action: VglsAction) {
-        when (action) {
-            is VglsAction.Menu -> {}
-            is VglsAction.AppBack -> {}
         }
     }
 
@@ -51,5 +60,32 @@ class TopBarViewModel @Inject constructor(
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
+    }
+
+    override fun onCleared() {
+        eventDispatcher.removeEventSink(this)
+    }
+
+    private fun handleAction(action: VglsAction) {
+        hatchet.d("Handling action: $action")
+        when (action) {
+            is TopBarAction.Menu -> eventDispatcher.sendEvent(VglsEvent.NavigateTo(Destination.MENU.noArgs()))
+            is TopBarAction.OpenPartPicker -> eventDispatcher.sendEvent(VglsEvent.NavigateTo(Destination.PART_PICKER.noArgs()))
+            is TopBarAction.AppBack -> eventDispatcher.sendEvent(VglsEvent.NavigateBack)
+        }
+    }
+
+    private fun handleEvent(event: VglsEvent) {
+        hatchet.d("Handling event: $event")
+        when (event) {
+            is VglsEvent.UpdateTitle -> updateTitle(
+                TitleBarModel(
+                    event.title,
+                    event.subtitle,
+                    event.imageUrl,
+                    event.shouldShowBack
+                )
+            )
+        }
     }
 }

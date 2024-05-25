@@ -1,13 +1,13 @@
 package com.vgleadsheets.remaster.games.list
 
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
@@ -51,6 +51,6 @@ class GameListViewModelBrain(
     }
 
     private fun onGameClicked(id: Long) {
-        emitEvent(ListEvent.NavigateTo(Destination.GAME_DETAIL.forId(id)))
+        emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(id)))
     }
 }

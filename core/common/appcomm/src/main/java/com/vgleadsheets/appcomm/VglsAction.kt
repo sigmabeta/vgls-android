@@ -1,4 +1,4 @@
-package com.vgleadsheets.state
+package com.vgleadsheets.appcomm
 
 open class VglsAction {
     data object Noop : VglsAction()
@@ -9,8 +9,5 @@ open class VglsAction {
 
     data object Resume : VglsAction()
 
-    data object Menu : VglsAction()
-    data object OpenPartPicker : VglsAction()
-    data object AppBack : VglsAction()
     data object DeviceBack : VglsAction()
 }

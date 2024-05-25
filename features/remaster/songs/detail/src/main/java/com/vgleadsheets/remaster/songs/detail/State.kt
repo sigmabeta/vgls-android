@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.songs.detail
 
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.LabelRatingStarListModel
@@ -15,7 +16,6 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider

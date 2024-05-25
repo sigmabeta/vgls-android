@@ -7,17 +7,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.list.ListStateActual
-import com.vgleadsheets.state.VglsAction
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ListScreen(
     stateSource: StateFlow<ListStateActual>,
-    titleUpdater: (TitleBarModel) -> Unit,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     val state by stateSource.collectAsStateWithLifecycle()
@@ -27,7 +26,7 @@ fun ListScreen(
 
     if (title.title != null) {
         LaunchedEffect(Unit) {
-            titleUpdater(title)
+            actionSink.sendAction(VglsAction.Resume)
         }
     }
 
@@ -40,7 +39,7 @@ fun ListScreen(
             contentType = { it.layoutId() }
         ) {
             it.Content(
-                actionHandler = actionHandler,
+                actionSink = actionSink,
                 modifier = Modifier
             )
         }

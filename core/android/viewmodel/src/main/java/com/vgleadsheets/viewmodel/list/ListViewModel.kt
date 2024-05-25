@@ -2,55 +2,63 @@ package com.vgleadsheets.viewmodel.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.EventSink
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.BrainProvider
-import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.state.VglsAction
-import com.vgleadsheets.ui.StringProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class ListViewModel @AssistedInject constructor(
-    private val brainProvider: BrainProvider,
-    val stringProvider: StringProvider,
+    brainProvider: BrainProvider,
     val hatchet: Hatchet,
     @Assisted destination: Destination,
-    @Assisted eventHandler: (ListEvent) -> Unit,
+    @Assisted private val eventDispatcher: EventDispatcher,
     @Assisted idArg: Long,
     @Assisted stringArg: String?,
-) : ViewModel() {
+) : ViewModel(),
+    ActionSink,
+    EventSink {
     private val brain: ListViewModelBrain = brainProvider.provideBrain(
         destination,
         viewModelScope,
     )
 
-    val actionHandler: (VglsAction) -> Unit = { action ->
-        hatchet.d("Handling action: $action")
-        handleAction(action)
-    }
+    val handlesBack: Boolean = brain.handlesBack
 
     val uiState = brain.uiStateActual
     private val uiEvents = brain.uiEvents
 
     init {
+        eventDispatcher.addEventSink(this)
+
         val initAction = when {
             (idArg > 0L) -> VglsAction.InitWithId(idArg)
             stringArg != null -> VglsAction.InitWithString(stringArg)
             else -> VglsAction.InitNoArgs
         }
 
-        handleAction(initAction)
+        this.sendAction(initAction)
         uiEvents
             .onEach {
-                hatchet.d("Handling event: $it")
-                eventHandler(it)
+                hatchet.d("Sending event: $it")
+                eventDispatcher.sendEvent(it)
             }
             .launchIn(viewModelScope)
     }
 
-    fun handleAction(action: VglsAction) = brain.handleAction(action)
+    override fun onCleared() {
+        eventDispatcher.removeEventSink(this)
+    }
+
+    override fun sendAction(action: VglsAction) = brain.sendAction(action)
+
+    override fun sendEvent(event: VglsEvent) = brain.sendEvent(event)
 }

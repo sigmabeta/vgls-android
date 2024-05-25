@@ -1,12 +1,12 @@
 package com.vgleadsheets.remaster.games.detail
 
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
@@ -104,10 +104,10 @@ class GameDetailViewModelBrain(
     }
 
     private fun onSongClicked(id: Long) {
-        emitEvent(ListEvent.NavigateTo(Destination.SONG_DETAIL.forId(id)))
+        emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(id)))
     }
 
     private fun onComposerClicked(id: Long) {
-        emitEvent(ListEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(id)))
+        emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(id)))
     }
 }

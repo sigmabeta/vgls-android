@@ -1,8 +1,8 @@
 package com.vgleadsheets.list
 
+import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.state.VglsState
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
 

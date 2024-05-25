@@ -1,10 +1,10 @@
 package com.vgleadsheets.remaster.browse
 
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.list.ListEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 
@@ -31,6 +31,6 @@ class BrowseViewModelBrain(
     }
 
     private fun onDestinationClicked(destination: String) {
-        emitEvent(ListEvent.NavigateTo(destination))
+        emitEvent(VglsEvent.NavigateTo(destination))
     }
 }

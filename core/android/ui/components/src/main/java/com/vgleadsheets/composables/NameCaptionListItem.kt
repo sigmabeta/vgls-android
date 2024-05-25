@@ -20,14 +20,16 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.state.VglsAction
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun NameCaptionListItem(
     model: NameCaptionListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     Row(
@@ -37,7 +39,7 @@ fun NameCaptionListItem(
             .padding(
                 horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
             )
-            .clickable { actionHandler(model.clickAction) }
+            .clickable { actionSink.sendAction(model.clickAction) }
     ) {
         Column(
             modifier = Modifier
@@ -110,7 +112,7 @@ private fun Sample() {
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
             VglsAction.Noop,
         ),
-        {},
+        PreviewActionSink { },
         Modifier
     )
 }

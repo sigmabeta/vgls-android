@@ -23,16 +23,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.SquareItemListModel
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun SquareItem(
     model: SquareItemListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     Surface(
@@ -43,7 +45,7 @@ fun SquareItem(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)
             )
-            .clickable { actionHandler(model.clickAction) }
+            .clickable { actionSink.sendAction(model.clickAction) }
     ) {
         Box {
             CrossfadeImage(
@@ -125,7 +127,7 @@ private fun Sample() {
             null,
             VglsAction.Noop
         ),
-        {},
+        PreviewActionSink {},
         Modifier
     )
 }

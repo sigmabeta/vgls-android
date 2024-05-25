@@ -20,16 +20,18 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.HeroImageListModel
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
-import com.vgleadsheets.state.VglsAction
 import com.vgleadsheets.ui.Icon
 
 @Composable
 fun BigImage(
     model: HeroImageListModel,
-    actionHandler: (VglsAction) -> Unit,
+    actionSink: ActionSink,
     modifier: Modifier
 ) {
     ElevatedRoundRect(
@@ -37,7 +39,7 @@ fun BigImage(
             .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             .height(320.dp)
             .fillMaxWidth()
-            .clickable(onClick = { actionHandler(model.clickAction) }),
+            .clickable(onClick = { actionSink.sendAction(model.clickAction) }),
         cornerRadius = 16.dp,
     ) {
         CrossfadeImage(
@@ -106,7 +108,7 @@ private fun LoadingGame() {
             imagePlaceholder = Icon.ALBUM,
             clickAction = VglsAction.Noop,
         ),
-        { },
+        PreviewActionSink { },
         modifier = Modifier
     )
 }
@@ -120,7 +122,7 @@ private fun SuccessGame() {
             imagePlaceholder = Icon.DESCRIPTION,
             clickAction = VglsAction.Noop,
         ),
-        { },
+        PreviewActionSink { },
         modifier = Modifier
     )
 }
@@ -136,7 +138,7 @@ private fun SuccessGameWithLabel() {
             caption = "Pretty awesome game tbh",
             clickAction = VglsAction.Noop,
         ),
-        { },
+        PreviewActionSink { },
         modifier = Modifier
     )
 }
