@@ -103,7 +103,7 @@ class FeatureDirectory(
             Destination.TAGS_LIST -> TODO()
             Destination.TAGS_VALUES_LIST -> TODO()
             Destination.TAGS_VALUES_SONG_LIST -> TODO()
-            Destination.MENU -> throw IllegalArgumentException("Not a list view.")
+            Destination.MENU -> throw IllegalArgumentException("Not a list view: $destination")
         }
     }
 }

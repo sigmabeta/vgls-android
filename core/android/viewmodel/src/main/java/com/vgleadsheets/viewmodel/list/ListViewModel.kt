@@ -35,6 +35,9 @@ class ListViewModel @AssistedInject constructor(
 
     val uiState = brain.uiStateActual
     private val uiEvents = brain.uiEvents
+        .onEach {
+            eventDispatcher.sendEvent(it)
+        }
 
     init {
         eventDispatcher.addEventSink(this)
@@ -47,10 +50,6 @@ class ListViewModel @AssistedInject constructor(
 
         this.sendAction(initAction)
         uiEvents
-            .onEach {
-                hatchet.d("Sending event: $it")
-                eventDispatcher.sendEvent(it)
-            }
             .launchIn(viewModelScope)
     }
 

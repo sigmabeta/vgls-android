@@ -29,12 +29,24 @@ fun NavGraphBuilder.listScreenEntry(
         } else {
             listOf(navArgument(ARG_TEMPLATE) { type = destination.argType.toNavType() })
         },
-    ) {
+    ) { navBackStackEntry ->
+        val idArg = if (destination.argType == ArgType.LONG) {
+            navBackStackEntry.arguments?.getLong(ARG_TEMPLATE)
+        } else {
+            null
+        }
+
+        val stringArg = if (destination.argType == ArgType.STRING) {
+            navBackStackEntry.arguments?.getString(ARG_TEMPLATE)
+        } else {
+            null
+        }
+
         val viewModel = listViewModel(
             destination = destination,
             eventDispatcher = eventDispatcher,
-            idArg = it.arguments?.getLong(ARG_TEMPLATE) ?: 0L,
-            stringArg = it.arguments?.getString(ARG_TEMPLATE)
+            idArg = idArg ?: 0L,
+            stringArg = stringArg,
         )
 
         LaunchedEffect(Unit) {

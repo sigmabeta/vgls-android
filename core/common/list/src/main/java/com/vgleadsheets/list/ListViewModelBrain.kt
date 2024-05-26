@@ -25,7 +25,7 @@ abstract class ListViewModelBrain(
 
     protected abstract fun handleAction(action: VglsAction)
 
-    protected open fun handleEvent(event: VglsEvent) { }
+    protected open fun handleEvent(event: VglsEvent) {}
 
     open val handlesBack: Boolean = false
 
@@ -41,6 +41,7 @@ abstract class ListViewModelBrain(
         .asStateFlow()
 
     fun sendAction(action: VglsAction) {
+        hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
         val state = internalUiState.value
         val titleModel = state.title(stringProvider)
 
@@ -55,11 +56,16 @@ abstract class ListViewModelBrain(
             )
         }
 
-        handleAction(action)
+        coroutineScope.launch(dispatchers.main) {
+            handleAction(action)
+        }
     }
 
     fun sendEvent(event: VglsEvent) {
-        handleEvent(event)
+        coroutineScope.launch(dispatchers.main) {
+            hatchet.d("${this@ListViewModelBrain.javaClass.simpleName} - Handling event: $event")
+            handleEvent(event)
+        }
     }
 
     protected fun updateState(updater: (ListState) -> ListState) {

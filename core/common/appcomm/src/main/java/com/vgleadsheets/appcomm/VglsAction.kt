@@ -10,4 +10,7 @@ open class VglsAction {
     data object Resume : VglsAction()
 
     data object DeviceBack : VglsAction()
+
+    data class SnackbarActionClicked(val action: VglsAction) : VglsAction()
+    data class SnackbarDismissed(val action: VglsAction) : VglsAction()
 }

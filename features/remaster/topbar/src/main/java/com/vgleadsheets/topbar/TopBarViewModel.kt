@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class TopBarViewModel @AssistedInject constructor(
     private val selectedPartManager: SelectedPartManager,
@@ -33,7 +34,7 @@ class TopBarViewModel @AssistedInject constructor(
 
         uiEvents
             .onEach {
-                hatchet.d("Handling event: $it")
+                hatchet.d("Sending event: $it")
                 eventDispatcher.sendEvent(it)
             }
             .launchIn(viewModelScope)
@@ -67,25 +68,29 @@ class TopBarViewModel @AssistedInject constructor(
     }
 
     private fun handleAction(action: VglsAction) {
-        hatchet.d("Handling action: $action")
-        when (action) {
-            is TopBarAction.Menu -> eventDispatcher.sendEvent(VglsEvent.NavigateTo(Destination.MENU.noArgs()))
-            is TopBarAction.OpenPartPicker -> eventDispatcher.sendEvent(VglsEvent.NavigateTo(Destination.PART_PICKER.noArgs()))
-            is TopBarAction.AppBack -> eventDispatcher.sendEvent(VglsEvent.NavigateBack)
+        coroutineScope.launch(dispatchers.main) {
+            hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+            when (action) {
+                is TopBarAction.Menu -> eventDispatcher.sendEvent(VglsEvent.NavigateTo(Destination.MENU.noArgs()))
+                is TopBarAction.OpenPartPicker -> eventDispatcher.sendEvent(VglsEvent.NavigateTo(Destination.PART_PICKER.noArgs()))
+                is TopBarAction.AppBack -> eventDispatcher.sendEvent(VglsEvent.NavigateBack)
+            }
         }
     }
 
     private fun handleEvent(event: VglsEvent) {
-        hatchet.d("Handling event: $event")
-        when (event) {
-            is VglsEvent.UpdateTitle -> updateTitle(
-                TitleBarModel(
-                    event.title,
-                    event.subtitle,
-                    event.imageUrl,
-                    event.shouldShowBack
+        coroutineScope.launch(dispatchers.main) {
+            hatchet.d("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
+            when (event) {
+                is VglsEvent.UpdateTitle -> updateTitle(
+                    TitleBarModel(
+                        event.title,
+                        event.subtitle,
+                        event.imageUrl,
+                        event.shouldShowBack
+                    )
                 )
-            )
+            }
         }
     }
 }
