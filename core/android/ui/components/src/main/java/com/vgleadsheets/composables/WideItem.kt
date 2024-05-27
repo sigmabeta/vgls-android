@@ -47,7 +47,7 @@ fun WideItem(
                 shape = RoundedCornerShape(8.dp)
             )
             .clickable { actionSink.sendAction(model.clickAction) }
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
     ) {
         CrossfadeImage(
             imageUrl = model.imageUrl,
