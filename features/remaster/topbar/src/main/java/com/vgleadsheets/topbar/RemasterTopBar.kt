@@ -111,13 +111,18 @@ fun RemasterTopBar(
                     .clip(CircleShape)
                     .clickable { handleAction(TopBarAction.OpenPartPicker) }
             ) {
-                Text(
-                    text = state.selectedPart ?: "",
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontSize = TextUnit(16.0f, TextUnitType.Sp)
-                    ),
-                    textAlign = TextAlign.Center,
-                )
+                Crossfade(
+                    targetState = state.selectedPart,
+                    label = "Title Animation",
+                ) {
+                    Text(
+                        text = it ?: "",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontSize = TextUnit(16.0f, TextUnitType.Sp)
+                        ),
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     )

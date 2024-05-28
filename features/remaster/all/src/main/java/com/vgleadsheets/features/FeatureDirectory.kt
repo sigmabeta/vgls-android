@@ -11,9 +11,11 @@ import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
 import com.vgleadsheets.remaster.games.detail.GameDetailViewModelBrain
 import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeViewModelBrain
+import com.vgleadsheets.remaster.parts.PartsListViewModelBrain
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +26,7 @@ class FeatureDirectory(
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
+    private val selectedPartManager: SelectedPartManager,
 ) : BrainProvider {
     override fun provideBrain(
         destination: Destination,
@@ -44,7 +47,13 @@ class FeatureDirectory(
                 coroutineScope,
             )
 
-            Destination.PART_PICKER -> TODO()
+            Destination.PART_PICKER -> PartsListViewModelBrain(
+                stringProvider,
+                hatchet,
+                dispatchers,
+                coroutineScope,
+                selectedPartManager,
+            )
 
             Destination.GAME_DETAIL -> GameDetailViewModelBrain(
                 repository,

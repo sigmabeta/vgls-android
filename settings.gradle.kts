@@ -126,6 +126,7 @@ include(
     ":features:remaster:games:detail",
     ":features:remaster:games:list",
     ":features:remaster:home",
+    ":features:remaster:parts",
     ":features:remaster:songs:detail",
     ":features:remaster:songs:list",
     ":features:remaster:topbar"

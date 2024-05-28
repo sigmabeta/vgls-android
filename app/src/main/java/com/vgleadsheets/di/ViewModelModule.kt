@@ -5,6 +5,7 @@ import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
@@ -24,6 +25,7 @@ class ViewModelModule {
         urlInfoProvider: UrlInfoProvider,
         stringProvider: StringProvider,
         hatchet: Hatchet,
+        selectedPartManager: SelectedPartManager,
     ): BrainProvider =
         FeatureDirectory(
             repository = repository,
@@ -31,5 +33,6 @@ class ViewModelModule {
             urlInfoProvider = urlInfoProvider,
             stringProvider = stringProvider,
             hatchet = hatchet,
+            selectedPartManager = selectedPartManager,
         )
 }

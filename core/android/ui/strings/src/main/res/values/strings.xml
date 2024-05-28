@@ -4,6 +4,23 @@
     <string name="cont_desc_app_menu">Open Menu</string>
     <string name="cont_desc_app_back">Go Back</string>
 
+    <string name="part_mid_c">C Instr.</string>
+    <string name="part_mid_b">B♭ Instr.</string>
+    <string name="part_mid_e">E♭ Instr.</string>
+    <string name="part_mid_f">F Instr.</string>
+    <string name="part_mid_g">G Instr.</string>
+    <string name="part_mid_alto">Alto Clef</string>
+    <string name="part_mid_bass">Bass Clef</string>
+    <string name="part_mid_vocal">Vocals</string>
+    <string name="part_long_c">C Instruments</string>
+    <string name="part_long_b">B♭ Instruments</string>
+    <string name="part_long_e">E♭ Instruments</string>
+    <string name="part_long_f">F Instruments</string>
+    <string name="part_long_g">G Instruments</string>
+    <string name="part_long_alto">Alto Clef</string>
+    <string name="part_long_bass">Bass Clef</string>
+    <string name="part_long_vocal">Vocalists</string>
+
     <string name="screen_title_browse">Browse</string>
     <string name="screen_title_games">Browse by Game</string>
     <string name="screen_title_composers">Browse by Composer</string>
@@ -24,4 +41,5 @@
     <string name="section_header_about_song">Details</string>
 
     <string name="label_song_also_known_as">Also Known As</string>
+
 </resources>
