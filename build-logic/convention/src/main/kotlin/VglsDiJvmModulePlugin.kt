@@ -7,13 +7,13 @@ class VglsDiJvmModulePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("kotlin-kapt")
+                apply("com.google.devtools.ksp")
             }
 
             dependencies {
                 add("implementation", libs.findLibrary("hilt-core").get())
 
-                "kapt"(libs.findLibrary("hilt.compiler").get())
+                "ksp"(libs.findLibrary("hilt.compiler").get())
             }
         }
     }

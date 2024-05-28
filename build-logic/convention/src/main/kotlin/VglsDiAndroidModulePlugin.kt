@@ -7,14 +7,14 @@ class VglsDiAndroidModulePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("kotlin-kapt")
+                apply("com.google.devtools.ksp")
                 apply("com.google.dagger.hilt.android")
             }
 
             dependencies {
                 add("implementation", libs.findLibrary("hilt").get())
 
-                "kapt"(libs.findLibrary("hilt.compiler").get())
+                "ksp"(libs.findLibrary("hilt.compiler").get())
             }
         }
     }

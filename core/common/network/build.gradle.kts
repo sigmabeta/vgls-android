@@ -18,7 +18,7 @@ dependencies {
     implementation(libs.retrofit.moshi)
 
     // Moshi code-gen
-    kapt(libs.moshi.codegen)
+    ksp(libs.moshi.codegen)
 }
 
 // See previous versions of this file for "GiantBombApiKey"
