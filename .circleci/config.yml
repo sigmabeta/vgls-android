@@ -16,6 +16,7 @@ workflows:
             - setup
       - build_release_apk:
           requires:
+            - kt-lint
             - detekt
             - android-lint
       - publish_app_bundle:
@@ -86,6 +87,10 @@ jobs:
       - store_artifacts:
           path: ktlint.html
           destination: ktlint-reports
+      - save_cache:
+          key: build-cache-v1-{{ .Branch }}
+          paths:
+            - build-cache
 
   detekt:
     resource_class: medium
@@ -113,6 +118,10 @@ jobs:
       - store_artifacts:
           path: app/build/reports/
           destination: reports
+      - save_cache:
+          key: build-cache-v1-{{ .Branch }}
+          paths:
+            - build-cache
 
   android-lint:
     resource_class: large
@@ -144,6 +153,10 @@ jobs:
       - store_artifacts:
           path: app/build/reports/
           destination: reports
+      - save_cache:
+          key: build-cache-v1-{{ .Branch }}
+          paths:
+            - build-cache
 
   build_release_apk:
     resource_class: large
