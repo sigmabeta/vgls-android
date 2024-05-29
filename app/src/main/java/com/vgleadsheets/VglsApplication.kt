@@ -4,11 +4,11 @@ import android.app.Application
 import android.os.Build
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import com.airbnb.mvrx.Mavericks
 import com.facebook.stetho.Stetho
 import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.SheetPreviewFetcher
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.pdf.PdfImageFetcher
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import javax.inject.Named
@@ -29,12 +29,13 @@ class VglsApplication :
     lateinit var coilLogger: HatchetCoilLogger
 
     @Inject
+    lateinit var pdfImageFetcherFactory: PdfImageFetcher.Factory
+
+    @Inject
     lateinit var sheetPreviewFetcherFactory: SheetPreviewFetcher.Factory
 
     override fun onCreate() {
         super.onCreate()
-
-        Mavericks.initialize(this)
 
         hatchet.v("Starting Application.")
         hatchet.v("Build type: ${BuildConfig.BUILD_TYPE}")
@@ -52,6 +53,9 @@ class VglsApplication :
     override fun newImageLoader() = ImageLoader.Builder(this)
         .logger(coilLogger)
         .okHttpClient(okHttpClient)
-        .components { add(sheetPreviewFetcherFactory) }
+        .components {
+            add(pdfImageFetcherFactory)
+            add(sheetPreviewFetcherFactory)
+        }
         .build()
 }

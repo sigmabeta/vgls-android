@@ -18,9 +18,6 @@ dependencies {
     // To allow features to interact with MainActivity"s state.
     api(projects.core.android.nav)
 
-    // All UI features should depend on Mavericks
-    api(projects.core.android.mvrx)
-
     // AndroidX libs
     api(libs.androidx.appcompat)
     api(libs.androidx.core.ktx)

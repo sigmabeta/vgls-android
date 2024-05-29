@@ -58,6 +58,7 @@ include(
     ":core:android:logging",
     ":core:android:mvrx",
     ":core:android:nav",
+    ":core:android:pdf",
     ":core:android:repository",
     ":core:android:resources",
     ":core:android:scaffold",

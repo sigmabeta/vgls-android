@@ -78,7 +78,7 @@ class SheetGenerator @Inject constructor(
             )
         }
 
-        hatchet.v("Unique text rendering took $uniqueText ms")
+        hatchet.v("Unique text rendering took $uniqueText ms.")
         return bitmap
     }
 
@@ -86,7 +86,7 @@ class SheetGenerator @Inject constructor(
         width: Int,
         scaledHeight: Float,
         scalingFactor: Float
-    ): Bitmap? {
+    ): Bitmap {
         val newBitmap = Bitmap.createBitmap(
             width,
             scaledHeight.toInt(),
