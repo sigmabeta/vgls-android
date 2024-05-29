@@ -19,6 +19,7 @@ import dagger.hilt.android.scopes.ActivityScoped
 class ViewModelModule {
     @Provides
     @ActivityScoped
+    @Suppress("LongParameterList")
     fun provideVMBrainProvider(
         repository: VglsRepository,
         dispatchers: VglsDispatchers,
