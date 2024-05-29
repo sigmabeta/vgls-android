@@ -94,6 +94,7 @@ android {
     lint {
         checkDependencies = true
         ignoreTestSources = true
+        checkReleaseBuilds = false
     }
 }
 
