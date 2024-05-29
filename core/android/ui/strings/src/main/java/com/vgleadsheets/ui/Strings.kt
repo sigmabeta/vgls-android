@@ -5,6 +5,7 @@ import com.vgleadsheets.ui.strings.R
 fun StringId.id(): Int {
     return when (this) {
         StringId.APP_NAME -> R.string.app_name
+        StringId.SCREEN_TITLE_PART_SELECTOR -> R.string.screen_title_parts
         StringId.SCREEN_TITLE_BROWSE -> R.string.screen_title_browse
         StringId.SCREEN_TITLE_BROWSE_GAMES -> R.string.screen_title_games
         StringId.SCREEN_TITLE_BROWSE_COMPOSERS -> R.string.screen_title_composers
@@ -25,6 +26,12 @@ fun StringId.id(): Int {
         StringId.SECTION_HEADER_ABOUT_SONG -> R.string.section_header_about_song
 
         StringId.LABEL_SONG_ALSO_KNOWN_AS -> R.string.label_song_also_known_as
+
+        StringId.BROWSE_LINK_FAVORITES -> R.string.browse_link_favorites
+        StringId.BROWSE_LINK_GAME -> R.string.browse_link_game
+        StringId.BROWSE_LINK_COMPOSER -> R.string.browse_link_composer
+        StringId.BROWSE_LINK_TAG -> R.string.browse_link_tag
+        StringId.BROWSE_LINK_SHEETS -> R.string.browse_link_sheets
 
         StringId.PART_MID_C -> R.string.part_mid_c
         StringId.PART_MID_B -> R.string.part_mid_b

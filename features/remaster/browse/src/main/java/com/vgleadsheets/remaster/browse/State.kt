@@ -19,35 +19,35 @@ data object State : ListState() {
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> = persistentListOf(
         MenuItemListModel(
-            name = "Favorites",
+            name = stringProvider.getString(StringId.BROWSE_LINK_FAVORITES),
             caption = null,
             icon = Icon.JAM_FILLED,
             clickAction = Action.DestinationClicked(Destination.FAVORITES.noArgs()),
             selected = false
         ),
         MenuItemListModel(
-            name = "By Game",
+            name = stringProvider.getString(StringId.BROWSE_LINK_GAME),
             caption = null,
             icon = Icon.ALBUM,
             clickAction = Action.DestinationClicked(Destination.GAMES_LIST.noArgs()),
             selected = false
         ),
         MenuItemListModel(
-            name = "By Composer",
+            name = stringProvider.getString(StringId.BROWSE_LINK_COMPOSER),
             caption = null,
             icon = Icon.PERSON,
             clickAction = Action.DestinationClicked(Destination.COMPOSERS_LIST.noArgs()),
             selected = false
         ),
         MenuItemListModel(
-            name = "By Tag",
+            name = stringProvider.getString(StringId.BROWSE_LINK_TAG),
             caption = null,
             icon = Icon.TAG,
             clickAction = Action.DestinationClicked(Destination.TAGS_LIST.noArgs()),
             selected = false
         ),
         MenuItemListModel(
-            name = "All Sheets",
+            name = stringProvider.getString(StringId.BROWSE_LINK_SHEETS),
             caption = null,
             icon = Icon.DESCRIPTION,
             clickAction = Action.DestinationClicked(Destination.SONGS_LIST.noArgs()),

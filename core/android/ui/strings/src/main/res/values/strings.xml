@@ -21,6 +21,7 @@
     <string name="part_long_bass">Bass Clef</string>
     <string name="part_long_vocal">Vocalists</string>
 
+    <string name="screen_title_parts">Select Part</string>
     <string name="screen_title_browse">Browse</string>
     <string name="screen_title_games">Browse by Game</string>
     <string name="screen_title_composers">Browse by Composer</string>
@@ -41,5 +42,12 @@
     <string name="section_header_about_song">Details</string>
 
     <string name="label_song_also_known_as">Also Known As</string>
+
+    <string name="browse_link_favorites">Favorites</string>
+    <string name="browse_link_game">By Game</string>
+    <string name="browse_link_composer">By Composer</string>
+    <string name="browse_link_tag">By Tag</string>
+    <string name="browse_link_sheets">All Sheets</string>
+
 
 </resources>

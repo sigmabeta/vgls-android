@@ -15,7 +15,7 @@ data class State(
     val selectedPart: Part? = null
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE),
+        title = stringProvider.getString(StringId.SCREEN_TITLE_PART_SELECTOR),
         shouldShowBack = true
     )
 

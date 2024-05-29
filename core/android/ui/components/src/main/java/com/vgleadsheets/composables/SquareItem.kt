@@ -3,7 +3,9 @@ package com.vgleadsheets.composables
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +23,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
@@ -58,6 +61,8 @@ fun SquareItem(
             Text(
                 text = model.name,
                 color = Color.White,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     shadow = Shadow(
                         color = Color.Black,
@@ -72,8 +77,8 @@ fun SquareItem(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color(0, 0, 0, 0),
-                                Color(0, 0, 0, 64),
                                 Color(0, 0, 0, 160),
+                                Color(0, 0, 0, 255),
                             )
                         )
                     )
@@ -118,16 +123,34 @@ private fun Dark() {
 
 @Composable
 private fun Sample() {
-    SquareItem(
-        SquareItemListModel(
-            1234L,
-            "Xenoblade Chronicles 3",
-            "https://randomfox.ca/images/12.jpg",
-            Icon.ALBUM,
-            null,
-            VglsAction.Noop
-        ),
-        PreviewActionSink {},
-        Modifier
-    )
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(8.dp)
+    ) {
+        SquareItem(
+            SquareItemListModel(
+                1234L,
+                "Xenoblade Chronicles 3",
+                "https://randomfox.ca/images/12.jpg",
+                Icon.ALBUM,
+                null,
+                VglsAction.Noop
+            ),
+            PreviewActionSink {},
+            Modifier.weight(1.0f)
+        )
+
+        SquareItem(
+            SquareItemListModel(
+                1234L,
+                "Xenoblade Chronicles 3: Future Redeemed Some More",
+                "https://randomfox.ca/images/1235.jpg",
+                Icon.ALBUM,
+                null,
+                VglsAction.Noop
+            ),
+            PreviewActionSink {},
+            Modifier.weight(1.0f)
+        )
+    }
 }
