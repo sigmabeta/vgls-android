@@ -33,7 +33,7 @@ data class State(
                     sourceInfo = PdfConfigById(
                         songId = song.id,
                         partApiId = sheetUrlInfo.partId ?: "",
-                        pageNumber = 1
+                        pageNumber = 0
                     ),
                     imagePlaceholder = Icon.DESCRIPTION,
                     clickAction = Action.SongClicked(song.id),

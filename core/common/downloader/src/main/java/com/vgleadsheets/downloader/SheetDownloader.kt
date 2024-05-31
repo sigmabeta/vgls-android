@@ -17,38 +17,34 @@ class SheetDownloader @Inject constructor(
 ) {
     suspend fun getSheet(id: Long, partApiId: String) = repository
         .getSong(id)
-        .map { getSheetInternal(it.name, it.gameName, partApiId) }
+        .map { getSheetInternal(it.filename, partApiId) }
         .first()
 
     suspend fun getSheet(
-        title: String,
-        gameName: String,
+        fileName: String,
         partApiId: String
     ) = getSheetInternal(
-        title,
-        gameName,
+        fileName,
         partApiId
     )
 
     private suspend fun getSheetInternal(
-        title: String,
-        gameName: String,
+        fileName: String,
         partApiId: String
     ): File {
-        val targetFile = fileReference(title, gameName, partApiId)
+        val targetFile = fileReference(fileName, partApiId)
 
         if (targetFile.exists()) {
             return targetFile
         }
 
-        downloadSheet(title, gameName, partApiId, targetFile)
+        downloadSheet(fileName, partApiId, targetFile)
 
         return targetFile
     }
 
     private suspend fun downloadSheet(
-        title: String,
-        gameName: String,
+        fileName: String,
         partApiId: String,
         targetFile: File,
     ) {
@@ -60,13 +56,13 @@ class SheetDownloader @Inject constructor(
         gameDirectory.ensureExists()
         songDirectory.ensureExists()
 
-        val remoteFileName = remoteFileName(title, gameName)
+        val suffixedFileName = "$fileName.pdf"
 
-        hatchet.d("Sending GET request for $remoteFileName...")
-        val response = sheetDownloadApi.downloadFile(remoteFileName, partApiId)
+        hatchet.d("Sending GET request for $suffixedFileName...")
+        val response = sheetDownloadApi.downloadFile(suffixedFileName, partApiId)
 
         if (!response.isSuccessful) {
-            throw IOException("Response \"${response.code()} - ${response.message()}\" received for filename $remoteFileName")
+            throw IOException("Response \"${response.code()} - ${response.message()}\" received for filename $suffixedFileName")
         }
 
         val body = response.body() ?: throw IOException("Somehow received empty response? Nani!?!?")
@@ -76,15 +72,13 @@ class SheetDownloader @Inject constructor(
         targetFile.writeBytes(bytes)
     }
 
-    private fun remoteFileName(title: String, gameName: String) = "$gameName - $title.pdf"
 
     private fun fileReference(
-        title: String,
-        gameName: String,
+        fileName: String,
         partApiId: String
     ) = File(
         storageDirectoryProvider.getStorageDirectory(),
-        "pdfs/$gameName/$title/$partApiId.pdf"
+        "pdfs/$fileName/$partApiId.pdf"
     )
 
     private fun File.ensureExists() {
