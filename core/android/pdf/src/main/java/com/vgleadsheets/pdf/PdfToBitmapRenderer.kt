@@ -1,12 +1,13 @@
 package com.vgleadsheets.pdf
 
-import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
 import com.vgleadsheets.logging.Hatchet
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,9 +15,13 @@ import kotlin.system.measureTimeMillis
 
 @Singleton
 class PdfToBitmapRenderer @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val hatchet: Hatchet,
 ) {
+    private val backgroundPaint = Paint().apply {
+        isAntiAlias = false
+        color = Color.WHITE
+    }
+
     fun renderPdfToBitmap(
         pdfFile: File,
         pdfConfigById: PdfConfigById,
@@ -85,6 +90,16 @@ class PdfToBitmapRenderer @Inject constructor(
             width,
             height,
             Bitmap.Config.ARGB_8888
-        )
+        ).apply {
+            val canvas = Canvas(this)
+
+            canvas.drawRect(
+                0.0f,
+                0.0f,
+                width.toFloat(),
+                height.toFloat(),
+                backgroundPaint
+            )
+        }
     }
 }

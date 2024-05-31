@@ -82,7 +82,7 @@ class SheetDownloader @Inject constructor(
         partApiId: String
     ) = File(
         storageDirectoryProvider.getStorageDirectory(),
-        "$gameName/$title/$partApiId.pdf"
+        "pdfs/$gameName/$title/$partApiId.pdf"
     )
 
     private fun File.ensureExists() {

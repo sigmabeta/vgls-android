@@ -35,7 +35,6 @@ fun PdfTestListItem(
             contentScale = ContentScale.Fit,
             contentDescription = null,
             modifier = modifier
-                .background(Color.White)
                 .fillMaxWidth(),
         )
     }
