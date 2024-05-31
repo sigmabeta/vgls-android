@@ -46,7 +46,8 @@ fun CrossfadeImage(
 
     val (painter, imageModifier) = if (forceGenBitmap) {
         BitmapPainter(
-            image = BitmapGenerator.generateBitmap(sourceInfo),
+            // Kotlin compiler complains without .toString() here....
+            image = BitmapGenerator.generateBitmap(sourceInfo.toString()),
             filterQuality = FilterQuality.None
         ) to modifier
     } else {
