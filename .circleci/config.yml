@@ -81,6 +81,10 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+      - restore_cache:
+          keys:
+            - build-cache-ktlint-v1-{{ .Branch }}-{{ .Revision }}
+            - build-cache-ktlint-v1-{{ .Branch }}-
       - run:
           name: Run Ktlint
           command: ./ktlint-check.sh
@@ -88,7 +92,7 @@ jobs:
           path: ktlint.html
           destination: ktlint-reports
       - save_cache:
-          key: build-cache-v1-{{ .Branch }}
+          key: build-cache-ktlint-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
 
@@ -111,7 +115,9 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
-          key: build-cache-v1-{{ .Branch }}
+          keys:
+            - build-cache-detekt-v1-{{ .Branch }}-{{ .Revision }}
+            - build-cache-detekt-v1-{{ .Branch }}-
       - run:
           name: Run Detekt checks
           command: ./gradlew detekt --no-configuration-cache --no-daemon --max-workers=2
@@ -119,7 +125,7 @@ jobs:
           path: app/build/reports/
           destination: reports
       - save_cache:
-          key: build-cache-v1-{{ .Branch }}
+          key: build-cache-detekt-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
 
@@ -143,7 +149,9 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
-          key: build-cache-v1-{{ .Branch }}
+          keys:
+            - build-cache-lint-v1-{{ .Branch }}-{{ .Revision }}
+            - build-cache-lint-v1-{{ .Branch }}-
       - run:
           name: Setup Google Services JSON
           command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
@@ -154,7 +162,7 @@ jobs:
           path: app/build/reports/
           destination: reports
       - save_cache:
-          key: build-cache-v1-{{ .Branch }}
+          key: build-cache-lint-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
 
@@ -178,7 +186,9 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
-          key: build-cache-v1-{{ .Branch }}
+          keys:
+            - build-cache-v1-{{ .Branch }}-{{ .Revision }}
+            - build-cache-v1-{{ .Branch }}-
       - run:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
@@ -189,7 +199,7 @@ jobs:
           name: Build Release
           command: ./gradlew :app:assembleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
       - save_cache:
-          key: build-cache-v1-{{ .Branch }}
+          key: build-cache-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
       - store_artifacts:
@@ -216,7 +226,9 @@ jobs:
       - restore_cache:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
-          key: build-cache-v1-{{ .Branch }}
+          keys:
+            - build-cache-v1-{{ .Branch }}-{{ .Revision }}
+            - build-cache-v1-{{ .Branch }}-
       - run:
           name: Set target Google Play Track
           command: ./set-track-name.sh
@@ -230,6 +242,6 @@ jobs:
           name: Publish Bundle
           command: ./gradlew :app:publishReleaseBundle --no-configuration-cache --no-daemon --max-workers=4
       - save_cache:
-          key: build-cache-v1-{{ .Branch }}
+          key: build-cache-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
