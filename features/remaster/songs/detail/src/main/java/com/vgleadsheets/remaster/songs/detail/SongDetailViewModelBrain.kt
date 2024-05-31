@@ -35,7 +35,7 @@ class SongDetailViewModelBrain(
     override fun handleAction(action: VglsAction) {
         when (action) {
             is VglsAction.InitWithId -> startLoading(action.id)
-            is Action.SongThumbnailClicked -> onSongThumbnailClicked(action.id)
+            is Action.SongThumbnailClicked -> onSongThumbnailClicked(action.id, action.pageNumber)
             is Action.GameClicked -> onGameClicked(action.id)
             is Action.ComposerClicked -> onComposerClicked(action.id)
             is Action.TagValueClicked -> onTagValueClicked(action.id)
@@ -125,7 +125,8 @@ class SongDetailViewModelBrain(
             .launchIn(coroutineScope)
     }
 
-    private fun onSongThumbnailClicked(id: Long) {
+    private fun onSongThumbnailClicked(id: Long, pageNumber: Int) {
+        TODO("Implement second arg")
         emitEvent(VglsEvent.NavigateTo(Destination.SONG_VIEWER.forId(id)))
     }
 

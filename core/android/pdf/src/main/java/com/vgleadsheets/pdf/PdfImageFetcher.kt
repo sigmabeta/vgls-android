@@ -6,6 +6,7 @@ import coil.decode.DataSource
 import coil.fetch.DrawableResult
 import coil.fetch.Fetcher
 import coil.request.Options
+import coil.size.Size
 import coil.size.pxOrElse
 import com.vgleadsheets.downloader.SheetDownloader
 import javax.inject.Inject
@@ -18,14 +19,21 @@ class PdfImageFetcher(
 ) : Fetcher {
     override suspend fun fetch(): DrawableResult {
         val pdfFile = sheetDownloader.getSheet(data.songId, data.partApiId)
-        val width = options.size.width.pxOrElse { 320 }
+        val size = options.size
+        val width = if (size == Size.ORIGINAL) {
+            null
+        } else {
+            size.width.pxOrElse { 69 }
+        }
+
+        println("Size $size width $width")
 
         return DrawableResult(
             drawable = pdfToBitmapRenderer
                 .renderPdfToBitmap(pdfFile, data, width)
                 .toDrawable(options.context.resources),
             isSampled = true,
-            dataSource = DataSource.MEMORY
+            dataSource = DataSource.DISK
         )
     }
 

@@ -4,21 +4,25 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import coil.size.Dimension
 import coil.size.Size
 import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.images.PagePreview
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -26,34 +30,34 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CrossfadeSheet(
-    sourceInfo: String,
+    sourceInfo: Any,
     pagePreview: PagePreview,
     sheetId: Long,
     modifier: Modifier,
-    eventListener: SheetPageListModel.ImageListener,
     simulateError: Boolean = false
 ) {
     if (simulateError) {
         Box(
+            contentAlignment = Alignment.Center,
             modifier = modifier.fillMaxSize()
         ) {
-            EmptyListIndicator(
-                model = ErrorStateListModel(
-                    sourceInfo,
-                    "Can't load this sheet. Check your network connection and try again?"
-                ),
-                modifier = modifier
-                    .align(Alignment.Center)
-            )
+            ErrorState(sourceInfo, modifier)
         }
         return
     }
 
-    eventListener.onLoadStarted()
+    val configuration = LocalConfiguration.current
+    val marginDp = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side)
+    val widthDp = configuration.screenWidthDp - (2 * marginDp.value)
+
+    val widthPx = with(LocalDensity.current) {
+        widthDp.dp.toPx().toInt()
+    }
+
     val painter = rememberAsyncImagePainter(
         model = with(ImageRequest.Builder(LocalContext.current)) {
             data(sourceInfo)
-            size(Size.ORIGINAL)
+            size(Size(Dimension.Pixels(widthPx), Dimension.Undefined))
             build()
         }
     )
@@ -64,38 +68,36 @@ fun CrossfadeSheet(
                 PlaceholderSheet(
                     pagePreview = pagePreview,
                     seed = sheetId,
-                    eventListener = eventListener,
-                    modifier = modifier.fillMaxSize(),
+                    modifier = modifier
                 )
 
             is AsyncImagePainter.State.Success -> {
-                eventListener.onLoadComplete()
                 Image(
                     painter = painter,
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    modifier = modifier
-                        .fillMaxSize(),
+                    modifier = modifier,
                 )
             }
 
             is AsyncImagePainter.State.Error -> {
-                eventListener.onLoadFailed(
-                    sourceInfo,
-                    (painter.state as AsyncImagePainter.State.Error).result.throwable
-                )
-                EmptyListIndicator(
-                    ErrorStateListModel(
-                        sourceInfo,
-                        "Can't load this sheet. Check your network connection and try again?"
-                    ),
-                    modifier.fillMaxHeight()
-                )
+                ErrorState(sourceInfo, modifier)
             }
 
             else -> {}
         }
     }
+}
+
+@Composable
+private fun ErrorState(sourceInfo: Any, modifier: Modifier) {
+    EmptyListIndicator(
+        model = ErrorStateListModel(
+            sourceInfo.toString(),
+            "Can't load this sheet. Check your network connection and try again?"
+        ),
+        modifier = modifier
+    )
 }
 
 @Preview
@@ -153,8 +155,7 @@ private fun SampleLoading() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier,
-        eventListener = NOOP_LISTENER,
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -171,8 +172,7 @@ private fun SampleSheet() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier,
-        eventListener = NOOP_LISTENER,
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -189,15 +189,7 @@ private fun SampleError() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier,
-        eventListener = NOOP_LISTENER,
+        modifier = Modifier.fillMaxWidth(),
         simulateError = true,
     )
-}
-
-internal val NOOP_LISTENER = object : SheetPageListModel.ImageListener {
-    override fun onClicked() {}
-    override fun onLoadStarted() {}
-    override fun onLoadComplete() {}
-    override fun onLoadFailed(sourceInfo: String, ex: Throwable?) {}
 }

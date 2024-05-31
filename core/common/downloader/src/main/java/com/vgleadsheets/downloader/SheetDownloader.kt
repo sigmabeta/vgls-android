@@ -20,14 +20,6 @@ class SheetDownloader @Inject constructor(
         .map { getSheetInternal(it.filename, partApiId) }
         .first()
 
-    suspend fun getSheet(
-        fileName: String,
-        partApiId: String
-    ) = getSheetInternal(
-        fileName,
-        partApiId
-    )
-
     private suspend fun getSheetInternal(
         fileName: String,
         partApiId: String

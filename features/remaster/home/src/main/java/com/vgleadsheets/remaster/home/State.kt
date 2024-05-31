@@ -1,8 +1,6 @@
 package com.vgleadsheets.remaster.home
 
-import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.PdfTestListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.ui.StringId
@@ -17,13 +15,6 @@ data object State : ListState() {
     )
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        return persistentListOf(
-            PdfTestListModel(
-                songId = 92,
-                partApiId = "Eb",
-                pageNumber = 0,
-                clickAction = VglsAction.Noop
-            )
-        )
+        return persistentListOf()
     }
 }

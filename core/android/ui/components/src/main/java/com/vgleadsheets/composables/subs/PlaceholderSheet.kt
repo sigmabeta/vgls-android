@@ -24,7 +24,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.vgleadsheets.bitmaps.SheetGenerator
-import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.previews.FullscreenBlack
 import com.vgleadsheets.images.PagePreview
 import com.vgleadsheets.logging.BasicHatchet
@@ -35,7 +34,6 @@ import kotlinx.collections.immutable.toImmutableList
 fun PlaceholderSheet(
     pagePreview: PagePreview,
     seed: Long,
-    eventListener: SheetPageListModel.ImageListener,
     modifier: Modifier,
 ) {
     val infiniteTransition = rememberInfiniteTransition()
@@ -138,7 +136,6 @@ private fun SampleLoadingKirby() {
     PlaceholderSheet(
         pagePreview = pagePreview,
         seed = 1234L,
-        eventListener = NOOP_LISTENER,
         modifier = Modifier,
     )
 }
@@ -157,7 +154,6 @@ private fun SampleLoadingArms() {
     PlaceholderSheet(
         pagePreview = pagePreview,
         seed = 1234L,
-        eventListener = NOOP_LISTENER,
         modifier = Modifier,
     )
 }

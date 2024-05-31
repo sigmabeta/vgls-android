@@ -25,17 +25,15 @@ class PdfToBitmapRenderer @Inject constructor(
     fun renderPdfToBitmap(
         pdfFile: File,
         pdfConfigById: PdfConfigById,
-        width: Int,
+        width: Int?,
     ): Bitmap {
         val pageNumber = pdfConfigById.pageNumber
-
-        hatchet.v("Generating $width px wide sheet bitmap for page $pageNumber of file ${pdfFile.name} ")
-
         val fileDescriptor = ParcelFileDescriptor.open(
             pdfFile,
             ParcelFileDescriptor.MODE_READ_ONLY
         )
-        hatchet.v("Generating $width px wide sheet bitmap for page $pageNumber of file ${pdfFile.name} ")
+
+        hatchet.v("Generating sheet bitmap for page $pageNumber of file ${pdfFile.name} ")
 
         val pdfRenderer = PdfRenderer(fileDescriptor)
         val pageCount = pdfRenderer.pageCount
@@ -54,7 +52,7 @@ class PdfToBitmapRenderer @Inject constructor(
     private fun createBitmap(
         pdfRenderer: PdfRenderer,
         pageNumber: Int,
-        width: Int
+        width: Int?
     ): Bitmap {
         val newBitmap: Bitmap
         val openPage = pdfRenderer.openPage(pageNumber)
@@ -62,11 +60,17 @@ class PdfToBitmapRenderer @Inject constructor(
         val pdfRenderTime = measureTimeMillis {
             openPage
                 .use { currentPage ->
-                    val scalingFactor = width / currentPage.width.toFloat()
-                    val scaledHeight = scalingFactor * currentPage.height
+                    val (scaledWidth, scaledHeight) = if (width != null) {
+                        val scalingFactor = width / currentPage.width.toFloat()
+                        width to (scalingFactor * currentPage.height)
+                    } else {
+                        currentPage.width to currentPage.height
+                    }
+
+                    hatchet.v("Scaled width: $scaledWidth ")
 
                     newBitmap = createBlankBitmap(
-                        width = width,
+                        width = scaledWidth,
                         height = scaledHeight.toInt()
                     )
 

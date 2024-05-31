@@ -1,24 +1,16 @@
 package com.vgleadsheets.components
 
+import com.vgleadsheets.appcomm.VglsAction
 import kotlinx.collections.immutable.ImmutableList
 
 data class SheetPageListModel(
-    val sheetUrl: String,
-    val pageNumber: Int,
+    val sourceInfo: Any,
     val title: String,
     val transposition: String,
     val gameName: String,
     val composers: ImmutableList<String>,
-    val songId: Long, // NOT the id of this page!
-    val listener: ImageListener,
-    override val dataId: Long = sheetUrl.hashCode().toLong()
+    val clickAction: VglsAction,
+    override val dataId: Long = sourceInfo.hashCode().toLong()
 ) : ListModel() {
     override val columns = ListModel.COLUMNS_ALL
-
-    interface ImageListener {
-        fun onClicked()
-        fun onLoadStarted()
-        fun onLoadComplete()
-        fun onLoadFailed(sourceInfo: String, ex: Throwable?)
-    }
 }

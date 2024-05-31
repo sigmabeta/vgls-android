@@ -55,7 +55,7 @@ fun CrossfadeImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(sourceInfo)
                 .placeholder(imagePlaceholder.id())
-                .crossfade(false)
+                .crossfade(true)
                 .build()
         )
 

@@ -7,6 +7,8 @@ import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.SheetPageCardListModel
+import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.list.ListState
@@ -21,6 +23,7 @@ import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -42,19 +45,48 @@ data class State(
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val songModel = if (song != null) {
-            val sourceInfo = PdfConfigById(
-                songId = song.id,
-                partApiId = sheetUrlInfo.partId ?: "",
-                pageNumber = 0
-            )
+            listOf(
+                if (song.pageCount > 1) {
+                    HorizontalScrollerListModel(
+                        dataId = song.id,
+                        scrollingItems = List(song.pageCount) { pageNumber ->
+                            val sourceInfo = PdfConfigById(
+                                songId = song.id,
+                                partApiId = sheetUrlInfo.partId ?: "",
+                                pageNumber = pageNumber
+                            )
 
-            listOf<ListModel>(
-                HeroImageListModel(
-                    sourceInfo = sourceInfo,
-                    imagePlaceholder = Icon.ALBUM,
-                    name = "",
-                    clickAction = Action.SongThumbnailClicked(song!!.id),
-                )
+                            SheetPageCardListModel(
+                                SheetPageListModel(
+                                    sourceInfo = sourceInfo,
+                                    title = song.name,
+                                    transposition = sourceInfo.partApiId,
+                                    gameName = song.gameName,
+                                    composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                                    clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
+                                )
+                            )
+
+                        }.toImmutableList()
+                    )
+                } else {
+                    val sourceInfo = PdfConfigById(
+                        songId = song.id,
+                        partApiId = sheetUrlInfo.partId ?: "",
+                        pageNumber = 0
+                    )
+
+                    SheetPageCardListModel(
+                        SheetPageListModel(
+                            sourceInfo = sourceInfo,
+                            title = song.name,
+                            transposition = sourceInfo.partApiId,
+                            gameName = song.gameName,
+                            composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                            clickAction = Action.SongThumbnailClicked(song.id, 0),
+                        )
+                    )
+                }
             )
         } else {
             emptyList()

@@ -1,6 +1,5 @@
 package com.vgleadsheets.composables
 
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.components.SheetPageListModel
@@ -10,9 +9,10 @@ import com.vgleadsheets.images.PagePreview
 @Composable
 fun SheetPageItem(
     model: SheetPageListModel,
+    modifier: Modifier,
 ) {
     CrossfadeSheet(
-        sourceInfo = model.sheetUrl,
+        sourceInfo = model.sourceInfo,
         pagePreview = PagePreview(
             model.title,
             model.transposition,
@@ -20,7 +20,8 @@ fun SheetPageItem(
             model.composers
         ),
         sheetId = model.dataId,
-        eventListener = model.listener,
-        modifier = Modifier.clickable { model.listener.onClicked() }
+        modifier = modifier/*.padding(
+            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+        )*/
     )
 }

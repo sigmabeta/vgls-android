@@ -74,6 +74,7 @@ include(
     ":core:android:ui:list",
     ":core:android:ui:strings",
     ":core:android:ui:themes",
+    ":core:android:viewer",
     ":core:android:viewmodel",
 
     ":core:common:appcomm",
