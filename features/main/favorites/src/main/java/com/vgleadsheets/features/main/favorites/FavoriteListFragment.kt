@@ -14,8 +14,8 @@ class FavoriteListFragment :
     lateinit var viewModelFactory: FavoriteListViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     override fun getTrackingScreen() = TrackingScreen.LIST_FAVORITE
 
@@ -28,7 +28,7 @@ class FavoriteListFragment :
     override fun generateListConfig(state: FavoriteListState, navState: NavState) = Config(
         state,
         navState,
-        baseImageUrl,
+        basesourceInfo,
         Clicks(
             getFragmentRouter(),
         ),

@@ -19,7 +19,8 @@ data object State : ListState() {
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         return persistentListOf(
             PdfTestListModel(
-                filename = "Xenoblade Chronicles 3 - Chain Attack.pdf",
+                songId = 92,
+                partApiId = "Eb",
                 pageNumber = 0,
                 clickAction = VglsAction.Noop
             )

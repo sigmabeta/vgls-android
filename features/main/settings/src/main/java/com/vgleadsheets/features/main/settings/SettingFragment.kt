@@ -13,8 +13,8 @@ class SettingFragment : ComposeListFragment<SettingState>() {
     lateinit var viewModelFactory: SettingViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     override fun getTrackingScreen() = TrackingScreen.SETTINGS
 

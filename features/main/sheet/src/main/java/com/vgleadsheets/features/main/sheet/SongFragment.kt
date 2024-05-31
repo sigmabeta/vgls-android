@@ -16,8 +16,8 @@ class SongFragment : ComposeListFragment<SongState>() {
     lateinit var viewModelFactory: SongViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_SHEET
 
@@ -28,7 +28,7 @@ class SongFragment : ComposeListFragment<SongState>() {
     override fun generateListConfig(state: SongState, navState: NavState) = Config(
         state,
         navState,
-        baseImageUrl,
+        basesourceInfo,
         Clicks(
             getFragmentRouter(),
             viewModel

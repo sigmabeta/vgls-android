@@ -17,8 +17,8 @@ class TagValueSongFragment :
     lateinit var viewModelFactory: TagValueSongViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     override fun getTrackingScreen() = TrackingScreen.LIST_TAG_VALUE_SONG
 
@@ -30,7 +30,7 @@ class TagValueSongFragment :
         Config(
             state,
             navState,
-            baseImageUrl,
+            basesourceInfo,
             Clicks(getFragmentRouter()),
             perfTracker,
             getPerfSpec(),

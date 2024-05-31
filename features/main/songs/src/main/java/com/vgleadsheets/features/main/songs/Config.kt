@@ -23,7 +23,7 @@ import com.vgleadsheets.perf.tracking.common.PerfTracker
 class Config(
     private val state: SongListState,
     private val navState: NavState,
-    private val baseImageUrl: String,
+    private val basesourceInfo: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
@@ -65,7 +65,7 @@ class Config(
                     it.name,
                     it.gameName,
                     Page.generateThumbUrl(
-                        baseImageUrl,
+                        basesourceInfo,
                         navState.selectedPart.apiId,
                         it.isAltSelected,
                         it.filename
@@ -80,7 +80,7 @@ class Config(
                 it.name,
                 it.gameName,
                 Page.generateThumbUrl(
-                    baseImageUrl,
+                    basesourceInfo,
                     navState.selectedPart.apiId,
                     it.isAltSelected,
                     it.filename

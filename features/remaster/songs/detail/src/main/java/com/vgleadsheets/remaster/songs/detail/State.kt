@@ -9,13 +9,13 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
-import com.vgleadsheets.images.Page
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -41,11 +41,16 @@ data class State(
     }
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        val imageUrl = song?.imageUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
-        val songModel = if (imageUrl != null) {
+        val songModel = if (song != null) {
+            val sourceInfo = PdfConfigById(
+                songId = song.id,
+                partApiId = sheetUrlInfo.partId ?: "",
+                pageNumber = 1
+            )
+
             listOf<ListModel>(
                 HeroImageListModel(
-                    imageUrl = imageUrl,
+                    sourceInfo = sourceInfo,
                     imagePlaceholder = Icon.ALBUM,
                     name = "",
                     clickAction = Action.SongThumbnailClicked(song!!.id),
@@ -66,7 +71,7 @@ data class State(
                         WideItemListModel(
                             dataId = composer.id + ID_PREFIX_COMPOSERS,
                             name = composer.name,
-                            imageUrl = composer.photoUrl,
+                            sourceInfo = composer.photoUrl,
                             imagePlaceholder = Icon.PERSON,
                             clickAction = Action.ComposerClicked(composer.id)
                         )
@@ -83,7 +88,7 @@ data class State(
                     stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_SONG)
                 ),
                 HeroImageListModel(
-                    imageUrl = game.photoUrl ?: "",
+                    sourceInfo = game.photoUrl ?: "",
                     imagePlaceholder = Icon.ALBUM,
                     name = game.name,
                     clickAction = Action.GameClicked(game.id),
@@ -147,16 +152,6 @@ data class State(
         }
 
         return (songModel + composerModels + gameModel + difficultyModels + aboutModels).toPersistentList()
-    }
-
-    private fun Song.imageUrl(baseImageUrl: String?, selectedPart: String?): String? {
-        return Page.generateImageUrl(
-            baseImageUrl = baseImageUrl ?: return null,
-            partApiId = selectedPart ?: return null,
-            filename = filename,
-            isAlternateEnabled = isAltSelected,
-            pageNumber = 1
-        )
     }
 
     private fun dedupeTagValues(

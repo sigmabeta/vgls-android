@@ -26,7 +26,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CrossfadeSheet(
-    imageUrl: String,
+    sourceInfo: String,
     pagePreview: PagePreview,
     sheetId: Long,
     modifier: Modifier,
@@ -39,7 +39,7 @@ fun CrossfadeSheet(
         ) {
             EmptyListIndicator(
                 model = ErrorStateListModel(
-                    imageUrl,
+                    sourceInfo,
                     "Can't load this sheet. Check your network connection and try again?"
                 ),
                 modifier = modifier
@@ -52,7 +52,7 @@ fun CrossfadeSheet(
     eventListener.onLoadStarted()
     val painter = rememberAsyncImagePainter(
         model = with(ImageRequest.Builder(LocalContext.current)) {
-            data(imageUrl)
+            data(sourceInfo)
             size(Size.ORIGINAL)
             build()
         }
@@ -81,12 +81,12 @@ fun CrossfadeSheet(
 
             is AsyncImagePainter.State.Error -> {
                 eventListener.onLoadFailed(
-                    imageUrl,
+                    sourceInfo,
                     (painter.state as AsyncImagePainter.State.Error).result.throwable
                 )
                 EmptyListIndicator(
                     ErrorStateListModel(
-                        imageUrl,
+                        sourceInfo,
                         "Can't load this sheet. Check your network connection and try again?"
                     ),
                     modifier.fillMaxHeight()
@@ -143,7 +143,7 @@ private fun PortraitError() {
 @Composable
 private fun SampleLoading() {
     CrossfadeSheet(
-        imageUrl = "Doesn't matter",
+        sourceInfo = "Doesn't matter",
         pagePreview = PagePreview(
             "A Trip to Alivel Mall",
             "C",
@@ -161,7 +161,7 @@ private fun SampleLoading() {
 @Composable
 private fun SampleSheet() {
     CrossfadeSheet(
-        imageUrl = "nope",
+        sourceInfo = "nope",
         pagePreview = PagePreview(
             "A Trip to Alivel Mall",
             "C",
@@ -179,7 +179,7 @@ private fun SampleSheet() {
 @Composable
 private fun SampleError() {
     CrossfadeSheet(
-        imageUrl = "nope",
+        sourceInfo = "nope",
         pagePreview = PagePreview(
             "A Trip to Alivel Mall",
             "C",
@@ -199,5 +199,5 @@ internal val NOOP_LISTENER = object : SheetPageListModel.ImageListener {
     override fun onClicked() {}
     override fun onLoadStarted() {}
     override fun onLoadComplete() {}
-    override fun onLoadFailed(imageUrl: String, ex: Throwable?) {}
+    override fun onLoadFailed(sourceInfo: String, ex: Throwable?) {}
 }

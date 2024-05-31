@@ -16,8 +16,8 @@ class GameDetailFragment : DetailFragment<GameDetailState>() {
     lateinit var viewModelFactory: GameDetailViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_GAME
 
@@ -28,7 +28,7 @@ class GameDetailFragment : DetailFragment<GameDetailState>() {
     override fun generateListConfig(state: GameDetailState, navState: NavState) = Config(
         state,
         navState,
-        baseImageUrl,
+        basesourceInfo,
         Clicks(
             getFragmentRouter(),
             viewModel

@@ -8,11 +8,11 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
-import com.vgleadsheets.images.Page
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -29,14 +29,13 @@ data class State(
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = composer?.name,
-        imageUrl = composer?.photoUrl
     )
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val composerModel = if (composer?.photoUrl != null) {
             listOf<ListModel>(
                 HeroImageListModel(
-                    imageUrl = composer.photoUrl!!,
+                    sourceInfo = composer.photoUrl!!,
                     imagePlaceholder = Icon.PERSON,
                     name = null,
                     clickAction = VglsAction.Noop,
@@ -57,7 +56,7 @@ data class State(
                         WideItemListModel(
                             dataId = game.id + ID_PREFIX_GAMES,
                             name = game.name,
-                            imageUrl = game.photoUrl,
+                            sourceInfo = game.photoUrl,
                             imagePlaceholder = Icon.ALBUM,
                             clickAction = Action.GameClicked(game.id),
                         )
@@ -74,12 +73,16 @@ data class State(
                     stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_COMPOSER)
                 )
             ) + songs.map { song ->
-                val imageUrl = song.thumbUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId)
+                val sourceInfo = PdfConfigById(
+                    songId = song.id,
+                    partApiId = sheetUrlInfo.partId ?: "",
+                    pageNumber = 1
+                )
                 ImageNameCaptionListModel(
                     dataId = song.id + ID_PREFIX_SONGS,
                     name = song.name,
                     caption = song.gameName,
-                    imageUrl = imageUrl,
+                    sourceInfo = sourceInfo,
                     imagePlaceholder = Icon.DESCRIPTION,
                     clickAction = Action.SongClicked(song.id)
                 )
@@ -89,16 +92,6 @@ data class State(
         }
 
         return (composerModel + gameModels + songModels).toImmutableList()
-    }
-
-    private fun Song.thumbUrl(baseImageUrl: String?, selectedPart: String?): String? {
-        return Page.generateImageUrl(
-            baseImageUrl ?: return null,
-            selectedPart ?: return null,
-            filename,
-            isAltSelected,
-            1
-        )
     }
 
     companion object {

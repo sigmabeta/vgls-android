@@ -6,7 +6,7 @@ import com.vgleadsheets.ui.Icon
 data class WideItemListModel(
     override val dataId: Long,
     val name: String,
-    val imageUrl: String?,
+    val sourceInfo: String?,
     val imagePlaceholder: Icon,
     val actionableId: Long? = null,
     val clickAction: VglsAction

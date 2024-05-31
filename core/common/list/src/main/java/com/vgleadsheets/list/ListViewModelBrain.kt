@@ -50,7 +50,6 @@ abstract class ListViewModelBrain(
                 VglsEvent.UpdateTitle(
                     title = titleModel.title,
                     subtitle = titleModel.subtitle,
-                    imageUrl = titleModel.imageUrl,
                     shouldShowBack = titleModel.shouldShowBack
                 )
             )

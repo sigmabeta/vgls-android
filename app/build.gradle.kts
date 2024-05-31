@@ -106,6 +106,7 @@ dependencies {
     implementation(projects.core.android.ui.components)
 
     implementation(projects.core.common.debug)
+    implementation(projects.core.common.downloader)
     implementation(projects.core.common.network)
     implementation(projects.core.common.settings.environment)
     implementation(projects.core.common.urlinfo)

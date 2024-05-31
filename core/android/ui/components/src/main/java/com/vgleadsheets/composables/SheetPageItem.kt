@@ -12,7 +12,7 @@ fun SheetPageItem(
     model: SheetPageListModel,
 ) {
     CrossfadeSheet(
-        imageUrl = model.sheetUrl,
+        sourceInfo = model.sheetUrl,
         pagePreview = PagePreview(
             model.title,
             model.transposition,

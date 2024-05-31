@@ -4,7 +4,10 @@ plugins {
 }
 
 dependencies {
-    api(libs.coil.kt)
+    implementation(libs.coil.kt)
+
+    implementation(projects.core.common.downloader)
+    api(projects.core.common.pdf)
 }
 
 android {

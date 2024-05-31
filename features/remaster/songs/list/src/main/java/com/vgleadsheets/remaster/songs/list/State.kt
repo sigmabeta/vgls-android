@@ -3,9 +3,9 @@ package com.vgleadsheets.remaster.songs.list
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.images.Page
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -30,21 +30,15 @@ data class State(
                     dataId = song.id,
                     name = song.name,
                     caption = song.gameName,
-                    imageUrl = song.thumbUrl(sheetUrlInfo.imageBaseUrl, sheetUrlInfo.partId),
+                    sourceInfo = PdfConfigById(
+                        songId = song.id,
+                        partApiId = sheetUrlInfo.partId ?: "",
+                        pageNumber = 1
+                    ),
                     imagePlaceholder = Icon.DESCRIPTION,
                     clickAction = Action.SongClicked(song.id),
                 )
             }
             .toImmutableList()
-    }
-
-    private fun Song.thumbUrl(baseImageUrl: String?, selectedPart: String?): String? {
-        return Page.generateImageUrl(
-            baseImageUrl = baseImageUrl ?: return null,
-            partApiId = selectedPart ?: return null,
-            filename = filename,
-            isAlternateEnabled = isAltSelected,
-            pageNumber = 1
-        )
     }
 }

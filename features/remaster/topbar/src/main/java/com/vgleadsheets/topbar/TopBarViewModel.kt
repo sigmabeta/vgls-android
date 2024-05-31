@@ -86,7 +86,6 @@ class TopBarViewModel @AssistedInject constructor(
                     TitleBarModel(
                         event.title,
                         event.subtitle,
-                        event.imageUrl,
                         event.shouldShowBack
                     )
                 )

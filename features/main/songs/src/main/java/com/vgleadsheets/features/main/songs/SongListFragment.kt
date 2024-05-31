@@ -14,8 +14,8 @@ class SongListFragment :
     lateinit var viewModelFactory: SongListViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     override fun getTrackingScreen() = TrackingScreen.LIST_SHEET
 
@@ -28,7 +28,7 @@ class SongListFragment :
     override fun generateListConfig(state: SongListState, navState: NavState) = Config(
         state,
         navState,
-        baseImageUrl,
+        basesourceInfo,
         Clicks(getFragmentRouter()),
         perfTracker,
         getPerfSpec(),

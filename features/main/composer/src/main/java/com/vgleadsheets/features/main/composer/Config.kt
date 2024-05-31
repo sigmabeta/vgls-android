@@ -28,7 +28,7 @@ import com.vgleadsheets.perf.tracking.common.PerfTracker
 class Config(
     private val state: ComposerDetailState,
     private val navState: NavState,
-    private val baseImageUrl: String,
+    private val basesourceInfo: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
@@ -91,7 +91,7 @@ class Config(
                     song.name,
                     song.captionText(),
                     Page.generateThumbUrl(
-                        baseImageUrl,
+                        basesourceInfo,
                         navState.selectedPart.apiId,
                         song.isAltSelected,
                         song.filename
@@ -119,9 +119,9 @@ class Config(
         if (!gameModels.isNullOrEmpty()) {
             if (gameModels.size == 1) {
                 val gameModel = gameModels.first()
-                val imageUrl = gameModel.imageUrl
+                val sourceInfo = gameModel.sourceInfo
 
-                if (imageUrl != null) {
+                if (sourceInfo != null) {
                     contentModels.add(
                         SectionHeaderListModel(
                             resources.getString(R.string.section_header_games)
@@ -130,7 +130,7 @@ class Config(
 
                     contentModels.add(
                         HeroImageListModel(
-                            imageUrl,
+                            sourceInfo,
                             gameModel.imagePlaceholder,
                             gameModel.name,
                         ) {

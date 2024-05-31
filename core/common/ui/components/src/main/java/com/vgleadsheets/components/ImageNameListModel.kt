@@ -6,7 +6,7 @@ import com.vgleadsheets.ui.Icon
 data class ImageNameListModel(
     override val dataId: Long,
     val name: String,
-    val imageUrl: String?,
+    val sourceInfo: Any?,
     val imagePlaceholder: Icon,
     val actionableId: Long? = null,
     val clickAction: VglsAction

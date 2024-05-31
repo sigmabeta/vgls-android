@@ -13,11 +13,11 @@ import kotlin.random.Random
 
 object BitmapGenerator {
     fun generateBitmap(
-        url: String,
+        sourceInfo: Any,
         squareImage: Boolean = true,
         drawLines: Boolean = false
     ): ImageBitmap {
-        val rng = Random(url.hashCode())
+        val rng = Random(sourceInfo.hashCode())
         val width = rng.nextInt(16) + 16
         val height = if (squareImage) {
             width

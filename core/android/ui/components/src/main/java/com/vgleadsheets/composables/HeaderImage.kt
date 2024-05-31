@@ -13,12 +13,12 @@ import com.vgleadsheets.ui.Icon
 
 @Composable
 fun HeaderImage(
-    imageUrl: String? = null,
+    sourceInfo: Any? = null,
     imagePlaceholder: Icon,
     modifier: Modifier
 ) {
     CrossfadeImage(
-        imageUrl = imageUrl,
+        sourceInfo = sourceInfo,
         imagePlaceholder = imagePlaceholder,
         modifier = modifier,
     )
@@ -30,7 +30,7 @@ fun HeaderImage(
     modifier: Modifier
 ) {
     HeaderImage(
-        imageUrl = model.imageUrl,
+        sourceInfo = model.sourceInfo,
         imagePlaceholder = model.imagePlaceholder,
         modifier = modifier
     )
@@ -41,7 +41,7 @@ fun HeaderImage(
 private fun LoadingGame() {
     HeaderImage(
         HeroImageListModel(
-            imageUrl = "whatever",
+            sourceInfo = "whatever",
             imagePlaceholder = Icon.ALBUM,
             clickAction = VglsAction.Noop,
         ),
@@ -56,7 +56,7 @@ private fun LoadingGame() {
 private fun SuccessGame() {
     HeaderImage(
         HeroImageListModel(
-            imageUrl = "whatever",
+            sourceInfo = "whatever",
             imagePlaceholder = Icon.DESCRIPTION,
             clickAction = VglsAction.Noop,
         ),

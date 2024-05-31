@@ -49,8 +49,8 @@ class ViewerFragment :
     lateinit var viewerViewModelFactory: ViewerViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     @Inject
     lateinit var dispatchers: VglsDispatchers
@@ -92,7 +92,7 @@ class ViewerFragment :
         perfTracker.onFullContentLoad(getPerfSpec())
     }
 
-    override fun onLoadFailed(imageUrl: String, ex: Throwable?) {
+    override fun onLoadFailed(sourceInfo: String, ex: Throwable?) {
         perfTracker.cancel(getPerfSpec())
         showError("Image load failed: ${ex?.message ?: "Unknown Error"}")
     }
@@ -263,8 +263,8 @@ class ViewerFragment :
 
         val listComponents = (1..pageCount).map { pageNumber ->
             SheetPageListModel(
-                Page.generateImageUrl(
-                    baseImageUrl,
+                Page.generatesourceInfo(
+                    basesourceInfo,
                     selectedPart.apiId,
                     song.filename,
                     song.isAltSelected,

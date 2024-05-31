@@ -43,7 +43,7 @@ fun BigImage(
         cornerRadius = 16.dp,
     ) {
         CrossfadeImage(
-            imageUrl = model.imageUrl,
+            sourceInfo = model.sourceInfo,
             imagePlaceholder = model.imagePlaceholder,
             modifier = Modifier.fillMaxSize(),
         )
@@ -104,7 +104,7 @@ fun BigImage(
 private fun LoadingGame() {
     BigImage(
         HeroImageListModel(
-            imageUrl = "whatever",
+            sourceInfo = "whatever",
             imagePlaceholder = Icon.ALBUM,
             clickAction = VglsAction.Noop,
         ),
@@ -118,7 +118,7 @@ private fun LoadingGame() {
 private fun SuccessGame() {
     BigImage(
         HeroImageListModel(
-            imageUrl = "whatever",
+            sourceInfo = "whatever",
             imagePlaceholder = Icon.DESCRIPTION,
             clickAction = VglsAction.Noop,
         ),
@@ -132,7 +132,7 @@ private fun SuccessGame() {
 private fun SuccessGameWithLabel() {
     BigImage(
         HeroImageListModel(
-            imageUrl = "whatever",
+            sourceInfo = "whatever",
             imagePlaceholder = Icon.DESCRIPTION,
             name = "Xenoblade Chronicles 3",
             caption = "Pretty awesome game tbh",

@@ -19,6 +19,6 @@ data class SheetPageListModel(
         fun onClicked()
         fun onLoadStarted()
         fun onLoadComplete()
-        fun onLoadFailed(imageUrl: String, ex: Throwable?)
+        fun onLoadFailed(sourceInfo: String, ex: Throwable?)
     }
 }

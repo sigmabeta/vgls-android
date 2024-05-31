@@ -30,6 +30,7 @@ class UrlInfoProvider(
                     baseBaseUrl = env.url,
                     apiBaseUrl = prependIfNotNull(env.url, "api/app/"),
                     imageBaseUrl = prependIfNotNull(env.url, "assets/sheets/png/"),
+                    pdfBaseUrl = prependIfNotNull(env.url, "assets/sheets/"),
                     partId = part.apiId
                 )
             }

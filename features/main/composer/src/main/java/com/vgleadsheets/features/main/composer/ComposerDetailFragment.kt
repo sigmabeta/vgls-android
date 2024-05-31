@@ -16,8 +16,8 @@ class ComposerDetailFragment : DetailFragment<ComposerDetailState>() {
     lateinit var viewModelFactory: ComposerDetailViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     override fun getTrackingScreen() = TrackingScreen.DETAIL_COMPOSER
 
@@ -28,7 +28,7 @@ class ComposerDetailFragment : DetailFragment<ComposerDetailState>() {
     override fun generateListConfig(state: ComposerDetailState, navState: NavState) = Config(
         state,
         navState,
-        baseImageUrl,
+        basesourceInfo,
         Clicks(
             getFragmentRouter(),
             viewModel

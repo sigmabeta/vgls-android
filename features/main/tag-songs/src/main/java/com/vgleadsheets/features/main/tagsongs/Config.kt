@@ -23,7 +23,7 @@ import com.vgleadsheets.perf.tracking.common.PerfTracker
 class Config(
     private val state: TagValueSongState,
     private val navState: NavState,
-    private val baseImageUrl: String,
+    private val basesourceInfo: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
@@ -66,7 +66,7 @@ class Config(
                     song.name,
                     song.captionText(),
                     Page.generateThumbUrl(
-                        baseImageUrl,
+                        basesourceInfo,
                         navState.selectedPart.apiId,
                         song.isAltSelected,
                         song.filename

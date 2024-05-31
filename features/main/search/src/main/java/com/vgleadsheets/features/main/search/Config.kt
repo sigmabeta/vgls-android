@@ -34,7 +34,7 @@ import com.vgleadsheets.nav.NavState
 class Config(
     private val state: SearchState,
     private val navState: NavState,
-    private val baseImageUrl: String,
+    private val basesourceInfo: String,
     private val clicks: Clicks,
     private val resources: Resources,
 ) : ListConfig {
@@ -166,7 +166,7 @@ class Config(
                             result.name,
                             result.gameName,
                             Page.generateThumbUrl(
-                                baseImageUrl,
+                                basesourceInfo,
                                 navState.selectedPart.apiId,
                                 result.isAltSelected,
                                 result.filename

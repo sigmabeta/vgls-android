@@ -110,7 +110,7 @@ private fun SquareItemSection(rng: Random) {
                 SquareItemListModel(
                     dataId = index.toLong(),
                     name = "Square #$index",
-                    imageUrl = rng.nextInt().toString(),
+                    sourceInfo = rng.nextInt().toString(),
                     imagePlaceholder = Icon.ALBUM,
                     null,
                     clickAction = VglsAction.Noop,
@@ -136,7 +136,7 @@ private fun WideItemSection(rng: Random) {
                 WideItemListModel(
                     dataId = index.toLong(),
                     name = "Wide Item #$index",
-                    imageUrl = rng.nextInt().toString(),
+                    sourceInfo = rng.nextInt().toString(),
                     Icon.PERSON,
                     null,
                     clickAction = VglsAction.Noop
@@ -160,7 +160,7 @@ private fun VerticalSection(rng: Random) {
             model = ImageNameListModel(
                 dataId = index.toLong(),
                 name = "Wide Item #$index",
-                imageUrl = rng.nextInt().toString(),
+                sourceInfo = rng.nextInt().toString(),
                 Icon.DESCRIPTION,
                 null,
                 clickAction = VglsAction.Noop

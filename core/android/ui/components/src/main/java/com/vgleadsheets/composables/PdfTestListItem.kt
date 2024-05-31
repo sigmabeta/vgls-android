@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.PdfTestListModel
-import com.vgleadsheets.pdf.PdfLoadConfig
+import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -27,8 +27,9 @@ fun PdfTestListItem(
         modifier = Modifier.padding(16.dp)
     ) {
         AsyncImage(
-            model = PdfLoadConfig(
-                model.filename,
+            model = PdfConfigById(
+                model.songId,
+                model.partApiId,
                 model.pageNumber
             ),
             contentScale = ContentScale.Fit,
@@ -58,7 +59,8 @@ private fun PortraitPdf() {
 private fun SamplePdf() {
     PdfTestListItem(
         PdfTestListModel(
-            filename = "Xenoblade Chronicles 3 - Chain Attack.pdf",
+            songId = 92,
+            partApiId = "Eb",
             pageNumber = 1,
             clickAction = VglsAction.Noop,
         ),

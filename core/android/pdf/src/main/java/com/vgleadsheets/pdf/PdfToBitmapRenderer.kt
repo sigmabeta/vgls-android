@@ -2,8 +2,6 @@ package com.vgleadsheets.pdf
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
@@ -19,24 +17,20 @@ class PdfToBitmapRenderer @Inject constructor(
     @ApplicationContext private val context: Context,
     private val hatchet: Hatchet,
 ) {
-    private val backgroundPaint =
-        Paint().apply {
-            isAntiAlias = false
-            color = Color.WHITE
-        }
+    fun renderPdfToBitmap(
+        pdfFile: File,
+        pdfConfigById: PdfConfigById,
+        width: Int,
+    ): Bitmap {
+        val pageNumber = pdfConfigById.pageNumber
 
-    fun renderPdfToBitmap(pdfLoadConfig: PdfLoadConfig, width: Int): Bitmap {
-        val pdfPath = pdfLoadConfig.pdfPath
-        val pageNumber = pdfLoadConfig.pageNumber
-
-        val file = File(context.filesDir, pdfPath)
-        hatchet.v("Generating $width px wide sheet bitmap for page $pageNumber of file ${file.name} ")
+        hatchet.v("Generating $width px wide sheet bitmap for page $pageNumber of file ${pdfFile.name} ")
 
         val fileDescriptor = ParcelFileDescriptor.open(
-            file,
+            pdfFile,
             ParcelFileDescriptor.MODE_READ_ONLY
         )
-        hatchet.v("Generating $width px wide sheet bitmap for page $pageNumber of file ${file.name} ")
+        hatchet.v("Generating $width px wide sheet bitmap for page $pageNumber of file ${pdfFile.name} ")
 
         val pdfRenderer = PdfRenderer(fileDescriptor)
         val pageCount = pdfRenderer.pageCount

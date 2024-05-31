@@ -3,6 +3,7 @@ package com.vgleadsheets.di
 import com.squareup.moshi.Moshi
 import com.vgleadsheets.network.FakeModelGenerator
 import com.vgleadsheets.network.FakeVglsApi
+import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides
@@ -47,4 +48,17 @@ object ApiModule {
     } else {
         FakeVglsApi(fakeModelGenerator)
     }
+
+    @Provides
+    @Singleton
+    fun provideSheetDownloadApi(
+        @Named("VglsPdfUrl") baseUrl: String?,
+        @Named("VglsOkHttp") client: OkHttpClient,
+    ): SheetDownloadApi {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .build().create(SheetDownloadApi::class.java)
+    }
+
 }

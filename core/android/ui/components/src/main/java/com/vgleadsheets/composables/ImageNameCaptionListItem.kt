@@ -43,7 +43,7 @@ fun ImageNameCaptionListItem(
     ImageNameCaptionListItem(
         model.name,
         model.caption,
-        model.imageUrl,
+        model.sourceInfo,
         model.imagePlaceholder,
         model.clickAction,
         actionSink,
@@ -60,7 +60,7 @@ fun ImageNameCaptionListItem(
     ImageNameCaptionListItem(
         model.name,
         model.caption,
-        model.imageUrl,
+        model.sourceInfo,
         model.imagePlaceholder,
         model.clickAction,
         actionSink,
@@ -72,7 +72,7 @@ fun ImageNameCaptionListItem(
 private fun ImageNameCaptionListItem(
     name: String,
     caption: String,
-    imageUrl: String?,
+    sourceInfo: Any?,
     imagePlaceholder: Icon,
     clickAction: VglsAction,
     actionSink: ActionSink,
@@ -93,7 +93,7 @@ private fun ImageNameCaptionListItem(
                 .align(Alignment.CenterVertically)
         ) {
             CrossfadeImage(
-                imageUrl = imageUrl,
+                sourceInfo = sourceInfo,
                 imagePlaceholder = imagePlaceholder,
                 modifier = modifier
             )

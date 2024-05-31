@@ -27,7 +27,7 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun CrossfadeImage(
-    imageUrl: String?,
+    sourceInfo: Any?,
     imagePlaceholder: Icon,
     modifier: Modifier,
     contentScale: ContentScale? = null,
@@ -35,7 +35,7 @@ fun CrossfadeImage(
 ) {
     val bgModifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)
 
-    if (imageUrl == null) {
+    if (sourceInfo == null) {
         Image(
             painter = painterResource(id = imagePlaceholder.id()),
             contentDescription = null,
@@ -46,13 +46,13 @@ fun CrossfadeImage(
 
     val (painter, imageModifier) = if (forceGenBitmap) {
         BitmapPainter(
-            image = BitmapGenerator.generateBitmap(imageUrl),
+            image = BitmapGenerator.generateBitmap(sourceInfo),
             filterQuality = FilterQuality.None
         ) to modifier
     } else {
         val asyncPainter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
+                .data(sourceInfo)
                 .placeholder(imagePlaceholder.id())
                 .crossfade(false)
                 .build()
@@ -102,7 +102,7 @@ private fun Sample() {
                 cornerRadius = 4.dp
             ) {
                 CrossfadeImage(
-                    imageUrl = null,
+                    sourceInfo = null,
                     imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
@@ -113,7 +113,7 @@ private fun Sample() {
                 cornerRadius = 4.dp
             ) {
                 CrossfadeImage(
-                    imageUrl = "doesn't matter",
+                    sourceInfo = "doesn't matter",
                     imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
@@ -125,7 +125,7 @@ private fun Sample() {
                 Modifier.size(64.dp)
             ) {
                 CrossfadeImage(
-                    imageUrl = null,
+                    sourceInfo = null,
                     imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
@@ -135,7 +135,7 @@ private fun Sample() {
                 Modifier.size(64.dp)
             ) {
                 CrossfadeImage(
-                    imageUrl = "doesn't matter",
+                    sourceInfo = "doesn't matter",
                     imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )

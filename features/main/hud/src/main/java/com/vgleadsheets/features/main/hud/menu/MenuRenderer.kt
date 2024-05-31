@@ -32,7 +32,7 @@ object MenuRenderer {
         updateTime: Async<Long>,
         currentSong: Song?,
         perfViewState: PerfViewState,
-        baseImageUrl: String,
+        basesourceInfo: String,
         navViewModel: NavViewModel,
         clicks: Clicks,
         resources: Resources
@@ -55,7 +55,7 @@ object MenuRenderer {
             searchQuery,
             selectedPart,
             searchResults,
-            baseImageUrl,
+            basesourceInfo,
             clicks,
             { text -> clicks.searchQuery(text) },
             clicks::bottomMenuButton,

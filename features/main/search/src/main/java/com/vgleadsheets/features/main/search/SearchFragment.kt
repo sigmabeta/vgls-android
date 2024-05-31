@@ -16,8 +16,8 @@ class SearchFragment : ComposeListFragment<SearchState>() {
     lateinit var viewModelFactory: SearchViewModel.Factory
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     override fun getTrackingScreen() = TrackingScreen.SEARCH
 
@@ -35,7 +35,7 @@ class SearchFragment : ComposeListFragment<SearchState>() {
     override fun generateListConfig(state: SearchState, navState: NavState) = Config(
         state,
         navState,
-        baseImageUrl,
+        basesourceInfo,
         Clicks(
             getFragmentRouter(),
             navViewModel

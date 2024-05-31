@@ -14,7 +14,7 @@ dependencies {
     api(libs.okhttp.logging)
 
     // Retrofit libs
-    implementation(libs.retrofit.core)
+    api(libs.retrofit.core)
     implementation(libs.retrofit.moshi)
 
     // Moshi code-gen

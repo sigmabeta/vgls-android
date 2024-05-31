@@ -43,8 +43,8 @@ class HudFragment : VglsFragment() {
     lateinit var storage: Storage
 
     @Inject
-    @Named("VglsImageUrl")
-    lateinit var baseImageUrl: String
+    @Named("VglssourceInfo")
+    lateinit var basesourceInfo: String
 
     private lateinit var clicks: Clicks
 
@@ -114,7 +114,7 @@ class HudFragment : VglsFragment() {
             navState.updateTime,
             navState.selectedSong,
             navState.perfViewState,
-            baseImageUrl,
+            basesourceInfo,
             navViewModel,
             clicks,
             resources

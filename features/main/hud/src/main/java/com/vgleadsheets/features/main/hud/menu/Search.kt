@@ -31,7 +31,7 @@ object Search {
         searchQuery: String?,
         selectedPart: Part,
         contentLoad: SearchContent,
-        baseImageUrl: String,
+        basesourceInfo: String,
         clicks: Clicks,
         onTextEntered: (String) -> Unit,
         onMenuButtonClick: () -> Unit,
@@ -42,7 +42,7 @@ object Search {
             searchQuery,
             contentLoad,
             selectedPart,
-            baseImageUrl,
+            basesourceInfo,
             clicks,
             resources
         ) + listOf(
@@ -62,7 +62,7 @@ object Search {
         query: String?,
         contentLoad: SearchContent,
         selectedPart: Part,
-        baseImageUrl: String,
+        basesourceInfo: String,
         clicks: Clicks,
         resources: Resources
     ): List<ListModel> {
@@ -90,7 +90,7 @@ object Search {
             query,
             2,
             contentLoad.games,
-            baseImageUrl,
+            basesourceInfo,
             selectedPart,
             clicks,
             resources
@@ -100,7 +100,7 @@ object Search {
             query,
             1,
             contentLoad.songs,
-            baseImageUrl,
+            basesourceInfo,
             selectedPart,
             clicks,
             resources
@@ -110,7 +110,7 @@ object Search {
             query,
             1,
             contentLoad.composers,
-            baseImageUrl,
+            basesourceInfo,
             selectedPart,
             clicks,
             resources
@@ -137,7 +137,7 @@ object Search {
         query: String,
         maxResults: Int,
         results: Async<List<Any>>,
-        baseImageUrl: String,
+        basesourceInfo: String,
         selectedPart: Part,
         clicks: Clicks,
         resources: Resources
@@ -149,7 +149,7 @@ object Search {
             query,
             maxResults,
             results(),
-            baseImageUrl,
+            basesourceInfo,
             selectedPart,
             clicks,
             resources,
@@ -161,7 +161,7 @@ object Search {
         query: String,
         maxResults: Int,
         results: List<Any>,
-        baseImageUrl: String,
+        basesourceInfo: String,
         selectedPart: Part,
         clicks: Clicks,
         resources: Resources
@@ -183,7 +183,7 @@ object Search {
                         query,
                         maxResults,
                         filteredResults,
-                        baseImageUrl,
+                        basesourceInfo,
                         selectedPart,
                         clicks,
                         resources
@@ -191,7 +191,7 @@ object Search {
                 } else {
                     mapSearchResults(
                         filteredResults,
-                        baseImageUrl,
+                        basesourceInfo,
                         selectedPart,
                         clicks,
                         resources
@@ -215,14 +215,14 @@ object Search {
         query: String,
         maxResults: Int,
         filteredResults: List<Any>,
-        baseImageUrl: String,
+        basesourceInfo: String,
         selectedPart: Part,
         clicks: Clicks,
         resources: Resources
     ): List<ListModel> {
         return mapSearchResults(
             filteredResults.take(maxResults),
-            baseImageUrl,
+            basesourceInfo,
             selectedPart,
             clicks,
             resources
@@ -240,7 +240,7 @@ object Search {
     @Suppress("UNUSED_PARAMETER")
     private fun mapSearchResults(
         results: List<Any>,
-        baseImageUrl: String,
+        basesourceInfo: String,
         selectedPart: Part,
         clicks: Clicks,
         resources: Resources
@@ -254,7 +254,7 @@ object Search {
                             result.name,
                             result.gameName,
                             Page.generateThumbUrl(
-                                baseImageUrl,
+                                basesourceInfo,
                                 selectedPart.apiId,
                                 result.isAltSelected,
                                 result.filename

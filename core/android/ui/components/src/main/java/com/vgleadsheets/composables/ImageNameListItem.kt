@@ -39,7 +39,7 @@ fun ImageNameListItem(
 ) {
     ImageNameListItem(
         model.name,
-        model.imageUrl,
+        model.sourceInfo,
         model.imagePlaceholder,
         model.clickAction,
         actionSink,
@@ -55,7 +55,7 @@ fun ImageNameListItem(
 ) {
     ImageNameListItem(
         model.name,
-        model.imageUrl,
+        model.sourceInfo,
         model.imagePlaceholder,
         model.clickAction,
         actionSink,
@@ -66,7 +66,7 @@ fun ImageNameListItem(
 @Composable
 fun ImageNameListItem(
     name: String,
-    imageUrl: String?,
+    sourceInfo: Any?,
     imagePlaceholder: Icon,
     clickAction: VglsAction,
     actionSink: ActionSink,
@@ -88,7 +88,7 @@ fun ImageNameListItem(
                 .align(Alignment.CenterVertically)
         ) {
             CrossfadeImage(
-                imageUrl = imageUrl,
+                sourceInfo = sourceInfo,
                 imagePlaceholder = imagePlaceholder,
                 modifier = modifier
             )

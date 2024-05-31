@@ -50,7 +50,7 @@ fun WideItem(
             .background(MaterialTheme.colorScheme.surfaceContainer)
     ) {
         CrossfadeImage(
-            imageUrl = model.imageUrl,
+            sourceInfo = model.sourceInfo,
             imagePlaceholder = model.imagePlaceholder,
             modifier = Modifier
                 .fillMaxHeight()

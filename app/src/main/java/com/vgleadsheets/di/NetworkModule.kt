@@ -1,17 +1,19 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.Random
+import javax.inject.Named
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -29,29 +31,67 @@ object NetworkModule {
     @Named("VglsUrl")
     @Singleton
     internal fun provideVglsUrl(
-        @Named("NetworkEndpoint") selectedNetwork: Int
-    ) = NetworkEndpoint.values()[selectedNetwork].url
+        urlInfoProvider: UrlInfoProvider,
+    ): String? {
+        return runBlocking {
+            val urlInfo = urlInfoProvider
+                .urlInfoFlow
+                .first { it.baseBaseUrl != null }
 
+            return@runBlocking urlInfo.baseBaseUrl
+        }
+    }
     @Provides
     @Named("VglsApiUrl")
     @Singleton
     internal fun provideVglsApiUrl(
-        @Named("VglsUrl") baseUrl: String?
-    ) = if (baseUrl != null) {
-        baseUrl + "api/"
-    } else {
-        null
+        urlInfoProvider: UrlInfoProvider,
+    ): String? {
+        return runBlocking {
+            val urlInfo = urlInfoProvider
+                .urlInfoFlow
+                .first { it.apiBaseUrl != null }
+
+            return@runBlocking urlInfo.apiBaseUrl
+        }
     }
 
     @Provides
     @Named("VglsImageUrl")
     @Singleton
     internal fun provideVglsImageUrl(
-        @Named("VglsUrl") baseUrl: String?
-    ) = if (baseUrl != null) {
-        baseUrl + "assets/sheets/png/"
-    } else {
-        "file:///android_asset/sheets"
+        urlInfoProvider: UrlInfoProvider,
+    ): String? {
+        val baseUrl = runBlocking {
+            val urlInfo = urlInfoProvider
+                .urlInfoFlow
+                .first { it.imageBaseUrl != null }
+
+            return@runBlocking urlInfo.imageBaseUrl
+        }
+
+        return if (baseUrl != null) {
+            baseUrl
+        } else {
+            "file:///android_asset/sheets"
+        }
+    }
+
+    @Provides
+    @Named("VglsPdfUrl")
+    @Singleton
+    internal fun provideVglsPdfUrl(
+        urlInfoProvider: UrlInfoProvider,
+    ): String? {
+        val baseUrl = runBlocking {
+            val urlInfo = urlInfoProvider
+                .urlInfoFlow
+                .first { it.pdfBaseUrl != null }
+
+            return@runBlocking urlInfo.pdfBaseUrl
+        }
+
+        return baseUrl
     }
 
     @Provides

@@ -25,7 +25,7 @@ data class State(
                 SquareItemListModel(
                     dataId = game.id,
                     name = game.name,
-                    imageUrl = game.photoUrl,
+                    sourceInfo = game.photoUrl,
                     imagePlaceholder = Icon.ALBUM,
                     clickAction = Action.GameClicked(game.id),
                 )

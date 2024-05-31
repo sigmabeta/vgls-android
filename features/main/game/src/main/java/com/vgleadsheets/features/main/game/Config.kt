@@ -28,7 +28,7 @@ import com.vgleadsheets.perf.tracking.common.PerfTracker
 class Config(
     private val state: GameDetailState,
     private val navState: NavState,
-    private val baseImageUrl: String,
+    private val basesourceInfo: String,
     private val clicks: Clicks,
     private val perfTracker: PerfTracker,
     private val perfSpec: PerfSpec,
@@ -113,9 +113,9 @@ class Config(
         if (!composerModels.isNullOrEmpty()) {
             if (composerModels.size == 1) {
                 val composerModel = composerModels.first()
-                val imageUrl = composerModel.imageUrl
+                val sourceInfo = composerModel.sourceInfo
 
-                if (imageUrl != null) {
+                if (sourceInfo != null) {
                     contentModels.add(
                         SectionHeaderListModel(
                             resources.getString(R.string.section_header_composers)
@@ -124,7 +124,7 @@ class Config(
 
                     contentModels.add(
                         HeroImageListModel(
-                            imageUrl,
+                            sourceInfo,
                             composerModel.imagePlaceholder,
                             composerModel.name,
                         ) {
@@ -197,8 +197,8 @@ class Config(
         else -> resources.getString(R.string.subtitle_composer_various)
     }
 
-    private fun Song.thumbUrl() = Page.generateImageUrl(
-        baseImageUrl,
+    private fun Song.thumbUrl() = Page.generatesourceInfo(
+        basesourceInfo,
         navState.selectedPart.apiId,
         filename,
         isAltSelected,

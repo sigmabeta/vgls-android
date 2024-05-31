@@ -37,7 +37,7 @@ fun DetailHeader(
             .fillMaxWidth()
     ) {
         CrossfadeImage(
-            imageUrl = model.photoUrl,
+            sourceInfo = model.photoUrl,
             imagePlaceholder = model.placeholder,
             modifier = Modifier.fillMaxSize(),
         )

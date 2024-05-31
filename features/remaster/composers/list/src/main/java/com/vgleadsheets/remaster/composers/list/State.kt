@@ -25,7 +25,7 @@ data class State(
                 SquareItemListModel(
                     dataId = composer.id,
                     name = composer.name,
-                    imageUrl = composer.photoUrl,
+                    sourceInfo = composer.photoUrl,
                     imagePlaceholder = Icon.ALBUM,
                     clickAction = Action.ComposerClicked(composer.id),
                 )
