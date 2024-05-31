@@ -8,7 +8,9 @@ import retrofit2.http.Path
 interface SheetDownloadApi {
     @GET("{partApiId}/{fileName}")
     suspend fun downloadFile(
-        /*Octo*/ @Path("fileName") fileName: String,
-        /*Octo*/ @Path("partApiId") partApiId: String,
+        /*Octo*/
+        @Path("fileName") fileName: String,
+        /*Octo*/
+        @Path("partApiId") partApiId: String,
     ): Response<ResponseBody>
 }

@@ -41,6 +41,7 @@ object NetworkModule {
             return@runBlocking urlInfo.baseBaseUrl
         }
     }
+
     @Provides
     @Named("VglsApiUrl")
     @Singleton
