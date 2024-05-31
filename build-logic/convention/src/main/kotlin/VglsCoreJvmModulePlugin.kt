@@ -9,6 +9,7 @@ class VglsCoreJvmModulePlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("org.jetbrains.kotlin.jvm")
+                apply("io.gitlab.arturbosch.detekt")
             }
 
             configureKotlinJvm()
