@@ -1,5 +1,5 @@
 package com.vgleadsheets.appcomm
 
-interface ActionSink {
+fun interface ActionSink {
     fun sendAction(action: VglsAction)
 }

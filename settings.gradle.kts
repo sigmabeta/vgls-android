@@ -44,7 +44,6 @@ rootProject.name = "VGLeadSheets"
 
 include(
     ":app",
-    ":app:viewmodel",
 
     ":core:android:activity",
     ":core:android:animation",
@@ -52,7 +51,6 @@ include(
     ":core:android:conversion",
     ":core:android:coroutines",
     ":core:android:database",
-    ":core:android:environment",
     ":core:android:firebase",
     ":core:android:images",
     ":core:android:logging",
