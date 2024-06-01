@@ -4,8 +4,15 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,14 +21,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Dimension
 import coil.size.Size
+import com.vgleadsheets.bitmaps.R
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.images.PagePreview
@@ -62,6 +73,11 @@ fun CrossfadeSheet(
         }
     )
 
+    if (LocalInspectionMode.current) {
+        PreviewSheet(pagePreview, modifier)
+        return
+    }
+
     Crossfade(targetState = painter.state) {
         when (it) {
             is AsyncImagePainter.State.Loading ->
@@ -85,6 +101,61 @@ fun CrossfadeSheet(
             }
 
             else -> {}
+        }
+    }
+}
+
+@Composable
+private fun PreviewSheet(
+    pagePreview: PagePreview,
+    modifier: Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(0.77272f)
+            .background(Color.White)
+    ) {
+        Text(
+            text = pagePreview.title,
+            color = Color.Black,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 12.dp)
+        )
+
+        Text(
+            text = "from ${pagePreview.gameName}",
+            color = Color.Black,
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 10.sp),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 40.dp)
+        )
+
+        Text(
+            text = "https://www.vgleadsheets.com/",
+            color = Color.Black,
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 8.sp),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+        )
+
+        Column(
+            modifier = Modifier
+                .padding(top = 72.dp)
+                .padding(horizontal = 24.dp)
+        ) {
+            repeat(10) {
+                Image(
+                    painter = painterResource(R.drawable.img_leadsheet_single_system_blank),
+                    contentDescription = null
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+            }
         }
     }
 }
