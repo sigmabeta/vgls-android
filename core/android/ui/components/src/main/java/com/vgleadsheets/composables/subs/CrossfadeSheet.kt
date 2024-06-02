@@ -58,6 +58,7 @@ fun CrossfadeSheet(
         model = with(ImageRequest.Builder(LocalContext.current)) {
             data(sourceInfo)
             size(Size(Dimension.Pixels(widthPx), Dimension.Undefined))
+            // size(Size.ORIGINAL)
             build()
         }
     )

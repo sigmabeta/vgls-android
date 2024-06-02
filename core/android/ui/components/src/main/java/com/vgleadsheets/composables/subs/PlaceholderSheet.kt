@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
-import com.vgleadsheets.bitmaps.SheetGenerator
+import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
 import com.vgleadsheets.composables.previews.FullscreenBlack
 import com.vgleadsheets.images.PagePreview
 import com.vgleadsheets.logging.BasicHatchet
@@ -82,7 +82,7 @@ private fun createImageBitmap(
     println("Generating...")
 
     val hatchet = BasicHatchet()
-    val generator = SheetGenerator(
+    val generator = LoadingIndicatorGenerator(
         context,
         hatchet,
         "https://jetpackcompose.com"

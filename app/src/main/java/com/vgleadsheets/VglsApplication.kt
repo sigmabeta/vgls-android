@@ -6,7 +6,7 @@ import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.facebook.stetho.Stetho
 import com.vgleadsheets.images.HatchetCoilLogger
-import com.vgleadsheets.images.SheetPreviewFetcher
+import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfImageFetcher
 import dagger.hilt.android.HiltAndroidApp
@@ -32,7 +32,7 @@ class VglsApplication :
     lateinit var pdfImageFetcherFactory: PdfImageFetcher.Factory
 
     @Inject
-    lateinit var sheetPreviewFetcherFactory: SheetPreviewFetcher.Factory
+    lateinit var loadingIndicatorFetcherFactory: LoadingIndicatorFetcher.Factory
 
     override fun onCreate() {
         super.onCreate()
@@ -55,7 +55,7 @@ class VglsApplication :
         .okHttpClient(okHttpClient)
         .components {
             add(pdfImageFetcherFactory)
-            add(sheetPreviewFetcherFactory)
+            add(loadingIndicatorFetcherFactory)
         }
         .build()
 }
