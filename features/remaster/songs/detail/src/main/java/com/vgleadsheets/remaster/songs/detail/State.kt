@@ -63,6 +63,7 @@ data class State(
                                     transposition = sourceInfo.partApiId,
                                     gameName = song.gameName,
                                     composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                                    pageNumber = pageNumber,
                                     clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
                                 )
                             )
@@ -83,6 +84,7 @@ data class State(
                             transposition = sourceInfo.partApiId,
                             gameName = song.gameName,
                             composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                            pageNumber = 0,
                             clickAction = Action.SongThumbnailClicked(song.id, 0),
                         )
                     )

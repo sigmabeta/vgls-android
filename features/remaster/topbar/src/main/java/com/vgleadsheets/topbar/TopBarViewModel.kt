@@ -21,9 +21,9 @@ import kotlinx.coroutines.launch
 
 class TopBarViewModel @AssistedInject constructor(
     private val selectedPartManager: SelectedPartManager,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
-    private val hatchet: Hatchet,
+    override val dispatchers: VglsDispatchers,
+    override val coroutineScope: CoroutineScope,
+    override val hatchet: Hatchet,
     @Assisted private val eventDispatcher: EventDispatcher,
 ) : VglsViewModel<TopBarState>() {
     override fun initialState() = TopBarState()
@@ -44,30 +44,11 @@ class TopBarViewModel @AssistedInject constructor(
 
     override fun sendEvent(event: VglsEvent) = handleEvent(event)
 
-    private fun updateTitle(title: TitleBarModel) {
-        hatchet.v("Updating title: $title")
-        internalUiState.update {
-            it.copy(model = title)
-        }
-    }
-
-    private fun loadSelectedPart() {
-        selectedPartManager
-            .selectedPartFlow()
-            .onEach { selectedPart ->
-                internalUiState.update {
-                    it.copy(selectedPart = selectedPart.apiId)
-                }
-            }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
-    }
-
     override fun onCleared() {
         eventDispatcher.removeEventSink(this)
     }
 
-    private fun handleAction(action: VglsAction) {
+    override fun handleAction(action: VglsAction) {
         coroutineScope.launch(dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
             when (action) {
@@ -96,7 +77,7 @@ class TopBarViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handleEvent(event: VglsEvent) {
+    override fun handleEvent(event: VglsEvent) {
         coroutineScope.launch(dispatchers.main) {
             hatchet.d("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
@@ -109,5 +90,24 @@ class TopBarViewModel @AssistedInject constructor(
                 )
             }
         }
+    }
+
+    private fun updateTitle(title: TitleBarModel) {
+        hatchet.v("Updating title: $title")
+        internalUiState.update {
+            it.copy(model = title)
+        }
+    }
+
+    private fun loadSelectedPart() {
+        selectedPartManager
+            .selectedPartFlow()
+            .onEach { selectedPart ->
+                internalUiState.update {
+                    it.copy(selectedPart = selectedPart.apiId)
+                }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
     }
 }
