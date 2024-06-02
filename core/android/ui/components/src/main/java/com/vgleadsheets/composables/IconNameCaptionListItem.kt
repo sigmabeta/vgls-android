@@ -57,7 +57,7 @@ fun IconNameCaptionListItem(
     modifier: Modifier,
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable { actionSink.sendAction(clickAction) }

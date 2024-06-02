@@ -18,7 +18,7 @@ import javax.inject.Singleton
 import kotlin.system.measureTimeMillis
 
 @Singleton
-class SheetGenerator @Inject constructor(
+class LoadingIndicatorGenerator @Inject constructor(
     @ApplicationContext private val context: Context,
     private val hatchet: Hatchet,
     @Named("VglsUrl") private val vglsUrl: String?

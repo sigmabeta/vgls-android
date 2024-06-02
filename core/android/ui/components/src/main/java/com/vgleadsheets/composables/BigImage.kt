@@ -17,7 +17,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
@@ -36,7 +35,6 @@ fun BigImage(
 ) {
     ElevatedRoundRect(
         modifier = modifier
-            .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             .height(320.dp)
             .fillMaxWidth()
             .clickable(onClick = { actionSink.sendAction(model.clickAction) }),
@@ -109,7 +107,7 @@ private fun LoadingGame() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
-        modifier = Modifier
+        modifier = Modifier.padding(16.dp)
     )
 }
 
@@ -123,7 +121,7 @@ private fun SuccessGame() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
-        modifier = Modifier
+        modifier = Modifier.padding(16.dp)
     )
 }
 
@@ -139,6 +137,6 @@ private fun SuccessGameWithLabel() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
-        modifier = Modifier
+        modifier = Modifier.padding(16.dp)
     )
 }

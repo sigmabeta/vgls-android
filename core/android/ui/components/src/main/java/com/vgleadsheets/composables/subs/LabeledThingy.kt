@@ -48,7 +48,7 @@ fun LabeledThingy(
     modifier: Modifier,
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)),

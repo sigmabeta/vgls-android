@@ -73,7 +73,7 @@ fun ImageNameListItem(
     modifier: Modifier,
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable { actionSink.sendAction(clickAction) }
@@ -90,7 +90,7 @@ fun ImageNameListItem(
             CrossfadeImage(
                 sourceInfo = sourceInfo,
                 imagePlaceholder = imagePlaceholder,
-                modifier = modifier
+                modifier = Modifier
             )
         }
 

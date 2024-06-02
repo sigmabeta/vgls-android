@@ -27,7 +27,6 @@ fun SectionHeader(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
             .padding(bottom = 16.dp, top = 16.dp)
     ) {
         val color = MaterialTheme.colorScheme.onBackground
@@ -93,6 +92,7 @@ private fun SampleNotMenu() {
     SectionHeader(
         "Sick new skills",
         modifier = Modifier
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
     )
 }
 
@@ -101,5 +101,6 @@ private fun SampleMenu() {
     SectionHeader(
         "Paths to the future",
         modifier = Modifier
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
     )
 }

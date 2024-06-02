@@ -44,7 +44,7 @@ fun MenuItem(
     modifier: Modifier,
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
