@@ -1,5 +1,6 @@
 package com.vgleadsheets.ui.viewer
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
@@ -15,24 +16,41 @@ import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class ViewerViewModel @AssistedInject constructor(
-    override val hatchet: Hatchet,
+    private val hatchet: Hatchet,
     private val stringProvider: StringProvider,
     private val repository: VglsRepository,
     private val urlInfoProvider: UrlInfoProvider,
-    override val dispatchers: VglsDispatchers,
-    override val coroutineScope: CoroutineScope,
+    private val dispatchers: VglsDispatchers,
+    private val coroutineScope: CoroutineScope,
     @Assisted private val eventDispatcher: EventDispatcher,
     @Assisted("id") idArg: Long,
     @Assisted("page") pageArg: Long,
 ) : VglsViewModel<ViewerState>(),
     ActionSink,
     EventSink {
+    private val internalUiEvents = MutableSharedFlow<VglsEvent>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
+    private val uiEvents = internalUiEvents
+        .onEach {
+            eventDispatcher.sendEvent(it)
+        }
+
+    private val internalUiState = MutableStateFlow(ViewerState())
+    val uiState = internalUiState.asStateFlow()
+
     init {
         eventDispatcher.addEventSink(this)
 
@@ -63,6 +81,18 @@ class ViewerViewModel @AssistedInject constructor(
         eventDispatcher.removeEventSink(this)
     }
 
+    override fun sendAction(action: VglsAction) {
+        coroutineScope.launch(dispatchers.main) {
+            handleAction(action)
+        }
+    }
+
+    override fun sendEvent(event: VglsEvent) {
+        coroutineScope.launch(dispatchers.main) {
+            handleEvent(event)
+        }
+    }
+
     private fun startLoading(id: Long, pageNumber: Long) {
         fetchSong(id, pageNumber)
         fetchUrlInfo()
@@ -76,6 +106,21 @@ class ViewerViewModel @AssistedInject constructor(
             hatchet.v("Updating state: $newState")
 
             internalUiState.value = newState
+        }
+    }
+
+    private fun emitEvent(event: VglsEvent) {
+        coroutineScope.launch(dispatchers.main) {
+            hatchet.d("Emitting event: $event")
+            internalUiEvents.tryEmit(event)
+        }
+    }
+
+    private fun handleAction(action: VglsAction) {
+        hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+        when (action) {
+            is VglsAction.Resume -> resume()
+            is Action.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
         }
     }
 
@@ -124,5 +169,9 @@ class ViewerViewModel @AssistedInject constructor(
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
+    }
+
+    private fun handleEvent(event: VglsEvent) {
+        hatchet.d("${this.javaClass.simpleName} - Handling event: $event")
     }
 }

@@ -50,6 +50,7 @@ fun ViewerScreen(
             .background(Color.Black)
     ) { page ->
         val item = items[page]
+        println("Viewer page: $page")
         item.Content(
             actionSink = actionSink,
             modifier = Modifier
