@@ -38,8 +38,8 @@ class PdfToBitmapRenderer @Inject constructor(
         val pdfRenderer = PdfRenderer(fileDescriptor)
         val pageCount = pdfRenderer.pageCount
 
-        if (pageNumber >= pageCount) {
-            throw IllegalArgumentException("PDF only has $pageCount pages, can't render page $pageNumber.")
+        require(pageNumber >= pageCount) {
+            "PDF only has $pageCount pages, can't render page $pageNumber."
         }
         val bitmap = createBitmap(pdfRenderer, pageNumber, width)
 
