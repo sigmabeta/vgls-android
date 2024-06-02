@@ -21,8 +21,6 @@ fun SheetPageItem(
             model.pageNumber,
         ),
         sheetId = model.dataId,
-        modifier = modifier/*.padding(
-            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
-        )*/
+        modifier = modifier
     )
 }

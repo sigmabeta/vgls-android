@@ -31,15 +31,13 @@ fun SheetPageCard(
     modifier: Modifier,
 ) {
     ElevatedCard(
-        modifier = Modifier
-            .padding(
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
-            )
+        modifier = modifier
+            .padding()
             .wrapContentSize()
     ) {
         SheetPageItem(
             model = model,
-            modifier = modifier
+            modifier = Modifier
                 .clickable { actionSink.sendAction(model.clickAction) }
                 .wrapContentHeight()
                 .fillMaxWidth(),
@@ -96,6 +94,8 @@ private fun SamplePdf() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
-        modifier = Modifier,
+        modifier = Modifier.padding(
+            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+        ),
     )
 }

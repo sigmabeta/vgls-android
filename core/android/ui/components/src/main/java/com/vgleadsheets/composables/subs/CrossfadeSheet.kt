@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
@@ -49,8 +48,7 @@ fun CrossfadeSheet(
     }
 
     val configuration = LocalConfiguration.current
-    val marginDp = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side)
-    val widthDp = configuration.screenWidthDp - (2 * marginDp.value)
+    val widthDp = configuration.screenWidthDp
 
     val widthPx = with(LocalDensity.current) {
         widthDp.dp.toPx().toInt()

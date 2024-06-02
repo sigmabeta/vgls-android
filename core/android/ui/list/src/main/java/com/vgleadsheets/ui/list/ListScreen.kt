@@ -1,11 +1,13 @@
 package com.vgleadsheets.ui.list
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
@@ -40,7 +42,9 @@ fun ListScreen(
         ) {
             it.Content(
                 actionSink = actionSink,
-                modifier = Modifier
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+                )
             )
         }
     }
