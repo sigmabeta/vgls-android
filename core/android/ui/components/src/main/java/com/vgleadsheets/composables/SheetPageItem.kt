@@ -17,7 +17,8 @@ fun SheetPageItem(
             model.title,
             model.transposition,
             model.gameName,
-            model.composers
+            model.composers,
+            model.pageNumber,
         ),
         sheetId = model.dataId,
         modifier = modifier/*.padding(

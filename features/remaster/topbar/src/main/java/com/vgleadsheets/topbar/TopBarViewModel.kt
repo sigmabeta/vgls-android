@@ -25,7 +25,7 @@ class TopBarViewModel @AssistedInject constructor(
     private val coroutineScope: CoroutineScope,
     private val hatchet: Hatchet,
     @Assisted private val eventDispatcher: EventDispatcher,
-) : VglsViewModel<TopBarState, VglsEvent>() {
+) : VglsViewModel<TopBarState>() {
     override fun initialState() = TopBarState()
 
     init {
@@ -71,9 +71,27 @@ class TopBarViewModel @AssistedInject constructor(
         coroutineScope.launch(dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
             when (action) {
-                is TopBarAction.Menu -> eventDispatcher.sendEvent(VglsEvent.NavigateTo(Destination.MENU.noArgs()))
-                is TopBarAction.OpenPartPicker -> eventDispatcher.sendEvent(VglsEvent.NavigateTo(Destination.PART_PICKER.noArgs()))
-                is TopBarAction.AppBack -> eventDispatcher.sendEvent(VglsEvent.NavigateBack)
+                is TopBarAction.Menu -> eventDispatcher.sendEvent(
+                    VglsEvent.NavigateTo(
+                        Destination.MENU.noArgs(),
+                        "TopBar"
+                    )
+                )
+
+                is TopBarAction.OpenPartPicker -> eventDispatcher.sendEvent(
+                    VglsEvent.NavigateTo(
+                        Destination.PART_PICKER.noArgs(),
+                        "TopBar"
+                    )
+                )
+
+                is TopBarAction.AppBack
+
+                -> eventDispatcher.sendEvent(
+                    VglsEvent.NavigateBack(
+                        "TopBar"
+                    )
+                )
             }
         }
     }

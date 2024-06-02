@@ -92,6 +92,7 @@ private fun SamplePdf() {
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList(),
+            pageNumber = 0,
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },

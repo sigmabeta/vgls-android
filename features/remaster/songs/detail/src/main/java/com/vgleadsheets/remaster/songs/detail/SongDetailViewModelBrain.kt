@@ -126,19 +126,38 @@ class SongDetailViewModelBrain(
     }
 
     private fun onSongThumbnailClicked(id: Long, pageNumber: Int) {
-        TODO("Implement second arg")
-        emitEvent(VglsEvent.NavigateTo(Destination.SONG_VIEWER.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.SONG_VIEWER.forTwoArgs(id, pageNumber.toLong()),
+                Destination.SONG_DETAIL.name
+            )
+        )
     }
 
     private fun onGameClicked(id: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.GAME_DETAIL.forId(id),
+                Destination.SONG_DETAIL.name
+            )
+        )
     }
 
     private fun onComposerClicked(id: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.COMPOSER_DETAIL.forId(id),
+                Destination.SONG_DETAIL.name
+            )
+        )
     }
 
     private fun onTagValueClicked(id: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.TAGS_VALUES_SONG_LIST.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.TAGS_VALUES_SONG_LIST.forId(id),
+                Destination.SONG_DETAIL.name
+            )
+        )
     }
 }

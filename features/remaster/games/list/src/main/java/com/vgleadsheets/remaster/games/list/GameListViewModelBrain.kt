@@ -51,6 +51,11 @@ class GameListViewModelBrain(
     }
 
     private fun onGameClicked(id: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.GAME_DETAIL.forId(id),
+                Destination.GAMES_LIST.name
+            )
+        )
     }
 }

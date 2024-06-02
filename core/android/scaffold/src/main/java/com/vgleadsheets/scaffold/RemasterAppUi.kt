@@ -28,6 +28,7 @@ import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarViewModel
 import com.vgleadsheets.topbar.topBarViewModel
 import com.vgleadsheets.ui.list.listScreenEntry
+import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,6 +108,12 @@ fun RemasterAppUi(
                     globalModifier = globalModifier,
                 )
             }
+
+            viewerScreenNavEntry(
+                eventDispatcher = eventDispatcher,
+                topBarState = topBarState,
+                globalModifier = globalModifier,
+            )
         }
     }
 }

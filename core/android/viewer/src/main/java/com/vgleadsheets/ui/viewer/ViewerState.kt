@@ -1,12 +1,48 @@
 package com.vgleadsheets.ui.viewer
 
-import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.appcomm.VglsState
+import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 data class ViewerState(
-    val title: TitleBarModel = TitleBarModel(),
-    val listItems: ImmutableList<ListModel> = emptyList<ListModel>().toImmutableList(),
+    val song: Song? = null,
+    val partApiId: String? = null,
     val initialPage: Int = 0,
-)
+) : VglsState {
+    fun title(stringProvider: StringProvider): TitleBarModel {
+        val gameName = song?.gameName
+        return TitleBarModel(
+            title = song?.name,
+            subtitle = gameName?.let { stringProvider.getStringOneArg(StringId.SCREEN_SUBTITLE_SONG_DETAIL, it) } ?: "",
+        )
+    }
+
+    fun pages(): ImmutableList<SheetPageListModel> = if (song != null && partApiId != null) {
+        println("Viewer page count: ${song.pageCount}")
+        List(song.pageCount) { pageNumber ->
+            SheetPageListModel(
+                PdfConfigById(
+                    songId = song.id,
+                    partApiId = partApiId,
+                    pageNumber = pageNumber
+                ),
+                song.name,
+                partApiId,
+                song.gameName,
+                song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                pageNumber,
+                Action.PageClicked(pageNumber),
+
+                )
+        }
+    } else {
+        emptyList()
+    }.toImmutableList()
+}
