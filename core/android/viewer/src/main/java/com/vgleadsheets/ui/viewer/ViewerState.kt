@@ -25,7 +25,6 @@ data class ViewerState(
     }
 
     fun pages(): ImmutableList<SheetPageListModel> = if (song != null && partApiId != null) {
-        println("Viewer page count: ${song.pageCount}")
         List(song.pageCount) { pageNumber ->
             SheetPageListModel(
                 PdfConfigById(

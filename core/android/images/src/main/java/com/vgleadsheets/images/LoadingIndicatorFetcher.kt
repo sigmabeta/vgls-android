@@ -7,11 +7,11 @@ import coil.fetch.DrawableResult
 import coil.fetch.Fetcher
 import coil.request.Options
 import coil.size.pxOrElse
-import com.vgleadsheets.bitmaps.SheetGenerator
+import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
 import javax.inject.Inject
 
-class SheetPreviewFetcher(
-    private val generator: SheetGenerator,
+class LoadingIndicatorFetcher(
+    private val generator: LoadingIndicatorGenerator,
     private val data: PagePreview,
     private val options: Options
 ) : Fetcher {
@@ -28,12 +28,12 @@ class SheetPreviewFetcher(
     )
 
     class Factory @Inject constructor(
-        private val generator: SheetGenerator
+        private val generator: LoadingIndicatorGenerator
     ) : Fetcher.Factory<PagePreview> {
         override fun create(
             data: PagePreview,
             options: Options,
             imageLoader: ImageLoader
-        ) = SheetPreviewFetcher(generator, data, options)
+        ) = LoadingIndicatorFetcher(generator, data, options)
     }
 }
