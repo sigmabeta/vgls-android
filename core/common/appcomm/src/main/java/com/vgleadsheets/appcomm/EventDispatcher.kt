@@ -32,6 +32,7 @@ class EventDispatcher(
                 VglsEvent.ShowSnackbar(
                     message = "Unimplemented screen: $destination",
                     withDismissAction = true,
+                    source = "Navigation"
                 )
             )
         }

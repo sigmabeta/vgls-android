@@ -5,6 +5,7 @@ import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 
@@ -31,6 +32,11 @@ class BrowseViewModelBrain(
     }
 
     private fun onDestinationClicked(destination: String) {
-        emitEvent(VglsEvent.NavigateTo(destination))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                destination,
+                Destination.BROWSE.name
+            )
+        )
     }
 }

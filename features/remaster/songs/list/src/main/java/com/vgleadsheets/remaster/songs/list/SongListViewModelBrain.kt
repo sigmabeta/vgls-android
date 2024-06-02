@@ -70,6 +70,11 @@ class SongListViewModelBrain(
     }
 
     private fun onSongClicked(id: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.SONG_DETAIL.forId(id),
+                Destination.SONGS_LIST.name
+            )
+        )
     }
 }

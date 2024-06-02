@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.nav.ARG_TEMPLATE
+import com.vgleadsheets.nav.ARG_TEMPLATE_ONE
 import com.vgleadsheets.nav.ArgType
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.viewmodel.list.listViewModel
@@ -27,17 +27,17 @@ fun NavGraphBuilder.listScreenEntry(
         arguments = if (destination.argType == ArgType.NONE) {
             emptyList()
         } else {
-            listOf(navArgument(ARG_TEMPLATE) { type = destination.argType.toNavType() })
+            listOf(navArgument(ARG_TEMPLATE_ONE) { type = destination.argType.toNavType() })
         },
     ) { navBackStackEntry ->
         val idArg = if (destination.argType == ArgType.LONG) {
-            navBackStackEntry.arguments?.getLong(ARG_TEMPLATE)
+            navBackStackEntry.arguments?.getLong(ARG_TEMPLATE_ONE)
         } else {
             null
         }
 
         val stringArg = if (destination.argType == ArgType.STRING) {
-            navBackStackEntry.arguments?.getString(ARG_TEMPLATE)
+            navBackStackEntry.arguments?.getString(ARG_TEMPLATE_ONE)
         } else {
             null
         }

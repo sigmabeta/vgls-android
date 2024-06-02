@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.vgls.di.android)
     alias(libs.plugins.vgls.compose.android.module)
 }
 
@@ -14,6 +15,8 @@ dependencies {
     api(projects.core.common.nav)
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.viewmodel)
+
+    implementation(projects.core.common.pdf)
 
     debugImplementation(libs.kotlinx.collections.immutable)
     debugImplementation(projects.core.android.ui.themes)

@@ -42,17 +42,20 @@ abstract class ListViewModelBrain(
 
     fun sendAction(action: VglsAction) {
         hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
-        val state = internalUiState.value
-        val titleModel = state.title(stringProvider)
-
         if (action is VglsAction.Resume) {
-            emitEvent(
-                VglsEvent.UpdateTitle(
-                    title = titleModel.title,
-                    subtitle = titleModel.subtitle,
-                    shouldShowBack = titleModel.shouldShowBack
+            val state = internalUiState.value
+            val titleModel = state.title(stringProvider)
+
+            if (titleModel.title != null) {
+                emitEvent(
+                    VglsEvent.UpdateTitle(
+                        title = titleModel.title,
+                        subtitle = titleModel.subtitle,
+                        shouldShowBack = titleModel.shouldShowBack,
+                        source = this.javaClass.simpleName
+                    )
                 )
-            )
+            }
         }
 
         coroutineScope.launch(dispatchers.main) {

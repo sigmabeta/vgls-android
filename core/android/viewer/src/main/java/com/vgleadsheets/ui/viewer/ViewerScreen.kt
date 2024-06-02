@@ -18,12 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.components.HeroImageListModel
-import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.ui.themes.VglsMaterial
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -35,19 +32,17 @@ fun ViewerScreen(
     modifier: Modifier
 ) {
     val state by stateSource.collectAsStateWithLifecycle()
+    println("Viewer items: $state")
+    val items = state.pages()
 
-    val title = state.title
-    val items = state.listItems
-
-    if (title.title != null) {
-        LaunchedEffect(Unit) {
-            actionSink.sendAction(VglsAction.Resume)
-        }
+    LaunchedEffect(Unit) {
+        actionSink.sendAction(VglsAction.Resume)
     }
 
     val pagerState = rememberPagerState(
         initialPage = state.initialPage
-    ) { state.listItems.size }
+    ) { items.size }
+
     HorizontalPager(
         state = pagerState,
         modifier = modifier
@@ -55,25 +50,11 @@ fun ViewerScreen(
             .background(Color.Black)
     ) { page ->
         val item = items[page]
+        println("Viewer page: $page")
         item.Content(
             actionSink = actionSink,
             modifier = Modifier
         )
-    }
-}
-
-@Preview
-@Composable
-private fun SampleBigImages() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-                .padding(top = 16.dp)
-                .fillMaxSize()
-        ) {
-            BigImages()
-        }
     }
 }
 
@@ -93,46 +74,28 @@ private fun SampleSheets() {
 }
 
 @Composable
-fun BigImages() {
-    val listItems = List(30) { index ->
-        HeroImageListModel(
-            sourceInfo = "whatever $index",
-            imagePlaceholder = Icon.DESCRIPTION,
-            clickAction = VglsAction.Noop,
-        )
-    }.toImmutableList()
-
-    val source = MutableStateFlow(
-        ViewerState(
-            listItems = listItems
-        )
-    )
-
-    ViewerScreen(
-        stateSource = source,
-        actionSink = { },
-        modifier = Modifier
-    )
-}
-
-@Composable
 fun Sheets() {
-    val listItems = List(30) { index ->
-        SheetPageListModel(
-            sourceInfo = "Whatever $index",
-            title = "A Trip to Alivel Mall",
-            transposition = "C",
-            gameName = "Kirby and the Forgotten Land",
-            composers = listOf(
-                "Hirokazu Ando",
-            ).toImmutableList(),
-            clickAction = VglsAction.Noop,
-        )
-    }.toImmutableList()
-
     val source = MutableStateFlow(
         ViewerState(
-            listItems = listItems
+            song = Song(
+                1234L,
+                name = "A Trip to Alivel Mall",
+                gameName = "Kirby and the Forgotten Land",
+                hasVocals = false,
+                pageCount = 3,
+                composers = emptyList(),
+                filename = "Whatever",
+                isAvailableOffline = true,
+                lyricPageCount = 4,
+                playCount = 1234,
+                game = null,
+                gameId = 123435L,
+                altPageCount = 5,
+                isAltSelected = false,
+                isFavorite = true,
+            ),
+            partApiId = "Bass",
+            initialPage = 0
         )
     )
 

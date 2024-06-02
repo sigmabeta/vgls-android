@@ -103,10 +103,20 @@ class ComposerDetailViewModelBrain(
     }
 
     private fun onSongClicked(id: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.SONG_DETAIL.forId(id),
+                Destination.COMPOSER_DETAIL.name
+            )
+        )
     }
 
     private fun onGameClicked(id: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.GAME_DETAIL.forId(id),
+                Destination.COMPOSER_DETAIL.name
+            )
+        )
     }
 }

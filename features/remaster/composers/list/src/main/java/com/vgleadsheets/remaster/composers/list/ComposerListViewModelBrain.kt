@@ -51,6 +51,11 @@ class ComposerListViewModelBrain(
     }
 
     private fun onComposerClicked(id: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(id)))
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.COMPOSER_DETAIL.forId(id),
+                Destination.COMPOSERS_LIST.name
+            )
+        )
     }
 }

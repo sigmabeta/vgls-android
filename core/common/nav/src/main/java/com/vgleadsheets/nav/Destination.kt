@@ -14,7 +14,7 @@ enum class Destination(
     GAMES_LIST("games", ArgType.NONE, renderAsGrid = true),
     COMPOSER_DETAIL("composers", ArgType.LONG),
     COMPOSERS_LIST("composers", ArgType.NONE, renderAsGrid = true),
-    SONG_VIEWER("songs/viewer", ArgType.LONG, isImplemented = false),
+    SONG_VIEWER("songs/viewer", ArgType.TWO),
     SONG_DETAIL("songs", ArgType.LONG),
     SONGS_LIST("songs", ArgType.NONE),
     TAGS_LIST("tags", ArgType.NONE, isImplemented = false),
@@ -25,14 +25,16 @@ enum class Destination(
 
     fun noArgs() = destName
     fun forId(id: Long) = "$destName/$id"
+    fun forTwoArgs(id: Long, second: Long) = "$destName/$id/$second"
     fun forString(arg: String) = "$destName/$arg"
     fun template(): String {
-        return if (argType == ArgType.NONE) {
-            destName
-        } else {
-            "$destName/{$ARG_TEMPLATE}"
+        return when (argType) {
+            ArgType.NONE -> destName
+            ArgType.TWO -> "$destName/{$ARG_TEMPLATE_ONE}/{$ARG_TEMPLATE_TWO}"
+            else -> "$destName/{$ARG_TEMPLATE_ONE}"
         }
     }
 }
 
-const val ARG_TEMPLATE = "replaceme"
+const val ARG_TEMPLATE_ONE = "arg_one"
+const val ARG_TEMPLATE_TWO = "arg_two"

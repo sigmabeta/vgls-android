@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.list)
     implementation(projects.core.android.viewmodel)
+    implementation(projects.core.android.viewer)
 
     implementation(projects.features.remaster.bottombar)
     implementation(projects.features.remaster.topbar)

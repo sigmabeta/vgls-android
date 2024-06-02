@@ -9,6 +9,7 @@ data class SheetPageListModel(
     val transposition: String,
     val gameName: String,
     val composers: ImmutableList<String>,
+    val pageNumber: Int,
     val clickAction: VglsAction,
     override val dataId: Long = sourceInfo.hashCode().toLong()
 ) : ListModel() {

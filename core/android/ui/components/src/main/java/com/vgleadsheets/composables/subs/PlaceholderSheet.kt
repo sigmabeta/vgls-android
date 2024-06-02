@@ -131,7 +131,8 @@ private fun SampleLoadingKirby() {
         "Kirby and the Forgotten Land",
         listOf(
             "Hirokazu Ando",
-        ).toImmutableList()
+        ).toImmutableList(),
+        pageNumber = 0
     )
     PlaceholderSheet(
         pagePreview = pagePreview,
@@ -149,7 +150,8 @@ private fun SampleLoadingArms() {
         listOf(
             "Atsuko Asahi",
             "Yasuaki Iwata"
-        ).toImmutableList()
+        ).toImmutableList(),
+        pageNumber = 0
     )
     PlaceholderSheet(
         pagePreview = pagePreview,

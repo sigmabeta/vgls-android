@@ -7,4 +7,5 @@ data class PagePreview(
     val transposition: String,
     val gameName: String,
     val composers: ImmutableList<String>,
+    val pageNumber: Int,
 )
