@@ -28,6 +28,7 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
 import kotlinx.coroutines.flow.Flow
 
 @Dao
+@Suppress("TooManyFunctions")
 interface SongRoomDao : RoomDao<SongEntity> {
     @Query(QUERY_SEARCH)
     fun searchByName(name: String): Flow<List<SongEntity>>
@@ -100,10 +101,12 @@ interface SongRoomDao : RoomDao<SongEntity> {
         private const val COLUMN_FOREIGN_KEY_TAG_VALUE_JOIN = SongTagValueJoin.COLUMN_FOREIGN_KEY_TWO
 
         private const val WHERE_GAME = "$WHERE $COLUMN_FOREIGN_KEY_GAME = :$COLUMN_PRIMARY_KEY_ID"
-        private const val WHERE_COMPOSER = "$INNER_JOIN $TABLE_COMPOSER $ON $TABLE_COMPOSER.$COLUMN_FOREIGN_KEY_COMPOSER_JOIN = $COLUMN_PRIMARY_KEY_ID" +
-            " $WHERE $COLUMN_FOREIGN_KEY_COMPOSER = :$COLUMN_PRIMARY_KEY_ID"
-        private const val WHERE_TAG_VALUE = "$INNER_JOIN $TABLE_TAG_VALUE $ON $TABLE_TAG_VALUE.$COLUMN_FOREIGN_KEY_TAG_VALUE_JOIN = $COLUMN_PRIMARY_KEY_ID" +
-            " $WHERE $COLUMN_FOREIGN_KEY_TAG_VALUE = :$COLUMN_PRIMARY_KEY_ID"
+        private const val WHERE_COMPOSER = "$INNER_JOIN $TABLE_COMPOSER $ON " +
+            "$TABLE_COMPOSER.$COLUMN_FOREIGN_KEY_COMPOSER_JOIN " +
+            "= $COLUMN_PRIMARY_KEY_ID $WHERE $COLUMN_FOREIGN_KEY_COMPOSER = :$COLUMN_PRIMARY_KEY_ID"
+        private const val WHERE_TAG_VALUE = "$INNER_JOIN $TABLE_TAG_VALUE $ON " +
+            "$TABLE_TAG_VALUE.$COLUMN_FOREIGN_KEY_TAG_VALUE_JOIN" +
+            " = $COLUMN_PRIMARY_KEY_ID $WHERE $COLUMN_FOREIGN_KEY_TAG_VALUE = :$COLUMN_PRIMARY_KEY_ID"
 
         private const val OPTION_ORDER_CUSTOM = "ORDER BY name, gameName"
 

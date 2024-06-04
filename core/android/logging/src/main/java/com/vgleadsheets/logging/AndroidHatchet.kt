@@ -82,6 +82,7 @@ class AndroidHatchet : Hatchet {
         AndroidHatchet::class.java.name,
     )
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     private val tag: String?
         get() = Throwable().stackTrace
             .first { it.className !in fqcnIgnore }

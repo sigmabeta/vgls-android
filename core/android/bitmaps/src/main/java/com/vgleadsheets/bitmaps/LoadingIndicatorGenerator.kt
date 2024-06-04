@@ -66,7 +66,8 @@ class LoadingIndicatorGenerator @Inject constructor(
             prevBitmap = createNewTemplateBitmap(width, scaledHeight, scalingFactor)
         }
 
-        val bitmap = prevBitmap!!
+        val bitmap = prevBitmap
+        checkNotNull(bitmap) { "Failed to allocate bitmap." }
         val uniqueText = measureTimeMillis {
             renderUniqueText(
                 bitmap,
@@ -116,6 +117,7 @@ class LoadingIndicatorGenerator @Inject constructor(
         return newBitmap
     }
 
+    @Suppress("LongParameterList")
     private fun renderUniqueText(
         bitmap: Bitmap,
         scalingFactor: Float,
@@ -216,7 +218,7 @@ class LoadingIndicatorGenerator @Inject constructor(
         val scaledStaffWidth = (WIDTH_STAFF * scalingFactor).toInt()
         val scaledStaffHeight = (HEIGHT_STAFF * scalingFactor).toInt()
 
-        for (staffNumber in 0 until 10) {
+        for (staffNumber in 0 until STAFF_COUNT) {
             val staffYPos = firstStaffYPosition + (staffNumber * staffYDisplacement)
 
             val destRect = Rect(
@@ -235,6 +237,7 @@ class LoadingIndicatorGenerator @Inject constructor(
         }
     }
 
+    @Suppress("LongParameterList")
     private fun Canvas.drawText(
         text: String,
         xPos: Float,
@@ -295,5 +298,7 @@ class LoadingIndicatorGenerator @Inject constructor(
 
         const val WIDTH_STAFF = 2313
         const val HEIGHT_STAFF = 178
+
+        const val STAFF_COUNT = 10
     }
 }

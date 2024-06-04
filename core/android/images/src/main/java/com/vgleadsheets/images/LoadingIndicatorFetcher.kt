@@ -17,7 +17,7 @@ class LoadingIndicatorFetcher(
 ) : Fetcher {
     override suspend fun fetch() = DrawableResult(
         drawable = generator.generateLoadingSheet(
-            options.size.width.pxOrElse { 320 },
+            options.size.width.pxOrElse { WIDTH_ARBITRARY },
             data.title,
             data.transposition,
             data.gameName,
@@ -35,5 +35,9 @@ class LoadingIndicatorFetcher(
             options: Options,
             imageLoader: ImageLoader
         ) = LoadingIndicatorFetcher(generator, data, options)
+    }
+
+    companion object {
+        private const val WIDTH_ARBITRARY = 320
     }
 }

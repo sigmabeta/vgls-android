@@ -20,6 +20,7 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
 import kotlinx.coroutines.flow.Flow
 
 @Dao
+@Suppress("TooManyFunctions")
 interface TagValueRoomDao : RoomDao<TagValueEntity> {
     @Query(QUERY_TAG_KEY)
     fun getForTagKey(id: Long): Flow<List<TagValueEntity>>

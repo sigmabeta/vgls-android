@@ -14,6 +14,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
+@Suppress("TooManyFunctions")
 object DatabaseModule {
     @Singleton
     @Provides

@@ -16,7 +16,7 @@ import javax.inject.Singleton
 object ResourcesModule {
     @Provides
     @Singleton
-    fun provideResources(@ApplicationContext context: Context) = context.resources
+    fun provideResources(@ApplicationContext context: Context): Resources = context.resources
 
     @Provides
     @Singleton

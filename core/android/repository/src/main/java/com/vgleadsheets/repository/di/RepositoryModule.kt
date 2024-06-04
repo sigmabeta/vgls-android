@@ -35,6 +35,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
+    @Suppress("LongParameterList")
     fun provideRealRepository(
         vglsApi: VglsApi,
         transactionDao: TransactionDao,

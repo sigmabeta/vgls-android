@@ -23,7 +23,7 @@ class PdfImageFetcher(
         val width = if (size == Size.ORIGINAL) {
             null
         } else {
-            size.width.pxOrElse { 69 }
+            size.width.pxOrElse { WIDTH_ARBITRARY }
         }
 
         println("Size $size width $width")
@@ -51,5 +51,9 @@ class PdfImageFetcher(
             data,
             options
         )
+    }
+
+    companion object {
+        private const val WIDTH_ARBITRARY = 69
     }
 }

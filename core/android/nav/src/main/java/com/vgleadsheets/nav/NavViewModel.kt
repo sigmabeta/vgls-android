@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@Suppress("LongParameterList", "TooManyFunctions")
 class NavViewModel @AssistedInject constructor(
     @Assisted initialState: NavState,
     @Assisted private val navigator: Navigator,
@@ -152,10 +153,12 @@ class NavViewModel @AssistedInject constructor(
         )
     }
 
+    @Suppress("UnsafeCallOnNullableType")
     fun sheetDetailClick() = withState { state ->
         navigator.showSongDetail(state.selectedSong?.id!!)
     }
 
+    @Suppress("UnsafeCallOnNullableType")
     fun youtubeSearchClick() = withState { state ->
         navigator.searchYoutube(state.selectedSong!!.name, state.selectedSong.gameName)
     }
@@ -163,8 +166,8 @@ class NavViewModel @AssistedInject constructor(
     fun refresh() = withState {
         if (it.digest !is Loading) {
             repository.refresh()
-                .execute {
-                    copy(digest = it)
+                .execute { digest ->
+                    copy(digest = digest)
                 }
         }
     }
@@ -247,6 +250,7 @@ class NavViewModel @AssistedInject constructor(
         }
     }
 
+    @Suppress("SwallowedException")
     private fun showInitialScreen() {
         viewModelScope.launch(dispatchers.disk) {
             val selectionString = storage.getSavedTopLevelScreen()
