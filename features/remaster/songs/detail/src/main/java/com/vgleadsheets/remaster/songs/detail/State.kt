@@ -67,7 +67,6 @@ data class State(
                                     clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
                                 )
                             )
-
                         }.toImmutableList()
                     )
                 } else {

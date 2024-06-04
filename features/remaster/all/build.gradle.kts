@@ -19,7 +19,6 @@ dependencies {
     api(projects.features.remaster.parts)
     api(projects.features.remaster.songs.list)
     api(projects.features.remaster.songs.detail)
-
 }
 
 android {
