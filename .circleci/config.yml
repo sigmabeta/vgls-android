@@ -48,7 +48,7 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+          key: jars-v1-
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies --no-configuration-cache --no-daemon --max-workers=1
