@@ -8,11 +8,12 @@ import com.facebook.stetho.Stetho
 import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import dagger.hilt.android.HiltAndroidApp
+import okhttp3.OkHttpClient
 import javax.inject.Inject
 import javax.inject.Named
-import okhttp3.OkHttpClient
 
 @HiltAndroidApp
 class VglsApplication :
@@ -27,6 +28,9 @@ class VglsApplication :
 
     @Inject
     lateinit var coilLogger: HatchetCoilLogger
+
+    @Inject
+    lateinit var pdfImageDecoderFactory: PdfImageDecoder.Factory
 
     @Inject
     lateinit var pdfImageFetcherFactory: PdfImageFetcher.Factory
@@ -54,6 +58,7 @@ class VglsApplication :
         .logger(coilLogger)
         .okHttpClient(okHttpClient)
         .components {
+            add(pdfImageDecoderFactory)
             add(pdfImageFetcherFactory)
             add(loadingIndicatorFetcherFactory)
         }

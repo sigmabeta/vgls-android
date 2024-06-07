@@ -24,10 +24,9 @@ class PdfToBitmapRenderer @Inject constructor(
 
     fun renderPdfToBitmap(
         pdfFile: File,
-        pdfConfigById: PdfConfigById,
+        pageNumber: Int,
         width: Int?,
     ): Bitmap {
-        val pageNumber = pdfConfigById.pageNumber
         val fileDescriptor = ParcelFileDescriptor.open(
             pdfFile,
             ParcelFileDescriptor.MODE_READ_ONLY
@@ -38,7 +37,7 @@ class PdfToBitmapRenderer @Inject constructor(
         val pdfRenderer = PdfRenderer(fileDescriptor)
         val pageCount = pdfRenderer.pageCount
 
-        require(pageNumber >= pageCount) {
+        require(pageNumber <= pageCount) {
             "PDF only has $pageCount pages, can't render page $pageNumber."
         }
         val bitmap = createBitmap(pdfRenderer, pageNumber, width)
