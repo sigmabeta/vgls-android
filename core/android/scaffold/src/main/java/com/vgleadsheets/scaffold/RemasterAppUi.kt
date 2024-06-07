@@ -29,6 +29,7 @@ import com.vgleadsheets.topbar.TopBarViewModel
 import com.vgleadsheets.topbar.topBarViewModel
 import com.vgleadsheets.ui.list.listScreenEntry
 import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,28 +45,7 @@ fun RemasterAppUi(
     val navFunction = { destination: String -> navController.navigate(destination) }
     val navBack: () -> Unit = { navController.popBackStack() }
 
-    val launchSnackbar: (VglsEvent.ShowSnackbar) -> Unit = { snackbarEvent ->
-        snackbarScope.launch {
-            val actionDetails = snackbarEvent.actionDetails
-            val result = snackbarHostState.showSnackbar(
-                message = snackbarEvent.message,
-                actionLabel = actionDetails?.clickActionLabel,
-                withDismissAction = snackbarEvent.withDismissAction,
-                duration = SnackbarDuration.Short
-            )
-
-            if (actionDetails == null) {
-                return@launch
-            }
-
-            val sink = actionDetails.actionSink
-
-            when (result) {
-                SnackbarResult.ActionPerformed -> sink.sendAction(VglsAction.SnackbarActionClicked(actionDetails.clickAction))
-                SnackbarResult.Dismissed -> sink.sendAction(VglsAction.SnackbarDismissed(actionDetails.clickAction))
-            }
-        }
-    }
+    val launchSnackbar: (VglsEvent.ShowSnackbar) -> Unit = createSnackbarLauncher(snackbarScope, snackbarHostState)
 
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
@@ -114,6 +94,37 @@ fun RemasterAppUi(
                 topBarState = topBarState,
                 globalModifier = globalModifier,
             )
+        }
+    }
+}
+
+private fun createSnackbarLauncher(
+    snackbarScope: CoroutineScope,
+    snackbarHostState: SnackbarHostState
+): (VglsEvent.ShowSnackbar) -> Unit = { snackbarEvent ->
+    snackbarScope.launch {
+        val actionDetails = snackbarEvent.actionDetails
+        val result = snackbarHostState.showSnackbar(
+            message = snackbarEvent.message,
+            actionLabel = actionDetails?.clickActionLabel,
+            withDismissAction = snackbarEvent.withDismissAction,
+            duration = SnackbarDuration.Short
+        )
+
+        if (actionDetails == null) {
+            return@launch
+        }
+
+        val sink = actionDetails.actionSink
+
+        when (result) {
+            SnackbarResult.ActionPerformed -> {
+                sink.sendAction(VglsAction.SnackbarActionClicked(actionDetails.clickAction))
+            }
+
+            SnackbarResult.Dismissed -> {
+                sink.sendAction(VglsAction.SnackbarDismissed(actionDetails.clickAction))
+            }
         }
     }
 }

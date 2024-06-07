@@ -141,6 +141,7 @@ private fun DarkSquare() {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun SampleWide() {
     Subsection(
         SubsectionListModel(
@@ -181,6 +182,7 @@ private fun SampleWide() {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun SampleSquare() {
     Subsection(
         SubsectionListModel(

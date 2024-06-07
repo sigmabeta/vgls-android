@@ -88,6 +88,7 @@ private fun Dark() {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun Sample() {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),

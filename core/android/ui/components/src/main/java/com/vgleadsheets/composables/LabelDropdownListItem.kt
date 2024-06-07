@@ -123,6 +123,7 @@ private fun MenuExpanded() {
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 private fun Sample(expanded: Boolean) {
     var selectedPosition by remember { mutableStateOf(3) }

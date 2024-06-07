@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.DeviceFontFamilyName
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -36,8 +35,8 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
+@Suppress("LongMethod")
 fun MenuItem(
     model: MenuItemListModel,
     actionSink: ActionSink,

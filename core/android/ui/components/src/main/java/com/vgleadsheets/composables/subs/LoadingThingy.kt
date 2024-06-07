@@ -95,6 +95,7 @@ private fun Menu() {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun Sample() {
     Column {
         LoadingThingy(

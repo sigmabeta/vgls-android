@@ -104,6 +104,7 @@ private fun Dark() {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun Sample() {
     NameCaptionListItem(
         NameCaptionListModel(

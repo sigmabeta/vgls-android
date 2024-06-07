@@ -24,6 +24,7 @@ class EventDispatcher(
         navBackFunction()
     }
 
+    @Suppress("SwallowedException")
     private fun navigateTo(destination: String) {
         try {
             navFunction(destination)

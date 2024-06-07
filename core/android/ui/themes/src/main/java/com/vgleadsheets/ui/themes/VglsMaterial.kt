@@ -1,4 +1,4 @@
-@file:Suppress("FunctionNaming", "UnusedPrivateMember")
+@file:Suppress("UnusedPrivateMember")
 
 package com.vgleadsheets.ui.themes
 

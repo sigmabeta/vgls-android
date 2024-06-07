@@ -27,6 +27,7 @@ import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
+@Suppress("MagicNumber")
 fun DetailHeader(
     model: TitleListModel,
     modifier: Modifier

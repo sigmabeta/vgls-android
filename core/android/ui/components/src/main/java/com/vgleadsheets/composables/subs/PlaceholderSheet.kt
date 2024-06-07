@@ -1,6 +1,5 @@
 package com.vgleadsheets.composables.subs
 
-import android.content.Context
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -18,15 +17,12 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
-import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
 import com.vgleadsheets.composables.previews.FullscreenBlack
+import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.images.PagePreview
-import com.vgleadsheets.logging.BasicHatchet
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -70,34 +66,11 @@ private fun Page(
         contentAlignment = Center,
         content = content,
         modifier = modifier
-            .aspectRatio(0.77272f)
+            .aspectRatio(SheetConstants.ASPECT_RATIO)
             .background(Color.White)
     )
 }
 
-private fun createImageBitmap(
-    context: Context,
-    pagePreview: PagePreview,
-): ImageBitmap {
-    println("Generating...")
-
-    val hatchet = BasicHatchet()
-    val generator = LoadingIndicatorGenerator(
-        context,
-        hatchet,
-        "https://jetpackcompose.com"
-    )
-
-    val bitmap = generator.generateLoadingSheet(
-        1000,
-        pagePreview.title,
-        pagePreview.transposition,
-        pagePreview.gameName,
-        pagePreview.composers
-    )
-
-    return bitmap.asImageBitmap()
-}
 
 @Preview
 @Composable

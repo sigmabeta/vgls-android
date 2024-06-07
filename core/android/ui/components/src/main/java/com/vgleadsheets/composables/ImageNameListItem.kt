@@ -167,6 +167,7 @@ private fun Beeg() {
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 private fun Sample() {
     ImageNameListItem(

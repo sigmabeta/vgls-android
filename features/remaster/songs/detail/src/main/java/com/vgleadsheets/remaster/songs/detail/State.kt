@@ -43,6 +43,8 @@ data class State(
         )
     }
 
+    // T O  D O: Actually fix these detekt problems
+    @Suppress("LongMethod", "MaxLineLength")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val songModel = if (song != null) {
             listOf(

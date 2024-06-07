@@ -38,6 +38,7 @@ import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
+@Suppress("LongMethod")
 fun RemasterTopBar(
     state: TopBarState,
     scrollBehavior: TopAppBarScrollBehavior,
@@ -75,7 +76,7 @@ fun RemasterTopBar(
                         Text(
                             text = it,
                             style = MaterialTheme.typography.titleLarge.copy(
-                                fontSize = TextUnit(12.0f, TextUnitType.Sp)
+                                fontSize = TextUnit(SIZE_TEXT_SMALL, TextUnitType.Sp)
                             ),
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -87,9 +88,17 @@ fun RemasterTopBar(
         },
         navigationIcon = {
             val (vector, stringId, action) = if (state.model.shouldShowBack) {
-                Triple(Icons.AutoMirrored.Default.ArrowBack, com.vgleadsheets.ui.strings.R.string.cont_desc_app_back, TopBarAction.AppBack)
+                Triple(
+                    Icons.AutoMirrored.Default.ArrowBack,
+                    com.vgleadsheets.ui.strings.R.string.cont_desc_app_back,
+                    TopBarAction.AppBack
+                )
             } else {
-                Triple(Icons.Default.Menu, com.vgleadsheets.ui.strings.R.string.cont_desc_app_menu, TopBarAction.Menu)
+                Triple(
+                    Icons.Default.Menu,
+                    com.vgleadsheets.ui.strings.R.string.cont_desc_app_menu,
+                    TopBarAction.Menu
+                )
             }
 
             IconButton(
@@ -118,7 +127,7 @@ fun RemasterTopBar(
                     Text(
                         text = it ?: "",
                         style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = TextUnit(16.0f, TextUnitType.Sp)
+                            fontSize = TextUnit(SIZE_TEXT_LARGE, TextUnitType.Sp)
                         ),
                         textAlign = TextAlign.Center,
                     )
@@ -181,3 +190,6 @@ private fun PreviewContent() {
         )
     }
 }
+
+private const val SIZE_TEXT_SMALL = 12.0f
+private const val SIZE_TEXT_LARGE = 16.0f

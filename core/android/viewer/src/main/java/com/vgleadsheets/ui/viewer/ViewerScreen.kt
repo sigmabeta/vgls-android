@@ -72,6 +72,7 @@ private fun SampleSheets() {
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 fun Sheets() {
     val source = MutableStateFlow(

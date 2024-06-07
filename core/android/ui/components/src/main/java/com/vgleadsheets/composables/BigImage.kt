@@ -28,6 +28,7 @@ import com.vgleadsheets.composables.subs.ElevatedRoundRect
 import com.vgleadsheets.ui.Icon
 
 @Composable
+@Suppress("MagicNumber", "LongMethod")
 fun BigImage(
     model: HeroImageListModel,
     actionSink: ActionSink,

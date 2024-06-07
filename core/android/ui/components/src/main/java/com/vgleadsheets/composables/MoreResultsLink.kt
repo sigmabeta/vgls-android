@@ -41,6 +41,7 @@ fun MoreResultsLink(
 
 @Preview
 @Composable
+@Suppress("MagicNumber")
 private fun Default() {
     VglsMaterialMenu {
         Column(

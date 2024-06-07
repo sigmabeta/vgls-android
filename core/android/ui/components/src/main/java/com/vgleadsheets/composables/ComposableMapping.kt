@@ -31,6 +31,7 @@ import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
 
+@Suppress("MaxLineLength")
 @Composable
 fun ListModel.Content(
     actionSink: ActionSink,

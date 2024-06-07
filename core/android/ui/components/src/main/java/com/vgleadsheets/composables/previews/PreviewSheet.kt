@@ -30,7 +30,7 @@ fun PreviewSheet(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(0.77272f)
+            .aspectRatio(SheetConstants.ASPECT_RATIO)
             .background(Color.White)
     ) {
         if (pagePreview.pageNumber == 0) {
@@ -45,6 +45,7 @@ fun PreviewSheet(
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun BoxScope.PreviewSheetTitle(
     pagePreview: PagePreview,
     modifier: Modifier = Modifier
@@ -93,6 +94,7 @@ private fun BoxScope.PreviewSheetTitle(
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun BoxScope.PreviewSheetOther() {
     Text(
         text = "https://www.vgleadsheets.com/",

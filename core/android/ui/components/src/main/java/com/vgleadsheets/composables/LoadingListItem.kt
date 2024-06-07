@@ -27,6 +27,7 @@ import com.vgleadsheets.ui.themes.VglsMaterialMenu
 import kotlin.random.Random
 
 @Composable
+@Suppress("MagicNumber")
 fun LoadingListItem(
     withImage: Boolean,
     seed: Long,
@@ -87,10 +88,12 @@ fun LoadingListItem(
     }
 }
 
+@Suppress("MagicNumber")
 private fun Random.next() = nextFloat().coerceAtLeast(0.3f)
 
 @Preview
 @Composable
+@Suppress("MagicNumber")
 private fun Light() {
     VglsMaterial {
         Box(
@@ -107,6 +110,7 @@ private fun Light() {
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
+@Suppress("MagicNumber")
 private fun Dark() {
     VglsMaterial {
         Box(
@@ -121,6 +125,7 @@ private fun Dark() {
 
 @Preview
 @Composable
+@Suppress("MagicNumber")
 private fun LightWithImage() {
     VglsMaterial {
         Box(
@@ -135,6 +140,7 @@ private fun LightWithImage() {
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
+@Suppress("MagicNumber")
 private fun DarkWithImage() {
     VglsMaterial {
         Box(
@@ -149,6 +155,7 @@ private fun DarkWithImage() {
 
 @Preview
 @Composable
+@Suppress("MagicNumber")
 private fun Menu() {
     VglsMaterialMenu {
         Box(
