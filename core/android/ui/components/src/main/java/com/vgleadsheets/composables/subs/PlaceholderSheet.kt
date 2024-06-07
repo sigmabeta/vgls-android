@@ -71,7 +71,6 @@ private fun Page(
     )
 }
 
-
 @Preview
 @Composable
 private fun PortraitLoadingKirby() {
