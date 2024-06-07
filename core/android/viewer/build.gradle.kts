@@ -18,6 +18,7 @@ dependencies {
 
     implementation(projects.core.common.pdf)
 
-    debugImplementation(libs.kotlinx.collections.immutable)
-    debugImplementation(projects.core.android.ui.themes)
+    // T O D O these two deps are only necessary for previews. Can we somehow make them debug-only?
+    implementation(libs.kotlinx.collections.immutable)
+    implementation(projects.core.android.ui.themes)
 }
