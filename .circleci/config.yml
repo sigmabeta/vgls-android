@@ -83,8 +83,7 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-ktlint-v1-{{ .Branch }}-{{ .Revision }}
-            - build-cache-ktlint-v1-{{ .Branch }}-
+            - build-cache-ktlint-v1-
       - run:
           name: Run Ktlint
           command: ./ktlint-check.sh
@@ -116,8 +115,7 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-detekt-v1-{{ .Branch }}-{{ .Revision }}
-            - build-cache-detekt-v1-{{ .Branch }}-
+            - build-cache-detekt-v1-
       - run:
           name: Run Detekt checks
           command: ./gradlew detekt --no-configuration-cache --no-daemon --max-workers=2
@@ -150,8 +148,7 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-lint-v1-{{ .Branch }}-{{ .Revision }}
-            - build-cache-lint-v1-{{ .Branch }}-
+            - build-cache-lint-v1-
       - run:
           name: Setup Google Services JSON
           command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
@@ -187,8 +184,7 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-v1-{{ .Branch }}-{{ .Revision }}
-            - build-cache-v1-{{ .Branch }}-
+            - build-cache-v1-
       - run:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
@@ -227,8 +223,7 @@ jobs:
           key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-v1-{{ .Branch }}-{{ .Revision }}
-            - build-cache-v1-{{ .Branch }}-
+            - build-cache-v1-
       - run:
           name: Set target Google Play Track
           command: ./set-track-name.sh
