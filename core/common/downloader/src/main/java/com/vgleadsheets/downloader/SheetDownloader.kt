@@ -23,16 +23,22 @@ class SheetDownloader @Inject constructor(
     private suspend fun getSheetInternal(
         fileName: String,
         partApiId: String
-    ): File {
+    ): SheetFileResult {
         val targetFile = fileReference(fileName, partApiId)
 
         if (targetFile.exists()) {
-            return targetFile
+            return SheetFileResult(
+                targetFile,
+                SheetSourceType.DISK
+            )
         }
 
         downloadSheet(fileName, partApiId, targetFile)
 
-        return targetFile
+        return SheetFileResult(
+            targetFile,
+            SheetSourceType.NETWORK
+        )
     }
 
     @Suppress("MagicNumber")

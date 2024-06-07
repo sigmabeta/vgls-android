@@ -8,6 +8,7 @@ import coil.fetch.Fetcher
 import coil.fetch.SourceResult
 import coil.request.Options
 import com.vgleadsheets.downloader.SheetDownloader
+import com.vgleadsheets.downloader.SheetSourceType
 import okio.FileSystem
 import okio.Path.Companion.toOkioPath
 import javax.inject.Inject
@@ -19,7 +20,9 @@ class PdfImageFetcher(
 ) : Fetcher {
     @OptIn(ExperimentalCoilApi::class)
     override suspend fun fetch(): SourceResult {
-        val pdfFile = sheetDownloader.getSheet(data.songId, data.partApiId)
+        val pdfFileResult = sheetDownloader.getSheet(data.songId, data.partApiId)
+        val pdfFile = pdfFileResult.file
+
         val pdfPath = pdfFile.toOkioPath()
 
         val width = computeWidth(options)
@@ -28,12 +31,17 @@ class PdfImageFetcher(
             source = ImageSource(
                 file = pdfPath,
                 fileSystem = FileSystem.SYSTEM,
-                diskCacheKey = "${data.songId}-${data.partApiId}-${data.pageNumber}-$width",
+                diskCacheKey = "pdf-${data.songId}-${data.partApiId}-${data.pageNumber}-$width",
                 metadata = PdfMetadata(data.pageNumber)
             ),
-            dataSource = DataSource.DISK,
+            dataSource = pdfFileResult.sourceType.toCoilDataSource(),
             mimeType = MIMETYPE
         )
+    }
+
+    private fun SheetSourceType.toCoilDataSource() = when (this) {
+        SheetSourceType.DISK -> DataSource.DISK
+        SheetSourceType.NETWORK -> DataSource.NETWORK
     }
 
     class Factory @Inject constructor(
