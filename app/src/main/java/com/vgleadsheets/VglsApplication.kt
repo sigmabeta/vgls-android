@@ -10,6 +10,7 @@ import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
+import com.vgleadsheets.pdf.PdfImageKeyer
 import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import javax.inject.Inject
@@ -28,6 +29,9 @@ class VglsApplication :
 
     @Inject
     lateinit var coilLogger: HatchetCoilLogger
+
+    @Inject
+    lateinit var pdfImageKeyer: PdfImageKeyer
 
     @Inject
     lateinit var pdfImageDecoderFactory: PdfImageDecoder.Factory
@@ -57,7 +61,9 @@ class VglsApplication :
     override fun newImageLoader() = ImageLoader.Builder(this)
         .logger(coilLogger)
         .okHttpClient(okHttpClient)
+        .respectCacheHeaders(false)
         .components {
+            add(pdfImageKeyer)
             add(pdfImageDecoderFactory)
             add(pdfImageFetcherFactory)
             add(loadingIndicatorFetcherFactory)
