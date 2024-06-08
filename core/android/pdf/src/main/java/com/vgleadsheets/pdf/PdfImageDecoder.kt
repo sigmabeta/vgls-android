@@ -15,6 +15,7 @@ class PdfImageDecoder(
     private val options: Options,
 ) : Decoder {
     @OptIn(ExperimentalCoilApi::class)
+    @Suppress("ReturnCount")
     override suspend fun decode(): DecodeResult? {
         // Check the source is actually a pdf
         if (result.mimeType != PdfImageFetcher.MIMETYPE) {
