@@ -31,13 +31,7 @@ class ListViewModel @AssistedInject constructor(
         viewModelScope,
     )
 
-    val handlesBack: Boolean = brain.handlesBack
-
     val uiState = brain.uiStateActual
-    private val uiEvents = brain.uiEvents
-        .onEach {
-            eventDispatcher.sendEvent(it)
-        }
 
     init {
         eventDispatcher.addEventSink(this)
@@ -49,7 +43,9 @@ class ListViewModel @AssistedInject constructor(
         }
 
         this.sendAction(initAction)
-        uiEvents
+
+        brain.uiEvents
+            .onEach { eventDispatcher.sendEvent(it) }
             .launchIn(viewModelScope)
     }
 

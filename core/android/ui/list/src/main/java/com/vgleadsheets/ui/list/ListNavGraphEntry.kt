@@ -55,7 +55,7 @@ fun NavGraphBuilder.listScreenEntry(
             viewModel.sendAction(VglsAction.Resume)
         }
 
-        BackHandler(viewModel.handlesBack) { viewModel.sendAction(VglsAction.DeviceBack) }
+        BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
 
         if (destination.renderAsGrid) {
             GridScreen(

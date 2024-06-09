@@ -1,6 +1,5 @@
 package com.vgleadsheets.topbar
 
-import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -24,20 +23,13 @@ class TopBarViewModel @AssistedInject constructor(
     override val dispatchers: VglsDispatchers,
     override val coroutineScope: CoroutineScope,
     override val hatchet: Hatchet,
-    @Assisted private val eventDispatcher: EventDispatcher,
+    @Assisted override val eventDispatcher: EventDispatcher,
 ) : VglsViewModel<TopBarState>() {
     override fun initialState() = TopBarState()
 
     init {
         eventDispatcher.addEventSink(this)
         loadSelectedPart()
-
-        uiEvents
-            .onEach {
-                hatchet.d("Sending event: $it")
-                eventDispatcher.sendEvent(it)
-            }
-            .launchIn(viewModelScope)
     }
 
     override fun sendAction(action: VglsAction) = handleAction(action)

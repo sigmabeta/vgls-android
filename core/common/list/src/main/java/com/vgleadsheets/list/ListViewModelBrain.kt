@@ -27,8 +27,6 @@ abstract class ListViewModelBrain(
 
     protected open fun handleEvent(event: VglsEvent) {}
 
-    open val handlesBack: Boolean = false
-
     protected val internalUiEvents = MutableSharedFlow<VglsEvent>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
@@ -42,6 +40,12 @@ abstract class ListViewModelBrain(
 
     fun sendAction(action: VglsAction) {
         hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+
+        if (action is VglsAction.DeviceBack) {
+            emitEvent(VglsEvent.NavigateBack(this.javaClass.simpleName))
+            return
+        }
+
         if (action is VglsAction.Resume) {
             val state = internalUiState.value
             val titleModel = state.title(stringProvider)

@@ -22,7 +22,7 @@ class PdfToBitmapRenderer @Inject constructor(
         color = Color.WHITE
     }
 
-    fun renderPdfToBitmap(
+    suspend fun renderPdfToBitmap(
         pdfFile: File,
         pageNumber: Int,
         width: Int?,
@@ -48,7 +48,7 @@ class PdfToBitmapRenderer @Inject constructor(
         return bitmap
     }
 
-    private fun createBitmap(
+    private suspend fun createBitmap(
         pdfRenderer: PdfRenderer,
         pageNumber: Int,
         width: Int?
