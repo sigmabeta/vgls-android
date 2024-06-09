@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.subs.CrossfadeSheet
-import com.vgleadsheets.images.PagePreview
+import com.vgleadsheets.images.LoadingIndicatorConfig
 
 @Composable
 fun SheetPageItem(
@@ -13,7 +13,7 @@ fun SheetPageItem(
 ) {
     CrossfadeSheet(
         sourceInfo = model.sourceInfo,
-        pagePreview = PagePreview(
+        loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
             model.transposition,
             model.gameName,

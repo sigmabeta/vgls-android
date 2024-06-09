@@ -22,13 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.vgleadsheets.composables.previews.FullscreenBlack
 import com.vgleadsheets.composables.previews.SheetConstants
-import com.vgleadsheets.images.PagePreview
+import com.vgleadsheets.images.LoadingIndicatorConfig
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @Suppress("UNUSED_PARAMETER")
 fun PlaceholderSheet(
-    pagePreview: PagePreview,
+    loadingIndicatorConfig: LoadingIndicatorConfig,
     seed: Long,
     modifier: Modifier,
 ) {
@@ -47,7 +47,7 @@ fun PlaceholderSheet(
 
     Page(modifier) {
         AsyncImage(
-            model = pagePreview,
+            model = loadingIndicatorConfig,
             contentScale = ContentScale.Fit,
             contentDescription = null,
             modifier = modifier
@@ -97,7 +97,7 @@ private fun PortraitLoadingArms() {
 
 @Composable
 private fun SampleLoadingKirby() {
-    val pagePreview = PagePreview(
+    val loadingIndicatorConfig = LoadingIndicatorConfig(
         "A Trip to Alivel Mall",
         "C",
         "Kirby and the Forgotten Land",
@@ -107,7 +107,7 @@ private fun SampleLoadingKirby() {
         pageNumber = 0
     )
     PlaceholderSheet(
-        pagePreview = pagePreview,
+        loadingIndicatorConfig = loadingIndicatorConfig,
         seed = 1234L,
         modifier = Modifier,
     )
@@ -115,7 +115,7 @@ private fun SampleLoadingKirby() {
 
 @Composable
 private fun SampleLoadingArms() {
-    val pagePreview = PagePreview(
+    val loadingIndicatorConfig = LoadingIndicatorConfig(
         "Grand Prix (Title)",
         "Vocals",
         "Arms",
@@ -126,7 +126,7 @@ private fun SampleLoadingArms() {
         pageNumber = 0
     )
     PlaceholderSheet(
-        pagePreview = pagePreview,
+        loadingIndicatorConfig = loadingIndicatorConfig,
         seed = 1234L,
         modifier = Modifier,
     )

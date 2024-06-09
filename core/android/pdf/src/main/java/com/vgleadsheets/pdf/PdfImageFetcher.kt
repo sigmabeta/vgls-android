@@ -25,13 +25,10 @@ class PdfImageFetcher(
 
         val pdfPath = pdfFile.toOkioPath()
 
-        val width = computeWidth(options)
-
         return SourceResult(
             source = ImageSource(
                 file = pdfPath,
                 fileSystem = FileSystem.SYSTEM,
-                diskCacheKey = "pdf-${data.songId}-${data.partApiId}-${data.pageNumber}-$width",
                 metadata = PdfMetadata(data.pageNumber)
             ),
             dataSource = pdfFileResult.sourceType.toCoilDataSource(),

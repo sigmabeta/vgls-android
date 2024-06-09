@@ -2,7 +2,7 @@ package com.vgleadsheets.images
 
 import kotlinx.collections.immutable.ImmutableList
 
-data class PagePreview(
+data class LoadingIndicatorConfig(
     val title: String,
     val transposition: String,
     val gameName: String,

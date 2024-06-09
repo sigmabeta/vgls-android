@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class LoadingIndicatorFetcher(
     private val generator: LoadingIndicatorGenerator,
-    private val data: PagePreview,
+    private val data: LoadingIndicatorConfig,
     private val options: Options
 ) : Fetcher {
     override suspend fun fetch() = DrawableResult(
@@ -29,9 +29,9 @@ class LoadingIndicatorFetcher(
 
     class Factory @Inject constructor(
         private val generator: LoadingIndicatorGenerator
-    ) : Fetcher.Factory<PagePreview> {
+    ) : Fetcher.Factory<LoadingIndicatorConfig> {
         override fun create(
-            data: PagePreview,
+            data: LoadingIndicatorConfig,
             options: Options,
             imageLoader: ImageLoader
         ) = LoadingIndicatorFetcher(generator, data, options)

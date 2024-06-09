@@ -7,6 +7,7 @@ import coil.ImageLoaderFactory
 import com.facebook.stetho.Stetho
 import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.LoadingIndicatorFetcher
+import com.vgleadsheets.images.LoadingIndicatorKeyer
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
@@ -29,6 +30,9 @@ class VglsApplication :
 
     @Inject
     lateinit var coilLogger: HatchetCoilLogger
+
+    @Inject
+    lateinit var loadingIndicatorKeyer: LoadingIndicatorKeyer
 
     @Inject
     lateinit var pdfImageKeyer: PdfImageKeyer
@@ -63,6 +67,7 @@ class VglsApplication :
         .okHttpClient(okHttpClient)
         .respectCacheHeaders(false)
         .components {
+            add(loadingIndicatorKeyer)
             add(pdfImageKeyer)
             add(pdfImageDecoderFactory)
             add(pdfImageFetcherFactory)
