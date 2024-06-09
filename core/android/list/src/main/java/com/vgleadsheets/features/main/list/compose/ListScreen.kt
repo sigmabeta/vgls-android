@@ -83,7 +83,7 @@ fun ListScreen(
                         contentType = { it.layoutId() }
                     ) {
                         it.Content(
-                            modifier = Modifier.animateItemPlacement()
+                            modifier = Modifier
                         )
                     }
                 }

@@ -58,7 +58,6 @@ fun HorizontalScroller(
                 actionSink = actionSink,
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
-                    .animateItemPlacement()
             )
         }
     }
