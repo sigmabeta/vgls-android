@@ -24,7 +24,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.bottombar.BottomBarVisibility
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
@@ -43,15 +46,15 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.viewer.Action
 import com.vgleadsheets.ui.viewer.ViewerScreen
 import com.vgleadsheets.ui.viewer.ViewerState
+import java.util.Random
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.util.Random
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun AppPreviewRegular() {
     VglsMaterial {
-        SampleScreen { _, clickHandler ->
+        SampleScreen { _, _ ->
             SampleScroller()
         }
     }
@@ -61,7 +64,7 @@ private fun AppPreviewRegular() {
 @Composable
 private fun AppPreviewDark() {
     VglsMaterial {
-        SampleScreen { _, clickHandler ->
+        SampleScreen { _, _ ->
             SampleScroller()
         }
     }
@@ -71,8 +74,8 @@ private fun AppPreviewDark() {
 @Composable
 private fun ViewerPreviewRegular() {
     VglsMaterial {
-        SampleScreen { _, clickHandler ->
-            SampleSheets(clickHandler)
+        SampleScreen { _, eventDispatcher ->
+            SampleSheets(eventDispatcher)
         }
     }
 }
@@ -81,15 +84,15 @@ private fun ViewerPreviewRegular() {
 @Composable
 private fun ViewerPreviewDark() {
     VglsMaterial {
-        SampleScreen { _, clickHandler ->
-            SampleSheets(clickHandler)
+        SampleScreen { _, eventDispatcher ->
+            SampleSheets(eventDispatcher)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SampleScreen(screenContent: @Composable (PaddingValues, () -> Unit) -> Unit) {
+private fun SampleScreen(screenContent: @Composable (PaddingValues, EventDispatcher) -> Unit) {
     val navController = rememberNavController()
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
@@ -104,8 +107,6 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, () -> Unit) 
     )
 
     val toggleBarVisibility = {
-        println("toggling visibility, prev value: $topBarVisibility")
-
         topBarVisibility = if (topBarVisibility == TopBarVisibility.VISIBLE) {
             TopBarVisibility.HIDDEN
         } else {
@@ -119,6 +120,16 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, () -> Unit) 
         }
     }
 
+    val eventDispatcher = object : EventDispatcher {
+        override fun addEventSink(sink: EventSink) {}
+        override fun removeEventSink(sink: EventSink) {}
+        override val sendEvent = { event: VglsEvent ->
+            if (event is VglsEvent.ShowUiChrome) {
+                toggleBarVisibility()
+            }
+        }
+    }
+
     AppContent(
         navController = navController,
         scrollBehavior = scrollBehavior,
@@ -126,7 +137,7 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, () -> Unit) 
         topBarVmState = topBarVmState,
         topBarActionHandler = { },
         bottomBarVisibility = bottomBarVisibility,
-        mainContent = { padding -> screenContent(padding, toggleBarVisibility) },
+        mainContent = { padding -> screenContent(padding, eventDispatcher) },
         modifier = Modifier,
     )
 }
@@ -234,21 +245,21 @@ private fun VerticalSection(rng: Random, modifier: Modifier) {
 }
 
 @Composable
-private fun SampleSheets(clickHandler: () -> Unit) {
+private fun SampleSheets(eventDispatcher: EventDispatcher) {
     Box(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .padding(top = 16.dp)
             .fillMaxSize()
     ) {
-        Sheets(clickHandler)
+        Sheets(eventDispatcher)
     }
 }
 
 @Suppress("MagicNumber")
 @Composable
 private fun Sheets(
-    onSheetClick: () -> Unit,
+    eventDispatcher: EventDispatcher,
 ) {
     val source = MutableStateFlow(
         ViewerState(
@@ -275,9 +286,10 @@ private fun Sheets(
     )
 
     val actionSink: (VglsAction) -> Unit = {
-        println("Action received: $it")
         when (it) {
-            is Action.PageClicked -> { onSheetClick() }
+            is Action.PageClicked -> {
+                eventDispatcher.sendEvent(VglsEvent.ShowUiChrome)
+            }
         }
     }
 

@@ -14,6 +14,8 @@ import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -41,7 +43,11 @@ class ViewerViewModel @AssistedInject constructor(
         )
 
         this.sendAction(initAction)
+        emitEvent(VglsEvent.ShowUiChrome)
+        startChromeVisibilityTimer()
     }
+
+    private var chromeVisibilityTimer: Job? = null
 
     override fun initialState() = ViewerState()
 
@@ -50,11 +56,15 @@ class ViewerViewModel @AssistedInject constructor(
         when (action) {
             is VglsAction.Resume -> resume()
             is Action.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
+            is Action.PageClicked -> emitEvent(VglsEvent.ShowUiChrome)
         }
     }
 
     override fun handleEvent(event: VglsEvent) {
         hatchet.d("${this.javaClass.simpleName} - Handling event: $event")
+        when (event) {
+            is VglsEvent.UiChromeBecameShown -> startChromeVisibilityTimer()
+        }
     }
 
     override fun onCleared() {
@@ -122,5 +132,18 @@ class ViewerViewModel @AssistedInject constructor(
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
+    }
+
+    private fun startChromeVisibilityTimer() {
+        chromeVisibilityTimer?.cancel()
+        chromeVisibilityTimer = coroutineScope.launch(dispatchers.computation) {
+            hatchet.v("Hiding UI chrome in $DURATION_CHROME_VISIBILITY ms.")
+            delay(DURATION_CHROME_VISIBILITY)
+            emitEvent(VglsEvent.HideUiChrome)
+        }
+    }
+
+    companion object {
+        private const val DURATION_CHROME_VISIBILITY = 3_000L
     }
 }

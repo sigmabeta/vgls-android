@@ -47,6 +47,8 @@ abstract class ListViewModelBrain(
         }
 
         if (action is VglsAction.Resume) {
+            emitEvent(VglsEvent.ShowUiChrome)
+
             val state = internalUiState.value
             val titleModel = state.title(stringProvider)
 

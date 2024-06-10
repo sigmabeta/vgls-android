@@ -73,6 +73,8 @@ class TopBarViewModel @AssistedInject constructor(
         coroutineScope.launch(dispatchers.main) {
             hatchet.d("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
+                is VglsEvent.HideUiChrome -> hideTopBar()
+                is VglsEvent.ShowUiChrome -> showTopBar()
                 is VglsEvent.UpdateTitle -> updateTitle(
                     TitleBarModel(
                         event.title,
@@ -82,6 +84,22 @@ class TopBarViewModel @AssistedInject constructor(
                 )
             }
         }
+    }
+
+    private fun showTopBar() {
+        hatchet.d("Show top bar.")
+        internalUiState.update {
+            it.copy(visibility = TopBarVisibility.VISIBLE)
+        }
+        emitEvent(VglsEvent.UiChromeBecameShown)
+    }
+
+    private fun hideTopBar() {
+        hatchet.d("Hiding top bar.")
+        internalUiState.update {
+            it.copy(visibility = TopBarVisibility.HIDDEN)
+        }
+        emitEvent(VglsEvent.UiChromeBecameHidden)
     }
 
     private fun updateTitle(title: TitleBarModel) {

@@ -25,4 +25,10 @@ open class VglsEvent {
         val shouldShowBack: Boolean = true,
         override val source: String,
     ) : VglsEvent()
+
+    data object ShowUiChrome : VglsEvent()
+    data object HideUiChrome : VglsEvent()
+
+    data object UiChromeBecameShown : VglsEvent()
+    data object UiChromeBecameHidden : VglsEvent()
 }
