@@ -1,6 +1,5 @@
 package com.vgleadsheets.ui.viewer
 
-import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
@@ -27,7 +26,7 @@ class ViewerViewModel @AssistedInject constructor(
     private val urlInfoProvider: UrlInfoProvider,
     override val dispatchers: VglsDispatchers,
     override val coroutineScope: CoroutineScope,
-    @Assisted private val eventDispatcher: EventDispatcher,
+    @Assisted override val eventDispatcher: EventDispatcher,
     @Assisted("id") idArg: Long,
     @Assisted("page") pageArg: Long,
 ) : VglsViewModel<ViewerState>(),
@@ -42,7 +41,6 @@ class ViewerViewModel @AssistedInject constructor(
         )
 
         this.sendAction(initAction)
-        uiEvents.launchIn(viewModelScope)
     }
 
     override fun initialState() = ViewerState()

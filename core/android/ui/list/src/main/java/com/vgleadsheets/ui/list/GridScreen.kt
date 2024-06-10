@@ -39,7 +39,9 @@ fun GridScreen(
     }
 
     LazyVerticalGrid(
-        contentPadding = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)),
+        contentPadding = PaddingValues(
+            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+        ),
         columns = GridCells.Adaptive(minSize),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),

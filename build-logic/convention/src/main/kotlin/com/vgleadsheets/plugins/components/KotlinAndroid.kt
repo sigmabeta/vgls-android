@@ -17,6 +17,7 @@
 package com.vgleadsheets.plugins.components
 
 import com.android.build.api.dsl.CommonExtension
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
@@ -73,6 +74,8 @@ internal fun Project.configureKotlinJvm() {
  * Configure base Kotlin options
  */
 private fun Project.configureKotlin() {
+    configureDetekt()
+
     // Use withType to workaround https://youtrack.jetbrains.com/issue/KT-55947
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
@@ -89,5 +92,15 @@ private fun Project.configureKotlin() {
                 "-opt-in=kotlinx.coroutines.FlowPreview",
             )
         }
+    }
+}
+
+private fun Project.configureDetekt() {
+    with(pluginManager) {
+        apply("io.gitlab.arturbosch.detekt")
+    }
+
+    extensions.configure<DetektExtension> {
+        config.setFrom("${rootDir.absolutePath}/detekt-config-vgls.yml")
     }
 }

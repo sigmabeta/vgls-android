@@ -114,6 +114,7 @@ class RootViewDeferringInsetsCallback(
         return insets
     }
 
+    @Suppress("UnsafeCallOnNullableType")
     override fun onEnd(animation: WindowInsetsAnimationCompat) {
         if (deferredInsets && (animation.typeMask and deferredInsetTypes) != 0) {
             // If we deferred the IME insets and an IME animation has finished, we need to reset

@@ -1,5 +1,6 @@
 package com.vgleadsheets.storage
 
+@Suppress("TooManyFunctions")
 interface Storage {
     // Loading Defaults
     suspend fun getSavedTopLevelScreen(): String

@@ -12,24 +12,27 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.launch
 
+@Suppress("TooManyFunctions")
 class SimpleStorage(
     private val simpleStore: SimpleStore,
     private val dispatchers: VglsDispatchers
 ) : Storage {
     private val storageCoroutineScope = CoroutineScope(dispatchers.disk)
 
-    override suspend fun getSavedTopLevelScreen() =
+    override suspend fun getSavedTopLevelScreen(): String =
         simpleStore.getString(KEY_SELECTED_TOP_LEVEL).await()
 
-    override suspend fun getSavedSelectedPart() =
+    override suspend fun getSavedSelectedPart(): String =
         simpleStore.getString(KEY_SELECTED_PART).await()
 
+    @Suppress("IgnoredReturnValue")
     override fun saveTopLevelScreen(screenId: String) {
         storageCoroutineScope.launch {
             simpleStore.putString(KEY_SELECTED_TOP_LEVEL, screenId)
         }
     }
 
+    @Suppress("IgnoredReturnValue")
     override fun saveSelectedPart(partId: String) {
         storageCoroutineScope.launch {
             simpleStore.putString(KEY_SELECTED_PART, partId)
@@ -83,6 +86,7 @@ class SimpleStorage(
         )
     }
 
+    @Suppress("IgnoredReturnValue")
     override fun saveSettingSheetScreenOn(setting: Boolean) {
         storageCoroutineScope.launch {
             simpleStore.putString(KEY_SHEETS_KEEP_SCREEN_ON, setting.toString())
@@ -98,12 +102,14 @@ class SimpleStorage(
         getDebugSettingShowPerfView()
     )
 
+    @Suppress("IgnoredReturnValue")
     override fun saveDebugSelectedNetworkEndpoint(newValue: Int) {
         storageCoroutineScope.launch {
             simpleStore.putString(KEY_DEBUG_NETWORK_ENDPOINT, newValue.toString())
         }
     }
 
+    @Suppress("IgnoredReturnValue")
     override fun saveDebugSettingPerfView(newValue: Boolean) {
         storageCoroutineScope.launch {
             simpleStore.putString(KEY_DEBUG_MISC_PERF_VIEW, newValue.toString())

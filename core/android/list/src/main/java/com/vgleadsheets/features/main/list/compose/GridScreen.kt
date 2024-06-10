@@ -96,7 +96,7 @@ fun GridScreen(
                         contentType = { it.layoutId() },
                     ) {
                         it.Content(
-                            modifier = Modifier.animateItemPlacement()
+                            modifier = Modifier
                         )
                     }
                 }

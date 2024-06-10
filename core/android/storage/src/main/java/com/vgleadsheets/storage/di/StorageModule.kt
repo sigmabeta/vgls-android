@@ -20,7 +20,7 @@ object StorageModule {
     @Provides
     fun provideSimpleStore(
         @ApplicationContext context: Context
-    ) = SimpleStoreFactory.create(
+    ): SimpleStore = SimpleStoreFactory.create(
         context,
         "vgls-store"
     )

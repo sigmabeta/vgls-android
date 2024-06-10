@@ -1,19 +1,22 @@
 package com.vgleadsheets.composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.subs.CrossfadeSheet
-import com.vgleadsheets.images.PagePreview
+import com.vgleadsheets.images.LoadingIndicatorConfig
 
 @Composable
 fun SheetPageItem(
     model: SheetPageListModel,
+    actionSink: ActionSink,
     modifier: Modifier,
 ) {
     CrossfadeSheet(
         sourceInfo = model.sourceInfo,
-        pagePreview = PagePreview(
+        loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
             model.transposition,
             model.gameName,
@@ -22,5 +25,9 @@ fun SheetPageItem(
         ),
         sheetId = model.dataId,
         modifier = modifier
+            .clickable {
+                println("sending event: ${model.clickAction}")
+                actionSink.sendAction(model.clickAction)
+            }
     )
 }

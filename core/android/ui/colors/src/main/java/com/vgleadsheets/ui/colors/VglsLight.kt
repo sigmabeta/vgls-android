@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.vgleadsheets.ui.colors
 
 import androidx.compose.material3.lightColorScheme

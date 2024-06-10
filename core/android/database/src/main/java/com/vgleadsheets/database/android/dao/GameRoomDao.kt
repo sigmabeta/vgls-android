@@ -21,6 +21,7 @@ import com.vgleadsheets.database.android.enitity.GameEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
+@Suppress("TooManyFunctions")
 interface GameRoomDao : RoomDao<GameEntity> {
     @Query(QUERY_SEARCH)
     fun searchByName(name: String): Flow<List<GameEntity>>

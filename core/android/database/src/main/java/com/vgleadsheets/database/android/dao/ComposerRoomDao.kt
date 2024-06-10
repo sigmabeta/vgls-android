@@ -26,6 +26,7 @@ import com.vgleadsheets.database.android.join.SongComposerJoin
 import kotlinx.coroutines.flow.Flow
 
 @Dao
+@Suppress("TooManyFunctions")
 interface ComposerRoomDao : RoomDao<ComposerEntity> {
     @Query(QUERY_SEARCH)
     fun searchByName(name: String): Flow<List<ComposerEntity>>

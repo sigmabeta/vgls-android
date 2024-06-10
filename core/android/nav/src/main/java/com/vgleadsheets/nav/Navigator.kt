@@ -2,6 +2,7 @@ package com.vgleadsheets.nav
 
 import com.vgleadsheets.tracking.TrackingScreen
 
+@Suppress("TooManyFunctions")
 interface Navigator {
     fun showGameDetail(gameId: Long)
 

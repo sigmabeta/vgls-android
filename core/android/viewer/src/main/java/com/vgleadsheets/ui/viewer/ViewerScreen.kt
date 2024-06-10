@@ -32,11 +32,16 @@ fun ViewerScreen(
     modifier: Modifier
 ) {
     val state by stateSource.collectAsStateWithLifecycle()
-    println("Viewer items: $state")
     val items = state.pages()
 
     LaunchedEffect(Unit) {
         actionSink.sendAction(VglsAction.Resume)
+    }
+
+    if (items.isEmpty()) {
+        // To fill the screen and prevent janky animation
+        Box(modifier = modifier)
+        return
     }
 
     val pagerState = rememberPagerState(
@@ -46,7 +51,6 @@ fun ViewerScreen(
     HorizontalPager(
         state = pagerState,
         modifier = modifier
-            .fillMaxSize()
             .background(Color.Black)
     ) { page ->
         val item = items[page]
@@ -72,8 +76,9 @@ private fun SampleSheets() {
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
-fun Sheets() {
+private  fun Sheets() {
     val source = MutableStateFlow(
         ViewerState(
             song = Song(
@@ -101,6 +106,6 @@ fun Sheets() {
     ViewerScreen(
         stateSource = source,
         actionSink = { },
-        modifier = Modifier
+        modifier = Modifier.fillMaxSize()
     )
 }

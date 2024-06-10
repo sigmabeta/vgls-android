@@ -1,6 +1,6 @@
-pluginManagement {
-    includeBuild("build-logic")
+includeBuild("build-logic")
 
+pluginManagement {
     repositories {
         google()
         mavenCentral()

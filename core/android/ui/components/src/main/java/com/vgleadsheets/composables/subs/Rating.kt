@@ -14,6 +14,7 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
+@Suppress("MagicNumber")
 fun Rating(
     score: Int,
     modifier: Modifier,
@@ -80,6 +81,7 @@ private fun Menu() {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun Sample() {
     Rating(
         3,

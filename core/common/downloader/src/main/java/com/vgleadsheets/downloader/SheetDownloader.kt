@@ -3,11 +3,11 @@ package com.vgleadsheets.downloader
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.repository.VglsRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 
 class SheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
@@ -23,18 +23,25 @@ class SheetDownloader @Inject constructor(
     private suspend fun getSheetInternal(
         fileName: String,
         partApiId: String
-    ): File {
+    ): SheetFileResult {
         val targetFile = fileReference(fileName, partApiId)
 
         if (targetFile.exists()) {
-            return targetFile
+            return SheetFileResult(
+                targetFile,
+                SheetSourceType.DISK
+            )
         }
 
         downloadSheet(fileName, partApiId, targetFile)
 
-        return targetFile
+        return SheetFileResult(
+            targetFile,
+            SheetSourceType.NETWORK
+        )
     }
 
+    @Suppress("MagicNumber")
     private suspend fun downloadSheet(
         fileName: String,
         partApiId: String,
@@ -54,7 +61,9 @@ class SheetDownloader @Inject constructor(
         val response = sheetDownloadApi.downloadFile(suffixedFileName, partApiId)
 
         if (!response.isSuccessful) {
-            throw IOException("Response \"${response.code()} - ${response.message()}\" received for filename $suffixedFileName")
+            throw IOException(
+                "Response \"${response.code()} - ${response.message()}\" received for filename $suffixedFileName"
+            )
         }
 
         val body = response.body() ?: throw IOException("Somehow received empty response? Nani!?!?")

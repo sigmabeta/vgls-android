@@ -31,6 +31,7 @@ import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
 
+@Suppress("MaxLineLength")
 @Composable
 fun ListModel.Content(
     actionSink: ActionSink,
@@ -54,7 +55,7 @@ fun ListModel.Content(
         is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = actionSink, modifier = modifier)
         is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = actionSink, modifier = modifier)
         is SectionHeaderListModel -> SectionHeader(name = title, modifier = modifier)
-        is SheetPageListModel -> SheetPageItem(model = this, modifier = modifier)
+        is SheetPageListModel -> SheetPageItem(model = this, actionSink = actionSink, modifier = modifier)
         is SingleTextListModel -> LabelNoThingyItem(model = this, modifier = modifier)
         is SquareItemListModel -> SquareItem(model = this, actionSink = actionSink, modifier = modifier)
         is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = modifier)

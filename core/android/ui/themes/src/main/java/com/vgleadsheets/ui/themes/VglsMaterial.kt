@@ -1,3 +1,5 @@
+@file:Suppress("UnusedPrivateMember")
+
 package com.vgleadsheets.ui.themes
 
 import android.content.res.Configuration

@@ -20,22 +20,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vgleadsheets.bitmaps.R
-import com.vgleadsheets.images.PagePreview
+import com.vgleadsheets.images.LoadingIndicatorConfig
 
 @Composable
 fun PreviewSheet(
-    pagePreview: PagePreview,
+    loadingIndicatorConfig: LoadingIndicatorConfig,
     modifier: Modifier
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(0.77272f)
+            .aspectRatio(SheetConstants.ASPECT_RATIO)
             .background(Color.White)
     ) {
-        if (pagePreview.pageNumber == 0) {
+        if (loadingIndicatorConfig.pageNumber == 0) {
             PreviewSheetTitle(
-                pagePreview,
+                loadingIndicatorConfig,
                 modifier
             )
         } else {
@@ -45,12 +45,13 @@ fun PreviewSheet(
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun BoxScope.PreviewSheetTitle(
-    pagePreview: PagePreview,
+    loadingIndicatorConfig: LoadingIndicatorConfig,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = pagePreview.title,
+        text = loadingIndicatorConfig.title,
         color = Color.Black,
         style = MaterialTheme.typography.titleLarge,
         modifier = Modifier
@@ -59,7 +60,7 @@ private fun BoxScope.PreviewSheetTitle(
     )
 
     Text(
-        text = "from ${pagePreview.gameName}",
+        text = "from ${loadingIndicatorConfig.gameName}",
         color = Color.Black,
         style = MaterialTheme.typography.titleLarge.copy(fontSize = 10.sp),
         modifier = Modifier
@@ -93,6 +94,7 @@ private fun BoxScope.PreviewSheetTitle(
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun BoxScope.PreviewSheetOther() {
     Text(
         text = "https://www.vgleadsheets.com/",

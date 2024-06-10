@@ -3,7 +3,6 @@ package com.vgleadsheets.images
 import android.animation.ArgbEvaluator
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
@@ -15,14 +14,13 @@ object BitmapGenerator {
     fun generateBitmap(
         sourceInfo: Any,
         squareImage: Boolean = true,
-        drawLines: Boolean = false
     ): ImageBitmap {
         val rng = Random(sourceInfo.hashCode())
-        val width = rng.nextInt(16) + 16
+        val width = rng.nextInt(RNG_LIMIT) + RNG_LIMIT
         val height = if (squareImage) {
             width
         } else {
-            rng.nextInt(16) + 16
+            rng.nextInt(RNG_LIMIT) + RNG_LIMIT
         }
 
         val sizeInBytes = width * height * BYTES_PER_PIXEL
@@ -69,24 +67,9 @@ object BitmapGenerator {
             canvas.drawLine(0.0f, row.toFloat(), width.toFloat(), row.toFloat(), paint)
         }
 
-        if (drawLines) {
-            paint.color = Color.WHITE
-
-            val leftVertLine = (width.toFloat() / 3) - 1
-            val rightVertLine = (2 * width.toFloat() / 3)
-
-            canvas.drawLine(leftVertLine, 0.0f, leftVertLine, height.toFloat(), paint)
-            canvas.drawLine(rightVertLine, 0.0f, rightVertLine, height.toFloat(), paint)
-
-            val topHorizLine = (height.toFloat() / 3) - 1
-            val bottomHorizLine = 2 * height.toFloat() / 3
-
-            canvas.drawLine(0.0f, topHorizLine, width.toFloat(), topHorizLine, paint)
-            canvas.drawLine(0.0f, bottomHorizLine, width.toFloat(), bottomHorizLine, paint)
-        }
-
         return bitmap.asImageBitmap()
     }
 
+    private const val RNG_LIMIT = 16
     private const val BYTES_PER_PIXEL = 4
 }

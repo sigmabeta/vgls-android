@@ -43,6 +43,8 @@ data class State(
         )
     }
 
+    // T O  D O: Actually fix these detekt problems
+    @Suppress("LongMethod", "MaxLineLength")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val songModel = if (song != null) {
             listOf(
@@ -67,7 +69,6 @@ data class State(
                                     clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
                                 )
                             )
-
                         }.toImmutableList()
                     )
                 } else {

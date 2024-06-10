@@ -23,7 +23,6 @@ data class State(
     )
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        println(sheetUrlInfo)
         return songs
             .map { song ->
                 ImageNameCaptionListModel(

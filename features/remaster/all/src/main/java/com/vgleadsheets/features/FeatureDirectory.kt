@@ -28,6 +28,7 @@ class FeatureDirectory(
     private val hatchet: Hatchet,
     private val selectedPartManager: SelectedPartManager,
 ) : BrainProvider {
+    @Suppress("LongMethod")
     override fun provideBrain(
         destination: Destination,
         coroutineScope: CoroutineScope

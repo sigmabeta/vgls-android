@@ -2,7 +2,6 @@ package com.vgleadsheets.composables
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,8 +36,8 @@ fun SheetPageCard(
     ) {
         SheetPageItem(
             model = model,
+            actionSink = actionSink,
             modifier = Modifier
-                .clickable { actionSink.sendAction(model.clickAction) }
                 .wrapContentHeight()
                 .fillMaxWidth(),
         )

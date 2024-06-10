@@ -7,7 +7,7 @@ import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.dao.DataSource
 import kotlinx.coroutines.flow.map
 
-abstract class AndroidDataSource<
+open class AndroidDataSource<
     RoomDaoType : RoomDao<EntityType>,
     ModelType,
     EntityType,

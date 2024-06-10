@@ -1,45 +1,48 @@
 package com.vgleadsheets.pdf
 
-import androidx.core.graphics.drawable.toDrawable
 import coil.ImageLoader
+import coil.annotation.ExperimentalCoilApi
 import coil.decode.DataSource
-import coil.fetch.DrawableResult
+import coil.decode.ImageSource
 import coil.fetch.Fetcher
+import coil.fetch.SourceResult
 import coil.request.Options
-import coil.size.Size
-import coil.size.pxOrElse
 import com.vgleadsheets.downloader.SheetDownloader
+import com.vgleadsheets.downloader.SheetSourceType
+import okio.FileSystem
+import okio.Path.Companion.toOkioPath
 import javax.inject.Inject
 
 class PdfImageFetcher(
     private val sheetDownloader: SheetDownloader,
-    private val pdfToBitmapRenderer: PdfToBitmapRenderer,
     private val data: PdfConfigById,
-    private val options: Options
+    private val options: Options,
 ) : Fetcher {
-    override suspend fun fetch(): DrawableResult {
-        val pdfFile = sheetDownloader.getSheet(data.songId, data.partApiId)
-        val size = options.size
-        val width = if (size == Size.ORIGINAL) {
-            null
-        } else {
-            size.width.pxOrElse { 69 }
-        }
+    @OptIn(ExperimentalCoilApi::class)
+    override suspend fun fetch(): SourceResult {
+        val pdfFileResult = sheetDownloader.getSheet(data.songId, data.partApiId)
+        val pdfFile = pdfFileResult.file
 
-        println("Size $size width $width")
+        val pdfPath = pdfFile.toOkioPath()
 
-        return DrawableResult(
-            drawable = pdfToBitmapRenderer
-                .renderPdfToBitmap(pdfFile, data, width)
-                .toDrawable(options.context.resources),
-            isSampled = true,
-            dataSource = DataSource.DISK
+        return SourceResult(
+            source = ImageSource(
+                file = pdfPath,
+                fileSystem = FileSystem.SYSTEM,
+                metadata = PdfMetadata(data.pageNumber)
+            ),
+            dataSource = pdfFileResult.sourceType.toCoilDataSource(),
+            mimeType = MIMETYPE
         )
+    }
+
+    private fun SheetSourceType.toCoilDataSource() = when (this) {
+        SheetSourceType.DISK -> DataSource.DISK
+        SheetSourceType.NETWORK -> DataSource.NETWORK
     }
 
     class Factory @Inject constructor(
         private val sheetDownloader: SheetDownloader,
-        private val pdfToBitmapRenderer: PdfToBitmapRenderer,
     ) : Fetcher.Factory<PdfConfigById> {
         override fun create(
             data: PdfConfigById,
@@ -47,9 +50,12 @@ class PdfImageFetcher(
             imageLoader: ImageLoader
         ) = PdfImageFetcher(
             sheetDownloader,
-            pdfToBitmapRenderer,
             data,
             options
         )
+    }
+
+    companion object {
+        const val MIMETYPE = "application/pdf"
     }
 }

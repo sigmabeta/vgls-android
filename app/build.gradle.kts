@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.vgls.compose.android.app)
     alias(libs.plugins.vgls.di.android)
 
-    alias(libs.plugins.detekt)
     alias(libs.plugins.git.version)
     alias(libs.plugins.gradle.publisher)
     alias(libs.plugins.licenses)
