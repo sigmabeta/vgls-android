@@ -3,6 +3,7 @@
 package com.vgleadsheets.topbar
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -44,97 +45,103 @@ fun RemasterTopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     handleAction: (VglsAction) -> Unit,
 ) {
-    val resources = LocalContext.current.resources
-    CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            titleContentColor = MaterialTheme.colorScheme.onBackground,
-            scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        ),
-        scrollBehavior = scrollBehavior,
-        title = {
-            Column {
-                Crossfade(
-                    targetState = state.model.title,
-                    label = "Title Animation",
-                ) {
-                    Text(
-                        text = it ?: resources.getString(R.string.title_default_top_app_bar),
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
-
-                val subtitle = state.model.subtitle
-                if (subtitle != null) {
+    AnimatedVisibility(
+        modifier = Modifier.fillMaxWidth(),
+        visible = state.visibility == TopBarVisibility.VISIBLE,
+        label = "TopBarVisibility"
+    ) {
+        val resources = LocalContext.current.resources
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            ),
+            scrollBehavior = scrollBehavior,
+            title = {
+                Column {
                     Crossfade(
-                        targetState = subtitle,
-                        label = "Subtitle Animation",
+                        targetState = state.model.title,
+                        label = "Title Animation",
                     ) {
                         Text(
-                            text = it,
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontSize = TextUnit(SIZE_TEXT_SMALL, TextUnitType.Sp)
-                            ),
+                            text = it ?: resources.getString(R.string.title_default_top_app_bar),
+                            style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
                         )
                     }
-                }
-            }
-        },
-        navigationIcon = {
-            val (vector, stringId, action) = if (state.model.shouldShowBack) {
-                Triple(
-                    Icons.AutoMirrored.Default.ArrowBack,
-                    com.vgleadsheets.ui.strings.R.string.cont_desc_app_back,
-                    TopBarAction.AppBack
-                )
-            } else {
-                Triple(
-                    Icons.Default.Menu,
-                    com.vgleadsheets.ui.strings.R.string.cont_desc_app_menu,
-                    TopBarAction.Menu
-                )
-            }
 
-            IconButton(
-                modifier = Modifier,
-                onClick = { handleAction(action) }
-            ) {
-                Icon(
-                    imageVector = vector,
-                    contentDescription = resources.getString(stringId),
-                )
-            }
-        },
-        actions = {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .padding(end = 4.dp)
-                    .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
-                    .clip(CircleShape)
-                    .clickable { handleAction(TopBarAction.OpenPartPicker) }
-            ) {
-                Crossfade(
-                    targetState = state.selectedPart,
-                    label = "Title Animation",
-                ) {
-                    Text(
-                        text = it ?: "",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = TextUnit(SIZE_TEXT_LARGE, TextUnitType.Sp)
-                        ),
-                        textAlign = TextAlign.Center,
+                    val subtitle = state.model.subtitle
+                    if (subtitle != null) {
+                        Crossfade(
+                            targetState = subtitle,
+                            label = "Subtitle Animation",
+                        ) {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontSize = TextUnit(SIZE_TEXT_SMALL, TextUnitType.Sp)
+                                ),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
+                    }
+                }
+            },
+            navigationIcon = {
+                val (vector, stringId, action) = if (state.model.shouldShowBack) {
+                    Triple(
+                        Icons.AutoMirrored.Default.ArrowBack,
+                        com.vgleadsheets.ui.strings.R.string.cont_desc_app_back,
+                        TopBarAction.AppBack
+                    )
+                } else {
+                    Triple(
+                        Icons.Default.Menu,
+                        com.vgleadsheets.ui.strings.R.string.cont_desc_app_menu,
+                        TopBarAction.Menu
                     )
                 }
+
+                IconButton(
+                    modifier = Modifier,
+                    onClick = { handleAction(action) }
+                ) {
+                    Icon(
+                        imageVector = vector,
+                        contentDescription = resources.getString(stringId),
+                    )
+                }
+            },
+            actions = {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                        .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
+                        .clip(CircleShape)
+                        .clickable { handleAction(TopBarAction.OpenPartPicker) }
+                ) {
+                    Crossfade(
+                        targetState = state.selectedPart,
+                        label = "Title Animation",
+                    ) {
+                        Text(
+                            text = it ?: "",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontSize = TextUnit(SIZE_TEXT_LARGE, TextUnitType.Sp)
+                            ),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 @Preview
