@@ -119,11 +119,6 @@ jobs:
       - run:
           name: Run Detekt checks
           command: ./gradlew detekt --no-configuration-cache --no-daemon --max-workers=2
-      - store_artifacts:
-          path: app/build/reports/
-          destination: reports
-      - store_test_results:
-          path: build/reports/detekt
       - save_cache:
           key: build-cache-detekt-v1-{{ .Branch }}-{{ .Revision }}
           paths:

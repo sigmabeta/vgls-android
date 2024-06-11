@@ -100,16 +100,7 @@ private fun Project.configureDetekt() {
         apply("io.gitlab.arturbosch.detekt")
     }
 
-    val reportMerge = tasks.register("reportMergeXml", io.gitlab.arturbosch.detekt.report.ReportMergeTask::class.java) {
-        input.from(tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().map { it.xmlReportFile })
-        output.set(rootProject.layout.buildDirectory.file("reports/detekt/merge.xml"))
-    }
-
     extensions.configure<DetektExtension> {
         config.setFrom("${rootDir.absolutePath}/detekt-config-vgls.yml")
-
-        tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-            finalizedBy(reportMerge)
-        }
     }
 }
