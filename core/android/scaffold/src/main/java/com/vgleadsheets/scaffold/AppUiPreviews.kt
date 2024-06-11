@@ -125,8 +125,8 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, EventDispatc
     }
 
     val eventDispatcher = object : EventDispatcher {
-        override fun addEventSink(sink: EventSink) {}
-        override fun removeEventSink(sink: EventSink) {}
+        override fun addEventSink(sink: EventSink) = Unit
+        override fun removeEventSink(sink: EventSink) = Unit
         override val sendEvent = { event: VglsEvent ->
             if (event is VglsEvent.ShowUiChrome) {
                 toggleBarVisibility()
