@@ -6,7 +6,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.vgleadsheets.appcomm.EventDispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.hilt.EntryPoint
@@ -17,7 +16,6 @@ import dagger.hilt.android.components.ActivityComponent
 @AssistedFactory
 internal interface Factory {
     fun create(
-        eventDispatcher: EventDispatcher,
         @Assisted("id") idArg: Long,
         @Assisted("page") pageArg: Long,
     ): ViewerViewModel
@@ -32,13 +30,11 @@ internal interface Provider {
 @Suppress("UNCHECKED_CAST")
 internal fun provideFactory(
     assistedFactory: Factory,
-    eventDispatcher: EventDispatcher,
     idArg: Long,
     pageArg: Long,
 ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return assistedFactory.create(
-            eventDispatcher,
             idArg,
             pageArg,
         ) as T
@@ -47,7 +43,6 @@ internal fun provideFactory(
 
 @Composable
 fun viewerViewModel(
-    eventDispatcher: EventDispatcher,
     idArg: Long,
     pageArg: Long,
 ): ViewerViewModel {
@@ -58,7 +53,6 @@ fun viewerViewModel(
     return viewModel(
         factory = provideFactory(
             factory,
-            eventDispatcher,
             idArg,
             pageArg,
         )

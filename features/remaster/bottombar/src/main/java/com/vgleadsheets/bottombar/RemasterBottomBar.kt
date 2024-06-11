@@ -19,12 +19,12 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun RemasterBottomBar(
+    state: BottomBarState,
     navController: NavController,
-    visibility: BottomBarVisibility,
 ) {
     AnimatedVisibility(
         modifier = Modifier.fillMaxWidth(),
-        visible = visibility == BottomBarVisibility.VISIBLE,
+        visible = state.visibility == BottomBarVisibility.VISIBLE,
         label = "BottomBarVisibility"
     ) {
         BottomAppBar(
@@ -71,5 +71,8 @@ private fun PreviewDark() {
 private fun PreviewContent() {
     val navController = rememberNavController()
 
-    RemasterBottomBar(navController, BottomBarVisibility.VISIBLE)
+    RemasterBottomBar(
+        BottomBarState(BottomBarVisibility.VISIBLE),
+        navController,
+    )
 }

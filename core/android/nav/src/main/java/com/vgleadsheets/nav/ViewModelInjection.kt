@@ -1,55 +1,61 @@
-package com.vgleadsheets.topbar
+package com.vgleadsheets.nav
 
 import android.app.Activity
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.vgleadsheets.appcomm.EventDispatcher
 import dagger.assisted.AssistedFactory
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.components.ActivityComponent
+import kotlinx.coroutines.CoroutineScope
 
 @AssistedFactory
 internal interface Factory {
     fun create(
-        eventDispatcher: EventDispatcher,
-    ): TopBarViewModel
+        snackbarScope: CoroutineScope,
+        snackbarHostState: SnackbarHostState,
+    ): NavViewModel
 }
 
 @EntryPoint
 @InstallIn(ActivityComponent::class)
 internal interface Provider {
-    fun topBarViewModelFactory(): Factory
+    fun navViewModelFactory(): Factory
 }
 
 @Suppress("UNCHECKED_CAST")
 internal fun provideFactory(
     assistedFactory: Factory,
-    eventDispatcher: EventDispatcher,
+    snackbarScope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
 ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return assistedFactory.create(
-            eventDispatcher,
+            snackbarScope,
+            snackbarHostState
         ) as T
     }
 }
 
 @Composable
-fun topBarViewModel(
-    eventDispatcher: EventDispatcher,
-): TopBarViewModel {
+fun navViewModel(
+    snackbarScope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
+): NavViewModel {
     val activity = LocalContext.current as Activity
     val entryPoint = EntryPointAccessors.fromActivity(activity, Provider::class.java)
-    val factory = entryPoint.topBarViewModelFactory()
+    val factory = entryPoint.navViewModelFactory()
 
     return viewModel(
         factory = provideFactory(
             factory,
-            eventDispatcher,
+            snackbarScope,
+            snackbarHostState
         )
     )
 }

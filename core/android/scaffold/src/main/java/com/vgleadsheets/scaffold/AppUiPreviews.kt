@@ -28,6 +28,7 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.bottombar.BottomBarState
 import com.vgleadsheets.bottombar.BottomBarVisibility
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
@@ -46,9 +47,9 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.viewer.Action
 import com.vgleadsheets.ui.viewer.ViewerScreen
 import com.vgleadsheets.ui.viewer.ViewerState
-import java.util.Random
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.util.Random
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
@@ -105,6 +106,9 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, EventDispatc
         TitleBarModel(),
         visibility = topBarVisibility
     )
+    val bottomBarVmState = BottomBarState(
+        visibility = bottomBarVisibility
+    )
 
     val toggleBarVisibility = {
         topBarVisibility = if (topBarVisibility == TopBarVisibility.VISIBLE) {
@@ -136,7 +140,7 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, EventDispatc
         snackbarHostState = snackbarHostState,
         topBarVmState = topBarVmState,
         topBarActionHandler = { },
-        bottomBarVisibility = bottomBarVisibility,
+        bottomBarVmState = bottomBarVmState,
         mainContent = { padding -> screenContent(padding, eventDispatcher) },
         modifier = Modifier,
     )

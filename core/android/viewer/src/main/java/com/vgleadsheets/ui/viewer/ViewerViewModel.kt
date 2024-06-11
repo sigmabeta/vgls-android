@@ -28,7 +28,7 @@ class ViewerViewModel @AssistedInject constructor(
     private val urlInfoProvider: UrlInfoProvider,
     override val dispatchers: VglsDispatchers,
     override val coroutineScope: CoroutineScope,
-    @Assisted override val eventDispatcher: EventDispatcher,
+    override val eventDispatcher: EventDispatcher,
     @Assisted("id") idArg: Long,
     @Assisted("page") pageArg: Long,
 ) : VglsViewModel<ViewerState>(),

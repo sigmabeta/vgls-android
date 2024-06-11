@@ -65,6 +65,10 @@ abstract class VglsViewModel<StateType : VglsState> :
         }
     }
 
+    override fun onCleared() {
+        eventDispatcher.removeEventSink(this)
+    }
+
     protected fun emitEvent(event: VglsEvent) {
         coroutineScope.launch(dispatchers.main) {
             hatchet.d("Emitting event: $event")

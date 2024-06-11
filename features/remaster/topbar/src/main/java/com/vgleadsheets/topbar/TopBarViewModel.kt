@@ -9,21 +9,22 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TopBarViewModel @AssistedInject constructor(
+@HiltViewModel
+class TopBarViewModel @Inject constructor(
     private val selectedPartManager: SelectedPartManager,
     override val dispatchers: VglsDispatchers,
     override val coroutineScope: CoroutineScope,
     override val hatchet: Hatchet,
-    @Assisted override val eventDispatcher: EventDispatcher,
+    override val eventDispatcher: EventDispatcher,
 ) : VglsViewModel<TopBarState>() {
     override fun initialState() = TopBarState()
 
@@ -35,10 +36,6 @@ class TopBarViewModel @AssistedInject constructor(
     override fun sendAction(action: VglsAction) = handleAction(action)
 
     override fun sendEvent(event: VglsEvent) = handleEvent(event)
-
-    override fun onCleared() {
-        eventDispatcher.removeEventSink(this)
-    }
 
     override fun handleAction(action: VglsAction) {
         coroutineScope.launch(dispatchers.main) {
@@ -87,7 +84,7 @@ class TopBarViewModel @AssistedInject constructor(
     }
 
     private fun showTopBar() {
-        hatchet.d("Show top bar.")
+        hatchet.d("Showing top bar.")
         internalUiState.update {
             it.copy(visibility = TopBarVisibility.VISIBLE)
         }

@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.nav.ARG_TEMPLATE_ONE
 import com.vgleadsheets.nav.ArgType
@@ -18,7 +17,6 @@ import com.vgleadsheets.viewmodel.list.listViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.listScreenEntry(
     destination: Destination,
-    eventDispatcher: EventDispatcher,
     topBarState: TopAppBarState,
     globalModifier: Modifier,
 ) {
@@ -44,7 +42,6 @@ fun NavGraphBuilder.listScreenEntry(
 
         val viewModel = listViewModel(
             destination = destination,
-            eventDispatcher = eventDispatcher,
             idArg = idArg ?: 0L,
             stringArg = stringArg,
         )

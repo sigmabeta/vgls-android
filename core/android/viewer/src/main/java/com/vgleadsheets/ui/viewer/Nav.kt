@@ -9,7 +9,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.nav.ARG_TEMPLATE_ONE
 import com.vgleadsheets.nav.ARG_TEMPLATE_TWO
@@ -17,7 +16,6 @@ import com.vgleadsheets.nav.Destination
 
 @OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.viewerScreenNavEntry(
-    eventDispatcher: EventDispatcher,
     topBarState: TopAppBarState,
     globalModifier: Modifier,
 ) {
@@ -32,7 +30,6 @@ fun NavGraphBuilder.viewerScreenNavEntry(
         val pageArg = navBackStackEntry.arguments?.getLong(ARG_TEMPLATE_TWO)
 
         val viewModel = viewerViewModel(
-            eventDispatcher = eventDispatcher,
             idArg = idArg ?: 0L,
             pageArg = pageArg ?: 0L,
         )

@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.onEach
 
 class ListViewModel @AssistedInject constructor(
     brainProvider: BrainProvider,
-    val hatchet: Hatchet,
+    private val hatchet: Hatchet,
+    private val eventDispatcher: EventDispatcher,
     @Assisted destination: Destination,
-    @Assisted private val eventDispatcher: EventDispatcher,
     @Assisted idArg: Long,
     @Assisted stringArg: String?,
 ) : ViewModel(),

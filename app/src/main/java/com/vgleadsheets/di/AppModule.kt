@@ -3,6 +3,8 @@ package com.vgleadsheets.di
 import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vgleadsheets.BuildConfig
+import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.EventDispatcherReal
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.settings.common.Storage
@@ -84,6 +86,10 @@ object AppModule {
         coroutineScope,
         dispatchers,
     )
+
+    @Provides
+    @Singleton
+    internal fun provideEventDispatcher(): EventDispatcher = EventDispatcherReal()
 
     @Provides
     @Singleton

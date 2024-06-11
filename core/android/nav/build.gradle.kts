@@ -1,19 +1,19 @@
 plugins {
     alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.vgls.compose.android.module)
     alias(libs.plugins.vgls.di.android)
 }
 
 dependencies {
-    implementation(libs.retrofit.core)
-
-    implementation(projects.core.common.model)
-    implementation(projects.core.common.perf)
-    implementation(projects.core.common.repository)
-    implementation(projects.core.common.tracking)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material3)
 
     implementation(projects.core.android.coroutines)
-    implementation(projects.core.android.mvrx)
-    implementation(projects.core.android.storage)
+    implementation(projects.core.android.viewmodel)
+
+    implementation(projects.core.common.appcomm)
+    implementation(projects.core.common.model)
+
 }
 
 android {

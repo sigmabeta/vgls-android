@@ -6,7 +6,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.nav.Destination
 import dagger.assisted.AssistedFactory
 import dagger.hilt.EntryPoint
@@ -18,7 +17,6 @@ import dagger.hilt.android.components.ActivityComponent
 internal interface Factory {
     fun create(
         destination: Destination,
-        eventDispatcher: EventDispatcher,
         idArg: Long,
         stringArg: String?,
     ): ListViewModel
@@ -34,14 +32,12 @@ internal interface Provider {
 internal fun provideFactory(
     assistedFactory: Factory,
     destination: Destination,
-    eventDispatcher: EventDispatcher,
     idArg: Long,
     stringArg: String?,
 ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return assistedFactory.create(
             destination,
-            eventDispatcher,
             idArg,
             stringArg,
         ) as T
@@ -51,7 +47,6 @@ internal fun provideFactory(
 @Composable
 fun listViewModel(
     destination: Destination,
-    eventDispatcher: EventDispatcher,
     idArg: Long,
     stringArg: String?,
 ): ListViewModel {
@@ -63,7 +58,6 @@ fun listViewModel(
         factory = provideFactory(
             factory,
             destination,
-            eventDispatcher,
             idArg,
             stringArg,
         )
