@@ -45,6 +45,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RemasterAppUi(
+    showSystemBars: () -> Unit,
+    hideSystemBars: () -> Unit,
     modifier: Modifier
 ) {
     val navController = rememberNavController()
@@ -61,8 +63,16 @@ fun RemasterAppUi(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
 
     var bottomBarVisibility by remember { mutableStateOf(BottomBarVisibility.VISIBLE) }
-    val showBottomBar = remember { { bottomBarVisibility = BottomBarVisibility.VISIBLE } }
-    val hideBottomBar = remember { { bottomBarVisibility = BottomBarVisibility.HIDDEN } }
+    val showBottomBar = {
+        showSystemBars()
+        bottomBarVisibility = BottomBarVisibility.VISIBLE
+    }
+
+    val hideBottomBar = {
+        hideSystemBars()
+        bottomBarVisibility = BottomBarVisibility.HIDDEN
+    }
+
 
     val eventDispatcher = remember { EventDispatcherReal(navFunction, navBack, launchSnackbar, showBottomBar, hideBottomBar) }
 
@@ -77,7 +87,7 @@ fun RemasterAppUi(
         topBarVmState = topBarVmState,
         topBarActionHandler = topBarActionHandler,
         bottomBarVisibility = bottomBarVisibility,
-        mainContent =  { innerPadding -> MainContent(navController, innerPadding, eventDispatcher, topBarState) },
+        mainContent = { innerPadding -> MainContent(navController, innerPadding, eventDispatcher, topBarState) },
         modifier = modifier,
     )
 }

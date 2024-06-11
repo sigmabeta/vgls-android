@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -24,9 +26,18 @@ class RemasteredActivity :
         setupEdgeToEdge()
         printDisplayDetails()
 
+        val windowInsetController = WindowInsetsControllerCompat(window, window.decorView)
+
+        val hideSystemBars = { windowInsetController.hide(WindowInsetsCompat.Type.systemBars()) }
+        val showSystemBars = { windowInsetController.show(WindowInsetsCompat.Type.systemBars()) }
+
         setContent {
             VglsMaterial {
-                RemasterAppUi(modifier = Modifier)
+                RemasterAppUi(
+                    showSystemBars,
+                    hideSystemBars,
+                    modifier = Modifier
+                )
             }
         }
     }
