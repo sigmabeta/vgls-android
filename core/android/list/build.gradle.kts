@@ -13,10 +13,6 @@ dependencies {
 }
 
 android {
-    buildFeatures {
-        dataBinding = true
-    }
-
     namespace = "com.vgleadsheets.features.main.list"
 
     kotlinOptions {
