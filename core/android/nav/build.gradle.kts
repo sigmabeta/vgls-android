@@ -13,7 +13,6 @@ dependencies {
 
     implementation(projects.core.common.appcomm)
     implementation(projects.core.common.model)
-
 }
 
 android {

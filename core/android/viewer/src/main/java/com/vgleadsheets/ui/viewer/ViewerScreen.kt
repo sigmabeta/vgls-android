@@ -78,7 +78,7 @@ private fun SampleSheets() {
 
 @Suppress("MagicNumber")
 @Composable
-private  fun Sheets() {
+private fun Sheets() {
     val source = MutableStateFlow(
         ViewerState(
             song = Song(
