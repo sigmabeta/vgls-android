@@ -2,6 +2,7 @@ package com.vgleadsheets.bottombar
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
@@ -44,7 +45,7 @@ class BottomBarViewModel @Inject constructor(
     private fun showBottomBar() {
         hatchet.d("Showing bottom bar.")
         viewModelScope.launch {
-            delay(500)
+            delay(Hacks.UI_VISIBILITY_ANIM_DELAY)
             internalUiState.update {
                 it.copy(visibility = BottomBarVisibility.VISIBLE)
             }

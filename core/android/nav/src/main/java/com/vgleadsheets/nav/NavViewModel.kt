@@ -6,6 +6,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
@@ -111,7 +112,7 @@ class NavViewModel @AssistedInject constructor(
     private fun hideSystemUi() {
         hatchet.d("Hiding system UI.")
         viewModelScope.launch {
-            delay(500)
+            delay(Hacks.UI_VISIBILITY_ANIM_DELAY)
             internalUiState.update {
                 it.copy(visibility = SystemUiVisibility.HIDDEN)
             }

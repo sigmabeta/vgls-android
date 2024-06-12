@@ -89,6 +89,7 @@ fun ViewerScreen(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
+@Suppress("ComplexCondition", "LongMethod")
 @Composable
 private fun BoxScope.DirectionButton(
     action: Action,
@@ -131,7 +132,7 @@ private fun BoxScope.DirectionButton(
         }
     }
 
-    var cumulativeDrag by remember { mutableStateOf(0.0f ) }
+    var cumulativeDrag by remember { mutableStateOf(0.0f) }
     val dragState = rememberDraggableState { offset ->
         cumulativeDrag += offset
 

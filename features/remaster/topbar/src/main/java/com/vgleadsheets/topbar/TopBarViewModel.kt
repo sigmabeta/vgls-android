@@ -2,6 +2,7 @@ package com.vgleadsheets.topbar
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.components.TitleBarModel
@@ -86,7 +87,7 @@ class TopBarViewModel @Inject constructor(
     private fun showTopBar() {
         hatchet.d("Showing top bar.")
         viewModelScope.launch {
-            delay(500)
+            delay(Hacks.UI_VISIBILITY_ANIM_DELAY)
             internalUiState.update {
                 it.copy(visibility = TopBarVisibility.VISIBLE)
             }
