@@ -11,6 +11,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -84,10 +85,12 @@ class TopBarViewModel @Inject constructor(
 
     private fun showTopBar() {
         hatchet.d("Showing top bar.")
-        internalUiState.update {
-            it.copy(visibility = TopBarVisibility.VISIBLE)
+        viewModelScope.launch {
+            delay(500)
+            internalUiState.update {
+                it.copy(visibility = TopBarVisibility.VISIBLE)
+            }
         }
-        emitEvent(VglsEvent.UiChromeBecameShown)
     }
 
     private fun hideTopBar() {
@@ -95,7 +98,6 @@ class TopBarViewModel @Inject constructor(
         internalUiState.update {
             it.copy(visibility = TopBarVisibility.HIDDEN)
         }
-        emitEvent(VglsEvent.UiChromeBecameHidden)
     }
 
     private fun updateTitle(title: TitleBarModel) {

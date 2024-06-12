@@ -8,6 +8,7 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,10 +43,12 @@ class BottomBarViewModel @Inject constructor(
 
     private fun showBottomBar() {
         hatchet.d("Showing bottom bar.")
-        internalUiState.update {
-            it.copy(visibility = BottomBarVisibility.VISIBLE)
+        viewModelScope.launch {
+            delay(500)
+            internalUiState.update {
+                it.copy(visibility = BottomBarVisibility.VISIBLE)
+            }
         }
-        emitEvent(VglsEvent.UiChromeBecameShown)
     }
 
     private fun hideBottomBar() {

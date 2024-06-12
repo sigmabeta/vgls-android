@@ -14,6 +14,7 @@ import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -109,9 +110,12 @@ class NavViewModel @AssistedInject constructor(
 
     private fun hideSystemUi() {
         hatchet.d("Hiding system UI.")
-        internalUiState.update {
-            it.copy(visibility = SystemUiVisibility.HIDDEN)
+        viewModelScope.launch {
+            delay(500)
+            internalUiState.update {
+                it.copy(visibility = SystemUiVisibility.HIDDEN)
+            }
+            emitEvent(VglsEvent.UiChromeBecameHidden)
         }
-        emitEvent(VglsEvent.UiChromeBecameHidden)
     }
 }
