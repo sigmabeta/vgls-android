@@ -163,7 +163,7 @@ class ViewerViewModel @AssistedInject constructor(
     private fun hideButtonsSoon() {
         buttonVisibilityTimer?.cancel()
         buttonVisibilityTimer = viewModelScope.launch {
-            delay(1_000L)
+            delay(DURATION_BUTTON_VISIBILITY)
             internalUiState.update {
                 it.copy(buttonsVisible = false)
             }
@@ -171,6 +171,7 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     companion object {
+        private const val DURATION_BUTTON_VISIBILITY = 1_500L
         private const val DURATION_CHROME_VISIBILITY = 3_000L
     }
 }

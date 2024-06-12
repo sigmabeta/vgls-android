@@ -109,7 +109,7 @@ private fun BoxScope.DirectionButton(
         else -> throw IllegalArgumentException("Needs to be a direction lol")
     }
 
-    val alpha = if (!visible) 0.0f else if (enabled) 1.0f else 0.2f
+    val alpha = if (!visible) ALPHA_TRANSPARENT else if (enabled) ALPHA_ENABLED else ALPHA_DISABLED
     val alphaState by animateFloatAsState(alpha)
 
     val color = if (enabled) Color.White else Color.Gray
@@ -121,11 +121,11 @@ private fun BoxScope.DirectionButton(
         modifier = Modifier
             .alpha(alphaState)
             .padding(8.dp)
-            .fillMaxWidth(0.3f)
-            .fillMaxHeight(0.5f)
+            .fillMaxWidth(WIDTH_PERCENT_BUTTON)
+            .fillMaxHeight(HEIGHT_PERCENT_BUTTON)
             .align(buttonAlignment)
             .clip(RoundedCornerShape(16.dp))
-            .background(Color(0, 0, 0, 64))
+            .background(Color(0, 0, 0, ALPHA_BACKGROUND_BUTTON_INT))
             .clickable(enabled = enabled) {
                 actionSink.sendAction(action)
                 scrollScope.launch {
@@ -139,11 +139,22 @@ private fun BoxScope.DirectionButton(
             tint = colorState,
             modifier = Modifier
                 .align(Alignment.Center)
-                .fillMaxWidth(0.5f)
+                .fillMaxWidth(WIDTH_PERCENT_ICON)
                 .aspectRatio(1.0f)
         )
     }
 }
+
+private const val WIDTH_PERCENT_ICON = 0.5f
+
+private const val WIDTH_PERCENT_BUTTON = 0.3f
+private const val HEIGHT_PERCENT_BUTTON = 0.5f
+
+private const val ALPHA_TRANSPARENT = 0.0f
+private const val ALPHA_DISABLED = 0.2f
+private const val ALPHA_ENABLED = 1.0f
+private const val ALPHA_BACKGROUND_BUTTON = 0.25f
+private const val ALPHA_BACKGROUND_BUTTON_INT = (ALPHA_BACKGROUND_BUTTON * 255).toInt()
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
