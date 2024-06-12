@@ -6,6 +6,9 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
@@ -34,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
@@ -117,6 +121,29 @@ private fun BoxScope.DirectionButton(
 
     val scrollScope = rememberCoroutineScope()
 
+    val dragThresholdPx = with(LocalDensity.current) {
+        96.dp.toPx()
+    }
+    val onClick: () -> Unit = {
+        actionSink.sendAction(action)
+        scrollScope.launch {
+            pagerState.animateScrollToPage(pagerState.currentPage + increment)
+        }
+    }
+
+    var cumulativeDrag by remember { mutableStateOf(0.0f ) }
+    val dragState = rememberDraggableState { offset ->
+        cumulativeDrag += offset
+
+        if (
+            action == Action.PrevButtonClicked && (cumulativeDrag > dragThresholdPx) ||
+            action == Action.NextButtonClicked && (cumulativeDrag < -dragThresholdPx)
+        ) {
+            onClick()
+            cumulativeDrag = 0f
+        }
+    }
+
     Box(
         modifier = Modifier
             .alpha(alphaState)
@@ -126,12 +153,15 @@ private fun BoxScope.DirectionButton(
             .align(buttonAlignment)
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0, 0, 0, ALPHA_BACKGROUND_BUTTON_INT))
-            .clickable(enabled = enabled) {
-                actionSink.sendAction(action)
-                scrollScope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage + increment)
+            .clickable(enabled = enabled, onClick = onClick)
+            .draggable(
+                state = dragState,
+                orientation = Orientation.Horizontal,
+                enabled = enabled,
+                onDragStopped = {
+                    cumulativeDrag = 0f
                 }
-            }
+            )
     ) {
         Icon(
             imageVector = imageVector,
