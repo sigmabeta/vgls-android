@@ -48,7 +48,6 @@ import com.vgleadsheets.ui.viewer.Action
 import com.vgleadsheets.ui.viewer.ViewerScreen
 import com.vgleadsheets.ui.viewer.ViewerState
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.Random
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
@@ -265,29 +264,28 @@ private fun SampleSheets(eventDispatcher: EventDispatcher) {
 private fun Sheets(
     eventDispatcher: EventDispatcher,
 ) {
-    val source = MutableStateFlow(
-        ViewerState(
-            song = Song(
-                1234L,
-                name = "A Trip to Alivel Mall",
-                gameName = "Kirby and the Forgotten Land",
-                hasVocals = false,
-                pageCount = 3,
-                composers = emptyList(),
-                filename = "Whatever",
-                isAvailableOffline = true,
-                lyricPageCount = 4,
-                playCount = 1234,
-                game = null,
-                gameId = 123435L,
-                altPageCount = 5,
-                isAltSelected = false,
-                isFavorite = true,
-            ),
-            partApiId = "Bass",
-            initialPage = 0
-        )
+    val state = ViewerState(
+        song = Song(
+            1234L,
+            name = "A Trip to Alivel Mall",
+            gameName = "Kirby and the Forgotten Land",
+            hasVocals = false,
+            pageCount = 3,
+            composers = emptyList(),
+            filename = "Whatever",
+            isAvailableOffline = true,
+            lyricPageCount = 4,
+            playCount = 1234,
+            game = null,
+            gameId = 123435L,
+            altPageCount = 5,
+            isAltSelected = false,
+            isFavorite = true,
+        ),
+        partApiId = "Bass",
+        initialPage = 0
     )
+
 
     val actionSink: (VglsAction) -> Unit = {
         when (it) {
@@ -298,8 +296,8 @@ private fun Sheets(
     }
 
     ViewerScreen(
-        stateSource = source,
+        state = state,
         actionSink = actionSink,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
     )
 }

@@ -10,7 +10,6 @@ import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,7 +26,6 @@ abstract class VglsViewModel<StateType : VglsState> :
     EventSink {
     protected abstract val hatchet: Hatchet
     protected abstract val dispatchers: VglsDispatchers
-    protected abstract val coroutineScope: CoroutineScope
     protected abstract val eventDispatcher: EventDispatcher
 
     protected val internalUiState = MutableStateFlow(initialState())
@@ -54,13 +52,13 @@ abstract class VglsViewModel<StateType : VglsState> :
             return
         }
 
-        coroutineScope.launch(dispatchers.main) {
+        viewModelScope.launch(dispatchers.main) {
             handleAction(action)
         }
     }
 
     override fun sendEvent(event: VglsEvent) {
-        coroutineScope.launch(dispatchers.main) {
+        viewModelScope.launch(dispatchers.main) {
             handleEvent(event)
         }
     }
@@ -70,7 +68,7 @@ abstract class VglsViewModel<StateType : VglsState> :
     }
 
     protected fun emitEvent(event: VglsEvent) {
-        coroutineScope.launch(dispatchers.main) {
+        viewModelScope.launch(dispatchers.main) {
             hatchet.d("Emitting event: $event")
             internalUiEvents.tryEmit(event)
         }

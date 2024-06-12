@@ -1,5 +1,6 @@
 package com.vgleadsheets.topbar
 
+import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -10,7 +11,6 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,7 +22,6 @@ import javax.inject.Inject
 class TopBarViewModel @Inject constructor(
     private val selectedPartManager: SelectedPartManager,
     override val dispatchers: VglsDispatchers,
-    override val coroutineScope: CoroutineScope,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
 ) : VglsViewModel<TopBarState>() {
@@ -38,7 +37,7 @@ class TopBarViewModel @Inject constructor(
     override fun sendEvent(event: VglsEvent) = handleEvent(event)
 
     override fun handleAction(action: VglsAction) {
-        coroutineScope.launch(dispatchers.main) {
+        viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
             when (action) {
                 is TopBarAction.Menu -> eventDispatcher.sendEvent(
@@ -67,7 +66,7 @@ class TopBarViewModel @Inject constructor(
     }
 
     override fun handleEvent(event: VglsEvent) {
-        coroutineScope.launch(dispatchers.main) {
+        viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.HideUiChrome -> hideTopBar()
@@ -115,6 +114,6 @@ class TopBarViewModel @Inject constructor(
                 }
             }
             .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .launchIn(viewModelScope)
     }
 }

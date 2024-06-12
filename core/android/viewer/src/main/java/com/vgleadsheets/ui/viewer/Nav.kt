@@ -4,7 +4,9 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -42,8 +44,10 @@ fun NavGraphBuilder.viewerScreenNavEntry(
 
         BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
 
+        val state by viewModel.uiState.collectAsStateWithLifecycle()
+
         ViewerScreen(
-            viewModel.uiState,
+            state = state,
             actionSink = viewModel,
             modifier = globalModifier
         )

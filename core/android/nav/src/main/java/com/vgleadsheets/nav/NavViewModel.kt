@@ -3,6 +3,7 @@ package com.vgleadsheets.nav
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
@@ -18,7 +19,6 @@ import kotlinx.coroutines.launch
 
 class NavViewModel @AssistedInject constructor(
     override val dispatchers: VglsDispatchers,
-    override val coroutineScope: CoroutineScope,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
     @Assisted private val snackbarScope: CoroutineScope,
@@ -33,13 +33,13 @@ class NavViewModel @AssistedInject constructor(
     override fun initialState() = NavState()
 
     override fun handleAction(action: VglsAction) {
-        coroutineScope.launch(dispatchers.main) {
+        viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
         }
     }
 
     override fun handleEvent(event: VglsEvent) {
-        coroutineScope.launch(dispatchers.main) {
+        viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this@NavViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.NavigateTo -> navigateTo(event.destination)

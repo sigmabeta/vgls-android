@@ -15,6 +15,7 @@ data class ViewerState(
     val song: Song? = null,
     val partApiId: String? = null,
     val initialPage: Int = 0,
+    val buttonsVisible: Boolean = true,
 ) : VglsState {
     fun title(stringProvider: StringProvider): TitleBarModel {
         val gameName = song?.gameName

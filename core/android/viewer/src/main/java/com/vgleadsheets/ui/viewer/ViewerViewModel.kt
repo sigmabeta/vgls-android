@@ -1,5 +1,6 @@
 package com.vgleadsheets.ui.viewer
 
+import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
@@ -13,12 +14,12 @@ import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ViewerViewModel @AssistedInject constructor(
@@ -27,7 +28,6 @@ class ViewerViewModel @AssistedInject constructor(
     private val repository: VglsRepository,
     private val urlInfoProvider: UrlInfoProvider,
     override val dispatchers: VglsDispatchers,
-    override val coroutineScope: CoroutineScope,
     override val eventDispatcher: EventDispatcher,
     @Assisted("id") idArg: Long,
     @Assisted("page") pageArg: Long,
@@ -44,10 +44,11 @@ class ViewerViewModel @AssistedInject constructor(
 
         this.sendAction(initAction)
         emitEvent(VglsEvent.ShowUiChrome)
-        startChromeVisibilityTimer()
+        hideChromeSoon()
     }
 
     private var chromeVisibilityTimer: Job? = null
+    private var buttonVisibilityTimer: Job? = null
 
     override fun initialState() = ViewerState()
 
@@ -57,13 +58,18 @@ class ViewerViewModel @AssistedInject constructor(
             is VglsAction.Resume -> resume()
             is Action.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
             is Action.PageClicked -> emitEvent(VglsEvent.ShowUiChrome)
+            is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
         }
     }
 
     override fun handleEvent(event: VglsEvent) {
         hatchet.d("${this.javaClass.simpleName} - Handling event: $event")
         when (event) {
-            is VglsEvent.UiChromeBecameShown -> startChromeVisibilityTimer()
+            is VglsEvent.UiChromeBecameHidden -> hideButtonsSoon()
+            is VglsEvent.UiChromeBecameShown -> {
+                hideChromeSoon()
+                showButtons()
+            }
         }
     }
 
@@ -77,7 +83,7 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun updateState(updater: (ViewerState) -> ViewerState) {
-        coroutineScope.launch(dispatchers.main) {
+        viewModelScope.launch(dispatchers.main) {
             val oldState = internalUiState.value
             val newState = updater(oldState)
 
@@ -119,7 +125,7 @@ class ViewerViewModel @AssistedInject constructor(
                 }
             }
             .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .launchIn(viewModelScope)
     }
 
     private fun fetchUrlInfo() {
@@ -131,15 +137,36 @@ class ViewerViewModel @AssistedInject constructor(
                 }
             }
             .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .launchIn(viewModelScope)
     }
 
-    private fun startChromeVisibilityTimer() {
+    private fun hideChromeSoon() {
         chromeVisibilityTimer?.cancel()
-        chromeVisibilityTimer = coroutineScope.launch(dispatchers.computation) {
+        chromeVisibilityTimer = viewModelScope.launch(dispatchers.computation) {
             hatchet.v("Hiding UI chrome in $DURATION_CHROME_VISIBILITY ms.")
             delay(DURATION_CHROME_VISIBILITY)
             emitEvent(VglsEvent.HideUiChrome)
+        }
+    }
+
+    private fun onButtonClicked() {
+        showButtons()
+        hideButtonsSoon()
+    }
+
+    private fun showButtons() {
+        internalUiState.update {
+            it.copy(buttonsVisible = true)
+        }
+    }
+
+    private fun hideButtonsSoon() {
+        buttonVisibilityTimer?.cancel()
+        buttonVisibilityTimer = viewModelScope.launch {
+            delay(1_000L)
+            internalUiState.update {
+                it.copy(buttonsVisible = false)
+            }
         }
     }
 
