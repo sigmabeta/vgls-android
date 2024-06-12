@@ -286,7 +286,6 @@ private fun Sheets(
         initialPage = 0
     )
 
-
     val actionSink: (VglsAction) -> Unit = {
         when (it) {
             is Action.PageClicked -> {
