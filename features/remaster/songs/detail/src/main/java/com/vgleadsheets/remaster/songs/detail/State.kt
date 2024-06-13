@@ -47,14 +47,17 @@ data class State(
     @Suppress("LongMethod", "MaxLineLength")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val songModel = if (song != null) {
+            val selectedPart = sheetUrlInfo.partId ?: return persistentListOf()
+            val pageCount = song.pageCount(selectedPart)
+
             listOf(
-                if (song.pageCount > 1) {
+                if (pageCount > 1) {
                     HorizontalScrollerListModel(
                         dataId = song.id,
-                        scrollingItems = List(song.pageCount) { pageNumber ->
+                        scrollingItems = List(pageCount) { pageNumber ->
                             val sourceInfo = PdfConfigById(
                                 songId = song.id,
-                                partApiId = sheetUrlInfo.partId ?: "",
+                                partApiId = selectedPart,
                                 pageNumber = pageNumber
                             )
 
@@ -74,7 +77,7 @@ data class State(
                 } else {
                     val sourceInfo = PdfConfigById(
                         songId = song.id,
-                        partApiId = sheetUrlInfo.partId ?: "",
+                        partApiId = selectedPart ?: "",
                         pageNumber = 0
                     )
 

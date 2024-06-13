@@ -16,4 +16,16 @@ data class Song(
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,
     val isAltSelected: Boolean,
-)
+) {
+    fun pageCount(selectedPart: String): Int {
+        if (selectedPart == Part.VOCAL.apiId) {
+            return lyricPageCount
+        }
+
+        if (isAltSelected) {
+            return altPageCount
+        }
+
+        return pageCount
+    }
+}
