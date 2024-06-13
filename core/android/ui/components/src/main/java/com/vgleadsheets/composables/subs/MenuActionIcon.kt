@@ -21,13 +21,13 @@ fun MenuActionIcon(
     Icon(
         painter = painterResource(id = iconId),
         contentDescription = stringResource(id = R.string.cont_desc_app_menu),
-        tint = MaterialTheme.colorScheme.onPrimary,
+        tint = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = Modifier
             .clickable(onClick = onClick)
             .defaultMinSize(
                 minHeight = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.min_clickable_size),
                 minWidth = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.min_clickable_size),
             )
-            .padding(vertical = 12.dp)
+            .padding(12.dp)
     )
 }

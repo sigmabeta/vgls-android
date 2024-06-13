@@ -56,9 +56,7 @@ class TopBarViewModel @Inject constructor(
                     )
                 )
 
-                is TopBarAction.AppBack
-
-                -> eventDispatcher.sendEvent(
+                is VglsAction.AppBack -> eventDispatcher.sendEvent(
                     VglsEvent.NavigateBack(
                         "TopBar"
                     )

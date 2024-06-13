@@ -10,7 +10,11 @@ open class VglsAction {
     data object Resume : VglsAction()
 
     data object DeviceBack : VglsAction()
+    data object AppBack : VglsAction()
 
     data class SnackbarActionClicked(val action: VglsAction) : VglsAction()
     data class SnackbarDismissed(val action: VglsAction) : VglsAction()
+
+    data class SearchQuerytEntered(val query: String): VglsAction()
+    data object SearchClearClicked: VglsAction()
 }

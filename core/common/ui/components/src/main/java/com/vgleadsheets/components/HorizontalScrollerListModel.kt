@@ -6,5 +6,5 @@ data class HorizontalScrollerListModel(
     override val dataId: Long,
     val scrollingItems: ImmutableList<ListModel>,
 ) : ListModel() {
-    override val columns = 1
+    override val columns = ListModel.COLUMNS_ALL
 }

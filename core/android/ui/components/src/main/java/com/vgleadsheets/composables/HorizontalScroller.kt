@@ -57,7 +57,6 @@ fun HorizontalScroller(
             it.Content(
                 actionSink = actionSink,
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
             )
         }
     }
