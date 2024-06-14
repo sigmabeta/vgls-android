@@ -4,6 +4,10 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+
+
     implementation(projects.core.android.ui.icons)
 }
 

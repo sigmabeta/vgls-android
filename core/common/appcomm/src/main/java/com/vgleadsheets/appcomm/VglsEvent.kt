@@ -26,6 +26,8 @@ open class VglsEvent {
         override val source: String,
     ) : VglsEvent()
 
+    data object HideTopBar : VglsEvent()
+
     data object ShowUiChrome : VglsEvent()
     data object HideUiChrome : VglsEvent()
 

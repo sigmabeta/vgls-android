@@ -32,6 +32,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.nav.SystemUiVisibility
 import com.vgleadsheets.nav.navViewModel
+import com.vgleadsheets.search.searchScreenNavEntry
 import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarViewModel
@@ -128,6 +129,11 @@ private fun MainContent(
                 globalModifier = globalModifier,
             )
         }
+
+        searchScreenNavEntry(
+            topBarState = topBarState,
+            globalModifier = globalModifier,
+        )
 
         viewerScreenNavEntry(
             topBarState = topBarState,

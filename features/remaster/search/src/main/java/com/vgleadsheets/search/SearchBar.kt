@@ -1,6 +1,7 @@
 package com.vgleadsheets.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +20,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,6 +60,7 @@ fun SearchBar(
             )
 
             var text by rememberSaveable { mutableStateOf(initialText) }
+            val textEmpty = text.isEmpty()
 
             Box(
                 modifier = Modifier
@@ -69,29 +73,35 @@ fun SearchBar(
                     textStyle = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     ),
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
                     onValueChange = {
                         text = it
                         actionSink.sendAction(VglsAction.SearchQuerytEntered(it))
                     },
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                if (text.isEmpty()) {
+                this@Row.AnimatedVisibility(visible = textEmpty) {
                     Text(
                         text = stringResource(id = R.string.hint_search),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        ),
+                        modifier = Modifier.alpha(0.5f)
+                            .fillMaxWidth()
                     )
-
-                    return@Row
                 }
             }
 
-            MenuActionIcon(
-                onClick = {
-                    text = ""
-                    actionSink.sendAction(VglsAction.SearchClearClicked)
-                },
-                iconId = com.vgleadsheets.ui.icons.R.drawable.ic_clear_black_24dp
-            )
+            AnimatedVisibility(visible = !textEmpty) {
+                MenuActionIcon(
+                    onClick = {
+                        text = ""
+                        actionSink.sendAction(VglsAction.SearchClearClicked)
+                    },
+                    iconId = com.vgleadsheets.ui.icons.R.drawable.ic_clear_black_24dp
+                )
+            }
         }
     }
 }

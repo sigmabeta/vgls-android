@@ -1,7 +1,9 @@
 package com.vgleadsheets.bottombar
 
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
@@ -16,9 +18,13 @@ class SearchViewModel @Inject constructor(
     override val dispatchers: VglsDispatchers,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
-) : VglsViewModel<SearchState>() {
+) : VglsViewModel<SearchState>(),
+    ActionSink,
+    EventSink {
     init {
         eventDispatcher.addEventSink(this)
+        emitEvent(VglsEvent.ShowUiChrome)
+        emitEvent(VglsEvent.HideTopBar)
     }
 
     override fun initialState() = SearchState()

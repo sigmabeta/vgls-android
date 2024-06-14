@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.core.android.viewer)
 
     implementation(projects.features.remaster.bottombar)
+    implementation(projects.features.remaster.search)
     implementation(projects.features.remaster.topbar)
 }
 

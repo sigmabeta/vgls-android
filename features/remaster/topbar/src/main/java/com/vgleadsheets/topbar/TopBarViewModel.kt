@@ -12,6 +12,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -27,6 +28,8 @@ class TopBarViewModel @Inject constructor(
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
 ) : VglsViewModel<TopBarState>() {
+    private var showTopBarJob: Job? =null
+
     override fun initialState() = TopBarState()
 
     init {
@@ -69,6 +72,7 @@ class TopBarViewModel @Inject constructor(
         viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
+                is VglsEvent.HideTopBar -> hideTopBar()
                 is VglsEvent.HideUiChrome -> hideTopBar()
                 is VglsEvent.ShowUiChrome -> showTopBar()
                 is VglsEvent.UpdateTitle -> updateTitle(
@@ -84,7 +88,7 @@ class TopBarViewModel @Inject constructor(
 
     private fun showTopBar() {
         hatchet.d("Showing top bar.")
-        viewModelScope.launch {
+        showTopBarJob = viewModelScope.launch {
             delay(Hacks.UI_VISIBILITY_ANIM_DELAY)
             internalUiState.update {
                 it.copy(visibility = TopBarVisibility.VISIBLE)
@@ -94,6 +98,7 @@ class TopBarViewModel @Inject constructor(
 
     private fun hideTopBar() {
         hatchet.d("Hiding top bar.")
+        showTopBarJob?.cancel()
         internalUiState.update {
             it.copy(visibility = TopBarVisibility.HIDDEN)
         }

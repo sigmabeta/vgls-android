@@ -97,7 +97,7 @@ fun RemasterTopBar(
                     Triple(
                         Icons.AutoMirrored.Default.ArrowBack,
                         com.vgleadsheets.ui.strings.R.string.cont_desc_app_back,
-                        TopBarAction.AppBack
+                        VglsAction.AppBack
                     )
                 } else {
                     Triple(
