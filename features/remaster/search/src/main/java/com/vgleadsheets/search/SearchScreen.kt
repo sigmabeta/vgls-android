@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.bottombar.SearchState
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.ListModel
@@ -42,21 +41,20 @@ import com.vgleadsheets.composables.Content
 import com.vgleadsheets.composables.SearchBar
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import java.util.Random
 
 @Composable
 fun SearchScreen(
-    state: SearchState,
+    results: ImmutableList<ListModel>,
     actionSink: ActionSink,
     modifier: Modifier = Modifier,
     initialQuery: String = "",
     minSize: Dp = 128.dp
 ) {
-    val items = state.resultItems
-
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(
                 color = MaterialTheme.colorScheme.background
@@ -64,9 +62,14 @@ fun SearchScreen(
     ) {
         val searchBarPadding: Dp = 64.dp
         val topInsets = WindowInsets.statusBars
+        val sidePadding = WindowInsets(
+            left = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side),
+            right = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side),
+        )
 
         val contentPadding: PaddingValues = WindowInsets(top = searchBarPadding)
             .add(topInsets)
+            .add(sidePadding)
             .asPaddingValues()
 
         LazyVerticalGrid(
@@ -77,7 +80,7 @@ fun SearchScreen(
             modifier = Modifier
         ) {
             items(
-                items = items,
+                items = results,
                 key = { it.dataId },
                 contentType = { it.layoutId() },
                 span = {
@@ -90,7 +93,7 @@ fun SearchScreen(
             ) {
                 it.Content(
                     actionSink = actionSink,
-                    modifier = Modifier.padding(horizontal = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side))
+                    modifier = Modifier
                 )
             }
         }
@@ -100,7 +103,6 @@ fun SearchScreen(
             modifier = Modifier.padding(top = topInsets.asPaddingValues().calculateTopPadding()),
             initialText = initialQuery,
         )
-
 
         Spacer(
             modifier = Modifier
@@ -136,12 +138,8 @@ private fun Dark() {
 @Composable
 @Suppress("MagicNumber")
 private fun Sample() {
-    val state = SearchState(
-        resultItems = listData().toImmutableList()
-    )
-
     SearchScreen(
-        state = state,
+        results = listData().toImmutableList(),
         actionSink = { },
         modifier = Modifier
     )

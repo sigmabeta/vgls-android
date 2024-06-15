@@ -7,8 +7,11 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
 
-
+    implementation(projects.core.android.pdf)
     implementation(projects.core.android.ui.icons)
+
+    implementation(projects.core.common.appcomm)
+    implementation(projects.core.common.urlinfo)
 }
 
 android {

@@ -32,6 +32,9 @@
 
     <string name="screen_subtitle_song_detail">from %1$s</string>
 
+    <string name="section_header_search_songs">Sheets</string>
+    <string name="section_header_search_games">Games</string>
+    <string name="section_header_search_composers">Composers</string>
     <string name="section_header_composers_from_song">Composed by</string>
     <string name="section_header_composers_from_game">Composers on VGLS</string>
     <string name="section_header_songs_from_game">Sheets on VGLS</string>

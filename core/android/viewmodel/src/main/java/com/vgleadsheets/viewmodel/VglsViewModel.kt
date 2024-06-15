@@ -74,6 +74,15 @@ abstract class VglsViewModel<StateType : VglsState> :
         }
     }
 
+    protected open fun updateState(updater: (StateType) -> StateType) {
+        viewModelScope.launch(dispatchers.main) {
+            val oldState = internalUiState.value
+            val newState = updater(oldState)
+
+            internalUiState.value = newState
+        }
+    }
+
     protected fun <ListType, ReturnType> Flow<List<ListType>>.mapList(
         mapper: (ListType) -> ReturnType
     ): Flow<List<ReturnType>> {

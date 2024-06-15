@@ -8,8 +8,20 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,13 +30,22 @@ class SearchViewModel @Inject constructor(
     override val dispatchers: VglsDispatchers,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
+    private val stringProvider: StringProvider,
+    private val repository: VglsRepository,
 ) : VglsViewModel<SearchState>(),
     ActionSink,
     EventSink {
+    private val internalQueryFlow = MutableStateFlow("")
+
+    private val internalResultItemsFlow = MutableStateFlow(initialState().resultItems(stringProvider))
+    val resultItemsFlow = internalResultItemsFlow
+        .asStateFlow()
+
     init {
         eventDispatcher.addEventSink(this)
         emitEvent(VglsEvent.ShowUiChrome)
         emitEvent(VglsEvent.HideTopBar)
+        setupSearchInputObservation()
     }
 
     override fun initialState() = SearchState()
@@ -32,6 +53,10 @@ class SearchViewModel @Inject constructor(
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+
+            when (action) {
+                is VglsAction.SearchQueryEntered -> startSearch(action.query)
+            }
         }
     }
 
@@ -42,5 +67,82 @@ class SearchViewModel @Inject constructor(
 
             }
         }
+    }
+
+    override fun updateState(updater: (SearchState) -> SearchState) {
+        viewModelScope.launch(dispatchers.main) {
+            val oldState = internalUiState.value
+            val newState = updater(oldState)
+
+            internalUiState.value = newState
+            internalResultItemsFlow.value = newState.resultItems(stringProvider)
+        }
+    }
+
+    private fun startSearch(query: String) {
+        internalQueryFlow.value = query
+    }
+
+    private fun setupSearchInputObservation() {
+        internalQueryFlow
+            .filter { it.length < 3 }
+            .onEach { clearSearch() }
+            .launchIn(viewModelScope)
+
+        observeSearchInput(
+            searchOperation = { repository.searchGamesCombined(it) },
+            onSearchSuccess = { results ->
+                updateState {
+                    it.copy(gameResults = results)
+                }
+            }
+        )
+
+        observeSearchInput(
+            searchOperation = { repository.searchSongsCombined(it) },
+            onSearchSuccess = { results ->
+                updateState {
+                    it.copy(songResults = results)
+                }
+            }
+        )
+
+        observeSearchInput(
+            searchOperation = { repository.searchComposersCombined(it) },
+            onSearchSuccess = { results ->
+                updateState {
+                    it.copy(composerResults = results)
+                }
+            }
+        )
+    }
+
+    private fun clearSearch() {
+        hatchet.v("Clearing search")
+        updateState {
+            it.copy(
+                songResults = emptyList(),
+                gameResults = emptyList(),
+                composerResults = emptyList(),
+            )
+        }
+    }
+
+    private fun <ModelType> observeSearchInput(
+        searchOperation: suspend (String) -> Flow<List<ModelType>>,
+        onSearchSuccess: suspend (List<ModelType>) -> Unit,
+    ) {
+        internalQueryFlow
+            .debounce(DEBOUNCE_THRESHOLD)
+            .filter { it.length > 2 }
+            .flatMapLatest(searchOperation)
+            .catch { hatchet.e("Error searching: ${it.message}") }
+            .onEach(onSearchSuccess)
+            .flowOn(dispatchers.disk)
+            .launchIn(viewModelScope)
+    }
+
+    companion object {
+        internal const val DEBOUNCE_THRESHOLD = 300L
     }
 }

@@ -17,7 +17,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -90,7 +89,7 @@ class TopBarViewModel @Inject constructor(
         hatchet.d("Showing top bar.")
         showTopBarJob = viewModelScope.launch {
             delay(Hacks.UI_VISIBILITY_ANIM_DELAY)
-            internalUiState.update {
+            updateState {
                 it.copy(visibility = TopBarVisibility.VISIBLE)
             }
         }
@@ -99,14 +98,14 @@ class TopBarViewModel @Inject constructor(
     private fun hideTopBar() {
         hatchet.d("Hiding top bar.")
         showTopBarJob?.cancel()
-        internalUiState.update {
+        updateState {
             it.copy(visibility = TopBarVisibility.HIDDEN)
         }
     }
 
     private fun updateTitle(title: TitleBarModel) {
         hatchet.v("Updating title: $title")
-        internalUiState.update {
+        updateState {
             it.copy(model = title)
         }
     }
@@ -115,7 +114,7 @@ class TopBarViewModel @Inject constructor(
         selectedPartManager
             .selectedPartFlow()
             .onEach { selectedPart ->
-                internalUiState.update {
+                updateState {
                     it.copy(selectedPart = selectedPart.apiId)
                 }
             }

@@ -76,7 +76,7 @@ fun SearchBar(
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
                     onValueChange = {
                         text = it
-                        actionSink.sendAction(VglsAction.SearchQuerytEntered(it))
+                        actionSink.sendAction(VglsAction.SearchQueryEntered(it))
                     },
                     modifier = Modifier.fillMaxWidth()
                 )

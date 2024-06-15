@@ -3,6 +3,7 @@ package com.vgleadsheets.bottombar
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +24,9 @@ fun RemasterBottomBar(
     navController: NavController,
 ) {
     AnimatedVisibility(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .imePadding(),
         visible = state.visibility == BottomBarVisibility.VISIBLE,
         label = "BottomBarVisibility"
     ) {

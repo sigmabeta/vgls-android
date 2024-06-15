@@ -81,8 +81,6 @@ abstract class ListViewModelBrain(
             val oldState = internalUiState.value
             val newState = updater(oldState)
 
-            hatchet.v("Updating state: $newState")
-
             internalUiState.value = newState
             internalUiStateActual.value = newState.toActual(stringProvider)
         }

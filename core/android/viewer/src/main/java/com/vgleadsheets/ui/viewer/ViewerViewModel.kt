@@ -19,7 +19,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ViewerViewModel @AssistedInject constructor(
@@ -80,17 +79,6 @@ class ViewerViewModel @AssistedInject constructor(
     private fun startLoading(id: Long, pageNumber: Long) {
         fetchSong(id, pageNumber)
         fetchUrlInfo()
-    }
-
-    private fun updateState(updater: (ViewerState) -> ViewerState) {
-        viewModelScope.launch(dispatchers.main) {
-            val oldState = internalUiState.value
-            val newState = updater(oldState)
-
-            hatchet.v("Updating state: $newState")
-
-            internalUiState.value = newState
-        }
     }
 
     private fun resume() {
@@ -155,7 +143,7 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun showButtons() {
-        internalUiState.update {
+        updateState {
             it.copy(buttonsVisible = true)
         }
     }
@@ -164,7 +152,7 @@ class ViewerViewModel @AssistedInject constructor(
         buttonVisibilityTimer?.cancel()
         buttonVisibilityTimer = viewModelScope.launch {
             delay(DURATION_BUTTON_VISIBILITY)
-            internalUiState.update {
+            updateState {
                 it.copy(buttonsVisible = false)
             }
         }
