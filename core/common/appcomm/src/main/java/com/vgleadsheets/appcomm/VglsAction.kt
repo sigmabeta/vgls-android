@@ -15,6 +15,6 @@ open class VglsAction {
     data class SnackbarActionClicked(val action: VglsAction) : VglsAction()
     data class SnackbarDismissed(val action: VglsAction) : VglsAction()
 
-    data class SearchQueryEntered(val query: String): VglsAction()
-    data object SearchClearClicked: VglsAction()
+    data class SearchQueryEntered(val query: String) : VglsAction()
+    data object SearchClearClicked : VglsAction()
 }

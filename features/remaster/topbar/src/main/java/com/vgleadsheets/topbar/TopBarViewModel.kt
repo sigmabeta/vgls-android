@@ -27,7 +27,7 @@ class TopBarViewModel @Inject constructor(
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
 ) : VglsViewModel<TopBarState>() {
-    private var showTopBarJob: Job? =null
+    private var showTopBarJob: Job? = null
 
     override fun initialState() = TopBarState()
 

@@ -68,9 +68,6 @@ class SearchViewModel @Inject constructor(
     override fun handleEvent(event: VglsEvent) {
         viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this@SearchViewModel.javaClass.simpleName} - Handling event: $event")
-            when (event) {
-
-            }
         }
     }
 
@@ -122,7 +119,7 @@ class SearchViewModel @Inject constructor(
 
     private fun setupSearchInputObservation() {
         internalQueryFlow
-            .filter { it.length < 3 }
+            .filter { it.length < MINIMUM_LENGTH_QUERY }
             .onEach { clearSearch() }
             .launchIn(viewModelScope)
 
@@ -171,7 +168,7 @@ class SearchViewModel @Inject constructor(
     ) {
         internalQueryFlow
             .debounce(DEBOUNCE_THRESHOLD)
-            .filter { it.length > 2 }
+            .filter { it.length >= MINIMUM_LENGTH_QUERY }
             .flatMapLatest(searchOperation)
             .catch { hatchet.e("Error searching: ${it.message}") }
             .onEach(onSearchSuccess)
@@ -181,5 +178,6 @@ class SearchViewModel @Inject constructor(
 
     companion object {
         internal const val DEBOUNCE_THRESHOLD = 300L
+        private const val MINIMUM_LENGTH_QUERY = 3
     }
 }

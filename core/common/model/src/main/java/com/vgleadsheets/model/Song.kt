@@ -17,6 +17,7 @@ data class Song(
     val isAvailableOffline: Boolean,
     val isAltSelected: Boolean,
 ) {
+    @Suppress("ReturnCount")
     fun pageCount(selectedPart: String): Int {
         if (selectedPart == Part.VOCAL.apiId) {
             return lyricPageCount

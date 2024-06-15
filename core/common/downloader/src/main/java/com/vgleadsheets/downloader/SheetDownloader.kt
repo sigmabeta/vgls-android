@@ -25,7 +25,7 @@ class SheetDownloader @Inject constructor(
     private suspend fun getSheetInternal(
         fileName: String,
     ): SheetFileResult {
-        val partApiId =  urlInfoProvider.urlInfoFlow.value.partId ?: throw IllegalStateException("No part selected.")
+        val partApiId = urlInfoProvider.urlInfoFlow.value.partId ?: throw IllegalStateException("No part selected.")
         val targetFile = fileReference(fileName, partApiId)
 
         if (targetFile.exists()) {

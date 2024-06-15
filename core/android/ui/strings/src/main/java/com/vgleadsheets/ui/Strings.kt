@@ -17,7 +17,6 @@ fun StringId.id(): Int {
 
         StringId.SCREEN_SUBTITLE_SONG_DETAIL -> R.string.screen_subtitle_song_detail
 
-
         StringId.SECTION_HEADER_SEARCH_SONGS -> R.string.section_header_search_songs
         StringId.SECTION_HEADER_SEARCH_GAMES -> R.string.section_header_search_games
         StringId.SECTION_HEADER_SEARCH_COMPOSERS -> R.string.section_header_search_composers

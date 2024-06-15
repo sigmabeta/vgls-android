@@ -34,6 +34,7 @@ import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
+@Suppress("LongMethod", "MagicNumber")
 fun SearchBar(
     actionSink: ActionSink,
     modifier: Modifier,

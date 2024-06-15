@@ -46,6 +46,7 @@ import kotlinx.collections.immutable.toImmutableList
 import java.util.Random
 
 @Composable
+@Suppress("LongMethod")
 fun SearchScreen(
     results: ImmutableList<ListModel>,
     actionSink: ActionSink,
@@ -145,7 +146,6 @@ private fun Sample() {
     )
 }
 
-
 @Suppress("MagicNumber")
 private fun listData(): List<ListModel> {
     val rng = Random("HorizontalScroller".hashCode().toLong())
@@ -155,7 +155,6 @@ private fun listData(): List<ListModel> {
         verticalSection(rng) +
         squareItemSection(rng) +
         verticalSection(rng)
-
 }
 
 @Suppress("MagicNumber")
