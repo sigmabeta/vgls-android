@@ -30,11 +30,9 @@ data class ViewerState(
             SheetPageListModel(
                 PdfConfigById(
                     songId = song.id,
-                    partApiId = partApiId,
                     pageNumber = pageNumber
                 ),
                 song.name,
-                partApiId,
                 song.gameName,
                 song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
                 pageNumber,

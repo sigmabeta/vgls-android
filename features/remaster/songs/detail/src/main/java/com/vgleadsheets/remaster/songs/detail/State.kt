@@ -57,7 +57,6 @@ data class State(
                         scrollingItems = List(pageCount) { pageNumber ->
                             val sourceInfo = PdfConfigById(
                                 songId = song.id,
-                                partApiId = selectedPart,
                                 pageNumber = pageNumber
                             )
 
@@ -65,7 +64,6 @@ data class State(
                                 SheetPageListModel(
                                     sourceInfo = sourceInfo,
                                     title = song.name,
-                                    transposition = sourceInfo.partApiId,
                                     gameName = song.gameName,
                                     composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
                                     pageNumber = pageNumber,
@@ -77,7 +75,6 @@ data class State(
                 } else {
                     val sourceInfo = PdfConfigById(
                         songId = song.id,
-                        partApiId = selectedPart ?: "",
                         pageNumber = 0
                     )
 
@@ -85,7 +82,6 @@ data class State(
                         SheetPageListModel(
                             sourceInfo = sourceInfo,
                             title = song.name,
-                            transposition = sourceInfo.partApiId,
                             gameName = song.gameName,
                             composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
                             pageNumber = 0,

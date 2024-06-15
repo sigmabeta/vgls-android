@@ -20,7 +20,7 @@ class PdfImageFetcher(
 ) : Fetcher {
     @OptIn(ExperimentalCoilApi::class)
     override suspend fun fetch(): SourceResult {
-        val pdfFileResult = sheetDownloader.getSheet(data.songId, data.partApiId)
+        val pdfFileResult = sheetDownloader.getSheet(data.songId)
         val pdfFile = pdfFileResult.file
 
         val pdfPath = pdfFile.toOkioPath()

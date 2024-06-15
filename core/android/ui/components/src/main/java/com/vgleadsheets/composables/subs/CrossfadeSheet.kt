@@ -160,7 +160,6 @@ private fun SampleLoading() {
         sourceInfo = "Doesn't matter",
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
-            transposition = "C",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
             composers = listOf(
@@ -178,7 +177,6 @@ private fun SampleSheetPageOne() {
         sourceInfo = "nope",
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
-            transposition = "C",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
             composers = listOf(
@@ -196,7 +194,6 @@ private fun SampleSheetPageTwo() {
         sourceInfo = "nope",
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
-            transposition = "C",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 1,
             composers = listOf(
@@ -214,7 +211,6 @@ private fun SampleError() {
         sourceInfo = "nope",
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
-            transposition = "C",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
             composers = listOf(

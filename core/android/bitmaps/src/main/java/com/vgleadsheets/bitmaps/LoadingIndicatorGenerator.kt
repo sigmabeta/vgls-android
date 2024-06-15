@@ -50,7 +50,6 @@ class LoadingIndicatorGenerator @Inject constructor(
     fun generateLoadingSheet(
         width: Int,
         title: String,
-        transposition: String,
         gameName: String,
         composers: List<String>,
     ): Bitmap {
@@ -75,7 +74,6 @@ class LoadingIndicatorGenerator @Inject constructor(
                 title,
                 gameName,
                 composers,
-                transposition,
             )
         }
 
@@ -124,7 +122,6 @@ class LoadingIndicatorGenerator @Inject constructor(
         title: String,
         gameName: String,
         composers: List<String>,
-        transposition: String,
     ) {
         val canvas = Canvas(bitmap)
         val centerXpos = (canvas.width / 2) / scalingFactor
@@ -159,7 +156,7 @@ class LoadingIndicatorGenerator @Inject constructor(
             )
 
             canvas.drawText(
-                text = transposition,
+                text = "C",
                 xPos = X_POS_TRANSPOSITION,
                 yPos = Y_POS_TRANSPOSITION,
                 scalingFactor = scalingFactor,

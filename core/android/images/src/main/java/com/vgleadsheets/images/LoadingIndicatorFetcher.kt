@@ -19,7 +19,6 @@ class LoadingIndicatorFetcher(
         drawable = generator.generateLoadingSheet(
             options.size.width.pxOrElse { WIDTH_ARBITRARY },
             data.title,
-            data.transposition,
             data.gameName,
             data.composers
         ).toDrawable(options.context.resources),

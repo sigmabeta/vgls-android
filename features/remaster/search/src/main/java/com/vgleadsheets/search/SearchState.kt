@@ -40,7 +40,6 @@ data class SearchState(
                 caption = song.gameName,
                 sourceInfo = PdfConfigById(
                     songId = song.id,
-                    partApiId = sheetUrlInfo.partId ?: "",
                     pageNumber = 0
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,

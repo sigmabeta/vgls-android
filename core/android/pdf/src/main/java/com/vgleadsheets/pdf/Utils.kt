@@ -13,7 +13,7 @@ internal fun computeWidth(options: Options): Int? {
     }
 }
 
-fun PdfConfigById.cacheKey(width: Int?): String {
+fun PdfConfigById.cacheKey(width: Int?, partApiId: String): String {
     return "pdf-$songId-$partApiId-$pageNumber-$width"
 }
 

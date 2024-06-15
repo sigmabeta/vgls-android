@@ -18,7 +18,6 @@ fun SheetPageItem(
         sourceInfo = model.sourceInfo,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
-            model.transposition,
             model.gameName,
             model.composers,
             model.pageNumber,

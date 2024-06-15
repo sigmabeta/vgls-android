@@ -3,6 +3,7 @@ package com.vgleadsheets.downloader
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.File
@@ -11,19 +12,20 @@ import javax.inject.Inject
 
 class SheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
+    private val urlInfoProvider: UrlInfoProvider,
     private val repository: VglsRepository,
     private val sheetDownloadApi: SheetDownloadApi,
     private val hatchet: Hatchet,
 ) {
-    suspend fun getSheet(id: Long, partApiId: String) = repository
+    suspend fun getSheet(id: Long) = repository
         .getSong(id)
-        .map { getSheetInternal(it.filename, partApiId) }
+        .map { getSheetInternal(it.filename) }
         .first()
 
     private suspend fun getSheetInternal(
         fileName: String,
-        partApiId: String
     ): SheetFileResult {
+        val partApiId =  urlInfoProvider.urlInfoFlow.value.partId ?: throw IllegalStateException("No part selected.")
         val targetFile = fileReference(fileName, partApiId)
 
         if (targetFile.exists()) {

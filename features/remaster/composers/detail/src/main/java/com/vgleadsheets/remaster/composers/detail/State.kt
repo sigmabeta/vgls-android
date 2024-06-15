@@ -75,7 +75,6 @@ data class State(
             ) + songs.map { song ->
                 val sourceInfo = PdfConfigById(
                     songId = song.id,
-                    partApiId = sheetUrlInfo.partId ?: "",
                     pageNumber = 0
                 )
                 ImageNameCaptionListModel(

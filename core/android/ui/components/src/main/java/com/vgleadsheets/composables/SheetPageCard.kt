@@ -80,11 +80,9 @@ private fun SamplePdf() {
         SheetPageListModel(
             sourceInfo = PdfConfigById(
                 songId = 92,
-                partApiId = "Eb",
                 pageNumber = 0,
             ),
             title = "A Trip to Alivel Mall",
-            transposition = "C",
             gameName = "Kirby and the Forgotten Land",
             composers = listOf(
                 "Hirokazu Ando",

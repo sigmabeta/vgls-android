@@ -99,7 +99,6 @@ private fun PortraitLoadingArms() {
 private fun SampleLoadingKirby() {
     val loadingIndicatorConfig = LoadingIndicatorConfig(
         "A Trip to Alivel Mall",
-        "C",
         "Kirby and the Forgotten Land",
         listOf(
             "Hirokazu Ando",
@@ -117,7 +116,6 @@ private fun SampleLoadingKirby() {
 private fun SampleLoadingArms() {
     val loadingIndicatorConfig = LoadingIndicatorConfig(
         "Grand Prix (Title)",
-        "Vocals",
         "Arms",
         listOf(
             "Atsuko Asahi",

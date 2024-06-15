@@ -7,6 +7,6 @@ import javax.inject.Inject
 class LoadingIndicatorKeyer @Inject constructor() : Keyer<LoadingIndicatorConfig> {
     override fun key(data: LoadingIndicatorConfig, options: Options): String {
         val width = options.size.width
-        return "loading-${data.title}-${data.gameName}-${data.transposition}-$width"
+        return "loading-${data.title}-${data.gameName}-C-$width"
     }
 }
