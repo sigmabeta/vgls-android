@@ -8,7 +8,9 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.search.Action
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,8 +45,6 @@ class SearchViewModel @Inject constructor(
 
     init {
         eventDispatcher.addEventSink(this)
-        emitEvent(VglsEvent.ShowUiChrome)
-        emitEvent(VglsEvent.HideTopBar)
         setupSearchInputObservation()
     }
 
@@ -55,7 +55,12 @@ class SearchViewModel @Inject constructor(
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
 
             when (action) {
+                is VglsAction.Resume -> onResume()
+                is VglsAction.SearchClearClicked -> startSearch("")
                 is VglsAction.SearchQueryEntered -> startSearch(action.query)
+                is Action.SongClicked -> onSongClicked(action.id)
+                is Action.GameClicked -> onGameClicked(action.id)
+                is Action.ComposerClicked -> onComposerClicked(action.id)
             }
         }
     }
@@ -79,8 +84,40 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    private fun onResume() {
+        emitEvent(VglsEvent.ShowUiChrome)
+        emitEvent(VglsEvent.HideTopBar)
+    }
+
     private fun startSearch(query: String) {
         internalQueryFlow.value = query
+    }
+
+    private fun onSongClicked(id: Long) {
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.SONG_DETAIL.forId(id),
+                Destination.SEARCH.template()
+            )
+        )
+    }
+
+    private fun onGameClicked(id: Long) {
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.GAME_DETAIL.forId(id),
+                Destination.SEARCH.template()
+            )
+        )
+    }
+
+    private fun onComposerClicked(id: Long) {
+        emitEvent(
+            VglsEvent.NavigateTo(
+                Destination.COMPOSER_DETAIL.forId(id),
+                Destination.SEARCH.template()
+            )
+        )
     }
 
     private fun setupSearchInputObservation() {
