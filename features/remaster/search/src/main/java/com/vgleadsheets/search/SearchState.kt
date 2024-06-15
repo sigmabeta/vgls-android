@@ -71,7 +71,7 @@ data class SearchState(
     private fun composerItems(stringProvider: StringProvider) = if (composerResults.isNotEmpty()) {
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_GAMES)
+                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_COMPOSERS)
             )
         ) + composerResults.map { composer ->
             SquareItemListModel(
