@@ -64,6 +64,10 @@ fun ViewerScreen(
     ) {
         val items = state.pages()
 
+        if (items.isEmpty()) {
+            return
+        }
+
         val pagerState = rememberPagerState(
             initialPage = state.initialPage
         ) { items.size }
