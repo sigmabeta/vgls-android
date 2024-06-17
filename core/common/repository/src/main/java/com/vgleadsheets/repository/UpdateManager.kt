@@ -48,41 +48,56 @@ class UpdateManager(
     fun getLastApiUpdateTime(): Flow<Time> = getLastApiUpdateTimeInternal()
 
     private fun setupApiUpdateTimeCheckFlow() {
-        getLastCheckTime().map { lastCheckTime ->
-            if (lastCheckTime.timeMs == 0L) {
-                hatchet.i("Forcing API refresh.")
-                return@map true
-            }
-
-            val currentTime = threeTen.now().toInstant().toEpochMilli()
-            val lastCheckAgeMillis = currentTime - lastCheckTime.timeMs
-            val lastCheckAge = lastCheckAgeMillis.toDuration(DurationUnit.MILLISECONDS)
-
-            hatchet.d("Last time we checked VGLS for updates was $lastCheckAge ago.")
-
-            if (lastCheckAge <= AGE_THRESHOLD) {
-                return@map false
-            }
-
-            true
-        }
+        getLastCheckTime()
+            .map { checkLastUpdateTimeIsOldEnough(it) }
+            .catch { emitDbUpdateErrors(it) }
             .filter { it }
-            .onEach {
-                hatchet.i("Requesting API update time check...")
-                refreshLastApiUpdateTime()
-            }
-            .flatMapLatest {
-                dbUpdateTimeCheckFlow()
-            }
+            .onEach { refreshLastApiUpdateTime() }
+            .catch { emitApiUpdateErrors(it) }
+            .flatMapLatest { dbUpdateTimeCheckFlow() }
+            .catch { emitDbUpdateErrors(it) }
+            .filter { it }
+            .flatMapLatest { refreshInternal() }
             .catch { emitDbUpdateErrors(it) }
             .onEach { eventDispatcher.sendEvent(VglsEvent.DbUpdateSuccessful) }
-            .filter { it }
-            .flatMapLatest {
-                hatchet.i("Requesting DB update...")
-                refreshInternal()
-            }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
+    }
+
+    private fun checkLastUpdateTimeIsOldEnough(lastCheckTime: Time): Boolean {
+        if (lastCheckTime.timeMs == 0L) {
+            hatchet.i("Forcing API refresh.")
+            return true
+        }
+
+        val currentTime = threeTen.now().toInstant().toEpochMilli()
+        val lastCheckAgeMillis = currentTime - lastCheckTime.timeMs
+        val lastCheckAge = lastCheckAgeMillis.toDuration(DurationUnit.MILLISECONDS)
+
+        hatchet.d("Last time we checked VGLS for updates was $lastCheckAge ago.")
+
+        return lastCheckAge > AGE_THRESHOLD
+    }
+
+    private suspend fun refreshLastApiUpdateTime() {
+        hatchet.i("Requesting API update time check...")
+
+        val lastUpdate = vglsApi.getLastUpdateTime()
+        val lastUpdateInstant = Instant.parse(lastUpdate.last_updated)
+        val lastUpdateTime = Time(
+            TimeType.LAST_VGLS_UPDATE.ordinal,
+            lastUpdateInstant.toEpochMilli()
+        )
+
+        val lastAppCheckTime = Time(
+            TimeType.LAST_APP_CHECK.ordinal,
+            threeTen.now().toInstant().toEpochMilli()
+        )
+
+        hatchet.d("VGLS was last updated at $lastUpdateInstant")
+
+        dbStatisticsDataSource.insert(lastUpdateTime)
+        dbStatisticsDataSource.insert(lastAppCheckTime)
     }
 
     private fun dbUpdateTimeCheckFlow() = combine(
@@ -104,10 +119,21 @@ class UpdateManager(
         true
     }
 
+    private fun refreshInternal(): Flow<Unit> {
+        hatchet.i("Requesting DB update...")
+        return dbUpdater.refresh()
+    }
+
     private fun emitDbUpdateErrors(ex: Throwable) {
         hatchet.e("DB update failed: ${ex.message}")
         ex.printStackTrace()
         eventDispatcher.sendEvent(VglsEvent.DbUpdateFailed(ex))
+    }
+
+    private fun emitApiUpdateErrors(ex: Throwable) {
+        hatchet.e("DB update failed: ${ex.message}")
+        ex.printStackTrace()
+        eventDispatcher.sendEvent(VglsEvent.LastUpdateCheckFailed(ex))
     }
 
     private fun getLastCheckTime() = dbStatisticsDataSource
@@ -118,30 +144,4 @@ class UpdateManager(
 
     private fun getLastApiUpdateTimeInternal() = dbStatisticsDataSource
         .getTime(TimeType.LAST_VGLS_UPDATE.ordinal)
-
-    private suspend fun refreshLastApiUpdateTime() {
-        try {
-            val lastUpdate = vglsApi.getLastUpdateTime()
-            val lastUpdateInstant = Instant.parse(lastUpdate.last_updated)
-            val lastUpdateTime = Time(
-                TimeType.LAST_VGLS_UPDATE.ordinal,
-                lastUpdateInstant.toEpochMilli()
-            )
-
-            val lastAppCheckTime = Time(
-                TimeType.LAST_APP_CHECK.ordinal,
-                threeTen.now().toInstant().toEpochMilli()
-            )
-
-            hatchet.d("VGLS was last updated at $lastUpdateInstant")
-
-            dbStatisticsDataSource.insert(lastUpdateTime)
-            dbStatisticsDataSource.insert(lastAppCheckTime)
-        } catch (ex: Exception) {
-            eventDispatcher.sendEvent(VglsEvent.LastUpdateCheckFailed(ex))
-            ex.printStackTrace()
-        }
-    }
-
-    private fun refreshInternal() = dbUpdater.refresh()
 }
