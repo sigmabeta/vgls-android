@@ -1,20 +1,17 @@
 package com.vgleadsheets.repository
 
+import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlin.random.Random
 
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
     private val realRepository: RealRepository
 ) : VglsRepository {
-    override suspend fun checkShouldAutoUpdate() = realRepository.checkShouldAutoUpdate()
-
-    override fun refresh() = realRepository.refresh()
 
     override fun getAllGames() = realRepository.getAllGames()
 
@@ -69,8 +66,6 @@ class DelayOrErrorRepository(
 
     override fun getTagValue(tagValueId: Long) = realRepository.getTagValue(tagValueId)
 
-    override fun getLastUpdateTime() = realRepository.getLastUpdateTime()
-
     override fun searchSongsCombined(searchQuery: String) =
         realRepository.searchSongsCombined(searchQuery)
 
@@ -100,8 +95,6 @@ class DelayOrErrorRepository(
         realRepository.toggleOfflineComposer(composerId)
 
     override suspend fun toggleAlternate(songId: Long) = realRepository.toggleAlternate(songId)
-
-    override suspend fun clearSheets() = realRepository.clearSheets()
 
     private fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
         onEach {

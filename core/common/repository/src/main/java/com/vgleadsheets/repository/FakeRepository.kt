@@ -8,7 +8,6 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.network.FakeModelGenerator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -18,9 +17,6 @@ class FakeRepository(
     private val fakeModelGenerator: FakeModelGenerator,
     private val dispatchers: VglsDispatchers,
 ) : VglsRepository {
-    override suspend fun checkShouldAutoUpdate() = false
-
-    override fun refresh() = flow { emit(Unit) }
     override fun getAllGames() = flow {
         val games = fakeModelGenerator.possibleGames
             ?.map {
@@ -145,10 +141,6 @@ class FakeRepository(
         TODO("Not yet implemented")
     }
 
-    override fun getLastUpdateTime(): Flow<Time> {
-        TODO("Not yet implemented")
-    }
-
     override fun searchSongsCombined(searchQuery: String): Flow<List<Song>> {
         TODO("Not yet implemented")
     }
@@ -190,10 +182,6 @@ class FakeRepository(
     }
 
     override suspend fun toggleAlternate(songId: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun clearSheets() {
         TODO("Not yet implemented")
     }
 }

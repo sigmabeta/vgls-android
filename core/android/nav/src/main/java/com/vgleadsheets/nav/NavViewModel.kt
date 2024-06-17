@@ -48,8 +48,19 @@ class NavViewModel @AssistedInject constructor(
                 is VglsEvent.ShowSnackbar -> launchSnackbar(event)
                 is VglsEvent.HideUiChrome -> hideSystemUi()
                 is VglsEvent.ShowUiChrome -> showSystemUi()
+                is VglsEvent.DbUpdateSuccessful -> onUpdateSuccess()
             }
         }
+    }
+
+    private fun onUpdateSuccess() {
+        launchSnackbar(
+            VglsEvent.ShowSnackbar(
+                message = "Update successful!",
+                withDismissAction = true,
+                source = "UpdateManager"
+            )
+        )
     }
 
     private fun launchSnackbar(snackbarEvent: VglsEvent.ShowSnackbar) {

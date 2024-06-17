@@ -7,6 +7,7 @@ dependencies {
 
     api(projects.core.common.model)
 
+    implementation(projects.core.common.appcomm)
     implementation(projects.core.common.conversion)
     implementation(projects.core.common.database)
     implementation(projects.core.common.logging)

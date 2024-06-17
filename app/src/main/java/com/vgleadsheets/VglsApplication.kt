@@ -12,15 +12,19 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer
+import com.vgleadsheets.repository.UpdateManager
 import dagger.hilt.android.HiltAndroidApp
-import okhttp3.OkHttpClient
 import javax.inject.Inject
 import javax.inject.Named
+import okhttp3.OkHttpClient
 
 @HiltAndroidApp
 class VglsApplication :
     Application(),
     ImageLoaderFactory {
+    @Inject
+    lateinit var updateManager: UpdateManager
+
     @Inject
     @Named("VglsOkHttp")
     lateinit var okHttpClient: OkHttpClient

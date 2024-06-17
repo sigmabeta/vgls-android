@@ -6,13 +6,9 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.model.time.Time
 import kotlinx.coroutines.flow.Flow
 
 interface VglsRepository {
-    suspend fun checkShouldAutoUpdate(): Boolean
-    fun refresh(): Flow<Unit>
-
     // Full Lists
     fun getAllGames(): Flow<List<Game>>
     fun getAllSongs(): Flow<List<Song>>
@@ -44,7 +40,6 @@ interface VglsRepository {
     fun getGameSync(gameId: Long): Game
     fun getTagKey(tagKeyId: Long): Flow<TagKey>
     fun getTagValue(tagValueId: Long): Flow<TagValue>
-    fun getLastUpdateTime(): Flow<Time>
 
     // Etc
     fun searchSongsCombined(searchQuery: String): Flow<List<Song>>
@@ -61,7 +56,4 @@ interface VglsRepository {
     suspend fun toggleOfflineComposer(composerId: Long)
 
     suspend fun toggleAlternate(songId: Long)
-
-    // Debug options
-    suspend fun clearSheets()
 }
