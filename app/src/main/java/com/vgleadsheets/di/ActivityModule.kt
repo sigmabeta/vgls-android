@@ -5,6 +5,7 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
@@ -36,6 +37,7 @@ class ActivityModule {
         stringProvider: StringProvider,
         hatchet: Hatchet,
         selectedPartManager: SelectedPartManager,
+        notifManager: NotifManager,
     ): BrainProvider =
         FeatureDirectory(
             repository = repository,
@@ -44,5 +46,6 @@ class ActivityModule {
             stringProvider = stringProvider,
             hatchet = hatchet,
             selectedPartManager = selectedPartManager,
+            notifManager = notifManager,
         )
 }

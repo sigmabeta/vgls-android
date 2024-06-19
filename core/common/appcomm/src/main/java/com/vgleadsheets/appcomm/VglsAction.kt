@@ -17,4 +17,7 @@ open class VglsAction {
 
     data class SearchQueryEntered(val query: String) : VglsAction()
     data object SearchClearClicked : VglsAction()
+
+    data class NotifClearClicked(val id: Long) : VglsAction()
+    data object SeeWhatsNewClicked : VglsAction()
 }

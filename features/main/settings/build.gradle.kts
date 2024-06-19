@@ -5,7 +5,6 @@ plugins {
 
 dependencies {
     implementation(projects.core.android.list)
-    implementation(projects.core.android.storage)
     implementation(projects.core.android.ui.strings)
 }
 

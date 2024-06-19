@@ -13,6 +13,7 @@ dependencies {
 
     implementation(projects.core.common.appcomm)
     implementation(projects.core.common.model)
+    implementation(projects.core.common.notif)
 }
 
 android {

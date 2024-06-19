@@ -5,6 +5,7 @@ import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
 import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
@@ -27,6 +28,7 @@ class FeatureDirectory(
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
     private val selectedPartManager: SelectedPartManager,
+    private val notifManager: NotifManager,
 ) : BrainProvider {
     @Suppress("LongMethod")
     override fun provideBrain(
@@ -39,6 +41,7 @@ class FeatureDirectory(
                 hatchet,
                 dispatchers,
                 coroutineScope,
+                notifManager,
             )
 
             Destination.BROWSE -> BrowseViewModelBrain(

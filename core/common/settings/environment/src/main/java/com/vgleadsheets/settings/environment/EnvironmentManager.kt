@@ -1,6 +1,6 @@
 package com.vgleadsheets.settings.environment
 
-import com.vgleadsheets.settings.common.Storage
+import com.vgleadsheets.storage.common.Storage
 import kotlinx.coroutines.flow.map
 
 class EnvironmentManager(

@@ -9,7 +9,6 @@ dependencies {
     implementation(projects.core.android.animation)
     implementation(projects.core.android.coroutines)
     implementation(projects.core.android.images)
-    implementation(projects.core.android.storage)
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.icons)
 }

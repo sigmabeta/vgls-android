@@ -11,25 +11,30 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.notif.Notif
+import com.vgleadsheets.notif.NotifCategory
+import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class NavViewModel @AssistedInject constructor(
+@HiltViewModel
+class NavViewModel @Inject constructor(
     override val dispatchers: VglsDispatchers,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
-    @Assisted private val snackbarScope: CoroutineScope,
-    @Assisted private val snackbarHostState: SnackbarHostState,
+    private val notifManager: NotifManager,
 ) : VglsViewModel<NavState>() {
     init {
         eventDispatcher.addEventSink(this)
     }
 
     lateinit var navController: NavController
+    lateinit var snackbarScope: CoroutineScope
+    lateinit var snackbarHostState: SnackbarHostState
 
     override fun initialState() = NavState()
 
@@ -54,11 +59,14 @@ class NavViewModel @AssistedInject constructor(
     }
 
     private fun onUpdateSuccess() {
-        launchSnackbar(
-            VglsEvent.ShowSnackbar(
-                message = "Update successful!",
-                withDismissAction = true,
-                source = "UpdateManager"
+        notifManager.addNotif(
+            Notif(
+                id = VglsEvent.DbUpdateSuccessful.hashCode().toLong(),
+                title = "New Sheets Available",
+                description = "VGLS has been updated and there are new sheets ready to play!",
+                actionLabel = "See what's new",
+                category = NotifCategory.VGLS_UPDATE,
+                action = VglsAction.SeeWhatsNewClicked,
             )
         )
     }

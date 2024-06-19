@@ -8,6 +8,7 @@ dependencies {
 
     api(projects.core.common.list)
     api(projects.core.common.nav)
+    api(projects.core.common.notif)
 
     // List features here.
     api(projects.features.remaster.home)

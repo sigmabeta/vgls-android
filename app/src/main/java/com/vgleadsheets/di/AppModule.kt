@@ -6,21 +6,21 @@ import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventDispatcherReal
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.ThreeTenTime
-import com.vgleadsheets.settings.common.Storage
 import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
+import com.vgleadsheets.storage.common.Storage
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
-import okhttp3.Interceptor
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
+import okhttp3.Interceptor
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -44,13 +44,10 @@ object AppModule {
     fun provideTime(@ApplicationContext context: Context): ThreeTenTime = ThreeTenImpl(context)
 
     @Provides
-    @Named("NetworkEndpoint")
     @Singleton
-    internal fun provideNetworkSetting(storage: com.vgleadsheets.storage.Storage): Int {
-        return runBlocking {
-            storage.getDebugSettingNetworkEndpoint().selectedPosition
-        }
-    }
+    fun provideNotifManager(storage: Storage) = NotifManager(
+        storage = storage,
+    )
 
     // TODO this should only happen in debug builds; in release builds it should be a no-op
     @Provides

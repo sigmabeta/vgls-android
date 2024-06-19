@@ -30,8 +30,8 @@ import com.vgleadsheets.bottombar.BottomBarViewModel
 import com.vgleadsheets.bottombar.RemasterBottomBar
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.nav.NavState
+import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.nav.SystemUiVisibility
-import com.vgleadsheets.nav.navViewModel
 import com.vgleadsheets.search.searchScreenNavEntry
 import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarState
@@ -54,11 +54,11 @@ fun RemasterAppUi(
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
 
-    val navViewModel = navViewModel(
-        snackbarScope = snackbarScope,
-        snackbarHostState = snackbarHostState,
-    )
+    val navViewModel = hiltViewModel<NavViewModel>()
+
     navViewModel.navController = navController
+    navViewModel.snackbarScope = snackbarScope
+    navViewModel.snackbarHostState = snackbarHostState
 
     val navState by navViewModel.uiState.collectAsState()
     handleSystemBars(navState, showSystemBars, hideSystemBars)

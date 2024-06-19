@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(projects.core.common.coroutines)
-    api(projects.core.common.settings.common)
+    api(projects.core.common.storage.common)
 }

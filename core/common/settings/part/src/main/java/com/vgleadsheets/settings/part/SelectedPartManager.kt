@@ -1,7 +1,7 @@
 package com.vgleadsheets.settings.part
 
 import com.vgleadsheets.model.Part
-import com.vgleadsheets.settings.common.Storage
+import com.vgleadsheets.storage.common.Storage
 import kotlinx.coroutines.flow.map
 
 class SelectedPartManager(

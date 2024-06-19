@@ -21,6 +21,7 @@ import com.vgleadsheets.components.LoadingNameCaptionListModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.NetworkRefreshingListModel
+import com.vgleadsheets.components.NotifListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SheetPageCardListModel
@@ -52,6 +53,7 @@ fun ListModel.Content(
         is LabelValueListModel -> LabelValueListItem(model = this, actionSink = actionSink, modifier = modifier)
         is MenuItemListModel -> MenuItem(model = this, actionSink = actionSink, modifier = modifier)
         is NameCaptionListModel -> NameCaptionListItem(model = this, actionSink = actionSink, modifier = modifier)
+        is NotifListModel -> NotifListItem(model = this, actionSink = actionSink, modifier = modifier)
         is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = actionSink, modifier = modifier)
         is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = actionSink, modifier = modifier)
         is SectionHeaderListModel -> SectionHeader(name = title, modifier = modifier)
