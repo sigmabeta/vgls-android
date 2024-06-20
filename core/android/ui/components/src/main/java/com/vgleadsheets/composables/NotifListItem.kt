@@ -34,6 +34,7 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
+@Suppress("LongMethod")
 fun NotifListItem(
     model: NotifListModel,
     actionSink: ActionSink,
@@ -43,9 +44,17 @@ fun NotifListItem(
         modifier = modifier
     ) {
         val (cardColor, contentColor, buttonTextColor) = if (model.isError) {
-            Triple(MaterialTheme.colorScheme.errorContainer, MaterialTheme.colorScheme.onErrorContainer, MaterialTheme.colorScheme.tertiary)
+            Triple(
+                MaterialTheme.colorScheme.errorContainer,
+                MaterialTheme.colorScheme.onErrorContainer,
+                MaterialTheme.colorScheme.tertiary
+            )
         } else {
-            Triple(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.onPrimaryContainer, MaterialTheme.colorScheme.primary)
+            Triple(
+                MaterialTheme.colorScheme.primaryContainer,
+                MaterialTheme.colorScheme.onPrimaryContainer,
+                MaterialTheme.colorScheme.primary
+            )
         }
 
         Column(
@@ -137,7 +146,7 @@ private fun Dark() {
 }
 
 @Composable
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "MaxLineLength", "LongMethod")
 private fun Sample() {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -196,6 +205,5 @@ private fun Sample() {
             PreviewActionSink { },
             modifier = Modifier
         )
-
     }
 }
