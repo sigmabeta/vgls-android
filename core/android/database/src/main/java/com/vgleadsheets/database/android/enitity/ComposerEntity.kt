@@ -10,6 +10,7 @@ import com.vgleadsheets.database.android.enitity.ComposerEntity.Companion.TABLE
 data class ComposerEntity(
     @PrimaryKey val id: Long,
     val name: String,
+    val songCount: Int,
     val hasVocalSongs: Boolean = false,
     val photoUrl: String? = null,
     val sheetsPlayed: Int,

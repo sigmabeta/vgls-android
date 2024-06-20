@@ -10,6 +10,7 @@ data class GameEntity(
     val name: String,
     val hasVocalSongs: Boolean,
     val photoUrl: String? = null,
+    val songCount: Int,
     val sheetsPlayed: Int,
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,

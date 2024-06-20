@@ -13,15 +13,11 @@ class DelayOrErrorRepository(
     private val realRepository: RealRepository
 ) : VglsRepository {
 
-    override fun getAllGames() = realRepository.getAllGames()
-
     override fun getAllSongs() = realRepository.getAllSongs()
 
     override fun getAllComposers() = realRepository.getAllComposers()
 
     override fun getAllTagKeys() = realRepository.getAllTagKeys()
-
-    override fun getFavoriteGames() = realRepository.getFavoriteGames()
 
     override fun getFavoriteSongs() =
         realRepository.getFavoriteSongs()
@@ -58,19 +54,12 @@ class DelayOrErrorRepository(
 
     override fun getComposer(composerId: Long) = realRepository.getComposer(composerId)
 
-    override fun getGame(gameId: Long) = realRepository.getGame(gameId)
-
-    override fun getGameSync(gameId: Long) = realRepository.getGameSync(gameId)
-
     override fun getTagKey(tagKeyId: Long) = realRepository.getTagKey(tagKeyId)
 
     override fun getTagValue(tagValueId: Long) = realRepository.getTagValue(tagValueId)
 
     override fun searchSongsCombined(searchQuery: String) =
         realRepository.searchSongsCombined(searchQuery)
-
-    override fun searchGamesCombined(searchQuery: String) =
-        realRepository.searchGamesCombined(searchQuery).butItTakesForever()
 
     override fun searchComposersCombined(searchQuery: String) =
         realRepository.searchComposersCombined(searchQuery).butItTakesForever()

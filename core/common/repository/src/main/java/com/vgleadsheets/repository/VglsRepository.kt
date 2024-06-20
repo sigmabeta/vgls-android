@@ -1,7 +1,6 @@
 package com.vgleadsheets.repository
 
 import com.vgleadsheets.model.Composer
-import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagKey
@@ -10,14 +9,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface VglsRepository {
     // Full Lists
-    fun getAllGames(): Flow<List<Game>>
     fun getAllSongs(): Flow<List<Song>>
     fun getAllComposers(): Flow<List<Composer>>
     fun getAllTagKeys(): Flow<List<TagKey>>
 
     // Favorites
-    fun getFavoriteGames(): Flow<List<Game>>
-
     fun getFavoriteSongs(): Flow<List<Song>>
 
     fun getFavoriteComposers(): Flow<List<Composer>>
@@ -36,14 +32,11 @@ interface VglsRepository {
     // Single items
     fun getSong(songId: Long): Flow<Song>
     fun getComposer(composerId: Long): Flow<Composer>
-    fun getGame(gameId: Long): Flow<Game>
-    fun getGameSync(gameId: Long): Game
     fun getTagKey(tagKeyId: Long): Flow<TagKey>
     fun getTagValue(tagValueId: Long): Flow<TagValue>
 
     // Etc
     fun searchSongsCombined(searchQuery: String): Flow<List<Song>>
-    fun searchGamesCombined(searchQuery: String): Flow<List<Game>>
     fun searchComposersCombined(searchQuery: String): Flow<List<Composer>>
 
     // User data

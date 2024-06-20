@@ -3,7 +3,6 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.conversion.asModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.Composer
-import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagKey
@@ -17,13 +16,13 @@ class FakeRepository(
     private val fakeModelGenerator: FakeModelGenerator,
     private val dispatchers: VglsDispatchers,
 ) : VglsRepository {
-    override fun getAllGames() = flow {
+    fun getAllGames() = flow {
         val games = fakeModelGenerator.possibleGames
             ?.map {
                 it.asModel(
                     0,
                     isFavorite = false,
-                    isAvailableOffline = false
+                    isAvailableOffline = false,
                 )
             }
             .orEmpty()
@@ -66,10 +65,6 @@ class FakeRepository(
     }.flowOn(dispatchers.disk)
 
     override fun getAllTagKeys(): Flow<List<TagKey>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getFavoriteGames(): Flow<List<Game>> {
         TODO("Not yet implemented")
     }
 
@@ -125,14 +120,6 @@ class FakeRepository(
         TODO("Not yet implemented")
     }
 
-    override fun getGame(gameId: Long): Flow<Game> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getGameSync(gameId: Long): Game {
-        TODO("Not yet implemented")
-    }
-
     override fun getTagKey(tagKeyId: Long): Flow<TagKey> {
         TODO("Not yet implemented")
     }
@@ -142,10 +129,6 @@ class FakeRepository(
     }
 
     override fun searchSongsCombined(searchQuery: String): Flow<List<Song>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun searchGamesCombined(searchQuery: String): Flow<List<Game>> {
         TODO("Not yet implemented")
     }
 

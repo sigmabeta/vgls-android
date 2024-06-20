@@ -3,14 +3,12 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
-import com.vgleadsheets.database.dao.GameAliasDataSource
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.model.Composer
-import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -23,18 +21,14 @@ import kotlinx.coroutines.flow.map
 @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
 class RealRepository(
     private val dispatchers: VglsDispatchers,
+    private val gameDataSource: GameDataSource,
     private val composerAliasDataSource: ComposerAliasDataSource,
     private val composerDataSource: ComposerDataSource,
-    private val gameAliasDataSource: GameAliasDataSource,
-    private val gameDataSource: GameDataSource,
     private val songDataSource: SongDataSource,
     private val songAliasDataSource: SongAliasDataSource,
     private val tagKeyDataSource: TagKeyDataSource,
     private val tagValueDataSource: TagValueDataSource
 ) : VglsRepository {
-    override fun getAllGames() = gameDataSource
-        .getAll()
-        .flowOn(dispatchers.disk)
 
     override fun getAllSongs() = songDataSource
         .getAll()
@@ -43,9 +37,6 @@ class RealRepository(
     override fun getAllComposers() = composerDataSource
         .getAll()
         .flowOn(dispatchers.disk)
-
-    override fun getFavoriteGames() =
-        gameDataSource.getFavorites().flowOn(dispatchers.disk)
 
     override fun getFavoriteSongs() =
         songDataSource.getFavorites().flowOn(dispatchers.disk)
@@ -101,13 +92,6 @@ class RealRepository(
         .getOneById(composerId)
         .flowOn(dispatchers.disk)
 
-    override fun getGame(gameId: Long) = gameDataSource
-        .getOneById(gameId)
-        .flowOn(dispatchers.disk)
-
-    override fun getGameSync(gameId: Long) = gameDataSource
-        .getOneByIdSync(gameId)
-
     override fun getTagKey(tagKeyId: Long) = tagKeyDataSource
         .getOneById(tagKeyId)
         .flowOn(dispatchers.disk)
@@ -115,15 +99,6 @@ class RealRepository(
     override fun getTagValue(tagValueId: Long) = tagValueDataSource
         .getOneById(tagValueId)
         .flowOn(dispatchers.disk)
-
-    override fun searchGamesCombined(searchQuery: String) = combine(
-        searchGames(searchQuery),
-        searchGameAliases(searchQuery)
-    ) { games: List<Game>, gameAliases: List<Game> ->
-        games + gameAliases
-    }.map { games ->
-        games.distinctBy { it.id }
-    }.flowOn(dispatchers.disk)
 
     override fun searchComposersCombined(searchQuery: String) = combine(
         searchComposers(searchQuery),
@@ -183,10 +158,6 @@ class RealRepository(
     }
 
     @Suppress("MaxLineLength")
-    private fun searchGames(searchQuery: String) = gameDataSource
-        .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-
-    @Suppress("MaxLineLength")
     private fun searchComposers(searchQuery: String) = composerDataSource
         .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
 
@@ -194,20 +165,6 @@ class RealRepository(
     private fun searchSongs(searchQuery: String) = songDataSource
         .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
         .flowOn(dispatchers.disk)
-
-    @Suppress("MaxLineLength")
-    private fun searchGameAliases(searchQuery: String) = gameAliasDataSource
-        .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { list ->
-            list.mapNotNull {
-                it.game?.copy(
-                    name = it.name,
-                    songs = songDataSource
-                        .getSongsForGame(it.game!!.id)
-                        .first()
-                )
-            }
-        }
 
     @Suppress("MaxLineLength")
     private fun searchComposerAliases(searchQuery: String) = composerAliasDataSource

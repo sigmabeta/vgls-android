@@ -7,4 +7,5 @@ dependencies {
     implementation(projects.core.common.list)
     implementation(projects.core.common.notif)
     implementation(projects.core.common.ui.components)
+    implementation(projects.core.common.repository)
 }

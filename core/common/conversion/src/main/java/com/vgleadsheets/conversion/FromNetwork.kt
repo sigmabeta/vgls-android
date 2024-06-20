@@ -10,11 +10,15 @@ import com.vgleadsheets.network.model.VglsApiGame
 fun VglsApiGame.asModel(
     sheetsPlayed: Int,
     isFavorite: Boolean,
-    isAvailableOffline: Boolean
+    isAvailableOffline: Boolean,
+    hasVocalSongs: Boolean,
+    songCount: Int
 ) = Game(
     game_id,
     game_name,
     null,
+    hasVocalSongs,
+    songCount,
     image_url,
     sheetsPlayed,
     isFavorite,
@@ -49,13 +53,16 @@ fun ApiSong.asModel(
 fun ApiComposer.asModel(
     sheetsPlayed: Int,
     isFavorite: Boolean,
-    isAvailableOffline: Boolean
+    isAvailableOffline: Boolean,
+    hasVocalSongs: Boolean,
+    songCount: Int
 ) = Composer(
     composer_id,
     composer_name ?: "Unknown Composer",
     null,
+    songCount,
     image_url,
-    false,
+    hasVocalSongs,
     sheetsPlayed,
     isFavorite,
     isAvailableOffline

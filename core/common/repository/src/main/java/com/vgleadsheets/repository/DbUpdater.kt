@@ -77,20 +77,31 @@ class DbUpdater(
         val dbSongMap = dbSongs.associateBy { it.id }
 
         val games = apiGames.map { apiGame ->
+            val hasVocalSongs = apiGame
+                .songs
+                .any { it.lyricsPageCount > 0 }
+
             val dbGame = dbGamesMap[apiGame.game_id]
             apiGame.asModel(
                 dbGame?.sheetsPlayed ?: 0,
                 dbGame?.isFavorite ?: false,
                 dbGame?.isAvailableOffline ?: false,
+                hasVocalSongs,
+                apiGame.songs.size,
             )
         }
 
-        val composerMap = apiComposers.associate {
-            val dbComposer = dbComposerMap[it.composer_id]
-            it.composer_id to it.asModel(
+        val composerMap = apiComposers.associate { apiComposer ->
+            val hasVocalSongs = apiComposer
+                .songs
+                .any { it.lyricsPageCount > 0 }
+
+            val dbComposer = dbComposerMap[apiComposer.composer_id]
+            apiComposer.composer_id to apiComposer.asModel(
                 dbComposer?.sheetsPlayed ?: 0,
                 dbComposer?.isFavorite ?: false,
                 dbComposer?.isAvailableOffline ?: false,
+                hasVocalSongs,
             )
         }.toMutableMap()
 
