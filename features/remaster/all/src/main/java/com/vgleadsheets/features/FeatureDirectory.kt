@@ -15,6 +15,7 @@ import com.vgleadsheets.remaster.home.HomeViewModelBrain
 import com.vgleadsheets.remaster.parts.PartsListViewModelBrain
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
+import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
@@ -23,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 
 class FeatureDirectory(
     private val repository: VglsRepository,
+    private val gameRepository: GameRepository,
     private val dispatchers: VglsDispatchers,
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
@@ -61,6 +63,7 @@ class FeatureDirectory(
 
             Destination.GAME_DETAIL -> GameDetailViewModelBrain(
                 repository,
+                gameRepository,
                 dispatchers,
                 coroutineScope,
                 urlInfoProvider,
@@ -69,7 +72,7 @@ class FeatureDirectory(
             )
 
             Destination.GAMES_LIST -> GameListViewModelBrain(
-                repository,
+                gameRepository,
                 dispatchers,
                 coroutineScope,
                 stringProvider,
@@ -78,6 +81,7 @@ class FeatureDirectory(
 
             Destination.COMPOSER_DETAIL -> ComposerDetailViewModelBrain(
                 repository,
+                gameRepository,
                 dispatchers,
                 coroutineScope,
                 urlInfoProvider,
@@ -96,6 +100,7 @@ class FeatureDirectory(
             Destination.SONG_VIEWER -> TODO()
             Destination.SONG_DETAIL -> SongDetailViewModelBrain(
                 repository,
+                gameRepository,
                 dispatchers,
                 coroutineScope,
                 urlInfoProvider,

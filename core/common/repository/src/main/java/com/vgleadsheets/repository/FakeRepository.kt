@@ -23,6 +23,8 @@ class FakeRepository(
                     0,
                     isFavorite = false,
                     isAvailableOffline = false,
+                    hasVocalSongs = false,
+                    songCount = 0
                 )
             }
             .orEmpty()
@@ -57,6 +59,8 @@ class FakeRepository(
                     sheetsPlayed = 0,
                     isFavorite = false,
                     isAvailableOffline = false,
+                    hasVocalSongs = false,
+                    songCount = 0
                 )
             }
             .orEmpty()

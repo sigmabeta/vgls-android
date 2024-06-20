@@ -6,6 +6,7 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.onEach
 
 class GameDetailViewModelBrain(
     private val repository: VglsRepository,
+    private val gameRepository: GameRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val urlInfoProvider: UrlInfoProvider,
@@ -58,7 +60,7 @@ class GameDetailViewModelBrain(
     }
 
     private fun fetchGame(gameId: Long) {
-        repository.getGame(gameId)
+        gameRepository.getGame(gameId)
             .onEach { game ->
                 updateState {
                     (it as State).copy(

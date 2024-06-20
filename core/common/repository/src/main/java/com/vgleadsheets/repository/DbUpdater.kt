@@ -28,12 +28,12 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
-import java.util.Locale
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class DbUpdater(
     private val vglsApi: VglsApi,
@@ -81,6 +81,10 @@ class DbUpdater(
                 .songs
                 .any { it.lyricsPageCount > 0 }
 
+            if (hasVocalSongs) {
+                hatchet.i("Game ${apiGame.game_name} has a vocal song.")
+            }
+
             val dbGame = dbGamesMap[apiGame.game_id]
             apiGame.asModel(
                 dbGame?.sheetsPlayed ?: 0,
@@ -92,16 +96,13 @@ class DbUpdater(
         }
 
         val composerMap = apiComposers.associate { apiComposer ->
-            val hasVocalSongs = apiComposer
-                .songs
-                .any { it.lyricsPageCount > 0 }
-
             val dbComposer = dbComposerMap[apiComposer.composer_id]
             apiComposer.composer_id to apiComposer.asModel(
                 dbComposer?.sheetsPlayed ?: 0,
                 dbComposer?.isFavorite ?: false,
                 dbComposer?.isAvailableOffline ?: false,
-                hasVocalSongs,
+                false,
+                0,
             )
         }.toMutableMap()
 
@@ -142,6 +143,16 @@ class DbUpdater(
                 dbSongMap,
                 gameAliases,
                 songAliases
+            )
+        }
+
+        composerMap.replaceAll { key, composer ->
+            val songCount = songComposerRelations
+                .filter { it.composerId == composer.id }
+                .size
+
+            composer.copy(
+                songCount = songCount
             )
         }
 

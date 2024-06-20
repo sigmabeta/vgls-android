@@ -6,6 +6,7 @@ import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
+import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
@@ -38,6 +39,7 @@ class ActivityModule {
         hatchet: Hatchet,
         selectedPartManager: SelectedPartManager,
         notifManager: NotifManager,
+        gameRepository: GameRepository,
     ): BrainProvider =
         FeatureDirectory(
             repository = repository,
@@ -47,5 +49,6 @@ class ActivityModule {
             hatchet = hatchet,
             selectedPartManager = selectedPartManager,
             notifManager = notifManager,
+            gameRepository = gameRepository,
         )
 }

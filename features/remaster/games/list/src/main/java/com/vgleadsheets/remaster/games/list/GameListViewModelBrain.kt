@@ -7,7 +7,7 @@ import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class GameListViewModelBrain(
-    private val repository: VglsRepository,
+    private val gameRepository: GameRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     stringProvider: StringProvider,
@@ -36,7 +36,7 @@ class GameListViewModelBrain(
     }
 
     private fun collectGames() {
-        repository.getAllGames()
+        gameRepository.getAllGames()
             .onEach(::onGamesLoaded)
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)

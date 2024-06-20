@@ -6,6 +6,7 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.onEach
 
 class ComposerDetailViewModelBrain(
     private val repository: VglsRepository,
+    private val gameRepository: GameRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val urlInfoProvider: UrlInfoProvider,
@@ -89,7 +91,7 @@ class ComposerDetailViewModelBrain(
         internalUiState
             .map { it as State }
             .map { state -> state.songs }
-            .mapList { song -> repository.getGameSync(song.gameId) }
+            .mapList { song -> gameRepository.getGameSync(song.gameId) }
             .map { it.distinct() }
             .onEach { games ->
                 updateState {

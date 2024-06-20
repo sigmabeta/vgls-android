@@ -9,6 +9,7 @@ import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.search.Action
 import com.vgleadsheets.ui.StringProvider
@@ -34,6 +35,7 @@ class SearchViewModel @Inject constructor(
     override val eventDispatcher: EventDispatcher,
     private val stringProvider: StringProvider,
     private val repository: VglsRepository,
+    private val gameRepository: GameRepository,
 ) : VglsViewModel<SearchState>(),
     ActionSink,
     EventSink {
@@ -124,7 +126,7 @@ class SearchViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         observeSearchInput(
-            searchOperation = { repository.searchGamesCombined(it) },
+            searchOperation = { gameRepository.searchGamesCombined(it) },
             onSearchSuccess = { results ->
                 updateState {
                     it.copy(gameResults = results)

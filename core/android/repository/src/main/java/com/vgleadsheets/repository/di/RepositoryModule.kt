@@ -16,6 +16,7 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.DelayOrErrorRepository
+import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.repository.UpdateManager
@@ -24,8 +25,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -51,14 +52,25 @@ object RepositoryModule {
         songAliasDataSource: SongAliasDataSource
     ) = RealRepository(
         dispatchers,
+        gameDataSource,
         composerAliasDataSource,
         composerDataSource,
-        gameAliasDataSource,
-        gameDataSource,
         songDataSource,
         songAliasDataSource,
         tagKeyDataSource,
         tagValueDataSource,
+    )
+
+    @Provides
+    @Singleton
+    fun provideGameRepository(
+        dispatchers: VglsDispatchers,
+        gameDataSource: GameDataSource,
+        gameAliasDataSource: GameAliasDataSource,
+    ) = GameRepository(
+        dispatchers,
+        gameAliasDataSource,
+        gameDataSource,
     )
 
     @Provides
