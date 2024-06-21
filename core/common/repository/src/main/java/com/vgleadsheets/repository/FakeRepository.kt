@@ -2,7 +2,6 @@ package com.vgleadsheets.repository
 
 import com.vgleadsheets.conversion.asModel
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagKey
@@ -52,31 +51,11 @@ class FakeRepository(
         emit(songs)
     }.flowOn(dispatchers.disk)
 
-    override fun getAllComposers() = flow {
-        val composers = fakeModelGenerator.possibleComposers
-            ?.map { apiComposer ->
-                apiComposer.asModel(
-                    sheetsPlayed = 0,
-                    isFavorite = false,
-                    isAvailableOffline = false,
-                    hasVocalSongs = false,
-                    songCount = 0
-                )
-            }
-            .orEmpty()
-
-        emit(composers)
-    }.flowOn(dispatchers.disk)
-
     override fun getAllTagKeys(): Flow<List<TagKey>> {
         TODO("Not yet implemented")
     }
 
     override fun getFavoriteSongs(): Flow<List<Song>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getFavoriteComposers(): Flow<List<Composer>> {
         TODO("Not yet implemented")
     }
 
@@ -89,14 +68,6 @@ class FakeRepository(
     }
 
     override fun getSongsForComposer(composerId: Long): Flow<List<Song>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getComposersForSong(songId: Long): Flow<List<Composer>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getComposersForSongSync(composerId: Long): List<Composer> {
         TODO("Not yet implemented")
     }
 
@@ -120,10 +91,6 @@ class FakeRepository(
         TODO("Not yet implemented")
     }
 
-    override fun getComposer(composerId: Long): Flow<Composer> {
-        TODO("Not yet implemented")
-    }
-
     override fun getTagKey(tagKeyId: Long): Flow<TagKey> {
         TODO("Not yet implemented")
     }
@@ -133,10 +100,6 @@ class FakeRepository(
     }
 
     override fun searchSongsCombined(searchQuery: String): Flow<List<Song>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun searchComposersCombined(searchQuery: String): Flow<List<Composer>> {
         TODO("Not yet implemented")
     }
 

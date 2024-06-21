@@ -18,8 +18,8 @@ class GameRepository(
         .flowOn(dispatchers.disk)
 
     fun getFavoriteGames() = gameDataSource
-            .getFavorites()
-            .flowOn(dispatchers.disk)
+        .getFavorites()
+        .flowOn(dispatchers.disk)
 
     fun getGame(gameId: Long) = gameDataSource
         .getOneById(gameId)

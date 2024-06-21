@@ -22,6 +22,10 @@ class ComposerAndroidDataSource(
     roomImpl,
 ),
     ComposerDataSource {
+    override fun getMostSongsComposers() = roomImpl
+        .getMostSongsComposers()
+        .mapListTo { convert.entityToModel(it) }
+
     override fun getFavorites() = roomImpl
         .getFavorites()
         .mapListTo { convert.entityToModel(it) }

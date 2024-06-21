@@ -6,6 +6,7 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.ui.StringProvider
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.onEach
 
 class ComposerDetailViewModelBrain(
     private val repository: VglsRepository,
+    private val composerRepository: ComposerRepository,
     private val gameRepository: GameRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
@@ -60,7 +62,7 @@ class ComposerDetailViewModelBrain(
     }
 
     private fun fetchComposer(composerId: Long) {
-        repository.getComposer(composerId)
+        composerRepository.getComposer(composerId)
             .onEach { composer ->
                 updateState {
                     (it as State).copy(

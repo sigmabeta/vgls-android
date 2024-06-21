@@ -1,6 +1,7 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.remaster.home.HomeModuleProvider
+import com.vgleadsheets.remaster.home.modules.MostSongsComposersModule
 import com.vgleadsheets.remaster.home.modules.MostSongsGamesModule
 import com.vgleadsheets.remaster.home.modules.NotifModule
 import dagger.Module
@@ -17,11 +18,13 @@ class HomeModuleModule {
     fun provideHomeModuleProviderLol(
         notifModule: NotifModule,
         mostSongsGamesModule: MostSongsGamesModule,
+        mostSongsComposersModule: MostSongsComposersModule,
     ): HomeModuleProvider = object : HomeModuleProvider {
         override val modules by lazy {
             val list = listOf(
                 notifModule,
                 mostSongsGamesModule,
+                mostSongsComposersModule,
             )
 
             list.forEach { it.setup() }

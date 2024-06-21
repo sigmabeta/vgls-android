@@ -34,6 +34,8 @@ interface RoomDao<EntityType> {
 
         const val OPTION_CASE_INSENSITIVE = "COLLATE NOCASE"
         const val OPTION_ALPHABETICAL_ORDER = "ORDER BY name"
+        const val OPTION_SONG_COUNT_ORDER = "ORDER BY songCount DESC"
+        const val OPTION_LIMIT = "LIMIT"
 
         const val COLUMN_FAVORITE = "isFavorite"
         const val COLUMN_OFFLINE = "isAvailableOffline"

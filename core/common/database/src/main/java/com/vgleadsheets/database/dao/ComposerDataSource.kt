@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface ComposerDataSource : DataSource<Composer> {
     fun getFavorites(): Flow<List<Composer>>
 
+    fun getMostSongsComposers(): Flow<List<Composer>>
+
     fun searchByName(name: String): Flow<List<Composer>>
 
     fun insertRelations(relations: List<SongComposerRelation>)

@@ -1,12 +1,12 @@
 package com.vgleadsheets.repository
 
-import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlin.random.Random
 
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
@@ -15,15 +15,10 @@ class DelayOrErrorRepository(
 
     override fun getAllSongs() = realRepository.getAllSongs()
 
-    override fun getAllComposers() = realRepository.getAllComposers()
-
     override fun getAllTagKeys() = realRepository.getAllTagKeys()
 
     override fun getFavoriteSongs() =
         realRepository.getFavoriteSongs()
-
-    override fun getFavoriteComposers() =
-        realRepository.getFavoriteComposers()
 
     override fun getSongsForGame(gameId: Long) =
         realRepository.getSongsForGame(gameId)
@@ -33,12 +28,6 @@ class DelayOrErrorRepository(
 
     override fun getSongsForComposer(composerId: Long) =
         realRepository.getSongsForComposer(composerId)
-
-    override fun getComposersForSong(songId: Long) =
-        realRepository.getComposersForSong(songId)
-
-    override fun getComposersForSongSync(composerId: Long) =
-        realRepository.getComposersForSongSync(composerId)
 
     override fun getTagValuesForSong(songId: Long) = realRepository.getTagValuesForSong(songId)
 
@@ -52,17 +41,12 @@ class DelayOrErrorRepository(
 
     override fun getSong(songId: Long) = realRepository.getSong(songId)
 
-    override fun getComposer(composerId: Long) = realRepository.getComposer(composerId)
-
     override fun getTagKey(tagKeyId: Long) = realRepository.getTagKey(tagKeyId)
 
     override fun getTagValue(tagValueId: Long) = realRepository.getTagValue(tagValueId)
 
     override fun searchSongsCombined(searchQuery: String) =
         realRepository.searchSongsCombined(searchQuery)
-
-    override fun searchComposersCombined(searchQuery: String) =
-        realRepository.searchComposersCombined(searchQuery).butItTakesForever()
 
     override suspend fun incrementViewCounter(songId: Long) =
         realRepository.incrementViewCounter(songId)

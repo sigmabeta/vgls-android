@@ -31,13 +31,18 @@ class HomeViewModelBrain(
             is VglsAction.InitNoArgs -> setup()
             is VglsAction.Resume -> return
             is VglsAction.NotifClearClicked -> onNotifClearClicked(action.id)
-            is Action.MostSongsGameclicked -> onMostSongsGameClicked(action.gameId)
+            is Action.MostSongsGameClicked -> onMostSongsGameClicked(action.gameId)
+            is Action.MostSongsComposerClicked -> onMostSongsComposerClicked(action.composerId)
             else -> onUnimplementedAction(action)
         }
     }
 
     private fun onMostSongsGameClicked(gameId: Long) {
         emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(gameId), Destination.HOME.destName))
+    }
+
+    private fun onMostSongsComposerClicked(composerId: Long) {
+        emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(composerId), Destination.HOME.destName))
     }
 
     private fun onUnimplementedAction(action: VglsAction) {

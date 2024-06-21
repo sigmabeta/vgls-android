@@ -12,6 +12,8 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.INNER_JOIN
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.ON
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETICAL_ORDER
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_LIMIT
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_SONG_COUNT_ORDER
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.SET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.TOGGLE_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.TOGGLE_OFFLINE
@@ -52,6 +54,9 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     @Delete(entity = ComposerEntity::class)
     override fun remove(ids: List<DeletionId>)
 
+    @Query(QUERY_MOST_SONGS)
+    fun getMostSongsComposers(): Flow<List<ComposerEntity>>
+
     @Query(QUERY_FAVORITES)
     fun getFavorites(): Flow<List<ComposerEntity>>
 
@@ -90,22 +95,23 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
 
         // Bespoke Queries
 
-        const val QUERY_FOR_SONG = "$GET $TABLE $WHERE_SONG $OPTION_ALPHABETICAL_ORDER"
+        private const val QUERY_FOR_SONG = "$GET $TABLE $WHERE_SONG $OPTION_ALPHABETICAL_ORDER"
 
         // Default Queries
 
-        const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
-        const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
-        const val QUERY_SEARCH =
+        private const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
+        private const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
+        private const val QUERY_SEARCH =
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
-        const val QUERY_DELETE = "$DELETE $TABLE"
-        const val QUERY_UPDATE = "$UPDATE $TABLE"
-        const val QUERY_FAVORITES =
+        private const val QUERY_DELETE = "$DELETE $TABLE"
+        private const val QUERY_UPDATE = "$UPDATE $TABLE"
+        private const val QUERY_FAVORITES =
             "$GET $TABLE $WHERE_FAVORITE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
+        private const val QUERY_MOST_SONGS = "$GET $TABLE $OPTION_SONG_COUNT_ORDER $OPTION_LIMIT 15"
 
-        const val QUERY_INCREMENT = "$QUERY_UPDATE $SET_INCREMENT $WHERE_SINGLE"
+        private const val QUERY_INCREMENT = "$QUERY_UPDATE $SET_INCREMENT $WHERE_SINGLE"
 
-        const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
-        const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
+        private const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
+        private const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
     }
 }

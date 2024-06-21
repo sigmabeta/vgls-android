@@ -7,7 +7,7 @@ import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class ComposerListViewModelBrain(
-    private val repository: VglsRepository,
+    private val composerRepository: ComposerRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     stringProvider: StringProvider,
@@ -36,7 +36,7 @@ class ComposerListViewModelBrain(
     }
 
     private fun collectComposers() {
-        repository.getAllComposers()
+        composerRepository.getAllComposers()
             .onEach(::onComposersLoaded)
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)

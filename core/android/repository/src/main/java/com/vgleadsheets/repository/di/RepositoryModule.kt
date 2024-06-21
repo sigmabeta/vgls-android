@@ -14,6 +14,7 @@ import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.DelayOrErrorRepository
 import com.vgleadsheets.repository.GameRepository
@@ -53,7 +54,6 @@ object RepositoryModule {
     ) = RealRepository(
         dispatchers,
         gameDataSource,
-        composerAliasDataSource,
         composerDataSource,
         songDataSource,
         songAliasDataSource,
@@ -71,6 +71,18 @@ object RepositoryModule {
         dispatchers,
         gameAliasDataSource,
         gameDataSource,
+    )
+
+    @Provides
+    @Singleton
+    fun provideComposerRepository(
+        dispatchers: VglsDispatchers,
+        composerDataSource: ComposerDataSource,
+        composerAliasDataSource: ComposerAliasDataSource,
+    ) = ComposerRepository(
+        dispatchers,
+        composerAliasDataSource,
+        composerDataSource,
     )
 
     @Provides
