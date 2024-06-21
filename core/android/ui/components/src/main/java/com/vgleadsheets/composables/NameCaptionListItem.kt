@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,14 +31,13 @@ fun NameCaptionListItem(
     model: NameCaptionListModel,
     actionSink: ActionSink,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
-            )
+            .padding(padding)
             .clickable { actionSink.sendAction(model.clickAction) }
     ) {
         Column(
@@ -114,6 +113,7 @@ private fun Sample() {
             VglsAction.Noop,
         ),
         PreviewActionSink { },
-        Modifier
+        Modifier,
+        PaddingValues(horizontal = 8.dp)
     )
 }

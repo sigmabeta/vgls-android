@@ -1,6 +1,8 @@
 package com.vgleadsheets.composables
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.ActionSink
@@ -13,6 +15,7 @@ fun SheetPageItem(
     model: SheetPageListModel,
     actionSink: ActionSink,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     CrossfadeSheet(
         sourceInfo = model.sourceInfo,
@@ -24,6 +27,7 @@ fun SheetPageItem(
         ),
         sheetId = model.dataId,
         modifier = modifier
+            .padding(padding)
             .clickable {
                 actionSink.sendAction(model.clickAction)
             }

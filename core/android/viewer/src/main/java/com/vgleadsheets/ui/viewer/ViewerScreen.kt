@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -214,8 +215,9 @@ private fun BoxScope.SheetPager(
     ) { page ->
         val item = items[page]
         item.Content(
-            actionSink = actionSink,
-            modifier = Modifier
+            sink = actionSink,
+            mod = Modifier,
+            pad = PaddingValues()
         )
     }
 }

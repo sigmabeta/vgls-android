@@ -158,23 +158,23 @@ private fun SampleScroller() {
     ) {
         val rng = Random("HorizontalScroller".hashCode().toLong())
 
-        val paddingModifier = Modifier.padding(
-            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
-        )
-        SquareItemSection(rng, paddingModifier)
-        WideItemSection(rng, paddingModifier)
-        VerticalSection(rng, paddingModifier)
-        SquareItemSection(rng, paddingModifier)
-        VerticalSection(rng, paddingModifier)
+        val paddingValues = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
+
+        SquareItemSection(rng, Modifier, paddingValues)
+        WideItemSection(rng, Modifier, paddingValues)
+        VerticalSection(rng, Modifier, paddingValues)
+        SquareItemSection(rng, Modifier, paddingValues)
+        VerticalSection(rng, Modifier, paddingValues)
     }
 }
 
 @Composable
 @Suppress("MagicNumber")
-private fun SquareItemSection(rng: Random, modifier: Modifier) {
+private fun SquareItemSection(rng: Random, modifier: Modifier, padding: PaddingValues) {
     SectionHeader(
         name = "Square Items",
-        modifier = modifier
+        modifier = modifier,
+        padding = padding,
     )
 
     HorizontalScroller(
@@ -193,15 +193,17 @@ private fun SquareItemSection(rng: Random, modifier: Modifier) {
         ),
         PreviewActionSink { },
         modifier = Modifier,
+        padding = padding,
     )
 }
 
 @Composable
 @Suppress("MagicNumber")
-private fun WideItemSection(rng: Random, modifier: Modifier) {
+private fun WideItemSection(rng: Random, modifier: Modifier, padding: PaddingValues) {
     SectionHeader(
         name = "Wide Items",
-        modifier = modifier
+        modifier = modifier,
+        padding = padding,
     )
 
     HorizontalScroller(
@@ -220,15 +222,17 @@ private fun WideItemSection(rng: Random, modifier: Modifier) {
         ),
         PreviewActionSink { },
         modifier = Modifier,
+        padding = padding,
     )
 }
 
 @Composable
 @Suppress("MagicNumber")
-private fun VerticalSection(rng: Random, modifier: Modifier) {
+private fun VerticalSection(rng: Random, modifier: Modifier, padding: PaddingValues) {
     SectionHeader(
         name = "Vertically Scrolling Items",
-        modifier = modifier
+        modifier = modifier,
+        padding = padding,
     )
 
     repeat(3) { index ->
@@ -243,6 +247,7 @@ private fun VerticalSection(rng: Random, modifier: Modifier) {
             ),
             PreviewActionSink { },
             modifier = Modifier,
+            padding = padding,
         )
     }
 }

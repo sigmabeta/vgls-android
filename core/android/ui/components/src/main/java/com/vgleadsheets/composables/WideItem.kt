@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
@@ -36,10 +37,12 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 fun WideItem(
     model: WideItemListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Row(
         modifier = modifier
+            .padding(padding)
             .defaultMinSize(minWidth = 192.dp)
             .height(64.dp)
             .shadow(
@@ -110,7 +113,8 @@ private fun Sample() {
                 VglsAction.Noop
             ),
             PreviewActionSink {},
-            modifier = Modifier
+            modifier = Modifier,
+            padding = PaddingValues(horizontal = 8.dp)
         )
 
         WideItem(
@@ -123,7 +127,8 @@ private fun Sample() {
                 VglsAction.Noop
             ),
             PreviewActionSink {},
-            modifier = Modifier
+            modifier = Modifier,
+            padding = PaddingValues(horizontal = 8.dp)
         )
     }
 }

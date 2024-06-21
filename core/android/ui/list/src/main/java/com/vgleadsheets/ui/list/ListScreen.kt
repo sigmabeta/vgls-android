@@ -1,6 +1,7 @@
 package com.vgleadsheets.ui.list
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -33,7 +34,7 @@ fun ListScreen(
     }
 
     LazyColumn(
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
         items(
             items = items,
@@ -41,10 +42,9 @@ fun ListScreen(
             contentType = { it.layoutId() }
         ) {
             it.Content(
-                actionSink = actionSink,
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
-                )
+                sink = actionSink,
+                mod = Modifier.animateItem(),
+                pad = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             )
         }
     }

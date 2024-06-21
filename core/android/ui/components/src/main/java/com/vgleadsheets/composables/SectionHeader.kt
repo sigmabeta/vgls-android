@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,10 +24,12 @@ import com.vgleadsheets.ui.themes.VglsMaterialMenu
 fun SectionHeader(
     name: String,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .padding(padding)
             .padding(bottom = 16.dp, top = 16.dp)
     ) {
         val color = MaterialTheme.colorScheme.onBackground
@@ -91,8 +94,8 @@ private fun Menu() {
 private fun SampleNotMenu() {
     SectionHeader(
         "Sick new skills",
-        modifier = Modifier
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
+        modifier = Modifier,
+        padding = PaddingValues(horizontal = dimensionResource(id = R.dimen.margin_side))
     )
 }
 
@@ -100,7 +103,7 @@ private fun SampleNotMenu() {
 private fun SampleMenu() {
     SectionHeader(
         "Paths to the future",
-        modifier = Modifier
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_side))
+        modifier = Modifier,
+        padding = PaddingValues(horizontal = dimensionResource(id = R.dimen.margin_side))
     )
 }

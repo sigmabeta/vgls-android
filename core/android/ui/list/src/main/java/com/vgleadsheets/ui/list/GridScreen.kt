@@ -2,6 +2,7 @@ package com.vgleadsheets.ui.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -45,7 +46,7 @@ fun GridScreen(
         columns = GridCells.Adaptive(minSize),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
         items(
             items = items,
@@ -60,8 +61,9 @@ fun GridScreen(
             }
         ) {
             it.Content(
-                actionSink = actionSink,
-                modifier = Modifier
+                sink = actionSink,
+                mod = Modifier.animateItem(),
+                pad = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             )
         }
     }

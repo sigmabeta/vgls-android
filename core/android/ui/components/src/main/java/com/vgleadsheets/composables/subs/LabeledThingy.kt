@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,12 +46,13 @@ fun LabeledThingy(
     thingy: @Composable RowScope.() -> Unit,
     onClick: () -> Unit,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)),
+            .padding(padding),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -117,13 +118,15 @@ private fun Menu() {
 @Suppress("MagicNumber")
 private fun Sample() {
     Column {
+        val padding = PaddingValues(horizontal = 8.dp)
         LabelNoThingyItem(
             model = SingleTextListModel(
                 1234L,
                 "Paths to the future",
                 VglsAction.Noop
             ),
-            modifier = Modifier
+            modifier = Modifier,
+            padding = padding,
         )
 
         LabelValueListItem(
@@ -133,7 +136,8 @@ private fun Sample() {
                 VglsAction.Noop
             ),
             PreviewActionSink {},
-            Modifier
+            Modifier,
+            padding = padding,
         )
 
         LabelRatingListItem(
@@ -143,7 +147,8 @@ private fun Sample() {
                 VglsAction.Noop,
             ),
             PreviewActionSink {},
-            Modifier
+            Modifier,
+            padding = padding,
         )
 
         var isChecked by remember { mutableStateOf(true) }
@@ -155,7 +160,8 @@ private fun Sample() {
                 clickAction = VglsAction.Noop
             ),
             PreviewActionSink { isChecked = !isChecked },
-            Modifier
+            Modifier,
+            padding = padding,
         )
 
         var selectedPosition by remember { mutableStateOf(3) }
@@ -174,7 +180,8 @@ private fun Sample() {
                 ).toImmutableList()
             ) { selectedPosition = it },
             defaultExpansion = false,
-            modifier = Modifier
+            modifier = Modifier,
+            padding = padding,
         )
     }
 }

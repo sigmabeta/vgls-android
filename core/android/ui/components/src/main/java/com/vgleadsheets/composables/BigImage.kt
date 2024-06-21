@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,10 +33,12 @@ import com.vgleadsheets.ui.Icon
 fun BigImage(
     model: HeroImageListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     ElevatedRoundRect(
         modifier = modifier
+            .padding(padding)
             .height(320.dp)
             .fillMaxWidth()
             .clickable(onClick = { actionSink.sendAction(model.clickAction) }),
@@ -108,7 +111,8 @@ private fun LoadingGame() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier,
+        padding = PaddingValues(16.dp),
     )
 }
 
@@ -122,7 +126,8 @@ private fun SuccessGame() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier,
+        padding = PaddingValues(16.dp),
     )
 }
 
@@ -138,6 +143,7 @@ private fun SuccessGameWithLabel() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier,
+        padding = PaddingValues(16.dp),
     )
 }

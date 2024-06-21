@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +35,8 @@ import com.vgleadsheets.ui.themes.VglsMaterialMenu
 fun ImageNameListItem(
     model: ImageNameListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     ImageNameListItem(
         model.name,
@@ -44,6 +45,7 @@ fun ImageNameListItem(
         model.clickAction,
         actionSink,
         modifier,
+        padding,
     )
 }
 
@@ -51,7 +53,8 @@ fun ImageNameListItem(
 fun ImageNameListItem(
     model: SearchResultListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     ImageNameListItem(
         model.name,
@@ -60,6 +63,7 @@ fun ImageNameListItem(
         model.clickAction,
         actionSink,
         modifier,
+        padding,
     )
 }
 
@@ -71,16 +75,15 @@ fun ImageNameListItem(
     clickAction: VglsAction,
     actionSink: ActionSink,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable { actionSink.sendAction(clickAction) }
-            .padding(
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side),
-                vertical = 4.dp
-            )
+            .padding(paddingValues = padding)
+            .padding(vertical = 4.dp)
     ) {
         ElevatedCircle(
             modifier = Modifier
@@ -180,6 +183,7 @@ private fun Sample() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
-        Modifier
+        Modifier,
+        PaddingValues(horizontal = 8.dp)
     )
 }

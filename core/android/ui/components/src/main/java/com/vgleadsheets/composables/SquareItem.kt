@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
@@ -39,7 +40,8 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 fun SquareItem(
     model: SquareItemListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Surface(
         modifier = modifier
@@ -139,7 +141,8 @@ private fun Sample() {
                 VglsAction.Noop
             ),
             PreviewActionSink {},
-            Modifier.weight(1.0f)
+            Modifier.weight(1.0f),
+            PaddingValues(horizontal = 8.dp)
         )
 
         SquareItem(
@@ -152,7 +155,8 @@ private fun Sample() {
                 VglsAction.Noop
             ),
             PreviewActionSink {},
-            Modifier.weight(1.0f)
+            Modifier.weight(1.0f),
+            PaddingValues(horizontal = 8.dp)
         )
     }
 }

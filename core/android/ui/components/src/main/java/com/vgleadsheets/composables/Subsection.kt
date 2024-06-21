@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -32,12 +33,14 @@ import kotlinx.collections.immutable.toImmutableList
 fun Subsection(
     model: SubsectionListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     val maxItemsInEachRow = 2
     FlowRow(
         maxItemsInEachRow = maxItemsInEachRow,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .padding(8.dp)
             .wrapContentHeight()
@@ -56,12 +59,14 @@ fun Subsection(
                     model = it,
                     actionSink = actionSink,
                     modifier = Modifier.weight(1.0f),
+                    padding = PaddingValues()
                 )
 
                 is SquareItemListModel -> SquareItem(
                     model = it,
                     actionSink = actionSink,
-                    modifier = Modifier
+                    modifier = Modifier,
+                    padding = padding,
                 )
 
                 else -> TODO()
@@ -178,6 +183,7 @@ private fun SampleWide() {
         ),
         PreviewActionSink { },
         Modifier,
+        PaddingValues(horizontal = 8.dp)
     )
 }
 
@@ -219,5 +225,6 @@ private fun SampleSquare() {
         ),
         PreviewActionSink { },
         Modifier,
+        PaddingValues(horizontal = 8.dp)
     )
 }

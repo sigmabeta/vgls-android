@@ -5,7 +5,8 @@ androidGradlePlugin = "8.4.1"
 androidxActivity = "1.8.1"
 androidxAppCompat = "1.6.1"
 androidxBrowser = "1.7.0"
-androidxComposeBom = "2024.05.00"
+androidxComposeBom = "2024.06.00"
+androidXComposeAnimationAlpha = "1.7.0-beta03"
 androidxComposeCompiler = "1.5.14"
 androidxComposeRuntimeTracing = "1.0.0-beta01"
 androidxCore = "1.12.0"
@@ -81,7 +82,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
-androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidXComposeAnimationAlpha" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }

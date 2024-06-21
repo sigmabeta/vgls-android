@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -38,14 +37,13 @@ import java.util.Random
 fun HorizontalScroller(
     model: HorizontalScrollerListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     LazyRow(
-        contentPadding = PaddingValues(
-            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
-        ),
+        contentPadding = padding,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
@@ -55,8 +53,9 @@ fun HorizontalScroller(
             contentType = { it.javaClass.simpleName },
         ) {
             it.Content(
-                actionSink = actionSink,
-                modifier = Modifier
+                sink = actionSink,
+                mod = Modifier.animateItem(),
+                pad = PaddingValues()
             )
         }
     }
@@ -91,9 +90,7 @@ private fun Sample() {
     ) {
         val rng = Random("HorizontalScroller".hashCode().toLong())
 
-        val paddingModifier = Modifier.padding(
-            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
-        )
+        val paddingModifier =  PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
         SquareItemSection(rng, paddingModifier)
         WideItemSection(rng, paddingModifier)
         VerticalSection(rng, paddingModifier)
@@ -104,10 +101,11 @@ private fun Sample() {
 
 @Composable
 @Suppress("MagicNumber")
-private fun SquareItemSection(rng: Random, modifier: Modifier) {
+private fun SquareItemSection(rng: Random, padding: PaddingValues) {
     SectionHeader(
         name = "Square Items",
-        modifier = modifier
+        modifier = Modifier,
+        padding = padding,
     )
 
     HorizontalScroller(
@@ -126,15 +124,17 @@ private fun SquareItemSection(rng: Random, modifier: Modifier) {
         ),
         PreviewActionSink { },
         modifier = Modifier,
+        padding = padding
     )
 }
 
 @Composable
 @Suppress("MagicNumber")
-private fun WideItemSection(rng: Random, modifier: Modifier) {
+private fun WideItemSection(rng: Random, padding: PaddingValues) {
     SectionHeader(
         name = "Wide Items",
-        modifier = modifier
+        modifier = Modifier,
+        padding = padding,
     )
 
     HorizontalScroller(
@@ -153,15 +153,17 @@ private fun WideItemSection(rng: Random, modifier: Modifier) {
         ),
         PreviewActionSink { },
         modifier = Modifier,
+        padding = padding
     )
 }
 
 @Composable
 @Suppress("MagicNumber")
-private fun VerticalSection(rng: Random, modifier: Modifier) {
+private fun VerticalSection(rng: Random, padding: PaddingValues) {
     SectionHeader(
         name = "Vertically Scrolling Items",
-        modifier = modifier
+        modifier = Modifier,
+        padding = padding,
     )
 
     repeat(3) { index ->
@@ -176,6 +178,7 @@ private fun VerticalSection(rng: Random, modifier: Modifier) {
             ),
             PreviewActionSink { },
             modifier = Modifier,
+            padding = padding,
         )
     }
 }

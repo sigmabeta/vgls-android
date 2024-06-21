@@ -5,10 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -36,7 +38,8 @@ import com.vgleadsheets.ui.themes.VglsMaterialMenu
 fun ImageNameCaptionListItem(
     model: ImageNameCaptionListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     ImageNameCaptionListItem(
         model.name,
@@ -46,6 +49,7 @@ fun ImageNameCaptionListItem(
         model.clickAction,
         actionSink,
         modifier,
+        padding,
     )
 }
 
@@ -53,7 +57,8 @@ fun ImageNameCaptionListItem(
 fun ImageNameCaptionListItem(
     model: SearchResultListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     ImageNameCaptionListItem(
         model.name,
@@ -63,6 +68,7 @@ fun ImageNameCaptionListItem(
         model.clickAction,
         actionSink,
         modifier,
+        padding,
     )
 }
 
@@ -75,9 +81,11 @@ private fun ImageNameCaptionListItem(
     clickAction: VglsAction,
     actionSink: ActionSink,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Row(
         modifier = modifier
+            .padding(padding)
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable { actionSink.sendAction(clickAction) }
@@ -189,6 +197,7 @@ private fun Sample() {
             VglsAction.Noop,
         ),
         PreviewActionSink {},
-        Modifier
+        Modifier,
+        PaddingValues(horizontal = 8.dp)
     )
 }

@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    api(libs.androidx.compose.foundation)
     api(libs.androidx.navigation.compose)
     api(libs.androidx.lifecycle.runtimeCompose)
 

@@ -3,6 +3,7 @@ package com.vgleadsheets.composables
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,6 +29,7 @@ fun SheetPageCard(
     model: SheetPageListModel,
     actionSink: ActionSink,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     ElevatedCard(
         modifier = modifier
@@ -40,6 +42,7 @@ fun SheetPageCard(
             modifier = Modifier
                 .wrapContentHeight()
                 .fillMaxWidth(),
+            padding = padding,
         )
     }
 }
@@ -94,5 +97,6 @@ private fun SamplePdf() {
         modifier = Modifier.padding(
             horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
         ),
+        padding = PaddingValues(horizontal = 8.dp)
     )
 }

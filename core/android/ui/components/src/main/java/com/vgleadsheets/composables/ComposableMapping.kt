@@ -1,5 +1,6 @@
 package com.vgleadsheets.composables
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.ActionSink
@@ -35,50 +36,51 @@ import com.vgleadsheets.components.WideItemListModel
 @Suppress("MaxLineLength")
 @Composable
 fun ListModel.Content(
-    actionSink: ActionSink,
-    modifier: Modifier,
+    sink: ActionSink,
+    mod: Modifier,
+    pad: PaddingValues,
 ) {
     when (this) {
-        is CheckableListModel -> LabelCheckboxItem(model = this, actionSink = actionSink, modifier = modifier)
-        is CtaListModel -> ActionItem(model = this, actionSink = actionSink, modifier = modifier)
-        is DropdownSettingListModel -> LabelDropdownListItem(model = this, modifier = modifier)
-        is EmptyStateListModel -> EmptyListIndicator(model = this, modifier = modifier)
-        is ErrorStateListModel -> EmptyListIndicator(model = this, modifier = modifier)
-        is HeroImageListModel -> BigImage(model = this, actionSink = actionSink, modifier = modifier)
-        is HorizontalScrollerListModel -> HorizontalScroller(model = this, actionSink = actionSink, modifier = modifier,)
-        is IconNameCaptionListModel -> IconNameCaptionListItem(model = this, actionSink = actionSink, modifier = modifier)
-        is ImageNameCaptionListModel -> ImageNameCaptionListItem(model = this, actionSink = actionSink, modifier = modifier)
-        is ImageNameListModel -> ImageNameListItem(model = this, actionSink = actionSink, modifier = modifier)
-        is LabelRatingStarListModel -> LabelRatingListItem(model = this, actionSink = actionSink, modifier = modifier)
-        is LabelValueListModel -> LabelValueListItem(model = this, actionSink = actionSink, modifier = modifier)
-        is MenuItemListModel -> MenuItem(model = this, actionSink = actionSink, modifier = modifier)
-        is NameCaptionListModel -> NameCaptionListItem(model = this, actionSink = actionSink, modifier = modifier)
-        is NotifListModel -> NotifListItem(model = this, actionSink = actionSink, modifier = modifier)
-        is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = actionSink, modifier = modifier)
-        is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = actionSink, modifier = modifier)
-        is SectionHeaderListModel -> SectionHeader(name = title, modifier = modifier)
-        is SheetPageListModel -> SheetPageItem(model = this, actionSink = actionSink, modifier = modifier)
-        is SingleTextListModel -> LabelNoThingyItem(model = this, modifier = modifier)
-        is SquareItemListModel -> SquareItem(model = this, actionSink = actionSink, modifier = modifier)
-        is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = modifier)
-        is SubsectionListModel -> Subsection(model = this, actionSink = actionSink, modifier = modifier)
-        is WideItemListModel -> WideItem(model = this, actionSink = actionSink, modifier = modifier)
+        is CheckableListModel -> LabelCheckboxItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is CtaListModel -> ActionItem(model = this, actionSink = sink, modifier = mod)
+        is DropdownSettingListModel -> LabelDropdownListItem(model = this, modifier = mod, padding = pad)
+        is EmptyStateListModel -> EmptyListIndicator(model = this, modifier = mod)
+        is ErrorStateListModel -> EmptyListIndicator(model = this, modifier = mod)
+        is HeroImageListModel -> BigImage(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is HorizontalScrollerListModel -> HorizontalScroller(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is IconNameCaptionListModel -> IconNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is ImageNameCaptionListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is ImageNameListModel -> ImageNameListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is LabelRatingStarListModel -> LabelRatingListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is LabelValueListModel -> LabelValueListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is MenuItemListModel -> MenuItem(model = this, actionSink = sink, modifier = mod)
+        is NameCaptionListModel -> NameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is NotifListModel -> NotifListItem(model = this, actionSink = sink, modifier = mod)
+        is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = sink, modifier = mod, padding = pad)
+        is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod,  padding = pad)
+        is SectionHeaderListModel -> SectionHeader(name = title, modifier = mod, padding = pad)
+        is SheetPageListModel -> SheetPageItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is SingleTextListModel -> LabelNoThingyItem(model = this, modifier = mod, padding = pad)
+        is SquareItemListModel -> SquareItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
+        is SubsectionListModel -> Subsection(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is WideItemListModel -> WideItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is LoadingImageNameCaptionListModel -> LoadingListItem(
             withImage = true,
             seed = dataId,
-            modifier = modifier
+            modifier = mod
         )
 
         is LoadingNameCaptionListModel -> LoadingListItem(
             withImage = false,
             seed = dataId,
-            modifier = modifier
+            modifier = mod
         )
 
         is NetworkRefreshingListModel -> LoadingListItem(
             withImage = true,
             seed = dataId,
-            modifier = modifier,
+            modifier = mod,
         )
 
         else -> throw IllegalArgumentException("No composable exists for this item type.")

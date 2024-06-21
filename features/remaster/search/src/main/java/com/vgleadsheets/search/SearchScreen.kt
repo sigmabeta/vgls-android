@@ -78,7 +78,7 @@ fun SearchScreen(
             columns = GridCells.Adaptive(minSize),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
+            modifier = Modifier.fillMaxSize()
         ) {
             items(
                 items = results,
@@ -93,8 +93,9 @@ fun SearchScreen(
                 }
             ) {
                 it.Content(
-                    actionSink = actionSink,
-                    modifier = Modifier
+                    sink = actionSink,
+                    mod = Modifier.animateItem(),
+                    pad = PaddingValues(),
                 )
             }
         }

@@ -3,6 +3,7 @@ package com.vgleadsheets.composables
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.composables.subs.Dropdown
 import com.vgleadsheets.composables.subs.LabeledThingy
@@ -22,7 +24,8 @@ import kotlinx.collections.immutable.toImmutableList
 fun LabelDropdownListItem(
     model: DropdownSettingListModel,
     defaultExpansion: Boolean = false,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     LabeledThingy(
         label = model.name,
@@ -35,7 +38,8 @@ fun LabelDropdownListItem(
             )
         },
         onClick = {},
-        modifier = modifier
+        modifier = modifier,
+        padding = padding,
     )
 }
 
@@ -142,6 +146,7 @@ private fun Sample(expanded: Boolean) {
             ).toImmutableList()
         ) { selectedPosition = it },
         defaultExpansion = expanded,
-        modifier = Modifier
+        modifier = Modifier,
+        padding = PaddingValues(horizontal = 8.dp)
     )
 }

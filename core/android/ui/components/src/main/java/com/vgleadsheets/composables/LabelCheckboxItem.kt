@@ -3,6 +3,7 @@ package com.vgleadsheets.composables
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.CheckableListModel
@@ -24,7 +26,8 @@ import com.vgleadsheets.ui.themes.VglsMaterialMenu
 fun LabelCheckboxItem(
     model: CheckableListModel,
     actionSink: ActionSink,
-    modifier: Modifier
+    modifier: Modifier,
+    padding: PaddingValues,
 ) {
     LabeledThingy(
         label = model.name,
@@ -35,7 +38,8 @@ fun LabelCheckboxItem(
             )
         },
         onClick = { actionSink.sendAction(model.clickAction) },
-        modifier = modifier
+        modifier = modifier,
+        padding = padding,
     )
 }
 
@@ -93,6 +97,7 @@ private fun Sample() {
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { isChecked = !isChecked },
-        Modifier
+        Modifier,
+        PaddingValues(horizontal = 8.dp)
     )
 }
