@@ -90,7 +90,9 @@ private fun Sample() {
     ) {
         val rng = Random("HorizontalScroller".hashCode().toLong())
 
-        val paddingModifier =  PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
+        val paddingModifier = PaddingValues(
+            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+        )
         SquareItemSection(rng, paddingModifier)
         WideItemSection(rng, paddingModifier)
         VerticalSection(rng, paddingModifier)

@@ -57,7 +57,7 @@ fun ListModel.Content(
         is NameCaptionListModel -> NameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is NotifListModel -> NotifListItem(model = this, actionSink = sink, modifier = mod)
         is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = sink, modifier = mod, padding = pad)
-        is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod,  padding = pad)
+        is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SectionHeaderListModel -> SectionHeader(name = title, modifier = mod, padding = pad)
         is SheetPageListModel -> SheetPageItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SingleTextListModel -> LabelNoThingyItem(model = this, modifier = mod, padding = pad)

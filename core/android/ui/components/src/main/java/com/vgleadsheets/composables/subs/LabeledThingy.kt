@@ -115,7 +115,7 @@ private fun Menu() {
 }
 
 @Composable
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongMethod")
 private fun Sample() {
     Column {
         val padding = PaddingValues(horizontal = 8.dp)
