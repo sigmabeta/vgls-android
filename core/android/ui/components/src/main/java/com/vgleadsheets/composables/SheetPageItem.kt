@@ -25,7 +25,6 @@ fun SheetPageItem(
         sheetId = model.dataId,
         modifier = modifier
             .clickable {
-                println("sending event: ${model.clickAction}")
                 actionSink.sendAction(model.clickAction)
             }
     )

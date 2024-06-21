@@ -17,8 +17,9 @@ class GameRepository(
         .getAll()
         .flowOn(dispatchers.disk)
 
-    fun getFavoriteGames() =
-        gameDataSource.getFavorites().flowOn(dispatchers.disk)
+    fun getFavoriteGames() = gameDataSource
+            .getFavorites()
+            .flowOn(dispatchers.disk)
 
     fun getGame(gameId: Long) = gameDataSource
         .getOneById(gameId)
@@ -35,6 +36,10 @@ class GameRepository(
     }.map { games ->
         games.distinctBy { it.id }
     }.flowOn(dispatchers.disk)
+
+    fun getMostSongsGames() = gameDataSource
+        .getMostSongsGames()
+        .flowOn(dispatchers.disk)
 
     @Suppress("MaxLineLength")
     private fun searchGames(searchQuery: String) = gameDataSource

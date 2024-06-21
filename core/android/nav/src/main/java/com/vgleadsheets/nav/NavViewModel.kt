@@ -16,10 +16,10 @@ import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
@@ -53,9 +53,14 @@ class NavViewModel @Inject constructor(
                 is VglsEvent.ShowSnackbar -> launchSnackbar(event)
                 is VglsEvent.HideUiChrome -> hideSystemUi()
                 is VglsEvent.ShowUiChrome -> showSystemUi()
+                is VglsEvent.ClearNotif -> clearNotif(event.id)
                 is VglsEvent.DbUpdateSuccessful -> onUpdateSuccess()
             }
         }
+    }
+
+    private fun clearNotif(notifId: Long) {
+        notifManager.removeNotif(notifId)
     }
 
     private fun onUpdateSuccess() {

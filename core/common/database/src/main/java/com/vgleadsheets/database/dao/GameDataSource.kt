@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface GameDataSource : DataSource<Game> {
     fun getFavorites(): Flow<List<Game>>
 
+    fun getMostSongsGames(): Flow<List<Game>>
+
     fun searchByName(name: String): Flow<List<Game>>
 
     fun incrementSheetsPlayed(gameId: Long)

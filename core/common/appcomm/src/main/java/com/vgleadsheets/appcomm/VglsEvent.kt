@@ -38,4 +38,6 @@ open class VglsEvent {
     data class DbUpdateFailed(val ex: Throwable) : VglsEvent()
 
     data object DbUpdateSuccessful : VglsEvent()
+
+    data class ClearNotif(val id: Long) : VglsEvent()
 }

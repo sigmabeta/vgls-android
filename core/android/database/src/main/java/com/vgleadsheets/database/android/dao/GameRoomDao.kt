@@ -41,6 +41,9 @@ interface GameRoomDao : RoomDao<GameEntity> {
     @Delete(entity = GameEntity::class)
     override fun remove(ids: List<DeletionId>)
 
+    @Query(QUERY_MOST_SONGS)
+    fun getMostSongsGames(): Flow<List<GameEntity>>
+
     @Query(QUERY_FAVORITES)
     fun getFavorites(): Flow<List<GameEntity>>
 
@@ -62,6 +65,9 @@ interface GameRoomDao : RoomDao<GameEntity> {
 
         private const val SET_INCREMENT = "$SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
 
+        private const val OPTION_SONG_COUNT_ORDER = "ORDER BY songCount DESC"
+        private const val OPTION_LIMIT = "LIMIT"
+
         const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         const val QUERY_SEARCH =
@@ -70,6 +76,7 @@ interface GameRoomDao : RoomDao<GameEntity> {
         const val QUERY_UPDATE = "$UPDATE $TABLE"
         const val QUERY_FAVORITES =
             "$GET $TABLE $WHERE_FAVORITE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
+        const val QUERY_MOST_SONGS = "$GET $TABLE $OPTION_SONG_COUNT_ORDER $OPTION_LIMIT 15"
 
         const val QUERY_INCREMENT = "$UPDATE $TABLE $SET_INCREMENT $WHERE_SINGLE"
 

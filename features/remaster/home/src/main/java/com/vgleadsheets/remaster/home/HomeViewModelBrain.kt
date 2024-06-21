@@ -5,19 +5,19 @@ import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.notif.NotifManager
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 class HomeViewModelBrain(
-    stringProvider: StringProvider,
-    hatchet: Hatchet,
+    private val stringProvider: StringProvider,
+    private val hatchet: Hatchet,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
-    private val notifManager: NotifManager,
+    private val homeModuleProvider: HomeModuleProvider,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
@@ -30,38 +30,44 @@ class HomeViewModelBrain(
         when (action) {
             is VglsAction.InitNoArgs -> setup()
             is VglsAction.Resume -> return
-            is VglsAction.NotifClearClicked -> removeNotif(action.id)
-            is VglsAction.SeeWhatsNewClicked -> onSeeWhatsNewClicked()
-            else -> throw IllegalArgumentException("Invalid action for this screen.")
+            is VglsAction.NotifClearClicked -> onNotifClearClicked(action.id)
+            is Action.MostSongsGameclicked -> onMostSongsGameClicked(action.gameId)
+            else -> onUnimplementedAction(action)
         }
     }
 
-    private fun onSeeWhatsNewClicked() {
+    private fun onMostSongsGameClicked(gameId: Long) {
+        emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(gameId), Destination.HOME.destName))
+    }
+
+    private fun onUnimplementedAction(action: VglsAction) {
         emitEvent(
             VglsEvent.ShowSnackbar(
-                message = "What's new screen is unimplemented.",
+                message = "Unimplemented action: ${action.javaClass.simpleName}.",
                 withDismissAction = false,
                 actionDetails = null,
-                source = "Home"
+                source = Destination.HOME.destName
             )
         )
     }
 
-    private fun removeNotif(id: Long) {
-        notifManager.removeNotif(id)
+    private fun onNotifClearClicked(id: Long) {
+        emitEvent(VglsEvent.ClearNotif(id))
     }
 
     private fun setup() {
-        notifManager
-            .notifState
-            .onEach { notifState ->
-                updateState {
-                    (it as State).copy(
-                        notifs = notifState.notifs.values.toList()
-                    )
-                }
+        val flows = homeModuleProvider.modules.map { it.moduleState }
+
+        val combinedFlows = combine(flows) { moduleStates ->
+            updateState { oldState ->
+                (oldState as State).copy(
+                    moduleStates = moduleStates.toList()
+                )
             }
-            .flowOn(dispatchers.disk)
+        }
+
+        combinedFlows
+            .flowOn(dispatchers.main)
             .launchIn(coroutineScope)
     }
 }

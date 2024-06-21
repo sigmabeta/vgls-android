@@ -46,6 +46,9 @@
 
     <string name="label_song_also_known_as">Also Known As</string>
 
+    <string name="home_section_most_songs_games">Popular Games</string>
+    <string name="home_section_most_songs_composers">Prolific Composers</string>
+
     <string name="browse_link_favorites">Favorites</string>
     <string name="browse_link_game">By Game</string>
     <string name="browse_link_composer">By Composer</string>

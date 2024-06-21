@@ -16,6 +16,10 @@ class GameAndroidDataSource(
     roomImpl,
 ),
 GameDataSource {
+    override fun getMostSongsGames() = roomImpl
+        .getMostSongsGames()
+        .mapListTo { convert.entityToModel(it) }
+
     override fun getFavorites() = roomImpl
         .getFavorites()
         .mapListTo { convert.entityToModel(it) }

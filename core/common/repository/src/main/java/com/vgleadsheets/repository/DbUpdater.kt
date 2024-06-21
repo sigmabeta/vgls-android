@@ -81,10 +81,6 @@ class DbUpdater(
                 .songs
                 .any { it.lyricsPageCount > 0 }
 
-            if (hasVocalSongs) {
-                hatchet.i("Game ${apiGame.game_name} has a vocal song.")
-            }
-
             val dbGame = dbGamesMap[apiGame.game_id]
             apiGame.asModel(
                 dbGame?.sheetsPlayed ?: 0,
