@@ -1,5 +1,8 @@
 package com.vgleadsheets.appcomm
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 open class VglsAction {
     data object Noop : VglsAction()
 

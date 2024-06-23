@@ -71,6 +71,7 @@ class NavViewModel @Inject constructor(
                 description = "VGLS has been updated and there are new sheets ready to play!",
                 actionLabel = "See what's new",
                 category = NotifCategory.VGLS_UPDATE,
+                isOneTime = true,
                 action = VglsAction.SeeWhatsNewClicked,
             )
         )
