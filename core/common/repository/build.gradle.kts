@@ -12,5 +12,6 @@ dependencies {
     implementation(projects.core.common.database)
     implementation(projects.core.common.logging)
     implementation(projects.core.common.network)
+    implementation(projects.core.common.notif)
     implementation(projects.core.common.tracking)
 }

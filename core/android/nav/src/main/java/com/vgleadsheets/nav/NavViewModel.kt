@@ -11,9 +11,8 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.notif.Notif
-import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
+import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +26,7 @@ class NavViewModel @Inject constructor(
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
     private val notifManager: NotifManager,
+    private val updateManager: UpdateManager,
 ) : VglsViewModel<NavState>() {
     init {
         eventDispatcher.addEventSink(this)
@@ -54,7 +54,7 @@ class NavViewModel @Inject constructor(
                 is VglsEvent.HideUiChrome -> hideSystemUi()
                 is VglsEvent.ShowUiChrome -> showSystemUi()
                 is VglsEvent.ClearNotif -> clearNotif(event.id)
-                is VglsEvent.DbUpdateSuccessful -> onUpdateSuccess()
+                is VglsEvent.RefreshDb -> refreshDb()
             }
         }
     }
@@ -63,18 +63,8 @@ class NavViewModel @Inject constructor(
         notifManager.removeNotif(notifId)
     }
 
-    private fun onUpdateSuccess() {
-        notifManager.addNotif(
-            Notif(
-                id = VglsEvent.DbUpdateSuccessful.hashCode().toLong(),
-                title = "New Sheets Available",
-                description = "VGLS has been updated and there are new sheets ready to play!",
-                actionLabel = "See what's new",
-                category = NotifCategory.VGLS_UPDATE,
-                isOneTime = true,
-                action = VglsAction.SeeWhatsNewClicked,
-            )
-        )
+    private fun refreshDb() {
+        updateManager.refresh()
     }
 
     private fun launchSnackbar(snackbarEvent: VglsEvent.ShowSnackbar) {

@@ -14,6 +14,7 @@ import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.DelayOrErrorRepository
@@ -97,6 +98,7 @@ object RepositoryModule {
         eventDispatcher: EventDispatcher,
         dbStatisticsDataSource: DbStatisticsDataSource,
         coroutineScope: CoroutineScope,
+        notifManager: NotifManager,
     ) = UpdateManager(
         vglsApi,
         dbUpdater,
@@ -106,6 +108,7 @@ object RepositoryModule {
         hatchet,
         dispatchers,
         coroutineScope,
+        notifManager,
     )
 
     @Provides

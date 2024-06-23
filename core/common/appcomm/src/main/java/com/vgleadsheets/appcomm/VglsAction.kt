@@ -18,6 +18,9 @@ open class VglsAction {
     data class SnackbarActionClicked(val action: VglsAction) : VglsAction()
     data class SnackbarDismissed(val action: VglsAction) : VglsAction()
 
+    @JsonClass(generateAdapter = true)
+    class RefreshDbClicked : VglsAction()
+
     data class SearchQueryEntered(val query: String) : VglsAction()
     data object SearchClearClicked : VglsAction()
 

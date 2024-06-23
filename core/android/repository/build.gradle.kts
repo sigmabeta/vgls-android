@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.core.common.coroutines)
     implementation(projects.core.common.conversion)
     implementation(projects.core.common.network)
+    implementation(projects.core.common.notif)
     implementation(projects.core.common.tracking)
 }
 

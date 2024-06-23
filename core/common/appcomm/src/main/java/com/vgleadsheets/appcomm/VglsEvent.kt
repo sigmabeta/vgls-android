@@ -34,10 +34,7 @@ open class VglsEvent {
     data object UiChromeBecameShown : VglsEvent()
     data object UiChromeBecameHidden : VglsEvent()
 
-    data class LastUpdateCheckFailed(val ex: Throwable) : VglsEvent()
-    data class DbUpdateFailed(val ex: Throwable) : VglsEvent()
-
-    data object DbUpdateSuccessful : VglsEvent()
-
     data class ClearNotif(val id: Long) : VglsEvent()
+
+    data object RefreshDb: VglsEvent()
 }

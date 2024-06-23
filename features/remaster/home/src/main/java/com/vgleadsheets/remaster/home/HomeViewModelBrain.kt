@@ -31,6 +31,7 @@ class HomeViewModelBrain(
             is VglsAction.InitNoArgs -> setup()
             is VglsAction.Resume -> return
             is VglsAction.NotifClearClicked -> onNotifClearClicked(action.id)
+            is VglsAction.RefreshDbClicked -> onRefreshDbClicked()
             is Action.MostSongsGameClicked -> onMostSongsGameClicked(action.gameId)
             is Action.MostSongsComposerClicked -> onMostSongsComposerClicked(action.composerId)
             else -> onUnimplementedAction(action)
@@ -48,7 +49,7 @@ class HomeViewModelBrain(
     private fun onUnimplementedAction(action: VglsAction) {
         emitEvent(
             VglsEvent.ShowSnackbar(
-                message = "Unimplemented action: ${action.javaClass.simpleName}.",
+                message = "Unimplemented action: $action.",
                 withDismissAction = false,
                 actionDetails = null,
                 source = Destination.HOME.destName
@@ -58,6 +59,10 @@ class HomeViewModelBrain(
 
     private fun onNotifClearClicked(id: Long) {
         emitEvent(VglsEvent.ClearNotif(id))
+    }
+
+    private fun onRefreshDbClicked() {
+        emitEvent(VglsEvent.RefreshDb)
     }
 
     private fun setup() {

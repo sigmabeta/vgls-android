@@ -1,16 +1,17 @@
 package com.vgleadsheets.repository
 
 import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.notif.Notif
+import com.vgleadsheets.notif.NotifCategory
+import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.RealRepository.Companion.AGE_THRESHOLD
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -22,7 +23,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class UpdateManager(
     private val vglsApi: VglsApi,
@@ -33,14 +37,17 @@ class UpdateManager(
     private val hatchet: Hatchet,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
+    private val notifManager: NotifManager
 ) {
     init {
         setupApiUpdateTimeCheckFlow()
     }
 
-    suspend fun refresh() {
-        val lastAppCheckTime = Time(TimeType.LAST_APP_CHECK.ordinal, 0)
-        dbStatisticsDataSource.insert(lastAppCheckTime)
+    fun refresh() {
+        coroutineScope.launch(dispatchers.disk) {
+            val lastAppCheckTime = Time(TimeType.LAST_APP_CHECK.ordinal, 0)
+            dbStatisticsDataSource.insert(lastAppCheckTime)
+        }
     }
 
     fun getLastDbUpdateTime(): Flow<Time> = getLastDbUpdateTimeInternal()
@@ -59,7 +66,7 @@ class UpdateManager(
             .filter { it }
             .flatMapLatest { refreshInternal() }
             .catch { emitDbUpdateErrors(it) }
-            .onEach { eventDispatcher.sendEvent(VglsEvent.DbUpdateSuccessful) }
+            .onEach { onUpdateSuccess() }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
     }
@@ -127,13 +134,58 @@ class UpdateManager(
     private fun emitDbUpdateErrors(ex: Throwable) {
         hatchet.e("DB update failed: ${ex.message}")
         ex.printStackTrace()
-        eventDispatcher.sendEvent(VglsEvent.DbUpdateFailed(ex))
+        onUpdateFailed(ex)
     }
 
     private fun emitApiUpdateErrors(ex: Throwable) {
-        hatchet.e("DB update failed: ${ex.message}")
+        hatchet.e("Last update API call failed: ${ex.message}")
         ex.printStackTrace()
-        eventDispatcher.sendEvent(VglsEvent.LastUpdateCheckFailed(ex))
+        onLastUpdateCheckFailed(ex)
+    }
+
+    private fun onUpdateSuccess() {
+        val title = "New Sheets Available"
+        notifManager.addNotif(
+            Notif(
+                id = title.hashCode().toLong(),
+                title = title,
+                description = "VGLS has been updated and there are new sheets ready to play!",
+                actionLabel = "See what's new",
+                category = NotifCategory.VGLS_UPDATE,
+                isOneTime = true,
+                action = VglsAction.SeeWhatsNewClicked,
+            )
+        )
+    }
+
+    private fun onLastUpdateCheckFailed(ex: Throwable) {
+        val title = "Last Update Check Failed"
+        notifManager.addNotif(
+            Notif(
+                id = title.hashCode().toLong(),
+                title = title,
+                description = "Error on last update API call:\n\n ${ex.message?: "No exception details available."}",
+                actionLabel = "Try again",
+                category = NotifCategory.ERROR,
+                isOneTime = true,
+                action = VglsAction.RefreshDbClicked(),
+            )
+        )
+    }
+
+    private fun onUpdateFailed(ex: Throwable) {
+        val title = "Update Failed"
+        notifManager.addNotif(
+            Notif(
+                id = title.hashCode().toLong(),
+                title = title,
+                description = "Error on DB update:\n\n${ex.message ?: "No exception details available."}",
+                actionLabel = "Try again",
+                category = NotifCategory.ERROR,
+                isOneTime = true,
+                action = VglsAction.RefreshDbClicked(),
+            )
+        )
     }
 
     private fun getLastCheckTime() = dbStatisticsDataSource
