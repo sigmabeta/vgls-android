@@ -164,7 +164,7 @@ class UpdateManager(
             Notif(
                 id = title.hashCode().toLong(),
                 title = title,
-                description = "Error on last update API call:\n\n ${ex.message?: "No exception details available."}",
+                description = "Error on last update API call:\n\n ${ex.message ?: "No exception details available."}",
                 actionLabel = "Try again",
                 category = NotifCategory.ERROR,
                 isOneTime = true,

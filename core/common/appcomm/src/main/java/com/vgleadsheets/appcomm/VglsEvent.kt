@@ -36,5 +36,5 @@ open class VglsEvent {
 
     data class ClearNotif(val id: Long) : VglsEvent()
 
-    data object RefreshDb: VglsEvent()
+    data object RefreshDb : VglsEvent()
 }

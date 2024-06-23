@@ -69,6 +69,7 @@ class NotifManager(
 
     private fun NotifState.toJson() = jsonAdapter.toJson(this)
 
+    @Suppress("PrintStackTrace", "TooGenericExceptionCaught")
     private fun String?.toObject(): NotifState? {
         if (this == null) {
             hatchet.e("No saved Notif information.")
@@ -95,4 +96,3 @@ class NotifManager(
         const val KEY_NOTIF_STATE = "NotifManager.NotifState"
     }
 }
-
