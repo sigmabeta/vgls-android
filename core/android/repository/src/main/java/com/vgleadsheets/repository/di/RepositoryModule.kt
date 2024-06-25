@@ -43,9 +43,7 @@ object RepositoryModule {
     @Suppress("LongParameterList")
     fun provideRealRepository(
         dispatchers: VglsDispatchers,
-        composerAliasDataSource: ComposerAliasDataSource,
         composerDataSource: ComposerDataSource,
-        gameAliasDataSource: GameAliasDataSource,
         gameDataSource: GameDataSource,
         songDataSource: SongDataSource,
         tagKeyDataSource: TagKeyDataSource,

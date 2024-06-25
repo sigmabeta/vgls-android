@@ -36,6 +36,7 @@ object DatabaseModule {
                 Migrations.RemoveJams,
                 Migrations.AddFavorites,
                 Migrations.AddAlternates,
+                Migrations.AddSongCounts,
             )
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
