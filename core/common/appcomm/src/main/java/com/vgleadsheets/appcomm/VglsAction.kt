@@ -1,8 +1,5 @@
 package com.vgleadsheets.appcomm
 
-import com.squareup.moshi.JsonClass
-
-@JsonClass(generateAdapter = true)
 open class VglsAction {
     data object Noop : VglsAction()
 
@@ -18,8 +15,7 @@ open class VglsAction {
     data class SnackbarActionClicked(val action: VglsAction) : VglsAction()
     data class SnackbarDismissed(val action: VglsAction) : VglsAction()
 
-    @JsonClass(generateAdapter = true)
-    class RefreshDbClicked : VglsAction()
+    data object RefreshDbClicked : VglsAction()
 
     data class SearchQueryEntered(val query: String) : VglsAction()
     data object SearchClearClicked : VglsAction()

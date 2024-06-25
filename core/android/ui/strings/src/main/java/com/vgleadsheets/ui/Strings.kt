@@ -57,5 +57,10 @@ fun StringId.id(): Int {
         StringId.PART_LONG_ALTO -> R.string.part_long_alto
         StringId.PART_LONG_BASS -> R.string.part_long_bass
         StringId.PART_LONG_VOCAL -> R.string.part_long_vocal
+
+        StringId.NOTIF_UPDATE_SUCCESS -> R.string.notif_update_success
+
+        StringId.ERROR_API_UPDATE -> R.string.error_api_update
+        StringId.ERROR_DB_UPDATE -> R.string.error_db_update
     }
 }

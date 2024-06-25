@@ -12,19 +12,21 @@ import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.RealRepository.Companion.AGE_THRESHOLD
+import com.vgleadsheets.ui.StringId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
+import kotlin.random.Random
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -45,7 +47,11 @@ class UpdateManager(
 
     fun refresh() {
         coroutineScope.launch(dispatchers.disk) {
-            val lastAppCheckTime = Time(TimeType.LAST_APP_CHECK.ordinal, 0)
+            hatchet.v("Launching refresh attempt...")
+            val lastAppCheckTime = Time(
+                TimeType.LAST_APP_CHECK.ordinal,
+                Random.nextInt(100_000).toLong() // ensures it'll work if previous value was 0
+            )
             dbStatisticsDataSource.insert(lastAppCheckTime)
         }
     }
@@ -57,16 +63,14 @@ class UpdateManager(
     private fun setupApiUpdateTimeCheckFlow() {
         getLastCheckTime()
             .map { checkLastUpdateTimeIsOldEnough(it) }
-            .catch { emitDbUpdateErrors(it) }
             .filter { it }
             .onEach { refreshLastApiUpdateTime() }
-            .catch { emitApiUpdateErrors(it) }
             .flatMapLatest { dbUpdateTimeCheckFlow() }
-            .catch { emitDbUpdateErrors(it) }
             .filter { it }
             .flatMapLatest { refreshInternal() }
-            .catch { emitDbUpdateErrors(it) }
+            .filter { it }
             .onEach { onUpdateSuccess() }
+            .onCompletion { hatchet.e("Cancelled update flow because of ${it?.message}") }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
     }
@@ -89,7 +93,13 @@ class UpdateManager(
     private suspend fun refreshLastApiUpdateTime() {
         hatchet.i("Requesting API update time check...")
 
-        val lastUpdate = vglsApi.getLastUpdateTime()
+        val lastUpdate = try {
+            vglsApi.getLastUpdateTime()
+        } catch (ex: Exception) {
+            emitApiUpdateErrors(ex)
+            return
+        }
+
         val lastUpdateInstant = Instant.parse(lastUpdate.last_updated)
         val lastUpdateTime = Time(
             TimeType.LAST_VGLS_UPDATE.ordinal,
@@ -108,8 +118,8 @@ class UpdateManager(
     }
 
     private fun dbUpdateTimeCheckFlow() = combine(
-        getLastDbUpdateTimeInternal().take(1),
-        getLastApiUpdateTimeInternal().take(1)
+        getLastDbUpdateTimeInternal(),
+        getLastApiUpdateTimeInternal(),
     ) { lastDbUpdateTime, lastApiUpdateTime ->
         if (lastDbUpdateTime.timeMs == 0L) {
             hatchet.i("DB has never been updated.")
@@ -126,9 +136,14 @@ class UpdateManager(
         true
     }
 
-    private fun refreshInternal(): Flow<Unit> {
+    private fun refreshInternal(): Flow<Boolean> {
         hatchet.i("Requesting DB update...")
-        return dbUpdater.refresh()
+        return try {
+            dbUpdater.refresh()
+        } catch (ex: Exception) {
+            emitDbUpdateErrors(ex)
+            flowOf(false)
+        }
     }
 
     private fun emitDbUpdateErrors(ex: Throwable) {
@@ -144,7 +159,7 @@ class UpdateManager(
     }
 
     private fun onUpdateSuccess() {
-        val title = "New Sheets Available"
+        val title = StringId.NOTIF_UPDATE_SUCCESS
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),
@@ -159,7 +174,7 @@ class UpdateManager(
     }
 
     private fun onLastUpdateCheckFailed(ex: Throwable) {
-        val title = "Last Update Check Failed"
+        val title = StringId.ERROR_API_UPDATE
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),
@@ -168,13 +183,13 @@ class UpdateManager(
                 actionLabel = "Try again",
                 category = NotifCategory.ERROR,
                 isOneTime = true,
-                action = VglsAction.RefreshDbClicked(),
+                action = VglsAction.RefreshDbClicked,
             )
         )
     }
 
     private fun onUpdateFailed(ex: Throwable) {
-        val title = "Update Failed"
+        val title = StringId.ERROR_DB_UPDATE
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),
@@ -183,7 +198,7 @@ class UpdateManager(
                 actionLabel = "Try again",
                 category = NotifCategory.ERROR,
                 isOneTime = true,
-                action = VglsAction.RefreshDbClicked(),
+                action = VglsAction.RefreshDbClicked,
             )
         )
     }

@@ -7,6 +7,7 @@ import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventDispatcherReal
+import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
@@ -57,12 +58,14 @@ object AppModule {
     fun provideNotifManager(
         storage: Storage,
         @Named(NotifManager.DEP_NAME_JSON_ADAPTER_NOTIF) jsonAdapter: JsonAdapter<NotifState>,
+        actionDeserializer: ActionDeserializer,
         coroutineScope: CoroutineScope,
         dispatchers: VglsDispatchers,
         hatchet: Hatchet,
     ) = NotifManager(
         storage = storage,
-        jsonAdapter = jsonAdapter,
+        notifStateJsonAdapter = jsonAdapter,
+        actionDeserializer = actionDeserializer,
         coroutineScope = coroutineScope,
         dispatchers = dispatchers,
         hatchet = hatchet,

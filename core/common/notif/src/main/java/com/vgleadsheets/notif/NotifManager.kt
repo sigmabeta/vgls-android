@@ -1,6 +1,7 @@
 package com.vgleadsheets.notif
 
 import com.squareup.moshi.JsonAdapter
+import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.storage.common.Storage
@@ -16,7 +17,8 @@ import kotlinx.coroutines.flow.update
 
 class NotifManager(
     private val storage: Storage,
-    private val jsonAdapter: JsonAdapter<NotifState>,
+    private val notifStateJsonAdapter: JsonAdapter<NotifState>,
+    private val actionDeserializer: ActionDeserializer,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
@@ -30,7 +32,17 @@ class NotifManager(
 
     fun addNotif(notif: Notif) {
         updateNotifsInStorage { notifs ->
-            notifs[notif.id] = notif
+            val actualNotif = if (notif.action != null) {
+                val genericAction = actionDeserializer.serializeAction(notif.action)
+
+                notif.copy(
+                    action = null,
+                    genericAction = genericAction,
+                )
+            } else {
+                notif
+            }
+            notifs[notif.id] = actualNotif
         }
     }
 
@@ -56,7 +68,7 @@ class NotifManager(
 
     private fun setupNotifStorageCollection() {
         storage.savedStringFlow(KEY_NOTIF_STATE)
-            .map { it?.toObject() }
+            .map { it?.toNotifState() }
             .filterNotNull()
             .onEach { newState ->
                 internalNotifState.update {
@@ -67,22 +79,39 @@ class NotifManager(
             .launchIn(coroutineScope)
     }
 
-    private fun NotifState.toJson() = jsonAdapter.toJson(this)
+    private fun NotifState.toJson() = notifStateJsonAdapter.toJson(this)
 
     @Suppress("PrintStackTrace", "TooGenericExceptionCaught")
-    private fun String?.toObject(): NotifState? {
+    private fun String?.toNotifState(): NotifState? {
         if (this == null) {
             hatchet.e("No saved Notif information.")
             return null
         }
         return try {
-            val fromJson = jsonAdapter.fromJson(this)
+            val fromJson = notifStateJsonAdapter.fromJson(this)
 
             if (fromJson == null) {
                 hatchet.e("Invalid Notif information: \"$this\"")
+                return null
             }
 
-            fromJson
+            val notifs = fromJson.notifs
+                .map { entry ->
+                    val actionLessNotif = entry.value
+
+                    hatchet.v("Found saved generic action: ${actionLessNotif.genericAction}")
+
+                    val action = actionDeserializer.recreateAction(actionLessNotif.genericAction)
+                    val notif = actionLessNotif.copy(
+                        genericAction = null,
+                        action = action,
+                    )
+
+                    entry.key to notif
+                }
+                .toMap() // lol
+
+            fromJson.copy(notifs = notifs)
         } catch (ex: Exception) {
             hatchet.e("Error reading Notifs from storage: ${ex.message}")
             ex.printStackTrace()
@@ -91,8 +120,10 @@ class NotifManager(
     }
 
     companion object {
-        const val DEP_NAME_JSON_ADAPTER_NOTIF = "NotifJsonAdapter"
-
         const val KEY_NOTIF_STATE = "NotifManager.NotifState"
+
+        private const val DEP_NAME_PREFIX = "Dep.Deserializer"
+
+        const val DEP_NAME_JSON_ADAPTER_NOTIF = "$DEP_NAME_PREFIX.Notif"
     }
 }

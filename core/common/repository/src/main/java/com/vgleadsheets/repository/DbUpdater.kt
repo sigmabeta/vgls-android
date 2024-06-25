@@ -1,5 +1,6 @@
 package com.vgleadsheets.repository
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.conversion.asModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.TransactionRunner
@@ -32,7 +33,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class DbUpdater(
@@ -51,7 +51,7 @@ class DbUpdater(
     private val tagValueDataSource: TagValueDataSource,
     private val dbStatisticsDataSource: DbStatisticsDataSource,
 ) {
-    suspend fun clearSheets() = withContext(dispatchers.disk) {
+    suspend fun clearSheets() {
         gameDataSource.nukeTable()
         songDataSource.nukeTable()
         composerDataSource.nukeTable()
@@ -68,7 +68,14 @@ class DbUpdater(
         getAllGames().take(1),
         getAllComposers().take(1),
         getAllSongs().take(1)
-    ) { digest, dbGames, dbComposers, dbSongs ->
+    ) { digestStatus, dbGames, dbComposers, dbSongs ->
+        val digest = if (digestStatus is LCE.Content) {
+            digestStatus.data
+        } else {
+            hatchet.w("New data not found, aborting update.")
+            return@combine false
+        }
+
         val apiComposers = digest.composers
         val apiGames = digest.games
 
@@ -162,37 +169,36 @@ class DbUpdater(
         val removedComposers =
             dbComposerMap.values.asIdSet { it.id } - composerMap.values.asIdSet { it.id }
 
-        withContext(dispatchers.disk) {
-            transactionRunner.inTransaction {
-                songDataSource.remove(removedSongs.toList())
-                gameDataSource.remove(removedGames.toList())
-                composerDataSource.remove(removedComposers.toList())
+        transactionRunner.inTransaction {
+            songDataSource.remove(removedSongs.toList())
+            gameDataSource.remove(removedGames.toList())
+            composerDataSource.remove(removedComposers.toList())
 
-                gameDataSource.insert(games)
-                composerDataSource.insert(composerMap.values.toList())
-                songDataSource.insert(songs)
+            gameDataSource.insert(games)
+            composerDataSource.insert(composerMap.values.toList())
+            songDataSource.insert(songs)
 
-                tagKeyDataSource.nukeTable()
-                tagKeyDataSource.insert(tagKeys.values.toList())
+            tagKeyDataSource.nukeTable()
+            tagKeyDataSource.insert(tagKeys.values.toList())
 
-                tagValueDataSource.nukeTable()
-                tagValueDataSource.insert(tagValues.values.toList())
+            tagValueDataSource.nukeTable()
+            tagValueDataSource.insert(tagValues.values.toList())
 
-                gameAliasDataSource.nukeTable()
-                gameAliasDataSource.insert(gameAliases)
+            gameAliasDataSource.nukeTable()
+            gameAliasDataSource.insert(gameAliases)
 
-                composerAliasDataSource.nukeTable()
-                composerAliasDataSource.insert(composerAliases)
+            composerAliasDataSource.nukeTable()
+            composerAliasDataSource.insert(composerAliases)
 
-                songAliasDataSource.nukeTable()
-                songAliasDataSource.insert(songAliases)
+            songAliasDataSource.nukeTable()
+            songAliasDataSource.insert(songAliases)
 
-                composerDataSource.insertRelations(songComposerRelations)
-                tagValueDataSource.insertRelations(songTagValueRelations)
+            composerDataSource.insertRelations(songComposerRelations)
+            tagValueDataSource.insertRelations(songTagValueRelations)
 
-                dbStatisticsDataSource.insert(lastDbUpdate)
-            }
+            dbStatisticsDataSource.insert(lastDbUpdate)
         }
+        true
     }
 
     private fun getAllGames() = gameDataSource
@@ -208,8 +214,13 @@ class DbUpdater(
         .flowOn(dispatchers.disk)
 
     private fun getDigest() = flow {
-        val digest = vglsApi.getDigest()
-        emit(digest)
+        try {
+            val digest = vglsApi.getDigest()
+            emit(LCE.Content(digest))
+        } catch (ex: Exception) {
+            hatchet.e("API request for digest failed: ${ex.message}")
+            emit(LCE.Error(ex))
+        }
     }
 
     private fun processGame(

@@ -32,7 +32,7 @@ class NotifModule @Inject constructor(
                 items = notifs.map { notif ->
                     NotifListModel(
                         dataId = notif.id,
-                        title = notif.title,
+                        title = stringProvider.getString(notif.title),
                         description = notif.description,
                         actionLabel = notif.actionLabel,
                         action = notif.action,

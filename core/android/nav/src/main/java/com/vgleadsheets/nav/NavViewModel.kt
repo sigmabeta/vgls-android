@@ -13,6 +13,7 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
+import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -65,6 +66,8 @@ class NavViewModel @Inject constructor(
 
     private fun refreshDb() {
         updateManager.refresh()
+        notifManager.removeNotif(id = StringId.ERROR_DB_UPDATE.hashCode().toLong())
+        notifManager.removeNotif(id = StringId.ERROR_API_UPDATE.hashCode().toLong())
     }
 
     private fun launchSnackbar(snackbarEvent: VglsEvent.ShowSnackbar) {

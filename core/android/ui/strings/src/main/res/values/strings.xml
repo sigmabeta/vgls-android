@@ -55,5 +55,8 @@
     <string name="browse_link_tag">By Tag</string>
     <string name="browse_link_sheets">All Sheets</string>
 
+    <string name="notif_update_success">New Sheets Available</string>
 
+    <string name="error_api_update">Sheet Update Failed</string>
+    <string name="error_db_update">Database Update Failed</string>
 </resources>

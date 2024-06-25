@@ -54,4 +54,9 @@ enum class StringId {
     PART_LONG_ALTO,
     PART_LONG_BASS,
     PART_LONG_VOCAL,
+
+    NOTIF_UPDATE_SUCCESS,
+
+    ERROR_API_UPDATE,
+    ERROR_DB_UPDATE,
 }
