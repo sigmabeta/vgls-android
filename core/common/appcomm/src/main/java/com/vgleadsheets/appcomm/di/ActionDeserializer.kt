@@ -23,6 +23,7 @@ class ActionDeserializer @Inject constructor(
         return toGeneric(action)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun fromGeneric(genericAction: GenericAction): VglsAction? {
         return try {
             when (genericAction.type) {

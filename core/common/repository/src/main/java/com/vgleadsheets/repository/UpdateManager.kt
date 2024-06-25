@@ -1,6 +1,5 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
@@ -26,7 +25,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
-import kotlin.random.Random
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -35,7 +33,6 @@ class UpdateManager(
     private val dbUpdater: DbUpdater,
     private val dbStatisticsDataSource: DbStatisticsDataSource,
     private val threeTen: ThreeTenTime,
-    private val eventDispatcher: EventDispatcher,
     private val hatchet: Hatchet,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
@@ -45,13 +42,11 @@ class UpdateManager(
         setupApiUpdateTimeCheckFlow()
     }
 
+    @Suppress("TooGenericExceptionCaught")
     fun refresh() {
         coroutineScope.launch(dispatchers.disk) {
             hatchet.v("Launching refresh attempt...")
-            val lastAppCheckTime = Time(
-                TimeType.LAST_APP_CHECK.ordinal,
-                Random.nextInt(100_000).toLong() // ensures it'll work if previous value was 0
-            )
+            val lastAppCheckTime = Time(TimeType.LAST_APP_CHECK.ordinal, 0)
             dbStatisticsDataSource.insert(lastAppCheckTime)
         }
     }
@@ -90,6 +85,7 @@ class UpdateManager(
         return lastCheckAge > AGE_THRESHOLD
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private suspend fun refreshLastApiUpdateTime() {
         hatchet.i("Requesting API update time check...")
 
@@ -136,6 +132,7 @@ class UpdateManager(
         true
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun refreshInternal(): Flow<Boolean> {
         hatchet.i("Requesting DB update...")
         return try {

@@ -213,6 +213,7 @@ class DbUpdater(
         .getAll()
         .flowOn(dispatchers.disk)
 
+    @Suppress("TooGenericExceptionCaught")
     private fun getDigest() = flow {
         try {
             val digest = vglsApi.getDigest()

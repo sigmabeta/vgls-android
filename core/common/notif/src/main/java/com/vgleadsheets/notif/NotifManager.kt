@@ -81,7 +81,7 @@ class NotifManager(
 
     private fun NotifState.toJson() = notifStateJsonAdapter.toJson(this)
 
-    @Suppress("PrintStackTrace", "TooGenericExceptionCaught")
+    @Suppress("PrintStackTrace", "TooGenericExceptionCaught", "ReturnCount")
     private fun String?.toNotifState(): NotifState? {
         if (this == null) {
             hatchet.e("No saved Notif information.")
