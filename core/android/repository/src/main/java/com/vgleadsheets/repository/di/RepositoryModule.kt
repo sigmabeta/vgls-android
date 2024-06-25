@@ -1,6 +1,5 @@
 package com.vgleadsheets.repository.di
 
-import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.android.dao.TransactionDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
@@ -27,8 +26,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -95,7 +94,6 @@ object RepositoryModule {
         threeTenTime: ThreeTenTime,
         dispatchers: VglsDispatchers,
         hatchet: Hatchet,
-        eventDispatcher: EventDispatcher,
         dbStatisticsDataSource: DbStatisticsDataSource,
         coroutineScope: CoroutineScope,
         notifManager: NotifManager,
@@ -104,7 +102,6 @@ object RepositoryModule {
         dbUpdater,
         dbStatisticsDataSource,
         threeTenTime,
-        eventDispatcher,
         hatchet,
         dispatchers,
         coroutineScope,
