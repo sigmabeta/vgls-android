@@ -6,6 +6,7 @@ import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
+import com.vgleadsheets.conversion.android.converter.SongHistoryConverter
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
 import dagger.Module
@@ -48,4 +49,8 @@ object ConverterModule {
     @Provides
     @Singleton
     fun composerSongAliasConverter() = SongAliasConverter()
+
+    @Provides
+    @Singleton
+    fun songHistoryConverter() = SongHistoryConverter()
 }

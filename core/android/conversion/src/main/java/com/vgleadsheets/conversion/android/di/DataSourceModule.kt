@@ -6,6 +6,7 @@ import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
+import com.vgleadsheets.conversion.android.converter.SongHistoryConverter
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
 import com.vgleadsheets.conversion.android.datasource.ComposerAliasAndroidDataSource
@@ -15,6 +16,7 @@ import com.vgleadsheets.conversion.android.datasource.GameAliasAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.GameAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SongAliasAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SongAndroidDataSource
+import com.vgleadsheets.conversion.android.datasource.SongHistoryAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.TagKeyAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.TagValueAndroidDataSource
 import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
@@ -23,6 +25,7 @@ import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
 import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.dao.GameRoomDao
 import com.vgleadsheets.database.android.dao.SongAliasRoomDao
+import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
@@ -35,6 +38,7 @@ import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
+import com.vgleadsheets.database.source.SongHistoryDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -130,5 +134,15 @@ object DataSourceModule {
     ): TagValueDataSource = TagValueAndroidDataSource(
         convert,
         roomImpl,
+    )
+
+    @Provides
+    @Singleton
+    fun songHistoryDataSource(
+        convert: SongHistoryConverter,
+        roomImpl: SongHistoryEntryRoomDao,
+    ): SongHistoryDataSource = SongHistoryAndroidDataSource(
+        roomImpl,
+        convert,
     )
 }

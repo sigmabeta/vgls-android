@@ -9,6 +9,7 @@ import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
@@ -25,6 +26,7 @@ class ViewerViewModel @AssistedInject constructor(
     override val hatchet: Hatchet,
     private val stringProvider: StringProvider,
     private val repository: VglsRepository,
+    private val songHistoryRepository: SongHistoryRepository,
     private val urlInfoProvider: UrlInfoProvider,
     override val dispatchers: VglsDispatchers,
     override val eventDispatcher: EventDispatcher,
@@ -105,6 +107,7 @@ class ViewerViewModel @AssistedInject constructor(
         repository
             .getSong(id)
             .onEach { song ->
+                songHistoryRepository.recordSongPlay(song)
                 updateState {
                     it.copy(
                         song = song,

@@ -11,6 +11,7 @@ import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
+import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.NotifManager
@@ -22,6 +23,7 @@ import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.history.SongHistoryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -139,5 +141,20 @@ object RepositoryModule {
         tagKeyDataSource,
         tagValueDataSource,
         dbStatisticsDataSource,
+    )
+
+    @Provides
+    @Singleton
+    @Suppress("LongParameterList")
+    fun provideSongHistoryRepository(
+        dispatchers: VglsDispatchers,
+        hatchet: Hatchet,
+        songHistoryDataSource: SongHistoryDataSource,
+        coroutineScope: CoroutineScope,
+    ) = SongHistoryRepository(
+        songHistoryDataSource,
+        coroutineScope,
+        dispatchers,
+        hatchet,
     )
 }

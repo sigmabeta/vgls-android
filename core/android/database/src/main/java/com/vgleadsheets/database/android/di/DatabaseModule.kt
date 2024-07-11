@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.vgleadsheets.database.android.DatabaseVersions
 import com.vgleadsheets.database.android.Migrations
+import com.vgleadsheets.database.android.UserContentDatabase
 import com.vgleadsheets.database.android.VglsDatabase
 import dagger.Module
 import dagger.Provides
@@ -37,6 +38,20 @@ object DatabaseModule {
                 Migrations.AddFavorites,
                 Migrations.AddAlternates,
                 Migrations.AddSongCounts,
+            )
+            .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    @Suppress("SpreadOperator")
+    fun provideUserContentDatabase(@ApplicationContext context: Context): UserContentDatabase {
+        return Room
+            .databaseBuilder(
+                context,
+                UserContentDatabase::class.java,
+                "user-content-database"
             )
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
@@ -95,4 +110,10 @@ object DatabaseModule {
     fun tagValueDao(
         database: VglsDatabase
     ) = database.tagValueDao()
+
+    @Provides
+    @Singleton
+    fun songHistoryEntryDao(
+        database: UserContentDatabase
+    ) = database.songHistoryEntryDao()
 }
