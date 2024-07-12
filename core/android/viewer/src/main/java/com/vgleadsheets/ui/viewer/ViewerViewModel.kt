@@ -8,6 +8,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.ui.StringProvider
@@ -50,6 +51,7 @@ class ViewerViewModel @AssistedInject constructor(
 
     private var chromeVisibilityTimer: Job? = null
     private var buttonVisibilityTimer: Job? = null
+    private var historyTimer: Job? = null
 
     override fun initialState() = ViewerState()
 
@@ -60,6 +62,7 @@ class ViewerViewModel @AssistedInject constructor(
             is Action.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
             is Action.PageClicked -> emitEvent(VglsEvent.ShowUiChrome)
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
+            is Action.SongLoaded -> startHistoryTimer(action.song)
         }
     }
 
@@ -76,6 +79,7 @@ class ViewerViewModel @AssistedInject constructor(
 
     override fun onCleared() {
         eventDispatcher.removeEventSink(this)
+        stopHistoryTimer()
     }
 
     private fun startLoading(id: Long, pageNumber: Long) {
@@ -107,7 +111,7 @@ class ViewerViewModel @AssistedInject constructor(
         repository
             .getSong(id)
             .onEach { song ->
-                songHistoryRepository.recordSongPlay(song)
+                sendAction(Action.SongLoaded(song))
                 updateState {
                     it.copy(
                         song = song,
@@ -161,8 +165,23 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
+    private fun startHistoryTimer(song: Song) {
+        historyTimer = viewModelScope.launch {
+            delay(DURATION_HISTORY_RECORD)
+            hatchet.d("This song has officially been viewed.")
+
+            songHistoryRepository.recordSongPlay(song)
+        }
+    }
+
+    private fun stopHistoryTimer() {
+        hatchet.i("This song was not officially viewed.")
+        historyTimer?.cancel()
+    }
+
     companion object {
         private const val DURATION_BUTTON_VISIBILITY = 1_500L
         private const val DURATION_CHROME_VISIBILITY = 3_000L
+        private const val DURATION_HISTORY_RECORD = 10_000L
     }
 }
