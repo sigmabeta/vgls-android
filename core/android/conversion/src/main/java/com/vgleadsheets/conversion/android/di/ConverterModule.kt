@@ -4,6 +4,7 @@ import com.vgleadsheets.conversion.android.converter.ComposerAliasConverter
 import com.vgleadsheets.conversion.android.converter.ComposerConverter
 import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
+import com.vgleadsheets.conversion.android.converter.GamePlayCountConverter
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
 import com.vgleadsheets.conversion.android.converter.SongHistoryConverter
@@ -53,4 +54,8 @@ object ConverterModule {
     @Provides
     @Singleton
     fun songHistoryConverter() = SongHistoryConverter()
+
+    @Provides
+    @Singleton
+    fun gamePlayCountConverter() = GamePlayCountConverter()
 }

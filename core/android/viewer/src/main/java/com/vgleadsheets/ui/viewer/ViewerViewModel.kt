@@ -171,12 +171,16 @@ class ViewerViewModel @AssistedInject constructor(
             hatchet.d("This song has officially been viewed.")
 
             songHistoryRepository.recordSongPlay(song)
+            historyTimer = null
         }
     }
 
     private fun stopHistoryTimer() {
-        hatchet.i("This song was not officially viewed.")
-        historyTimer?.cancel()
+        if (historyTimer != null) {
+            hatchet.i("This song was not officially viewed.")
+            historyTimer?.cancel()
+            historyTimer = null
+        }
     }
 
     companion object {

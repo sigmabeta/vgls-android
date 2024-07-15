@@ -116,4 +116,10 @@ object DatabaseModule {
     fun songHistoryEntryDao(
         database: UserContentDatabase
     ) = database.songHistoryEntryDao()
+
+    @Provides
+    @Singleton
+    fun gamePlayCountDao(
+        database: UserContentDatabase
+    ) = database.gamePlayCountDao()
 }
