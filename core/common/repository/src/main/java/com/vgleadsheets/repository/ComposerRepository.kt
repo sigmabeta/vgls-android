@@ -25,7 +25,7 @@ class ComposerRepository(
         .getComposersForSong(songId)
         .flowOn(dispatchers.disk)
 
-    fun getComposersForSongSync(composerId: Long) = composerDataSource
+    suspend fun getComposersForSongSync(composerId: Long) = composerDataSource
         .getComposersForSongSync(composerId)
 
     fun getComposer(composerId: Long): Flow<Composer> = composerDataSource

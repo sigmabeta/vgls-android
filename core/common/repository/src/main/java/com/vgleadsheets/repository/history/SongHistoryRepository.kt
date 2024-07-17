@@ -1,6 +1,8 @@
 package com.vgleadsheets.repository.history
 
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.database.dao.ComposerDataSource
+import com.vgleadsheets.database.source.ComposerPlayCountDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.logging.Hatchet
@@ -12,6 +14,8 @@ import kotlinx.coroutines.launch
 class SongHistoryRepository(
     private val songHistoryDataSource: SongHistoryDataSource,
     private val gamePlayCountDataSource: GamePlayCountDataSource,
+    private val composerPlayCountDataSource: ComposerPlayCountDataSource,
+    private val composerDataSource: ComposerDataSource,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
@@ -26,6 +30,16 @@ class SongHistoryRepository(
                     timeMs = System.currentTimeMillis()
                 )
             )
+
+            incrementPlayCountForComposersForSong(song.id)
+        }
+    }
+
+    private suspend fun incrementPlayCountForComposersForSong(id: Long) {
+        val composers = composerDataSource.getComposersForSongSync(id)
+
+        composers.forEach {
+            composerPlayCountDataSource.incrementPlayCount(it.id)
         }
     }
 }

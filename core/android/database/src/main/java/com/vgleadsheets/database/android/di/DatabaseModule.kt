@@ -122,4 +122,10 @@ object DatabaseModule {
     fun gamePlayCountDao(
         database: UserContentDatabase
     ) = database.gamePlayCountDao()
+
+    @Provides
+    @Singleton
+    fun composerPlayCountDao(
+        database: UserContentDatabase
+    ) = database.composerPlayCountDao()
 }

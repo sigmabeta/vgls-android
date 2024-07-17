@@ -12,6 +12,7 @@ import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -93,7 +94,7 @@ class GameDetailViewModelBrain(
         internalUiState
             .map { it as State }
             .map { state -> state.songs }
-            .mapList { song -> composerRepository.getComposersForSongSync(song.id) }
+            .map { songs -> songs.map { song -> composerRepository.getComposersForSong(song.id).firstOrNull() ?: emptyList() } }
             .map { it.flatten() }
             .map { it.distinct() }
             .onEach { composers ->

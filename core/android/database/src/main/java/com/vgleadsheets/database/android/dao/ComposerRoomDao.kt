@@ -37,7 +37,7 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     fun getForSong(id: Long): Flow<List<ComposerEntity>>
 
     @Query(QUERY_FOR_SONG)
-    fun getForSongSync(id: Long): List<ComposerEntity>
+    suspend fun getForSongSync(id: Long): List<ComposerEntity>
 
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<ComposerEntity>

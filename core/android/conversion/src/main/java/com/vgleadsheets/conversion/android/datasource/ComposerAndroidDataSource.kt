@@ -48,7 +48,7 @@ class ComposerAndroidDataSource(
         .getForSong(songId)
         .mapListTo { convert.entityToModel(it) }
 
-    override fun getComposersForSongSync(songId: Long) = roomImpl
+    override suspend fun getComposersForSongSync(songId: Long) = roomImpl
         .getForSongSync(songId)
         .map { convert.entityToModel(it) }
 
