@@ -94,7 +94,11 @@ class GameDetailViewModelBrain(
         internalUiState
             .map { it as State }
             .map { state -> state.songs }
-            .map { songs -> songs.map { song -> composerRepository.getComposersForSong(song.id).firstOrNull() ?: emptyList() } }
+            .map { songs ->
+                songs.map { song ->
+                    composerRepository.getComposersForSong(song.id).firstOrNull() ?: emptyList()
+                }
+            }
             .map { it.flatten() }
             .map { it.distinct() }
             .onEach { composers ->
