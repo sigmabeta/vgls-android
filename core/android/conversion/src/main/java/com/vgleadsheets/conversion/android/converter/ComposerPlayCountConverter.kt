@@ -8,10 +8,12 @@ class ComposerPlayCountConverter : Converter<ComposerPlayCount, ComposerPlayCoun
     override fun ComposerPlayCount.toEntity() = ComposerPlayCountEntity(
         id,
         playCount,
+        mostRecentPlay,
     )
 
     override fun ComposerPlayCountEntity.toModel() = ComposerPlayCount(
         id,
         playCount,
+        mostRecentPlay,
     )
 }

@@ -13,7 +13,7 @@ interface ComposerPlayCountRoomDao {
     fun getAll(): Flow<List<ComposerPlayCountEntity>>
 
     @Query(QUERY_UPSERT)
-    suspend fun incrementPlayCount(id: Long)
+    suspend fun incrementPlayCount(id: Long, mostRecentPlay: Long)
 
     companion object {
         private const val DEFAULT_PLAY_COUNT = 1
@@ -21,7 +21,7 @@ interface ComposerPlayCountRoomDao {
         private const val TABLE = ComposerPlayCountEntity.TABLE
         private const val COLUMN_ID = "id"
         private const val COLUMN_INCREMENTABLE = "playCount"
-        private const val LIST_ARGS = "(:id, $DEFAULT_PLAY_COUNT)"
+        private const val LIST_ARGS = "(:id, $DEFAULT_PLAY_COUNT, :mostRecentPlay)"
 
         private const val QUERY_ALL = "$GET $TABLE"
         private const val QUERY_INSERT = "INSERT INTO $TABLE VALUES $LIST_ARGS"

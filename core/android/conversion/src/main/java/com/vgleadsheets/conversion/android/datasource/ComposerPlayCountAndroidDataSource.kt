@@ -9,8 +9,12 @@ class ComposerPlayCountAndroidDataSource(
     private val roomImpl: ComposerPlayCountRoomDao,
     private val convert: ComposerPlayCountConverter
 ) : ComposerPlayCountDataSource {
-    override suspend fun incrementPlayCount(composerId: Long) = roomImpl.incrementPlayCount(
-        composerId
+    override suspend fun incrementPlayCount(
+        composerId: Long,
+        mostRecentPlay: Long,
+    ) = roomImpl.incrementPlayCount(
+        composerId,
+        mostRecentPlay,
     )
 
     override fun getAll() = roomImpl

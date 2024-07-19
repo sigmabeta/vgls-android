@@ -9,8 +9,12 @@ class GamePlayCountAndroidDataSource(
     private val roomImpl: GamePlayCountRoomDao,
     private val convert: GamePlayCountConverter
 ) : GamePlayCountDataSource {
-    override suspend fun incrementPlayCount(gameId: Long) = roomImpl.incrementPlayCount(
-        gameId
+    override suspend fun incrementPlayCount(
+        gameId: Long,
+        mostRecentPlay: Long,
+    ) = roomImpl.incrementPlayCount(
+        gameId,
+        mostRecentPlay,
     )
 
     override fun getAll() = roomImpl

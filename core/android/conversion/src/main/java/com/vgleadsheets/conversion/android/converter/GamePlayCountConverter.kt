@@ -8,10 +8,12 @@ class GamePlayCountConverter : Converter<GamePlayCount, GamePlayCountEntity> {
     override fun GamePlayCount.toEntity() = GamePlayCountEntity(
         id,
         playCount,
+        mostRecentPlay,
     )
 
     override fun GamePlayCountEntity.toModel() = GamePlayCount(
         id,
         playCount,
+        mostRecentPlay,
     )
 }

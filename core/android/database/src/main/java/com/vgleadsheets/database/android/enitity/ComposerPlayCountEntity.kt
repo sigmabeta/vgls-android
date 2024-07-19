@@ -10,6 +10,7 @@ import com.vgleadsheets.database.android.enitity.ComposerPlayCountEntity.Compani
 data class ComposerPlayCountEntity(
     @PrimaryKey val id: Long,
     val playCount: Int,
+    val mostRecentPlay: Long,
 ) {
     companion object {
         const val TABLE = "composer_play_count"

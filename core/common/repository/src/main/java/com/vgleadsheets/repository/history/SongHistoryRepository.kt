@@ -22,8 +22,9 @@ class SongHistoryRepository(
 ) {
     fun recordSongPlay(song: Song) {
         coroutineScope.launch(dispatchers.disk) {
+            val currentTime = System.currentTimeMillis()
             hatchet.v("Recording play for song: ${song.gameName} - ${song.name}")
-            gamePlayCountDataSource.incrementPlayCount(song.gameId)
+            gamePlayCountDataSource.incrementPlayCount(song.gameId, currentTime)
             songHistoryDataSource.insert(
                 SongHistoryEntry(
                     songId = song.id,
@@ -31,15 +32,15 @@ class SongHistoryRepository(
                 )
             )
 
-            incrementPlayCountForComposersForSong(song.id)
+            incrementPlayCountForComposersForSong(song.id, currentTime)
         }
     }
 
-    private suspend fun incrementPlayCountForComposersForSong(id: Long) {
+    private suspend fun incrementPlayCountForComposersForSong(id: Long, currentTime: Long) {
         val composers = composerDataSource.getComposersForSongSync(id)
 
         composers.forEach {
-            composerPlayCountDataSource.incrementPlayCount(it.id)
+            composerPlayCountDataSource.incrementPlayCount(it.id, currentTime)
         }
     }
 }

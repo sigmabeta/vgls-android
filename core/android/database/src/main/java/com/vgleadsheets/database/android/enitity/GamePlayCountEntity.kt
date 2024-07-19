@@ -10,6 +10,7 @@ import com.vgleadsheets.database.android.enitity.GamePlayCountEntity.Companion.T
 data class GamePlayCountEntity(
     @PrimaryKey val id: Long,
     val playCount: Int,
+    val mostRecentPlay: Long,
 ) {
     companion object {
         const val TABLE = "game_play_count"
