@@ -5,6 +5,7 @@ import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
+import com.vgleadsheets.database.source.SongPlayCountDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SongHistoryEntry
@@ -15,6 +16,7 @@ class SongHistoryRepository(
     private val songHistoryDataSource: SongHistoryDataSource,
     private val gamePlayCountDataSource: GamePlayCountDataSource,
     private val composerPlayCountDataSource: ComposerPlayCountDataSource,
+    private val songPlayCountDataSource: SongPlayCountDataSource,
     private val composerDataSource: ComposerDataSource,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: VglsDispatchers,
@@ -24,6 +26,8 @@ class SongHistoryRepository(
         coroutineScope.launch(dispatchers.disk) {
             val currentTime = System.currentTimeMillis()
             hatchet.v("Recording play for song: ${song.gameName} - ${song.name}")
+
+            songPlayCountDataSource.incrementPlayCount(song.id, currentTime)
             gamePlayCountDataSource.incrementPlayCount(song.gameId, currentTime)
             songHistoryDataSource.insert(
                 SongHistoryEntry(

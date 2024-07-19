@@ -128,4 +128,10 @@ object DatabaseModule {
     fun composerPlayCountDao(
         database: UserContentDatabase
     ) = database.composerPlayCountDao()
+
+    @Provides
+    @Singleton
+    fun songPlayCountDao(
+        database: UserContentDatabase
+    ) = database.songPlayCountDao()
 }

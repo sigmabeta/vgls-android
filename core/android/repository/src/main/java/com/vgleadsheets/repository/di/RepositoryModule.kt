@@ -14,6 +14,7 @@ import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
+import com.vgleadsheets.database.source.SongPlayCountDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.NotifManager
@@ -154,12 +155,14 @@ object RepositoryModule {
         songHistoryDataSource: SongHistoryDataSource,
         gamePlayCountDataSource: GamePlayCountDataSource,
         composerPlayCountDataSource: ComposerPlayCountDataSource,
+        songPlayCountDataSource: SongPlayCountDataSource,
         composerDataSource: ComposerDataSource,
         coroutineScope: CoroutineScope,
     ) = SongHistoryRepository(
         songHistoryDataSource,
         gamePlayCountDataSource,
         composerPlayCountDataSource,
+        songPlayCountDataSource,
         composerDataSource,
         coroutineScope,
         dispatchers,

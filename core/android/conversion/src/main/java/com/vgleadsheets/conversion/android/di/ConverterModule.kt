@@ -9,6 +9,7 @@ import com.vgleadsheets.conversion.android.converter.GamePlayCountConverter
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
 import com.vgleadsheets.conversion.android.converter.SongHistoryConverter
+import com.vgleadsheets.conversion.android.converter.SongPlayCountConverter
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
 import dagger.Module
@@ -63,4 +64,8 @@ object ConverterModule {
     @Provides
     @Singleton
     fun composerPlayCountConverter() = ComposerPlayCountConverter()
+
+    @Provides
+    @Singleton
+    fun songPlayCountConverter() = SongPlayCountConverter()
 }
