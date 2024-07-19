@@ -10,9 +10,9 @@ import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class MostSongsGamesModule @Inject constructor(
     private val gameRepository: GameRepository,
@@ -28,7 +28,7 @@ class MostSongsGamesModule @Inject constructor(
         .map { games ->
             HomeModuleState(
                 shouldShow = games.isNotEmpty(),
-                priority = Priority.HIGH,
+                priority = Priority.MID,
                 title = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_GAMES),
                 items = games.map { game ->
                     SquareItemListModel(

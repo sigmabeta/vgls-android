@@ -20,6 +20,10 @@ GameDataSource {
         .getMostSongsGames()
         .mapListTo { convert.entityToModel(it) }
 
+    override fun getByIdList(ids: List<Long>) = roomImpl
+        .getByIdList(ids.toTypedArray())
+        .mapListTo { convert.entityToModel(it) }
+
     override fun getFavorites() = roomImpl
         .getFavorites()
         .mapListTo { convert.entityToModel(it) }

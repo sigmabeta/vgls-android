@@ -24,9 +24,7 @@ abstract class HomeModule(
 
     fun setup() {
         state()
-            .onEach { newState ->
-                internalModuleState.update { oldState -> newState }
-            }
+            .onEach { newState -> internalModuleState.update { newState } }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
     }

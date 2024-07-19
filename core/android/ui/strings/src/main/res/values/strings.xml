@@ -48,6 +48,9 @@
 
     <string name="home_section_most_songs_games">Popular Games</string>
     <string name="home_section_most_songs_composers">Prolific Composers</string>
+    <string name="home_section_most_plays_games">Frequently Played Games</string>
+    <string name="home_section_most_plays_songs">Songs You\'re Stuck On</string>
+    <string name="home_section_most_plays_composers">Frequently Played Composers</string>
 
     <string name="browse_link_favorites">Favorites</string>
     <string name="browse_link_game">By Game</string>

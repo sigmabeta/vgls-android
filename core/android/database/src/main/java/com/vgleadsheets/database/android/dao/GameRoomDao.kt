@@ -15,6 +15,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.SET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.TOGGLE_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.TOGGLE_OFFLINE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.UPDATE
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
@@ -33,6 +34,9 @@ interface GameRoomDao : RoomDao<GameEntity> {
 
     @Query(QUERY_SINGLE)
     override fun getOneByIdSync(id: Long): GameEntity
+
+    @Query(QUERY_IDS)
+    fun getByIdList(ids: Array<Long>): Flow<List<GameEntity>>
 
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<GameEntity>>
@@ -65,10 +69,12 @@ interface GameRoomDao : RoomDao<GameEntity> {
         private const val TABLE = GameEntity.TABLE
         private const val COLUMN_INCREMENTABLE = "sheetsPlayed"
 
+        private const val WHERE_IDS = "$WHERE id in (:ids)"
         private const val SET_INCREMENT = "$SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
 
         private const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         private const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
+        private const val QUERY_IDS = "$GET $TABLE $WHERE_IDS"
         private const val QUERY_SEARCH =
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         private const val QUERY_DELETE = "$DELETE $TABLE"

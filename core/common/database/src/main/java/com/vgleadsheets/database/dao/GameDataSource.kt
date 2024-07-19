@@ -8,6 +8,8 @@ interface GameDataSource : DataSource<Game> {
 
     fun getMostSongsGames(): Flow<List<Game>>
 
+    fun getByIdList(ids: List<Long>): Flow<List<Game>>
+
     fun searchByName(name: String): Flow<List<Game>>
 
     fun incrementSheetsPlayed(gameId: Long)

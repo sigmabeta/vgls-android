@@ -17,8 +17,8 @@ class GamePlayCountAndroidDataSource(
         mostRecentPlay,
     )
 
-    override fun getAll() = roomImpl
-        .getAll()
+    override fun getMostPlays() = roomImpl
+        .getMostPlays()
         .mapListTo {
             convert.entityToModel(it)
         }
