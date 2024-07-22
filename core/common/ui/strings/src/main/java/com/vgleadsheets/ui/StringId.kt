@@ -1,5 +1,8 @@
 package com.vgleadsheets.ui
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = false)
 enum class StringId {
     APP_NAME,
 

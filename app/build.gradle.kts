@@ -38,20 +38,29 @@ android {
 
     signingConfigs {
         signingConfigs {
-            create("release") {
-                val decodedPass = System.getenv("UPLOAD_KEYPASS")
+            val decodedPass = System.getenv("UPLOAD_KEYPASS")
 
-                keyAlias = System.getenv("UPLOAD_KEY")
-                keyPassword = decodedPass
-                storeFile = file("vgls-upload.jks")
-                storePassword = decodedPass
+            if (decodedPass != null) {
+                create("release") {
+                    keyAlias = System.getenv("UPLOAD_KEY")
+                    keyPassword = decodedPass
+                    storeFile = file("vgls-upload.jks")
+                    storePassword = decodedPass
+                }
+            } else {
+                create("release") {
+                    keyAlias = "vgls-development"
+                    keyPassword = "vgls-development"
+                    storeFile = file("vgls-development.jks")
+                    storePassword = "vgls-development"
+                }
             }
         }
     }
 
     buildTypes {
         debug {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
