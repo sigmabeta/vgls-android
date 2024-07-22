@@ -53,4 +53,3 @@ class MostPlaysGamesModule @Inject constructor(
         return !none { (it.first.mostRecentPlay - currentTime) > 3.toDuration(DurationUnit.DAYS).inWholeMilliseconds }
     }
 }
-
