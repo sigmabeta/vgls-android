@@ -11,6 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.requery.android.database.sqlite.RequerySQLiteOpenHelperFactory
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -33,6 +34,7 @@ object DatabaseModule {
                 VglsDatabase::class.java,
                 "vgls-database"
             )
+            .openHelperFactory(RequerySQLiteOpenHelperFactory())
             .addMigrations(
                 Migrations.RemoveJams,
                 Migrations.AddFavorites,
@@ -53,6 +55,7 @@ object DatabaseModule {
                 UserContentDatabase::class.java,
                 "user-content-database"
             )
+            .openHelperFactory(RequerySQLiteOpenHelperFactory())
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }

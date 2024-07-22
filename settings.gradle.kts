@@ -34,7 +34,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") } // For PhotoView
+        maven { url = uri("https://jitpack.io") } // For SupportSQLite
     }
 }
 

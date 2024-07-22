@@ -12,6 +12,9 @@ dependencies {
     api(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    // Support-SQLite
+    implementation(libs.support.sqlite)
 }
 
 android {

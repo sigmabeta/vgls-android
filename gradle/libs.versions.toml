@@ -70,6 +70,7 @@ room = "2.6.1"
 secrets = "2.0.1"
 simplestore = "0.0.8"
 stetho = "1.6.0"
+supportSqlite = "3.45.0"
 threeten = "1.4.0"
 turbine = "1.0.0"
 
@@ -171,6 +172,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 simplestore = { group = "com.uber.simplestore", name = "simplestore", version.ref = "simplestore" }
 stetho = { group = "com.facebook.stetho", name = "stetho", version.ref = "stetho" }
 stetho-okhttp = { group = "com.facebook.stetho", name = "stetho-okhttp3", version.ref = "stetho" }
+support-sqlite = { group = "com.github.requery", name = "sqlite-android", version.ref = "supportSqlite" }
 threeten = { group = "com.jakewharton.threetenabp", name = "threetenabp", version.ref = "threeten" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
