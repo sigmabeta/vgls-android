@@ -158,6 +158,7 @@ object RepositoryModule {
         songPlayCountDataSource: SongPlayCountDataSource,
         gameDataSource: GameDataSource,
         composerDataSource: ComposerDataSource,
+        songDataSource: SongDataSource,
         coroutineScope: CoroutineScope,
     ) = SongHistoryRepository(
         songHistoryDataSource,
@@ -166,6 +167,7 @@ object RepositoryModule {
         songPlayCountDataSource,
         gameDataSource,
         composerDataSource,
+        songDataSource,
         coroutineScope,
         dispatchers,
         hatchet,

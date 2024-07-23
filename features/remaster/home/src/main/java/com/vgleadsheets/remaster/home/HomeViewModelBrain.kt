@@ -36,6 +36,7 @@ class HomeViewModelBrain(
             is Action.MostSongsComposerClicked -> onMostSongsComposerClicked(action.composerId)
             is Action.MostPlaysGameClicked -> onMostPlaysGameClicked(action.gameId)
             is Action.MostPlaysComposerClicked -> onMostPlaysComposerClicked(action.composerId)
+            is Action.MostPlaysSongClicked -> onMostPlaysSongClicked(action.songId)
             else -> onUnimplementedAction(action)
         }
     }
@@ -54,6 +55,10 @@ class HomeViewModelBrain(
 
     private fun onMostPlaysComposerClicked(composerId: Long) {
         emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(composerId), Destination.HOME.destName))
+    }
+
+    private fun onMostPlaysSongClicked(songId: Long) {
+        emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(songId), Destination.HOME.destName))
     }
 
     private fun onUnimplementedAction(action: VglsAction) {

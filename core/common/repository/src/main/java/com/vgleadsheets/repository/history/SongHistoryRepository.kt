@@ -3,6 +3,7 @@ package com.vgleadsheets.repository.history
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.GameDataSource
+import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
@@ -21,6 +22,7 @@ class SongHistoryRepository(
     private val songPlayCountDataSource: SongPlayCountDataSource,
     private val gameDataSource: GameDataSource,
     private val composerDataSource: ComposerDataSource,
+    private val songDataSource: SongDataSource,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
@@ -56,6 +58,14 @@ class SongHistoryRepository(
         .map { list ->
             list.map { item ->
                 item to composerDataSource.getOneByIdSync(item.id)
+            }
+        }
+
+    fun getMostPlaysSongs() = songPlayCountDataSource
+        .getMostPlays()
+        .map { list ->
+            list.map { item ->
+                item to songDataSource.getOneByIdSync(item.id)
             }
         }
 
