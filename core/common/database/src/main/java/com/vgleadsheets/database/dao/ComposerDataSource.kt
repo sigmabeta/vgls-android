@@ -9,6 +9,8 @@ interface ComposerDataSource : DataSource<Composer> {
 
     fun getMostSongsComposers(): Flow<List<Composer>>
 
+    fun getByIdList(ids: List<Long>): Flow<List<Composer>>
+
     fun searchByName(name: String): Flow<List<Composer>>
 
     fun insertRelations(relations: List<SongComposerRelation>)

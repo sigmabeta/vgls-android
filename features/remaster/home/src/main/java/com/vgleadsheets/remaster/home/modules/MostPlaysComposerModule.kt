@@ -2,8 +2,8 @@ package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.history.GamePlayCount
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.history.ComposerPlayCount
 import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
@@ -18,7 +18,7 @@ import kotlin.time.toDuration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 
-class MostPlaysGamesModule @Inject constructor(
+class MostPlaysComposerModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
     private val stringProvider: StringProvider,
     dispatchers: VglsDispatchers,
@@ -28,7 +28,7 @@ class MostPlaysGamesModule @Inject constructor(
     coroutineScope,
 ) {
     override fun state() = songHistoryRepository
-        .getMostPlaysGames()
+        .getMostPlaysComposers()
         .map { list ->
             list.filter { it.first.playCount > 1 }
         }
@@ -36,22 +36,22 @@ class MostPlaysGamesModule @Inject constructor(
             HomeModuleState(
                 shouldShow = shouldShow(pairs),
                 priority = Priority.HIGH,
-                title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_GAMES),
+                title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_COMPOSERS),
                 items = pairs
                     .map { it.second }
-                    .map { game ->
+                    .map { composer ->
                         SquareItemListModel(
-                            dataId = game.id,
-                            name = game.name,
-                            sourceInfo = game.photoUrl,
+                            dataId = composer.id,
+                            name = composer.name,
+                            sourceInfo = composer.photoUrl,
                             imagePlaceholder = Icon.ALBUM,
-                            clickAction = Action.MostPlaysGameClicked(game.id)
+                            clickAction = Action.MostPlaysComposerClicked(composer.id)
                         )
                     }
             )
         }
 
-    private fun shouldShow(pairs: List<Pair<GamePlayCount, Game>>): Boolean {
+    private fun shouldShow(pairs: List<Pair<ComposerPlayCount, Composer>>): Boolean {
         if (pairs.size < 5) {
             return false
         }
@@ -63,7 +63,7 @@ class MostPlaysGamesModule @Inject constructor(
         return true
     }
 
-    private fun List<Pair<GamePlayCount, Game>>.areOldEnough(): Boolean {
+    private fun List<Pair<ComposerPlayCount, Composer>>.areOldEnough(): Boolean {
         val currentTime = System.currentTimeMillis()
         return !none { (it.first.mostRecentPlay - currentTime) < 3.toDuration(DurationUnit.DAYS).inWholeMilliseconds }
     }

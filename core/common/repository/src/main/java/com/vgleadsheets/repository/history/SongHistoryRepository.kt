@@ -11,9 +11,7 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SongHistoryEntry
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SongHistoryRepository(
@@ -47,13 +45,17 @@ class SongHistoryRepository(
 
     fun getMostPlaysGames() = gamePlayCountDataSource
         .getMostPlays()
-        .flatMapConcat { gameCounts ->
-            val ids = gameCounts.map { it.id }
-            combine(
-                flow { emit(gameCounts) },
-                gameDataSource.getByIdList(ids)
-            ) { gameCountsToZip, games ->
-                gameCountsToZip.zip(games)
+        .map { list ->
+            list.map { item ->
+                item to gameDataSource.getOneByIdSync(item.id)
+            }
+        }
+
+    fun getMostPlaysComposers() = composerPlayCountDataSource
+        .getMostPlays()
+        .map { list ->
+            list.map { item ->
+                item to composerDataSource.getOneByIdSync(item.id)
             }
         }
 

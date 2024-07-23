@@ -45,6 +45,9 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     @Query(QUERY_SINGLE)
     override fun getOneByIdSync(id: Long): ComposerEntity
 
+    @Query(QUERY_IDS)
+    fun getByIdList(ids: Array<Long>): Flow<List<ComposerEntity>>
+
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<ComposerEntity>>
 
@@ -87,6 +90,7 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
 
         private const val COLUMN_INCREMENTABLE = "sheetsPlayed"
 
+        private const val WHERE_IDS = "$WHERE id in (:ids)"
         private const val SET_INCREMENT = "$SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
 
         private const val WHERE_SONG =
@@ -101,6 +105,8 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
 
         private const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         private const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
+        private const val QUERY_IDS = "$GET $TABLE $WHERE_IDS"
+
         private const val QUERY_SEARCH =
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         private const val QUERY_DELETE = "$DELETE $TABLE"

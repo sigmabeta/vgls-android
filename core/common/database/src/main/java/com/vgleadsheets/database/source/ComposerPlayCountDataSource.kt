@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface ComposerPlayCountDataSource {
     suspend fun incrementPlayCount(composerId: Long, mostRecentPlay: Long)
 
-    fun getAll(): Flow<List<ComposerPlayCount>>
+    fun getMostPlays(): Flow<List<ComposerPlayCount>>
 }
