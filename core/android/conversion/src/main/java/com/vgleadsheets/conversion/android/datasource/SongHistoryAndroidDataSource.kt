@@ -14,8 +14,8 @@ class SongHistoryAndroidDataSource(
         convert.modelToEntity(model)
     )
 
-    override fun getAll() = roomImpl
-        .getAll()
+    override fun getRecentSongs() = roomImpl
+        .getMostPlays()
         .mapListTo {
             convert.entityToModel(it)
         }

@@ -4,7 +4,7 @@ import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.history.SongPlayCount
+import com.vgleadsheets.model.history.SongHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
@@ -20,7 +20,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 
-class MostPlaysSongsModule @Inject constructor(
+class RecentSongsModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
     private val stringProvider: StringProvider,
     dispatchers: VglsDispatchers,
@@ -30,15 +30,12 @@ class MostPlaysSongsModule @Inject constructor(
     coroutineScope,
 ) {
     override fun state() = songHistoryRepository
-        .getMostPlaysSongs()
-        .map { list ->
-            list.filter { it.first.playCount > 1 }
-        }
+        .getRecentSongs()
         .map { pairs ->
             HomeModuleState(
                 shouldShow = shouldShow(pairs),
                 priority = Priority.HIGH,
-                title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_SONGS),
+                title = stringProvider.getString(StringId.HOME_SECTION_RECENT_SONGS),
                 items = pairs
                     .map { it.second }
                     .map { song ->
@@ -51,7 +48,7 @@ class MostPlaysSongsModule @Inject constructor(
                                     pageNumber = 0,
                                 ),
                                 gameName = song.gameName,
-                                clickAction = Action.MostPlaysSongClicked(song.id),
+                                clickAction = Action.RecentSongClicked(song.id),
                                 composers = persistentListOf(),
                                 pageNumber = 0,
                             )
@@ -61,27 +58,27 @@ class MostPlaysSongsModule @Inject constructor(
         }
 
     @Suppress("ReturnCount")
-    private fun shouldShow(pairs: List<Pair<SongPlayCount, Song>>): Boolean {
+    private fun shouldShow(pairs: List<Pair<SongHistoryEntry, Song>>): Boolean {
         if (pairs.size < MINIMUM_ITEMS) {
             return false
         }
 
-        if (!pairs.areOldEnough()) {
+        if (!pairs.areNewEnough()) {
             return false
         }
 
         return true
     }
 
-    private fun List<Pair<SongPlayCount, Song>>.areOldEnough(): Boolean {
+    private fun List<Pair<SongHistoryEntry, Song>>.areNewEnough(): Boolean {
         val currentTime = System.currentTimeMillis()
         return !none {
-            (it.first.mostRecentPlay - currentTime) > MINIMUM_AGE_DAYS.toDuration(DurationUnit.DAYS).inWholeMilliseconds
+            (it.first.timeMs - currentTime) < MAXIMUM_AGE_DAYS.toDuration(DurationUnit.DAYS).inWholeMilliseconds
         }
     }
 
     companion object {
-        private const val MINIMUM_ITEMS = 5
-        private const val MINIMUM_AGE_DAYS = 3
+        private const val MINIMUM_ITEMS = 2
+        private const val MAXIMUM_AGE_DAYS = 4
     }
 }

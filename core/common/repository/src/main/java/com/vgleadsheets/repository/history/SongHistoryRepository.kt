@@ -69,11 +69,24 @@ class SongHistoryRepository(
             }
         }
 
+    fun getRecentSongs() = songHistoryDataSource
+        .getRecentSongs()
+        .map { list ->
+            list.filter { it.id != null }
+                .distinctBy { it.songId }
+                .take(MAXIMUM_SONG_HISTORY)
+                .map { item -> item to songDataSource.getOneByIdSync(item.songId) }
+        }
+
     private suspend fun incrementPlayCountForComposersForSong(id: Long, currentTime: Long) {
         val composers = composerDataSource.getComposersForSongSync(id)
 
         composers.forEach {
             composerPlayCountDataSource.incrementPlayCount(it.id, currentTime)
         }
+    }
+
+    companion object {
+        const val MAXIMUM_SONG_HISTORY = 5
     }
 }

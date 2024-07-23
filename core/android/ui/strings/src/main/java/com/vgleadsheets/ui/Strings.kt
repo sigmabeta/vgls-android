@@ -31,6 +31,7 @@ fun StringId.id(): Int {
 
         StringId.LABEL_SONG_ALSO_KNOWN_AS -> R.string.label_song_also_known_as
 
+        StringId.HOME_SECTION_RECENT_SONGS -> R.string.home_section_recent_songs
         StringId.HOME_SECTION_MOST_SONGS_GAMES -> R.string.home_section_most_songs_games
         StringId.HOME_SECTION_MOST_SONGS_COMPOSERS -> R.string.home_section_most_songs_composers
         StringId.HOME_SECTION_MOST_PLAYS_GAMES -> R.string.home_section_most_plays_games

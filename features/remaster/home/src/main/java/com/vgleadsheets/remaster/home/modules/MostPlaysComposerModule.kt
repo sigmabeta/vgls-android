@@ -67,7 +67,7 @@ class MostPlaysComposerModule @Inject constructor(
     private fun List<Pair<ComposerPlayCount, Composer>>.areOldEnough(): Boolean {
         val currentTime = System.currentTimeMillis()
         return !none {
-            (it.first.mostRecentPlay - currentTime) < MINIMUM_AGE_DAYS.toDuration(DurationUnit.DAYS).inWholeMilliseconds
+            (it.first.mostRecentPlay - currentTime) > MINIMUM_AGE_DAYS.toDuration(DurationUnit.DAYS).inWholeMilliseconds
         }
     }
 

@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface SongHistoryDataSource {
     suspend fun insert(model: SongHistoryEntry)
 
-    fun getAll(): Flow<List<SongHistoryEntry>>
+    fun getRecentSongs(): Flow<List<SongHistoryEntry>>
 }
