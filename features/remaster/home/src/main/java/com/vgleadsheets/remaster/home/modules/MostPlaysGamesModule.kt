@@ -51,8 +51,9 @@ class MostPlaysGamesModule @Inject constructor(
             )
         }
 
+    @Suppress("ReturnCount")
     private fun shouldShow(pairs: List<Pair<GamePlayCount, Game>>): Boolean {
-        if (pairs.size < 5) {
+        if (pairs.size < MINIMUM_ITEMS) {
             return false
         }
 
@@ -66,5 +67,9 @@ class MostPlaysGamesModule @Inject constructor(
     private fun List<Pair<GamePlayCount, Game>>.areOldEnough(): Boolean {
         val currentTime = System.currentTimeMillis()
         return !none { (it.first.mostRecentPlay - currentTime) < 3.toDuration(DurationUnit.DAYS).inWholeMilliseconds }
+    }
+
+    companion object {
+        private const val MINIMUM_ITEMS = 5
     }
 }
