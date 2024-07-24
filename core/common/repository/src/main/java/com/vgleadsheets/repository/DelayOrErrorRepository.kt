@@ -1,58 +1,29 @@
 package com.vgleadsheets.repository
 
+import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlin.random.Random
 
 @Suppress("UnusedPrivateMember")
 class DelayOrErrorRepository(
     private val realRepository: RealRepository
 ) : VglsRepository {
 
-    override fun getAllSongs() = realRepository.getAllSongs()
-
     override fun getAllTagKeys() = realRepository.getAllTagKeys()
-
-    override fun getFavoriteSongs() =
-        realRepository.getFavoriteSongs()
-
-    override fun getSongsForGame(gameId: Long) =
-        realRepository.getSongsForGame(gameId)
-
-    override fun getSongsForGameSync(gameId: Long) =
-        realRepository.getSongsForGameSync(gameId)
-
-    override fun getSongsForComposer(composerId: Long) =
-        realRepository.getSongsForComposer(composerId)
 
     override fun getTagValuesForSong(songId: Long) = realRepository.getTagValuesForSong(songId)
 
-    override fun getSongsForTagValue(tagValueId: Long) =
-        realRepository.getSongsForTagValue(tagValueId)
 
     override fun getTagValuesForTagKey(tagKeyId: Long) =
         realRepository.getTagValuesForTagKey(tagKeyId)
 
-    override fun getAliasesForSong(songId: Long) = realRepository.getAliasesForSong(songId)
-
-    override fun getSong(songId: Long) = realRepository.getSong(songId)
-
     override fun getTagKey(tagKeyId: Long) = realRepository.getTagKey(tagKeyId)
 
     override fun getTagValue(tagValueId: Long) = realRepository.getTagValue(tagValueId)
-
-    override fun searchSongsCombined(searchQuery: String) =
-        realRepository.searchSongsCombined(searchQuery)
-
-    override suspend fun incrementViewCounter(songId: Long) =
-        realRepository.incrementViewCounter(songId)
-
-    override suspend fun toggleFavoriteSong(songId: Long) =
-        realRepository.toggleFavoriteSong(songId)
 
     override suspend fun toggleFavoriteGame(gameId: Long) =
         realRepository.toggleFavoriteGame(gameId)
@@ -60,14 +31,10 @@ class DelayOrErrorRepository(
     override suspend fun toggleFavoriteComposer(composerId: Long) =
         realRepository.toggleFavoriteComposer(composerId)
 
-    override suspend fun toggleOfflineSong(songId: Long) = realRepository.toggleOfflineSong(songId)
-
     override suspend fun toggleOfflineGame(gameId: Long) = realRepository.toggleOfflineGame(gameId)
 
     override suspend fun toggleOfflineComposer(composerId: Long) =
         realRepository.toggleOfflineComposer(composerId)
-
-    override suspend fun toggleAlternate(songId: Long) = realRepository.toggleAlternate(songId)
 
     private fun <EventType, FlowType : Flow<EventType>> FlowType.butItTakesForever() =
         onEach {

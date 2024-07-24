@@ -84,6 +84,9 @@ interface SongRoomDao : RoomDao<SongEntity> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJoins(joins: List<SongTagValueJoin>)
 
+    @Query(QUERY_HIGHEST_ID)
+    fun getHighestId(): Flow<SongEntity>
+
     @Query(QUERY_DELETE)
     override fun nukeTable()
 
@@ -109,6 +112,8 @@ interface SongRoomDao : RoomDao<SongEntity> {
             " = $COLUMN_PRIMARY_KEY_ID $WHERE $COLUMN_FOREIGN_KEY_TAG_VALUE = :$COLUMN_PRIMARY_KEY_ID"
 
         private const val OPTION_ORDER_CUSTOM = "ORDER BY name, gameName"
+        private const val OPTION_BY_ID = "ORDER BY id DESC"
+        private const val OPTION_NUM_RECORDS_BY_ID = "LIMIT 1"
 
         private const val COLUMN_INCREMENTABLE = "playCount"
         private const val COLUMN_ALTERNATE = "isAltSelected"
@@ -136,8 +141,9 @@ interface SongRoomDao : RoomDao<SongEntity> {
 
         const val QUERY_INCREMENT = "$QUERY_UPDATE $SET_INCREMENT $WHERE_SINGLE"
 
-        const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
-        const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
-        const val QUERY_TOGGLE_ALTERNATE = "$QUERY_UPDATE $TOGGLE_ALTERNATE $WHERE_SINGLE"
+        private const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
+        private const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
+        private const val QUERY_TOGGLE_ALTERNATE = "$QUERY_UPDATE $TOGGLE_ALTERNATE $WHERE_SINGLE"
+        private const val QUERY_HIGHEST_ID = "$GET $TABLE $OPTION_BY_ID $OPTION_NUM_RECORDS_BY_ID"
     }
 }

@@ -8,6 +8,7 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.onEach
 
 class GameDetailViewModelBrain(
     private val repository: VglsRepository,
+    private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
     private val dispatchers: VglsDispatchers,
@@ -77,7 +79,7 @@ class GameDetailViewModelBrain(
     }
 
     private fun fetchSongs(gameId: Long) {
-        repository
+        songRepository
             .getSongsForGame(gameId)
             .onEach { songs ->
                 updateState {

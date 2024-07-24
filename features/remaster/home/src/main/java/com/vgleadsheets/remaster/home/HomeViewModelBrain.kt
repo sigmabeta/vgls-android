@@ -6,11 +6,13 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class HomeViewModelBrain(
     private val stringProvider: StringProvider,
@@ -18,6 +20,7 @@ class HomeViewModelBrain(
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val homeModuleProvider: HomeModuleProvider,
+    private val songRepository: SongRepository,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
@@ -38,6 +41,9 @@ class HomeViewModelBrain(
             is Action.MostPlaysComposerClicked -> onMostPlaysComposerClicked(action.composerId)
             is Action.MostPlaysSongClicked -> onMostPlaysSongClicked(action.songId)
             is Action.RecentSongClicked -> onRecentSongClicked(action.songId)
+            Action.RandomSongClicked -> onRandomSongClicked()
+            // Action.RandomGameClicked -> onRandomGameClicked()
+            // Action.RandomComposerClicked -> onRandomComposerClicked()
             else -> onUnimplementedAction(action)
         }
     }
@@ -64,6 +70,16 @@ class HomeViewModelBrain(
 
     private fun onRecentSongClicked(songId: Long) {
         emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(songId), Destination.HOME.destName))
+    }
+
+    private fun onRandomSongClicked() {
+        songRepository
+            .getRandomSong()
+            .onEach { song ->
+                emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(song.id), Destination.HOME.destName))
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
     }
 
     private fun onUnimplementedAction(action: VglsAction) {

@@ -17,6 +17,7 @@ import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
@@ -25,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 
 class FeatureDirectory(
     private val repository: VglsRepository,
+    private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
     private val dispatchers: VglsDispatchers,
@@ -46,6 +48,7 @@ class FeatureDirectory(
                 dispatchers,
                 coroutineScope,
                 homeModuleProvider,
+                songRepository,
             )
 
             Destination.BROWSE -> BrowseViewModelBrain(
@@ -65,6 +68,7 @@ class FeatureDirectory(
 
             Destination.GAME_DETAIL -> GameDetailViewModelBrain(
                 repository,
+                songRepository,
                 gameRepository,
                 composerRepository,
                 dispatchers,
@@ -83,7 +87,7 @@ class FeatureDirectory(
             )
 
             Destination.COMPOSER_DETAIL -> ComposerDetailViewModelBrain(
-                repository,
+                songRepository,
                 composerRepository,
                 gameRepository,
                 dispatchers,
@@ -104,6 +108,7 @@ class FeatureDirectory(
             Destination.SONG_VIEWER -> TODO()
             Destination.SONG_DETAIL -> SongDetailViewModelBrain(
                 repository,
+                songRepository,
                 gameRepository,
                 composerRepository,
                 dispatchers,
@@ -114,7 +119,7 @@ class FeatureDirectory(
             )
 
             Destination.SONGS_LIST -> SongListViewModelBrain(
-                repository,
+                songRepository,
                 dispatchers,
                 coroutineScope,
                 urlInfoProvider,

@@ -8,6 +8,7 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
@@ -39,6 +40,7 @@ class ActivityModule {
         stringProvider: StringProvider,
         hatchet: Hatchet,
         selectedPartManager: SelectedPartManager,
+        songRepository: SongRepository,
         gameRepository: GameRepository,
         composerRepository: ComposerRepository,
         homeModuleProvider: HomeModuleProvider,
@@ -52,6 +54,7 @@ class ActivityModule {
             selectedPartManager = selectedPartManager,
             gameRepository = gameRepository,
             composerRepository = composerRepository,
+            songRepository = songRepository,
             homeModuleProvider = homeModuleProvider,
         )
 }

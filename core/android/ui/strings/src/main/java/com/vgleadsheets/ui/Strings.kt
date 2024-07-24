@@ -37,6 +37,11 @@ fun StringId.id(): Int {
         StringId.HOME_SECTION_MOST_PLAYS_GAMES -> R.string.home_section_most_plays_games
         StringId.HOME_SECTION_MOST_PLAYS_SONGS -> R.string.home_section_most_plays_songs
         StringId.HOME_SECTION_MOST_PLAYS_COMPOSERS -> R.string.home_section_most_plays_composers
+        StringId.HOME_SECTION_RNG -> R.string.home_section_rng
+
+        StringId.HOME_ACTION_RANDOM_SONG -> R.string.home_action_random_song
+        StringId.HOME_ACTION_RANDOM_GAME -> R.string.home_action_random_game
+        StringId.HOME_ACTION_RANDOM_COMPOSER -> R.string.home_action_random_composer
 
         StringId.BROWSE_LINK_FAVORITES -> R.string.browse_link_favorites
         StringId.BROWSE_LINK_GAME -> R.string.browse_link_game

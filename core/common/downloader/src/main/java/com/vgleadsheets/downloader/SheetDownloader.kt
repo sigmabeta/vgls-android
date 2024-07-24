@@ -2,22 +2,22 @@ package com.vgleadsheets.downloader
 
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.SheetDownloadApi
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 class SheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
     private val urlInfoProvider: UrlInfoProvider,
-    private val repository: VglsRepository,
+    private val songRepository: SongRepository,
     private val sheetDownloadApi: SheetDownloadApi,
     private val hatchet: Hatchet,
 ) {
-    suspend fun getSheet(id: Long) = repository
+    suspend fun getSheet(id: Long) = songRepository
         .getSong(id)
         .map { getSheetInternal(it.filename) }
         .first()

@@ -8,6 +8,7 @@ import com.vgleadsheets.remaster.home.modules.MostSongsComposersModule
 import com.vgleadsheets.remaster.home.modules.MostSongsGamesModule
 import com.vgleadsheets.remaster.home.modules.NotifModule
 import com.vgleadsheets.remaster.home.modules.RecentSongsModule
+import com.vgleadsheets.remaster.home.modules.RngModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +28,7 @@ class HomeModuleModule {
         mostPlaysComposerModule: MostPlaysComposerModule,
         mostPlaysSongsModule: MostPlaysSongsModule,
         recentSongsModule: RecentSongsModule,
+        rngModule: RngModule,
     ): HomeModuleProvider = object : HomeModuleProvider {
         override val modules by lazy {
             val list = listOf(
@@ -37,6 +39,7 @@ class HomeModuleModule {
                 mostPlaysSongsModule,
                 mostPlaysGamesModule,
                 mostPlaysComposerModule,
+                rngModule,
             )
 
             list.forEach { it.setup() }

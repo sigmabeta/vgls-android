@@ -7,7 +7,7 @@ import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class SongListViewModelBrain(
-    private val repository: VglsRepository,
+    private val songRepository: SongRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val urlInfoProvider: UrlInfoProvider,
@@ -55,7 +55,7 @@ class SongListViewModelBrain(
     }
 
     private fun collectSongs() {
-        repository.getAllSongs()
+        songRepository.getAllSongs()
             .onEach(::onSongsLoaded)
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)

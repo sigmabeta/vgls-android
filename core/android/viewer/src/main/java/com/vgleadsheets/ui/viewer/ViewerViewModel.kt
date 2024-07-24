@@ -9,7 +9,7 @@ import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 class ViewerViewModel @AssistedInject constructor(
     override val hatchet: Hatchet,
     private val stringProvider: StringProvider,
-    private val repository: VglsRepository,
+    private val songRepository: SongRepository,
     private val songHistoryRepository: SongHistoryRepository,
     private val urlInfoProvider: UrlInfoProvider,
     override val dispatchers: VglsDispatchers,
@@ -108,7 +108,7 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun fetchSong(id: Long, pageNumber: Long) {
-        repository
+        songRepository
             .getSong(id)
             .onEach { song ->
                 sendAction(Action.SongLoaded(song))

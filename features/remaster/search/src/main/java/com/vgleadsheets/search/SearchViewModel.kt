@@ -11,11 +11,12 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.GameRepository
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.search.Action
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +28,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
@@ -35,7 +35,7 @@ class SearchViewModel @Inject constructor(
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
     private val stringProvider: StringProvider,
-    private val repository: VglsRepository,
+    private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
 ) : VglsViewModel<SearchState>(),
@@ -137,7 +137,7 @@ class SearchViewModel @Inject constructor(
         )
 
         observeSearchInput(
-            searchOperation = { repository.searchSongsCombined(it) },
+            searchOperation = { songRepository.searchSongsCombined(it) },
             onSearchSuccess = { results ->
                 updateState {
                     it.copy(songResults = results)

@@ -23,6 +23,7 @@ import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.DelayOrErrorRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RealRepository
+import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.VglsRepository
@@ -50,18 +51,26 @@ object RepositoryModule {
         dispatchers: VglsDispatchers,
         composerDataSource: ComposerDataSource,
         gameDataSource: GameDataSource,
-        songDataSource: SongDataSource,
         tagKeyDataSource: TagKeyDataSource,
         tagValueDataSource: TagValueDataSource,
-        songAliasDataSource: SongAliasDataSource
     ) = RealRepository(
         dispatchers,
         gameDataSource,
         composerDataSource,
-        songDataSource,
-        songAliasDataSource,
         tagKeyDataSource,
         tagValueDataSource,
+    )
+
+    @Provides
+    @Singleton
+    fun provideSongRepository(
+        dispatchers: VglsDispatchers,
+        songDataSource: SongDataSource,
+        songAliasDataSource: SongAliasDataSource,
+    ) = SongRepository(
+        dispatchers,
+        songDataSource,
+        songAliasDataSource,
     )
 
     @Provides

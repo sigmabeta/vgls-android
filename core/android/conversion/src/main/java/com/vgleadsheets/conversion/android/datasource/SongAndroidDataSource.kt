@@ -7,6 +7,7 @@ import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.model.Song
+import kotlinx.coroutines.flow.map
 
 class SongAndroidDataSource(
     private val convert: SongConverter,
@@ -47,4 +48,8 @@ SongDataSource {
     override fun toggleOffline(songId: Long) = roomImpl.toggleOffline(songId)
 
     override fun toggleAlternate(songId: Long) = roomImpl.toggleAlternate(songId)
+
+    override fun getHighestId() = roomImpl
+        .getHighestId()
+        .map { it.id }
 }

@@ -9,4 +9,7 @@ sealed class Action : VglsAction() {
     data class MostPlaysComposerClicked(val composerId: Long) : VglsAction()
     data class MostPlaysSongClicked(val songId: Long) : VglsAction()
     data class RecentSongClicked(val songId: Long) : VglsAction()
+    data object RandomSongClicked : VglsAction()
+    data object RandomGameClicked : VglsAction()
+    data object RandomComposerClicked : VglsAction()
 }
