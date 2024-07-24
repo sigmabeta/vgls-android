@@ -2,7 +2,7 @@ package com.vgleadsheets.ui
 
 import com.vgleadsheets.ui.strings.R
 
-@Suppress("CyclomaticComplexMethod")
+@Suppress("CyclomaticComplexMethod", "LongMethod")
 fun StringId.id(): Int {
     return when (this) {
         StringId.APP_NAME -> R.string.app_name
