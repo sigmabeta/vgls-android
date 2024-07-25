@@ -49,35 +49,33 @@ class HomeViewModelBrain(
     }
 
     private fun onMostSongsGameClicked(gameId: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(gameId), Destination.HOME.destName))
+        navigateTo(Destination.GAME_DETAIL.forId(gameId))
     }
 
     private fun onMostSongsComposerClicked(composerId: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(composerId), Destination.HOME.destName))
+        navigateTo(Destination.COMPOSER_DETAIL.forId(composerId))
     }
 
     private fun onMostPlaysGameClicked(gameId: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(gameId), Destination.HOME.destName))
+        navigateTo(Destination.GAME_DETAIL.forId(gameId))
     }
 
     private fun onMostPlaysComposerClicked(composerId: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(composerId), Destination.HOME.destName))
+        navigateTo(Destination.COMPOSER_DETAIL.forId(composerId))
     }
 
     private fun onMostPlaysSongClicked(songId: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(songId), Destination.HOME.destName))
+        navigateTo(Destination.SONG_DETAIL.forId(songId))
     }
 
     private fun onRecentSongClicked(songId: Long) {
-        emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(songId), Destination.HOME.destName))
+        navigateTo(Destination.SONG_DETAIL.forId(songId))
     }
 
     private fun onRandomSongClicked() {
         randomRepository
             .getRandomSong()
-            .onEach { song ->
-                emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(song.id), Destination.HOME.destName))
-            }
+            .onEach { song -> navigateTo(Destination.SONG_DETAIL.forId(song.id)) }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
     }
@@ -85,9 +83,7 @@ class HomeViewModelBrain(
     private fun onRandomGameClicked() {
         randomRepository
             .getRandomGame()
-            .onEach { game ->
-                emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(game.id), Destination.HOME.destName))
-            }
+            .onEach { game -> navigateTo(Destination.GAME_DETAIL.forId(game.id)) }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
     }
@@ -95,11 +91,18 @@ class HomeViewModelBrain(
     private fun onRandomComposerClicked() {
         randomRepository
             .getRandomComposer()
-            .onEach { composer ->
-                emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(composer.id), Destination.HOME.destName))
-            }
+            .onEach { composer -> navigateTo(Destination.COMPOSER_DETAIL.forId(composer.id)) }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
+    }
+
+    private fun navigateTo(destinationString: String) {
+        emitEvent(
+            VglsEvent.NavigateTo(
+                destinationString,
+                Destination.HOME.destName
+            )
+        )
     }
 
     private fun onUnimplementedAction(action: VglsAction) {

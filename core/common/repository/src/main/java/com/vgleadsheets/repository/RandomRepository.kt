@@ -32,7 +32,7 @@ class RandomRepository(
             randomSong
         }
         .take(1)
-    
+
     fun getRandomComposer() = composerDataSource
         .getHighestId()
         .map { limit ->
@@ -49,7 +49,7 @@ class RandomRepository(
             randomComposer
         }
         .take(1)
-    
+
     fun getRandomGame() = gameDataSource
         .getHighestId()
         .map { limit ->
@@ -66,5 +66,4 @@ class RandomRepository(
             randomGame
         }
         .take(1)
-
 }
