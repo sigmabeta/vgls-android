@@ -17,6 +17,7 @@ import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.settings.part.SelectedPartManager
@@ -29,6 +30,7 @@ class FeatureDirectory(
     private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
+    private val randomRepository: RandomRepository,
     private val dispatchers: VglsDispatchers,
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
@@ -48,7 +50,7 @@ class FeatureDirectory(
                 dispatchers,
                 coroutineScope,
                 homeModuleProvider,
-                songRepository,
+                randomRepository,
             )
 
             Destination.BROWSE -> BrowseViewModelBrain(

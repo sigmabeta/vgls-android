@@ -7,6 +7,7 @@ import com.vgleadsheets.database.android.dao.GameRoomDao
 import com.vgleadsheets.database.android.enitity.GameEntity
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.model.Game
+import kotlinx.coroutines.flow.map
 
 class GameAndroidDataSource(
     private val convert: GameConverter,
@@ -37,4 +38,8 @@ GameDataSource {
     override fun toggleFavorite(gameId: Long) = roomImpl.toggleFavorite(gameId)
 
     override fun toggleOffline(gameId: Long) = roomImpl.toggleOffline(gameId)
+
+    override fun getHighestId() = roomImpl
+        .getHighestId()
+        .map { it.id }
 }

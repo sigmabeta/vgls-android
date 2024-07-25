@@ -24,4 +24,6 @@ interface ComposerDataSource : DataSource<Composer> {
     fun toggleFavorite(composerId: Long)
 
     fun toggleOffline(composerId: Long)
+
+    fun getHighestId(): Flow<Long>
 }

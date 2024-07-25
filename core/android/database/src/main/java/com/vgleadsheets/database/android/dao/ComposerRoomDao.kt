@@ -75,6 +75,9 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     @Insert
     fun insertJoins(joins: List<SongComposerJoin>)
 
+    @Query(QUERY_HIGHEST_ID)
+    fun getHighestId(): Flow<ComposerEntity>
+
     @Query(QUERY_DELETE)
     override fun nukeTable()
 
@@ -87,6 +90,9 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
 
         private const val COLUMN_FOREIGN_KEY_SONG = SongComposerJoin.COLUMN_FOREIGN_KEY_ONE
         private const val COLUMN_FOREIGN_KEY_SONG_JOIN = SongComposerJoin.COLUMN_FOREIGN_KEY_TWO
+
+        private const val OPTION_BY_ID = "ORDER BY id DESC"
+        private const val OPTION_NUM_RECORDS_BY_ID = "LIMIT 1"
 
         private const val COLUMN_INCREMENTABLE = "sheetsPlayed"
 
@@ -119,5 +125,6 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
 
         private const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
         private const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
+        private const val QUERY_HIGHEST_ID = "$GET $TABLE $OPTION_BY_ID $OPTION_NUM_RECORDS_BY_ID"
     }
 }

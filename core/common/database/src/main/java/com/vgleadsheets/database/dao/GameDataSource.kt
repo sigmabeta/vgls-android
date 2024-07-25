@@ -17,4 +17,6 @@ interface GameDataSource : DataSource<Game> {
     fun toggleFavorite(gameId: Long)
 
     fun toggleOffline(gameId: Long)
+
+    fun getHighestId(): Flow<Long>
 }

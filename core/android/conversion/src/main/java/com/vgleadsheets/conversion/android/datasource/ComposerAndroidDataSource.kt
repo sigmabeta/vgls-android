@@ -9,6 +9,7 @@ import com.vgleadsheets.database.android.join.SongComposerJoin
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.relation.SongComposerRelation
+import kotlinx.coroutines.flow.map
 
 class ComposerAndroidDataSource(
     private val convert: ComposerConverter,
@@ -62,4 +63,8 @@ class ComposerAndroidDataSource(
     override fun toggleFavorite(composerId: Long) = roomImpl.toggleFavorite(composerId)
 
     override fun toggleOffline(composerId: Long) = roomImpl.toggleOffline(composerId)
+
+    override fun getHighestId() = roomImpl
+        .getHighestId()
+        .map { it.id }
 }

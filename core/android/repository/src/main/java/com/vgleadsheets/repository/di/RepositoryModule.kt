@@ -22,6 +22,7 @@ import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.DelayOrErrorRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.ThreeTenTime
@@ -32,8 +33,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -64,11 +65,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideSongRepository(
-        dispatchers: VglsDispatchers,
         songDataSource: SongDataSource,
         songAliasDataSource: SongAliasDataSource,
     ) = SongRepository(
-        dispatchers,
         songDataSource,
         songAliasDataSource,
     )
@@ -95,6 +94,18 @@ object RepositoryModule {
         dispatchers,
         composerAliasDataSource,
         composerDataSource,
+    )
+
+    @Provides
+    @Singleton
+    fun provideRandomRepository(
+        songDataSource: SongDataSource,
+        gameDataSource: GameDataSource,
+        composerDataSource: ComposerDataSource,
+    ) = RandomRepository(
+        songDataSource,
+        composerDataSource,
+        gameDataSource,
     )
 
     @Provides

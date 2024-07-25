@@ -62,6 +62,9 @@ interface GameRoomDao : RoomDao<GameEntity> {
     @Query(QUERY_TOGGLE_OFFLINE)
     fun toggleOffline(id: Long)
 
+    @Query(QUERY_HIGHEST_ID)
+    fun getHighestId(): Flow<GameEntity>
+
     @Query(QUERY_DELETE)
     override fun nukeTable()
 
@@ -71,6 +74,9 @@ interface GameRoomDao : RoomDao<GameEntity> {
 
         private const val WHERE_IDS = "$WHERE id in (:ids)"
         private const val SET_INCREMENT = "$SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
+
+        private const val OPTION_BY_ID = "ORDER BY id DESC"
+        private const val OPTION_NUM_RECORDS_BY_ID = "LIMIT 1"
 
         private const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         private const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
@@ -87,5 +93,6 @@ interface GameRoomDao : RoomDao<GameEntity> {
 
         private const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
         private const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
+        private const val QUERY_HIGHEST_ID = "$GET $TABLE $OPTION_BY_ID $OPTION_NUM_RECORDS_BY_ID"
     }
 }

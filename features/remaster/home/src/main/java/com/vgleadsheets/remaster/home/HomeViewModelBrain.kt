@@ -6,7 +6,7 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.repository.SongRepository
+import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
@@ -20,7 +20,7 @@ class HomeViewModelBrain(
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val homeModuleProvider: HomeModuleProvider,
-    private val songRepository: SongRepository,
+    private val randomRepository: RandomRepository,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
@@ -42,8 +42,8 @@ class HomeViewModelBrain(
             is Action.MostPlaysSongClicked -> onMostPlaysSongClicked(action.songId)
             is Action.RecentSongClicked -> onRecentSongClicked(action.songId)
             Action.RandomSongClicked -> onRandomSongClicked()
-            // Action.RandomGameClicked -> onRandomGameClicked()
-            // Action.RandomComposerClicked -> onRandomComposerClicked()
+            Action.RandomGameClicked -> onRandomGameClicked()
+            Action.RandomComposerClicked -> onRandomComposerClicked()
             else -> onUnimplementedAction(action)
         }
     }
@@ -73,10 +73,30 @@ class HomeViewModelBrain(
     }
 
     private fun onRandomSongClicked() {
-        songRepository
+        randomRepository
             .getRandomSong()
             .onEach { song ->
                 emitEvent(VglsEvent.NavigateTo(Destination.SONG_DETAIL.forId(song.id), Destination.HOME.destName))
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
+    }
+
+    private fun onRandomGameClicked() {
+        randomRepository
+            .getRandomGame()
+            .onEach { game ->
+                emitEvent(VglsEvent.NavigateTo(Destination.GAME_DETAIL.forId(game.id), Destination.HOME.destName))
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
+    }
+
+    private fun onRandomComposerClicked() {
+        randomRepository
+            .getRandomComposer()
+            .onEach { composer ->
+                emitEvent(VglsEvent.NavigateTo(Destination.COMPOSER_DETAIL.forId(composer.id), Destination.HOME.destName))
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
