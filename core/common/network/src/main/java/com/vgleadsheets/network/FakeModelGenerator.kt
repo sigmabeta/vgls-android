@@ -1,27 +1,54 @@
-package com.vgleadsheets.model.generator
+package com.vgleadsheets.network
 
-import com.vgleadsheets.model.Composer
-import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Song
+import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.network.model.ApiComposer
+import com.vgleadsheets.network.model.ApiSong
+import com.vgleadsheets.network.model.VglsApiGame
 import java.io.IOException
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
+import javax.inject.Inject
+import javax.inject.Named
 
-@Suppress("TooManyFunctions", "UnusedPrivateMember", "MagicNumber")
-class FakeModelGenerator constructor(
+@Suppress("TooManyFunctions", "UnusedPrivateMember")
+class FakeModelGenerator @Inject constructor(
     private val random: Random,
-    /*@Named("RngSeed")*/
-    private val seed: Long,
+    @Named("RngSeed") private val seed: Long,
     private val stringGenerator: StringGenerator,
+    private val hatchet: Hatchet,
 ) {
-    lateinit var possibleTags: Map<String, List<String>>
+    var possibleTags: Map<String, List<String>>? = null
+        get() {
+            if (field == null) {
+                generateModels()
+            }
+            return field
+        }
 
-    lateinit var possibleSongs: List<Song>
+    var possibleSongs: List<ApiSong>? = null
+        get() {
+            if (field == null) {
+                generateModels()
+            }
+            return field
+        }
 
-    lateinit var possibleComposers: List<Composer>
+    var possibleComposers: List<ApiComposer>? = null
+        get() {
+            if (field == null) {
+                generateModels()
+            }
+            return field
+        }
 
-    lateinit var possibleGames: List<Game>
+    var possibleGames: List<VglsApiGame>? = null
+        get() {
+            if (field == null) {
+                generateModels()
+            }
+            return field
+        }
 
     var generateEmptyState = false
 
@@ -33,72 +60,53 @@ class FakeModelGenerator constructor(
     var maxTagsValues = DEFAULT_MAX_TAGS_VALUES
     var maxSongsPerGame = DEFAULT_MAX_SONGS_PER_GAME
 
-    private var remainingSongs: Stack<Song>? = null
-
-    init {
-        generateModels()
-    }
-
-    fun randomSong() = possibleSongs.random()
-
-    fun randomSongs() = List(random.nextInt(20)) {
-        randomSong()
-    }.distinctBy { it.id }
-
-    fun randomGame() = possibleGames.random()
-
-    fun randomGames() = List(random.nextInt(20)) {
-        randomGame()
-    }
-
-    fun randomComposer() = possibleComposers.random()
-
-    fun randomComposers() = List(random.nextInt(20)) {
-        randomComposer()
-    }
+    private var remainingSongs: Stack<ApiSong>? = null
 
     private fun generateModels() {
+        possibleTags = null
+        possibleComposers = null
+        remainingSongs = null
+        possibleSongs = null
+
         random.setSeed(seed)
 
         if (generateEmptyState) {
             throw IOException("Arbitrarily failed a network request!")
         }
 
-        generateComposers()
-
         val gameCount = random.nextInt(maxGames)
-        val games = ArrayList<Game>(gameCount)
+        hatchet.i("Generating $gameCount games...")
+        val games = ArrayList<VglsApiGame>(gameCount)
 
         for (gameIndex in 0 until gameCount) {
             val game = generateGame()
             games.add(game)
         }
 
-        val filteredGames = games
-            .distinctBy { it.id }
-            .filter { it.songs!!.isNotEmpty() }
+        hatchet.i("Generated ${games.size} games...")
 
+        val filteredGames = games
+            .distinctBy { it.game_id }
+            .filter { it.songs.isNotEmpty() }
+
+        hatchet.i("Returning ${filteredGames.size} games...")
         possibleGames = filteredGames
     }
 
-    private fun generateGame(): Game {
+    private fun generateGame(): VglsApiGame {
         val gameId = random.nextLong()
 
-        return Game(
-            id = random.nextLong(),
-            name = stringGenerator.generateTitle(),
-            hasVocalSongs = random.nextBoolean(),
-            photoUrl = null,
-            songs = getSongs(),
-            songCount = 0,
-            sheetsPlayed = 0,
-            isFavorite = false,
-            isAvailableOffline = false,
+        return VglsApiGame(
+            null,
+            gameId,
+            stringGenerator.generateTitle(),
+            getSongs(),
+            null
         )
     }
 
     @Suppress("SwallowedException")
-    private fun getSongs(): List<Song> {
+    private fun getSongs(): List<ApiSong> {
         if (remainingSongs == null) {
             generateSongs()
         }
@@ -106,7 +114,7 @@ class FakeModelGenerator constructor(
         val availableSongs = remainingSongs!!
         val songCount = random.nextInt(maxSongsPerGame) + 1
 
-        val songs = ArrayList<Song>(songCount)
+        val songs = ArrayList<ApiSong>(songCount)
 
         for (songIndex in 0 until songCount) {
             try {
@@ -122,8 +130,9 @@ class FakeModelGenerator constructor(
 
     private fun generateSongs() {
         val songCount = random.nextInt(maxSongs) + 1
+        // hatchet.d("Generating $songCount songs...")
 
-        val songs = Stack<Song>()
+        val songs = Stack<ApiSong>()
         val songIds = HashSet<Long>(songCount)
 
         for (songIndex in 0 until songCount) {
@@ -140,22 +149,17 @@ class FakeModelGenerator constructor(
         possibleSongs = songs.toMutableList()
     }
 
-    private fun generateSong() = Song(
-        id = random.nextLong(),
-        name = stringGenerator.generateTitle(),
-        filename = "${stringGenerator.generateName()} - ${stringGenerator.generateTitle()}",
-        pageCount = random.nextInt(MAX_PAGE_COUNT) + 1,
-        lyricPageCount = random.nextInt(MAX_PAGE_COUNT) + 1,
-        altPageCount = random.nextInt(MAX_PAGE_COUNT) + 1,
-        composers = getComposersForSong(),
-        isFavorite = false,
-        isAltSelected = false,
-        isAvailableOffline = false,
-        hasVocals = random.nextBoolean(),
-        game = null,
-        gameId = random.nextLong(),
-        gameName = stringGenerator.generateTitle(),
-        playCount = 0,
+    private fun generateSong() = ApiSong(
+        random.nextLong(),
+        "goose",
+        getParts(),
+        stringGenerator.generateTitle(),
+        random.nextInt(MAX_PAGE_COUNT) + 1,
+        random.nextInt(MAX_PAGE_COUNT) + 1,
+        random.nextInt(MAX_PAGE_COUNT) + 1,
+        getComposersForSong(),
+        getTags(),
+        listOf()
     )
 
     @Suppress("MagicNumber")
@@ -170,7 +174,11 @@ class FakeModelGenerator constructor(
     }
 
     @Suppress("MagicNumber")
-    private fun getComposersForSong(): List<Composer> {
+    private fun getComposersForSong(): List<ApiComposer> {
+        if (possibleComposers == null) {
+            generateComposers()
+        }
+
         val availableComposers = possibleComposers!!
         val randomNumber = random.nextInt(10)
         val composerCount = if (randomNumber < 1) {
@@ -181,7 +189,7 @@ class FakeModelGenerator constructor(
             1
         }
 
-        val composers = ArrayList<Composer>(composerCount)
+        val composers = ArrayList<ApiComposer>(composerCount)
 
         for (composerIndex in 0 until composerCount) {
             val whichComposer = random.nextInt(availableComposers.size - 1)
@@ -189,31 +197,27 @@ class FakeModelGenerator constructor(
             composers.add(composer)
         }
 
-        return composers.distinctBy { it.id }
+        return composers.distinctBy { it.composer_id }
     }
 
     private fun generateComposers() {
         val composerCount = random.nextInt(maxComposers) + 1
-        val composers = ArrayList<Composer>(composerCount)
+        // hatchet.i("Generating $composerCount composers...")
+        val composers = ArrayList<ApiComposer>(composerCount)
 
         for (composerIndex in 0 until composerCount) {
             val composer = generateComposer()
             composers.add(composer)
         }
 
-        possibleComposers = composers.distinctBy { it.id }
+        possibleComposers = composers.distinctBy { it.composer_id }
     }
 
-    private fun generateComposer() = Composer(
-        id = random.nextLong(),
-        songs = null,
-        songCount = random.nextInt(10),
-        hasVocalSongs = random.nextBoolean(),
-        name = stringGenerator.generateTitle(),
-        photoUrl = null,
-        isFavorite = false,
-        isAvailableOffline = false,
-        sheetsPlayed = 0,
+    private fun generateComposer() = ApiComposer(
+        null,
+        random.nextLong(),
+        stringGenerator.generateName(),
+        null
     )
 
     private fun getTags(): Map<String, List<String>> {
@@ -235,6 +239,7 @@ class FakeModelGenerator constructor(
 
     private fun generateTags() {
         val tagCount = random.nextInt(maxTags) + 1
+        // hatchet.i("Generating $tagCount tags...")
         val tags = mutableMapOf<String, List<String>>()
 
         for (tagIndex in 0 until tagCount) {

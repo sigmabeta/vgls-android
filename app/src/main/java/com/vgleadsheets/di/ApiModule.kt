@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
 import com.squareup.moshi.Moshi
-import com.vgleadsheets.model.generator.FakeModelGenerator
+import com.vgleadsheets.network.FakeModelGenerator
 import com.vgleadsheets.network.FakeVglsApi
 import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.network.VglsApi

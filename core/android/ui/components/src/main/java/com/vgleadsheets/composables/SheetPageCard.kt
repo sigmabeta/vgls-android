@@ -33,7 +33,7 @@ fun SheetPageCard(
 ) {
     ElevatedCard(
         modifier = modifier
-            .padding()
+            .padding(padding)
             .wrapContentSize()
     ) {
         SheetPageItem(
@@ -42,7 +42,7 @@ fun SheetPageCard(
             modifier = Modifier
                 .wrapContentHeight()
                 .fillMaxWidth(),
-            padding = padding,
+            padding = PaddingValues(),
         )
     }
 }

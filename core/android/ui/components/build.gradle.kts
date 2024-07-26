@@ -5,6 +5,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.core.common.model)
     api(projects.core.common.ui.components)
 
     implementation(projects.core.android.animation)

@@ -1,6 +1,5 @@
 package com.vgleadsheets.network
 
-import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.network.model.ApiDigest
 import com.vgleadsheets.network.model.ApiTime
 
