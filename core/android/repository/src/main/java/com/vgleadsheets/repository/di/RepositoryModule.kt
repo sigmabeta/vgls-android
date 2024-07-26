@@ -13,6 +13,7 @@ import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
+import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
 import com.vgleadsheets.logging.Hatchet
@@ -24,6 +25,7 @@ import com.vgleadsheets.repository.DelayOrErrorRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.RealRepository
+import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.repository.UpdateManager
@@ -33,8 +35,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -75,24 +77,16 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideGameRepository(
-        dispatchers: VglsDispatchers,
         gameDataSource: GameDataSource,
-        gameAliasDataSource: GameAliasDataSource,
     ) = GameRepository(
-        dispatchers,
-        gameAliasDataSource,
         gameDataSource,
     )
 
     @Provides
     @Singleton
     fun provideComposerRepository(
-        dispatchers: VglsDispatchers,
         composerDataSource: ComposerDataSource,
-        composerAliasDataSource: ComposerAliasDataSource,
     ) = ComposerRepository(
-        dispatchers,
-        composerAliasDataSource,
         composerDataSource,
     )
 
@@ -106,6 +100,26 @@ object RepositoryModule {
         songDataSource,
         composerDataSource,
         gameDataSource,
+    )
+
+    @Provides
+    @Singleton
+    fun provideSearchRepository(
+        searchHistoryDataSource: SearchHistoryDataSource,
+        songDataSource: SongDataSource,
+        songAliasDataSource: SongAliasDataSource,
+        gameDataSource: GameDataSource,
+        gameAliasDataSource: GameAliasDataSource,
+        composerDataSource: ComposerDataSource,
+        composerAliasDataSource: ComposerAliasDataSource,
+    ) = SearchRepository(
+        searchHistoryDataSource,
+        songDataSource,
+        songAliasDataSource,
+        gameDataSource,
+        gameAliasDataSource,
+        composerDataSource,
+        composerAliasDataSource,
     )
 
     @Provides

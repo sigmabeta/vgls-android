@@ -9,9 +9,7 @@ import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.repository.ComposerRepository
-import com.vgleadsheets.repository.GameRepository
-import com.vgleadsheets.repository.SongRepository
+import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.search.Action
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
@@ -35,9 +33,7 @@ class SearchViewModel @Inject constructor(
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
     private val stringProvider: StringProvider,
-    private val songRepository: SongRepository,
-    private val gameRepository: GameRepository,
-    private val composerRepository: ComposerRepository,
+    private val searchRepository: SearchRepository,
 ) : VglsViewModel<SearchState>(),
     ActionSink,
     EventSink {
@@ -128,7 +124,7 @@ class SearchViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         observeSearchInput(
-            searchOperation = { gameRepository.searchGamesCombined(it) },
+            searchOperation = { searchRepository.searchGamesCombined(it) },
             onSearchSuccess = { results ->
                 updateState {
                     it.copy(gameResults = results)
@@ -137,7 +133,7 @@ class SearchViewModel @Inject constructor(
         )
 
         observeSearchInput(
-            searchOperation = { songRepository.searchSongsCombined(it) },
+            searchOperation = { searchRepository.searchSongsCombined(it) },
             onSearchSuccess = { results ->
                 updateState {
                     it.copy(songResults = results)
@@ -146,7 +142,7 @@ class SearchViewModel @Inject constructor(
         )
 
         observeSearchInput(
-            searchOperation = { composerRepository.searchComposersCombined(it) },
+            searchOperation = { searchRepository.searchComposersCombined(it) },
             onSearchSuccess = { results ->
                 updateState {
                     it.copy(composerResults = results)
