@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
 import com.squareup.moshi.Moshi
-import com.vgleadsheets.network.FakeModelGenerator
+import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.network.FakeVglsApi
 import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.network.VglsApi
@@ -9,12 +9,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
+import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import javax.inject.Named
-import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module

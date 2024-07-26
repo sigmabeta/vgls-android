@@ -1,10 +1,9 @@
-package com.vgleadsheets.network
+package com.vgleadsheets.model.generator
 
 import java.util.Locale
 import java.util.Random
-import javax.inject.Inject
 
-class StringGenerator @Inject constructor(private val random: Random) {
+class StringGenerator(private val random: Random) {
     fun generateName() = "${FIRST_NAMES[random.nextInt(FIRST_NAMES.size)]} " +
         LAST_NAMES[random.nextInt(LAST_NAMES.size)]
 

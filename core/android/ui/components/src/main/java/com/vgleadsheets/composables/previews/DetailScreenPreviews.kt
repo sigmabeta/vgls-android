@@ -1,0 +1,10 @@
+package com.vgleadsheets.composables.previews
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+
+@Preview
+@Composable
+private fun DetailScreen(modifier: Modifier = Modifier) {
+}

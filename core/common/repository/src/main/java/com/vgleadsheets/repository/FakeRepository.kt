@@ -2,9 +2,9 @@ package com.vgleadsheets.repository
 
 import com.vgleadsheets.conversion.asModel
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.network.FakeModelGenerator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

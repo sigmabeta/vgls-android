@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
+import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.network.FakeVglsApi
-import com.vgleadsheets.network.StringGenerator
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides

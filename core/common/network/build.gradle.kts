@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.kotlin.stdlib)
+
     // Module deps
     implementation(projects.core.common.logging)
     implementation(projects.core.common.model)
