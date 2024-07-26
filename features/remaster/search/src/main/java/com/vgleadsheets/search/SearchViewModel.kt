@@ -1,4 +1,4 @@
-package com.vgleadsheets.bottombar
+package com.vgleadsheets.search
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.ActionSink
@@ -6,15 +6,14 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.bottombar.SearchState
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.SearchRepository
-import com.vgleadsheets.search.Action
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -23,10 +22,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -35,13 +36,12 @@ class SearchViewModel @Inject constructor(
     override val dispatchers: VglsDispatchers,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
-    private val stringProvider: StringProvider,
+    val stringProvider: StringProvider,
     private val searchRepository: SearchRepository,
 ) : VglsViewModel<SearchState>(),
     ActionSink,
     EventSink {
     private var historyTimer: Job? = null
-    private val internalQueryFlow = MutableStateFlow("")
 
     private val internalResultItemsFlow = MutableStateFlow(initialState().resultItems(stringProvider))
     val resultItemsFlow = internalResultItemsFlow
@@ -99,7 +99,11 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun startSearch(query: String) {
-        internalQueryFlow.value = query.lowercase(Locale.getDefault())
+        updateState {
+            it.copy(
+                searchQuery = query
+            )
+        }
     }
 
     private fun onSongClicked(id: Long) {
@@ -143,19 +147,15 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun setupSearchInputObservation() {
-        internalQueryFlow
-            .filter { it.length < MINIMUM_LENGTH_QUERY }
-            .onEach { clearSearch() }
-            .launchIn(viewModelScope)
-
-        internalQueryFlow
-            .filter { it.length >= MINIMUM_LENGTH_QUERY }
-            .onEach {
-                startHistoryTimer(it)
-                updateState {
-                    it.copy(
-                        showHistory = false
-                    )
+        internalUiState
+            .map { it.searchQuery }
+            .distinctUntilChanged()
+            .debounce(300L)
+            .onEach { query ->
+                if (query.length >= MINIMUM_LENGTH_QUERY) {
+                    startHistoryTimer(query)
+                } else {
+                    clearSearch()
                 }
             }
             .launchIn(viewModelScope)
@@ -192,7 +192,7 @@ class SearchViewModel @Inject constructor(
         hatchet.v("Clearing search")
         updateState {
             it.copy(
-                showHistory = true,
+                searchQuery = "",
                 songResults = emptyList(),
                 gameResults = emptyList(),
                 composerResults = emptyList(),
@@ -223,7 +223,8 @@ class SearchViewModel @Inject constructor(
         searchOperation: suspend (String) -> Flow<List<ModelType>>,
         onSearchSuccess: suspend (List<ModelType>) -> Unit,
     ) {
-        internalQueryFlow
+        internalUiState
+            .map { it.searchQuery }
             .debounce(DEBOUNCE_THRESHOLD)
             .filter { it.length >= MINIMUM_LENGTH_QUERY }
             .flatMapLatest(searchOperation)

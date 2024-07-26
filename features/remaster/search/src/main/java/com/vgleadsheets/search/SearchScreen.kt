@@ -38,20 +38,19 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.composables.SearchBar
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
+import java.util.Random
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import java.util.Random
 
 @Composable
 @Suppress("LongMethod")
 fun SearchScreen(
+    query: String,
     results: ImmutableList<ListModel>,
     actionSink: ActionSink,
     modifier: Modifier = Modifier,
-    initialQuery: String = "",
     minSize: Dp = 128.dp
 ) {
     Box(
@@ -101,9 +100,9 @@ fun SearchScreen(
         }
 
         SearchBar(
+            text = query,
             actionSink = actionSink,
             modifier = Modifier.padding(top = topInsets.asPaddingValues().calculateTopPadding()),
-            initialText = initialQuery,
         )
 
         Spacer(
@@ -141,6 +140,7 @@ private fun Dark() {
 @Suppress("MagicNumber")
 private fun Sample() {
     SearchScreen(
+        query = "Something productive",
         results = listData().toImmutableList(),
         actionSink = { },
         modifier = Modifier

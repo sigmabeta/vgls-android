@@ -1,4 +1,4 @@
-package com.vgleadsheets.composables
+package com.vgleadsheets.search
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
@@ -14,10 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -36,9 +32,9 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 @Composable
 @Suppress("LongMethod", "MagicNumber")
 fun SearchBar(
+    text: String,
     actionSink: ActionSink,
     modifier: Modifier,
-    initialText: String = "",
 ) {
     Surface(
         modifier = modifier
@@ -60,7 +56,6 @@ fun SearchBar(
                 onClick = { actionSink.sendAction(VglsAction.AppBack) }
             )
 
-            var text by rememberSaveable { mutableStateOf(initialText) }
             val textEmpty = text.isEmpty()
 
             Box(
@@ -76,7 +71,6 @@ fun SearchBar(
                     ),
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
                     onValueChange = {
-                        text = it
                         actionSink.sendAction(VglsAction.SearchQueryEntered(it))
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -88,7 +82,8 @@ fun SearchBar(
                         style = MaterialTheme.typography.titleMedium.copy(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         ),
-                        modifier = Modifier.alpha(0.5f)
+                        modifier = Modifier
+                            .alpha(0.5f)
                             .fillMaxWidth()
                     )
                 }
@@ -97,7 +92,6 @@ fun SearchBar(
             AnimatedVisibility(visible = !textEmpty) {
                 MenuActionIcon(
                     onClick = {
-                        text = ""
                         actionSink.sendAction(VglsAction.SearchClearClicked)
                     },
                     iconId = com.vgleadsheets.ui.icons.R.drawable.ic_clear_black_24dp
@@ -166,6 +160,7 @@ private fun TextEnteredDark() {
 @Composable
 private fun SampleEmpty() {
     SearchBar(
+        "",
         { },
         Modifier,
     )
@@ -174,8 +169,8 @@ private fun SampleEmpty() {
 @Composable
 private fun SampleText() {
     SearchBar(
+        "Xenoblade Chronicles 3: Future Redeemed",
         { },
-        Modifier,
-        initialText = "Xenoblade Chronicles 3: Future Redeemed"
+        Modifier
     )
 }

@@ -20,7 +20,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 data class SearchState(
-    val showHistory: Boolean = true,
+    val searchQuery: String = "",
     val searchHistory: List<SearchHistoryEntry> = emptyList(),
     val songResults: List<Song> = emptyList(),
     val gameResults: List<Game> = emptyList(),
@@ -28,7 +28,7 @@ data class SearchState(
     val sheetUrlInfo: UrlInfo = UrlInfo(),
 ) : VglsState {
     fun resultItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        if (showHistory) {
+        if (searchQuery.isBlank()) {
             return historyItems()
         }
         return (songItems(stringProvider) + gameItems(stringProvider) + composerItems(stringProvider))

@@ -11,7 +11,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.bottombar.SearchViewModel
 import com.vgleadsheets.nav.Destination
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,10 +31,11 @@ fun NavGraphBuilder.searchScreenNavEntry(
 
         BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
 
-        val results by viewModel.resultItemsFlow.collectAsStateWithLifecycle()
+        val state by viewModel.uiState.collectAsStateWithLifecycle()
 
         SearchScreen(
-            results = results,
+            query = state.searchQuery,
+            results = state.resultItems(viewModel.stringProvider),
             actionSink = viewModel,
             modifier = globalModifier
         )
