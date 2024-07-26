@@ -14,7 +14,10 @@ import com.vgleadsheets.search.Action
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Locale
 import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,6 +40,7 @@ class SearchViewModel @Inject constructor(
 ) : VglsViewModel<SearchState>(),
     ActionSink,
     EventSink {
+    private var historyTimer: Job? = null
     private val internalQueryFlow = MutableStateFlow("")
 
     private val internalResultItemsFlow = MutableStateFlow(initialState().resultItems(stringProvider))
@@ -45,6 +49,7 @@ class SearchViewModel @Inject constructor(
 
     init {
         eventDispatcher.addEventSink(this)
+        getSearchHistory()
         setupSearchInputObservation()
     }
 
@@ -61,6 +66,8 @@ class SearchViewModel @Inject constructor(
                 is Action.SongClicked -> onSongClicked(action.id)
                 is Action.GameClicked -> onGameClicked(action.id)
                 is Action.ComposerClicked -> onComposerClicked(action.id)
+                is Action.SearchHistoryEntryClicked -> startSearch(action.query)
+                is Action.SearchHistoryEntryRemoveClicked -> searchRepository.removeFromSearchHistory(action.id)
             }
         }
     }
@@ -81,13 +88,18 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        stopHistoryTimer()
+    }
+
     private fun onResume() {
         emitEvent(VglsEvent.ShowUiChrome)
         emitEvent(VglsEvent.HideTopBar)
     }
 
     private fun startSearch(query: String) {
-        internalQueryFlow.value = query
+        internalQueryFlow.value = query.lowercase(Locale.getDefault())
     }
 
     private fun onSongClicked(id: Long) {
@@ -117,10 +129,35 @@ class SearchViewModel @Inject constructor(
         )
     }
 
+    private fun getSearchHistory() {
+        searchRepository.getRecentSearches()
+            .onEach { history ->
+                updateState {
+                    it.copy(
+                        searchHistory = history
+                    )
+                }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(viewModelScope)
+    }
+
     private fun setupSearchInputObservation() {
         internalQueryFlow
             .filter { it.length < MINIMUM_LENGTH_QUERY }
             .onEach { clearSearch() }
+            .launchIn(viewModelScope)
+
+        internalQueryFlow
+            .filter { it.length >= MINIMUM_LENGTH_QUERY }
+            .onEach {
+                startHistoryTimer(it)
+                updateState {
+                    it.copy(
+                        showHistory = false
+                    )
+                }
+            }
             .launchIn(viewModelScope)
 
         observeSearchInput(
@@ -155,10 +192,30 @@ class SearchViewModel @Inject constructor(
         hatchet.v("Clearing search")
         updateState {
             it.copy(
+                showHistory = true,
                 songResults = emptyList(),
                 gameResults = emptyList(),
                 composerResults = emptyList(),
             )
+        }
+    }
+
+    private fun startHistoryTimer(query: String) {
+        historyTimer?.cancel()
+        historyTimer = viewModelScope.launch(dispatchers.disk) {
+            delay(DURATION_HISTORY_RECORD)
+
+            searchRepository.addToSearchHistory(query)
+            hatchet.d("This search has officially been recorded.")
+            historyTimer = null
+        }
+    }
+
+    private fun stopHistoryTimer() {
+        if (historyTimer != null) {
+            hatchet.i("This search was not officially recorded.")
+            historyTimer?.cancel()
+            historyTimer = null
         }
     }
 
@@ -177,6 +234,8 @@ class SearchViewModel @Inject constructor(
     }
 
     companion object {
+        private const val DURATION_HISTORY_RECORD = 1_000L
+
         internal const val DEBOUNCE_THRESHOLD = 300L
         private const val MINIMUM_LENGTH_QUERY = 3
     }

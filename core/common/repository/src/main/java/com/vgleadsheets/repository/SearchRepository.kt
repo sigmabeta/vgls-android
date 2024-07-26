@@ -10,6 +10,7 @@ import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.history.SearchHistoryEntry
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
@@ -22,6 +23,19 @@ class SearchRepository(
     private val composerDataSource: ComposerDataSource,
     private val composerAliasDataSource: ComposerAliasDataSource,
 ) {
+    fun getRecentSearches() = searchHistoryDataSource
+        .getRecentEntries()
+
+    suspend fun addToSearchHistory(query: String) = searchHistoryDataSource.add(
+        SearchHistoryEntry(
+            null,
+            query,
+            System.currentTimeMillis()
+        )
+    )
+
+    suspend fun removeFromSearchHistory(id: Long) = searchHistoryDataSource.removeEntry(id)
+
     fun searchSongsCombined(searchQuery: String) = combine(
         searchSongs(searchQuery),
         searchSongAliases(searchQuery)

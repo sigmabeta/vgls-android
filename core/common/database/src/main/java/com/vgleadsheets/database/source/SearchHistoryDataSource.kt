@@ -4,7 +4,7 @@ import com.vgleadsheets.model.history.SearchHistoryEntry
 import kotlinx.coroutines.flow.Flow
 
 interface SearchHistoryDataSource {
-    suspend fun insert(model: SearchHistoryEntry)
+    suspend fun add(model: SearchHistoryEntry)
 
     suspend fun removeEntry(id: Long)
 

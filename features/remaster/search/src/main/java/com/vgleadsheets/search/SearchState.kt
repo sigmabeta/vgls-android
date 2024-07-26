@@ -3,11 +3,13 @@ package com.vgleadsheets.bottombar
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.SearchHistoryListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.search.Action
 import com.vgleadsheets.ui.Icon
@@ -18,15 +20,30 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 data class SearchState(
+    val showHistory: Boolean = true,
+    val searchHistory: List<SearchHistoryEntry> = emptyList(),
     val songResults: List<Song> = emptyList(),
     val gameResults: List<Game> = emptyList(),
     val composerResults: List<Composer> = emptyList(),
     val sheetUrlInfo: UrlInfo = UrlInfo(),
 ) : VglsState {
     fun resultItems(stringProvider: StringProvider): ImmutableList<ListModel> {
+        if (showHistory) {
+            return historyItems()
+        }
         return (songItems(stringProvider) + gameItems(stringProvider) + composerItems(stringProvider))
             .toImmutableList()
     }
+
+    private fun historyItems(): ImmutableList<ListModel> = searchHistory
+        .map { entry ->
+            SearchHistoryListModel(
+                dataId = entry.id!!,
+                name = entry.query,
+                clickAction = Action.SearchHistoryEntryClicked(entry.query),
+                removeAction = Action.SearchHistoryEntryRemoveClicked(entry.id!!),
+            )
+        }.toImmutableList()
 
     private fun songItems(stringProvider: StringProvider) = if (songResults.isNotEmpty()) {
         listOf(

@@ -13,7 +13,7 @@ class SearchHistoryAndroidDataSource(
     private val convert: SearchHistoryConverter
 ) : SearchHistoryDataSource {
 
-    override suspend fun insert(model: SearchHistoryEntry) = roomImpl.insert(
+    override suspend fun add(model: SearchHistoryEntry) = roomImpl.insert(
         convert.modelToEntity(model)
     )
 
