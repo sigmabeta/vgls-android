@@ -150,7 +150,7 @@ class SearchViewModel @Inject constructor(
         internalUiState
             .map { it.searchQuery }
             .distinctUntilChanged()
-            .debounce(300L)
+            .debounce(DEBOUNCE_THRESHOLD)
             .onEach { query ->
                 if (query.length >= MINIMUM_LENGTH_QUERY) {
                     startHistoryTimer(query)
@@ -224,7 +224,7 @@ class SearchViewModel @Inject constructor(
         onSearchSuccess: suspend (List<ModelType>) -> Unit,
     ) {
         internalUiState
-            .map { it.searchQuery }
+            .map { it.searchQuery.trim() }
             .debounce(DEBOUNCE_THRESHOLD)
             .filter { it.length >= MINIMUM_LENGTH_QUERY }
             .flatMapLatest(searchOperation)
