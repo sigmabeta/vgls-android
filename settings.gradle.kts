@@ -69,6 +69,7 @@ include(
     ":core:android:ui:strings",
     ":core:android:ui:fonts",
     ":core:android:ui:list",
+    ":core:android:ui:previews",
     ":core:android:ui:strings",
     ":core:android:ui:themes",
     ":core:android:viewer",

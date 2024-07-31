@@ -4,7 +4,9 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
@@ -53,16 +55,17 @@ fun NavGraphBuilder.listScreenEntry(
         }
 
         BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
+        val state by viewModel.uiState.collectAsStateWithLifecycle()
 
         if (destination.renderAsGrid) {
             GridScreen(
-                stateSource = viewModel.uiState,
+                state = state,
                 actionSink = viewModel,
                 modifier = globalModifier,
             )
         } else {
             ListScreen(
-                stateSource = viewModel.uiState,
+                state = state,
                 actionSink = viewModel,
                 modifier = globalModifier,
             )

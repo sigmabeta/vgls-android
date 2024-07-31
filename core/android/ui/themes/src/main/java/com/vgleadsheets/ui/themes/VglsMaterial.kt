@@ -24,9 +24,10 @@ import com.vgleadsheets.ui.fonts.VglsTypography
 
 @Composable
 fun VglsMaterial(
+    forceDark: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colors = if (!isSystemInDarkTheme()) {
+    val colors = if (!isSystemInDarkTheme() && !forceDark) {
         VglsLight
     } else {
         VglsDark

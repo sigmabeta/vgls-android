@@ -69,7 +69,6 @@ class GameDetailViewModelBrain(
             .onEach { game ->
                 updateState {
                     (it as State).copy(
-                        title = game.name,
                         game = game,
                     )
                 }

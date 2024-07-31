@@ -3,10 +3,12 @@ package com.vgleadsheets.model.generator
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.tag.TagValue
 import java.io.IOException
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
+import kotlin.random.asKotlinRandom
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember", "MagicNumber")
 class FakeModelGenerator constructor(
@@ -33,31 +35,55 @@ class FakeModelGenerator constructor(
     var maxTagsValues = DEFAULT_MAX_TAGS_VALUES
     var maxSongsPerGame = DEFAULT_MAX_SONGS_PER_GAME
 
+    private var skipModelGeneration = false
     private var remainingSongs: Stack<Song>? = null
 
     init {
         generateModels()
     }
 
-    fun randomSong() = possibleSongs.random()
+    fun randomSong() = possibleSongs.random(random.asKotlinRandom())
 
-    fun randomSongs() = List(random.nextInt(20)) {
+    fun randomSongs() = List(random.nextInt(100)) {
         randomSong()
     }.distinctBy { it.id }
 
-    fun randomGame() = possibleGames.random()
+    fun randomGame() = possibleGames.random(random.asKotlinRandom())
 
-    fun randomGames() = List(random.nextInt(20)) {
+    fun randomGames() = List(random.nextInt(100)) {
         randomGame()
-    }
+    }.distinctBy { it.id }
 
-    fun randomComposer() = possibleComposers.random()
+    fun randomComposer() = possibleComposers.random(random.asKotlinRandom())
 
-    fun randomComposers() = List(random.nextInt(20)) {
+    fun randomComposers() = List(random.nextInt(100)) {
         randomComposer()
+    }.distinctBy { it.id }
+
+    fun randomTag() = possibleTags
+        .entries
+        .toList()
+        .random(random.asKotlinRandom())
+        .let { entry ->
+            TagValue(
+                id = random.nextLong(),
+                name = entry.value.random(random.asKotlinRandom()),
+                tagKeyId = random.nextLong(),
+                tagKeyName = entry.key,
+                songs = emptyList()
+            )
+        }
+
+    fun randomTags() = List(random.nextInt(20)) {
+        randomTag()
     }
 
     private fun generateModels() {
+        if (skipModelGeneration) {
+            return
+        }
+        skipModelGeneration = true
+
         random.setSeed(seed)
 
         if (generateEmptyState) {
@@ -65,13 +91,11 @@ class FakeModelGenerator constructor(
         }
 
         generateComposers()
+        generateTags()
 
-        val gameCount = random.nextInt(maxGames)
-        val games = ArrayList<Game>(gameCount)
-
-        for (gameIndex in 0 until gameCount) {
-            val game = generateGame()
-            games.add(game)
+        val gameCount = random.nextInt(maxGames) + 100
+        val games = List(gameCount) {
+            generateGame()
         }
 
         val filteredGames = games
@@ -82,15 +106,13 @@ class FakeModelGenerator constructor(
     }
 
     private fun generateGame(): Game {
-        val gameId = random.nextLong()
-
         return Game(
             id = random.nextLong(),
             name = stringGenerator.generateTitle(),
             hasVocalSongs = random.nextBoolean(),
-            photoUrl = null,
+            photoUrl = stringGenerator.generateName(),
             songs = getSongs(),
-            songCount = 0,
+            songCount = random.nextInt(20),
             sheetsPlayed = 0,
             isFavorite = false,
             isAvailableOffline = false,
@@ -121,7 +143,7 @@ class FakeModelGenerator constructor(
     }
 
     private fun generateSongs() {
-        val songCount = random.nextInt(maxSongs) + 1
+        val songCount = random.nextInt(maxSongs) + 100
 
         val songs = Stack<Song>()
         val songIds = HashSet<Long>(songCount)
@@ -193,7 +215,7 @@ class FakeModelGenerator constructor(
     }
 
     private fun generateComposers() {
-        val composerCount = random.nextInt(maxComposers) + 1
+        val composerCount = random.nextInt(maxComposers) + 100
         val composers = ArrayList<Composer>(composerCount)
 
         for (composerIndex in 0 until composerCount) {
@@ -210,7 +232,7 @@ class FakeModelGenerator constructor(
         songCount = random.nextInt(10),
         hasVocalSongs = random.nextBoolean(),
         name = stringGenerator.generateTitle(),
-        photoUrl = null,
+        photoUrl = stringGenerator.generateName(),
         isFavorite = false,
         isAvailableOffline = false,
         sheetsPlayed = 0,

@@ -9,27 +9,22 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.list.ListStateActual
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun GridScreen(
-    stateSource: StateFlow<ListStateActual>,
+    state: ListStateActual,
     actionSink: ActionSink,
     modifier: Modifier,
     minSize: Dp = 128.dp
 ) {
-    val state by stateSource.collectAsStateWithLifecycle()
-
     val title = state.title
     val items = state.listItems
 
@@ -41,7 +36,8 @@ fun GridScreen(
 
     LazyVerticalGrid(
         contentPadding = PaddingValues(
-            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+            vertical = 16.dp,
+            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side),
         ),
         columns = GridCells.Adaptive(minSize),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
