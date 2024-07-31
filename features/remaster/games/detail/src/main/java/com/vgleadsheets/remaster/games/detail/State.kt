@@ -33,6 +33,7 @@ data class State(
         title = game?.name,
     )
 
+    @Suppress("LongMethod")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val gameModels = if (game?.photoUrl != null) {
             listOf<ListModel>(

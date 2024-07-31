@@ -33,6 +33,7 @@ data class State(
         title = composer?.name,
     )
 
+    @Suppress("LongMethod")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val composerModel = if (composer?.photoUrl != null) {
             listOf<ListModel>(
