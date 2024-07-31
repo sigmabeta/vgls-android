@@ -12,6 +12,7 @@ import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
+import com.vgleadsheets.database.source.FavoriteComposerDataSource
 import com.vgleadsheets.database.source.FavoriteSongDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
@@ -213,7 +214,9 @@ object RepositoryModule {
     @Singleton
     fun provideFavoriteRepository(
         favoriteSongDataSource: FavoriteSongDataSource,
+        favoriteComposerDataSource: FavoriteComposerDataSource,
     ) = FavoriteRepository(
         favoriteSongDataSource,
+        favoriteComposerDataSource,
     )
 }

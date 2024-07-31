@@ -17,6 +17,7 @@ import com.vgleadsheets.conversion.android.datasource.ComposerAliasAndroidDataSo
 import com.vgleadsheets.conversion.android.datasource.ComposerAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.ComposerPlayCountAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.DbStatisticsAndroidDataSource
+import com.vgleadsheets.conversion.android.datasource.FavoriteComposerAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.FavoriteSongAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.GameAliasAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.GameAndroidDataSource
@@ -32,6 +33,7 @@ import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
 import com.vgleadsheets.database.android.dao.ComposerPlayCountRoomDao
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
 import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
+import com.vgleadsheets.database.android.dao.FavoriteComposerRoomDao
 import com.vgleadsheets.database.android.dao.FavoriteSongRoomDao
 import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.dao.GamePlayCountRoomDao
@@ -53,6 +55,7 @@ import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
+import com.vgleadsheets.database.source.FavoriteComposerDataSource
 import com.vgleadsheets.database.source.FavoriteSongDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
@@ -210,6 +213,14 @@ object DataSourceModule {
     fun favoriteSongDataSource(
         roomImpl: FavoriteSongRoomDao,
     ): FavoriteSongDataSource = FavoriteSongAndroidDataSource(
+        roomImpl,
+    )
+
+    @Provides
+    @Singleton
+    fun favoriteComposerDataSource(
+        roomImpl: FavoriteComposerRoomDao,
+    ): FavoriteComposerDataSource = FavoriteComposerAndroidDataSource(
         roomImpl,
     )
 }

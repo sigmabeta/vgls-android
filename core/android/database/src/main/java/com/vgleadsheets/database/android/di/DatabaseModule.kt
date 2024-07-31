@@ -149,4 +149,10 @@ object DatabaseModule {
     fun favoriteSongDao(
         database: UserContentDatabase
     ) = database.favoriteSongDao()
+
+    @Provides
+    @Singleton
+    fun favoriteComposerDao(
+        database: UserContentDatabase
+    ) = database.favoriteComposerDao()
 }

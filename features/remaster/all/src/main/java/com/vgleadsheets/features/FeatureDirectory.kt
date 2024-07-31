@@ -94,6 +94,7 @@ class FeatureDirectory(
                 songRepository,
                 composerRepository,
                 gameRepository,
+                favoriteRepository,
                 dispatchers,
                 coroutineScope,
                 urlInfoProvider,

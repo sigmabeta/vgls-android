@@ -156,7 +156,7 @@ class SongDetailViewModelBrain(
             .mapNotNull { it.song?.id }
             .take(1)
             .onEach { id ->
-                favoriteRepository.addFavorite(id)
+                favoriteRepository.addFavoriteSong(id)
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
@@ -168,7 +168,7 @@ class SongDetailViewModelBrain(
             .mapNotNull { it.song?.id }
             .take(1)
             .onEach { id ->
-                favoriteRepository.removeFavorite(id)
+                favoriteRepository.removeFavoriteSong(id)
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
