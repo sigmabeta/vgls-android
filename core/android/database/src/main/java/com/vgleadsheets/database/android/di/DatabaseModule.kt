@@ -152,6 +152,12 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun favoriteGameDao(
+        database: UserContentDatabase
+    ) = database.favoriteGameDao()
+
+    @Provides
+    @Singleton
     fun favoriteComposerDao(
         database: UserContentDatabase
     ) = database.favoriteComposerDao()

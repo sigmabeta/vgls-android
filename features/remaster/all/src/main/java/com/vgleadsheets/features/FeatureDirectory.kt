@@ -71,10 +71,10 @@ class FeatureDirectory(
             )
 
             Destination.GAME_DETAIL -> GameDetailViewModelBrain(
-                repository,
                 songRepository,
                 gameRepository,
                 composerRepository,
+                favoriteRepository,
                 dispatchers,
                 coroutineScope,
                 urlInfoProvider,

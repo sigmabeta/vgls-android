@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.games.detail
 
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
@@ -26,6 +27,7 @@ data class State(
     val game: Game? = null,
     val songs: List<Song> = emptyList(),
     val composers: List<Composer> = emptyList(),
+    val isFavorite: Boolean? = null,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = game?.name,
@@ -39,6 +41,32 @@ data class State(
                     imagePlaceholder = Icon.ALBUM,
                     name = null,
                     clickAction = VglsAction.Noop,
+                )
+            )
+        } else {
+            emptyList()
+        }
+
+        val ctaModels = if (game != null && isFavorite != null) {
+            val (icon, label, action) = if (isFavorite) {
+                Triple(
+                    Icon.JAM_FILLED,
+                    StringId.CTA_FAVORITE_REMOVE,
+                    Action.RemoveFavoriteClicked,
+                )
+            } else {
+                Triple(
+                    Icon.JAM_EMPTY,
+                    StringId.CTA_FAVORITE_ADD,
+                    Action.AddFavoriteClicked,
+                )
+            }
+
+            listOf(
+                CtaListModel(
+                    icon = icon,
+                    name = stringProvider.getString(label),
+                    clickAction = action,
                 )
             )
         } else {
@@ -90,7 +118,7 @@ data class State(
             emptyList()
         }
 
-        return (gameModels + composerModels + songModels).toPersistentList()
+        return (gameModels + ctaModels + composerModels + songModels).toPersistentList()
     }
 
     companion object {
