@@ -25,6 +25,7 @@ private fun GameListDark(modifier: Modifier = Modifier) {
     ScreenPreviewDark(screenState, isGrid = true)
 }
 
+@Suppress("MagicNumber")
 private fun gameScreenState(): State {
     val seed = 1234567L
     val random = Random(seed)

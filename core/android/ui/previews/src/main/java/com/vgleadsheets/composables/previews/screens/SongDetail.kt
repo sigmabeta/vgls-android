@@ -28,6 +28,7 @@ private fun SongDetailDark(modifier: Modifier = Modifier) {
     ScreenPreviewDark(screenState)
 }
 
+@Suppress("MagicNumber")
 private fun songScreenState(): State {
     val seed = 12345L
     val random = Random(seed)
