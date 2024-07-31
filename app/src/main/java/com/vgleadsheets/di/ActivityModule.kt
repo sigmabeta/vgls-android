@@ -7,6 +7,7 @@ import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.repository.ComposerRepository
+import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
@@ -45,6 +46,7 @@ class ActivityModule {
         gameRepository: GameRepository,
         composerRepository: ComposerRepository,
         randomRepository: RandomRepository,
+        favoriteRepository: FavoriteRepository,
         homeModuleProvider: HomeModuleProvider,
     ): BrainProvider =
         FeatureDirectory(
@@ -58,6 +60,7 @@ class ActivityModule {
             composerRepository = composerRepository,
             songRepository = songRepository,
             randomRepository = randomRepository,
+            favoriteRepository = favoriteRepository,
             homeModuleProvider = homeModuleProvider,
         )
 }

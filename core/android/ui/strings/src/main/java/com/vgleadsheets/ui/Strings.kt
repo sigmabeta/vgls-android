@@ -29,6 +29,9 @@ fun StringId.id(): Int {
         StringId.SECTION_HEADER_DIFFICULTY_FOR_SONG -> R.string.section_header_difficulty_for_song
         StringId.SECTION_HEADER_ABOUT_SONG -> R.string.section_header_about_song
 
+        StringId.CTA_FAVORITE_ADD -> R.string.cta_favorite_add
+        StringId.CTA_FAVORITE_REMOVE -> R.string.cta_favorite_remove
+
         StringId.LABEL_SONG_ALSO_KNOWN_AS -> R.string.label_song_also_known_as
 
         StringId.HOME_SECTION_RECENT_SONGS -> R.string.home_section_recent_songs

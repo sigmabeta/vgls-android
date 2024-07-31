@@ -24,6 +24,8 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
@@ -38,14 +40,14 @@ fun ActionItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_small)
+                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_medium)
             )
             .clickable(
                 onClick = { actionSink.sendAction(model.clickAction) },
             )
     ) {
         Icon(
-            painterResource(id = model.iconId),
+            painterResource(id = model.icon.id()),
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = null,
             modifier = Modifier
@@ -60,7 +62,7 @@ fun ActionItem(
 
         Text(
             text = model.name,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -105,7 +107,7 @@ private fun NotMenu() {
 private fun Sample() {
     ActionItem(
         CtaListModel(
-            com.vgleadsheets.ui.icons.R.drawable.ic_search_black_24dp,
+            Icon.JAM_EMPTY,
             "Find a path to the future",
             VglsAction.Noop,
         ),

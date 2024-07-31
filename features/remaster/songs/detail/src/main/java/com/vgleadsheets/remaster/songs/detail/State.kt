@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.songs.detail
 
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.LabelRatingStarListModel
@@ -34,6 +35,7 @@ data class State(
     val game: Game? = null,
     val songAliases: List<SongAlias> = emptyList(),
     val tagValues: List<TagValue> = emptyList(),
+    val isFavorite: Boolean? = null,
 ) : ListState() {
     override fun title(stringProvider: StringProvider): TitleBarModel {
         val gameName = song?.gameName
@@ -89,6 +91,32 @@ data class State(
                         )
                     )
                 }
+            )
+        } else {
+            emptyList()
+        }
+
+        val ctaModels = if (song != null && isFavorite != null) {
+            val (icon, label, action) = if (isFavorite) {
+                Triple(
+                    Icon.JAM_FILLED,
+                    StringId.CTA_FAVORITE_REMOVE,
+                    Action.RemoveFavoriteClicked,
+                )
+            } else {
+                Triple(
+                    Icon.JAM_EMPTY,
+                    StringId.CTA_FAVORITE_ADD,
+                    Action.AddFavoriteClicked,
+                )
+            }
+
+            listOf(
+                CtaListModel(
+                    icon = icon,
+                    name = stringProvider.getString(label),
+                    clickAction = action,
+                )
             )
         } else {
             emptyList()
@@ -185,7 +213,7 @@ data class State(
             emptyList()
         }
 
-        return (songModel + composerModels + gameModel + difficultyModels + aboutModels).toPersistentList()
+        return (songModel + ctaModels + composerModels + gameModel + difficultyModels + aboutModels).toPersistentList()
     }
 
     private fun dedupeTagValues(

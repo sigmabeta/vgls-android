@@ -7,4 +7,6 @@ sealed class Action : VglsAction() {
     data class TagValueClicked(val id: Long) : Action()
     data class ComposerClicked(val id: Long) : Action()
     data class GameClicked(val id: Long) : Action()
+    data object AddFavoriteClicked : Action()
+    data object RemoveFavoriteClicked : Action()
 }

@@ -44,6 +44,9 @@
     <string name="section_header_difficulty_for_song">Difficulty</string>
     <string name="section_header_about_song">Details</string>
 
+    <string name="cta_favorite_add">Add to Favorites</string>
+    <string name="cta_favorite_remove">Remove from Favorites</string>
+
     <string name="label_song_also_known_as">Also Known As</string>
 
     <string name="home_section_recent_songs">Jump Back In</string>

@@ -143,4 +143,10 @@ object DatabaseModule {
     fun searchHistoryDao(
         database: UserContentDatabase
     ) = database.searchHistoryDao()
+
+    @Provides
+    @Singleton
+    fun favoriteSongDao(
+        database: UserContentDatabase
+    ) = database.favoriteSongDao()
 }

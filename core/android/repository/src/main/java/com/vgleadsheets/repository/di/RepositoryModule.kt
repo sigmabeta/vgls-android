@@ -12,6 +12,7 @@ import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
+import com.vgleadsheets.database.source.FavoriteSongDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
@@ -22,6 +23,7 @@ import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.DelayOrErrorRepository
+import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.RealRepository
@@ -205,5 +207,13 @@ object RepositoryModule {
         coroutineScope,
         dispatchers,
         hatchet,
+    )
+
+    @Provides
+    @Singleton
+    fun provideFavoriteRepository(
+        favoriteSongDataSource: FavoriteSongDataSource,
+    ) = FavoriteRepository(
+        favoriteSongDataSource,
     )
 }
