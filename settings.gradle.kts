@@ -134,5 +134,6 @@ include(
     ":features:remaster:search",
     ":features:remaster:songs:detail",
     ":features:remaster:songs:list",
+    ":features:remaster:tags:list",
     ":features:remaster:topbar"
 )

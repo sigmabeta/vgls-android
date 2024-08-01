@@ -10,8 +10,9 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
-import com.vgleadsheets.repository.RealRepository.Companion.AGE_THRESHOLD
 import com.vgleadsheets.ui.StringId
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -25,8 +26,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 class UpdateManager(
     private val vglsApi: VglsApi,
@@ -208,4 +207,8 @@ class UpdateManager(
 
     private fun getLastApiUpdateTimeInternal() = dbStatisticsDataSource
         .getTime(TimeType.LAST_VGLS_UPDATE.ordinal)
+
+    companion object {
+        val AGE_THRESHOLD = 4.toDuration(DurationUnit.HOURS)
+    }
 }

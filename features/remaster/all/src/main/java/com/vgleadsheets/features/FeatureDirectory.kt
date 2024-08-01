@@ -16,24 +16,25 @@ import com.vgleadsheets.remaster.home.HomeViewModelBrain
 import com.vgleadsheets.remaster.parts.PartsListViewModelBrain
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
+import com.vgleadsheets.remaster.tags.list.TagListViewModelBrain
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
 
 class FeatureDirectory(
-    private val repository: VglsRepository,
     private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
     private val randomRepository: RandomRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val tagRepository: TagRepository,
     private val dispatchers: VglsDispatchers,
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
@@ -113,11 +114,11 @@ class FeatureDirectory(
 
             Destination.SONG_VIEWER -> TODO()
             Destination.SONG_DETAIL -> SongDetailViewModelBrain(
-                repository,
                 songRepository,
                 gameRepository,
                 composerRepository,
                 favoriteRepository,
+                tagRepository,
                 dispatchers,
                 coroutineScope,
                 urlInfoProvider,
@@ -142,7 +143,14 @@ class FeatureDirectory(
                 hatchet
             )
 
-            Destination.TAGS_LIST -> TODO()
+            Destination.TAGS_LIST -> TagListViewModelBrain(
+                tagRepository,
+                dispatchers,
+                coroutineScope,
+                stringProvider,
+                hatchet
+            )
+
             Destination.TAGS_VALUES_LIST -> TODO()
             Destination.TAGS_VALUES_SONG_LIST -> TODO()
             Destination.MENU -> throw IllegalArgumentException("Not a list view: $destination")

@@ -11,7 +11,7 @@ import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
@@ -36,7 +36,6 @@ class ActivityModule {
     @ActivityScoped
     @Suppress("LongParameterList")
     fun provideVMBrainProvider(
-        repository: VglsRepository,
         dispatchers: VglsDispatchers,
         urlInfoProvider: UrlInfoProvider,
         stringProvider: StringProvider,
@@ -47,10 +46,10 @@ class ActivityModule {
         composerRepository: ComposerRepository,
         randomRepository: RandomRepository,
         favoriteRepository: FavoriteRepository,
+        tagRepository: TagRepository,
         homeModuleProvider: HomeModuleProvider,
     ): BrainProvider =
         FeatureDirectory(
-            repository = repository,
             dispatchers = dispatchers,
             urlInfoProvider = urlInfoProvider,
             stringProvider = stringProvider,
@@ -61,6 +60,7 @@ class ActivityModule {
             songRepository = songRepository,
             randomRepository = randomRepository,
             favoriteRepository = favoriteRepository,
+            tagRepository = tagRepository,
             homeModuleProvider = homeModuleProvider,
         )
 }

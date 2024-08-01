@@ -74,4 +74,7 @@ enum class StringId {
 
     ERROR_API_UPDATE,
     ERROR_DB_UPDATE,
+
+    TAG_CAPTION_AND_OTHERS,
+    TAG_CAPTION_SEPARATOR,
 }

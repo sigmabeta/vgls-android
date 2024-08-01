@@ -10,7 +10,7 @@ import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.SongRepository
-import com.vgleadsheets.repository.VglsRepository
+import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
@@ -24,11 +24,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 
 class SongDetailViewModelBrain(
-    private val repository: VglsRepository,
     private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val tagRepository: TagRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val urlInfoProvider: UrlInfoProvider,
@@ -113,7 +113,7 @@ class SongDetailViewModelBrain(
     }
 
     private fun fetchTagValues(id: Long) {
-        repository
+        tagRepository
             .getTagValuesForSong(id)
             .onEach { tagValues ->
                 updateState {

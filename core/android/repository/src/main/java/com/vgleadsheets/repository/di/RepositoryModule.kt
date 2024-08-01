@@ -24,16 +24,14 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
-import com.vgleadsheets.repository.DelayOrErrorRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
-import com.vgleadsheets.repository.RealRepository
 import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.repository.SongRepository
+import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.repository.UpdateManager
-import com.vgleadsheets.repository.VglsRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import dagger.Module
 import dagger.Provides
@@ -45,29 +43,6 @@ import kotlinx.coroutines.CoroutineScope
 @InstallIn(SingletonComponent::class)
 @Module
 object RepositoryModule {
-    @Provides
-    @Singleton
-    fun provideRepository(
-        realRepository: RealRepository
-    ): VglsRepository = DelayOrErrorRepository(realRepository)
-
-    @Provides
-    @Singleton
-    @Suppress("LongParameterList")
-    fun provideRealRepository(
-        dispatchers: VglsDispatchers,
-        composerDataSource: ComposerDataSource,
-        gameDataSource: GameDataSource,
-        tagKeyDataSource: TagKeyDataSource,
-        tagValueDataSource: TagValueDataSource,
-    ) = RealRepository(
-        dispatchers,
-        gameDataSource,
-        composerDataSource,
-        tagKeyDataSource,
-        tagValueDataSource,
-    )
-
     @Provides
     @Singleton
     fun provideSongRepository(
@@ -227,5 +202,15 @@ object RepositoryModule {
         favoriteSongDataSource,
         favoriteGameDataSource,
         favoriteComposerDataSource,
+    )
+
+    @Provides
+    @Singleton
+    fun provideTagRepository(
+        tagKeyDataSource: TagKeyDataSource,
+        tagValueDataSource: TagValueDataSource,
+    ) = TagRepository(
+        tagKeyDataSource,
+        tagValueDataSource,
     )
 }

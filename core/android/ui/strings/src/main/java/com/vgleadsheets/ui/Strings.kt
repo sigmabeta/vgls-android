@@ -74,5 +74,8 @@ fun StringId.id(): Int {
 
         StringId.ERROR_API_UPDATE -> R.string.error_api_update
         StringId.ERROR_DB_UPDATE -> R.string.error_db_update
+
+        StringId.TAG_CAPTION_AND_OTHERS -> R.string.tag_caption_and_others
+        StringId.TAG_CAPTION_SEPARATOR -> R.string.tag_caption_separator
     }
 }

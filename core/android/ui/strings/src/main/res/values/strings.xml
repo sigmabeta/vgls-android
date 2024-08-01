@@ -71,4 +71,8 @@
 
     <string name="error_api_update">Sheet Update Failed</string>
     <string name="error_db_update">Database Update Failed</string>
+
+    <string name="tag_caption_and_others">" and %1$d more…"</string>
+    <string name="tag_caption_separator">", "</string>
+
 </resources>
