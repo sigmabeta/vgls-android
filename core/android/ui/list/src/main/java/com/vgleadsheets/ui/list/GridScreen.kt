@@ -59,7 +59,7 @@ fun GridScreen(
             it.Content(
                 sink = actionSink,
                 mod = Modifier.animateItem(),
-                pad = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
+                pad = PaddingValues()
             )
         }
     }
