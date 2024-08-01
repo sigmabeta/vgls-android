@@ -21,9 +21,13 @@ interface FavoriteComposerRoomDao {
     @Query(QUERY_SINGLE)
     fun getFavoriteComposer(id: Long): Flow<FavoriteComposerEntity?>
 
+    @Query(QUERY_ALL)
+    fun getAll(): Flow<List<FavoriteComposerEntity>>
+
     companion object {
         private const val TABLE = FavoriteComposerEntity.TABLE
 
         const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
+        const val QUERY_ALL = "$GET $TABLE"
     }
 }

@@ -1,5 +1,7 @@
 package com.vgleadsheets.conversion.android.datasource
 
+import com.vgleadsheets.conversion.android.converter.FavoriteSongConverter
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.FavoriteSongRoomDao
 import com.vgleadsheets.database.android.enitity.DeletionId
 import com.vgleadsheets.database.android.enitity.FavoriteSongEntity
@@ -8,6 +10,7 @@ import kotlinx.coroutines.flow.map
 
 class FavoriteSongAndroidDataSource(
     private val roomImpl: FavoriteSongRoomDao,
+    private val converter: FavoriteSongConverter,
 ) : FavoriteSongDataSource {
     override suspend fun addFavorite(id: Long) {
         roomImpl.insert(
@@ -24,4 +27,8 @@ class FavoriteSongAndroidDataSource(
     override fun isFavoriteSong(id: Long) = roomImpl
         .getFavoriteSong(id)
         .map { it != null }
+
+    override fun getAll() = roomImpl
+        .getAll()
+        .mapListTo { converter.entityToModel(it) }
 }

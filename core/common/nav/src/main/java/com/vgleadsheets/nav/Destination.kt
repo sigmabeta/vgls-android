@@ -21,7 +21,7 @@ enum class Destination(
     TAGS_LIST("tags", ArgType.NONE, isImplemented = false),
     TAGS_VALUES_LIST("tags", ArgType.LONG, isImplemented = false),
     TAGS_VALUES_SONG_LIST("tags/value", ArgType.LONG, isImplemented = false),
-    FAVORITES("favorites", ArgType.NONE, isImplemented = false),
+    FAVORITES("favorites", ArgType.NONE, renderAsGrid = true),
     ;
 
     fun noArgs() = destName

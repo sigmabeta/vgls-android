@@ -18,6 +18,7 @@ dependencies {
     api(projects.features.remaster.games.detail)
     api(projects.features.remaster.composers.list)
     api(projects.features.remaster.composers.detail)
+    api(projects.features.remaster.favorites)
     api(projects.features.remaster.parts)
     api(projects.features.remaster.songs.list)
     api(projects.features.remaster.songs.detail)

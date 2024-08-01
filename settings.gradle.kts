@@ -128,6 +128,7 @@ include(
     ":features:remaster:composers:list",
     ":features:remaster:games:detail",
     ":features:remaster:games:list",
+    ":features:remaster:favorites",
     ":features:remaster:home",
     ":features:remaster:parts",
     ":features:remaster:search",

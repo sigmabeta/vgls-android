@@ -1,5 +1,6 @@
 package com.vgleadsheets.database.source
 
+import com.vgleadsheets.model.history.Favorite
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteComposerDataSource {
@@ -8,4 +9,6 @@ interface FavoriteComposerDataSource {
     suspend fun removeFavorite(id: Long)
 
     fun isFavoriteComposer(id: Long): Flow<Boolean>
+
+    fun getAll(): Flow<List<Favorite>>
 }

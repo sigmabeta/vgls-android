@@ -3,6 +3,9 @@ package com.vgleadsheets.conversion.android.di
 import com.vgleadsheets.conversion.android.converter.ComposerAliasConverter
 import com.vgleadsheets.conversion.android.converter.ComposerConverter
 import com.vgleadsheets.conversion.android.converter.ComposerPlayCountConverter
+import com.vgleadsheets.conversion.android.converter.FavoriteComposerConverter
+import com.vgleadsheets.conversion.android.converter.FavoriteGameConverter
+import com.vgleadsheets.conversion.android.converter.FavoriteSongConverter
 import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.android.converter.GamePlayCountConverter
@@ -215,23 +218,29 @@ object DataSourceModule {
     @Singleton
     fun favoriteSongDataSource(
         roomImpl: FavoriteSongRoomDao,
+        converter: FavoriteSongConverter
     ): FavoriteSongDataSource = FavoriteSongAndroidDataSource(
         roomImpl,
+        converter,
     )
 
     @Provides
     @Singleton
     fun favoriteGameDataSource(
         roomImpl: FavoriteGameRoomDao,
+        converter: FavoriteGameConverter,
     ): FavoriteGameDataSource = FavoriteGameAndroidDataSource(
         roomImpl,
+        converter,
     )
 
     @Provides
     @Singleton
     fun favoriteComposerDataSource(
         roomImpl: FavoriteComposerRoomDao,
+        converter: FavoriteComposerConverter,
     ): FavoriteComposerDataSource = FavoriteComposerAndroidDataSource(
         roomImpl,
+        converter,
     )
 }

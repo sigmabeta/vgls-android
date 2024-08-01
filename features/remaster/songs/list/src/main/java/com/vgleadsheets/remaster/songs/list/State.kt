@@ -17,7 +17,6 @@ data class State(
     val songs: List<Song> = emptyList(),
     val sheetUrlInfo: UrlInfo = UrlInfo(),
 ) : ListState() {
-    override val renderAsGrid = true
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_ALL)
     )

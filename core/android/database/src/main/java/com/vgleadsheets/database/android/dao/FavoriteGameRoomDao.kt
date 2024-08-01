@@ -21,9 +21,13 @@ interface FavoriteGameRoomDao {
     @Query(QUERY_SINGLE)
     fun getFavoriteGame(id: Long): Flow<FavoriteGameEntity?>
 
+    @Query(QUERY_ALL)
+    fun getAll(): Flow<List<FavoriteGameEntity>>
+
     companion object {
         private const val TABLE = FavoriteGameEntity.TABLE
 
         const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
+        const val QUERY_ALL = "$GET $TABLE"
     }
 }

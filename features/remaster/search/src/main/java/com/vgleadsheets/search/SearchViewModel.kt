@@ -6,7 +6,6 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.bottombar.SearchState
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination

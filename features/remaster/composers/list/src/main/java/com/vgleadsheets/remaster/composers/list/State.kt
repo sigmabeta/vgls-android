@@ -14,7 +14,6 @@ import kotlinx.collections.immutable.toImmutableList
 data class State(
     val composers: List<Composer> = emptyList()
 ) : ListState() {
-    override val renderAsGrid = true
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_COMPOSERS)
     )

@@ -1,5 +1,6 @@
 package com.vgleadsheets.repository.history
 
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.GameDataSource
@@ -47,26 +48,20 @@ class SongHistoryRepository(
 
     fun getMostPlaysGames() = gamePlayCountDataSource
         .getMostPlays()
-        .map { list ->
-            list.map { item ->
-                item to gameDataSource.getOneByIdSync(item.id)
-            }
+        .mapListTo { item ->
+            item to gameDataSource.getOneByIdSync(item.id)
         }
 
     fun getMostPlaysComposers() = composerPlayCountDataSource
         .getMostPlays()
-        .map { list ->
-            list.map { item ->
-                item to composerDataSource.getOneByIdSync(item.id)
-            }
+        .mapListTo { item ->
+            item to composerDataSource.getOneByIdSync(item.id)
         }
 
     fun getMostPlaysSongs() = songPlayCountDataSource
         .getMostPlays()
-        .map { list ->
-            list.map { item ->
-                item to songDataSource.getOneByIdSync(item.id)
-            }
+        .mapListTo { item ->
+            item to songDataSource.getOneByIdSync(item.id)
         }
 
     fun getRecentSongs() = songHistoryDataSource

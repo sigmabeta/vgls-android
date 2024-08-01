@@ -1,55 +1,41 @@
-package com.vgleadsheets.search
+package com.vgleadsheets.remaster.favorites
 
-import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.SearchHistoryListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
+import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-data class SearchState(
-    val searchQuery: String = "",
-    val searchHistory: List<SearchHistoryEntry> = emptyList(),
-    val songResults: List<Song> = emptyList(),
-    val gameResults: List<Game> = emptyList(),
-    val composerResults: List<Composer> = emptyList(),
-    val sheetUrlInfo: UrlInfo = UrlInfo(),
-) : VglsState {
-    fun resultItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        if (searchQuery.isBlank()) {
-            return historyItems()
-        }
+data class State(
+    val favoriteSongs: List<Song> = emptyList(),
+    val favoriteGames: List<Game> = emptyList(),
+    val favoriteComposers: List<Composer> = emptyList(),
+) : ListState() {
+    override fun title(stringProvider: StringProvider) = TitleBarModel(
+        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_FAVORITES)
+    )
+
+    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         return (songItems(stringProvider) + gameItems(stringProvider) + composerItems(stringProvider))
             .toImmutableList()
     }
 
-    private fun historyItems(): ImmutableList<ListModel> = searchHistory
-        .map { entry ->
-            SearchHistoryListModel(
-                dataId = entry.id!!,
-                name = entry.query,
-                clickAction = Action.SearchHistoryEntryClicked(entry.query),
-                removeAction = Action.SearchHistoryEntryRemoveClicked(entry.id!!),
-            )
-        }.toImmutableList()
-
-    private fun songItems(stringProvider: StringProvider) = if (songResults.isNotEmpty()) {
+    private fun songItems(stringProvider: StringProvider) = if (favoriteSongs.isNotEmpty()) {
         listOf(
             SectionHeaderListModel(
                 stringProvider.getString(StringId.SECTION_HEADER_SEARCH_SONGS)
             )
-        ) + songResults.map { song ->
+        ) + favoriteSongs.map { song ->
             ImageNameCaptionListModel(
                 dataId = song.id,
                 name = song.name,
@@ -66,12 +52,12 @@ data class SearchState(
         emptyList()
     }
 
-    private fun gameItems(stringProvider: StringProvider) = if (gameResults.isNotEmpty()) {
+    private fun gameItems(stringProvider: StringProvider) = if (favoriteGames.isNotEmpty()) {
         listOf(
             SectionHeaderListModel(
                 stringProvider.getString(StringId.SECTION_HEADER_SEARCH_GAMES)
             )
-        ) + gameResults.map { game ->
+        ) + favoriteGames.map { game ->
             SquareItemListModel(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
@@ -84,12 +70,12 @@ data class SearchState(
         emptyList()
     }
 
-    private fun composerItems(stringProvider: StringProvider) = if (composerResults.isNotEmpty()) {
+    private fun composerItems(stringProvider: StringProvider) = if (favoriteComposers.isNotEmpty()) {
         listOf(
             SectionHeaderListModel(
                 stringProvider.getString(StringId.SECTION_HEADER_SEARCH_COMPOSERS)
             )
-        ) + composerResults.map { composer ->
+        ) + favoriteComposers.map { composer ->
             SquareItemListModel(
                 dataId = composer.id + ID_OFFSET_COMPOSER,
                 name = composer.name,

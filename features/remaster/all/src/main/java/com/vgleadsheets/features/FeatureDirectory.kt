@@ -8,6 +8,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
 import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
+import com.vgleadsheets.remaster.favorites.FavoritesViewModelBrain
 import com.vgleadsheets.remaster.games.detail.GameDetailViewModelBrain
 import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeModuleProvider
@@ -133,7 +134,14 @@ class FeatureDirectory(
                 hatchet,
             )
 
-            Destination.FAVORITES -> TODO()
+            Destination.FAVORITES -> FavoritesViewModelBrain(
+                favoriteRepository,
+                dispatchers,
+                coroutineScope,
+                stringProvider,
+                hatchet
+            )
+
             Destination.TAGS_LIST -> TODO()
             Destination.TAGS_VALUES_LIST -> TODO()
             Destination.TAGS_VALUES_SONG_LIST -> TODO()

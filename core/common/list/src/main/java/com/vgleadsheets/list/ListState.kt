@@ -9,7 +9,6 @@ import kotlinx.collections.immutable.ImmutableList
 abstract class ListState : VglsState {
     abstract fun title(stringProvider: StringProvider): TitleBarModel
     abstract fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel>
-    open val renderAsGrid = false
 
     fun toActual(stringProvider: StringProvider): ListStateActual {
         return ListStateActual(

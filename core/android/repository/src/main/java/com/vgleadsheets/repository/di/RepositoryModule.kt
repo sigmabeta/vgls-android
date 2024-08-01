@@ -214,10 +214,16 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideFavoriteRepository(
+        songDataSource: SongDataSource,
+        gameDataSource: GameDataSource,
+        composerDataSource: ComposerDataSource,
         favoriteSongDataSource: FavoriteSongDataSource,
         favoriteGameDataSource: FavoriteGameDataSource,
         favoriteComposerDataSource: FavoriteComposerDataSource,
     ) = FavoriteRepository(
+        songDataSource,
+        gameDataSource,
+        composerDataSource,
         favoriteSongDataSource,
         favoriteGameDataSource,
         favoriteComposerDataSource,
