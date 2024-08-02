@@ -11,7 +11,6 @@ import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
-import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -27,7 +26,6 @@ class ComposerDetailViewModelBrain(
     private val favoriteRepository: FavoriteRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
-    private val urlInfoProvider: UrlInfoProvider,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
@@ -49,7 +47,6 @@ class ComposerDetailViewModelBrain(
     }
 
     private fun startLoading(id: Long) {
-        fetchUrlInfo()
         fetchComposer(id)
         fetchSongs(id)
         fetchGames()
@@ -87,18 +84,6 @@ class ComposerDetailViewModelBrain(
             .take(1)
             .onEach { id ->
                 favoriteRepository.removeFavoriteComposer(id)
-            }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
-    }
-
-    private fun fetchUrlInfo() {
-        urlInfoProvider
-            .urlInfoFlow
-            .onEach { urlInfo ->
-                updateState {
-                    (it as State).copy(sheetUrlInfo = urlInfo)
-                }
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)

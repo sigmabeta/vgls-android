@@ -11,7 +11,6 @@ import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
-import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
@@ -28,7 +27,6 @@ class GameDetailViewModelBrain(
     private val favoriteRepository: FavoriteRepository,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
-    private val urlInfoProvider: UrlInfoProvider,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
@@ -50,23 +48,10 @@ class GameDetailViewModelBrain(
     }
 
     private fun startLoading(id: Long) {
-        fetchUrlInfo()
         fetchGame(id)
         fetchSongs(id)
         fetchComposers()
         checkFavoriteStatus(id)
-    }
-
-    private fun fetchUrlInfo() {
-        urlInfoProvider
-            .urlInfoFlow
-            .onEach { urlInfo ->
-                updateState {
-                    (it as State).copy(sheetUrlInfo = urlInfo)
-                }
-            }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
     }
 
     private fun fetchGame(gameId: Long) {

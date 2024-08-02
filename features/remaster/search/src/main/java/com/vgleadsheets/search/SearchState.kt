@@ -14,7 +14,6 @@ import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -24,7 +23,6 @@ data class SearchState(
     val songResults: List<Song> = emptyList(),
     val gameResults: List<Game> = emptyList(),
     val composerResults: List<Composer> = emptyList(),
-    val sheetUrlInfo: UrlInfo = UrlInfo(),
 ) : VglsState {
     fun resultItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         if (searchQuery.isBlank()) {

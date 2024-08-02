@@ -90,6 +90,9 @@ interface SongRoomDao : RoomDao<SongEntity> {
     @Query(QUERY_DELETE)
     override fun nukeTable()
 
+    // final String _sql = "SELECT * FROM song INNER JOIN song_composer_join  ON song_composer_join.songId      = id WHERE composerId = ? ORDER BY name, gameName";
+    // final String _sql = "SELECT * FROM song INNER JOIN song_tag_value_join ON song_tag_value_join.tagValueId = id WHERE songId = ?     ORDER BY name, gameName";
+
     companion object {
 
         // Query Properties
@@ -100,8 +103,8 @@ interface SongRoomDao : RoomDao<SongEntity> {
         private const val COLUMN_FOREIGN_KEY_GAME = GameEntity.COLUMN_FOREIGN_KEY
         private const val COLUMN_FOREIGN_KEY_COMPOSER = SongComposerJoin.COLUMN_FOREIGN_KEY_TWO
         private const val COLUMN_FOREIGN_KEY_COMPOSER_JOIN = SongComposerJoin.COLUMN_FOREIGN_KEY_ONE
-        private const val COLUMN_FOREIGN_KEY_TAG_VALUE = SongTagValueJoin.COLUMN_FOREIGN_KEY_ONE
-        private const val COLUMN_FOREIGN_KEY_TAG_VALUE_JOIN = SongTagValueJoin.COLUMN_FOREIGN_KEY_TWO
+        private const val COLUMN_FOREIGN_KEY_TAG_VALUE = SongTagValueJoin.COLUMN_FOREIGN_KEY_TWO
+        private const val COLUMN_FOREIGN_KEY_TAG_VALUE_JOIN = SongTagValueJoin.COLUMN_FOREIGN_KEY_ONE
 
         private const val WHERE_GAME = "$WHERE $COLUMN_FOREIGN_KEY_GAME = :$COLUMN_PRIMARY_KEY_ID"
         private const val WHERE_COMPOSER = "$INNER_JOIN $TABLE_COMPOSER $ON " +

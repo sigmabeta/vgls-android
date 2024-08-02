@@ -5,11 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
-import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.songs.detail.State
-import com.vgleadsheets.urlinfo.UrlInfo
 import java.util.Random
 
 @Preview
@@ -44,7 +42,6 @@ private fun songScreenState(): State {
     val tags = modelGenerator.randomTags()
 
     val screenState = State(
-        sheetUrlInfo = UrlInfo(partId = Part.C.apiId),
         song = song,
         composers = composers,
         game = game,

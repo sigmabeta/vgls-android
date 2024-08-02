@@ -8,7 +8,7 @@ enum class Destination(
 ) {
     HOME("home", ArgType.NONE),
     BROWSE("browse", ArgType.NONE),
-    SEARCH("search", ArgType.NONE, isImplemented = false),
+    SEARCH("search", ArgType.NONE),
     MENU("menu", ArgType.NONE, isImplemented = false),
     PART_PICKER("parts", ArgType.NONE),
     GAME_DETAIL("games", ArgType.LONG),
@@ -20,7 +20,7 @@ enum class Destination(
     SONGS_LIST("songs", ArgType.NONE),
     TAGS_LIST("tags", ArgType.NONE),
     TAGS_VALUES_LIST("tags", ArgType.LONG),
-    TAGS_VALUES_SONG_LIST("tags/value", ArgType.LONG, isImplemented = false),
+    TAGS_VALUES_SONG_LIST("tags/value", ArgType.LONG),
     FAVORITES("favorites", ArgType.NONE, renderAsGrid = true),
     ;
 

@@ -17,13 +17,11 @@ import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 data class State(
-    val sheetUrlInfo: UrlInfo = UrlInfo(),
     val game: Game? = null,
     val songs: List<Song> = emptyList(),
     val composers: List<Composer> = emptyList(),
