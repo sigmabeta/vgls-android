@@ -1,4 +1,4 @@
-package com.vgleadsheets.search
+package com.vgleadsheets.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
@@ -33,6 +33,7 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 @Suppress("LongMethod", "MagicNumber")
 fun SearchBar(
     text: String,
+    textFieldUpdater: (String) -> Unit,
     actionSink: ActionSink,
     modifier: Modifier,
 ) {
@@ -71,6 +72,8 @@ fun SearchBar(
                     ),
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
                     onValueChange = {
+                        println("OnValueChange: $it")
+                        textFieldUpdater(it)
                         actionSink.sendAction(VglsAction.SearchQueryEntered(it))
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -91,9 +94,7 @@ fun SearchBar(
 
             AnimatedVisibility(visible = !textEmpty) {
                 MenuActionIcon(
-                    onClick = {
-                        actionSink.sendAction(VglsAction.SearchClearClicked)
-                    },
+                    onClick = { actionSink.sendAction(VglsAction.SearchClearClicked) },
                     iconId = com.vgleadsheets.ui.icons.R.drawable.ic_clear_black_24dp
                 )
             }
@@ -162,6 +163,7 @@ private fun SampleEmpty() {
     SearchBar(
         "",
         { },
+        { },
         Modifier,
     )
 }
@@ -171,6 +173,7 @@ private fun SampleText() {
     SearchBar(
         "Xenoblade Chronicles 3: Future Redeemed",
         { },
-        Modifier
+        { },
+        Modifier,
     )
 }

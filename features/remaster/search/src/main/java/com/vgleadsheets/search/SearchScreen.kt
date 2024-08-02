@@ -1,6 +1,5 @@
 package com.vgleadsheets.search
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -26,23 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.components.HorizontalScrollerListModel
-import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.themes.VglsMaterial
-import java.util.Random
+import com.vgleadsheets.composables.SearchBar
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @Suppress("LongMethod")
@@ -50,6 +39,7 @@ fun SearchScreen(
     query: String,
     results: ImmutableList<ListModel>,
     actionSink: ActionSink,
+    textFieldUpdater: (String) -> Unit,
     modifier: Modifier = Modifier,
     minSize: Dp = 128.dp
 ) {
@@ -101,6 +91,7 @@ fun SearchScreen(
 
         SearchBar(
             text = query,
+            textFieldUpdater = textFieldUpdater,
             actionSink = actionSink,
             modifier = Modifier.padding(top = topInsets.asPaddingValues().calculateTopPadding()),
         )
@@ -116,109 +107,6 @@ fun SearchScreen(
                         .times(2)
                 )
                 .background(brush = Brush.verticalGradient(colors = scrimColors(isSystemInDarkTheme())))
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun Light() {
-    VglsMaterial {
-        Sample()
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun Dark() {
-    VglsMaterial {
-        Sample()
-    }
-}
-
-@Composable
-@Suppress("MagicNumber")
-private fun Sample() {
-    SearchScreen(
-        query = "Something productive",
-        results = listData().toImmutableList(),
-        actionSink = { },
-        modifier = Modifier
-    )
-}
-
-@Suppress("MagicNumber")
-private fun listData(): List<ListModel> {
-    val rng = Random("HorizontalScroller".hashCode().toLong())
-
-    return squareItemSection(rng) +
-        wideItemSection(rng) +
-        verticalSection(rng) +
-        squareItemSection(rng) +
-        verticalSection(rng)
-}
-
-@Suppress("MagicNumber")
-private fun squareItemSection(rng: Random): List<ListModel> {
-    val size = rng.nextInt(15) + 5
-    return listOf(
-        SectionHeaderListModel(
-            title = "Square Items $size",
-        ),
-        HorizontalScrollerListModel(
-            dataId = 1_000_000L + rng.nextInt(1_000),
-            scrollingItems = List(size) { index ->
-                SquareItemListModel(
-                    dataId = index.toLong(),
-                    name = "Square #$index",
-                    sourceInfo = rng.nextInt().toString(),
-                    imagePlaceholder = Icon.ALBUM,
-                    null,
-                    clickAction = VglsAction.Noop,
-                )
-            }.toImmutableList()
-        )
-    )
-}
-
-@Suppress("MagicNumber")
-private fun wideItemSection(rng: Random): List<ListModel> {
-    val size = rng.nextInt(15) + 5
-    return listOf(
-        SectionHeaderListModel(
-            title = "Wide Items $size",
-        ),
-        HorizontalScrollerListModel(
-            dataId = 1_000L + rng.nextInt(1_000),
-            scrollingItems = List(size) { index ->
-                WideItemListModel(
-                    dataId = index.toLong(),
-                    name = "Wide Item #$index",
-                    sourceInfo = rng.nextInt().toString(),
-                    Icon.PERSON,
-                    null,
-                    clickAction = VglsAction.Noop
-                )
-            }.toImmutableList()
-        ),
-    )
-}
-
-@Suppress("MagicNumber")
-private fun verticalSection(rng: Random): List<ListModel> {
-    val size = rng.nextInt(10) + 5
-    return listOf(
-        SectionHeaderListModel(
-            title = "Vertically Scrolling Items $size",
-        ),
-    ) + List(size) { index ->
-        ImageNameListModel(
-            dataId = index.toLong() + rng.nextInt(1_000),
-            name = "Wide Item #$index",
-            sourceInfo = rng.nextInt().toString(),
-            Icon.DESCRIPTION,
-            null,
-            clickAction = VglsAction.Noop
         )
     }
 }

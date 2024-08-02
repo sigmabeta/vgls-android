@@ -5,8 +5,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -20,8 +22,11 @@ fun NavGraphBuilder.searchScreenNavEntry(
 ) {
     composable(
         route = Destination.SEARCH.template(),
-    ) { navBackStackEntry ->
-        val viewModel: SearchViewModel = hiltViewModel()
+    ) {
+        var searchText by rememberSaveable { mutableStateOf("") }
+        val textFieldUpdater = { newText: String -> searchText = newText }
+
+        val viewModel: SearchViewModel = searchViewModel(textFieldUpdater)
 
         LaunchedEffect(Unit) {
             topBarState.heightOffset = 0.0f
@@ -34,8 +39,9 @@ fun NavGraphBuilder.searchScreenNavEntry(
         val state by viewModel.uiState.collectAsStateWithLifecycle()
 
         SearchScreen(
-            query = state.searchQuery,
+            query = searchText,
             results = state.resultItems(viewModel.stringProvider),
+            textFieldUpdater = textFieldUpdater,
             actionSink = viewModel,
             modifier = globalModifier
         )

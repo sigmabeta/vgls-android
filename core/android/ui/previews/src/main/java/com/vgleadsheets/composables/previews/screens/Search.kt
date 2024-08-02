@@ -99,6 +99,7 @@ private fun Content(
         query = state.searchQuery,
         results = state.resultItems(stringProvider),
         actionSink = actionSink,
-        modifier = Modifier
+        modifier = Modifier,
+        textFieldUpdater = textFieldUpdater
     )
 }

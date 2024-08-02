@@ -12,13 +12,12 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -30,21 +29,19 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-class SearchViewModel @Inject constructor(
+class SearchViewModel @AssistedInject constructor(
     override val dispatchers: VglsDispatchers,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
     val stringProvider: StringProvider,
     private val searchRepository: SearchRepository,
+    @Assisted("textUpdater") private val textUpdater: (String) -> Unit,
 ) : VglsViewModel<SearchState>(),
     ActionSink,
     EventSink {
     private var historyTimer: Job? = null
 
     private val internalResultItemsFlow = MutableStateFlow(initialState().resultItems(stringProvider))
-    val resultItemsFlow = internalResultItemsFlow
-        .asStateFlow()
 
     init {
         eventDispatcher.addEventSink(this)
@@ -60,12 +57,12 @@ class SearchViewModel @Inject constructor(
 
             when (action) {
                 is VglsAction.Resume -> onResume()
-                is VglsAction.SearchClearClicked -> startSearch("")
+                is VglsAction.SearchClearClicked -> onSearchClearClicked()
                 is VglsAction.SearchQueryEntered -> startSearch(action.query)
                 is Action.SongClicked -> onSongClicked(action.id)
                 is Action.GameClicked -> onGameClicked(action.id)
                 is Action.ComposerClicked -> onComposerClicked(action.id)
-                is Action.SearchHistoryEntryClicked -> startSearch(action.query)
+                is Action.SearchHistoryEntryClicked -> onSearchHistoryEntryClicked(action.query)
                 is Action.SearchHistoryEntryRemoveClicked -> searchRepository.removeFromSearchHistory(action.id)
             }
         }
@@ -103,6 +100,16 @@ class SearchViewModel @Inject constructor(
                 searchQuery = query
             )
         }
+    }
+
+    private fun onSearchHistoryEntryClicked(query: String) {
+        updateTextField(query)
+        startSearch(query)
+    }
+
+    private fun onSearchClearClicked() {
+        updateTextField("")
+        clearSearch()
     }
 
     private fun onSongClicked(id: Long) {
@@ -143,6 +150,10 @@ class SearchViewModel @Inject constructor(
             }
             .flowOn(dispatchers.disk)
             .launchIn(viewModelScope)
+    }
+
+    private fun updateTextField(newText: String) {
+        textUpdater(newText)
     }
 
     private fun setupSearchInputObservation() {
