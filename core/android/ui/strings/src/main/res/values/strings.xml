@@ -26,6 +26,7 @@
     <string name="screen_title_games">Browse by Game</string>
     <string name="screen_title_composers">Browse by Composer</string>
     <string name="screen_title_tags">Browse by Tag</string>
+    <string name="screen_title_by_tag">Browse by %1$s</string>
     <string name="screen_title_all">Browse All Sheets</string>
     <string name="screen_title_favorites">Browse Favorites </string>
     <string name="screen_title_search">Search</string>

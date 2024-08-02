@@ -62,7 +62,7 @@ fun ListModel.Content(
         is SectionHeaderListModel -> SectionHeader(name = title, modifier = mod, padding = pad)
         is SearchHistoryListModel -> SearchHistoryListItem(model = this, modifier = mod, actionSink = sink, padding = pad)
         is SheetPageListModel -> SheetPageItem(model = this, actionSink = sink, modifier = mod, padding = pad)
-        is SingleTextListModel -> LabelNoThingyItem(model = this, modifier = mod, padding = pad)
+        is SingleTextListModel -> LabelNoThingyItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SquareItemListModel -> SquareItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
         is SubsectionListModel -> Subsection(model = this, actionSink = sink, modifier = mod, padding = pad)

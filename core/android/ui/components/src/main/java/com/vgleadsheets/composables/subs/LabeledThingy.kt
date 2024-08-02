@@ -119,12 +119,14 @@ private fun Menu() {
 private fun Sample() {
     Column {
         val padding = PaddingValues(horizontal = 8.dp)
+        val actionSink = PreviewActionSink { }
         LabelNoThingyItem(
             model = SingleTextListModel(
                 1234L,
                 "Paths to the future",
                 VglsAction.Noop
             ),
+            actionSink = actionSink,
             modifier = Modifier,
             padding = padding,
         )

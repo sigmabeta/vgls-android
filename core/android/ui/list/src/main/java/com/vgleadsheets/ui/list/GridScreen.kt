@@ -29,7 +29,7 @@ fun GridScreen(
     val items = state.listItems
 
     if (title.title != null) {
-        LaunchedEffect(Unit) {
+        LaunchedEffect(title.title) {
             actionSink.sendAction(VglsAction.Resume)
         }
     }

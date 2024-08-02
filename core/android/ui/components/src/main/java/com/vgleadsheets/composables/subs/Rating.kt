@@ -22,7 +22,7 @@ fun Rating(
     Row(
         modifier = modifier
     ) {
-        for (index in 1..5) {
+        for (index in 1..4) {
             val iconId = if (score >= index) {
                 com.vgleadsheets.ui.icons.R.drawable.ic_jam_filled
             } else {

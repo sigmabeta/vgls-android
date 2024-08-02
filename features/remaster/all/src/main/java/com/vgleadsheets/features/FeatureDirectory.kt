@@ -17,6 +17,7 @@ import com.vgleadsheets.remaster.parts.PartsListViewModelBrain
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
 import com.vgleadsheets.remaster.tags.list.TagListViewModelBrain
+import com.vgleadsheets.remaster.tags.values.TagValuesViewModelBrain
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
@@ -151,7 +152,14 @@ class FeatureDirectory(
                 hatchet
             )
 
-            Destination.TAGS_VALUES_LIST -> TODO()
+            Destination.TAGS_VALUES_LIST -> TagValuesViewModelBrain(
+                tagRepository,
+                dispatchers,
+                coroutineScope,
+                stringProvider,
+                hatchet
+            )
+
             Destination.TAGS_VALUES_SONG_LIST -> TODO()
             Destination.MENU -> throw IllegalArgumentException("Not a list view: $destination")
             Destination.SEARCH -> throw IllegalArgumentException("Not a list view: $destination")
