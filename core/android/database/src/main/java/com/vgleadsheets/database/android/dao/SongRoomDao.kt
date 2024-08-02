@@ -90,9 +90,6 @@ interface SongRoomDao : RoomDao<SongEntity> {
     @Query(QUERY_DELETE)
     override fun nukeTable()
 
-    // final String _sql = "SELECT * FROM song INNER JOIN song_composer_join  ON song_composer_join.songId      = id WHERE composerId = ? ORDER BY name, gameName";
-    // final String _sql = "SELECT * FROM song INNER JOIN song_tag_value_join ON song_tag_value_join.tagValueId = id WHERE songId = ?     ORDER BY name, gameName";
-
     companion object {
 
         // Query Properties

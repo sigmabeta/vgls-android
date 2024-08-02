@@ -19,7 +19,11 @@ data class State(
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = if (tagValue != null) {
-            stringProvider.getStringTwoArgs(StringId.SCREEN_TITLE_BROWSE_SONGS_WITH_TAG, tagValue.tagKeyName, tagValue.name)
+            stringProvider.getStringTwoArgs(
+                StringId.SCREEN_TITLE_BROWSE_SONGS_WITH_TAG,
+                tagValue.tagKeyName,
+                tagValue.name
+            )
         } else {
             stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_TAGS)
         }

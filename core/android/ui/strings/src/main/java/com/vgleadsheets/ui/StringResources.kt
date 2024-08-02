@@ -11,5 +11,9 @@ class StringResources(
 
     override fun getStringOneInt(string: StringId, arg: Int) = resources.getString(string.id(), arg)
 
-    override fun getStringTwoArgs(string: StringId, first: String, second: String) = resources.getString(string.id(), first, second)
+    override fun getStringTwoArgs(string: StringId, first: String, second: String) = resources.getString(
+        string.id(),
+        first,
+        second
+    )
 }
