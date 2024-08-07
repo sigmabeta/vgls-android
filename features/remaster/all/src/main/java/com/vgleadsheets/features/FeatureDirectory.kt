@@ -13,6 +13,7 @@ import com.vgleadsheets.remaster.games.detail.GameDetailViewModelBrain
 import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.remaster.home.HomeViewModelBrain
+import com.vgleadsheets.remaster.menu.MenuViewModelBrain
 import com.vgleadsheets.remaster.parts.PartsListViewModelBrain
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
@@ -25,6 +26,7 @@ import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -42,6 +44,7 @@ class FeatureDirectory(
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
     private val selectedPartManager: SelectedPartManager,
+    private val generalSettingsManager: GeneralSettingsManager,
     private val homeModuleProvider: HomeModuleProvider,
 ) : BrainProvider {
     @Suppress("LongMethod")
@@ -112,7 +115,6 @@ class FeatureDirectory(
                 hatchet,
             )
 
-            Destination.SONG_VIEWER -> TODO()
             Destination.SONG_DETAIL -> SongDetailViewModelBrain(
                 songRepository,
                 gameRepository,
@@ -167,8 +169,15 @@ class FeatureDirectory(
                 hatchet
             )
 
-            Destination.MENU -> throw IllegalArgumentException("Not a list view: $destination")
-            Destination.SEARCH -> throw IllegalArgumentException("Not a list view: $destination")
+            Destination.MENU -> MenuViewModelBrain(
+                generalSettingsManager,
+                stringProvider,
+                hatchet,
+                dispatchers,
+                coroutineScope
+            )
+
+            Destination.SEARCH, Destination.SONG_VIEWER -> throw IllegalArgumentException("Not a list view: $destination")
         }
     }
 }

@@ -9,7 +9,7 @@ enum class Destination(
     HOME("home", ArgType.NONE),
     BROWSE("browse", ArgType.NONE),
     SEARCH("search", ArgType.NONE),
-    MENU("menu", ArgType.NONE, isImplemented = false),
+    MENU("menu", ArgType.NONE),
     PART_PICKER("parts", ArgType.NONE),
     GAME_DETAIL("games", ArgType.LONG),
     GAMES_LIST("games", ArgType.NONE, renderAsGrid = true),

@@ -31,6 +31,7 @@
     <string name="screen_title_all">Browse All Sheets</string>
     <string name="screen_title_favorites">Browse Favorites </string>
     <string name="screen_title_search">Search</string>
+    <string name="screen_title_settings">Settings</string>
 
     <string name="screen_subtitle_song_detail">from %1$s</string>
 
@@ -50,6 +51,9 @@
     <string name="cta_favorite_remove">Remove from Favorites</string>
 
     <string name="label_song_also_known_as">Also Known As</string>
+    <string name="label_settings_keep_screen_on">Sheets keep screen on</string>
+    <string name="label_settings_license">Open-source Licenses</string>
+    <string name="label_settings_website">VGLeadSheets.com</string>
 
     <string name="home_section_recent_songs">Jump Back In</string>
     <string name="home_section_most_songs_games">Popular Games</string>
@@ -68,6 +72,7 @@
     <string name="browse_link_composer">By Composer</string>
     <string name="browse_link_tag">By Tag</string>
     <string name="browse_link_sheets">All Sheets</string>
+
 
     <string name="notif_update_success">New Sheets Available</string>
 

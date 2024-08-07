@@ -16,6 +16,7 @@ fun StringId.id(): Int {
         StringId.SCREEN_TITLE_BROWSE_ALL -> R.string.screen_title_all
         StringId.SCREEN_TITLE_BROWSE_FAVORITES -> R.string.screen_title_favorites
         StringId.SCREEN_TITLE_SEARCH -> R.string.screen_title_search
+        StringId.SCREEN_TITLE_SETTINGS -> R.string.screen_title_settings
 
         StringId.SCREEN_SUBTITLE_SONG_DETAIL -> R.string.screen_subtitle_song_detail
 
@@ -71,6 +72,10 @@ fun StringId.id(): Int {
         StringId.PART_LONG_ALTO -> R.string.part_long_alto
         StringId.PART_LONG_BASS -> R.string.part_long_bass
         StringId.PART_LONG_VOCAL -> R.string.part_long_vocal
+
+        StringId.SETTINGS_LABEL_KEEP_SCREEN_ON -> R.string.label_settings_keep_screen_on
+        StringId.SETTINGS_LABEL_LICENSES -> R.string.label_settings_license
+        StringId.SETTINGS_LABEL_WEBSITE -> R.string.label_settings_website
 
         StringId.NOTIF_UPDATE_SUCCESS -> R.string.notif_update_success
 

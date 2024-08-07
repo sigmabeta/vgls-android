@@ -122,9 +122,9 @@ private fun Sample() {
         val actionSink = PreviewActionSink { }
         LabelNoThingyItem(
             model = SingleTextListModel(
-                1234L,
-                "Paths to the future",
-                VglsAction.Noop
+                dataId = 1234L,
+                name = "Paths to the future",
+                clickAction = VglsAction.Noop
             ),
             actionSink = actionSink,
             modifier = Modifier,

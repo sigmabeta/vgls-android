@@ -12,6 +12,7 @@ import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
@@ -48,6 +49,7 @@ class ActivityModule {
         favoriteRepository: FavoriteRepository,
         tagRepository: TagRepository,
         homeModuleProvider: HomeModuleProvider,
+        generalSettingsManager: GeneralSettingsManager,
     ): BrainProvider =
         FeatureDirectory(
             dispatchers = dispatchers,
@@ -62,5 +64,6 @@ class ActivityModule {
             favoriteRepository = favoriteRepository,
             tagRepository = tagRepository,
             homeModuleProvider = homeModuleProvider,
+            generalSettingsManager = generalSettingsManager,
         )
 }

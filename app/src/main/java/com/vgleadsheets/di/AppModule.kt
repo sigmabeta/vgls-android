@@ -13,6 +13,7 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
 import com.vgleadsheets.repository.ThreeTenTime
+import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.storage.common.Storage
@@ -22,10 +23,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import okhttp3.Interceptor
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
+import okhttp3.Interceptor
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -78,6 +79,16 @@ object AppModule {
         storage: Storage
     ): EnvironmentManager {
         return EnvironmentManager(
+            storage = storage
+        )
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideGeneralSettingsManager(
+        storage: Storage
+    ): GeneralSettingsManager {
+        return GeneralSettingsManager(
             storage = storage
         )
     }
