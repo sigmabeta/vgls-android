@@ -17,6 +17,7 @@ fun StringId.id(): Int {
         StringId.SCREEN_TITLE_BROWSE_FAVORITES -> R.string.screen_title_favorites
         StringId.SCREEN_TITLE_SEARCH -> R.string.screen_title_search
         StringId.SCREEN_TITLE_SETTINGS -> R.string.screen_title_settings
+        StringId.SCREEN_TITLE_LICENSES -> R.string.screen_title_licenses
 
         StringId.SCREEN_SUBTITLE_SONG_DETAIL -> R.string.screen_subtitle_song_detail
 

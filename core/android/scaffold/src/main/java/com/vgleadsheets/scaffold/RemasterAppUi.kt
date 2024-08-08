@@ -36,6 +36,7 @@ import com.vgleadsheets.search.searchScreenNavEntry
 import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarViewModel
+import com.vgleadsheets.ui.licenses.licensesScreenNavEntry
 import com.vgleadsheets.ui.list.listScreenEntry
 import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
 
@@ -136,6 +137,11 @@ private fun MainContent(
         )
 
         viewerScreenNavEntry(
+            topBarState = topBarState,
+            globalModifier = globalModifier,
+        )
+
+        licensesScreenNavEntry(
             topBarState = topBarState,
             globalModifier = globalModifier,
         )

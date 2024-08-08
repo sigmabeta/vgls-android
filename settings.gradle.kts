@@ -53,6 +53,7 @@ include(
     ":core:android:database",
     ":core:android:firebase",
     ":core:android:images",
+    ":core:android:licenses",
     ":core:android:logging",
     ":core:android:mvrx",
     ":core:android:nav",

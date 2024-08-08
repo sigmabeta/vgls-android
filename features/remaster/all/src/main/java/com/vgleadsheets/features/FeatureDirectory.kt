@@ -177,7 +177,9 @@ class FeatureDirectory(
                 coroutineScope
             )
 
-            Destination.SEARCH, Destination.SONG_VIEWER -> throw IllegalArgumentException("Not a list view: $destination")
+            Destination.SEARCH,
+            Destination.SONG_VIEWER,
+            Destination.LICENSES -> throw IllegalArgumentException("Not a list view: $destination")
         }
     }
 }

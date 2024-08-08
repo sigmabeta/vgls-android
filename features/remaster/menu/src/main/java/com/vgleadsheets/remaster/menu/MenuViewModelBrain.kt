@@ -1,9 +1,11 @@
 package com.vgleadsheets.remaster.menu
 
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +32,7 @@ class MenuViewModelBrain(
             is VglsAction.InitNoArgs -> fetchSettings()
             is VglsAction.Resume -> return
             is Action.KeepScreenOnClicked -> onKeepScreenOnClicked()
+            is Action.LicensesLinkClicked -> onLicensesLinkClicked()
             else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
     }
@@ -37,6 +40,10 @@ class MenuViewModelBrain(
     private fun onKeepScreenOnClicked() {
         val oldValue = (internalUiState.value as State).keepScreenOn ?: return
         generalSettingsManager.setKeepScreenOn(!oldValue)
+    }
+
+    private fun onLicensesLinkClicked() {
+        navigateTo(Destination.LICENSES.noArgs())
     }
 
     private fun fetchSettings() {
@@ -51,5 +58,14 @@ class MenuViewModelBrain(
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
+    }
+
+    private fun navigateTo(destinationString: String) {
+        emitEvent(
+            VglsEvent.NavigateTo(
+                destinationString,
+                Destination.MENU.destName
+            )
+        )
     }
 }

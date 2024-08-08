@@ -73,6 +73,7 @@ stetho = "1.6.0"
 supportSqlite = "3.45.0"
 threeten = "1.4.0"
 turbine = "1.0.0"
+webview = "0.33.6"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -175,6 +176,7 @@ stetho-okhttp = { group = "com.facebook.stetho", name = "stetho-okhttp3", versio
 support-sqlite = { group = "com.github.requery", name = "sqlite-android", version.ref = "supportSqlite" }
 threeten = { group = "com.jakewharton.threetenabp", name = "threetenabp", version.ref = "threeten" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+webview = { group = "io.github.kevinnzou", name = "compose-webview", version.ref = "webview" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

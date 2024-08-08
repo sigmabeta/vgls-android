@@ -8,6 +8,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
 
+    implementation(projects.core.android.licenses)
     implementation(projects.core.android.ui.core)
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.list)
