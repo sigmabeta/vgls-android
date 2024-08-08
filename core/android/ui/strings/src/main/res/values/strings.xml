@@ -55,6 +55,7 @@
     <string name="label_settings_keep_screen_on">Sheets keep screen on</string>
     <string name="label_settings_license">Open-source Licenses</string>
     <string name="label_settings_website">VGLeadSheets.com</string>
+    <string name="label_settings_gb">Giant Bomb Wiki</string>
 
     <string name="home_section_recent_songs">Jump Back In</string>
     <string name="home_section_most_songs_games">Popular Games</string>

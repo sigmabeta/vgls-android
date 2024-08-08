@@ -37,4 +37,7 @@ open class VglsEvent {
     data class ClearNotif(val id: Long) : VglsEvent()
 
     data object RefreshDb : VglsEvent()
+
+    data object WebsiteLinkClicked : VglsEvent()
+    data object GiantBombLinkClicked : VglsEvent()
 }

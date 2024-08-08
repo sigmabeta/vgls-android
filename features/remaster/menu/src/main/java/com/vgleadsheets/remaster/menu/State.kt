@@ -24,6 +24,7 @@ data class State(
         keepScreenOn(stringProvider),
         licenses(stringProvider),
         website(stringProvider),
+        giantBomb(stringProvider),
     )
 
     private fun keepScreenOn(stringProvider: StringProvider) = CheckableListModel(
@@ -41,5 +42,10 @@ data class State(
     private fun website(stringProvider: StringProvider) = SingleTextListModel(
         name = stringProvider.getString(StringId.SETTINGS_LABEL_WEBSITE),
         clickAction = Action.WebsiteLinkClicked
+    )
+
+    private fun giantBomb(stringProvider: StringProvider) = SingleTextListModel(
+        name = stringProvider.getString(StringId.SETTINGS_LABEL_GIANT_BOMB),
+        clickAction = Action.GiantBombClicked
     )
 }

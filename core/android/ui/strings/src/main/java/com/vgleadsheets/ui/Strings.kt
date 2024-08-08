@@ -77,6 +77,7 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_KEEP_SCREEN_ON -> R.string.label_settings_keep_screen_on
         StringId.SETTINGS_LABEL_LICENSES -> R.string.label_settings_license
         StringId.SETTINGS_LABEL_WEBSITE -> R.string.label_settings_website
+        StringId.SETTINGS_LABEL_GIANT_BOMB -> R.string.label_settings_gb
 
         StringId.NOTIF_UPDATE_SUCCESS -> R.string.notif_update_success
 

@@ -32,6 +32,8 @@ class MenuViewModelBrain(
             is VglsAction.InitNoArgs -> fetchSettings()
             is VglsAction.Resume -> return
             is Action.KeepScreenOnClicked -> onKeepScreenOnClicked()
+            is Action.WebsiteLinkClicked -> onWebsiteLinkClicked()
+            is Action.GiantBombClicked -> onGiantBombClicked()
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
             else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
@@ -44,6 +46,14 @@ class MenuViewModelBrain(
 
     private fun onLicensesLinkClicked() {
         navigateTo(Destination.LICENSES.noArgs())
+    }
+
+    private fun onWebsiteLinkClicked() {
+        emitEvent(VglsEvent.WebsiteLinkClicked)
+    }
+
+    private fun onGiantBombClicked() {
+        emitEvent(VglsEvent.GiantBombLinkClicked)
     }
 
     private fun fetchSettings() {

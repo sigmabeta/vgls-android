@@ -1,5 +1,7 @@
 package com.vgleadsheets.nav
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -16,10 +18,13 @@ import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
@@ -36,6 +41,12 @@ class NavViewModel @Inject constructor(
     lateinit var navController: NavController
     lateinit var snackbarScope: CoroutineScope
     lateinit var snackbarHostState: SnackbarHostState
+
+    private val internalIntentFlow = MutableSharedFlow<Intent>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val intents = internalIntentFlow.asSharedFlow()
 
     override fun initialState() = NavState()
 
@@ -56,6 +67,8 @@ class NavViewModel @Inject constructor(
                 is VglsEvent.ShowUiChrome -> showSystemUi()
                 is VglsEvent.ClearNotif -> clearNotif(event.id)
                 is VglsEvent.RefreshDb -> refreshDb()
+                is VglsEvent.GiantBombLinkClicked -> launchWebsite(URL_GB_WEBSITE)
+                is VglsEvent.WebsiteLinkClicked -> launchWebsite(URL_VGLS_WEBSITE)
             }
         }
     }
@@ -68,6 +81,12 @@ class NavViewModel @Inject constructor(
         updateManager.refresh()
         notifManager.removeNotif(id = StringId.ERROR_DB_UPDATE.hashCode().toLong())
         notifManager.removeNotif(id = StringId.ERROR_API_UPDATE.hashCode().toLong())
+    }
+
+    private fun launchWebsite(url: String) {
+        val launcher = Intent(Intent.ACTION_VIEW)
+        launcher.data = Uri.parse(url)
+        internalIntentFlow.tryEmit(launcher)
     }
 
     private fun launchSnackbar(snackbarEvent: VglsEvent.ShowSnackbar) {
@@ -135,5 +154,10 @@ class NavViewModel @Inject constructor(
             }
             emitEvent(VglsEvent.UiChromeBecameHidden)
         }
+    }
+
+    companion object {
+        private const val URL_VGLS_WEBSITE = "https://www.vgleadsheets.com/"
+        private const val URL_GB_WEBSITE = "https://www.giantbomb.com/"
     }
 }
