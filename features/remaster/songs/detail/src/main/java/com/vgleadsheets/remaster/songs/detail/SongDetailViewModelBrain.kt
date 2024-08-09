@@ -51,6 +51,7 @@ class SongDetailViewModelBrain(
             is Action.TagValueClicked -> onTagValueClicked(action.id)
             is Action.AddFavoriteClicked -> onAddFavoriteClicked()
             is Action.RemoveFavoriteClicked -> onRemoveFavoriteClicked()
+            is Action.SearchYoutubeClicked -> onSearchYoutubeClicked()
         }
     }
 
@@ -174,37 +175,36 @@ class SongDetailViewModelBrain(
             .launchIn(coroutineScope)
     }
 
-    private fun onSongThumbnailClicked(id: Long, pageNumber: Int) {
+    private fun onSearchYoutubeClicked() {
+        val state = internalUiState.value as State
+        val song = state.song ?: return
+        val query = "${song.gameName} - ${song.name} Music"
+
         emitEvent(
-            VglsEvent.NavigateTo(
-                Destination.SONG_VIEWER.forTwoArgs(id, pageNumber.toLong()),
-                Destination.SONG_DETAIL.name
-            )
+            VglsEvent.SearchYoutubeClicked(query)
         )
+    }
+
+    private fun onSongThumbnailClicked(id: Long, pageNumber: Int) {
+        navigateTo(Destination.SONG_VIEWER.forTwoArgs(id, pageNumber.toLong()))
     }
 
     private fun onGameClicked(id: Long) {
-        emitEvent(
-            VglsEvent.NavigateTo(
-                Destination.GAME_DETAIL.forId(id),
-                Destination.SONG_DETAIL.name
-            )
-        )
+        navigateTo(Destination.GAME_DETAIL.forId(id))
     }
 
     private fun onComposerClicked(id: Long) {
-        emitEvent(
-            VglsEvent.NavigateTo(
-                Destination.COMPOSER_DETAIL.forId(id),
-                Destination.SONG_DETAIL.name
-            )
-        )
+        navigateTo(Destination.COMPOSER_DETAIL.forId(id))
     }
 
     private fun onTagValueClicked(id: Long) {
+        navigateTo(Destination.TAGS_VALUES_SONG_LIST.forId(id))
+    }
+
+    private fun navigateTo(destination: String) {
         emitEvent(
             VglsEvent.NavigateTo(
-                Destination.TAGS_VALUES_SONG_LIST.forId(id),
+                destination,
                 Destination.SONG_DETAIL.name
             )
         )

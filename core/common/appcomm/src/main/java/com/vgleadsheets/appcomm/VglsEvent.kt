@@ -38,6 +38,8 @@ open class VglsEvent {
 
     data object RefreshDb : VglsEvent()
 
-    data object WebsiteLinkClicked : VglsEvent()
+    data class SearchYoutubeClicked(val query: String) : VglsEvent()
+
     data object GiantBombLinkClicked : VglsEvent()
+    data object WebsiteLinkClicked : VglsEvent()
 }

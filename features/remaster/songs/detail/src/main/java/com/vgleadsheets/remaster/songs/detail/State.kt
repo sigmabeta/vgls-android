@@ -96,28 +96,11 @@ data class State(
             emptyList()
         }
 
-        val ctaModels = if (song != null && isFavorite != null) {
-            val (icon, label, action) = if (isFavorite) {
-                Triple(
-                    Icon.JAM_FILLED,
-                    StringId.CTA_FAVORITE_REMOVE,
-                    Action.RemoveFavoriteClicked,
-                )
-            } else {
-                Triple(
-                    Icon.JAM_EMPTY,
-                    StringId.CTA_FAVORITE_ADD,
-                    Action.AddFavoriteClicked,
-                )
-            }
-
+        val ctaModels = if (song != null) {
             listOf(
-                CtaListModel(
-                    icon = icon,
-                    name = stringProvider.getString(label),
-                    clickAction = action,
-                )
-            )
+                favoriteCtaItem(stringProvider),
+                searchYoutubeItem(stringProvider),
+            ).flatten()
         } else {
             emptyList()
         }
@@ -214,6 +197,46 @@ data class State(
         }
 
         return (songModel + ctaModels + composerModels + gameModel + difficultyModels + aboutModels).toPersistentList()
+    }
+
+    private fun favoriteCtaItem(
+        stringProvider: StringProvider
+    ): List<CtaListModel> {
+        if (isFavorite == null) {
+            return emptyList()
+        }
+
+        val (icon, label, action) = if (isFavorite) {
+            Triple(
+                Icon.JAM_FILLED,
+                StringId.CTA_FAVORITE_REMOVE,
+                Action.RemoveFavoriteClicked,
+            )
+        } else {
+            Triple(
+                Icon.JAM_EMPTY,
+                StringId.CTA_FAVORITE_ADD,
+                Action.AddFavoriteClicked,
+            )
+        }
+
+        return listOf(
+            CtaListModel(
+                icon = icon,
+                name = stringProvider.getString(label),
+                clickAction = action,
+            )
+        )
+    }
+
+    private fun searchYoutubeItem(stringProvider: StringProvider): List<CtaListModel> {
+        return listOf(
+            CtaListModel(
+                icon = Icon.SEARCH_YOUTUBE,
+                name = stringProvider.getString(StringId.CTA_SEARCH_YOUTUBE),
+                clickAction = Action.SearchYoutubeClicked,
+            )
+        )
     }
 
     private fun dedupeTagValues(

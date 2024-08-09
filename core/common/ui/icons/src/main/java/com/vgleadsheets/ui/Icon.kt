@@ -8,4 +8,5 @@ enum class Icon {
     PERSON,
     REFRESH,
     TAG,
+    SEARCH_YOUTUBE,
 }

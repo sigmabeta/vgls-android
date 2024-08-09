@@ -68,6 +68,7 @@ class NavViewModel @Inject constructor(
                 is VglsEvent.ClearNotif -> clearNotif(event.id)
                 is VglsEvent.RefreshDb -> refreshDb()
                 is VglsEvent.GiantBombLinkClicked -> launchWebsite(URL_GB_WEBSITE)
+                is VglsEvent.SearchYoutubeClicked -> launchWebsite(getYoutubeSearchUrlForQuery(event.query))
                 is VglsEvent.WebsiteLinkClicked -> launchWebsite(URL_VGLS_WEBSITE)
             }
         }

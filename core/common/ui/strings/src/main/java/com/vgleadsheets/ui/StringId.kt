@@ -35,6 +35,7 @@ enum class StringId {
 
     CTA_FAVORITE_ADD,
     CTA_FAVORITE_REMOVE,
+    CTA_SEARCH_YOUTUBE,
 
     LABEL_SONG_ALSO_KNOWN_AS,
 
