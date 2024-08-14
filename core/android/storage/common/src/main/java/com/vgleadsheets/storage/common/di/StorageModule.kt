@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.coroutines.VglsDispatchers.Companion.DEP_NAME_DISPATCHER_REGULAR
 import com.vgleadsheets.storage.common.AndroidDataStore
 import com.vgleadsheets.storage.common.Storage
 import dagger.Module
@@ -12,6 +13,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 
@@ -33,7 +35,7 @@ object StorageModule {
     fun provideStorage(
         dataStore: DataStore<Preferences>,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers
+        @Named(DEP_NAME_DISPATCHER_REGULAR) dispatchers: VglsDispatchers
     ): Storage = AndroidDataStore(
         dataStore = dataStore,
         coroutineScope = coroutineScope,

@@ -21,6 +21,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -48,6 +50,9 @@ class NavViewModel @Inject constructor(
     )
     val intents = internalIntentFlow.asSharedFlow()
 
+    private val internalRestartChannel = Channel<Unit>()
+    val restartChannel: ReceiveChannel<Unit> = internalRestartChannel
+
     override fun initialState() = NavState()
 
     override fun handleAction(action: VglsAction) {
@@ -70,7 +75,14 @@ class NavViewModel @Inject constructor(
                 is VglsEvent.GiantBombLinkClicked -> launchWebsite(URL_GB_WEBSITE)
                 is VglsEvent.SearchYoutubeClicked -> launchWebsite(getYoutubeSearchUrlForQuery(event.query))
                 is VglsEvent.WebsiteLinkClicked -> launchWebsite(URL_VGLS_WEBSITE)
+                is VglsEvent.RestartApp -> restartApp()
             }
+        }
+    }
+
+    private fun restartApp() {
+        viewModelScope.launch {
+            internalRestartChannel.send(Unit)
         }
     }
 

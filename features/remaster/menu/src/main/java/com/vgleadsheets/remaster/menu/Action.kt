@@ -7,4 +7,7 @@ sealed class Action : VglsAction() {
     data object LicensesLinkClicked : Action()
     data object WebsiteLinkClicked : Action()
     data object GiantBombClicked : Action()
+
+    data object DebugDelayClicked : Action()
+    data object RestartAppClicked : Action()
 }

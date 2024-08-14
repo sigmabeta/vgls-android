@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.nav.BuildConfig
 import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -17,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 
 @AndroidEntryPoint
 class RemasteredActivity :
@@ -39,6 +42,7 @@ class RemasteredActivity :
         val showSystemBars = { windowInsetController.show(WindowInsetsCompat.Type.systemBars()) }
 
         setupIntentLauncher()
+        setupRestartChannel()
 
         setContent {
             VglsMaterial {
@@ -49,6 +53,27 @@ class RemasteredActivity :
                 )
             }
         }
+    }
+
+    private fun setupRestartChannel() {
+        if (BuildConfig.DEBUG) {
+            navViewModel.restartChannel
+                .receiveAsFlow()
+                .onEach { restartApp() }
+                .launchIn(navViewModel.viewModelScope)
+        }
+    }
+
+    private fun restartApp() {
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        val componentName = intent!!.component
+        val mainIntent = Intent.makeRestartActivityTask(componentName)
+
+        // Required for API 34 and later
+        // Ref: https://developer.android.com/about/versions/14/behavior-changes-14#safer-intents
+        mainIntent.setPackage(packageName)
+        startActivity(mainIntent)
+        Runtime.getRuntime().exit(0)
     }
 
     private fun setupIntentLauncher() {

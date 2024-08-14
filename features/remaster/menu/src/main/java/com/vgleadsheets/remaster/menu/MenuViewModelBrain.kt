@@ -6,6 +6,7 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.onEach
 
 class MenuViewModelBrain(
     private val generalSettingsManager: GeneralSettingsManager,
+    private val debugSettingsManager: DebugSettingsManager,
     stringProvider: StringProvider,
     hatchet: Hatchet,
     private val dispatchers: VglsDispatchers,
@@ -35,6 +37,8 @@ class MenuViewModelBrain(
             is Action.WebsiteLinkClicked -> onWebsiteLinkClicked()
             is Action.GiantBombClicked -> onGiantBombClicked()
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
+            is Action.DebugDelayClicked -> onDebugDelayClicked()
+            is Action.RestartAppClicked -> onRestartAppClicked()
             else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
     }
@@ -56,8 +60,15 @@ class MenuViewModelBrain(
         emitEvent(VglsEvent.GiantBombLinkClicked)
     }
 
+    private fun onDebugDelayClicked() {
+        val oldValue = (internalUiState.value as State).debugShouldDelay ?: return
+        debugSettingsManager.setShouldDelay(!oldValue)
+    }
+
     private fun fetchSettings() {
         fetchKeepScreenOn()
+
+        fetchDebugShouldDelay()
     }
 
     private fun fetchKeepScreenOn() {
@@ -68,6 +79,22 @@ class MenuViewModelBrain(
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)
+    }
+
+    private fun fetchDebugShouldDelay() {
+        debugSettingsManager
+            .getShouldDelay()
+            .onEach { value ->
+                updateState { (it as State).copy(debugShouldDelay = value ?: false) }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
+    }
+
+    private fun onRestartAppClicked() {
+        emitEvent(
+            VglsEvent.RestartApp
+        )
     }
 
     private fun navigateTo(destinationString: String) {

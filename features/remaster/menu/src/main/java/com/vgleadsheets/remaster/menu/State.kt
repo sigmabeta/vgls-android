@@ -2,6 +2,7 @@ package com.vgleadsheets.remaster.menu
 
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
@@ -13,7 +14,8 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class State(
     val selectedPart: Part? = null,
-    val keepScreenOn: Boolean? = null
+    val keepScreenOn: Boolean? = null,
+    val debugShouldDelay: Boolean? = null,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_SETTINGS),
@@ -23,8 +25,21 @@ data class State(
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> = persistentListOf(
         keepScreenOn(stringProvider),
         licenses(stringProvider),
+        sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_ABOUT)),
         website(stringProvider),
         giantBomb(stringProvider),
+        sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)),
+        shouldDelay(stringProvider),
+        restartApp(stringProvider),
+    )
+
+    private fun restartApp(stringProvider: StringProvider) = SingleTextListModel(
+        name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_RESTART),
+        clickAction = Action.RestartAppClicked
+    )
+
+    private fun sectionHeader(title: String) = SectionHeaderListModel(
+        title = title
     )
 
     private fun keepScreenOn(stringProvider: StringProvider) = CheckableListModel(
@@ -47,5 +62,12 @@ data class State(
     private fun giantBomb(stringProvider: StringProvider) = SingleTextListModel(
         name = stringProvider.getString(StringId.SETTINGS_LABEL_GIANT_BOMB),
         clickAction = Action.GiantBombClicked
+    )
+
+    private fun shouldDelay(stringProvider: StringProvider) = CheckableListModel(
+        name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_DELAY),
+        clickAction = Action.DebugDelayClicked,
+        settingId = StringId.SETTINGS_LABEL_DEBUG_DELAY.name,
+        checked = debugShouldDelay ?: false,
     )
 }

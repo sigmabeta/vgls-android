@@ -32,6 +32,8 @@ fun StringId.id(): Int {
         StringId.SECTION_HEADER_GAMES_FROM_COMPOSER -> R.string.section_header_games_from_composer
         StringId.SECTION_HEADER_DIFFICULTY_FOR_SONG -> R.string.section_header_difficulty_for_song
         StringId.SECTION_HEADER_ABOUT_SONG -> R.string.section_header_about_song
+        StringId.SECTION_HEADER_SETTINGS_ABOUT -> R.string.section_header_settings_about
+        StringId.SECTION_HEADER_SETTINGS_DEBUG -> R.string.section_header_settings_debug
 
         StringId.CTA_FAVORITE_ADD -> R.string.cta_favorite_add
         StringId.CTA_FAVORITE_REMOVE -> R.string.cta_favorite_remove
@@ -79,6 +81,8 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_LICENSES -> R.string.label_settings_license
         StringId.SETTINGS_LABEL_WEBSITE -> R.string.label_settings_website
         StringId.SETTINGS_LABEL_GIANT_BOMB -> R.string.label_settings_gb
+        StringId.SETTINGS_LABEL_DEBUG_DELAY -> R.string.label_settings_debug_delay
+        StringId.SETTINGS_LABEL_DEBUG_RESTART -> R.string.label_settings_debug_restart
 
         StringId.NOTIF_UPDATE_SUCCESS -> R.string.notif_update_success
 

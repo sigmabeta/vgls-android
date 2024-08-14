@@ -42,4 +42,7 @@ open class VglsEvent {
 
     data object GiantBombLinkClicked : VglsEvent()
     data object WebsiteLinkClicked : VglsEvent()
+
+    data object RestartApp : VglsEvent()
+
 }

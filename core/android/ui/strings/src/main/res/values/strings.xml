@@ -47,6 +47,8 @@
     <string name="section_header_games_from_composer">Games on VGLS</string>
     <string name="section_header_difficulty_for_song">Difficulty</string>
     <string name="section_header_about_song">Details</string>
+    <string name="section_header_settings_about">About VGLS</string>
+    <string name="section_header_settings_debug">Debug</string>
 
     <string name="cta_favorite_add">Add to Favorites</string>
     <string name="cta_favorite_remove">Remove from Favorites</string>
@@ -57,6 +59,8 @@
     <string name="label_settings_license">Open-source Licenses</string>
     <string name="label_settings_website">VGLeadSheets.com</string>
     <string name="label_settings_gb">Giant Bomb Wiki</string>
+    <string name="label_settings_debug_delay">Slow down screen loads</string>
+    <string name="label_settings_debug_restart">Restart App</string>
 
     <string name="home_section_recent_songs">Jump Back In</string>
     <string name="home_section_most_songs_games">Popular Games</string>

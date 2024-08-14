@@ -8,11 +8,14 @@ import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventDispatcherReal
 import com.vgleadsheets.appcomm.di.ActionDeserializer
+import com.vgleadsheets.coroutines.DispatcherConfigProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.dispatchers.DispatcherConfigProviderImpl
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
 import com.vgleadsheets.repository.ThreeTenTime
+import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
@@ -95,6 +98,16 @@ object AppModule {
 
     @Provides
     @Singleton
+    internal fun provideDebugSettingsManager(
+        storage: Storage
+    ): DebugSettingsManager {
+        return DebugSettingsManager(
+            storage = storage
+        )
+    }
+
+    @Provides
+    @Singleton
     internal fun provideSelectedPartManager(
         storage: Storage
     ): SelectedPartManager {
@@ -115,6 +128,14 @@ object AppModule {
         partManager,
         coroutineScope,
         dispatchers,
+    )
+
+    @Provides
+    @Singleton
+    internal fun provideDispatcherConfigProvider(
+        debugSettingsManager: DebugSettingsManager,
+    ): DispatcherConfigProvider = DispatcherConfigProviderImpl(
+        debugSettingsManager
     )
 
     @Provides
