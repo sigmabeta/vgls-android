@@ -44,5 +44,4 @@ open class VglsEvent {
     data object WebsiteLinkClicked : VglsEvent()
 
     data object RestartApp : VglsEvent()
-
 }
