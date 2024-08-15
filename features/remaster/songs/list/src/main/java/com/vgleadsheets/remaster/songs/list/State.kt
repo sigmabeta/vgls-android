@@ -32,6 +32,7 @@ data class State(
         }
     }
 
+    @Suppress("MagicNumber")
     private fun loading(operationName: String) = List(20) { index ->
         LoadingListModel(
             withImage = true,
