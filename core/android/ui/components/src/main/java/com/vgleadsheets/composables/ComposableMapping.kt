@@ -17,8 +17,7 @@ import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingImageNameCaptionListModel
-import com.vgleadsheets.components.LoadingNameCaptionListModel
+import com.vgleadsheets.components.LoadingListModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.NetworkRefreshingListModel
@@ -67,22 +66,20 @@ fun ListModel.Content(
         is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
         is SubsectionListModel -> Subsection(model = this, actionSink = sink, modifier = mod, padding = pad)
         is WideItemListModel -> WideItem(model = this, actionSink = sink, modifier = mod, padding = pad)
-        is LoadingImageNameCaptionListModel -> LoadingListItem(
-            withImage = true,
+        is LoadingListModel -> LoadingListItem(
+            withImage = withImage,
+            withCaption = withCaption,
             seed = dataId,
-            modifier = mod
-        )
-
-        is LoadingNameCaptionListModel -> LoadingListItem(
-            withImage = false,
-            seed = dataId,
-            modifier = mod
+            modifier = mod,
+            padding = pad,
         )
 
         is NetworkRefreshingListModel -> LoadingListItem(
             withImage = true,
+            withCaption = true,
             seed = dataId,
             modifier = mod,
+            padding = pad,
         )
 
         else -> throw IllegalArgumentException("No composable exists for this item type.")

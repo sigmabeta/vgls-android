@@ -29,11 +29,11 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
+import java.util.Locale
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
-import java.util.Locale
 
 class DbUpdater(
     private val vglsApi: VglsApi,
@@ -220,7 +220,7 @@ class DbUpdater(
             emit(LCE.Content(digest))
         } catch (ex: Exception) {
             hatchet.e("API request for digest failed: ${ex.message}")
-            emit(LCE.Error(ex))
+            emit(LCE.Error("Load digest", ex))
         }
     }
 

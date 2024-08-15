@@ -1,9 +1,7 @@
 package com.vgleadsheets.composables
 
-import android.content.res.Configuration
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,34 +10,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
 import kotlin.random.Random
 
 @Composable
 @Suppress("MagicNumber")
 fun LoadingListItem(
     withImage: Boolean,
+    withCaption: Boolean,
     seed: Long,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
-            )
+            .padding(padding)
     ) {
         val randomizer = Random(seed)
         val randomDelay = randomizer.nextInt(200)
@@ -63,26 +58,32 @@ fun LoadingListItem(
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
+            val paddingModifier = if (withCaption) {
+                Modifier.padding(top = 12.dp)
+            } else {
+                Modifier.padding(vertical = 16.dp)
+            }
             ElevatedPill(
-                modifier = Modifier
-                    .padding(top = 12.dp)
-                    .height(12.dp)
+                modifier = paddingModifier
+                    .height(14.dp)
                     .fillMaxWidth(randomizer.next())
             ) {
-                Flasher(startDelay = randomDelay + 100)
+                Flasher(startDelay = randomDelay)
             }
 
-            Spacer(
-                modifier = Modifier.height(4.dp)
-            )
+            if (withCaption) {
+                Spacer(
+                    modifier = Modifier.height(4.dp)
+                )
 
-            ElevatedPill(
-                modifier = Modifier
-                    .padding(top = 4.dp, bottom = 12.dp)
-                    .height(10.dp)
-                    .fillMaxWidth(randomizer.next())
-            ) {
-                Flasher(startDelay = randomDelay + 200)
+                ElevatedPill(
+                    modifier = Modifier
+                        .padding(top = 4.dp, bottom = 12.dp)
+                        .height(10.dp)
+                        .fillMaxWidth(randomizer.next())
+                ) {
+                    Flasher(startDelay = randomDelay)
+                }
             }
         }
     }
@@ -93,95 +94,59 @@ private fun Random.next() = nextFloat().coerceAtLeast(0.3f)
 
 @Preview
 @Composable
-@Suppress("MagicNumber")
 private fun Light() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            Sample(
-                1845L
-            )
-        }
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-@Suppress("MagicNumber")
-private fun Dark() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            Sample(2345L)
-        }
+    FullScreenOf {
+        Sample(
+            seed = Random.nextLong(),
+            withImage = false,
+            withCaption = false,
+        )
     }
 }
 
 @Preview
 @Composable
-@Suppress("MagicNumber")
 private fun LightWithImage() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            SampleWithImage(5678L)
-        }
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-@Suppress("MagicNumber")
-private fun DarkWithImage() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            SampleWithImage(2345L)
-        }
+    FullScreenOf {
+        Sample(
+            seed = Random.nextLong(),
+            withImage = true,
+            withCaption = false,
+        )
     }
 }
 
 @Preview
 @Composable
-@Suppress("MagicNumber")
-private fun Menu() {
-    VglsMaterialMenu {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            SampleWithImage(5678L)
-        }
+private fun LightWithImageAndCaption() {
+    FullScreenOf {
+        Sample(
+            seed = Random.nextLong(),
+            withImage = true,
+            withCaption = true,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun DarkWithImageAndCaption() {
+    FullScreenOf(darkTheme = true) {
+        Sample(
+            seed = Random.nextLong(),
+            withImage = true,
+            withCaption = true,
+        )
     }
 }
 
 @Composable
-private fun Sample(seed: Long) {
+private fun Sample(seed: Long, withImage: Boolean, withCaption: Boolean) {
     LoadingListItem(
-        withImage = false,
+        withImage = withImage,
+        withCaption = withCaption,
         seed = seed,
-        modifier = Modifier
-    )
-}
-
-@Composable
-private fun SampleWithImage(seed: Long) {
-    LoadingListItem(
-        withImage = true,
-        seed = seed,
-        modifier = Modifier
+        modifier = Modifier,
+        padding = PaddingValues(horizontal = 16.dp)
     )
 }

@@ -3,6 +3,7 @@ package com.vgleadsheets.composables.previews.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
@@ -14,6 +15,14 @@ import java.util.Random
 @Composable
 private fun SongListLight(modifier: Modifier = Modifier) {
     val screenState = songScreenState()
+
+    ScreenPreviewLight(screenState)
+}
+
+@Preview
+@Composable
+private fun SongListLoading(modifier: Modifier = Modifier) {
+    val screenState = loadingScreenState()
 
     ScreenPreviewLight(screenState)
 }
@@ -39,7 +48,11 @@ private fun songScreenState(): State {
     val songs = modelGenerator.randomSongs()
 
     val screenState = State(
-        songs = songs,
+        songs = LCE.Content(songs),
     )
     return screenState
 }
+
+private fun loadingScreenState() = State(
+    songs = LCE.Loading("songs.list"),
+)

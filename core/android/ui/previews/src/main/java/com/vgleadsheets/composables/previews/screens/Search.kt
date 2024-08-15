@@ -100,6 +100,6 @@ private fun Content(
         results = state.resultItems(stringProvider),
         actionSink = actionSink,
         modifier = Modifier,
-        textFieldUpdater = textFieldUpdater
+        textFieldUpdater = { }
     )
 }

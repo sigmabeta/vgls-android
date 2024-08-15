@@ -27,8 +27,8 @@ fun Flasher(
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val animatedAlphaValue by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 0.1f,
+        initialValue = 0.4f,
+        targetValue = 0.3f,
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = 500 - (startDelay / 3),

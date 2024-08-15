@@ -118,7 +118,7 @@ private fun Menu() {
 @Suppress("MagicNumber", "LongMethod")
 private fun Sample() {
     Column {
-        val padding = PaddingValues(horizontal = 8.dp)
+        val padding = PaddingValues(horizontal = 16.dp)
         val actionSink = PreviewActionSink { }
         LabelNoThingyItem(
             model = SingleTextListModel(
