@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.remaster.home.Action
@@ -22,23 +23,29 @@ class MostSongsComposersModule @Inject constructor(
 ) : HomeModule(
     dispatchers,
     coroutineScope,
+    priority = Priority.LOW,
 ) {
     override fun state() = composerRepository
         .getMostSongsComposers()
         .map { composers ->
-            HomeModuleState(
-                shouldShow = composers.isNotEmpty(),
-                priority = Priority.MID,
-                title = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_COMPOSERS),
-                items = composers.map { composer ->
-                    SquareItemListModel(
-                        dataId = composer.id,
-                        name = composer.name,
-                        sourceInfo = composer.photoUrl,
-                        imagePlaceholder = Icon.PERSON,
-                        clickAction = Action.MostSongsComposerClicked(composer.id)
-                    )
-                }
+            LCE.Content(
+                HomeModuleState(
+                    moduleName = this.javaClass.simpleName,
+                    shouldShow = composers.isNotEmpty(),
+                    priority = priority,
+                    title = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_COMPOSERS),
+                    items = composers.map { composer ->
+                        SquareItemListModel(
+                            dataId = composer.id,
+                            name = composer.name,
+                            sourceInfo = composer.photoUrl,
+                            imagePlaceholder = Icon.PERSON,
+                            clickAction = Action.MostSongsComposerClicked(composer.id)
+                        )
+                    }
+                )
             )
         }
+        .withLoadingState()
+        .withErrorState()
 }

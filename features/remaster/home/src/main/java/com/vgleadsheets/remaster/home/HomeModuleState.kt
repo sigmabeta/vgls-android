@@ -6,6 +6,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import kotlinx.collections.immutable.toImmutableList
 
 data class HomeModuleState(
+    val moduleName: String,
     val shouldShow: Boolean = false,
     val priority: Priority = Priority.MID,
     val title: String? = null,

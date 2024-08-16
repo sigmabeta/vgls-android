@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.Game
@@ -26,6 +27,7 @@ class MostPlaysGamesModule @Inject constructor(
 ) : HomeModule(
     dispatchers,
     coroutineScope,
+    priority = Priority.MID,
 ) {
     override fun state() = songHistoryRepository
         .getMostPlaysGames()
@@ -33,23 +35,28 @@ class MostPlaysGamesModule @Inject constructor(
             list.filter { it.first.playCount > 1 }
         }
         .map { pairs ->
-            HomeModuleState(
-                shouldShow = shouldShow(pairs),
-                priority = Priority.HIGH,
-                title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_GAMES),
-                items = pairs
-                    .map { it.second }
-                    .map { game ->
-                        SquareItemListModel(
-                            dataId = game.id,
-                            name = game.name,
-                            sourceInfo = game.photoUrl,
-                            imagePlaceholder = Icon.ALBUM,
-                            clickAction = Action.MostPlaysGameClicked(game.id)
-                        )
-                    }
+            LCE.Content(
+                HomeModuleState(
+                    moduleName = this.javaClass.simpleName,
+                    shouldShow = shouldShow(pairs),
+                    priority = priority,
+                    title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_GAMES),
+                    items = pairs
+                        .map { it.second }
+                        .map { game ->
+                            SquareItemListModel(
+                                dataId = game.id,
+                                name = game.name,
+                                sourceInfo = game.photoUrl,
+                                imagePlaceholder = Icon.ALBUM,
+                                clickAction = Action.MostPlaysGameClicked(game.id)
+                            )
+                        }
+                )
             )
         }
+        .withLoadingState()
+        .withErrorState()
 
     @Suppress("ReturnCount")
     private fun shouldShow(pairs: List<Pair<GamePlayCount, Game>>): Boolean {

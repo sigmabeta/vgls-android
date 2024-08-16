@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
@@ -28,34 +29,40 @@ class RecentSongsModule @Inject constructor(
 ) : HomeModule(
     dispatchers,
     coroutineScope,
+    priority = Priority.HIGH,
 ) {
     override fun state() = songHistoryRepository
         .getRecentSongs()
         .map { pairs ->
-            HomeModuleState(
-                shouldShow = shouldShow(pairs),
-                priority = Priority.HIGH,
-                title = stringProvider.getString(StringId.HOME_SECTION_RECENT_SONGS),
-                items = pairs
-                    .map { it.second }
-                    .map { song ->
-                        SheetPageCardListModel(
-                            SheetPageListModel(
-                                dataId = song.id,
-                                title = song.name,
-                                sourceInfo = PdfConfigById(
-                                    songId = song.id,
+            LCE.Content(
+                HomeModuleState(
+                    moduleName = this.javaClass.simpleName,
+                    shouldShow = shouldShow(pairs),
+                    priority = priority,
+                    title = stringProvider.getString(StringId.HOME_SECTION_RECENT_SONGS),
+                    items = pairs
+                        .map { it.second }
+                        .map { song ->
+                            SheetPageCardListModel(
+                                SheetPageListModel(
+                                    dataId = song.id,
+                                    title = song.name,
+                                    sourceInfo = PdfConfigById(
+                                        songId = song.id,
+                                        pageNumber = 0,
+                                    ),
+                                    gameName = song.gameName,
+                                    clickAction = Action.RecentSongClicked(song.id),
+                                    composers = persistentListOf(),
                                     pageNumber = 0,
-                                ),
-                                gameName = song.gameName,
-                                clickAction = Action.RecentSongClicked(song.id),
-                                composers = persistentListOf(),
-                                pageNumber = 0,
+                                )
                             )
-                        )
-                    }
+                        }
+                )
             )
         }
+        .withLoadingState()
+        .withErrorState()
 
     @Suppress("ReturnCount")
     private fun shouldShow(pairs: List<Pair<SongHistoryEntry, Song>>): Boolean {

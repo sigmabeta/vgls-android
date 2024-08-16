@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.Composer
@@ -26,6 +27,7 @@ class MostPlaysComposerModule @Inject constructor(
 ) : HomeModule(
     dispatchers,
     coroutineScope,
+    priority = Priority.MID,
 ) {
     override fun state() = songHistoryRepository
         .getMostPlaysComposers()
@@ -33,23 +35,28 @@ class MostPlaysComposerModule @Inject constructor(
             list.filter { it.first.playCount > 1 }
         }
         .map { pairs ->
-            HomeModuleState(
-                shouldShow = shouldShow(pairs),
-                priority = Priority.HIGH,
-                title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_COMPOSERS),
-                items = pairs
-                    .map { it.second }
-                    .map { composer ->
-                        SquareItemListModel(
-                            dataId = composer.id,
-                            name = composer.name,
-                            sourceInfo = composer.photoUrl,
-                            imagePlaceholder = Icon.ALBUM,
-                            clickAction = Action.MostPlaysComposerClicked(composer.id)
-                        )
-                    }
+            LCE.Content(
+                HomeModuleState(
+                    moduleName = this.javaClass.simpleName,
+                    shouldShow = shouldShow(pairs),
+                    priority = priority,
+                    title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_COMPOSERS),
+                    items = pairs
+                        .map { it.second }
+                        .map { composer ->
+                            SquareItemListModel(
+                                dataId = composer.id,
+                                name = composer.name,
+                                sourceInfo = composer.photoUrl,
+                                imagePlaceholder = Icon.ALBUM,
+                                clickAction = Action.MostPlaysComposerClicked(composer.id)
+                            )
+                        }
+                )
             )
         }
+        .withLoadingState()
+        .withErrorState()
 
     @Suppress("ReturnCount")
     private fun shouldShow(pairs: List<Pair<ComposerPlayCount, Composer>>): Boolean {

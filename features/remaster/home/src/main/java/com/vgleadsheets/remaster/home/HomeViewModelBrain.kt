@@ -9,9 +9,11 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class HomeViewModelBrain(
@@ -125,17 +127,36 @@ class HomeViewModelBrain(
     }
 
     private fun setup() {
-        val flows = homeModuleProvider.modules.map { it.moduleState }
+        val modulesByPriority = homeModuleProvider
+            .modules
+            .map { FlowPairing(it, it.moduleState) }
+            .sortedBy { it.module.priority }
 
-        val combinedFlows = combine(flows) { moduleStates ->
-            updateState { oldState ->
-                (oldState as State).copy(
-                    moduleStates = moduleStates.toList()
-                )
+        val combinedFlows = modulesByPriority
+            .asFlow()
+            .flatMapMerge { flowPairing ->
+                flowPairing
+                    .flow
+                    .map { state ->
+                        Pairing(flowPairing.module, state)
+                    }
             }
-        }
 
         combinedFlows
+            .onEach { pairing ->
+                updateState { oldState ->
+                    val state = oldState as State
+                    val newModuleStates = state
+                        .moduleStatesByPriority
+                        .toMutableMap()
+
+                    newModuleStates.put(pairing.module, pairing.state)
+
+                    state.copy(
+                        moduleStatesByPriority = newModuleStates
+                    )
+                }
+            }
             .flowOn(dispatchers.main)
             .launchIn(coroutineScope)
     }

@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
@@ -28,6 +29,7 @@ class MostPlaysSongsModule @Inject constructor(
 ) : HomeModule(
     dispatchers,
     coroutineScope,
+    priority = Priority.HIGH,
 ) {
     override fun state() = songHistoryRepository
         .getMostPlaysSongs()
@@ -35,30 +37,35 @@ class MostPlaysSongsModule @Inject constructor(
             list.filter { it.first.playCount > 1 }
         }
         .map { pairs ->
-            HomeModuleState(
-                shouldShow = shouldShow(pairs),
-                priority = Priority.HIGH,
-                title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_SONGS),
-                items = pairs
-                    .map { it.second }
-                    .map { song ->
-                        SheetPageCardListModel(
-                            SheetPageListModel(
-                                dataId = song.id,
-                                title = song.name,
-                                sourceInfo = PdfConfigById(
-                                    songId = song.id,
+            LCE.Content(
+                HomeModuleState(
+                    moduleName = this.javaClass.simpleName,
+                    shouldShow = shouldShow(pairs),
+                    priority = priority,
+                    title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_SONGS),
+                    items = pairs
+                        .map { it.second }
+                        .map { song ->
+                            SheetPageCardListModel(
+                                SheetPageListModel(
+                                    dataId = song.id,
+                                    title = song.name,
+                                    sourceInfo = PdfConfigById(
+                                        songId = song.id,
+                                        pageNumber = 0,
+                                    ),
+                                    gameName = song.gameName,
+                                    clickAction = Action.MostPlaysSongClicked(song.id),
+                                    composers = persistentListOf(),
                                     pageNumber = 0,
-                                ),
-                                gameName = song.gameName,
-                                clickAction = Action.MostPlaysSongClicked(song.id),
-                                composers = persistentListOf(),
-                                pageNumber = 0,
+                                )
                             )
-                        )
-                    }
+                        }
+                )
             )
         }
+        .withLoadingState()
+        .withErrorState()
 
     @Suppress("ReturnCount")
     private fun shouldShow(pairs: List<Pair<SongPlayCount, Song>>): Boolean {

@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.remaster.home.Action
@@ -22,23 +23,29 @@ class MostSongsGamesModule @Inject constructor(
 ) : HomeModule(
     dispatchers,
     coroutineScope,
+    priority = Priority.LOW,
 ) {
     override fun state() = gameRepository
         .getMostSongsGames()
         .map { games ->
-            HomeModuleState(
-                shouldShow = games.isNotEmpty(),
-                priority = Priority.MID,
-                title = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_GAMES),
-                items = games.map { game ->
-                    SquareItemListModel(
-                        dataId = game.id,
-                        name = game.name,
-                        sourceInfo = game.photoUrl,
-                        imagePlaceholder = Icon.ALBUM,
-                        clickAction = Action.MostSongsGameClicked(game.id)
-                    )
-                }
+            LCE.Content(
+                HomeModuleState(
+                    moduleName = this.javaClass.simpleName,
+                    shouldShow = games.isNotEmpty(),
+                    priority = priority,
+                    title = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_GAMES),
+                    items = games.map { game ->
+                        SquareItemListModel(
+                            dataId = game.id,
+                            name = game.name,
+                            sourceInfo = game.photoUrl,
+                            imagePlaceholder = Icon.ALBUM,
+                            clickAction = Action.MostSongsGameClicked(game.id)
+                        )
+                    }
+                )
             )
         }
+        .withLoadingState()
+        .withErrorState()
 }

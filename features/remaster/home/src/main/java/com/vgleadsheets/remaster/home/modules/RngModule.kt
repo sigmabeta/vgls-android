@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.remaster.home.Action
@@ -22,39 +23,45 @@ class RngModule @Inject constructor(
 ) : HomeModule(
     dispatchers,
     coroutineScope,
+    priority = Priority.LOWEST,
 ) {
     override fun state() = flowOf(
-        HomeModuleState(
-            shouldShow = true,
-            priority = Priority.LOWEST,
-            title = stringProvider.getString(StringId.HOME_SECTION_RNG),
-            items = listOf(
-                SquareItemListModel(
-                    dataId = StringId.HOME_ACTION_RANDOM_SONG.hashCode().toLong(),
-                    name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_SONG),
-                    sourceInfo = null,
-                    imagePlaceholder = Icon.DESCRIPTION,
-                    clickAction = Action.RandomSongClicked
-                ),
-                SquareItemListModel(
-                    dataId = StringId.HOME_ACTION_RANDOM_GAME.hashCode().toLong(),
-                    name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_GAME),
-                    sourceInfo = null,
-                    imagePlaceholder = Icon.ALBUM,
-                    clickAction = Action.RandomGameClicked
-                ),
-                SquareItemListModel(
-                    dataId = StringId.HOME_ACTION_RANDOM_COMPOSER.hashCode().toLong(),
-                    name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_COMPOSER),
-                    sourceInfo = null,
-                    imagePlaceholder = Icon.PERSON,
-                    clickAction = Action.RandomComposerClicked
-                ),
+        LCE.Content(
+            HomeModuleState(
+                moduleName = this.javaClass.simpleName,
+                shouldShow = true,
+                priority = priority,
+                title = stringProvider.getString(StringId.HOME_SECTION_RNG),
+                items = listOf(
+                    SquareItemListModel(
+                        dataId = StringId.HOME_ACTION_RANDOM_SONG.hashCode().toLong(),
+                        name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_SONG),
+                        sourceInfo = null,
+                        imagePlaceholder = Icon.DESCRIPTION,
+                        clickAction = Action.RandomSongClicked
+                    ),
+                    SquareItemListModel(
+                        dataId = StringId.HOME_ACTION_RANDOM_GAME.hashCode().toLong(),
+                        name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_GAME),
+                        sourceInfo = null,
+                        imagePlaceholder = Icon.ALBUM,
+                        clickAction = Action.RandomGameClicked
+                    ),
+                    SquareItemListModel(
+                        dataId = StringId.HOME_ACTION_RANDOM_COMPOSER.hashCode().toLong(),
+                        name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_COMPOSER),
+                        sourceInfo = null,
+                        imagePlaceholder = Icon.PERSON,
+                        clickAction = Action.RandomComposerClicked
+                    ),
+                )
             )
         )
     ).onStart {
         delay(DURATION_WAIT_RNG)
     }
+        .withLoadingState()
+        .withErrorState()
 
     companion object {
         private const val DURATION_WAIT_RNG = 1_000L
