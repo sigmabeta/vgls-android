@@ -14,6 +14,7 @@ import com.vgleadsheets.images.LoadingIndicatorConfig
 fun SheetPageItem(
     model: SheetPageListModel,
     actionSink: ActionSink,
+    fillMaxWidth: Boolean,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
@@ -26,10 +27,11 @@ fun SheetPageItem(
             model.pageNumber,
         ),
         sheetId = model.dataId,
+        fillMaxWidth = fillMaxWidth,
         modifier = modifier
             .padding(padding)
             .clickable {
                 actionSink.sendAction(model.clickAction)
-            }
+            },
     )
 }

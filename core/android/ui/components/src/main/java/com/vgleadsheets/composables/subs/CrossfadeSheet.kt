@@ -32,6 +32,7 @@ fun CrossfadeSheet(
     sourceInfo: Any,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
+    fillMaxWidth: Boolean,
     modifier: Modifier,
     simulateError: Boolean = false
 ) {
@@ -46,7 +47,11 @@ fun CrossfadeSheet(
     }
 
     if (LocalInspectionMode.current) {
-        PreviewSheet(loadingIndicatorConfig, modifier)
+        PreviewSheet(
+            loadingIndicatorConfig,
+            fillMaxWidth,
+            modifier
+        )
         return
     }
 
@@ -168,6 +173,7 @@ private fun SampleLoading() {
         ),
         sheetId = 1234L,
         modifier = Modifier.fillMaxSize(),
+        fillMaxWidth = true,
     )
 }
 
@@ -185,6 +191,7 @@ private fun SampleSheetPageOne() {
         ),
         sheetId = 1234L,
         modifier = Modifier.fillMaxSize(),
+        fillMaxWidth = true,
     )
 }
 
@@ -202,6 +209,7 @@ private fun SampleSheetPageTwo() {
         ),
         sheetId = 1234L,
         modifier = Modifier.fillMaxSize(),
+        fillMaxWidth = true,
     )
 }
 
@@ -220,5 +228,6 @@ private fun SampleError() {
         sheetId = 1234L,
         modifier = Modifier.fillMaxWidth(),
         simulateError = true,
+        fillMaxWidth = true,
     )
 }

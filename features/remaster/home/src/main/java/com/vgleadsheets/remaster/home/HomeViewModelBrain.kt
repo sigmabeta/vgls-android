@@ -129,16 +129,16 @@ class HomeViewModelBrain(
     private fun setup() {
         val modulesByPriority = homeModuleProvider
             .modules
-            .map { FlowPairing(it, it.moduleState) }
-            .sortedBy { it.module.priority }
+            .map { it to it.moduleState }
+            .sortedBy { it.first.priority }
 
         val combinedFlows = modulesByPriority
             .asFlow()
             .flatMapMerge { flowPairing ->
                 flowPairing
-                    .flow
+                    .second
                     .map { state ->
-                        Pairing(flowPairing.module, state)
+                        flowPairing.first to state
                     }
             }
 
@@ -150,7 +150,12 @@ class HomeViewModelBrain(
                         .moduleStatesByPriority
                         .toMutableMap()
 
-                    newModuleStates.put(pairing.module, pairing.state)
+                    val moduleDetails = ModuleDetails(
+                        pairing.first.javaClass.simpleName,
+                        pairing.first.priority
+                    )
+
+                    newModuleStates[moduleDetails] = pairing.second
 
                     state.copy(
                         moduleStatesByPriority = newModuleStates

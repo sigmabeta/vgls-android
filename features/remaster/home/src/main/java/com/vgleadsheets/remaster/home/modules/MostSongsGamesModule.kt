@@ -2,7 +2,6 @@ package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
@@ -12,17 +11,12 @@ import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 
 class MostSongsGamesModule @Inject constructor(
     private val gameRepository: GameRepository,
     private val stringProvider: StringProvider,
-    dispatchers: VglsDispatchers,
-    coroutineScope: CoroutineScope,
 ) : HomeModule(
-    dispatchers,
-    coroutineScope,
     priority = Priority.LOW,
 ) {
     override fun state() = gameRepository

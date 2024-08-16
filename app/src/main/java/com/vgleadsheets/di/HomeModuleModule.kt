@@ -1,5 +1,6 @@
 package com.vgleadsheets.di
 
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.remaster.home.modules.MostPlaysComposerModule
 import com.vgleadsheets.remaster.home.modules.MostPlaysGamesModule
@@ -14,6 +15,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.scopes.ActivityScoped
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 
 @InstallIn(ActivityComponent::class)
 @Module
@@ -29,6 +33,8 @@ class HomeModuleModule {
         mostPlaysSongsModule: MostPlaysSongsModule,
         recentSongsModule: RecentSongsModule,
         rngModule: RngModule,
+        dispatchers: VglsDispatchers,
+        coroutineScope: CoroutineScope,
     ): HomeModuleProvider = object : HomeModuleProvider {
         override val modules by lazy {
             val list = listOf(
@@ -42,7 +48,11 @@ class HomeModuleModule {
                 rngModule,
             )
 
-            list.forEach { it.setup() }
+            list.forEach {
+                it.setup()
+                    .flowOn(dispatchers.disk)
+                    .launchIn(coroutineScope)
+            }
             list
         }
     }

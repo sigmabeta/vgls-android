@@ -231,7 +231,7 @@ class FakeModelGenerator constructor(
         songs = null,
         songCount = random.nextInt(10),
         hasVocalSongs = random.nextBoolean(),
-        name = stringGenerator.generateTitle(),
+        name = stringGenerator.generateName(),
         photoUrl = stringGenerator.generateName(),
         isFavorite = false,
         isAvailableOffline = false,

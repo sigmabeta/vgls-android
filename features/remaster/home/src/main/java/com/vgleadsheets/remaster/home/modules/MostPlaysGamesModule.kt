@@ -2,7 +2,6 @@ package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.history.GamePlayCount
 import com.vgleadsheets.remaster.home.Action
@@ -16,17 +15,12 @@ import com.vgleadsheets.ui.StringProvider
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 
 class MostPlaysGamesModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
     private val stringProvider: StringProvider,
-    dispatchers: VglsDispatchers,
-    coroutineScope: CoroutineScope,
 ) : HomeModule(
-    dispatchers,
-    coroutineScope,
     priority = Priority.MID,
 ) {
     override fun state() = songHistoryRepository

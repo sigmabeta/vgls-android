@@ -8,6 +8,7 @@ import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.songs.detail.State
+import com.vgleadsheets.urlinfo.UrlInfo
 import java.util.Random
 
 @Preview
@@ -46,7 +47,8 @@ private fun songScreenState(): State {
         composers = composers,
         game = game,
         songAliases = emptyList(),
-        tagValues = tags
+        tagValues = tags,
+        sheetUrlInfo = UrlInfo(partId = "C")
     )
     return screenState
 }

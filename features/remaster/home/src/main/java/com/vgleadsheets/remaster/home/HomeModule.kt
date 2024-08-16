@@ -2,22 +2,16 @@ package com.vgleadsheets.remaster.home
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.coroutines.VglsDispatchers
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 
 abstract class HomeModule(
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
     val priority: Priority,
 ) {
     protected open fun initialState(): LCE<HomeModuleState> = LCE.Uninitialized
@@ -27,12 +21,8 @@ abstract class HomeModule(
 
     protected abstract fun state(): Flow<LCE<HomeModuleState>>
 
-    fun setup() {
-        state()
+    fun setup() = state()
             .onEach { newState -> internalModuleState.update { newState } }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
-    }
 
     fun <ListType, ReturnType> Flow<List<ListType>>.mapList(
         mapper: (ListType) -> ReturnType

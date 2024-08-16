@@ -48,8 +48,8 @@ data class State(
     // T O  D O: Actually fix these detekt problems
     @Suppress("LongMethod", "MaxLineLength")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        val songModel = if (song != null) {
-            val selectedPart = sheetUrlInfo.partId ?: return persistentListOf()
+        val selectedPart = sheetUrlInfo.partId
+        val songModel = if (song != null && selectedPart != null) {
             val pageCount = song.pageCount(selectedPart)
 
             listOf(

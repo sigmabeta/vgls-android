@@ -3,7 +3,6 @@ package com.vgleadsheets.remaster.home.modules
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SongHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
@@ -18,17 +17,12 @@ import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 
 class RecentSongsModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
     private val stringProvider: StringProvider,
-    dispatchers: VglsDispatchers,
-    coroutineScope: CoroutineScope,
 ) : HomeModule(
-    dispatchers,
-    coroutineScope,
     priority = Priority.HIGH,
 ) {
     override fun state() = songHistoryRepository

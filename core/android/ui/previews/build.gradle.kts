@@ -5,6 +5,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.features.remaster.home)
     implementation(projects.features.remaster.games.list)
     implementation(projects.features.remaster.games.detail)
     implementation(projects.features.remaster.songs.list)

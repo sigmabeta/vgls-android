@@ -13,7 +13,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 data class State(
-    val moduleStatesByPriority: Map<HomeModule, LCE<HomeModuleState>> = emptyMap()
+    val moduleStatesByPriority: Map<ModuleDetails, LCE<HomeModuleState>> = emptyMap()
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.APP_NAME),
