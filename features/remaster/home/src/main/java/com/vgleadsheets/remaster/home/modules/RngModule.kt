@@ -12,9 +12,7 @@ import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.onStart
 
 class RngModule @Inject constructor(
     private val stringProvider: StringProvider,
@@ -57,13 +55,7 @@ class RngModule @Inject constructor(
                 )
             )
         )
-    ).onStart {
-        delay(DURATION_WAIT_RNG)
-    }
+    )
         .withLoadingState()
         .withErrorState()
-
-    companion object {
-        private const val DURATION_WAIT_RNG = 1_000L
-    }
 }
