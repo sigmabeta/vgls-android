@@ -4,6 +4,7 @@ import android.content.Context
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.repository.ComposerRepository
@@ -39,6 +40,7 @@ class ActivityModule {
     @Suppress("LongParameterList")
     fun provideVMBrainProvider(
         dispatchers: VglsDispatchers,
+        delayManager: DelayManager,
         urlInfoProvider: UrlInfoProvider,
         stringProvider: StringProvider,
         hatchet: Hatchet,
@@ -55,6 +57,7 @@ class ActivityModule {
     ): BrainProvider =
         FeatureDirectory(
             dispatchers = dispatchers,
+            delayManager = delayManager,
             urlInfoProvider = urlInfoProvider,
             stringProvider = stringProvider,
             hatchet = hatchet,

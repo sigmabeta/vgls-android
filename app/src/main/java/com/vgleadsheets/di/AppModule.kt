@@ -8,9 +8,9 @@ import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventDispatcherReal
 import com.vgleadsheets.appcomm.di.ActionDeserializer
-import com.vgleadsheets.coroutines.DispatcherConfigProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.dispatchers.DispatcherConfigProviderImpl
+import com.vgleadsheets.dispatchers.DelayManagerImpl
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
@@ -134,8 +134,12 @@ object AppModule {
     @Singleton
     internal fun provideDispatcherConfigProvider(
         debugSettingsManager: DebugSettingsManager,
-    ): DispatcherConfigProvider = DispatcherConfigProviderImpl(
-        debugSettingsManager
+        coroutineScope: CoroutineScope,
+        dispatchers: VglsDispatchers,
+    ): DelayManager = DelayManagerImpl(
+        debugSettingsManager,
+        dispatchers,
+        coroutineScope,
     )
 
     @Provides

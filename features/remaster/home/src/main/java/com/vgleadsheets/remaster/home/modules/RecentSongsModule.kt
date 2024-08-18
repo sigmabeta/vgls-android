@@ -3,6 +3,7 @@ package com.vgleadsheets.remaster.home.modules
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SongHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
@@ -22,8 +23,10 @@ import kotlinx.coroutines.flow.map
 class RecentSongsModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
     private val stringProvider: StringProvider,
+    delayManager: DelayManager,
 ) : HomeModule(
     priority = Priority.HIGH,
+    delayManager,
 ) {
     override fun state() = songHistoryRepository
         .getRecentSongs()

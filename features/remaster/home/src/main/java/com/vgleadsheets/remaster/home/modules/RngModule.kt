@@ -2,6 +2,7 @@ package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.SquareItemListModel
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
@@ -14,8 +15,10 @@ import kotlinx.coroutines.flow.flowOf
 
 class RngModule @Inject constructor(
     private val stringProvider: StringProvider,
+    delayManager: DelayManager,
 ) : HomeModule(
     priority = Priority.LOWEST,
+    delayManager,
 ) {
     override fun state() = flowOf(content())
         .withLoadingState()

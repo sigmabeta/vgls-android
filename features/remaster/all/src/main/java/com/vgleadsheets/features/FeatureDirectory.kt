@@ -2,6 +2,7 @@ package com.vgleadsheets.features
 
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.BrainProvider
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
@@ -41,6 +42,7 @@ class FeatureDirectory(
     private val favoriteRepository: FavoriteRepository,
     private val tagRepository: TagRepository,
     private val dispatchers: VglsDispatchers,
+    private val delayManager: DelayManager,
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
@@ -54,12 +56,19 @@ class FeatureDirectory(
         destination: Destination,
         coroutineScope: CoroutineScope
     ): ListViewModelBrain {
+        val scheduler = ViewModelScheduler(
+            coroutineScope,
+            dispatchers,
+            delayManager,
+        )
+
         return when (destination) {
             Destination.HOME -> HomeViewModelBrain(
                 stringProvider,
                 hatchet,
                 dispatchers,
                 coroutineScope,
+                scheduler,
                 homeModuleProvider,
                 randomRepository,
             )

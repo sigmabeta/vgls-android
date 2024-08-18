@@ -2,6 +2,9 @@ package com.vgleadsheets.remaster.home
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.list.DelayManager
+import kotlin.random.Random
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,6 +16,7 @@ import kotlinx.coroutines.flow.update
 
 abstract class HomeModule(
     val priority: Priority,
+    private val delayManager: DelayManager,
 ) {
     protected open fun initialState(): LCE<HomeModuleState> = LCE.Uninitialized
 
@@ -21,8 +25,14 @@ abstract class HomeModule(
 
     protected abstract fun state(): Flow<LCE<HomeModuleState>>
 
+    @Suppress("MagicNumber")
     fun setup() = state()
-            .onEach { newState -> internalModuleState.update { newState } }
+        .onEach { newState ->
+            if (delayManager.shouldDelay() && newState is LCE.Content) {
+                delay(Random.nextLong(4000) + 1000)
+            }
+            internalModuleState.update { newState }
+        }
 
     fun <ListType, ReturnType> Flow<List<ListType>>.mapList(
         mapper: (ListType) -> ReturnType

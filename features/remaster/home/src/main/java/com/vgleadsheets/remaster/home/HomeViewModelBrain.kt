@@ -4,23 +4,30 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.ui.StringProvider
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 
 class HomeViewModelBrain(
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
     private val homeModuleProvider: HomeModuleProvider,
     private val randomRepository: RandomRepository,
 ) : ListViewModelBrain(
@@ -78,24 +85,21 @@ class HomeViewModelBrain(
         randomRepository
             .getRandomSong()
             .onEach { song -> navigateTo(Destination.SONG_DETAIL.forId(song.id)) }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onRandomGameClicked() {
         randomRepository
             .getRandomGame()
             .onEach { game -> navigateTo(Destination.GAME_DETAIL.forId(game.id)) }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onRandomComposerClicked() {
         randomRepository
             .getRandomComposer()
             .onEach { composer -> navigateTo(Destination.COMPOSER_DETAIL.forId(composer.id)) }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun navigateTo(destinationString: String) {
@@ -162,7 +166,24 @@ class HomeViewModelBrain(
                     )
                 }
             }
-            .flowOn(dispatchers.main)
+            .runInBackground(shouldDelay = false)
+    }
+
+    @Suppress("MagicNumber")
+    private fun <EmissionType> Flow<EmissionType>.runInBackground(
+        dispatcher: CoroutineDispatcher = scheduler.dispatchers.disk,
+        shouldDelay: Boolean = scheduler.delayManager.shouldDelay()
+    ): Job {
+        val possiblyDelayedFlow = if (shouldDelay) {
+            (
+                this.onStart { delay(2000L) }
+                )
+        } else {
+            this
+        }
+
+        return possiblyDelayedFlow
+            .flowOn(dispatcher)
             .launchIn(coroutineScope)
     }
 }

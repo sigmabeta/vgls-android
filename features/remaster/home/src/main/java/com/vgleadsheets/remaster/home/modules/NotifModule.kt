@@ -2,6 +2,7 @@ package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.NotifListModel
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.remaster.home.HomeModule
@@ -14,8 +15,10 @@ import kotlinx.coroutines.flow.map
 class NotifModule @Inject constructor(
     private val notifManager: NotifManager,
     private val stringProvider: StringProvider,
+    delayManager: DelayManager,
 ) : HomeModule(
     priority = Priority.HIGHEST,
+    delayManager,
 ) {
     override fun state() = notifManager
         .notifState

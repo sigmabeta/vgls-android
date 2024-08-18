@@ -30,13 +30,21 @@ data class State(
             .sortedBy { it.key.priority }
 
         val highestStillLoadingPriority = sortedModuleStatesByPriority
-            .lastOrNull { it.value !is LCE.Content && it.value !is LCE.Error }
+            .firstOrNull() { it.value !is LCE.Content && it.value !is LCE.Error }
             ?.key
             ?.priority
 
-        val statesToShow = sortedModuleStatesByPriority
+        val prioritiesToShow = sortedModuleStatesByPriority
             // Counter-intuitive verbally, but makes sense numerical
             .filter { it.key.priority.ordinal <= (highestStillLoadingPriority?.ordinal ?: Int.MAX_VALUE) }
+
+        // For debugging
+        // println("Showing states. Highest still loading prio $highestStillLoadingPriority")
+        // prioritiesToShow.forEach { entry ->
+        //     println("${entry.key.priority} || ${entry.value.javaClass.simpleName} || ${entry.key.name} ")
+        // }
+
+        val statesToShow = prioritiesToShow
             .map { it.value }
 
         return statesToShow
