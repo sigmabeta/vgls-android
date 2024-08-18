@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.remaster.home.Action
@@ -20,6 +21,11 @@ class RngModule @Inject constructor(
     priority = Priority.LOWEST,
     delayManager,
 ) {
+    override fun loadingType() = LoadingType.SQUARE
+
+    override fun title() = stringProvider.getString(StringId.HOME_SECTION_RNG)
+
+
     override fun state() = flowOf(content())
         .withLoadingState()
         .withErrorState()
@@ -29,8 +35,7 @@ class RngModule @Inject constructor(
         HomeModuleState(
             moduleName = this.javaClass.simpleName,
             shouldShow = true,
-            priority = priority,
-            title = stringProvider.getString(StringId.HOME_SECTION_RNG),
+            title = title(),
             items = listOf(
                 SquareItemListModel(
                     dataId = StringId.HOME_ACTION_RANDOM_SONG.hashCode().toLong(),
@@ -53,7 +58,7 @@ class RngModule @Inject constructor(
                     imagePlaceholder = Icon.PERSON,
                     clickAction = Action.RandomComposerClicked
                 ),
-            )
+            ),
         )
     )
 }

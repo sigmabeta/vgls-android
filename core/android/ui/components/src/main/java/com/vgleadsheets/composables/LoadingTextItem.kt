@@ -23,7 +23,7 @@ import kotlin.random.Random
 
 @Composable
 @Suppress("MagicNumber")
-fun LoadingListItem(
+fun LoadingTextItem(
     withImage: Boolean,
     withCaption: Boolean,
     seed: Long,
@@ -142,7 +142,7 @@ private fun DarkWithImageAndCaption() {
 
 @Composable
 private fun Sample(seed: Long, withImage: Boolean, withCaption: Boolean) {
-    LoadingListItem(
+    LoadingTextItem(
         withImage = withImage,
         withCaption = withCaption,
         seed = seed,

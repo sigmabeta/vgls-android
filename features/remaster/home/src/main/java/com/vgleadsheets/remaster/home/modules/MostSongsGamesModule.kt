@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.remaster.home.Action
@@ -22,6 +23,10 @@ class MostSongsGamesModule @Inject constructor(
     priority = Priority.LOW,
     delayManager,
 ) {
+    override fun loadingType() = LoadingType.SQUARE
+
+    override fun title() = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_GAMES)
+
     override fun state() = gameRepository
         .getMostSongsGames()
         .map { games ->
@@ -29,8 +34,7 @@ class MostSongsGamesModule @Inject constructor(
                 HomeModuleState(
                     moduleName = this.javaClass.simpleName,
                     shouldShow = games.isNotEmpty(),
-                    priority = priority,
-                    title = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_GAMES),
+                    title = title(),
                     items = games.map { game ->
                         SquareItemListModel(
                             dataId = game.id,
@@ -39,7 +43,7 @@ class MostSongsGamesModule @Inject constructor(
                             imagePlaceholder = Icon.ALBUM,
                             clickAction = Action.MostSongsGameClicked(game.id)
                         )
-                    }
+                    },
                 )
             )
         }

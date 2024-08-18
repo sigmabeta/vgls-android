@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.remaster.home.Action
@@ -22,6 +23,10 @@ class MostSongsComposersModule @Inject constructor(
     priority = Priority.LOW,
     delayManager,
 ) {
+    override fun loadingType() = LoadingType.SQUARE
+
+    override fun title() = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_COMPOSERS)
+
     override fun state() = composerRepository
         .getMostSongsComposers()
         .map { composers ->
@@ -29,8 +34,7 @@ class MostSongsComposersModule @Inject constructor(
                 HomeModuleState(
                     moduleName = this.javaClass.simpleName,
                     shouldShow = composers.isNotEmpty(),
-                    priority = priority,
-                    title = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_COMPOSERS),
+                    title = title(),
                     items = composers.map { composer ->
                         SquareItemListModel(
                             dataId = composer.id,
@@ -39,7 +43,7 @@ class MostSongsComposersModule @Inject constructor(
                             imagePlaceholder = Icon.PERSON,
                             clickAction = Action.MostSongsComposerClicked(composer.id)
                         )
-                    }
+                    },
                 )
             )
         }

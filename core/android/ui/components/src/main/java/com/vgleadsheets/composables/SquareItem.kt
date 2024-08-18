@@ -31,6 +31,7 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.composables.previews.SquareConstants
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -45,8 +46,8 @@ fun SquareItem(
 ) {
     Surface(
         modifier = modifier
-            .defaultMinSize(minHeight = 160.dp)
-            .aspectRatio(1.0f)
+            .defaultMinSize(minHeight = SquareConstants.MIN_WIDTH)
+            .aspectRatio(SquareConstants.ASPECT_RATIO)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)

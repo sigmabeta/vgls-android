@@ -1,7 +1,6 @@
 package com.vgleadsheets.composables
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,13 +11,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.ui.core.R
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.composables.previews.FullScreenOf
 
 @Composable
 fun SectionHeader(
@@ -54,56 +50,24 @@ fun SectionHeader(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-        ) {
-            SampleNotMenu()
-        }
+    FullScreenOf { paddingValues ->
+        Sample(paddingValues)
     }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-        ) {
-            SampleNotMenu()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun Menu() {
-    VglsMaterialMenu {
-        Box(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-        ) {
-            SampleMenu()
-        }
+    FullScreenOf(darkTheme = true) { paddingValues ->
+        Sample(paddingValues)
     }
 }
 
 @Composable
-private fun SampleNotMenu() {
+private fun Sample(paddingValues: PaddingValues) {
     SectionHeader(
         "Sick new skills",
         modifier = Modifier,
-        padding = PaddingValues(horizontal = dimensionResource(id = R.dimen.margin_side))
-    )
-}
-
-@Composable
-private fun SampleMenu() {
-    SectionHeader(
-        "Paths to the future",
-        modifier = Modifier,
-        padding = PaddingValues(horizontal = dimensionResource(id = R.dimen.margin_side))
+        padding = paddingValues,
     )
 }

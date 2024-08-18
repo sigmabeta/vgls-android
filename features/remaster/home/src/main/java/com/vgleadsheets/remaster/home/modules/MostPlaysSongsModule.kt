@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.list.DelayManager
@@ -28,6 +29,10 @@ class MostPlaysSongsModule @Inject constructor(
     priority = Priority.HIGH,
     delayManager,
 ) {
+    override fun loadingType() = LoadingType.SHEET
+
+    override fun title() = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_SONGS)
+
     override fun state() = songHistoryRepository
         .getMostPlaysSongs()
         .map { list ->
@@ -38,8 +43,7 @@ class MostPlaysSongsModule @Inject constructor(
                 HomeModuleState(
                     moduleName = this.javaClass.simpleName,
                     shouldShow = shouldShow(pairs),
-                    priority = priority,
-                    title = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_SONGS),
+                    title = title(),
                     items = pairs
                         .map { it.second }
                         .map { song ->
@@ -57,7 +61,7 @@ class MostPlaysSongsModule @Inject constructor(
                                     pageNumber = 0,
                                 )
                             )
-                        }
+                        },
                 )
             )
         }

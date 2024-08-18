@@ -4,7 +4,7 @@ import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingListModel
+import com.vgleadsheets.components.LoadingTextListtModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Song
@@ -34,7 +34,7 @@ data class State(
 
     @Suppress("MagicNumber")
     private fun loading(operationName: String) = List(20) { index ->
-        LoadingListModel(
+        LoadingTextListtModel(
             withImage = true,
             withCaption = true,
             loadOperationName = operationName,

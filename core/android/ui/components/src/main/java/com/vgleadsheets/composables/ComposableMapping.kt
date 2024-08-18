@@ -17,7 +17,9 @@ import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingListModel
+import com.vgleadsheets.components.LoadingItemListModel
+import com.vgleadsheets.components.LoadingSectionHeaderListModel
+import com.vgleadsheets.components.LoadingTextListtModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.NetworkRefreshingListModel
@@ -66,7 +68,9 @@ fun ListModel.Content(
         is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
         is SubsectionListModel -> Subsection(model = this, actionSink = sink, modifier = mod, padding = pad)
         is WideItemListModel -> WideItem(model = this, actionSink = sink, modifier = mod, padding = pad)
-        is LoadingListModel -> LoadingListItem(
+        is LoadingSectionHeaderListModel -> LoadingSectionHeader(seed = dataId, modifier = Modifier, padding = pad)
+        is LoadingItemListModel -> LoadingItem(seed = dataId, loadingType = loadingType, modifier = mod, padding = pad)
+        is LoadingTextListtModel -> LoadingTextItem(
             withImage = withImage,
             withCaption = withCaption,
             seed = dataId,
@@ -74,7 +78,7 @@ fun ListModel.Content(
             padding = pad,
         )
 
-        is NetworkRefreshingListModel -> LoadingListItem(
+        is NetworkRefreshingListModel -> LoadingTextItem(
             withImage = true,
             withCaption = true,
             seed = dataId,

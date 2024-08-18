@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.home
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingListModel
+import com.vgleadsheets.components.LoadingTextListtModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.ui.StringId
@@ -30,13 +30,17 @@ data class State(
             .sortedBy { it.key.priority }
 
         val highestStillLoadingPriority = sortedModuleStatesByPriority
-            .firstOrNull() { it.value !is LCE.Content && it.value !is LCE.Error }
+            .firstOrNull {
+                val stateLCE = it.value
+                val isLoading = stateLCE is LCE.Content && stateLCE.data.isLoading
+                isLoading || stateLCE == LCE.Uninitialized
+            }
             ?.key
             ?.priority
 
         val prioritiesToShow = sortedModuleStatesByPriority
             // Counter-intuitive verbally, but makes sense numerical
-            .filter { it.key.priority.ordinal <= (highestStillLoadingPriority?.ordinal ?: Int.MAX_VALUE) }
+            .filter { it.key.priority.ordinal - 1 <= (highestStillLoadingPriority?.ordinal ?: Int.MAX_VALUE) }
 
         // For debugging
         // println("Showing states. Highest still loading prio $highestStillLoadingPriority")
@@ -61,7 +65,7 @@ data class State(
     }
 
     private fun LCE.Loading.loadingListModels() = List(2) { index ->
-        LoadingListModel(
+        LoadingTextListtModel(
             withImage = true,
             withCaption = true,
             loadOperationName = this.operationName,

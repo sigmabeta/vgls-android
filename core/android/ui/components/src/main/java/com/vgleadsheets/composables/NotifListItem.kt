@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.NotifListModel
+import com.vgleadsheets.composables.previews.NotifConstants
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.themes.VglsMaterial
 
@@ -44,8 +45,8 @@ fun NotifListItem(
     ElevatedCard(
         modifier = modifier
             .widthIn(
-                min = 0.dp,
-                max = 340.dp
+                min = NotifConstants.MIN_WIDTH,
+                max = NotifConstants.MAX_WIDTH,
             )
     ) {
         val (cardColor, contentColor, buttonTextColor) = if (model.isError) {

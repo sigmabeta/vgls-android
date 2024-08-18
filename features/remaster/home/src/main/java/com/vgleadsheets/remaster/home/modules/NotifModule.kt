@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.NotifListModel
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.notif.NotifCategory
@@ -20,6 +21,10 @@ class NotifModule @Inject constructor(
     priority = Priority.HIGHEST,
     delayManager,
 ) {
+    override fun loadingType() = LoadingType.NOTIF
+
+    override fun title() = null
+
     override fun state() = notifManager
         .notifState
         .map { it.notifs.values.toList() }
@@ -28,8 +33,7 @@ class NotifModule @Inject constructor(
                 HomeModuleState(
                     moduleName = this.javaClass.simpleName,
                     shouldShow = notifs.isNotEmpty(),
-                    priority = priority,
-                    title = null,
+                    title = title(),
                     items = notifs.map { notif ->
                         NotifListModel(
                             dataId = notif.id,
@@ -39,7 +43,7 @@ class NotifModule @Inject constructor(
                             action = notif.action,
                             isError = notif.category == NotifCategory.ERROR
                         )
-                    }
+                    },
                 )
             )
         }

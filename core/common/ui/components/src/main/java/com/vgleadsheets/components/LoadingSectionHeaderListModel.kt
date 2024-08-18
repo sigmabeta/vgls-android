@@ -1,8 +1,6 @@
 package com.vgleadsheets.components
 
-data class LoadingListModel(
-    val withImage: Boolean,
-    val withCaption: Boolean,
+data class LoadingSectionHeaderListModel(
     val loadOperationName: String,
     val loadPositionOffset: Int
 ) : ListModel() {

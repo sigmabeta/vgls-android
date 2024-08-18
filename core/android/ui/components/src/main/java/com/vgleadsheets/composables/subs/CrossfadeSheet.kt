@@ -15,7 +15,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -63,7 +62,7 @@ fun CrossfadeSheet(
         contentScale = ContentScale.Fit,
         contentDescription = null,
         modifier = modifier
-            .defaultMinSize(minWidth = 300.dp)
+            .defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
             .aspectRatio(SheetConstants.ASPECT_RATIO),
     ) {
         when (painter.state) {

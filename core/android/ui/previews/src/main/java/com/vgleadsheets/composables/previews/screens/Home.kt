@@ -6,14 +6,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.ModuleDetails
 import com.vgleadsheets.remaster.home.Priority
@@ -42,6 +45,21 @@ private fun HomeScreenDark(modifier: Modifier = Modifier) {
     ScreenPreviewDark(screenState)
 }
 
+@Preview
+@Composable
+private fun HomeScreenLightLoading(modifier: Modifier = Modifier) {
+    val screenState = homeScreenLoadingState()
+    ScreenPreviewLight(screenState)
+}
+
+@Preview
+@Composable
+private fun HomeScreenDarkLoading(modifier: Modifier = Modifier) {
+    val screenState = homeScreenLoadingState()
+
+    ScreenPreviewDark(screenState)
+}
+
 @Suppress("MagicNumber")
 private fun homeScreenState(stringProvider: StringProvider): State {
     val seed = 1234567L
@@ -65,10 +83,29 @@ private fun homeScreenState(stringProvider: StringProvider): State {
     return screenState
 }
 
-fun rngModule(stringProvider: StringProvider): Pair<ModuleDetails, LCE<HomeModuleState>> {
+@Suppress("MagicNumber")
+private fun homeScreenLoadingState(): State {
+    val moduleStatesByPriority = mapOf(
+        loadingModule(LoadingType.NOTIF, Priority.HIGHEST),
+        loadingModule(LoadingType.SHEET, Priority.HIGH),
+        loadingModule(LoadingType.SQUARE, Priority.HIGH),
+    )
+
+    val screenState = State(
+        moduleStatesByPriority = moduleStatesByPriority
+    )
+    return screenState
+}
+
+private fun rngModule(stringProvider: StringProvider): Pair<ModuleDetails, LCE<HomeModuleState>> {
     val moduleName = "Rng"
     val rngModule = RngModule(
         stringProvider,
+        object : DelayManager {
+            override fun shouldDelay(): Boolean {
+                return false
+            }
+        }
     )
 
     val details = ModuleDetails(
@@ -79,7 +116,7 @@ fun rngModule(stringProvider: StringProvider): Pair<ModuleDetails, LCE<HomeModul
     return details to rngModule.content()
 }
 
-fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<HomeModuleState>> {
+private fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<HomeModuleState>> {
     val songs = modelGenerator.randomSongs()
 
     val moduleName = "Songs"
@@ -88,7 +125,6 @@ fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<Hom
     val state = HomeModuleState(
         moduleName = moduleName,
         shouldShow = true,
-        priority = priority,
         title = "Sick Songs",
         items = songs.map { song ->
             SheetPageCardListModel(
@@ -105,7 +141,7 @@ fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<Hom
                     pageNumber = 0,
                 )
             )
-        }
+        },
     )
     val lce = LCE.Content(state)
     val details = ModuleDetails(
@@ -115,7 +151,7 @@ fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<Hom
     return details to lce
 }
 
-fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<HomeModuleState>> {
+private fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<HomeModuleState>> {
     val games = modelGenerator.randomGames()
 
     val moduleName = "Games"
@@ -124,7 +160,6 @@ fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<Home
     val state = HomeModuleState(
         moduleName = moduleName,
         shouldShow = true,
-        priority = priority,
         title = "Great Games",
         items = games.map { game ->
             SquareItemListModel(
@@ -134,7 +169,7 @@ fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<Home
                 imagePlaceholder = Icon.ALBUM,
                 clickAction = VglsAction.Noop
             )
-        }
+        },
     )
     val lce = LCE.Content(state)
     val details = ModuleDetails(
@@ -144,7 +179,7 @@ fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<Home
     return details to lce
 }
 
-fun composerModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<HomeModuleState>> {
+private fun composerModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<HomeModuleState>> {
     val composers = modelGenerator.randomComposers()
 
     val moduleName = "Composers"
@@ -153,7 +188,6 @@ fun composerModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<
     val state = HomeModuleState(
         moduleName = moduleName,
         shouldShow = true,
-        priority = priority,
         title = "Cool Composers",
         items = composers.map { composer ->
             SquareItemListModel(
@@ -163,8 +197,30 @@ fun composerModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, LCE<
                 imagePlaceholder = Icon.PERSON,
                 clickAction = VglsAction.Noop
             )
-        }
+        },
     )
+    val lce = LCE.Content(state)
+    val details = ModuleDetails(
+        name = moduleName,
+        priority = priority,
+    )
+    return details to lce
+}
+
+private fun loadingModule(loadingType: LoadingType, priority: Priority): Pair<ModuleDetails, LCE<HomeModuleState>> {
+    val moduleName = loadingType.name
+    val title = if (loadingType == LoadingType.NOTIF) {
+        null
+    } else {
+        moduleName
+    }
+
+    val state = HomeModule.loadingStateFromName(
+        moduleName,
+        title,
+        loadingType
+    )
+
     val lce = LCE.Content(state)
     val details = ModuleDetails(
         name = moduleName,

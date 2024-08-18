@@ -153,7 +153,7 @@ private fun NotMenu() {
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            SampleNotMenu()
+            Sample()
         }
     }
 }
@@ -167,7 +167,7 @@ private fun NotMenuDark() {
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            SampleNotMenu()
+            Sample()
         }
     }
 }
@@ -243,7 +243,7 @@ private fun MenuNoCross() {
 }
 
 @Composable
-private fun SampleNotMenu() {
+private fun Sample() {
     EmptyListIndicator(
         EmptyStateListModel(
             com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
