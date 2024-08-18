@@ -37,7 +37,6 @@ abstract class HomeModule(
         .onEach { newState ->
             if (delayManager.shouldDelay() && hasEmittedLoader) {
                 delay(Random.nextLong(4000) + 1000)
-
             }
 
             if (newState is LCE.Content) {

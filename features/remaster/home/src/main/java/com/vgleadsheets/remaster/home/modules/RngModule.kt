@@ -25,7 +25,6 @@ class RngModule @Inject constructor(
 
     override fun title() = stringProvider.getString(StringId.HOME_SECTION_RNG)
 
-
     override fun state() = flowOf(content())
         .withLoadingState()
         .withErrorState()

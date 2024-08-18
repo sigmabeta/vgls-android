@@ -14,6 +14,7 @@ import com.vgleadsheets.composables.subs.Flasher
 import kotlin.random.Random
 
 @Composable
+@Suppress("MagicNumber")
 fun LoadingSectionHeader(
     seed: Long,
     modifier: Modifier,

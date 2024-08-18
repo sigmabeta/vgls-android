@@ -46,7 +46,11 @@ fun FullScreenOf(
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
             repeat(count) {
-                content(PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)))
+                content(
+                    PaddingValues(
+                        horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+                    )
+                )
             }
         }
     }
