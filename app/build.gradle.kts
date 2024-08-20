@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ApplicationBuildType
+
 plugins {
     alias(libs.plugins.vgls.android.app)
     alias(libs.plugins.vgls.compose.android.app)
@@ -60,6 +62,8 @@ android {
 
     buildTypes {
         debug {
+            addTimeToBuildConfig(butActuallyThough = false)
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -68,6 +72,8 @@ android {
         }
 
         release {
+            addTimeToBuildConfig(butActuallyThough = true)
+
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
@@ -112,7 +118,7 @@ dependencies {
     implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.ui.components)
 
-    implementation(projects.core.common.debug)
+    implementation(projects.core.common.appinfo)
     implementation(projects.core.common.downloader)
     implementation(projects.core.common.network)
     implementation(projects.core.common.settings.environment)
@@ -151,4 +157,24 @@ dependencies {
 
 fun checkShouldIncludeFirebase(): Boolean {
     return File("app/google-services.json").exists()
+}
+
+fun ApplicationBuildType.addTimeToBuildConfig(butActuallyThough: Boolean) {
+    val timeMs = if (butActuallyThough) {
+        System.currentTimeMillis()
+    } else {
+        0L
+    }
+
+    buildConfigField("Long", "BUILD_TIME", "${timeMs}L")
+}
+
+fun ApplicationBuildType.addBranchNameToBuildConfig(butActuallyThough: Boolean) {
+    val timeMs = if (butActuallyThough) {
+        System.currentTimeMillis()
+    } else {
+        0L
+    }
+
+    buildConfigField("Long", "BUILD_TIME", "${timeMs}L")
 }

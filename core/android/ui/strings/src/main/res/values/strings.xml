@@ -59,6 +59,9 @@
     <string name="label_settings_license">Open-source Licenses</string>
     <string name="label_settings_website">VGLeadSheets.com</string>
     <string name="label_settings_gb">Giant Bomb Wiki</string>
+    <string name="label_settings_version_name">App Version</string>
+    <string name="label_settings_version_code">App Version Code</string>
+    <string name="label_settings_build_date">Build Date</string>
     <string name="label_settings_debug_delay">Slow down screen loads</string>
     <string name="label_settings_debug_restart">Restart App</string>
 

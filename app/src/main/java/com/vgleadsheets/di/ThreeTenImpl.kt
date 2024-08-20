@@ -2,7 +2,7 @@ package com.vgleadsheets.di
 
 import android.content.Context
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.vgleadsheets.repository.ThreeTenTime
+import com.vgleadsheets.time.ThreeTenTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter

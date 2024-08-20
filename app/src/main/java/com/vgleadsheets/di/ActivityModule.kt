@@ -1,6 +1,7 @@
 package com.vgleadsheets.di
 
 import android.content.Context
+import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
@@ -41,6 +42,7 @@ class ActivityModule {
     fun provideVMBrainProvider(
         dispatchers: VglsDispatchers,
         delayManager: DelayManager,
+        appInfo: AppInfo,
         urlInfoProvider: UrlInfoProvider,
         stringProvider: StringProvider,
         hatchet: Hatchet,
@@ -58,6 +60,7 @@ class ActivityModule {
         FeatureDirectory(
             dispatchers = dispatchers,
             delayManager = delayManager,
+            appInfo = appInfo,
             urlInfoProvider = urlInfoProvider,
             stringProvider = stringProvider,
             hatchet = hatchet,

@@ -1,9 +1,7 @@
 package com.vgleadsheets
 
-import com.vgleadsheets.common.debug.NetworkEndpoint
 import com.vgleadsheets.storage.BooleanSetting
 import com.vgleadsheets.storage.DropdownSetting
-import com.vgleadsheets.storage.R
 import com.vgleadsheets.storage.SimpleStorage
 import com.vgleadsheets.storage.Storage
 import io.reactivex.Single

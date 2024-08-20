@@ -2,9 +2,6 @@ plugins {
     alias(libs.plugins.vgls.core.jvm)
 }
 dependencies {
-    // So we don"t have buggy time comparisons
-    api(libs.threeten)
-
     api(projects.core.common.model)
 
     implementation(projects.core.common.appcomm)
@@ -14,5 +11,6 @@ dependencies {
     implementation(projects.core.common.network)
     implementation(projects.core.common.notif)
     implementation(projects.core.common.ui.strings)
+    implementation(projects.core.common.time)
     implementation(projects.core.common.tracking)
 }

@@ -9,7 +9,6 @@ dependencies {
     // Module deps
     implementation(projects.core.common.logging)
     implementation(projects.core.common.model)
-    implementation(projects.core.common.debug)
 
     // OkHttp libs
     api(libs.okhttp)

@@ -1,5 +1,6 @@
 package com.vgleadsheets.features
 
+import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.DelayManager
@@ -43,6 +44,7 @@ class FeatureDirectory(
     private val tagRepository: TagRepository,
     private val dispatchers: VglsDispatchers,
     private val delayManager: DelayManager,
+    private val appInfo: AppInfo,
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
@@ -183,6 +185,7 @@ class FeatureDirectory(
             Destination.MENU -> MenuViewModelBrain(
                 generalSettingsManager,
                 debugSettingsManager,
+                appInfo,
                 stringProvider,
                 hatchet,
                 dispatchers,

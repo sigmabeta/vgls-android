@@ -8,18 +8,19 @@ import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventDispatcherReal
 import com.vgleadsheets.appcomm.di.ActionDeserializer
+import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.dispatchers.DelayManagerImpl
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
-import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.storage.common.Storage
+import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
 import dagger.Provides
@@ -41,8 +42,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    @Named("IsDebugBuild")
-    fun provideIsDebugBuild() = BuildConfig.DEBUG
+    fun provideAppInfo() = AppInfo(
+        isDebug = BuildConfig.DEBUG,
+        versionName = BuildConfig.VERSION_NAME,
+        versionCode = BuildConfig.VERSION_CODE,
+        buildTimeMs = BuildConfig.BUILD_TIME,
+    )
 
     @Provides
     @Named("StethoInterceptor")

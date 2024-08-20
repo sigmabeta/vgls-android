@@ -2,6 +2,7 @@ package com.vgleadsheets.remaster.menu
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.onEach
 class MenuViewModelBrain(
     private val generalSettingsManager: GeneralSettingsManager,
     private val debugSettingsManager: DebugSettingsManager,
+    private val appInfo: AppInfo,
     stringProvider: StringProvider,
     hatchet: Hatchet,
     private val dispatchers: VglsDispatchers,
@@ -33,6 +35,7 @@ class MenuViewModelBrain(
         when (action) {
             is VglsAction.InitNoArgs -> fetchSettings()
             is VglsAction.Resume -> return
+            is VglsAction.Noop -> return
             is Action.KeepScreenOnClicked -> onKeepScreenOnClicked()
             is Action.WebsiteLinkClicked -> onWebsiteLinkClicked()
             is Action.GiantBombClicked -> onGiantBombClicked()
@@ -67,8 +70,12 @@ class MenuViewModelBrain(
 
     private fun fetchSettings() {
         fetchKeepScreenOn()
-
+        fetchAppInfo()
         fetchDebugShouldDelay()
+    }
+
+    private fun fetchAppInfo() {
+        updateState { (it as State).copy(appInfo = appInfo) }
     }
 
     private fun fetchKeepScreenOn() {

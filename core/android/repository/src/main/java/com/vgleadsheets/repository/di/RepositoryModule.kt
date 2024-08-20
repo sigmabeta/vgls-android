@@ -30,9 +30,9 @@ import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
-import com.vgleadsheets.repository.ThreeTenTime
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.history.SongHistoryRepository
+import com.vgleadsheets.time.ThreeTenTime
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
