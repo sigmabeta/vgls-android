@@ -83,6 +83,7 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_GIANT_BOMB -> R.string.label_settings_gb
         StringId.SETTINGS_LABEL_DEBUG_DELAY -> R.string.label_settings_debug_delay
         StringId.SETTINGS_LABEL_DEBUG_RESTART -> R.string.label_settings_debug_restart
+        StringId.SETTINGS_LABEL_APP_BRANCH -> R.string.label_settings_branch
         StringId.SETTINGS_LABEL_APP_VERSION_NAME -> R.string.label_settings_version_name
         StringId.SETTINGS_LABEL_APP_VERSION_CODE -> R.string.label_settings_version_code
         StringId.SETTINGS_LABEL_APP_BUILD_DATE -> R.string.label_settings_build_date

@@ -47,6 +47,7 @@ object AppModule {
         versionName = BuildConfig.VERSION_NAME,
         versionCode = BuildConfig.VERSION_CODE,
         buildTimeMs = BuildConfig.BUILD_TIME,
+        buildBranch = BuildConfig.BUILD_BRANCH,
     )
 
     @Provides

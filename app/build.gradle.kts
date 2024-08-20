@@ -63,6 +63,7 @@ android {
     buildTypes {
         debug {
             addTimeToBuildConfig(butActuallyThough = false)
+            addBranchNameToBuildConfig(butActuallyThough = false)
 
             isMinifyEnabled = false
             proguardFiles(
@@ -73,6 +74,7 @@ android {
 
         release {
             addTimeToBuildConfig(butActuallyThough = true)
+            addBranchNameToBuildConfig(butActuallyThough = true)
 
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
@@ -170,11 +172,14 @@ fun ApplicationBuildType.addTimeToBuildConfig(butActuallyThough: Boolean) {
 }
 
 fun ApplicationBuildType.addBranchNameToBuildConfig(butActuallyThough: Boolean) {
-    val timeMs = if (butActuallyThough) {
-        System.currentTimeMillis()
-    } else {
-        0L
+    val unknown = "Unknown"
+    val branchEnvVariable = System.getenv("CIRCLE_BRANCH")
+
+    val branchName = when {
+        !butActuallyThough -> unknown
+        branchEnvVariable.isNullOrEmpty() -> unknown
+        else -> branchEnvVariable
     }
 
-    buildConfigField("Long", "BUILD_TIME", "${timeMs}L")
+    buildConfigField("String", "BUILD_BRANCH", "\"$branchName\"")
 }

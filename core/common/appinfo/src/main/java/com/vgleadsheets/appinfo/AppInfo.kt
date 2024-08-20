@@ -5,4 +5,5 @@ data class AppInfo(
     val versionName: String,
     val versionCode: Int,
     val buildTimeMs: Long,
+    val buildBranch: String,
 )

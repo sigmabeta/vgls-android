@@ -39,6 +39,7 @@ data class State(
         giantBomb(stringProvider),
         appVersionName(stringProvider),
         appVersionCode(stringProvider),
+        appBuildBranch(stringProvider),
         appBuildDate(stringProvider),
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)),
         shouldDelay(stringProvider),
@@ -99,6 +100,14 @@ data class State(
         return LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
             value = appInfo?.buildTimeMs?.toBuildDate() ?: return null,
+            clickAction = VglsAction.Noop
+        )
+    }
+
+    private fun appBuildBranch(stringProvider: StringProvider): LabelValueListModel? {
+        return LabelValueListModel(
+            label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
+            value = appInfo?.buildBranch ?: "Unknown",
             clickAction = VglsAction.Noop
         )
     }
