@@ -84,6 +84,7 @@ data class State(
         )
     }
 
+    @Suppress("ReturnCount")
     private fun appVersionCode(stringProvider: StringProvider): LabelValueListModel? {
         if (appInfo?.isDebug == false) return null
 
