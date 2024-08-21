@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.BuildConfig
 import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.scaffold.RemasterAppUi
@@ -41,7 +42,7 @@ class RemasteredActivity :
         val hideSystemBars = { windowInsetController.hide(WindowInsetsCompat.Type.systemBars()) }
         val showSystemBars = { windowInsetController.show(WindowInsetsCompat.Type.systemBars()) }
 
-        setupIntentLauncher()
+        setupNavEventListener()
         setupRestartChannel()
 
         setContent {
@@ -76,10 +77,17 @@ class RemasteredActivity :
         Runtime.getRuntime().exit(0)
     }
 
-    private fun setupIntentLauncher() {
-        navViewModel.intents
-            .onEach { startActivity(it) }
+    private fun setupNavEventListener() {
+        navViewModel.activityEvents
+            .onEach { handleNavEvent(it) }
             .launchIn(navViewModel.viewModelScope)
+    }
+
+    private fun handleNavEvent(event: ActivityEvent) {
+        when (event) {
+            ActivityEvent.Finish -> finish()
+            is ActivityEvent.LaunchIntent -> startActivity(event.intent)
+        }
     }
 
     private fun setupEdgeToEdge() {

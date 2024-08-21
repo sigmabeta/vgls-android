@@ -11,6 +11,7 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
@@ -26,6 +27,8 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -35,20 +38,22 @@ class NavViewModel @Inject constructor(
     override val eventDispatcher: EventDispatcher,
     private val notifManager: NotifManager,
     private val updateManager: UpdateManager,
+    private val appInfo: AppInfo,
 ) : VglsViewModel<NavState>() {
     init {
         eventDispatcher.addEventSink(this)
+        sendAction(VglsAction.InitNoArgs)
     }
 
     lateinit var navController: NavController
     lateinit var snackbarScope: CoroutineScope
     lateinit var snackbarHostState: SnackbarHostState
 
-    private val internalIntentFlow = MutableSharedFlow<Intent>(
+    private val activityEventFlow = MutableSharedFlow<ActivityEvent>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
-    val intents = internalIntentFlow.asSharedFlow()
+    val activityEvents = activityEventFlow.asSharedFlow()
 
     private val internalRestartChannel = Channel<Unit>()
     val restartChannel: ReceiveChannel<Unit> = internalRestartChannel
@@ -58,6 +63,10 @@ class NavViewModel @Inject constructor(
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+
+            when (action) {
+                is VglsAction.InitNoArgs -> startWatchingBackstack()
+            }
         }
     }
 
@@ -67,7 +76,7 @@ class NavViewModel @Inject constructor(
             when (event) {
                 is VglsEvent.NavigateTo -> navigateTo(event.destination)
                 is VglsEvent.NavigateBack -> navigateBack()
-                is VglsEvent.ShowSnackbar -> launchSnackbar(event)
+                is VglsEvent.ShowSnackbar -> showSnackbar(event)
                 is VglsEvent.HideUiChrome -> hideSystemUi()
                 is VglsEvent.ShowUiChrome -> showSystemUi()
                 is VglsEvent.ClearNotif -> clearNotif(event.id)
@@ -78,6 +87,13 @@ class NavViewModel @Inject constructor(
                 is VglsEvent.RestartApp -> restartApp()
             }
         }
+    }
+
+    private fun startWatchingBackstack() {
+        navController
+            .currentBackStackEntryFlow
+            .onEach { printBackstackStatus() }
+            .launchIn(viewModelScope)
     }
 
     private fun restartApp() {
@@ -99,10 +115,12 @@ class NavViewModel @Inject constructor(
     private fun launchWebsite(url: String) {
         val launcher = Intent(Intent.ACTION_VIEW)
         launcher.data = Uri.parse(url)
-        internalIntentFlow.tryEmit(launcher)
+
+        val event = ActivityEvent.LaunchIntent(launcher)
+        activityEventFlow.tryEmit(event)
     }
 
-    private fun launchSnackbar(snackbarEvent: VglsEvent.ShowSnackbar) {
+    private fun showSnackbar(snackbarEvent: VglsEvent.ShowSnackbar) {
         snackbarScope.launch {
             val actionDetails = snackbarEvent.actionDetails
             val result = snackbarHostState.showSnackbar(
@@ -133,8 +151,16 @@ class NavViewModel @Inject constructor(
     @Suppress("SwallowedException")
     private fun navigateTo(destination: String) {
         try {
-            hatchet.v("Navigating to $destination...")
+            val message = "Navigating to $destination"
+
+            hatchet.v(message)
             navController.navigate(destination)
+
+            if (appInfo.isDebug) {
+                showSnackbar(
+                    VglsEvent.ShowSnackbar(message, false, source = "Navigation")
+                )
+            }
         } catch (ex: IllegalArgumentException) {
             sendEvent(
                 VglsEvent.ShowSnackbar(
@@ -147,7 +173,30 @@ class NavViewModel @Inject constructor(
     }
 
     private fun navigateBack() {
-        navController.popBackStack()
+        val oldRoute = navController.currentDestination?.route
+        val success = navController.popBackStack()
+
+        if (!success) {
+            activityEventFlow.tryEmit(ActivityEvent.Finish)
+            return
+        }
+
+        val newRoute = navController.currentDestination?.route
+        val message = "Popping stack from $oldRoute to $newRoute"
+        if (appInfo.isDebug) {
+            showSnackbar(
+                VglsEvent.ShowSnackbar(message, false, source = "Navigation")
+            )
+        }
+    }
+
+    private fun printBackstackStatus() {
+        if (appInfo.isDebug) {
+            hatchet.d("Nav backstack updated.")
+            navController.visibleEntries.value.forEach { entry ->
+                hatchet.v("Dest: ${entry.destination.route?.take(10)} State: ${entry.maxLifecycle}")
+            }
+        }
     }
 
     private fun showSystemUi() {

@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.core.android.coroutines)
 
     api(projects.core.common.appcomm)
+    api(projects.core.common.appinfo)
 
     implementation(projects.core.common.model)
     implementation(projects.core.common.notif)
