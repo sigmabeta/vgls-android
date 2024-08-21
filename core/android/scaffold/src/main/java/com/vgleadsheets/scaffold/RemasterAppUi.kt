@@ -13,6 +13,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -60,6 +61,8 @@ fun RemasterAppUi(
     navViewModel.navController = navController
     navViewModel.snackbarScope = snackbarScope
     navViewModel.snackbarHostState = snackbarHostState
+
+    LaunchedEffect(Unit) { navViewModel.startWatchingBackstack() }
 
     val navState by navViewModel.uiState.collectAsState()
     handleSystemBars(navState, showSystemBars, hideSystemBars)

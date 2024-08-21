@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.ActivityEvent
-import com.vgleadsheets.nav.BuildConfig
 import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -43,7 +42,6 @@ class RemasteredActivity :
         val showSystemBars = { windowInsetController.show(WindowInsetsCompat.Type.systemBars()) }
 
         setupNavEventListener()
-        setupRestartChannel()
 
         setContent {
             VglsMaterial {
@@ -53,15 +51,6 @@ class RemasteredActivity :
                     modifier = Modifier
                 )
             }
-        }
-    }
-
-    private fun setupRestartChannel() {
-        if (BuildConfig.DEBUG) {
-            navViewModel.restartChannel
-                .receiveAsFlow()
-                .onEach { restartApp() }
-                .launchIn(navViewModel.viewModelScope)
         }
     }
 
@@ -79,6 +68,7 @@ class RemasteredActivity :
 
     private fun setupNavEventListener() {
         navViewModel.activityEvents
+            .receiveAsFlow()
             .onEach { handleNavEvent(it) }
             .launchIn(navViewModel.viewModelScope)
     }
@@ -87,6 +77,7 @@ class RemasteredActivity :
         when (event) {
             ActivityEvent.Finish -> finish()
             is ActivityEvent.LaunchIntent -> startActivity(event.intent)
+            ActivityEvent.Restart -> restartApp()
         }
     }
 

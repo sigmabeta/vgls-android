@@ -1,5 +1,6 @@
 package com.vgleadsheets.nav
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.material3.SnackbarDuration
@@ -21,12 +22,9 @@ import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -49,24 +47,14 @@ class NavViewModel @Inject constructor(
     lateinit var snackbarScope: CoroutineScope
     lateinit var snackbarHostState: SnackbarHostState
 
-    private val activityEventFlow = MutableSharedFlow<ActivityEvent>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
-    val activityEvents = activityEventFlow.asSharedFlow()
-
-    private val internalRestartChannel = Channel<Unit>()
-    val restartChannel: ReceiveChannel<Unit> = internalRestartChannel
+    private val activityEventChannel = Channel<ActivityEvent>()
+    val activityEvents: ReceiveChannel<ActivityEvent> = activityEventChannel
 
     override fun initialState() = NavState()
 
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
-
-            when (action) {
-                is VglsAction.InitNoArgs -> startWatchingBackstack()
-            }
         }
     }
 
@@ -89,7 +77,7 @@ class NavViewModel @Inject constructor(
         }
     }
 
-    private fun startWatchingBackstack() {
+    fun startWatchingBackstack() {
         navController
             .currentBackStackEntryFlow
             .onEach { printBackstackStatus() }
@@ -98,7 +86,7 @@ class NavViewModel @Inject constructor(
 
     private fun restartApp() {
         viewModelScope.launch {
-            internalRestartChannel.send(Unit)
+            activityEventChannel.send(ActivityEvent.Restart)
         }
     }
 
@@ -117,7 +105,9 @@ class NavViewModel @Inject constructor(
         launcher.data = Uri.parse(url)
 
         val event = ActivityEvent.LaunchIntent(launcher)
-        activityEventFlow.tryEmit(event)
+        viewModelScope.launch {
+            activityEventChannel.send(event)
+        }
     }
 
     private fun showSnackbar(snackbarEvent: VglsEvent.ShowSnackbar) {
@@ -177,7 +167,7 @@ class NavViewModel @Inject constructor(
         val success = navController.popBackStack()
 
         if (!success) {
-            activityEventFlow.tryEmit(ActivityEvent.Finish)
+            viewModelScope.launch { activityEventChannel.send(ActivityEvent.Finish) }
             return
         }
 
@@ -190,11 +180,15 @@ class NavViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private fun printBackstackStatus() {
         if (appInfo.isDebug) {
             hatchet.d("Nav backstack updated.")
-            navController.visibleEntries.value.forEach { entry ->
-                hatchet.v("Dest: ${entry.destination.route?.take(10)} State: ${entry.maxLifecycle}")
+            navController.currentBackStack.value.forEach { entry ->
+                if (entry.destination.route == null) {
+                    return@forEach
+                }
+                hatchet.v("Dest: ${entry.destination.route} State: ${entry.maxLifecycle} Args: ${entry.arguments}")
             }
         }
     }
