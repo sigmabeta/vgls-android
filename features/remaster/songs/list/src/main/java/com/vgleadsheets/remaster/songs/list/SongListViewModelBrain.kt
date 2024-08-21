@@ -45,25 +45,21 @@ class SongListViewModelBrain(
     }
 
     private fun showLoading() {
-        updateState {
-            (it as State).copy(
-                songs = LCE.Loading(LOAD_OPERATION_NAME)
-            )
-        }
+        updateSongs(LCE.Loading(LOAD_OPERATION_NAME))
     }
 
     private fun showError(loadOperationName: String, error: Throwable) {
-        updateState {
-            (it as State).copy(
-                songs = LCE.Error(loadOperationName, error)
-            )
-        }
+        updateSongs(LCE.Error(loadOperationName, error))
     }
 
     private fun onSongsLoaded(songs: List<Song>) {
+        updateSongs(LCE.Content(songs))
+    }
+
+    private fun updateSongs(songs: LCE<List<Song>>) {
         updateState {
             (it as State).copy(
-                songs = LCE.Content(songs)
+                songs = songs
             )
         }
     }

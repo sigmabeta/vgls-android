@@ -45,27 +45,15 @@ class GameListViewModelBrain(
     }
 
     private fun onGamesLoaded(games: List<Game>) {
-        updateState {
-            (it as State).copy(
-                games = LCE.Content(games)
-            )
-        }
+        updateGames(LCE.Content(games))
     }
 
     private fun showLoading() {
-        updateState {
-            (it as State).copy(
-                games = LCE.Loading(LOAD_OPERATION_NAME)
-            )
-        }
+        updateGames(LCE.Loading(LOAD_OPERATION_NAME))
     }
 
     private fun showError(loadOperationName: String, error: Throwable) {
-        updateState {
-            (it as State).copy(
-                games = LCE.Error(loadOperationName, error)
-            )
-        }
+        updateGames(LCE.Error(loadOperationName, error))
     }
 
     private fun onGameClicked(id: Long) {
@@ -75,6 +63,14 @@ class GameListViewModelBrain(
                 Destination.GAMES_LIST.name
             )
         )
+    }
+
+    private fun updateGames(games: LCE<List<Game>>) {
+        updateState {
+            (it as State).copy(
+                games = games
+            )
+        }
     }
 
     companion object {

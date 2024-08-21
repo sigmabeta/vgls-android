@@ -45,25 +45,21 @@ class ComposerListViewModelBrain(
     }
 
     private fun onComposersLoaded(composers: List<Composer>) {
-        updateState {
-            (it as State).copy(
-                composers = LCE.Content(composers)
-            )
-        }
+        updateComposers(LCE.Content(composers))
     }
 
     private fun showLoading() {
-        updateState {
-            (it as State).copy(
-                composers = LCE.Loading(LOAD_OPERATION_NAME)
-            )
-        }
+        updateComposers(LCE.Loading(LOAD_OPERATION_NAME))
     }
 
     private fun showError(loadOperationName: String, error: Throwable) {
+        updateComposers(LCE.Error(loadOperationName, error))
+    }
+
+    private fun updateComposers(composers: LCE<List<Composer>>) {
         updateState {
             (it as State).copy(
-                composers = LCE.Error(loadOperationName, error)
+                composers = composers
             )
         }
     }
