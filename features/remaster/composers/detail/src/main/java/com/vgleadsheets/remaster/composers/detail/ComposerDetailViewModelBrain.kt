@@ -2,8 +2,8 @@ package com.vgleadsheets.remaster.composers.detail
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
@@ -11,9 +11,6 @@ import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -24,15 +21,13 @@ class ComposerDetailViewModelBrain(
     private val composerRepository: ComposerRepository,
     private val gameRepository: GameRepository,
     private val favoriteRepository: FavoriteRepository,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State()
 
@@ -61,8 +56,7 @@ class ComposerDetailViewModelBrain(
                     (it as State).copy(isFavorite = isFavorite)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onAddFavoriteClicked() {
@@ -73,8 +67,7 @@ class ComposerDetailViewModelBrain(
             .onEach { id ->
                 favoriteRepository.addFavoriteComposer(id)
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onRemoveFavoriteClicked() {
@@ -85,8 +78,7 @@ class ComposerDetailViewModelBrain(
             .onEach { id ->
                 favoriteRepository.removeFavoriteComposer(id)
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchComposer(composerId: Long) {
@@ -99,8 +91,7 @@ class ComposerDetailViewModelBrain(
                     )
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchSongs(composerId: Long) {
@@ -113,8 +104,7 @@ class ComposerDetailViewModelBrain(
                     )
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchGames() {
@@ -130,8 +120,7 @@ class ComposerDetailViewModelBrain(
                     )
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onSongClicked(id: Long) {

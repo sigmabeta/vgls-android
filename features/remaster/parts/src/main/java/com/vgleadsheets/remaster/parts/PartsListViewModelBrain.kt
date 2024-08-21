@@ -1,28 +1,23 @@
 package com.vgleadsheets.remaster.parts
 
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class PartsListViewModelBrain(
     stringProvider: StringProvider,
     hatchet: Hatchet,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
     private val selectedPartManager: SelectedPartManager,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State()
 
@@ -38,8 +33,7 @@ class PartsListViewModelBrain(
     private fun collectSelectedPart() {
         selectedPartManager.selectedPartFlow()
             .onEach(::onSelectedPartLoaded)
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onSelectedPartLoaded(part: Part) {

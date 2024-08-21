@@ -2,8 +2,8 @@ package com.vgleadsheets.remaster.favorites
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
@@ -11,22 +11,17 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class FavoritesViewModelBrain(
     private val favoriteRepository: FavoriteRepository,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State()
 
@@ -48,22 +43,19 @@ class FavoritesViewModelBrain(
     private fun collectSongs() {
         favoriteRepository.getAllSongs()
             .onEach(::onSongsLoaded)
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun collectGames() {
         favoriteRepository.getAllGames()
             .onEach(::onGamesLoaded)
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun collectComposers() {
         favoriteRepository.getAllComposers()
             .onEach(::onComposersLoaded)
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onSongsLoaded(games: List<Song>) {

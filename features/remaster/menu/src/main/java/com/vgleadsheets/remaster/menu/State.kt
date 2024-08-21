@@ -33,7 +33,6 @@ data class State(
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> = listOfNotNull(
         keepScreenOn(stringProvider),
-        licenses(stringProvider),
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_ABOUT)),
         website(stringProvider),
         giantBomb(stringProvider),
@@ -41,6 +40,7 @@ data class State(
         appVersionCode(stringProvider),
         appBuildBranch(stringProvider),
         appBuildDate(stringProvider),
+        licenses(stringProvider),
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)),
         shouldDelay(stringProvider),
         restartApp(stringProvider),

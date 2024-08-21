@@ -2,29 +2,24 @@ package com.vgleadsheets.remaster.games.list
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class GameListViewModelBrain(
     private val gameRepository: GameRepository,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State()
 
@@ -38,8 +33,7 @@ class GameListViewModelBrain(
     private fun collectGames() {
         gameRepository.getAllGames()
             .onEach(::onGamesLoaded)
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onGamesLoaded(games: List<Game>) {

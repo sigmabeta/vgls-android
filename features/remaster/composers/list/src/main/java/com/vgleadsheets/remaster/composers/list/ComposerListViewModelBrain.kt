@@ -2,29 +2,24 @@ package com.vgleadsheets.remaster.composers.list
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class ComposerListViewModelBrain(
     private val composerRepository: ComposerRepository,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State()
 
@@ -38,8 +33,7 @@ class ComposerListViewModelBrain(
     private fun collectComposers() {
         composerRepository.getAllComposers()
             .onEach(::onComposersLoaded)
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onComposersLoaded(composers: List<Composer>) {

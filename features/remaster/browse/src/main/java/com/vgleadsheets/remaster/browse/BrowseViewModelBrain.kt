@@ -2,23 +2,20 @@ package com.vgleadsheets.remaster.browse
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
 
 class BrowseViewModelBrain(
     stringProvider: StringProvider,
     hatchet: Hatchet,
-    dispatchers: VglsDispatchers,
-    coroutineScope: CoroutineScope,
+    scheduler: VglsScheduler,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State
 

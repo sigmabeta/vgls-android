@@ -2,8 +2,8 @@ package com.vgleadsheets.remaster.songs.detail
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
@@ -13,11 +13,8 @@ import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -29,16 +26,14 @@ class SongDetailViewModelBrain(
     private val composerRepository: ComposerRepository,
     private val favoriteRepository: FavoriteRepository,
     private val tagRepository: TagRepository,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
     private val urlInfoProvider: UrlInfoProvider,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State()
 
@@ -73,8 +68,7 @@ class SongDetailViewModelBrain(
                     (it as State).copy(sheetUrlInfo = urlInfo)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchSong(id: Long) {
@@ -85,8 +79,7 @@ class SongDetailViewModelBrain(
                     (it as State).copy(song = song)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchComposers(songId: Long) {
@@ -97,8 +90,7 @@ class SongDetailViewModelBrain(
                     (it as State).copy(composers = composers)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchAliases(id: Long) {
@@ -109,8 +101,7 @@ class SongDetailViewModelBrain(
                     (it as State).copy(songAliases = songAliases)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchTagValues(id: Long) {
@@ -121,8 +112,7 @@ class SongDetailViewModelBrain(
                     (it as State).copy(tagValues = tagValues)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchGame() {
@@ -135,8 +125,7 @@ class SongDetailViewModelBrain(
                     (it as State).copy(game = game)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun checkFavoriteStatus(id: Long) {
@@ -147,8 +136,7 @@ class SongDetailViewModelBrain(
                     (it as State).copy(isFavorite = isFavorite)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onAddFavoriteClicked() {
@@ -159,8 +147,7 @@ class SongDetailViewModelBrain(
             .onEach { id ->
                 favoriteRepository.addFavoriteSong(id)
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onRemoveFavoriteClicked() {
@@ -171,8 +158,7 @@ class SongDetailViewModelBrain(
             .onEach { id ->
                 favoriteRepository.removeFavoriteSong(id)
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onSearchYoutubeClicked() {

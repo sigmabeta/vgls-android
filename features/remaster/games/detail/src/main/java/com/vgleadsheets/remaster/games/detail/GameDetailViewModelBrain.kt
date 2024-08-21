@@ -2,8 +2,8 @@ package com.vgleadsheets.remaster.games.detail
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
@@ -11,10 +11,7 @@ import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -25,15 +22,13 @@ class GameDetailViewModelBrain(
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
     private val favoriteRepository: FavoriteRepository,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State()
 
@@ -63,8 +58,7 @@ class GameDetailViewModelBrain(
                     )
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchSongs(gameId: Long) {
@@ -77,8 +71,7 @@ class GameDetailViewModelBrain(
                     )
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchComposers() {
@@ -99,8 +92,7 @@ class GameDetailViewModelBrain(
                     )
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun checkFavoriteStatus(id: Long) {
@@ -111,8 +103,7 @@ class GameDetailViewModelBrain(
                     (it as State).copy(isFavorite = isFavorite)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onAddFavoriteClicked() {
@@ -123,8 +114,7 @@ class GameDetailViewModelBrain(
             .onEach { id ->
                 favoriteRepository.addFavoriteGame(id)
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onRemoveFavoriteClicked() {
@@ -135,8 +125,7 @@ class GameDetailViewModelBrain(
             .onEach { id ->
                 favoriteRepository.removeFavoriteGame(id)
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onSongClicked(id: Long) {

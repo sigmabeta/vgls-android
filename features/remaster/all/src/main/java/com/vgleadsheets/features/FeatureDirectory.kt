@@ -68,8 +68,6 @@ class FeatureDirectory(
             Destination.HOME -> HomeViewModelBrain(
                 stringProvider,
                 hatchet,
-                dispatchers,
-                coroutineScope,
                 scheduler,
                 homeModuleProvider,
                 randomRepository,
@@ -78,15 +76,13 @@ class FeatureDirectory(
             Destination.BROWSE -> BrowseViewModelBrain(
                 stringProvider,
                 hatchet,
-                dispatchers,
-                coroutineScope,
+                scheduler,
             )
 
             Destination.PART_PICKER -> PartsListViewModelBrain(
                 stringProvider,
                 hatchet,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 selectedPartManager,
             )
 
@@ -95,16 +91,14 @@ class FeatureDirectory(
                 gameRepository,
                 composerRepository,
                 favoriteRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet,
             )
 
             Destination.GAMES_LIST -> GameListViewModelBrain(
                 gameRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet,
             )
@@ -114,16 +108,14 @@ class FeatureDirectory(
                 composerRepository,
                 gameRepository,
                 favoriteRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet,
             )
 
             Destination.COMPOSERS_LIST -> ComposerListViewModelBrain(
                 composerRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet,
             )
@@ -134,8 +126,7 @@ class FeatureDirectory(
                 composerRepository,
                 favoriteRepository,
                 tagRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 urlInfoProvider,
                 stringProvider,
                 hatchet,
@@ -143,32 +134,28 @@ class FeatureDirectory(
 
             Destination.SONGS_LIST -> SongListViewModelBrain(
                 songRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet,
             )
 
             Destination.FAVORITES -> FavoritesViewModelBrain(
                 favoriteRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet
             )
 
             Destination.TAGS_LIST -> TagListViewModelBrain(
                 tagRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet
             )
 
             Destination.TAGS_VALUES_LIST -> TagValuesViewModelBrain(
                 tagRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet
             )
@@ -176,8 +163,7 @@ class FeatureDirectory(
             Destination.TAGS_VALUES_SONG_LIST -> TagValueSongsViewModelBrain(
                 tagRepository,
                 songRepository,
-                dispatchers,
-                coroutineScope,
+                scheduler,
                 stringProvider,
                 hatchet
             )
@@ -188,8 +174,7 @@ class FeatureDirectory(
                 appInfo,
                 stringProvider,
                 hatchet,
-                dispatchers,
-                coroutineScope
+                scheduler,
             )
 
             Destination.SEARCH,

@@ -3,16 +3,13 @@ package com.vgleadsheets.remaster.menu
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.appinfo.AppInfo
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class MenuViewModelBrain(
@@ -21,13 +18,11 @@ class MenuViewModelBrain(
     private val appInfo: AppInfo,
     stringProvider: StringProvider,
     hatchet: Hatchet,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
-    dispatchers,
-    coroutineScope
+    scheduler,
 ) {
     override fun initialState() = State()
 
@@ -84,8 +79,7 @@ class MenuViewModelBrain(
             .onEach { value ->
                 updateState { (it as State).copy(keepScreenOn = value) }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun fetchDebugShouldDelay() {
@@ -94,8 +88,7 @@ class MenuViewModelBrain(
             .onEach { value ->
                 updateState { (it as State).copy(debugShouldDelay = value ?: false) }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(coroutineScope)
+            .runInBackground()
     }
 
     private fun onRestartAppClicked() {

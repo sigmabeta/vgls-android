@@ -2,24 +2,27 @@ package com.vgleadsheets.list
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 abstract class ListViewModelBrain(
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
-    private val dispatchers: VglsDispatchers,
-    private val coroutineScope: CoroutineScope,
+    private val scheduler: VglsScheduler,
 ) {
     abstract fun initialState(): ListState
 
@@ -64,20 +67,20 @@ abstract class ListViewModelBrain(
             }
         }
 
-        coroutineScope.launch(dispatchers.main) {
+        scheduler.coroutineScope.launch(scheduler.dispatchers.main) {
             handleAction(action)
         }
     }
 
     fun sendEvent(event: VglsEvent) {
-        coroutineScope.launch(dispatchers.main) {
+        scheduler.coroutineScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this@ListViewModelBrain.javaClass.simpleName} - Handling event: $event")
             handleEvent(event)
         }
     }
 
     protected fun updateState(updater: (ListState) -> ListState) {
-        coroutineScope.launch(dispatchers.main) {
+        scheduler.coroutineScope.launch(scheduler.dispatchers.main) {
             val oldState = internalUiState.value
             val newState = updater(oldState)
 
@@ -87,7 +90,7 @@ abstract class ListViewModelBrain(
     }
 
     protected fun emitEvent(event: VglsEvent) {
-        coroutineScope.launch(dispatchers.main) {
+        scheduler.coroutineScope.launch(scheduler.dispatchers.main) {
             hatchet.d("Emitting event: $event")
             internalUiEvents.tryEmit(event)
         }
@@ -99,5 +102,23 @@ abstract class ListViewModelBrain(
         return map { list ->
             list.map(mapper)
         }
+    }
+
+    @Suppress("MagicNumber")
+    protected fun <EmissionType> Flow<EmissionType>.runInBackground(
+        dispatcher: CoroutineDispatcher = scheduler.dispatchers.disk,
+        shouldDelay: Boolean = scheduler.delayManager.shouldDelay()
+    ): Job {
+        val possiblyDelayedFlow = if (shouldDelay) {
+            (
+                this.onStart { delay(2000L) }
+                )
+        } else {
+            this
+        }
+
+        return possiblyDelayedFlow
+            .flowOn(dispatcher)
+            .launchIn(scheduler.coroutineScope)
     }
 }
