@@ -1,13 +1,15 @@
 package com.vgleadsheets.nav
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.get
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
@@ -78,10 +80,13 @@ class NavViewModel @Inject constructor(
     }
 
     fun startWatchingBackstack() {
-        navController
-            .currentBackStackEntryFlow
-            .onEach { printBackstackStatus() }
-            .launchIn(viewModelScope)
+        if (appInfo.isDebug) {
+            val composeNavigator = navController.navigatorProvider[ComposeNavigator::class]
+            composeNavigator
+                .backStack
+                .onEach { printBackstackStatus(it) }
+                .launchIn(viewModelScope)
+        }
     }
 
     private fun restartApp() {
@@ -180,16 +185,10 @@ class NavViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("RestrictedApi")
-    private fun printBackstackStatus() {
-        if (appInfo.isDebug) {
-            hatchet.d("Nav backstack updated.")
-            navController.currentBackStack.value.forEach { entry ->
-                if (entry.destination.route == null) {
-                    return@forEach
-                }
-                hatchet.v("Dest: ${entry.destination.route} State: ${entry.maxLifecycle} Args: ${entry.arguments}")
-            }
+    private fun printBackstackStatus(navBackStackEntries: List<NavBackStackEntry>) {
+        hatchet.d("Nav backstack updated.")
+        navBackStackEntries.forEach { entry ->
+            hatchet.v("Dest: ${entry.destination.route} State: ${entry.maxLifecycle} Args: ${entry.arguments}")
         }
     }
 
