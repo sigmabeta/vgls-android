@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.games.list
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
@@ -9,6 +10,7 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.ui.StringProvider
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 
 class GameListViewModelBrain(
@@ -25,21 +27,43 @@ class GameListViewModelBrain(
 
     override fun handleAction(action: VglsAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> collectGames()
+            is VglsAction.InitNoArgs -> startLoading()
             is Action.GameClicked -> onGameClicked(action.id)
         }
+    }
+
+    private fun startLoading() {
+        showLoading()
+        collectGames()
     }
 
     private fun collectGames() {
         gameRepository.getAllGames()
             .onEach(::onGamesLoaded)
+            .catch { error -> showError(LOAD_OPERATION_NAME, error) }
             .runInBackground()
     }
 
     private fun onGamesLoaded(games: List<Game>) {
         updateState {
             (it as State).copy(
-                games = games
+                games = LCE.Content(games)
+            )
+        }
+    }
+
+    private fun showLoading() {
+        updateState {
+            (it as State).copy(
+                games = LCE.Loading(LOAD_OPERATION_NAME)
+            )
+        }
+    }
+
+    private fun showError(loadOperationName: String, error: Throwable) {
+        updateState {
+            (it as State).copy(
+                games = LCE.Error(loadOperationName, error)
             )
         }
     }
@@ -51,5 +75,9 @@ class GameListViewModelBrain(
                 Destination.GAMES_LIST.name
             )
         )
+    }
+
+    companion object {
+        private const val LOAD_OPERATION_NAME = "games.list"
     }
 }

@@ -6,5 +6,5 @@ data class LoadingItemListModel(
     val loadPositionOffset: Int
 ) : ListModel() {
     override val dataId = loadOperationName.hashCode().toLong() + loadPositionOffset
-    override val columns = ListModel.COLUMNS_ALL
+    override val columns = 1
 }

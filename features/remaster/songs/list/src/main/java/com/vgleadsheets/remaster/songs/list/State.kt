@@ -29,7 +29,7 @@ data class State(
             is LCE.Error -> error(songs.operationName, songs.error)
             is LCE.Loading -> loading(songs.operationName)
             LCE.Uninitialized -> persistentListOf()
-        }
+        }.toImmutableList()
     }
 
     @Suppress("MagicNumber")
@@ -40,7 +40,7 @@ data class State(
             loadOperationName = operationName,
             loadPositionOffset = index
         )
-    }.toImmutableList()
+    }
 
     private fun content(songs: List<Song>) = songs
         .map { song ->
@@ -56,9 +56,8 @@ data class State(
                 clickAction = Action.SongClicked(song.id),
             )
         }
-        .toImmutableList()
 
-    private fun error(operationName: String, error: Throwable) = persistentListOf(
+    private fun error(operationName: String, error: Throwable) = listOf(
         ErrorStateListModel(
             failedOperationName = operationName,
             errorString = error.message ?: "Unknown error."

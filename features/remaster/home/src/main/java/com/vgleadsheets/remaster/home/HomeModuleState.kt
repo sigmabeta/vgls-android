@@ -55,7 +55,7 @@ data class HomeModuleState(
 
     @Suppress("MagicNumber")
     private fun createHorizScrollerLoadingListModel(): List<HorizontalScrollerListModel> {
-        val items = List(moduleName.hashCode() % 5 + 5) { index ->
+        val items = List(5) { index ->
             LoadingItemListModel(
                 loadingType = loadingType,
                 loadOperationName = moduleName,

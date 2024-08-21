@@ -33,11 +33,7 @@ class SongListViewModelBrain(
     }
 
     private fun startLoading() {
-        updateState {
-            (it as State).copy(
-                songs = LCE.Loading(LOAD_OPERATION_NAME)
-            )
-        }
+        showLoading()
         collectSongs()
     }
 
@@ -46,6 +42,14 @@ class SongListViewModelBrain(
             .onEach(::onSongsLoaded)
             .catch { error -> showError(LOAD_OPERATION_NAME, error) }
             .runInBackground()
+    }
+
+    private fun showLoading() {
+        updateState {
+            (it as State).copy(
+                songs = LCE.Loading(LOAD_OPERATION_NAME)
+            )
+        }
     }
 
     private fun showError(loadOperationName: String, error: Throwable) {
