@@ -29,6 +29,8 @@ fun ListScreen(
         }
     }
 
+    checkForDupes(items)
+
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
         modifier = modifier.fillMaxSize()

@@ -34,6 +34,8 @@ fun GridScreen(
         }
     }
 
+    checkForDupes(items)
+
     LazyVerticalGrid(
         contentPadding = PaddingValues(
             vertical = 16.dp,
@@ -64,3 +66,4 @@ fun GridScreen(
         }
     }
 }
+
