@@ -1,7 +1,10 @@
 package com.vgleadsheets.remaster.tags.songs
 
+import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Song
@@ -11,18 +14,19 @@ import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 data class State(
-    val tagValue: TagValue? = null,
-    val songs: List<Song> = emptyList(),
+    val tagValue: LCE<TagValue> = LCE.Uninitialized,
+    val songs: LCE<List<Song>> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = if (tagValue != null) {
+        title = if (tagValue is LCE.Content) {
             stringProvider.getStringTwoArgs(
                 StringId.SCREEN_TITLE_BROWSE_SONGS_WITH_TAG,
-                tagValue.tagKeyName,
-                tagValue.name
+                tagValue.data.tagKeyName,
+                tagValue.data.name
             )
         } else {
             stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_TAGS)
@@ -30,20 +34,43 @@ data class State(
     )
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        return songs
-            .map { song ->
-                ImageNameCaptionListModel(
-                    dataId = song.id,
-                    name = song.name,
-                    caption = song.gameName,
-                    sourceInfo = PdfConfigById(
-                        songId = song.id,
-                        pageNumber = 0
-                    ),
-                    imagePlaceholder = Icon.DESCRIPTION,
-                    clickAction = Action.SongClicked(song.id),
-                )
-            }
-            .toImmutableList()
+        return when (songs) {
+            is LCE.Content -> content(songs.data)
+            is LCE.Error -> error(songs.operationName, songs.error)
+            is LCE.Loading -> loading(songs.operationName)
+            LCE.Uninitialized -> persistentListOf()
+        }.toImmutableList()
     }
+
+    private fun content(songs: List<Song>) = songs
+        .map { song ->
+            ImageNameCaptionListModel(
+                dataId = song.id,
+                name = song.name,
+                caption = song.gameName,
+                sourceInfo = PdfConfigById(
+                    songId = song.id,
+                    pageNumber = 0
+                ),
+                imagePlaceholder = Icon.DESCRIPTION,
+                clickAction = Action.SongClicked(song.id),
+            )
+        }
+
+    @Suppress("MagicNumber")
+    private fun loading(operationName: String) = List(20) { index ->
+        LoadingTextListModel(
+            withImage = true,
+            withCaption = true,
+            loadOperationName = operationName,
+            loadPositionOffset = index
+        )
+    }
+
+    private fun error(operationName: String, error: Throwable) = listOf(
+        ErrorStateListModel(
+            failedOperationName = operationName,
+            errorString = error.message ?: "Unknown error."
+        )
+    )
 }

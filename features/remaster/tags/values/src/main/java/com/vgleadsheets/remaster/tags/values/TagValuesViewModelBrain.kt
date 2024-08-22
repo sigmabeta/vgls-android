@@ -100,7 +100,7 @@ class TagValuesViewModelBrain(
     }
 
     companion object {
-        private const val LOAD_OPERATION_KEY = "songs.list"
-        private const val LOAD_OPERATION_VALUES = "songs.list"
+        private const val LOAD_OPERATION_KEY = "key.title"
+        private const val LOAD_OPERATION_VALUES = "values.list"
     }
 }
