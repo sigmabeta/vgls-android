@@ -40,7 +40,7 @@ class SongListViewModelBrain(
     private fun collectSongs() {
         songRepository.getAllSongs()
             .onEach(::onSongsLoaded)
-            .catch { error -> showError(LOAD_OPERATION_NAME, error) }
+            .catch { error -> showError(error) }
             .runInBackground()
     }
 
@@ -48,8 +48,8 @@ class SongListViewModelBrain(
         updateSongs(LCE.Loading(LOAD_OPERATION_NAME))
     }
 
-    private fun showError(loadOperationName: String, error: Throwable) {
-        updateSongs(LCE.Error(loadOperationName, error))
+    private fun showError(error: Throwable) {
+        updateSongs(LCE.Error(LOAD_OPERATION_NAME, error))
     }
 
     private fun onSongsLoaded(songs: List<Song>) {

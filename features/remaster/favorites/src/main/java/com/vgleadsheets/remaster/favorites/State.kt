@@ -6,7 +6,7 @@ import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingSectionHeaderListModel
-import com.vgleadsheets.components.LoadingTextListtModel
+import com.vgleadsheets.components.LoadingTextListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
@@ -130,7 +130,7 @@ data class State(
     private fun loadingTextItems(operationName: String) = listOf(
         LoadingSectionHeaderListModel(operationName, 0)
     ) + List(2) { index ->
-        LoadingTextListtModel(
+        LoadingTextListModel(
             withImage = true,
             withCaption = true,
             loadOperationName = operationName,

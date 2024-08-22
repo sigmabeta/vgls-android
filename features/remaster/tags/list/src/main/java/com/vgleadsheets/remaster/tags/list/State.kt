@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.tags.list
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingTextListtModel
+import com.vgleadsheets.components.LoadingTextListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
@@ -32,7 +32,7 @@ data class State(
 
     @Suppress("MagicNumber")
     private fun loading(operationName: String) = List(20) { index ->
-        LoadingTextListtModel(
+        LoadingTextListModel(
             withImage = true,
             withCaption = true,
             loadOperationName = operationName,

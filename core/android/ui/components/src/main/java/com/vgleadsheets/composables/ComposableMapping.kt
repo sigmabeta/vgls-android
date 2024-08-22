@@ -19,7 +19,7 @@ import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingSectionHeaderListModel
-import com.vgleadsheets.components.LoadingTextListtModel
+import com.vgleadsheets.components.LoadingTextListModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.NetworkRefreshingListModel
@@ -70,7 +70,7 @@ fun ListModel.Content(
         is WideItemListModel -> WideItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is LoadingSectionHeaderListModel -> LoadingSectionHeader(seed = dataId, modifier = Modifier, padding = pad)
         is LoadingItemListModel -> LoadingItem(seed = dataId, loadingType = loadingType, modifier = mod, padding = pad)
-        is LoadingTextListtModel -> LoadingTextItem(
+        is LoadingTextListModel -> LoadingTextItem(
             withImage = withImage,
             withCaption = withCaption,
             seed = dataId,

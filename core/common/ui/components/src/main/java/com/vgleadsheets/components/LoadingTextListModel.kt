@@ -1,6 +1,6 @@
 package com.vgleadsheets.components
 
-data class LoadingTextListtModel(
+data class LoadingTextListModel(
     val withImage: Boolean,
     val withCaption: Boolean,
     val loadOperationName: String,

@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.home
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingTextListtModel
+import com.vgleadsheets.components.LoadingTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.ui.StringId
@@ -65,7 +65,7 @@ data class State(
     }
 
     private fun LCE.Loading.loadingListModels() = List(2) { index ->
-        LoadingTextListtModel(
+        LoadingTextListModel(
             withImage = true,
             withCaption = true,
             loadOperationName = this.operationName,
