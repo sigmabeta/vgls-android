@@ -18,11 +18,9 @@ import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
-import com.vgleadsheets.components.LoadingSectionHeaderListModel
-import com.vgleadsheets.components.LoadingTextListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.components.NetworkRefreshingListModel
 import com.vgleadsheets.components.NotifListModel
 import com.vgleadsheets.components.SearchHistoryListModel
 import com.vgleadsheets.components.SearchResultListModel
@@ -68,23 +66,19 @@ fun ListModel.Content(
         is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
         is SubsectionListModel -> Subsection(model = this, actionSink = sink, modifier = mod, padding = pad)
         is WideItemListModel -> WideItem(model = this, actionSink = sink, modifier = mod, padding = pad)
-        is LoadingSectionHeaderListModel -> LoadingSectionHeader(seed = dataId, modifier = Modifier, padding = pad)
-        is LoadingItemListModel -> LoadingItem(seed = dataId, loadingType = loadingType, modifier = mod, padding = pad)
-        is LoadingTextListModel -> LoadingTextItem(
-            withImage = withImage,
-            withCaption = withCaption,
-            seed = dataId,
-            modifier = mod,
-            padding = pad,
-        )
+        is LoadingItemListModel -> {
+            when (loadingType) {
+                LoadingType.SHEET, LoadingType.SQUARE, LoadingType.NOTIF -> LoadingItem(
+                    seed = dataId,
+                    loadingType = loadingType,
+                    modifier = mod,
+                    padding = pad
+                )
 
-        is NetworkRefreshingListModel -> LoadingTextItem(
-            withImage = true,
-            withCaption = true,
-            seed = dataId,
-            modifier = mod,
-            padding = pad,
-        )
+                LoadingType.SECTION_HEADER -> LoadingSectionHeader(seed = dataId, modifier = mod, padding = pad)
+                else -> LoadingTextItem(seed = dataId, loadingType = loadingType, modifier = mod, padding = pad)
+            }
+        }
 
         else -> throw IllegalArgumentException("No composable exists for this item type.")
     }

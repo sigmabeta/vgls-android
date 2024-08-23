@@ -1,10 +1,9 @@
 package com.vgleadsheets.remaster.songs.list
 
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingTextListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Song
@@ -27,19 +26,9 @@ data class State(
         return when (songs) {
             is LCE.Content -> content(songs.data)
             is LCE.Error -> error(songs.operationName, songs.error)
-            is LCE.Loading -> loading(songs.operationName)
+            is LCE.Loading -> loading(songs.operationName, LoadingType.TEXT_CAPTION_IMAGE, 20)
             LCE.Uninitialized -> persistentListOf()
         }.toImmutableList()
-    }
-
-    @Suppress("MagicNumber")
-    private fun loading(operationName: String) = List(20) { index ->
-        LoadingTextListModel(
-            withImage = true,
-            withCaption = true,
-            loadOperationName = operationName,
-            loadPositionOffset = index
-        )
     }
 
     private fun content(songs: List<Song>) = songs
@@ -56,11 +45,4 @@ data class State(
                 clickAction = Action.SongClicked(song.id),
             )
         }
-
-    private fun error(operationName: String, error: Throwable) = listOf(
-        ErrorStateListModel(
-            failedOperationName = operationName,
-            errorString = error.message ?: "Unknown error."
-        )
-    )
 }

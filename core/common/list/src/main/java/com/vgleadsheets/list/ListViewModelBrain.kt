@@ -111,7 +111,7 @@ abstract class ListViewModelBrain(
     ): Job {
         val possiblyDelayedFlow = if (shouldDelay) {
             (
-                this.onStart { delay(2000L) }
+                this.onStart { delay(5000L) }
                 )
         } else {
             this

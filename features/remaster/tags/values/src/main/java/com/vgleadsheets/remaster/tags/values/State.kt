@@ -1,9 +1,8 @@
 package com.vgleadsheets.remaster.tags.values
 
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingTextListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
@@ -31,19 +30,9 @@ data class State(
         return when (tagValues) {
             is LCE.Content -> content(tagValues.data)
             is LCE.Error -> error(tagValues.operationName, tagValues.error)
-            is LCE.Loading -> loading(tagValues.operationName)
+            is LCE.Loading -> loading(tagValues.operationName, loadingType = LoadingType.TEXT_IMAGE, 20)
             LCE.Uninitialized -> persistentListOf()
         }.toImmutableList()
-    }
-
-    @Suppress("MagicNumber")
-    private fun loading(operationName: String) = List(20) { index ->
-        LoadingTextListModel(
-            withImage = false,
-            withCaption = false,
-            loadOperationName = operationName,
-            loadPositionOffset = index
-        )
     }
 
     private fun content(tagValues: List<TagValue>) = tagValues
@@ -54,11 +43,4 @@ data class State(
                 clickAction = Action.TagValueClicked(tagValue.id),
             )
         }
-
-    private fun error(operationName: String, error: Throwable) = listOf(
-        ErrorStateListModel(
-            failedOperationName = operationName,
-            errorString = error.message ?: "Unknown error."
-        )
-    )
 }

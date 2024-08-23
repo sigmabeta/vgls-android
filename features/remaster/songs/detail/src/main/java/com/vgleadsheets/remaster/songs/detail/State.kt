@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.songs.detail
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.HeroImageListModel
@@ -7,6 +8,7 @@ import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
@@ -19,6 +21,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -29,90 +32,141 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 data class State(
-    val sheetUrlInfo: UrlInfo = UrlInfo(),
-    val song: Song? = null,
-    val composers: List<Composer>? = null,
-    val game: Game? = null,
-    val songAliases: List<SongAlias> = emptyList(),
-    val tagValues: List<TagValue> = emptyList(),
-    val isFavorite: Boolean? = null,
+    val sheetUrlInfo: LCE<UrlInfo> = LCE.Uninitialized,
+    val song: LCE<Song> = LCE.Uninitialized,
+    val composers: LCE<List<Composer>> = LCE.Uninitialized,
+    val game: LCE<Game> = LCE.Uninitialized,
+    val songAliases: LCE<List<SongAlias>> = LCE.Uninitialized,
+    val tagValues: LCE<List<TagValue>> = LCE.Uninitialized,
+    val isFavorite: LCE<Boolean> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider): TitleBarModel {
-        val gameName = song?.gameName
-        return TitleBarModel(
-            title = song?.name,
-            subtitle = gameName?.let { stringProvider.getStringOneArg(StringId.SCREEN_SUBTITLE_SONG_DETAIL, it) } ?: "",
+        return if (song is LCE.Content) {
+            val gameName = song.data.gameName
+            TitleBarModel(
+                title = song.data.name,
+                subtitle = gameName.let { stringProvider.getStringOneArg(StringId.SCREEN_SUBTITLE_SONG_DETAIL, it) },
+            )
+        } else {
+            TitleBarModel()
+        }
+    }
+
+    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
+        val sheetPreviewSection = sheetPreviewSection()
+        val ctaSection = ctaSection(stringProvider)
+        val composerModels = composerSection(stringProvider)
+        val gameModel = gameSection(stringProvider)
+
+        val dedupedTagValues = dedupeTagValues(tagValues)
+
+        val difficultySection = difficultySection(dedupedTagValues, stringProvider)
+
+        val aboutSection = aboutSection(dedupedTagValues, stringProvider)
+
+        return (
+            sheetPreviewSection +
+                ctaSection +
+                composerModels +
+                gameModel +
+                difficultySection +
+                aboutSection
+            ).toPersistentList()
+    }
+
+    private fun sheetPreviewSection(): List<ListModel> {
+        return when (song) {
+            is LCE.Content -> sheetPreviewContent(song.data)
+            is LCE.Error -> error(song.operationName, song.error)
+            is LCE.Loading -> loading(song.operationName, LoadingType.SHEET, 1)
+            LCE.Uninitialized -> persistentListOf()
+        }
+    }
+
+    private fun sheetPreviewContent(song: Song): List<ListModel> {
+        if (sheetUrlInfo !is LCE.Content) {
+            return loading(LOAD_OPERATION_SONG, LoadingType.SHEET, 1)
+        }
+
+        val selectedPart = sheetUrlInfo.data.partId ?: return loading(LOAD_OPERATION_SONG, LoadingType.SHEET, 1)
+        val pageCount = song.pageCount(selectedPart)
+
+        return listOf(
+            if (pageCount > 1) {
+                HorizontalScrollerListModel(
+                    dataId = song.id,
+                    scrollingItems = List(pageCount) { pageNumber ->
+                        sheetPage(
+                            song,
+                            pageNumber
+                        )
+                    }.toImmutableList()
+                )
+            } else {
+                sheetPage(song, 0)
+            }
         )
     }
 
-    // T O  D O: Actually fix these detekt problems
-    @Suppress("LongMethod", "MaxLineLength")
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        val selectedPart = sheetUrlInfo.partId
-        val songModel = if (song != null && selectedPart != null) {
-            val pageCount = song.pageCount(selectedPart)
+    private fun sheetPage(
+        song: Song,
+        pageNumber: Int
+    ) = SheetPageCardListModel(
+        SheetPageListModel(
+            title = song.name,
+            gameName = song.gameName,
+            composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+            pageNumber = pageNumber,
+            clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
+            sourceInfo = PdfConfigById(
+                songId = song.id,
+                pageNumber = pageNumber
+            ),
+        )
+    )
 
-            listOf(
-                if (pageCount > 1) {
-                    HorizontalScrollerListModel(
-                        dataId = song.id,
-                        scrollingItems = List(pageCount) { pageNumber ->
-                            val sourceInfo = PdfConfigById(
-                                songId = song.id,
-                                pageNumber = pageNumber
-                            )
-
-                            SheetPageCardListModel(
-                                SheetPageListModel(
-                                    sourceInfo = sourceInfo,
-                                    title = song.name,
-                                    gameName = song.gameName,
-                                    composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                                    pageNumber = pageNumber,
-                                    clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
-                                )
-                            )
-                        }.toImmutableList()
-                    )
-                } else {
-                    val sourceInfo = PdfConfigById(
-                        songId = song.id,
-                        pageNumber = 0
-                    )
-
-                    SheetPageCardListModel(
-                        SheetPageListModel(
-                            sourceInfo = sourceInfo,
-                            title = song.name,
-                            gameName = song.gameName,
-                            composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                            pageNumber = 0,
-                            clickAction = Action.SongThumbnailClicked(song.id, 0),
-                        )
-                    )
-                }
-            )
-        } else {
-            emptyList()
-        }
-
-        val ctaModels = if (song != null) {
+    private fun ctaSection(stringProvider: StringProvider) = when (song) {
+        is LCE.Content -> {
             listOf(
                 favoriteCtaItem(stringProvider),
                 searchYoutubeItem(stringProvider),
             ).flatten()
-        } else {
-            emptyList()
         }
 
-        val composerModels = if (composers?.isNotEmpty() == true) {
+        is LCE.Error -> error(song.operationName, song.error)
+        is LCE.Loading -> loading(song.operationName + ".cta", LoadingType.TEXT_IMAGE, 3)
+        LCE.Uninitialized -> emptyList()
+    }
+
+    private fun gameSection(stringProvider: StringProvider) = when (game) {
+        is LCE.Content -> {
+            listOf(
+                SectionHeaderListModel(
+                    stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_SONG)
+                ),
+                HeroImageListModel(
+                    sourceInfo = game.data.photoUrl ?: "",
+                    imagePlaceholder = Icon.ALBUM,
+                    name = game.data.name,
+                    clickAction = Action.GameClicked(game.data.id),
+                )
+            )
+        }
+
+        is LCE.Error -> error(game.operationName, game.error)
+        is LCE.Loading -> loading(game.operationName, LoadingType.SHEET, 1)
+        LCE.Uninitialized -> emptyList()
+    }
+
+    private fun composerSection(stringProvider: StringProvider) = when (composers) {
+        is LCE.Content -> {
             listOf(
                 SectionHeaderListModel(
                     stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_GAME)
                 ),
                 HorizontalScrollerListModel(
                     dataId = StringId.SECTION_HEADER_COMPOSERS_FROM_GAME.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
-                    scrollingItems = composers.map { composer ->
+                    scrollingItems = composers.data.map { composer ->
                         WideItemListModel(
                             dataId = composer.id + ID_PREFIX_COMPOSERS,
                             name = composer.name,
@@ -123,110 +177,122 @@ data class State(
                     }.toImmutableList()
                 )
             )
-        } else {
-            emptyList()
         }
 
-        val gameModel = if (game != null) {
-            listOf(
-                SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_SONG)
-                ),
-                HeroImageListModel(
-                    sourceInfo = game.photoUrl ?: "",
-                    imagePlaceholder = Icon.ALBUM,
-                    name = game.name,
-                    clickAction = Action.GameClicked(game.id),
-                )
-            )
-        } else {
-            emptyList()
-        }
+        is LCE.Error -> error(composers.operationName, composers.error)
+        is LCE.Loading -> loading(composers.operationName, LoadingType.SQUARE, 3)
+        LCE.Uninitialized -> emptyList()
+    }
 
-        val dedupedTagValues = dedupeTagValues(tagValues)
-
-        val difficultyValues = dedupedTagValues.filter {
-            val valueAsNumber = it.name.toIntOrNull() ?: -1
-            valueAsNumber in RATING_MINIMUM..RATING_MAXIMUM
-        }
-
-        val detailValues = dedupedTagValues.filter {
-            val valueAsNumber = it.name.toIntOrNull() ?: -1
-            valueAsNumber !in RATING_MINIMUM..RATING_MAXIMUM
-        }
-
-        val difficultyModels = if (difficultyValues.isNotEmpty()) {
-            listOf(
-                SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_DIFFICULTY_FOR_SONG)
-                )
-            ) + difficultyValues.map { difficultyValue ->
-                LabelRatingStarListModel(
-                    label = difficultyValue.tagKeyName,
-                    value = difficultyValue.name.toIntOrNull() ?: -1,
-                    clickAction = Action.TagValueClicked(difficultyValue.id),
-                    dataId = difficultyValue.id + ID_PREFIX_TAG_VALUE
-                )
+    private fun difficultySection(
+        dedupedTagValues: LCE<List<TagValue>>,
+        stringProvider: StringProvider
+    ) = when (dedupedTagValues) {
+        is LCE.Content -> {
+            val difficultyValues = dedupedTagValues.data.filter {
+                val valueAsNumber = it.name.toIntOrNull() ?: -1
+                valueAsNumber in RATING_MINIMUM..RATING_MAXIMUM
             }
-        } else {
-            emptyList()
-        }
 
-        val aboutModels = if (songAliases.isNotEmpty() || detailValues.isNotEmpty()) {
-            listOf(
-                SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_ABOUT_SONG)
-                )
-            ) + songAliases.map {
-                LabelValueListModel(
-                    label = stringProvider.getString(StringId.LABEL_SONG_ALSO_KNOWN_AS),
-                    value = it.name,
-                    clickAction = VglsAction.Noop,
-                    dataId = (it.id ?: 0L) + ID_PREFIX_AKA
-                )
-            } + detailValues.map { detailValue ->
-                LabelValueListModel(
-                    label = detailValue.tagKeyName,
-                    value = detailValue.name,
-                    clickAction = Action.TagValueClicked(detailValue.id),
-                    dataId = detailValue.id + ID_PREFIX_TAG_VALUE
-                )
+            if (difficultyValues.isNotEmpty()) {
+                listOf(
+                    SectionHeaderListModel(
+                        stringProvider.getString(StringId.SECTION_HEADER_DIFFICULTY_FOR_SONG)
+                    )
+                ) + difficultyValues.map { difficultyValue ->
+                    LabelRatingStarListModel(
+                        label = difficultyValue.tagKeyName,
+                        value = difficultyValue.name.toIntOrNull() ?: -1,
+                        clickAction = Action.TagValueClicked(difficultyValue.id),
+                        dataId = difficultyValue.id + ID_PREFIX_TAG_VALUE
+                    )
+                }
+            } else {
+                emptyList()
             }
-        } else {
-            emptyList()
         }
 
-        return (songModel + ctaModels + composerModels + gameModel + difficultyModels + aboutModels).toPersistentList()
+        is LCE.Error -> error(dedupedTagValues.operationName + ".difficulty", dedupedTagValues.error)
+        is LCE.Loading -> loading(dedupedTagValues.operationName + ".difficulty", LoadingType.SINGLE_TEXT, 3)
+        LCE.Uninitialized -> emptyList()
+    }
+
+    private fun aboutSection(
+        dedupedTagValues: LCE<List<TagValue>>,
+        stringProvider: StringProvider
+    ) = when (dedupedTagValues) {
+        is LCE.Content -> {
+            val detailValues = dedupedTagValues.data.filter {
+                val valueAsNumber = it.name.toIntOrNull() ?: -1
+                valueAsNumber !in RATING_MINIMUM..RATING_MAXIMUM
+            }
+
+            val aliasValues = if (songAliases is LCE.Content) {
+                songAliases.data
+            } else {
+                emptyList()
+            }
+
+            if (aliasValues.isNotEmpty() || detailValues.isNotEmpty()) {
+                listOf(
+                    SectionHeaderListModel(
+                        stringProvider.getString(StringId.SECTION_HEADER_ABOUT_SONG)
+                    )
+                ) + aliasValues.map { alias ->
+                    LabelValueListModel(
+                        label = stringProvider.getString(StringId.LABEL_SONG_ALSO_KNOWN_AS),
+                        value = alias.name,
+                        clickAction = VglsAction.Noop,
+                        dataId = (alias.id ?: 0L) + ID_PREFIX_AKA,
+                    )
+                } + detailValues.map { detailValue ->
+                    LabelValueListModel(
+                        label = detailValue.tagKeyName,
+                        value = detailValue.name,
+                        clickAction = Action.TagValueClicked(detailValue.id),
+                        dataId = detailValue.id + ID_PREFIX_TAG_VALUE
+                    )
+                }
+            } else {
+                emptyList()
+            }
+        }
+
+        is LCE.Error -> error(dedupedTagValues.operationName + ".details", dedupedTagValues.error)
+        is LCE.Loading -> loading(dedupedTagValues.operationName + ".details", LoadingType.SINGLE_TEXT, 3)
+        LCE.Uninitialized -> emptyList()
     }
 
     private fun favoriteCtaItem(
         stringProvider: StringProvider
-    ): List<CtaListModel> {
-        if (isFavorite == null) {
-            return emptyList()
+    ) = when (isFavorite) {
+        is LCE.Content -> {
+            val (icon, label, action) = if (isFavorite.data) {
+                Triple(
+                    Icon.JAM_FILLED,
+                    StringId.CTA_FAVORITE_REMOVE,
+                    Action.RemoveFavoriteClicked,
+                )
+            } else {
+                Triple(
+                    Icon.JAM_EMPTY,
+                    StringId.CTA_FAVORITE_ADD,
+                    Action.AddFavoriteClicked,
+                )
+            }
+
+            listOf(
+                CtaListModel(
+                    icon = icon,
+                    name = stringProvider.getString(label),
+                    clickAction = action,
+                )
+            )
         }
 
-        val (icon, label, action) = if (isFavorite) {
-            Triple(
-                Icon.JAM_FILLED,
-                StringId.CTA_FAVORITE_REMOVE,
-                Action.RemoveFavoriteClicked,
-            )
-        } else {
-            Triple(
-                Icon.JAM_EMPTY,
-                StringId.CTA_FAVORITE_ADD,
-                Action.AddFavoriteClicked,
-            )
-        }
-
-        return listOf(
-            CtaListModel(
-                icon = icon,
-                name = stringProvider.getString(label),
-                clickAction = action,
-            )
-        )
+        is LCE.Error -> error(isFavorite.operationName, isFavorite.error)
+        is LCE.Loading -> loading(isFavorite.operationName, LoadingType.SINGLE_TEXT, 3)
+        LCE.Uninitialized -> emptyList()
     }
 
     private fun searchYoutubeItem(stringProvider: StringProvider): List<CtaListModel> {
@@ -240,9 +306,14 @@ data class State(
     }
 
     private fun dedupeTagValues(
-        tagValues: List<TagValue>
-    ): List<TagValue> {
+        tagValues: LCE<List<TagValue>>
+    ): LCE<List<TagValue>> {
+        if (tagValues !is LCE.Content) {
+            return tagValues
+        }
+
         val dupedTagValueGroups = tagValues
+            .data
             .groupBy { it.tagKeyName }
             .filter { it.value.size > 1 }
 
@@ -250,7 +321,7 @@ data class State(
             return tagValues
         }
 
-        val tempValues = tagValues.toMutableList()
+        val tempValues = tagValues.data.toMutableList()
 
         dupedTagValueGroups.forEach { entry ->
             val dupesWithThisKey = entry.value
@@ -271,7 +342,7 @@ data class State(
         }
 
         tempValues.sortBy { it.tagKeyName }
-        return tempValues.toList()
+        return LCE.Content(tempValues.toList())
     }
 
     companion object {

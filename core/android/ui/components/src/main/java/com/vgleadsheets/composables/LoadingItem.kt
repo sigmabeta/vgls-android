@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
@@ -38,11 +39,13 @@ fun LoadingItem(
         LoadingType.SHEET -> SheetConstants.MIN_WIDTH to SheetConstants.ASPECT_RATIO
         LoadingType.SQUARE -> SquareConstants.MIN_WIDTH to SquareConstants.ASPECT_RATIO
         LoadingType.NOTIF -> NotifConstants.MIN_WIDTH to NotifConstants.ASPECT_RATIO
+        else -> return
     }
 
     ElevatedRoundRect(
         modifier = modifier
             .padding(paddingValues = padding)
+            .padding(bottom = 4.dp, top = 4.dp)
             .defaultMinSize(minWidth = width)
             .aspectRatio(ratio),
     ) {
@@ -85,7 +88,13 @@ private fun ColumnScope.Sample(
     paddingValues: PaddingValues,
     stringGen: StringGenerator,
 ) {
-    val loadingType = LoadingType.entries.random(randomizer.asKotlinRandom())
+    val possibleTypes = listOf(
+        LoadingType.SHEET,
+        LoadingType.SQUARE,
+        LoadingType.NOTIF,
+    )
+
+    val loadingType = possibleTypes.random(randomizer.asKotlinRandom())
     val rowName = loadingType.name
     LoadingSectionHeader(
         seed = randomizer.nextLong(),

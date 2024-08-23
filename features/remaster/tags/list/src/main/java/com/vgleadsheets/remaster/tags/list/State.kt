@@ -1,9 +1,8 @@
 package com.vgleadsheets.remaster.tags.list
 
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingTextListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
@@ -25,19 +24,9 @@ data class State(
         return when (tagKeys) {
             is LCE.Content -> content(tagKeys.data, stringProvider)
             is LCE.Error -> error(tagKeys.operationName, tagKeys.error)
-            is LCE.Loading -> loading(tagKeys.operationName)
+            is LCE.Loading -> loading(tagKeys.operationName, LoadingType.TEXT_CAPTION, 20)
             LCE.Uninitialized -> persistentListOf()
         }.toImmutableList()
-    }
-
-    @Suppress("MagicNumber")
-    private fun loading(operationName: String) = List(20) { index ->
-        LoadingTextListModel(
-            withImage = true,
-            withCaption = true,
-            loadOperationName = operationName,
-            loadPositionOffset = index
-        )
     }
 
     private fun content(tagKeys: List<TagKey>, stringProvider: StringProvider) = tagKeys
@@ -49,13 +38,6 @@ data class State(
                 clickAction = Action.TagKeyClicked(tagKey.id),
             )
         }
-
-    private fun error(operationName: String, error: Throwable) = listOf(
-        ErrorStateListModel(
-            failedOperationName = operationName,
-            errorString = error.message ?: "Unknown error."
-        )
-    )
 
     @Suppress("LoopWithTooManyJumpStatements")
     private fun TagKey.captionText(stringProvider: StringProvider): String {

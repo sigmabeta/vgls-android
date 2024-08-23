@@ -1,9 +1,8 @@
 package com.vgleadsheets.remaster.home
 
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingTextListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.ui.StringId
@@ -58,25 +57,9 @@ data class State(
     }
 
     private fun LCE<HomeModuleState>.toListItems() = when (this) {
-        is LCE.Loading -> loadingListModels()
+        is LCE.Loading -> loading(operationName, LoadingType.TEXT_CAPTION_IMAGE, 20)
         is LCE.Content -> this.data.toListItems()
-        is LCE.Error -> errorListModels()
+        is LCE.Error -> error(operationName, error)
         LCE.Uninitialized -> emptyList()
     }
-
-    private fun LCE.Loading.loadingListModels() = List(2) { index ->
-        LoadingTextListModel(
-            withImage = true,
-            withCaption = true,
-            loadOperationName = this.operationName,
-            loadPositionOffset = index,
-        )
-    }
-
-    private fun LCE.Error.errorListModels() = listOf(
-        ErrorStateListModel(
-            failedOperationName = this.operationName,
-            errorString = "Failed to load data for home screen module: ${error.message}",
-        )
-    )
 }

@@ -3,7 +3,6 @@ package com.vgleadsheets.remaster.home
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
-import com.vgleadsheets.components.LoadingSectionHeaderListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import kotlinx.collections.immutable.toImmutableList
@@ -44,8 +43,9 @@ data class HomeModuleState(
 
     private fun createTitleLoadingListModel(title: String?) = if (title != null) {
         listOf(
-            LoadingSectionHeaderListModel(
+            LoadingItemListModel(
                 loadOperationName = "$title.loading.header",
+                loadingType = LoadingType.SECTION_HEADER,
                 loadPositionOffset = 0
             )
         )

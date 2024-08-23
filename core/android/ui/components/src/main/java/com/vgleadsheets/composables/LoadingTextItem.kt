@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.subs.ElevatedPill
@@ -24,12 +25,19 @@ import kotlin.random.Random
 @Composable
 @Suppress("MagicNumber")
 fun LoadingTextItem(
-    withImage: Boolean,
-    withCaption: Boolean,
+    loadingType: LoadingType,
     seed: Long,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
+    val (withImage, withCaption) = when (loadingType) {
+        LoadingType.SINGLE_TEXT -> false to false
+        LoadingType.TEXT_CAPTION -> false to true
+        LoadingType.TEXT_IMAGE -> true to false
+        LoadingType.TEXT_CAPTION_IMAGE -> true to true
+        else -> return
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -98,8 +106,7 @@ private fun Light() {
     FullScreenOf {
         Sample(
             seed = Random.nextLong(),
-            withImage = false,
-            withCaption = false,
+            loadingType = LoadingType.SINGLE_TEXT,
         )
     }
 }
@@ -110,8 +117,7 @@ private fun LightWithImage() {
     FullScreenOf {
         Sample(
             seed = Random.nextLong(),
-            withImage = true,
-            withCaption = false,
+            loadingType = LoadingType.TEXT_IMAGE,
         )
     }
 }
@@ -122,8 +128,7 @@ private fun LightWithImageAndCaption() {
     FullScreenOf {
         Sample(
             seed = Random.nextLong(),
-            withImage = true,
-            withCaption = true,
+            loadingType = LoadingType.TEXT_CAPTION_IMAGE,
         )
     }
 }
@@ -134,17 +139,15 @@ private fun DarkWithImageAndCaption() {
     FullScreenOf(darkTheme = true) {
         Sample(
             seed = Random.nextLong(),
-            withImage = true,
-            withCaption = true,
+            loadingType = LoadingType.TEXT_CAPTION_IMAGE,
         )
     }
 }
 
 @Composable
-private fun Sample(seed: Long, withImage: Boolean, withCaption: Boolean) {
+private fun Sample(seed: Long, loadingType: LoadingType) {
     LoadingTextItem(
-        withImage = withImage,
-        withCaption = withCaption,
+        loadingType = loadingType,
         seed = seed,
         modifier = Modifier,
         padding = PaddingValues(horizontal = 16.dp)

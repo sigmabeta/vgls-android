@@ -1,12 +1,8 @@
 package com.vgleadsheets.remaster.favorites
 
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingItemListModel
-import com.vgleadsheets.components.LoadingSectionHeaderListModel
-import com.vgleadsheets.components.LoadingTextListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
@@ -46,7 +42,7 @@ data class State(
         return when (songs) {
             is LCE.Content -> content(songs.data, stringProvider)
             is LCE.Error -> error(songs.operationName, songs.error)
-            is LCE.Loading -> loadingTextItems(songs.operationName)
+            is LCE.Loading -> loading(songs.operationName, LoadingType.TEXT_CAPTION_IMAGE, 2, true)
             LCE.Uninitialized -> persistentListOf()
         }
     }
@@ -55,7 +51,7 @@ data class State(
         return when (games) {
             is LCE.Content -> content(games.data, stringProvider)
             is LCE.Error -> error(games.operationName, games.error)
-            is LCE.Loading -> loadingSquareItems(games.operationName)
+            is LCE.Loading -> loading(games.operationName, LoadingType.SQUARE, 2, true)
             LCE.Uninitialized -> persistentListOf()
         }
     }
@@ -64,7 +60,7 @@ data class State(
         return when (composers) {
             is LCE.Content -> content(composers.data, stringProvider)
             is LCE.Error -> error(composers.operationName, composers.error)
-            is LCE.Loading -> loadingSquareItems(composers.operationName)
+            is LCE.Loading -> loading(composers.operationName, LoadingType.SQUARE, 2, true)
             LCE.Uninitialized -> persistentListOf()
         }
     }
@@ -125,36 +121,6 @@ data class State(
             clickAction = Action.ComposerClicked(composer.id),
         )
     }
-
-    @Suppress("MagicNumber")
-    private fun loadingTextItems(operationName: String) = listOf(
-        LoadingSectionHeaderListModel(operationName, 0)
-    ) + List(2) { index ->
-        LoadingTextListModel(
-            withImage = true,
-            withCaption = true,
-            loadOperationName = operationName,
-            loadPositionOffset = index
-        )
-    }
-
-    @Suppress("MagicNumber")
-    private fun loadingSquareItems(operationName: String) = listOf(
-        LoadingSectionHeaderListModel(operationName, 0)
-    ) + List(2) { index ->
-        LoadingItemListModel(
-            loadingType = LoadingType.SQUARE,
-            loadOperationName = operationName,
-            loadPositionOffset = index
-        )
-    }
-
-    private fun error(operationName: String, error: Throwable) = listOf(
-        ErrorStateListModel(
-            failedOperationName = operationName,
-            errorString = error.message ?: "Unknown error."
-        )
-    )
 
     companion object {
         private const val ID_OFFSET_GAME = 1_000L

@@ -1,7 +1,6 @@
 package com.vgleadsheets.remaster.composers.list
 
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
@@ -50,11 +49,4 @@ data class State(
                 clickAction = Action.ComposerClicked(composer.id),
             )
         }
-
-    private fun error(operationName: String, error: Throwable) = listOf(
-        ErrorStateListModel(
-            failedOperationName = operationName,
-            errorString = error.message ?: "Unknown error."
-        )
-    )
 }
