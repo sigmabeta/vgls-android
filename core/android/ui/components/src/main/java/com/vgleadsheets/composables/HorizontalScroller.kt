@@ -23,13 +23,15 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
+import com.vgleadsheets.components.LoadingItemListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
-import kotlinx.collections.immutable.toImmutableList
 import java.util.Random
+import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -95,6 +97,7 @@ private fun Sample() {
         )
         SquareItemSection(rng, paddingModifier)
         WideItemSection(rng, paddingModifier)
+        LoadingSquareItemSection(rng, paddingModifier)
         VerticalSection(rng, paddingModifier)
         SquareItemSection(rng, paddingModifier)
         VerticalSection(rng, paddingModifier)
@@ -121,6 +124,33 @@ private fun SquareItemSection(rng: Random, padding: PaddingValues) {
                     imagePlaceholder = Icon.ALBUM,
                     null,
                     clickAction = VglsAction.Noop,
+                )
+            }.toImmutableList()
+        ),
+        PreviewActionSink { },
+        modifier = Modifier,
+        padding = padding
+    )
+}
+
+@Composable
+@Suppress("MagicNumber")
+private fun LoadingSquareItemSection(rng: Random, padding: PaddingValues) {
+    val sectionName = "Square Items"
+    LoadingSectionHeader(
+        seed = sectionName.hashCode().toLong(),
+        modifier = Modifier,
+        padding = padding,
+    )
+
+    HorizontalScroller(
+        model = HorizontalScrollerListModel(
+            dataId = 1_000_000L,
+            scrollingItems = List(15) { index ->
+                LoadingItemListModel(
+                    loadingType = LoadingType.SQUARE,
+                    loadOperationName = sectionName,
+                    loadPositionOffset = index,
                 )
             }.toImmutableList()
         ),

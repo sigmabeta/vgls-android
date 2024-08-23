@@ -1,6 +1,5 @@
 package com.vgleadsheets.composables.subs
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -17,7 +16,6 @@ fun ElevatedRoundRect(
 ) {
     Surface(
         modifier = modifier
-            .padding(horizontal = 4.dp)
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(cornerRadius)
