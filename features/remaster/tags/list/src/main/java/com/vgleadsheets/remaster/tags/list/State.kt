@@ -20,6 +20,7 @@ data class State(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_TAGS)
     )
 
+    @Suppress("MagicNumber")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         return when (tagKeys) {
             is LCE.Content -> content(tagKeys.data, stringProvider)

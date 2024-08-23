@@ -22,6 +22,7 @@ data class State(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_ALL)
     )
 
+    @Suppress("MagicNumber")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         return when (songs) {
             is LCE.Content -> content(songs.data)

@@ -32,6 +32,7 @@ data class State(
         }
     )
 
+    @Suppress("MagicNumber")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         return when (songs) {
             is LCE.Content -> content(songs.data)

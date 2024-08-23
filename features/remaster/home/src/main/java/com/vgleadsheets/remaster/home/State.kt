@@ -56,6 +56,7 @@ data class State(
             .toImmutableList()
     }
 
+    @Suppress("MagicNumber")
     private fun LCE<HomeModuleState>.toListItems() = when (this) {
         is LCE.Loading -> loading(operationName, LoadingType.TEXT_CAPTION_IMAGE, 20)
         is LCE.Content -> this.data.toListItems()

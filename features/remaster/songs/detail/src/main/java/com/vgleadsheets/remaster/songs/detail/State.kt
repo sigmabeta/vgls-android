@@ -83,6 +83,7 @@ data class State(
         }
     }
 
+    @Suppress("ReturnCount")
     private fun sheetPreviewContent(song: Song): List<ListModel> {
         if (sheetUrlInfo !is LCE.Content) {
             return loading(LOAD_OPERATION_SONG, LoadingType.SHEET, 1)
@@ -125,6 +126,7 @@ data class State(
         )
     )
 
+    @Suppress("MagicNumber")
     private fun ctaSection(stringProvider: StringProvider) = when (song) {
         is LCE.Content -> {
             listOf(
@@ -158,6 +160,7 @@ data class State(
         LCE.Uninitialized -> emptyList()
     }
 
+    @Suppress("MagicNumber")
     private fun composerSection(stringProvider: StringProvider) = when (composers) {
         is LCE.Content -> {
             listOf(
@@ -184,6 +187,7 @@ data class State(
         LCE.Uninitialized -> emptyList()
     }
 
+    @Suppress("MagicNumber")
     private fun difficultySection(
         dedupedTagValues: LCE<List<TagValue>>,
         stringProvider: StringProvider
@@ -217,6 +221,7 @@ data class State(
         LCE.Uninitialized -> emptyList()
     }
 
+    @Suppress("MagicNumber")
     private fun aboutSection(
         dedupedTagValues: LCE<List<TagValue>>,
         stringProvider: StringProvider
@@ -263,6 +268,7 @@ data class State(
         LCE.Uninitialized -> emptyList()
     }
 
+    @Suppress("MagicNumber")
     private fun favoriteCtaItem(
         stringProvider: StringProvider
     ) = when (isFavorite) {
@@ -305,6 +311,7 @@ data class State(
         )
     }
 
+    @Suppress("ReturnCount")
     private fun dedupeTagValues(
         tagValues: LCE<List<TagValue>>
     ): LCE<List<TagValue>> {

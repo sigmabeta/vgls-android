@@ -23,7 +23,7 @@ import com.vgleadsheets.composables.subs.Flasher
 import kotlin.random.Random
 
 @Composable
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongMethod")
 fun LoadingTextItem(
     loadingType: LoadingType,
     seed: Long,
