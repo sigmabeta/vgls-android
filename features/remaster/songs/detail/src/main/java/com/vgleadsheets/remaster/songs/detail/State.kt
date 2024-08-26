@@ -79,7 +79,7 @@ data class State(
             is LCE.Content -> sheetPreviewContent(song.data)
             is LCE.Error -> error(song.operationName, song.error)
             is LCE.Loading -> loading(song.operationName, LoadingType.SHEET, 1)
-            LCE.Uninitialized -> persistentListOf()
+            LCE.Uninitialized -> emptyList()
         }
     }
 
@@ -135,7 +135,7 @@ data class State(
             ).flatten()
         }
 
-        is LCE.Error -> error(song.operationName, song.error)
+        is LCE.Error -> emptyList()
         is LCE.Loading -> loading(song.operationName + ".cta", LoadingType.TEXT_IMAGE, 2)
         LCE.Uninitialized -> emptyList()
     }
@@ -170,10 +170,10 @@ data class State(
         is LCE.Content -> {
             listOf(
                 SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_GAME)
+                    stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_SONG)
                 ),
                 HorizontalScrollerListModel(
-                    dataId = StringId.SECTION_HEADER_COMPOSERS_FROM_GAME.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
+                    dataId = StringId.SECTION_HEADER_COMPOSERS_FROM_SONG.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
                     scrollingItems = composers.data.map { composer ->
                         WideItemListModel(
                             dataId = composer.id + ID_PREFIX_COMPOSERS,
