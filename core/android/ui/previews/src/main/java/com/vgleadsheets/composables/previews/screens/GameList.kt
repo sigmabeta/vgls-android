@@ -3,6 +3,7 @@ package com.vgleadsheets.composables.previews.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
@@ -38,7 +39,7 @@ private fun gameScreenState(): State {
     val games = modelGenerator.randomGames()
 
     val screenState = State(
-        games = games,
+        games = LCE.Content(games),
     )
     return screenState
 }

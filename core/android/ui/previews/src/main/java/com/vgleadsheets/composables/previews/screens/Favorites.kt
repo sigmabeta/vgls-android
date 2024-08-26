@@ -3,6 +3,7 @@ package com.vgleadsheets.composables.previews.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
@@ -40,9 +41,9 @@ private fun favoritesScreenState(): State {
     val composers = modelGenerator.randomComposers()
 
     val screenState = State(
-        favoriteSongs = songs,
-        favoriteGames = games,
-        favoriteComposers = composers,
+        favoriteSongs = LCE.Content(songs),
+        favoriteGames = LCE.Content(games),
+        favoriteComposers = LCE.Content(composers),
     )
     return screenState
 }

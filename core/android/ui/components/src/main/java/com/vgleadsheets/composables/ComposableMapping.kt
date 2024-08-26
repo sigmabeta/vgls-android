@@ -68,7 +68,7 @@ fun ListModel.Content(
         is WideItemListModel -> WideItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is LoadingItemListModel -> {
             when (loadingType) {
-                LoadingType.SHEET, LoadingType.SQUARE, LoadingType.NOTIF -> LoadingItem(
+                LoadingType.SHEET, LoadingType.SQUARE, LoadingType.NOTIF, LoadingType.WIDE_ITEM, LoadingType.BIG_IMAGE -> LoadingItem(
                     seed = dataId,
                     loadingType = loadingType,
                     modifier = mod,

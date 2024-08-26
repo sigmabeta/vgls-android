@@ -12,11 +12,13 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
+import com.vgleadsheets.composables.previews.BigImageConstants
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.previews.NotifConstants
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.composables.previews.SquareConstants
+import com.vgleadsheets.composables.previews.WideItemConstants
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.model.generator.StringGenerator
@@ -39,6 +41,8 @@ fun LoadingItem(
         LoadingType.SHEET -> SheetConstants.MIN_WIDTH to SheetConstants.ASPECT_RATIO
         LoadingType.SQUARE -> SquareConstants.MIN_WIDTH to SquareConstants.ASPECT_RATIO
         LoadingType.NOTIF -> NotifConstants.MIN_WIDTH to NotifConstants.ASPECT_RATIO
+        LoadingType.WIDE_ITEM -> WideItemConstants.MIN_WIDTH to WideItemConstants.ASPECT_RATIO
+        LoadingType.BIG_IMAGE -> BigImageConstants.MIN_WIDTH to BigImageConstants.ASPECT_RATIO
         else -> return
     }
 
@@ -92,6 +96,8 @@ private fun ColumnScope.Sample(
         LoadingType.SHEET,
         LoadingType.SQUARE,
         LoadingType.NOTIF,
+        LoadingType.WIDE_ITEM,
+        LoadingType.BIG_IMAGE
     )
 
     val loadingType = possibleTypes.random(randomizer.asKotlinRandom())
@@ -121,4 +127,4 @@ private fun ColumnScope.Sample(
     )
 }
 
-private const val RANDOMIZER_SEED = 12301L
+private const val RANDOMIZER_SEED = 1231L

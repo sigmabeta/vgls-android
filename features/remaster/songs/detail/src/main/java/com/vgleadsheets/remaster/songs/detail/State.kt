@@ -136,7 +136,7 @@ data class State(
         }
 
         is LCE.Error -> error(song.operationName, song.error)
-        is LCE.Loading -> loading(song.operationName + ".cta", LoadingType.TEXT_IMAGE, 3)
+        is LCE.Loading -> loading(song.operationName + ".cta", LoadingType.TEXT_IMAGE, 2)
         LCE.Uninitialized -> emptyList()
     }
 
@@ -156,7 +156,12 @@ data class State(
         }
 
         is LCE.Error -> error(game.operationName, game.error)
-        is LCE.Loading -> loading(game.operationName, LoadingType.SHEET, 1)
+        is LCE.Loading -> loading(
+            operationName = game.operationName,
+            loadingType = LoadingType.BIG_IMAGE,
+            itemCount = 1,
+            withHeader = true,
+        )
         LCE.Uninitialized -> emptyList()
     }
 
@@ -183,7 +188,13 @@ data class State(
         }
 
         is LCE.Error -> error(composers.operationName, composers.error)
-        is LCE.Loading -> loading(composers.operationName, LoadingType.SQUARE, 3)
+        is LCE.Loading -> loading(
+            operationName = composers.operationName,
+            loadingType = LoadingType.WIDE_ITEM,
+            itemCount = 3,
+            withHeader = true,
+            horizScrollable = true
+        )
         LCE.Uninitialized -> emptyList()
     }
 
@@ -217,7 +228,12 @@ data class State(
         }
 
         is LCE.Error -> error(dedupedTagValues.operationName + ".difficulty", dedupedTagValues.error)
-        is LCE.Loading -> loading(dedupedTagValues.operationName + ".difficulty", LoadingType.SINGLE_TEXT, 3)
+        is LCE.Loading -> loading(
+            operationName = dedupedTagValues.operationName + ".difficulty",
+            loadingType = LoadingType.SINGLE_TEXT,
+            itemCount = 3,
+            withHeader = true,
+        )
         LCE.Uninitialized -> emptyList()
     }
 
@@ -264,7 +280,12 @@ data class State(
         }
 
         is LCE.Error -> error(dedupedTagValues.operationName + ".details", dedupedTagValues.error)
-        is LCE.Loading -> loading(dedupedTagValues.operationName + ".details", LoadingType.SINGLE_TEXT, 3)
+        is LCE.Loading -> loading(
+            operationName = dedupedTagValues.operationName + ".details",
+            loadingType = LoadingType.SINGLE_TEXT,
+            itemCount = 3,
+            withHeader = true,
+        )
         LCE.Uninitialized -> emptyList()
     }
 

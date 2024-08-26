@@ -3,6 +3,7 @@ package com.vgleadsheets.composables.previews.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
@@ -15,6 +16,14 @@ import java.util.Random
 @Composable
 private fun SongDetailLight(modifier: Modifier = Modifier) {
     val screenState = songScreenState()
+
+    ScreenPreviewLight(screenState)
+}
+
+@Preview
+@Composable
+private fun SongDetailLoading(modifier: Modifier = Modifier) {
+    val screenState = songScreenLoadingState()
 
     ScreenPreviewLight(screenState)
 }
@@ -43,12 +52,29 @@ private fun songScreenState(): State {
     val tags = modelGenerator.randomTags()
 
     val screenState = State(
-        song = song,
-        composers = composers,
-        game = game,
-        songAliases = emptyList(),
-        tagValues = tags,
-        sheetUrlInfo = UrlInfo(partId = "C")
+        song = LCE.Content(song),
+        composers = LCE.Content(composers),
+        game = LCE.Content(game),
+        songAliases = LCE.Content(emptyList()),
+        tagValues = LCE.Content(tags),
+        sheetUrlInfo = LCE.Content(UrlInfo(partId = "C")),
+    )
+    return screenState
+}
+
+@Suppress("MagicNumber")
+private fun songScreenLoadingState(): State {
+    val seed = 12345L
+    val random = Random(seed)
+    val stringGenerator = StringGenerator(random)
+
+    val screenState = State(
+        song = LCE.Loading(stringGenerator.generateName()),
+        composers = LCE.Loading(stringGenerator.generateName()),
+        game = LCE.Loading(stringGenerator.generateName()),
+        songAliases = LCE.Loading(stringGenerator.generateName()),
+        tagValues = LCE.Loading(stringGenerator.generateName()),
+        sheetUrlInfo = LCE.Loading(stringGenerator.generateName()),
     )
     return screenState
 }
