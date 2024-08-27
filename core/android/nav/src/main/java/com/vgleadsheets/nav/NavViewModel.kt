@@ -16,6 +16,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
@@ -34,6 +35,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class NavViewModel @Inject constructor(
     override val dispatchers: VglsDispatchers,
+    override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
     private val notifManager: NotifManager,
@@ -55,13 +57,13 @@ class NavViewModel @Inject constructor(
     override fun initialState() = NavState()
 
     override fun handleAction(action: VglsAction) {
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
         }
     }
 
     override fun handleEvent(event: VglsEvent) {
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this@NavViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.NavigateTo -> navigateTo(event.destination)

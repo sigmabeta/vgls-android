@@ -7,6 +7,7 @@ import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.repository.SongRepository
@@ -30,6 +31,7 @@ class ViewerViewModel @AssistedInject constructor(
     private val songHistoryRepository: SongHistoryRepository,
     private val urlInfoProvider: UrlInfoProvider,
     override val dispatchers: VglsDispatchers,
+    override val delayManager: DelayManager,
     override val eventDispatcher: EventDispatcher,
     @Assisted("id") idArg: Long,
     @Assisted("page") pageArg: Long,
@@ -119,7 +121,7 @@ class ViewerViewModel @AssistedInject constructor(
                     )
                 }
             }
-            .flowOn(dispatchers.disk)
+            .flowOn(scheduler.dispatchers.disk)
             .launchIn(viewModelScope)
     }
 
@@ -131,13 +133,12 @@ class ViewerViewModel @AssistedInject constructor(
                     it.copy(partApiId = urlInfo.partId)
                 }
             }
-            .flowOn(dispatchers.disk)
-            .launchIn(viewModelScope)
+            .runInBackground(shouldDelay = false)
     }
 
     private fun hideChromeSoon() {
         chromeVisibilityTimer?.cancel()
-        chromeVisibilityTimer = viewModelScope.launch(dispatchers.computation) {
+        chromeVisibilityTimer = viewModelScope.launch(scheduler.dispatchers.computation) {
             hatchet.v("Hiding UI chrome in $DURATION_CHROME_VISIBILITY ms.")
             delay(DURATION_CHROME_VISIBILITY)
             emitEvent(VglsEvent.HideUiChrome)

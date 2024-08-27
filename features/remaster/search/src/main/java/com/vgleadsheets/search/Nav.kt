@@ -40,7 +40,7 @@ fun NavGraphBuilder.searchScreenNavEntry(
 
         SearchScreen(
             query = searchText,
-            results = state.resultItems(viewModel.stringProvider),
+            results = state.toListItems(viewModel.stringProvider),
             textFieldUpdater = textFieldUpdater,
             actionSink = viewModel,
             modifier = globalModifier

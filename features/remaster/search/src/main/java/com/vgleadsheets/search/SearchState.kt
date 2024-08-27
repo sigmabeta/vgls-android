@@ -1,53 +1,60 @@
 package com.vgleadsheets.search
 
-import com.vgleadsheets.appcomm.VglsState
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SearchHistoryListModel
-import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
+import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 data class SearchState(
     val searchQuery: String = "",
-    val searchHistory: List<SearchHistoryEntry> = emptyList(),
-    val songResults: List<Song> = emptyList(),
-    val gameResults: List<Game> = emptyList(),
-    val composerResults: List<Composer> = emptyList(),
-) : VglsState {
-    fun resultItems(stringProvider: StringProvider): ImmutableList<ListModel> {
+    val searchHistory: LCE<List<SearchHistoryEntry>> = LCE.Uninitialized,
+    val songResults: LCE<List<Song>> = LCE.Uninitialized,
+    val gameResults: LCE<List<Game>> = LCE.Uninitialized,
+    val composerResults: LCE<List<Composer>> = LCE.Uninitialized,
+) : ListState() {
+    override fun title(stringProvider: StringProvider) = TitleBarModel()
+
+    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         if (searchQuery.isBlank()) {
             return historyItems()
         }
-        return (songItems(stringProvider) + gameItems(stringProvider) + composerItems(stringProvider))
+        return (songItems() + gameItems() + composerItems())
             .toImmutableList()
     }
 
-    private fun historyItems(): ImmutableList<ListModel> = searchHistory
-        .map { entry ->
+    private fun historyItems(): ImmutableList<ListModel> = searchHistory.withStandardErrorAndLoading(
+        loadingType = LoadingType.SINGLE_TEXT,
+        loadingItemCount = 10,
+        loadingWithHeader = false
+    ) {
+        data.map { entry ->
             SearchHistoryListModel(
                 dataId = entry.id!!,
                 name = entry.query,
                 clickAction = Action.SearchHistoryEntryClicked(entry.query),
                 removeAction = Action.SearchHistoryEntryRemoveClicked(entry.id!!),
             )
-        }.toImmutableList()
+        }
+    }
 
-    private fun songItems(stringProvider: StringProvider) = if (songResults.isNotEmpty()) {
-        listOf(
-            SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_SONGS)
-            )
-        ) + songResults.map { song ->
+    private fun songItems() = songResults.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_CAPTION_IMAGE,
+        loadingItemCount = 2,
+    ) {
+        data.map { song ->
             ImageNameCaptionListModel(
                 dataId = song.id,
                 name = song.name,
@@ -60,16 +67,13 @@ data class SearchState(
                 clickAction = Action.SongClicked(song.id),
             )
         }
-    } else {
-        emptyList()
     }
 
-    private fun gameItems(stringProvider: StringProvider) = if (gameResults.isNotEmpty()) {
-        listOf(
-            SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_GAMES)
-            )
-        ) + gameResults.map { game ->
+    private fun gameItems() = gameResults.withStandardErrorAndLoading(
+        loadingType = LoadingType.SQUARE,
+        loadingItemCount = 2,
+    ) {
+        data.map { game ->
             SquareItemListModel(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
@@ -78,16 +82,13 @@ data class SearchState(
                 clickAction = Action.GameClicked(game.id),
             )
         }
-    } else {
-        emptyList()
     }
 
-    private fun composerItems(stringProvider: StringProvider) = if (composerResults.isNotEmpty()) {
-        listOf(
-            SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_COMPOSERS)
-            )
-        ) + composerResults.map { composer ->
+    private fun composerItems() = composerResults.withStandardErrorAndLoading(
+        loadingType = LoadingType.SQUARE,
+        loadingItemCount = 2,
+    ) {
+        data.map { composer ->
             SquareItemListModel(
                 dataId = composer.id + ID_OFFSET_COMPOSER,
                 name = composer.name,
@@ -96,8 +97,6 @@ data class SearchState(
                 clickAction = Action.ComposerClicked(composer.id),
             )
         }
-    } else {
-        emptyList()
     }
 
     companion object {

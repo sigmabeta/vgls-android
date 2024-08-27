@@ -1,5 +1,6 @@
 package com.vgleadsheets.list
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel
@@ -22,13 +23,35 @@ abstract class ListState : VglsState {
         )
     }
 
+    protected fun <ModelType> LCE<ModelType>.withStandardErrorAndLoading(
+        loadingType: LoadingType = LoadingType.SQUARE,
+        loadingItemCount: Int = 10,
+        loadingWithHeader: Boolean = true,
+        loadingHorizScrollable: Boolean = false,
+        content: LCE.Content<ModelType>.() -> List<ListModel>
+    ): ImmutableList<ListModel> {
+        return when (this) {
+            is LCE.Content -> content()
+            is LCE.Error -> error(error)
+            is LCE.Loading -> loading(
+                operationName = operationName,
+                loadingType = loadingType,
+                loadingItemCount = loadingItemCount,
+                loadingWithHeader = loadingWithHeader,
+                loadingHorizScrollable = loadingHorizScrollable
+            )
+
+            LCE.Uninitialized -> emptyList()
+        }.toImmutableList()
+    }
+
     protected fun loading(
         operationName: String,
-        loadingType: LoadingType,
-        itemCount: Int,
-        withHeader: Boolean = false,
-        horizScrollable: Boolean = false,
-    ) = if (withHeader) {
+        loadingType: LoadingType = LoadingType.SQUARE,
+        loadingItemCount: Int = 5,
+        loadingWithHeader: Boolean = false,
+        loadingHorizScrollable: Boolean = false,
+    ) = if (loadingWithHeader) {
         listOf(
             LoadingItemListModel(
                 loadingType = LoadingType.SECTION_HEADER,
@@ -38,7 +61,7 @@ abstract class ListState : VglsState {
         )
     } else {
         emptyList()
-    } + loadingItems(horizScrollable, itemCount, loadingType, operationName)
+    } + loadingItems(loadingHorizScrollable, loadingItemCount, loadingType, operationName)
 
     private fun loadingItems(
         horizScrollable: Boolean,

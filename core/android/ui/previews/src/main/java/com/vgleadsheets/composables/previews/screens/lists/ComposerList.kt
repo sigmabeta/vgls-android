@@ -1,4 +1,4 @@
-package com.vgleadsheets.composables.previews.screens
+package com.vgleadsheets.composables.previews.screens.lists
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,36 +8,34 @@ import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
-import com.vgleadsheets.remaster.games.detail.State
+import com.vgleadsheets.remaster.composers.list.State
 import java.util.Random
 
 @Preview
 @Composable
-private fun GameDetailLight(modifier: Modifier = Modifier) {
-    val screenState = gameScreenState()
-
-    ScreenPreviewLight(screenState)
+private fun ComposerListLight(modifier: Modifier = Modifier) {
+    val screenState = composerScreenState()
+    ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun GameDetailLoading(modifier: Modifier = Modifier) {
-    val screenState = gameScreenLoadingState()
-
-    ScreenPreviewLight(screenState)
+private fun ComposerListLoading(modifier: Modifier = Modifier) {
+    val screenState = composerScreenLoadingState()
+    ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun GameDetailDark(modifier: Modifier = Modifier) {
-    val screenState = gameScreenState()
+private fun ComposerListDark(modifier: Modifier = Modifier) {
+    val screenState = composerScreenState()
 
-    ScreenPreviewDark(screenState)
+    ScreenPreviewDark(screenState, isGrid = true)
 }
 
 @Suppress("MagicNumber")
-private fun gameScreenState(): State {
-    val seed = 1234L
+private fun composerScreenState(): State {
+    val seed = 1234567L
     val random = Random(seed)
     val modelGenerator = FakeModelGenerator(
         random,
@@ -45,30 +43,22 @@ private fun gameScreenState(): State {
         StringGenerator(random)
     )
 
-    val game = modelGenerator.randomGame()
     val composers = modelGenerator.randomComposers()
-    val songs = modelGenerator.randomSongs()
 
     val screenState = State(
-        game = LCE.Content(game),
         composers = LCE.Content(composers),
-        songs = LCE.Content(songs),
-        isFavorite = LCE.Content(false),
     )
     return screenState
 }
 
 @Suppress("MagicNumber")
-private fun gameScreenLoadingState(): State {
-    val seed = 1234L
+private fun composerScreenLoadingState(): State {
+    val seed = 1234567L
     val random = Random(seed)
     val stringGenerator = StringGenerator(random)
 
     val screenState = State(
-        game = LCE.Loading(stringGenerator.generateName()),
         composers = LCE.Loading(stringGenerator.generateName()),
-        songs = LCE.Loading(stringGenerator.generateName()),
-        isFavorite = LCE.Loading(stringGenerator.generateName()),
     )
     return screenState
 }

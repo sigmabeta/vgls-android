@@ -159,8 +159,8 @@ data class State(
         is LCE.Loading -> loading(
             operationName = game.operationName,
             loadingType = LoadingType.BIG_IMAGE,
-            itemCount = 1,
-            withHeader = true,
+            loadingItemCount = 1,
+            loadingWithHeader = true,
         )
         LCE.Uninitialized -> emptyList()
     }
@@ -191,9 +191,9 @@ data class State(
         is LCE.Loading -> loading(
             operationName = composers.operationName,
             loadingType = LoadingType.WIDE_ITEM,
-            itemCount = 3,
-            withHeader = true,
-            horizScrollable = true
+            loadingItemCount = 3,
+            loadingWithHeader = true,
+            loadingHorizScrollable = true
         )
         LCE.Uninitialized -> emptyList()
     }
@@ -231,8 +231,8 @@ data class State(
         is LCE.Loading -> loading(
             operationName = dedupedTagValues.operationName + ".difficulty",
             loadingType = LoadingType.SINGLE_TEXT,
-            itemCount = 3,
-            withHeader = true,
+            loadingItemCount = 3,
+            loadingWithHeader = true,
         )
         LCE.Uninitialized -> emptyList()
     }
@@ -283,8 +283,8 @@ data class State(
         is LCE.Loading -> loading(
             operationName = dedupedTagValues.operationName + ".details",
             loadingType = LoadingType.SINGLE_TEXT,
-            itemCount = 3,
-            withHeader = true,
+            loadingItemCount = 3,
+            loadingWithHeader = true,
         )
         LCE.Uninitialized -> emptyList()
     }

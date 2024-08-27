@@ -1,4 +1,4 @@
-package com.vgleadsheets.composables.previews.screens
+package com.vgleadsheets.composables.previews.screens.lists
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

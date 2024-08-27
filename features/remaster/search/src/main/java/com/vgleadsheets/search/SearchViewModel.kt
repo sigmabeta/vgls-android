@@ -4,10 +4,16 @@ import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.ui.StringProvider
@@ -17,13 +23,13 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -31,6 +37,7 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel @AssistedInject constructor(
     override val dispatchers: VglsDispatchers,
+    override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
     val stringProvider: StringProvider,
@@ -41,7 +48,7 @@ class SearchViewModel @AssistedInject constructor(
     EventSink {
     private var historyTimer: Job? = null
 
-    private val internalResultItemsFlow = MutableStateFlow(initialState().resultItems(stringProvider))
+    private val internalResultItemsFlow = MutableStateFlow(initialState().toListItems(stringProvider))
 
     init {
         eventDispatcher.addEventSink(this)
@@ -52,7 +59,7 @@ class SearchViewModel @AssistedInject constructor(
     override fun initialState() = SearchState()
 
     override fun handleAction(action: VglsAction) {
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
 
             when (action) {
@@ -69,18 +76,18 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     override fun handleEvent(event: VglsEvent) {
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this@SearchViewModel.javaClass.simpleName} - Handling event: $event")
         }
     }
 
     override fun updateState(updater: (SearchState) -> SearchState) {
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(scheduler.dispatchers.main) {
             val oldState = internalUiState.value
             val newState = updater(oldState)
 
             internalUiState.value = newState
-            internalResultItemsFlow.value = newState.resultItems(stringProvider)
+            internalResultItemsFlow.value = newState.toListItems(stringProvider)
         }
     }
 
@@ -140,16 +147,11 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     private fun getSearchHistory() {
+        updateSearchHistory(LCE.Loading(LOAD_OPERATION_HISTORY))
         searchRepository.getRecentSearches()
-            .onEach { history ->
-                updateState {
-                    it.copy(
-                        searchHistory = history
-                    )
-                }
-            }
-            .flowOn(dispatchers.disk)
-            .launchIn(viewModelScope)
+            .onEach { history -> updateSearchHistory(LCE.Content(history)) }
+            .catch { updateSearchHistory(LCE.Error(LOAD_OPERATION_HISTORY, it)) }
+            .runInBackground()
     }
 
     private fun updateTextField(newText: String) {
@@ -171,30 +173,30 @@ class SearchViewModel @AssistedInject constructor(
             .launchIn(viewModelScope)
 
         observeSearchInput(
-            searchOperation = { searchRepository.searchGamesCombined(it) },
-            onSearchSuccess = { results ->
-                updateState {
-                    it.copy(gameResults = results)
-                }
-            }
+            searchOperation = {
+                updateGames(LCE.Loading(LOAD_OPERATION_GAMES))
+                searchRepository.searchGamesCombined(it)
+            },
+            onSearchError = { updateGames(LCE.Error(LOAD_OPERATION_GAMES, it)) },
+            onSearchSuccess = { results -> updateGames(LCE.Content(results)) },
         )
 
         observeSearchInput(
-            searchOperation = { searchRepository.searchSongsCombined(it) },
-            onSearchSuccess = { results ->
-                updateState {
-                    it.copy(songResults = results)
-                }
-            }
+            searchOperation = {
+                updateSongs(LCE.Loading(LOAD_OPERATION_SONGS))
+                searchRepository.searchSongsCombined(it)
+            },
+            onSearchError = { updateSongs(LCE.Error(LOAD_OPERATION_SONGS, it)) },
+            onSearchSuccess = { results -> updateSongs(LCE.Content(results)) },
         )
 
         observeSearchInput(
-            searchOperation = { searchRepository.searchComposersCombined(it) },
-            onSearchSuccess = { results ->
-                updateState {
-                    it.copy(composerResults = results)
-                }
-            }
+            searchOperation = {
+                updateComposers(LCE.Loading(LOAD_OPERATION_COMPOSER))
+                searchRepository.searchComposersCombined(it)
+            },
+            onSearchError = { updateComposers(LCE.Error(LOAD_OPERATION_COMPOSER, it)) },
+            onSearchSuccess = { results -> updateComposers(LCE.Content(results)) },
         )
     }
 
@@ -203,27 +205,25 @@ class SearchViewModel @AssistedInject constructor(
         updateState {
             it.copy(
                 searchQuery = "",
-                songResults = emptyList(),
-                gameResults = emptyList(),
-                composerResults = emptyList(),
+                songResults = LCE.Uninitialized,
+                gameResults = LCE.Uninitialized,
+                composerResults = LCE.Uninitialized,
             )
         }
     }
 
     private fun startHistoryTimer(query: String) {
         historyTimer?.cancel()
-        historyTimer = viewModelScope.launch(dispatchers.disk) {
+        historyTimer = viewModelScope.launch(scheduler.dispatchers.disk) {
             delay(DURATION_HISTORY_RECORD)
 
             searchRepository.addToSearchHistory(query)
-            hatchet.d("This search has officially been recorded.")
             historyTimer = null
         }
     }
 
     private fun stopHistoryTimer() {
         if (historyTimer != null) {
-            hatchet.i("This search was not officially recorded.")
             historyTimer?.cancel()
             historyTimer = null
         }
@@ -231,17 +231,50 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun <ModelType> observeSearchInput(
         searchOperation: suspend (String) -> Flow<List<ModelType>>,
+        onSearchError: suspend FlowCollector<List<ModelType>>.(cause: Throwable) -> Unit,
         onSearchSuccess: suspend (List<ModelType>) -> Unit,
     ) {
         internalUiState
             .map { it.searchQuery.trim() }
             .debounce(DEBOUNCE_THRESHOLD)
             .filter { it.length >= MINIMUM_LENGTH_QUERY }
+            .distinctUntilChanged()
             .flatMapLatest(searchOperation)
-            .catch { hatchet.e("Error searching: ${it.message}") }
             .onEach(onSearchSuccess)
-            .flowOn(dispatchers.disk)
-            .launchIn(viewModelScope)
+            .catch(onSearchError)
+            .runInBackground(shouldDelay = true)
+    }
+
+    private fun updateSearchHistory(searchHistory: LCE<List<SearchHistoryEntry>>) {
+        updateState {
+            it.copy(
+                searchHistory = searchHistory
+            )
+        }
+    }
+
+    private fun updateSongs(songs: LCE<List<Song>>) {
+        updateState {
+            it.copy(
+                songResults = songs
+            )
+        }
+    }
+
+    private fun updateComposers(composers: LCE<List<Composer>>) {
+        updateState {
+            it.copy(
+                composerResults = composers
+            )
+        }
+    }
+
+    private fun updateGames(games: LCE<List<Game>>) {
+        updateState {
+            it.copy(
+                gameResults = games
+            )
+        }
     }
 
     companion object {
@@ -249,5 +282,10 @@ class SearchViewModel @AssistedInject constructor(
 
         internal const val DEBOUNCE_THRESHOLD = 300L
         private const val MINIMUM_LENGTH_QUERY = 3
+
+        internal const val LOAD_OPERATION_HISTORY = "search.history"
+        internal const val LOAD_OPERATION_COMPOSER = "search.composers"
+        internal const val LOAD_OPERATION_SONGS = "search.songs"
+        internal const val LOAD_OPERATION_GAMES = "search.games"
     }
 }

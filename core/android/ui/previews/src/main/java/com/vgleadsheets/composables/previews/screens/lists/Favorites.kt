@@ -1,4 +1,4 @@
-package com.vgleadsheets.composables.previews.screens
+package com.vgleadsheets.composables.previews.screens.lists
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,27 +8,27 @@ import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
-import com.vgleadsheets.remaster.games.list.State
+import com.vgleadsheets.remaster.favorites.State
 import java.util.Random
 
 @Preview
 @Composable
-private fun GameListLight(modifier: Modifier = Modifier) {
-    val screenState = gameScreenState()
+private fun FavoriteListLight(modifier: Modifier = Modifier) {
+    val screenState = favoritesScreenState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun GameListDark(modifier: Modifier = Modifier) {
-    val screenState = gameScreenState()
+private fun FavoriteListDark(modifier: Modifier = Modifier) {
+    val screenState = favoritesScreenState()
 
     ScreenPreviewDark(screenState, isGrid = true)
 }
 
 @Suppress("MagicNumber")
-private fun gameScreenState(): State {
-    val seed = 1234567L
+private fun favoritesScreenState(): State {
+    val seed = 1234L
     val random = Random(seed)
     val modelGenerator = FakeModelGenerator(
         random,
@@ -36,10 +36,14 @@ private fun gameScreenState(): State {
         StringGenerator(random)
     )
 
+    val songs = modelGenerator.randomSongs()
     val games = modelGenerator.randomGames()
+    val composers = modelGenerator.randomComposers()
 
     val screenState = State(
-        games = LCE.Content(games),
+        favoriteSongs = LCE.Content(songs),
+        favoriteGames = LCE.Content(games),
+        favoriteComposers = LCE.Content(composers),
     )
     return screenState
 }

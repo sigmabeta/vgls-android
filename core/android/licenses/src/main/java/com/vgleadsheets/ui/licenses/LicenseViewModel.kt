@@ -4,6 +4,7 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
@@ -14,6 +15,7 @@ import javax.inject.Inject
 class LicenseViewModel @Inject constructor(
     override val hatchet: Hatchet,
     override val dispatchers: VglsDispatchers,
+    override val delayManager: DelayManager,
     override val eventDispatcher: EventDispatcher,
     private val stringProvider: StringProvider,
 ) : VglsViewModel<State>() {

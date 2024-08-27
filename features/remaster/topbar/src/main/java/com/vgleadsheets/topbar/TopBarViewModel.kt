@@ -7,23 +7,25 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class TopBarViewModel @Inject constructor(
     private val selectedPartManager: SelectedPartManager,
     override val dispatchers: VglsDispatchers,
+    override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
 ) : VglsViewModel<TopBarState>() {
@@ -41,7 +43,7 @@ class TopBarViewModel @Inject constructor(
     override fun sendEvent(event: VglsEvent) = handleEvent(event)
 
     override fun handleAction(action: VglsAction) {
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
             when (action) {
                 is TopBarAction.Menu -> eventDispatcher.sendEvent(
@@ -68,7 +70,7 @@ class TopBarViewModel @Inject constructor(
     }
 
     override fun handleEvent(event: VglsEvent) {
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.HideTopBar -> hideTopBar()
@@ -118,7 +120,7 @@ class TopBarViewModel @Inject constructor(
                     it.copy(selectedPart = selectedPart.apiId)
                 }
             }
-            .flowOn(dispatchers.disk)
+            .flowOn(scheduler.dispatchers.disk)
             .launchIn(viewModelScope)
     }
 }

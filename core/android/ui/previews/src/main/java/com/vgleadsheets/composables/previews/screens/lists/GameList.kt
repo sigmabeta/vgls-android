@@ -1,4 +1,4 @@
-package com.vgleadsheets.composables.previews.screens
+package com.vgleadsheets.composables.previews.screens.lists
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,27 +8,34 @@ import com.vgleadsheets.composables.previews.ScreenPreviewDark
 import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
-import com.vgleadsheets.remaster.favorites.State
+import com.vgleadsheets.remaster.games.list.State
 import java.util.Random
 
 @Preview
 @Composable
 private fun GameListLight(modifier: Modifier = Modifier) {
-    val screenState = favoritesScreenState()
+    val screenState = gameScreenState()
+    ScreenPreviewLight(screenState, isGrid = true)
+}
+
+@Preview
+@Composable
+private fun GameListLoading(modifier: Modifier = Modifier) {
+    val screenState = gameScreenLoadingState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
 private fun GameListDark(modifier: Modifier = Modifier) {
-    val screenState = favoritesScreenState()
+    val screenState = gameScreenState()
 
     ScreenPreviewDark(screenState, isGrid = true)
 }
 
 @Suppress("MagicNumber")
-private fun favoritesScreenState(): State {
-    val seed = 1234L
+private fun gameScreenState(): State {
+    val seed = 1234567L
     val random = Random(seed)
     val modelGenerator = FakeModelGenerator(
         random,
@@ -36,14 +43,22 @@ private fun favoritesScreenState(): State {
         StringGenerator(random)
     )
 
-    val songs = modelGenerator.randomSongs()
     val games = modelGenerator.randomGames()
-    val composers = modelGenerator.randomComposers()
 
     val screenState = State(
-        favoriteSongs = LCE.Content(songs),
-        favoriteGames = LCE.Content(games),
-        favoriteComposers = LCE.Content(composers),
+        games = LCE.Content(games),
+    )
+    return screenState
+}
+
+@Suppress("MagicNumber")
+private fun gameScreenLoadingState(): State {
+    val seed = 1234567L
+    val random = Random(seed)
+    val stringGenerator = StringGenerator(random)
+
+    val screenState = State(
+        games = LCE.Loading(stringGenerator.generateName()),
     )
     return screenState
 }

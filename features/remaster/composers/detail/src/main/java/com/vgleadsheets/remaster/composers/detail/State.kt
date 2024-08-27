@@ -106,9 +106,9 @@ data class State(
         is LCE.Loading -> loading(
             operationName = games.operationName,
             loadingType = LoadingType.WIDE_ITEM,
-            itemCount = 3,
-            withHeader = true,
-            horizScrollable = true
+            loadingItemCount = 3,
+            loadingWithHeader = true,
+            loadingHorizScrollable = true
         )
 
         LCE.Uninitialized -> emptyList()
@@ -140,8 +140,8 @@ data class State(
         is LCE.Loading -> loading(
             operationName = songs.operationName,
             loadingType = LoadingType.TEXT_IMAGE,
-            itemCount = 8,
-            withHeader = true,
+            loadingItemCount = 8,
+            loadingWithHeader = true,
         )
 
         LCE.Uninitialized -> emptyList()
