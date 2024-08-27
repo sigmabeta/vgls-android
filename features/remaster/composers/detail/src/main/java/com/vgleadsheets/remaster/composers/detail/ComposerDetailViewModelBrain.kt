@@ -1,20 +1,25 @@
 package com.vgleadsheets.remaster.composers.detail
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
 
 class ComposerDetailViewModelBrain(
     private val songRepository: SongRepository,
@@ -48,79 +53,78 @@ class ComposerDetailViewModelBrain(
         checkFavoriteStatus(id)
     }
 
-    private fun checkFavoriteStatus(id: Long) {
-        favoriteRepository
-            .isFavoriteComposer(id)
-            .onEach { isFavorite ->
-                updateState {
-                    (it as State).copy(isFavorite = isFavorite)
-                }
-            }
-            .runInBackground()
-    }
-
-    private fun onAddFavoriteClicked() {
-        internalUiState
-            .map { it as State }
-            .mapNotNull { it.composer?.id }
-            .take(1)
-            .onEach { id ->
-                favoriteRepository.addFavoriteComposer(id)
-            }
-            .runInBackground()
-    }
-
-    private fun onRemoveFavoriteClicked() {
-        internalUiState
-            .map { it as State }
-            .mapNotNull { it.composer?.id }
-            .take(1)
-            .onEach { id ->
-                favoriteRepository.removeFavoriteComposer(id)
-            }
-            .runInBackground()
-    }
-
     private fun fetchComposer(composerId: Long) {
+        updateComposer(LCE.Loading(LOAD_OPERATION_COMPOSER))
         composerRepository.getComposer(composerId)
-            .onEach { composer ->
-                updateState {
-                    (it as State).copy(
-                        title = composer.name,
-                        composer = composer,
-                    )
-                }
-            }
+            .onEach { composer -> updateComposer(LCE.Content(composer)) }
+            .catch { updateComposer(LCE.Error(LOAD_OPERATION_COMPOSER, it)) }
             .runInBackground()
     }
 
     private fun fetchSongs(composerId: Long) {
+        updateSongs(LCE.Loading(LOAD_OPERATION_SONGS))
         songRepository
             .getSongsForComposer(composerId)
-            .onEach { songs ->
-                updateState {
-                    (it as State).copy(
-                        songs = songs,
-                    )
-                }
-            }
+            .onEach { songs -> updateSongs(LCE.Content(songs)) }
+            .catch { updateSongs(LCE.Error(LOAD_OPERATION_SONGS, it)) }
             .runInBackground()
     }
 
     private fun fetchGames() {
+        updateGames(LCE.Loading(LOAD_OPERATION_GAMES))
         internalUiState
             .map { it as State }
             .map { state -> state.songs }
-            .mapList { song -> gameRepository.getGameSync(song.gameId) }
-            .map { it.distinct() }
-            .onEach { games ->
-                updateState {
-                    (it as State).copy(
-                        games = games,
-                    )
-                }
-            }
+            .map { songs -> songLCEtoGameLCE(songs) }
+            .catch { updateGames(LCE.Error(LOAD_OPERATION_GAMES, it)) }
+            .onEach { gamesLCE -> updateGames(gamesLCE) }
             .runInBackground()
+    }
+
+    private suspend fun songLCEtoGameLCE(songs: LCE<List<Song>>) = when (songs) {
+        is LCE.Content -> LCE.Content(getUniqueGames(songs.data))
+        is LCE.Error -> LCE.Uninitialized
+        is LCE.Loading -> LCE.Loading(LOAD_OPERATION_GAMES)
+        LCE.Uninitialized -> LCE.Uninitialized
+    }
+
+    private suspend fun getUniqueGames(songs: List<Song>): List<Game> {
+        val games = songs.mapNotNull { song ->
+            gameRepository
+                .getGame(song.gameId)
+                .firstOrNull()
+        }
+
+        return games
+    }
+
+    private fun checkFavoriteStatus(id: Long) {
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
+        favoriteRepository
+            .isFavoriteGame(id)
+            .onEach { isFavorite -> updateIsFavorite(LCE.Content(isFavorite)) }
+            .catch { updateIsFavorite(LCE.Error(LOAD_OPERATION_FAVORITE, it)) }
+            .runInBackground()
+    }
+
+    private fun onAddFavoriteClicked() {
+        val state = internalUiState.value as State
+        val composer = state.composer
+        if (composer !is LCE.Content) return
+
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            favoriteRepository.addFavoriteComposer(composer.data.id)
+        }
+    }
+
+    private fun onRemoveFavoriteClicked() {
+        val state = internalUiState.value as State
+        val composer = state.composer
+        if (composer !is LCE.Content) return
+
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            favoriteRepository.removeFavoriteComposer(composer.data.id)
+        }
     }
 
     private fun onSongClicked(id: Long) {
@@ -139,5 +143,44 @@ class ComposerDetailViewModelBrain(
                 Destination.COMPOSER_DETAIL.name
             )
         )
+    }
+
+    private fun updateComposer(composer: LCE<Composer>) {
+        updateState {
+            (it as State).copy(
+                composer = composer
+            )
+        }
+    }
+
+    private fun updateSongs(songs: LCE<List<Song>>) {
+        updateState {
+            (it as State).copy(
+                songs = songs
+            )
+        }
+    }
+
+    private fun updateGames(games: LCE<List<Game>>) {
+        updateState {
+            (it as State).copy(
+                games = games
+            )
+        }
+    }
+
+    private fun updateIsFavorite(isFavorite: LCE<Boolean>) {
+        updateState {
+            (it as State).copy(
+                isFavorite = isFavorite
+            )
+        }
+    }
+
+    companion object {
+        internal const val LOAD_OPERATION_COMPOSER = "composers.detail"
+        internal const val LOAD_OPERATION_SONGS = "composers.detail.songs"
+        internal const val LOAD_OPERATION_GAMES = "composers.detail.games"
+        internal const val LOAD_OPERATION_FAVORITE = "composers.detail.favorite"
     }
 }
