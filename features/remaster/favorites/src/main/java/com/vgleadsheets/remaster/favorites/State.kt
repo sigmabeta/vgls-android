@@ -37,7 +37,10 @@ data class State(
             .toImmutableList()
     }
 
-    private fun songsToListItems(songs: LCE<List<Song>>, stringProvider: StringProvider) = songs.withStandardErrorAndLoading(
+    private fun songsToListItems(
+        songs: LCE<List<Song>>,
+        stringProvider: StringProvider
+    ) = songs.withStandardErrorAndLoading(
         loadingType = LoadingType.TEXT_CAPTION_IMAGE,
         loadingItemCount = 2,
     ) {
@@ -58,7 +61,10 @@ data class State(
         }
     }
 
-    private fun gamesToListItems(games: LCE<List<Game>>, stringProvider: StringProvider) = games.withStandardErrorAndLoading(
+    private fun gamesToListItems(
+        games: LCE<List<Game>>,
+        stringProvider: StringProvider
+    ) = games.withStandardErrorAndLoading(
         loadingType = LoadingType.SQUARE,
         loadingItemCount = 2
     ) {
@@ -77,7 +83,10 @@ data class State(
         }
     }
 
-    private fun composersToListItems(composers: LCE<List<Composer>>, stringProvider: StringProvider) = composers.withStandardErrorAndLoading(
+    private fun composersToListItems(
+        composers: LCE<List<Composer>>,
+        stringProvider: StringProvider
+    ) = composers.withStandardErrorAndLoading(
         loadingType = LoadingType.SQUARE,
         loadingItemCount = 2
     ) {
