@@ -28,13 +28,14 @@ abstract class ListState : VglsState {
         loadingItemCount: Int = 10,
         loadingWithHeader: Boolean = true,
         loadingHorizScrollable: Boolean = false,
+        loadingOperationNameOverride: String? = null,
         content: LCE.Content<ModelType>.() -> List<ListModel>
     ): ImmutableList<ListModel> {
         return when (this) {
             is LCE.Content -> content()
             is LCE.Error -> error(error)
             is LCE.Loading -> loading(
-                operationName = operationName,
+                operationName = loadingOperationNameOverride ?: this.operationName,
                 loadingType = loadingType,
                 loadingItemCount = loadingItemCount,
                 loadingWithHeader = loadingWithHeader,

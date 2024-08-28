@@ -57,10 +57,9 @@ data class State(
     }
 
     @Suppress("MagicNumber")
-    private fun LCE<HomeModuleState>.toListItems() = when (this) {
-        is LCE.Loading -> loading(operationName, LoadingType.TEXT_CAPTION_IMAGE, 20)
-        is LCE.Content -> this.data.toListItems()
-        is LCE.Error -> error(operationName, error)
-        LCE.Uninitialized -> emptyList()
+    private fun LCE<HomeModuleState>.toListItems() = withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_CAPTION_IMAGE,
+    ) {
+        this.data.toListItems()
     }
 }

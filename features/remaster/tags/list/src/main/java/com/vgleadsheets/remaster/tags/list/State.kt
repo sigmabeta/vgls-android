@@ -1,7 +1,6 @@
 package com.vgleadsheets.remaster.tags.list
 
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.TitleBarModel
@@ -9,9 +8,6 @@ import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 data class State(
     val tagKeys: LCE<List<TagKey>> = LCE.Uninitialized,
@@ -21,17 +17,11 @@ data class State(
     )
 
     @Suppress("MagicNumber")
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        return when (tagKeys) {
-            is LCE.Content -> content(tagKeys.data, stringProvider)
-            is LCE.Error -> error(tagKeys.operationName, tagKeys.error)
-            is LCE.Loading -> loading(tagKeys.operationName, LoadingType.TEXT_CAPTION, 20)
-            LCE.Uninitialized -> persistentListOf()
-        }.toImmutableList()
-    }
-
-    private fun content(tagKeys: List<TagKey>, stringProvider: StringProvider) = tagKeys
-        .map { tagKey ->
+    override fun toListItems(stringProvider: StringProvider) = tagKeys.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_CAPTION,
+        loadingWithHeader = false
+    ) {
+        data.map { tagKey ->
             NameCaptionListModel(
                 dataId = tagKey.id,
                 name = tagKey.name,
@@ -39,6 +29,7 @@ data class State(
                 clickAction = Action.TagKeyClicked(tagKey.id),
             )
         }
+    }
 
     @Suppress("LoopWithTooManyJumpStatements")
     private fun TagKey.captionText(stringProvider: StringProvider): String {

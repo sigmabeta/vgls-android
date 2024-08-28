@@ -2,7 +2,6 @@ package com.vgleadsheets.remaster.songs.list
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
@@ -11,9 +10,6 @@ import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 data class State(
     val songs: LCE<List<Song>> = LCE.Uninitialized,
@@ -23,17 +19,11 @@ data class State(
     )
 
     @Suppress("MagicNumber")
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        return when (songs) {
-            is LCE.Content -> content(songs.data)
-            is LCE.Error -> error(songs.operationName, songs.error)
-            is LCE.Loading -> loading(songs.operationName, LoadingType.TEXT_CAPTION_IMAGE, 20)
-            LCE.Uninitialized -> persistentListOf()
-        }.toImmutableList()
-    }
-
-    private fun content(songs: List<Song>) = songs
-        .map { song ->
+    override fun toListItems(stringProvider: StringProvider) = songs.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_CAPTION_IMAGE,
+        loadingWithHeader = false,
+    ) {
+        data.map { song ->
             ImageNameCaptionListModel(
                 dataId = song.id,
                 name = song.name,
@@ -46,4 +36,5 @@ data class State(
                 clickAction = Action.SongClicked(song.id),
             )
         }
+    }
 }

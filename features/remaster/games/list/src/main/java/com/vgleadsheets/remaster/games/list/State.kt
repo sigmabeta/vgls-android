@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.games.list
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
@@ -16,7 +17,10 @@ data class State(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_GAMES)
     )
 
-    override fun toListItems(stringProvider: StringProvider) = games.withStandardErrorAndLoading {
+    override fun toListItems(stringProvider: StringProvider) = games.withStandardErrorAndLoading(
+        loadingType = LoadingType.SQUARE,
+        loadingWithHeader = false,
+    ) {
         content(data)
     }
 

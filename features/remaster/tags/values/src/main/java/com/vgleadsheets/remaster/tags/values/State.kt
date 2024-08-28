@@ -1,7 +1,6 @@
 package com.vgleadsheets.remaster.tags.values
 
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
@@ -10,9 +9,6 @@ import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 data class State(
     val tagKey: LCE<TagKey> = LCE.Uninitialized,
@@ -27,21 +23,16 @@ data class State(
     )
 
     @Suppress("MagicNumber")
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        return when (tagValues) {
-            is LCE.Content -> content(tagValues.data)
-            is LCE.Error -> error(tagValues.operationName, tagValues.error)
-            is LCE.Loading -> loading(tagValues.operationName, loadingType = LoadingType.TEXT_IMAGE, 20)
-            LCE.Uninitialized -> persistentListOf()
-        }.toImmutableList()
-    }
-
-    private fun content(tagValues: List<TagValue>) = tagValues
-        .map { tagValue ->
+    override fun toListItems(stringProvider: StringProvider) = tagValues.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_IMAGE,
+        loadingWithHeader = false,
+    ) {
+        data.map { tagValue ->
             SingleTextListModel(
                 dataId = tagValue.id,
                 name = tagValue.name,
                 clickAction = Action.TagValueClicked(tagValue.id),
             )
         }
+    }
 }

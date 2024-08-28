@@ -20,6 +20,13 @@ private fun FavoriteListLight(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
+private fun FavoriteListLoading(modifier: Modifier = Modifier) {
+    val screenState = favoritesScreenLoadingState()
+    ScreenPreviewLight(screenState, isGrid = true)
+}
+
+@Preview
+@Composable
 private fun FavoriteListDark(modifier: Modifier = Modifier) {
     val screenState = favoritesScreenState()
 
@@ -44,6 +51,20 @@ private fun favoritesScreenState(): State {
         favoriteSongs = LCE.Content(songs),
         favoriteGames = LCE.Content(games),
         favoriteComposers = LCE.Content(composers),
+    )
+    return screenState
+}
+
+@Suppress("MagicNumber")
+private fun favoritesScreenLoadingState(): State {
+    val seed = 1234L
+    val random = Random(seed)
+    val stringGenerator = StringGenerator(random)
+
+    val screenState = State(
+        favoriteSongs = LCE.Loading(stringGenerator.generateName()),
+        favoriteGames = LCE.Loading(stringGenerator.generateName()),
+        favoriteComposers = LCE.Loading(stringGenerator.generateName()),
     )
     return screenState
 }

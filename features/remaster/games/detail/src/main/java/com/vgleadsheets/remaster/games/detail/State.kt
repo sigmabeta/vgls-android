@@ -47,139 +47,115 @@ data class State(
         return (gameModels + ctaModels + composerModels + songModels).toPersistentList()
     }
 
-    private fun gameSection() = when (game) {
-        is LCE.Content -> {
-            val photoUrl = game.data.photoUrl
-            if (photoUrl != null) {
-                listOf(
-                    HeroImageListModel(
-                        sourceInfo = photoUrl,
-                        imagePlaceholder = Icon.ALBUM,
-                        name = null,
-                        clickAction = VglsAction.Noop,
-                    )
-                )
-            } else {
-                emptyList()
-            }
-        }
-
-        is LCE.Error -> error(game.operationName, game.error)
-        is LCE.Loading -> loading(game.operationName, LoadingType.BIG_IMAGE, 1)
-        LCE.Uninitialized -> emptyList()
-    }
-
-    @Suppress("MagicNumber")
-    private fun ctaSection(stringProvider: StringProvider) = when (game) {
-        is LCE.Content -> {
+    private fun gameSection() = game.withStandardErrorAndLoading(
+        loadingType = LoadingType.BIG_IMAGE,
+        loadingWithHeader = false,
+        loadingItemCount = 1
+    ) {
+        val photoUrl = data.photoUrl
+        if (photoUrl != null) {
             listOf(
-                favoriteCtaItem(stringProvider),
-            ).flatten()
-        }
-
-        is LCE.Error -> emptyList()
-        is LCE.Loading -> loading(game.operationName + ".cta", LoadingType.TEXT_IMAGE, 1)
-        LCE.Uninitialized -> emptyList()
-    }
-
-    @Suppress("MagicNumber")
-    private fun composerSection(stringProvider: StringProvider) = when (composers) {
-        is LCE.Content -> {
-            listOf(
-                SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_GAME)
-                ),
-                HorizontalScrollerListModel(
-                    dataId = StringId.SECTION_HEADER_COMPOSERS_FROM_GAME.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
-                    scrollingItems = composers.data.map { composer ->
-                        WideItemListModel(
-                            dataId = composer.id + ID_PREFIX_COMPOSERS,
-                            name = composer.name,
-                            sourceInfo = composer.photoUrl,
-                            imagePlaceholder = Icon.PERSON,
-                            clickAction = Action.ComposerClicked(composer.id)
-                        )
-                    }.toImmutableList()
+                HeroImageListModel(
+                    sourceInfo = photoUrl,
+                    imagePlaceholder = Icon.ALBUM,
+                    name = null,
+                    clickAction = VglsAction.Noop,
                 )
             )
+        } else {
+            emptyList()
         }
-
-        is LCE.Error -> error(composers.operationName, composers.error)
-        is LCE.Loading -> loading(
-            operationName = composers.operationName,
-            loadingType = LoadingType.WIDE_ITEM,
-            loadingItemCount = 3,
-            loadingWithHeader = true,
-            loadingHorizScrollable = true
-        )
-
-        LCE.Uninitialized -> emptyList()
     }
 
-    private fun songSection(stringProvider: StringProvider) = when (songs) {
-        is LCE.Content -> {
-            listOf(
-                SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_GAME)
-                )
-            ) + songs.data.map { song ->
-                val sourceInfo = PdfConfigById(
-                    songId = song.id,
-                    pageNumber = 0
-                )
+    @Suppress("MagicNumber")
+    private fun ctaSection(stringProvider: StringProvider) = game.withStandardErrorAndLoading(
+        loadingItemCount = 0,
+        loadingWithHeader = false
+    ) {
+        listOf(
+            favoriteCtaItem(stringProvider),
+        ).flatten()
+    }
 
-                ImageNameListModel(
-                    dataId = song.id + ID_PREFIX_SONGS,
-                    name = song.name,
-                    sourceInfo = sourceInfo,
-                    imagePlaceholder = Icon.DESCRIPTION,
-                    clickAction = Action.SongClicked(song.id)
-                )
-            }
-        }
-
-        is LCE.Error -> error(songs.operationName, songs.error)
-        is LCE.Loading -> loading(
-            operationName = songs.operationName,
-            loadingType = LoadingType.TEXT_IMAGE,
-            loadingItemCount = 8,
-            loadingWithHeader = true,
+    @Suppress("MagicNumber")
+    private fun composerSection(stringProvider: StringProvider) = composers.withStandardErrorAndLoading(
+        loadingType = LoadingType.WIDE_ITEM,
+        loadingWithHeader = true,
+        loadingHorizScrollable = true
+    ) {
+        listOf(
+            SectionHeaderListModel(
+                stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_GAME)
+            ),
+            HorizontalScrollerListModel(
+                dataId = StringId.SECTION_HEADER_COMPOSERS_FROM_GAME.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
+                scrollingItems = data.map { composer ->
+                    WideItemListModel(
+                        dataId = composer.id + ID_PREFIX_COMPOSERS,
+                        name = composer.name,
+                        sourceInfo = composer.photoUrl,
+                        imagePlaceholder = Icon.PERSON,
+                        clickAction = Action.ComposerClicked(composer.id)
+                    )
+                }.toImmutableList()
+            )
         )
+    }
 
-        LCE.Uninitialized -> emptyList()
+    private fun songSection(stringProvider: StringProvider) = songs.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_IMAGE,
+        loadingItemCount = 8,
+        loadingWithHeader = true,
+    ) {
+        listOf(
+            SectionHeaderListModel(
+                stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_GAME)
+            )
+        ) + data.map { song ->
+            val sourceInfo = PdfConfigById(
+                songId = song.id,
+                pageNumber = 0
+            )
+
+            ImageNameListModel(
+                dataId = song.id + ID_PREFIX_SONGS,
+                name = song.name,
+                sourceInfo = sourceInfo,
+                imagePlaceholder = Icon.DESCRIPTION,
+                clickAction = Action.SongClicked(song.id)
+            )
+        }
     }
 
     @Suppress("MagicNumber")
     private fun favoriteCtaItem(
         stringProvider: StringProvider
-    ) = when (isFavorite) {
-        is LCE.Content -> {
-            val (icon, label, action) = if (isFavorite.data) {
-                Triple(
-                    Icon.JAM_FILLED,
-                    StringId.CTA_FAVORITE_REMOVE,
-                    Action.RemoveFavoriteClicked,
-                )
-            } else {
-                Triple(
-                    Icon.JAM_EMPTY,
-                    StringId.CTA_FAVORITE_ADD,
-                    Action.AddFavoriteClicked,
-                )
-            }
-
-            listOf(
-                CtaListModel(
-                    icon = icon,
-                    name = stringProvider.getString(label),
-                    clickAction = action,
-                )
+    ) = isFavorite.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_IMAGE,
+        loadingItemCount = 1,
+        loadingWithHeader = false
+    ) {
+        val (icon, label, action) = if (data) {
+            Triple(
+                Icon.JAM_FILLED,
+                StringId.CTA_FAVORITE_REMOVE,
+                Action.RemoveFavoriteClicked,
+            )
+        } else {
+            Triple(
+                Icon.JAM_EMPTY,
+                StringId.CTA_FAVORITE_ADD,
+                Action.AddFavoriteClicked,
             )
         }
 
-        is LCE.Error -> error(isFavorite.operationName, isFavorite.error)
-        is LCE.Loading -> loading(isFavorite.operationName, LoadingType.SINGLE_TEXT, 3)
-        LCE.Uninitialized -> emptyList()
+        listOf(
+            CtaListModel(
+                icon = icon,
+                name = stringProvider.getString(label),
+                clickAction = action,
+            )
+        )
     }
 
     companion object {

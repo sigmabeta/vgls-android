@@ -47,137 +47,110 @@ data class State(
         return (composerModel + ctaModels + gameModels + songModels).toImmutableList()
     }
 
-    private fun composerSection() = when (composer) {
-        is LCE.Content -> {
-            val photoUrl = composer.data.photoUrl
-            if (photoUrl != null) {
-                listOf(
-                    HeroImageListModel(
-                        sourceInfo = photoUrl,
-                        imagePlaceholder = Icon.PERSON,
-                        name = null,
-                        clickAction = VglsAction.Noop,
-                    )
-                )
-            } else {
-                emptyList()
-            }
-        }
-
-        is LCE.Error -> error(composer.operationName, composer.error)
-        is LCE.Loading -> loading(composer.operationName, LoadingType.BIG_IMAGE, 1)
-        LCE.Uninitialized -> emptyList()
-    }
-
-    private fun State.ctaSection(stringProvider: StringProvider) = when (composer) {
-        is LCE.Content -> {
+    private fun composerSection() = composer.withStandardErrorAndLoading(
+        loadingType = LoadingType.BIG_IMAGE,
+        loadingItemCount = 1,
+        loadingWithHeader = false,
+    ) {
+        val photoUrl = data.photoUrl
+        if (photoUrl != null) {
             listOf(
-                favoriteCtaItem(stringProvider),
-            ).flatten()
-        }
-
-        is LCE.Error -> emptyList()
-        is LCE.Loading -> loading(composer.operationName + ".cta", LoadingType.TEXT_IMAGE, 1)
-        LCE.Uninitialized -> emptyList()
-    }
-
-    private fun gameSection(stringProvider: StringProvider) = when (games) {
-        is LCE.Content -> {
-            listOf(
-                SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_COMPOSER)
-                ),
-                HorizontalScrollerListModel(
-                    dataId = StringId.SECTION_HEADER_GAMES_FROM_COMPOSER.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
-                    scrollingItems = games.data.map { game ->
-                        WideItemListModel(
-                            dataId = game.id + ID_PREFIX_GAMES,
-                            name = game.name,
-                            sourceInfo = game.photoUrl,
-                            imagePlaceholder = Icon.ALBUM,
-                            clickAction = Action.GameClicked(game.id),
-                        )
-                    }.toImmutableList()
+                HeroImageListModel(
+                    sourceInfo = photoUrl,
+                    imagePlaceholder = Icon.PERSON,
+                    name = null,
+                    clickAction = VglsAction.Noop,
                 )
             )
+        } else {
+            emptyList()
         }
-
-        is LCE.Error -> error(games.operationName, games.error)
-        is LCE.Loading -> loading(
-            operationName = games.operationName,
-            loadingType = LoadingType.WIDE_ITEM,
-            loadingItemCount = 3,
-            loadingWithHeader = true,
-            loadingHorizScrollable = true
-        )
-
-        LCE.Uninitialized -> emptyList()
     }
 
-    private fun songSection(stringProvider: StringProvider) = when (songs) {
-        is LCE.Content -> {
-            listOf(
-                SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_COMPOSER)
-                )
-            ) + songs.data.map { song ->
-                val sourceInfo = PdfConfigById(
-                    songId = song.id,
-                    pageNumber = 0
-                )
+    private fun State.ctaSection(stringProvider: StringProvider) = composer.withStandardErrorAndLoading(
+        loadingItemCount = 0,
+        loadingWithHeader = false,
+    ) {
+        listOf(
+            favoriteCtaItem(stringProvider),
+        ).flatten()
+    }
 
-                ImageNameListModel(
-                    dataId = song.id + ID_PREFIX_SONGS,
-                    name = song.name,
-                    sourceInfo = sourceInfo,
-                    imagePlaceholder = Icon.DESCRIPTION,
-                    clickAction = Action.SongClicked(song.id)
-                )
-            }
-        }
-
-        is LCE.Error -> error(songs.operationName, songs.error)
-        is LCE.Loading -> loading(
-            operationName = songs.operationName,
-            loadingType = LoadingType.TEXT_IMAGE,
-            loadingItemCount = 8,
-            loadingWithHeader = true,
+    private fun gameSection(stringProvider: StringProvider) = games.withStandardErrorAndLoading(
+        loadingType = LoadingType.WIDE_ITEM,
+        loadingHorizScrollable = true
+    ) {
+        listOf(
+            SectionHeaderListModel(
+                stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_COMPOSER)
+            ),
+            HorizontalScrollerListModel(
+                dataId = StringId.SECTION_HEADER_GAMES_FROM_COMPOSER.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
+                scrollingItems = data.map { game ->
+                    WideItemListModel(
+                        dataId = game.id + ID_PREFIX_GAMES,
+                        name = game.name,
+                        sourceInfo = game.photoUrl,
+                        imagePlaceholder = Icon.ALBUM,
+                        clickAction = Action.GameClicked(game.id),
+                    )
+                }.toImmutableList()
+            )
         )
+    }
 
-        LCE.Uninitialized -> emptyList()
+    private fun songSection(stringProvider: StringProvider) = songs.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_IMAGE,
+    ) {
+        listOf(
+            SectionHeaderListModel(
+                stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_COMPOSER)
+            )
+        ) + data.map { song ->
+            val sourceInfo = PdfConfigById(
+                songId = song.id,
+                pageNumber = 0
+            )
+
+            ImageNameListModel(
+                dataId = song.id + ID_PREFIX_SONGS,
+                name = song.name,
+                sourceInfo = sourceInfo,
+                imagePlaceholder = Icon.DESCRIPTION,
+                clickAction = Action.SongClicked(song.id)
+            )
+        }
     }
 
     @Suppress("MagicNumber")
     private fun favoriteCtaItem(
         stringProvider: StringProvider
-    ) = when (isFavorite) {
-        is LCE.Content -> {
-            val (icon, label, action) = if (isFavorite.data) {
-                Triple(
-                    Icon.JAM_FILLED,
-                    StringId.CTA_FAVORITE_REMOVE,
-                    Action.RemoveFavoriteClicked,
-                )
-            } else {
-                Triple(
-                    Icon.JAM_EMPTY,
-                    StringId.CTA_FAVORITE_ADD,
-                    Action.AddFavoriteClicked,
-                )
-            }
-
-            listOf(
-                CtaListModel(
-                    icon = icon,
-                    name = stringProvider.getString(label),
-                    clickAction = action,
-                )
+    ) = isFavorite.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_IMAGE,
+        loadingWithHeader = false,
+        loadingItemCount = 1
+    ) {
+        val (icon, label, action) = if (data) {
+            Triple(
+                Icon.JAM_FILLED,
+                StringId.CTA_FAVORITE_REMOVE,
+                Action.RemoveFavoriteClicked,
+            )
+        } else {
+            Triple(
+                Icon.JAM_EMPTY,
+                StringId.CTA_FAVORITE_ADD,
+                Action.AddFavoriteClicked,
             )
         }
 
-        is LCE.Error -> error(isFavorite.operationName, isFavorite.error)
-        is LCE.Loading -> loading(isFavorite.operationName, LoadingType.SINGLE_TEXT, 3)
-        LCE.Uninitialized -> emptyList()
+        listOf(
+            CtaListModel(
+                icon = icon,
+                name = stringProvider.getString(label),
+                clickAction = action,
+            )
+        )
     }
 
     companion object {
