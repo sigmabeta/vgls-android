@@ -57,6 +57,7 @@ fun StringId.id(): Int {
         StringId.BROWSE_LINK_GAME -> R.string.browse_link_game
         StringId.BROWSE_LINK_COMPOSER -> R.string.browse_link_composer
         StringId.BROWSE_LINK_TAG -> R.string.browse_link_tag
+        StringId.BROWSE_LINK_DIFFICULTY -> R.string.browse_link_difficulty
         StringId.BROWSE_LINK_SHEETS -> R.string.browse_link_sheets
 
         StringId.PART_MID_C -> R.string.part_mid_c
@@ -95,5 +96,10 @@ fun StringId.id(): Int {
 
         StringId.TAG_CAPTION_AND_OTHERS -> R.string.tag_caption_and_others
         StringId.TAG_CAPTION_SEPARATOR -> R.string.tag_caption_separator
+
+        StringId.DIFFICULTY_ONE -> R.string.difficulty_one
+        StringId.DIFFICULTY_TWO -> R.string.difficulty_two
+        StringId.DIFFICULTY_THREE -> R.string.difficulty_three
+        StringId.DIFFICULTY_FOUR -> R.string.difficulty_four
     }
 }

@@ -40,6 +40,13 @@ data object State : ListState() {
             selected = false
         ),
         MenuItemListModel(
+            name = stringProvider.getString(StringId.BROWSE_LINK_DIFFICULTY),
+            caption = null,
+            icon = Icon.DIFFICULTY,
+            clickAction = Action.DestinationClicked(Destination.DIFFICULTY_LIST.noArgs()),
+            selected = false
+        ),
+        MenuItemListModel(
             name = stringProvider.getString(StringId.BROWSE_LINK_TAG),
             caption = null,
             icon = Icon.TAG,

@@ -129,6 +129,8 @@ include(
     ":features:remaster:browse",
     ":features:remaster:composers:detail",
     ":features:remaster:composers:list",
+    ":features:remaster:difficulty:list",
+    ":features:remaster:difficulty:values",
     ":features:remaster:games:detail",
     ":features:remaster:games:list",
     ":features:remaster:favorites",

@@ -7,6 +7,7 @@ enum class Icon {
     JAM_FILLED,
     PERSON,
     REFRESH,
+    DIFFICULTY,
     TAG,
     SEARCH_YOUTUBE,
 }

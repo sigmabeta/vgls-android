@@ -3,6 +3,7 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
+import kotlinx.coroutines.flow.map
 
 class TagRepository(
     private val tagKeyDataSource: TagKeyDataSource,
@@ -14,6 +15,28 @@ class TagRepository(
             tagKey.copy(
                 values = getTagValuesForTagKeySync(tagKeyId = tagKey.id)
             )
+        }
+
+    fun getDetailTagKeys() = tagKeyDataSource
+        .getAll()
+        .mapListTo { tagKey ->
+            tagKey.copy(
+                values = getTagValuesForTagKeySync(tagKeyId = tagKey.id)
+            )
+        }
+        .map { list ->
+            list.filter { !(it.isDifficultyTag() ?: false) }
+        }
+
+    fun getDifficultyTagKeys() = tagKeyDataSource
+        .getAll()
+        .mapListTo { tagKey ->
+            tagKey.copy(
+                values = getTagValuesForTagKeySync(tagKeyId = tagKey.id)
+            )
+        }
+        .map { list ->
+            list.filter { it.isDifficultyTag() ?: false }
         }
 
     fun getTagValuesForTagKey(tagKeyId: Long) = tagValueDataSource

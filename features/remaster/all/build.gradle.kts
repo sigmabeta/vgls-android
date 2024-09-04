@@ -23,6 +23,8 @@ dependencies {
     api(projects.features.remaster.parts)
     api(projects.features.remaster.songs.list)
     api(projects.features.remaster.songs.detail)
+    api(projects.features.remaster.difficulty.list)
+    api(projects.features.remaster.difficulty.values)
     api(projects.features.remaster.tags.list)
     api(projects.features.remaster.tags.songs)
     api(projects.features.remaster.tags.values)

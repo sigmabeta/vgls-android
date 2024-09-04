@@ -82,6 +82,7 @@
     <string name="browse_link_game">By Game</string>
     <string name="browse_link_composer">By Composer</string>
     <string name="browse_link_tag">By Tag</string>
+    <string name="browse_link_difficulty">By Difficulty</string>
     <string name="browse_link_sheets">All Sheets</string>
 
 
@@ -92,5 +93,10 @@
 
     <string name="tag_caption_and_others">" and %1$d more…"</string>
     <string name="tag_caption_separator">", "</string>
+
+    <string name="difficulty_one">Easy</string>
+    <string name="difficulty_two">Medium</string>
+    <string name="difficulty_three">Hard</string>
+    <string name="difficulty_four">Forbidden</string>
 
 </resources>

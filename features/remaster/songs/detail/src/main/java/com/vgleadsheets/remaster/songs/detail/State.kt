@@ -186,8 +186,7 @@ data class State(
         loadingOperationNameOverride = "$LOAD_OPERATION_TAG_VALUES.difficulty",
     ) {
         val difficultyValues = data.filter {
-            val valueAsNumber = it.name.toIntOrNull() ?: -1
-            valueAsNumber in RATING_MINIMUM..RATING_MAXIMUM
+            it.isDifficultyValue()
         }
 
         if (difficultyValues.isNotEmpty()) {
@@ -219,8 +218,7 @@ data class State(
         loadingOperationNameOverride = "$LOAD_OPERATION_TAG_VALUES.details",
     ) {
         val detailValues = data.filter {
-            val valueAsNumber = it.name.toIntOrNull() ?: -1
-            valueAsNumber !in RATING_MINIMUM..RATING_MAXIMUM
+            !it.isDifficultyValue()
         }
 
         val aliasValues = if (songAliases is LCE.Content) {
@@ -341,8 +339,5 @@ data class State(
         private const val ID_PREFIX_TAG_VALUE = 1_000_000_000L
         private const val ID_PREFIX_SCROLLER_CONTENT = 1_000_000_000_000L
         private const val ID_PREFIX_AKA = 1_000_000_000_000_000L
-
-        const val RATING_MINIMUM = 0
-        const val RATING_MAXIMUM = 5
     }
 }

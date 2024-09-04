@@ -10,6 +10,8 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
 import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
+import com.vgleadsheets.remaster.difficulty.list.DifficultyListViewModelBrain
+import com.vgleadsheets.remaster.difficulty.values.DifficultyValuesViewModelBrain
 import com.vgleadsheets.remaster.favorites.FavoritesViewModelBrain
 import com.vgleadsheets.remaster.games.detail.GameDetailViewModelBrain
 import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
@@ -141,6 +143,20 @@ class FeatureDirectory(
 
             Destination.FAVORITES -> FavoritesViewModelBrain(
                 favoriteRepository,
+                scheduler,
+                stringProvider,
+                hatchet
+            )
+
+            Destination.DIFFICULTY_LIST -> DifficultyListViewModelBrain(
+                tagRepository,
+                scheduler,
+                stringProvider,
+                hatchet
+            )
+
+            Destination.DIFFICULTY_VALUES_LIST -> DifficultyValuesViewModelBrain(
+                tagRepository,
                 scheduler,
                 stringProvider,
                 hatchet
