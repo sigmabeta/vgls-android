@@ -242,7 +242,7 @@ class SearchViewModel @AssistedInject constructor(
             .flatMapLatest(searchOperation)
             .onEach(onSearchSuccess)
             .catch(onSearchError)
-            .runInBackground(shouldDelay = true)
+            .runInBackground()
     }
 
     private fun updateSearchHistory(searchHistory: LCE<List<SearchHistoryEntry>>) {

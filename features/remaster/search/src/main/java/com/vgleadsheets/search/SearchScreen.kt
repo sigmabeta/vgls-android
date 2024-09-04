@@ -50,7 +50,7 @@ fun SearchScreen(
                 color = MaterialTheme.colorScheme.background
             ),
     ) {
-        val searchBarPadding: Dp = 64.dp
+        val searchBarPadding: Dp = 72.dp
         val topInsets = WindowInsets.statusBars
         val sidePadding = WindowInsets(
             left = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side),
