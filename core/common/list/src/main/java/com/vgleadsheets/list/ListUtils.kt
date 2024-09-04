@@ -1,5 +1,6 @@
-package com.vgleadsheets.ui.list
+package com.vgleadsheets.list
 
+import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ListModel
 import kotlinx.collections.immutable.ImmutableList
 
@@ -25,5 +26,10 @@ fun checkForDupes(items: ImmutableList<ListModel>) {
 
         val message = "Duplicate ids found: \n$duplicatesAsString"
         throw IllegalArgumentException(message)
+    }
+
+    val horizScrollers = items.filterIsInstance<HorizontalScrollerListModel>()
+    horizScrollers.forEach {
+        checkForDupes(it.scrollingItems)
     }
 }

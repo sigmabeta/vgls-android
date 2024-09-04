@@ -31,6 +31,7 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.composables.SearchBar
+import com.vgleadsheets.list.checkForDupes
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -61,6 +62,8 @@ fun SearchScreen(
             .add(topInsets)
             .add(sidePadding)
             .asPaddingValues()
+
+        checkForDupes(results)
 
         LazyVerticalGrid(
             contentPadding = contentPadding,

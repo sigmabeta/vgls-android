@@ -89,11 +89,13 @@ class ComposerDetailViewModelBrain(
     }
 
     private suspend fun getUniqueGames(songs: List<Song>): List<Game> {
-        val games = songs.mapNotNull { song ->
-            gameRepository
-                .getGame(song.gameId)
-                .firstOrNull()
-        }
+        val games = songs
+            .mapNotNull { song ->
+                gameRepository
+                    .getGame(song.gameId)
+                    .firstOrNull()
+            }
+            .distinctBy { it.id }
 
         return games
     }

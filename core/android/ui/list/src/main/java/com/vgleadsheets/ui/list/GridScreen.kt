@@ -17,6 +17,7 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.list.ListStateActual
+import com.vgleadsheets.list.checkForDupes
 
 @Composable
 fun GridScreen(

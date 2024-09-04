@@ -72,7 +72,6 @@ fun SearchBar(
                     ),
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
                     onValueChange = {
-                        println("OnValueChange: $it")
                         textFieldUpdater(it)
                         actionSink.sendAction(VglsAction.SearchQueryEntered(it))
                     },
