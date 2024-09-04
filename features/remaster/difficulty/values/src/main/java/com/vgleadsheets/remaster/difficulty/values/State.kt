@@ -40,6 +40,7 @@ data class State(
     }
 }
 
+@Suppress("MagicNumber")
 private fun Int.getLabel(stringProvider: StringProvider): String {
     val stringId = when (this) {
         1 -> StringId.DIFFICULTY_ONE
