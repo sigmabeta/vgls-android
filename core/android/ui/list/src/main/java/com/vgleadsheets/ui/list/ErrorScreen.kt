@@ -5,36 +5,36 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.list.ListStateActual
-import com.vgleadsheets.list.checkForDupes
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun ListScreen(
-    state: ListStateActual,
-    actionSink: ActionSink,
-    modifier: Modifier
+fun ErrorScreen(
+    errorString: String,
+    modifier: Modifier = Modifier
 ) {
-    val title = state.title
-    val items = state.listItems
-
-    if (title.title != null) {
-        LaunchedEffect(title.title) {
-            actionSink.sendAction(VglsAction.Resume)
+    val errorMessage = buildString {
+        append(stringResource(StringId.ERROR_BROKEN_SCREEN_DESC.id()))
+        if (BuildConfig.DEBUG) {
+            append("\n")
+            append("\n")
+            append("Error details: ")
+            append(errorString)
         }
     }
-    try {
-        checkForDupes(items)
-    } catch (ex: IllegalArgumentException) {
-        ErrorScreen(ex.message ?: "Unknown Error", modifier.fillMaxSize())
-        return
-    }
+    val items = persistentListOf(
+        ErrorStateListModel(
+            failedOperationName = "renderScreen",
+            errorString = errorMessage
+        )
+    )
 
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
@@ -46,7 +46,7 @@ fun ListScreen(
             contentType = { it.layoutId() }
         ) {
             it.Content(
-                sink = actionSink,
+                sink = { },
                 mod = Modifier.animateItem(),
                 pad = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             )

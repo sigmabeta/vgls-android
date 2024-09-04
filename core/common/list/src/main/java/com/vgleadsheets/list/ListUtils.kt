@@ -11,20 +11,13 @@ fun checkForDupes(items: ImmutableList<ListModel>) {
         .filter { it.value > 1 }
 
     if (duplicateIds.isNotEmpty()) {
-        val duplicates = mutableListOf<ListModel>()
-
-        duplicateIds.forEach { duplicateId ->
-            duplicates.addAll(
-                items.filter { it.dataId == duplicateId.key }
-            )
-        }
-
-        val duplicatesAsString = duplicates
+        val duplicatesAsString = duplicateIds
+            .toList()
             .joinToString("\n") {
-                it.dataId.toString() + " - " + it.toString()
+                "ID ${it.first} - ${it.second} times"
             }
 
-        val message = "Duplicate ids found: \n$duplicatesAsString"
+        val message = "Duplicate ids found.\n$duplicatesAsString"
         throw IllegalArgumentException(message)
     }
 

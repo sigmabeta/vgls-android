@@ -9,9 +9,9 @@ dependencies {
 
     implementation(projects.core.android.pdf)
     implementation(projects.core.android.ui.icons)
+    implementation(projects.core.android.ui.list)
 
     implementation(projects.core.common.appcomm)
-    implementation(projects.core.common.list)
     implementation(projects.core.common.urlinfo)
 }
 

@@ -93,6 +93,8 @@ fun StringId.id(): Int {
 
         StringId.ERROR_API_UPDATE -> R.string.error_api_update
         StringId.ERROR_DB_UPDATE -> R.string.error_db_update
+        StringId.ERROR_BROKEN_SCREEN_TITLE -> R.string.error_broken_screen_title
+        StringId.ERROR_BROKEN_SCREEN_DESC -> R.string.error_broken_screen_desc
 
         StringId.TAG_CAPTION_AND_OTHERS -> R.string.tag_caption_and_others
         StringId.TAG_CAPTION_SEPARATOR -> R.string.tag_caption_separator

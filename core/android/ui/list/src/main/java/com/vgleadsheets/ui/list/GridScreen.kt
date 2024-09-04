@@ -35,7 +35,12 @@ fun GridScreen(
         }
     }
 
-    checkForDupes(items)
+    try {
+        checkForDupes(items)
+    } catch (ex: IllegalArgumentException) {
+        ErrorScreen(ex.message ?: "Unknown Error", modifier.fillMaxSize())
+        return
+    }
 
     LazyVerticalGrid(
         contentPadding = PaddingValues(

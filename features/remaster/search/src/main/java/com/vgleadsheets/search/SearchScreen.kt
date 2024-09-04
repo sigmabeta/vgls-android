@@ -32,6 +32,7 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.composables.SearchBar
 import com.vgleadsheets.list.checkForDupes
+import com.vgleadsheets.ui.list.ErrorScreen
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -63,7 +64,12 @@ fun SearchScreen(
             .add(sidePadding)
             .asPaddingValues()
 
-        checkForDupes(results)
+        try {
+            checkForDupes(results)
+        } catch (ex: IllegalArgumentException) {
+            ErrorScreen(ex.message ?: "Unknown Error", modifier.fillMaxSize())
+            return
+        }
 
         LazyVerticalGrid(
             contentPadding = contentPadding,

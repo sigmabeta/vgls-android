@@ -8,18 +8,38 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 abstract class ListState : VglsState {
     abstract fun title(stringProvider: StringProvider): TitleBarModel
     abstract fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel>
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     fun toActual(stringProvider: StringProvider): ListStateActual {
+        val title = try {
+            title(stringProvider)
+        } catch (ex: Exception) {
+            TitleBarModel(stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_TITLE))
+        }
+
+        val listItems = try {
+            toListItems(stringProvider)
+        } catch (ex: Exception) {
+            persistentListOf(
+                ErrorStateListModel(
+                    failedOperationName = "toActual",
+                    errorString = stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_TITLE)
+                )
+            )
+        }
+
         return ListStateActual(
-            title = title(stringProvider),
-            listItems = toListItems(stringProvider),
+            title = title,
+            listItems = listItems,
         )
     }
 
