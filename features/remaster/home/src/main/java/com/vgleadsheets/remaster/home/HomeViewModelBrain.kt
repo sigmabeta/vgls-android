@@ -7,17 +7,24 @@ import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.RandomRepository
+import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.time.PublishDateUtils
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 
 class HomeViewModelBrain(
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
     private val scheduler: VglsScheduler,
     private val homeModuleProvider: HomeModuleProvider,
+    private val tagRepository: TagRepository,
     private val randomRepository: RandomRepository,
 ) : ListViewModelBrain(
     stringProvider,
@@ -31,6 +38,7 @@ class HomeViewModelBrain(
             is VglsAction.InitNoArgs -> setup()
             is VglsAction.Resume -> return
             is VglsAction.NotifClearClicked -> onNotifClearClicked(action.id)
+            is VglsAction.SeeWhatsNewClicked -> onSeeWhatsNewClicked()
             is VglsAction.RefreshDbClicked -> onRefreshDbClicked()
             is Action.MostSongsGameClicked -> onMostSongsGameClicked(action.gameId)
             is Action.MostSongsComposerClicked -> onMostSongsComposerClicked(action.composerId)
@@ -43,6 +51,20 @@ class HomeViewModelBrain(
             Action.RandomComposerClicked -> onRandomComposerClicked()
             else -> onUnimplementedAction(action)
         }
+    }
+
+    private fun onSeeWhatsNewClicked() {
+        tagRepository.getIdOfPublishDateTagKey()
+            .take(1)
+            .filterNotNull()
+            .flatMapConcat { tagRepository.getTagValuesForTagKey(it) }
+            .take(1)
+            .map {
+                it.maxBy { tagValue -> PublishDateUtils.ldtFromString(tagValue.name) }
+            }
+            .onEach { tagValue -> navigateTo(Destination.TAGS_VALUES_SONG_LIST.forId(tagValue.id)) }
+            .catch { showError(it.message ?: "Unknown error.") }
+            .runInBackground()
     }
 
     private fun onMostSongsGameClicked(gameId: Long) {
@@ -73,6 +95,7 @@ class HomeViewModelBrain(
         randomRepository
             .getRandomSong()
             .onEach { song -> navigateTo(Destination.SONG_DETAIL.forId(song.id)) }
+            .catch { showError(it.message ?: "Unknown error.") }
             .runInBackground()
     }
 
@@ -80,6 +103,7 @@ class HomeViewModelBrain(
         randomRepository
             .getRandomGame()
             .onEach { game -> navigateTo(Destination.GAME_DETAIL.forId(game.id)) }
+            .catch { showError(it.message ?: "Unknown error.") }
             .runInBackground()
     }
 
@@ -87,6 +111,7 @@ class HomeViewModelBrain(
         randomRepository
             .getRandomComposer()
             .onEach { composer -> navigateTo(Destination.COMPOSER_DETAIL.forId(composer.id)) }
+            .catch { showError(it.message ?: "Unknown error.") }
             .runInBackground()
     }
 
@@ -95,6 +120,18 @@ class HomeViewModelBrain(
             VglsEvent.NavigateTo(
                 destinationString,
                 Destination.HOME.destName
+            )
+        )
+    }
+
+    private fun showError(message: String) {
+        hatchet.e("Error occurred: $message")
+        emitEvent(
+            VglsEvent.ShowSnackbar(
+                message = "An error occurred. Try again after an app update.",
+                withDismissAction = false,
+                actionDetails = null,
+                source = Destination.HOME.destName
             )
         )
     }

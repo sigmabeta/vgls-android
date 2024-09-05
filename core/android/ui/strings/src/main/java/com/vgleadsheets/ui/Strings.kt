@@ -59,6 +59,7 @@ fun StringId.id(): Int {
         StringId.BROWSE_LINK_TAG -> R.string.browse_link_tag
         StringId.BROWSE_LINK_DIFFICULTY -> R.string.browse_link_difficulty
         StringId.BROWSE_LINK_SHEETS -> R.string.browse_link_sheets
+        StringId.BROWSE_LINK_PUBLISH_DATE -> R.string.browse_link_publish_date
 
         StringId.PART_MID_C -> R.string.part_mid_c
         StringId.PART_MID_B -> R.string.part_mid_b

@@ -83,6 +83,7 @@
     <string name="browse_link_composer">By Composer</string>
     <string name="browse_link_tag">By Tag</string>
     <string name="browse_link_difficulty">By Difficulty</string>
+    <string name="browse_link_publish_date">By Date Published on VGLS</string>
     <string name="browse_link_sheets">All Sheets</string>
 
 

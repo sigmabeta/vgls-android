@@ -5,6 +5,7 @@ import com.vgleadsheets.ui.icons.R
 fun Icon.id(): Int {
     return when (this) {
         Icon.ALBUM -> R.drawable.ic_album_24dp
+        Icon.CALENDAR -> R.drawable.ic_calendar_month_24
         Icon.DESCRIPTION -> R.drawable.ic_description_24dp
         Icon.JAM_EMPTY -> R.drawable.ic_jam_unfilled
         Icon.JAM_FILLED -> R.drawable.ic_jam_filled

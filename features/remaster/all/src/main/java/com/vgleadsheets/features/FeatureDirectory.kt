@@ -72,10 +72,12 @@ class FeatureDirectory(
                 hatchet,
                 scheduler,
                 homeModuleProvider,
+                tagRepository,
                 randomRepository,
             )
 
             Destination.BROWSE -> BrowseViewModelBrain(
+                tagRepository,
                 stringProvider,
                 hatchet,
                 scheduler,

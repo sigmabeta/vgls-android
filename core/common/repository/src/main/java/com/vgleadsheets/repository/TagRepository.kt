@@ -53,4 +53,17 @@ class TagRepository(
 
     fun getTagValue(tagValueId: Long) = tagValueDataSource
         .getOneById(tagValueId)
+
+    fun getIdOfPublishDateTagKey() = tagKeyDataSource
+        .getAll()
+        .map { list ->
+            list.firstOrNull {
+                it.name == TAG_NAME_DATE_PUBLISHED
+            }
+        }
+        .map { it?.id }
+
+    companion object {
+        const val TAG_NAME_DATE_PUBLISHED = "Date Published"
+    }
 }
