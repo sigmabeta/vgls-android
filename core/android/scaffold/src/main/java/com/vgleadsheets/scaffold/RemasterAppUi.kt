@@ -118,7 +118,11 @@ private fun MainContent(
     NavHost(
         navController = navController,
         modifier = Modifier.padding(innerPadding),
-        startDestination = Destination.HOME.template()
+        startDestination = Destination.HOME.template(),
+        enterTransition = { enterTransition() },
+        exitTransition = { exitTransition() },
+        popEnterTransition = { popEnterTransition() },
+        popExitTransition = { popExitTransition() },
     ) {
         val globalModifier = Modifier.fillMaxSize()
 
