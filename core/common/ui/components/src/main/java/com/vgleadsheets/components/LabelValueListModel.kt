@@ -4,7 +4,7 @@ import com.vgleadsheets.appcomm.VglsAction
 
 data class LabelValueListModel(
     val label: String,
-    val value: String,
+    val value: String?,
     val clickAction: VglsAction,
     override val dataId: Long = label.hashCode().toLong()
 ) : ListModel() {

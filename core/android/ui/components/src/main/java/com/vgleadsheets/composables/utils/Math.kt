@@ -1,6 +1,7 @@
 package com.vgleadsheets.composables.utils
 
 import com.google.android.material.math.MathUtils
+import kotlin.random.Random
 
 fun partialLerpUntil(
     start: Float,
@@ -29,3 +30,11 @@ fun partialLerpAfter(
         MathUtils.lerp(start, end, scaledProgress)
     }
 }
+
+@Suppress("MagicNumber")
+fun Random.nextPercentageFloat(
+    minOutOfHundred: Int,
+    maxOutOfHundred: Int = 100,
+) = nextInt(maxOutOfHundred - minOutOfHundred)
+    .plus(minOutOfHundred)
+    .div(100f)

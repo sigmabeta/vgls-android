@@ -37,7 +37,6 @@ import com.vgleadsheets.composables.LabelRatingListItem
 import com.vgleadsheets.composables.LabelValueListItem
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -90,20 +89,6 @@ private fun Light() {
 @Composable
 private fun Dark() {
     VglsMaterial {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            Sample()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun Menu() {
-    VglsMaterialMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

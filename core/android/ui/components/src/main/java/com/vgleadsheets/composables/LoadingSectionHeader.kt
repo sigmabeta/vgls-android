@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
+import com.vgleadsheets.composables.utils.nextPercentageFloat
 import kotlin.random.Random
 
 @Composable
@@ -27,16 +28,16 @@ fun LoadingSectionHeader(
             .padding(padding)
             .padding(bottom = 16.dp, top = 16.dp)
             .height(32.dp)
-            .fillMaxWidth(randomizer.next())
+            .fillMaxWidth(
+                randomizer.nextPercentageFloat(
+                    minOutOfHundred = 30,
+                    maxOutOfHundred = 80,
+                )
+            )
     ) {
         Flasher(startDelay = randomDelay)
     }
 }
-
-@Suppress("MagicNumber")
-private fun Random.next() = nextFloat()
-    .coerceAtLeast(0.3f)
-    .coerceAtMost(0.8f)
 
 @Preview
 @Composable

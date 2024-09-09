@@ -82,18 +82,19 @@ data class State(
     private fun appVersionName(stringProvider: StringProvider): LabelValueListModel? {
         return LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_NAME),
-            value = appInfo?.versionName ?: return null,
+            value = appInfo?.versionName,
             clickAction = VglsAction.Noop
         )
     }
 
     @Suppress("ReturnCount")
     private fun appVersionCode(stringProvider: StringProvider): LabelValueListModel? {
-        if (appInfo?.isDebug == false) return null
+        if (appInfo == null) return null
+        if (appInfo.buildBranch == "release") return null
 
         return LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_CODE),
-            value = appInfo?.versionCode?.toString() ?: return null,
+            value = appInfo.versionCode.toString(),
             clickAction = VglsAction.Noop
         )
     }
@@ -101,7 +102,7 @@ data class State(
     private fun appBuildDate(stringProvider: StringProvider): LabelValueListModel? {
         return LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
-            value = appInfo?.buildTimeMs?.toBuildDate() ?: return null,
+            value = appInfo?.buildTimeMs?.toBuildDate(),
             clickAction = VglsAction.Noop
         )
     }
@@ -131,7 +132,7 @@ data class State(
     private fun Long.toBuildDate(): String {
         val instant = Instant.ofEpochMilli(this)
         val formatter = DateTimeFormatter
-            .ofLocalizedDateTime(FormatStyle.LONG)
+            .ofLocalizedDate(FormatStyle.LONG)
             .withLocale(Locale.getDefault())
             .withZone(ZoneId.systemDefault())
 

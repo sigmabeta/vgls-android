@@ -20,6 +20,7 @@ import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
+import com.vgleadsheets.composables.utils.nextPercentageFloat
 import kotlin.random.Random
 
 @Composable
@@ -74,7 +75,11 @@ fun LoadingTextItem(
             ElevatedPill(
                 modifier = paddingModifier
                     .height(14.dp)
-                    .fillMaxWidth(randomizer.next())
+                    .fillMaxWidth(
+                        randomizer.nextPercentageFloat(
+                            minOutOfHundred = 30,
+                        )
+                    )
             ) {
                 Flasher(startDelay = randomDelay)
             }
@@ -88,7 +93,11 @@ fun LoadingTextItem(
                     modifier = Modifier
                         .padding(top = 4.dp, bottom = 12.dp)
                         .height(10.dp)
-                        .fillMaxWidth(randomizer.next())
+                        .fillMaxWidth(
+                            randomizer.nextPercentageFloat(
+                                minOutOfHundred = 30,
+                            )
+                        )
                 ) {
                     Flasher(startDelay = randomDelay)
                 }
@@ -96,9 +105,6 @@ fun LoadingTextItem(
         }
     }
 }
-
-@Suppress("MagicNumber")
-private fun Random.next() = nextFloat().coerceAtLeast(0.3f)
 
 @Preview
 @Composable
