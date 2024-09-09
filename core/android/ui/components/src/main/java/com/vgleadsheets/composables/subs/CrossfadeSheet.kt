@@ -40,7 +40,7 @@ fun CrossfadeSheet(
             contentAlignment = Alignment.Center,
             modifier = modifier.fillMaxSize()
         ) {
-            ErrorState(sourceInfo, modifier)
+            ErrorState(sourceInfo, modifier, "Oops it didn't work.")
         }
         return
     }
@@ -65,7 +65,8 @@ fun CrossfadeSheet(
             .defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
             .aspectRatio(SheetConstants.ASPECT_RATIO),
     ) {
-        when (painter.state) {
+        val state = painter.state
+        when (state) {
             is AsyncImagePainter.State.Loading ->
                 PlaceholderSheet(
                     loadingIndicatorConfig = loadingIndicatorConfig,
@@ -83,7 +84,11 @@ fun CrossfadeSheet(
             }
 
             is AsyncImagePainter.State.Error -> {
-                ErrorState(sourceInfo, modifier)
+                ErrorState(
+                    sourceInfo = sourceInfo,
+                    modifier = modifier,
+                    errorMessage = state.result.throwable.message ?: "Unknown Error"
+                )
             }
 
             else -> {}
@@ -92,11 +97,12 @@ fun CrossfadeSheet(
 }
 
 @Composable
-private fun ErrorState(sourceInfo: Any, modifier: Modifier) {
+private fun ErrorState(sourceInfo: Any, modifier: Modifier, errorMessage: String) {
     EmptyListIndicator(
         model = ErrorStateListModel(
-            sourceInfo.toString(),
-            "Can't load this sheet. Check your network connection and try again?"
+            failedOperationName = sourceInfo.toString(),
+            errorString = "Can't load this sheet. Check your network connection and try again?",
+            debugText = errorMessage
         ),
         modifier = modifier
     )

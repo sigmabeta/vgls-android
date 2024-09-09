@@ -20,19 +20,13 @@ fun ErrorScreen(
     errorString: String,
     modifier: Modifier = Modifier
 ) {
-    val errorMessage = buildString {
-        append(stringResource(StringId.ERROR_BROKEN_SCREEN_DESC.id()))
-        if (BuildConfig.DEBUG) {
-            append("\n")
-            append("\n")
-            append("Error details: ")
-            append(errorString)
-        }
-    }
+    val errorMessage = stringResource(StringId.ERROR_BROKEN_SCREEN_DESC.id())
+
     val items = persistentListOf(
         ErrorStateListModel(
             failedOperationName = "renderScreen",
-            errorString = errorMessage
+            errorString = errorMessage,
+            debugText = errorString,
         )
     )
 

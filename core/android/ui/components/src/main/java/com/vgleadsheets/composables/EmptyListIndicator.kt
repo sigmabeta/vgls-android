@@ -16,11 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.ui.components.BuildConfig
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -33,7 +36,8 @@ fun EmptyListIndicator(
         iconId = com.vgleadsheets.ui.icons.R.drawable.ic_error_24dp,
         showCrossOut = false,
         menu = false,
-        modifier
+        debugText = model.debugText,
+        modifier = modifier,
     )
 }
 
@@ -47,6 +51,7 @@ fun EmptyListIndicator(
         iconId = model.iconId,
         showCrossOut = model.showCrossOut,
         menu = false,
+        debugText = model.debugText,
         modifier = modifier
     )
 }
@@ -57,6 +62,8 @@ private fun EmptyListIndicator(
     iconId: Int,
     showCrossOut: Boolean,
     menu: Boolean,
+    showDebug: Boolean = BuildConfig.DEBUG,
+    debugText: String?,
     modifier: Modifier,
 ) {
     val color = if (menu) {
@@ -111,7 +118,28 @@ private fun EmptyListIndicator(
                 .padding(bottom = 16.dp)
                 .widthIn(min = 200.dp, max = 400.dp)
         )
+
+        if (showDebug && debugText != null) {
+            DebugText(debugText, color)
+        }
     }
+}
+
+@Composable
+private fun DebugText(debugText: String, color: Color) {
+    Text(
+        text = debugText,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.bodySmall.copy(
+            fontSize = 8.sp,
+            fontFamily = FontFamily.Monospace
+        ),
+        color = color,
+        modifier = Modifier
+            .padding(horizontal = 32.dp)
+            .padding(bottom = 16.dp)
+            .widthIn(min = 200.dp, max = 400.dp)
+    )
 }
 
 @Preview
@@ -174,8 +202,9 @@ private fun DarkError() {
 private fun Sample() {
     EmptyListIndicator(
         EmptyStateListModel(
-            com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
-            "It's all part of the protocol, innit?",
+            iconId = com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
+            explanation = "It's all part of the protocol, innit?",
+            debugText = null,
             showCrossOut = true
         ),
         Modifier
@@ -186,10 +215,10 @@ private fun Sample() {
 private fun SampleErrorNotMenu() {
     EmptyListIndicator(
         ErrorStateListModel(
-            "oops",
-            "Enemy's broken away from me!"
+            failedOperationName = "oops",
+            errorString = "Enemy's broken away from me!",
+            debugText = "java.lang.IllegalStateException: Failed to allocate bitmap."
         ),
         Modifier
     )
 }
-

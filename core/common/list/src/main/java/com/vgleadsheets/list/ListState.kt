@@ -32,7 +32,8 @@ abstract class ListState : VglsState {
             persistentListOf(
                 ErrorStateListModel(
                     failedOperationName = "toActual",
-                    errorString = stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_TITLE)
+                    errorString = stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_TITLE),
+                    debugText = ex.message ?: "Unknown Error"
                 )
             )
         }
@@ -115,7 +116,8 @@ abstract class ListState : VglsState {
     protected fun error(operationName: String, error: Throwable) = listOf(
         ErrorStateListModel(
             failedOperationName = operationName,
-            errorString = error.message ?: "Unknown error."
+            errorString = "Failed to load data for $operationName.",
+            debugText = error.message ?: "Unknown error."
         )
     )
 }

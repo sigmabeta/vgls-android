@@ -1,6 +1,7 @@
 package com.vgleadsheets.composables
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,10 +38,15 @@ fun LabelValueListItem(
     LabeledThingy(
         label = model.label,
         thingy = {
-            if (value == null) {
+            AnimatedVisibility(
+                visible = value == null
+            ) {
                 LoadingTextValue(model)
-            } else {
-                TextValue(value = value)
+            }
+            AnimatedVisibility(
+                visible = value != null
+            ) {
+                TextValue(value = value!!)
             }
         },
         onClick = { actionSink.sendAction(model.clickAction) },
@@ -64,6 +70,7 @@ fun TextValue(value: String) {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun LoadingTextValue(model: LabelValueListModel) {
     val randomizer = Random(model.label.hashCode())
     val randomDelay = randomizer.nextInt(200)

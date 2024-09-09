@@ -10,6 +10,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.ui.StringProvider
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 
 class MenuViewModelBrain(
@@ -79,10 +80,16 @@ class MenuViewModelBrain(
     }
 
     private fun fetchAppInfo() {
-        updateState { (it as State).copy(appInfo = appInfo) }
+        updateState { (it as State).copy(appInfo = null) }
+        flow { emit(Unit) }
+            .onEach { _ ->
+                updateState { (it as State).copy(appInfo = appInfo) }
+            }
+            .runInBackground()
     }
 
     private fun fetchKeepScreenOn() {
+        updateState { (it as State).copy(keepScreenOn = null) }
         generalSettingsManager
             .getKeepScreenOn()
             .onEach { value ->

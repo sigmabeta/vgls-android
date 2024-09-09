@@ -61,7 +61,7 @@ data class State(
         name = stringProvider.getString(StringId.SETTINGS_LABEL_KEEP_SCREEN_ON),
         clickAction = Action.KeepScreenOnClicked,
         settingId = StringId.SETTINGS_LABEL_KEEP_SCREEN_ON.name,
-        checked = keepScreenOn ?: false,
+        checked = keepScreenOn,
     )
 
     private fun licenses(stringProvider: StringProvider) = SingleTextListModel(
@@ -89,12 +89,14 @@ data class State(
 
     @Suppress("ReturnCount")
     private fun appVersionCode(stringProvider: StringProvider): LabelValueListModel? {
-        if (appInfo == null) return null
-        if (appInfo.buildBranch == "release") return null
+        if (appInfo?.buildBranch == "release") return null
+
+        val versionCode = appInfo?.versionCode
+        val value = versionCode?.let { appInfo?.versionCode.toString() }
 
         return LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_CODE),
-            value = appInfo.versionCode.toString(),
+            value = value,
             clickAction = VglsAction.Noop
         )
     }
@@ -110,7 +112,7 @@ data class State(
     private fun appBuildBranch(stringProvider: StringProvider): LabelValueListModel? {
         return LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
-            value = appInfo?.buildBranch ?: "Unknown",
+            value = appInfo?.buildBranch,
             clickAction = VglsAction.Noop
         )
     }

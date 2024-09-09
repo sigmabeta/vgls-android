@@ -1,5 +1,6 @@
 package com.vgleadsheets.ui.licenses
 
+import android.os.Build
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -34,7 +35,14 @@ fun LicenseScreen(
             EmptyListIndicator(
                 model = ErrorStateListModel(
                     failedOperationName = "webpageLoad",
-                    errorString = resources.getString(R.string.error_webview_failed)
+                    errorString = resources.getString(R.string.error_webview_failed),
+                    debugText = webState.errorsForCurrentRequest.joinToString(separator = ";\n") {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            it.error.description
+                        } else {
+                            it.error.toString()
+                        }
+                    }
                 ),
                 modifier = Modifier
                     .align(Alignment.Center),
