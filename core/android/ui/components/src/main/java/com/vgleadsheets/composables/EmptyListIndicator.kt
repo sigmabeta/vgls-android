@@ -21,10 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.components.MenuEmptyStateListModel
-import com.vgleadsheets.components.MenuErrorStateListModel
 import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun EmptyListIndicator(
@@ -42,20 +39,6 @@ fun EmptyListIndicator(
 
 @Composable
 fun EmptyListIndicator(
-    model: MenuErrorStateListModel,
-    modifier: Modifier,
-) {
-    EmptyListIndicator(
-        explanation = model.errorString,
-        iconId = com.vgleadsheets.ui.icons.R.drawable.ic_error_24dp,
-        showCrossOut = false,
-        menu = true,
-        modifier = modifier
-    )
-}
-
-@Composable
-fun EmptyListIndicator(
     model: EmptyStateListModel,
     modifier: Modifier,
 ) {
@@ -64,20 +47,6 @@ fun EmptyListIndicator(
         iconId = model.iconId,
         showCrossOut = model.showCrossOut,
         menu = false,
-        modifier = modifier
-    )
-}
-
-@Composable
-fun EmptyListIndicator(
-    model: MenuEmptyStateListModel,
-    modifier: Modifier,
-) {
-    EmptyListIndicator(
-        explanation = model.explanation,
-        iconId = model.iconId,
-        showCrossOut = model.showCrossOut,
-        menu = true,
         modifier = modifier
     )
 }
@@ -147,7 +116,7 @@ private fun EmptyListIndicator(
 
 @Preview
 @Composable
-private fun NotMenu() {
+private fun Light() {
     VglsMaterial {
         Box(
             modifier = Modifier.background(
@@ -161,7 +130,7 @@ private fun NotMenu() {
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun NotMenuDark() {
+private fun Dark() {
     VglsMaterial {
         Box(
             modifier = Modifier.background(
@@ -175,21 +144,7 @@ private fun NotMenuDark() {
 
 @Preview
 @Composable
-private fun Menu() {
-    VglsMaterialMenu {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            SampleMenu()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun NotMenuError() {
+private fun LightError() {
     VglsMaterial {
         Box(
             modifier = Modifier.background(
@@ -203,7 +158,7 @@ private fun NotMenuError() {
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun NotMenuDarkError() {
+private fun DarkError() {
     VglsMaterial {
         Box(
             modifier = Modifier.background(
@@ -211,34 +166,6 @@ private fun NotMenuDarkError() {
             )
         ) {
             SampleErrorNotMenu()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun MenuError() {
-    VglsMaterialMenu {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            SampleErrorMenu()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun MenuNoCross() {
-    VglsMaterialMenu {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            SampleMenuNoCross()
         }
     }
 }
@@ -256,18 +183,6 @@ private fun Sample() {
 }
 
 @Composable
-private fun SampleMenu() {
-    EmptyListIndicator(
-        MenuEmptyStateListModel(
-            com.vgleadsheets.ui.icons.R.drawable.ic_person_24dp,
-            "You hear that, Noah? Lanz wants something a little meatier.",
-            showCrossOut = true
-        ),
-        Modifier
-    )
-}
-
-@Composable
 private fun SampleErrorNotMenu() {
     EmptyListIndicator(
         ErrorStateListModel(
@@ -278,25 +193,3 @@ private fun SampleErrorNotMenu() {
     )
 }
 
-@Composable
-private fun SampleErrorMenu() {
-    EmptyListIndicator(
-        MenuErrorStateListModel(
-            "oooops",
-            "Queeen's wiiiings!"
-        ),
-        Modifier
-    )
-}
-
-@Composable
-private fun SampleMenuNoCross() {
-    EmptyListIndicator(
-        MenuEmptyStateListModel(
-            com.vgleadsheets.ui.icons.R.drawable.ic_search_black_24dp,
-            "I'm the girl with the gall.",
-            showCrossOut = false,
-        ),
-        Modifier
-    )
-}
