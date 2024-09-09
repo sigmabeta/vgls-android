@@ -1,10 +1,14 @@
 package com.vgleadsheets.composables
 
 import android.content.res.Configuration
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,10 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.CheckableListModel
-import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelCheckboxItem(
@@ -32,10 +34,23 @@ fun LabelCheckboxItem(
     LabeledThingy(
         label = model.name,
         thingy = {
-            Checkbox(
-                model.checked,
-                { actionSink.sendAction(model.clickAction) }
-            )
+            Crossfade(
+                targetState = model.checked,
+                label = "CheckboxState"
+            ) { checked ->
+                when {
+                    checked != null -> Checkbox(
+                        checked = checked,
+                        onCheckedChange = { actionSink.sendAction(model.clickAction) }
+                    )
+
+                    else -> CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .size(24.dp)
+                    )
+                }
+            }
         },
         onClick = { actionSink.sendAction(model.clickAction) },
         modifier = modifier,
@@ -47,12 +62,14 @@ fun LabelCheckboxItem(
 @Composable
 private fun Light() {
     VglsMaterial {
-        Box(
+        Column(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            Sample()
+            SampleChecked()
+            SampleUnchecked()
+            SampleLoading()
         }
     }
 }
@@ -61,42 +78,56 @@ private fun Light() {
 @Composable
 private fun Dark() {
     VglsMaterial {
-        Box(
+        Column(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            Sample()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun Menu() {
-    VglsMaterialMenu {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            Sample()
+            SampleChecked()
+            SampleUnchecked()
+            SampleLoading()
         }
     }
 }
 
 @Composable
-private fun Sample() {
+private fun SampleChecked() {
     var isChecked by remember { mutableStateOf(true) }
 
+    Sample(
+        "Sena seen in action",
+        isChecked
+    ) { isChecked = !isChecked }
+}
+
+@Composable
+private fun SampleUnchecked() {
+    var isChecked by remember { mutableStateOf(false) }
+
+    Sample(
+        "Pronounced \"Hydrocity\" correctly",
+        isChecked
+    ) { isChecked = !isChecked }
+}
+
+@Composable
+private fun SampleLoading() {
+    Sample(
+        "Please wait, now loading...",
+        null
+    ) { }
+}
+
+@Composable
+private fun Sample(name: String, isChecked: Boolean?, actionSink: ActionSink) {
     LabelCheckboxItem(
         CheckableListModel(
-            "someId",
-            "Sena seen in action",
+            name,
+            name,
             isChecked,
             clickAction = VglsAction.Noop,
         ),
-        PreviewActionSink { isChecked = !isChecked },
+        actionSink,
         Modifier,
         PaddingValues(horizontal = 8.dp)
     )

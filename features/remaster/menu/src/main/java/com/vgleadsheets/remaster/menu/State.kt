@@ -25,6 +25,7 @@ data class State(
     val keepScreenOn: Boolean? = null,
     val appInfo: AppInfo? = null,
     val debugShouldDelay: Boolean? = null,
+    val debugShouldShowNavSnackbars: Boolean? = null,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_SETTINGS),
@@ -43,6 +44,7 @@ data class State(
         licenses(stringProvider),
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)),
         shouldDelay(stringProvider),
+        shouldShowNavSnackbars(stringProvider),
         restartApp(stringProvider),
     ).toImmutableList()
 
@@ -116,7 +118,14 @@ data class State(
         name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_DELAY),
         clickAction = Action.DebugDelayClicked,
         settingId = StringId.SETTINGS_LABEL_DEBUG_DELAY.name,
-        checked = debugShouldDelay ?: false,
+        checked = debugShouldDelay,
+    )
+
+    private fun shouldShowNavSnackbars(stringProvider: StringProvider) = CheckableListModel(
+        name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS),
+        clickAction = Action.DebugShowNavSnackbarsClicked,
+        settingId = StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS.name,
+        checked = debugShouldShowNavSnackbars,
     )
 
     private fun Long.toBuildDate(): String {

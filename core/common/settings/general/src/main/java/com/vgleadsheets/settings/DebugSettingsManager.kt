@@ -10,6 +10,10 @@ class DebugSettingsManager(
 
     fun setShouldDelay(value: Boolean) = setBoolean(SETTING_DELAY_LOADING_OPS, value)
 
+    fun getShouldShowSnackbars() = getBoolean(SETTING_NAV_SHOW_SNACKBARS)
+
+    fun setShouldShowSnackbars(value: Boolean) = setBoolean(SETTING_NAV_SHOW_SNACKBARS, value)
+
     private fun setBoolean(key: String, value: Boolean) {
         storage.saveString(key, value.toString())
     }
@@ -20,5 +24,6 @@ class DebugSettingsManager(
 
     companion object {
         private const val SETTING_DELAY_LOADING_OPS = "setting.debug.delay"
+        private const val SETTING_NAV_SHOW_SNACKBARS = "setting.debug.nav.snackbars"
     }
 }

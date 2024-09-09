@@ -36,6 +36,7 @@ class MenuViewModelBrain(
             is Action.GiantBombClicked -> onGiantBombClicked()
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
             is Action.DebugDelayClicked -> onDebugDelayClicked()
+            is Action.DebugShowNavSnackbarsClicked -> onDebugShowNavSnackbarsClicked()
             is Action.RestartAppClicked -> onRestartAppClicked()
             else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
@@ -60,13 +61,21 @@ class MenuViewModelBrain(
 
     private fun onDebugDelayClicked() {
         val oldValue = (internalUiState.value as State).debugShouldDelay ?: return
+        updateState { (it as State).copy(debugShouldDelay = null) }
         debugSettingsManager.setShouldDelay(!oldValue)
+    }
+
+    private fun onDebugShowNavSnackbarsClicked() {
+        val oldValue = (internalUiState.value as State).debugShouldShowNavSnackbars ?: return
+        updateState { (it as State).copy(debugShouldShowNavSnackbars = null) }
+        debugSettingsManager.setShouldShowSnackbars(!oldValue)
     }
 
     private fun fetchSettings() {
         fetchKeepScreenOn()
         fetchAppInfo()
         fetchDebugShouldDelay()
+        fetchDebugShouldShowNavSnackbars()
     }
 
     private fun fetchAppInfo() {
@@ -83,10 +92,21 @@ class MenuViewModelBrain(
     }
 
     private fun fetchDebugShouldDelay() {
+        updateState { (it as State).copy(debugShouldDelay = null) }
         debugSettingsManager
             .getShouldDelay()
             .onEach { value ->
                 updateState { (it as State).copy(debugShouldDelay = value ?: false) }
+            }
+            .runInBackground()
+    }
+
+    private fun fetchDebugShouldShowNavSnackbars() {
+        updateState { (it as State).copy(debugShouldShowNavSnackbars = null) }
+        debugSettingsManager
+            .getShouldShowSnackbars()
+            .onEach { value ->
+                updateState { (it as State).copy(debugShouldShowNavSnackbars = value ?: false) }
             }
             .runInBackground()
     }

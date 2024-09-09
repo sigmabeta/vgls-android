@@ -17,6 +17,7 @@ dependencies {
 
     implementation(projects.core.common.model)
     implementation(projects.core.common.notif)
+    implementation(projects.core.common.settings.general)
 }
 
 android {

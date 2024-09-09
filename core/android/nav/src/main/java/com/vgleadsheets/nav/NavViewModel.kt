@@ -14,12 +14,12 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
+import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,8 +28,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -40,12 +44,15 @@ class NavViewModel @Inject constructor(
     override val eventDispatcher: EventDispatcher,
     private val notifManager: NotifManager,
     private val updateManager: UpdateManager,
-    private val appInfo: AppInfo,
+    private val debugSettingsManager: DebugSettingsManager,
 ) : VglsViewModel<NavState>() {
     init {
         eventDispatcher.addEventSink(this)
+        setupSettingsCollection()
         sendAction(VglsAction.InitNoArgs)
     }
+
+    private val internalShowSnackbarState = MutableStateFlow(false)
 
     lateinit var navController: NavController
     lateinit var snackbarScope: CoroutineScope
@@ -81,14 +88,28 @@ class NavViewModel @Inject constructor(
         }
     }
 
+    private fun setupSettingsCollection() {
+        debugSettingsManager.getShouldShowSnackbars()
+            .map { it ?: false }
+            .onEach { shouldShow ->
+                internalShowSnackbarState.update {
+                    shouldShow
+                }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(viewModelScope)
+    }
+
     fun startWatchingBackstack() {
-        if (appInfo.isDebug) {
-            val composeNavigator = navController.navigatorProvider[ComposeNavigator::class]
-            composeNavigator
-                .backStack
-                .onEach { printBackstackStatus(it) }
-                .launchIn(viewModelScope)
-        }
+        navController
+            .navigatorProvider[ComposeNavigator::class]
+            .backStack
+            .onEach {
+                if (internalShowSnackbarState.value) {
+                    printBackstackStatus(it)
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun restartApp() {
@@ -153,7 +174,7 @@ class NavViewModel @Inject constructor(
             hatchet.v(message)
             navController.navigate(destination)
 
-            if (appInfo.isDebug) {
+            if (internalShowSnackbarState.value) {
                 showSnackbar(
                     VglsEvent.ShowSnackbar(message, false, source = "Navigation")
                 )
@@ -180,7 +201,7 @@ class NavViewModel @Inject constructor(
 
         val newRoute = navController.currentDestination?.route
         val message = "Popping stack from $oldRoute to $newRoute"
-        if (appInfo.isDebug) {
+        if (internalShowSnackbarState.value) {
             showSnackbar(
                 VglsEvent.ShowSnackbar(message, false, source = "Navigation")
             )

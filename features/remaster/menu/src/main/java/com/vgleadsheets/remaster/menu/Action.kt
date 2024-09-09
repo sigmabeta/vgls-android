@@ -9,5 +9,6 @@ sealed class Action : VglsAction() {
     data object GiantBombClicked : Action()
 
     data object DebugDelayClicked : Action()
+    data object DebugShowNavSnackbarsClicked : Action()
     data object RestartAppClicked : Action()
 }

@@ -5,7 +5,7 @@ import com.vgleadsheets.appcomm.VglsAction
 data class CheckableListModel(
     val settingId: String,
     val name: String,
-    val checked: Boolean,
+    val checked: Boolean?,
     val clickAction: VglsAction,
 ) : ListModel() {
     override val dataId: Long = settingId.hashCode().toLong()

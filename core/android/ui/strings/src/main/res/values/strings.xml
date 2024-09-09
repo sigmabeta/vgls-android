@@ -64,6 +64,7 @@
     <string name="label_settings_version_code">App Version Code</string>
     <string name="label_settings_build_date">Build Date</string>
     <string name="label_settings_debug_delay">Slow down screen loads</string>
+    <string name="label_settings_debug_show_nav_snackbars">Show nav snackbars</string>
     <string name="label_settings_debug_restart">Restart App</string>
 
     <string name="home_section_recent_songs">Jump Back In</string>
