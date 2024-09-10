@@ -23,6 +23,7 @@ interface RoomDao<EntityType> {
         const val DELETE = "DELETE FROM"
         const val UPDATE = "UPDATE"
         const val SET = "SET"
+        const val AND = ","
         const val DROP = "DROP TABLE"
         const val WHERE = "WHERE"
         const val INNER_JOIN = "INNER JOIN"

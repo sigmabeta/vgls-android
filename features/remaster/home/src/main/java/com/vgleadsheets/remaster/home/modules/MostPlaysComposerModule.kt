@@ -11,13 +11,14 @@ import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
+import com.vgleadsheets.time.TimeUtils
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import javax.inject.Inject
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 import kotlinx.coroutines.flow.map
+import org.threeten.bp.Duration
+import org.threeten.bp.Instant
 
 class MostPlaysComposerModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
@@ -34,7 +35,7 @@ class MostPlaysComposerModule @Inject constructor(
     override fun state() = songHistoryRepository
         .getMostPlaysComposers()
         .map { list ->
-            list.filter { it.first.playCount > 1 }
+            list.filter { it.first.playCount > 1 }.shuffled()
         }
         .map { pairs ->
             LCE.Content(
@@ -72,15 +73,14 @@ class MostPlaysComposerModule @Inject constructor(
         return true
     }
 
-    private fun List<Pair<ComposerPlayCount, Composer>>.areOldEnough(): Boolean {
-        val currentTime = System.currentTimeMillis()
-        return !none {
-            (it.first.mostRecentPlay - currentTime) > MINIMUM_AGE_DAYS.toDuration(DurationUnit.DAYS).inWholeMilliseconds
-        }
+    private fun List<Pair<ComposerPlayCount, Composer>>.areOldEnough() = none {
+        val recordAge = TimeUtils.calculateAgeOf(Instant.ofEpochMilli(it.first.mostRecentPlay))
+        val minimumAge = Duration.ofDays(MINIMUM_AGE_DAYS)
+        recordAge < minimumAge
     }
 
     companion object {
         private const val MINIMUM_ITEMS = 5
-        private const val MINIMUM_AGE_DAYS = 3
+        private const val MINIMUM_AGE_DAYS = 3L
     }
 }

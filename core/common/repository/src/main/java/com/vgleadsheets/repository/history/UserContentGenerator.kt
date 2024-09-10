@@ -23,7 +23,7 @@ class UserContentGenerator(
 
         repeat(songsToAdd) {
             val songToAdd = songs.random(randomizer)
-            val time = System.currentTimeMillis() - randomizer.nextLong(MAXIMUM_AGE_DAYS.toDuration(DurationUnit.DAYS).inWholeMilliseconds)
+            val time = randomizer.generateTime()
 
             songHistoryRepository.recordSongPlay(songToAdd, time)
         }
@@ -31,7 +31,18 @@ class UserContentGenerator(
         return songsToAdd
     }
 
+    private fun Random.generateTime(): Long {
+        val minAge = MINIMUM_AGE_DAYS.toDuration(DurationUnit.DAYS)
+        val maxAge = MAXIMUM_AGE_DAYS.toDuration(DurationUnit.DAYS)
+
+        val ageRange = maxAge - minAge
+        return System.currentTimeMillis() -
+            nextLong(ageRange.inWholeMilliseconds) -
+            minAge.inWholeMilliseconds
+    }
+
     companion object {
+        private const val MINIMUM_AGE_DAYS = 5
         private const val MAXIMUM_AGE_DAYS = 30
     }
 }
