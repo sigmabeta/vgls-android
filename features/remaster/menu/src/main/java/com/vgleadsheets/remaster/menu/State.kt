@@ -57,13 +57,13 @@ data class State(
         clickAction = Action.RestartAppClicked
     )
 
-    private fun generateUserRecords(stringProvider: StringProvider) = if (songRecordsGenerated == null) (
+    private fun generateUserRecords(stringProvider: StringProvider) = if (songRecordsGenerated == null) {
         LoadingItemListModel(
             loadingType = LoadingType.SINGLE_TEXT,
             loadOperationName = "userRecordGeneration",
             loadPositionOffset = 0,
         )
-        ) else {
+    } else {
         SingleTextListModel(
             name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS),
             clickAction = Action.GenerateUserContentClicked

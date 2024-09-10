@@ -19,7 +19,7 @@ class UserContentGenerator(
 
     private fun processSongs(songs: List<Song>): Int {
         val randomizer = Random
-        val songsToAdd = randomizer.nextInt(190) + 10
+        val songsToAdd = randomizer.nextInt(MAXIMUM_RECORDS_TO_ADD - MINIMUM_RECORDS_TO_ADD) + MINIMUM_RECORDS_TO_ADD
 
         repeat(songsToAdd) {
             val songToAdd = songs.random(randomizer)
@@ -44,5 +44,8 @@ class UserContentGenerator(
     companion object {
         private const val MINIMUM_AGE_DAYS = 5
         private const val MAXIMUM_AGE_DAYS = 30
+
+        private const val MAXIMUM_RECORDS_TO_ADD = 200
+        private const val MINIMUM_RECORDS_TO_ADD = 10
     }
 }

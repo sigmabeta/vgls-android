@@ -35,7 +35,5 @@ interface GamePlayCountRoomDao {
         private const val QUERY_INSERT = "INSERT INTO $TABLE VALUES $LIST_ARGS"
         private const val QUERY_MOST_PLAYS = "$GET $TABLE $BY_PLAY_COUNT $NUM_RECORDS"
         private const val QUERY_UPSERT = "$QUERY_INSERT $ON_CONFLICT $UPDATE $SET $SET_INCREMENT $AND $SET_NEW_DATE"
-
-
     }
 }
