@@ -171,7 +171,7 @@ class ViewerViewModel @AssistedInject constructor(
             delay(DURATION_HISTORY_RECORD)
             hatchet.d("This song has officially been viewed.")
 
-            songHistoryRepository.recordSongPlay(song)
+            songHistoryRepository.recordSongPlay(song, System.currentTimeMillis())
             historyTimer = null
         }
     }

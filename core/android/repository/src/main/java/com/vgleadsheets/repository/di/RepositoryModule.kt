@@ -32,6 +32,7 @@ import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.history.SongHistoryRepository
+import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.time.ThreeTenTime
 import dagger.Module
 import dagger.Provides
@@ -212,5 +213,17 @@ object RepositoryModule {
     ) = TagRepository(
         tagKeyDataSource,
         tagValueDataSource,
+    )
+
+    @Provides
+    @Singleton
+    fun providesUserContentGenerator(
+        songHistoryRepository: SongHistoryRepository,
+        songDataSource: SongDataSource,
+        hatchet: Hatchet
+    ) = UserContentGenerator(
+        songHistoryRepository = songHistoryRepository,
+        songDataSource = songDataSource,
+        hatchet = hatchet,
     )
 }

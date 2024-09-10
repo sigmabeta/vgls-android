@@ -28,9 +28,11 @@ class SongHistoryRepository(
     private val dispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
 ) {
-    fun recordSongPlay(song: Song) {
+    fun recordSongPlay(
+        song: Song,
+        currentTime: Long = System.currentTimeMillis(),
+    ) {
         coroutineScope.launch(dispatchers.disk) {
-            val currentTime = System.currentTimeMillis()
             hatchet.v("Recording play for song: ${song.gameName} - ${song.name}")
 
             songPlayCountDataSource.incrementPlayCount(song.id, currentTime)
@@ -38,7 +40,7 @@ class SongHistoryRepository(
             songHistoryDataSource.insert(
                 SongHistoryEntry(
                     songId = song.id,
-                    timeMs = System.currentTimeMillis()
+                    timeMs = currentTime
                 )
             )
 

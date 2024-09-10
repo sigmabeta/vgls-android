@@ -19,6 +19,7 @@ import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
+import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.NotifListModel
 import com.vgleadsheets.components.SearchHistoryListModel
@@ -52,6 +53,7 @@ fun ListModel.Content(
         is ImageNameListModel -> ImageNameListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is LabelRatingStarListModel -> LabelRatingListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is LabelValueListModel -> LabelValueListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is MenuItemListModel -> MenuItem(model = this, actionSink = sink, modifier = mod)
         is NameCaptionListModel -> NameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is NotifListModel -> NotifListItem(model = this, actionSink = sink, modifier = mod)
         is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = sink, modifier = mod, padding = pad)
@@ -78,6 +80,6 @@ fun ListModel.Content(
             }
         }
 
-        else -> throw IllegalArgumentException("No composable exists for this item type.")
+        else -> throw IllegalArgumentException("No composable exists for item type: ${this.javaClass.simpleName}")
     }
 }

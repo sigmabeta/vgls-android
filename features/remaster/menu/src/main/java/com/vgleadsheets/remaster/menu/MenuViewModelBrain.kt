@@ -7,6 +7,7 @@ import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.ui.StringProvider
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.onEach
 class MenuViewModelBrain(
     private val generalSettingsManager: GeneralSettingsManager,
     private val debugSettingsManager: DebugSettingsManager,
+    private val userContentGenerator: UserContentGenerator,
     private val appInfo: AppInfo,
     stringProvider: StringProvider,
     hatchet: Hatchet,
@@ -38,6 +40,7 @@ class MenuViewModelBrain(
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
             is Action.DebugDelayClicked -> onDebugDelayClicked()
             is Action.DebugShowNavSnackbarsClicked -> onDebugShowNavSnackbarsClicked()
+            is Action.GenerateUserContentClicked -> onGenerateUserContentClicked()
             is Action.RestartAppClicked -> onRestartAppClicked()
             else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
@@ -114,6 +117,23 @@ class MenuViewModelBrain(
             .getShouldShowSnackbars()
             .onEach { value ->
                 updateState { (it as State).copy(debugShouldShowNavSnackbars = value ?: false) }
+            }
+            .runInBackground()
+    }
+
+    private fun onGenerateUserContentClicked() {
+        updateState { (it as State).copy(songRecordsGenerated = null) }
+        userContentGenerator
+            .generateRandomUserData()
+            .onEach { songsAdded ->
+                emitEvent(
+                    VglsEvent.ShowSnackbar(
+                        "Added $songsAdded songs.",
+                        false,
+                        source = "DebugMenu"
+                    )
+                )
+                updateState { (it as State).copy(songRecordsGenerated = songsAdded) }
             }
             .runInBackground()
     }

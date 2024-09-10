@@ -30,6 +30,7 @@ import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
@@ -53,6 +54,7 @@ class FeatureDirectory(
     private val selectedPartManager: SelectedPartManager,
     private val generalSettingsManager: GeneralSettingsManager,
     private val debugSettingsManager: DebugSettingsManager,
+    private val userContentGenerator: UserContentGenerator,
     private val homeModuleProvider: HomeModuleProvider,
 ) : BrainProvider {
     @Suppress("LongMethod")
@@ -189,6 +191,7 @@ class FeatureDirectory(
             Destination.MENU -> MenuViewModelBrain(
                 generalSettingsManager,
                 debugSettingsManager,
+                userContentGenerator,
                 appInfo,
                 stringProvider,
                 hatchet,

@@ -5,6 +5,8 @@ import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
+import com.vgleadsheets.components.LoadingItemListModel
+import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
@@ -26,6 +28,7 @@ data class State(
     val appInfo: AppInfo? = null,
     val debugShouldDelay: Boolean? = null,
     val debugShouldShowNavSnackbars: Boolean? = null,
+    val songRecordsGenerated: Int? = 0,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_SETTINGS),
@@ -45,6 +48,7 @@ data class State(
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)),
         shouldDelay(stringProvider),
         shouldShowNavSnackbars(stringProvider),
+        generateUserRecords(stringProvider),
         restartApp(stringProvider),
     ).toImmutableList()
 
@@ -52,6 +56,19 @@ data class State(
         name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_RESTART),
         clickAction = Action.RestartAppClicked
     )
+
+    private fun generateUserRecords(stringProvider: StringProvider) = if (songRecordsGenerated == null) (
+        LoadingItemListModel(
+            loadingType = LoadingType.SINGLE_TEXT,
+            loadOperationName = "userRecordGeneration",
+            loadPositionOffset = 0,
+        )
+        ) else {
+        SingleTextListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS),
+            clickAction = Action.GenerateUserContentClicked
+        )
+    }
 
     private fun sectionHeader(title: String) = SectionHeaderListModel(
         title = title
