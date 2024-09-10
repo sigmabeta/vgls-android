@@ -2,6 +2,9 @@ package com.vgleadsheets.database.android.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.sqlite.db.SupportSQLiteOpenHelper
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
+import com.vgleadsheets.database.BuildConfig
 import com.vgleadsheets.database.android.DatabaseVersions
 import com.vgleadsheets.database.android.Migrations
 import com.vgleadsheets.database.android.UserContentDatabase
@@ -26,15 +29,26 @@ object DatabaseModule {
 
     @Singleton
     @Provides
+    fun provideSqlOpenHelperFactory() = if (BuildConfig.DEBUG) {
+        FrameworkSQLiteOpenHelperFactory()
+    } else {
+        RequerySQLiteOpenHelperFactory()
+    }
+
+    @Singleton
+    @Provides
     @Suppress("SpreadOperator")
-    fun provideVglsDatabase(@ApplicationContext context: Context): VglsDatabase {
+    fun provideVglsDatabase(
+        @ApplicationContext context: Context,
+        sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
+    ): VglsDatabase {
         return Room
             .databaseBuilder(
                 context,
                 VglsDatabase::class.java,
                 "vgls-database"
             )
-            .openHelperFactory(RequerySQLiteOpenHelperFactory())
+            .openHelperFactory(sqlOpenHelperFactory)
             .addMigrations(
                 Migrations.RemoveJams,
                 Migrations.AddFavorites,
@@ -48,14 +62,17 @@ object DatabaseModule {
     @Singleton
     @Provides
     @Suppress("SpreadOperator")
-    fun provideUserContentDatabase(@ApplicationContext context: Context): UserContentDatabase {
+    fun provideUserContentDatabase(
+        @ApplicationContext context: Context,
+        sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
+    ): UserContentDatabase {
         return Room
             .databaseBuilder(
                 context,
                 UserContentDatabase::class.java,
                 "user-content-database"
             )
-            .openHelperFactory(RequerySQLiteOpenHelperFactory())
+            .openHelperFactory(sqlOpenHelperFactory)
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }
