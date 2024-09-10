@@ -1,7 +1,6 @@
 package com.vgleadsheets.composables
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,7 +32,6 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 import java.util.Random
 import kotlinx.collections.immutable.toImmutableList
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Suppress("MagicNumber")
 fun HorizontalScroller(
