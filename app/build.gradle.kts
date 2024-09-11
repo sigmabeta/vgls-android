@@ -62,6 +62,8 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix = ".debug"
+
             addTimeToBuildConfig(butActuallyThough = false)
             addBranchNameToBuildConfig(butActuallyThough = false)
 
