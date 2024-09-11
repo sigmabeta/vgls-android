@@ -11,6 +11,7 @@ class DebugSettingsManager(
     fun setShouldDelay(value: Boolean) = setBoolean(SETTING_DELAY_LOADING_OPS, value)
 
     fun getShouldShowSnackbars() = getBoolean(SETTING_NAV_SHOW_SNACKBARS)
+        .map { it ?: false }
 
     fun setShouldShowSnackbars(value: Boolean) = setBoolean(SETTING_NAV_SHOW_SNACKBARS, value)
 

@@ -33,6 +33,25 @@ class RandomRepository(
         }
         .take(1)
 
+    fun getRandomSongs(count: Int) = songDataSource
+        .getHighestId()
+        .map { limit ->
+            List(count) {
+                var randomSong: Song? = null
+                while (randomSong == null) {
+                    val randomId = Random
+                        .nextInt(limit.toInt())
+                        .toLong()
+
+                    randomSong = songDataSource
+                        .getOneById(randomId)
+                        .firstOrNull()
+                }
+                randomSong
+            }
+        }
+        .take(1)
+
     fun getRandomComposer() = composerDataSource
         .getHighestId()
         .map { limit ->

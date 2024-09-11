@@ -48,6 +48,9 @@ class SongHistoryRepository(
         }
     }
 
+    fun getSongPlayCount(songId: Long) = songPlayCountDataSource
+        .getPlayCount(songId)
+
     fun getMostPlaysGames() = gamePlayCountDataSource
         .getMostPlays()
         .mapListTo { item ->

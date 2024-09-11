@@ -44,6 +44,7 @@ fun StringId.id(): Int {
         StringId.HOME_SECTION_RECENT_SONGS -> R.string.home_section_recent_songs
         StringId.HOME_SECTION_MOST_SONGS_GAMES -> R.string.home_section_most_songs_games
         StringId.HOME_SECTION_MOST_SONGS_COMPOSERS -> R.string.home_section_most_songs_composers
+        StringId.HOME_SECTION_NO_PLAYS_SONGS -> R.string.home_section_no_plays_games
         StringId.HOME_SECTION_MOST_PLAYS_GAMES -> R.string.home_section_most_plays_games
         StringId.HOME_SECTION_MOST_PLAYS_SONGS -> R.string.home_section_most_plays_songs
         StringId.HOME_SECTION_MOST_PLAYS_COMPOSERS -> R.string.home_section_most_plays_composers

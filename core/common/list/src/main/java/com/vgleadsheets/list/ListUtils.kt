@@ -13,8 +13,10 @@ fun checkForDupes(items: ImmutableList<ListModel>) {
     if (duplicateIds.isNotEmpty()) {
         val duplicatesAsString = duplicateIds
             .toList()
-            .joinToString("\n") {
-                "ID ${it.first} - ${it.second} times"
+            .joinToString("\n") { pair ->
+                val item = items.firstOrNull { it.dataId == pair.first}
+                "ID ${pair.first} - ${pair.second} times\n" +
+                    "Details: $item"
             }
 
         val message = "Duplicate ids found.\n$duplicatesAsString"

@@ -32,7 +32,7 @@ data class HomeModuleState(
     }
 
     private fun createHorizScrollerListModel(): List<HorizontalScrollerListModel> {
-        val dataId = ("$title.items".hashCode()).toLong()
+        val dataId = ("$moduleName.items".hashCode()).toLong()
 
         return listOf(
             HorizontalScrollerListModel(
@@ -64,7 +64,7 @@ data class HomeModuleState(
             )
         }
 
-        val dataId = ("$title.items".hashCode()).toLong()
+        val dataId = ("$moduleName.items".hashCode()).toLong()
         return listOf(
             HorizontalScrollerListModel(
                 dataId = dataId,
