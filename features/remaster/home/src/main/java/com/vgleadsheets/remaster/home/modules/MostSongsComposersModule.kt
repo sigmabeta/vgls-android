@@ -29,6 +29,7 @@ class MostSongsComposersModule @Inject constructor(
 
     override fun state() = composerRepository
         .getMostSongsComposers()
+        .map { it.shuffled().take(10) }
         .map { composers ->
             LCE.Content(
                 HomeModuleState(

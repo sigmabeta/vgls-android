@@ -76,7 +76,8 @@ interface GameRoomDao : RoomDao<GameEntity> {
         private const val SET_INCREMENT = "$SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
 
         private const val OPTION_BY_ID = "ORDER BY id DESC"
-        private const val OPTION_NUM_RECORDS_BY_ID = "LIMIT 1"
+        private const val OPTION_NUM_RECORDS_BY_ID = "$OPTION_LIMIT 1"
+        private const val OPTION_NUM_RECORDS_MOST = "$OPTION_LIMIT 40"
 
         private const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         private const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
@@ -87,7 +88,7 @@ interface GameRoomDao : RoomDao<GameEntity> {
         private const val QUERY_UPDATE = "$UPDATE $TABLE"
         private const val QUERY_FAVORITES =
             "$GET $TABLE $WHERE_FAVORITE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
-        private const val QUERY_MOST_SONGS = "$GET $TABLE $OPTION_SONG_COUNT_ORDER $OPTION_LIMIT 15"
+        private const val QUERY_MOST_SONGS = "$GET $TABLE $OPTION_SONG_COUNT_ORDER $OPTION_NUM_RECORDS_MOST"
 
         private const val QUERY_INCREMENT = "$UPDATE $TABLE $SET_INCREMENT $WHERE_SINGLE"
 

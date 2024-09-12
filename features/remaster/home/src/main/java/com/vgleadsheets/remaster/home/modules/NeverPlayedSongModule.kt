@@ -15,10 +15,10 @@ import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
+import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class NeverPlayedSongModule @Inject constructor(
     private val randomRepository: RandomRepository,
@@ -26,7 +26,7 @@ class NeverPlayedSongModule @Inject constructor(
     private val stringProvider: StringProvider,
     delayManager: DelayManager,
 ) : HomeModule(
-    priority = Priority.MID,
+    priority = Priority.LOW,
     delayManager,
 ) {
     override fun loadingType() = LoadingType.SHEET

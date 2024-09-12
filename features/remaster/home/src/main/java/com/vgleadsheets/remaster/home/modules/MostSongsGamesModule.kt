@@ -29,6 +29,7 @@ class MostSongsGamesModule @Inject constructor(
 
     override fun state() = gameRepository
         .getMostSongsGames()
+        .map { it.shuffled().take(10) }
         .map { games ->
             LCE.Content(
                 HomeModuleState(

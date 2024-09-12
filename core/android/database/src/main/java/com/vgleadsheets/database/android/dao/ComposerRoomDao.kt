@@ -92,7 +92,8 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
         private const val COLUMN_FOREIGN_KEY_SONG_JOIN = SongComposerJoin.COLUMN_FOREIGN_KEY_TWO
 
         private const val OPTION_BY_ID = "ORDER BY id DESC"
-        private const val OPTION_NUM_RECORDS_BY_ID = "LIMIT 1"
+        private const val OPTION_NUM_RECORDS_BY_ID = "$OPTION_LIMIT 1"
+        private const val OPTION_NUM_RECORDS_MOST = "$OPTION_LIMIT 40"
 
         private const val COLUMN_INCREMENTABLE = "sheetsPlayed"
 
@@ -119,7 +120,7 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
         private const val QUERY_UPDATE = "$UPDATE $TABLE"
         private const val QUERY_FAVORITES =
             "$GET $TABLE $WHERE_FAVORITE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
-        private const val QUERY_MOST_SONGS = "$GET $TABLE $OPTION_SONG_COUNT_ORDER $OPTION_LIMIT 15"
+        private const val QUERY_MOST_SONGS = "$GET $TABLE $OPTION_SONG_COUNT_ORDER $OPTION_NUM_RECORDS_MOST"
 
         private const val QUERY_INCREMENT = "$QUERY_UPDATE $SET_INCREMENT $WHERE_SINGLE"
 

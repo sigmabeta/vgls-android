@@ -41,9 +41,9 @@ class HomeModuleModule {
         override val modules by lazy {
             val list = listOf(
                 notifModule,
+                neverPlayedSongModule,
                 mostSongsGamesModule,
                 mostSongsComposersModule,
-                neverPlayedSongModule,
                 recentSongsModule,
                 mostPlaysSongsModule,
                 mostPlaysGamesModule,
