@@ -85,7 +85,7 @@ interface SongRoomDao : RoomDao<SongEntity> {
     fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_HIGHEST_ID)
-    fun getHighestId(): Flow<SongEntity>
+    fun getHighestId(): Flow<SongEntity?>
 
     @Query(QUERY_DELETE)
     override fun nukeTable()

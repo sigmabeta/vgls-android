@@ -51,5 +51,5 @@ SongDataSource {
 
     override fun getHighestId() = roomImpl
         .getHighestId()
-        .map { it.id }
+        .map { it?.id ?: 0 }
 }

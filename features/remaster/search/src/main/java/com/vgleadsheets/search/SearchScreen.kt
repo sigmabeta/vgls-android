@@ -67,7 +67,7 @@ fun SearchScreen(
         try {
             checkForDupes(results)
         } catch (ex: IllegalArgumentException) {
-            ErrorScreen(ex.message ?: "Unknown Error", modifier.fillMaxSize())
+            ErrorScreen(ex, modifier.fillMaxSize())
             return
         }
 

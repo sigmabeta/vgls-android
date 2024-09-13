@@ -82,7 +82,7 @@ abstract class HomeModule(
             ErrorStateListModel(
                 failedOperationName = loadOperationName(),
                 errorString = "Failed to load data for ${this.javaClass.simpleName}.",
-                debugText = error.message ?: "Unknown error."
+                error = error
             )
         ),
     )

@@ -32,7 +32,7 @@ fun ListScreen(
     try {
         checkForDupes(items)
     } catch (ex: IllegalArgumentException) {
-        ErrorScreen(ex.message ?: "Unknown Error", modifier.fillMaxSize())
+        ErrorScreen(ex, modifier.fillMaxSize())
         return
     }
 

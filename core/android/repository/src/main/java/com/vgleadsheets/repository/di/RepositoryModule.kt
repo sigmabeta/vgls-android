@@ -19,6 +19,7 @@ import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
+import com.vgleadsheets.database.source.TagValuePlayCountDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.NotifManager
@@ -76,10 +77,12 @@ object RepositoryModule {
         songDataSource: SongDataSource,
         gameDataSource: GameDataSource,
         composerDataSource: ComposerDataSource,
+        hatchet: Hatchet,
     ) = RandomRepository(
         songDataSource,
         composerDataSource,
         gameDataSource,
+        hatchet,
     )
 
     @Provides
@@ -174,13 +177,19 @@ object RepositoryModule {
         composerDataSource: ComposerDataSource,
         songDataSource: SongDataSource,
         coroutineScope: CoroutineScope,
+        tagValuePlayCountDataSource: TagValuePlayCountDataSource,
+        tagValueDataSource: TagValueDataSource,
+        tagKeyDataSource: TagKeyDataSource,
     ) = SongHistoryRepository(
         songHistoryDataSource,
         gamePlayCountDataSource,
         composerPlayCountDataSource,
         songPlayCountDataSource,
+        tagValuePlayCountDataSource,
         gameDataSource,
         composerDataSource,
+        tagValueDataSource,
+        tagKeyDataSource,
         songDataSource,
         coroutineScope,
         dispatchers,

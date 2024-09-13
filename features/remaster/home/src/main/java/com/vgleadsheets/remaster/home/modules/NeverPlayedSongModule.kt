@@ -17,8 +17,10 @@ import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.take
 
 class NeverPlayedSongModule @Inject constructor(
     private val randomRepository: RandomRepository,
@@ -35,6 +37,8 @@ class NeverPlayedSongModule @Inject constructor(
 
     override fun state() = randomRepository
         .getRandomSongs(20)
+        .filter { it.isNotEmpty() }
+        .take(1)
         .map { list ->
             list
                 .filter { onlySongsNeverPlayed(it) }
@@ -45,7 +49,7 @@ class NeverPlayedSongModule @Inject constructor(
             LCE.Content(
                 HomeModuleState(
                     moduleName = this.javaClass.simpleName,
-                    shouldShow = true,
+                    shouldShow = songs.isNotEmpty(),
                     title = title(),
                     items = songs
                         .map { song ->
@@ -72,8 +76,6 @@ class NeverPlayedSongModule @Inject constructor(
 
     private suspend fun onlySongsNeverPlayed(it: Song): Boolean {
         val songPlayCount = getSongPlayCount(it)
-        println("Song ${it.name} plays: $songPlayCount")
-
         return songPlayCount == null
     }
 

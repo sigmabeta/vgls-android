@@ -32,17 +32,19 @@ fun LicenseScreen(
                 modifier = Modifier.fillMaxSize()
             )
         } else {
+            val errorMessage = webState.errorsForCurrentRequest.joinToString(separator = ";\n") {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    it.error.description
+                } else {
+                    it.error.toString()
+                }
+            }
+
             EmptyListIndicator(
                 model = ErrorStateListModel(
                     failedOperationName = "webpageLoad",
                     errorString = resources.getString(R.string.error_webview_failed),
-                    debugText = webState.errorsForCurrentRequest.joinToString(separator = ";\n") {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            it.error.description
-                        } else {
-                            it.error.toString()
-                        }
-                    }
+                    error = RuntimeException(errorMessage)
                 ),
                 modifier = Modifier
                     .align(Alignment.Center),

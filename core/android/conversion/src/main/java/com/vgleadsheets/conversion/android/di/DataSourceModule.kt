@@ -16,6 +16,7 @@ import com.vgleadsheets.conversion.android.converter.SongHistoryConverter
 import com.vgleadsheets.conversion.android.converter.SongPlayCountConverter
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
+import com.vgleadsheets.conversion.android.converter.TagValuePlayCountConverter
 import com.vgleadsheets.conversion.android.datasource.ComposerAliasAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.ComposerAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.ComposerPlayCountAndroidDataSource
@@ -33,6 +34,7 @@ import com.vgleadsheets.conversion.android.datasource.SongHistoryAndroidDataSour
 import com.vgleadsheets.conversion.android.datasource.SongPlayCountAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.TagKeyAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.TagValueAndroidDataSource
+import com.vgleadsheets.conversion.android.datasource.TagValuePlayCountAndroidDataSource
 import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
 import com.vgleadsheets.database.android.dao.ComposerPlayCountRoomDao
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
@@ -49,6 +51,7 @@ import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongPlayCountRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
+import com.vgleadsheets.database.android.dao.TagValuePlayCountRoomDao
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
@@ -67,6 +70,7 @@ import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
+import com.vgleadsheets.database.source.TagValuePlayCountDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -190,6 +194,16 @@ object DataSourceModule {
         convert: ComposerPlayCountConverter,
         roomImpl: ComposerPlayCountRoomDao,
     ): ComposerPlayCountDataSource = ComposerPlayCountAndroidDataSource(
+        roomImpl,
+        convert,
+    )
+
+    @Provides
+    @Singleton
+    fun tagValuePlayCountDataSource(
+        convert: TagValuePlayCountConverter,
+        roomImpl: TagValuePlayCountRoomDao,
+    ): TagValuePlayCountDataSource = TagValuePlayCountAndroidDataSource(
         roomImpl,
         convert,
     )

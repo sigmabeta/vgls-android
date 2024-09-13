@@ -151,6 +151,12 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun tagValuePlayCountDao(
+        database: UserContentDatabase
+    ) = database.tagValuePlayCountDao()
+
+    @Provides
+    @Singleton
     fun songPlayCountDao(
         database: UserContentDatabase
     ) = database.songPlayCountDao()

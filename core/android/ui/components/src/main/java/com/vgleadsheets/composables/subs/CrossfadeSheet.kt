@@ -40,7 +40,7 @@ fun CrossfadeSheet(
             contentAlignment = Alignment.Center,
             modifier = modifier.fillMaxSize()
         ) {
-            ErrorState(sourceInfo, modifier, "Oops it didn't work.")
+            ErrorState(sourceInfo, modifier, IllegalArgumentException("Oops it didn't work."))
         }
         return
     }
@@ -87,7 +87,7 @@ fun CrossfadeSheet(
                 ErrorState(
                     sourceInfo = sourceInfo,
                     modifier = modifier,
-                    errorMessage = state.result.throwable.message ?: "Unknown Error"
+                    error = state.result.throwable
                 )
             }
 
@@ -97,12 +97,12 @@ fun CrossfadeSheet(
 }
 
 @Composable
-private fun ErrorState(sourceInfo: Any, modifier: Modifier, errorMessage: String) {
+private fun ErrorState(sourceInfo: Any, modifier: Modifier, error: Throwable) {
     EmptyListIndicator(
         model = ErrorStateListModel(
             failedOperationName = sourceInfo.toString(),
             errorString = "Can't load this sheet. Check your network connection and try again?",
-            debugText = errorMessage
+            error = error
         ),
         modifier = modifier
     )

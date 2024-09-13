@@ -33,7 +33,7 @@ abstract class ListState : VglsState {
                 ErrorStateListModel(
                     failedOperationName = "toActual",
                     errorString = stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_TITLE),
-                    debugText = ex.message ?: "Unknown Error"
+                    error = ex
                 )
             )
         }
@@ -117,7 +117,7 @@ abstract class ListState : VglsState {
         ErrorStateListModel(
             failedOperationName = operationName,
             errorString = "Failed to load data for $operationName.",
-            debugText = error.message ?: "Unknown error."
+            error = error
         )
     )
 }

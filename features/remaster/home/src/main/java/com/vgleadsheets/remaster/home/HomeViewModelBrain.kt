@@ -45,6 +45,7 @@ class HomeViewModelBrain(
             is Action.MostPlaysGameClicked -> onMostPlaysGameClicked(action.gameId)
             is Action.MostPlaysComposerClicked -> onMostPlaysComposerClicked(action.composerId)
             is Action.MostPlaysSongClicked -> onMostPlaysSongClicked(action.songId)
+            is Action.MostPlaysTagValueClicked -> onMostPlaysTagValueClicked(action.tagValueId)
             is Action.RecentSongClicked -> onRecentSongClicked(action.songId)
             Action.RandomSongClicked -> onRandomSongClicked()
             Action.RandomGameClicked -> onRandomGameClicked()
@@ -85,6 +86,10 @@ class HomeViewModelBrain(
 
     private fun onMostPlaysSongClicked(songId: Long) {
         navigateTo(Destination.SONG_DETAIL.forId(songId))
+    }
+
+    private fun onMostPlaysTagValueClicked(tagValueId: Long) {
+        navigateTo(Destination.TAGS_VALUES_SONG_LIST.forId(tagValueId))
     }
 
     private fun onRecentSongClicked(songId: Long) {

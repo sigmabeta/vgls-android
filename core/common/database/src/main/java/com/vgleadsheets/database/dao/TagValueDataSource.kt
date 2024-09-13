@@ -12,4 +12,6 @@ interface TagValueDataSource : DataSource<TagValue> {
     fun getTagValuesForTagKeySync(tagKeyId: Long): List<TagValue>
 
     fun getTagValuesForSong(songId: Long): Flow<List<TagValue>>
+
+    fun getTagValuesForSongSync(songId: Long): List<TagValue>
 }

@@ -16,6 +16,7 @@ import com.vgleadsheets.conversion.android.converter.SongHistoryConverter
 import com.vgleadsheets.conversion.android.converter.SongPlayCountConverter
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
+import com.vgleadsheets.conversion.android.converter.TagValuePlayCountConverter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -68,6 +69,10 @@ object ConverterModule {
     @Provides
     @Singleton
     fun composerPlayCountConverter() = ComposerPlayCountConverter()
+
+    @Provides
+    @Singleton
+    fun tagValuePlayCountConverter() = TagValuePlayCountConverter()
 
     @Provides
     @Singleton

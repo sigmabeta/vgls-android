@@ -39,4 +39,8 @@ TagValueDataSource {
     override fun getTagValuesForSong(songId: Long) = roomImpl
         .getForSong(songId)
         .mapListTo { convert.entityToModel(it) }
+
+    override fun getTagValuesForSongSync(songId: Long) = roomImpl
+        .getForSongSync(songId)
+        .map { convert.entityToModel(it) }
 }

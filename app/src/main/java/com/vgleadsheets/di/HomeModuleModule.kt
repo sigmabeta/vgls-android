@@ -5,6 +5,7 @@ import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.remaster.home.modules.MostPlaysComposerModule
 import com.vgleadsheets.remaster.home.modules.MostPlaysGamesModule
 import com.vgleadsheets.remaster.home.modules.MostPlaysSongsModule
+import com.vgleadsheets.remaster.home.modules.MostPlaysTagValuesModule
 import com.vgleadsheets.remaster.home.modules.MostSongsComposersModule
 import com.vgleadsheets.remaster.home.modules.MostSongsGamesModule
 import com.vgleadsheets.remaster.home.modules.NeverPlayedSongModule
@@ -30,6 +31,7 @@ class HomeModuleModule {
         mostSongsGamesModule: MostSongsGamesModule,
         mostSongsComposersModule: MostSongsComposersModule,
         neverPlayedSongModule: NeverPlayedSongModule,
+        mostPlaysTagValuesModule: MostPlaysTagValuesModule,
         mostPlaysGamesModule: MostPlaysGamesModule,
         mostPlaysComposerModule: MostPlaysComposerModule,
         mostPlaysSongsModule: MostPlaysSongsModule,
@@ -45,6 +47,7 @@ class HomeModuleModule {
                 mostSongsGamesModule,
                 mostSongsComposersModule,
                 recentSongsModule,
+                mostPlaysTagValuesModule,
                 mostPlaysSongsModule,
                 mostPlaysGamesModule,
                 mostPlaysComposerModule,

@@ -5,10 +5,13 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.SongDataSource
+import com.vgleadsheets.database.dao.TagKeyDataSource
+import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
+import com.vgleadsheets.database.source.TagValuePlayCountDataSource
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SongHistoryEntry
@@ -21,8 +24,11 @@ class SongHistoryRepository(
     private val gamePlayCountDataSource: GamePlayCountDataSource,
     private val composerPlayCountDataSource: ComposerPlayCountDataSource,
     private val songPlayCountDataSource: SongPlayCountDataSource,
+    private val tagValuePlayCountDataSource: TagValuePlayCountDataSource,
     private val gameDataSource: GameDataSource,
     private val composerDataSource: ComposerDataSource,
+    private val tagValueDataSource: TagValueDataSource,
+    private val tagKeyDataSource: TagKeyDataSource,
     private val songDataSource: SongDataSource,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: VglsDispatchers,
@@ -45,6 +51,7 @@ class SongHistoryRepository(
             )
 
             incrementPlayCountForComposersForSong(song.id, currentTime)
+            incrementPlayCountForTagValuesForSong(song.id, currentTime)
         }
     }
 
@@ -61,6 +68,15 @@ class SongHistoryRepository(
         .getMostPlays()
         .mapListTo { item ->
             item to composerDataSource.getOneByIdSync(item.id)
+        }
+
+    fun getMostPlaysTagValues() = tagValuePlayCountDataSource
+        .getMostPlays()
+        .mapListTo { item ->
+            item to tagValueDataSource.getOneByIdSync(item.id)
+        }
+        .map { list ->
+            list.filter { pair -> !pair.second.isDifficultyValue() }
         }
 
     fun getMostPlaysSongs() = songPlayCountDataSource
@@ -83,6 +99,14 @@ class SongHistoryRepository(
 
         composers.forEach {
             composerPlayCountDataSource.incrementPlayCount(it.id, currentTime)
+        }
+    }
+
+    private suspend fun incrementPlayCountForTagValuesForSong(id: Long, currentTime: Long) {
+        val tagValues = tagValueDataSource.getTagValuesForSongSync(id)
+
+        tagValues.forEach {
+            tagValuePlayCountDataSource.incrementPlayCount(it.id, currentTime)
         }
     }
 

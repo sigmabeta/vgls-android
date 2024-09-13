@@ -1,7 +1,10 @@
 package com.vgleadsheets.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,8 +15,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -30,13 +38,13 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 fun EmptyListIndicator(
     model: ErrorStateListModel,
     modifier: Modifier,
-    ) {
+) {
     EmptyListIndicator(
         explanation = model.errorString,
         iconId = com.vgleadsheets.ui.icons.R.drawable.ic_error_24dp,
         showCrossOut = false,
-        menu = false,
-        debugText = model.debugText,
+        error = model.error,
+        showDebug = BuildConfig.DEBUG,
         modifier = modifier,
     )
 }
@@ -50,8 +58,6 @@ fun EmptyListIndicator(
         explanation = model.explanation,
         iconId = model.iconId,
         showCrossOut = model.showCrossOut,
-        menu = false,
-        debugText = model.debugText,
         modifier = modifier
     )
 }
@@ -61,20 +67,19 @@ private fun EmptyListIndicator(
     explanation: String,
     iconId: Int,
     showCrossOut: Boolean,
-    menu: Boolean,
-    showDebug: Boolean = BuildConfig.DEBUG,
-    debugText: String?,
+    showDebug: Boolean = false,
+    error: Throwable? = null,
     modifier: Modifier,
 ) {
-    val color = if (menu) {
-        MaterialTheme.colorScheme.onPrimary
-    } else {
-        MaterialTheme.colorScheme.outline
-    }
+    val color = MaterialTheme.colorScheme.outline
+    var showDetails by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .animateContentSize()
+            .fillMaxWidth()
+            .clickable(enabled = showDebug) { showDetails = !showDetails }
     ) {
         Box(
             modifier = Modifier
@@ -83,11 +88,7 @@ private fun EmptyListIndicator(
                     bottom = 8.dp
                 )
         ) {
-            val crossOutResource = if (menu) {
-                com.vgleadsheets.ui.icons.R.drawable.ic_cross_out_menu_24dp
-            } else {
-                com.vgleadsheets.ui.icons.R.drawable.ic_cross_out_24dp
-            }
+            val crossOutResource = com.vgleadsheets.ui.icons.R.drawable.ic_cross_out_24dp
 
             Icon(
                 painter = painterResource(id = iconId),
@@ -119,8 +120,24 @@ private fun EmptyListIndicator(
                 .widthIn(min = 200.dp, max = 400.dp)
         )
 
-        if (showDebug && debugText != null) {
-            DebugText(debugText, color)
+        if (showDebug && error != null) {
+            val firstStackElement = error.stackTrace.first()
+            val className = firstStackElement.fileName
+            val methodName = firstStackElement.methodName
+            val lineNumber = firstStackElement.lineNumber
+            val summary = "$className: $lineNumber ($methodName)"
+            DebugText(summary, color)
+
+            AnimatedVisibility(visible = !showDetails) {
+                val message = error.message
+                if (message != null) {
+                    DebugTextSmall(message, color)
+                }
+            }
+
+            AnimatedVisibility(visible = showDetails) {
+                DebugTextSmall(error.stackTraceToString(), color)
+            }
         }
     }
 }
@@ -131,7 +148,24 @@ private fun DebugText(debugText: String, color: Color) {
         text = debugText,
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.bodySmall.copy(
-            fontSize = 8.sp,
+            fontSize = 10.sp,
+            fontFamily = FontFamily.Monospace
+        ),
+        color = color,
+        modifier = Modifier
+            .padding(horizontal = 32.dp)
+            .padding(bottom = 8.dp)
+            .widthIn(min = 200.dp, max = 400.dp)
+    )
+}
+
+@Composable
+private fun DebugTextSmall(debugText: String, color: Color) {
+    Text(
+        text = debugText,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.bodySmall.copy(
+            fontSize = 6.sp,
             fontFamily = FontFamily.Monospace
         ),
         color = color,
@@ -139,6 +173,7 @@ private fun DebugText(debugText: String, color: Color) {
             .padding(horizontal = 32.dp)
             .padding(bottom = 16.dp)
             .widthIn(min = 200.dp, max = 400.dp)
+            .alpha(0.8f)
     )
 }
 
@@ -179,7 +214,7 @@ private fun LightError() {
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            SampleErrorNotMenu()
+            SampleError()
         }
     }
 }
@@ -193,7 +228,7 @@ private fun DarkError() {
                 color = MaterialTheme.colorScheme.background
             )
         ) {
-            SampleErrorNotMenu()
+            SampleError()
         }
     }
 }
@@ -212,12 +247,12 @@ private fun Sample() {
 }
 
 @Composable
-private fun SampleErrorNotMenu() {
+private fun SampleError() {
     EmptyListIndicator(
         ErrorStateListModel(
             failedOperationName = "oops",
             errorString = "Enemy's broken away from me!",
-            debugText = "java.lang.IllegalStateException: Failed to allocate bitmap."
+            error = IllegalStateException("Could not maintain aggro. Try using provoke?"),
         ),
         Modifier
     )

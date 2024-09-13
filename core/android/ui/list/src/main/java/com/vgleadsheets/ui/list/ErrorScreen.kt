@@ -17,7 +17,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ErrorScreen(
-    errorString: String,
+    error: Throwable,
     modifier: Modifier = Modifier
 ) {
     val errorMessage = stringResource(StringId.ERROR_BROKEN_SCREEN_DESC.id())
@@ -26,7 +26,7 @@ fun ErrorScreen(
         ErrorStateListModel(
             failedOperationName = "renderScreen",
             errorString = errorMessage,
-            debugText = errorString,
+            error = error,
         )
     )
 
