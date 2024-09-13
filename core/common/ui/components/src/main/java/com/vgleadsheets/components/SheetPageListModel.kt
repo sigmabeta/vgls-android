@@ -10,6 +10,7 @@ data class SheetPageListModel(
     val composers: ImmutableList<String>,
     val pageNumber: Int,
     val clickAction: VglsAction,
+    val showLyricsWarning: Boolean = false,
     override val dataId: Long = sourceInfo.hashCode().toLong()
 ) : ListModel() {
     override val columns = ListModel.COLUMNS_ALL

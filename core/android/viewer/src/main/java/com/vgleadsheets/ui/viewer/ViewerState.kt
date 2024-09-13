@@ -3,6 +3,7 @@ package com.vgleadsheets.ui.viewer
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.StringId
@@ -26,7 +27,15 @@ data class ViewerState(
     }
 
     fun pages(): ImmutableList<SheetPageListModel> = if (song != null && partApiId != null) {
-        List(song.pageCount(partApiId)) { pageNumber ->
+        val pageCount = song.pageCount(partApiId)
+        val actualPartApiId = if (pageCount > 0) {
+            partApiId
+        } else {
+            Part.C.apiId
+        }
+        val actualPageCount = song.pageCount(actualPartApiId)
+
+        List(actualPageCount) { pageNumber ->
             SheetPageListModel(
                 PdfConfigById(
                     songId = song.id,
@@ -42,4 +51,12 @@ data class ViewerState(
     } else {
         emptyList()
     }.toImmutableList()
+
+    fun shouldShowLyricsWarning(): Boolean {
+        return if (song != null && partApiId != null) {
+            song.pageCount(partApiId) <= 0
+        } else {
+            false
+        }
+    }
 }

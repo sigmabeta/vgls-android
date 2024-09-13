@@ -1,6 +1,8 @@
 package com.vgleadsheets.downloader
 
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
 import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -19,14 +21,21 @@ class SheetDownloader @Inject constructor(
 ) {
     suspend fun getSheet(id: Long) = songRepository
         .getSong(id)
-        .map { getSheetInternal(it.filename) }
+        .map { getSheetInternal(it) }
         .first()
 
     private suspend fun getSheetInternal(
-        fileName: String,
+        song: Song,
     ): SheetFileResult {
+        val fileName = song.filename
         val partApiId = urlInfoProvider.urlInfoFlow.value.partId ?: throw IllegalStateException("No part selected.")
-        val targetFile = fileReference(fileName, partApiId)
+        val actualPartApiId = if (partApiId == Part.VOCAL.apiId && song.lyricPageCount == 0) {
+            Part.C.apiId
+        } else {
+            partApiId
+        }
+
+        val targetFile = fileReference(fileName, actualPartApiId)
 
         if (targetFile.exists()) {
             return SheetFileResult(
@@ -35,7 +44,7 @@ class SheetDownloader @Inject constructor(
             )
         }
 
-        downloadSheet(fileName, partApiId, targetFile)
+        downloadSheet(fileName, actualPartApiId, targetFile)
 
         return SheetFileResult(
             targetFile,

@@ -21,6 +21,7 @@ import com.vgleadsheets.ui.id
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
+@Suppress("MagicNumber")
 data class SearchState(
     val searchQuery: String = "",
     val searchHistory: LCE<List<SearchHistoryEntry>> = LCE.Uninitialized,

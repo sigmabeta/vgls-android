@@ -12,4 +12,5 @@ enum class Icon {
     TAG,
     SEARCH,
     SEARCH_YOUTUBE,
+    WARNING,
 }

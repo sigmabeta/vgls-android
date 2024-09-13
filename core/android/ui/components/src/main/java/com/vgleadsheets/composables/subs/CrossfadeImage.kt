@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -55,6 +56,7 @@ fun CrossfadeImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(sourceInfo)
                 .placeholder(imagePlaceholder.id())
+                .error(imagePlaceholder.id())
                 .crossfade(true)
                 .build()
         )
@@ -62,7 +64,7 @@ fun CrossfadeImage(
         asyncPainter to if (asyncPainter.state is AsyncImagePainter.State.Success) {
             modifier
         } else {
-            bgModifier
+            bgModifier.padding(4.dp)
         }
     }
 

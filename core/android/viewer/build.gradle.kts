@@ -14,6 +14,7 @@ dependencies {
 
     api(projects.core.common.nav)
     implementation(projects.core.android.ui.components)
+    implementation(projects.core.android.ui.icons)
     implementation(projects.core.android.viewmodel)
 
     implementation(projects.core.common.pdf)

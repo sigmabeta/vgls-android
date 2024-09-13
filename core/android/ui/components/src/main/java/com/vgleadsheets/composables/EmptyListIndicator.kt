@@ -38,6 +38,7 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 fun EmptyListIndicator(
     model: ErrorStateListModel,
     modifier: Modifier,
+    onBlack: Boolean = false,
 ) {
     EmptyListIndicator(
         explanation = model.errorString,
@@ -45,6 +46,7 @@ fun EmptyListIndicator(
         showCrossOut = false,
         error = model.error,
         showDebug = BuildConfig.DEBUG,
+        onBlack = onBlack,
         modifier = modifier,
     )
 }
@@ -53,11 +55,13 @@ fun EmptyListIndicator(
 fun EmptyListIndicator(
     model: EmptyStateListModel,
     modifier: Modifier,
+    onBlack: Boolean = false,
 ) {
     EmptyListIndicator(
         explanation = model.explanation,
         iconId = model.iconId,
         showCrossOut = model.showCrossOut,
+        onBlack = onBlack,
         modifier = modifier
     )
 }
@@ -70,9 +74,14 @@ private fun EmptyListIndicator(
     showCrossOut: Boolean,
     showDebug: Boolean = false,
     error: Throwable? = null,
+    onBlack: Boolean,
     modifier: Modifier,
 ) {
-    val color = MaterialTheme.colorScheme.outline
+    val color = if (onBlack) {
+        Color.White
+    } else {
+        MaterialTheme.colorScheme.outline
+    }
     var showDetails by remember { mutableStateOf(false) }
 
     Column(

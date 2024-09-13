@@ -89,18 +89,19 @@ data class State(
         val pageCount = data.pageCount(selectedPart)
 
         listOf(
-            if (pageCount > 1) {
-                HorizontalScrollerListModel(
-                    dataId = data.id,
-                    scrollingItems = List(pageCount) { pageNumber ->
-                        sheetPage(
-                            data,
-                            pageNumber
-                        )
-                    }.toImmutableList()
-                )
-            } else {
-                sheetPage(data, 0)
+            when {
+                pageCount > 1 -> HorizontalScrollerListModel(
+                        dataId = data.id,
+                        scrollingItems = List(pageCount) { pageNumber ->
+                            sheetPage(
+                                data,
+                                pageNumber,
+                                false
+                            )
+                        }.toImmutableList()
+                    )
+                pageCount == 0 -> sheetPage(data, 0, true)
+                else -> sheetPage(data, 0, false)
             }
         )
     }
@@ -109,7 +110,8 @@ data class State(
 
     private fun sheetPage(
         song: Song,
-        pageNumber: Int
+        pageNumber: Int,
+        showLyricsMissingWarning: Boolean,
     ) = SheetPageCardListModel(
         SheetPageListModel(
             title = song.name,
@@ -117,6 +119,7 @@ data class State(
             composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
             pageNumber = pageNumber,
             clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
+            showLyricsWarning = showLyricsMissingWarning,
             sourceInfo = PdfConfigById(
                 songId = song.id,
                 pageNumber = pageNumber

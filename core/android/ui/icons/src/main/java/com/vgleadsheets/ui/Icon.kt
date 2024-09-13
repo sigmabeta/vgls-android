@@ -15,5 +15,6 @@ fun Icon.id(): Int {
         Icon.TAG -> R.drawable.ic_tag_black_24dp
         Icon.SEARCH -> R.drawable.ic_search_black_24dp
         Icon.SEARCH_YOUTUBE -> R.drawable.ic_play_circle_filled_24
+        Icon.WARNING -> R.drawable.ic_baseline_warning_24
     }
 }

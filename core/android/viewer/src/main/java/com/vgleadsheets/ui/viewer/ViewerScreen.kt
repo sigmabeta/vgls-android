@@ -9,9 +9,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +28,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +42,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
@@ -46,6 +50,8 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
@@ -90,6 +96,39 @@ fun ViewerScreen(
             DirectionButton(Action.PrevButtonClicked, prevEnabled, visible, actionSink, pagerState)
             DirectionButton(Action.NextButtonClicked, nextEnabled, visible, actionSink, pagerState)
         }
+
+        if (state.shouldShowLyricsWarning()) {
+            LyricsWarning()
+        }
+    }
+}
+
+@Composable
+@Suppress("MagicNumber")
+private fun BoxScope.LyricsWarning() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.BottomCenter)
+            .background(Color(0, 0, 0, 160))
+            .padding(horizontal = 8.dp)
+    ) {
+        Icon(
+            painter = painterResource(Icon.WARNING.id()),
+            tint = Color.White,
+            contentDescription = null,
+        )
+
+        Text(
+            text = "No lyrics available for this sheet.",
+            color = Color.White,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .padding(vertical = 32.dp)
+        )
     }
 }
 
@@ -193,7 +232,6 @@ private const val ALPHA_BACKGROUND_BUTTON = 0.25f
 private const val ALPHA_BACKGROUND_BUTTON_INT = (ALPHA_BACKGROUND_BUTTON * 255).toInt()
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun BoxScope.SheetPager(
     items: ImmutableList<SheetPageListModel>,
     pagerState: PagerState,
