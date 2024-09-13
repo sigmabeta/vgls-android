@@ -35,6 +35,7 @@ class NeverPlayedSongModule @Inject constructor(
 
     override fun title() = stringProvider.getString(StringId.HOME_SECTION_NO_PLAYS_SONGS)
 
+    @Suppress("MagicNumber")
     override fun state() = randomRepository
         .getRandomSongs(20)
         .filter { it.isNotEmpty() }

@@ -27,6 +27,7 @@ class MostSongsGamesModule @Inject constructor(
 
     override fun title() = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_GAMES)
 
+    @Suppress("MagicNumber")
     override fun state() = gameRepository
         .getMostSongsGames()
         .map { it.shuffled().take(10) }

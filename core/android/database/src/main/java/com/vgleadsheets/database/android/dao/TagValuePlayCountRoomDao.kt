@@ -27,13 +27,12 @@ interface TagValuePlayCountRoomDao {
         private const val LIST_ARGS = "(:id, $DEFAULT_PLAY_COUNT, :mostRecentPlay)"
 
         private const val BY_PLAY_COUNT = "ORDER BY playCount DESC"
-        private const val NUM_RECORDS = "LIMIT 20"
         private const val ON_CONFLICT = "ON CONFLICT(`$COLUMN_ID`) DO"
         private const val SET_INCREMENT = "$COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
         private const val SET_NEW_DATE = "$COLUMN_MOST_RECENT = :mostRecentPlay"
 
         private const val QUERY_INSERT = "INSERT INTO $TABLE VALUES $LIST_ARGS"
-        private const val QUERY_MOST_PLAYS = "$GET $TABLE $BY_PLAY_COUNT $NUM_RECORDS"
+        private const val QUERY_MOST_PLAYS = "$GET $TABLE $BY_PLAY_COUNT"
         private const val QUERY_UPSERT = "$QUERY_INSERT $ON_CONFLICT $UPDATE $SET $SET_INCREMENT $AND $SET_NEW_DATE"
     }
 }

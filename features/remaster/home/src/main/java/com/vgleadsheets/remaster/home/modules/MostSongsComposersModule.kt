@@ -27,6 +27,7 @@ class MostSongsComposersModule @Inject constructor(
 
     override fun title() = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_COMPOSERS)
 
+    @Suppress("MagicNumber")
     override fun state() = composerRepository
         .getMostSongsComposers()
         .map { it.shuffled().take(10) }

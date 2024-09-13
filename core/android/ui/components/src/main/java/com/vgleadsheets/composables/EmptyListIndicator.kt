@@ -63,6 +63,7 @@ fun EmptyListIndicator(
 }
 
 @Composable
+@Suppress("LongMethod")
 private fun EmptyListIndicator(
     explanation: String,
     iconId: Int,
@@ -160,6 +161,7 @@ private fun DebugText(debugText: String, color: Color) {
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun DebugTextSmall(debugText: String, color: Color) {
     Text(
         text = debugText,

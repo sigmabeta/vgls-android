@@ -28,6 +28,7 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SingleTextListModel
+import com.vgleadsheets.components.SmallTextListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
@@ -62,6 +63,7 @@ fun ListModel.Content(
         is SearchHistoryListModel -> SearchHistoryListItem(model = this, modifier = mod, actionSink = sink, padding = pad)
         is SheetPageListModel -> SheetPageItem(model = this, actionSink = sink, modifier = mod, fillMaxWidth = true, padding = pad)
         is SingleTextListModel -> LabelNoThingyItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is SmallTextListModel -> SmallText(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SquareItemListModel -> SquareItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
         is SubsectionListModel -> Subsection(model = this, actionSink = sink, modifier = mod, padding = pad)

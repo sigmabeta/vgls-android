@@ -2,7 +2,7 @@ package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.SquareItemListModel
+import com.vgleadsheets.components.SmallTextListModel
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.model.history.TagValuePlayCount
 import com.vgleadsheets.model.tag.TagValue
@@ -11,7 +11,6 @@ import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import javax.inject.Inject
@@ -29,10 +28,11 @@ class MostPlaysTagValuesModule @Inject constructor(
 
     override fun title() = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_TAG_VALUES)
 
+    @Suppress("MagicNumber")
     override fun state() = songHistoryRepository
         .getMostPlaysTagValues()
         .map { list ->
-            list.filter { it.first.playCount > 4 }.shuffled()
+            list.filter { it.first.playCount > 4 }.take(10)
         }
         .map { pairs ->
             LCE.Content(
@@ -43,12 +43,10 @@ class MostPlaysTagValuesModule @Inject constructor(
                     items = pairs
                         .map { it.second }
                         .map { tagValue ->
-                            SquareItemListModel(
+                            SmallTextListModel(
                                 dataId = tagValue.id,
                                 name = "${tagValue.tagKeyName}: ${tagValue.name}",
-                                sourceInfo = null,
                                 clickAction = Action.MostPlaysTagValueClicked(tagValue.id),
-                                imagePlaceholder = Icon.DESCRIPTION,
                             )
                         },
                 )
