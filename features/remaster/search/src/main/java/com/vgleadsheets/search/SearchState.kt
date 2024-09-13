@@ -1,6 +1,7 @@
 package com.vgleadsheets.search
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingType
@@ -14,7 +15,9 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
+import com.vgleadsheets.ui.id
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -29,7 +32,13 @@ data class SearchState(
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         if (searchQuery.isBlank()) {
-            return historyItems()
+            val historyItems = historyItems()
+
+            return if (historyItems.size < 5) {
+                historyItems + searchCta(stringProvider)
+            } else {
+                historyItems
+            }.toImmutableList()
         }
         return (songItems() + gameItems() + composerItems())
             .toImmutableList()
@@ -49,6 +58,14 @@ data class SearchState(
             )
         }
     }
+
+    private fun searchCta(stringProvider: StringProvider) = listOf(
+        EmptyStateListModel(
+            iconId = Icon.SEARCH.id(),
+            explanation = stringProvider.getString(StringId.CTA_SEARCH),
+            showCrossOut = false,
+        )
+    )
 
     private fun songItems() = songResults.withStandardErrorAndLoading(
         loadingType = LoadingType.TEXT_CAPTION_IMAGE,

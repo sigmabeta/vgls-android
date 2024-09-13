@@ -37,7 +37,9 @@ class MostPlaysSongsModule @Inject constructor(
     override fun state() = songHistoryRepository
         .getMostPlaysSongs()
         .map { list ->
-            list.filter { it.first.playCount > 1 }.shuffled()
+            list.filter { it.first.playCount > 1 }
+                .shuffled()
+                .distinctBy { it.second.id }
         }
         .map { pairs ->
             LCE.Content(

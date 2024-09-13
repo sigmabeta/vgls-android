@@ -32,7 +32,9 @@ class MostPlaysTagValuesModule @Inject constructor(
     override fun state() = songHistoryRepository
         .getMostPlaysTagValues()
         .map { list ->
-            list.filter { it.first.playCount > 4 }.take(10)
+            list.filter { it.first.playCount > 4 }
+                .take(10)
+                .distinctBy { it.second.id }
         }
         .map { pairs ->
             LCE.Content(

@@ -10,5 +10,6 @@ enum class Icon {
     REFRESH,
     DIFFICULTY,
     TAG,
+    SEARCH,
     SEARCH_YOUTUBE,
 }

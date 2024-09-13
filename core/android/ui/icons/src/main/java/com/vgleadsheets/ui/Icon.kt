@@ -13,6 +13,7 @@ fun Icon.id(): Int {
         Icon.REFRESH -> R.drawable.ic_refresh_24dp
         Icon.DIFFICULTY -> R.drawable.ic_bar_chart_24
         Icon.TAG -> R.drawable.ic_tag_black_24dp
+        Icon.SEARCH -> R.drawable.ic_search_black_24dp
         Icon.SEARCH_YOUTUBE -> R.drawable.ic_play_circle_filled_24
     }
 }
