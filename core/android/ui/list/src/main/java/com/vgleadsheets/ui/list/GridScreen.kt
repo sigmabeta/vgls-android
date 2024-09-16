@@ -22,6 +22,7 @@ import com.vgleadsheets.list.ListStateActual
 fun GridScreen(
     state: ListStateActual,
     actionSink: ActionSink,
+    showDebug: Boolean,
     modifier: Modifier,
     minSize: Dp = 128.dp
 ) {
@@ -59,6 +60,7 @@ fun GridScreen(
             it.Content(
                 sink = actionSink,
                 mod = Modifier.animateItem(),
+                debug = showDebug,
                 pad = PaddingValues()
             )
         }

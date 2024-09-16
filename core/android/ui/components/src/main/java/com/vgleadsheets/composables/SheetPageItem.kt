@@ -15,6 +15,7 @@ fun SheetPageItem(
     model: SheetPageListModel,
     actionSink: ActionSink,
     fillMaxWidth: Boolean,
+    showDebug: Boolean,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
@@ -28,6 +29,7 @@ fun SheetPageItem(
         ),
         sheetId = model.dataId,
         fillMaxWidth = fillMaxWidth,
+        showDebug = showDebug,
         modifier = modifier
             .padding(padding)
             .clickable {

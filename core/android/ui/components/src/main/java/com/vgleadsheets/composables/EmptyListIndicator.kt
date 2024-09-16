@@ -31,13 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.ui.components.BuildConfig
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun EmptyListIndicator(
     model: ErrorStateListModel,
     modifier: Modifier,
+    showDebug: Boolean,
     onBlack: Boolean = false,
 ) {
     EmptyListIndicator(
@@ -45,7 +45,7 @@ fun EmptyListIndicator(
         iconId = com.vgleadsheets.ui.icons.R.drawable.ic_error_24dp,
         showCrossOut = false,
         error = model.error,
-        showDebug = BuildConfig.DEBUG,
+        showDebug = showDebug,
         onBlack = onBlack,
         modifier = modifier,
     )
@@ -260,11 +260,12 @@ private fun Sample() {
 @Composable
 private fun SampleError() {
     EmptyListIndicator(
-        ErrorStateListModel(
+        model = ErrorStateListModel(
             failedOperationName = "oops",
             errorString = "Enemy's broken away from me!",
             error = IllegalStateException("Could not maintain aggro. Try using provoke?"),
         ),
-        Modifier
+        showDebug = true,
+        modifier = Modifier
     )
 }

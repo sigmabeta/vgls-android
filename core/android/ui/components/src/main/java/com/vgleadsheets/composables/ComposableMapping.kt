@@ -38,6 +38,7 @@ import com.vgleadsheets.components.WideItemListModel
 @Composable
 fun ListModel.Content(
     sink: ActionSink,
+    debug: Boolean,
     mod: Modifier,
     pad: PaddingValues,
 ) {
@@ -46,9 +47,9 @@ fun ListModel.Content(
         is CtaListModel -> ActionItem(model = this, actionSink = sink, modifier = mod)
         is DropdownSettingListModel -> LabelDropdownListItem(model = this, modifier = mod, padding = pad)
         is EmptyStateListModel -> EmptyListIndicator(model = this, modifier = mod)
-        is ErrorStateListModel -> EmptyListIndicator(model = this, modifier = mod)
+        is ErrorStateListModel -> EmptyListIndicator(model = this, showDebug = debug, modifier = mod)
         is HeroImageListModel -> BigImage(model = this, actionSink = sink, modifier = mod, padding = pad)
-        is HorizontalScrollerListModel -> HorizontalScroller(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is HorizontalScrollerListModel -> HorizontalScroller(model = this, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
         is IconNameCaptionListModel -> IconNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is ImageNameCaptionListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is ImageNameListModel -> ImageNameListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
@@ -57,11 +58,11 @@ fun ListModel.Content(
         is MenuItemListModel -> MenuItem(model = this, actionSink = sink, modifier = mod)
         is NameCaptionListModel -> NameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is NotifListModel -> NotifListItem(model = this, actionSink = sink, modifier = mod)
-        is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = sink, modifier = mod, padding = pad)
+        is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
         is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SectionHeaderListModel -> SectionHeader(name = title, modifier = mod, padding = pad)
         is SearchHistoryListModel -> SearchHistoryListItem(model = this, modifier = mod, actionSink = sink, padding = pad)
-        is SheetPageListModel -> SheetPageItem(model = this, actionSink = sink, modifier = mod, fillMaxWidth = true, padding = pad)
+        is SheetPageListModel -> SheetPageItem(model = this, actionSink = sink, fillMaxWidth = true, showDebug = debug, modifier = mod, padding = pad)
         is SingleTextListModel -> LabelNoThingyItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SmallTextListModel -> SmallText(model = this, actionSink = sink, modifier = mod, padding = pad)
         is SquareItemListModel -> SquareItem(model = this, actionSink = sink, modifier = mod, padding = pad)

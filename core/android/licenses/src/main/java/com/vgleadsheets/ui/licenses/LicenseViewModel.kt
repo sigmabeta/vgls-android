@@ -3,6 +3,7 @@ package com.vgleadsheets.ui.licenses
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
@@ -18,6 +19,7 @@ class LicenseViewModel @Inject constructor(
     override val delayManager: DelayManager,
     override val eventDispatcher: EventDispatcher,
     private val stringProvider: StringProvider,
+    override val showDebugProvider: ShowDebugProvider,
 ) : VglsViewModel<State>() {
     override fun initialState() = State("file:///android_asset/open_source_licenses.html")
 

@@ -5,6 +5,7 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
@@ -28,6 +29,7 @@ class TopBarViewModel @Inject constructor(
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
+    override val showDebugProvider: ShowDebugProvider,
 ) : VglsViewModel<TopBarState>() {
     private var showTopBarJob: Job? = null
 

@@ -8,6 +8,7 @@ import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.appcomm.VglsState
+import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.list.VglsScheduler
@@ -35,6 +36,7 @@ abstract class VglsViewModel<StateType : VglsState> :
     protected abstract val dispatchers: VglsDispatchers
     protected abstract val delayManager: DelayManager
     protected abstract val eventDispatcher: EventDispatcher
+    protected abstract val showDebugProvider: ShowDebugProvider
     val scheduler by lazy {
         object : VglsScheduler {
             override val dispatchers = this@VglsViewModel.dispatchers
@@ -42,6 +44,7 @@ abstract class VglsViewModel<StateType : VglsState> :
             override val delayManager = this@VglsViewModel.delayManager
         }
     }
+    val showDebug by lazy { showDebugProvider.showDebugFlow }
 
     protected val internalUiState = MutableStateFlow(initialState())
     val uiState = internalUiState.asStateFlow()

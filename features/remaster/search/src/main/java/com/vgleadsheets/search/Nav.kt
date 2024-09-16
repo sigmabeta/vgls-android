@@ -37,11 +37,13 @@ fun NavGraphBuilder.searchScreenNavEntry(
         BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
 
         val state by viewModel.uiState.collectAsStateWithLifecycle()
+        val showDebug by viewModel.showDebug.collectAsStateWithLifecycle()
 
         SearchScreen(
             query = searchText,
             results = state.toListItems(viewModel.stringProvider),
             textFieldUpdater = textFieldUpdater,
+            showDebug = showDebug,
             actionSink = viewModel,
             modifier = globalModifier
         )

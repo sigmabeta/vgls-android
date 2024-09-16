@@ -7,6 +7,7 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
@@ -20,6 +21,7 @@ class ListViewModel @AssistedInject constructor(
     brainProvider: BrainProvider,
     private val hatchet: Hatchet,
     private val eventDispatcher: EventDispatcher,
+    private val showDebugProvider: ShowDebugProvider,
     @Assisted destination: Destination,
     @Assisted idArg: Long,
     @Assisted stringArg: String?,
@@ -32,6 +34,8 @@ class ListViewModel @AssistedInject constructor(
     )
 
     val uiState = brain.uiStateActual
+
+    val showDebug = showDebugProvider.showDebugFlow
 
     init {
         eventDispatcher.addEventSink(this)

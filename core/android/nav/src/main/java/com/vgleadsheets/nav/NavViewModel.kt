@@ -14,6 +14,7 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
@@ -45,6 +46,7 @@ class NavViewModel @Inject constructor(
     private val notifManager: NotifManager,
     private val updateManager: UpdateManager,
     private val debugSettingsManager: DebugSettingsManager,
+    override val showDebugProvider: ShowDebugProvider,
 ) : VglsViewModel<NavState>() {
     init {
         eventDispatcher.addEventSink(this)

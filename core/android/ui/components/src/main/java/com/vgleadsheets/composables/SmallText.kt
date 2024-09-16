@@ -128,6 +128,7 @@ private fun Sample() {
                 ),
                 actionSink = actionSink,
                 modifier = Modifier,
+                showDebug = true,
                 padding = padding
             )
         }

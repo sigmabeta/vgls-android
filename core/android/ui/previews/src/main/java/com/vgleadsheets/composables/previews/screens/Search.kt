@@ -187,6 +187,7 @@ private fun Content(
         query = state.searchQuery,
         results = state.toListItems(stringProvider),
         actionSink = actionSink,
+        showDebug = true,
         modifier = Modifier,
         textFieldUpdater = { }
     )

@@ -30,7 +30,6 @@ abstract class ListState : VglsState {
             toListItems(stringProvider)
                 .filter { it !is NoopListModel }
                 .toImmutableList()
-                
         } catch (ex: Exception) {
             persistentListOf(
                 ErrorStateListModel(

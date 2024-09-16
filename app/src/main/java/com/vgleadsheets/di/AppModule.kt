@@ -9,6 +9,7 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventDispatcherReal
 import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.appinfo.AppInfo
+import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.dispatchers.DelayManagerImpl
 import com.vgleadsheets.list.DelayManager
@@ -48,6 +49,18 @@ object AppModule {
         versionCode = BuildConfig.VERSION_CODE,
         buildTimeMs = BuildConfig.BUILD_TIME,
         buildBranch = BuildConfig.BUILD_BRANCH,
+    )
+
+    @Provides
+    @Singleton
+    fun provideShowDebugProvider(
+        debugSettingsManager: DebugSettingsManager,
+        coroutineScope: CoroutineScope,
+        dispatchers: VglsDispatchers,
+    ) = ShowDebugProvider(
+        debugSettingsManager,
+        coroutineScope,
+        dispatchers,
     )
 
     @Provides

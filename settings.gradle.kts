@@ -81,6 +81,7 @@ include(
     ":core:common:conversion",
     ":core:common:coroutines",
     ":core:common:database",
+    ":core:common:debug",
     ":core:common:downloader",
     ":core:common:images",
     ":core:common:list",

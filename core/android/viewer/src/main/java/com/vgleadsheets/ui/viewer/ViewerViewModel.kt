@@ -6,6 +6,7 @@ import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
@@ -33,6 +34,7 @@ class ViewerViewModel @AssistedInject constructor(
     override val dispatchers: VglsDispatchers,
     override val delayManager: DelayManager,
     override val eventDispatcher: EventDispatcher,
+    override val showDebugProvider: ShowDebugProvider,
     @Assisted("id") idArg: Long,
     @Assisted("page") pageArg: Long,
 ) : VglsViewModel<ViewerState>(),

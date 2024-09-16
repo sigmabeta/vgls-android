@@ -7,6 +7,7 @@ import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
@@ -42,6 +43,7 @@ class SearchViewModel @AssistedInject constructor(
     override val eventDispatcher: EventDispatcher,
     val stringProvider: StringProvider,
     private val searchRepository: SearchRepository,
+    override val showDebugProvider: ShowDebugProvider,
     @Assisted("textUpdater") private val textUpdater: (String) -> Unit,
 ) : VglsViewModel<SearchState>(),
     ActionSink,

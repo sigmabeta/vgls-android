@@ -37,6 +37,7 @@ import kotlinx.collections.immutable.toImmutableList
 fun HorizontalScroller(
     model: HorizontalScrollerListModel,
     actionSink: ActionSink,
+    showDebug: Boolean,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
@@ -54,6 +55,7 @@ fun HorizontalScroller(
         ) {
             it.Content(
                 sink = actionSink,
+                debug = showDebug,
                 mod = Modifier.animateItem(),
                 pad = PaddingValues()
             )
@@ -127,6 +129,7 @@ private fun SquareItemSection(rng: Random, padding: PaddingValues) {
         ),
         PreviewActionSink { },
         modifier = Modifier,
+        showDebug = true,
         padding = padding
     )
 }
@@ -153,6 +156,7 @@ private fun LoadingSquareItemSection(rng: Random, padding: PaddingValues) {
             }.toImmutableList()
         ),
         PreviewActionSink { },
+        showDebug = true,
         modifier = Modifier,
         padding = padding
     )
@@ -182,6 +186,7 @@ private fun WideItemSection(rng: Random, padding: PaddingValues) {
             }.toImmutableList()
         ),
         PreviewActionSink { },
+        showDebug = true,
         modifier = Modifier,
         padding = padding
     )

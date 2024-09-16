@@ -40,6 +40,7 @@ fun SearchScreen(
     results: ImmutableList<ListModel>,
     actionSink: ActionSink,
     textFieldUpdater: (String) -> Unit,
+    showDebug: Boolean,
     modifier: Modifier = Modifier,
     minSize: Dp = 128.dp
 ) {
@@ -83,6 +84,7 @@ fun SearchScreen(
             ) {
                 it.Content(
                     sink = actionSink,
+                    debug = showDebug,
                     mod = Modifier.animateItem(),
                     pad = PaddingValues(),
                 )

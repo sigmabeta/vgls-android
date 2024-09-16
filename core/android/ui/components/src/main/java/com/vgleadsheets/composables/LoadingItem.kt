@@ -123,6 +123,7 @@ private fun ColumnScope.Sample(
         ),
         actionSink = PreviewActionSink(),
         modifier = Modifier,
+        showDebug = true,
         padding = paddingValues
     )
 }

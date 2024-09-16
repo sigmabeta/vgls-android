@@ -57,11 +57,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ViewerScreen(
     state: ViewerState,
     actionSink: ActionSink,
+    showDebug: Boolean,
     modifier: Modifier
 ) {
     Box(
@@ -82,6 +82,7 @@ fun ViewerScreen(
         SheetPager(
             items,
             pagerState,
+            showDebug,
             actionSink
         )
 
@@ -235,6 +236,7 @@ private const val ALPHA_BACKGROUND_BUTTON_INT = (ALPHA_BACKGROUND_BUTTON * 255).
 private fun BoxScope.SheetPager(
     items: ImmutableList<SheetPageListModel>,
     pagerState: PagerState,
+    showDebug: Boolean,
     actionSink: ActionSink,
 ) {
     LaunchedEffect(Unit) {
@@ -255,6 +257,7 @@ private fun BoxScope.SheetPager(
         item.Content(
             sink = actionSink,
             mod = Modifier,
+            debug = showDebug,
             pad = PaddingValues()
         )
     }
@@ -384,6 +387,7 @@ private fun Sheets(
     ViewerScreen(
         state = state,
         actionSink = actionSink,
+        showDebug = true,
         modifier = Modifier.fillMaxSize()
     )
 }

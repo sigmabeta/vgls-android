@@ -64,6 +64,7 @@ class MenuViewModelBrain(
         emitEvent(VglsEvent.GiantBombLinkClicked)
     }
 
+    @Suppress("MagicNumber")
     private fun onBuildDateClicked() {
         val oldValue = (internalUiState.value as State).debugClickCount
         val newValue = oldValue + 1

@@ -27,11 +27,13 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
+@Suppress("LongMethod")
 fun CrossfadeSheet(
     sourceInfo: Any,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
     fillMaxWidth: Boolean,
+    showDebug: Boolean,
     modifier: Modifier,
     simulateError: Boolean = false
 ) {
@@ -40,7 +42,12 @@ fun CrossfadeSheet(
             contentAlignment = Alignment.Center,
             modifier = modifier.fillMaxSize()
         ) {
-            ErrorState(sourceInfo, modifier, IllegalArgumentException("Oops it didn't work."))
+            ErrorState(
+                sourceInfo,
+                modifier,
+                showDebug,
+                IllegalArgumentException("Oops it didn't work.")
+            )
         }
         return
     }
@@ -87,6 +94,7 @@ fun CrossfadeSheet(
                 ErrorState(
                     sourceInfo = sourceInfo,
                     modifier = modifier,
+                    showDebug = showDebug,
                     error = state.result.throwable
                 )
             }
@@ -97,13 +105,19 @@ fun CrossfadeSheet(
 }
 
 @Composable
-private fun ErrorState(sourceInfo: Any, modifier: Modifier, error: Throwable) {
+private fun ErrorState(
+    sourceInfo: Any,
+    modifier: Modifier,
+    showDebug: Boolean,
+    error: Throwable
+) {
     EmptyListIndicator(
         model = ErrorStateListModel(
             failedOperationName = sourceInfo.toString(),
             errorString = "Can't load this sheet. Check your network connection and try again?",
             error = error
         ),
+        showDebug = showDebug,
         modifier = modifier
     )
 }
@@ -178,6 +192,7 @@ private fun SampleLoading() {
         ),
         sheetId = 1234L,
         modifier = Modifier.fillMaxSize(),
+        showDebug = true,
         fillMaxWidth = true,
     )
 }
@@ -196,6 +211,7 @@ private fun SampleSheetPageOne() {
         ),
         sheetId = 1234L,
         modifier = Modifier.fillMaxSize(),
+        showDebug = true,
         fillMaxWidth = true,
     )
 }
@@ -214,6 +230,7 @@ private fun SampleSheetPageTwo() {
         ),
         sheetId = 1234L,
         modifier = Modifier.fillMaxSize(),
+        showDebug = true,
         fillMaxWidth = true,
     )
 }
@@ -233,6 +250,7 @@ private fun SampleError() {
         sheetId = 1234L,
         modifier = Modifier.fillMaxWidth(),
         simulateError = true,
+        showDebug = true,
         fillMaxWidth = true,
     )
 }

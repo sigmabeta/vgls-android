@@ -56,17 +56,20 @@ fun NavGraphBuilder.listScreenEntry(
 
         BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
         val state by viewModel.uiState.collectAsStateWithLifecycle()
+        val showDebug by viewModel.showDebug.collectAsStateWithLifecycle()
 
         if (destination.renderAsGrid) {
             GridScreen(
                 state = state,
                 actionSink = viewModel,
+                showDebug = showDebug,
                 modifier = globalModifier,
             )
         } else {
             ListScreen(
                 state = state,
                 actionSink = viewModel,
+                showDebug = showDebug,
                 modifier = globalModifier,
             )
         }

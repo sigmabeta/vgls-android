@@ -45,10 +45,12 @@ fun NavGraphBuilder.viewerScreenNavEntry(
         BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
 
         val state by viewModel.uiState.collectAsStateWithLifecycle()
+        val showDebug by viewModel.showDebug.collectAsStateWithLifecycle()
 
         ViewerScreen(
             state = state,
             actionSink = viewModel,
+            showDebug = showDebug,
             modifier = globalModifier
         )
     }

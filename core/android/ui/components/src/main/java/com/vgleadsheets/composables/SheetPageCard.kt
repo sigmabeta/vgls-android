@@ -32,6 +32,7 @@ import kotlinx.collections.immutable.toImmutableList
 fun SheetPageCard(
     model: SheetPageListModel,
     actionSink: ActionSink,
+    showDebug: Boolean,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
@@ -44,9 +45,10 @@ fun SheetPageCard(
             SheetPageItem(
                 model = model,
                 actionSink = actionSink,
+                fillMaxWidth = false,
+                showDebug = showDebug,
                 modifier = Modifier
                     .wrapContentHeight(),
-                fillMaxWidth = false,
                 padding = PaddingValues(),
             )
 
@@ -124,6 +126,7 @@ private fun SamplePdf() {
         modifier = Modifier.padding(
             horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
         ),
+        showDebug = true,
         padding = PaddingValues(horizontal = 8.dp)
     )
 }

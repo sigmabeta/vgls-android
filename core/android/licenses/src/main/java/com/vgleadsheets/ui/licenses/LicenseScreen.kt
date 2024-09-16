@@ -44,8 +44,9 @@ fun LicenseScreen(
                 model = ErrorStateListModel(
                     failedOperationName = "webpageLoad",
                     errorString = resources.getString(R.string.error_webview_failed),
-                    error = RuntimeException(errorMessage)
+                    error = RuntimeException(errorMessage),
                 ),
+                showDebug = false,
                 modifier = Modifier
                     .align(Alignment.Center),
             )

@@ -128,6 +128,7 @@ private fun OnePageSheet(
             pageNumber = 0,
             clickAction = VglsAction.Noop,
         ),
+        showDebug = true,
         modifier = Modifier,
     )
 }
@@ -160,6 +161,7 @@ private fun ColumnScope.ComposerSection(
             ),
             actionSink = actionSink,
             modifier = Modifier,
+            showDebug = true,
             padding = padding,
         )
     }

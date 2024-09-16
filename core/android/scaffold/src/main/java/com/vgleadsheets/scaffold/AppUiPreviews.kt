@@ -47,8 +47,8 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.viewer.Action
 import com.vgleadsheets.ui.viewer.ViewerScreen
 import com.vgleadsheets.ui.viewer.ViewerState
-import kotlinx.collections.immutable.toImmutableList
 import java.util.Random
+import kotlinx.collections.immutable.toImmutableList
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
@@ -195,6 +195,7 @@ private fun SquareItemSection(rng: Random, modifier: Modifier, padding: PaddingV
         ),
         PreviewActionSink { },
         modifier = Modifier,
+        showDebug = true,
         padding = padding,
     )
 }
@@ -224,6 +225,7 @@ private fun WideItemSection(rng: Random, modifier: Modifier, padding: PaddingVal
         ),
         PreviewActionSink { },
         modifier = Modifier,
+        showDebug = true,
         padding = padding,
     )
 }
@@ -304,6 +306,7 @@ private fun Sheets(
     ViewerScreen(
         state = state,
         actionSink = actionSink,
+        showDebug = true,
         modifier = Modifier
     )
 }

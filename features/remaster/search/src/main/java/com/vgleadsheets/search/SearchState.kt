@@ -35,6 +35,7 @@ data class SearchState(
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel()
 
+    @Suppress("TooGenericExceptionCaught")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
         val tempList = if (searchQuery.isBlank()) {
             val historyItems = historyItems()
@@ -49,7 +50,6 @@ data class SearchState(
         }
             .filter { it !is NoopListModel }
             .toImmutableList()
-
 
         try {
             checkForDupes(tempList)

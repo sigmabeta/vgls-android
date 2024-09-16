@@ -18,6 +18,7 @@ import com.vgleadsheets.list.ListStateActual
 fun ListScreen(
     state: ListStateActual,
     actionSink: ActionSink,
+    showDebug: Boolean,
     modifier: Modifier
 ) {
     val title = state.title
@@ -41,6 +42,7 @@ fun ListScreen(
             it.Content(
                 sink = actionSink,
                 mod = Modifier.animateItem(),
+                debug = showDebug,
                 pad = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
             )
         }
