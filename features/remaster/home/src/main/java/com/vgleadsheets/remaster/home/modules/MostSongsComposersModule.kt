@@ -34,7 +34,7 @@ class MostSongsComposersModule @Inject constructor(
         .map { composers ->
             LCE.Content(
                 HomeModuleState(
-                    moduleName = this.javaClass.simpleName,
+                    moduleName = "MostSongsComposersModule",
                     shouldShow = composers.isNotEmpty(),
                     title = title(),
                     items = composers.map { composer ->

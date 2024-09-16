@@ -44,7 +44,7 @@ class MostPlaysSongsModule @Inject constructor(
         .map { pairs ->
             LCE.Content(
                 HomeModuleState(
-                    moduleName = this.javaClass.simpleName,
+                    moduleName = "MostPlaysSongsModule",
                     shouldShow = shouldShow(pairs),
                     title = title(),
                     items = pairs

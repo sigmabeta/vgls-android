@@ -32,7 +32,7 @@ class RngModule @Inject constructor(
     // Public for use in composable previews only
     fun content() = LCE.Content(
         HomeModuleState(
-            moduleName = this.javaClass.simpleName,
+            moduleName = "RngModule",
             shouldShow = true,
             title = title(),
             items = listOf(

@@ -31,7 +31,7 @@ class NotifModule @Inject constructor(
         .map { notifs ->
             LCE.Content(
                 HomeModuleState(
-                    moduleName = this.javaClass.simpleName,
+                    moduleName = "NotifModule",
                     shouldShow = notifs.isNotEmpty(),
                     title = title(),
                     items = notifs.map { notif ->

@@ -39,7 +39,7 @@ class MostPlaysTagValuesModule @Inject constructor(
         .map { pairs ->
             LCE.Content(
                 HomeModuleState(
-                    moduleName = this.javaClass.simpleName,
+                    moduleName = "MostPlaysTagValuesModule",
                     shouldShow = shouldShow(pairs),
                     title = title(),
                     items = pairs

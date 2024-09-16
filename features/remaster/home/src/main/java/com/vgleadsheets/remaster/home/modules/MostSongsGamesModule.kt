@@ -34,7 +34,7 @@ class MostSongsGamesModule @Inject constructor(
         .map { games ->
             LCE.Content(
                 HomeModuleState(
-                    moduleName = this.javaClass.simpleName,
+                    moduleName = "MostSongsGamesModule",
                     shouldShow = games.isNotEmpty(),
                     title = title(),
                     items = games.map { game ->

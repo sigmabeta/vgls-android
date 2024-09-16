@@ -49,7 +49,7 @@ class NeverPlayedSongModule @Inject constructor(
         .map { songs ->
             LCE.Content(
                 HomeModuleState(
-                    moduleName = this.javaClass.simpleName,
+                    moduleName = "NeverPlayedSongModule",
                     shouldShow = songs.isNotEmpty(),
                     title = title(),
                     items = songs

@@ -72,10 +72,10 @@ abstract class HomeModule(
 
     private fun loadOperationName() = "${this.javaClass.name}.loading"
 
-    private fun loadingState() = loadingStateFromName(this.javaClass.simpleName, title(), loadingType())
+    private fun loadingState() = loadingStateFromName(title() ?: "Unknown Module", title(), loadingType())
 
     private fun errorState(error: Throwable) = HomeModuleState(
-        moduleName = this.javaClass.simpleName,
+        moduleName = title() ?: "Unknown Module",
         shouldShow = true, // TODO Only if debug
         title = null,
         items = listOf(
