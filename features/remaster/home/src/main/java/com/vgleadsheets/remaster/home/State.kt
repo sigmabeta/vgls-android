@@ -7,9 +7,7 @@ import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 data class State(
     val moduleStatesByPriority: Map<ModuleDetails, LCE<HomeModuleState>> = emptyMap()
@@ -19,7 +17,7 @@ data class State(
         shouldShowBack = false,
     )
 
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
+    override fun toListItems(stringProvider: StringProvider): List<ListModel> {
         if (moduleStatesByPriority.isEmpty()) {
             return persistentListOf()
         }
@@ -53,7 +51,6 @@ data class State(
         return statesToShow
             .map { it.toListItems() }
             .flatten()
-            .toImmutableList()
     }
 
     @Suppress("MagicNumber")

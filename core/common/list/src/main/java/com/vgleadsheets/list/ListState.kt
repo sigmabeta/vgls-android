@@ -7,16 +7,16 @@ import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
+import com.vgleadsheets.components.NoopListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 abstract class ListState : VglsState {
     abstract fun title(stringProvider: StringProvider): TitleBarModel
-    abstract fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel>
+    abstract fun toListItems(stringProvider: StringProvider): List<ListModel>
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     fun toActual(stringProvider: StringProvider): ListStateActual {
@@ -28,6 +28,9 @@ abstract class ListState : VglsState {
 
         val listItems = try {
             toListItems(stringProvider)
+                .filter { it !is NoopListModel }
+                .toImmutableList()
+                
         } catch (ex: Exception) {
             persistentListOf(
                 ErrorStateListModel(
@@ -35,6 +38,24 @@ abstract class ListState : VglsState {
                     errorString = stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_TITLE),
                     error = ex
                 )
+            )
+        }
+
+        try {
+            checkForDupes(listItems)
+        } catch (ex: Exception) {
+            val errorMessage = stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_DESC)
+
+            val items = persistentListOf(
+                ErrorStateListModel(
+                    failedOperationName = "renderScreen",
+                    errorString = errorMessage,
+                    error = ex,
+                )
+            )
+            return ListStateActual(
+                title = title,
+                listItems = items,
             )
         }
 
@@ -51,7 +72,7 @@ abstract class ListState : VglsState {
         loadingHorizScrollable: Boolean = false,
         loadingOperationNameOverride: String? = null,
         content: LCE.Content<ModelType>.() -> List<ListModel>
-    ): ImmutableList<ListModel> {
+    ): List<ListModel> {
         return when (this) {
             is LCE.Content -> content()
             is LCE.Error -> error(error)
@@ -64,7 +85,7 @@ abstract class ListState : VglsState {
             )
 
             LCE.Uninitialized -> emptyList()
-        }.toImmutableList()
+        }
     }
 
     protected fun loading(

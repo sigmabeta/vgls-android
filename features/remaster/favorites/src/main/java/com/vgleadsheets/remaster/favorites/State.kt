@@ -15,8 +15,6 @@ import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 
 data class State(
     val favoriteSongs: LCE<List<Song>> = LCE.Uninitialized,
@@ -27,14 +25,13 @@ data class State(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_FAVORITES)
     )
 
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
+    override fun toListItems(stringProvider: StringProvider): List<ListModel> {
         return listOf(
             songsToListItems(favoriteSongs, stringProvider),
             gamesToListItems(favoriteGames, stringProvider),
             composersToListItems(favoriteComposers, stringProvider),
         )
             .flatten()
-            .toImmutableList()
     }
 
     private fun songsToListItems(

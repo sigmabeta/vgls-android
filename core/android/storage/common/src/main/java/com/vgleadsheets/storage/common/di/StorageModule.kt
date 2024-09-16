@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.storage.common.AndroidDataStore
 import com.vgleadsheets.storage.common.Storage
 import dagger.Module
@@ -33,10 +34,12 @@ object StorageModule {
     fun provideStorage(
         dataStore: DataStore<Preferences>,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers
+        dispatchers: VglsDispatchers,
+        hatchet: Hatchet
     ): Storage = AndroidDataStore(
         dataStore = dataStore,
         coroutineScope = coroutineScope,
         dispatchers = dispatchers,
+        hatchet = hatchet,
     )
 }

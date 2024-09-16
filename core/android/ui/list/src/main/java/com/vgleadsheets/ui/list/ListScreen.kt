@@ -13,7 +13,6 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.list.ListStateActual
-import com.vgleadsheets.list.checkForDupes
 
 @Composable
 fun ListScreen(
@@ -28,12 +27,6 @@ fun ListScreen(
         LaunchedEffect(title.title) {
             actionSink.sendAction(VglsAction.Resume)
         }
-    }
-    try {
-        checkForDupes(items)
-    } catch (ex: IllegalArgumentException) {
-        ErrorScreen(ex, modifier.fillMaxSize())
-        return
     }
 
     LazyColumn(

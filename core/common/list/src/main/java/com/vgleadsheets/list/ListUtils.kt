@@ -2,9 +2,9 @@ package com.vgleadsheets.list
 
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ListModel
-import kotlinx.collections.immutable.ImmutableList
+import com.vgleadsheets.components.NoopListModel
 
-fun checkForDupes(items: ImmutableList<ListModel>) {
+fun checkForDupes(items: List<ListModel>) {
     val duplicateIds = items
         .groupingBy { it.dataId }
         .eachCount()
@@ -26,5 +26,21 @@ fun checkForDupes(items: ImmutableList<ListModel>) {
     val horizScrollers = items.filterIsInstance<HorizontalScrollerListModel>()
     horizScrollers.forEach {
         checkForDupes(it.scrollingItems)
+    }
+}
+
+fun ifTrue(condition: Boolean, content: () -> ListModel): ListModel {
+    return if (condition) {
+        content()
+    } else {
+        NoopListModel
+    }
+}
+
+fun <InputType> ifNotNull(input: InputType?, content: (InputType) -> ListModel): ListModel {
+    return if (input != null) {
+        content(input)
+    } else {
+        NoopListModel
     }
 }

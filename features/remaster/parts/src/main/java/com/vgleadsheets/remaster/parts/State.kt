@@ -8,8 +8,6 @@ import com.vgleadsheets.model.Part
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 
 data class State(
     val selectedPart: Part? = null
@@ -19,7 +17,7 @@ data class State(
         shouldShowBack = true
     )
 
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> = Part
+    override fun toListItems(stringProvider: StringProvider): List<ListModel> = Part
         .entries
         .map { PartSelectorOption.valueOf(it.name) }
         .map {
@@ -30,5 +28,5 @@ data class State(
                 clickAction = Action.PartSelected(it),
                 selected = it.apiId == selectedPart?.apiId
             )
-        }.toImmutableList()
+        }
 }

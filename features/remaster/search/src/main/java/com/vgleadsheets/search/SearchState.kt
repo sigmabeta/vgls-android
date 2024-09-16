@@ -2,13 +2,16 @@ package com.vgleadsheets.search
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.EmptyStateListModel
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingType
+import com.vgleadsheets.components.NoopListModel
 import com.vgleadsheets.components.SearchHistoryListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
+import com.vgleadsheets.list.checkForDupes
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
@@ -19,6 +22,7 @@ import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.id
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Suppress("MagicNumber")
@@ -32,20 +36,41 @@ data class SearchState(
     override fun title(stringProvider: StringProvider) = TitleBarModel()
 
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        if (searchQuery.isBlank()) {
+        val tempList = if (searchQuery.isBlank()) {
             val historyItems = historyItems()
 
-            return if (historyItems.size < 5) {
+            if (historyItems.size < 5) {
                 historyItems + searchCta(stringProvider)
             } else {
                 historyItems
-            }.toImmutableList()
+            }
+        } else {
+            (songItems() + gameItems() + composerItems())
         }
-        return (songItems() + gameItems() + composerItems())
+            .filter { it !is NoopListModel }
             .toImmutableList()
+
+
+        try {
+            checkForDupes(tempList)
+        } catch (ex: Exception) {
+            val errorMessage = stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_DESC)
+
+            val items = persistentListOf(
+                ErrorStateListModel(
+                    failedOperationName = "renderScreen",
+                    errorString = errorMessage,
+                    error = ex,
+                )
+            )
+
+            return items.toImmutableList()
+        }
+
+        return tempList
     }
 
-    private fun historyItems(): ImmutableList<ListModel> = searchHistory.withStandardErrorAndLoading(
+    private fun historyItems(): List<ListModel> = searchHistory.withStandardErrorAndLoading(
         loadingType = LoadingType.SINGLE_TEXT,
         loadingItemCount = 10,
         loadingWithHeader = false

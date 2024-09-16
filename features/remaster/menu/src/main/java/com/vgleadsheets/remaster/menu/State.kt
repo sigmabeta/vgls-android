@@ -7,6 +7,7 @@ import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
+import com.vgleadsheets.components.NoopListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
@@ -15,8 +16,6 @@ import com.vgleadsheets.model.Part
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import java.util.Locale
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.format.DateTimeFormatter
@@ -26,6 +25,8 @@ data class State(
     val selectedPart: Part? = null,
     val keepScreenOn: Boolean? = null,
     val appInfo: AppInfo? = null,
+    val debugClickCount: Int = 0,
+    val shouldShowDebug: Boolean? = null,
     val debugShouldDelay: Boolean? = null,
     val debugShouldShowNavSnackbars: Boolean? = null,
     val songRecordsGenerated: Int? = 0,
@@ -35,7 +36,7 @@ data class State(
         shouldShowBack = true
     )
 
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> = listOfNotNull(
+    override fun toListItems(stringProvider: StringProvider): List<ListModel> = listOfNotNull(
         keepScreenOn(stringProvider),
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_ABOUT)),
         website(stringProvider),
@@ -45,12 +46,12 @@ data class State(
         appBuildBranch(stringProvider),
         appBuildDate(stringProvider),
         licenses(stringProvider),
-        sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)),
+        ifShowDebugEnabled { sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)) },
         shouldDelay(stringProvider),
         shouldShowNavSnackbars(stringProvider),
         generateUserRecords(stringProvider),
         restartApp(stringProvider),
-    ).toImmutableList()
+    )
 
     private fun restartApp(stringProvider: StringProvider) = SingleTextListModel(
         name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_RESTART),
@@ -96,57 +97,53 @@ data class State(
         clickAction = Action.GiantBombClicked
     )
 
-    private fun appVersionName(stringProvider: StringProvider): LabelValueListModel? {
-        return LabelValueListModel(
-            label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_NAME),
-            value = appInfo?.versionName,
-            clickAction = VglsAction.Noop
-        )
-    }
+    private fun appVersionName(stringProvider: StringProvider) = LabelValueListModel(
+        label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_NAME),
+        value = appInfo?.versionName,
+        clickAction = VglsAction.Noop
+    )
 
     @Suppress("ReturnCount")
-    private fun appVersionCode(stringProvider: StringProvider): LabelValueListModel? {
-        if (appInfo?.buildBranch == "release") return null
-
+    private fun appVersionCode(stringProvider: StringProvider) = ifShowDebugEnabled {
         val versionCode = appInfo?.versionCode
         val value = versionCode?.let { appInfo?.versionCode.toString() }
 
-        return LabelValueListModel(
+        LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_CODE),
             value = value,
             clickAction = VglsAction.Noop
         )
     }
 
-    private fun appBuildDate(stringProvider: StringProvider): LabelValueListModel? {
-        return LabelValueListModel(
-            label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
-            value = appInfo?.buildTimeMs?.toBuildDate(),
-            clickAction = VglsAction.Noop
+    private fun appBuildDate(stringProvider: StringProvider) = LabelValueListModel(
+        label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
+        value = appInfo?.buildTimeMs?.toBuildDate(),
+        clickAction = Action.BuildDateClicked
+    )
+
+    private fun appBuildBranch(stringProvider: StringProvider) = LabelValueListModel(
+        label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
+        value = appInfo?.buildBranch,
+        clickAction = VglsAction.Noop
+    )
+
+    private fun shouldDelay(stringProvider: StringProvider) = ifShowDebugEnabled {
+        CheckableListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_DELAY),
+            clickAction = Action.DebugDelayClicked,
+            settingId = StringId.SETTINGS_LABEL_DEBUG_DELAY.name,
+            checked = debugShouldDelay,
         )
     }
 
-    private fun appBuildBranch(stringProvider: StringProvider): LabelValueListModel? {
-        return LabelValueListModel(
-            label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
-            value = appInfo?.buildBranch,
-            clickAction = VglsAction.Noop
+    private fun shouldShowNavSnackbars(stringProvider: StringProvider) = ifShowDebugEnabled {
+        CheckableListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS),
+            clickAction = Action.DebugShowNavSnackbarsClicked,
+            settingId = StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS.name,
+            checked = debugShouldShowNavSnackbars,
         )
     }
-
-    private fun shouldDelay(stringProvider: StringProvider) = CheckableListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_DELAY),
-        clickAction = Action.DebugDelayClicked,
-        settingId = StringId.SETTINGS_LABEL_DEBUG_DELAY.name,
-        checked = debugShouldDelay,
-    )
-
-    private fun shouldShowNavSnackbars(stringProvider: StringProvider) = CheckableListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS),
-        clickAction = Action.DebugShowNavSnackbarsClicked,
-        settingId = StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS.name,
-        checked = debugShouldShowNavSnackbars,
-    )
 
     private fun Long.toBuildDate(): String {
         val instant = Instant.ofEpochMilli(this)
@@ -158,5 +155,13 @@ data class State(
         if (this == 0L) return formatter.format(Instant.now())
 
         return formatter.format(instant)
+    }
+
+    private fun ifShowDebugEnabled(content: () -> ListModel): ListModel {
+        return if (shouldShowDebug == true) {
+            content()
+        } else {
+            NoopListModel
+        }
     }
 }

@@ -27,10 +27,8 @@ import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfo
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toPersistentList
 
 data class State(
     val sheetUrlInfo: LCE<UrlInfo> = LCE.Uninitialized,
@@ -53,7 +51,7 @@ data class State(
         }
     }
 
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
+    override fun toListItems(stringProvider: StringProvider): List<ListModel> {
         val sheetPreviewSection = sheetPreviewSection()
         val ctaSection = ctaSection(stringProvider)
         val composerModels = composerSection(stringProvider)
@@ -72,7 +70,7 @@ data class State(
                 gameModel +
                 difficultySection +
                 aboutSection
-            ).toPersistentList()
+            )
     }
 
     private fun sheetPreviewSection() = song.withStandardErrorAndLoading(

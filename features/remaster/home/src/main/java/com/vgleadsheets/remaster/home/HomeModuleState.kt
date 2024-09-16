@@ -5,6 +5,7 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.list.ifNotNull
 import kotlinx.collections.immutable.toImmutableList
 
 data class HomeModuleState(
@@ -15,47 +16,45 @@ data class HomeModuleState(
     val title: String? = null,
     val items: List<ListModel> = emptyList()
 ) {
-    fun toListItems() = if (shouldShow) {
+    fun toListItems(): List<ListModel> = if (shouldShow) {
         if (isLoading) {
-            createTitleLoadingListModel(title) + createHorizScrollerLoadingListModel()
+            listOf(
+                createTitleLoadingListModel(title),
+                createHorizScrollerLoadingListModel()
+            )
         } else {
-            createTitleListModel(title) + createHorizScrollerListModel()
+            listOf(
+                createTitleListModel(title),
+                createHorizScrollerListModel()
+            )
         }
     } else {
         emptyList()
     }
 
-    private fun createTitleListModel(title: String?) = if (title != null) {
-        listOf(SectionHeaderListModel(title))
-    } else {
-        emptyList()
+    private fun createTitleListModel(title: String?) = ifNotNull(title) {
+        SectionHeaderListModel(it)
     }
 
-    private fun createHorizScrollerListModel(): List<HorizontalScrollerListModel> {
+    private fun createHorizScrollerListModel(): HorizontalScrollerListModel {
         val dataId = ("$moduleName.items".hashCode()).toLong()
 
-        return listOf(
-            HorizontalScrollerListModel(
-                dataId = dataId,
-                scrollingItems = items.toImmutableList()
-            )
+        return HorizontalScrollerListModel(
+            dataId = dataId,
+            scrollingItems = items.toImmutableList()
         )
     }
 
-    private fun createTitleLoadingListModel(title: String?) = if (title != null) {
-        listOf(
-            LoadingItemListModel(
-                loadOperationName = "$title.loading.header",
-                loadingType = LoadingType.SECTION_HEADER,
-                loadPositionOffset = 0
-            )
+    private fun createTitleLoadingListModel(title: String?) = ifNotNull(title) {
+        LoadingItemListModel(
+            loadOperationName = "$title.loading.header",
+            loadingType = LoadingType.SECTION_HEADER,
+            loadPositionOffset = 0
         )
-    } else {
-        emptyList()
     }
 
     @Suppress("MagicNumber")
-    private fun createHorizScrollerLoadingListModel(): List<HorizontalScrollerListModel> {
+    private fun createHorizScrollerLoadingListModel(): HorizontalScrollerListModel {
         val items = List(5) { index ->
             LoadingItemListModel(
                 loadingType = loadingType,
@@ -65,11 +64,9 @@ data class HomeModuleState(
         }
 
         val dataId = ("$moduleName.items".hashCode()).toLong()
-        return listOf(
-            HorizontalScrollerListModel(
-                dataId = dataId,
-                scrollingItems = items.toImmutableList()
-            )
+        return HorizontalScrollerListModel(
+            dataId = dataId,
+            scrollingItems = items.toImmutableList()
         )
     }
 }

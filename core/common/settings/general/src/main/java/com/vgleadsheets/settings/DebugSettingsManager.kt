@@ -6,6 +6,10 @@ import kotlinx.coroutines.flow.map
 class DebugSettingsManager(
     private val storage: Storage
 ) {
+    fun getShouldShowDebug() = getBoolean(SETTING_SHOW_DEBUG_OPTIONS)
+
+    fun setShouldShowDebug(value: Boolean) = setBoolean(SETTING_SHOW_DEBUG_OPTIONS, value)
+
     fun getShouldDelay() = getBoolean(SETTING_DELAY_LOADING_OPS)
 
     fun setShouldDelay(value: Boolean) = setBoolean(SETTING_DELAY_LOADING_OPS, value)
@@ -24,6 +28,7 @@ class DebugSettingsManager(
         .map { it?.toBooleanStrictOrNull() }
 
     companion object {
+        private const val SETTING_SHOW_DEBUG_OPTIONS = "setting.debug.visible"
         private const val SETTING_DELAY_LOADING_OPS = "setting.debug.delay"
         private const val SETTING_NAV_SHOW_SNACKBARS = "setting.debug.nav.snackbars"
     }

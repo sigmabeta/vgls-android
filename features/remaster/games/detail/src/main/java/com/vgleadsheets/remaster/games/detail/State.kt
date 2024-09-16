@@ -19,9 +19,7 @@ import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toPersistentList
 
 data class State(
     val game: LCE<Game> = LCE.Uninitialized,
@@ -38,13 +36,13 @@ data class State(
     }
 
     @Suppress("LongMethod")
-    override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
+    override fun toListItems(stringProvider: StringProvider): List<ListModel> {
         val gameModels = gameSection()
         val ctaModels = ctaSection(stringProvider)
         val composerModels = composerSection(stringProvider)
         val songModels = songSection(stringProvider)
 
-        return (gameModels + ctaModels + composerModels + songModels).toPersistentList()
+        return (gameModels + ctaModels + composerModels + songModels)
     }
 
     private fun gameSection() = game.withStandardErrorAndLoading(

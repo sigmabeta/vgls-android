@@ -37,6 +37,7 @@ class MenuViewModelBrain(
             is Action.KeepScreenOnClicked -> onKeepScreenOnClicked()
             is Action.WebsiteLinkClicked -> onWebsiteLinkClicked()
             is Action.GiantBombClicked -> onGiantBombClicked()
+            is Action.BuildDateClicked -> onBuildDateClicked()
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
             is Action.DebugDelayClicked -> onDebugDelayClicked()
             is Action.DebugShowNavSnackbarsClicked -> onDebugShowNavSnackbarsClicked()
@@ -63,6 +64,23 @@ class MenuViewModelBrain(
         emitEvent(VglsEvent.GiantBombLinkClicked)
     }
 
+    private fun onBuildDateClicked() {
+        val oldValue = (internalUiState.value as State).debugClickCount
+        val newValue = oldValue + 1
+        updateState { (it as State).copy(debugClickCount = newValue) }
+        if (newValue < 5) {
+            return
+        }
+
+        toggleShouldShowDebug()
+    }
+
+    private fun toggleShouldShowDebug() {
+        val oldValue = (internalUiState.value as State).shouldShowDebug ?: false
+        val newValue = !oldValue
+        debugSettingsManager.setShouldShowDebug(newValue)
+    }
+
     private fun onDebugDelayClicked() {
         val oldValue = (internalUiState.value as State).debugShouldDelay ?: return
         updateState { (it as State).copy(debugShouldDelay = null) }
@@ -78,6 +96,7 @@ class MenuViewModelBrain(
     private fun fetchSettings() {
         fetchKeepScreenOn()
         fetchAppInfo()
+        fetchShouldShowDebug()
         fetchDebugShouldDelay()
         fetchDebugShouldShowNavSnackbars()
     }
@@ -97,6 +116,16 @@ class MenuViewModelBrain(
             .getKeepScreenOn()
             .onEach { value ->
                 updateState { (it as State).copy(keepScreenOn = value) }
+            }
+            .runInBackground()
+    }
+
+    private fun fetchShouldShowDebug() {
+        updateState { (it as State).copy(shouldShowDebug = null) }
+        debugSettingsManager
+            .getShouldShowDebug()
+            .onEach { value ->
+                updateState { (it as State).copy(shouldShowDebug = value ?: false) }
             }
             .runInBackground()
     }
