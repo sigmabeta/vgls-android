@@ -189,6 +189,6 @@ class ViewerViewModel @AssistedInject constructor(
     companion object {
         private const val DURATION_BUTTON_VISIBILITY = 1_500L
         private const val DURATION_CHROME_VISIBILITY = 3_000L
-        private const val DURATION_HISTORY_RECORD = 1_000L
+        private const val DURATION_HISTORY_RECORD = 10_000L
     }
 }
