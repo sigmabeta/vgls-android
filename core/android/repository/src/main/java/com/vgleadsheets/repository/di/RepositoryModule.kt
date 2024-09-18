@@ -35,6 +35,7 @@ import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
+import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.time.ThreeTenTime
 import dagger.Module
 import dagger.Provides
@@ -240,10 +241,16 @@ object RepositoryModule {
     fun providesUserContentMigrator(
         songHistoryRepository: SongHistoryRepository,
         songDataSource: SongDataSource,
+        settingsManager: GeneralSettingsManager,
+        coroutineScope: CoroutineScope,
+        dispatchers: VglsDispatchers,
         hatchet: Hatchet
     ) = UserContentMigrator(
         songHistoryRepository = songHistoryRepository,
         songDataSource = songDataSource,
+        settingsManager = settingsManager,
         hatchet = hatchet,
+        coroutineScope = coroutineScope,
+        dispatchers = dispatchers,
     )
 }

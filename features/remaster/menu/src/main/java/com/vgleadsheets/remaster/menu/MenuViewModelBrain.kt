@@ -120,7 +120,7 @@ class MenuViewModelBrain(
         generalSettingsManager
             .getKeepScreenOn()
             .onEach { value ->
-                updateState { (it as State).copy(keepScreenOn = value) }
+                updateState { (it as State).copy(keepScreenOn = value ?: false) }
             }
             .runInBackground()
     }

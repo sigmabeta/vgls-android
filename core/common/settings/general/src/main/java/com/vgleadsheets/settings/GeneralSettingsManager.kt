@@ -10,15 +10,20 @@ class GeneralSettingsManager(
 
     fun setKeepScreenOn(value: Boolean) = setBoolean(SETTING_KEEP_SCREEN_ON, value)
 
+    fun getNeedsAutoMigrate() = getBoolean(SETTING_NEEDS_AUTO_MIGRATE)
+
+    fun setNeedsAutoMigrate(value: Boolean) = setBoolean(SETTING_NEEDS_AUTO_MIGRATE, value)
+
     private fun setBoolean(key: String, value: Boolean) {
         storage.saveString(key, value.toString())
     }
 
     private fun getBoolean(key: String) = storage
         .savedStringFlow(key)
-        .map { it.toBoolean() }
+        .map { it?.toBooleanStrictOrNull() }
 
     companion object {
         private const val SETTING_KEEP_SCREEN_ON = "setting.general.screen"
+        private const val SETTING_NEEDS_AUTO_MIGRATE = "setting.general.automigrate"
     }
 }

@@ -65,7 +65,7 @@ class UserContentGenerator(
         private const val MINIMUM_AGE_DAYS = 5
         private const val MAXIMUM_AGE_DAYS = 30
 
-        private const val MAXIMUM_RECORDS_TO_ADD = 20
-        private const val MINIMUM_RECORDS_TO_ADD = 5
+        private const val MAXIMUM_RECORDS_TO_ADD = 200
+        private const val MINIMUM_RECORDS_TO_ADD = 10
     }
 }

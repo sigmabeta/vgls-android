@@ -13,6 +13,7 @@ import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer
 import com.vgleadsheets.repository.UpdateManager
+import com.vgleadsheets.repository.history.UserContentMigrator
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import javax.inject.Named
@@ -31,6 +32,9 @@ class VglsApplication :
 
     @Inject
     lateinit var hatchet: Hatchet
+
+    @Inject
+    lateinit var userContentMigrator: UserContentMigrator
 
     @Inject
     lateinit var coilLogger: HatchetCoilLogger
