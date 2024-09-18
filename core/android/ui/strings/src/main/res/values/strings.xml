@@ -67,6 +67,8 @@
     <string name="label_settings_debug_delay">Slow down screen loads</string>
     <string name="label_settings_debug_show_nav_snackbars">Show nav snackbars</string>
     <string name="label_settings_debug_generate_records">Generate user history records</string>
+    <string name="label_settings_debug_generate_records_legacy">Generate user history records (Legacy)</string>
+    <string name="label_settings_debug_migrate_records">Migrate user history records</string>
     <string name="label_settings_debug_restart">Restart App</string>
 
     <string name="home_section_recent_songs">Jump Back In</string>

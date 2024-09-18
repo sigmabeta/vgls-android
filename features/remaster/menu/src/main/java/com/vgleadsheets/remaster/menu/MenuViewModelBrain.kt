@@ -8,6 +8,7 @@ import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.history.UserContentGenerator
+import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.ui.StringProvider
@@ -18,6 +19,7 @@ class MenuViewModelBrain(
     private val generalSettingsManager: GeneralSettingsManager,
     private val debugSettingsManager: DebugSettingsManager,
     private val userContentGenerator: UserContentGenerator,
+    private val userContentMigrator: UserContentMigrator,
     private val appInfo: AppInfo,
     stringProvider: StringProvider,
     hatchet: Hatchet,
@@ -42,6 +44,8 @@ class MenuViewModelBrain(
             is Action.DebugDelayClicked -> onDebugDelayClicked()
             is Action.DebugShowNavSnackbarsClicked -> onDebugShowNavSnackbarsClicked()
             is Action.GenerateUserContentClicked -> onGenerateUserContentClicked()
+            is Action.GenerateUserContentLegacyClicked -> onGenerateUserContentLegacyClicked()
+            is Action.MigrateUserContentLegacyClicked -> onMigrateUserContentLegacyClicked()
             is Action.RestartAppClicked -> onRestartAppClicked()
             else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
@@ -164,6 +168,40 @@ class MenuViewModelBrain(
                     )
                 )
                 updateState { (it as State).copy(songRecordsGenerated = songsAdded) }
+            }
+            .runInBackground()
+    }
+
+    private fun onGenerateUserContentLegacyClicked() {
+        updateState { (it as State).copy(songRecordsGeneratedLegacy = null) }
+        userContentGenerator
+            .generateRandomUserDataLegacy()
+            .onEach { songsAdded ->
+                emitEvent(
+                    VglsEvent.ShowSnackbar(
+                        "Added $songsAdded songs to legacy data.",
+                        false,
+                        source = "DebugMenu"
+                    )
+                )
+                updateState { (it as State).copy(songRecordsGeneratedLegacy = songsAdded) }
+            }
+            .runInBackground()
+    }
+
+    private fun onMigrateUserContentLegacyClicked() {
+        updateState { (it as State).copy(songRecordsMigrated = null) }
+        userContentMigrator
+            .migrateUserData()
+            .onEach { songsAdded ->
+                emitEvent(
+                    VglsEvent.ShowSnackbar(
+                        "Migrated $songsAdded songs from legacy data.",
+                        false,
+                        source = "DebugMenu"
+                    )
+                )
+                updateState { (it as State).copy(songRecordsMigrated = songsAdded) }
             }
             .runInBackground()
     }

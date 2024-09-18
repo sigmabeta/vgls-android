@@ -89,6 +89,8 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_DEBUG_DELAY -> R.string.label_settings_debug_delay
         StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS -> R.string.label_settings_debug_show_nav_snackbars
         StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS -> R.string.label_settings_debug_generate_records
+        StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS_LEGACY -> R.string.label_settings_debug_generate_records_legacy
+        StringId.SETTINGS_LABEL_DEBUG_MIGRATE_RECORDS -> R.string.label_settings_debug_migrate_records
         StringId.SETTINGS_LABEL_DEBUG_RESTART -> R.string.label_settings_debug_restart
         StringId.SETTINGS_LABEL_APP_BRANCH -> R.string.label_settings_branch
         StringId.SETTINGS_LABEL_APP_VERSION_NAME -> R.string.label_settings_version_name

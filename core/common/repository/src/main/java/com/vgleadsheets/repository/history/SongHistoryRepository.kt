@@ -5,7 +5,6 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.SongDataSource
-import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
@@ -28,7 +27,6 @@ class SongHistoryRepository(
     private val gameDataSource: GameDataSource,
     private val composerDataSource: ComposerDataSource,
     private val tagValueDataSource: TagValueDataSource,
-    private val tagKeyDataSource: TagKeyDataSource,
     private val songDataSource: SongDataSource,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: VglsDispatchers,
@@ -52,6 +50,18 @@ class SongHistoryRepository(
 
             incrementPlayCountForComposersForSong(song.id, currentTime)
             incrementPlayCountForTagValuesForSong(song.id, currentTime)
+        }
+    }
+
+    fun recordSongPlayLegacy(
+        song: Song,
+    ) {
+        coroutineScope.launch(dispatchers.disk) {
+            hatchet.v("Recording legacy play for song: ${song.gameName} - ${song.name}")
+
+            songDataSource.incrementPlayCount(song.id)
+            gameDataSource.incrementSheetsPlayed(song.gameId)
+            incrementPlayCountForComposersForSongLegacy(song.id)
         }
     }
 
@@ -99,6 +109,14 @@ class SongHistoryRepository(
 
         composers.forEach {
             composerPlayCountDataSource.incrementPlayCount(it.id, currentTime)
+        }
+    }
+
+    private suspend fun incrementPlayCountForComposersForSongLegacy(id: Long) {
+        val composers = composerDataSource.getComposersForSongSync(id)
+
+        composers.forEach {
+            composerDataSource.incrementSheetsPlayed(it.id)
         }
     }
 

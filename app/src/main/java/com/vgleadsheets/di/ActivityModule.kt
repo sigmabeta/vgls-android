@@ -15,6 +15,7 @@ import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
+import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
@@ -58,6 +59,7 @@ class ActivityModule {
         generalSettingsManager: GeneralSettingsManager,
         debugSettingsManager: DebugSettingsManager,
         userContentGenerator: UserContentGenerator,
+        userContentMigrator: UserContentMigrator,
     ): BrainProvider =
         FeatureDirectory(
             dispatchers = dispatchers,
@@ -76,6 +78,7 @@ class ActivityModule {
             homeModuleProvider = homeModuleProvider,
             generalSettingsManager = generalSettingsManager,
             userContentGenerator = userContentGenerator,
+            userContentMigrator = userContentMigrator,
             debugSettingsManager = debugSettingsManager,
         )
 }

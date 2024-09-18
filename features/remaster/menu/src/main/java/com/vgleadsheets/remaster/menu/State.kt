@@ -30,6 +30,8 @@ data class State(
     val debugShouldDelay: Boolean? = null,
     val debugShouldShowNavSnackbars: Boolean? = null,
     val songRecordsGenerated: Int? = 0,
+    val songRecordsGeneratedLegacy: Int? = 0,
+    val songRecordsMigrated: Int? = 0,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_SETTINGS),
@@ -50,6 +52,8 @@ data class State(
         shouldDelay(stringProvider),
         shouldShowNavSnackbars(stringProvider),
         generateUserRecords(stringProvider),
+        generateUserRecordsLegacy(stringProvider),
+        migrateUserRecordsLegacy(stringProvider),
         restartApp(stringProvider),
     )
 
@@ -68,6 +72,32 @@ data class State(
         SingleTextListModel(
             name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS),
             clickAction = Action.GenerateUserContentClicked
+        )
+    }
+
+    private fun generateUserRecordsLegacy(stringProvider: StringProvider) = if (songRecordsGeneratedLegacy == null) {
+        LoadingItemListModel(
+            loadingType = LoadingType.SINGLE_TEXT,
+            loadOperationName = "userRecordGenerationLegacy",
+            loadPositionOffset = 0,
+        )
+    } else {
+        SingleTextListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS_LEGACY),
+            clickAction = Action.GenerateUserContentLegacyClicked
+        )
+    }
+
+    private fun migrateUserRecordsLegacy(stringProvider: StringProvider) = if (songRecordsMigrated == null) {
+        LoadingItemListModel(
+            loadingType = LoadingType.SINGLE_TEXT,
+            loadOperationName = "userRecordMigrate",
+            loadPositionOffset = 0,
+        )
+    } else {
+        SingleTextListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_MIGRATE_RECORDS),
+            clickAction = Action.MigrateUserContentLegacyClicked
         )
     }
 

@@ -7,6 +7,7 @@ import kotlin.random.Random
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.take
 
 class UserContentGenerator(
     private val songHistoryRepository: SongHistoryRepository,
@@ -15,7 +16,13 @@ class UserContentGenerator(
 ) {
     fun generateRandomUserData() = songDataSource
         .getAll()
+        .take(1)
         .map { processSongs(it) }
+
+    fun generateRandomUserDataLegacy() = songDataSource
+        .getAll()
+        .take(1)
+        .map { processSongsLegacy(it) }
 
     private fun processSongs(songs: List<Song>): Int {
         val randomizer = Random
@@ -26,6 +33,19 @@ class UserContentGenerator(
             val time = randomizer.generateTime()
 
             songHistoryRepository.recordSongPlay(songToAdd, time)
+        }
+
+        return songsToAdd
+    }
+
+    private fun processSongsLegacy(songs: List<Song>): Int {
+        val randomizer = Random
+        val songsToAdd = randomizer.nextInt(MAXIMUM_RECORDS_TO_ADD - MINIMUM_RECORDS_TO_ADD) + MINIMUM_RECORDS_TO_ADD
+
+        repeat(songsToAdd) {
+            val songToAdd = songs.random(randomizer)
+
+            songHistoryRepository.recordSongPlayLegacy(songToAdd)
         }
 
         return songsToAdd
@@ -45,7 +65,7 @@ class UserContentGenerator(
         private const val MINIMUM_AGE_DAYS = 5
         private const val MAXIMUM_AGE_DAYS = 30
 
-        private const val MAXIMUM_RECORDS_TO_ADD = 200
-        private const val MINIMUM_RECORDS_TO_ADD = 10
+        private const val MAXIMUM_RECORDS_TO_ADD = 20
+        private const val MINIMUM_RECORDS_TO_ADD = 5
     }
 }
