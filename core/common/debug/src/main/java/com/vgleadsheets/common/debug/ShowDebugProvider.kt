@@ -21,7 +21,7 @@ class ShowDebugProvider(
     init {
         debugSettingsManager.getShouldShowDebug()
             .onEach { newValue ->
-                _showDebugFlow.update { newValue ?: false }
+                _showDebugFlow.update { newValue }
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)

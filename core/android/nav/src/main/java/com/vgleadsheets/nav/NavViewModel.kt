@@ -92,7 +92,7 @@ class NavViewModel @Inject constructor(
 
     private fun setupSettingsCollection() {
         debugSettingsManager.getShouldShowSnackbars()
-            .map { it ?: false }
+            .map { it }
             .onEach { shouldShow ->
                 internalShowSnackbarState.update {
                     shouldShow

@@ -34,7 +34,7 @@ class RandomRepository(
 
             List(count) {
                 randomSongHelper(limit)
-            }
+            }.distinctBy { it.id }
         }
 
     private suspend fun randomSongHelper(limit: Long): Song {

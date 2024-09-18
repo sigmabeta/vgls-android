@@ -81,7 +81,7 @@ class MenuViewModelBrain(
     }
 
     private fun toggleShouldShowDebug() {
-        val oldValue = (internalUiState.value as State).shouldShowDebug ?: false
+        val oldValue = (internalUiState.value as State).shouldShowDebug ?: return
         val newValue = !oldValue
         debugSettingsManager.setShouldShowDebug(newValue)
     }
@@ -120,7 +120,7 @@ class MenuViewModelBrain(
         generalSettingsManager
             .getKeepScreenOn()
             .onEach { value ->
-                updateState { (it as State).copy(keepScreenOn = value ?: false) }
+                updateState { (it as State).copy(keepScreenOn = value) }
             }
             .runInBackground()
     }
@@ -130,7 +130,7 @@ class MenuViewModelBrain(
         debugSettingsManager
             .getShouldShowDebug()
             .onEach { value ->
-                updateState { (it as State).copy(shouldShowDebug = value ?: false) }
+                updateState { (it as State).copy(shouldShowDebug = value) }
             }
             .runInBackground()
     }
@@ -140,7 +140,7 @@ class MenuViewModelBrain(
         debugSettingsManager
             .getShouldDelay()
             .onEach { value ->
-                updateState { (it as State).copy(debugShouldDelay = value ?: false) }
+                updateState { (it as State).copy(debugShouldDelay = value) }
             }
             .runInBackground()
     }
@@ -150,7 +150,7 @@ class MenuViewModelBrain(
         debugSettingsManager
             .getShouldShowSnackbars()
             .onEach { value ->
-                updateState { (it as State).copy(debugShouldShowNavSnackbars = value ?: false) }
+                updateState { (it as State).copy(debugShouldShowNavSnackbars = value) }
             }
             .runInBackground()
     }
