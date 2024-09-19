@@ -2,15 +2,14 @@ package com.vgleadsheets.downloader
 
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Part
-import com.vgleadsheets.model.Song
 import com.vgleadsheets.network.SheetDownloadApi
+import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 
 class SheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
@@ -19,14 +18,9 @@ class SheetDownloader @Inject constructor(
     private val sheetDownloadApi: SheetDownloadApi,
     private val hatchet: Hatchet,
 ) {
-    suspend fun getSheet(id: Long) = songRepository
-        .getSong(id)
-        .map { getSheetInternal(it) }
-        .first()
+    suspend fun getSheet(config: PdfConfigById): SheetFileResult {
+        val song = songRepository.getSong(config.songId).first()
 
-    private suspend fun getSheetInternal(
-        song: Song,
-    ): SheetFileResult {
         val fileName = song.filename
         val partApiId = urlInfoProvider.urlInfoFlow.value.partId ?: throw IllegalStateException("No part selected.")
         val actualPartApiId = if (partApiId == Part.VOCAL.apiId && song.lyricPageCount == 0) {
@@ -35,7 +29,9 @@ class SheetDownloader @Inject constructor(
             partApiId
         }
 
-        val targetFile = fileReference(fileName, actualPartApiId)
+        val isAlternate = config.isAltSelected
+
+        val targetFile = fileReference(fileName, actualPartApiId, isAlternate)
 
         if (targetFile.exists()) {
             return SheetFileResult(
@@ -44,7 +40,7 @@ class SheetDownloader @Inject constructor(
             )
         }
 
-        downloadSheet(fileName, actualPartApiId, targetFile)
+        downloadSheet(fileName, actualPartApiId, isAlternate, targetFile)
 
         return SheetFileResult(
             targetFile,
@@ -56,6 +52,7 @@ class SheetDownloader @Inject constructor(
     private suspend fun downloadSheet(
         fileName: String,
         partApiId: String,
+        isAlternate: Boolean,
         targetFile: File,
     ) {
         val songDirectory = targetFile.parentFile
@@ -66,7 +63,7 @@ class SheetDownloader @Inject constructor(
         gameDirectory.ensureExists()
         songDirectory.ensureExists()
 
-        val suffixedFileName = "$fileName.pdf"
+        val suffixedFileName = "$fileName${isAlternate.altSuffix()}.pdf"
 
         hatchet.d("Sending GET request for $suffixedFileName...")
         val response = sheetDownloadApi.downloadFile(suffixedFileName, partApiId)
@@ -80,17 +77,24 @@ class SheetDownloader @Inject constructor(
         val body = response.body() ?: throw IOException("Somehow received empty response? Nani!?!?")
 
         val bytes = body.bytes()
-        hatchet.d("Saving ${bytes.size / 1_024.0f} KB to ${targetFile.absolutePath}...")
+        hatchet.d("Saving ${bytes.size / 1_024.0f} KiB to ${targetFile.absolutePath}...")
         targetFile.writeBytes(bytes)
     }
 
     private fun fileReference(
         fileName: String,
-        partApiId: String
+        partApiId: String,
+        isAlternate: Boolean,
     ) = File(
         storageDirectoryProvider.getStorageDirectory(),
-        "pdfs/$fileName/$partApiId.pdf"
+        "pdfs/$fileName/$partApiId${isAlternate.altSuffix()}.pdf"
     )
+
+    private fun Boolean.altSuffix() = if (this) {
+        " [ALT]"
+    } else {
+        ""
+    }
 
     private fun File.ensureExists() {
         if (exists()) {

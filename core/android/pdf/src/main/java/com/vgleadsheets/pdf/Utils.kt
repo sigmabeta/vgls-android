@@ -14,7 +14,7 @@ internal fun computeWidth(options: Options): Int? {
 }
 
 fun PdfConfigById.cacheKey(width: Int?, partApiId: String): String {
-    return "pdf-$songId-$partApiId-$pageNumber-$width"
+    return "pdf-$songId-$partApiId-alt=$isAltSelected-$pageNumber-$width"
 }
 
 private const val WIDTH_ARBITRARY = 69

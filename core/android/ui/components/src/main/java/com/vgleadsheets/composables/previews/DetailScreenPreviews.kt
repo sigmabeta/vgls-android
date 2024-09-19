@@ -120,7 +120,8 @@ private fun OnePageSheet(
         model = SheetPageListModel(
             sourceInfo = PdfConfigById(
                 songId = song.id,
-                pageNumber = 0
+                pageNumber = 0,
+                isAltSelected = false,
             ),
             title = song.name,
             gameName = song.gameName,

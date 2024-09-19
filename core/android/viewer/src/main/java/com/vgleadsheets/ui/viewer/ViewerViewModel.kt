@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
@@ -20,6 +21,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -89,6 +91,7 @@ class ViewerViewModel @AssistedInject constructor(
     private fun startLoading(id: Long, pageNumber: Long) {
         fetchSong(id, pageNumber)
         fetchUrlInfo()
+        checkAltSelectionStatus(id)
     }
 
     private fun resume() {
@@ -136,6 +139,21 @@ class ViewerViewModel @AssistedInject constructor(
                 }
             }
             .runInBackground(shouldDelay = false)
+    }
+
+    private fun checkAltSelectionStatus(id: Long) {
+        updateIsAltSelected(LCE.Loading(LOAD_OPERATION_IS_ALT_SELECTED))
+        songRepository
+            .isAlternateSelected(id)
+            .onEach { isAltSelected -> updateIsAltSelected(LCE.Content(isAltSelected)) }
+            .catch { updateIsAltSelected(LCE.Error(LOAD_OPERATION_IS_ALT_SELECTED, it)) }
+            .runInBackground()
+    }
+
+    private fun updateIsAltSelected(isAltSelected: LCE<Boolean>) {
+        updateState {
+            it.copy(isAltSelected = isAltSelected)
+        }
     }
 
     private fun hideChromeSoon() {
@@ -190,5 +208,7 @@ class ViewerViewModel @AssistedInject constructor(
         private const val DURATION_BUTTON_VISIBILITY = 1_500L
         private const val DURATION_CHROME_VISIBILITY = 3_000L
         private const val DURATION_HISTORY_RECORD = 10_000L
+
+        internal const val LOAD_OPERATION_IS_ALT_SELECTED = "songs.detail.alternate"
     }
 }

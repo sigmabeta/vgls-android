@@ -1,5 +1,6 @@
 package com.vgleadsheets.ui.viewer
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.TitleBarModel
@@ -17,6 +18,7 @@ data class ViewerState(
     val partApiId: String? = null,
     val initialPage: Int = 0,
     val buttonsVisible: Boolean = true,
+    val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
 ) : VglsState {
     fun title(stringProvider: StringProvider): TitleBarModel {
         val gameName = song?.gameName
@@ -27,19 +29,25 @@ data class ViewerState(
     }
 
     fun pages(): ImmutableList<SheetPageListModel> = if (song != null && partApiId != null) {
-        val pageCount = song.pageCount(partApiId)
+        val pageCount = song.pageCount(partApiId, false)
         val actualPartApiId = if (pageCount > 0) {
             partApiId
         } else {
             Part.C.apiId
         }
-        val actualPageCount = song.pageCount(actualPartApiId)
+
+        val (actualPageCount, altSelection) = if (isAltSelected !is LCE.Content) {
+            0 to false
+        } else {
+            song.pageCount(actualPartApiId, isAltSelected.data) to isAltSelected.data
+        }
 
         List(actualPageCount) { pageNumber ->
             SheetPageListModel(
                 PdfConfigById(
                     songId = song.id,
-                    pageNumber = pageNumber
+                    pageNumber = pageNumber,
+                    isAltSelected = altSelection,
                 ),
                 song.name,
                 song.gameName,
@@ -54,7 +62,7 @@ data class ViewerState(
 
     fun shouldShowLyricsWarning(): Boolean {
         return if (song != null && partApiId != null) {
-            song.pageCount(partApiId) <= 0
+            song.pageCount(partApiId, false) <= 0
         } else {
             false
         }

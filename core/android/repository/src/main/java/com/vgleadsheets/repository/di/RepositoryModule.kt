@@ -11,6 +11,7 @@ import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
+import com.vgleadsheets.database.source.AlternateSettingDataSource
 import com.vgleadsheets.database.source.ComposerPlayCountDataSource
 import com.vgleadsheets.database.source.FavoriteComposerDataSource
 import com.vgleadsheets.database.source.FavoriteGameDataSource
@@ -52,9 +53,11 @@ object RepositoryModule {
     fun provideSongRepository(
         songDataSource: SongDataSource,
         songAliasDataSource: SongAliasDataSource,
+        alternateSettingDataSource: AlternateSettingDataSource,
     ) = SongRepository(
         songDataSource,
         songAliasDataSource,
+        alternateSettingDataSource,
     )
 
     @Provides

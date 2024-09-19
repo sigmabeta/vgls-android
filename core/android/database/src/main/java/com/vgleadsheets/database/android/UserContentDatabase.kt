@@ -2,6 +2,7 @@ package com.vgleadsheets.database.android
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.vgleadsheets.database.android.dao.AlternateSettingRoomDao
 import com.vgleadsheets.database.android.dao.ComposerPlayCountRoomDao
 import com.vgleadsheets.database.android.dao.FavoriteComposerRoomDao
 import com.vgleadsheets.database.android.dao.FavoriteGameRoomDao
@@ -11,6 +12,7 @@ import com.vgleadsheets.database.android.dao.SearchHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongPlayCountRoomDao
 import com.vgleadsheets.database.android.dao.TagValuePlayCountRoomDao
+import com.vgleadsheets.database.android.enitity.AlternateSettingEntity
 import com.vgleadsheets.database.android.enitity.ComposerPlayCountEntity
 import com.vgleadsheets.database.android.enitity.FavoriteComposerEntity
 import com.vgleadsheets.database.android.enitity.FavoriteGameEntity
@@ -32,6 +34,7 @@ import com.vgleadsheets.database.android.enitity.TagValuePlayCountEntity
         FavoriteSongEntity::class,
         FavoriteGameEntity::class,
         FavoriteComposerEntity::class,
+        AlternateSettingEntity::class,
     ],
     version = UserContentDatabaseVersions.ORIGINAL,
 )
@@ -45,4 +48,5 @@ abstract class UserContentDatabase : RoomDatabase() {
     abstract fun favoriteSongDao(): FavoriteSongRoomDao
     abstract fun favoriteGameDao(): FavoriteGameRoomDao
     abstract fun favoriteComposerDao(): FavoriteComposerRoomDao
+    abstract fun alternateSettingDao(): AlternateSettingRoomDao
 }

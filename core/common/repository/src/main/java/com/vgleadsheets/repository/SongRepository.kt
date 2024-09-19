@@ -2,10 +2,12 @@ package com.vgleadsheets.repository
 
 import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
+import com.vgleadsheets.database.source.AlternateSettingDataSource
 
 class SongRepository(
     private val songDataSource: SongDataSource,
     private val songAliasDataSource: SongAliasDataSource,
+    private val alternateSettingDataSource: AlternateSettingDataSource,
 ) {
     fun getAllSongs() = songDataSource
         .getAll()
@@ -27,18 +29,14 @@ class SongRepository(
 
     fun getSong(songId: Long) = songDataSource.getOneById(songId)
 
-    suspend fun toggleFavoriteSong(songId: Long) {
-        songDataSource.toggleFavorite(songId)
-    }
-
-    suspend fun toggleOfflineSong(songId: Long) {
-        songDataSource.toggleOffline(songId)
-    }
-
     suspend fun toggleAlternate(songId: Long) {
-        songDataSource.toggleAlternate(songId)
+        val areFavoritesMigratedYet = false
+
+        alternateSettingDataSource.toggleAlternate(songId)
     }
 
     fun getAliasesForSong(songId: Long) = songAliasDataSource
         .getAliasesForSong(songId)
+
+    fun isAlternateSelected(id: Long) = alternateSettingDataSource.isAlternateSelected(id)
 }

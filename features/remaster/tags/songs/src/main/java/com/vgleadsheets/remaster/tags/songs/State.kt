@@ -40,7 +40,8 @@ data class State(
                 caption = song.gameName,
                 sourceInfo = PdfConfigById(
                     songId = song.id,
-                    pageNumber = 0
+                    isAltSelected = false,
+                    pageNumber = 0,
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,
                 clickAction = Action.SongClicked(song.id),

@@ -184,4 +184,10 @@ object DatabaseModule {
     fun favoriteComposerDao(
         database: UserContentDatabase
     ) = database.favoriteComposerDao()
+
+    @Provides
+    @Singleton
+    fun alternateSettingDao(
+        database: UserContentDatabase
+    ) = database.alternateSettingDao()
 }

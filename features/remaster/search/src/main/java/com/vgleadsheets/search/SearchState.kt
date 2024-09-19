@@ -104,7 +104,8 @@ data class SearchState(
                 caption = song.gameName,
                 sourceInfo = PdfConfigById(
                     songId = song.id,
-                    pageNumber = 0
+                    pageNumber = 0,
+                    isAltSelected = false,
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,
                 clickAction = Action.SongClicked(song.id),

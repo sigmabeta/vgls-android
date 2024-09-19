@@ -38,6 +38,7 @@ data class State(
     val songAliases: LCE<List<SongAlias>> = LCE.Uninitialized,
     val tagValues: LCE<List<TagValue>> = LCE.Uninitialized,
     val isFavorite: LCE<Boolean> = LCE.Uninitialized,
+    val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider): TitleBarModel {
         return if (song is LCE.Content) {
@@ -82,9 +83,13 @@ data class State(
         if (sheetUrlInfo !is LCE.Content) {
             return@withStandardErrorAndLoading sheetLoading()
         }
+        if (isAltSelected !is LCE.Content) {
+            return@withStandardErrorAndLoading sheetLoading()
+        }
 
         val selectedPart = sheetUrlInfo.data.partId ?: return@withStandardErrorAndLoading sheetLoading()
-        val pageCount = data.pageCount(selectedPart)
+        val altSelection = isAltSelected.data
+        val pageCount = data.pageCount(selectedPart, altSelection)
 
         listOf(
             when {
@@ -94,12 +99,14 @@ data class State(
                             sheetPage(
                                 data,
                                 pageNumber,
-                                false
+                                false,
+                                altSelection
                             )
                         }.toImmutableList()
                     )
-                pageCount == 0 -> sheetPage(data, 0, true)
-                else -> sheetPage(data, 0, false)
+
+                pageCount == 0 -> sheetPage(data, 0, true, altSelection)
+                else -> sheetPage(data, 0, false, altSelection)
             }
         )
     }
@@ -110,6 +117,7 @@ data class State(
         song: Song,
         pageNumber: Int,
         showLyricsMissingWarning: Boolean,
+        altSelectionValue: Boolean,
     ) = SheetPageCardListModel(
         SheetPageListModel(
             title = song.name,
@@ -120,7 +128,8 @@ data class State(
             showLyricsWarning = showLyricsMissingWarning,
             sourceInfo = PdfConfigById(
                 songId = song.id,
-                pageNumber = pageNumber
+                pageNumber = pageNumber,
+                isAltSelected = altSelectionValue,
             ),
         )
     )
@@ -131,6 +140,7 @@ data class State(
     ) {
         listOf(
             favoriteCtaItem(stringProvider),
+            altSelectionCtaItem(stringProvider),
             searchYoutubeItem(stringProvider),
         ).flatten()
     }
@@ -282,6 +292,37 @@ data class State(
                 clickAction = action,
             )
         )
+    }
+
+    @Suppress("ReturnCount")
+    private fun altSelectionCtaItem(stringProvider: StringProvider): List<ListModel> {
+        val song = (song as? LCE.Content)?.data ?: return emptyList()
+
+        if (song.altPageCount > 0) {
+            return isAltSelected.withStandardErrorAndLoading(
+                loadingType = LoadingType.TEXT_IMAGE,
+                loadingItemCount = 1,
+                loadingWithHeader = false
+            ) {
+                val isAltSelected = data
+
+                val label = if (isAltSelected) {
+                    StringId.CTA_ALT_UNSELECT
+                } else {
+                    StringId.CTA_ALT_SELECT
+                }
+
+                listOf(
+                    CtaListModel(
+                        icon = Icon.DESCRIPTION,
+                        name = stringProvider.getString(label),
+                        clickAction = Action.ToggleAltSelectedClicked,
+                    )
+                )
+            }
+        }
+
+        return emptyList()
     }
 
     private fun searchYoutubeItem(stringProvider: StringProvider): List<CtaListModel> {

@@ -22,7 +22,5 @@ interface SongDataSource : DataSource<Song> {
 
     fun toggleOffline(songId: Long)
 
-    fun toggleAlternate(songId: Long)
-
     fun getHighestId(): Flow<Long>
 }

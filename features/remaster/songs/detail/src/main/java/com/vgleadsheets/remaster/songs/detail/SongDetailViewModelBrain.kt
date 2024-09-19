@@ -53,6 +53,7 @@ class SongDetailViewModelBrain(
             is Action.TagValueClicked -> onTagValueClicked(action.id)
             is Action.AddFavoriteClicked -> onAddFavoriteClicked()
             is Action.RemoveFavoriteClicked -> onRemoveFavoriteClicked()
+            is Action.ToggleAltSelectedClicked -> onToggleAltSelectedClicked()
             is Action.SearchYoutubeClicked -> onSearchYoutubeClicked()
         }
     }
@@ -65,6 +66,7 @@ class SongDetailViewModelBrain(
         fetchAliases(id)
         fetchTagValues(id)
         checkFavoriteStatus(id)
+        checkAltSelectionStatus(id)
     }
 
     private fun fetchUrlInfo() {
@@ -132,6 +134,15 @@ class SongDetailViewModelBrain(
             .runInBackground()
     }
 
+    private fun checkAltSelectionStatus(id: Long) {
+        updateIsAltSelected(LCE.Loading(LOAD_OPERATION_IS_ALT_SELECTED))
+        songRepository
+            .isAlternateSelected(id)
+            .onEach { isAltSelected -> updateIsAltSelected(LCE.Content(isAltSelected)) }
+            .catch { updateIsAltSelected(LCE.Error(LOAD_OPERATION_IS_ALT_SELECTED, it)) }
+            .runInBackground()
+    }
+
     private fun onAddFavoriteClicked() {
         val state = internalUiState.value as State
         val song = state.song
@@ -149,6 +160,16 @@ class SongDetailViewModelBrain(
 
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.removeFavoriteSong(song.data.id)
+        }
+    }
+
+    private fun onToggleAltSelectedClicked() {
+        val state = internalUiState.value as State
+        val song = state.song
+        if (song !is LCE.Content) return
+
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            songRepository.toggleAlternate(song.data.id)
         }
     }
 
@@ -244,6 +265,14 @@ class SongDetailViewModelBrain(
         }
     }
 
+    private fun updateIsAltSelected(isAltSelected: LCE<Boolean>) {
+        updateState {
+            (it as State).copy(
+                isAltSelected = isAltSelected
+            )
+        }
+    }
+
     companion object {
         internal const val LOAD_OPERATION_SONG = "songs.detail"
         internal const val LOAD_OPERATION_URL_INFO = "songs.detail.urlinfo"
@@ -252,5 +281,6 @@ class SongDetailViewModelBrain(
         internal const val LOAD_OPERATION_ALIASES = "songs.detail.aliases"
         internal const val LOAD_OPERATION_TAG_VALUES = "songs.detail.tagvalues"
         internal const val LOAD_OPERATION_IS_FAVORITE = "songs.detail.favorite"
+        internal const val LOAD_OPERATION_IS_ALT_SELECTED = "songs.detail.alternate"
     }
 }

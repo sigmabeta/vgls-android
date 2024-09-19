@@ -9,18 +9,17 @@ import coil.fetch.SourceResult
 import coil.request.Options
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.downloader.SheetSourceType
+import javax.inject.Inject
 import okio.FileSystem
 import okio.Path.Companion.toOkioPath
-import javax.inject.Inject
 
 class PdfImageFetcher(
     private val sheetDownloader: SheetDownloader,
     private val data: PdfConfigById,
-    private val options: Options,
 ) : Fetcher {
     @OptIn(ExperimentalCoilApi::class)
     override suspend fun fetch(): SourceResult {
-        val pdfFileResult = sheetDownloader.getSheet(data.songId)
+        val pdfFileResult = sheetDownloader.getSheet(data)
         val pdfFile = pdfFileResult.file
 
         val pdfPath = pdfFile.toOkioPath()
@@ -51,7 +50,6 @@ class PdfImageFetcher(
         ) = PdfImageFetcher(
             sheetDownloader,
             data,
-            options
         )
     }
 

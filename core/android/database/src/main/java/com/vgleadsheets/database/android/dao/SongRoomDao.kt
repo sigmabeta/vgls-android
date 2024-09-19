@@ -78,9 +78,6 @@ interface SongRoomDao : RoomDao<SongEntity> {
     @Query(QUERY_TOGGLE_OFFLINE)
     fun toggleOffline(id: Long)
 
-    @Query(QUERY_TOGGLE_ALTERNATE)
-    fun toggleAlternate(id: Long)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJoins(joins: List<SongTagValueJoin>)
 
@@ -116,11 +113,8 @@ interface SongRoomDao : RoomDao<SongEntity> {
         private const val OPTION_NUM_RECORDS_BY_ID = "LIMIT 1"
 
         private const val COLUMN_INCREMENTABLE = "playCount"
-        private const val COLUMN_ALTERNATE = "isAltSelected"
 
         private const val SET_INCREMENT = "$SET $COLUMN_INCREMENTABLE = $COLUMN_INCREMENTABLE + 1"
-
-        private const val TOGGLE_ALTERNATE = "$SET $COLUMN_ALTERNATE = (1 - $COLUMN_ALTERNATE)"
 
         // Bespoke Queries
 
@@ -143,7 +137,6 @@ interface SongRoomDao : RoomDao<SongEntity> {
 
         private const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
         private const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
-        private const val QUERY_TOGGLE_ALTERNATE = "$QUERY_UPDATE $TOGGLE_ALTERNATE $WHERE_SINGLE"
         private const val QUERY_HIGHEST_ID = "$GET $TABLE $OPTION_BY_ID $OPTION_NUM_RECORDS_BY_ID"
     }
 }

@@ -112,7 +112,8 @@ data class State(
         ) + data.map { song ->
             val sourceInfo = PdfConfigById(
                 songId = song.id,
-                pageNumber = 0
+                isAltSelected = false,
+                pageNumber = 0,
             )
 
             ImageNameListModel(

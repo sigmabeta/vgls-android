@@ -61,6 +61,7 @@ class NeverPlayedSongModule @Inject constructor(
                                     sourceInfo = PdfConfigById(
                                         songId = song.id,
                                         pageNumber = 0,
+                                        isAltSelected = false,
                                     ),
                                     gameName = song.gameName,
                                     clickAction = Action.MostPlaysSongClicked(song.id),

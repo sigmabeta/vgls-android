@@ -18,12 +18,12 @@ data class Song(
     val isAltSelected: Boolean,
 ) {
     @Suppress("ReturnCount")
-    fun pageCount(selectedPart: String): Int {
+    fun pageCount(selectedPart: String, altSelection: Boolean): Int {
         if (selectedPart == Part.VOCAL.apiId) {
             return lyricPageCount
         }
 
-        if (isAltSelected) {
+        if (altSelection) {
             return altPageCount
         }
 

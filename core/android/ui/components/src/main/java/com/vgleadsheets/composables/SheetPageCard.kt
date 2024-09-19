@@ -113,6 +113,7 @@ private fun SamplePdf() {
             sourceInfo = PdfConfigById(
                 songId = 92,
                 pageNumber = 0,
+                isAltSelected = false,
             ),
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",

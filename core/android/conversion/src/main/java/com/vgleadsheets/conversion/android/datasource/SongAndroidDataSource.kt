@@ -47,8 +47,6 @@ SongDataSource {
 
     override fun toggleOffline(songId: Long) = roomImpl.toggleOffline(songId)
 
-    override fun toggleAlternate(songId: Long) = roomImpl.toggleAlternate(songId)
-
     override fun getHighestId() = roomImpl
         .getHighestId()
         .map { it?.id ?: 0 }
