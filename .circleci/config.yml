@@ -14,6 +14,9 @@ workflows:
       - android-lint:
           requires:
             - setup
+      - screenshot-test:
+          requires:
+            - setup
       - build_release_apk:
           requires:
             - kt-lint
@@ -121,6 +124,38 @@ jobs:
           command: ./gradlew detekt --no-configuration-cache --no-daemon --max-workers=2
       - save_cache:
           key: build-cache-detekt-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - build-cache
+
+  screenshot-test:
+    resource_class: medium
+
+    docker:
+      - image: cimg/android:2024.04.1
+
+    environment:
+      JVM_OPTS: -Xmx3200m
+
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - restore_cache:
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+      - restore_cache:
+          keys:
+            - build-cache-screenshot-test-v1-
+      - run:
+          name: Run Fail-fast script
+          command: ./paparazzi-build-script.sh
+      - run:
+          name: Compare screenshot tests
+          command: ./gradlew :core:android:ui:previews:verifyPaparazziDebug --no-configuration-cache --no-daemon --max-workers=2
+      - save_cache:
+          key: build-cache-screenshot-test-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
 
