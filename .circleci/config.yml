@@ -150,7 +150,7 @@ jobs:
             - build-cache-screenshot-test-v1-
       - run:
           name: Run Fail-fast script
-          command: ./paparazzi-build-script.sh
+          command: chmod +x ./paparazzi-build-script.sh && ./paparazzi-build-script.sh
       - run:
           name: Compare screenshot tests
           command: ./gradlew :core:android:ui:previews:verifyPaparazziDebug --no-configuration-cache --no-daemon --max-workers=2

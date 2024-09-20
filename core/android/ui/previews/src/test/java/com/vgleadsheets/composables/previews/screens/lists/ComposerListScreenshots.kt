@@ -14,7 +14,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
-class ComposerDetailScreenshots(
+class ComposerListScreenshots(
     private val deviceConfig: DeviceConfig,
     private val category: String,
     private val width: String,
