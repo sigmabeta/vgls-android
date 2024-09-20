@@ -154,6 +154,9 @@ jobs:
       - run:
           name: Compare screenshot tests
           command: ./gradlew :core:android:ui:previews:verifyPaparazziDebug --no-configuration-cache --no-daemon --max-workers=2
+      - store_artifacts:
+          path: core/android/ui/previews/build/paparazzi/failures/
+          destination: failure-screenshots
       - save_cache:
           key: build-cache-screenshot-test-v1-{{ .Branch }}-{{ .Revision }}
           paths:
