@@ -1,4 +1,4 @@
-package com.vgleadsheets.composables.previews.screens.lists
+package com.vgleadsheets.composables.previews.screens.details
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
@@ -20,34 +20,34 @@ class ComposerListScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun composerListScreenLight() {
+    fun composerDetailScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerListLight()
+            ComposerDetailLight()
         }
     }
 
     @Test
-    fun composerListScreenDark() {
+    fun composerDetailScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerListDark()
+            ComposerDetailDark()
         }
     }
 
     @Test
-    fun composerListScreenLightLoading() {
+    fun composerDetailScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerListLightLoading()
+            ComposerDetailLoading()
         }
     }
 
     @Test
-    fun composerListScreenDarkLoading() {
+    fun composerDetailScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerListDarkLoading()
+            ComposerDetailLoadingDark()
         }
     }
 
