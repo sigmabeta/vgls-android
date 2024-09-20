@@ -8,6 +8,7 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.NoopListModel
 import com.vgleadsheets.components.SearchHistoryListModel
+import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
@@ -46,7 +47,7 @@ data class SearchState(
                 historyItems
             }
         } else {
-            (songItems() + gameItems() + composerItems())
+            (songItems(stringProvider) + gameItems(stringProvider) + composerItems(stringProvider))
         }
             .filter { it !is NoopListModel }
             .toImmutableList()
@@ -93,11 +94,15 @@ data class SearchState(
         )
     )
 
-    private fun songItems() = songResults.withStandardErrorAndLoading(
+    private fun songItems(stringProvider: StringProvider) = songResults.withStandardErrorAndLoading(
         loadingType = LoadingType.TEXT_CAPTION_IMAGE,
         loadingItemCount = 2,
     ) {
-        data.map { song ->
+        listOf(
+            SectionHeaderListModel(
+                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_SONGS)
+            )
+        ) + data.map { song ->
             ImageNameCaptionListModel(
                 dataId = song.id,
                 name = song.name,
@@ -113,11 +118,15 @@ data class SearchState(
         }
     }
 
-    private fun gameItems() = gameResults.withStandardErrorAndLoading(
+    private fun gameItems(stringProvider: StringProvider) = gameResults.withStandardErrorAndLoading(
         loadingType = LoadingType.SQUARE,
         loadingItemCount = 2,
     ) {
-        data.map { game ->
+        listOf(
+            SectionHeaderListModel(
+                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_GAMES)
+            )
+        ) + data.map { game ->
             SquareItemListModel(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
@@ -128,11 +137,15 @@ data class SearchState(
         }
     }
 
-    private fun composerItems() = composerResults.withStandardErrorAndLoading(
+    private fun composerItems(stringProvider: StringProvider) = composerResults.withStandardErrorAndLoading(
         loadingType = LoadingType.SQUARE,
         loadingItemCount = 2,
     ) {
-        data.map { composer ->
+        listOf(
+            SectionHeaderListModel(
+                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_COMPOSERS)
+            )
+        ) + data.map { composer ->
             SquareItemListModel(
                 dataId = composer.id + ID_OFFSET_COMPOSER,
                 name = composer.name,

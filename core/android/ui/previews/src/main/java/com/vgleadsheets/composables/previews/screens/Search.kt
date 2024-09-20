@@ -21,28 +21,36 @@ import java.util.Random
 
 @Preview
 @Composable
-private fun SearchScreenLight(modifier: Modifier = Modifier) {
+internal fun SearchScreenLight(modifier: Modifier = Modifier) {
     val screenState = searchScreenState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun SearchScreenLoading(modifier: Modifier = Modifier) {
+internal fun SearchScreenLoading(modifier: Modifier = Modifier) {
     val screenState = searchScreenLoadingState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun SearchScreenHistory(modifier: Modifier = Modifier) {
+internal fun SearchScreenHistory(modifier: Modifier = Modifier) {
     val screenState = searchScreenHistoryState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun SearchScreenDark(modifier: Modifier = Modifier) {
+internal fun SearchScreenLoadingHistory(modifier: Modifier = Modifier) {
+    val screenState = searchScreenLoadingHistoryState()
+
+    ScreenPreviewLight(screenState, isGrid = true)
+}
+
+@Preview
+@Composable
+internal fun SearchScreenDark(modifier: Modifier = Modifier) {
     val screenState = searchScreenState()
 
     ScreenPreviewDark(screenState, isGrid = true)
@@ -50,7 +58,21 @@ private fun SearchScreenDark(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun SearchScreenLoadingHistory(modifier: Modifier = Modifier) {
+internal fun SearchScreenLoadingDark(modifier: Modifier = Modifier) {
+    val screenState = searchScreenLoadingState()
+    com.vgleadsheets.composables.previews.ScreenPreviewDark(screenState, isGrid = true)
+}
+
+@Preview
+@Composable
+internal fun SearchScreenHistoryDark(modifier: Modifier = Modifier) {
+    val screenState = searchScreenHistoryState()
+    ScreenPreviewDark(screenState, isGrid = true)
+}
+
+@Preview
+@Composable
+internal fun SearchScreenLoadingHistoryDark(modifier: Modifier = Modifier) {
     val screenState = searchScreenLoadingHistoryState()
 
     ScreenPreviewDark(screenState, isGrid = true)
@@ -66,9 +88,9 @@ private fun searchScreenState(): SearchState {
         StringGenerator(random)
     )
 
-    val songs = modelGenerator.randomSongs()
-    val games = modelGenerator.randomGames()
-    val composers = modelGenerator.randomComposers()
+    val songs = modelGenerator.randomSongs().take(4)
+    val games = modelGenerator.randomGames().take(2)
+    val composers = modelGenerator.randomComposers().take(4)
 
     val screenState = SearchState(
         searchQuery = "this is thancred",

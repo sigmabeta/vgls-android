@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.composables.SearchBar
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -51,14 +50,14 @@ fun SearchScreen(
                 color = MaterialTheme.colorScheme.background
             ),
     ) {
-        val searchBarPadding: Dp = 72.dp
+        val enoughToGetBelowSearchBar: Dp = 96.dp
         val topInsets = WindowInsets.statusBars
         val sidePadding = WindowInsets(
             left = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side),
             right = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side),
         )
 
-        val contentPadding: PaddingValues = WindowInsets(top = searchBarPadding)
+        val contentPadding: PaddingValues = WindowInsets(top = enoughToGetBelowSearchBar)
             .add(topInsets)
             .add(sidePadding)
             .asPaddingValues()
@@ -91,21 +90,22 @@ fun SearchScreen(
             }
         }
 
+        val topPaddingForSearchBar = topInsets.asPaddingValues().calculateTopPadding()
+
         SearchBar(
             text = query,
             textFieldUpdater = textFieldUpdater,
             actionSink = actionSink,
-            modifier = Modifier.padding(top = topInsets.asPaddingValues().calculateTopPadding()),
+            modifier = Modifier.padding(top = topPaddingForSearchBar + 16.dp),
         )
 
+        // Scrim for android status bar
         Spacer(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .fillMaxWidth()
                 .height(
-                    topInsets
-                        .asPaddingValues()
-                        .calculateTopPadding()
+                    topPaddingForSearchBar
                         .times(2)
                 )
                 .background(brush = Brush.verticalGradient(colors = scrimColors(isSystemInDarkTheme())))

@@ -30,7 +30,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Preview
 @Composable
-private fun HomeScreenLight(modifier: Modifier = Modifier) {
+internal fun HomeScreenLight(modifier: Modifier = Modifier) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = homeScreenState(stringProvider)
     ScreenPreviewLight(screenState)
@@ -38,7 +38,7 @@ private fun HomeScreenLight(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun HomeScreenDark(modifier: Modifier = Modifier) {
+internal fun HomeScreenDark(modifier: Modifier = Modifier) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = homeScreenState(stringProvider)
 
@@ -47,14 +47,14 @@ private fun HomeScreenDark(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun HomeScreenLightLoading(modifier: Modifier = Modifier) {
+internal fun HomeScreenLightLoading(modifier: Modifier = Modifier) {
     val screenState = homeScreenLoadingState()
     ScreenPreviewLight(screenState)
 }
 
 @Preview
 @Composable
-private fun HomeScreenDarkLoading(modifier: Modifier = Modifier) {
+internal fun HomeScreenDarkLoading(modifier: Modifier = Modifier) {
     val screenState = homeScreenLoadingState()
 
     ScreenPreviewDark(screenState)
@@ -133,6 +133,7 @@ private fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails,
                     title = song.name,
                     sourceInfo = PdfConfigById(
                         songId = song.id,
+                        isAltSelected = false,
                         pageNumber = 0,
                     ),
                     gameName = song.gameName,

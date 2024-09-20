@@ -13,23 +13,29 @@ import java.util.Random
 
 @Preview
 @Composable
-private fun ComposerListLight(modifier: Modifier = Modifier) {
+internal fun ComposerListLight(modifier: Modifier = Modifier) {
     val screenState = composerScreenState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun ComposerListLoading(modifier: Modifier = Modifier) {
+internal fun ComposerListLightLoading(modifier: Modifier = Modifier) {
     val screenState = composerScreenLoadingState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun ComposerListDark(modifier: Modifier = Modifier) {
+internal fun ComposerListDark(modifier: Modifier = Modifier) {
     val screenState = composerScreenState()
+    ScreenPreviewDark(screenState, isGrid = true)
+}
 
+@Preview
+@Composable
+internal fun ComposerListDarkLoading(modifier: Modifier = Modifier) {
+    val screenState = composerScreenLoadingState()
     ScreenPreviewDark(screenState, isGrid = true)
 }
 

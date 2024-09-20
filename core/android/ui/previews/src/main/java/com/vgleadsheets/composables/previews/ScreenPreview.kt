@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.ListStateActual
@@ -24,10 +26,12 @@ internal fun ScreenPreviewLight(
     val state = screenState.toActual(stringProvider)
 
     VglsMaterial {
-        Box(
-            modifier = Modifier.background(MaterialTheme.colorScheme.background)
-        ) {
-            Content(isGrid, state, actionSink)
+        CompositionLocalProvider(LocalInspectionMode provides true) {
+            Box(
+                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            ) {
+                Content(isGrid, state, actionSink)
+            }
         }
     }
 }
@@ -42,10 +46,12 @@ internal fun ScreenPreviewDark(
     val state = screenState.toActual(stringProvider)
 
     VglsMaterial(forceDark = true) {
-        Box(
-            modifier = Modifier.background(MaterialTheme.colorScheme.background)
-        ) {
-            Content(isGrid, state, actionSink)
+        CompositionLocalProvider(LocalInspectionMode provides true) {
+            Box(
+                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            ) {
+                Content(isGrid, state, actionSink)
+            }
         }
     }
 }
@@ -60,12 +66,14 @@ private fun Content(
         GridScreen(
             state = state,
             actionSink = actionSink,
+            showDebug = false,
             modifier = Modifier,
         )
     } else {
         ListScreen(
             state = state,
             actionSink = actionSink,
+            showDebug = false,
             modifier = Modifier,
         )
     }

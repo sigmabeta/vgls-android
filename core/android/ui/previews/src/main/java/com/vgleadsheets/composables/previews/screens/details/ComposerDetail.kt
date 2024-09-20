@@ -13,7 +13,7 @@ import java.util.Random
 
 @Preview
 @Composable
-private fun ComposerDetailLight(modifier: Modifier = Modifier) {
+internal fun ComposerDetailLight(modifier: Modifier = Modifier) {
     val screenState = composerScreenState()
 
     ScreenPreviewLight(screenState)
@@ -21,7 +21,7 @@ private fun ComposerDetailLight(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun ComposerDetailLoading(modifier: Modifier = Modifier) {
+internal fun ComposerDetailLoading(modifier: Modifier = Modifier) {
     val screenState = composerScreenLoadingState()
 
     ScreenPreviewLight(screenState)
@@ -29,10 +29,18 @@ private fun ComposerDetailLoading(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun ComposerDetailDark(modifier: Modifier = Modifier) {
+internal fun ComposerDetailDark(modifier: Modifier = Modifier) {
     val screenState = composerScreenState()
 
     ScreenPreviewDark(screenState)
+}
+
+@Preview
+@Composable
+internal fun ComposerDetailLoadingDark(modifier: Modifier = Modifier) {
+    val screenState = composerScreenLoadingState()
+
+    ScreenPreviewLight(screenState)
 }
 
 @Suppress("MagicNumber")
