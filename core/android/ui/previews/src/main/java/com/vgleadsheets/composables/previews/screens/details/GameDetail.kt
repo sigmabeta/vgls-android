@@ -13,7 +13,7 @@ import java.util.Random
 
 @Preview
 @Composable
-private fun GameDetailLight(modifier: Modifier = Modifier) {
+internal fun GameDetailLight(modifier: Modifier = Modifier) {
     val screenState = gameScreenState()
 
     ScreenPreviewLight(screenState)
@@ -21,7 +21,7 @@ private fun GameDetailLight(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun GameDetailLoading(modifier: Modifier = Modifier) {
+internal fun GameDetailLoading(modifier: Modifier = Modifier) {
     val screenState = gameScreenLoadingState()
 
     ScreenPreviewLight(screenState)
@@ -29,8 +29,16 @@ private fun GameDetailLoading(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun GameDetailDark(modifier: Modifier = Modifier) {
+internal fun GameDetailDark(modifier: Modifier = Modifier) {
     val screenState = gameScreenState()
+
+    ScreenPreviewDark(screenState)
+}
+
+@Preview
+@Composable
+internal fun GameDetailLoadingDark(modifier: Modifier = Modifier) {
+    val screenState = gameScreenLoadingState()
 
     ScreenPreviewDark(screenState)
 }
