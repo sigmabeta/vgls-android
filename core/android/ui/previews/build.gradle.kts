@@ -8,6 +8,8 @@ plugins {
 
 dependencies {
     implementation(projects.features.remaster.home)
+    implementation(projects.features.remaster.browse)
+    implementation(projects.features.remaster.search)
     implementation(projects.features.remaster.composers.list)
     implementation(projects.features.remaster.composers.detail)
     implementation(projects.features.remaster.games.list)
@@ -15,7 +17,6 @@ dependencies {
     implementation(projects.features.remaster.songs.list)
     implementation(projects.features.remaster.songs.detail)
     implementation(projects.features.remaster.favorites)
-    implementation(projects.features.remaster.search)
 
     implementation(projects.core.common.model)
     implementation(projects.core.common.ui.components)
