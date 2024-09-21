@@ -13,7 +13,7 @@ import java.util.Random
 
 @Preview
 @Composable
-private fun SongListLight(modifier: Modifier = Modifier) {
+internal fun SongListLight(modifier: Modifier = Modifier) {
     val screenState = songScreenState()
 
     ScreenPreviewLight(screenState)
@@ -21,7 +21,7 @@ private fun SongListLight(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun SongListLoading(modifier: Modifier = Modifier) {
+internal fun SongListLightLoading(modifier: Modifier = Modifier) {
     val screenState = loadingScreenState()
 
     ScreenPreviewLight(screenState)
@@ -29,8 +29,16 @@ private fun SongListLoading(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun SongListDark(modifier: Modifier = Modifier) {
+internal fun SongListDark(modifier: Modifier = Modifier) {
     val screenState = songScreenState()
+
+    ScreenPreviewDark(screenState)
+}
+
+@Preview
+@Composable
+internal fun SongListDarkLoading(modifier: Modifier = Modifier) {
+    val screenState = loadingScreenState()
 
     ScreenPreviewDark(screenState)
 }
