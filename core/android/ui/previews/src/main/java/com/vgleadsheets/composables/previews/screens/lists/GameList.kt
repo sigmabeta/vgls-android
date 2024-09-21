@@ -13,29 +13,36 @@ import java.util.Random
 
 @Preview
 @Composable
-private fun GameListLight(modifier: Modifier = Modifier) {
+internal fun GameListLight(modifier: Modifier = Modifier) {
     val screenState = gameScreenState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun GameListLoading(modifier: Modifier = Modifier) {
+internal fun GameListLightLoading(modifier: Modifier = Modifier) {
     val screenState = gameScreenLoadingState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun GameListDark(modifier: Modifier = Modifier) {
+internal fun GameListDark(modifier: Modifier = Modifier) {
     val screenState = gameScreenState()
 
     ScreenPreviewDark(screenState, isGrid = true)
 }
 
+@Preview
+@Composable
+internal fun GameListDarkLoading(modifier: Modifier = Modifier) {
+    val screenState = gameScreenLoadingState()
+    ScreenPreviewDark(screenState, isGrid = true)
+}
+
 @Suppress("MagicNumber")
 private fun gameScreenState(): State {
-    val seed = 1234567L
+    val seed = 123456L
     val random = Random(seed)
     val modelGenerator = FakeModelGenerator(
         random,
