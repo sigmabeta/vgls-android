@@ -13,23 +13,30 @@ import java.util.Random
 
 @Preview
 @Composable
-private fun FavoriteListLight(modifier: Modifier = Modifier) {
+internal fun FavoriteListLight(modifier: Modifier = Modifier) {
     val screenState = favoritesScreenState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun FavoriteListLoading(modifier: Modifier = Modifier) {
+internal fun FavoriteListLightLoading(modifier: Modifier = Modifier) {
     val screenState = favoritesScreenLoadingState()
     ScreenPreviewLight(screenState, isGrid = true)
 }
 
 @Preview
 @Composable
-private fun FavoriteListDark(modifier: Modifier = Modifier) {
+internal fun FavoriteListDark(modifier: Modifier = Modifier) {
     val screenState = favoritesScreenState()
 
+    ScreenPreviewDark(screenState, isGrid = true)
+}
+
+@Preview
+@Composable
+internal fun FavoriteListDarkLoading(modifier: Modifier = Modifier) {
+    val screenState = favoritesScreenLoadingState()
     ScreenPreviewDark(screenState, isGrid = true)
 }
 
@@ -43,9 +50,9 @@ private fun favoritesScreenState(): State {
         StringGenerator(random)
     )
 
-    val songs = modelGenerator.randomSongs()
-    val games = modelGenerator.randomGames()
-    val composers = modelGenerator.randomComposers()
+    val songs = modelGenerator.randomSongs().take(3)
+    val games = modelGenerator.randomGames().take(4)
+    val composers = modelGenerator.randomComposers().take(4)
 
     val screenState = State(
         favoriteSongs = LCE.Content(songs),
