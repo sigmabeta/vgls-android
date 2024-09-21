@@ -41,7 +41,7 @@ internal fun ComposerListDarkLoading(modifier: Modifier = Modifier) {
 
 @Suppress("MagicNumber")
 private fun composerScreenState(): State {
-    val seed = 1234567L
+    val seed = 123456L
     val random = Random(seed)
     val modelGenerator = FakeModelGenerator(
         random,
