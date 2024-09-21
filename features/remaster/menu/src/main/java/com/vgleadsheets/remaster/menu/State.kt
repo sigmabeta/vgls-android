@@ -12,7 +12,6 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
-import com.vgleadsheets.model.Part
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import java.util.Locale
@@ -22,7 +21,6 @@ import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
 
 data class State(
-    val selectedPart: Part? = null,
     val keepScreenOn: Boolean? = null,
     val appInfo: AppInfo? = null,
     val debugClickCount: Int = 0,
