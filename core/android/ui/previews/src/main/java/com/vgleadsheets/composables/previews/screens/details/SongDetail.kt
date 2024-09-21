@@ -14,7 +14,7 @@ import java.util.Random
 
 @Preview
 @Composable
-private fun SongDetailLight(modifier: Modifier = Modifier) {
+internal fun SongDetailLight(modifier: Modifier = Modifier) {
     val screenState = songScreenState()
 
     ScreenPreviewLight(screenState)
@@ -22,7 +22,7 @@ private fun SongDetailLight(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun SongDetailLoading(modifier: Modifier = Modifier) {
+internal fun SongDetailLoading(modifier: Modifier = Modifier) {
     val screenState = songScreenLoadingState()
 
     ScreenPreviewLight(screenState)
@@ -30,8 +30,16 @@ private fun SongDetailLoading(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun SongDetailDark(modifier: Modifier = Modifier) {
+internal fun SongDetailDark(modifier: Modifier = Modifier) {
     val screenState = songScreenState()
+
+    ScreenPreviewDark(screenState)
+}
+
+@Preview
+@Composable
+internal fun SongDetailLoadingDark(modifier: Modifier = Modifier) {
+    val screenState = songScreenLoadingState()
 
     ScreenPreviewDark(screenState)
 }
@@ -58,6 +66,8 @@ private fun songScreenState(): State {
         songAliases = LCE.Content(emptyList()),
         tagValues = LCE.Content(tags),
         sheetUrlInfo = LCE.Content(UrlInfo(partId = "C")),
+        isFavorite = LCE.Content(false),
+        isAltSelected = LCE.Content(false),
     )
     return screenState
 }
