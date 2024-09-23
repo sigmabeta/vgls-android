@@ -24,7 +24,7 @@ data class State(
 
     @Suppress("MagicNumber")
     override fun toListItems(stringProvider: StringProvider) = tagValues.withStandardErrorAndLoading(
-        loadingType = LoadingType.TEXT_IMAGE,
+        loadingType = LoadingType.SINGLE_TEXT,
         loadingWithHeader = false,
     ) {
         data.map { tagValue ->
