@@ -57,7 +57,7 @@ private fun songScreenState(): State {
     val song = modelGenerator.randomSong()
     val composers = modelGenerator.randomComposers()
     val game = modelGenerator.randomGame()
-    val tags = modelGenerator.randomTags()
+    val tags = modelGenerator.randomTagValues()
 
     val screenState = State(
         song = LCE.Content(song),

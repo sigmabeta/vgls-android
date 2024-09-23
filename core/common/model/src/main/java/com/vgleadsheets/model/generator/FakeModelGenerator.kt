@@ -3,6 +3,7 @@ package com.vgleadsheets.model.generator
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import java.io.IOException
 import java.util.EmptyStackException
@@ -60,7 +61,23 @@ class FakeModelGenerator constructor(
         randomComposer()
     }.distinctBy { it.id }
 
-    fun randomTag() = possibleTags
+    fun randomTagKey() = possibleTags
+        .entries
+        .toList()
+        .random(random.asKotlinRandom())
+        .let { entry ->
+            TagKey(
+                id = random.nextLong(),
+                name = entry.value.random(random.asKotlinRandom()),
+                values = randomTagValues()
+            )
+        }
+
+    fun randomTagKeys() = List(random.nextInt(20)) {
+        randomTagKey()
+    }
+
+    fun randomTagValue() = possibleTags
         .entries
         .toList()
         .random(random.asKotlinRandom())
@@ -74,8 +91,8 @@ class FakeModelGenerator constructor(
             )
         }
 
-    fun randomTags() = List(random.nextInt(20)) {
-        randomTag()
+    fun randomTagValues() = List(random.nextInt(20)) {
+        randomTagValue()
     }
 
     private fun generateModels() {
