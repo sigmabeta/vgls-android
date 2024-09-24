@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -130,7 +131,8 @@ private fun EmptyListIndicator(
                 .widthIn(min = 200.dp, max = 400.dp)
         )
 
-        if (showDebug && error != null) {
+        val shouldShowError = showDebug || LocalInspectionMode.current
+        if (shouldShowError && error != null) {
             val firstStackElement = error.stackTrace.first()
             val className = firstStackElement.fileName
             val methodName = firstStackElement.methodName

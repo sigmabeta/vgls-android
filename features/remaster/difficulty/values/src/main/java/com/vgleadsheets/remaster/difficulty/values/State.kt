@@ -28,8 +28,12 @@ data class State(
         loadingWithHeader = false,
     ) {
         data.map { difficultyValue ->
-            val valueAsInt = difficultyValue.name.toIntOrNull() ?: -1
+            val name = difficultyValue.name
+            val valueAsInt = name.toIntOrNull() ?: throw IllegalArgumentException(
+                "Badly formatted difficulty value: $name"
+            )
             val label = valueAsInt.getLabel(stringProvider)
+
             LabelRatingStarListModel(
                 dataId = difficultyValue.id,
                 label = label,
@@ -47,7 +51,7 @@ private fun Int.getLabel(stringProvider: StringProvider): String {
         2 -> StringId.DIFFICULTY_TWO
         3 -> StringId.DIFFICULTY_THREE
         4 -> StringId.DIFFICULTY_FOUR
-        else -> throw IllegalArgumentException("Badly formatted difficulty value.")
+        else -> throw IllegalArgumentException("Badly formatted difficulty value: $this")
     }
 
     return stringProvider.getString(stringId)
