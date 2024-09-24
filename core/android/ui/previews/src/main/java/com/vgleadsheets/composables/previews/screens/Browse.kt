@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.composables.previews.ScreenPreviewDark
-import com.vgleadsheets.composables.previews.ScreenPreviewLight
+import com.vgleadsheets.composables.previews.ListScreenPreviewDark
+import com.vgleadsheets.composables.previews.ListScreenPreviewLight
 import com.vgleadsheets.remaster.browse.State
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
@@ -16,7 +16,7 @@ import com.vgleadsheets.ui.StringResources
 internal fun BrowseScreenLight(modifier: Modifier = Modifier) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = browseScreenState(stringProvider)
-    ScreenPreviewLight(screenState)
+    ListScreenPreviewLight(screenState)
 }
 
 @Preview
@@ -25,14 +25,14 @@ internal fun BrowseScreenDark(modifier: Modifier = Modifier) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = browseScreenState(stringProvider)
 
-    ScreenPreviewDark(screenState)
+    ListScreenPreviewDark(screenState)
 }
 
 @Preview
 @Composable
 internal fun BrowseScreenLightLoading(modifier: Modifier = Modifier) {
     val screenState = browseScreenLoadingState()
-    ScreenPreviewLight(screenState)
+    ListScreenPreviewLight(screenState)
 }
 
 @Preview
@@ -40,7 +40,7 @@ internal fun BrowseScreenLightLoading(modifier: Modifier = Modifier) {
 internal fun BrowseScreenDarkLoading(modifier: Modifier = Modifier) {
     val screenState = browseScreenLoadingState()
 
-    ScreenPreviewDark(screenState)
+    ListScreenPreviewDark(screenState)
 }
 
 @Suppress("MagicNumber")

@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.composables.previews.ScreenPreviewDark
-import com.vgleadsheets.composables.previews.ScreenPreviewLight
+import com.vgleadsheets.composables.previews.ListScreenPreviewDark
+import com.vgleadsheets.composables.previews.ListScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.games.detail.State
@@ -16,7 +16,7 @@ import java.util.Random
 internal fun GameDetailLight(modifier: Modifier = Modifier) {
     val screenState = gameScreenState()
 
-    ScreenPreviewLight(screenState)
+    ListScreenPreviewLight(screenState)
 }
 
 @Preview
@@ -24,7 +24,7 @@ internal fun GameDetailLight(modifier: Modifier = Modifier) {
 internal fun GameDetailLoading(modifier: Modifier = Modifier) {
     val screenState = gameScreenLoadingState()
 
-    ScreenPreviewLight(screenState)
+    ListScreenPreviewLight(screenState)
 }
 
 @Preview
@@ -32,7 +32,7 @@ internal fun GameDetailLoading(modifier: Modifier = Modifier) {
 internal fun GameDetailDark(modifier: Modifier = Modifier) {
     val screenState = gameScreenState()
 
-    ScreenPreviewDark(screenState)
+    ListScreenPreviewDark(screenState)
 }
 
 @Preview
@@ -40,7 +40,7 @@ internal fun GameDetailDark(modifier: Modifier = Modifier) {
 internal fun GameDetailLoadingDark(modifier: Modifier = Modifier) {
     val screenState = gameScreenLoadingState()
 
-    ScreenPreviewDark(screenState)
+    ListScreenPreviewDark(screenState)
 }
 
 @Suppress("MagicNumber")

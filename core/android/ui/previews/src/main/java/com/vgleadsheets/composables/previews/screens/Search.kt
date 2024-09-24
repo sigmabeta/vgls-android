@@ -1,43 +1,44 @@
 package com.vgleadsheets.composables.previews.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.composables.previews.ScreenPreviewDark
+import com.vgleadsheets.composables.previews.ScreenPreviewLight
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.search.SearchScreen
 import com.vgleadsheets.search.SearchState
 import com.vgleadsheets.ui.StringProvider
-import com.vgleadsheets.ui.StringResources
-import com.vgleadsheets.ui.themes.VglsMaterial
 import java.util.Random
 
 @Preview
 @Composable
 internal fun SearchScreenLight(modifier: Modifier = Modifier) {
     val screenState = searchScreenState()
-    ScreenPreviewLight(screenState, isGrid = true)
+    ScreenPreviewLight {
+        SearchContent(screenState, it)
+    }
 }
 
 @Preview
 @Composable
 internal fun SearchScreenLoading(modifier: Modifier = Modifier) {
     val screenState = searchScreenLoadingState()
-    ScreenPreviewLight(screenState, isGrid = true)
+    ScreenPreviewLight {
+        SearchContent(screenState, it)
+    }
 }
 
 @Preview
 @Composable
 internal fun SearchScreenHistory(modifier: Modifier = Modifier) {
     val screenState = searchScreenHistoryState()
-    ScreenPreviewLight(screenState, isGrid = true)
+    ScreenPreviewLight {
+        SearchContent(screenState, it)
+    }
 }
 
 @Preview
@@ -45,7 +46,9 @@ internal fun SearchScreenHistory(modifier: Modifier = Modifier) {
 internal fun SearchScreenLoadingHistory(modifier: Modifier = Modifier) {
     val screenState = searchScreenLoadingHistoryState()
 
-    ScreenPreviewLight(screenState, isGrid = true)
+    ScreenPreviewLight {
+        SearchContent(screenState, it)
+    }
 }
 
 @Preview
@@ -53,21 +56,27 @@ internal fun SearchScreenLoadingHistory(modifier: Modifier = Modifier) {
 internal fun SearchScreenDark(modifier: Modifier = Modifier) {
     val screenState = searchScreenState()
 
-    ScreenPreviewDark(screenState, isGrid = true)
+    ScreenPreviewDark {
+        SearchContent(screenState, it)
+    }
 }
 
 @Preview
 @Composable
 internal fun SearchScreenLoadingDark(modifier: Modifier = Modifier) {
     val screenState = searchScreenLoadingState()
-    com.vgleadsheets.composables.previews.ScreenPreviewDark(screenState, isGrid = true)
+    ScreenPreviewDark {
+        SearchContent(screenState, it)
+    }
 }
 
 @Preview
 @Composable
 internal fun SearchScreenHistoryDark(modifier: Modifier = Modifier) {
     val screenState = searchScreenHistoryState()
-    ScreenPreviewDark(screenState, isGrid = true)
+    ScreenPreviewDark {
+        SearchContent(screenState, it)
+    }
 }
 
 @Preview
@@ -75,7 +84,9 @@ internal fun SearchScreenHistoryDark(modifier: Modifier = Modifier) {
 internal fun SearchScreenLoadingHistoryDark(modifier: Modifier = Modifier) {
     val screenState = searchScreenLoadingHistoryState()
 
-    ScreenPreviewDark(screenState, isGrid = true)
+    ScreenPreviewDark {
+        SearchContent(screenState, it)
+    }
 }
 
 @Suppress("MagicNumber")
@@ -166,49 +177,14 @@ private fun searchScreenLoadingHistoryState(): SearchState {
 }
 
 @Composable
-internal fun ScreenPreviewLight(
-    screenState: SearchState,
-    isGrid: Boolean = false,
-) {
-    val actionSink = ActionSink { }
-    val stringProvider = StringResources(LocalContext.current.resources)
-
-    VglsMaterial {
-        Box(
-            modifier = Modifier.background(MaterialTheme.colorScheme.background)
-        ) {
-            Content(screenState, stringProvider, actionSink)
-        }
-    }
-}
-
-@Composable
-internal fun ScreenPreviewDark(
-    screenState: SearchState,
-    isGrid: Boolean = false,
-) {
-    val actionSink = ActionSink { }
-    val stringProvider = StringResources(LocalContext.current.resources)
-
-    VglsMaterial(forceDark = true) {
-        Box(
-            modifier = Modifier.background(MaterialTheme.colorScheme.background)
-        ) {
-            Content(screenState, stringProvider, actionSink)
-        }
-    }
-}
-
-@Composable
-private fun Content(
+private fun SearchContent(
     state: SearchState,
     stringProvider: StringProvider,
-    actionSink: ActionSink
 ) {
     SearchScreen(
         query = state.searchQuery,
         results = state.toListItems(stringProvider),
-        actionSink = actionSink,
+        actionSink = { },
         showDebug = true,
         modifier = Modifier,
         textFieldUpdater = { }

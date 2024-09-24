@@ -10,8 +10,8 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.composables.previews.ScreenPreviewDark
-import com.vgleadsheets.composables.previews.ScreenPreviewLight
+import com.vgleadsheets.composables.previews.ListScreenPreviewDark
+import com.vgleadsheets.composables.previews.ListScreenPreviewLight
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
@@ -25,15 +25,15 @@ import com.vgleadsheets.remaster.home.modules.RngModule
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
-import java.util.Random
 import kotlinx.collections.immutable.persistentListOf
+import java.util.Random
 
 @Preview
 @Composable
 internal fun HomeScreenLight(modifier: Modifier = Modifier) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = homeScreenState(stringProvider)
-    ScreenPreviewLight(screenState)
+    ListScreenPreviewLight(screenState)
 }
 
 @Preview
@@ -42,14 +42,14 @@ internal fun HomeScreenDark(modifier: Modifier = Modifier) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = homeScreenState(stringProvider)
 
-    ScreenPreviewDark(screenState)
+    ListScreenPreviewDark(screenState)
 }
 
 @Preview
 @Composable
 internal fun HomeScreenLightLoading(modifier: Modifier = Modifier) {
     val screenState = homeScreenLoadingState()
-    ScreenPreviewLight(screenState)
+    ListScreenPreviewLight(screenState)
 }
 
 @Preview
@@ -57,7 +57,7 @@ internal fun HomeScreenLightLoading(modifier: Modifier = Modifier) {
 internal fun HomeScreenDarkLoading(modifier: Modifier = Modifier) {
     val screenState = homeScreenLoadingState()
 
-    ScreenPreviewDark(screenState)
+    ListScreenPreviewDark(screenState)
 }
 
 @Suppress("MagicNumber")

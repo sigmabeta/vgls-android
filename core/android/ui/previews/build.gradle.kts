@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.core.android.ui.icons)
     implementation(projects.core.android.ui.list)
     implementation(projects.core.android.ui.strings)
+    implementation(projects.core.android.viewer)
 }
 
 android {
