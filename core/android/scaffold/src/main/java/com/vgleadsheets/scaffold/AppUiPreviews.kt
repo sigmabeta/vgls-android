@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.bottombar.BottomBarState
@@ -291,13 +292,14 @@ private fun Sheets(
             isAltSelected = false,
             isFavorite = true,
         ),
+        isAltSelected = LCE.Content(false),
         partApiId = "Bass",
         initialPage = 0
     )
 
     val actionSink: (VglsAction) -> Unit = {
         when (it) {
-            is Action.PageClicked -> {
+            is Action.ScreenClicked -> {
                 eventDispatcher.sendEvent(VglsEvent.ShowUiChrome)
             }
         }

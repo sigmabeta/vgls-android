@@ -47,9 +47,10 @@ fun SheetPageCard(
                 actionSink = actionSink,
                 fillMaxWidth = false,
                 showDebug = showDebug,
-                modifier = Modifier
-                    .wrapContentHeight(),
                 padding = PaddingValues(),
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .clickable { actionSink.sendAction(model.clickAction) },
             )
 
             if (model.showLyricsWarning) {

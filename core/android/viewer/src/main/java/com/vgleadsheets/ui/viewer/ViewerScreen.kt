@@ -46,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.Content
@@ -66,8 +67,9 @@ fun ViewerScreen(
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(Color.Black)
+            .clickable { actionSink.sendAction(Action.ScreenClicked) }
     ) {
         val items = state.pages()
 
@@ -366,7 +368,8 @@ private fun Sheets(
         ),
         partApiId = "Bass",
         initialPage = visiblePage,
-        buttonsVisible = visible
+        buttonsVisible = visible,
+        isAltSelected = LCE.Content(false)
     )
 
     val actionSink: (action: VglsAction) -> Unit = {

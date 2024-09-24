@@ -54,7 +54,7 @@ data class ViewerState(
                 song.gameName,
                 song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
                 pageNumber,
-                Action.PageClicked(pageNumber),
+                VglsAction.Noop,
             )
         }
     } else {

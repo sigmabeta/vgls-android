@@ -1,6 +1,5 @@
 package com.vgleadsheets.composables
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -32,8 +31,5 @@ fun SheetPageItem(
         showDebug = showDebug,
         modifier = modifier
             .padding(padding)
-            .clickable {
-                actionSink.sendAction(model.clickAction)
-            },
     )
 }

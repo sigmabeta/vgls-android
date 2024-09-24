@@ -66,7 +66,7 @@ class ViewerViewModel @AssistedInject constructor(
         when (action) {
             is VglsAction.Resume -> resume()
             is Action.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
-            is Action.PageClicked -> emitEvent(VglsEvent.ShowUiChrome)
+            is Action.ScreenClicked -> emitEvent(VglsEvent.ShowUiChrome)
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
             is Action.SongLoaded -> startHistoryTimer(action.song)
         }
