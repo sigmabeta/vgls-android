@@ -66,14 +66,17 @@ private fun BoxScope.PreviewSheetTitle(
             .padding(top = 12.dp)
     )
 
-    Text(
-        text = "from ${loadingIndicatorConfig.gameName}",
-        color = Color.Black,
-        style = MaterialTheme.typography.titleLarge.copy(fontSize = 10.sp),
-        modifier = Modifier
-            .align(Alignment.TopCenter)
-            .padding(top = 40.dp)
-    )
+    val gameName = loadingIndicatorConfig.gameName
+    if (gameName.isNotEmpty()) {
+        Text(
+            text = "from $gameName",
+            color = Color.Black,
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 10.sp),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 40.dp)
+        )
+    }
 
     Text(
         text = "https://www.vgleadsheets.com/",

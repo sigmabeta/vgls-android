@@ -31,4 +31,3 @@ private fun songScreenState(): State {
     )
     return screenState
 }
-

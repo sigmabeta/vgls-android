@@ -1,6 +1,7 @@
 package com.vgleadsheets.ui.viewer
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.TitleBarModel
@@ -57,7 +58,16 @@ data class ViewerState(
             )
         }
     } else {
-        emptyList()
+        listOf(
+            SheetPageListModel(
+                sourceInfo = null,
+                title = song?.name.orEmpty(),
+                gameName = song?.gameName.orEmpty(),
+                composers = song?.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                pageNumber = 0,
+                clickAction = VglsAction.Noop,
+            )
+        )
     }.toImmutableList()
 
     fun shouldShowLyricsWarning(): Boolean {

@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 @Suppress("LongMethod")
 fun CrossfadeSheet(
-    sourceInfo: Any,
+    sourceInfo: Any?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
     fillMaxWidth: Boolean,
@@ -43,7 +43,7 @@ fun CrossfadeSheet(
             modifier = modifier.fillMaxSize()
         ) {
             ErrorState(
-                sourceInfo,
+                sourceInfo ?: "Simulated Error",
                 modifier,
                 showDebug,
                 IllegalArgumentException("Oops it didn't work.")
@@ -61,6 +61,14 @@ fun CrossfadeSheet(
         return
     }
 
+    if (sourceInfo == null) {
+        PlaceholderSheet(
+            loadingIndicatorConfig = loadingIndicatorConfig,
+            seed = sheetId,
+            modifier = modifier
+        )
+        return
+    }
     SubcomposeAsyncImage(
         model = with(ImageRequest.Builder(LocalContext.current)) {
             data(sourceInfo)
