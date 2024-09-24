@@ -2,6 +2,7 @@ package com.vgleadsheets.composables.previews.screens
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
+import com.android.resources.ScreenOrientation
 import com.vgleadsheets.composables.previews.PreviewTestUtils.INTERESTING_DEVICES
 import com.vgleadsheets.composables.previews.PreviewTestUtils.SUFFIX_TESTNAME
 import org.junit.Rule
@@ -55,7 +56,40 @@ class ViewerScreenshots(
         @JvmStatic
         @Parameterized.Parameters(name = SUFFIX_TESTNAME)
         fun getDeviceConfig(): Iterable<Array<Any>> {
-            return INTERESTING_DEVICES
+            val landscapeDevices = INTERESTING_DEVICES.map { deviceConfigQuad ->
+                val originalConfigName = deviceConfigQuad[1] as String
+                val originalConfig = deviceConfigQuad[0] as DeviceConfig
+
+                val landscapeConfigName = "$originalConfigName (Landscape)"
+                val landscapeConfig = originalConfig.copy(
+                    orientation = ScreenOrientation.LANDSCAPE
+                )
+
+                arrayOf(
+                    landscapeConfig,
+                    landscapeConfigName,
+                    deviceConfigQuad[2],
+                    deviceConfigQuad[3],
+                )
+            }
+            val portraitDevices = INTERESTING_DEVICES.map { deviceConfigQuad ->
+                val originalConfigName = deviceConfigQuad[1] as String
+                val originalConfig = deviceConfigQuad[0] as DeviceConfig
+
+                val landscapeConfigName = "$originalConfigName (Portrait)"
+                val landscapeConfig = originalConfig.copy(
+                    orientation = ScreenOrientation.PORTRAIT
+                )
+
+                arrayOf(
+                    landscapeConfig,
+                    landscapeConfigName,
+                    deviceConfigQuad[2],
+                    deviceConfigQuad[3],
+                )
+            }
+
+            return landscapeDevices + portraitDevices
         }
     }
 }
