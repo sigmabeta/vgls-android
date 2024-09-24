@@ -27,7 +27,7 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-@Suppress("LongMethod")
+@Suppress("LongMethod", "ReturnCount")
 fun CrossfadeSheet(
     sourceInfo: Any?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
