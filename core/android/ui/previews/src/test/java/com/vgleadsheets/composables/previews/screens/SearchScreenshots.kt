@@ -23,7 +23,7 @@ class SearchScreenshots(
     fun searchScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreenLight()
+            SearchScreen(darkTheme = false)
         }
     }
 
@@ -55,7 +55,7 @@ class SearchScreenshots(
     fun searchScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreenDark()
+            SearchScreen(darkTheme = true)
         }
     }
 
@@ -63,7 +63,7 @@ class SearchScreenshots(
     fun searchScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreenLoadingDark()
+            SearchScreenLoading(darkTheme = true)
         }
     }
 
@@ -71,7 +71,7 @@ class SearchScreenshots(
     fun searchScreenDarkHistory() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreenHistoryDark()
+            SearchScreenHistory(darkTheme = true)
         }
     }
 
@@ -79,7 +79,7 @@ class SearchScreenshots(
     fun searchScreenDarkHistoryLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreenLoadingHistoryDark()
+            SearchScreenLoadingHistory(darkTheme = true)
         }
     }
 

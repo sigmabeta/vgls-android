@@ -222,7 +222,9 @@ private fun BoxScope.DirectionButton(
         actionSink.sendAction(action)
         scrollScope.launch {
             if (shouldScrollFreely) {
-                scrollerState.animateScrollToItem(scrollerState.firstVisibleItemIndex + increment)
+                val newIndex = (scrollerState.firstVisibleItemIndex + increment)
+                    .coerceIn(0..scrollerState.layoutInfo.totalItemsCount)
+                scrollerState.animateScrollToItem(newIndex)
             } else {
                 pagerState.animateScrollToPage(pagerState.currentPage + increment)
             }

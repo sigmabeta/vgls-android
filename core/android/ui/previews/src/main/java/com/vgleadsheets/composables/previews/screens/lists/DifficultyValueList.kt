@@ -1,47 +1,46 @@
 package com.vgleadsheets.composables.previews.screens.lists
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.composables.previews.ListScreenPreviewDark
-import com.vgleadsheets.composables.previews.ListScreenPreviewLight
+import com.vgleadsheets.composables.previews.DevicePreviews
+import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.remaster.difficulty.values.State
 import java.util.Random
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun DifficultyValueListLight(modifier: Modifier = Modifier) {
+internal fun DifficultyValueList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = difficultyValueScreenState()
 
-    ListScreenPreviewLight(screenState)
+    ListScreenPreview(screenState, darkTheme = false)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun DifficultyValueListLightLoading(modifier: Modifier = Modifier) {
+internal fun DifficultyValueListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = loadingScreenState()
 
-    ListScreenPreviewLight(screenState)
+    ListScreenPreview(screenState, darkTheme = false)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun DifficultyValueListDark(modifier: Modifier = Modifier) {
+internal fun DifficultyValueListDark(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = difficultyValueScreenState()
 
-    ListScreenPreviewDark(screenState)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun DifficultyValueListDarkLoading(modifier: Modifier = Modifier) {
+internal fun DifficultyValueListDarkLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = loadingScreenState()
 
-    ListScreenPreviewDark(screenState)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

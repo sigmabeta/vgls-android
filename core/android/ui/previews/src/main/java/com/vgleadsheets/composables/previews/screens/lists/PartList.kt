@@ -1,27 +1,18 @@
 package com.vgleadsheets.composables.previews.screens.lists
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.vgleadsheets.composables.previews.ListScreenPreviewDark
-import com.vgleadsheets.composables.previews.ListScreenPreviewLight
+import com.vgleadsheets.composables.previews.DevicePreviews
+import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.remaster.parts.State
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun PartListLight(modifier: Modifier = Modifier) {
+internal fun PartList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = songScreenState()
 
-    ListScreenPreviewLight(screenState)
-}
-
-@Preview
-@Composable
-internal fun PartListDark(modifier: Modifier = Modifier) {
-    val screenState = songScreenState()
-
-    ListScreenPreviewDark(screenState)
+    ListScreenPreview(screenState, darkTheme = false)
 }
 
 @Suppress("MagicNumber")

@@ -20,10 +20,10 @@ class GameDetailScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun gameDetailScreenLight() {
+    fun gameDetailScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameDetailLight()
+            GameDetail()
         }
     }
 
@@ -31,12 +31,12 @@ class GameDetailScreenshots(
     fun gameDetailScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameDetailDark()
+            GameDetail(darkTheme = true)
         }
     }
 
     @Test
-    fun gameDetailScreenLightLoading() {
+    fun gameDetailScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
             GameDetailLoading()
@@ -47,7 +47,7 @@ class GameDetailScreenshots(
     fun gameDetailScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameDetailLoadingDark()
+            GameDetailLoading(darkTheme = true)
         }
     }
 

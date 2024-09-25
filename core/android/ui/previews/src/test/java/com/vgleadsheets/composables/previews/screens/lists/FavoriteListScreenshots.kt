@@ -23,7 +23,7 @@ class FavoriteListScreenshots(
     fun favoriteListScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            FavoriteListLight()
+            FavoriteList(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class FavoriteListScreenshots(
     fun favoriteListScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            FavoriteListDark()
+            FavoriteList(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class FavoriteListScreenshots(
     fun favoriteListScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            FavoriteListLightLoading()
+            FavoriteListLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class FavoriteListScreenshots(
     fun favoriteListScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            FavoriteListDarkLoading()
+            FavoriteListLoading(darkTheme = true)
         }
     }
 

@@ -1,11 +1,11 @@
 package com.vgleadsheets.composables.previews.screens
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.composables.previews.ScreenPreviewDark
-import com.vgleadsheets.composables.previews.ScreenPreviewLight
+import com.vgleadsheets.composables.previews.DevicePreviews
+import com.vgleadsheets.composables.previews.ScreenPreview
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.model.history.SearchHistoryEntry
@@ -14,77 +14,39 @@ import com.vgleadsheets.search.SearchState
 import com.vgleadsheets.ui.StringProvider
 import java.util.Random
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun SearchScreenLight(modifier: Modifier = Modifier) {
+internal fun SearchScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = searchScreenState()
-    ScreenPreviewLight {
+    ScreenPreview(darkTheme = darkTheme) {
         SearchContent(screenState, it)
     }
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun SearchScreenLoading(modifier: Modifier = Modifier) {
+internal fun SearchScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = searchScreenLoadingState()
-    ScreenPreviewLight {
+    ScreenPreview(darkTheme = darkTheme) {
         SearchContent(screenState, it)
     }
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun SearchScreenHistory(modifier: Modifier = Modifier) {
+internal fun SearchScreenHistory(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = searchScreenHistoryState()
-    ScreenPreviewLight {
+    ScreenPreview(darkTheme = darkTheme) {
         SearchContent(screenState, it)
     }
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun SearchScreenLoadingHistory(modifier: Modifier = Modifier) {
+internal fun SearchScreenLoadingHistory(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = searchScreenLoadingHistoryState()
 
-    ScreenPreviewLight {
-        SearchContent(screenState, it)
-    }
-}
-
-@Preview
-@Composable
-internal fun SearchScreenDark(modifier: Modifier = Modifier) {
-    val screenState = searchScreenState()
-
-    ScreenPreviewDark {
-        SearchContent(screenState, it)
-    }
-}
-
-@Preview
-@Composable
-internal fun SearchScreenLoadingDark(modifier: Modifier = Modifier) {
-    val screenState = searchScreenLoadingState()
-    ScreenPreviewDark {
-        SearchContent(screenState, it)
-    }
-}
-
-@Preview
-@Composable
-internal fun SearchScreenHistoryDark(modifier: Modifier = Modifier) {
-    val screenState = searchScreenHistoryState()
-    ScreenPreviewDark {
-        SearchContent(screenState, it)
-    }
-}
-
-@Preview
-@Composable
-internal fun SearchScreenLoadingHistoryDark(modifier: Modifier = Modifier) {
-    val screenState = searchScreenLoadingHistoryState()
-
-    ScreenPreviewDark {
+    ScreenPreview(darkTheme = darkTheme) {
         SearchContent(screenState, it)
     }
 }

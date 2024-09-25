@@ -1,43 +1,42 @@
 package com.vgleadsheets.composables.previews.screens.lists
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.composables.previews.ListScreenPreviewDark
-import com.vgleadsheets.composables.previews.ListScreenPreviewLight
+import com.vgleadsheets.composables.previews.DevicePreviews
+import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.games.list.State
 import java.util.Random
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun GameListLight(modifier: Modifier = Modifier) {
+internal fun GameList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = gameScreenState()
-    ListScreenPreviewLight(screenState, isGrid = true)
+    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun GameListLightLoading(modifier: Modifier = Modifier) {
+internal fun GameListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = gameScreenLoadingState()
-    ListScreenPreviewLight(screenState, isGrid = true)
+    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun GameListDark(modifier: Modifier = Modifier) {
+internal fun GameListDark(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = gameScreenState()
 
-    ListScreenPreviewDark(screenState, isGrid = true)
+    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun GameListDarkLoading(modifier: Modifier = Modifier) {
+internal fun GameListDarkLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = gameScreenLoadingState()
-    ListScreenPreviewDark(screenState, isGrid = true)
+    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
 }
 
 @Suppress("MagicNumber")

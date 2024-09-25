@@ -1,46 +1,29 @@
 package com.vgleadsheets.composables.previews.screens.details
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.composables.previews.ListScreenPreviewDark
-import com.vgleadsheets.composables.previews.ListScreenPreviewLight
+import com.vgleadsheets.composables.previews.DevicePreviews
+import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.composers.detail.State
 import java.util.Random
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun ComposerDetailLight(modifier: Modifier = Modifier) {
+internal fun ComposerDetail(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = composerScreenState()
 
-    ListScreenPreviewLight(screenState)
+    ListScreenPreview(screenState, darkTheme = false)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun ComposerDetailLoading(modifier: Modifier = Modifier) {
+internal fun ComposerDetailLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = composerScreenLoadingState()
 
-    ListScreenPreviewLight(screenState)
-}
-
-@Preview
-@Composable
-internal fun ComposerDetailDark(modifier: Modifier = Modifier) {
-    val screenState = composerScreenState()
-
-    ListScreenPreviewDark(screenState)
-}
-
-@Preview
-@Composable
-internal fun ComposerDetailLoadingDark(modifier: Modifier = Modifier) {
-    val screenState = composerScreenLoadingState()
-
-    ListScreenPreviewLight(screenState)
+    ListScreenPreview(screenState, darkTheme = false)
 }
 
 @Suppress("MagicNumber")

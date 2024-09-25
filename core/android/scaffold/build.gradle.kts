@@ -5,6 +5,8 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.material3.adaptive)
+    implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
 
@@ -16,7 +18,7 @@ dependencies {
     implementation(projects.core.android.viewmodel)
     implementation(projects.core.android.viewer)
 
-    implementation(projects.features.remaster.bottombar)
+    implementation(projects.features.remaster.navbar)
     implementation(projects.features.remaster.search)
     implementation(projects.features.remaster.topbar)
 }

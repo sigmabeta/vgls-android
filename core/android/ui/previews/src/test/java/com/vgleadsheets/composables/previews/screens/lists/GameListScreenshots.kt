@@ -23,7 +23,7 @@ class GameListScreenshots(
     fun gameListScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameListLight()
+            GameList(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class GameListScreenshots(
     fun gameListScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameListDark()
+            GameList(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class GameListScreenshots(
     fun gameListScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameListLightLoading()
+            GameListLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class GameListScreenshots(
     fun gameListScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameListDarkLoading()
+            GameListLoading(darkTheme = true)
         }
     }
 

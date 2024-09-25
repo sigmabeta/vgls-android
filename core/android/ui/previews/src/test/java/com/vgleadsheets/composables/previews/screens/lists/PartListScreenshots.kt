@@ -23,7 +23,7 @@ class PartListScreenshots(
     fun partListScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            PartListLight()
+            PartList(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class PartListScreenshots(
     fun partListScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            PartListDark()
+            PartList(darkTheme = true)
         }
     }
 

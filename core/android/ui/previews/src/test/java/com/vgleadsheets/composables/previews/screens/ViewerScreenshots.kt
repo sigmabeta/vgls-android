@@ -24,7 +24,7 @@ class ViewerScreenshots(
     fun viewerScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ViewerLight()
+            Viewer(darkTheme = false)
         }
     }
 
@@ -32,7 +32,7 @@ class ViewerScreenshots(
     fun viewerScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ViewerDark()
+            Viewer(darkTheme = true)
         }
     }
 
@@ -40,7 +40,7 @@ class ViewerScreenshots(
     fun viewerScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ViewerLightLoading()
+            ViewerLoading(darkTheme = false)
         }
     }
 
@@ -48,7 +48,7 @@ class ViewerScreenshots(
     fun viewerScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ViewerDarkLoading()
+            ViewerLoading(darkTheme = true)
         }
     }
 
@@ -62,7 +62,7 @@ class ViewerScreenshots(
 
                 val landscapeConfigName = "$originalConfigName (Landscape)"
                 val landscapeConfig = originalConfig.copy(
-                    orientation = ScreenOrientation.LANDSCAPE
+                    orientation = ScreenOrientation.LANDSCAPE,
                 )
 
                 arrayOf(
@@ -76,14 +76,14 @@ class ViewerScreenshots(
                 val originalConfigName = deviceConfigQuad[1] as String
                 val originalConfig = deviceConfigQuad[0] as DeviceConfig
 
-                val landscapeConfigName = "$originalConfigName (Portrait)"
-                val landscapeConfig = originalConfig.copy(
+                val portraitConfigName = "$originalConfigName (Portrait)"
+                val portraitConfig = originalConfig.copy(
                     orientation = ScreenOrientation.PORTRAIT
                 )
 
                 arrayOf(
-                    landscapeConfig,
-                    landscapeConfigName,
+                    portraitConfig,
+                    portraitConfigName,
                     deviceConfigQuad[2],
                     deviceConfigQuad[3],
                 )

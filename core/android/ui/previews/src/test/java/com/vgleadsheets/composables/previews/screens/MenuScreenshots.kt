@@ -23,7 +23,7 @@ class MenuScreenshots(
     fun menuScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            MenuScreenLight()
+            MenuScreen(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class MenuScreenshots(
     fun menuScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            MenuScreenDark()
+            MenuScreen(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class MenuScreenshots(
     fun menuScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            MenuScreenLightLoading()
+            MenuScreenLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class MenuScreenshots(
     fun menuScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            MenuScreenDarkLoading()
+            MenuScreenLoading(darkTheme = true)
         }
     }
 

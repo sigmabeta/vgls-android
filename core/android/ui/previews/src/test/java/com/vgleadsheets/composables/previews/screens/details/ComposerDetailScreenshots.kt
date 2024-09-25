@@ -23,7 +23,7 @@ class ComposerDetailScreenshots(
     fun composerDetailScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerDetailLight()
+            ComposerDetail(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class ComposerDetailScreenshots(
     fun composerDetailScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerDetailDark()
+            ComposerDetail(darkTheme = true)
         }
     }
 
@@ -47,7 +47,7 @@ class ComposerDetailScreenshots(
     fun composerDetailScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerDetailLoadingDark()
+            ComposerDetailLoading(darkTheme = true)
         }
     }
 

@@ -13,11 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.bottombar.BottomBarState
-import com.vgleadsheets.bottombar.BottomBarVisibility
-import com.vgleadsheets.bottombar.RemasterBottomBar
+import com.vgleadsheets.bottombar.NavBarState
+import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.ListStateActual
@@ -32,28 +30,16 @@ import com.vgleadsheets.ui.list.ListScreen
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
-internal fun ListScreenPreviewLight(
+internal fun ListScreenPreview(
     screenState: ListState,
     isGrid: Boolean = false,
+    darkTheme: Boolean,
 ) {
-    ListScreenPreview(screenState, isGrid, false)
-}
-
-@Composable
-internal fun ListScreenPreviewDark(
-    screenState: ListState,
-    isGrid: Boolean = false,
-) {
-    ListScreenPreview(screenState, isGrid, true)
-}
-
-@Composable
-private fun ListScreenPreview(screenState: ListState, isGrid: Boolean, inDarkMode: Boolean) {
     val actionSink = ActionSink { }
     val stringProvider = StringResources(LocalContext.current.resources)
     val state = screenState.toActual(stringProvider)
 
-    VglsMaterial(forceDark = inDarkMode) {
+    VglsMaterial(forceDark = darkTheme) {
         CompositionLocalProvider(LocalInspectionMode provides true) {
             AppChrome(state.title) {
                 Box(
@@ -70,37 +56,19 @@ private fun ListScreenPreview(screenState: ListState, isGrid: Boolean, inDarkMod
 }
 
 @Composable
-internal fun ScreenPreviewLight(
+internal fun ScreenPreview(
+    darkTheme: Boolean,
     content: @Composable (StringProvider) -> Unit,
 ) {
     val stringProvider = StringResources(LocalContext.current.resources)
 
-    VglsMaterial {
+    VglsMaterial(forceDark = darkTheme) {
         CompositionLocalProvider(LocalInspectionMode provides true) {
             AppChrome(TitleBarModel()) {
                 Box(
                     modifier = Modifier
                         .padding(top = 72.dp)
                         .background(MaterialTheme.colorScheme.background)
-                ) {
-                    content(stringProvider)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-internal fun ScreenPreviewDark(
-    content: @Composable (StringProvider) -> Unit,
-) {
-    val stringProvider = StringResources(LocalContext.current.resources)
-
-    VglsMaterial(forceDark = true) {
-        CompositionLocalProvider(LocalInspectionMode provides true) {
-            AppChrome(TitleBarModel()) {
-                Box(
-                    modifier = Modifier.background(MaterialTheme.colorScheme.background)
                 ) {
                     content(stringProvider)
                 }
@@ -144,15 +112,15 @@ private fun AppChrome(
         titleBarModel,
         visibility = TopBarVisibility.VISIBLE
     )
-    val bottomBarVmState = BottomBarState(
-        visibility = BottomBarVisibility.VISIBLE
+    val bottomBarVmState = NavBarState(
+        visibility = NavBarVisibility.VISIBLE
     )
 
     val stringProvider = StringResources(LocalContext.current.resources)
     AppContent(
         mainContent = { content(stringProvider) },
         topBarContent = { RemasterTopBar(topBarVmState, scrollBehavior) { } },
-        bottomBarContent = { RemasterBottomBar(bottomBarVmState, rememberNavController()) },
+        // bottomBarContent = { RemasterBottomBar(bottomBarVmState, rememberNavController()) },
         snackbarHost = { },
         modifier = Modifier,
     )

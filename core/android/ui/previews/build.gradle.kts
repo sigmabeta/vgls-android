@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     implementation(projects.features.remaster.all)
-    implementation(projects.features.remaster.bottombar)
+    implementation(projects.features.remaster.navbar)
     implementation(projects.features.remaster.topbar)
 
     implementation(projects.core.common.model)

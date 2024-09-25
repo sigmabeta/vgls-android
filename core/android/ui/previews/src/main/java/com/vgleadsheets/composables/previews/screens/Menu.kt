@@ -1,46 +1,28 @@
 package com.vgleadsheets.composables.previews.screens
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appinfo.AppInfo
-import com.vgleadsheets.composables.previews.ListScreenPreviewDark
-import com.vgleadsheets.composables.previews.ListScreenPreviewLight
+import com.vgleadsheets.composables.previews.DevicePreviews
+import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.remaster.menu.State
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun MenuScreenLight(modifier: Modifier = Modifier) {
+internal fun MenuScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = menuScreenState(stringProvider)
-    ListScreenPreviewLight(screenState)
+    ListScreenPreview(screenState, darkTheme = false)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun MenuScreenDark(modifier: Modifier = Modifier) {
-    val stringProvider = StringResources(LocalContext.current.resources)
-    val screenState = menuScreenState(stringProvider)
-
-    ListScreenPreviewDark(screenState)
-}
-
-@Preview
-@Composable
-internal fun MenuScreenLightLoading(modifier: Modifier = Modifier) {
+internal fun MenuScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = menuScreenLoadingState()
-    ListScreenPreviewLight(screenState)
-}
-
-@Preview
-@Composable
-internal fun MenuScreenDarkLoading(modifier: Modifier = Modifier) {
-    val screenState = menuScreenLoadingState()
-
-    ListScreenPreviewDark(screenState)
+    ListScreenPreview(screenState, darkTheme = false)
 }
 
 @Suppress("MagicNumber")

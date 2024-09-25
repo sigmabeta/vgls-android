@@ -126,7 +126,6 @@ include(
 //    ":features:main:viewer",
 
     ":features:remaster:all",
-    ":features:remaster:bottombar",
     ":features:remaster:browse",
     ":features:remaster:composers:detail",
     ":features:remaster:composers:list",
@@ -137,6 +136,7 @@ include(
     ":features:remaster:favorites",
     ":features:remaster:home",
     ":features:remaster:menu",
+    ":features:remaster:navbar",
     ":features:remaster:parts",
     ":features:remaster:search",
     ":features:remaster:songs:detail",

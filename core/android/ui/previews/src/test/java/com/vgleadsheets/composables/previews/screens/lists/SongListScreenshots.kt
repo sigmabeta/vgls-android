@@ -23,7 +23,7 @@ class SongListScreenshots(
     fun songListScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SongListLight()
+            SongList(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class SongListScreenshots(
     fun songListScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SongListDark()
+            SongList(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class SongListScreenshots(
     fun songListScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SongListLightLoading()
+            SongListLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class SongListScreenshots(
     fun songListScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SongListDarkLoading()
+            SongListLoading(darkTheme = true)
         }
     }
 

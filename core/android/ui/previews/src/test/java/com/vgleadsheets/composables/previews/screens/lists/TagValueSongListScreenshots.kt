@@ -23,7 +23,7 @@ class TagValueSongListScreenshots(
     fun tagValueSongListScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueSongListLight()
+            TagValueSongList(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class TagValueSongListScreenshots(
     fun tagValueSongListScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueSongListDark()
+            TagValueSongList(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class TagValueSongListScreenshots(
     fun tagValueSongListScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueSongListLightLoading()
+            TagValueSongListLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class TagValueSongListScreenshots(
     fun tagValueSongListScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueSongListDarkLoading()
+            TagValueSongListLoading(darkTheme = true)
         }
     }
 

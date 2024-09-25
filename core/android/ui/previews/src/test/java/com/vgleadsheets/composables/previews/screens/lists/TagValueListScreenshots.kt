@@ -23,7 +23,7 @@ class TagValueListScreenshots(
     fun tagValueListScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueListLight()
+            TagValueList(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class TagValueListScreenshots(
     fun tagValueListScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueListDark()
+            TagValueList(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class TagValueListScreenshots(
     fun tagValueListScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueListLightLoading()
+            TagValueListLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class TagValueListScreenshots(
     fun tagValueListScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueListDarkLoading()
+            TagValueListLoading(darkTheme = true)
         }
     }
 

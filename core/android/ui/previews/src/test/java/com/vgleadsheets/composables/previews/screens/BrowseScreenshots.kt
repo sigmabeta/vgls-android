@@ -23,7 +23,7 @@ class BrowseScreenshots(
     fun browseScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            BrowseScreenLight()
+            BrowseScreen(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class BrowseScreenshots(
     fun browseScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            BrowseScreenDark()
+            BrowseScreen(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class BrowseScreenshots(
     fun browseScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            BrowseScreenLightLoading()
+            BrowseScreenLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class BrowseScreenshots(
     fun browseScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            BrowseScreenDarkLoading()
+            BrowseScreenLoading(darkTheme = true)
         }
     }
 

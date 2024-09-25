@@ -30,9 +30,8 @@ import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.bottombar.BottomBarState
-import com.vgleadsheets.bottombar.BottomBarVisibility
-import com.vgleadsheets.bottombar.RemasterBottomBar
+import com.vgleadsheets.bottombar.NavBarState
+import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SquareItemListModel
@@ -58,7 +57,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 private fun AppPreviewRegular() {
     VglsMaterial {
-        SampleScreen { _, _ ->
+        SampleScreen { _ ->
             SampleScroller()
         }
     }
@@ -68,7 +67,7 @@ private fun AppPreviewRegular() {
 @Composable
 private fun AppPreviewDark() {
     VglsMaterial {
-        SampleScreen { _, _ ->
+        SampleScreen { _ ->
             SampleScroller()
         }
     }
@@ -78,7 +77,7 @@ private fun AppPreviewDark() {
 @Composable
 private fun ViewerPreviewRegular() {
     VglsMaterial {
-        SampleScreen { _, eventDispatcher ->
+        SampleScreen { eventDispatcher ->
             SampleSheets(eventDispatcher)
         }
     }
@@ -88,7 +87,7 @@ private fun ViewerPreviewRegular() {
 @Composable
 private fun ViewerPreviewDark() {
     VglsMaterial {
-        SampleScreen { _, eventDispatcher ->
+        SampleScreen { eventDispatcher ->
             SampleSheets(eventDispatcher)
         }
     }
@@ -96,21 +95,21 @@ private fun ViewerPreviewDark() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SampleScreen(screenContent: @Composable (PaddingValues, EventDispatcher) -> Unit) {
+private fun SampleScreen(screenContent: @Composable (EventDispatcher) -> Unit) {
     val navController = rememberNavController()
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
     val snackbarHostState = remember { SnackbarHostState() }
 
     var topBarVisibility by remember { mutableStateOf(TopBarVisibility.VISIBLE) }
-    var bottomBarVisibility by remember { mutableStateOf(BottomBarVisibility.VISIBLE) }
+    var navBarVisibility by remember { mutableStateOf(NavBarVisibility.VISIBLE) }
 
     val topBarVmState = TopBarState(
         TitleBarModel(),
         visibility = topBarVisibility
     )
-    val bottomBarVmState = BottomBarState(
-        visibility = bottomBarVisibility
+    val bottomBarVmState = NavBarState(
+        visibility = navBarVisibility
     )
 
     val toggleBarVisibility = {
@@ -120,10 +119,10 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, EventDispatc
             TopBarVisibility.VISIBLE
         }
 
-        bottomBarVisibility = if (bottomBarVisibility == BottomBarVisibility.VISIBLE) {
-            BottomBarVisibility.HIDDEN
+        navBarVisibility = if (navBarVisibility == NavBarVisibility.VISIBLE) {
+            NavBarVisibility.HIDDEN
         } else {
-            BottomBarVisibility.VISIBLE
+            NavBarVisibility.VISIBLE
         }
     }
 
@@ -138,9 +137,9 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, EventDispatc
     }
 
     AppContent(
+        navController = navController,
         topBarContent = { RemasterTopBar(state = topBarVmState, scrollBehavior = scrollBehavior, handleAction = { }) },
-        mainContent = { padding -> screenContent(padding, eventDispatcher) },
-        bottomBarContent = { RemasterBottomBar(state = bottomBarVmState, navController = navController) },
+        mainContent = { screenContent(eventDispatcher) },
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier,
     )

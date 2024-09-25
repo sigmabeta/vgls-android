@@ -1,11 +1,11 @@
 package com.vgleadsheets.composables.previews.screens
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.composables.previews.ScreenPreviewDark
-import com.vgleadsheets.composables.previews.ScreenPreviewLight
+import com.vgleadsheets.composables.previews.DevicePreviews
+import com.vgleadsheets.composables.previews.ScreenPreview
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
@@ -13,42 +13,22 @@ import com.vgleadsheets.ui.viewer.ViewerScreen
 import com.vgleadsheets.ui.viewer.ViewerState
 import java.util.Random
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun ViewerLight(modifier: Modifier = Modifier) {
+internal fun Viewer(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = viewerScreenState()
 
-    ScreenPreviewLight {
+    ScreenPreview(darkTheme = darkTheme) {
         ViewerContent(screenState)
     }
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun ViewerLightLoading(modifier: Modifier = Modifier) {
+internal fun ViewerLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = loadingScreenState()
 
-    ScreenPreviewLight {
-        ViewerContent(screenState)
-    }
-}
-
-@Preview
-@Composable
-internal fun ViewerDark(modifier: Modifier = Modifier) {
-    val screenState = viewerScreenState()
-
-    ScreenPreviewDark {
-        ViewerContent(screenState)
-    }
-}
-
-@Preview
-@Composable
-internal fun ViewerDarkLoading(modifier: Modifier = Modifier) {
-    val screenState = loadingScreenState()
-
-    ScreenPreviewDark {
+    ScreenPreview(darkTheme = darkTheme) {
         ViewerContent(screenState)
     }
 }

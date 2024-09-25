@@ -23,7 +23,7 @@ class DifficultyValueListScreenshots(
     fun difficultyValueListScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            DifficultyValueListLight()
+            DifficultyValueList(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class DifficultyValueListScreenshots(
     fun difficultyValueListScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            DifficultyValueListDark()
+            DifficultyValueList(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class DifficultyValueListScreenshots(
     fun difficultyValueListScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            DifficultyValueListLightLoading()
+            DifficultyValueListLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class DifficultyValueListScreenshots(
     fun difficultyValueListScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            DifficultyValueListDarkLoading()
+            DifficultyValueListLoading(darkTheme = true)
         }
     }
 

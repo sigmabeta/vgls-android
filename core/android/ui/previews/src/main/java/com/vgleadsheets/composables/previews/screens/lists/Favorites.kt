@@ -1,43 +1,27 @@
 package com.vgleadsheets.composables.previews.screens.lists
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.composables.previews.ListScreenPreviewDark
-import com.vgleadsheets.composables.previews.ListScreenPreviewLight
+import com.vgleadsheets.composables.previews.DevicePreviews
+import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.favorites.State
 import java.util.Random
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun FavoriteListLight(modifier: Modifier = Modifier) {
+internal fun FavoriteList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = favoritesScreenState()
-    ListScreenPreviewLight(screenState, isGrid = true)
+    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
 }
 
-@Preview
+@DevicePreviews
 @Composable
-internal fun FavoriteListLightLoading(modifier: Modifier = Modifier) {
+internal fun FavoriteListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = favoritesScreenLoadingState()
-    ListScreenPreviewLight(screenState, isGrid = true)
-}
-
-@Preview
-@Composable
-internal fun FavoriteListDark(modifier: Modifier = Modifier) {
-    val screenState = favoritesScreenState()
-
-    ListScreenPreviewDark(screenState, isGrid = true)
-}
-
-@Preview
-@Composable
-internal fun FavoriteListDarkLoading(modifier: Modifier = Modifier) {
-    val screenState = favoritesScreenLoadingState()
-    ListScreenPreviewDark(screenState, isGrid = true)
+    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
 }
 
 @Suppress("MagicNumber")

@@ -23,7 +23,7 @@ class HomeScreenshots(
     fun homeScreenLight() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            HomeScreenLight()
+            HomeScreen(darkTheme = false)
         }
     }
 
@@ -31,7 +31,7 @@ class HomeScreenshots(
     fun homeScreenDark() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            HomeScreenDark()
+            HomeScreen(darkTheme = true)
         }
     }
 
@@ -39,7 +39,7 @@ class HomeScreenshots(
     fun homeScreenLightLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            HomeScreenLightLoading()
+            HomeScreenLoading(darkTheme = false)
         }
     }
 
@@ -47,7 +47,7 @@ class HomeScreenshots(
     fun homeScreenDarkLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            HomeScreenDarkLoading()
+            HomeScreenLoading(darkTheme = true)
         }
     }
 
