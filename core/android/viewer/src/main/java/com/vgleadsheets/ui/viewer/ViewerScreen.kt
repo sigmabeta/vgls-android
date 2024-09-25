@@ -58,6 +58,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
+@Suppress("LongMethod", "MaxLineLength")
 fun ViewerScreen(
     state: ViewerState,
     actionSink: ActionSink,

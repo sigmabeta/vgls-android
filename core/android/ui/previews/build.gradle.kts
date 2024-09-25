@@ -29,5 +29,3 @@ dependencies {
 android {
     namespace = "com.vgleadsheets.ui.previews"
 }
-
-

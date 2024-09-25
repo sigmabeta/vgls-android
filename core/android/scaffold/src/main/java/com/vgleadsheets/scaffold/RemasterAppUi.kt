@@ -38,6 +38,7 @@ import com.vgleadsheets.ui.list.listScreenEntry
 import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("MaxLineLength")
 @Composable
 fun RemasterAppUi(
     showSystemBars: () -> Unit,
