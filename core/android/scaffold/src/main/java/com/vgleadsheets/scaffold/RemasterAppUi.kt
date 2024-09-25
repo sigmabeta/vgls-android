@@ -9,7 +9,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -21,12 +20,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.bottombar.BottomBarState
 import com.vgleadsheets.bottombar.BottomBarViewModel
 import com.vgleadsheets.bottombar.RemasterBottomBar
 import com.vgleadsheets.nav.Destination
@@ -35,7 +32,6 @@ import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.nav.SystemUiVisibility
 import com.vgleadsheets.search.searchScreenNavEntry
 import com.vgleadsheets.topbar.RemasterTopBar
-import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarViewModel
 import com.vgleadsheets.ui.licenses.licensesScreenNavEntry
 import com.vgleadsheets.ui.list.listScreenEntry
@@ -75,36 +71,29 @@ fun RemasterAppUi(
     val bottomBarVmState by bottomBarViewModel.uiState.collectAsState()
 
     AppContent(
-        navController = navController,
-        scrollBehavior = scrollBehavior,
-        snackbarHostState = snackbarHostState,
-        topBarVmState = topBarVmState,
-        topBarActionHandler = topBarActionHandler,
-        bottomBarVmState = bottomBarVmState,
         mainContent = { innerPadding -> MainContent(navController, innerPadding, topBarState) },
-        modifier = modifier,
+        topBarContent = { RemasterTopBar(state = topBarVmState, scrollBehavior = scrollBehavior, handleAction = topBarActionHandler) },
+        bottomBarContent = { RemasterBottomBar(state = bottomBarVmState, navController = navController) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppContent(
-    navController: NavHostController,
-    scrollBehavior: TopAppBarScrollBehavior,
-    snackbarHostState: SnackbarHostState,
-    topBarVmState: TopBarState,
-    topBarActionHandler: (VglsAction) -> Unit,
-    bottomBarVmState: BottomBarState,
     mainContent: @Composable (PaddingValues) -> Unit,
+    topBarContent: @Composable () -> Unit,
+    bottomBarContent: @Composable () -> Unit,
+    snackbarHost: @Composable () -> Unit,
     modifier: Modifier,
 ) {
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { TopBarContent(topBarVmState, scrollBehavior, topBarActionHandler) },
-        bottomBar = { BottomBarContent(bottomBarVmState, navController) },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        topBar = topBarContent,
+        bottomBar = bottomBarContent,
+        snackbarHost = snackbarHost,
         content = mainContent,
+        modifier = modifier,
     )
 }
 
@@ -153,31 +142,6 @@ private fun MainContent(
             globalModifier = globalModifier,
         )
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBarContent(
-    state: TopBarState,
-    scrollBehavior: TopAppBarScrollBehavior,
-    handleAction: (VglsAction) -> Unit,
-) {
-    RemasterTopBar(
-        state = state,
-        scrollBehavior = scrollBehavior,
-        handleAction = handleAction,
-    )
-}
-
-@Composable
-private fun BottomBarContent(
-    state: BottomBarState,
-    navController: NavController,
-) {
-    RemasterBottomBar(
-        state = state,
-        navController = navController,
-    )
 }
 
 private fun handleSystemBars(

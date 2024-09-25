@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -31,6 +32,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.bottombar.BottomBarState
 import com.vgleadsheets.bottombar.BottomBarVisibility
+import com.vgleadsheets.bottombar.RemasterBottomBar
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SquareItemListModel
@@ -41,6 +43,7 @@ import com.vgleadsheets.composables.ImageNameListItem
 import com.vgleadsheets.composables.SectionHeader
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.topbar.RemasterTopBar
 import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarVisibility
 import com.vgleadsheets.ui.Icon
@@ -135,13 +138,10 @@ private fun SampleScreen(screenContent: @Composable (PaddingValues, EventDispatc
     }
 
     AppContent(
-        navController = navController,
-        scrollBehavior = scrollBehavior,
-        snackbarHostState = snackbarHostState,
-        topBarVmState = topBarVmState,
-        topBarActionHandler = { },
-        bottomBarVmState = bottomBarVmState,
+        topBarContent = { RemasterTopBar(state = topBarVmState, scrollBehavior = scrollBehavior, handleAction = { }) },
         mainContent = { padding -> screenContent(padding, eventDispatcher) },
+        bottomBarContent = { RemasterBottomBar(state = bottomBarVmState, navController = navController) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier,
     )
 }
