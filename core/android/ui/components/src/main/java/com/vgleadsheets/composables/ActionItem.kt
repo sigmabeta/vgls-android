@@ -3,6 +3,7 @@ package com.vgleadsheets.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,14 +35,13 @@ fun ActionItem(
     model: CtaListModel,
     actionSink: ActionSink,
     modifier: Modifier,
+    padding: PaddingValues,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_medium)
-            )
+            .padding(padding)
             .clickable(
                 onClick = { actionSink.sendAction(model.clickAction) },
             )
@@ -52,7 +52,6 @@ fun ActionItem(
             contentDescription = null,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(start = 4.dp)
                 .padding(vertical = 12.dp)
         )
 
@@ -112,6 +111,7 @@ private fun Sample() {
             VglsAction.Noop,
         ),
         PreviewActionSink { },
-        Modifier
+        padding = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_medium)),
+        modifier = Modifier
     )
 }

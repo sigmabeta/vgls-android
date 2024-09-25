@@ -44,7 +44,7 @@ fun ListModel.Content(
 ) {
     when (this) {
         is CheckableListModel -> LabelCheckboxItem(model = this, actionSink = sink, modifier = mod, padding = pad)
-        is CtaListModel -> ActionItem(model = this, actionSink = sink, modifier = mod)
+        is CtaListModel -> ActionItem(model = this, actionSink = sink, modifier = mod, padding = pad)
         is DropdownSettingListModel -> LabelDropdownListItem(model = this, modifier = mod, padding = pad)
         is EmptyStateListModel -> EmptyListIndicator(model = this, modifier = mod)
         is ErrorStateListModel -> EmptyListIndicator(model = this, showDebug = debug, modifier = mod)
