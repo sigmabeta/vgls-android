@@ -69,6 +69,7 @@ fun CrossfadeSheet(
         )
         return
     }
+
     SubcomposeAsyncImage(
         model = with(ImageRequest.Builder(LocalContext.current)) {
             data(sourceInfo)
