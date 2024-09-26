@@ -97,11 +97,16 @@ fun AppContent(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val orientation = LocalConfiguration.current.orientation
+    val scaffoldInsetPadding = calculateCutoutInset()
+
     NavigationSuiteScaffold(
+        modifier = scaffoldInsetPadding,
         layoutType = calculateNavSuiteType(
             currentWindowAdaptiveInfo(),
-            LocalConfiguration.current.orientation
+            orientation
         ),
+
         navigationSuiteItems = {
             NavBarItem.entries.forEach { navItem ->
                 item(
