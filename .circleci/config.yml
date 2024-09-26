@@ -128,13 +128,13 @@ jobs:
             - build-cache
 
   screenshot-test:
-    resource_class: medium
+    resource_class: large
 
     docker:
       - image: cimg/android:2024.04.1
 
     environment:
-      JVM_OPTS: -Xmx1024m
+      JVM_OPTS: -Xmx512m
 
     steps:
       - restore_cache:
