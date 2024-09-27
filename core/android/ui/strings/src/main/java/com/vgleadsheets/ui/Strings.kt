@@ -41,6 +41,8 @@ fun StringId.id(): Int {
         StringId.CTA_ALT_UNSELECT -> R.string.cta_alt_unselect
         StringId.CTA_SEARCH_YOUTUBE -> R.string.cta_search_youtube
         StringId.CTA_SEARCH -> R.string.cta_search
+        StringId.CTA_SEARCH_OTHER_QUERY -> R.string.cta_search_other_query
+        StringId.CTA_FAVORITES -> R.string.cta_favorites
 
         StringId.LABEL_SONG_ALSO_KNOWN_AS -> R.string.label_song_also_known_as
 

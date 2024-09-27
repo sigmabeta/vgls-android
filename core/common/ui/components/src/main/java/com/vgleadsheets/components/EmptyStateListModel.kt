@@ -1,7 +1,9 @@
 package com.vgleadsheets.components
 
+import com.vgleadsheets.ui.Icon
+
 data class EmptyStateListModel(
-    val iconId: Int,
+    val icon: Icon,
     val explanation: String,
     val debugText: String? = null,
     val showCrossOut: Boolean = true

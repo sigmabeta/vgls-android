@@ -56,6 +56,8 @@
     <string name="cta_alt_unselect">Show standard version</string>
     <string name="cta_search_youtube">Search song on YouTube</string>
     <string name="cta_search">Enter some text to search VGLS for a song, composer, or game.</string>
+    <string name="cta_search_other_query">Nothing found. Try a broader search?</string>
+    <string name="cta_favorites">Add a game, song, or composer to your favorites to find them here quickly.</string>
 
     <string name="label_song_also_known_as">Also Known As</string>
     <string name="label_settings_keep_screen_on">Sheets keep screen on</string>

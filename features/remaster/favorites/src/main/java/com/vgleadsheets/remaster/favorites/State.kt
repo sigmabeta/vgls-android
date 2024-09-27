@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.favorites
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingType
@@ -26,12 +27,22 @@ data class State(
     )
 
     override fun toListItems(stringProvider: StringProvider): List<ListModel> {
-        return listOf(
+        val results = listOf(
             songsToListItems(favoriteSongs, stringProvider),
             gamesToListItems(favoriteGames, stringProvider),
             composersToListItems(favoriteComposers, stringProvider),
-        )
-            .flatten()
+        ).flatten()
+
+        if (results.isEmpty()) {
+            return listOf(
+                EmptyStateListModel(
+                    icon = Icon.JAM_EMPTY,
+                    explanation = stringProvider.getString(StringId.CTA_FAVORITES),
+                    showCrossOut = false
+                )
+            )
+        }
+        return results
     }
 
     private fun songsToListItems(
@@ -41,6 +52,10 @@ data class State(
         loadingType = LoadingType.TEXT_CAPTION_IMAGE,
         loadingItemCount = 2,
     ) {
+        if (data.isEmpty()) {
+            return@withStandardErrorAndLoading emptyList()
+        }
+
         listOf(
             SectionHeaderListModel(stringProvider.getString(StringId.SECTION_HEADER_SEARCH_SONGS))
         ) + data.map { item ->
@@ -66,6 +81,10 @@ data class State(
         loadingType = LoadingType.SQUARE,
         loadingItemCount = 2
     ) {
+        if (data.isEmpty()) {
+            return@withStandardErrorAndLoading emptyList()
+        }
+
         listOf(
             SectionHeaderListModel(
                 stringProvider.getString(StringId.SECTION_HEADER_SEARCH_GAMES)
@@ -88,6 +107,10 @@ data class State(
         loadingType = LoadingType.SQUARE,
         loadingItemCount = 2
     ) {
+        if (data.isEmpty()) {
+            return@withStandardErrorAndLoading emptyList()
+        }
+
         listOf(
             SectionHeaderListModel(
                 stringProvider.getString(StringId.SECTION_HEADER_SEARCH_COMPOSERS)

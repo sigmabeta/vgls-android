@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -43,7 +45,7 @@ fun EmptyListIndicator(
 ) {
     EmptyListIndicator(
         explanation = model.errorString,
-        iconId = com.vgleadsheets.ui.icons.R.drawable.ic_error_24dp,
+        icon = Icon.WARNING,
         showCrossOut = false,
         error = model.error,
         showDebug = showDebug,
@@ -60,7 +62,7 @@ fun EmptyListIndicator(
 ) {
     EmptyListIndicator(
         explanation = model.explanation,
-        iconId = model.iconId,
+        icon = model.icon,
         showCrossOut = model.showCrossOut,
         onBlack = onBlack,
         modifier = modifier
@@ -71,7 +73,7 @@ fun EmptyListIndicator(
 @Suppress("LongMethod")
 private fun EmptyListIndicator(
     explanation: String,
-    iconId: Int,
+    icon: Icon,
     showCrossOut: Boolean,
     showDebug: Boolean = false,
     error: Throwable? = null,
@@ -85,12 +87,17 @@ private fun EmptyListIndicator(
     }
     var showDetails by remember { mutableStateOf(false) }
 
+    val clickableModifier = if (showDebug) {
+        modifier.clickable { showDetails = !showDetails }
+    } else {
+        modifier
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = clickableModifier
             .animateContentSize()
             .fillMaxWidth()
-            .clickable(enabled = showDebug) { showDetails = !showDetails }
     ) {
         Box(
             modifier = Modifier
@@ -102,7 +109,7 @@ private fun EmptyListIndicator(
             val crossOutResource = com.vgleadsheets.ui.icons.R.drawable.ic_cross_out_24dp
 
             Icon(
-                painter = painterResource(id = iconId),
+                painter = painterResource(id = icon.id()),
                 contentDescription = null,
                 tint = color,
                 modifier = Modifier
@@ -250,7 +257,7 @@ private fun DarkError() {
 private fun Sample() {
     EmptyListIndicator(
         EmptyStateListModel(
-            iconId = com.vgleadsheets.ui.icons.R.drawable.ic_album_24dp,
+            icon = Icon.ALBUM,
             explanation = "It's all part of the protocol, innit?",
             debugText = null,
             showCrossOut = true

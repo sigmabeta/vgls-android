@@ -21,7 +21,6 @@ import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import com.vgleadsheets.ui.id
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -50,6 +49,15 @@ data class SearchState(
             (songItems(stringProvider) + gameItems(stringProvider) + composerItems(stringProvider))
         }
             .filter { it !is NoopListModel }
+            .ifEmpty {
+                listOf(
+                    EmptyStateListModel(
+                        icon = Icon.SEARCH,
+                        explanation = stringProvider.getString(StringId.CTA_SEARCH_OTHER_QUERY),
+                        showCrossOut = false
+                    )
+                )
+            }
             .toImmutableList()
 
         try {
@@ -88,7 +96,7 @@ data class SearchState(
 
     private fun searchCta(stringProvider: StringProvider) = listOf(
         EmptyStateListModel(
-            iconId = Icon.SEARCH.id(),
+            icon = Icon.SEARCH,
             explanation = stringProvider.getString(StringId.CTA_SEARCH),
             showCrossOut = false,
         )
@@ -98,6 +106,10 @@ data class SearchState(
         loadingType = LoadingType.TEXT_CAPTION_IMAGE,
         loadingItemCount = 2,
     ) {
+        if (data.isEmpty()) {
+            return@withStandardErrorAndLoading emptyList()
+        }
+
         listOf(
             SectionHeaderListModel(
                 stringProvider.getString(StringId.SECTION_HEADER_SEARCH_SONGS)
@@ -122,6 +134,10 @@ data class SearchState(
         loadingType = LoadingType.SQUARE,
         loadingItemCount = 2,
     ) {
+        if (data.isEmpty()) {
+            return@withStandardErrorAndLoading emptyList()
+        }
+
         listOf(
             SectionHeaderListModel(
                 stringProvider.getString(StringId.SECTION_HEADER_SEARCH_GAMES)
@@ -141,6 +157,10 @@ data class SearchState(
         loadingType = LoadingType.SQUARE,
         loadingItemCount = 2,
     ) {
+        if (data.isEmpty()) {
+            return@withStandardErrorAndLoading emptyList()
+        }
+
         listOf(
             SectionHeaderListModel(
                 stringProvider.getString(StringId.SECTION_HEADER_SEARCH_COMPOSERS)

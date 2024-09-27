@@ -24,6 +24,7 @@ import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
@@ -62,13 +63,12 @@ fun SheetPageCard(
                 ) {
                     EmptyListIndicator(
                         model = EmptyStateListModel(
-                            iconId = com.vgleadsheets.ui.icons.R.drawable.ic_baseline_warning_24,
+                            icon = Icon.WARNING,
                             explanation = "No lyrics available for this sheet.",
                             showCrossOut = false,
                         ),
                         onBlack = true,
                         modifier = Modifier
-                            .clickable { actionSink.sendAction(model.clickAction) }
                             .align(Alignment.Center)
                     )
                 }
