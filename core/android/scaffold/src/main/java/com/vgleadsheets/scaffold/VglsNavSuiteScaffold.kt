@@ -24,6 +24,7 @@ import com.vgleadsheets.topbar.RemasterTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Suppress("MaxLineLength")
 fun VglsNavSuiteScaffold(
     layoutType: NavigationSuiteType,
     navSuiteItems: NavigationSuiteScope.() -> Unit,

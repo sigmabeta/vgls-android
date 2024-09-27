@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import com.vgleadsheets.list.ListStateActual
 import com.vgleadsheets.scaffold.AppContent
 import com.vgleadsheets.scaffold.TopBarConfig
 import com.vgleadsheets.topbar.TopBarState
+import com.vgleadsheets.topbar.TopBarVisibility
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.ui.list.GridScreen
@@ -33,6 +35,8 @@ internal fun ListScreenPreview(
     screenState: ListState,
     isGrid: Boolean = false,
     darkTheme: Boolean,
+    topBarVisibility: TopBarVisibility = TopBarVisibility.VISIBLE,
+    navBarVisibility: NavBarVisibility = NavBarVisibility.VISIBLE,
 ) {
     val actionSink = ActionSink { }
     val stringProvider = StringResources(LocalContext.current.resources)
@@ -40,16 +44,21 @@ internal fun ListScreenPreview(
 
     VglsMaterial(forceDark = darkTheme) {
         CompositionLocalProvider(LocalInspectionMode provides true) {
-            AppChrome(state.title) {
-                Box(
-                    modifier = Modifier
-                        .padding(top = 72.dp)
-                        .background(MaterialTheme.colorScheme.background)
-                        .fillMaxSize()
-                ) {
-                    ListContent(isGrid, state, actionSink)
-                }
-            }
+            AppChrome(
+                titleBarModel = state.title,
+                topBarVisibility = topBarVisibility,
+                navBarVisibility = navBarVisibility,
+                content = {
+                    Box(
+                        modifier = Modifier
+                            .padding(top = 72.dp)
+                            .background(MaterialTheme.colorScheme.background)
+                            .fillMaxSize()
+                    ) {
+                        ListContent(isGrid, state, actionSink)
+                    }
+                },
+            )
         }
     }
 }
@@ -57,21 +66,28 @@ internal fun ListScreenPreview(
 @Composable
 internal fun ScreenPreview(
     darkTheme: Boolean,
+    topBarVisibility: TopBarVisibility = TopBarVisibility.VISIBLE,
+    navBarVisibility: NavBarVisibility = NavBarVisibility.VISIBLE,
     content: @Composable (StringProvider) -> Unit,
 ) {
     val stringProvider = StringResources(LocalContext.current.resources)
 
     VglsMaterial(forceDark = darkTheme) {
         CompositionLocalProvider(LocalInspectionMode provides true) {
-            AppChrome(TitleBarModel()) {
-                Box(
-                    modifier = Modifier
-                        .padding(top = 72.dp)
-                        .background(MaterialTheme.colorScheme.background)
-                ) {
-                    content(stringProvider)
-                }
-            }
+            AppChrome(
+                titleBarModel = TitleBarModel(),
+                topBarVisibility = topBarVisibility,
+                navBarVisibility = navBarVisibility,
+                content = {
+                    Box(
+                        modifier = Modifier
+                            .padding(top = 72.dp)
+                            .background(MaterialTheme.colorScheme.background)
+                    ) {
+                        content(stringProvider)
+                    }
+                },
+            )
         }
     }
 }
@@ -103,20 +119,30 @@ private fun ListContent(
 @Composable
 private fun AppChrome(
     titleBarModel: TitleBarModel,
+    topBarVisibility: TopBarVisibility,
+    navBarVisibility: NavBarVisibility,
     content: @Composable (StringProvider) -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val topBarVmState = TopBarState(titleBarModel)
+    val topBarState = rememberTopAppBarState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
+    val topBarVmState = TopBarState(
+        model = titleBarModel,
+        visibility = topBarVisibility,
+    )
     val topBarConfig = TopBarConfig(
         state = topBarVmState,
         behavior = scrollBehavior,
         handleAction = { },
     )
     val bottomBarVmState = NavBarState(
-        visibility = NavBarVisibility.VISIBLE
+        visibility = navBarVisibility
     )
 
     val stringProvider = StringResources(LocalContext.current.resources)
+
+    topBarState.heightOffset = 0.0f
+    topBarState.contentOffset = 0.0f
+
     AppContent(
         screen = { content(stringProvider) },
         topBarConfig = topBarConfig,

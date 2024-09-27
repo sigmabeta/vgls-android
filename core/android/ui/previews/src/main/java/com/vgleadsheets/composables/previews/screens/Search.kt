@@ -11,6 +11,7 @@ import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.search.SearchScreen
 import com.vgleadsheets.search.SearchState
+import com.vgleadsheets.topbar.TopBarVisibility
 import com.vgleadsheets.ui.StringProvider
 import java.util.Random
 
@@ -18,7 +19,10 @@ import java.util.Random
 @Composable
 internal fun SearchScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = searchScreenState()
-    ScreenPreview(darkTheme = darkTheme) {
+    ScreenPreview(
+        darkTheme = darkTheme,
+        topBarVisibility = TopBarVisibility.HIDDEN
+    ) {
         SearchContent(screenState, it)
     }
 }
@@ -27,7 +31,10 @@ internal fun SearchScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
 @Composable
 internal fun SearchScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = searchScreenLoadingState()
-    ScreenPreview(darkTheme = darkTheme) {
+    ScreenPreview(
+        darkTheme = darkTheme,
+        topBarVisibility = TopBarVisibility.HIDDEN
+    ) {
         SearchContent(screenState, it)
     }
 }
@@ -36,7 +43,10 @@ internal fun SearchScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
 @Composable
 internal fun SearchScreenHistory(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = searchScreenHistoryState()
-    ScreenPreview(darkTheme = darkTheme) {
+    ScreenPreview(
+        darkTheme = darkTheme,
+        topBarVisibility = TopBarVisibility.HIDDEN
+    ) {
         SearchContent(screenState, it)
     }
 }
@@ -46,7 +56,10 @@ internal fun SearchScreenHistory(darkTheme: Boolean = isSystemInDarkTheme()) {
 internal fun SearchScreenLoadingHistory(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = searchScreenLoadingHistoryState()
 
-    ScreenPreview(darkTheme = darkTheme) {
+    ScreenPreview(
+        darkTheme = darkTheme,
+        topBarVisibility = TopBarVisibility.HIDDEN
+    ) {
         SearchContent(screenState, it)
     }
 }

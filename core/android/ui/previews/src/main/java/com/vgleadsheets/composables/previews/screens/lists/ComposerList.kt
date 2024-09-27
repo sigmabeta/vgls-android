@@ -14,14 +14,14 @@ import java.util.Random
 @Composable
 internal fun ComposerList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = composerScreenState()
-    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
+    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
 }
 
 @DevicePreviews
 @Composable
 internal fun ComposerListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = composerScreenLoadingState()
-    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
+    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

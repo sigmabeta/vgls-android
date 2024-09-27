@@ -37,8 +37,8 @@ internal fun RemasterBottomBar(
         val defaultItemColors = NavigationSuiteDefaults.itemColors()
 
         NavigationBar(
-            containerColor = colors.navigationRailContainerColor,
-            contentColor = colors.navigationRailContentColor,
+            containerColor = colors.navigationBarContainerColor,
+            contentColor = colors.navigationBarContentColor,
         ) {
             navItemProvider.itemList.forEach {
                 NavigationBarItem(

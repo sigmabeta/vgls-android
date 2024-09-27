@@ -14,14 +14,14 @@ import java.util.Random
 @Composable
 internal fun GameList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = gameScreenState()
-    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
+    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
 }
 
 @DevicePreviews
 @Composable
 internal fun GameListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = gameScreenLoadingState()
-    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
+    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
 }
 
 @DevicePreviews
@@ -29,14 +29,14 @@ internal fun GameListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
 internal fun GameListDark(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = gameScreenState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
+    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
 }
 
 @DevicePreviews
 @Composable
 internal fun GameListDarkLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = gameScreenLoadingState()
-    ListScreenPreview(screenState, darkTheme = darkTheme, isGrid = true)
+    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

@@ -5,6 +5,7 @@ package com.vgleadsheets.topbar
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -59,7 +60,9 @@ fun RemasterTopBar(
             ),
             scrollBehavior = scrollBehavior,
             title = {
-                Column {
+                Column(
+                    modifier = Modifier.animateContentSize()
+                ) {
                     Crossfade(
                         targetState = state.model.title,
                         label = "Title Animation",
@@ -75,12 +78,12 @@ fun RemasterTopBar(
 
                     val subtitle = state.model.subtitle
                     if (subtitle != null) {
-                        Crossfade(
-                            targetState = subtitle,
+                        AnimatedVisibility(
+                            visible = subtitle.isNotEmpty(),
                             label = "Subtitle Animation",
                         ) {
                             Text(
-                                text = it,
+                                text = subtitle,
                                 style = MaterialTheme.typography.titleLarge.copy(
                                     fontSize = TextUnit(SIZE_TEXT_SMALL, TextUnitType.Sp)
                                 ),
