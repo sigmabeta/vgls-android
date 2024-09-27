@@ -15,7 +15,7 @@ import java.util.Random
 internal fun SongList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = songScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @DevicePreviews
@@ -23,7 +23,7 @@ internal fun SongList(darkTheme: Boolean = isSystemInDarkTheme()) {
 internal fun SongListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = loadingScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

@@ -20,34 +20,18 @@ class TagValueSongListScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun tagValueSongListScreenLight() {
+    fun tagValueSongListScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueSongList(darkTheme = false)
+            TagValueSongList()
         }
     }
 
     @Test
-    fun tagValueSongListScreenDark() {
+    fun tagValueSongListScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagValueSongList(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun tagValueSongListScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            TagValueSongListLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun tagValueSongListScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            TagValueSongListLoading(darkTheme = true)
+            TagValueSongListLoading()
         }
     }
 

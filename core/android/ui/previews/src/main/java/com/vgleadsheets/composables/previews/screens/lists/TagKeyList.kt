@@ -15,7 +15,7 @@ import java.util.Random
 internal fun TagKeyList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = tagKeyScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @DevicePreviews
@@ -23,7 +23,7 @@ internal fun TagKeyList(darkTheme: Boolean = isSystemInDarkTheme()) {
 internal fun TagKeyListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = loadingScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

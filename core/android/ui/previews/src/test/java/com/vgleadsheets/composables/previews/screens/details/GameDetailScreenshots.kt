@@ -28,26 +28,10 @@ class GameDetailScreenshots(
     }
 
     @Test
-    fun gameDetailScreenDark() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            GameDetail(darkTheme = true)
-        }
-    }
-
-    @Test
     fun gameDetailScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
             GameDetailLoading()
-        }
-    }
-
-    @Test
-    fun gameDetailScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            GameDetailLoading(darkTheme = true)
         }
     }
 

@@ -20,34 +20,18 @@ class BrowseScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun browseScreenLight() {
+    fun browseScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            BrowseScreen(darkTheme = false)
+            BrowseScreen()
         }
     }
 
     @Test
-    fun browseScreenDark() {
+    fun browseScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            BrowseScreen(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun browseScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            BrowseScreenLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun browseScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            BrowseScreenLoading(darkTheme = true)
+            BrowseScreenLoading()
         }
     }
 

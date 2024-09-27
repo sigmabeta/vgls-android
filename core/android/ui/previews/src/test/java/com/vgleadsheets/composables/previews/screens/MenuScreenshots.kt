@@ -20,34 +20,18 @@ class MenuScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun menuScreenLight() {
+    fun menuScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            MenuScreen(darkTheme = false)
+            MenuScreen()
         }
     }
 
     @Test
-    fun menuScreenDark() {
+    fun menuScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            MenuScreen(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun menuScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            MenuScreenLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun menuScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            MenuScreenLoading(darkTheme = true)
+            MenuScreenLoading()
         }
     }
 

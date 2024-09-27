@@ -21,34 +21,18 @@ class ViewerScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun viewerScreenLight() {
+    fun viewerScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            Viewer(darkTheme = false)
+            Viewer()
         }
     }
 
     @Test
-    fun viewerScreenDark() {
+    fun viewerScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            Viewer(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun viewerScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            ViewerLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun viewerScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            ViewerLoading(darkTheme = true)
+            ViewerLoading()
         }
     }
 

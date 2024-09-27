@@ -15,7 +15,7 @@ import java.util.Random
 internal fun ComposerDetail(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = composerScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @DevicePreviews
@@ -23,7 +23,7 @@ internal fun ComposerDetail(darkTheme: Boolean = isSystemInDarkTheme()) {
 internal fun ComposerDetailLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = composerScreenLoadingState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

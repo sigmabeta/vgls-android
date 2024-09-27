@@ -15,14 +15,14 @@ import com.vgleadsheets.ui.StringResources
 internal fun MenuScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = menuScreenState(stringProvider)
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @DevicePreviews
 @Composable
 internal fun MenuScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = menuScreenLoadingState()
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

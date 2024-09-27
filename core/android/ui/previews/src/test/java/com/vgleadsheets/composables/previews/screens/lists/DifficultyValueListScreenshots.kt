@@ -20,34 +20,18 @@ class DifficultyValueListScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun difficultyValueListScreenLight() {
+    fun difficultyValueListScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            DifficultyValueList(darkTheme = false)
+            DifficultyValueList()
         }
     }
 
     @Test
-    fun difficultyValueListScreenDark() {
+    fun difficultyValueListScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            DifficultyValueList(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun difficultyValueListScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            DifficultyValueListLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun difficultyValueListScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            DifficultyValueListLoading(darkTheme = true)
+            DifficultyValueListLoading()
         }
     }
 

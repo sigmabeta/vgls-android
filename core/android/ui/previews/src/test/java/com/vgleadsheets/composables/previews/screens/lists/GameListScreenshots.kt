@@ -20,34 +20,18 @@ class GameListScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun gameListScreenLight() {
+    fun gameListScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameList(darkTheme = false)
+            GameList()
         }
     }
 
     @Test
-    fun gameListScreenDark() {
+    fun gameListScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameList(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun gameListScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            GameListLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun gameListScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            GameListLoading(darkTheme = true)
+            GameListLoading()
         }
     }
 

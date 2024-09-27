@@ -20,34 +20,18 @@ class FavoriteListScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun favoriteListScreenLight() {
+    fun favoriteListScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            FavoriteList(darkTheme = false)
+            FavoriteList()
         }
     }
 
     @Test
-    fun favoriteListScreenDark() {
+    fun favoriteListScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            FavoriteList(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun favoriteListScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            FavoriteListLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun favoriteListScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            FavoriteListLoading(darkTheme = true)
+            FavoriteListLoading()
         }
     }
 

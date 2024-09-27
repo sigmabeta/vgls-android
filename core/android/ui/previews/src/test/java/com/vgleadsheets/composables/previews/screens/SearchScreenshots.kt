@@ -20,15 +20,15 @@ class SearchScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun searchScreenLight() {
+    fun searchScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreen(darkTheme = false)
+            SearchScreen()
         }
     }
 
     @Test
-    fun searchScreenLightLoading() {
+    fun searchScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
             SearchScreenLoading()
@@ -36,7 +36,7 @@ class SearchScreenshots(
     }
 
     @Test
-    fun searchScreenLightHistory() {
+    fun searchScreenHistory() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
             SearchScreenHistory()
@@ -44,42 +44,10 @@ class SearchScreenshots(
     }
 
     @Test
-    fun searchScreenLightHistoryLoading() {
+    fun searchScreenHistoryLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
             SearchScreenLoadingHistory()
-        }
-    }
-
-    @Test
-    fun searchScreenDark() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            SearchScreen(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun searchScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            SearchScreenLoading(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun searchScreenDarkHistory() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            SearchScreenHistory(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun searchScreenDarkHistoryLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            SearchScreenLoadingHistory(darkTheme = true)
         }
     }
 

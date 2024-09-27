@@ -16,7 +16,7 @@ import java.util.Random
 internal fun DifficultyValueList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = difficultyValueScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @DevicePreviews
@@ -24,7 +24,7 @@ internal fun DifficultyValueList(darkTheme: Boolean = isSystemInDarkTheme()) {
 internal fun DifficultyValueListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = loadingScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @DevicePreviews

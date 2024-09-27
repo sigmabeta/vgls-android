@@ -20,34 +20,18 @@ class HomeScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun homeScreenLight() {
+    fun homeScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            HomeScreen(darkTheme = false)
+            HomeScreen()
         }
     }
 
     @Test
-    fun homeScreenDark() {
+    fun homeScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            HomeScreen(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun homeScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            HomeScreenLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun homeScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            HomeScreenLoading(darkTheme = true)
+            HomeScreenLoading()
         }
     }
 

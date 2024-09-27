@@ -20,34 +20,18 @@ class ComposerDetailScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun composerDetailScreenLight() {
+    fun composerDetailScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerDetail(darkTheme = false)
+            ComposerDetail()
         }
     }
 
     @Test
-    fun composerDetailScreenDark() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            ComposerDetail(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun composerDetailScreenLightLoading() {
+    fun composerDetailScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
             ComposerDetailLoading()
-        }
-    }
-
-    @Test
-    fun composerDetailScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            ComposerDetailLoading(darkTheme = true)
         }
     }
 

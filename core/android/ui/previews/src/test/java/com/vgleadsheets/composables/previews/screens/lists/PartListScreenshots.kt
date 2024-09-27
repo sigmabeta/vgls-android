@@ -20,18 +20,10 @@ class PartListScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun partListScreenLight() {
+    fun partListScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            PartList(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun partListScreenDark() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            PartList(darkTheme = true)
+            PartList()
         }
     }
 

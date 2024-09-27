@@ -15,7 +15,7 @@ import java.util.Random
 internal fun TagValueSongList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = tagValueSongScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @DevicePreviews
@@ -23,7 +23,7 @@ internal fun TagValueSongList(darkTheme: Boolean = isSystemInDarkTheme()) {
 internal fun TagValueSongListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = loadingScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

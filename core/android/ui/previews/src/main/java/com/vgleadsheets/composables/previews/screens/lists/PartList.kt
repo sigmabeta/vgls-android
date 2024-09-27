@@ -12,7 +12,7 @@ import com.vgleadsheets.remaster.parts.State
 internal fun PartList(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = songScreenState()
 
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

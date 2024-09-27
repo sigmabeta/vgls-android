@@ -20,34 +20,18 @@ class TagKeyListScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun tagKeyListScreenLight() {
+    fun tagKeyListScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagKeyList(darkTheme = false)
+            TagKeyList()
         }
     }
 
     @Test
-    fun tagKeyListScreenDark() {
+    fun tagKeyListScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            TagKeyList(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun tagKeyListScreenLightLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            TagKeyListLoading(darkTheme = false)
-        }
-    }
-
-    @Test
-    fun tagKeyListScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            TagKeyListLoading(darkTheme = true)
+            TagKeyListLoading()
         }
     }
 

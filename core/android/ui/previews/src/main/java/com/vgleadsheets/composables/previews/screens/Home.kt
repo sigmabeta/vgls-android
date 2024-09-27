@@ -32,14 +32,14 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun HomeScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = homeScreenState(stringProvider)
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @DevicePreviews
 @Composable
 internal fun HomeScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
     val screenState = homeScreenLoadingState()
-    ListScreenPreview(screenState, darkTheme = false)
+    ListScreenPreview(screenState, darkTheme = darkTheme)
 }
 
 @Suppress("MagicNumber")

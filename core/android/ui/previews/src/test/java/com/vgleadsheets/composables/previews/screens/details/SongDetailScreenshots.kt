@@ -20,34 +20,18 @@ class SongDetailScreenshots(
     val paparazzi = Paparazzi()
 
     @Test
-    fun songDetailScreenLight() {
+    fun songDetailScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SongDetail(darkTheme = false)
+            SongDetail()
         }
     }
 
     @Test
-    fun songDetailScreenDark() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            SongDetail(darkTheme = true)
-        }
-    }
-
-    @Test
-    fun songDetailScreenLightLoading() {
+    fun songDetailScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
             SongDetailLoading()
-        }
-    }
-
-    @Test
-    fun songDetailScreenDarkLoading() {
-        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
-        paparazzi.snapshot {
-            SongDetailLoading(darkTheme = true)
         }
     }
 
