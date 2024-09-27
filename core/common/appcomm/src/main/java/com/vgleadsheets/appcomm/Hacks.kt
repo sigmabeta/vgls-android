@@ -1,5 +1,5 @@
 package com.vgleadsheets.appcomm
 
 object Hacks {
-    const val UI_VISIBILITY_ANIM_DELAY = 500L
+    const val UI_VISIBILITY_ANIM_DELAY = 0L
 }

@@ -20,9 +20,8 @@ import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.ListStateActual
 import com.vgleadsheets.scaffold.AppContent
-import com.vgleadsheets.topbar.RemasterTopBar
+import com.vgleadsheets.scaffold.TopBarConfig
 import com.vgleadsheets.topbar.TopBarState
-import com.vgleadsheets.topbar.TopBarVisibility
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.ui.list.GridScreen
@@ -107,10 +106,11 @@ private fun AppChrome(
     content: @Composable (StringProvider) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
-    val topBarVmState = TopBarState(
-        titleBarModel,
-        visibility = TopBarVisibility.VISIBLE
+    val topBarVmState = TopBarState(titleBarModel)
+    val topBarConfig = TopBarConfig(
+        state = topBarVmState,
+        behavior = scrollBehavior,
+        handleAction = { },
     )
     val bottomBarVmState = NavBarState(
         visibility = NavBarVisibility.VISIBLE
@@ -118,10 +118,9 @@ private fun AppChrome(
 
     val stringProvider = StringResources(LocalContext.current.resources)
     AppContent(
-        mainContent = { content(stringProvider) },
-        topBarContent = { RemasterTopBar(topBarVmState, scrollBehavior) { } },
-        // bottomBarContent = { RemasterBottomBar(bottomBarVmState, rememberNavController()) },
-        snackbarHost = { },
+        screen = { content(stringProvider) },
+        topBarConfig = topBarConfig,
+        navBarState = bottomBarVmState,
         modifier = Modifier,
     )
 }

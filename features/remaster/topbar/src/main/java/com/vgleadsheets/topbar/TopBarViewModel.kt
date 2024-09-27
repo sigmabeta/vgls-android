@@ -2,7 +2,6 @@ package com.vgleadsheets.topbar
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
@@ -16,7 +15,6 @@ import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -92,7 +90,6 @@ class TopBarViewModel @Inject constructor(
     private fun showTopBar() {
         hatchet.d("Showing top bar.")
         showTopBarJob = viewModelScope.launch {
-            delay(Hacks.UI_VISIBILITY_ANIM_DELAY)
             updateState {
                 it.copy(visibility = TopBarVisibility.VISIBLE)
             }

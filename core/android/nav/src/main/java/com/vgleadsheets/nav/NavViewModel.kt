@@ -11,7 +11,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
 import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
@@ -28,7 +27,6 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -228,7 +226,6 @@ class NavViewModel @Inject constructor(
     private fun hideSystemUi() {
         hatchet.d("Hiding system UI.")
         viewModelScope.launch {
-            delay(Hacks.UI_VISIBILITY_ANIM_DELAY)
             updateState {
                 it.copy(visibility = SystemUiVisibility.HIDDEN)
             }

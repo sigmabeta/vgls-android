@@ -2,7 +2,6 @@ package com.vgleadsheets.bottombar
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.Hacks
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
@@ -12,7 +11,6 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -48,7 +46,6 @@ class NavBarViewModel @Inject constructor(
     private fun showBottomBar() {
         hatchet.d("Showing bottom bar.")
         viewModelScope.launch {
-            delay(Hacks.UI_VISIBILITY_ANIM_DELAY)
             updateState {
                 it.copy(visibility = NavBarVisibility.VISIBLE)
             }
