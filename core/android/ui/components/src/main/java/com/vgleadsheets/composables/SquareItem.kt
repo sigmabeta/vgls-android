@@ -12,14 +12,11 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -33,6 +30,7 @@ import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.previews.SquareConstants
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.composables.subs.ElevatedRoundRect
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
@@ -44,14 +42,11 @@ fun SquareItem(
     modifier: Modifier,
     padding: PaddingValues,
 ) {
-    Surface(
+    ElevatedRoundRect(
         modifier = modifier
-            .defaultMinSize(minHeight = SquareConstants.MIN_WIDTH)
+            .padding(paddingValues = padding)
+            .defaultMinSize(minWidth = SquareConstants.MIN_WIDTH)
             .aspectRatio(SquareConstants.ASPECT_RATIO)
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
-            )
             .clickable { actionSink.sendAction(model.clickAction) }
     ) {
         Box {
