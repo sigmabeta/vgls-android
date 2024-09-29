@@ -18,6 +18,8 @@ abstract class ListState : VglsState {
     abstract fun title(stringProvider: StringProvider): TitleBarModel
     abstract fun toListItems(stringProvider: StringProvider): List<ListModel>
 
+    open val columnType: ColumnType = ColumnType.One
+
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     fun toActual(stringProvider: StringProvider): ListStateActual {
         val title = try {
@@ -53,12 +55,14 @@ abstract class ListState : VglsState {
                 )
             )
             return ListStateActual(
+                columnType = columnType,
                 title = title,
                 listItems = items,
             )
         }
 
         return ListStateActual(
+            columnType = columnType,
             title = title,
             listItems = listItems,
         )

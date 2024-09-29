@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
@@ -23,8 +22,8 @@ fun GridScreen(
     state: ListStateActual,
     actionSink: ActionSink,
     showDebug: Boolean,
+    numberOfColumns: Int,
     modifier: Modifier,
-    minSize: Dp = 128.dp
 ) {
     val title = state.title
     val items = state.listItems
@@ -40,7 +39,7 @@ fun GridScreen(
             vertical = 16.dp,
             horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side),
         ),
-        columns = GridCells.Adaptive(minSize),
+        columns = GridCells.Fixed(numberOfColumns),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.fillMaxSize()

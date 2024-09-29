@@ -8,6 +8,7 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
@@ -22,6 +23,8 @@ data class State(
     val favoriteGames: LCE<List<Game>> = LCE.Uninitialized,
     val favoriteComposers: LCE<List<Composer>> = LCE.Uninitialized,
 ) : ListState() {
+    override val columnType = ColumnType.Adaptive(160)
+
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_FAVORITES)
     )

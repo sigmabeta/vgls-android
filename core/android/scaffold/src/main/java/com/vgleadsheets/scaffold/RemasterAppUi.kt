@@ -30,6 +30,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.bottombar.NavBarItem
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarViewModel
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.nav.NavViewModel
@@ -83,9 +84,10 @@ fun RemasterAppUi(
         topBarConfig = topBarConfig,
         navBarState = bottomBarVmState,
         snackbarHostState = snackbarHostState,
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        screen = { innerPadding -> MainContent(navController, innerPadding, topBarState) },
-    )
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+    ) { innerPadding, widthClass ->
+        NavHostAndSuch(navController, innerPadding, widthClass, topBarState)
+    }
 }
 
 @Composable
@@ -95,13 +97,18 @@ fun AppContent(
     navBarState: NavBarState,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier,
-    screen: @Composable (PaddingValues) -> Unit,
+    syntheticWidthClass: WidthClass? = null,
+    screen: @Composable (PaddingValues, WidthClass) -> Unit,
 ) {
+    val adaptiveInfo = syntheticWidthClass?.toAdaptiveInfoSynthetic() ?: currentWindowAdaptiveInfo()
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
     val orientation = LocalConfiguration.current.orientation
-    val layoutType = calculateNavSuiteType(currentWindowAdaptiveInfo(), orientation)
+    val layoutType = calculateNavSuiteType(adaptiveInfo, orientation)
+
+    val displayWidthClass = adaptiveInfo.windowSizeClass.windowWidthSizeClass.toWidthClass()
 
     VglsNavSuiteScaffold(
         layoutType = layoutType,
@@ -110,15 +117,16 @@ fun AppContent(
         navBarState = navBarState,
         snackbarHostState = snackbarHostState,
         modifier = modifier,
-        screen = { innerPadding -> screen(innerPadding) },
+        screen = { innerPadding -> screen(innerPadding, displayWidthClass) },
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MainContent(
+private fun NavHostAndSuch(
     navController: NavHostController,
     innerPadding: PaddingValues,
+    displayWidthClass: WidthClass,
     topBarState: TopAppBarState
 ) {
     NavHost(
@@ -140,6 +148,7 @@ private fun MainContent(
             listScreenEntry(
                 destination = destination,
                 topBarState = topBarState,
+                displayWidthClass = displayWidthClass,
                 globalModifier = globalModifier,
             )
         }

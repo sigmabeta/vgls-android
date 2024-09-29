@@ -5,27 +5,41 @@ import androidx.compose.runtime.Composable
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.games.detail.State
+import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import java.util.Random
 
 @DevicePreviews
 @Composable
 internal fun GameDetail(
-    darkTheme: Boolean = isSystemInDarkTheme()
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
 ) {
     val screenState = gameScreenState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun GameDetailLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun GameDetailLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = gameScreenLoadingState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @Suppress("MagicNumber")

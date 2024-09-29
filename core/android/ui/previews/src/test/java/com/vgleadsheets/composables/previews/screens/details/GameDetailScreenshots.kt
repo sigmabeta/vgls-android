@@ -4,6 +4,7 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.vgleadsheets.composables.previews.PreviewTestUtils.INTERESTING_DEVICES
 import com.vgleadsheets.composables.previews.PreviewTestUtils.SUFFIX_TESTNAME
+import com.vgleadsheets.composables.previews.toWidthClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +24,7 @@ class GameDetailScreenshots(
     fun gameDetailScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameDetail()
+            GameDetail(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 
@@ -31,7 +32,7 @@ class GameDetailScreenshots(
     fun gameDetailScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            GameDetailLoading()
+            GameDetailLoading(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 

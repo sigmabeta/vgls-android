@@ -4,6 +4,7 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.vgleadsheets.composables.previews.PreviewTestUtils.INTERESTING_DEVICES
 import com.vgleadsheets.composables.previews.PreviewTestUtils.SUFFIX_TESTNAME
+import com.vgleadsheets.composables.previews.toWidthClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +24,7 @@ class SearchScreenshots(
     fun searchScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreen()
+            SearchScreen(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 
@@ -31,7 +32,7 @@ class SearchScreenshots(
     fun searchScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreenLoading()
+            SearchScreenLoading(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 
@@ -39,7 +40,7 @@ class SearchScreenshots(
     fun searchScreenHistory() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreenHistory()
+            SearchScreenHistory(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 
@@ -47,7 +48,7 @@ class SearchScreenshots(
     fun searchScreenHistoryLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            SearchScreenLoadingHistory()
+            SearchScreenLoadingHistory(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 

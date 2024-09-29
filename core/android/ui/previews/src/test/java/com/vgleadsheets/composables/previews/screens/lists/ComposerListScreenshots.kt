@@ -4,6 +4,7 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.vgleadsheets.composables.previews.PreviewTestUtils.INTERESTING_DEVICES
 import com.vgleadsheets.composables.previews.PreviewTestUtils.SUFFIX_TESTNAME
+import com.vgleadsheets.composables.previews.toWidthClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +24,7 @@ class ComposerListScreenshots(
     fun composerListScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerList()
+            ComposerList(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 
@@ -31,7 +32,7 @@ class ComposerListScreenshots(
     fun composerListScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ComposerListLoading()
+            ComposerListLoading(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 

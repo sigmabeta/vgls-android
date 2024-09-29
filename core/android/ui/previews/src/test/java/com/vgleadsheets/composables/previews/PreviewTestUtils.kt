@@ -1,8 +1,12 @@
 package com.vgleadsheets.composables.previews
 
+import android.util.DisplayMetrics
 import app.cash.paparazzi.DeviceConfig
 import com.android.resources.Density
 import com.android.resources.NightMode
+import com.android.resources.ScreenOrientation
+import com.vgleadsheets.list.WidthClass
+import kotlin.math.round
 
 object PreviewTestUtils {
     internal const val SUFFIX_TESTNAME = "{1}: {2}x{3}"
@@ -50,5 +54,24 @@ object PreviewTestUtils {
             deviceConfigQuad[2],
             deviceConfigQuad[3],
         )
+    }
+}
+
+fun DeviceConfig.toWidthClass(): WidthClass {
+    val orientation = this.orientation
+    val density = this.density.dpiValue
+    val relevantWidth = if (orientation == ScreenOrientation.PORTRAIT) {
+        this.screenHeight
+    } else {
+        this.screenWidth
+    }
+
+    val scalingFactor = density.toFloat() / DisplayMetrics.DENSITY_DEFAULT
+    val relevantWidthDp = round(relevantWidth / scalingFactor)
+
+    return when {
+        relevantWidthDp < 600 -> WidthClass.COMPACT
+        relevantWidthDp < 840 -> WidthClass.MEDIUM
+        else -> WidthClass.EXPANDED
     }
 }

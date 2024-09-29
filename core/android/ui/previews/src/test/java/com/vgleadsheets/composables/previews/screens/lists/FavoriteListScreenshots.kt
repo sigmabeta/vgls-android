@@ -4,6 +4,7 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.vgleadsheets.composables.previews.PreviewTestUtils.INTERESTING_DEVICES
 import com.vgleadsheets.composables.previews.PreviewTestUtils.SUFFIX_TESTNAME
+import com.vgleadsheets.composables.previews.toWidthClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +24,7 @@ class FavoriteListScreenshots(
     fun favoriteListScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            FavoriteList()
+            FavoriteList(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 
@@ -31,7 +32,7 @@ class FavoriteListScreenshots(
     fun favoriteListScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            FavoriteListLoading()
+            FavoriteListLoading(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 

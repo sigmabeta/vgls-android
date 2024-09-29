@@ -6,23 +6,39 @@ import androidx.compose.ui.platform.LocalContext
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.remaster.browse.State
+import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 
 @DevicePreviews
 @Composable
-internal fun BrowseScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun BrowseScreen(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = browseScreenState(stringProvider)
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun BrowseScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun BrowseScreenLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = browseScreenLoadingState()
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @Suppress("MagicNumber")

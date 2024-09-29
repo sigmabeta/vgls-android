@@ -20,6 +20,7 @@ import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.ListStateActual
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.scaffold.AppContent
 import com.vgleadsheets.scaffold.TopBarConfig
 import com.vgleadsheets.topbar.TopBarState
@@ -33,8 +34,8 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 @Composable
 internal fun ListScreenPreview(
     screenState: ListState,
-    isGrid: Boolean = false,
     darkTheme: Boolean,
+    syntheticWidthClass: WidthClass,
     topBarVisibility: TopBarVisibility = TopBarVisibility.VISIBLE,
     navBarVisibility: NavBarVisibility = NavBarVisibility.VISIBLE,
 ) {
@@ -48,14 +49,15 @@ internal fun ListScreenPreview(
                 titleBarModel = state.title,
                 topBarVisibility = topBarVisibility,
                 navBarVisibility = navBarVisibility,
-                content = {
+                syntheticWidthClass = syntheticWidthClass,
+                content = { widthClass ->
                     Box(
                         modifier = Modifier
                             .padding(top = 72.dp)
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxSize()
                     ) {
-                        ListContent(isGrid, state, actionSink)
+                        ListContent(state, widthClass, actionSink)
                     }
                 },
             )
@@ -68,6 +70,7 @@ internal fun ScreenPreview(
     darkTheme: Boolean,
     topBarVisibility: TopBarVisibility = TopBarVisibility.VISIBLE,
     navBarVisibility: NavBarVisibility = NavBarVisibility.VISIBLE,
+    syntheticWidthClass: WidthClass,
     content: @Composable (StringProvider) -> Unit,
 ) {
     val stringProvider = StringResources(LocalContext.current.resources)
@@ -78,6 +81,7 @@ internal fun ScreenPreview(
                 titleBarModel = TitleBarModel(),
                 topBarVisibility = topBarVisibility,
                 navBarVisibility = navBarVisibility,
+                syntheticWidthClass = syntheticWidthClass,
                 content = {
                     Box(
                         modifier = Modifier
@@ -92,17 +96,27 @@ internal fun ScreenPreview(
     }
 }
 
+/**
+ * Roughly equivalent to NavGraphBuilder.listScreenEntry()
+ */
 @Composable
 private fun ListContent(
-    isGrid: Boolean,
     state: ListStateActual,
+    displayWidthClass: WidthClass,
     actionSink: ActionSink
 ) {
-    if (isGrid) {
+    val numColumns = state.columnType.numberOfColumns(displayWidthClass)
+
+    require(numColumns > 0) {
+        "Calculated number of columns is zero for ${state.columnType} and $displayWidthClass."
+    }
+
+    if (numColumns > 1) {
         GridScreen(
             state = state,
             actionSink = actionSink,
             showDebug = false,
+            numberOfColumns = numColumns,
             modifier = Modifier,
         )
     } else {
@@ -115,13 +129,17 @@ private fun ListContent(
     }
 }
 
+/**
+ * Roughly equivalent to RemasterAppUi
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppChrome(
     titleBarModel: TitleBarModel,
     topBarVisibility: TopBarVisibility,
     navBarVisibility: NavBarVisibility,
-    content: @Composable (StringProvider) -> Unit,
+    syntheticWidthClass: WidthClass,
+    content: @Composable (WidthClass) -> Unit,
 ) {
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
@@ -138,15 +156,14 @@ private fun AppChrome(
         visibility = navBarVisibility
     )
 
-    val stringProvider = StringResources(LocalContext.current.resources)
-
     topBarState.heightOffset = 0.0f
     topBarState.contentOffset = 0.0f
 
     AppContent(
-        screen = { content(stringProvider) },
+        screen = { _, widthClass -> content(widthClass) },
         topBarConfig = topBarConfig,
         navBarState = bottomBarVmState,
+        syntheticWidthClass = syntheticWidthClass,
         modifier = Modifier,
     )
 }

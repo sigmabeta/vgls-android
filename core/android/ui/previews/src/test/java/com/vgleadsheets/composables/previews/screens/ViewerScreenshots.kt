@@ -5,6 +5,7 @@ import app.cash.paparazzi.Paparazzi
 import com.android.resources.ScreenOrientation
 import com.vgleadsheets.composables.previews.PreviewTestUtils.INTERESTING_DEVICES
 import com.vgleadsheets.composables.previews.PreviewTestUtils.SUFFIX_TESTNAME
+import com.vgleadsheets.composables.previews.toWidthClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,7 +25,7 @@ class ViewerScreenshots(
     fun viewerScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            Viewer()
+            Viewer(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 
@@ -32,7 +33,7 @@ class ViewerScreenshots(
     fun viewerScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            ViewerLoading()
+            ViewerLoading(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 

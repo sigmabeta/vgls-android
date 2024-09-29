@@ -4,6 +4,7 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.vgleadsheets.composables.previews.PreviewTestUtils.INTERESTING_DEVICES
 import com.vgleadsheets.composables.previews.PreviewTestUtils.SUFFIX_TESTNAME
+import com.vgleadsheets.composables.previews.toWidthClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +24,7 @@ class HomeScreenshots(
     fun homeScreen() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            HomeScreen()
+            HomeScreen(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 
@@ -31,7 +32,7 @@ class HomeScreenshots(
     fun homeScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {
-            HomeScreenLoading()
+            HomeScreenLoading(syntheticWidthClass = deviceConfig.toWidthClass())
         }
     }
 

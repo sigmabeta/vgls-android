@@ -11,6 +11,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.nav.ARG_TEMPLATE_ONE
 import com.vgleadsheets.nav.ArgType
 import com.vgleadsheets.nav.Destination
@@ -20,6 +21,7 @@ import com.vgleadsheets.viewmodel.list.listViewModel
 fun NavGraphBuilder.listScreenEntry(
     destination: Destination,
     topBarState: TopAppBarState,
+    displayWidthClass: WidthClass,
     globalModifier: Modifier,
 ) {
     composable(
@@ -58,11 +60,18 @@ fun NavGraphBuilder.listScreenEntry(
         val state by viewModel.uiState.collectAsStateWithLifecycle()
         val showDebug by viewModel.showDebug.collectAsStateWithLifecycle()
 
-        if (destination.renderAsGrid) {
+        val numColumns = state.columnType.numberOfColumns(displayWidthClass)
+
+        require(numColumns > 0) {
+            "Calculated number of columns is zero for ${state.columnType} and $displayWidthClass."
+        }
+
+        if (numColumns > 1) {
             GridScreen(
                 state = state,
                 actionSink = viewModel,
                 showDebug = showDebug,
+                numberOfColumns = numColumns,
                 modifier = globalModifier,
             )
         } else {

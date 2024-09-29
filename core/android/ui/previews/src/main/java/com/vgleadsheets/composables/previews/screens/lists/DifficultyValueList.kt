@@ -5,42 +5,72 @@ import androidx.compose.runtime.Composable
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.remaster.difficulty.values.State
+import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import java.util.Random
 
 @DevicePreviews
 @Composable
-internal fun DifficultyValueList(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun DifficultyValueList(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = difficultyValueScreenState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun DifficultyValueListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun DifficultyValueListLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = loadingScreenState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun DifficultyValueListDark(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun DifficultyValueListDark(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = difficultyValueScreenState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun DifficultyValueListDarkLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun DifficultyValueListDarkLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = loadingScreenState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @Suppress("MagicNumber")

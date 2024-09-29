@@ -6,9 +6,11 @@ import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ScreenPreview
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.model.history.SearchHistoryEntry
+import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import com.vgleadsheets.search.SearchScreen
 import com.vgleadsheets.search.SearchState
 import com.vgleadsheets.topbar.TopBarVisibility
@@ -17,10 +19,14 @@ import java.util.Random
 
 @DevicePreviews
 @Composable
-internal fun SearchScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun SearchScreen(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = searchScreenState()
     ScreenPreview(
         darkTheme = darkTheme,
+        syntheticWidthClass = syntheticWidthClass,
         topBarVisibility = TopBarVisibility.HIDDEN
     ) {
         SearchContent(screenState, it)
@@ -29,10 +35,14 @@ internal fun SearchScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
 
 @DevicePreviews
 @Composable
-internal fun SearchScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun SearchScreenLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = searchScreenLoadingState()
     ScreenPreview(
         darkTheme = darkTheme,
+        syntheticWidthClass = syntheticWidthClass,
         topBarVisibility = TopBarVisibility.HIDDEN
     ) {
         SearchContent(screenState, it)
@@ -41,10 +51,14 @@ internal fun SearchScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
 
 @DevicePreviews
 @Composable
-internal fun SearchScreenHistory(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun SearchScreenHistory(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = searchScreenHistoryState()
     ScreenPreview(
         darkTheme = darkTheme,
+        syntheticWidthClass = syntheticWidthClass,
         topBarVisibility = TopBarVisibility.HIDDEN
     ) {
         SearchContent(screenState, it)
@@ -53,11 +67,15 @@ internal fun SearchScreenHistory(darkTheme: Boolean = isSystemInDarkTheme()) {
 
 @DevicePreviews
 @Composable
-internal fun SearchScreenLoadingHistory(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun SearchScreenLoadingHistory(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = searchScreenLoadingHistoryState()
 
     ScreenPreview(
         darkTheme = darkTheme,
+        syntheticWidthClass = syntheticWidthClass,
         topBarVisibility = TopBarVisibility.HIDDEN
     ) {
         SearchContent(screenState, it)

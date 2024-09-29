@@ -12,6 +12,7 @@ import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.list.DelayManager
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.pdf.PdfConfigById
@@ -21,6 +22,7 @@ import com.vgleadsheets.remaster.home.ModuleDetails
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.remaster.home.State
 import com.vgleadsheets.remaster.home.modules.RngModule
+import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
@@ -29,17 +31,31 @@ import kotlinx.collections.immutable.persistentListOf
 
 @DevicePreviews
 @Composable
-internal fun HomeScreen(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun HomeScreen(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val stringProvider = StringResources(LocalContext.current.resources)
     val screenState = homeScreenState(stringProvider)
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun HomeScreenLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun HomeScreenLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = homeScreenLoadingState()
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @Suppress("MagicNumber")

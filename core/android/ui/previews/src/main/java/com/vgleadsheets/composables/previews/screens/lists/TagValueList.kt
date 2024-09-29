@@ -5,25 +5,41 @@ import androidx.compose.runtime.Composable
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.tags.values.State
+import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import java.util.Random
 
 @DevicePreviews
 @Composable
-internal fun TagValueList(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun TagValueList(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = tagValueScreenState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun TagValueListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun TagValueListLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = loadingScreenState()
 
-    ListScreenPreview(screenState, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @Suppress("MagicNumber")

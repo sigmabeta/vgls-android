@@ -3,7 +3,6 @@ package com.vgleadsheets.nav
 enum class Destination(
     val destName: String,
     val argType: ArgType,
-    val renderAsGrid: Boolean = false,
     val isImplemented: Boolean = true,
 ) {
     HOME("home", ArgType.NONE),
@@ -12,9 +11,9 @@ enum class Destination(
     MENU("menu", ArgType.NONE),
     PART_PICKER("parts", ArgType.NONE),
     GAME_DETAIL("games", ArgType.LONG),
-    GAMES_LIST("games", ArgType.NONE, renderAsGrid = true),
+    GAMES_LIST("games", ArgType.NONE),
     COMPOSER_DETAIL("composers", ArgType.LONG),
-    COMPOSERS_LIST("composers", ArgType.NONE, renderAsGrid = true),
+    COMPOSERS_LIST("composers", ArgType.NONE),
     SONG_VIEWER("songs/viewer", ArgType.TWO),
     SONG_DETAIL("songs", ArgType.LONG),
     SONGS_LIST("songs", ArgType.NONE),
@@ -23,7 +22,7 @@ enum class Destination(
     TAGS_LIST("tags", ArgType.NONE),
     TAGS_VALUES_LIST("tags", ArgType.LONG),
     TAGS_VALUES_SONG_LIST("tags/value", ArgType.LONG),
-    FAVORITES("favorites", ArgType.NONE, renderAsGrid = true),
+    FAVORITES("favorites", ArgType.NONE),
     LICENSES("licenses", ArgType.NONE),
     ;
 

@@ -5,38 +5,68 @@ import androidx.compose.runtime.Composable
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
+import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.games.list.State
+import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import java.util.Random
 
 @DevicePreviews
 @Composable
-internal fun GameList(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun GameList(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = gameScreenState()
-    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun GameListLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun GameListLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = gameScreenLoadingState()
-    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun GameListDark(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun GameListDark(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = gameScreenState()
 
-    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @DevicePreviews
 @Composable
-internal fun GameListDarkLoading(darkTheme: Boolean = isSystemInDarkTheme()) {
+internal fun GameListDarkLoading(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
     val screenState = gameScreenLoadingState()
-    ListScreenPreview(screenState, isGrid = true, darkTheme = darkTheme)
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
 }
 
 @Suppress("MagicNumber")
