@@ -28,6 +28,7 @@ import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 import java.util.Random
 import kotlinx.collections.immutable.toImmutableList
@@ -93,7 +94,7 @@ private fun Sample() {
         val rng = Random("HorizontalScroller".hashCode().toLong())
 
         val paddingModifier = PaddingValues(
-            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+            horizontal = dimensionResource(id = R.dimen.margin_side)
         )
         SquareItemSection(rng, paddingModifier)
         WideItemSection(rng, paddingModifier)

@@ -50,7 +50,7 @@ fun ListScreen(
                 sink = actionSink,
                 mod = Modifier.animateItem(),
                 debug = showDebug,
-                pad = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
+                pad = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side))
             )
         }
     }

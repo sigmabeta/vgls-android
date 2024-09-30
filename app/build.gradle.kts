@@ -118,12 +118,12 @@ dependencies {
     implementation(projects.core.android.repository)
     implementation(projects.core.android.resources)
     implementation(projects.core.android.storage.common)
-    implementation(projects.core.android.ui.core)
     implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.ui.components)
 
     implementation(projects.core.common.appinfo)
     implementation(projects.core.common.downloader)
+    implementation(projects.core.common.debug)
     implementation(projects.core.common.network)
     implementation(projects.core.common.settings.environment)
     implementation(projects.core.common.urlinfo)

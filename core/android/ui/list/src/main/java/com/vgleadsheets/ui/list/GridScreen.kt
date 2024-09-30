@@ -67,7 +67,7 @@ fun GridScreen(
         LazyVerticalStaggeredGrid(
             contentPadding = PaddingValues(
                 vertical = 16.dp,
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side),
+                horizontal = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side),
             ),
             columns = StaggeredGridCells.Fixed(numberOfColumns),
             horizontalArrangement = Arrangement.spacedBy(32.dp),
@@ -97,7 +97,7 @@ fun GridScreen(
         LazyVerticalGrid(
             contentPadding = PaddingValues(
                 vertical = 16.dp,
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side),
+                horizontal = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side),
             ),
             columns = GridCells.Fixed(numberOfColumns),
             horizontalArrangement = Arrangement.spacedBy(8.dp),

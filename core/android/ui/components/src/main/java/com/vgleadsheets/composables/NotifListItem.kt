@@ -33,6 +33,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.NotifListModel
 import com.vgleadsheets.composables.previews.NotifConstants
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -158,7 +159,7 @@ private fun Sample() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .padding(dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side))
+            .padding(dimensionResource(id = R.dimen.margin_side))
     ) {
         NotifListItem(
             NotifListModel(

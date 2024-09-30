@@ -21,6 +21,7 @@ import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SinglePageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
@@ -102,7 +103,7 @@ private fun SamplePdf() {
         ),
         actionSink = PreviewActionSink { },
         modifier = Modifier.padding(
-            horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+            horizontal = dimensionResource(id = R.dimen.margin_side)
         ),
         showDebug = true,
         padding = PaddingValues(horizontal = 8.dp)

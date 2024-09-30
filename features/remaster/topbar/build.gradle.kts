@@ -5,6 +5,9 @@ plugins {
 
 dependencies {
     api(projects.core.android.ui.strings)
+
+    // Only for previews
+    debugImplementation(projects.core.android.ui.themes)
 }
 
 android {

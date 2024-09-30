@@ -19,10 +19,10 @@ dependencies {
     implementation(projects.core.android.images)
     implementation(projects.core.android.pdf)
     implementation(projects.core.android.scaffold)
-    implementation(projects.core.android.ui.core)
     implementation(projects.core.android.ui.icons)
     implementation(projects.core.android.ui.list)
     implementation(projects.core.android.ui.strings)
+    implementation(projects.core.android.ui.themes)
     implementation(projects.core.android.viewer)
 }
 

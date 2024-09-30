@@ -21,6 +21,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 
@@ -32,7 +33,7 @@ fun LoadingThingy(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)),
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_side)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val simulatedTextHeight = with(LocalDensity.current) {

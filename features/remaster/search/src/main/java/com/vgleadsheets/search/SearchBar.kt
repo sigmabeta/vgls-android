@@ -44,7 +44,7 @@ fun SearchBar(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side))
+            .padding(horizontal = dimensionResource(com.vgleadsheets.ui.components.R.dimen.margin_side))
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(32.dp)

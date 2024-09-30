@@ -13,6 +13,9 @@ dependencies {
 
     implementation(projects.core.common.appcomm)
     implementation(projects.core.common.urlinfo)
+
+    // Only for previews
+    debugImplementation(projects.core.android.ui.themes)
 }
 
 android {

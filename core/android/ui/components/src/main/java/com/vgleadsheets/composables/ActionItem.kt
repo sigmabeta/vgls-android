@@ -26,6 +26,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
@@ -111,7 +112,7 @@ private fun Sample() {
             VglsAction.Noop,
         ),
         PreviewActionSink { },
-        padding = PaddingValues(horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_medium)),
+        padding = PaddingValues(horizontal = dimensionResource(id = R.dimen.margin_medium)),
         modifier = Modifier
     )
 }

@@ -63,7 +63,6 @@ include(
     ":core:android:scaffold",
     ":core:android:storage:common",
     ":core:android:tracking",
-    ":core:android:ui:core",
     ":core:android:ui:components",
     ":core:android:ui:colors",
     ":core:android:ui:icons",

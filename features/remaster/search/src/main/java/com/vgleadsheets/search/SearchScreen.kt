@@ -53,8 +53,8 @@ fun SearchScreen(
         val enoughToGetBelowSearchBar: Dp = 96.dp
         val topInsets = WindowInsets.statusBars
         val sidePadding = WindowInsets(
-            left = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side),
-            right = dimensionResource(com.vgleadsheets.ui.core.R.dimen.margin_side),
+            left = dimensionResource(com.vgleadsheets.ui.components.R.dimen.margin_side),
+            right = dimensionResource(com.vgleadsheets.ui.components.R.dimen.margin_side),
         )
 
         val contentPadding: PaddingValues = WindowInsets(top = enoughToGetBelowSearchBar)

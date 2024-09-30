@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -48,7 +49,7 @@ fun FullScreenOf(
             repeat(count) {
                 content(
                     PaddingValues(
-                        horizontal = dimensionResource(id = com.vgleadsheets.ui.core.R.dimen.margin_side)
+                        horizontal = dimensionResource(id = R.dimen.margin_side)
                     )
                 )
             }
