@@ -11,6 +11,7 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
@@ -28,6 +29,8 @@ data class State(
     val games: LCE<List<Game>> = LCE.Uninitialized,
     val isFavorite: LCE<Boolean> = LCE.Uninitialized,
 ) : ListState() {
+    override val columnType = ColumnType.Staggered(320)
+
     override fun title(stringProvider: StringProvider) = if (composer is LCE.Content) {
         TitleBarModel(
             title = composer.data.name,
@@ -43,10 +46,16 @@ data class State(
         val gameModels = gameSection(stringProvider)
         val songModels = songSection(stringProvider)
 
-        return (composerModel + ctaModels + gameModels + songModels)
+        return listOf(
+            composerModel,
+            ctaModels,
+            gameModels,
+            songModels
+        )
     }
 
-    private fun composerSection() = composer.withStandardErrorAndLoading(
+    private fun composerSection() = composer.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_COMPOSER,
         loadingType = LoadingType.BIG_IMAGE,
         loadingItemCount = 1,
         loadingWithHeader = false,
@@ -65,7 +74,8 @@ data class State(
         }
     }
 
-    private fun State.ctaSection(stringProvider: StringProvider) = composer.withStandardErrorAndLoading(
+    private fun State.ctaSection(stringProvider: StringProvider) = composer.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_CTA,
         loadingItemCount = 0,
         loadingWithHeader = false,
     ) {
@@ -74,7 +84,8 @@ data class State(
         ).flatten()
     }
 
-    private fun gameSection(stringProvider: StringProvider) = games.withStandardErrorAndLoading(
+    private fun gameSection(stringProvider: StringProvider) = games.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_GAMES,
         loadingType = LoadingType.WIDE_ITEM,
         loadingHorizScrollable = true
     ) {
@@ -97,7 +108,8 @@ data class State(
         )
     }
 
-    private fun songSection(stringProvider: StringProvider) = songs.withStandardErrorAndLoading(
+    private fun songSection(stringProvider: StringProvider) = songs.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_SONGS,
         loadingType = LoadingType.TEXT_IMAGE,
     ) {
         listOf(
@@ -153,6 +165,11 @@ data class State(
     }
 
     companion object {
+        private const val SECTION_NAME_COMPOSER = "section.composer"
+        private const val SECTION_NAME_GAMES = "section.game"
+        private const val SECTION_NAME_CTA = "section.cta"
+        private const val SECTION_NAME_SONGS = "section.song"
+
         private const val ID_PREFIX_GAMES = 1_000_000L
         private const val ID_PREFIX_SONGS = 1_000_000_000L
         private const val ID_PREFIX_SCROLLER_CONTENT = 1_000_000_000_000L
