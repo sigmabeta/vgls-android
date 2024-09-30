@@ -18,6 +18,7 @@ import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 
+@Suppress("MagicNumber")
 data class State(
     val favoriteSongs: LCE<List<Song>> = LCE.Uninitialized,
     val favoriteGames: LCE<List<Game>> = LCE.Uninitialized,

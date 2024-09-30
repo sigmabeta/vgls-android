@@ -25,6 +25,7 @@ import com.vgleadsheets.list.ListStateActual
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
+@Suppress("MagicNumber", "LongMethod")
 fun GridScreen(
     state: ListStateActual,
     actionSink: ActionSink,

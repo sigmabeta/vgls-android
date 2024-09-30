@@ -32,6 +32,7 @@ import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
+@Suppress("MagicNumber")
 data class State(
     val sheetUrlInfo: LCE<UrlInfo> = LCE.Uninitialized,
     val song: LCE<Song> = LCE.Uninitialized,

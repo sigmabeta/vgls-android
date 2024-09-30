@@ -30,6 +30,7 @@ internal fun SongDetail(
 
 @DevicePreviews
 @Composable
+@Suppress("MagicNumber")
 internal fun SongDetailMultipage(
     darkTheme: Boolean = isSystemInDarkTheme(),
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),

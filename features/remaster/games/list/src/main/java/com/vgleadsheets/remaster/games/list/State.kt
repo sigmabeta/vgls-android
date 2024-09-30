@@ -11,6 +11,7 @@ import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 
+@Suppress("MagicNumber")
 data class State(
     val games: LCE<List<Game>> = LCE.Uninitialized
 ) : ListState() {

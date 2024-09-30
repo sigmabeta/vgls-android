@@ -7,5 +7,4 @@ data class SectionListModel(
     override val columns: Int = 1,
     val dontUnroll: Boolean = false,
     val sectionItems: ImmutableList<ListModel>,
-) : ListModel() {
-}
+) : ListModel()

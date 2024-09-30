@@ -46,6 +46,7 @@ fun WidthClass.toWidthClass() = when (this) {
     else -> throw IllegalArgumentException("Invalid WidthClass: $this")
 }
 
+@Suppress("MagicNumber")
 fun WidthClass.toWidthDpSynthetic() = when (this) {
     WidthClass.COMPACT -> 400
     WidthClass.MEDIUM -> 700

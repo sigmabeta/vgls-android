@@ -22,6 +22,7 @@ import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.toImmutableList
 
+@Suppress("MagicNumber")
 data class State(
     val game: LCE<Game> = LCE.Uninitialized,
     val songs: LCE<List<Song>> = LCE.Uninitialized,
