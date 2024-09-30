@@ -5,19 +5,23 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.window.core.layout.WindowHeightSizeClass
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.topbar.RemasterTopBar
@@ -71,13 +75,20 @@ fun VglsNavSuiteScaffold(
             }
         }
 
+        val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
+        val possiblyInsettedModifier = if (windowHeightSizeClass != WindowHeightSizeClass.COMPACT) {
+            modifier.windowInsetsPadding(WindowInsets.navigationBars)
+        } else {
+            modifier
+        }
+
         Scaffold(
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
             topBar = { RemasterTopBar(state = topBarConfig.state, scrollBehavior = topBarConfig.behavior, handleAction = topBarConfig.handleAction) },
             bottomBar = { RemasterBottomBar(state = navBarState, layoutType = layoutType, navItemProvider = navItemProvider) },
             snackbarHost = { SnackbarHost(snackbarHostState) },
             content = { innerPadding -> screen(innerPadding) },
-            modifier = modifier,
+            modifier = possiblyInsettedModifier,
         )
     }
 }

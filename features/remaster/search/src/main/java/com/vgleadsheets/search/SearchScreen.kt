@@ -41,7 +41,6 @@ fun SearchScreen(
     textFieldUpdater: (String) -> Unit,
     showDebug: Boolean,
     modifier: Modifier = Modifier,
-    minSize: Dp = 128.dp
 ) {
     Box(
         modifier = modifier
@@ -64,7 +63,7 @@ fun SearchScreen(
 
         LazyVerticalGrid(
             contentPadding = contentPadding,
-            columns = GridCells.Adaptive(minSize),
+            columns = GridCells.Adaptive(200.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxSize()
