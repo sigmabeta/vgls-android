@@ -45,7 +45,9 @@ internal fun ViewerLoading(
 
     ScreenPreview(
         darkTheme = darkTheme,
-        syntheticWidthClass = syntheticWidthClass
+        syntheticWidthClass = syntheticWidthClass,
+        topBarVisibility = TopBarVisibility.HIDDEN,
+        navBarVisibility = NavBarVisibility.HIDDEN,
     ) {
         ViewerContent(screenState)
     }
@@ -84,7 +86,9 @@ internal fun ViewerLoadingWithChrome(
 }
 
 @Composable
-private fun ViewerContent(state: ViewerState) {
+private fun ViewerContent(
+    state: ViewerState,
+) {
     ViewerScreen(
         state = state,
         actionSink = { },

@@ -2,6 +2,7 @@ package com.vgleadsheets.composables.previews
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,13 +12,14 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.ListStateActual
 import com.vgleadsheets.list.WidthClass
@@ -50,14 +52,13 @@ internal fun ListScreenPreview(
                 topBarVisibility = topBarVisibility,
                 navBarVisibility = navBarVisibility,
                 syntheticWidthClass = syntheticWidthClass,
-                content = { widthClass ->
+                content = { innerPadding, widthClass ->
                     Box(
                         modifier = Modifier
-                            .padding(top = 72.dp)
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxSize()
                     ) {
-                        ListContent(state, widthClass, actionSink)
+                        ListContent(state, widthClass, innerPadding, actionSink)
                     }
                 },
             )
@@ -82,10 +83,10 @@ internal fun ScreenPreview(
                 topBarVisibility = topBarVisibility,
                 navBarVisibility = navBarVisibility,
                 syntheticWidthClass = syntheticWidthClass,
-                content = {
+                content = { paddingValues, widthClass ->
                     Box(
                         modifier = Modifier
-                            .padding(top = 72.dp)
+                            .padding(paddingValues)
                             .background(MaterialTheme.colorScheme.background)
                     ) {
                         content(stringProvider)
@@ -103,6 +104,7 @@ internal fun ScreenPreview(
 private fun ListContent(
     state: ListStateActual,
     displayWidthClass: WidthClass,
+    innerPadding: PaddingValues,
     actionSink: ActionSink
 ) {
     val numColumns = state.columnType.numberOfColumns(displayWidthClass)
@@ -118,14 +120,15 @@ private fun ListContent(
             actionSink = actionSink,
             showDebug = false,
             numberOfColumns = numColumns,
-            modifier = Modifier,
+            staggered = state.columnType is ColumnType.Staggered,
+            modifier = Modifier.padding(innerPadding),
         )
     } else {
         ListScreen(
             state = state,
             actionSink = actionSink,
             showDebug = false,
-            modifier = Modifier,
+            modifier = Modifier.padding(innerPadding),
         )
     }
 }
@@ -140,7 +143,7 @@ private fun AppChrome(
     topBarVisibility: TopBarVisibility,
     navBarVisibility: NavBarVisibility,
     syntheticWidthClass: WidthClass,
-    content: @Composable (WidthClass) -> Unit,
+    content: @Composable (PaddingValues, WidthClass) -> Unit,
 ) {
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
@@ -161,10 +164,10 @@ private fun AppChrome(
     topBarState.contentOffset = 0.0f
 
     AppContent(
-        screen = { _, widthClass -> content(widthClass) },
         topBarConfig = topBarConfig,
         navBarState = bottomBarVmState,
         syntheticWidthClass = syntheticWidthClass,
-        modifier = Modifier,
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        screen = { innerPadding, widthClass -> content(innerPadding, widthClass) },
     )
 }
