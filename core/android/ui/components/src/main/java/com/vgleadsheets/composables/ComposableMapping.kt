@@ -25,6 +25,7 @@ import com.vgleadsheets.components.NotifListModel
 import com.vgleadsheets.components.SearchHistoryListModel
 import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.components.SectionHeaderListModel
+import com.vgleadsheets.components.SectionListModel
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SingleTextListModel
@@ -60,6 +61,7 @@ fun ListModel.Content(
         is NotifListModel -> NotifListItem(model = this, actionSink = sink, modifier = mod)
         is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
         is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+        is SectionListModel -> SectionListItem(model = this, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
         is SectionHeaderListModel -> SectionHeader(name = title, modifier = mod, padding = pad)
         is SearchHistoryListModel -> SearchHistoryListItem(model = this, modifier = mod, actionSink = sink, padding = pad)
         is SheetPageListModel -> SheetPageItem(model = this, actionSink = sink, fillMaxWidth = true, showDebug = debug, modifier = mod, padding = pad)

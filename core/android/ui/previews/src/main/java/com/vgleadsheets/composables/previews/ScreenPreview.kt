@@ -110,6 +110,7 @@ private fun ListContent(
     require(numColumns > 0) {
         "Calculated number of columns is zero for ${state.columnType} and $displayWidthClass."
     }
+    println("Calculated number of columns is $numColumns for ${state.columnType} and $displayWidthClass.")
 
     if (numColumns > 1) {
         GridScreen(

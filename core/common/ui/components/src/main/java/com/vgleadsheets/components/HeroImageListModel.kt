@@ -11,5 +11,5 @@ data class HeroImageListModel(
     val clickAction: VglsAction
 ) : ListModel() {
     override val dataId = sourceInfo.hashCode().toLong()
-    override val columns = ListModel.COLUMNS_ALL
+    override val columns = 1
 }

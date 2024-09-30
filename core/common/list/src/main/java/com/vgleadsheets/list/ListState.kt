@@ -8,6 +8,7 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.NoopListModel
+import com.vgleadsheets.components.SectionListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -55,7 +56,7 @@ abstract class ListState : VglsState {
                 )
             )
             return ListStateActual(
-                columnType = columnType,
+                columnType = ColumnType.One,
                 title = title,
                 listItems = items,
             )
@@ -89,6 +90,35 @@ abstract class ListState : VglsState {
 
             LCE.Uninitialized -> emptyList()
         }
+    }
+
+    protected fun <ModelType> LCE<ModelType>.sectionWithStandardErrorAndLoading(
+        sectionName: String,
+        columns: Int = 1,
+        loadingType: LoadingType = LoadingType.SQUARE,
+        loadingItemCount: Int = 10,
+        loadingWithHeader: Boolean = true,
+        loadingHorizScrollable: Boolean = false,
+        content: LCE.Content<ModelType>.() -> List<ListModel>,
+    ): SectionListModel {
+        val sectionItems = when (this) {
+            is LCE.Content -> content()
+            is LCE.Error -> error(error)
+            is LCE.Loading -> loading(
+                operationName = sectionName,
+                loadingType = loadingType,
+                loadingItemCount = loadingItemCount,
+                loadingWithHeader = loadingWithHeader,
+                loadingHorizScrollable = loadingHorizScrollable
+            )
+
+            LCE.Uninitialized -> emptyList()
+        }
+        return SectionListModel(
+            dataId = sectionName.hashCode().toLong(),
+            sectionItems = sectionItems.toImmutableList(),
+            columns = columns,
+        )
     }
 
     protected fun loading(
