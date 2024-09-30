@@ -9,6 +9,7 @@ data class SheetPageListModel(
     val gameName: String,
     val composers: ImmutableList<String>,
     val pageNumber: Int,
+    val beeg: Boolean,
     val clickAction: VglsAction,
     val showLyricsWarning: Boolean = false,
     override val dataId: Long = ("$gameName - $title: Page $pageNumber").hashCode().toLong()

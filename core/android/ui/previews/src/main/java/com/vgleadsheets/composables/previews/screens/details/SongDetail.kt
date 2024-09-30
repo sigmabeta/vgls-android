@@ -19,7 +19,22 @@ internal fun SongDetail(
     darkTheme: Boolean = isSystemInDarkTheme(),
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
 ) {
-    val screenState = songScreenState()
+    val screenState = songScreenState(1)
+
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
+}
+
+@DevicePreviews
+@Composable
+internal fun SongDetailMultipage(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
+    val screenState = songScreenState(3)
 
     ListScreenPreview(
         screenState = screenState,
@@ -44,7 +59,7 @@ internal fun SongDetailLoading(
 }
 
 @Suppress("MagicNumber")
-private fun songScreenState(): State {
+private fun songScreenState(pageCount: Int): State {
     val seed = 12345L
     val random = Random(seed)
     val modelGenerator = FakeModelGenerator(
@@ -53,7 +68,7 @@ private fun songScreenState(): State {
         StringGenerator(random)
     )
 
-    val song = modelGenerator.randomSong()
+    val song = modelGenerator.randomSong().copy(pageCount = pageCount)
     val composers = modelGenerator.randomComposers()
     val game = modelGenerator.randomGame()
     val tags = modelGenerator.randomTagValues()

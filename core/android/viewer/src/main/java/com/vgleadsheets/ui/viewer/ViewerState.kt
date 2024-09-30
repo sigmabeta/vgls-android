@@ -54,6 +54,7 @@ data class ViewerState(
                 song.gameName,
                 song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
                 pageNumber,
+                beeg = true,
                 VglsAction.Noop,
             )
         }
@@ -65,6 +66,7 @@ data class ViewerState(
                 gameName = song?.gameName.orEmpty(),
                 composers = song?.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
                 pageNumber = 0,
+                beeg = true,
                 clickAction = VglsAction.Noop,
             )
         )

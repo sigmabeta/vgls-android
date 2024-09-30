@@ -137,6 +137,7 @@ private fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails,
                     gameName = song.gameName,
                     clickAction = VglsAction.Noop,
                     composers = persistentListOf(),
+                    beeg = false,
                     pageNumber = 0,
                 )
             )

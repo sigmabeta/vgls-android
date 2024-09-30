@@ -12,12 +12,14 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
+import com.vgleadsheets.components.SinglePageListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
@@ -73,7 +75,7 @@ data class State(
             gameModel,
             difficultySection,
             aboutSection,
-            )
+        )
     }
 
     private fun sheetPreviewSection() = song.sectionWithStandardErrorAndLoading(
@@ -99,24 +101,48 @@ data class State(
         listOf(
             when {
                 pageCount > 1 -> HorizontalScrollerListModel(
-                        dataId = data.id,
-                        scrollingItems = List(pageCount) { pageNumber ->
-                            sheetPage(
-                                data,
-                                pageNumber,
-                                false,
-                                altSelection
-                            )
-                        }.toImmutableList()
-                    )
+                    dataId = data.id,
+                    scrollingItems = List(pageCount) { pageNumber ->
+                        sheetPage(
+                            data,
+                            pageNumber,
+                            false,
+                            altSelection
+                        )
+                    }.toImmutableList()
+                )
 
-                pageCount == 0 -> sheetPage(data, 0, true, altSelection)
-                else -> sheetPage(data, 0, false, altSelection)
+                pageCount == 0 -> HorizontalScrollerListModel(
+                    dataId = data.id,
+                    scrollingItems = List(data.pageCount(Part.C.apiId, altSelection)) { pageNumber ->
+                        sheetPage(
+                            data,
+                            pageNumber,
+                            true,
+                            altSelection
+                        )
+                    }.toImmutableList()
+                )
+
+                else -> singlePage(data, false, altSelection)
             }
         )
     }
 
     private fun sheetLoading() = loading(LOAD_OPERATION_SONG, LoadingType.SHEET, 1)
+
+    private fun singlePage(
+        song: Song,
+        showLyricsMissingWarning: Boolean,
+        altSelectionValue: Boolean,
+    ) = SinglePageListModel(
+        sheetPageCardModel = sheetPage(
+            song = song,
+            pageNumber = 0,
+            showLyricsMissingWarning = showLyricsMissingWarning,
+            altSelectionValue = altSelectionValue,
+        )
+    )
 
     private fun sheetPage(
         song: Song,
@@ -131,6 +157,7 @@ data class State(
             pageNumber = pageNumber,
             clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
             showLyricsWarning = showLyricsMissingWarning,
+            beeg = true,
             sourceInfo = PdfConfigById(
                 songId = song.id,
                 pageNumber = pageNumber,
@@ -390,7 +417,6 @@ data class State(
         private const val SECTION_NAME_GAMES = "section.game"
         private const val SECTION_NAME_DIFFICULTY = "section.difficulty"
         private const val SECTION_NAME_ABOUT = "section.about"
-
 
         private const val ID_PREFIX_COMPOSERS = 1_000_000L
         private const val ID_PREFIX_TAG_VALUE = 1_000_000_000L
