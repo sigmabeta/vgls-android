@@ -28,7 +28,7 @@ data class State(
     val composers: LCE<List<Composer>> = LCE.Uninitialized,
     val isFavorite: LCE<Boolean> = LCE.Uninitialized,
 ) : ListState() {
-    override val columnType = ColumnType.Adaptive(320)
+    override val columnType = ColumnType.Staggered(320)
 
     override fun title(stringProvider: StringProvider) = if (game is LCE.Content) {
         TitleBarModel(
@@ -65,7 +65,6 @@ data class State(
                     HeroImageListModel(
                         sourceInfo = photoUrl,
                         imagePlaceholder = Icon.ALBUM,
-                        name = null,
                         clickAction = VglsAction.Noop,
                     )
                 )

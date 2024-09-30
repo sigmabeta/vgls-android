@@ -7,11 +7,11 @@ sealed class ColumnType {
         override fun numberOfColumns(width: WidthClass) = 1
     }
 
-    data class Fixed(val numberOfColumns: Int) : ColumnType() {
-        override fun numberOfColumns(width: WidthClass) = numberOfColumns
+    data class Regular(val widthInDp: Int) : ColumnType() {
+        override fun numberOfColumns(width: WidthClass) = width.averageWidthInDp / widthInDp
     }
 
-    data class Adaptive(val sizeInDp: Int) : ColumnType() {
-        override fun numberOfColumns(width: WidthClass) = width.averageWidthInDp / sizeInDp
+    data class Staggered(val widthInDp: Int) : ColumnType() {
+        override fun numberOfColumns(width: WidthClass) = width.averageWidthInDp / widthInDp
     }
 }

@@ -11,6 +11,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.nav.ARG_TEMPLATE_ONE
 import com.vgleadsheets.nav.ArgType
@@ -72,6 +73,7 @@ fun NavGraphBuilder.listScreenEntry(
                 actionSink = viewModel,
                 showDebug = showDebug,
                 numberOfColumns = numColumns,
+                staggered = state.columnType is ColumnType.Staggered,
                 modifier = globalModifier,
             )
         } else {

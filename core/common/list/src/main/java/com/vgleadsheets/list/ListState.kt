@@ -95,6 +95,7 @@ abstract class ListState : VglsState {
     protected fun <ModelType> LCE<ModelType>.sectionWithStandardErrorAndLoading(
         sectionName: String,
         columns: Int = 1,
+        dontUnroll: Boolean = false,
         loadingType: LoadingType = LoadingType.SQUARE,
         loadingItemCount: Int = 10,
         loadingWithHeader: Boolean = true,
@@ -117,6 +118,7 @@ abstract class ListState : VglsState {
         return SectionListModel(
             dataId = sectionName.hashCode().toLong(),
             sectionItems = sectionItems.toImmutableList(),
+            dontUnroll = dontUnroll,
             columns = columns,
         )
     }

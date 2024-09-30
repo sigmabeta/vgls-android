@@ -23,7 +23,7 @@ data class State(
     val favoriteGames: LCE<List<Game>> = LCE.Uninitialized,
     val favoriteComposers: LCE<List<Composer>> = LCE.Uninitialized,
 ) : ListState() {
-    override val columnType = ColumnType.Adaptive(160)
+    override val columnType = ColumnType.Regular(160)
 
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_FAVORITES)

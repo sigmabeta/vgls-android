@@ -14,7 +14,7 @@ import com.vgleadsheets.ui.StringProvider
 data class State(
     val games: LCE<List<Game>> = LCE.Uninitialized
 ) : ListState() {
-    override val columnType = ColumnType.Adaptive(160)
+    override val columnType = ColumnType.Regular(160)
 
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_GAMES)

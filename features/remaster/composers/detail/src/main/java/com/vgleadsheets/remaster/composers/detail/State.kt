@@ -57,7 +57,6 @@ data class State(
                 HeroImageListModel(
                     sourceInfo = photoUrl,
                     imagePlaceholder = Icon.PERSON,
-                    name = null,
                     clickAction = VglsAction.Noop,
                 )
             )

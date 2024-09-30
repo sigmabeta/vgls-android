@@ -14,6 +14,7 @@ import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
@@ -22,7 +23,6 @@ import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
-import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_TAG_VALUES
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -40,6 +40,8 @@ data class State(
     val isFavorite: LCE<Boolean> = LCE.Uninitialized,
     val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
 ) : ListState() {
+    override val columnType = ColumnType.Staggered(320)
+
     override fun title(stringProvider: StringProvider): TitleBarModel {
         return if (song is LCE.Content) {
             val gameName = song.data.gameName
@@ -64,30 +66,33 @@ data class State(
 
         val aboutSection = aboutSection(dedupedTagValues, stringProvider)
 
-        return (
-            sheetPreviewSection +
-                ctaSection +
-                composerModels +
-                gameModel +
-                difficultySection +
-                aboutSection
+        return listOf(
+            sheetPreviewSection,
+            ctaSection,
+            composerModels,
+            gameModel,
+            difficultySection,
+            aboutSection,
             )
     }
 
-    private fun sheetPreviewSection() = song.withStandardErrorAndLoading(
+    private fun sheetPreviewSection() = song.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_SONG,
+        dontUnroll = true,
         loadingType = LoadingType.SHEET,
         loadingItemCount = 2,
         loadingWithHeader = false,
         loadingHorizScrollable = true,
+        columns = ListModel.COLUMNS_ALL,
     ) {
         if (sheetUrlInfo !is LCE.Content) {
-            return@withStandardErrorAndLoading sheetLoading()
+            return@sectionWithStandardErrorAndLoading sheetLoading()
         }
         if (isAltSelected !is LCE.Content) {
-            return@withStandardErrorAndLoading sheetLoading()
+            return@sectionWithStandardErrorAndLoading sheetLoading()
         }
 
-        val selectedPart = sheetUrlInfo.data.partId ?: return@withStandardErrorAndLoading sheetLoading()
+        val selectedPart = sheetUrlInfo.data.partId ?: return@sectionWithStandardErrorAndLoading sheetLoading()
         val altSelection = isAltSelected.data
         val pageCount = data.pageCount(selectedPart, altSelection)
 
@@ -135,7 +140,8 @@ data class State(
     )
 
     @Suppress("MagicNumber")
-    private fun ctaSection(stringProvider: StringProvider) = song.withStandardErrorAndLoading(
+    private fun ctaSection(stringProvider: StringProvider) = song.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_CTA,
         loadingItemCount = 0
     ) {
         listOf(
@@ -145,7 +151,8 @@ data class State(
         ).flatten()
     }
 
-    private fun gameSection(stringProvider: StringProvider) = game.withStandardErrorAndLoading(
+    private fun gameSection(stringProvider: StringProvider) = game.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_GAMES,
         loadingType = LoadingType.BIG_IMAGE,
         loadingItemCount = 1,
         loadingWithHeader = true,
@@ -157,14 +164,14 @@ data class State(
             HeroImageListModel(
                 sourceInfo = data.photoUrl ?: "",
                 imagePlaceholder = Icon.ALBUM,
-                name = data.name,
                 clickAction = Action.GameClicked(data.id),
             )
         )
     }
 
     @Suppress("MagicNumber")
-    private fun composerSection(stringProvider: StringProvider) = composers.withStandardErrorAndLoading(
+    private fun composerSection(stringProvider: StringProvider) = composers.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_COMPOSERS,
         loadingType = LoadingType.WIDE_ITEM,
         loadingHorizScrollable = true
     ) {
@@ -191,10 +198,10 @@ data class State(
     private fun difficultySection(
         dedupedTagValues: LCE<List<TagValue>>,
         stringProvider: StringProvider
-    ) = dedupedTagValues.withStandardErrorAndLoading(
+    ) = dedupedTagValues.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_DIFFICULTY,
         loadingType = LoadingType.SINGLE_TEXT,
         loadingItemCount = 3,
-        loadingOperationNameOverride = "$LOAD_OPERATION_TAG_VALUES.difficulty",
     ) {
         val difficultyValues = data.filter {
             it.isDifficultyValue()
@@ -222,11 +229,11 @@ data class State(
     private fun aboutSection(
         dedupedTagValues: LCE<List<TagValue>>,
         stringProvider: StringProvider
-    ) = dedupedTagValues.withStandardErrorAndLoading(
+    ) = dedupedTagValues.sectionWithStandardErrorAndLoading(
+        sectionName = SECTION_NAME_ABOUT,
         loadingType = LoadingType.SINGLE_TEXT,
         loadingItemCount = 3,
         loadingWithHeader = true,
-        loadingOperationNameOverride = "$LOAD_OPERATION_TAG_VALUES.details",
     ) {
         val detailValues = data.filter {
             !it.isDifficultyValue()
@@ -377,6 +384,14 @@ data class State(
     }
 
     companion object {
+        private const val SECTION_NAME_SONG = "section.song"
+        private const val SECTION_NAME_CTA = "section.cta"
+        private const val SECTION_NAME_COMPOSERS = "section.composer"
+        private const val SECTION_NAME_GAMES = "section.game"
+        private const val SECTION_NAME_DIFFICULTY = "section.difficulty"
+        private const val SECTION_NAME_ABOUT = "section.about"
+
+
         private const val ID_PREFIX_COMPOSERS = 1_000_000L
         private const val ID_PREFIX_TAG_VALUE = 1_000_000_000L
         private const val ID_PREFIX_SCROLLER_CONTENT = 1_000_000_000_000L
