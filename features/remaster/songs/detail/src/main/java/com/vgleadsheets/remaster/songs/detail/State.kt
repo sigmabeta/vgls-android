@@ -235,9 +235,10 @@ data class State(
         loadingType = LoadingType.SINGLE_TEXT,
         loadingItemCount = 3,
     ) {
-        val difficultyValues = data.filter {
-            it.isDifficultyValue()
-        }
+        val difficultyValues = data
+            .filter { it.isDifficultyValue() }
+            .sortedBy { it.tagKeyName }
+            .sortedBy { it.tagKeyName.split(" ").size }
 
         if (difficultyValues.isNotEmpty()) {
             listOf(
