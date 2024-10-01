@@ -43,7 +43,7 @@ data class State(
     val isFavorite: LCE<Boolean> = LCE.Uninitialized,
     val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
 ) : ListState() {
-    override val columnType = ColumnType.Staggered(320)
+    override val columnType = ColumnType.Staggered(320, true)
 
     override fun title(stringProvider: StringProvider): TitleBarModel {
         return if (song is LCE.Content) {

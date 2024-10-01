@@ -40,7 +40,7 @@ fun SheetPageCard(
     padding: PaddingValues,
 ) {
     val maxHeight = if (model.beeg) {
-        800.dp
+        600.dp
     } else {
         400.dp
     }

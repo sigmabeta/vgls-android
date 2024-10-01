@@ -107,19 +107,27 @@ private fun ListContent(
     innerPadding: PaddingValues,
     actionSink: ActionSink
 ) {
-    val numColumns = state.columnType.numberOfColumns(displayWidthClass)
+    val columnType = state.columnType
+    val numColumns = columnType.numberOfColumns(displayWidthClass)
 
     require(numColumns > 0) {
         "Calculated number of columns is zero for ${state.columnType} and $displayWidthClass."
     }
 
     if (numColumns > 1) {
+        val (staggered, allowHorizScroller) = if (columnType is ColumnType.Staggered) {
+            true to columnType.allowHorizScroller
+        } else {
+            false to false
+        }
+
         GridScreen(
             state = state,
             actionSink = actionSink,
             showDebug = false,
             numberOfColumns = numColumns,
-            staggered = state.columnType is ColumnType.Staggered,
+            staggered = staggered,
+            allowHorizScroller = allowHorizScroller,
             modifier = Modifier.padding(innerPadding),
         )
     } else {

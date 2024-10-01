@@ -32,6 +32,7 @@ fun GridScreen(
     showDebug: Boolean,
     numberOfColumns: Int,
     staggered: Boolean,
+    allowHorizScroller: Boolean,
     modifier: Modifier,
 ) {
     val title = state.title
@@ -65,13 +66,27 @@ fun GridScreen(
     }
 
     if (staggered) {
+        val (contentPadding, itemPadding, arrangement) = if (allowHorizScroller) {
+            Triple(
+                0.dp,
+                dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side) / 2,
+                Arrangement.spacedBy(0.dp)
+            )
+        } else {
+            Triple(
+                dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side),
+                0.dp,
+                Arrangement.spacedBy(32.dp)
+            )
+        }
+
         LazyVerticalStaggeredGrid(
             contentPadding = PaddingValues(
                 vertical = 16.dp,
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side),
+                horizontal = contentPadding,
             ),
             columns = StaggeredGridCells.Fixed(numberOfColumns),
-            horizontalArrangement = Arrangement.spacedBy(32.dp),
+            horizontalArrangement = arrangement,
             modifier = modifier.fillMaxSize()
         ) {
             items(
@@ -90,7 +105,7 @@ fun GridScreen(
                     sink = actionSink,
                     mod = Modifier.animateItem(),
                     debug = showDebug,
-                    pad = PaddingValues()
+                    pad = PaddingValues(horizontal = itemPadding)
                 )
             }
         }

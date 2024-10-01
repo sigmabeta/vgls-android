@@ -29,7 +29,7 @@ data class State(
     val composers: LCE<List<Composer>> = LCE.Uninitialized,
     val isFavorite: LCE<Boolean> = LCE.Uninitialized,
 ) : ListState() {
-    override val columnType = ColumnType.Staggered(320)
+    override val columnType = ColumnType.Staggered(320, false)
 
     override fun title(stringProvider: StringProvider) = if (game is LCE.Content) {
         TitleBarModel(

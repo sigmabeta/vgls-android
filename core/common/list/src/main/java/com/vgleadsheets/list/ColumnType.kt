@@ -11,7 +11,7 @@ sealed class ColumnType {
         override fun numberOfColumns(width: WidthClass) = width.averageWidthInDp / widthInDp
     }
 
-    data class Staggered(val widthInDp: Int) : ColumnType() {
+    data class Staggered(val widthInDp: Int, val allowHorizScroller: Boolean) : ColumnType() {
         override fun numberOfColumns(width: WidthClass) = width.averageWidthInDp / widthInDp
     }
 }

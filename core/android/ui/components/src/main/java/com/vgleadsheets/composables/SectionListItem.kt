@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -36,7 +35,6 @@ fun SectionListItem(
 ) {
     Column(
         modifier = modifier
-            .padding(padding)
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
@@ -45,7 +43,7 @@ fun SectionListItem(
                 sink = actionSink,
                 debug = showDebug,
                 mod = Modifier,
-                pad = PaddingValues()
+                pad = padding
             )
         }
     }
