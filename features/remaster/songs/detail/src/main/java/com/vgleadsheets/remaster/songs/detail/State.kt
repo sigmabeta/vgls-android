@@ -107,7 +107,8 @@ data class State(
                         sheetPage(
                             data,
                             pageNumber,
-                            false,
+                            beeg = false,
+                            showLyricsMissingWarning = false,
                             altSelection
                         )
                     }.toImmutableList()
@@ -119,7 +120,8 @@ data class State(
                         sheetPage(
                             data,
                             pageNumber,
-                            true,
+                            beeg = false,
+                            showLyricsMissingWarning = true,
                             altSelection
                         )
                     }.toImmutableList()
@@ -140,6 +142,7 @@ data class State(
         sheetPageCardModel = sheetPage(
             song = song,
             pageNumber = 0,
+            beeg = true,
             showLyricsMissingWarning = showLyricsMissingWarning,
             altSelectionValue = altSelectionValue,
         )
@@ -148,6 +151,7 @@ data class State(
     private fun sheetPage(
         song: Song,
         pageNumber: Int,
+        beeg: Boolean,
         showLyricsMissingWarning: Boolean,
         altSelectionValue: Boolean,
     ) = SheetPageCardListModel(
@@ -158,7 +162,7 @@ data class State(
             pageNumber = pageNumber,
             clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
             showLyricsWarning = showLyricsMissingWarning,
-            beeg = true,
+            beeg = beeg,
             sourceInfo = PdfConfigById(
                 songId = song.id,
                 pageNumber = pageNumber,
