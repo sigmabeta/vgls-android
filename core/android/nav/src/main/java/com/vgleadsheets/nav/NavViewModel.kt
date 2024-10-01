@@ -23,7 +23,6 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -34,6 +33,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
@@ -65,13 +65,13 @@ class NavViewModel @Inject constructor(
 
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {
-            hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+            hatchet.v("${this.javaClass.simpleName} - Handling action: $action")
         }
     }
 
     override fun handleEvent(event: VglsEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
-            hatchet.d("${this@NavViewModel.javaClass.simpleName} - Handling event: $event")
+            hatchet.v("${this@NavViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.NavigateTo -> navigateTo(event.destination)
                 is VglsEvent.NavigateBack -> navigateBack()
@@ -220,7 +220,7 @@ class NavViewModel @Inject constructor(
         updateState {
             it.copy(visibility = SystemUiVisibility.VISIBLE)
         }
-        emitEvent(VglsEvent.UiChromeBecameShown)
+        emitEvent(VglsEvent.SystemBarsBecameShown)
     }
 
     private fun hideSystemUi() {
@@ -229,7 +229,7 @@ class NavViewModel @Inject constructor(
             updateState {
                 it.copy(visibility = SystemUiVisibility.HIDDEN)
             }
-            emitEvent(VglsEvent.UiChromeBecameHidden)
+            emitEvent(VglsEvent.SystemBarsBecameHidden)
         }
     }
 

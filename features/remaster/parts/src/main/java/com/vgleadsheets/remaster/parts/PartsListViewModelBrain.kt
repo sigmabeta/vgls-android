@@ -26,7 +26,6 @@ class PartsListViewModelBrain(
             is VglsAction.InitNoArgs -> collectSelectedPart()
             is VglsAction.Resume -> return
             is Action.PartSelected -> onPartSelected(action.option)
-            else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
     }
 

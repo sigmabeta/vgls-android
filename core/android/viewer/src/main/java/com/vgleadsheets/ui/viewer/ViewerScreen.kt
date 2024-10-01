@@ -68,10 +68,6 @@ fun ViewerScreen(
     var width by remember { mutableStateOf(1) }
     var height by remember { mutableStateOf(1) }
 
-    LaunchedEffect(Unit) {
-        actionSink.sendAction(VglsAction.Resume)
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()

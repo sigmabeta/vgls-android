@@ -38,7 +38,6 @@ class ListViewModel @AssistedInject constructor(
     val showDebug = showDebugProvider.showDebugFlow
 
     init {
-        eventDispatcher.addEventSink(this)
 
         val initAction = when {
             (idArg > 0L) -> VglsAction.InitWithId(idArg)
@@ -53,11 +52,25 @@ class ListViewModel @AssistedInject constructor(
             .launchIn(viewModelScope)
     }
 
-    override fun onCleared() {
+    fun onResume() {
+        eventDispatcher.addEventSink(this)
+    }
+
+    fun onPause() {
         eventDispatcher.removeEventSink(this)
     }
 
-    override fun sendAction(action: VglsAction) = brain.sendAction(action)
+    override fun onCleared() {
+    }
+
+    override fun sendAction(action: VglsAction) {
+        when (action) {
+            is VglsAction.Resume -> onResume()
+            is VglsAction.Pause -> onPause()
+            else -> {}
+        }
+        brain.sendAction(action)
+    }
 
     override fun sendEvent(event: VglsEvent) = brain.sendEvent(event)
 }

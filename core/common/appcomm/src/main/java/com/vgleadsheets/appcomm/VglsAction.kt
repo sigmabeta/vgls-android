@@ -8,6 +8,7 @@ open class VglsAction {
     data class InitWithString(val arg: String) : VglsAction()
 
     data object Resume : VglsAction()
+    data object Pause : VglsAction()
 
     data object DeviceBack : VglsAction()
     data object AppBack : VglsAction()

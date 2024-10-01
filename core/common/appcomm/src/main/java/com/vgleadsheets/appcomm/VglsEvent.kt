@@ -31,8 +31,12 @@ open class VglsEvent {
     data object ShowUiChrome : VglsEvent()
     data object HideUiChrome : VglsEvent()
 
-    data object UiChromeBecameShown : VglsEvent()
-    data object UiChromeBecameHidden : VglsEvent()
+    data object SystemBarsBecameShown : VglsEvent()
+    data object SystemBarsBecameHidden : VglsEvent()
+    data object TopBarBecameShown : VglsEvent()
+    data object TopBarBecameHidden : VglsEvent()
+    data object NavBarBecameShown : VglsEvent()
+    data object NavBarBecameHidden : VglsEvent()
 
     data class ClearNotif(val id: Long) : VglsEvent()
 

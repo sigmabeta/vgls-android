@@ -13,12 +13,12 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class TopBarViewModel @Inject constructor(
@@ -44,7 +44,7 @@ class TopBarViewModel @Inject constructor(
 
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {
-            hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+            hatchet.v("${this.javaClass.simpleName} - Handling action: $action")
             when (action) {
                 is TopBarAction.Menu -> eventDispatcher.sendEvent(
                     VglsEvent.NavigateTo(
@@ -71,7 +71,7 @@ class TopBarViewModel @Inject constructor(
 
     override fun handleEvent(event: VglsEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
-            hatchet.d("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
+            hatchet.v("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.HideTopBar -> hideTopBar()
                 is VglsEvent.HideUiChrome -> hideTopBar()
@@ -94,6 +94,7 @@ class TopBarViewModel @Inject constructor(
                 it.copy(visibility = TopBarVisibility.VISIBLE)
             }
         }
+        emitEvent(VglsEvent.TopBarBecameShown)
     }
 
     private fun hideTopBar() {
@@ -102,6 +103,7 @@ class TopBarViewModel @Inject constructor(
         updateState {
             it.copy(visibility = TopBarVisibility.HIDDEN)
         }
+        emitEvent(VglsEvent.TopBarBecameHidden)
     }
 
     private fun updateTitle(title: TitleBarModel) {

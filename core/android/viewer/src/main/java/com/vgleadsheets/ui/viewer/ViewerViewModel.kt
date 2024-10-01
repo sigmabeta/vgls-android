@@ -11,7 +11,6 @@ import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.model.Song
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.ui.StringProvider
@@ -22,9 +21,11 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class ViewerViewModel @AssistedInject constructor(
@@ -43,16 +44,12 @@ class ViewerViewModel @AssistedInject constructor(
     ActionSink,
     EventSink {
     init {
-        eventDispatcher.addEventSink(this)
-
         val initAction = Action.InitWithPageNumber(
             idArg,
             pageArg
         )
 
         this.sendAction(initAction)
-        emitEvent(VglsEvent.ShowUiChrome)
-        hideChromeSoon()
     }
 
     private var chromeVisibilityTimer: Job? = null
@@ -65,26 +62,25 @@ class ViewerViewModel @AssistedInject constructor(
         hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
         when (action) {
             is VglsAction.Resume -> resume()
+            is VglsAction.Pause -> pause()
             is Action.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
             is Action.ScreenClicked -> emitEvent(VglsEvent.ShowUiChrome)
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
-            is Action.SongLoaded -> startHistoryTimer(action.song)
         }
     }
 
     override fun handleEvent(event: VglsEvent) {
         hatchet.d("${this.javaClass.simpleName} - Handling event: $event")
         when (event) {
-            is VglsEvent.UiChromeBecameHidden -> hideButtonsSoon()
-            is VglsEvent.UiChromeBecameShown -> {
-                hideChromeSoon()
+            is VglsEvent.SystemBarsBecameHidden -> startHideButtonsTimer()
+            is VglsEvent.SystemBarsBecameShown -> {
+                startHideChromeTimer()
                 showButtons()
             }
         }
     }
 
     override fun onCleared() {
-        eventDispatcher.removeEventSink(this)
         stopHistoryTimer()
     }
 
@@ -95,7 +91,14 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun resume() {
+        eventDispatcher.addEventSink(this)
         updateTitle()
+        startTimers()
+    }
+
+    private fun pause() {
+        stopTimers()
+        eventDispatcher.removeEventSink(this)
     }
 
     private fun updateTitle() {
@@ -118,11 +121,11 @@ class ViewerViewModel @AssistedInject constructor(
         songRepository
             .getSong(id)
             .onEach { song ->
-                sendAction(Action.SongLoaded(song))
                 updateState {
                     it.copy(
                         song = song,
                         initialPage = pageNumber.toInt(),
+                        isSongHistoryEntryRecorded = false,
                     )
                 }
             }
@@ -156,18 +159,9 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    private fun hideChromeSoon() {
-        chromeVisibilityTimer?.cancel()
-        chromeVisibilityTimer = viewModelScope.launch(scheduler.dispatchers.computation) {
-            hatchet.v("Hiding UI chrome in $DURATION_CHROME_VISIBILITY ms.")
-            delay(DURATION_CHROME_VISIBILITY)
-            emitEvent(VglsEvent.HideUiChrome)
-        }
-    }
-
     private fun onButtonClicked() {
         showButtons()
-        hideButtonsSoon()
+        startHideButtonsTimer()
     }
 
     private fun showButtons() {
@@ -176,9 +170,24 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    private fun hideButtonsSoon() {
+    private fun startTimers() {
+        startHideChromeTimer()
+        startRecordSongHistoryEntryTimerMaybe()
+    }
+
+    private fun startHideChromeTimer() {
+        chromeVisibilityTimer?.cancel()
+        chromeVisibilityTimer = viewModelScope.launch(scheduler.dispatchers.computation) {
+            hatchet.v("Hiding UI chrome in $DURATION_CHROME_VISIBILITY ms.")
+            delay(DURATION_CHROME_VISIBILITY)
+            emitEvent(VglsEvent.HideUiChrome)
+        }
+    }
+
+    private fun startHideButtonsTimer() {
         buttonVisibilityTimer?.cancel()
         buttonVisibilityTimer = viewModelScope.launch {
+            hatchet.v("Hiding buttons in $DURATION_BUTTON_VISIBILITY ms.")
             delay(DURATION_BUTTON_VISIBILITY)
             updateState {
                 it.copy(buttonsVisible = false)
@@ -186,19 +195,51 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    private fun startHistoryTimer(song: Song) {
-        historyTimer = viewModelScope.launch {
-            delay(DURATION_HISTORY_RECORD)
-            hatchet.d("This song has officially been viewed.")
+    private fun startRecordSongHistoryEntryTimerMaybe() {
+        historyTimer?.cancel()
+        historyTimer = internalUiState
+            .filter { it.song != null && !it.isSongHistoryEntryRecorded }
+            .take(1)
+            .onEach { state ->
+                hatchet.v("Starting song history entry timer.")
+                delay(DURATION_HISTORY_RECORD)
+                hatchet.d("Recording song history entry for ${state.song!!.name}.")
 
-            songHistoryRepository.recordSongPlay(song, System.currentTimeMillis())
-            historyTimer = null
+                songHistoryRepository.recordSongPlay(state.song, System.currentTimeMillis())
+                updateState {
+                    it.copy(isSongHistoryEntryRecorded = true)
+                }
+                historyTimer = null
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(viewModelScope)
+    }
+
+    private fun stopTimers() {
+        stopHideChromeTimer()
+        stopHideButtonsTimer()
+        stopHistoryTimer()
+    }
+
+    private fun stopHideChromeTimer() {
+        if (chromeVisibilityTimer != null) {
+            hatchet.i("HideChrome timer stopped.")
+            chromeVisibilityTimer?.cancel()
+            chromeVisibilityTimer = null
+        }
+    }
+
+    private fun stopHideButtonsTimer() {
+        if (buttonVisibilityTimer != null) {
+            hatchet.i("HideButtons timer stopped.")
+            buttonVisibilityTimer?.cancel()
+            buttonVisibilityTimer = null
         }
     }
 
     private fun stopHistoryTimer() {
         if (historyTimer != null) {
-            hatchet.i("This song was not officially viewed.")
+            hatchet.i("Song history entry timer stopped.")
             historyTimer?.cancel()
             historyTimer = null
         }

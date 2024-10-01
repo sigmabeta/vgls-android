@@ -10,8 +10,8 @@ import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class NavBarViewModel @Inject constructor(
@@ -29,34 +29,35 @@ class NavBarViewModel @Inject constructor(
 
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {
-            hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+            hatchet.v("${this.javaClass.simpleName} - Handling action: $action")
         }
     }
 
     override fun handleEvent(event: VglsEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
-            hatchet.d("${this@NavBarViewModel.javaClass.simpleName} - Handling event: $event")
+            hatchet.v("${this@NavBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
-                is VglsEvent.HideUiChrome -> hideBottomBar()
-                is VglsEvent.ShowUiChrome -> showBottomBar()
+                is VglsEvent.HideUiChrome -> hideNavBar()
+                is VglsEvent.ShowUiChrome -> showNavBar()
             }
         }
     }
 
-    private fun showBottomBar() {
-        hatchet.d("Showing bottom bar.")
+    private fun showNavBar() {
+        hatchet.d("Showing nav bar.")
         viewModelScope.launch {
             updateState {
                 it.copy(visibility = NavBarVisibility.VISIBLE)
             }
         }
+        emitEvent(VglsEvent.NavBarBecameShown)
     }
 
-    private fun hideBottomBar() {
-        hatchet.d("Hiding bottom bar.")
+    private fun hideNavBar() {
+        hatchet.d("Hiding nav bar.")
         updateState {
             it.copy(visibility = NavBarVisibility.HIDDEN)
         }
-        emitEvent(VglsEvent.UiChromeBecameHidden)
+        emitEvent(VglsEvent.NavBarBecameHidden)
     }
 }

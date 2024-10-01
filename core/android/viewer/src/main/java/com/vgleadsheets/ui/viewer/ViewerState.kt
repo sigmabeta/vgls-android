@@ -20,6 +20,7 @@ data class ViewerState(
     val initialPage: Int = 0,
     val buttonsVisible: Boolean = true,
     val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
+    val isSongHistoryEntryRecorded: Boolean = false,
 ) : VglsState {
     fun title(stringProvider: StringProvider): TitleBarModel {
         val gameName = song?.gameName
