@@ -47,7 +47,6 @@ class MenuViewModelBrain(
             is Action.GenerateUserContentLegacyClicked -> onGenerateUserContentLegacyClicked()
             is Action.MigrateUserContentLegacyClicked -> onMigrateUserContentLegacyClicked()
             is Action.RestartAppClicked -> onRestartAppClicked()
-            else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
     }
 

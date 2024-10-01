@@ -3,7 +3,7 @@ package com.vgleadsheets.search
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarState
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -28,10 +28,14 @@ fun NavGraphBuilder.searchScreenNavEntry(
 
         val viewModel: SearchViewModel = searchViewModel(textFieldUpdater)
 
-        LaunchedEffect(Unit) {
+        DisposableEffect(Unit) {
             topBarState.heightOffset = 0.0f
             topBarState.contentOffset = 0.0f
             viewModel.sendAction(VglsAction.Resume)
+
+            onDispose {
+                viewModel.sendAction(VglsAction.Pause)
+            }
         }
 
         BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }

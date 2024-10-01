@@ -37,6 +37,7 @@ class HomeViewModelBrain(
         when (action) {
             is VglsAction.InitNoArgs -> setup()
             is VglsAction.Resume -> return
+            is VglsAction.Pause -> return
             is VglsAction.NotifClearClicked -> onNotifClearClicked(action.id)
             is VglsAction.SeeWhatsNewClicked -> onSeeWhatsNewClicked()
             is VglsAction.RefreshDbClicked -> onRefreshDbClicked()
