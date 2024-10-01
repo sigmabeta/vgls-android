@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.parts
 
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
@@ -47,5 +48,6 @@ class PartsListViewModelBrain(
         selectedPartManager.setPart(
             Part.valueOf(option.name)
         )
+        emitEvent(VglsEvent.NavigateBack(this.javaClass.simpleName))
     }
 }
