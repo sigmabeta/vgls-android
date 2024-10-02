@@ -19,6 +19,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.viewmodel.list.listViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("LongMethod")
 fun NavGraphBuilder.listScreenEntry(
     destination: Destination,
     topBarState: TopAppBarState,

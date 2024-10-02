@@ -60,9 +60,6 @@ class ListViewModel @AssistedInject constructor(
         eventDispatcher.removeEventSink(this)
     }
 
-    override fun onCleared() {
-    }
-
     override fun sendAction(action: VglsAction) {
         when (action) {
             is VglsAction.Resume -> onResume()
