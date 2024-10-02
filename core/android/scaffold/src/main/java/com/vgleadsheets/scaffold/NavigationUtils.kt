@@ -1,9 +1,6 @@
 package com.vgleadsheets.scaffold
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.calculatePosture
@@ -12,8 +9,6 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass.Companion.COMPACT
@@ -68,15 +63,3 @@ fun currentWindowWidthClassSynthetic() = currentWindowAdaptiveInfo()
     .windowSizeClass
     .windowWidthSizeClass
     .toWidthClass()
-
-@Composable
-fun calculateNavBarInset(): Modifier {
-    val cutoutInsets = WindowInsets.navigationBars
-    val bottomInsetOnly = WindowInsets(
-        bottom = cutoutInsets.getBottom(
-            LocalDensity.current,
-        )
-    )
-
-    return Modifier.windowInsetsPadding(bottomInsetOnly)
-}

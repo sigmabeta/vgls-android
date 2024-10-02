@@ -1,7 +1,10 @@
 package com.vgleadsheets.ui.list
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -34,12 +37,18 @@ fun ListScreen(
     val listState = rememberLazyListState()
 
     // To work around home screen not starting at the top (now we here)
-    LaunchedEffect(items) { listState.animateScrollToItem(0) }
+    // LaunchedEffect(items) { listState.animateScrollToItem(0) }
+
+    val contentPadding = PaddingValues(
+        top = 16.dp,
+        bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    )
 
     LazyColumn(
         state = listState,
-        contentPadding = PaddingValues(vertical = 16.dp),
-        modifier = modifier.fillMaxSize()
+        contentPadding = contentPadding,
+        modifier = modifier
+            .fillMaxSize()
     ) {
         items(
             items = items,

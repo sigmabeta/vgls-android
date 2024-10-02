@@ -2,7 +2,10 @@ package com.vgleadsheets.ui.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -80,14 +83,19 @@ fun GridScreen(
             )
         }
 
+        val contentPaddingWithInsets = PaddingValues(
+            top = 16.dp,
+            start = contentPadding,
+            end = contentPadding,
+            bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        )
+
         LazyVerticalStaggeredGrid(
-            contentPadding = PaddingValues(
-                vertical = 16.dp,
-                horizontal = contentPadding,
-            ),
+            contentPadding = contentPaddingWithInsets,
             columns = StaggeredGridCells.Fixed(numberOfColumns),
             horizontalArrangement = arrangement,
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
         ) {
             items(
                 items = unrolledItems,
@@ -110,15 +118,20 @@ fun GridScreen(
             }
         }
     } else {
+        val contentPaddingWithInsets = PaddingValues(
+            top = 16.dp,
+            bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+            start = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side),
+            end = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side),
+        )
+
         LazyVerticalGrid(
-            contentPadding = PaddingValues(
-                vertical = 16.dp,
-                horizontal = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side),
-            ),
+            contentPadding = contentPaddingWithInsets,
             columns = GridCells.Fixed(numberOfColumns),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
         ) {
             items(
                 items = unrolledItems,
