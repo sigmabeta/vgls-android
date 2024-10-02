@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,14 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.DeviceFontFamilyName
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +27,6 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
@@ -41,15 +35,14 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 fun MenuItem(
     model: MenuItemListModel,
     actionSink: ActionSink,
+    padding: PaddingValues,
     modifier: Modifier,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                horizontal = dimensionResource(id = R.dimen.margin_small)
-            )
+            .padding(padding)
             .clickable { actionSink.sendAction(model.clickAction) },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -81,30 +74,10 @@ fun MenuItem(
             overflow = TextOverflow.Ellipsis,
             fontWeight = if (model.selected) FontWeight.Bold else FontWeight.Normal,
             modifier = Modifier
+                .weight(1.0f)
                 .padding(
                     top = 16.dp,
                     bottom = 16.dp
-                )
-        )
-
-        Text(
-            text = model.caption ?: "",
-            textAlign = TextAlign.End,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontStyle = FontStyle.Italic,
-                fontFamily = FontFamily(
-                    Font(DeviceFontFamilyName("sans-serif-condensed")),
-                )
-            ),
-            color = color,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 16.dp,
-                    bottom = 16.dp,
-                    end = 8.dp
                 )
         )
     }
@@ -177,6 +150,7 @@ private fun Sample(selected: Boolean) {
             clickAction = VglsAction.Noop
         ),
         PreviewActionSink {},
-        Modifier
+        PaddingValues(),
+        Modifier,
     )
 }
