@@ -110,9 +110,7 @@ abstract class ListViewModelBrain(
         shouldDelay: Boolean = scheduler.delayManager.shouldDelay()
     ): Job {
         val possiblyDelayedFlow = if (shouldDelay) {
-            (
-                this.onStart { delay(5000L) }
-                )
+            this.onStart { delay(5000L) }
         } else {
             this
         }

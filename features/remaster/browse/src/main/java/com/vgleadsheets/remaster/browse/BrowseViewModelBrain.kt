@@ -28,7 +28,6 @@ class BrowseViewModelBrain(
             is VglsAction.InitNoArgs -> startLoading()
             is VglsAction.Resume -> return
             is Action.DestinationClicked -> onDestinationClicked(action.destination)
-            else -> throw IllegalArgumentException("Invalid action for this screen.")
         }
     }
 

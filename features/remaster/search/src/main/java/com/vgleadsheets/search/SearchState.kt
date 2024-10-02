@@ -18,6 +18,7 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.search.SearchViewModel.Companion.MINIMUM_LENGTH_QUERY
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -37,7 +38,7 @@ data class SearchState(
 
     @Suppress("TooGenericExceptionCaught")
     override fun toListItems(stringProvider: StringProvider): ImmutableList<ListModel> {
-        val tempList = if (searchQuery.isBlank()) {
+        val tempList = if (searchQuery.length < MINIMUM_LENGTH_QUERY) {
             val historyItems = historyItems()
 
             if (historyItems.size < 5) {
@@ -46,7 +47,7 @@ data class SearchState(
                 historyItems
             }
         } else {
-            (songItems(stringProvider) + gameItems(stringProvider) + composerItems(stringProvider))
+            songItems(stringProvider) + gameItems(stringProvider) + composerItems(stringProvider)
         }
             .filter { it !is NoopListModel }
             .ifEmpty {

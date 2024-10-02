@@ -73,6 +73,7 @@ class SearchViewModel @AssistedInject constructor(
                 is Action.ComposerClicked -> onComposerClicked(action.id)
                 is Action.SearchHistoryEntryClicked -> onSearchHistoryEntryClicked(action.query)
                 is Action.SearchHistoryEntryRemoveClicked -> searchRepository.removeFromSearchHistory(action.id)
+                is VglsAction.AppBack -> navigateBack()
             }
         }
     }
@@ -118,7 +119,8 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun onSearchClearClicked() {
         updateTextField("")
-        clearSearch()
+        clearQuery()
+        clearResults()
     }
 
     private fun onSongClicked(id: Long) {
@@ -162,21 +164,23 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun setupSearchInputObservation() {
         internalUiState
-            .map { it.searchQuery }
+            .map { it.searchQuery.trim() }
             .distinctUntilChanged()
-            .debounce(DEBOUNCE_THRESHOLD)
+            .onEach { showLoadingResultsMaybe() }
+            .launchIn(viewModelScope)
+
+        latestQuery()
             .onEach { query ->
                 if (query.length >= MINIMUM_LENGTH_QUERY) {
                     startHistoryTimer(query)
                 } else {
-                    clearSearch()
+                    clearResults()
                 }
             }
             .launchIn(viewModelScope)
 
         observeSearchInput(
             searchOperation = {
-                updateGames(LCE.Loading(LOAD_OPERATION_GAMES))
                 searchRepository.searchGamesCombined(it)
             },
             onSearchError = { updateGames(LCE.Error(LOAD_OPERATION_GAMES, it)) },
@@ -185,7 +189,6 @@ class SearchViewModel @AssistedInject constructor(
 
         observeSearchInput(
             searchOperation = {
-                updateSongs(LCE.Loading(LOAD_OPERATION_SONGS))
                 searchRepository.searchSongsCombined(it)
             },
             onSearchError = { updateSongs(LCE.Error(LOAD_OPERATION_SONGS, it)) },
@@ -194,7 +197,6 @@ class SearchViewModel @AssistedInject constructor(
 
         observeSearchInput(
             searchOperation = {
-                updateComposers(LCE.Loading(LOAD_OPERATION_COMPOSER))
                 searchRepository.searchComposersCombined(it)
             },
             onSearchError = { updateComposers(LCE.Error(LOAD_OPERATION_COMPOSER, it)) },
@@ -202,11 +204,35 @@ class SearchViewModel @AssistedInject constructor(
         )
     }
 
-    private fun clearSearch() {
-        hatchet.v("Clearing search")
+    private fun showLoadingResultsMaybe() {
+        val state = internalUiState.value
+
+        if (!state.songResults.containsAnyResults()) {
+            updateSongs(LCE.Loading(LOAD_OPERATION_SONGS))
+        }
+
+        if (!state.gameResults.containsAnyResults()) {
+            updateGames(LCE.Loading(LOAD_OPERATION_GAMES))
+        }
+
+        if (!state.composerResults.containsAnyResults()) {
+            updateComposers(LCE.Loading(LOAD_OPERATION_COMPOSER))
+        }
+    }
+
+    private fun clearQuery() {
+        hatchet.v("Clearing query")
         updateState {
             it.copy(
                 searchQuery = "",
+            )
+        }
+    }
+
+    private fun clearResults() {
+        hatchet.v("Clearing results")
+        updateState {
+            it.copy(
                 songResults = LCE.Uninitialized,
                 gameResults = LCE.Uninitialized,
                 composerResults = LCE.Uninitialized,
@@ -219,6 +245,29 @@ class SearchViewModel @AssistedInject constructor(
         historyTimer = viewModelScope.launch(scheduler.dispatchers.disk) {
             delay(DURATION_HISTORY_RECORD)
 
+            val state = internalUiState.value
+            val history = state.searchHistory
+            if (history !is LCE.Content) {
+                return@launch
+            }
+
+            val existingQueriesInHistory = history.data.map { it.query }
+
+            if (existingQueriesInHistory.contains(query)) {
+                hatchet.i("Not adding query $query to history because it's already there.")
+                return@launch
+            }
+
+            val anySearchResultsFound = state.composerResults.containsAnyResults() ||
+                state.gameResults.containsAnyResults() ||
+                state.songResults.containsAnyResults()
+
+            if (!anySearchResultsFound) {
+                hatchet.i("Not adding query $query to history because it found no results.")
+                return@launch
+            }
+
+            hatchet.d("Adding query $query to history.")
             searchRepository.addToSearchHistory(query)
             historyTimer = null
         }
@@ -236,16 +285,18 @@ class SearchViewModel @AssistedInject constructor(
         onSearchError: suspend FlowCollector<List<ModelType>>.(cause: Throwable) -> Unit,
         onSearchSuccess: suspend (List<ModelType>) -> Unit,
     ) {
-        internalUiState
-            .map { it.searchQuery.trim() }
-            .debounce(DEBOUNCE_THRESHOLD)
+        latestQuery()
             .filter { it.length >= MINIMUM_LENGTH_QUERY }
-            .distinctUntilChanged()
             .flatMapLatest(searchOperation)
             .onEach(onSearchSuccess)
             .catch(onSearchError)
             .runInBackground()
     }
+
+    private fun latestQuery() = internalUiState
+        .map { it.searchQuery.trim() }
+        .distinctUntilChanged()
+        .debounce(DEBOUNCE_THRESHOLD)
 
     private fun updateSearchHistory(searchHistory: LCE<List<SearchHistoryEntry>>) {
         updateState {
@@ -272,6 +323,7 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     private fun updateGames(games: LCE<List<Game>>) {
+        hatchet.v("Updating games to $games")
         updateState {
             it.copy(
                 gameResults = games
@@ -279,11 +331,28 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
+    private fun navigateBack() {
+        eventDispatcher.sendEvent(
+            VglsEvent.NavigateBack(
+                "Search"
+            )
+        )
+    }
+
+    private fun <ItemType> LCE<List<ItemType>>.containsAnyResults(): Boolean {
+        if (this !is LCE.Content) {
+            return false
+        }
+
+        val data = this.data
+        return data.isNotEmpty()
+    }
+
     companion object {
-        private const val DURATION_HISTORY_RECORD = 1_000L
+        private const val DURATION_HISTORY_RECORD = 3_000L
 
         internal const val DEBOUNCE_THRESHOLD = 300L
-        private const val MINIMUM_LENGTH_QUERY = 3
+        internal const val MINIMUM_LENGTH_QUERY = 3
 
         internal const val LOAD_OPERATION_HISTORY = "search.history"
         internal const val LOAD_OPERATION_COMPOSER = "search.composers"
