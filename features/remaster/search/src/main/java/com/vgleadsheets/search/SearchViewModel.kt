@@ -323,7 +323,6 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     private fun updateGames(games: LCE<List<Game>>) {
-        hatchet.v("Updating games to $games")
         updateState {
             it.copy(
                 gameResults = games

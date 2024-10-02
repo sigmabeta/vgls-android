@@ -1,5 +1,6 @@
 package com.vgleadsheets.repository
 
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.GameAliasDataSource
@@ -70,12 +71,11 @@ class SearchRepository(
     @Suppress("MaxLineLength")
     private fun searchSongAliases(searchQuery: String) = songAliasDataSource
         .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { list ->
-            list.mapNotNull {
-                it.song?.copy(
-                    name = it.name,
-                )
-            }
+        .mapListTo {
+            val tempSong = songDataSource.getOneByIdSync(it.songId)
+            tempSong.copy(
+                name = "${tempSong.name} (${it.name})"
+            )
         }
 
     @Suppress("MaxLineLength")
@@ -85,8 +85,11 @@ class SearchRepository(
     @Suppress("MaxLineLength")
     private fun searchGameAliases(searchQuery: String) = gameAliasDataSource
         .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { list ->
-            list.mapNotNull { it.game }
+        .mapListTo {
+            val tempGame = gameDataSource.getOneByIdSync(it.gameId)
+            tempGame.copy(
+                name = "${tempGame.name} (${it.name})"
+            )
         }
 
     @Suppress("MaxLineLength")
@@ -96,7 +99,10 @@ class SearchRepository(
     @Suppress("MaxLineLength")
     private fun searchComposerAliases(searchQuery: String) = composerAliasDataSource
         .searchByName("%$searchQuery%") // Percent characters allow characters before and after the query to match.
-        .map { list ->
-            list.mapNotNull { it.composer }
+        .mapListTo {
+            val tempComposer = composerDataSource.getOneByIdSync(it.composerId)
+            tempComposer.copy(
+                name = "${tempComposer.name} (${it.name})"
+            )
         }
 }

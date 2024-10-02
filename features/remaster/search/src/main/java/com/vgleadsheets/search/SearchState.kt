@@ -178,7 +178,7 @@ data class SearchState(
     }
 
     companion object {
-        private const val ID_OFFSET_GAME = 1_000L
+        private const val ID_OFFSET_GAME = 1_000_000_000L
         private const val ID_OFFSET_COMPOSER = 1_000_000L
     }
 }
