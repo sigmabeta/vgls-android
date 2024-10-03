@@ -2,13 +2,8 @@
 <resources>
 
     <style name="VglsSplashTheme" parent="Theme.SplashScreen">
-        <!-- Set the splash screen background, animated icon, and animation duration. -->
-        <item name="windowSplashScreenBackground">@color/md_theme_dark_secondaryContainer</item>
-
-        <!-- Use windowSplashScreenAnimatedIcon to add a drawable or an animated drawable. One of these is required. -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_person_24dp</item>
-
-        <!-- Set the theme of the Activity that directly follows your splashscreen. This is required. -->
+        <item name="windowSplashScreenBackground">@color/md_theme_light_primaryContainer</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_icon_splash</item>
         <item name="postSplashScreenTheme">@style/VglsAppTheme</item>
     </style>
 </resources>
