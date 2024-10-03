@@ -12,4 +12,6 @@ dependencies {
     api(libs.material)
     api(projects.core.android.ui.colors)
     api(projects.core.android.ui.fonts)
+
+    implementation(libs.androidx.core.splash)
 }

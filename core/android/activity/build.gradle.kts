@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.core.splash)
 
     implementation(projects.core.android.nav)
     implementation(projects.core.android.scaffold)

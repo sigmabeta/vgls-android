@@ -3,6 +3,7 @@
     <application>
         <activity
             android:name="com.vgleadsheets.remaster.RemasteredActivity"
+            android:theme="@style/VglsSplashTheme"
             android:windowSoftInputMode="adjustResize"
             android:resizeableActivity="true"
             android:exported="true">
