@@ -1,8 +1,6 @@
 package com.vgleadsheets.ui.viewer
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -16,9 +14,7 @@ import com.vgleadsheets.nav.ARG_TEMPLATE_ONE
 import com.vgleadsheets.nav.ARG_TEMPLATE_TWO
 import com.vgleadsheets.nav.Destination
 
-@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.viewerScreenNavEntry(
-    topBarState: TopAppBarState,
     globalModifier: Modifier,
 ) {
     composable(
@@ -37,8 +33,6 @@ fun NavGraphBuilder.viewerScreenNavEntry(
         )
 
         DisposableEffect(Unit) {
-            topBarState.heightOffset = 0.0f
-            topBarState.contentOffset = 0.0f
             viewModel.sendAction(VglsAction.Resume)
 
             onDispose {

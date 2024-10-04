@@ -1,8 +1,6 @@
 package com.vgleadsheets.search
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,9 +13,7 @@ import androidx.navigation.compose.composable
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.nav.Destination
 
-@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.searchScreenNavEntry(
-    topBarState: TopAppBarState,
     globalModifier: Modifier,
 ) {
     composable(
@@ -29,8 +25,6 @@ fun NavGraphBuilder.searchScreenNavEntry(
         val viewModel: SearchViewModel = searchViewModel(textFieldUpdater)
 
         DisposableEffect(Unit) {
-            topBarState.heightOffset = 0.0f
-            topBarState.contentOffset = 0.0f
             viewModel.sendAction(VglsAction.Resume)
 
             onDispose {

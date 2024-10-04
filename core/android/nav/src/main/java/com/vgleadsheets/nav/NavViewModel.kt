@@ -23,7 +23,9 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +35,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
@@ -48,15 +49,18 @@ class NavViewModel @Inject constructor(
 ) : VglsViewModel<NavState>() {
     init {
         eventDispatcher.addEventSink(this)
-        setupSettingsCollection()
         sendAction(VglsAction.InitNoArgs)
     }
 
     private val internalShowSnackbarState = MutableStateFlow(false)
 
+    private var backstackWatchJob: Job? = null
+    private var settingsWatchJob: Job? = null
+
     lateinit var navController: NavController
     lateinit var snackbarScope: CoroutineScope
     lateinit var snackbarHostState: SnackbarHostState
+    lateinit var topBarExpander: () -> Unit
 
     private val activityEventChannel = Channel<ActivityEvent>()
     val activityEvents: ReceiveChannel<ActivityEvent> = activityEventChannel
@@ -89,27 +93,34 @@ class NavViewModel @Inject constructor(
     }
 
     private fun setupSettingsCollection() {
-        debugSettingsManager.getShouldShowSnackbars()
-            .map { it }
-            .onEach { shouldShow ->
-                internalShowSnackbarState.update {
-                    shouldShow
+        if (settingsWatchJob == null) {
+            hatchet.i("Settings watcher not initialized. Starting now...")
+            settingsWatchJob = debugSettingsManager.getShouldShowSnackbars()
+                .map { it }
+                .onEach { shouldShow ->
+                    internalShowSnackbarState.update {
+                        shouldShow
+                    }
                 }
-            }
-            .flowOn(dispatchers.disk)
-            .launchIn(viewModelScope)
+                .flowOn(dispatchers.disk)
+                .launchIn(viewModelScope)
+        }
     }
 
-    fun startWatchingBackstack() {
-        navController
-            .navigatorProvider[ComposeNavigator::class]
-            .backStack
-            .onEach {
-                if (internalShowSnackbarState.value) {
-                    printBackstackStatus(it)
+    private fun startWatchingBackstack() {
+        if (backstackWatchJob == null) {
+            hatchet.i("Backstack watcher not initialized. Starting now...")
+
+            backstackWatchJob = navController
+                .navigatorProvider[ComposeNavigator::class]
+                .backStack
+                .onEach {
+                    if (internalShowSnackbarState.value) {
+                        printBackstackStatus(it)
+                    }
                 }
-            }
-            .launchIn(viewModelScope)
+                .launchIn(viewModelScope)
+        }
     }
 
     private fun restartApp() {
@@ -169,16 +180,18 @@ class NavViewModel @Inject constructor(
     @Suppress("SwallowedException")
     private fun navigateTo(destination: String) {
         try {
-            val message = "Navigating to $destination"
-
-            hatchet.v(message)
-            navController.navigate(destination)
-
             if (internalShowSnackbarState.value) {
+                val message = "Navigating to $destination"
+                hatchet.v(message)
                 showSnackbar(
                     VglsEvent.ShowSnackbar(message, false, source = "Navigation")
                 )
             }
+
+            startWatchingBackstack()
+            setupSettingsCollection()
+            topBarExpander()
+            navController.navigate(destination)
         } catch (ex: IllegalArgumentException) {
             sendEvent(
                 VglsEvent.ShowSnackbar(
@@ -191,6 +204,10 @@ class NavViewModel @Inject constructor(
     }
 
     private fun navigateBack() {
+        topBarExpander()
+        startWatchingBackstack()
+        setupSettingsCollection()
+
         val oldRoute = navController.currentDestination?.route
         val success = navController.popBackStack()
 
@@ -199,9 +216,9 @@ class NavViewModel @Inject constructor(
             return
         }
 
-        val newRoute = navController.currentDestination?.route
-        val message = "Popping stack from $oldRoute to $newRoute"
         if (internalShowSnackbarState.value) {
+            val newRoute = navController.currentDestination?.route
+            val message = "Popping stack from $oldRoute to $newRoute"
             showSnackbar(
                 VglsEvent.ShowSnackbar(message, false, source = "Navigation")
             )

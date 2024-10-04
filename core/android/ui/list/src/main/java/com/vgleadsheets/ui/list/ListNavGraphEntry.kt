@@ -1,8 +1,6 @@
 package com.vgleadsheets.ui.list
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,11 +16,9 @@ import com.vgleadsheets.nav.ArgType
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.viewmodel.list.listViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongMethod")
 fun NavGraphBuilder.listScreenEntry(
     destination: Destination,
-    topBarState: TopAppBarState,
     displayWidthClass: WidthClass,
     globalModifier: Modifier,
 ) {
@@ -53,8 +49,6 @@ fun NavGraphBuilder.listScreenEntry(
         )
 
         DisposableEffect(Unit) {
-            topBarState.heightOffset = 0.0f
-            topBarState.contentOffset = 0.0f
             viewModel.sendAction(VglsAction.Resume)
 
             onDispose {

@@ -8,11 +8,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarState
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -57,13 +55,19 @@ fun RemasterAppUi(
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
 
+    val topBarExpander = remember {
+        {
+            topBarState.heightOffset = 0.0f
+            topBarState.contentOffset = 0.0f
+        }
+    }
+
     val navViewModel = hiltViewModel<NavViewModel>()
 
     navViewModel.navController = navController
     navViewModel.snackbarScope = snackbarScope
     navViewModel.snackbarHostState = snackbarHostState
-
-    LaunchedEffect(Unit) { navViewModel.startWatchingBackstack() }
+    navViewModel.topBarExpander = topBarExpander
 
     val navState by navViewModel.uiState.collectAsState()
     handleSystemBars(navState, showSystemBars, hideSystemBars)
@@ -79,6 +83,7 @@ fun RemasterAppUi(
     val navBarViewModel: NavBarViewModel = hiltViewModel()
     val bottomBarVmState by navBarViewModel.uiState.collectAsState()
 
+
     AppContent(
         navController = navController,
         topBarConfig = topBarConfig,
@@ -86,7 +91,7 @@ fun RemasterAppUi(
         snackbarHostState = snackbarHostState,
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding, widthClass ->
-        NavHostAndSuch(navController, innerPadding, widthClass, topBarState)
+        NavHostAndSuch(navController, innerPadding, widthClass)
     }
 }
 
@@ -127,7 +132,6 @@ private fun NavHostAndSuch(
     navController: NavHostController,
     innerPadding: PaddingValues,
     displayWidthClass: WidthClass,
-    topBarState: TopAppBarState
 ) {
     NavHost(
         navController = navController,
@@ -147,24 +151,20 @@ private fun NavHostAndSuch(
 
             listScreenEntry(
                 destination = destination,
-                topBarState = topBarState,
                 displayWidthClass = displayWidthClass,
                 globalModifier = globalModifier,
             )
         }
 
         searchScreenNavEntry(
-            topBarState = topBarState,
             globalModifier = globalModifier,
         )
 
         viewerScreenNavEntry(
-            topBarState = topBarState,
             globalModifier = globalModifier,
         )
 
         licensesScreenNavEntry(
-            topBarState = topBarState,
             globalModifier = globalModifier,
         )
     }
