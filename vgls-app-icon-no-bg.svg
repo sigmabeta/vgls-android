@@ -2,61 +2,69 @@
 
 <svg width="64" height="64" viewBox="0 0 16.933333 16.933333" version="1.1" id="svg1"
     inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)" sodipodi:docname="vgls-app-icon-no-bg.svg"
-    xml:space="preserve" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    xml:space="preserve" inkscape:export-filename="vgls-app-icon-no-bg-with-text-export.svg"
+    inkscape:export-xdpi="96" inkscape:export-ydpi="96"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
     xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
     xmlns="http://www.w3.org/2000/svg"><sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#2b2b2b"
-     inkscape:document-units="px"
-     showgrid="false"
-     inkscape:zoom="16"
-     inkscape:cx="35.6875"
-     inkscape:cy="34.375"
-     inkscape:window-width="3440"
-     inkscape:window-height="1412"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g37"
-     inkscape:clip-to-page="true"><inkscape:grid
-       id="grid1"
-       units="px"
-       originx="0"
-       originy="0"
-       spacingx="0.26458333"
-       spacingy="0.26458333"
-       empcolor="#0099e5"
-       empopacity="0.30196078"
-       color="#0099e5"
-       opacity="0.14901961"
-       empspacing="4"
-       dotted="false"
-       gridanglex="30"
-       gridanglez="30"
-       visible="false" /></sodipodi:namedview>
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#2b2b2b"
+   inkscape:document-units="px"
+   showgrid="false"
+   inkscape:zoom="13.412932"
+   inkscape:cx="89.987784"
+   inkscape:cy="25.796001"
+   inkscape:window-width="3440"
+   inkscape:window-height="1412"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g37"
+   inkscape:clip-to-page="true"><inkscape:grid
+     id="grid1"
+     units="px"
+     originx="0"
+     originy="0"
+     spacingx="0.26458333"
+     spacingy="0.26458333"
+     empcolor="#0099e5"
+     empopacity="0.30196078"
+     color="#0099e5"
+     opacity="0.14901961"
+     empspacing="4"
+     dotted="false"
+     gridanglex="30"
+     gridanglez="30"
+     visible="false" /></sodipodi:namedview>
     <defs id="defs1"><inkscape:path-effect
-       effect="fillet_chamfer"
-       id="path-effect32"
-       is_visible="true"
-       lpeversion="1"
-       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
-       radius="0"
-       unit="px"
-       method="auto"
-       mode="F"
-       chamfer_steps="1"
-       flexible="false"
-       use_knot_distance="true"
-       apply_no_radius="true"
-       apply_with_radius="true"
-       only_selected="false"
-       hide_knots="false" />
+   effect="fillet_chamfer"
+   id="path-effect6"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" />
+        <inkscape:path-effect effect="fillet_chamfer" id="path-effect32" is_visible="true"
+            lpeversion="1"
+            nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+            radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false"
+            use_knot_distance="true" apply_no_radius="true" apply_with_radius="true"
+            only_selected="false" hide_knots="false" />
         <rect x="17.999999" y="14" width="34" height="12.146551" id="rect10" />
         <rect x="-391.99999" y="-63.999998" width="615.99998" height="279.99999" id="rect9" />
         <inkscape:path-effect effect="fillet_chamfer" id="path-effect4" is_visible="true"
@@ -83,212 +91,189 @@
             radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false"
             use_knot_distance="true" apply_no_radius="true" apply_with_radius="true"
             only_selected="false" hide_knots="false" />
-        <filter style="color-interpolation-filters:sRGB;" inkscape:label="Drop Shadow" id="filter33"
-            x="-0.068031501" y="-0.056692914" width="1.136063" height="1.1133858"><feFlood
-         result="flood"
-         in="SourceGraphic"
-         flood-opacity="1.000000"
-         flood-color="rgb(0,0,0)"
-         id="feFlood32" />
-            <feGaussianBlur result="blur" in="SourceGraphic" stdDeviation="0.300000"
-                id="feGaussianBlur32" />
-            <feOffset result="offset" in="blur" dx="0.000000" dy="0.000000" id="feOffset32" />
-            <feComposite result="comp1" operator="in" in="flood" in2="offset" id="feComposite32" />
-            <feComposite result="comp2" operator="over" in="SourceGraphic" in2="comp1"
-                id="feComposite33" /></filter></defs>
+        <inkscape:path-effect effect="fillet_chamfer" id="path-effect4-7" is_visible="true"
+            lpeversion="1"
+            nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0.25,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+            radius="0" unit="px" method="auto" mode="F" chamfer_steps="1" flexible="false"
+            use_knot_distance="true" apply_no_radius="true" apply_with_radius="true"
+            only_selected="false" hide_knots="false" /></defs>
     <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1"><g
-       id="g33"
-       inkscape:label="Gamecard"
-       style="display:inline"
-       sodipodi:insensitive="true"><path
-         id="rect1"
-         d="m 3.425,2.1166666 h 10.083333 a 0.25,0.25 45 0 1 0.25,0.25 V 13.508333 a 0.60355379,0.60355379 112.49999 0 1 -0.176777,0.426777 l -0.704779,0.70478 A 0.6035529,0.6035529 157.49999 0 1 12.45,14.816667 l -9.008375,-1e-6 C 3.2943721,14.816666 3.175,14.697294 3.175,14.550041 V 2.3666666 c 0,-0.1380712 0.1119288,-0.25 0.25,-0.25 z"
-         style="display:inline;fill:#292929;fill-opacity:1;stroke-width:0;stroke-dasharray:none;filter:url(#filter33)"
-         sodipodi:nodetypes="scccccss"
-         inkscape:label="Gamecard Body"
-         sodipodi:insensitive="true"
-         inkscape:original-d="M 3.425,2.1166666 H 13.758333 V 13.758333 L 12.7,14.816667 l -9.258375,-1e-6 C 3.2943721,14.816666 3.175,14.697294 3.175,14.550041 V 2.3666666 c 0,-0.1380712 0.1119288,-0.25 0.25,-0.25 z"
-         inkscape:path-effect="#path-effect4" /><path id="rect29"
-        style="fill:#ffffff;fill-opacity:0.239345;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+   id="g33"
+   inkscape:label="Gamecard"
+   style="display:inline"><path
+     id="rect1"
+     d="m 3.425,2.1166666 h 10.083333 a 0.25,0.25 45 0 1 0.25,0.25 V 13.508333 a 0.60355379,0.60355379 112.49999 0 1 -0.176777,0.426777 l -0.704779,0.70478 A 0.6035529,0.6035529 157.49999 0 1 12.45,14.816667 l -9.008375,-1e-6 C 3.2943721,14.816666 3.175,14.697294 3.175,14.550041 V 2.3666666 c 0,-0.1380712 0.1119288,-0.25 0.25,-0.25 z"
+     style="display:inline;fill:#292929;fill-opacity:1;stroke-width:0;stroke-dasharray:none"
+     sodipodi:nodetypes="scccccss"
+     inkscape:label="Gamecard Body"
+     inkscape:original-d="M 3.425,2.1166666 H 13.758333 V 13.758333 L 12.7,14.816667 l -9.258375,-1e-6 C 3.2943721,14.816666 3.175,14.697294 3.175,14.550041 V 2.3666666 c 0,-0.1380712 0.1119288,-0.25 0.25,-0.25 z"
+     inkscape:path-effect="#path-effect4"
+     sodipodi:insensitive="true" /><path id="rect29"
+        style="display:inline;fill:#ffffff;fill-opacity:0.239345;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
         d="m 3.4251139,2.1166666 c -0.091994,0 -0.1715645,0.050021 -0.214974,0.1240235 H 13.722676 A 0.25,0.25 0 0 0 13.508219,2.1166666 Z"
         inkscape:label="Gamecard Highlight" sodipodi:insensitive="true" /><path id="rect4"
-        style="display:inline;fill-opacity:0;stroke:#7f7f7f;stroke-width:0.0661458;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+        style="display:inline;fill-opacity:0;stroke:#7f7f7f;stroke-width:0.0661458;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:0.49621278"
         inkscape:label="Indent Highlight" d="M 12.666927,3.175 V 13.72526 H 4.2333362"
-        sodipodi:nodetypes="ccc" sodipodi:insensitive="true" /><path id="rect5"
-        style="display:inline;fill-opacity:0;stroke:#404040;stroke-width:0.132292;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none"
+        sodipodi:nodetypes="ccc" /><path id="rect5"
+        style="display:inline;fill-opacity:0;stroke:#404040;stroke-width:0.132292;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:0.50361949"
         inkscape:label="Indent Shadow" d="M 4.2994792,13.758333 V 3.2411458 h 8.4005198"
-        sodipodi:nodetypes="ccc" sodipodi:insensitive="true" /></g>
-        <g id="g37" inkscape:label="Sticker" style="display:inline"><g
-         id="g34"
-         inkscape:label="Sticker Backgrounds"><rect
-           style="fill:#f1f1f1;fill-opacity:1;stroke:#7f7f7f;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-           id="rect6"
-           width="7.9374995"
-           height="10.054167"
-           x="4.4979167"
-           y="3.4395833"
-           ry="0.26155642"
-           inkscape:label="Sticker Background"
-           rx="0.26155642"
-           sodipodi:insensitive="true" /><path id="rect7"
-            style="fill:#8c33b3;stroke:#0000ff;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:1"
-            inkscape:label="VGLS Background"
-            d="m 4.4979167,11.646416 7.9374993,-0.0047 v 1.723288 c 0,0.128745 0,0.128845 -0.128845,0.128845 H 4.6267619 c -0.1288455,0 -0.1288452,-1e-4 -0.1288452,-0.128845 z"
-            sodipodi:nodetypes="cccsssc" sodipodi:insensitive="true" /><path id="rect8"
-            style="display:inline;fill:#ababab;stroke:#0000ff;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:1"
-            d="m 4.4979164,3.7041665 c 0,-0.2645833 3e-7,-0.2645832 0.2645833,-0.2645833 2.4694444,-1.4e-6 7.4083333,0 7.4083333,0 0.264583,0 0.264583,0 0.264583,0.2645834 V 4.7624998 H 4.4979167 c 0,0 -3e-7,-0.7055556 -3e-7,-1.0583333 z"
-            sodipodi:nodetypes="ssssccs" sodipodi:insensitive="true"
-            inkscape:label="Code Background" /></g>
+        sodipodi:nodetypes="ccc" /></g>
+        <g id="g37" inkscape:label="Sticker" style="display:inline">
+            
+            
+            <g id="g34" inkscape:label="Sticker Backgrounds" style="display:inline"><path
+     id="rect3"
+     style="display:inline;fill:#ababab;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+     inkscape:label="Code Background"
+     d="m 4.7593993,3.4395833 c -0.1449021,0 -0.2614827,0.1165806 -0.2614827,0.2614827 V 4.7624999 H 12.4349 V 3.6958984 C 12.432088,3.5534695 12.31706,3.4395833 12.173934,3.4395833 Z" />
+                <path id="rect11"
+                    style="display:inline;fill:#8c33b3;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+                    inkscape:label="VGLS Background"
+                    d="m 4.4979166,11.641666 v 1.590601 c 0,0.144902 0.1165806,0.261483 0.2614827,0.261483 h 7.4145347 c 0.144902,0 0.261482,-0.116581 0.261482,-0.261483 v -1.590601 z" />
+                <rect
+                    style="fill:#dcdcdc;fill-opacity:1;stroke:none;stroke-width:0.080847;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:0.50362"
+                    id="rect12" width="7.9374995" height="6.8791661" x="4.4979167" y="4.7624998"
+                    rx="0" ry="0" inkscape:label="Music Background" /></g>
             <g id="g36" inkscape:label="Music"
-                transform="matrix(1.2034697,0,0,1.2034697,-2.4528511,-1.4535364)"><g
-           id="g14"
-           inkscape:label="Beat One"
-           transform="translate(0.40624484,-0.81593899)"><g
-             id="g13-1"
-             inkscape:label="Double Flag Beat One"
-             transform="matrix(1.0105852,0,0,1,-9.4485486,-0.11543565)"
-             style="display:inline"><path
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               d="M 15.135723,9.820191 18.009098,9.6014031 V 9.7326187 L 15.135723,9.944224 Z"
-               id="path12-9"
-               sodipodi:nodetypes="ccccc"
-               inkscape:label="Flag Prototype Long Bottom" /><path
-                style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-                d="M 15.135723,9.6196977 18.009098,9.4009098 V 9.5321254 L 15.135723,9.7437307 Z"
-                id="path12-3-6" sodipodi:nodetypes="ccccc"
-                inkscape:label="Flag Prototype Long Top" /></g><g id="g12-0"
-                inkscape:label="Beat One D" transform="translate(-7.3808043,-0.43919525)"><ellipse
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               id="path11-4"
-               ry="0.12943645"
-               rx="0.20451996"
-               cy="15.961065"
-               cx="12.196258"
-               inkscape:label="Note Body Prototype"
-               transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
-               inkscape:transform-center-x="-0.11082044"
-               inkscape:transform-center-y="-0.16955629" />
-                <rect
+                transform="matrix(1.5886657,0,0,1.5886657,-4.894517,-4.3690292)"
+                style="display:inline">
+                <g id="g14" inkscape:label="Beat One" transform="translate(0.40624484,-0.81593899)"><g
+   id="g13-1"
+   inkscape:label="Double Flag Beat One"
+   transform="matrix(0.70588397,0,0,1,-4.848115,-0.11212134)"
+   style="display:inline"><path
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+     d="M 15.135723,9.820191 18.009098,9.6014031 V 9.7326187 L 15.135723,9.944224 Z"
+     id="path12-9"
+     sodipodi:nodetypes="ccccc"
+     inkscape:label="Flag Prototype Long Bottom" /><path
                     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-                    id="rect12-62" width="0.059473492" height="1.0004678" x="16.074942" y="8.963727"
-                    inkscape:label="Note Stem Prototype" /></g><g id="g12-0-6"
-                inkscape:label="Beat One C" transform="translate(-8.3653748,-0.30530311)"><ellipse
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               id="path11-4-9"
-               ry="0.12943645"
-               rx="0.20451996"
-               cy="15.961065"
-               cx="12.196258"
-               inkscape:label="Note Body Prototype"
-               transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
-               inkscape:transform-center-x="-0.11082044"
-               inkscape:transform-center-y="-0.16955629" />
-                <rect
-                    style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-                    id="rect12-62-8" width="0.059473492" height="0.96987116" x="16.074942"
-                    y="8.963727" inkscape:label="Note Stem Prototype" /></g><g id="g12-0-2"
-                inkscape:label="Beat One B" transform="translate(-9.3294142,-0.14774072)"><ellipse
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               id="path11-4-99"
-               ry="0.12943645"
-               rx="0.20451996"
-               cy="15.961065"
-               cx="12.196258"
-               inkscape:label="Note Body Prototype"
-               transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
-               inkscape:transform-center-x="-0.11082044"
-               inkscape:transform-center-y="-0.16955629" />
-                <rect
-                    style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-                    id="rect12-62-6" width="0.059473492" height="0.88886923" x="16.074942"
-                    y="8.963727" inkscape:label="Note Stem Prototype" /></g><g id="g12-80"
-                inkscape:label="Beat One A" transform="translate(-10.25832,-0.02049362)"><ellipse
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               id="path11-5"
-               ry="0.12943645"
-               rx="0.20451996"
-               cy="15.961065"
-               cx="12.196258"
-               inkscape:label="Note Body Prototype"
-               transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
-               inkscape:transform-center-x="-0.11082044"
-               inkscape:transform-center-y="-0.16955629" />
-                <rect
-                    style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-                    id="rect12-6" width="0.059473492" height="0.88886923" x="16.074942" y="8.963727"
-                    inkscape:label="Note Stem Prototype" /></g></g>
+                    d="M 15.135723,9.6196977 18.009098,9.4009098 V 9.5321254 L 15.135723,9.7437307 Z"
+                    id="path12-3-6" sodipodi:nodetypes="ccccc"
+                    inkscape:label="Flag Prototype Long Top" /></g>
+                    <g id="g12-0" inkscape:label="Beat One D"
+                        transform="translate(-8.2701966,-0.43575149)"><ellipse
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+   id="path11-4"
+   ry="0.12943645"
+   rx="0.20451996"
+   cy="15.961065"
+   cx="12.196258"
+   inkscape:label="Note Body Prototype"
+   transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
+   inkscape:transform-center-x="-0.11082044"
+   inkscape:transform-center-y="-0.16955629" />
+                        <rect
+                            style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+                            id="rect12-62" width="0.059473492" height="1.0004678" x="16.074942"
+                            y="8.963727" inkscape:label="Note Stem Prototype" /></g>
+                    <g id="g12-0-6" inkscape:label="Beat One C"
+                        transform="translate(-8.9363741,-0.28163286)"><ellipse
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+   id="path11-4-9"
+   ry="0.12943645"
+   rx="0.20451996"
+   cy="15.961065"
+   cx="12.196258"
+   inkscape:label="Note Body Prototype"
+   transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
+   inkscape:transform-center-x="-0.11082044"
+   inkscape:transform-center-y="-0.16955629" />
+                        <rect
+                            style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+                            id="rect12-62-8" width="0.059473492" height="0.96987116" x="16.074942"
+                            y="8.963727" inkscape:label="Note Stem Prototype" /></g>
+                    <g id="g12-0-2" inkscape:label="Beat One B"
+                        transform="translate(-9.6025516,-0.14774072)"><ellipse
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+   id="path11-4-99"
+   ry="0.12943645"
+   rx="0.20451996"
+   cy="15.961065"
+   cx="12.196258"
+   inkscape:label="Note Body Prototype"
+   transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
+   inkscape:transform-center-x="-0.11082044"
+   inkscape:transform-center-y="-0.16955629" />
+                        <rect
+                            style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+                            id="rect12-62-6" width="0.059473492" height="0.88886923" x="16.074942"
+                            y="8.963727" inkscape:label="Note Stem Prototype" /></g>
+                    <g id="g12-80" inkscape:label="Beat One A"
+                        transform="translate(-10.268729,-0.02049362)"><ellipse
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+   id="path11-5"
+   ry="0.12943645"
+   rx="0.20451996"
+   cy="15.961065"
+   cx="12.196258"
+   inkscape:label="Note Body Prototype"
+   transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
+   inkscape:transform-center-x="-0.11082044"
+   inkscape:transform-center-y="-0.16955629" />
+                        <rect
+                            style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+                            id="rect12-6" width="0.059473492" height="0.88886923" x="16.074942"
+                            y="8.963727" inkscape:label="Note Stem Prototype" /></g></g>
                 <g id="g16" inkscape:label="Beat Two" transform="translate(0.97332559,-0.79315914)"><g
-             id="g15"
-             inkscape:label="Double Flag Beat Two"
-             sodipodi:insensitive="true"><path
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               d="m 11.077263,8.1624524 -0.840331,-0.021012 6.13e-4,0.1170223 0.842663,0.01694 z"
-               id="path12-9-3"
-               sodipodi:nodetypes="ccccc"
-               inkscape:label="Flag Prototype Long Bottom" /><path
+   id="g15"
+   inkscape:label="Double Flag Beat Two"
+   style="display:inline"
+   transform="matrix(0.85902558,0,0,1,0.24884635,-8.2405411e-4)"><path
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+     d="m 11.077263,8.1624524 -0.840331,-0.021012 6.13e-4,0.1170223 0.842663,0.01694 z"
+     id="path12-9-3"
+     sodipodi:nodetypes="ccccc"
+     inkscape:label="Flag Prototype Long Bottom" /><path
                     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
                     d="m 11.080208,7.982969 -1.8141181,-0.04606 4e-7,0.1280067 1.8141177,0.044696 z"
                     id="path12-3-6-2" sodipodi:nodetypes="ccccc"
                     inkscape:label="Flag Prototype Long Top" /></g>
                     <g id="g12-80-7" inkscape:label="Beat Two A"
-                        transform="rotate(180,13.577575,8.8991788)"><ellipse
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               id="path11-5-5"
-               ry="0.12943645"
-               rx="0.20451996"
-               cy="15.961065"
-               cx="12.196258"
-               inkscape:label="Note Body Prototype"
-               transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
-               inkscape:transform-center-x="-0.11082044"
-               inkscape:transform-center-y="-0.16955629" />
+                        transform="rotate(180,12.920985,8.8991788)"><ellipse
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+   id="path11-5-5"
+   ry="0.12943645"
+   rx="0.20451996"
+   cy="15.961065"
+   cx="12.196258"
+   inkscape:label="Note Body Prototype"
+   transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
+   inkscape:transform-center-x="-0.11082044"
+   inkscape:transform-center-y="-0.16955629" />
                         <rect
                             style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
                             id="rect12-6-8" width="0.059473492" height="0.85248601" x="16.074942"
                             y="8.963727" inkscape:label="Note Stem Prototype" /></g>
                     <g id="g12-0-2-9" inkscape:label="Beat Two G"
-                        transform="rotate(180,13.185087,8.9506659)"><ellipse
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               id="path11-4-99-1"
-               ry="0.12943645"
-               rx="0.20451996"
-               cy="15.961065"
-               cx="12.196258"
-               inkscape:label="Note Body Prototype"
-               transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
-               inkscape:transform-center-x="-0.11082044"
-               inkscape:transform-center-y="-0.16955629" />
+                        transform="rotate(180,12.587896,8.9506659)"><ellipse
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+   id="path11-4-99-1"
+   ry="0.12943645"
+   rx="0.20451996"
+   cy="15.961065"
+   cx="12.196258"
+   inkscape:label="Note Body Prototype"
+   transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
+   inkscape:transform-center-x="-0.11082044"
+   inkscape:transform-center-y="-0.16955629" />
                         <rect
                             style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
                             id="rect12-62-6-0" width="0.05799428" height="0.9606806" x="16.074942"
                             y="8.963727" inkscape:label="Note Stem Prototype" /></g>
                     <g id="g12-0-1" inkscape:label="Beat Two B"
-                        transform="rotate(180,12.697415,8.8474883)"><ellipse
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-               id="path11-4-5"
-               ry="0.12943645"
-               rx="0.20451996"
-               cy="15.961065"
-               cx="12.196258"
-               inkscape:label="Note Body Prototype"
-               transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
-               inkscape:transform-center-x="-0.11082044"
-               inkscape:transform-center-y="-0.16955629" />
+                        transform="rotate(180,12.171535,8.8474883)"><ellipse
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+   id="path11-4-5"
+   ry="0.12943645"
+   rx="0.20451996"
+   cy="15.961065"
+   cx="12.196258"
+   inkscape:label="Note Body Prototype"
+   transform="matrix(0.86999586,-0.49305902,0.3537603,0.93533612,0,0)"
+   inkscape:transform-center-x="-0.11082044"
+   inkscape:transform-center-y="-0.16955629" />
                         <rect
                             style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
                             id="rect12-62-9" width="0.059473466" height="0.73106217" x="16.074942"
-                            y="8.963727" inkscape:label="Note Stem Prototype" /></g></g></g>
-            <g id="g1" inkscape:label="Fake Text"><rect
-           style="display:inline;fill:#ffffff;fill-opacity:0.749444;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-           id="rect40"
-           width="6.3499994"
-           height="0.79374999"
-           x="5.2916665"
-           y="12.170833"
-           ry="0.39687499"
-           inkscape:label="VGLS Text Fake"
-           sodipodi:insensitive="true" />
-                <rect
-                    style="display:inline;fill:#ffffff;fill-opacity:0.749444;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-                    id="rect41" width="5.4477248" height="0.54991323" x="5.7428036" y="3.8260846"
-                    ry="0.26858479" inkscape:label="Serial Text Fake" sodipodi:insensitive="true" /></g></g></g></svg>
+                            y="8.963727" inkscape:label="Note Stem Prototype" /></g></g></g></g></g></svg>
