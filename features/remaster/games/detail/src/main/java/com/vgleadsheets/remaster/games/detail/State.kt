@@ -11,6 +11,7 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
@@ -64,7 +65,7 @@ data class State(
             if (photoUrl != null) {
                 listOf(
                     HeroImageListModel(
-                        sourceInfo = photoUrl,
+                        sourceInfo = SourceInfo(photoUrl),
                         imagePlaceholder = Icon.ALBUM,
                         clickAction = VglsAction.Noop,
                     )
@@ -132,7 +133,7 @@ data class State(
                 ImageNameListModel(
                     dataId = song.id + ID_PREFIX_SONGS,
                     name = song.name,
-                    sourceInfo = sourceInfo,
+                    sourceInfo = SourceInfo(sourceInfo),
                     imagePlaceholder = Icon.DESCRIPTION,
                     clickAction = Action.SongClicked(song.id)
                 )

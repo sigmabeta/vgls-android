@@ -11,6 +11,7 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
@@ -65,7 +66,7 @@ data class State(
         if (photoUrl != null) {
             listOf(
                 HeroImageListModel(
-                    sourceInfo = photoUrl,
+                    sourceInfo = SourceInfo(photoUrl),
                     imagePlaceholder = Icon.PERSON,
                     clickAction = VglsAction.Noop,
                 )
@@ -118,10 +119,12 @@ data class State(
                 stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_COMPOSER)
             )
         ) + data.map { song ->
-            val sourceInfo = PdfConfigById(
-                songId = song.id,
-                pageNumber = 0,
-                isAltSelected = false,
+            val sourceInfo = SourceInfo(
+                PdfConfigById(
+                    songId = song.id,
+                    pageNumber = 0,
+                    isAltSelected = false,
+                )
             )
 
             ImageNameListModel(

@@ -22,13 +22,14 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.vgleadsheets.images.BitmapGenerator
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
 fun CrossfadeImage(
-    sourceInfo: Any?,
+    sourceInfo: SourceInfo,
     imagePlaceholder: Icon,
     modifier: Modifier,
     contentScale: ContentScale? = null,
@@ -48,13 +49,13 @@ fun CrossfadeImage(
     val (painter, imageModifier) = if (forceGenBitmap) {
         BitmapPainter(
             // Kotlin compiler complains without .toString() here....
-            image = BitmapGenerator.generateBitmap(sourceInfo.toString()),
+            image = BitmapGenerator.generateBitmap(sourceInfo.info.toString()),
             filterQuality = FilterQuality.None
         ) to modifier
     } else {
         val asyncPainter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(sourceInfo)
+                .data(sourceInfo.info)
                 .placeholder(imagePlaceholder.id())
                 .error(imagePlaceholder.id())
                 .crossfade(true)
@@ -105,7 +106,7 @@ private fun Sample() {
                 cornerRadius = 4.dp
             ) {
                 CrossfadeImage(
-                    sourceInfo = null,
+                    sourceInfo = SourceInfo(null),
                     imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
@@ -116,7 +117,7 @@ private fun Sample() {
                 cornerRadius = 4.dp
             ) {
                 CrossfadeImage(
-                    sourceInfo = "doesn't matter",
+                    sourceInfo = SourceInfo("doesn't matter"),
                     imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
@@ -128,7 +129,7 @@ private fun Sample() {
                 Modifier.size(64.dp)
             ) {
                 CrossfadeImage(
-                    sourceInfo = null,
+                    sourceInfo = SourceInfo(null),
                     imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )
@@ -138,7 +139,7 @@ private fun Sample() {
                 Modifier.size(64.dp)
             ) {
                 CrossfadeImage(
-                    sourceInfo = "doesn't matter",
+                    sourceInfo = SourceInfo("doesn't matter"),
                     imagePlaceholder = Icon.PERSON,
                     modifier = Modifier,
                 )

@@ -1,10 +1,11 @@
 package com.vgleadsheets.components
 
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 
 data class HeroImageListModel(
-    val sourceInfo: Any,
+    val sourceInfo: SourceInfo,
     val imagePlaceholder: Icon,
     val clickAction: VglsAction
 ) : ListModel() {

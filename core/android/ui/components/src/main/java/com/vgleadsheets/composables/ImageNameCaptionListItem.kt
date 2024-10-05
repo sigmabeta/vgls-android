@@ -29,6 +29,7 @@ import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
@@ -75,7 +76,7 @@ fun ImageNameCaptionListItem(
 private fun ImageNameCaptionListItem(
     name: String,
     caption: String,
-    sourceInfo: Any?,
+    sourceInfo: SourceInfo,
     imagePlaceholder: Icon,
     clickAction: VglsAction,
     actionSink: ActionSink,
@@ -190,7 +191,7 @@ private fun Sample() {
             1234L,
             "Xenoblade Chronicles 3",
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
-            "https://randomfox.ca/images/12.jpg",
+            SourceInfo("https://randomfox.ca/images/12.jpg"),
             Icon.PERSON,
             null,
             VglsAction.Noop,

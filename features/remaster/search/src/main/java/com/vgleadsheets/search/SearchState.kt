@@ -11,6 +11,7 @@ import com.vgleadsheets.components.SearchHistoryListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.checkForDupes
 import com.vgleadsheets.model.Composer
@@ -120,10 +121,12 @@ data class SearchState(
                 dataId = song.id,
                 name = song.name,
                 caption = song.gameName,
-                sourceInfo = PdfConfigById(
-                    songId = song.id,
-                    pageNumber = 0,
-                    isAltSelected = false,
+                sourceInfo = SourceInfo(
+                    PdfConfigById(
+                        songId = song.id,
+                        pageNumber = 0,
+                        isAltSelected = false,
+                    )
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,
                 clickAction = Action.SongClicked(song.id),

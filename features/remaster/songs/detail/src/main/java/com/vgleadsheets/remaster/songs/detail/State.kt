@@ -15,6 +15,7 @@ import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SinglePageListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
@@ -163,10 +164,12 @@ data class State(
             clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
             showLyricsWarning = showLyricsMissingWarning,
             beeg = beeg,
-            sourceInfo = PdfConfigById(
-                songId = song.id,
-                pageNumber = pageNumber,
-                isAltSelected = altSelectionValue,
+            sourceInfo = SourceInfo(
+                PdfConfigById(
+                    songId = song.id,
+                    pageNumber = pageNumber,
+                    isAltSelected = altSelectionValue,
+                )
             ),
         )
     )
@@ -194,7 +197,7 @@ data class State(
                 stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_SONG)
             ),
             HeroImageListModel(
-                sourceInfo = data.photoUrl ?: "",
+                sourceInfo = SourceInfo(data.photoUrl),
                 imagePlaceholder = Icon.ALBUM,
                 clickAction = Action.GameClicked(data.id),
             )

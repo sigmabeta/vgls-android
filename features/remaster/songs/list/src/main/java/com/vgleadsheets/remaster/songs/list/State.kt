@@ -4,6 +4,7 @@ import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
@@ -28,10 +29,12 @@ data class State(
                 dataId = song.id,
                 name = song.name,
                 caption = song.gameName,
-                sourceInfo = PdfConfigById(
-                    songId = song.id,
-                    isAltSelected = false,
-                    pageNumber = 0,
+                sourceInfo = SourceInfo(
+                    PdfConfigById(
+                        songId = song.id,
+                        isAltSelected = false,
+                        pageNumber = 0,
+                    )
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,
                 clickAction = Action.SongClicked(song.id),

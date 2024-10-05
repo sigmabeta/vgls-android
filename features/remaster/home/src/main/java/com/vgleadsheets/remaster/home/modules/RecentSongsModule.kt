@@ -4,6 +4,7 @@ import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SongHistoryEntry
@@ -48,10 +49,12 @@ class RecentSongsModule @Inject constructor(
                                 SheetPageListModel(
                                     dataId = song.id,
                                     title = song.name,
-                                    sourceInfo = PdfConfigById(
-                                        songId = song.id,
-                                        pageNumber = 0,
-                                        isAltSelected = false,
+                                    sourceInfo = SourceInfo(
+                                        PdfConfigById(
+                                            songId = song.id,
+                                            pageNumber = 0,
+                                            isAltSelected = false,
+                                        )
                                     ),
                                     gameName = song.gameName,
                                     clickAction = Action.RecentSongClicked(song.id),

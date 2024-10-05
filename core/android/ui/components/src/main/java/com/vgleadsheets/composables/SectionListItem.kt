@@ -19,6 +19,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SectionListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -100,7 +101,7 @@ private fun VerticalSection(rng: Random, padding: PaddingValues) {
             model = ImageNameListModel(
                 dataId = index.toLong(),
                 name = "Wide Item #$index",
-                sourceInfo = rng.nextInt().toString(),
+                sourceInfo = SourceInfo(rng.nextInt().toString()),
                 Icon.DESCRIPTION,
                 null,
                 clickAction = VglsAction.Noop

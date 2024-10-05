@@ -23,13 +23,14 @@ import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.images.LoadingIndicatorConfig
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @Suppress("LongMethod", "ReturnCount")
 fun CrossfadeSheet(
-    sourceInfo: Any?,
+    sourceInfo: SourceInfo,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
     fillMaxWidth: Boolean,
@@ -43,7 +44,7 @@ fun CrossfadeSheet(
             modifier = modifier.fillMaxSize()
         ) {
             ErrorState(
-                sourceInfo ?: "Simulated Error",
+                SourceInfo(sourceInfo ?: "Simulated Error"),
                 modifier,
                 showDebug,
                 IllegalArgumentException("Oops it didn't work.")
@@ -72,7 +73,7 @@ fun CrossfadeSheet(
 
     SubcomposeAsyncImage(
         model = with(ImageRequest.Builder(LocalContext.current)) {
-            data(sourceInfo)
+            data(sourceInfo.info)
             build()
         },
         contentScale = ContentScale.Fit,
@@ -115,7 +116,7 @@ fun CrossfadeSheet(
 
 @Composable
 private fun ErrorState(
-    sourceInfo: Any,
+    sourceInfo: SourceInfo,
     modifier: Modifier,
     showDebug: Boolean,
     error: Throwable
@@ -190,7 +191,7 @@ private fun PortraitError() {
 @Composable
 private fun SampleLoading() {
     CrossfadeSheet(
-        sourceInfo = "Doesn't matter",
+        sourceInfo = SourceInfo("Doesn't matter"),
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -209,7 +210,7 @@ private fun SampleLoading() {
 @Composable
 private fun SampleSheetPageOne() {
     CrossfadeSheet(
-        sourceInfo = "nope",
+        sourceInfo = SourceInfo("nope"),
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -228,7 +229,7 @@ private fun SampleSheetPageOne() {
 @Composable
 private fun SampleSheetPageTwo() {
     CrossfadeSheet(
-        sourceInfo = "nope",
+        sourceInfo = SourceInfo("nope"),
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -247,7 +248,7 @@ private fun SampleSheetPageTwo() {
 @Composable
 private fun SampleError() {
     CrossfadeSheet(
-        sourceInfo = "nope",
+        sourceInfo = SourceInfo("nope"),
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",

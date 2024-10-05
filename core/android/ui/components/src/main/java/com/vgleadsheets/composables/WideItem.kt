@@ -30,6 +30,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.WideItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
@@ -54,7 +55,7 @@ fun WideItem(
             .background(MaterialTheme.colorScheme.surfaceContainer)
     ) {
         CrossfadeImage(
-            sourceInfo = model.sourceInfo,
+            sourceInfo = SourceInfo(model.sourceInfo),
             imagePlaceholder = model.imagePlaceholder,
             modifier = Modifier
                 .fillMaxHeight()

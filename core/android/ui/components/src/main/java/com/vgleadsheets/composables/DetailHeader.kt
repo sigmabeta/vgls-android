@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.TitleListModel
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
@@ -38,7 +39,7 @@ fun DetailHeader(
             .fillMaxWidth()
     ) {
         CrossfadeImage(
-            sourceInfo = model.photoUrl,
+            sourceInfo = SourceInfo(model.photoUrl),
             imagePlaceholder = model.placeholder,
             modifier = Modifier.fillMaxSize(),
         )

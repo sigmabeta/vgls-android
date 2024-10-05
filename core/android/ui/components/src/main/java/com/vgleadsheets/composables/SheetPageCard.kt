@@ -24,6 +24,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.components.R
@@ -121,10 +122,12 @@ private fun DarkPdf() {
 private fun SamplePdf() {
     SheetPageCard(
         model = SheetPageListModel(
-            sourceInfo = PdfConfigById(
-                songId = 92,
-                pageNumber = 0,
-                isAltSelected = false,
+            sourceInfo = SourceInfo(
+                PdfConfigById(
+                    songId = 92,
+                    pageNumber = 0,
+                    isAltSelected = false,
+                )
             ),
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",

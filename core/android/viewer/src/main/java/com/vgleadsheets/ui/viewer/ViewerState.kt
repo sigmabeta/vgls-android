@@ -5,6 +5,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
@@ -46,10 +47,12 @@ data class ViewerState(
 
         List(actualPageCount) { pageNumber ->
             SheetPageListModel(
-                PdfConfigById(
-                    songId = song.id,
-                    pageNumber = pageNumber,
-                    isAltSelected = altSelection,
+                SourceInfo(
+                    PdfConfigById(
+                        songId = song.id,
+                        pageNumber = pageNumber,
+                        isAltSelected = altSelection,
+                    )
                 ),
                 song.name,
                 song.gameName,
@@ -62,7 +65,7 @@ data class ViewerState(
     } else {
         listOf(
             SheetPageListModel(
-                sourceInfo = null,
+                sourceInfo = SourceInfo(null),
                 title = song?.name.orEmpty(),
                 gameName = song?.gameName.orEmpty(),
                 composers = song?.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),

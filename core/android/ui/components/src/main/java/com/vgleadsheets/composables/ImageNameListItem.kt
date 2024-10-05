@@ -27,6 +27,7 @@ import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
@@ -70,7 +71,7 @@ fun ImageNameListItem(
 @Composable
 fun ImageNameListItem(
     name: String,
-    sourceInfo: Any?,
+    sourceInfo: SourceInfo,
     imagePlaceholder: Icon,
     clickAction: VglsAction,
     actionSink: ActionSink,
@@ -177,7 +178,7 @@ private fun Sample() {
         ImageNameListModel(
             1234L,
             "Carrying the Weight of Life",
-            "https://randomfox.ca/images/12.jpg",
+            SourceInfo("https://randomfox.ca/images/12.jpg"),
             Icon.DESCRIPTION,
             null,
             clickAction = VglsAction.Noop,

@@ -8,6 +8,7 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
@@ -67,10 +68,12 @@ data class State(
                 dataId = item.id,
                 name = item.name,
                 caption = item.gameName,
-                sourceInfo = PdfConfigById(
-                    songId = item.id,
-                    isAltSelected = false,
-                    pageNumber = 0,
+                sourceInfo = SourceInfo(
+                    PdfConfigById(
+                        songId = item.id,
+                        isAltSelected = false,
+                        pageNumber = 0,
+                    )
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,
                 clickAction = Action.SongClicked(item.id),

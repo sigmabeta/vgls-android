@@ -15,6 +15,7 @@ import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 
 @Composable
@@ -45,7 +46,7 @@ fun BigImage(
 private fun LoadingGame() {
     BigImage(
         HeroImageListModel(
-            sourceInfo = "whatever",
+            sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.ALBUM,
             clickAction = VglsAction.Noop,
         ),
@@ -60,7 +61,7 @@ private fun LoadingGame() {
 private fun SuccessGame() {
     BigImage(
         HeroImageListModel(
-            sourceInfo = "whatever",
+            sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.DESCRIPTION,
             clickAction = VglsAction.Noop,
         ),
@@ -75,7 +76,7 @@ private fun SuccessGame() {
 private fun SuccessGameWithLabel() {
     BigImage(
         HeroImageListModel(
-            sourceInfo = "whatever",
+            sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.DESCRIPTION,
             clickAction = VglsAction.Noop,
         ),

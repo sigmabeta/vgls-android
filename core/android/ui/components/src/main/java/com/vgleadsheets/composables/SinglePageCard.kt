@@ -20,6 +20,7 @@ import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SinglePageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -85,10 +86,12 @@ private fun SamplePdf() {
         model = SinglePageListModel(
             sheetPageCardModel = SheetPageCardListModel(
                 sheetPageModel = SheetPageListModel(
-                    sourceInfo = PdfConfigById(
-                        songId = 92,
-                        pageNumber = 0,
-                        isAltSelected = false,
+                    sourceInfo = SourceInfo(
+                        PdfConfigById(
+                            songId = 92,
+                            pageNumber = 0,
+                            isAltSelected = false,
+                        )
                     ),
                     title = "A Trip to Alivel Mall",
                     gameName = "Kirby and the Forgotten Land",

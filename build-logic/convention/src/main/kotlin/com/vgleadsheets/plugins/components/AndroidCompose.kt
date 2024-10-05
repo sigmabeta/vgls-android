@@ -18,7 +18,10 @@ package com.vgleadsheets.plugins.components
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
  * Configure Compose-specific options
@@ -36,6 +39,8 @@ internal fun Project.configureAndroidCompose(
                 libs.findVersion("androidxComposeCompiler").get().toString()
         }
 
+        configureKotlinCompose()
+
         dependencies {
             val bom = libs.findLibrary("androidx-compose-bom").get()
 
@@ -48,5 +53,35 @@ internal fun Project.configureAndroidCompose(
 
             add("debugImplementation", libs.findLibrary("androidx-compose-ui-tooling").get())
         }
+    }
+}
+
+private fun Project.configureKotlinCompose() {
+    tasks.withType<KotlinCompile>().configureEach {
+        val buildDirectory = project.layout.buildDirectory.asFile.get().path
+
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                listOf(
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
+                )
+            )
+        }
+
+        kotlinOptions {
+            freeCompilerArgs += listOf(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$buildDirectory/compose_compiler",
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$buildDirectory/compose_compiler",
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=${rootProject.rootDir.absolutePath}/app/compose-stability.conf",
+            )
+        }
+    }
+
+    tasks.withType<Test> {
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() / 3).coerceAtLeast(1)
     }
 }

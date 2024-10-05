@@ -1,5 +1,8 @@
 package com.vgleadsheets.scaffold
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -83,7 +87,6 @@ fun RemasterAppUi(
     val navBarViewModel: NavBarViewModel = hiltViewModel()
     val bottomBarVmState by navBarViewModel.uiState.collectAsState()
 
-
     AppContent(
         navController = navController,
         topBarConfig = topBarConfig,
@@ -126,21 +129,33 @@ fun AppContent(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NavHostAndSuch(
     navController: NavHostController,
     innerPadding: PaddingValues,
     displayWidthClass: WidthClass,
 ) {
+    val enterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = remember {
+        { enterTransition() }
+    }
+    val exitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = remember {
+        { exitTransition() }
+    }
+    val popEnterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = remember {
+        { popEnterTransition() }
+    }
+    val popExitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = remember {
+        { popExitTransition() }
+    }
+
     NavHost(
         navController = navController,
         modifier = Modifier.padding(innerPadding),
         startDestination = Destination.HOME.template(),
-        enterTransition = { enterTransition() },
-        exitTransition = { exitTransition() },
-        popEnterTransition = { popEnterTransition() },
-        popExitTransition = { popExitTransition() },
+        enterTransition = enterTransition,
+        exitTransition = exitTransition,
+        popEnterTransition = popEnterTransition,
+        popExitTransition = popExitTransition,
     ) {
         val globalModifier = Modifier.fillMaxSize()
 
