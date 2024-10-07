@@ -16,11 +16,12 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.map
 
 class RecentSongsModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
@@ -36,6 +37,7 @@ class RecentSongsModule @Inject constructor(
 
     override fun state() = songHistoryRepository
         .getRecentSongs()
+        .take(1)
         .map { pairs ->
             LCE.Content(
                 HomeModuleState(
