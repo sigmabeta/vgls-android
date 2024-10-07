@@ -44,7 +44,9 @@ class NeverPlayedSongModule @Inject constructor(
     override fun state(): Flow<LCE<HomeModuleState>> {
         return randomRepository
             .getRandomSongs(20, seed = appLaunchTime.toLongDateText().hashCode().toLong())
-            .filter { it.isNotEmpty() }
+            .filter {
+                it.isNotEmpty()
+            }
             .take(1)
             .map { it.onlySongsNeverPlayed() }
             .map { songs ->
@@ -92,7 +94,9 @@ class NeverPlayedSongModule @Inject constructor(
         ?.playCount
 
 
-    private suspend fun List<Song>.onlySongsNeverPlayed() = filter { it.wasNeverPlayed() }
+    private suspend fun List<Song>.onlySongsNeverPlayed() = filter {
+        it.wasNeverPlayed()
+    }
         .take(10)
         .shuffled()
 }

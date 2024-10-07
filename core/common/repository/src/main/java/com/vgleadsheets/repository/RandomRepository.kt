@@ -34,8 +34,8 @@ class RandomRepository(
                 return@map emptyList()
             }
 
-            List(count) {
-                randomSongHelper(limit, seed)
+            List(count) { index ->
+                randomSongHelper(limit, seed?.plus(index.toLong()))
             }.distinctBy { it.id }
         }
 
