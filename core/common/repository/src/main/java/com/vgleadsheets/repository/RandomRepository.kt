@@ -8,11 +8,11 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import kotlin.random.Random
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
+import java.util.Random
 
 class RandomRepository(
     private val songDataSource: SongDataSource,
@@ -20,12 +20,14 @@ class RandomRepository(
     private val gameDataSource: GameDataSource,
     private val hatchet: Hatchet,
 ) {
-    fun getRandomSong() = songDataSource
+    private val random = Random()
+
+    fun getRandomSong(seed: Long? = null) = songDataSource
         .getHighestId()
-        .map { limit -> randomSongHelper(limit) }
+        .map { limit -> randomSongHelper(limit, seed) }
         .take(1)
 
-    fun getRandomSongs(count: Int) = songDataSource
+    fun getRandomSongs(count: Int, seed: Long? = null) = songDataSource
         .getHighestId()
         .map { limit ->
             if (limit <= 0) {
@@ -33,28 +35,16 @@ class RandomRepository(
             }
 
             List(count) {
-                randomSongHelper(limit)
+                randomSongHelper(limit, seed)
             }.distinctBy { it.id }
         }
 
-    private suspend fun randomSongHelper(limit: Long): Song {
-        var randomSong: Song? = null
-        while (randomSong == null) {
-            val randomId = Random
-                .nextInt(limit.toInt())
-                .toLong()
-
-            randomSong = songDataSource.getItem(TYPE_SONG, randomId)
-        }
-        return randomSong
-    }
-
-    fun getRandomComposer() = composerDataSource
+    fun getRandomComposer(seed: Long? = null) = composerDataSource
         .getHighestId()
         .map { limit ->
             var randomComposer: Composer? = null
             while (randomComposer == null) {
-                val randomId = Random
+                val randomId = getRng(seed)
                     .nextInt(limit.toInt())
                     .toLong()
 
@@ -64,12 +54,12 @@ class RandomRepository(
         }
         .take(1)
 
-    fun getRandomGame() = gameDataSource
+    fun getRandomGame(seed: Long? = null) = gameDataSource
         .getHighestId()
         .map { limit ->
             var randomGame: Game? = null
             while (randomGame == null) {
-                val randomId = Random
+                val randomId = getRng(seed)
                     .nextInt(limit.toInt())
                     .toLong()
 
@@ -79,9 +69,27 @@ class RandomRepository(
         }
         .take(1)
 
+    private suspend fun randomSongHelper(limit: Long, seed: Long? = null): Song {
+        var randomSong: Song? = null
+        while (randomSong == null) {
+            val randomId = getRng(seed)
+                .nextInt(limit.toInt())
+                .toLong()
+
+            randomSong = songDataSource.getItem(TYPE_SONG, randomId)
+        }
+        return randomSong
+    }
+
     private suspend fun <ModelType> DataSource<ModelType>.getItem(type: String, id: Long) = getOneById(id)
         .catch { ex -> hatchet.w("Error retrieving random $type with id $id; ${ex.message}") }
         .firstOrNull()
+
+    private fun getRng(seed: Long?) = if (seed != null) {
+        Random(seed)
+    } else {
+        random
+    }
 
     companion object {
         private const val TYPE_SONG = "song"

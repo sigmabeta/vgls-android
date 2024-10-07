@@ -14,14 +14,16 @@ import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
+import com.vgleadsheets.time.PublishDateUtils.toLongDateText
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
+import javax.inject.Inject
 
 class NeverPlayedSongModule @Inject constructor(
     private val randomRepository: RandomRepository,
@@ -32,56 +34,55 @@ class NeverPlayedSongModule @Inject constructor(
     priority = Priority.LOW,
     delayManager,
 ) {
+    private val appLaunchTime = System.currentTimeMillis()
+
     override fun loadingType() = LoadingType.SHEET
 
     override fun title() = stringProvider.getString(StringId.HOME_SECTION_NO_PLAYS_SONGS)
 
     @Suppress("MagicNumber")
-    override fun state() = randomRepository
-        .getRandomSongs(20)
-        .filter { it.isNotEmpty() }
-        .take(1)
-        .map { list ->
-            list
-                .filter { onlySongsNeverPlayed(it) }
-                .take(10)
-                .shuffled()
-        }
-        .map { songs ->
-            LCE.Content(
-                HomeModuleState(
-                    moduleName = "NeverPlayedSongModule",
-                    shouldShow = songs.isNotEmpty(),
-                    title = title(),
-                    items = songs
-                        .map { song ->
-                            SheetPageCardListModel(
-                                SheetPageListModel(
-                                    dataId = song.id,
-                                    title = song.name,
-                                    sourceInfo = SourceInfo(
-                                        PdfConfigById(
-                                            songId = song.id,
-                                            pageNumber = 0,
-                                            isAltSelected = false,
-                                        )
-                                    ),
-                                    gameName = song.gameName,
-                                    clickAction = Action.MostPlaysSongClicked(song.id),
-                                    composers = persistentListOf(),
-                                    beeg = false,
-                                    pageNumber = 0,
+    override fun state(): Flow<LCE<HomeModuleState>> {
+        return randomRepository
+            .getRandomSongs(20, seed = appLaunchTime.toLongDateText().hashCode().toLong())
+            .filter { it.isNotEmpty() }
+            .take(1)
+            .map { it.onlySongsNeverPlayed() }
+            .map { songs ->
+                LCE.Content(
+                    HomeModuleState(
+                        moduleName = "NeverPlayedSongModule",
+                        shouldShow = songs.isNotEmpty(),
+                        title = title(),
+                        items = songs
+                            .map { song ->
+                                SheetPageCardListModel(
+                                    SheetPageListModel(
+                                        dataId = song.id,
+                                        title = song.name,
+                                        sourceInfo = SourceInfo(
+                                            PdfConfigById(
+                                                songId = song.id,
+                                                pageNumber = 0,
+                                                isAltSelected = false,
+                                            )
+                                        ),
+                                        gameName = song.gameName,
+                                        clickAction = Action.MostPlaysSongClicked(song.id),
+                                        composers = persistentListOf(),
+                                        beeg = false,
+                                        pageNumber = 0,
+                                    )
                                 )
-                            )
-                        },
+                            },
+                    )
                 )
-            )
-        }
-        .withLoadingState()
-        .withErrorState()
+            }
+            .withLoadingState()
+            .withErrorState()
+    }
 
-    private suspend fun onlySongsNeverPlayed(it: Song): Boolean {
-        val songPlayCount = getSongPlayCount(it)
+    private suspend fun Song.wasNeverPlayed(): Boolean {
+        val songPlayCount = getSongPlayCount(this)
         return songPlayCount == null
     }
 
@@ -90,5 +91,10 @@ class NeverPlayedSongModule @Inject constructor(
         .firstOrNull()
         ?.playCount
 
-    companion object
+
+    private suspend fun List<Song>.onlySongsNeverPlayed() = filter { it.wasNeverPlayed() }
+        .take(10)
+        .shuffled()
 }
+
+

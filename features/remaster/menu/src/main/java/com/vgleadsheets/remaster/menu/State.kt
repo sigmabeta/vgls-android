@@ -12,13 +12,9 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
+import com.vgleadsheets.time.PublishDateUtils.toLongDateText
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import java.util.Locale
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneId
-import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.format.FormatStyle
 
 data class State(
     val keepScreenOn: Boolean? = null,
@@ -145,7 +141,7 @@ data class State(
 
     private fun appBuildDate(stringProvider: StringProvider) = LabelValueListModel(
         label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
-        value = appInfo?.buildTimeMs?.toBuildDate(),
+        value = appInfo?.buildTimeMs?.toLongDateText(),
         clickAction = Action.BuildDateClicked
     )
 
@@ -171,18 +167,6 @@ data class State(
             settingId = StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS.name,
             checked = debugShouldShowNavSnackbars,
         )
-    }
-
-    private fun Long.toBuildDate(): String {
-        val instant = Instant.ofEpochMilli(this)
-        val formatter = DateTimeFormatter
-            .ofLocalizedDate(FormatStyle.LONG)
-            .withLocale(Locale.getDefault())
-            .withZone(ZoneId.systemDefault())
-
-        if (this == 0L) return formatter.format(Instant.now())
-
-        return formatter.format(instant)
     }
 
     private fun ifShowDebugEnabled(content: () -> ListModel): ListModel {
