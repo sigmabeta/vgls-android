@@ -5,7 +5,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
@@ -21,7 +21,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -161,16 +160,7 @@ private fun NavHostAndSuch(
 
     NavHost(
         navController = navController,
-        modifier = Modifier
-            .offset {
-                IntOffset(
-                    x = 0,
-                    y = innerPadding
-                        .calculateTopPadding()
-                        .toPx()
-                        .toInt()
-                )
-            },
+        modifier = Modifier.padding(innerPadding),
         startDestination = Destination.HOME.template(),
         enterTransition = enterTransition,
         exitTransition = exitTransition,
