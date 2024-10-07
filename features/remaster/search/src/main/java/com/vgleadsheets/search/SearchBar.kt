@@ -1,6 +1,7 @@
 package com.vgleadsheets.search
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -41,14 +43,23 @@ fun SearchBar(
     actionSink: ActionSink,
     modifier: Modifier,
 ) {
+    val shape = RoundedCornerShape(32.dp)
+
+    val commonModifier = modifier
+        .fillMaxWidth()
+        .padding(horizontal = dimensionResource(com.vgleadsheets.ui.components.R.dimen.margin_side))
+
+    val actualModifier = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        commonModifier.shadow(
+            elevation = 4.dp,
+            shape = shape
+        )
+    } else {
+        commonModifier.clip(shape)
+    }
+
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = dimensionResource(com.vgleadsheets.ui.components.R.dimen.margin_side))
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(32.dp)
-            ),
+        modifier = actualModifier,
     ) {
         Row(
             modifier = Modifier

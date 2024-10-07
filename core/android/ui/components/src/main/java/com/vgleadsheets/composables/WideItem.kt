@@ -1,6 +1,7 @@
 package com.vgleadsheets.composables
 
 import android.content.res.Configuration
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -20,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,16 +43,25 @@ fun WideItem(
     modifier: Modifier,
     padding: PaddingValues,
 ) {
+    val shape = RoundedCornerShape(8.dp)
+
+    val commonModifier = modifier
+        .padding(padding)
+        .padding(vertical = 4.dp)
+        .defaultMinSize(minWidth = 192.dp)
+        .height(64.dp)
+
+    val actualModifier = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        commonModifier.shadow(
+            elevation = 4.dp,
+            shape = shape
+        )
+    } else {
+        commonModifier.clip(shape)
+    }
+
     Row(
-        modifier = modifier
-            .padding(padding)
-            .padding(vertical = 4.dp)
-            .defaultMinSize(minWidth = 192.dp)
-            .height(64.dp)
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
-            )
+        modifier = actualModifier
             .clickable { actionSink.sendAction(model.clickAction) }
             .background(MaterialTheme.colorScheme.surfaceContainer)
     ) {

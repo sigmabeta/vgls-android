@@ -37,7 +37,7 @@ fun CrossfadeImage(
 ) {
     val bgModifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)
 
-    if (sourceInfo == null) {
+    if (sourceInfo.info == null) {
         Image(
             painter = painterResource(id = imagePlaceholder.id()),
             contentDescription = null,
