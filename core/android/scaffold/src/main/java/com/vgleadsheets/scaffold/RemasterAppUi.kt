@@ -5,7 +5,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
@@ -21,6 +21,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -28,6 +29,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.window.core.layout.WindowHeightSizeClass
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.bottombar.NavBarItem
 import com.vgleadsheets.bottombar.NavBarState
@@ -87,12 +89,21 @@ fun RemasterAppUi(
     val navBarViewModel: NavBarViewModel = hiltViewModel()
     val bottomBarVmState by navBarViewModel.uiState.collectAsState()
 
+    val adaptiveInfo = currentWindowAdaptiveInfo()
+    val displayHeightClass = adaptiveInfo.windowSizeClass.windowHeightSizeClass
+
+    val actualModifier = if (displayHeightClass == WindowHeightSizeClass.COMPACT) {
+        modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+    } else {
+        modifier
+    }
+
     AppContent(
         navController = navController,
         topBarConfig = topBarConfig,
         navBarState = bottomBarVmState,
         snackbarHostState = snackbarHostState,
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = actualModifier,
     ) { innerPadding, widthClass ->
         NavHostAndSuch(navController, innerPadding, widthClass)
     }
@@ -150,7 +161,16 @@ private fun NavHostAndSuch(
 
     NavHost(
         navController = navController,
-        modifier = Modifier.padding(innerPadding),
+        modifier = Modifier
+            .offset {
+                IntOffset(
+                    x = 0,
+                    y = innerPadding
+                        .calculateTopPadding()
+                        .toPx()
+                        .toInt()
+                )
+            },
         startDestination = Destination.HOME.template(),
         enterTransition = enterTransition,
         exitTransition = exitTransition,
