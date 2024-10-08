@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
@@ -14,13 +15,14 @@ import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
+import com.vgleadsheets.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.ui.themes.VglsMaterial
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RemasteredActivity :
@@ -47,11 +49,13 @@ class RemasteredActivity :
 
         setContent {
             VglsMaterial {
-                RemasterAppUi(
-                    showSystemBars,
-                    hideSystemBars,
-                    modifier = Modifier
-                )
+                CompositionLocalProvider(LocalLogger provides hatchet) {
+                    RemasterAppUi(
+                        showSystemBars,
+                        hideSystemBars,
+                        modifier = Modifier
+                    )
+                }
             }
         }
     }

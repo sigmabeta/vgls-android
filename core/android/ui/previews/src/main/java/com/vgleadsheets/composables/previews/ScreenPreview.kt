@@ -23,6 +23,11 @@ import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.ListStateActual
 import com.vgleadsheets.list.WidthClass
+import com.vgleadsheets.logging.BasicHatchet
+import com.vgleadsheets.perf.DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW
+import com.vgleadsheets.perf.DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW
+import com.vgleadsheets.perf.LocalLogger
+import com.vgleadsheets.perf.WithMeasurementScreen
 import com.vgleadsheets.scaffold.AppContent
 import com.vgleadsheets.scaffold.TopBarConfig
 import com.vgleadsheets.topbar.TopBarState
@@ -46,7 +51,10 @@ internal fun ListScreenPreview(
     val state = screenState.toActual(stringProvider)
 
     VglsMaterial(forceDark = darkTheme) {
-        CompositionLocalProvider(LocalInspectionMode provides true) {
+        CompositionLocalProvider(
+            LocalInspectionMode provides true,
+            LocalLogger provides BasicHatchet(),
+        ) {
             AppChrome(
                 titleBarModel = state.title,
                 topBarVisibility = topBarVisibility,
@@ -58,7 +66,13 @@ internal fun ListScreenPreview(
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxSize()
                     ) {
-                        ListContent(state, widthClass, innerPadding, actionSink)
+                        WithMeasurementScreen(
+                            "${state.title.title ?: "Unknown"} ($syntheticWidthClass)",
+                            DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW,
+                            DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW,
+                        ) {
+                            ListContent(state, widthClass, innerPadding, actionSink)
+                        }
                     }
                 },
             )
@@ -77,19 +91,28 @@ internal fun ScreenPreview(
     val stringProvider = StringResources(LocalContext.current.resources)
 
     VglsMaterial(forceDark = darkTheme) {
-        CompositionLocalProvider(LocalInspectionMode provides true) {
+        CompositionLocalProvider(
+            LocalInspectionMode provides true,
+            LocalLogger provides BasicHatchet(),
+        ) {
             AppChrome(
                 titleBarModel = TitleBarModel(),
                 topBarVisibility = topBarVisibility,
                 navBarVisibility = navBarVisibility,
                 syntheticWidthClass = syntheticWidthClass,
-                content = { paddingValues, widthClass ->
+                content = { paddingValues, _ ->
                     Box(
                         modifier = Modifier
                             .padding(paddingValues)
                             .background(MaterialTheme.colorScheme.background)
                     ) {
-                        content(stringProvider)
+                        WithMeasurementScreen(
+                            "Non-List Screen ($syntheticWidthClass)",
+                            DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW,
+                            DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW,
+                        ) {
+                            content(stringProvider)
+                        }
                     }
                 },
             )

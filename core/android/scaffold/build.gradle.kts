@@ -12,6 +12,7 @@ dependencies {
 
     implementation(projects.core.android.licenses)
     implementation(projects.core.android.nav)
+    implementation(projects.core.android.perf)
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.list)
     implementation(projects.core.android.ui.themes)

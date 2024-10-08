@@ -17,13 +17,13 @@ import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.time.PublishDateUtils.toLongDateText
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
+import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
-import javax.inject.Inject
 
 class NeverPlayedSongModule @Inject constructor(
     private val randomRepository: RandomRepository,
@@ -93,12 +93,8 @@ class NeverPlayedSongModule @Inject constructor(
         .firstOrNull()
         ?.playCount
 
-
-    private suspend fun List<Song>.onlySongsNeverPlayed() = filter {
-        it.wasNeverPlayed()
-    }
+    @Suppress("MagicNumber")
+    private suspend fun List<Song>.onlySongsNeverPlayed() = filter { it.wasNeverPlayed() }
         .take(10)
         .shuffled()
 }
-
-

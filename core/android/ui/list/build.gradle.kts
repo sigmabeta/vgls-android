@@ -13,6 +13,7 @@ dependencies {
     api(libs.androidx.lifecycle.runtimeCompose)
 
     api(projects.core.common.nav)
+    implementation(projects.core.android.perf)
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.viewmodel)
