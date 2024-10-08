@@ -308,6 +308,7 @@ class FakeModelGenerator constructor(
         const val DEFAULT_MAX_TAGS_VALUES = 10
         const val DEFAULT_MAX_SONGS_PER_GAME = 10
 
+        const val MAX_WORDS_PER_LOREM = 50
         const val MAX_WORDS_PER_TITLE = 5
         const val MAX_PAGE_COUNT = 2
 

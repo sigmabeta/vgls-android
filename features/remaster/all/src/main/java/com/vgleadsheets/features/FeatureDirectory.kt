@@ -24,6 +24,7 @@ import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
 import com.vgleadsheets.remaster.tags.list.TagListViewModelBrain
 import com.vgleadsheets.remaster.tags.songs.TagValueSongsViewModelBrain
 import com.vgleadsheets.remaster.tags.values.TagValuesViewModelBrain
+import com.vgleadsheets.remaster.updates.UpdatesViewModelBrain
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
@@ -196,6 +197,12 @@ class FeatureDirectory(
                 userContentGenerator,
                 userContentMigrator,
                 appInfo,
+                stringProvider,
+                hatchet,
+                scheduler,
+            )
+
+            Destination.UPDATES -> UpdatesViewModelBrain(
                 stringProvider,
                 hatchet,
                 scheduler,

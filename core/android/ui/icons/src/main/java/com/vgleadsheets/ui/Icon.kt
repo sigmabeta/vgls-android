@@ -9,7 +9,9 @@ fun Icon.id(): Int {
         Icon.DESCRIPTION -> R.drawable.ic_description_24dp
         Icon.JAM_EMPTY -> R.drawable.ic_jam_unfilled
         Icon.JAM_FILLED -> R.drawable.ic_jam_filled
+        Icon.MINUS -> R.drawable.ic_remove_24
         Icon.PERSON -> R.drawable.ic_person_24dp
+        Icon.PLUS -> R.drawable.ic_add_24
         Icon.REFRESH -> R.drawable.ic_refresh_24dp
         Icon.DIFFICULTY -> R.drawable.ic_bar_chart_24
         Icon.TAG -> R.drawable.ic_tag_black_24dp

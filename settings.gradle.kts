@@ -107,24 +107,6 @@ include(
     ":core:fake:perf",
     ":core:fake:tracking",
 
-//    ":features:main",
-//    ":features:main:about",
-//    ":features:main:composer",
-//    ":features:main:composers",
-//    ":features:main:debug",
-//    ":features:main:favorites",
-//    ":features:main:games",
-//    ":features:main:game",
-//    ":features:main:license",
-//    ":features:main:search",
-//    ":features:main:settings",
-//    ":features:main:sheet",
-//    ":features:main:songs",
-//    ":features:main:tag-key",
-//    ":features:main:tag-songs",
-//    ":features:main:tag-value",
-//    ":features:main:viewer",
-
     ":features:remaster:all",
     ":features:remaster:browse",
     ":features:remaster:composers:detail",
@@ -144,5 +126,6 @@ include(
     ":features:remaster:tags:list",
     ":features:remaster:tags:songs",
     ":features:remaster:tags:values",
-    ":features:remaster:topbar"
+    ":features:remaster:topbar",
+    ":features:remaster:updates",
 )

@@ -24,6 +24,7 @@ enum class Destination(
     TAGS_VALUES_SONG_LIST("tags/value", ArgType.LONG),
     FAVORITES("favorites", ArgType.NONE),
     LICENSES("licenses", ArgType.NONE),
+    UPDATES("updates", ArgType.NONE),
     ;
 
     fun noArgs() = destName

@@ -22,6 +22,20 @@ class StringGenerator(private val random: Random) {
         return builder.toString().trim()
     }
 
+    fun generateLorem(): String {
+        val wordCount = random.nextInt(FakeModelGenerator.MAX_WORDS_PER_LOREM - 1) + 1
+        val builder = StringBuilder()
+
+        for (wordIndex in 0 until wordCount) {
+            val randomWordIndex = random.nextInt(RANDOM_WORDS.size - 1)
+            val randomWord = RANDOM_WORDS[randomWordIndex]
+            builder.append(randomWord)
+            builder.append(' ')
+        }
+
+        return builder.toString().trim()
+    }
+
     companion object {
         val RANDOM_WORDS = """Lorem ipsum dolor sit amet consectetur adipiscing elit Curabitur 
                 |iaculis neque vel fermentum dictum Pellentesque ac justo ultricies 
