@@ -2,6 +2,11 @@ package com.vgleadsheets.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,19 +31,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.components.CollapsibleDetailsListModel
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.id
 import java.util.Random
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CollapsibleDetailsListItem(
-    title: String,
-    detailItems: ImmutableList<String>,
-    initiallyCollapsed: Boolean = false,
+    model: CollapsibleDetailsListModel,
     padding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -47,17 +50,18 @@ fun CollapsibleDetailsListItem(
             .fillMaxWidth()
             .animateContentSize()
     ) {
-        var collapsed by remember { mutableStateOf(initiallyCollapsed) }
+        var collapsed by remember { mutableStateOf(model.initiallyCollapsed) }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background)
                 .clickable { collapsed = !collapsed }
                 .padding(padding),
         ) {
             Text(
-                text = title,
+                text = model.title,
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
@@ -78,8 +82,15 @@ fun CollapsibleDetailsListItem(
             )
         }
 
-        detailItems.forEach { item ->
-            AnimatedVisibility(!collapsed) {
+        val enterTransition = enterTransition()
+        val exitTransition = exitTransition()
+
+        model.detailItems.forEach { item ->
+            AnimatedVisibility(
+                visible = !collapsed,
+                enter = enterTransition,
+                exit = exitTransition,
+            ) {
                 DetailItem(
                     detailText = item,
                     padding = padding,
@@ -88,6 +99,16 @@ fun CollapsibleDetailsListItem(
         }
     }
 }
+
+@Composable
+private fun enterTransition() = fadeIn(
+    animationSpec = tween(delayMillis = 400)
+)
+
+@Composable
+private fun exitTransition() = fadeOut() + shrinkVertically(
+    animationSpec = tween(delayMillis = 100)
+)
 
 @Composable
 private fun DetailItem(
@@ -150,10 +171,17 @@ private fun Sample(padding: PaddingValues, randomizer: Random, stringGen: String
         stringGen.generateLorem()
     }
 
-    CollapsibleDetailsListItem(
-        title = stringGen.generateTitle(),
+    val title = stringGen.generateTitle()
+
+    val model = CollapsibleDetailsListModel(
+        dataId = title.hashCode().toLong(),
+        title = title,
         detailItems = detailItems.toImmutableList(),
         initiallyCollapsed = detailCount % 2 == 0,
+    )
+
+    CollapsibleDetailsListItem(
+        model = model,
         padding = padding,
         modifier = Modifier,
     )

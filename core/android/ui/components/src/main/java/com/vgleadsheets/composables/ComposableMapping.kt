@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.components.CheckableListModel
+import com.vgleadsheets.components.CollapsibleDetailsListModel
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.EmptyStateListModel
@@ -54,6 +55,7 @@ fun ListModel.Content(
     ) {
         when (this) {
             is CheckableListModel -> LabelCheckboxItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+            is CollapsibleDetailsListModel -> CollapsibleDetailsListItem(model = this, modifier = mod, padding = pad)
             is CtaListModel -> ActionItem(model = this, actionSink = sink, modifier = mod, padding = pad)
             is DropdownSettingListModel -> LabelDropdownListItem(model = this, modifier = mod, padding = pad)
             is EmptyStateListModel -> EmptyListIndicator(model = this, modifier = mod)
