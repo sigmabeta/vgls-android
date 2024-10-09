@@ -32,6 +32,7 @@
     <string name="screen_title_favorites">Browse Favorites </string>
     <string name="screen_title_search">Search</string>
     <string name="screen_title_settings">Settings</string>
+    <string name="screen_title_updates">App Updates</string>
     <string name="screen_title_licenses">Open-source Licenses</string>
 
     <string name="screen_subtitle_song_detail">from %1$s</string>
@@ -64,6 +65,7 @@
     <string name="label_settings_license">Open-source Licenses</string>
     <string name="label_settings_website">VGLeadSheets.com</string>
     <string name="label_settings_gb">Giant Bomb Wiki</string>
+    <string name="label_settings_whats_new">What\'s new in the app</string>
     <string name="label_settings_branch">Source Branch</string>
     <string name="label_settings_version_name">App Version</string>
     <string name="label_settings_version_code">App Version Code</string>

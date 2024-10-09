@@ -17,6 +17,7 @@ fun StringId.id(): Int {
         StringId.SCREEN_TITLE_BROWSE_FAVORITES -> R.string.screen_title_favorites
         StringId.SCREEN_TITLE_SEARCH -> R.string.screen_title_search
         StringId.SCREEN_TITLE_SETTINGS -> R.string.screen_title_settings
+        StringId.SCREEN_TITLE_UPDATES -> R.string.screen_title_updates
         StringId.SCREEN_TITLE_LICENSES -> R.string.screen_title_licenses
 
         StringId.SCREEN_SUBTITLE_SONG_DETAIL -> R.string.screen_subtitle_song_detail
@@ -96,6 +97,7 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS_LEGACY -> R.string.label_settings_debug_generate_records_legacy
         StringId.SETTINGS_LABEL_DEBUG_MIGRATE_RECORDS -> R.string.label_settings_debug_migrate_records
         StringId.SETTINGS_LABEL_DEBUG_RESTART -> R.string.label_settings_debug_restart
+        StringId.SETTINGS_LABEL_APP_WHATS_NEW -> R.string.label_settings_whats_new
         StringId.SETTINGS_LABEL_APP_BRANCH -> R.string.label_settings_branch
         StringId.SETTINGS_LABEL_APP_VERSION_NAME -> R.string.label_settings_version_name
         StringId.SETTINGS_LABEL_APP_VERSION_CODE -> R.string.label_settings_version_code

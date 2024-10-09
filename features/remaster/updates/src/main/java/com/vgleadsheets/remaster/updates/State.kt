@@ -15,7 +15,7 @@ data class State(
     val updates: LCE<List<AppUpdate>> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_SETTINGS),
+        title = stringProvider.getString(StringId.SCREEN_TITLE_UPDATES),
         shouldShowBack = true
     )
 
@@ -28,7 +28,7 @@ data class State(
 
             CollapsibleDetailsListModel(
                 dataId = update.versionCode.toLong(),
-                title = "${update.versionName}: $releaseDate",
+                title = "${update.versionName} - $releaseDate",
                 detailItems = update.changes.toImmutableList(),
                 initiallyCollapsed = index != 0
             )

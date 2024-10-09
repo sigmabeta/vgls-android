@@ -39,6 +39,7 @@ class MenuViewModelBrain(
             is Action.KeepScreenOnClicked -> onKeepScreenOnClicked()
             is Action.WebsiteLinkClicked -> onWebsiteLinkClicked()
             is Action.GiantBombClicked -> onGiantBombClicked()
+            is Action.WhatsNewClicked -> onWhatsNewClicked()
             is Action.BuildDateClicked -> onBuildDateClicked()
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
             is Action.DebugDelayClicked -> onDebugDelayClicked()
@@ -65,6 +66,10 @@ class MenuViewModelBrain(
 
     private fun onGiantBombClicked() {
         emitEvent(VglsEvent.GiantBombLinkClicked)
+    }
+
+    private fun onWhatsNewClicked() {
+        navigateTo(Destination.UPDATES.noArgs())
     }
 
     @Suppress("MagicNumber")

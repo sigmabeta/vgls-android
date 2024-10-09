@@ -37,6 +37,7 @@ data class State(
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_ABOUT)),
         website(stringProvider),
         giantBomb(stringProvider),
+        appWhatsNew(stringProvider),
         appVersionName(stringProvider),
         appVersionCode(stringProvider),
         appBuildBranch(stringProvider),
@@ -143,6 +144,11 @@ data class State(
         label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
         value = appInfo?.buildTimeMs?.toLongDateText(),
         clickAction = Action.BuildDateClicked
+    )
+
+    private fun appWhatsNew(stringProvider: StringProvider) = SingleTextListModel(
+        name = stringProvider.getString(StringId.SETTINGS_LABEL_APP_WHATS_NEW),
+        clickAction = Action.WhatsNewClicked
     )
 
     private fun appBuildBranch(stringProvider: StringProvider) = LabelValueListModel(
