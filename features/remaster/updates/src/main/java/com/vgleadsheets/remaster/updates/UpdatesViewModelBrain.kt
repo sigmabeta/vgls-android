@@ -35,6 +35,7 @@ class UpdatesViewModelBrain(
         }
     }
 
+    @Suppress("MaxLineLength")
     private fun generateUpdates() = LCE.Content(
         data = listOf(
             AppUpdate(

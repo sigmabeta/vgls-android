@@ -44,7 +44,7 @@ internal fun UpdateScreenLoading(
     )
 }
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "MaxLineLength")
 private fun updateScreenState(stringProvider: StringProvider): State {
     val screenState = State(
         updates = LCE.Content(

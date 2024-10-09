@@ -111,6 +111,7 @@ private fun exitTransition() = fadeOut() + shrinkVertically(
 )
 
 @Composable
+@Suppress("MagicNumber")
 private fun DetailItem(
     detailText: String,
     padding: PaddingValues,
