@@ -103,6 +103,7 @@ include(
     ":core:common:ui:icons",
     ":core:common:ui:strings",
     ":core:common:urlinfo",
+    ":core:common:versions",
 
     ":core:fake:perf",
     ":core:fake:tracking",

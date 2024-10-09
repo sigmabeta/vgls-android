@@ -22,5 +22,6 @@ open class VglsAction {
     data object SearchClearClicked : VglsAction()
 
     data class NotifClearClicked(val id: Long) : VglsAction()
-    data object SeeWhatsNewClicked : VglsAction()
+    data object DbSeeWhatsNewClicked : VglsAction()
+    data object AppSeeWhatsNewClicked : VglsAction()
 }

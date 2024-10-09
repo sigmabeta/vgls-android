@@ -1,7 +1,6 @@
 package com.vgleadsheets.notif
 
 import com.squareup.moshi.JsonAdapter
-import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.storage.common.Storage
@@ -13,12 +12,12 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 
 class NotifManager(
     private val storage: Storage,
     private val notifStateJsonAdapter: JsonAdapter<NotifState>,
-    private val actionDeserializer: ActionDeserializer,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
@@ -28,21 +27,12 @@ class NotifManager(
 
     init {
         setupNotifStorageCollection()
+        removePreviousOneTimeNotifs()
     }
 
     fun addNotif(notif: Notif) {
         updateNotifsInStorage { notifs ->
-            val actualNotif = if (notif.action != null) {
-                val genericAction = actionDeserializer.serializeAction(notif.action)
-
-                notif.copy(
-                    action = null,
-                    genericAction = genericAction,
-                )
-            } else {
-                notif
-            }
-            notifs[notif.id] = actualNotif
+            notifs[notif.id] = notif
         }
     }
 
@@ -79,6 +69,19 @@ class NotifManager(
             .launchIn(coroutineScope)
     }
 
+    private fun removePreviousOneTimeNotifs() {
+        internalNotifState
+            .take(1)
+            .onEach {
+                hatchet.v("Clearing previous one-time notifs...")
+                updateNotifsInStorage { notifs ->
+                    notifs.filterNot { entry -> entry.value.isOneTime }
+                }
+            }
+            .flowOn(dispatchers.disk)
+            .launchIn(coroutineScope)
+    }
+
     private fun NotifState.toJson() = notifStateJsonAdapter.toJson(this)
 
     @Suppress("PrintStackTrace", "TooGenericExceptionCaught", "ReturnCount")
@@ -89,29 +92,7 @@ class NotifManager(
         }
         return try {
             val fromJson = notifStateJsonAdapter.fromJson(this)
-
-            if (fromJson == null) {
-                hatchet.e("Invalid Notif information: \"$this\"")
-                return null
-            }
-
-            val notifs = fromJson.notifs
-                .map { entry ->
-                    val actionLessNotif = entry.value
-
-                    hatchet.v("Found saved generic action: ${actionLessNotif.genericAction}")
-
-                    val action = actionDeserializer.recreateAction(actionLessNotif.genericAction)
-                    val notif = actionLessNotif.copy(
-                        genericAction = null,
-                        action = action,
-                    )
-
-                    entry.key to notif
-                }
-                .toMap() // lol
-
-            fromJson.copy(notifs = notifs)
+            return fromJson
         } catch (ex: Exception) {
             hatchet.e("Error reading Notifs from storage: ${ex.message}")
             ex.printStackTrace()

@@ -39,7 +39,8 @@ class HomeViewModelBrain(
             is VglsAction.Resume -> return
             is VglsAction.Pause -> return
             is VglsAction.NotifClearClicked -> onNotifClearClicked(action.id)
-            is VglsAction.SeeWhatsNewClicked -> onSeeWhatsNewClicked()
+            is VglsAction.DbSeeWhatsNewClicked -> onDbSeeWhatsNewClicked()
+            is VglsAction.AppSeeWhatsNewClicked -> onAppSeeWhatsNewClicked()
             is VglsAction.RefreshDbClicked -> onRefreshDbClicked()
             is Action.MostSongsGameClicked -> onMostSongsGameClicked(action.gameId)
             is Action.MostSongsComposerClicked -> onMostSongsComposerClicked(action.composerId)
@@ -55,7 +56,7 @@ class HomeViewModelBrain(
         }
     }
 
-    private fun onSeeWhatsNewClicked() {
+    private fun onDbSeeWhatsNewClicked() {
         tagRepository.getIdOfPublishDateTagKey()
             .take(1)
             .filterNotNull()
@@ -67,6 +68,10 @@ class HomeViewModelBrain(
             .onEach { tagValue -> navigateTo(Destination.TAGS_VALUES_SONG_LIST.forId(tagValue.id)) }
             .catch { showError(it.message ?: "Unknown error.") }
             .runInBackground()
+    }
+
+    private fun onAppSeeWhatsNewClicked() {
+        navigateTo(Destination.UPDATES.noArgs())
     }
 
     private fun onMostSongsGameClicked(gameId: Long) {

@@ -12,22 +12,27 @@ class ActionDeserializer @Inject constructor(
 ) {
     fun recreateAction(genericAction: GenericAction?): VglsAction? {
         return when (genericAction?.type) {
-            VglsAction.RefreshDbClicked::class.simpleName -> VglsAction.RefreshDbClicked
-            VglsAction.SeeWhatsNewClicked::class.simpleName -> VglsAction.SeeWhatsNewClicked
+            "VglsAction.RefreshDbClicked" -> VglsAction.RefreshDbClicked
+            "VglsAction.DbSeeWhatsNewClicked" -> VglsAction.DbSeeWhatsNewClicked
+            "VglsAction.AppSeeWhatsNewClicked" -> VglsAction.AppSeeWhatsNewClicked
             null -> null
             else -> fromGeneric(genericAction)
         }
     }
 
-    fun serializeAction(action: VglsAction): GenericAction? {
-        return toGeneric(action)
+    fun serializeAction(action: VglsAction?): GenericAction? {
+        return if (action != null) {
+            toGeneric(action)
+        } else {
+            null
+        }
     }
 
     @Suppress("TooGenericExceptionCaught")
     private fun fromGeneric(genericAction: GenericAction): VglsAction? {
         return try {
             when (genericAction.type) {
-                VglsAction.InitWithId::class.simpleName -> VglsAction.InitWithId(id = genericAction.argIdOne!!)
+                "VglsAction.InitWithId" -> VglsAction.InitWithId(id = genericAction.argIdOne!!)
                 else -> null
             }
         } catch (ex: NullPointerException) {
@@ -38,9 +43,10 @@ class ActionDeserializer @Inject constructor(
 
     private fun toGeneric(action: VglsAction): GenericAction {
         return when (action) {
-            is VglsAction.RefreshDbClicked -> GenericAction(type = action::class.java.simpleName)
-            is VglsAction.SeeWhatsNewClicked -> GenericAction(type = action::class.java.simpleName)
-            is VglsAction.InitWithId -> GenericAction(type = action::class.java.simpleName, argIdOne = action.id)
+            is VglsAction.RefreshDbClicked -> GenericAction(type = "VglsAction.RefreshDbClicked")
+            is VglsAction.DbSeeWhatsNewClicked -> GenericAction(type = "VglsAction.DbSeeWhatsNewClicked")
+            is VglsAction.AppSeeWhatsNewClicked -> GenericAction(type = "VglsAction.AppSeeWhatsNewClicked")
+            is VglsAction.InitWithId -> GenericAction(type = "VglsAction.InitWithId", argIdOne = action.id)
             else -> throw IllegalArgumentException("Not a supported action: $action")
         }
     }

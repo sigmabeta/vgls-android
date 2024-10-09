@@ -19,10 +19,10 @@ class AndroidDataStore(
     private val hatchet: Hatchet,
 ) : Storage {
     override fun saveString(key: String, value: String) {
-        hatchet.v("Saving string to storage: $key -> $value")
-        val typedKey = stringPreferencesKey(key)
-
         coroutineScope.launch(dispatchers.disk) {
+            hatchet.v("Saving string to storage: $key -> $value")
+            val typedKey = stringPreferencesKey(key)
+
             dataStore.edit { preferences ->
                 preferences[typedKey] = value
             }
@@ -34,10 +34,10 @@ class AndroidDataStore(
         .map { preferences -> preferences[stringPreferencesKey(key)] }
 
     override fun saveInt(key: String, value: Int) {
-        hatchet.v("Saving integer to storage: $key -> $value")
-        val typedKey = intPreferencesKey(key)
-
         coroutineScope.launch(dispatchers.disk) {
+            hatchet.v("Saving integer to storage: $key -> $value")
+            val typedKey = intPreferencesKey(key)
+
             dataStore.edit { preferences ->
                 preferences[typedKey] = value
             }

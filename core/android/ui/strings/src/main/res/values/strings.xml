@@ -100,7 +100,11 @@
     <string name="browse_link_sheets">All Sheets</string>
 
 
-    <string name="notif_update_success">New Sheets Available</string>
+    <string name="notif_db_update_success">New Sheets Available</string>
+    <string name="notif_app_update_default">App Update</string>
+    <string name="notif_app_update_first">Welcome to VGLeadSheets!</string>
+    <string name="notif_app_update_remaster">VGLeadSheets remastered!</string>
+    <string name="notif_app_update_error">App Update Error</string>
 
     <string name="error_api_update">Sheet Update Failed</string>
     <string name="error_db_update">Database Update Failed</string>

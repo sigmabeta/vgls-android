@@ -1,6 +1,7 @@
 package com.vgleadsheets.repository
 
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import com.vgleadsheets.logging.Hatchet
@@ -33,6 +34,7 @@ class UpdateManager(
     private val dbUpdater: DbUpdater,
     private val dbStatisticsDataSource: DbStatisticsDataSource,
     private val threeTen: ThreeTenTime,
+    private val actionDeserializer: ActionDeserializer,
     private val hatchet: Hatchet,
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
@@ -156,7 +158,7 @@ class UpdateManager(
     }
 
     private fun onUpdateSuccess() {
-        val title = StringId.NOTIF_UPDATE_SUCCESS
+        val title = StringId.NOTIF_TITLE_DB_UPDATE_SUCCESS
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),
@@ -165,7 +167,7 @@ class UpdateManager(
                 actionLabel = "See what's new",
                 category = NotifCategory.VGLS_UPDATE,
                 isOneTime = true,
-                action = VglsAction.SeeWhatsNewClicked,
+                action = actionDeserializer.serializeAction(VglsAction.DbSeeWhatsNewClicked),
             )
         )
     }
@@ -180,7 +182,7 @@ class UpdateManager(
                 actionLabel = "Try again",
                 category = NotifCategory.ERROR,
                 isOneTime = true,
-                action = VglsAction.RefreshDbClicked,
+                action = actionDeserializer.serializeAction(VglsAction.RefreshDbClicked),
             )
         )
     }
@@ -195,7 +197,7 @@ class UpdateManager(
                 actionLabel = "Try again",
                 category = NotifCategory.ERROR,
                 isOneTime = true,
-                action = VglsAction.RefreshDbClicked,
+                action = actionDeserializer.serializeAction(VglsAction.RefreshDbClicked),
             )
         )
     }

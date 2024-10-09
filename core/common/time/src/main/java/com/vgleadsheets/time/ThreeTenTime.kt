@@ -1,6 +1,7 @@
 package com.vgleadsheets.time
 
 interface ThreeTenTime {
+    fun init()
 
     fun now(): org.threeten.bp.ZonedDateTime
 

@@ -14,6 +14,8 @@ import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.history.UserContentMigrator
+import com.vgleadsheets.time.ThreeTenTime
+import com.vgleadsheets.versions.AppVersionManager
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import javax.inject.Named
@@ -35,6 +37,12 @@ class VglsApplication :
 
     @Inject
     lateinit var userContentMigrator: UserContentMigrator
+
+    @Inject
+    lateinit var appVersionManager: AppVersionManager
+
+    @Inject
+    lateinit var threeTenTime: ThreeTenTime
 
     @Inject
     lateinit var coilLogger: HatchetCoilLogger
@@ -67,6 +75,8 @@ class VglsApplication :
         hatchet.v("Device manufacturer: ${Build.MANUFACTURER}")
         hatchet.v("Device model: ${Build.MODEL}")
 
+        threeTenTime.init()
+        appVersionManager.reportAppVersion(BuildConfig.VERSION_CODE)
         Stetho.initializeWithDefaults(this)
     }
 

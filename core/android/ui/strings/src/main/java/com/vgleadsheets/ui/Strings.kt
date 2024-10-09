@@ -103,7 +103,11 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_APP_VERSION_CODE -> R.string.label_settings_version_code
         StringId.SETTINGS_LABEL_APP_BUILD_DATE -> R.string.label_settings_build_date
 
-        StringId.NOTIF_UPDATE_SUCCESS -> R.string.notif_update_success
+        StringId.NOTIF_TITLE_DB_UPDATE_SUCCESS -> R.string.notif_db_update_success
+        StringId.NOTIF_TITLE_APP_UPDATE_DEFAULT -> R.string.notif_app_update_default
+        StringId.NOTIF_TITLE_APP_UPDATE_FIRST_TIME -> R.string.notif_app_update_first
+        StringId.NOTIF_TITLE_APP_UPDATE_FIRST_SINCE_REMASTER -> R.string.notif_app_update_remaster
+        StringId.NOTIF_TITLE_APP_UPDATE_ERROR -> R.string.notif_app_update_error
 
         StringId.ERROR_API_UPDATE -> R.string.error_api_update
         StringId.ERROR_DB_UPDATE -> R.string.error_db_update

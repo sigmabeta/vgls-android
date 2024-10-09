@@ -1,5 +1,6 @@
 package com.vgleadsheets.repository.di
 
+import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.android.dao.TransactionDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
@@ -118,6 +119,7 @@ object RepositoryModule {
         dbUpdater: DbUpdater,
         threeTenTime: ThreeTenTime,
         dispatchers: VglsDispatchers,
+        actionDeserializer: ActionDeserializer,
         hatchet: Hatchet,
         dbStatisticsDataSource: DbStatisticsDataSource,
         coroutineScope: CoroutineScope,
@@ -127,6 +129,7 @@ object RepositoryModule {
         dbUpdater,
         dbStatisticsDataSource,
         threeTenTime,
+        actionDeserializer,
         hatchet,
         dispatchers,
         coroutineScope,

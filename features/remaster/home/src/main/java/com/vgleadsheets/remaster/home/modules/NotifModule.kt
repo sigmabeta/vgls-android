@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.appcomm.LCE
+import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.NotifListModel
 import com.vgleadsheets.list.DelayManager
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.map
 
 class NotifModule @Inject constructor(
     private val notifManager: NotifManager,
+    private val actionDeserializer: ActionDeserializer,
     private val stringProvider: StringProvider,
     delayManager: DelayManager,
 ) : HomeModule(
@@ -35,12 +37,13 @@ class NotifModule @Inject constructor(
                     shouldShow = notifs.isNotEmpty(),
                     title = title(),
                     items = notifs.map { notif ->
+                        val title = stringProvider.getString(notif.title)
                         NotifListModel(
                             dataId = notif.id,
-                            title = stringProvider.getString(notif.title),
+                            title = title,
                             description = notif.description,
                             actionLabel = notif.actionLabel,
-                            action = notif.action,
+                            action = actionDeserializer.recreateAction(notif.action),
                             isError = notif.category == NotifCategory.ERROR
                         )
                     },
