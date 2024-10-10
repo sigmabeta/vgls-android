@@ -46,13 +46,14 @@ internal fun UpdateScreenLoading(
 
 @Suppress("MagicNumber", "MaxLineLength")
 private fun updateScreenState(stringProvider: StringProvider): State {
+    val releaseDate = 1728504059000L
     val screenState = State(
         updates = LCE.Content(
             listOf(
                 AppUpdate(
                     versionCode = 123456,
                     versionName = "3.4.5",
-                    releaseDate = System.currentTimeMillis(),
+                    releaseDate = releaseDate,
                     changes = listOf(
                         "Here's something that was changed in this version.",
                         "We fixed another thing, which hopefully you'll enjoy.",
@@ -62,7 +63,7 @@ private fun updateScreenState(stringProvider: StringProvider): State {
                 AppUpdate(
                     versionCode = 12345,
                     versionName = "2.3.4",
-                    releaseDate = System.currentTimeMillis() - 100000000L,
+                    releaseDate = releaseDate - 100000000L,
                     changes = listOf(
                         "This is a different update.",
                         "I'm going to say a bunch of sentences here. So it's longer. Long text needs to be tested, you see. Kurikaesu: I'm going to say a bunch of sentences here. So it's longer. Long text needs to be tested, you see.",
