@@ -2,15 +2,25 @@ package com.vgleadsheets.database.android.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.sqlite.db.SupportSQLiteOpenHelper
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
+import com.vgleadsheets.database.BuildConfig
 import com.vgleadsheets.database.android.DatabaseVersions
 import com.vgleadsheets.database.android.Migrations
+import com.vgleadsheets.database.android.UserContentDatabase
 import com.vgleadsheets.database.android.VglsDatabase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import io.requery.android.database.sqlite.RequerySQLiteOpenHelperFactory
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-class DatabaseModule {
+@Suppress("TooManyFunctions")
+object DatabaseModule {
     @Singleton
     @Provides
     fun providesTransactionRunner(
@@ -19,19 +29,50 @@ class DatabaseModule {
 
     @Singleton
     @Provides
+    fun provideSqlOpenHelperFactory() = if (BuildConfig.DEBUG) {
+        FrameworkSQLiteOpenHelperFactory()
+    } else {
+        RequerySQLiteOpenHelperFactory()
+    }
+
+    @Singleton
+    @Provides
     @Suppress("SpreadOperator")
-    fun provideVglsDatabase(context: Context): VglsDatabase {
+    fun provideVglsDatabase(
+        @ApplicationContext context: Context,
+        sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
+    ): VglsDatabase {
         return Room
             .databaseBuilder(
                 context,
                 VglsDatabase::class.java,
                 "vgls-database"
             )
+            .openHelperFactory(sqlOpenHelperFactory)
             .addMigrations(
                 Migrations.RemoveJams,
                 Migrations.AddFavorites,
                 Migrations.AddAlternates,
+                Migrations.AddSongCounts,
             )
+            .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    @Suppress("SpreadOperator")
+    fun provideUserContentDatabase(
+        @ApplicationContext context: Context,
+        sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
+    ): UserContentDatabase {
+        return Room
+            .databaseBuilder(
+                context,
+                UserContentDatabase::class.java,
+                "user-content-database"
+            )
+            .openHelperFactory(sqlOpenHelperFactory)
             .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }
@@ -92,25 +133,61 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun composerForSongDao(
-        database: VglsDatabase
-    ) = database.composerForSongDao()
+    fun songHistoryEntryDao(
+        database: UserContentDatabase
+    ) = database.songHistoryEntryDao()
 
     @Provides
     @Singleton
-    fun songForComposerDao(
-        database: VglsDatabase
-    ) = database.songForComposerDao()
+    fun gamePlayCountDao(
+        database: UserContentDatabase
+    ) = database.gamePlayCountDao()
 
     @Provides
     @Singleton
-    fun songForTagValueDao(
-        database: VglsDatabase
-    ) = database.songForTagValueDao()
+    fun composerPlayCountDao(
+        database: UserContentDatabase
+    ) = database.composerPlayCountDao()
 
     @Provides
     @Singleton
-    fun tagValueForSongDao(
-        database: VglsDatabase
-    ) = database.tagValueForSongDao()
+    fun tagValuePlayCountDao(
+        database: UserContentDatabase
+    ) = database.tagValuePlayCountDao()
+
+    @Provides
+    @Singleton
+    fun songPlayCountDao(
+        database: UserContentDatabase
+    ) = database.songPlayCountDao()
+
+    @Provides
+    @Singleton
+    fun searchHistoryDao(
+        database: UserContentDatabase
+    ) = database.searchHistoryDao()
+
+    @Provides
+    @Singleton
+    fun favoriteSongDao(
+        database: UserContentDatabase
+    ) = database.favoriteSongDao()
+
+    @Provides
+    @Singleton
+    fun favoriteGameDao(
+        database: UserContentDatabase
+    ) = database.favoriteGameDao()
+
+    @Provides
+    @Singleton
+    fun favoriteComposerDao(
+        database: UserContentDatabase
+    ) = database.favoriteComposerDao()
+
+    @Provides
+    @Singleton
+    fun alternateSettingDao(
+        database: UserContentDatabase
+    ) = database.alternateSettingDao()
 }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.8">
-      <module name="VGLeadSheets.core.android.bitmaps" target="17" />
-      <module name="VGLeadSheets.core.android.ui.colors" target="17" />
-      <module name="VGLeadSheets.core.android.ui.fonts" target="17" />
-      <module name="VGLeadSheets.core.android.ui.themes" target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="VGLeadSheets.core.android.hud" target="17" />
+      <module name="VGLeadSheets.core.android.router" target="17" />
+      <module name="VGLeadSheets.core.android.ui-components" target="17" />
+      <module name="VGLeadSheets.core.android.ui-core" target="17" />
+      <module name="VGLeadSheets.core.android.vectors" target="17" />
       <module name="VGLeadSheets.core.coroutines" target="11" />
       <module name="VGLeadSheets.core.di" target="11" />
       <module name="VGLeadSheets.core.images" target="11" />
@@ -23,8 +24,6 @@
       <module name="VGLeadSheets.core.ui-components" target="11" />
       <module name="VGLeadSheets.core.ui-core" target="11" />
       <module name="VGLeadSheets.core.vectors" target="11" />
-      <module name="VGLeadSheets.features.main.jam" target="17" />
-      <module name="VGLeadSheets.features.main.jams" target="17" />
       <module name="VGLeadSheets.features.main.list" target="17" />
       <module name="VGLeadSheets.features.main.router" target="17" />
     </bytecodeTargetLevel>

@@ -1,47 +1,31 @@
 package com.vgleadsheets.conversion.android.datasource
 
-import com.vgleadsheets.conversion.android.OneToOneAndroidDataSource
+import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.ComposerAliasConverter
-import com.vgleadsheets.conversion.android.converter.ComposerConverter
-import com.vgleadsheets.conversion.mapList
+import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
-import com.vgleadsheets.database.android.dao.ComposerRoomDao
 import com.vgleadsheets.database.android.enitity.ComposerAliasEntity
-import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
-import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.alias.ComposerAlias
 
 @Suppress("MaxLineLength")
 class ComposerAliasAndroidDataSource(
     private val convert: ComposerAliasConverter,
     private val roomImpl: ComposerAliasRoomDao,
-    private val otoRelatedRoomImpl: ComposerRoomDao,
-    private val composerConverter: ComposerConverter,
-) : OneToOneAndroidDataSource<ComposerAliasRoomDao, ComposerAlias, ComposerAliasEntity, Composer, ComposerEntity, ComposerRoomDao, ComposerAliasConverter, ComposerConverter>(
+) : AndroidDataSource<ComposerAliasRoomDao, ComposerAlias, ComposerAliasEntity, ComposerAliasConverter>(
     convert,
-    composerConverter,
     roomImpl,
-    otoRelatedRoomImpl
 ),
     ComposerAliasDataSource {
     override fun searchByName(name: String) = roomImpl
         .searchByName(name)
-        .mapList {
-            convert.entityToModelWithForeignOne(
-                it,
-                otoRelatedRoomImpl,
-                composerConverter
-            )
+        .mapListTo {
+            convert.entityToModel(it)
         }
 
-    override fun getAll(withRelated: Boolean) = roomImpl
+    override fun getAll() = roomImpl
         .getAll()
-        .mapList {
-            convert.entityToModelWithForeignOne(
-                it,
-                otoRelatedRoomImpl,
-                composerConverter
-            )
+        .mapListTo {
+            convert.entityToModel(it)
         }
 }

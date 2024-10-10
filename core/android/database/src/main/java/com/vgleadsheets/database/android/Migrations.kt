@@ -49,6 +49,17 @@ object Migrations {
         }
     }
 
+    object AddSongCounts : Migration(
+        DatabaseVersions.ADDED_ALTERNATES,
+        DatabaseVersions.ADDED_SONG_COUNTS,
+    ) {
+        @Suppress("MaxLineLength")
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("$MIGRATE ${ComposerEntity.TABLE} $ADD songCount $WITH_DEFAULT_ZERO")
+            database.execSQL("$MIGRATE ${GameEntity.TABLE} $ADD songCount $WITH_DEFAULT_ZERO")
+        }
+    }
+
     const val DELETE_JAMS = "${RoomDao.DROP} jam"
     const val DELETE_SETLIST = "${RoomDao.DROP} setlist_entry"
     const val DELETE_SONG_HISTORY = "${RoomDao.DROP} song_history_entry"

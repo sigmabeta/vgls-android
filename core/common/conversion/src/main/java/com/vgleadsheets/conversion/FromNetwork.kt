@@ -7,21 +7,25 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 
-fun VglsApiGame.toModel(
+fun VglsApiGame.asModel(
     sheetsPlayed: Int,
     isFavorite: Boolean,
-    isAvailableOffline: Boolean
+    isAvailableOffline: Boolean,
+    hasVocalSongs: Boolean,
+    songCount: Int
 ) = Game(
     game_id,
     game_name,
     null,
+    hasVocalSongs,
+    songCount,
     image_url,
     sheetsPlayed,
     isFavorite,
     isAvailableOffline
 )
 
-fun ApiSong.toModel(
+fun ApiSong.asModel(
     gameId: Long,
     gameName: String,
     playCount: Int,
@@ -34,6 +38,7 @@ fun ApiSong.toModel(
     filename,
     gameId,
     gameName,
+    null,
     lyricsPageCount > 0,
     pageCount,
     altPageCount,
@@ -45,16 +50,19 @@ fun ApiSong.toModel(
     isAltSelected
 )
 
-fun ApiComposer.toModel(
+fun ApiComposer.asModel(
     sheetsPlayed: Int,
     isFavorite: Boolean,
-    isAvailableOffline: Boolean
+    isAvailableOffline: Boolean,
+    hasVocalSongs: Boolean,
+    songCount: Int
 ) = Composer(
     composer_id,
     composer_name ?: "Unknown Composer",
     null,
+    songCount,
     image_url,
-    false,
+    hasVocalSongs,
     sheetsPlayed,
     isFavorite,
     isAvailableOffline

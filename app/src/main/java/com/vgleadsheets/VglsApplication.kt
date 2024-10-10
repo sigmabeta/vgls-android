@@ -1,55 +1,95 @@
 package com.vgleadsheets
 
-import android.graphics.Bitmap
+import android.app.Application
 import android.os.Build
-import com.airbnb.mvrx.Mavericks
+import coil.ImageLoader
+import coil.ImageLoaderFactory
 import com.facebook.stetho.Stetho
-import com.squareup.picasso.OkHttp3Downloader
-import com.squareup.picasso.Picasso
-import com.vgleadsheets.di.AppModule
-import com.vgleadsheets.di.DaggerAppComponent
+import com.vgleadsheets.images.HatchetCoilLogger
+import com.vgleadsheets.images.LoadingIndicatorFetcher
+import com.vgleadsheets.images.LoadingIndicatorKeyer
 import com.vgleadsheets.logging.Hatchet
-import dagger.android.DaggerApplication
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import com.vgleadsheets.pdf.PdfImageDecoder
+import com.vgleadsheets.pdf.PdfImageFetcher
+import com.vgleadsheets.pdf.PdfImageKeyer
+import com.vgleadsheets.repository.UpdateManager
+import com.vgleadsheets.repository.history.UserContentMigrator
+import com.vgleadsheets.time.ThreeTenTime
+import com.vgleadsheets.versions.AppVersionManager
+import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
+import javax.inject.Named
+import okhttp3.OkHttpClient
 
-class VglsApplication : DaggerApplication(), HasAndroidInjector {
+@HiltAndroidApp
+class VglsApplication :
+    Application(),
+    ImageLoaderFactory {
     @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+    lateinit var updateManager: UpdateManager
 
     @Inject
-    lateinit var okHttp3Downloader: OkHttp3Downloader
+    @Named("VglsOkHttp")
+    lateinit var okHttpClient: OkHttpClient
 
     @Inject
     lateinit var hatchet: Hatchet
 
+    @Inject
+    lateinit var userContentMigrator: UserContentMigrator
+
+    @Inject
+    lateinit var appVersionManager: AppVersionManager
+
+    @Inject
+    lateinit var threeTenTime: ThreeTenTime
+
+    @Inject
+    lateinit var coilLogger: HatchetCoilLogger
+
+    @Inject
+    lateinit var loadingIndicatorKeyer: LoadingIndicatorKeyer
+
+    @Inject
+    lateinit var pdfImageKeyer: PdfImageKeyer
+
+    @Inject
+    lateinit var pdfImageDecoderFactory: PdfImageDecoder.Factory
+
+    @Inject
+    lateinit var pdfImageFetcherFactory: PdfImageFetcher.Factory
+
+    @Inject
+    lateinit var loadingIndicatorFetcherFactory: LoadingIndicatorFetcher.Factory
+
     override fun onCreate() {
         super.onCreate()
 
-        Mavericks.initialize(this)
+        hatchet.v("Starting Application.")
+        hatchet.v("Build type: ${BuildConfig.BUILD_TYPE}")
 
-        hatchet.v(this.javaClass.simpleName, "Starting Application.")
-        hatchet.v(this.javaClass.simpleName, "Build type: ${BuildConfig.BUILD_TYPE}")
+        hatchet.v("App version name: ${BuildConfig.VERSION_NAME}")
+        hatchet.v("App version code: ${BuildConfig.VERSION_CODE}")
 
-        hatchet.v(this.javaClass.simpleName, "Android version: ${Build.VERSION.RELEASE}")
-        hatchet.v(this.javaClass.simpleName, "Device manufacturer: ${Build.MANUFACTURER}")
-        hatchet.v(this.javaClass.simpleName, "Device model: ${Build.MODEL}")
+        hatchet.v("Android version: ${Build.VERSION.RELEASE}")
+        hatchet.v("Device manufacturer: ${Build.MANUFACTURER}")
+        hatchet.v("Device model: ${Build.MODEL}")
 
+        threeTenTime.init()
+        appVersionManager.reportAppVersion(BuildConfig.VERSION_CODE)
         Stetho.initializeWithDefaults(this)
-
-        val picasso = Picasso.Builder(this)
-            .downloader(okHttp3Downloader)
-            .indicatorsEnabled(BuildConfig.DEBUG)
-            .defaultBitmapConfig(Bitmap.Config.RGB_565)
-            .build()
-
-        Picasso.setSingletonInstance(picasso)
     }
 
-    override fun applicationInjector() = DaggerAppComponent
-        .factory()
-        .create(AppModule(this))
-
-    override fun androidInjector() = dispatchingAndroidInjector
+    override fun newImageLoader() = ImageLoader.Builder(this)
+        .logger(coilLogger)
+        .okHttpClient(okHttpClient)
+        .respectCacheHeaders(false)
+        .components {
+            add(loadingIndicatorKeyer)
+            add(pdfImageKeyer)
+            add(pdfImageDecoderFactory)
+            add(pdfImageFetcherFactory)
+            add(loadingIndicatorFetcherFactory)
+        }
+        .build()
 }

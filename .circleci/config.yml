@@ -8,28 +8,37 @@ workflows:
       - kt-lint:
           requires:
             - setup
-      - build_apk:
-          requires:
-            - kt-lint
       - detekt:
           requires:
-            - build_apk
+            - setup
       - android-lint:
           requires:
-            - build_apk
-      - publish_app_bundle:
+            - setup
+      - screenshot-test:
           requires:
+            - setup
+      - build_release_apk:
+          requires:
+            - kt-lint
             - detekt
             - android-lint
+      - publish_app_bundle:
+          filters:
+            branches:
+              only:
+                - release
+                - beta
+          requires:
+            - build_release_apk
 
 ##################################################
 
 jobs:
   setup:
-    resource_class: small
+    resource_class: medium
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -42,12 +51,12 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies --no-configuration-cache --no-daemon --max-workers=1
       - save_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
           paths:
             - ~/.gradle
       - run:
@@ -61,7 +70,7 @@ jobs:
 
   kt-lint:
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       JVM_OPTS: -Xmx2048m
@@ -74,55 +83,26 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+      - restore_cache:
+          keys:
+            - build-cache-ktlint-v1-
       - run:
           name: Run Ktlint
           command: ./ktlint-check.sh
       - store_artifacts:
           path: ktlint.html
           destination: ktlint-reports
-
-  build_apk:
-    resource_class: large
-
-    docker:
-      - image: cimg/android:2022.04.1
-
-    environment:
-      # Start off with a 4GB heap size; expand up to 6GB
-      JVM_OPTS: -Xms4g -Xmx6g
-
-    steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-      - checkout
-      - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Setup Google Services JSON
-          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
-      - run:
-          name: Prepare license information Webview
-          command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
-      - run:
-          name: Build Release
-          command: ./gradlew :app:assembleRelease --no-configuration-cache --no-daemon --max-workers=4
       - save_cache:
-          key: build-cache-v1-{{ .Revision }}
+          key: build-cache-ktlint-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
-      - store_artifacts:
-          path: app/build/outputs
-          destination: outputs
 
   detekt:
     resource_class: medium
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -135,21 +115,58 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
-          key: build-cache-v1-{{ .Revision }}
+          keys:
+            - build-cache-detekt-v1-
       - run:
           name: Run Detekt checks
           command: ./gradlew detekt --no-configuration-cache --no-daemon --max-workers=2
+      - save_cache:
+          key: build-cache-detekt-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - build-cache
+
+  screenshot-test:
+    resource_class: large
+
+    docker:
+      - image: cimg/android:2024.04.1
+
+    environment:
+      JVM_OPTS: -Xmx512m
+
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - restore_cache:
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+      - restore_cache:
+          keys:
+            - build-cache-screenshot-test-v1-
+      - run:
+          name: Run Fail-fast script
+          command: ./paparazzi-build-script.sh
+      - run:
+          name: Compare screenshot tests
+          command: ./gradlew :core:android:ui:previews:verifyPaparazziDebug --no-configuration-cache --no-daemon --max-workers=2
       - store_artifacts:
-          path: app/build/reports/
-          destination: reports
+          path: core/android/ui/previews/build/paparazzi/failures/
+          destination: failure-screenshots
+      - save_cache:
+          key: build-cache-screenshot-test-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - build-cache
 
   android-lint:
     resource_class: large
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       # Start off with a 4GB heap size; expand up to 6GB
@@ -163,9 +180,10 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
-          key: build-cache-v1-{{ .Revision }}
+          keys:
+            - build-cache-lint-v1-
       - run:
           name: Setup Google Services JSON
           command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
@@ -175,12 +193,16 @@ jobs:
       - store_artifacts:
           path: app/build/reports/
           destination: reports
+      - save_cache:
+          key: build-cache-lint-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - build-cache
 
-  publish_app_bundle:
+  build_release_apk:
     resource_class: large
 
     docker:
-      - image: cimg/android:2022.04.1
+      - image: cimg/android:2024.04.1
 
     environment:
       # Start off with a 4GB heap size; expand up to 6GB
@@ -194,12 +216,52 @@ jobs:
             - source-v1-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
-          key: build-cache-v1-{{ .Revision }}
+          keys:
+            - build-cache-v1-
+      - run:
+          name: Prepare license information Webview
+          command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
       - run:
           name: Setup Google Services JSON
           command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
+      - run:
+          name: Build Release
+          command: ./gradlew :app:assembleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
+      - run:
+          name: Rename APK
+          command: ./rename-apk-release.sh
+      - save_cache:
+          key: build-cache-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - build-cache
+      - store_artifacts:
+          path: app/build/outputs/apk/release
+          destination: outputs
+
+  publish_app_bundle:
+    resource_class: large
+
+    docker:
+      - image: cimg/android:2024.04.1
+
+    environment:
+      # Start off with a 4GB heap size; expand up to 6GB
+      JVM_OPTS: -Xms4g -Xmx6g
+
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - restore_cache:
+          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+      - restore_cache:
+          keys:
+            - build-cache-v1-
       - run:
           name: Set target Google Play Track
           command: ./set-track-name.sh
@@ -207,8 +269,12 @@ jobs:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
       - run:
-          name: Build Release
+          name: Build Release Bundle
           command: ./gradlew :app:bundleRelease -PdisablePreDex --no-configuration-cache --no-daemon --max-workers=4
       - run:
           name: Publish Bundle
           command: ./gradlew :app:publishReleaseBundle --no-configuration-cache --no-daemon --max-workers=4
+      - save_cache:
+          key: build-cache-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - build-cache

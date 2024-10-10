@@ -1,30 +1,44 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.network.MockVglsApi
-import com.vgleadsheets.network.StringGenerator
+import com.squareup.moshi.Moshi
+import com.vgleadsheets.network.FakeModelGenerator
+import com.vgleadsheets.network.FakeVglsApi
+import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.network.VglsApi
+import dagger.Module
 import dagger.Provides
-import java.util.*
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-@dagger.Module
-class ApiModule {
+@InstallIn(SingletonComponent::class)
+@Module
+object ApiModule {
+    @Provides
+    @Singleton
+    internal fun provideMoshi(): Moshi = Moshi
+        .Builder()
+        .build()
+
+    @Provides
+    @Singleton
+    internal fun provideConverterFactory(
+        moshiInstance: Moshi
+    ): Converter.Factory = MoshiConverterFactory.create(moshiInstance)
+
     @Provides
     @Singleton
     fun provideVglsApi(
         @Named("VglsApiUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,
-        converterFactory: MoshiConverterFactory,
-        random: Random,
-        @Named("RngSeed") seed: Long,
-        stringGenerator: StringGenerator,
-        hatchet: Hatchet
-    ) = if (baseUrl != null) {
+        converterFactory: Converter.Factory,
+        fakeModelGenerator: FakeModelGenerator
+    ): VglsApi = if (baseUrl != null) {
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
@@ -32,6 +46,18 @@ class ApiModule {
             .build()
             .create(VglsApi::class.java)
     } else {
-        MockVglsApi(random, seed, stringGenerator, hatchet)
+        FakeVglsApi(fakeModelGenerator)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSheetDownloadApi(
+        @Named("VglsPdfUrl") baseUrl: String?,
+        @Named("VglsOkHttp") client: OkHttpClient,
+    ): SheetDownloadApi {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .build().create(SheetDownloadApi::class.java)
     }
 }

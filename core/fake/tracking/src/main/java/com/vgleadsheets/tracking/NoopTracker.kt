@@ -7,37 +7,37 @@ class NoopTracker(
     private val hatchet: Hatchet
 ) : Tracker {
     override fun logRefreshClick() {
-        hatchet.d(this.javaClass.simpleName, "Refresh forced.")
+        hatchet.d("Refresh forced.")
     }
 
     override fun logAutoRefresh() {
-        hatchet.d(this.javaClass.simpleName, "Refresh performed automatically.")
+        hatchet.d("Refresh performed automatically.")
     }
 
     override fun logStickerBr() {
-        hatchet.d(this.javaClass.simpleName, "Stickerbr search detected.")
+        hatchet.d("Stickerbr search detected.")
     }
 
     override fun logSearch(query: String) {
-        hatchet.d(this.javaClass.simpleName, "Searching for: $query")
+        hatchet.d("Searching for: $query")
     }
 
     override fun logPartSelect(transposition: String) {
-        hatchet.d(this.javaClass.simpleName, "Transposition selected: $transposition")
+        hatchet.d("Transposition selected: $transposition")
     }
 
     override fun logRandomSongView(songName: String, gameName: String, transposition: String) {
-        hatchet.d(this.javaClass.simpleName, "Random song loaded: $gameName - $songName; for $transposition")
+        hatchet.d("Random song loaded: $gameName - $songName; for $transposition")
     }
 
     override fun logError(message: String) = Unit
 
     override fun logWebLaunch(url: String, fromScreen: TrackingScreen, fromDetails: String) {
-        hatchet.d(this.javaClass.simpleName, "Web browser launched with url $url from screen: $fromScreen:$fromDetails")
+        hatchet.d("Web browser launched with url $url from screen: $fromScreen:$fromDetails")
     }
 
     override fun logSearchSuccess(query: String, toScreen: TrackingScreen, toDetails: String) {
-        hatchet.d(this.javaClass.simpleName, "Search result clicked: $toScreen:$toDetails from query $query")
+        hatchet.d("Search result clicked: $toScreen:$toDetails from query $query")
     }
 
     override fun logScreenView(
@@ -46,7 +46,7 @@ class NoopTracker(
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        hatchet.v(this.javaClass.simpleName, "Screen view: $screen:$details from screen: $fromScreen:$fromDetails")
+        hatchet.v("Screen view: $screen:$details from screen: $fromScreen:$fromDetails")
     }
 
     override fun logGameView(
@@ -54,7 +54,7 @@ class NoopTracker(
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        hatchet.d(this.javaClass.simpleName, "Game $gameName viewed from screen: $fromScreen:$fromDetails")
+        hatchet.d("Game $gameName viewed from screen: $fromScreen:$fromDetails")
     }
 
     override fun logComposerView(
@@ -62,7 +62,7 @@ class NoopTracker(
         fromScreen: TrackingScreen,
         fromDetails: String
     ) {
-        hatchet.d(this.javaClass.simpleName, "Composer $composerName viewed from screen: $fromScreen:$fromDetails")
+        hatchet.d("Composer $composerName viewed from screen: $fromScreen:$fromDetails")
     }
 
     override fun logSongView(
@@ -74,29 +74,29 @@ class NoopTracker(
         fromDetails: String
     ) {
         hatchet.i(
-            this.javaClass.simpleName,
+
             "Song $gameName - $songName, for $transposition; viewed from screen: $fromScreen:$fromDetails"
         )
     }
 
     override fun logShadowClick() {
-        hatchet.d(this.javaClass.simpleName, "Shadow clicked.")
+        hatchet.d("Shadow clicked.")
     }
 
     override fun logSearchButtonClick() {
-        hatchet.d(this.javaClass.simpleName, "Search button clicked.")
+        hatchet.d("Search button clicked.")
     }
 
     override fun logAppBarButtonClick() {
-        hatchet.d(this.javaClass.simpleName, "App bar button clicked.")
+        hatchet.d("App bar button clicked.")
     }
 
     override fun logBottomMenuButtonClick() {
-        hatchet.d(this.javaClass.simpleName, "Bottom Menu button clicked.")
+        hatchet.d("Bottom Menu button clicked.")
     }
 
     override fun logChangePartClick() {
-        hatchet.d(this.javaClass.simpleName, "Change part button clicked.")
+        hatchet.d("Change part button clicked.")
     }
 
     override fun logScreenLinkClick(
@@ -104,10 +104,10 @@ class NoopTracker(
         fromScreen: TrackingScreen,
         trackingDetails: String
     ) {
-        hatchet.d(this.javaClass.simpleName, "Screen link to $screenId clicked.")
+        hatchet.d("Screen link to $screenId clicked.")
     }
 
     override fun logRandomClick() {
-        hatchet.d(this.javaClass.simpleName, "Random select button clicked.")
+        hatchet.d("Random select button clicked.")
     }
 }

@@ -6,13 +6,17 @@ import com.vgleadsheets.resources.RealResourceProvider
 import com.vgleadsheets.resources.ResourceProvider
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@InstallIn(SingletonComponent::class)
 @Module
-class ResourcesModule {
+object ResourcesModule {
     @Provides
     @Singleton
-    fun provideResources(context: Context) = context.resources
+    fun provideResources(@ApplicationContext context: Context): Resources = context.resources
 
     @Provides
     @Singleton

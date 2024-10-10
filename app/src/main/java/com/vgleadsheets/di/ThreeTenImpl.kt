@@ -2,12 +2,16 @@ package com.vgleadsheets.di
 
 import android.content.Context
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.vgleadsheets.repository.ThreeTenTime
+import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.time.ThreeTenTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
-class ThreeTenImpl(private val context: Context) : ThreeTenTime {
+class ThreeTenImpl(
+    private val context: Context,
+    private val hatchet: Hatchet,
+) : ThreeTenTime {
 
     private val initializer: Long by lazy {
         AndroidThreeTen.init(context)
@@ -26,9 +30,15 @@ class ThreeTenImpl(private val context: Context) : ThreeTenTime {
         }
     }
 
+    override fun init() {
+        initializer.let {
+            Thread.sleep(0)
+        }
+    }
+
     override fun now(): ZonedDateTime = initialized { ZonedDateTime.now() }
 
-    override fun parse(textToParse: String, formatter: DateTimeFormatter) = initialized {
+    override fun parse(textToParse: String, formatter: DateTimeFormatter): ZonedDateTime = initialized {
         ZonedDateTime.parse(textToParse, formatter)
     }
 

@@ -1,19 +1,24 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.common.debug.NetworkEndpoint
+import com.vgleadsheets.appinfo.AppInfo
+import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.urlinfo.UrlInfoProvider
+import dagger.Module
 import dagger.Provides
-import java.io.File
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import java.util.Random
 import javax.inject.Named
 import javax.inject.Singleton
-import okhttp3.Cache
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.converter.moshi.MoshiConverterFactory
 
-@dagger.Module
-class NetworkModule {
+@InstallIn(SingletonComponent::class)
+@Module
+object NetworkModule {
     @Provides
     @Singleton
     @Named("RngSeed")
@@ -27,39 +32,78 @@ class NetworkModule {
     @Named("VglsUrl")
     @Singleton
     internal fun provideVglsUrl(
-        @Named("NetworkEndpoint") selectedNetwork: Int
-    ) = NetworkEndpoint.values()[selectedNetwork].url
+        urlInfoProvider: UrlInfoProvider,
+    ): String? {
+        return runBlocking {
+            val urlInfo = urlInfoProvider
+                .urlInfoFlow
+                .first { it.baseBaseUrl != null }
+
+            return@runBlocking urlInfo.baseBaseUrl
+        }
+    }
 
     @Provides
     @Named("VglsApiUrl")
     @Singleton
     internal fun provideVglsApiUrl(
-        @Named("VglsUrl") baseUrl: String?
-    ) = if (baseUrl != null) {
-        baseUrl + "api/"
-    } else {
-        null
+        urlInfoProvider: UrlInfoProvider,
+    ): String? {
+        return runBlocking {
+            val urlInfo = urlInfoProvider
+                .urlInfoFlow
+                .first { it.apiBaseUrl != null }
+
+            return@runBlocking urlInfo.apiBaseUrl
+        }
     }
 
     @Provides
     @Named("VglsImageUrl")
     @Singleton
     internal fun provideVglsImageUrl(
-        @Named("VglsUrl") baseUrl: String?
-    ) = if (baseUrl != null) {
-        baseUrl + "assets/sheets/png/"
-    } else {
-        "file:///android_asset/sheets"
+        urlInfoProvider: UrlInfoProvider,
+    ): String? {
+        val baseUrl = runBlocking {
+            val urlInfo = urlInfoProvider
+                .urlInfoFlow
+                .first { it.imageBaseUrl != null }
+
+            return@runBlocking urlInfo.imageBaseUrl
+        }
+
+        return if (baseUrl != null) {
+            baseUrl
+        } else {
+            "file:///android_asset/sheets"
+        }
+    }
+
+    @Provides
+    @Named("VglsPdfUrl")
+    @Singleton
+    internal fun provideVglsPdfUrl(
+        urlInfoProvider: UrlInfoProvider,
+    ): String? {
+        val baseUrl = runBlocking {
+            val urlInfo = urlInfoProvider
+                .urlInfoFlow
+                .first { it.pdfBaseUrl != null }
+
+            return@runBlocking urlInfo.pdfBaseUrl
+        }
+
+        return baseUrl
     }
 
     @Provides
     @Singleton
     @Named("VglsOkHttp")
     internal fun provideVglsOkClient(
-        @Named("IsDebugBuild") isDebug: Boolean,
+        appInfo: AppInfo,
         @Named("HttpLoggingInterceptor") logger: Interceptor,
         @Named("StethoInterceptor") debugger: Interceptor,
-    ) = if (isDebug) {
+    ) = if (appInfo.isDebug) {
         OkHttpClient.Builder()
             .addNetworkInterceptor(logger)
             .addNetworkInterceptor(debugger)
@@ -69,30 +113,13 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
-    @Named("PicassoOkHttp")
-    internal fun providePicassoOkClient(
-        @Named("IsDebugBuild") isDebug: Boolean,
-        @Named("CachePath") cachePath: String,
-        @Named("HttpLoggingInterceptor") logger: Interceptor,
-        @Named("StethoInterceptor") debugger: Interceptor,
-        @Named("CacheInterceptor") cacher: Interceptor
-    ) = if (isDebug) {
-        OkHttpClient.Builder()
-            .cache(Cache(File(cachePath, "okhttp"), CACHE_SIZE_BYTES))
-            .addNetworkInterceptor(logger)
-            .addNetworkInterceptor(debugger)
-            .addNetworkInterceptor(cacher)
-            .build()
-    } else {
-        OkHttpClient()
-    }
+    fun provideHatchetLogger(hatchet: Hatchet) = HatchetOkHttpLogger(hatchet)
 
     @Provides
     @Named("HttpLoggingInterceptor")
-    internal fun provideHttpLoggingInterceptor(): Interceptor {
-        val logger = HttpLoggingInterceptor()
-        logger.level = HttpLoggingInterceptor.Level.BASIC
+    internal fun provideHttpLoggingInterceptor(hatchetOkHttpLogger: HatchetOkHttpLogger): Interceptor {
+        val logger = HttpLoggingInterceptor(hatchetOkHttpLogger)
+        logger.level = HttpLoggingInterceptor.Level.HEADERS
         return logger
     }
 
@@ -105,14 +132,7 @@ class NetworkModule {
             .build()
     }
 
-    @Provides
-    @Singleton
-    internal fun provideConverterFactory() = MoshiConverterFactory.create()
+    const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
 
-    companion object {
-        const val CACHE_SIZE_BYTES = 100000000L
-        const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
-
-        const val SEED_RANDOM_NUMBER_GENERATOR = 123456L
-    }
+    const val SEED_RANDOM_NUMBER_GENERATOR = 123456L
 }

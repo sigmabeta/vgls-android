@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sample_text">Name Goes Here</string>
+    <string name="sample_text_caption">Some details about the thing</string>
+
+    <string name="sample_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+    <string name="error_image_load">Could not load image.  Tap to try again.</string>
+    <string name="error_no_gb_api">For sheet metadata, build app using a Giant Bomb API key. See README.MD.</string>
+
+    <string name="label_refreshing">Refreshing…</string>
+
+    <string name="button_label_transpo_change">Change</string>
+    <string name="cont_desc_logo">App Logo</string>
+    <string name="cont_desc_app_menu">App Menu</string>
+    <string name="cont_desc_app_back">Go Back</string>
+
+    <string name="hint_search">Search for a song or game…</string>
+    <string name="cont_desc_search_clear">Clear search input</string>
+    <string name="label_search">Search</string>
+</resources>

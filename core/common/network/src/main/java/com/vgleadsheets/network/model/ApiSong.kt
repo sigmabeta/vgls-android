@@ -1,5 +1,8 @@
 package com.vgleadsheets.network.model
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class ApiSong(
     val id: Long,
     val filename: String,

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="VglsBaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="bottomSheetDialogTheme">@style/VglsBottomSheetDialog</item>
+    </style>
+
+    <style name="VglsBottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <!-- Apply attributes here -->
+        <item name="behavior_hideable">true</item>
+    </style>
+
+    <style name="VglsBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/VglsBottomSheet</item>
+    </style>
+</resources>

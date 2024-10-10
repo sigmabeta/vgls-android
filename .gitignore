@@ -69,3 +69,5 @@ build-cache
 
 ktlint
 ktlint.html
+
+.attach_pid*

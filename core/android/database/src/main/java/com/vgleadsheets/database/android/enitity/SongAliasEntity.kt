@@ -3,8 +3,8 @@ package com.vgleadsheets.database.android.enitity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.vgleadsheets.database.android.dao.RoomDao.Companion.ROW_PRIMARY_KEY_ID
-import com.vgleadsheets.database.android.enitity.SongAliasEntity.Companion.ROW_FOREIGN_KEY
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_PRIMARY_KEY_ID
+import com.vgleadsheets.database.android.enitity.SongAliasEntity.Companion.COLUMN_FOREIGN_KEY
 import com.vgleadsheets.database.android.enitity.SongAliasEntity.Companion.TABLE
 
 @Entity(
@@ -12,8 +12,8 @@ import com.vgleadsheets.database.android.enitity.SongAliasEntity.Companion.TABLE
     foreignKeys = [
         ForeignKey(
             entity = SongEntity::class,
-            parentColumns = arrayOf(ROW_PRIMARY_KEY_ID),
-            childColumns = arrayOf(ROW_FOREIGN_KEY),
+            parentColumns = arrayOf(COLUMN_PRIMARY_KEY_ID),
+            childColumns = arrayOf(COLUMN_FOREIGN_KEY),
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -26,6 +26,6 @@ data class SongAliasEntity(
     companion object {
         const val TABLE = "alias_song"
 
-        const val ROW_FOREIGN_KEY = "songId"
+        const val COLUMN_FOREIGN_KEY = "songId"
     }
 }

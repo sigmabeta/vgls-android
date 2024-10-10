@@ -10,7 +10,7 @@ class StringGenerator @Inject constructor(private val random: Random) {
 
     @Suppress("UnusedPrivateMember")
     fun generateTitle(): String {
-        val wordCount = random.nextInt(MockVglsApi.MAX_WORDS_PER_TITLE - 1) + 1
+        val wordCount = random.nextInt(FakeModelGenerator.MAX_WORDS_PER_TITLE - 1) + 1
         val builder = StringBuilder()
 
         for (wordIndex in 0 until wordCount) {

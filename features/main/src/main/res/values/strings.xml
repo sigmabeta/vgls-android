@@ -1,8 +1,0 @@
-<resources>
-    <string name="alpha_transparent">0.0</string>
-    <string name="alpha_opaque">1.0</string>
-
-    <string name="scale_small">0.7</string>
-    <string name="scale_normal">1.0</string>
-    <string name="scale_large">1.2</string>
-</resources>

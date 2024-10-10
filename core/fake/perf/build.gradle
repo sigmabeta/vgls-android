@@ -1,6 +1,0 @@
-apply from: "$rootProject.projectDir/core-kotlin-module.gradle"
-
-dependencies {
-    // Contains the PerfTracker interface
-    api project(':core:common:perf')
-}

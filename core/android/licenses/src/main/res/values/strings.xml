@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_webview_failed">Failed to load open-source license information.</string>
+</resources>
