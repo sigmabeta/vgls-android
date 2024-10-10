@@ -40,6 +40,7 @@ fun WithMeasurementScreen(
     content: @Composable () -> Unit
 ) {
     if (!BuildConfig.DEBUG) {
+        content()
         return
     }
 
@@ -69,6 +70,7 @@ fun WithMeasurementComponent(
     content: @Composable () -> Unit
 ) {
     if (!BuildConfig.DEBUG) {
+        content()
         return
     }
 
