@@ -8,11 +8,11 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import java.util.Random
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
-import java.util.Random
 
 class RandomRepository(
     private val songDataSource: SongDataSource,
@@ -43,8 +43,9 @@ class RandomRepository(
         .getHighestId()
         .map { limit ->
             var randomComposer: Composer? = null
+            val rng = getRng(seed)
             while (randomComposer == null) {
-                val randomId = getRng(seed)
+                val randomId = rng
                     .nextInt(limit.toInt())
                     .toLong()
 
@@ -58,8 +59,10 @@ class RandomRepository(
         .getHighestId()
         .map { limit ->
             var randomGame: Game? = null
+            val rng = getRng(seed)
+
             while (randomGame == null) {
-                val randomId = getRng(seed)
+                val randomId = rng
                     .nextInt(limit.toInt())
                     .toLong()
 
@@ -70,9 +73,10 @@ class RandomRepository(
         .take(1)
 
     private suspend fun randomSongHelper(limit: Long, seed: Long? = null): Song {
+        val rng = getRng(seed)
         var randomSong: Song? = null
         while (randomSong == null) {
-            val randomId = getRng(seed)
+            val randomId = rng
                 .nextInt(limit.toInt())
                 .toLong()
 
