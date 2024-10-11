@@ -23,7 +23,6 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -35,6 +34,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
@@ -180,6 +180,11 @@ class NavViewModel @Inject constructor(
     @Suppress("SwallowedException")
     private fun navigateTo(destination: String) {
         try {
+            if (navController.currentDestination?.route == destination) {
+                hatchet.w("Destination $destination matches current location; ignoring navigation request.")
+                return
+            }
+
             if (internalShowSnackbarState.value) {
                 val message = "Navigating to $destination"
                 hatchet.v(message)
