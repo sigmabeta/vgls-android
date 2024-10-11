@@ -23,13 +23,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowHeightSizeClass
+import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.bottombar.NavBarItem
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarViewModel
@@ -97,31 +98,34 @@ fun RemasterAppUi(
         modifier
     }
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     AppContent(
-        navController = navController,
         topBarConfig = topBarConfig,
         navBarState = bottomBarVmState,
+        navEventSink = navViewModel,
+        currentRoute = currentRoute,
         snackbarHostState = snackbarHostState,
         modifier = actualModifier,
-    ) { innerPadding, widthClass ->
-        NavHostAndSuch(navController, innerPadding, widthClass)
-    }
+        screen = { innerPadding, widthClass ->
+            NavHostAndSuch(navController, innerPadding, widthClass)
+        },
+    )
 }
 
 @Composable
 fun AppContent(
-    navController: NavHostController = rememberNavController(),
     topBarConfig: TopBarConfig,
     navBarState: NavBarState,
+    navEventSink: EventSink,
+    currentRoute: String?,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     modifier: Modifier,
     syntheticWidthClass: WidthClass? = null,
     screen: @Composable (PaddingValues, WidthClass) -> Unit,
 ) {
     val adaptiveInfo = syntheticWidthClass?.toAdaptiveInfoSynthetic() ?: currentWindowAdaptiveInfo()
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
 
     val orientation = LocalConfiguration.current.orientation
     val layoutType = calculateNavSuiteType(adaptiveInfo, orientation)
@@ -130,7 +134,7 @@ fun AppContent(
 
     VglsNavSuiteScaffold(
         layoutType = layoutType,
-        navSuiteItems = navSuiteItems(currentRoute, navController),
+        navSuiteItems = navSuiteItems(currentRoute, navEventSink),
         topBarConfig = topBarConfig,
         navBarState = navBarState,
         snackbarHostState = snackbarHostState,
@@ -209,7 +213,7 @@ private fun handleSystemBars(
 @Composable
 fun navSuiteItems(
     currentRoute: String?,
-    navController: NavController = rememberNavController()
+    navEventSink: EventSink,
 ): NavigationSuiteScope.() -> Unit = {
     NavBarItem.entries.forEach { navItem ->
         item(
@@ -217,10 +221,9 @@ fun navSuiteItems(
             label = { Text(navItem.label) },
             selected = currentRoute == navItem.route,
             onClick = {
-                navController.navigate(navItem.route) {
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
-                }
+                navEventSink.sendEvent(
+                    VglsEvent.NavigateSingleTopLevel(navItem.route, "NavBar")
+                )
             }
         )
     }

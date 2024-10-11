@@ -5,6 +5,7 @@ open class VglsEvent {
 
     data class NavigateBack(override val source: String) : VglsEvent()
     data class NavigateTo(val destination: String, override val source: String) : VglsEvent()
+    data class NavigateSingleTopLevel(val destination: String, override val source: String) : VglsEvent()
 
     data class ShowSnackbar(
         val message: String,

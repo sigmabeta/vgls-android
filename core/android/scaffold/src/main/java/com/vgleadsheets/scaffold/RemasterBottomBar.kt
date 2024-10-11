@@ -76,7 +76,12 @@ private fun PreviewDark() {
 
 @Composable
 private fun PreviewContent() {
-    val navItemProvider by rememberStateOfItems(navSuiteItems(currentRoute = null))
+    val navItemProvider by rememberStateOfItems(
+        navSuiteItems(
+            currentRoute = null,
+            navEventSink = { }
+        )
+    )
     RemasterBottomBar(
         NavBarState(NavBarVisibility.VISIBLE),
         NavigationSuiteType.NavigationBar,
