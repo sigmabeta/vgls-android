@@ -35,9 +35,9 @@ data class State(
     override fun toListItems(stringProvider: StringProvider): List<ListModel> = listOfNotNull(
         keepScreenOn(stringProvider),
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_ABOUT)),
+        appWhatsNew(stringProvider),
         website(stringProvider),
         giantBomb(stringProvider),
-        appWhatsNew(stringProvider),
         appVersionName(stringProvider),
         appVersionCode(stringProvider),
         appBuildBranch(stringProvider),
@@ -52,48 +52,56 @@ data class State(
         restartApp(stringProvider),
     )
 
-    private fun restartApp(stringProvider: StringProvider) = SingleTextListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_RESTART),
-        clickAction = Action.RestartAppClicked
-    )
-
-    private fun generateUserRecords(stringProvider: StringProvider) = if (songRecordsGenerated == null) {
-        LoadingItemListModel(
-            loadingType = LoadingType.SINGLE_TEXT,
-            loadOperationName = "userRecordGeneration",
-            loadPositionOffset = 0,
-        )
-    } else {
+    private fun restartApp(stringProvider: StringProvider) = ifShowDebugEnabled {
         SingleTextListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS),
-            clickAction = Action.GenerateUserContentClicked
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_RESTART),
+            clickAction = Action.RestartAppClicked
         )
     }
 
-    private fun generateUserRecordsLegacy(stringProvider: StringProvider) = if (songRecordsGeneratedLegacy == null) {
-        LoadingItemListModel(
-            loadingType = LoadingType.SINGLE_TEXT,
-            loadOperationName = "userRecordGenerationLegacy",
-            loadPositionOffset = 0,
-        )
-    } else {
-        SingleTextListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS_LEGACY),
-            clickAction = Action.GenerateUserContentLegacyClicked
-        )
+    private fun generateUserRecords(stringProvider: StringProvider) = ifShowDebugEnabled {
+        if (songRecordsGenerated == null) {
+            LoadingItemListModel(
+                loadingType = LoadingType.SINGLE_TEXT,
+                loadOperationName = "userRecordGeneration",
+                loadPositionOffset = 0,
+            )
+        } else {
+            SingleTextListModel(
+                name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS),
+                clickAction = Action.GenerateUserContentClicked
+            )
+        }
     }
 
-    private fun migrateUserRecordsLegacy(stringProvider: StringProvider) = if (songRecordsMigrated == null) {
-        LoadingItemListModel(
-            loadingType = LoadingType.SINGLE_TEXT,
-            loadOperationName = "userRecordMigrate",
-            loadPositionOffset = 0,
-        )
-    } else {
-        SingleTextListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_MIGRATE_RECORDS),
-            clickAction = Action.MigrateUserContentLegacyClicked
-        )
+    private fun generateUserRecordsLegacy(stringProvider: StringProvider) = ifShowDebugEnabled {
+        if (songRecordsGeneratedLegacy == null) {
+            LoadingItemListModel(
+                loadingType = LoadingType.SINGLE_TEXT,
+                loadOperationName = "userRecordGenerationLegacy",
+                loadPositionOffset = 0,
+            )
+        } else {
+            SingleTextListModel(
+                name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS_LEGACY),
+                clickAction = Action.GenerateUserContentLegacyClicked
+            )
+        }
+    }
+
+    private fun migrateUserRecordsLegacy(stringProvider: StringProvider) = ifShowDebugEnabled {
+        if (songRecordsMigrated == null) {
+            LoadingItemListModel(
+                loadingType = LoadingType.SINGLE_TEXT,
+                loadOperationName = "userRecordMigrate",
+                loadPositionOffset = 0,
+            )
+        } else {
+            SingleTextListModel(
+                name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_MIGRATE_RECORDS),
+                clickAction = Action.MigrateUserContentLegacyClicked
+            )
+        }
     }
 
     private fun sectionHeader(title: String) = SectionHeaderListModel(
@@ -151,11 +159,13 @@ data class State(
         clickAction = Action.WhatsNewClicked
     )
 
-    private fun appBuildBranch(stringProvider: StringProvider) = LabelValueListModel(
-        label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
-        value = appInfo?.buildBranch,
-        clickAction = VglsAction.Noop
-    )
+    private fun appBuildBranch(stringProvider: StringProvider) = ifShowDebugEnabled {
+        LabelValueListModel(
+            label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
+            value = appInfo?.buildBranch,
+            clickAction = VglsAction.Noop
+        )
+    }
 
     private fun shouldDelay(stringProvider: StringProvider) = ifShowDebugEnabled {
         CheckableListModel(
