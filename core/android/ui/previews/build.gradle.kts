@@ -14,7 +14,6 @@ dependencies {
     implementation(projects.core.common.model)
     implementation(projects.core.common.ui.components)
 
-    implementation(projects.core.android.animation)
     implementation(projects.core.android.bitmaps)
     implementation(projects.core.android.images)
     implementation(projects.core.android.pdf)

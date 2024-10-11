@@ -23,7 +23,6 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -35,6 +34,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
@@ -78,6 +78,7 @@ class NavViewModel @Inject constructor(
             hatchet.v("${this@NavViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.NavigateTo -> navigateTo(event.destination)
+                is VglsEvent.NavigateSingleTopLevel -> navigateToTopLevel(event.destination)
                 is VglsEvent.NavigateBack -> navigateBack()
                 is VglsEvent.ShowSnackbar -> showSnackbar(event)
                 is VglsEvent.HideUiChrome -> hideSystemUi()
@@ -177,9 +178,22 @@ class NavViewModel @Inject constructor(
         }
     }
 
-    @Suppress("SwallowedException")
     private fun navigateTo(destination: String) {
+        navigateInternal(destination, false)
+    }
+
+    private fun navigateToTopLevel(destination: String) {
+        navigateInternal(destination, true)
+    }
+
+    @Suppress("SwallowedException")
+    private fun navigateInternal(destination: String, topLevel: Boolean) {
         try {
+            if (navController.currentDestination?.route == destination) {
+                hatchet.w("Destination $destination matches current location; ignoring navigation request.")
+                return
+            }
+
             if (internalShowSnackbarState.value) {
                 val message = "Navigating to $destination"
                 hatchet.v(message)
@@ -191,7 +205,15 @@ class NavViewModel @Inject constructor(
             startWatchingBackstack()
             setupSettingsCollection()
             topBarExpander()
-            navController.navigate(destination)
+
+            if (topLevel) {
+                navController.navigate(destination) {
+                     popUpTo(navController.graph.startDestinationId)
+                     launchSingleTop = true
+                 }
+            } else {
+                navController.navigate(destination)
+            }
         } catch (ex: IllegalArgumentException) {
             sendEvent(
                 VglsEvent.ShowSnackbar(

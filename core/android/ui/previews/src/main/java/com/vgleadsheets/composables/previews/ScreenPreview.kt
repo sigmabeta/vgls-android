@@ -196,8 +196,10 @@ private fun AppChrome(
     AppContent(
         topBarConfig = topBarConfig,
         navBarState = bottomBarVmState,
-        syntheticWidthClass = syntheticWidthClass,
+        navEventSink = { },
+        currentRoute = "",
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        syntheticWidthClass = syntheticWidthClass,
         screen = { innerPadding, widthClass -> content(innerPadding, widthClass) },
     )
 }

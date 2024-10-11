@@ -46,7 +46,6 @@ include(
     ":app",
 
     ":core:android:activity",
-    ":core:android:animation",
     ":core:android:bitmaps",
     ":core:android:conversion",
     ":core:android:coroutines",
