@@ -1,15 +1,13 @@
 package com.vgleadsheets.pdf
 
-import coil.ImageLoader
-import coil.annotation.ExperimentalCoilApi
-import coil.decode.DataSource
-import coil.decode.ImageSource
-import coil.fetch.Fetcher
-import coil.fetch.SourceResult
-import coil.request.Options
+import coil3.ImageLoader
+import coil3.decode.DataSource
+import coil3.decode.ImageSource
+import coil3.fetch.Fetcher
+import coil3.fetch.SourceFetchResult
+import coil3.request.Options
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.downloader.SheetSourceType
-import javax.inject.Inject
 import okio.FileSystem
 import okio.Path.Companion.toOkioPath
 
@@ -17,14 +15,13 @@ class PdfImageFetcher(
     private val sheetDownloader: SheetDownloader,
     private val data: PdfConfigById,
 ) : Fetcher {
-    @OptIn(ExperimentalCoilApi::class)
-    override suspend fun fetch(): SourceResult {
+    override suspend fun fetch(): SourceFetchResult {
         val pdfFileResult = sheetDownloader.getSheet(data)
         val pdfFile = pdfFileResult.file
 
         val pdfPath = pdfFile.toOkioPath()
 
-        return SourceResult(
+        return SourceFetchResult(
             source = ImageSource(
                 file = pdfPath,
                 fileSystem = FileSystem.SYSTEM,
@@ -40,7 +37,7 @@ class PdfImageFetcher(
         SheetSourceType.NETWORK -> DataSource.NETWORK
     }
 
-    class Factory @Inject constructor(
+    class Factory (
         private val sheetDownloader: SheetDownloader,
     ) : Fetcher.Factory<PdfConfigById> {
         override fun create(

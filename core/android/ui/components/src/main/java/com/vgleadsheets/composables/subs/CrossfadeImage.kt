@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.painter.BitmapPainter
@@ -18,9 +20,12 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
+import coil3.compose.AsyncImagePainter
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
 import com.vgleadsheets.images.BitmapGenerator
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
@@ -62,11 +67,14 @@ fun CrossfadeImage(
                 .build()
         )
 
-        asyncPainter to if (asyncPainter.state is AsyncImagePainter.State.Success) {
+        val state by asyncPainter.state.collectAsState()
+        val possibleBgModifier = if (state is AsyncImagePainter.State.Success) {
             modifier
         } else {
             bgModifier.padding(4.dp)
         }
+
+        asyncPainter to possibleBgModifier
     }
 
     Image(

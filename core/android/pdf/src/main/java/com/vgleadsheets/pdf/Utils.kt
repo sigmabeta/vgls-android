@@ -1,8 +1,8 @@
 package com.vgleadsheets.pdf
 
-import coil.request.Options
-import coil.size.Size
-import coil.size.pxOrElse
+import coil3.request.Options
+import coil3.size.Size
+import coil3.size.pxOrElse
 
 internal fun computeWidth(options: Options): Int? {
     val size = options.size

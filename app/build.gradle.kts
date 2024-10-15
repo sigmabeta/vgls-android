@@ -136,10 +136,6 @@ dependencies {
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
 
-    // Debug helper
-    implementation(libs.stetho)
-    implementation(libs.stetho.okhttp)
-
     val shouldIncludeFirebase = checkShouldIncludeFirebase()
     logger.quiet("Including firebase: $shouldIncludeFirebase")
     if (shouldIncludeFirebase) {
@@ -159,6 +155,14 @@ dependencies {
 
     // Junit libs
     testImplementation(libs.junit4)
+
+    // UI Testing
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.compose.ui.testing)
+    androidTestImplementation(libs.hilt.testing)
+
+    kspAndroidTest(libs.hilt.compiler)
 }
 
 fun checkShouldIncludeFirebase(): Boolean {

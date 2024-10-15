@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.vgls.core.android)
-    alias(libs.plugins.vgls.di.android)
 }
 
 dependencies {
-    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.core)
+    implementation(libs.androidx.core.ktx)
 
     implementation(projects.core.common.downloader)
     implementation(projects.core.common.repository)

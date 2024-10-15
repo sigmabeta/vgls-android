@@ -12,6 +12,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.viewModelScope
+import coil3.ImageLoader
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
@@ -19,10 +20,10 @@ import com.vgleadsheets.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.ui.themes.VglsMaterial
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RemasteredActivity :
@@ -30,6 +31,9 @@ class RemasteredActivity :
 
     @Inject
     lateinit var hatchet: Hatchet
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
 
     private val navViewModel: NavViewModel by viewModels()
 

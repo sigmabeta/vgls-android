@@ -1,12 +1,12 @@
 package com.vgleadsheets.images
 
-import androidx.core.graphics.drawable.toDrawable
-import coil.ImageLoader
-import coil.decode.DataSource
-import coil.fetch.DrawableResult
-import coil.fetch.Fetcher
-import coil.request.Options
-import coil.size.pxOrElse
+import coil3.ImageLoader
+import coil3.asImage
+import coil3.decode.DataSource
+import coil3.fetch.Fetcher
+import coil3.fetch.ImageFetchResult
+import coil3.request.Options
+import coil3.size.pxOrElse
 import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
 import javax.inject.Inject
 
@@ -15,13 +15,13 @@ class LoadingIndicatorFetcher(
     private val data: LoadingIndicatorConfig,
     private val options: Options
 ) : Fetcher {
-    override suspend fun fetch() = DrawableResult(
-        drawable = generator.generateLoadingSheet(
+    override suspend fun fetch() = ImageFetchResult(
+        image = generator.generateLoadingSheet(
             options.size.width.pxOrElse { WIDTH_ARBITRARY },
             data.title,
             data.gameName,
             data.composers
-        ).toDrawable(options.context.resources),
+        ).asImage(),
         isSampled = true,
         dataSource = DataSource.MEMORY
     )

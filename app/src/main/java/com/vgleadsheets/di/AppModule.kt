@@ -1,7 +1,6 @@
 package com.vgleadsheets.di
 
 import android.content.Context
-import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
@@ -30,10 +29,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Named
 import javax.inject.Singleton
-import kotlinx.coroutines.CoroutineScope
-import okhttp3.Interceptor
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -64,10 +62,6 @@ object AppModule {
         coroutineScope,
         dispatchers,
     )
-
-    @Provides
-    @Named("StethoInterceptor")
-    internal fun provideStethoInterceptor(): Interceptor = StethoInterceptor()
 
     @Provides
     @Singleton

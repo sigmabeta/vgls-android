@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,9 +17,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
-import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
-import coil.request.ImageRequest
+import coil3.compose.AsyncImagePainter
+import coil3.compose.SubcomposeAsyncImage
+import coil3.request.ImageRequest
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
@@ -82,7 +84,7 @@ fun CrossfadeSheet(
             .defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
             .aspectRatio(SheetConstants.ASPECT_RATIO),
     ) {
-        val state = painter.state
+        val state by painter.state.collectAsState()
         when (state) {
             is AsyncImagePainter.State.Loading ->
                 PlaceholderSheet(
@@ -105,7 +107,7 @@ fun CrossfadeSheet(
                     sourceInfo = sourceInfo,
                     modifier = modifier,
                     showDebug = showDebug,
-                    error = state.result.throwable
+                    error = (state as AsyncImagePainter.State.Error).result.throwable
                 )
             }
 

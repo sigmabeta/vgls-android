@@ -4,9 +4,12 @@ plugins {
 }
 
 dependencies {
-    api(libs.coil.kt)
+    api(libs.coil.kt.core)
     api(libs.coil.kt.compose)
+    api(libs.coil.kt.okhttp)
     api(libs.kotlinx.collections.immutable)
+
+    implementation(projects.core.common.images)
 
     api(projects.core.android.bitmaps)
 

@@ -1,14 +1,11 @@
 package com.vgleadsheets.pdf
 
-import coil.key.Keyer
-import coil.request.Options
-import com.vgleadsheets.repository.SongRepository
+import coil3.key.Keyer
+import coil3.request.Options
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import javax.inject.Inject
 
-class PdfImageKeyer @Inject constructor(
+class PdfImageKeyer(
     private val urlInfoProvider: UrlInfoProvider,
-    private val songRepository: SongRepository,
 ) : Keyer<PdfConfigById> {
     override fun key(data: PdfConfigById, options: Options): String {
         val width = computeWidth(options)

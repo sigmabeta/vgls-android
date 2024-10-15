@@ -7,14 +7,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.Random
+import javax.inject.Named
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -102,11 +102,9 @@ object NetworkModule {
     internal fun provideVglsOkClient(
         appInfo: AppInfo,
         @Named("HttpLoggingInterceptor") logger: Interceptor,
-        @Named("StethoInterceptor") debugger: Interceptor,
     ) = if (appInfo.isDebug) {
         OkHttpClient.Builder()
             .addNetworkInterceptor(logger)
-            .addNetworkInterceptor(debugger)
             .build()
     } else {
         OkHttpClient()

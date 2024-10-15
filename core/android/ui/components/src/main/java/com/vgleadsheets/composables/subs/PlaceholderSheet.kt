@@ -19,7 +19,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.vgleadsheets.composables.previews.FullscreenBlack
 import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.images.LoadingIndicatorConfig
