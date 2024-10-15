@@ -13,6 +13,8 @@ dependencies {
     implementation(projects.core.android.perf)
     implementation(projects.core.android.scaffold)
     implementation(projects.core.android.ui.themes)
+
+    implementation(projects.core.common.versions)
 }
 
 android {

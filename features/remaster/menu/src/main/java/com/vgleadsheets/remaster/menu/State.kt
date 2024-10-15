@@ -12,13 +12,13 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
-import com.vgleadsheets.time.PublishDateUtils.toLongDateText
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 
 data class State(
     val keepScreenOn: Boolean? = null,
     val appInfo: AppInfo? = null,
+    val formattedBuildDate: String? = null,
     val debugClickCount: Int = 0,
     val shouldShowDebug: Boolean? = null,
     val debugShouldDelay: Boolean? = null,
@@ -150,7 +150,7 @@ data class State(
 
     private fun appBuildDate(stringProvider: StringProvider) = LabelValueListModel(
         label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
-        value = appInfo?.buildTimeMs?.toLongDateText(),
+        value = formattedBuildDate,
         clickAction = Action.BuildDateClicked
     )
 

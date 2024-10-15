@@ -12,7 +12,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.viewModelScope
-import coil3.ImageLoader
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
@@ -26,14 +25,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RemasteredActivity :
-    ComponentActivity() {
-
+class RemasteredActivity : ComponentActivity() {
     @Inject
     lateinit var hatchet: Hatchet
 
     @Inject
-    lateinit var imageLoader: ImageLoader
+    lateinit var activityDependencyInitializer: ActivityDependencyInitializer
 
     private val navViewModel: NavViewModel by viewModels()
 
@@ -101,13 +98,9 @@ class RemasteredActivity :
         val heightPixels = displayMetrics.heightPixels
 
         hatchet.v("Device screen DPI: ${displayMetrics.densityDpi}")
-        hatchet.v(
-
-            "Device screen scaling factor: ${displayMetrics.density}"
-        )
+        hatchet.v("Device screen scaling factor: ${displayMetrics.density}")
         hatchet.v("Device screen size: ${widthPixels}x$heightPixels")
         hatchet.v(
-
             "Device screen size (scaled): ${(widthPixels / displayMetrics.density).toInt()}" +
                 "x${(heightPixels / displayMetrics.density).toInt()}"
         )

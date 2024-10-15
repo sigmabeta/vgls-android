@@ -2,15 +2,17 @@ package com.vgleadsheets.di
 
 import android.content.Context
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.time.ThreeTenTime
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
+import java.util.Locale
 
 class ThreeTenImpl(
     private val context: Context,
-    private val hatchet: Hatchet,
 ) : ThreeTenTime {
 
     private val initializer: Long by lazy {
@@ -30,12 +32,6 @@ class ThreeTenImpl(
         }
     }
 
-    override fun init() {
-        initializer.let {
-            Thread.sleep(0)
-        }
-    }
-
     override fun now(): ZonedDateTime = initialized { ZonedDateTime.now() }
 
     override fun parse(textToParse: String, formatter: DateTimeFormatter): ZonedDateTime = initialized {
@@ -44,5 +40,20 @@ class ThreeTenImpl(
 
     override fun zoneIdFrom(stringId: String): ZoneId = initialized {
         ZoneId.of(stringId)
+    }
+
+    override fun localDateFromString(date: String) = initialized {
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+        LocalDate.parse(date, formatter)
+    }
+
+    override fun longDateTextFromMillis(timestamp: Long) = initialized {
+        val formatter = DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.LONG)
+            .withLocale(Locale.getDefault())
+            .withZone(ZoneId.systemDefault())
+
+        val instant = if (timestamp == 0L) Instant.now() else Instant.ofEpochMilli(timestamp)
+        formatter.format(instant)
     }
 }

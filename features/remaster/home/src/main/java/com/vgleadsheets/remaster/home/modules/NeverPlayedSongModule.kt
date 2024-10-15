@@ -14,21 +14,22 @@ import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import com.vgleadsheets.time.PublishDateUtils.toLongDateText
+import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
+import javax.inject.Inject
 
 class NeverPlayedSongModule @Inject constructor(
     private val randomRepository: RandomRepository,
     private val songHistoryRepository: SongHistoryRepository,
     private val stringProvider: StringProvider,
+    private val threeTenTime: ThreeTenTime,
     delayManager: DelayManager,
 ) : HomeModule(
     priority = Priority.LOW,
@@ -43,7 +44,7 @@ class NeverPlayedSongModule @Inject constructor(
     @Suppress("MagicNumber")
     override fun state(): Flow<LCE<HomeModuleState>> {
         return randomRepository
-            .getRandomSongs(20, seed = appLaunchTime.toLongDateText().hashCode().toLong())
+            .getRandomSongs(20, seed = threeTenTime.longDateTextFromMillis(appLaunchTime).hashCode().toLong())
             .filter {
                 it.isNotEmpty()
             }

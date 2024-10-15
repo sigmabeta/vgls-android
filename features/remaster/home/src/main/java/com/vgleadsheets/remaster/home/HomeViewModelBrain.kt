@@ -8,7 +8,7 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.TagRepository
-import com.vgleadsheets.time.PublishDateUtils
+import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import org.threeten.bp.LocalDate
 
 class HomeViewModelBrain(
     private val stringProvider: StringProvider,
@@ -26,6 +27,7 @@ class HomeViewModelBrain(
     private val homeModuleProvider: HomeModuleProvider,
     private val tagRepository: TagRepository,
     private val randomRepository: RandomRepository,
+    private val threeTenTime: ThreeTenTime,
 ) : ListViewModelBrain(
     stringProvider,
     hatchet,
@@ -63,7 +65,9 @@ class HomeViewModelBrain(
             .flatMapConcat { tagRepository.getTagValuesForTagKey(it) }
             .take(1)
             .map {
-                it.maxBy { tagValue -> PublishDateUtils.ldtFromString(tagValue.name) }
+                it.maxBy { tagValue ->
+                    threeTenTime.localDateFromString(tagValue.name) ?: LocalDate.MIN
+                }
             }
             .onEach { tagValue -> navigateTo(Destination.TAGS_VALUES_SONG_LIST.forId(tagValue.id)) }
             .catch { showError(it.message ?: "Unknown error.") }

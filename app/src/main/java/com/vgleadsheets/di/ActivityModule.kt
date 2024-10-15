@@ -19,6 +19,7 @@ import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
+import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -60,6 +61,7 @@ class ActivityModule {
         debugSettingsManager: DebugSettingsManager,
         userContentGenerator: UserContentGenerator,
         userContentMigrator: UserContentMigrator,
+        threeTenTime: ThreeTenTime,
     ): BrainProvider =
         FeatureDirectory(
             dispatchers = dispatchers,
@@ -80,5 +82,6 @@ class ActivityModule {
             userContentGenerator = userContentGenerator,
             userContentMigrator = userContentMigrator,
             debugSettingsManager = debugSettingsManager,
+            threeTenTime = threeTenTime,
         )
 }

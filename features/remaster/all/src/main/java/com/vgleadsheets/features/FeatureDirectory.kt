@@ -36,6 +36,7 @@ import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
+import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
@@ -53,6 +54,7 @@ class FeatureDirectory(
     private val urlInfoProvider: UrlInfoProvider,
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
+    private val threeTenTime: ThreeTenTime,
     private val selectedPartManager: SelectedPartManager,
     private val generalSettingsManager: GeneralSettingsManager,
     private val debugSettingsManager: DebugSettingsManager,
@@ -79,6 +81,7 @@ class FeatureDirectory(
                 homeModuleProvider,
                 tagRepository,
                 randomRepository,
+                threeTenTime,
             )
 
             Destination.BROWSE -> BrowseViewModelBrain(
@@ -197,6 +200,7 @@ class FeatureDirectory(
                 userContentGenerator,
                 userContentMigrator,
                 appInfo,
+                threeTenTime,
                 stringProvider,
                 hatchet,
                 scheduler,
@@ -206,6 +210,8 @@ class FeatureDirectory(
                 stringProvider,
                 hatchet,
                 scheduler,
+                threeTenTime,
+                appInfo,
             )
 
             Destination.SEARCH,

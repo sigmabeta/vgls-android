@@ -65,9 +65,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideTime(@ApplicationContext context: Context, hatchet: Hatchet): ThreeTenTime = ThreeTenImpl(
+    fun provideTime(@ApplicationContext context: Context): ThreeTenTime = ThreeTenImpl(
         context,
-        hatchet
     )
 
     @Provides
