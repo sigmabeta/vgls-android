@@ -157,11 +157,12 @@ dependencies {
     testImplementation(libs.junit4)
 
     // UI Testing
+    debugImplementation(libs.androidx.compose.ui.testing.manifest)
+    androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.compose.ui.testing)
     androidTestImplementation(libs.hilt.testing)
-
     kspAndroidTest(libs.hilt.compiler)
 }
 
