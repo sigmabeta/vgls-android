@@ -13,7 +13,11 @@ class FakeVglsApi(
 
     private fun generateDigest(): ApiDigest {
         val games = fakeModelGenerator.possibleGames!!
-        val composers = fakeModelGenerator.possibleComposers!!
+        val composers = games
+            .map { it.songs }
+            .flatten()
+            .map { it.composers }
+            .flatten()
 
         return ApiDigest(
             composers,

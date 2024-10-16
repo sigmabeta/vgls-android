@@ -1,6 +1,8 @@
-package com.vgleadsheets.di
+package com.vgleadsheets.di.network
 
+import com.squareup.moshi.Moshi
 import com.vgleadsheets.appinfo.AppInfo
+import com.vgleadsheets.di.HatchetOkHttpLogger
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
@@ -12,6 +14,8 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.Random
 import javax.inject.Named
 import javax.inject.Singleton
@@ -130,7 +134,19 @@ object NetworkModule {
             .build()
     }
 
+    @Provides
+    @Singleton
+    internal fun provideMoshi(): Moshi = Moshi
+        .Builder()
+        .build()
+
+    @Provides
+    @Singleton
+    internal fun provideConverterFactory(
+        moshiInstance: Moshi
+    ): Converter.Factory = MoshiConverterFactory.create(moshiInstance)
+
     const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
 
-    const val SEED_RANDOM_NUMBER_GENERATOR = 123456L
+    const val SEED_RANDOM_NUMBER_GENERATOR = 12345L
 }

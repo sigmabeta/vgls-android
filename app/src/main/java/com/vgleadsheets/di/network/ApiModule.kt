@@ -1,4 +1,4 @@
-package com.vgleadsheets.di
+package com.vgleadsheets.di.network
 
 import com.squareup.moshi.Moshi
 import com.vgleadsheets.network.FakeModelGenerator
@@ -19,18 +19,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @InstallIn(SingletonComponent::class)
 @Module
 object ApiModule {
-    @Provides
-    @Singleton
-    internal fun provideMoshi(): Moshi = Moshi
-        .Builder()
-        .build()
-
-    @Provides
-    @Singleton
-    internal fun provideConverterFactory(
-        moshiInstance: Moshi
-    ): Converter.Factory = MoshiConverterFactory.create(moshiInstance)
-
     @Provides
     @Singleton
     fun provideVglsApi(
@@ -56,7 +44,7 @@ object ApiModule {
         @Named("VglsOkHttp") client: OkHttpClient,
     ): SheetDownloadApi {
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(baseUrl.orEmpty())
             .client(client)
             .build().create(SheetDownloadApi::class.java)
     }
