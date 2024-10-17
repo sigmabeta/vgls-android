@@ -16,7 +16,6 @@ class PdfImageFetcher(
     private val data: PdfConfigById,
 ) : Fetcher {
     override suspend fun fetch(): SourceFetchResult {
-        println("Fetch request for $data")
         val pdfFileResult = sheetDownloader.getSheet(data)
         val pdfFile = pdfFileResult.file
 

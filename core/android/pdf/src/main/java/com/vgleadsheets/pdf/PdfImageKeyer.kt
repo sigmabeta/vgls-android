@@ -13,7 +13,6 @@ class PdfImageKeyer(
             width,
             urlInfoProvider.urlInfoFlow.value.partId ?: throw IllegalStateException("No part selected.")
         )
-        println("PDF cache key: $cacheKey")
         return cacheKey
     }
 }

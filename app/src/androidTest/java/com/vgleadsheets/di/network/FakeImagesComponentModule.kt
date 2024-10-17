@@ -1,36 +1,36 @@
-package com.vgleadsheets.di.images
+package com.vgleadsheets.di.network
 
 import coil3.ComponentRegistry
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import com.vgleadsheets.bitmaps.FakePdfImageGenerator
 import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
+import com.vgleadsheets.di.images.ImagesComponentsModule
+import com.vgleadsheets.downloader.FakeSheetDownloader
 import com.vgleadsheets.downloader.RealSheetDownloader
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.images.LoadingIndicatorKeyer
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
-import com.vgleadsheets.pdf.PdfImageKeyer
-import com.vgleadsheets.pdf.PdfToBitmapRenderer
+import com.vgleadsheets.pdf.fake.FakePdfImageDecoder
+import com.vgleadsheets.pdf.fake.FakePdfImageKeyer
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import okhttp3.OkHttpClient
 import javax.inject.Named
 
 @Module
-@InstallIn(SingletonComponent::class)
-class ImagesComponentsModule {
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [ImagesComponentsModule::class]
+)
+object FakeImagesComponentModule {
     @Provides
     internal fun provideLogger(hatchet: Hatchet) = HatchetCoilLogger(
-        hatchet = hatchet,
-    )
-
-    @Provides
-    internal fun providePdfToBitmapRenderer(hatchet: Hatchet) = PdfToBitmapRenderer(
         hatchet = hatchet,
     )
 
@@ -45,19 +45,21 @@ class ImagesComponentsModule {
     )
 
     @Provides
-    internal fun providePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = PdfImageKeyer(
+    internal fun provideFakePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = FakePdfImageKeyer(
         urlInfoProvider = urlInfoProvider
     )
 
     @Provides
-    internal fun providePdfImageDecoderFactory(pdfToBitmapRenderer: PdfToBitmapRenderer) = PdfImageDecoder.Factory(
-        pdfToBitmapRenderer = pdfToBitmapRenderer
+    internal fun provideFakePdfImageDecoderFactory(
+        generator: FakePdfImageGenerator
+    ) = FakePdfImageDecoder.Factory(
+        generator = generator,
     )
 
     @Provides
     internal fun provideSheetDownloader(
-        realSheetDownloader: RealSheetDownloader,
-    ): SheetDownloader = realSheetDownloader
+        fakeSheetDownloader: FakeSheetDownloader,
+    ): SheetDownloader = fakeSheetDownloader
 
     @Provides
     internal fun providePdfImageFetcherFactory(sheetDownloader: RealSheetDownloader) = PdfImageFetcher.Factory(
@@ -69,17 +71,17 @@ class ImagesComponentsModule {
         @Named("VglsOkHttp") okHttpClient: OkHttpClient,
         loadingIndicatorKeyer: LoadingIndicatorKeyer,
         loadingIndicatorFetcherFactory: LoadingIndicatorFetcher.Factory,
-        pdfImageKeyer: PdfImageKeyer,
         pdfImageFetcherFactory: PdfImageFetcher.Factory,
-        pdfImageDecoderFactory: PdfImageDecoder.Factory,
+        fakePdfImageKeyer: FakePdfImageKeyer,
+        fakePdfImageDecoderFactory: FakePdfImageDecoder.Factory,
     ): ComponentRegistry.Builder.() -> Unit {
         return {
             add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
             add(loadingIndicatorKeyer)
             add(loadingIndicatorFetcherFactory)
             add(pdfImageFetcherFactory)
-            add(pdfImageKeyer)
-            add(pdfImageDecoderFactory)
+            add(fakePdfImageKeyer)
+            add(fakePdfImageDecoderFactory)
         }
     }
 }

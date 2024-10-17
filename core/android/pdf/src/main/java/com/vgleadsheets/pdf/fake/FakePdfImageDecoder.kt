@@ -1,5 +1,6 @@
 package com.vgleadsheets.pdf.fake
 
+import android.graphics.Bitmap
 import coil3.ImageLoader
 import coil3.asImage
 import coil3.decode.DecodeResult
@@ -16,7 +17,6 @@ class FakePdfImageDecoder(
     private val options: Options,
 ): Decoder {
     override suspend fun decode(): DecodeResult? {
-        println("Decode request (fake) for $result")
         // Check the source is actually a pdf
         if (result.mimeType != MIMETYPE) {
             return null
@@ -29,23 +29,33 @@ class FakePdfImageDecoder(
             return null
         }
 
-        val pdfFile = source.file().toFile()
-        val path = pdfFile.path
-        val pathSplit = path.split("/")
-        val relevantPart = pathSplit[pathSplit.size - 2]
-        val relevantPartSplit = relevantPart.split(" - ")
-        val title = relevantPartSplit[1].trim()
-        val gameName = relevantPartSplit[0].trim()
-
         val width = computeWidth(options)
-
-        return DecodeResult(
-            image = generator.generateLoadingSheet(
+        val bitmap = try {
+            val pdfFile = source.file().toFile()
+            val path = pdfFile.path
+            val pathSplit = path.split("/")
+            val relevantPart = pathSplit[pathSplit.size - 2]
+            val relevantPartSplit = relevantPart.split(" - ")
+            val title = relevantPartSplit.last().trim()
+            val gameName = relevantPartSplit.first().trim()
+            generator.generateLoadingSheet(
                 width!!,
                 title,
                 gameName,
                 listOf("Composer One")
-            ).asImage(),
+            )
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            return null
+        }
+
+        return DecodeResult(
+            image = bitmap
+                .copy(
+                    Bitmap.Config.ARGB_8888,
+                    false
+                )
+                .asImage(),
             isSampled = true,
         )
     }

@@ -16,7 +16,6 @@ class LoadingIndicatorFetcher(
     private val options: Options
 ) : Fetcher {
     override suspend fun fetch(): ImageFetchResult {
-        println("Fetch request for loading indicator for $data")
         return ImageFetchResult(
             image = generator.generateLoadingSheet(
                 options.size.width.pxOrElse { WIDTH_ARBITRARY },
