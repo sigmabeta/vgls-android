@@ -15,7 +15,8 @@ class FakePdfImageDecoder(
     private val generator: FakePdfImageGenerator,
     private val result: SourceFetchResult,
     private val options: Options,
-): Decoder {
+) : Decoder {
+    @Suppress("ReturnCount")
     override suspend fun decode(): DecodeResult? {
         // Check the source is actually a pdf
         if (result.mimeType != MIMETYPE) {
@@ -30,24 +31,21 @@ class FakePdfImageDecoder(
         }
 
         val width = computeWidth(options)
-        val bitmap = try {
-            val pdfFile = source.file().toFile()
-            val path = pdfFile.path
-            val pathSplit = path.split("/")
-            val relevantPart = pathSplit[pathSplit.size - 2]
-            val relevantPartSplit = relevantPart.split(" - ")
-            val title = relevantPartSplit.last().trim()
-            val gameName = relevantPartSplit.first().trim()
-            generator.generateLoadingSheet(
-                width!!,
-                title,
-                gameName,
-                listOf("Composer One")
-            )
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            return null
-        }
+
+        val pdfFile = source.file().toFile()
+        val path = pdfFile.path
+        val pathSplit = path.split("/")
+        val relevantPart = pathSplit[pathSplit.size - 2]
+        val relevantPartSplit = relevantPart.split(" - ")
+        val title = relevantPartSplit.last().trim()
+        val gameName = relevantPartSplit.first().trim()
+
+        val bitmap = generator.generateLoadingSheet(
+            width!!,
+            title,
+            gameName,
+            listOf("Composer One")
+        )
 
         return DecodeResult(
             image = bitmap
@@ -60,8 +58,7 @@ class FakePdfImageDecoder(
         )
     }
 
-
-    class Factory (
+    class Factory(
         private val generator: FakePdfImageGenerator,
     ) : Decoder.Factory {
         override fun create(

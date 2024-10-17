@@ -4,7 +4,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import retrofit2.Response
 
-class FakeSheetDownloadApi: SheetDownloadApi {
+class FakeSheetDownloadApi : SheetDownloadApi {
     override suspend fun downloadFile(
         fileName: String,
         partApiId: String,

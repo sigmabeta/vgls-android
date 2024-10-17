@@ -11,7 +11,7 @@ import com.vgleadsheets.logging.Hatchet
 import java.io.File
 import kotlin.system.measureTimeMillis
 
-class PdfToBitmapRenderer (private val hatchet: Hatchet, ) {
+class PdfToBitmapRenderer(private val hatchet: Hatchet,) {
     private val backgroundPaint = Paint().apply {
         isAntiAlias = false
         color = Color.WHITE

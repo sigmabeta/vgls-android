@@ -40,7 +40,7 @@ class PdfImageDecoder(
         )
     }
 
-    class Factory (
+    class Factory(
         private val pdfToBitmapRenderer: PdfToBitmapRenderer,
     ) : Decoder.Factory {
         override fun create(
