@@ -15,16 +15,19 @@ class LoadingIndicatorFetcher(
     private val data: LoadingIndicatorConfig,
     private val options: Options
 ) : Fetcher {
-    override suspend fun fetch() = ImageFetchResult(
-        image = generator.generateLoadingSheet(
-            options.size.width.pxOrElse { WIDTH_ARBITRARY },
-            data.title,
-            data.gameName,
-            data.composers
-        ).asImage(),
-        isSampled = true,
-        dataSource = DataSource.MEMORY
-    )
+    override suspend fun fetch(): ImageFetchResult {
+        println("Fetch request for loading indicator for $data")
+        return ImageFetchResult(
+            image = generator.generateLoadingSheet(
+                options.size.width.pxOrElse { WIDTH_ARBITRARY },
+                data.title,
+                data.gameName,
+                data.composers
+            ).asImage(),
+            isSampled = true,
+            dataSource = DataSource.MEMORY
+        )
+    }
 
     class Factory @Inject constructor(
         private val generator: LoadingIndicatorGenerator

@@ -16,6 +16,7 @@ class PdfImageFetcher(
     private val data: PdfConfigById,
 ) : Fetcher {
     override suspend fun fetch(): SourceFetchResult {
+        println("Fetch request for $data")
         val pdfFileResult = sheetDownloader.getSheet(data)
         val pdfFile = pdfFileResult.file
 
@@ -37,7 +38,7 @@ class PdfImageFetcher(
         SheetSourceType.NETWORK -> DataSource.NETWORK
     }
 
-    class Factory (
+    class Factory(
         private val sheetDownloader: SheetDownloader,
     ) : Fetcher.Factory<PdfConfigById> {
         override fun create(

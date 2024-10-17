@@ -15,16 +15,19 @@ class PdfImageDecoder(
 ) : Decoder {
     @Suppress("ReturnCount")
     override suspend fun decode(): DecodeResult? {
+        println("Decode request for ${result.source.file()}")
         // Check the source is actually a pdf
         if (result.mimeType != PdfImageFetcher.MIMETYPE) {
-            return null
+            println("Cannot decode, not a PDF")
+            throw IllegalArgumentException("Not a PDF")
         }
 
         val source = result.source
 
         val metadata = source.metadata
         if (metadata !is PdfMetadata) {
-            return null
+            println("Cannot decode, not a PDF")
+            throw IllegalArgumentException("Not a PDF")
         }
 
         val pdfFile = source.file().toFile()

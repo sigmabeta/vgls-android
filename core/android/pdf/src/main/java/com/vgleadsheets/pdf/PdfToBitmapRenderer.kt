@@ -17,7 +17,7 @@ class PdfToBitmapRenderer (private val hatchet: Hatchet, ) {
         color = Color.WHITE
     }
 
-    suspend fun renderPdfToBitmap(
+    fun renderPdfToBitmap(
         pdfFile: File,
         pageNumber: Int,
         width: Int?,
@@ -43,7 +43,7 @@ class PdfToBitmapRenderer (private val hatchet: Hatchet, ) {
         return bitmap
     }
 
-    private suspend fun createBitmap(
+    private fun createBitmap(
         pdfRenderer: PdfRenderer,
         pageNumber: Int,
         width: Int?
@@ -80,7 +80,7 @@ class PdfToBitmapRenderer (private val hatchet: Hatchet, ) {
         return newBitmap
     }
 
-    private suspend fun createBlankBitmap(
+    private fun createBlankBitmap(
         width: Int,
         height: Int
     ): Bitmap {

@@ -6,6 +6,8 @@ dependencies {
     implementation(libs.coil.kt.core)
     implementation(libs.androidx.core.ktx)
 
+    implementation(projects.core.android.bitmaps)
+
     implementation(projects.core.common.downloader)
     implementation(projects.core.common.repository)
     implementation(projects.core.common.urlinfo)

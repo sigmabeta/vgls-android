@@ -1,10 +1,11 @@
-package com.vgleadsheets.di
+package com.vgleadsheets.di.images
 
-import android.content.Context
-import coil3.ImageLoader
-import coil3.SingletonImageLoader
+import coil3.ComponentRegistry
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import com.vgleadsheets.bitmaps.FakePdfImageGenerator
 import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
+import com.vgleadsheets.downloader.FakeSheetDownloader
+import com.vgleadsheets.downloader.RealSheetDownloader
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.LoadingIndicatorFetcher
@@ -14,18 +15,19 @@ import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer
 import com.vgleadsheets.pdf.PdfToBitmapRenderer
+import com.vgleadsheets.pdf.fake.FakePdfImageDecoder
+import com.vgleadsheets.pdf.fake.FakePdfImageKeyer
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ImagesModule {
+class ImagesComponentsModule {
     @Provides
     internal fun provideLogger(hatchet: Hatchet) = HatchetCoilLogger(
         hatchet = hatchet,
@@ -47,6 +49,11 @@ class ImagesModule {
     )
 
     @Provides
+    internal fun provideFakePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = FakePdfImageKeyer(
+        urlInfoProvider = urlInfoProvider
+    )
+
+    @Provides
     internal fun providePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = PdfImageKeyer(
         urlInfoProvider = urlInfoProvider
     )
@@ -57,32 +64,49 @@ class ImagesModule {
     )
 
     @Provides
-    internal fun providePdfImageFetcherFactory(sheetDownloader: SheetDownloader) = PdfImageFetcher.Factory(
+    internal fun provideFakePdfImageDecoderFactory(
+        generator: FakePdfImageGenerator
+    ) = FakePdfImageDecoder.Factory(
+        generator = generator,
+    )
+
+    @Provides
+    internal fun provideSheetDownloader(
+        fakeSheetDownloader: FakeSheetDownloader,
+        realSheetDownloader: RealSheetDownloader,
+    ): SheetDownloader = fakeSheetDownloader
+
+    @Provides
+    internal fun providePdfImageFetcherFactory(sheetDownloader: RealSheetDownloader) = PdfImageFetcher.Factory(
         sheetDownloader = sheetDownloader
     )
 
     @Provides
-    internal fun provideImageLoader(
-        @ApplicationContext context: Context,
-        coilLogger: HatchetCoilLogger,
+    internal fun providesComponentRegistryBuilderFunction(
         @Named("VglsOkHttp") okHttpClient: OkHttpClient,
         loadingIndicatorKeyer: LoadingIndicatorKeyer,
         loadingIndicatorFetcherFactory: LoadingIndicatorFetcher.Factory,
+        fakePdfImageKeyer: FakePdfImageKeyer,
         pdfImageKeyer: PdfImageKeyer,
-        pdfImageDecoderFactory: PdfImageDecoder.Factory,
         pdfImageFetcherFactory: PdfImageFetcher.Factory,
-    ): ImageLoader {
-        return ImageLoader.Builder(context)
-            .logger(coilLogger)
-            .components {
-                add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
-                add(loadingIndicatorKeyer)
-                add(loadingIndicatorFetcherFactory)
-                add(pdfImageKeyer)
-                add(pdfImageDecoderFactory)
-                add(pdfImageFetcherFactory)
-            }
-            .build()
-            .also { loader -> SingletonImageLoader.setSafe { loader } }
+        pdfImageDecoderFactory: PdfImageDecoder.Factory,
+        fakePdfImageDecoderFactory: FakePdfImageDecoder.Factory,
+    ): ComponentRegistry.Builder.() -> Unit {
+        return {
+            add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
+            add(loadingIndicatorKeyer)
+            add(loadingIndicatorFetcherFactory)
+            add(pdfImageFetcherFactory)
+            add(pdfImageKeyer)
+            add(pdfImageDecoderFactory)
+        }
+//        return {
+//            add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
+//            add(loadingIndicatorKeyer)
+//            add(loadingIndicatorFetcherFactory)
+//            add(pdfImageFetcherFactory)
+//            add(fakePdfImageKeyer)
+//            add(fakePdfImageDecoderFactory)
+//        }
     }
 }

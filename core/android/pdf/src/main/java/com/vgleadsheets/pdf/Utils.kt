@@ -17,4 +17,8 @@ fun PdfConfigById.cacheKey(width: Int?, partApiId: String): String {
     return "pdf-$songId-$partApiId-alt=$isAltSelected-$pageNumber-$width"
 }
 
+fun PdfConfigById.fakeCacheKey(width: Int?, partApiId: String): String {
+    return "fakepdf-$songId-$partApiId-alt=$isAltSelected-$pageNumber-$width"
+}
+
 private const val WIDTH_ARBITRARY = 69
