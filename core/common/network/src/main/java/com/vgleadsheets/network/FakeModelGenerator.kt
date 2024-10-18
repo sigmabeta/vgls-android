@@ -93,12 +93,13 @@ class FakeModelGenerator @Inject constructor(
 
     private fun generateGame(id: Long): VglsApiGame {
         val songs = getSongs()
+        val game_name = stringGenerator.generateTitle()
         return VglsApiGame(
             null,
             id,
-            stringGenerator.generateTitle(),
+            game_name,
             songs,
-            null
+            game_name
         )
     }
 
@@ -146,18 +147,21 @@ class FakeModelGenerator @Inject constructor(
         possibleSongs = songs.toMutableList()
     }
 
-    private fun generateSong(id: Long) = ApiSong(
-        id,
-        "goose",
-        getParts(),
-        stringGenerator.generateTitle(),
-        random.nextInt(MAX_PAGE_COUNT) + 1,
-        random.nextInt(MAX_PAGE_COUNT) + 1,
-        random.nextInt(MAX_PAGE_COUNT) + 1,
-        getComposersForSong(),
-        getTags(),
-        listOf()
-    )
+    private fun generateSong(id: Long): ApiSong {
+        val name = stringGenerator.generateTitle()
+        return ApiSong(
+            id,
+            name,
+            getParts(),
+            name,
+            random.nextInt(MAX_PAGE_COUNT) + 1,
+            random.nextInt(MAX_PAGE_COUNT) + 1,
+            random.nextInt(MAX_PAGE_COUNT) + 1,
+            getComposersForSong(),
+            getTags(),
+            listOf()
+        )
+    }
 
     @Suppress("MagicNumber")
     private fun getParts(): Set<String> {
@@ -210,12 +214,15 @@ class FakeModelGenerator @Inject constructor(
         possibleComposers = composers.distinctBy { it.composer_id }
     }
 
-    private fun generateComposer(id: Long) = ApiComposer(
-        null,
-        id,
-        stringGenerator.generateName(),
-        null
-    )
+    private fun generateComposer(id: Long): ApiComposer {
+        val composer_name = stringGenerator.generateName()
+        return ApiComposer(
+            null,
+            id,
+            composer_name,
+            composer_name,
+        )
+    }
 
     private fun getTags(): Map<String, List<String>> {
         if (possibleTags == null) {

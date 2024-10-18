@@ -1,6 +1,7 @@
 package com.vgleadsheets.di.network
 
 import com.vgleadsheets.network.FakeModelGenerator
+import com.vgleadsheets.network.FakeSheetDownloadApi
 import com.vgleadsheets.network.FakeVglsApi
 import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.network.VglsApi
@@ -40,10 +41,12 @@ object ApiModule {
     fun provideSheetDownloadApi(
         @Named("VglsPdfUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,
-    ): SheetDownloadApi {
-        return Retrofit.Builder()
-            .baseUrl(baseUrl.orEmpty())
+    ): SheetDownloadApi = if (baseUrl != null) {
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
             .client(client)
             .build().create(SheetDownloadApi::class.java)
+    } else {
+        FakeSheetDownloadApi()
     }
 }

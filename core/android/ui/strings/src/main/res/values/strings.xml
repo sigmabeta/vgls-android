@@ -70,6 +70,7 @@
     <string name="label_settings_version_name">App Version</string>
     <string name="label_settings_version_code">App Version Code</string>
     <string name="label_settings_build_date">Build Date</string>
+    <string name="label_settings_debug_fake">Use fake VGLS API</string>
     <string name="label_settings_debug_delay">Slow down screen loads</string>
     <string name="label_settings_debug_show_nav_snackbars">Show nav snackbars</string>
     <string name="label_settings_debug_generate_records">Generate user history records</string>

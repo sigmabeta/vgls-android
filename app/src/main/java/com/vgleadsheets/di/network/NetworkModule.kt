@@ -41,7 +41,7 @@ object NetworkModule {
         return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first { it.baseBaseUrl != null }
+                .first()
 
             return@runBlocking urlInfo.baseBaseUrl
         }
@@ -56,7 +56,7 @@ object NetworkModule {
         return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first { it.apiBaseUrl != null }
+                .first()
 
             return@runBlocking urlInfo.apiBaseUrl
         }
@@ -68,18 +68,13 @@ object NetworkModule {
     internal fun provideVglsImageUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
-        val baseUrl = runBlocking {
+
+        return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first { it.imageBaseUrl != null }
+                .first()
 
             return@runBlocking urlInfo.imageBaseUrl
-        }
-
-        return if (baseUrl != null) {
-            baseUrl
-        } else {
-            "file:///android_asset/sheets"
         }
     }
 
@@ -92,7 +87,7 @@ object NetworkModule {
         val baseUrl = runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first { it.pdfBaseUrl != null }
+                .first()
 
             return@runBlocking urlInfo.pdfBaseUrl
         }

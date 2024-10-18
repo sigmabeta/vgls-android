@@ -1,7 +1,6 @@
 package com.vgleadsheets.di.images
 
 import android.content.Context
-import coil3.ComponentRegistry
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import com.vgleadsheets.images.HatchetCoilLogger
@@ -10,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -19,11 +19,15 @@ class ImagesModule {
     internal fun provideImageLoader(
         @ApplicationContext context: Context,
         coilLogger: HatchetCoilLogger,
-        builder: ComponentRegistry.Builder.() -> Unit,
+        @Named("PdfImageLoaderBuilder") pdfBuilder: CoilBuilderFunction,
+        @Named("OtherImageLoaderBuilder") otherBuilder: CoilBuilderFunction,
     ): ImageLoader {
         return ImageLoader.Builder(context)
             .logger(coilLogger)
-            .components(builder)
+            .components {
+                pdfBuilder.function(this)
+                otherBuilder.function(this)
+            }
             .build()
             .also { loader -> SingletonImageLoader.setSafe { loader } }
     }

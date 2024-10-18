@@ -156,11 +156,13 @@ object AppModule {
     internal fun provideUrlInfoProvider(
         environmentManager: EnvironmentManager,
         partManager: SelectedPartManager,
+        debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
         dispatchers: VglsDispatchers
     ) = UrlInfoProvider(
         environmentManager,
         partManager,
+        debugSettingsManager,
         coroutineScope,
         dispatchers,
     )

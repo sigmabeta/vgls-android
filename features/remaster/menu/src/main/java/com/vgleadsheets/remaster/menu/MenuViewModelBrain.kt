@@ -44,6 +44,7 @@ class MenuViewModelBrain(
             is Action.WhatsNewClicked -> onWhatsNewClicked()
             is Action.BuildDateClicked -> onBuildDateClicked()
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
+            is Action.FakeApiClicked -> onFakeApiClicked()
             is Action.DebugDelayClicked -> onDebugDelayClicked()
             is Action.DebugShowNavSnackbarsClicked -> onDebugShowNavSnackbarsClicked()
             is Action.GenerateUserContentClicked -> onGenerateUserContentClicked()
@@ -92,6 +93,12 @@ class MenuViewModelBrain(
         debugSettingsManager.setShouldShowDebug(newValue)
     }
 
+    private fun onFakeApiClicked() {
+        val oldValue = (internalUiState.value as State).debugShouldUseFakeApi ?: return
+        updateState { (it as State).copy(debugShouldUseFakeApi = null) }
+        debugSettingsManager.setShouldUseFakeApi(!oldValue)
+    }
+
     private fun onDebugDelayClicked() {
         val oldValue = (internalUiState.value as State).debugShouldDelay ?: return
         updateState { (it as State).copy(debugShouldDelay = null) }
@@ -108,6 +115,7 @@ class MenuViewModelBrain(
         fetchKeepScreenOn()
         fetchAppInfo()
         fetchShouldShowDebug()
+        fetchDebugShouldUseFakeApi()
         fetchDebugShouldDelay()
         fetchDebugShouldShowNavSnackbars()
     }
@@ -142,6 +150,16 @@ class MenuViewModelBrain(
             .getShouldShowDebug()
             .onEach { value ->
                 updateState { (it as State).copy(shouldShowDebug = value) }
+            }
+            .runInBackground()
+    }
+
+    private fun fetchDebugShouldUseFakeApi() {
+        updateState { (it as State).copy(debugShouldUseFakeApi = null) }
+        debugSettingsManager
+            .getShouldUseFakeApi()
+            .onEach { value ->
+                updateState { (it as State).copy(debugShouldUseFakeApi = value) }
             }
             .runInBackground()
     }
