@@ -68,7 +68,6 @@ object NetworkModule {
     internal fun provideVglsImageUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
-
         return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow

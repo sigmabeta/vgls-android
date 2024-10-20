@@ -11,7 +11,7 @@ import coil3.request.Options
 
 class FakeOtherImageDecoder(
     private val result: SourceFetchResult,
-): Decoder {
+) : Decoder {
     override suspend fun decode(): DecodeResult? {
         if (result.mimeType == MIMETYPE) {
             return null

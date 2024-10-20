@@ -93,13 +93,13 @@ class FakeModelGenerator @Inject constructor(
 
     private fun generateGame(id: Long): VglsApiGame {
         val songs = getSongs()
-        val game_name = stringGenerator.generateTitle()
+        val gameName = stringGenerator.generateTitle()
         return VglsApiGame(
             null,
             id,
-            game_name,
+            gameName,
             songs,
-            game_name
+            gameName
         )
     }
 
@@ -215,12 +215,12 @@ class FakeModelGenerator @Inject constructor(
     }
 
     private fun generateComposer(id: Long): ApiComposer {
-        val composer_name = stringGenerator.generateName()
+        val composerName = stringGenerator.generateName()
         return ApiComposer(
             null,
             id,
-            composer_name,
-            composer_name,
+            composerName,
+            composerName,
         )
     }
 

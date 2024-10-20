@@ -52,7 +52,7 @@ fun LabelCheckboxItem(
                     checked != null -> Checkbox(
                         checked = checked,
                         onCheckedChange = { actionSink.sendAction(model.clickAction) },
-                        Modifier.clearAndSetSemantics {  }
+                        Modifier.clearAndSetSemantics { }
                     )
 
                     else -> CircularProgressIndicator(

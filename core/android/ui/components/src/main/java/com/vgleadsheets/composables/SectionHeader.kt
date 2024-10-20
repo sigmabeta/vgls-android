@@ -45,7 +45,7 @@ fun SectionHeader(
                     shape = RoundedCornerShape(4.dp)
                 )
                 .padding(horizontal = 8.dp)
-                .semantics { 
+                .semantics {
                     heading()
                 }
         )
