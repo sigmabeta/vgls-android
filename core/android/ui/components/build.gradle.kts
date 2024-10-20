@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(projects.core.common.model)
+
     api(projects.core.common.ui.components)
 
     implementation(projects.core.android.bitmaps)
@@ -14,6 +15,7 @@ dependencies {
     implementation(projects.core.android.perf)
     implementation(projects.core.android.ui.icons)
     implementation(projects.core.android.ui.themes)
+    implementation(projects.core.android.ui.strings)
 
     implementation(libs.kotlin.reflect)
 }

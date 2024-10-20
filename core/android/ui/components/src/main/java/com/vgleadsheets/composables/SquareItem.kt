@@ -54,6 +54,7 @@ fun SquareItem(
             CrossfadeImage(
                 sourceInfo = SourceInfo(model.sourceInfo),
                 imagePlaceholder = model.imagePlaceholder,
+                contentDescription = model.name,
                 modifier = Modifier
                     .fillMaxSize()
             )

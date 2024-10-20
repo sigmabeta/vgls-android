@@ -33,6 +33,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Suppress("LongMethod", "ReturnCount")
 fun CrossfadeSheet(
     sourceInfo: SourceInfo,
+    contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
     fillMaxWidth: Boolean,
@@ -79,7 +80,7 @@ fun CrossfadeSheet(
             build()
         },
         contentScale = ContentScale.Fit,
-        contentDescription = null,
+        contentDescription = contentDescription,
         modifier = modifier
             .defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
             .aspectRatio(SheetConstants.ASPECT_RATIO),
@@ -96,7 +97,7 @@ fun CrossfadeSheet(
             is AsyncImagePainter.State.Success -> {
                 Image(
                     painter = painter,
-                    contentDescription = null,
+                    contentDescription = contentDescription,
                     contentScale = ContentScale.Fit,
                     modifier = modifier,
                 )
@@ -194,6 +195,7 @@ private fun PortraitError() {
 private fun SampleLoading() {
     CrossfadeSheet(
         sourceInfo = SourceInfo("Doesn't matter"),
+        contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -203,9 +205,9 @@ private fun SampleLoading() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier.fillMaxSize(),
-        showDebug = true,
         fillMaxWidth = true,
+        showDebug = true,
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -213,6 +215,7 @@ private fun SampleLoading() {
 private fun SampleSheetPageOne() {
     CrossfadeSheet(
         sourceInfo = SourceInfo("nope"),
+        contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -222,9 +225,9 @@ private fun SampleSheetPageOne() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier.fillMaxSize(),
-        showDebug = true,
         fillMaxWidth = true,
+        showDebug = true,
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -232,6 +235,7 @@ private fun SampleSheetPageOne() {
 private fun SampleSheetPageTwo() {
     CrossfadeSheet(
         sourceInfo = SourceInfo("nope"),
+        contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -241,9 +245,9 @@ private fun SampleSheetPageTwo() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier.fillMaxSize(),
-        showDebug = true,
         fillMaxWidth = true,
+        showDebug = true,
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -251,6 +255,7 @@ private fun SampleSheetPageTwo() {
 private fun SampleError() {
     CrossfadeSheet(
         sourceInfo = SourceInfo("nope"),
+        contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -260,9 +265,9 @@ private fun SampleError() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
+        fillMaxWidth = true,
+        showDebug = true,
         modifier = Modifier.fillMaxWidth(),
         simulateError = true,
-        showDebug = true,
-        fillMaxWidth = true,
     )
 }

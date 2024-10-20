@@ -41,7 +41,7 @@ object NetworkModule {
         return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first()
+                .first { it.loaded }
 
             return@runBlocking urlInfo.baseBaseUrl
         }
@@ -56,7 +56,7 @@ object NetworkModule {
         return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first()
+                .first { it.loaded }
 
             return@runBlocking urlInfo.apiBaseUrl
         }
@@ -72,7 +72,7 @@ object NetworkModule {
         return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first()
+                .first { it.loaded }
 
             return@runBlocking urlInfo.imageBaseUrl
         }
@@ -87,7 +87,7 @@ object NetworkModule {
         val baseUrl = runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first()
+                .first { it.loaded }
 
             return@runBlocking urlInfo.pdfBaseUrl
         }

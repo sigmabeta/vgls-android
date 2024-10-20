@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,8 @@ import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.utils.nextPercentageFloat
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlin.random.Random
 
@@ -35,6 +38,13 @@ fun LabelValueListItem(
     padding: PaddingValues,
 ) {
     val value = model.value
+    val action = model.clickAction
+    val onClickLabel = if (action !is VglsAction.Noop) {
+        stringResource(StringId.ACCY_OCL_VALUE.id())
+    } else {
+        null
+    }
+
     LabeledThingy(
         label = model.label,
         thingy = {
@@ -50,6 +60,8 @@ fun LabelValueListItem(
             }
         },
         onClick = { actionSink.sendAction(model.clickAction) },
+        onClickLabel = onClickLabel,
+        accyStateDescription = null, // It already reads out both strings
         modifier = modifier,
         padding = padding,
     )

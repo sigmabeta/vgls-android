@@ -33,6 +33,7 @@ import com.vgleadsheets.ui.themes.VglsMaterial
 fun CrossfadeImage(
     sourceInfo: SourceInfo,
     imagePlaceholder: Icon,
+    contentDescription: String?,
     modifier: Modifier,
     contentScale: ContentScale? = null,
     forceGenBitmap: Boolean = LocalInspectionMode.current,
@@ -49,13 +50,21 @@ fun CrossfadeImage(
         return
     }
 
-    RealImage(sourceInfo, imagePlaceholder, modifier, bgModifier, contentScale)
+    RealImage(
+        sourceInfo,
+        imagePlaceholder,
+        contentDescription,
+        modifier,
+        bgModifier,
+        contentScale,
+    )
 }
 
 @Composable
 private fun RealImage(
     sourceInfo: SourceInfo,
     imagePlaceholder: Icon,
+    contentDescription: String?,
     modifier: Modifier,
     bgModifier: Modifier,
     contentScale: ContentScale?
@@ -74,7 +83,7 @@ private fun RealImage(
         if (loadingState is AsyncImagePainter.State.Success) {
             Image(
                 painter = asyncPainter,
-                contentDescription = null,
+                contentDescription = contentDescription,
                 contentScale = contentScale ?: ContentScale.Crop,
                 modifier = modifier,
             )
@@ -147,6 +156,7 @@ private fun Sample() {
                 CrossfadeImage(
                     sourceInfo = SourceInfo(null),
                     imagePlaceholder = Icon.PERSON,
+                    contentDescription = null,
                     modifier = Modifier,
                 )
             }
@@ -158,6 +168,7 @@ private fun Sample() {
                 CrossfadeImage(
                     sourceInfo = SourceInfo("doesn't matter"),
                     imagePlaceholder = Icon.PERSON,
+                    contentDescription = null,
                     modifier = Modifier,
                 )
             }
@@ -170,6 +181,7 @@ private fun Sample() {
                 CrossfadeImage(
                     sourceInfo = SourceInfo(null),
                     imagePlaceholder = Icon.PERSON,
+                    contentDescription = null,
                     modifier = Modifier,
                 )
             }
@@ -180,6 +192,7 @@ private fun Sample() {
                 CrossfadeImage(
                     sourceInfo = SourceInfo("doesn't matter"),
                     imagePlaceholder = Icon.PERSON,
+                    contentDescription = null,
                     modifier = Modifier,
                 )
             }

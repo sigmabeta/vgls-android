@@ -11,11 +11,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.composables.subs.Dropdown
 import com.vgleadsheets.composables.subs.LabeledThingy
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 import kotlinx.collections.immutable.toImmutableList
@@ -38,6 +41,7 @@ fun LabelDropdownListItem(
             )
         },
         onClick = {},
+        onClickLabel = stringResource(StringId.ACCY_OCL_DROPDOWN.id()),
         modifier = modifier,
         padding = padding,
     )

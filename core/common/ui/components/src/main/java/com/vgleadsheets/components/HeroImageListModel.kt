@@ -6,6 +6,7 @@ import com.vgleadsheets.ui.Icon
 
 data class HeroImageListModel(
     val sourceInfo: SourceInfo,
+    val contentDescription: String,
     val imagePlaceholder: Icon,
     val clickAction: VglsAction
 ) : ListModel() {

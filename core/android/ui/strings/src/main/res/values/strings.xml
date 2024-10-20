@@ -120,4 +120,18 @@
     <string name="difficulty_three">Hard</string>
     <string name="difficulty_four">Forbidden</string>
 
+    <string name="accy_ocl_checkbox">Toggle setting</string>
+    <string name="accy_ocl_dropdown">Change setting</string>
+    <string name="accy_ocl_rating">See more songs</string>
+    <string name="accy_ocl_sheet_card">See details</string>
+    <string name="accy_ocl_single_line">Perform action: %1$s</string>
+    <string name="accy_ocl_value">See details</string>
+
+    <string name="accy_st_desc_loading">Loading</string>
+    <string name="accy_st_desc_checked">Enabled</string>
+    <string name="accy_st_desc_unchecked">Disabled</string>
+
+    <string name="accy_cdesc_hero_game">Box art image</string>
+    <string name="accy_cdesc_hero_composer">Photo of composer</string>
+
 </resources>

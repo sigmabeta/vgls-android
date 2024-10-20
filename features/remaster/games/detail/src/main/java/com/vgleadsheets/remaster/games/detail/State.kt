@@ -42,7 +42,7 @@ data class State(
 
     @Suppress("LongMethod")
     override fun toListItems(stringProvider: StringProvider): List<ListModel> {
-        val gameModels = gameSection()
+        val gameModels = gameSection(stringProvider)
         val ctaModels = ctaSection(stringProvider)
         val composerModels = composerSection(stringProvider)
         val songModels = songSection(stringProvider)
@@ -55,7 +55,7 @@ data class State(
         )
     }
 
-    private fun gameSection() = game.sectionWithStandardErrorAndLoading(
+    private fun gameSection(stringProvider: StringProvider) = game.sectionWithStandardErrorAndLoading(
         sectionName = SECTION_NAME_GAME,
         loadingType = LoadingType.BIG_IMAGE,
         loadingItemCount = 1,
@@ -67,6 +67,7 @@ data class State(
                     HeroImageListModel(
                         sourceInfo = SourceInfo(photoUrl),
                         imagePlaceholder = Icon.ALBUM,
+                        contentDescription = stringProvider.getString(StringId.ACCY_CDESC_HERO_GAME),
                         clickAction = VglsAction.Noop,
                     )
                 )

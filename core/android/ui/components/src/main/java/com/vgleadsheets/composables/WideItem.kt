@@ -68,6 +68,7 @@ fun WideItem(
         CrossfadeImage(
             sourceInfo = SourceInfo(model.sourceInfo),
             imagePlaceholder = model.imagePlaceholder,
+            contentDescription = null,
             modifier = Modifier
                 .fillMaxHeight()
                 .aspectRatio(1.0f)

@@ -30,12 +30,18 @@ class UrlInfoProvider(
             debugSettingsManager.getShouldUseFakeApi().take(1),
         ) { env, part, useFake ->
             if (useFake) {
-                _urlInfoFlow.update { UrlInfo(partId = part.apiId) }
+                _urlInfoFlow.update {
+                    UrlInfo(
+                        loaded = true,
+                        partId = part.apiId,
+                    )
+                }
                 return@combine
             }
 
             _urlInfoFlow.update {
                 UrlInfo(
+                    loaded = true,
                     baseBaseUrl = env.url,
                     apiBaseUrl = prependIfNotNull(env.url, "api/app/"),
                     imageBaseUrl = prependIfNotNull(env.url, "assets/sheets/png/"),

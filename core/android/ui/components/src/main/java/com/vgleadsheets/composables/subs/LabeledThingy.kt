@@ -21,6 +21,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,15 +46,23 @@ fun LabeledThingy(
     label: String,
     thingy: @Composable RowScope.() -> Unit,
     onClick: () -> Unit,
+    onClickLabel: String?,
+    accyStateDescription: String? = null,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(padding),
-        verticalAlignment = Alignment.CenterVertically,
+            .clickable(
+                onClick = onClick,
+                onClickLabel = onClickLabel,
+            )
+            .padding(padding)
+            .semantics {
+                accyStateDescription?.let { stateDescription = it }
+            },
     ) {
         Text(
             text = label,
