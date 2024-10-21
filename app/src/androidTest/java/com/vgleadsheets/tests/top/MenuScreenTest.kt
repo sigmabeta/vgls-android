@@ -27,6 +27,5 @@ class MenuScreenTest {
         composeRule.onNodeWithContentDescription("App Menu").performClick()
 
         composeRule.onNodeWithText("Settings").assertExists()
-
     }
 }

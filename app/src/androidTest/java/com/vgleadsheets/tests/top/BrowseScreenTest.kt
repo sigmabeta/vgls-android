@@ -26,6 +26,5 @@ class BrowseScreenTest {
         composeRule.onNodeWithText("Browse").performClick()
 
         composeRule.onNodeWithText("All Sheets").assertExists()
-
     }
 }

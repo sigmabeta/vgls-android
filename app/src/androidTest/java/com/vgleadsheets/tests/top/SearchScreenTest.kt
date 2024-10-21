@@ -26,6 +26,5 @@ class SearchScreenTest {
         composeRule.onNodeWithText("Search").performClick()
 
         composeRule.onNodeWithText("Search for a song or game…").assertExists()
-
     }
 }
