@@ -1,7 +1,8 @@
-package com.vgleadsheets.tests
+package com.vgleadsheets.tests.list
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vgleadsheets.remaster.RemasteredActivity
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -12,7 +13,7 @@ import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class SmokeTest {
+class GameListScreenTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -20,7 +21,12 @@ class SmokeTest {
     var composeRule = createAndroidComposeRule<RemasteredActivity>()
 
     @Test
-    fun launchScreen_doesntCrash() {
+    fun gameListScreen_doesntCrash() {
         composeRule.onNodeWithText("VGLeadSheets").assertExists()
+        composeRule.onNodeWithText("Browse").performClick()
+
+        composeRule.onNodeWithText("By Game").performClick()
+
+        composeRule.onNodeWithText("A Curabitur Hendrerit").assertExists()
     }
 }
