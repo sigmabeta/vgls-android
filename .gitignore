@@ -71,3 +71,6 @@ ktlint
 ktlint.html
 
 .attach_pid*
+
+# Kotlin 2.0
+.kotlin/
