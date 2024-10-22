@@ -9,4 +9,8 @@ dependencies {
 
 android {
     namespace = "com.vgleadsheets.perf"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }

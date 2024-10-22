@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     `kotlin-dsl`
@@ -11,9 +11,9 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
@@ -23,6 +23,7 @@ dependencies {
     compileOnly(libs.firebase.crashlytics.gradlePlugin)
     compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.kotlin.compose.compiler.gradlePlugin)
 }
 
 gradlePlugin {

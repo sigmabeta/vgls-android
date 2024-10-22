@@ -19,4 +19,8 @@ dependencies {
 
 android {
     namespace = "com.vgleadsheets.database"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }

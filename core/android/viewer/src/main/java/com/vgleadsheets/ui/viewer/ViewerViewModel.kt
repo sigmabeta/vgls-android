@@ -48,7 +48,7 @@ class ViewerViewModel @AssistedInject constructor(
             idArg,
             pageArg
         )
-
+        Runtime.getRuntime().availableProcessors()
         this.sendAction(initAction)
     }
 

@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationBuildType
+import org.jetbrains.kotlin.config.JvmTarget
 
 plugins {
     alias(libs.plugins.vgls.android.app)
@@ -93,7 +94,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JvmTarget.JVM_17.description
     }
 
     testOptions {
@@ -104,6 +105,10 @@ android {
         checkDependencies = true
         ignoreTestSources = true
         checkReleaseBuilds = false
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 

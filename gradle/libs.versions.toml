@@ -1,37 +1,37 @@
 [versions]
 adaptive = "1.0.0"
 adaptiveNavigation = "1.3.0"
-androidDesugarJdkLibs = "2.0.4"
-androidGradlePlugin = "8.6.0"
-androidxActivity = "1.9.1"
+androidDesugarJdkLibs = "2.1.2"
+androidGradlePlugin = "8.7.1"
+androidxActivity = "1.9.3"
 androidxAppCompat = "1.7.0"
-androidXComposeAnimationAlpha = "1.7.0-beta07"
-androidxComposeBom = "2024.06.00"
+androidXComposeAnimationAlpha = "1.7.4"
+androidxComposeBom = "2024.10.00"
 androidxComposeCompiler = "1.5.14"
 androidxCore = "1.13.1"
 androidxConstraint = "2.1.4"
 androidxDataStore = "1.1.1"
 androidxHiltNavigationCompose = "1.2.0"
-androidxLifecycle = "2.8.4"
-androidxNavigation = "2.7.7"
+androidxLifecycle = "2.8.6"
+androidxNavigation = "2.8.3"
 androidXTest = "1.6.1"
 androidXTestExtJunit = "1.2.1"
 androidxWindowManager = "1.3.0"
 coil = "3.0.0-rc01"
 detekt = "1.23.6"
-firebaseBom = "33.1.2"
+firebaseBom = "33.5.0"
 firebaseCrashlyticsPlugin = "3.0.2"
 firebasePerfPlugin = "1.4.2"
 gitVersion = "1.3.2"
 gradlePublisher = "3.9.1"
 gmsPlugin = "4.4.2"
-hilt = "2.50"
+hilt = "2.52"
 jankStatsVersion = "1.0.0-beta01"
 junit4 = "4.13.2"
-kotlin = "1.9.24"
+kotlin = "2.0.20"
 kotlinxCollections = "0.3.6"
-kotlinxCoroutines = "1.7.3"
-ksp = "1.9.24-1.0.20"
+kotlinxCoroutines = "1.9.0"
+ksp = "2.0.20-1.0.25"
 licensePlugin = "0.9.7"
 material = "1.12.0"
 mavericks = "3.0.7"
@@ -40,10 +40,10 @@ okhttp = "4.12.0"
 paparazzi = "1.3.4"
 retrofit = "2.11.0"
 room = "2.6.1"
-splash = "1.0.0-beta02"
+splash = "1.0.1"
 supportSqlite = "3.45.0"
 threeten = "1.4.0"
-tracing = "1.7.3"
+tracing = "1.7.4"
 webview = "0.33.6"
 
 [libraries]
@@ -112,10 +112,12 @@ detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gr
 firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
 firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerfPlugin" }

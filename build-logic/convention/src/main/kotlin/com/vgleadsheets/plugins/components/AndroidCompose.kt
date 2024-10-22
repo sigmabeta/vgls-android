@@ -17,11 +17,14 @@
 package com.vgleadsheets.plugins.components
 
 import com.android.build.api.dsl.CommonExtension
+import java.lang.Runtime
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
+import org.gradle.kotlin.dsl.assign
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 
 /**
  * Configure Compose-specific options
@@ -32,11 +35,6 @@ internal fun Project.configureAndroidCompose(
     commonExtension.apply {
         buildFeatures {
             compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion =
-                libs.findVersion("androidxComposeCompiler").get().toString()
         }
 
         configureKotlinCompose()
@@ -58,28 +56,10 @@ internal fun Project.configureAndroidCompose(
 }
 
 private fun Project.configureKotlinCompose() {
-    tasks.withType<KotlinCompile>().configureEach {
-        val buildDirectory = project.layout.buildDirectory.asFile.get().path
-
-        compilerOptions {
-            freeCompilerArgs.addAll(
-                listOf(
-                    "-P",
-                    "plugin:androidx.compose.compiler.plugins.kotlin:strongSkipping=true",
-                )
-            )
-        }
-
-        kotlinOptions {
-            freeCompilerArgs += listOf(
-                "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$buildDirectory/compose_compiler",
-                "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$buildDirectory/compose_compiler",
-                "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=${rootProject.rootDir.absolutePath}/app/compose-stability.conf",
-            )
-        }
+    extensions.configure<ComposeCompilerGradlePluginExtension> {
+        stabilityConfigurationFile = rootProject.layout.projectDirectory.file("compose-stability.conf")
+        reportsDestination = project.layout.buildDirectory.dir("compose_compiler/reports")
+        metricsDestination = project.layout.buildDirectory.dir("compose_compiler/metrics")
     }
 
     tasks.withType<Test> {
