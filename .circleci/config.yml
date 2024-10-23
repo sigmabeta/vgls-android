@@ -46,24 +46,24 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v2-{{ .Branch }}-{{ .Revision }}
+            - source-v2-{{ .Branch }}-
+            - source-v2-
       - checkout
       - restore_cache:
-          key: jars-v1-
+          key: jars-v2-
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies --no-configuration-cache --no-daemon --max-workers=1
       - save_cache:
-          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+          key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
           paths:
             - ~/.gradle
       - run:
           name: Get all Git tags
           command: git fetch --tags -f
       - save_cache:
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          key: source-v2-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
@@ -78,15 +78,15 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v2-{{ .Branch }}-{{ .Revision }}
+            - source-v2-{{ .Branch }}-
+            - source-v2-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+          key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-ktlint-v1-
+            - build-cache-ktlint-v2-
       - run:
           name: Run Ktlint
           command: ./ktlint-check.sh
@@ -94,7 +94,7 @@ jobs:
           path: ktlint.html
           destination: ktlint-reports
       - save_cache:
-          key: build-cache-ktlint-v1-{{ .Branch }}-{{ .Revision }}
+          key: build-cache-ktlint-v2-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
 
@@ -110,20 +110,20 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v2-{{ .Branch }}-{{ .Revision }}
+            - source-v2-{{ .Branch }}-
+            - source-v2-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+          key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-detekt-v1-
+            - build-cache-detekt-v2-
       - run:
           name: Run Detekt checks
           command: ./gradlew detekt --no-configuration-cache --no-daemon --max-workers=2
       - save_cache:
-          key: build-cache-detekt-v1-{{ .Branch }}-{{ .Revision }}
+          key: build-cache-detekt-v2-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
 
@@ -139,15 +139,15 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v2-{{ .Branch }}-{{ .Revision }}
+            - source-v2-{{ .Branch }}-
+            - source-v2-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+          key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-screenshot-test-v1-
+            - build-cache-screenshot-test-v2-
       - run:
           name: Run Fail-fast script
           command: ./paparazzi-build-script.sh
@@ -158,7 +158,7 @@ jobs:
           path: core/android/ui/previews/build/paparazzi/failures/
           destination: failure-screenshots
       - save_cache:
-          key: build-cache-screenshot-test-v1-{{ .Branch }}-{{ .Revision }}
+          key: build-cache-screenshot-test-v2-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
 
@@ -175,15 +175,15 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v2-{{ .Branch }}-{{ .Revision }}
+            - source-v2-{{ .Branch }}-
+            - source-v2-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+          key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-lint-v1-
+            - build-cache-lint-v2-
       - run:
           name: Setup Google Services JSON
           command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
@@ -194,7 +194,7 @@ jobs:
           path: app/build/reports/
           destination: reports
       - save_cache:
-          key: build-cache-lint-v1-{{ .Branch }}-{{ .Revision }}
+          key: build-cache-lint-v2-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
 
@@ -211,15 +211,15 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v2-{{ .Branch }}-{{ .Revision }}
+            - source-v2-{{ .Branch }}-
+            - source-v2-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+          key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-v1-
+            - build-cache-v2-
       - run:
           name: Prepare license information Webview
           command: ./gradlew licenseReleaseReport --no-configuration-cache --no-daemon --max-workers=4
@@ -233,7 +233,7 @@ jobs:
           name: Rename APK
           command: ./rename-apk-release.sh
       - save_cache:
-          key: build-cache-v1-{{ .Branch }}-{{ .Revision }}
+          key: build-cache-v2-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
       - store_artifacts:
@@ -253,15 +253,15 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
+            - source-v2-{{ .Branch }}-{{ .Revision }}
+            - source-v2-{{ .Branch }}-
+            - source-v2-
       - checkout
       - restore_cache:
-          key: jars-v1-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
+          key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
           keys:
-            - build-cache-v1-
+            - build-cache-v2-
       - run:
           name: Set target Google Play Track
           command: ./set-track-name.sh
@@ -275,6 +275,6 @@ jobs:
           name: Publish Bundle
           command: ./gradlew :app:publishReleaseBundle --no-configuration-cache --no-daemon --max-workers=4
       - save_cache:
-          key: build-cache-v1-{{ .Branch }}-{{ .Revision }}
+          key: build-cache-v2-{{ .Branch }}-{{ .Revision }}
           paths:
             - build-cache
