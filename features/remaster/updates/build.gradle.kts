@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.core.common.appinfo)
     api(projects.core.common.list)
     api(projects.core.common.model)
     api(projects.core.common.nav)

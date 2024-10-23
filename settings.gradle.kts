@@ -54,7 +54,6 @@ include(
     ":core:android:images",
     ":core:android:licenses",
     ":core:android:logging",
-    ":core:android:mvrx",
     ":core:android:nav",
     ":core:android:perf",
     ":core:android:pdf",

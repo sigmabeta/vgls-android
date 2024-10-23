@@ -12,15 +12,16 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
-import com.vgleadsheets.time.PublishDateUtils.toLongDateText
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 
 data class State(
     val keepScreenOn: Boolean? = null,
     val appInfo: AppInfo? = null,
+    val formattedBuildDate: String? = null,
     val debugClickCount: Int = 0,
     val shouldShowDebug: Boolean? = null,
+    val debugShouldUseFakeApi: Boolean? = null,
     val debugShouldDelay: Boolean? = null,
     val debugShouldShowNavSnackbars: Boolean? = null,
     val songRecordsGenerated: Int? = 0,
@@ -44,6 +45,7 @@ data class State(
         appBuildDate(stringProvider),
         licenses(stringProvider),
         ifShowDebugEnabled { sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)) },
+        shouldUseFakeApi(stringProvider),
         shouldDelay(stringProvider),
         shouldShowNavSnackbars(stringProvider),
         generateUserRecords(stringProvider),
@@ -150,7 +152,7 @@ data class State(
 
     private fun appBuildDate(stringProvider: StringProvider) = LabelValueListModel(
         label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
-        value = appInfo?.buildTimeMs?.toLongDateText(),
+        value = formattedBuildDate,
         clickAction = Action.BuildDateClicked
     )
 
@@ -164,6 +166,15 @@ data class State(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
             value = appInfo?.buildBranch,
             clickAction = VglsAction.Noop
+        )
+    }
+
+    private fun shouldUseFakeApi(stringProvider: StringProvider) = ifShowDebugEnabled {
+        CheckableListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_FAKE_API),
+            clickAction = Action.FakeApiClicked,
+            settingId = StringId.SETTINGS_LABEL_DEBUG_FAKE_API.name,
+            checked = debugShouldUseFakeApi,
         )
     }
 

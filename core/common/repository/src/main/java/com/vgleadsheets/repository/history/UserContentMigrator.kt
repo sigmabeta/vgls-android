@@ -37,17 +37,19 @@ class UserContentMigrator(
         settingsManager.getNeedsAutoMigrate()
             .take(1)
             .flatMapLatest { needsMigrate ->
-                if (needsMigrate != false) {
+                if (needsMigrate) {
                     migrateUserData()
                 } else {
-                    flow { }
+                    flow {}
                 }
             }
             .onEach { songsMigrated ->
                 if (songsMigrated > 0) {
-                    hatchet.v("Migrated $songsMigrated songs.")
-                    settingsManager.setNeedsAutoMigrate(false)
+                    hatchet.d("Migrated $songsMigrated songs.")
+                } else {
+                    hatchet.v("No migration necessary.")
                 }
+                settingsManager.setNeedsAutoMigrate(false)
             }
             .flowOn(dispatchers.disk)
             .launchIn(coroutineScope)

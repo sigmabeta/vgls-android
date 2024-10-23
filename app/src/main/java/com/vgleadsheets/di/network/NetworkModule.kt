@@ -1,20 +1,24 @@
-package com.vgleadsheets.di
+package com.vgleadsheets.di.network
 
+import com.squareup.moshi.Moshi
 import com.vgleadsheets.appinfo.AppInfo
+import com.vgleadsheets.di.HatchetOkHttpLogger
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
+import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.Random
+import javax.inject.Named
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -37,7 +41,7 @@ object NetworkModule {
         return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first { it.baseBaseUrl != null }
+                .first { it.loaded }
 
             return@runBlocking urlInfo.baseBaseUrl
         }
@@ -52,7 +56,7 @@ object NetworkModule {
         return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first { it.apiBaseUrl != null }
+                .first { it.loaded }
 
             return@runBlocking urlInfo.apiBaseUrl
         }
@@ -64,18 +68,12 @@ object NetworkModule {
     internal fun provideVglsImageUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
-        val baseUrl = runBlocking {
+        return runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first { it.imageBaseUrl != null }
+                .first { it.loaded }
 
             return@runBlocking urlInfo.imageBaseUrl
-        }
-
-        return if (baseUrl != null) {
-            baseUrl
-        } else {
-            "file:///android_asset/sheets"
         }
     }
 
@@ -88,7 +86,7 @@ object NetworkModule {
         val baseUrl = runBlocking {
             val urlInfo = urlInfoProvider
                 .urlInfoFlow
-                .first { it.pdfBaseUrl != null }
+                .first { it.loaded }
 
             return@runBlocking urlInfo.pdfBaseUrl
         }
@@ -102,11 +100,9 @@ object NetworkModule {
     internal fun provideVglsOkClient(
         appInfo: AppInfo,
         @Named("HttpLoggingInterceptor") logger: Interceptor,
-        @Named("StethoInterceptor") debugger: Interceptor,
     ) = if (appInfo.isDebug) {
         OkHttpClient.Builder()
             .addNetworkInterceptor(logger)
-            .addNetworkInterceptor(debugger)
             .build()
     } else {
         OkHttpClient()
@@ -132,7 +128,19 @@ object NetworkModule {
             .build()
     }
 
+    @Provides
+    @Singleton
+    internal fun provideMoshi(): Moshi = Moshi
+        .Builder()
+        .build()
+
+    @Provides
+    @Singleton
+    internal fun provideConverterFactory(
+        moshiInstance: Moshi
+    ): Converter.Factory = MoshiConverterFactory.create(moshiInstance)
+
     const val CACHE_MAX_AGE = 60 * 60 * 24 * 365
 
-    const val SEED_RANDOM_NUMBER_GENERATOR = 123456L
+    const val SEED_RANDOM_NUMBER_GENERATOR = 12345L
 }

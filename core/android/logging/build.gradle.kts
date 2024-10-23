@@ -8,4 +8,8 @@ dependencies {
 
 android {
     namespace = "com.vgleadsheets.logging"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }

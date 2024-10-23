@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,9 +17,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
-import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
-import coil.request.ImageRequest
+import coil3.compose.AsyncImagePainter
+import coil3.compose.SubcomposeAsyncImage
+import coil3.request.ImageRequest
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
@@ -31,6 +33,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Suppress("LongMethod", "ReturnCount")
 fun CrossfadeSheet(
     sourceInfo: SourceInfo,
+    contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
     fillMaxWidth: Boolean,
@@ -77,12 +80,12 @@ fun CrossfadeSheet(
             build()
         },
         contentScale = ContentScale.Fit,
-        contentDescription = null,
+        contentDescription = contentDescription,
         modifier = modifier
             .defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
             .aspectRatio(SheetConstants.ASPECT_RATIO),
     ) {
-        val state = painter.state
+        val state by painter.state.collectAsState()
         when (state) {
             is AsyncImagePainter.State.Loading ->
                 PlaceholderSheet(
@@ -94,7 +97,7 @@ fun CrossfadeSheet(
             is AsyncImagePainter.State.Success -> {
                 Image(
                     painter = painter,
-                    contentDescription = null,
+                    contentDescription = contentDescription,
                     contentScale = ContentScale.Fit,
                     modifier = modifier,
                 )
@@ -105,7 +108,7 @@ fun CrossfadeSheet(
                     sourceInfo = sourceInfo,
                     modifier = modifier,
                     showDebug = showDebug,
-                    error = state.result.throwable
+                    error = (state as AsyncImagePainter.State.Error).result.throwable
                 )
             }
 
@@ -192,6 +195,7 @@ private fun PortraitError() {
 private fun SampleLoading() {
     CrossfadeSheet(
         sourceInfo = SourceInfo("Doesn't matter"),
+        contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -201,9 +205,9 @@ private fun SampleLoading() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier.fillMaxSize(),
-        showDebug = true,
         fillMaxWidth = true,
+        showDebug = true,
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -211,6 +215,7 @@ private fun SampleLoading() {
 private fun SampleSheetPageOne() {
     CrossfadeSheet(
         sourceInfo = SourceInfo("nope"),
+        contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -220,9 +225,9 @@ private fun SampleSheetPageOne() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier.fillMaxSize(),
-        showDebug = true,
         fillMaxWidth = true,
+        showDebug = true,
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -230,6 +235,7 @@ private fun SampleSheetPageOne() {
 private fun SampleSheetPageTwo() {
     CrossfadeSheet(
         sourceInfo = SourceInfo("nope"),
+        contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -239,9 +245,9 @@ private fun SampleSheetPageTwo() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        modifier = Modifier.fillMaxSize(),
-        showDebug = true,
         fillMaxWidth = true,
+        showDebug = true,
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -249,6 +255,7 @@ private fun SampleSheetPageTwo() {
 private fun SampleError() {
     CrossfadeSheet(
         sourceInfo = SourceInfo("nope"),
+        contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -258,9 +265,9 @@ private fun SampleError() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
+        fillMaxWidth = true,
+        showDebug = true,
         modifier = Modifier.fillMaxWidth(),
         simulateError = true,
-        showDebug = true,
-        fillMaxWidth = true,
     )
 }

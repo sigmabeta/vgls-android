@@ -43,8 +43,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -124,6 +124,7 @@ object RepositoryModule {
         dbStatisticsDataSource: DbStatisticsDataSource,
         coroutineScope: CoroutineScope,
         notifManager: NotifManager,
+        userContentMigrator: UserContentMigrator,
     ) = UpdateManager(
         vglsApi,
         dbUpdater,
@@ -134,6 +135,7 @@ object RepositoryModule {
         dispatchers,
         coroutineScope,
         notifManager,
+        userContentMigrator,
     )
 
     @Provides

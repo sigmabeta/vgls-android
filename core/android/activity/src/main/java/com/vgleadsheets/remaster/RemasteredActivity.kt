@@ -19,17 +19,18 @@ import com.vgleadsheets.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.ui.themes.VglsMaterial
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class RemasteredActivity :
-    ComponentActivity() {
-
+class RemasteredActivity : ComponentActivity() {
     @Inject
     lateinit var hatchet: Hatchet
+
+    @Inject
+    lateinit var activityDependencyInitializer: ActivityDependencyInitializer
 
     private val navViewModel: NavViewModel by viewModels()
 
@@ -97,13 +98,9 @@ class RemasteredActivity :
         val heightPixels = displayMetrics.heightPixels
 
         hatchet.v("Device screen DPI: ${displayMetrics.densityDpi}")
-        hatchet.v(
-
-            "Device screen scaling factor: ${displayMetrics.density}"
-        )
+        hatchet.v("Device screen scaling factor: ${displayMetrics.density}")
         hatchet.v("Device screen size: ${widthPixels}x$heightPixels")
         hatchet.v(
-
             "Device screen size (scaled): ${(widthPixels / displayMetrics.density).toInt()}" +
                 "x${(heightPixels / displayMetrics.density).toInt()}"
         )

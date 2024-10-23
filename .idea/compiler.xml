@@ -2,7 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="17">
+      <module name="VGLeadSheets.core.android.animation" target="21" />
       <module name="VGLeadSheets.core.android.hud" target="17" />
+      <module name="VGLeadSheets.core.android.mvrx" target="21" />
       <module name="VGLeadSheets.core.android.router" target="17" />
       <module name="VGLeadSheets.core.android.ui-components" target="17" />
       <module name="VGLeadSheets.core.android.ui-core" target="17" />

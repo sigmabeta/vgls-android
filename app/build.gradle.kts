@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationBuildType
+import org.jetbrains.kotlin.config.JvmTarget
 
 plugins {
     alias(libs.plugins.vgls.android.app)
@@ -93,7 +94,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JvmTarget.JVM_17.description
     }
 
     testOptions {
@@ -104,6 +105,10 @@ android {
         checkDependencies = true
         ignoreTestSources = true
         checkReleaseBuilds = false
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -136,10 +141,6 @@ dependencies {
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
 
-    // Debug helper
-    implementation(libs.stetho)
-    implementation(libs.stetho.okhttp)
-
     val shouldIncludeFirebase = checkShouldIncludeFirebase()
     logger.quiet("Including firebase: $shouldIncludeFirebase")
     if (shouldIncludeFirebase) {
@@ -159,6 +160,15 @@ dependencies {
 
     // Junit libs
     testImplementation(libs.junit4)
+
+    // UI Testing
+    debugImplementation(libs.androidx.compose.ui.testing.manifest)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.compose.ui.testing)
+    androidTestImplementation(libs.hilt.testing)
+    kspAndroidTest(libs.hilt.compiler)
 }
 
 fun checkShouldIncludeFirebase(): Boolean {

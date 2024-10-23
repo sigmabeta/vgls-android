@@ -9,20 +9,15 @@ import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
 import com.vgleadsheets.logging.Hatchet
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.system.measureTimeMillis
 
-@Singleton
-class PdfToBitmapRenderer @Inject constructor(
-    private val hatchet: Hatchet,
-) {
+class PdfToBitmapRenderer(private val hatchet: Hatchet,) {
     private val backgroundPaint = Paint().apply {
         isAntiAlias = false
         color = Color.WHITE
     }
 
-    suspend fun renderPdfToBitmap(
+    fun renderPdfToBitmap(
         pdfFile: File,
         pageNumber: Int,
         width: Int?,
@@ -48,7 +43,7 @@ class PdfToBitmapRenderer @Inject constructor(
         return bitmap
     }
 
-    private suspend fun createBitmap(
+    private fun createBitmap(
         pdfRenderer: PdfRenderer,
         pageNumber: Int,
         width: Int?

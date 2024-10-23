@@ -1,11 +1,18 @@
 package com.vgleadsheets.time
 
+import org.threeten.bp.LocalDate
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
+
 interface ThreeTenTime {
-    fun init()
+    fun now(): ZonedDateTime
 
-    fun now(): org.threeten.bp.ZonedDateTime
+    fun parse(textToParse: String, formatter: DateTimeFormatter): ZonedDateTime
 
-    fun parse(textToParse: String, formatter: org.threeten.bp.format.DateTimeFormatter): org.threeten.bp.ZonedDateTime
+    fun zoneIdFrom(stringId: String): ZoneId
 
-    fun zoneIdFrom(stringId: String): org.threeten.bp.ZoneId
+    fun localDateFromString(date: String): LocalDate?
+
+    fun longDateTextFromMillis(timestamp: Long): String?
 }

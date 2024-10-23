@@ -36,6 +36,7 @@ fun BigImage(
         CrossfadeImage(
             sourceInfo = model.sourceInfo,
             imagePlaceholder = model.imagePlaceholder,
+            contentDescription = model.contentDescription,
             modifier = Modifier.fillMaxSize(),
         )
     }
@@ -48,6 +49,7 @@ private fun LoadingGame() {
         HeroImageListModel(
             sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.ALBUM,
+            contentDescription = "",
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
@@ -63,6 +65,7 @@ private fun SuccessGame() {
         HeroImageListModel(
             sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.DESCRIPTION,
+            contentDescription = "",
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },
@@ -78,6 +81,7 @@ private fun SuccessGameWithLabel() {
         HeroImageListModel(
             sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.DESCRIPTION,
+            contentDescription = "",
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },

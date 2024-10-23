@@ -1,20 +1,18 @@
 package com.vgleadsheets.pdf
 
 import androidx.core.graphics.drawable.toDrawable
-import coil.ImageLoader
-import coil.annotation.ExperimentalCoilApi
-import coil.decode.DecodeResult
-import coil.decode.Decoder
-import coil.fetch.SourceResult
-import coil.request.Options
-import javax.inject.Inject
+import coil3.ImageLoader
+import coil3.asImage
+import coil3.decode.DecodeResult
+import coil3.decode.Decoder
+import coil3.fetch.SourceFetchResult
+import coil3.request.Options
 
 class PdfImageDecoder(
     private val pdfToBitmapRenderer: PdfToBitmapRenderer,
-    private val result: SourceResult,
+    private val result: SourceFetchResult,
     private val options: Options,
 ) : Decoder {
-    @OptIn(ExperimentalCoilApi::class)
     @Suppress("ReturnCount")
     override suspend fun decode(): DecodeResult? {
         // Check the source is actually a pdf
@@ -38,15 +36,15 @@ class PdfImageDecoder(
 
         return DecodeResult(
             isSampled = true,
-            drawable = drawable,
+            image = drawable.asImage(),
         )
     }
 
-    class Factory @Inject constructor(
+    class Factory(
         private val pdfToBitmapRenderer: PdfToBitmapRenderer,
     ) : Decoder.Factory {
         override fun create(
-            result: SourceResult,
+            result: SourceFetchResult,
             options: Options,
             imageLoader: ImageLoader
         ) = PdfImageDecoder(

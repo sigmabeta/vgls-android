@@ -18,8 +18,11 @@ fun SheetPageItem(
     modifier: Modifier,
     padding: PaddingValues,
 ) {
+    val contentDescription = "${model.title} from ${model.gameName}, page ${model.pageNumber + 1}"
+
     CrossfadeSheet(
         sourceInfo = model.sourceInfo,
+        contentDescription = contentDescription,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
             model.gameName,
@@ -30,6 +33,6 @@ fun SheetPageItem(
         fillMaxWidth = fillMaxWidth,
         showDebug = showDebug,
         modifier = modifier
-            .padding(padding)
+            .padding(padding),
     )
 }

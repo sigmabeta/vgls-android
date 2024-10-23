@@ -6,7 +6,6 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.updates.AppUpdate
-import com.vgleadsheets.time.PublishDateUtils.toLongDateText
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.toImmutableList
@@ -24,7 +23,7 @@ data class State(
         loadingItemCount = 6,
     ) {
         data.mapIndexed { index, update ->
-            val releaseDate = update.releaseDate.toLongDateText()
+            val releaseDate = update.releaseDate
 
             CollapsibleDetailsListModel(
                 dataId = update.versionCode.toLong(),

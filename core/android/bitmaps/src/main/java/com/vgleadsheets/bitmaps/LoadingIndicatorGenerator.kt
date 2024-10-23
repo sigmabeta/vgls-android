@@ -47,6 +47,7 @@ class LoadingIndicatorGenerator @Inject constructor(
 
     private var prevBitmap: Bitmap? = null
 
+    @Synchronized
     fun generateLoadingSheet(
         width: Int,
         title: String,

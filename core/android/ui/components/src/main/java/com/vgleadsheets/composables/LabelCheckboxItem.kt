@@ -16,12 +16,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -31,6 +35,12 @@ fun LabelCheckboxItem(
     modifier: Modifier,
     padding: PaddingValues,
 ) {
+    val accyStateDescription = when (model.checked) {
+        true -> stringResource(StringId.ACCY_ST_DESC_CHECKED.id())
+        false -> stringResource(StringId.ACCY_ST_DESC_UNCHECKED.id())
+        null -> stringResource(StringId.ACCY_ST_DESC_LOADING.id())
+    }
+
     LabeledThingy(
         label = model.name,
         thingy = {
@@ -41,7 +51,8 @@ fun LabelCheckboxItem(
                 when {
                     checked != null -> Checkbox(
                         checked = checked,
-                        onCheckedChange = { actionSink.sendAction(model.clickAction) }
+                        onCheckedChange = { actionSink.sendAction(model.clickAction) },
+                        Modifier.clearAndSetSemantics { }
                     )
 
                     else -> CircularProgressIndicator(
@@ -53,6 +64,8 @@ fun LabelCheckboxItem(
             }
         },
         onClick = { actionSink.sendAction(model.clickAction) },
+        onClickLabel = stringResource(StringId.ACCY_OCL_CHECKBOX.id()),
+        accyStateDescription = accyStateDescription,
         modifier = modifier,
         padding = padding,
     )

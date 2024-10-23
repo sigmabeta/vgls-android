@@ -199,6 +199,7 @@ data class State(
             HeroImageListModel(
                 sourceInfo = SourceInfo(data.photoUrl),
                 imagePlaceholder = Icon.ALBUM,
+                contentDescription = data.name,
                 clickAction = Action.GameClicked(data.id),
             )
         )

@@ -1,7 +1,7 @@
 package com.vgleadsheets.pdf
 
-import coil.annotation.ExperimentalCoilApi
-import coil.decode.ImageSource
+import coil3.annotation.ExperimentalCoilApi
+import coil3.decode.ImageSource
 
 @OptIn(ExperimentalCoilApi::class)
 data class PdfMetadata(

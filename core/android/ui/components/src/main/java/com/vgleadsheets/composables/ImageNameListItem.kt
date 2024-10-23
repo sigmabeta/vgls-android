@@ -94,6 +94,7 @@ fun ImageNameListItem(
             CrossfadeImage(
                 sourceInfo = sourceInfo,
                 imagePlaceholder = imagePlaceholder,
+                contentDescription = null,
                 modifier = Modifier
             )
         }

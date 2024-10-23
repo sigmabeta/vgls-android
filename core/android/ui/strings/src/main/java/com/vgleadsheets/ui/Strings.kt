@@ -91,6 +91,7 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_LICENSES -> R.string.label_settings_license
         StringId.SETTINGS_LABEL_WEBSITE -> R.string.label_settings_website
         StringId.SETTINGS_LABEL_GIANT_BOMB -> R.string.label_settings_gb
+        StringId.SETTINGS_LABEL_DEBUG_FAKE_API -> R.string.label_settings_debug_fake
         StringId.SETTINGS_LABEL_DEBUG_DELAY -> R.string.label_settings_debug_delay
         StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS -> R.string.label_settings_debug_show_nav_snackbars
         StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS -> R.string.label_settings_debug_generate_records
@@ -121,5 +122,19 @@ fun StringId.id(): Int {
         StringId.DIFFICULTY_TWO -> R.string.difficulty_two
         StringId.DIFFICULTY_THREE -> R.string.difficulty_three
         StringId.DIFFICULTY_FOUR -> R.string.difficulty_four
+
+        StringId.ACCY_OCL_CHECKBOX -> R.string.accy_ocl_checkbox
+        StringId.ACCY_OCL_DROPDOWN -> R.string.accy_ocl_dropdown
+        StringId.ACCY_OCL_RATING -> R.string.accy_ocl_rating
+        StringId.ACCY_OCL_SHEET_CARD -> R.string.accy_ocl_sheet_card
+        StringId.ACCY_OCL_SINGLE_LINE -> R.string.accy_ocl_single_line
+        StringId.ACCY_OCL_VALUE -> R.string.accy_ocl_value
+
+        StringId.ACCY_ST_DESC_LOADING -> R.string.accy_st_desc_loading
+        StringId.ACCY_ST_DESC_CHECKED -> R.string.accy_st_desc_checked
+        StringId.ACCY_ST_DESC_UNCHECKED -> R.string.accy_st_desc_unchecked
+
+        StringId.ACCY_CDESC_HERO_GAME -> R.string.accy_cdesc_hero_game
+        StringId.ACCY_CDESC_HERO_COMPOSER -> R.string.accy_cdesc_hero_composer
     }
 }

@@ -1,10 +1,9 @@
 package com.vgleadsheets.images
 
-import coil.key.Keyer
-import coil.request.Options
-import javax.inject.Inject
+import coil3.key.Keyer
+import coil3.request.Options
 
-class LoadingIndicatorKeyer @Inject constructor() : Keyer<LoadingIndicatorConfig> {
+class LoadingIndicatorKeyer : Keyer<LoadingIndicatorConfig> {
     override fun key(data: LoadingIndicatorConfig, options: Options): String {
         val width = options.size.width
         return "loading-${data.title}-${data.gameName}-C-$width"

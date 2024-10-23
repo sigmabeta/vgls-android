@@ -4,9 +4,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 
 object BitmapGenerator {
     fun generateBitmap(
-        url: String,
+        sourceInfo: Any,
         squareImage: Boolean = true,
-        drawLines: Boolean = false
     ): ImageBitmap {
         throw RuntimeException("This shouldn't be used in release builds.")
     }

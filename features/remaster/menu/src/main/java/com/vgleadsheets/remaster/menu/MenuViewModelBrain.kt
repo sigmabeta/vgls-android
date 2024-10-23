@@ -11,6 +11,7 @@ import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
+import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
@@ -21,6 +22,7 @@ class MenuViewModelBrain(
     private val userContentGenerator: UserContentGenerator,
     private val userContentMigrator: UserContentMigrator,
     private val appInfo: AppInfo,
+    private val threeTenTime: ThreeTenTime,
     stringProvider: StringProvider,
     hatchet: Hatchet,
     private val scheduler: VglsScheduler,
@@ -42,6 +44,7 @@ class MenuViewModelBrain(
             is Action.WhatsNewClicked -> onWhatsNewClicked()
             is Action.BuildDateClicked -> onBuildDateClicked()
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
+            is Action.FakeApiClicked -> onFakeApiClicked()
             is Action.DebugDelayClicked -> onDebugDelayClicked()
             is Action.DebugShowNavSnackbarsClicked -> onDebugShowNavSnackbarsClicked()
             is Action.GenerateUserContentClicked -> onGenerateUserContentClicked()
@@ -90,6 +93,12 @@ class MenuViewModelBrain(
         debugSettingsManager.setShouldShowDebug(newValue)
     }
 
+    private fun onFakeApiClicked() {
+        val oldValue = (internalUiState.value as State).debugShouldUseFakeApi ?: return
+        updateState { (it as State).copy(debugShouldUseFakeApi = null) }
+        debugSettingsManager.setShouldUseFakeApi(!oldValue)
+    }
+
     private fun onDebugDelayClicked() {
         val oldValue = (internalUiState.value as State).debugShouldDelay ?: return
         updateState { (it as State).copy(debugShouldDelay = null) }
@@ -106,6 +115,7 @@ class MenuViewModelBrain(
         fetchKeepScreenOn()
         fetchAppInfo()
         fetchShouldShowDebug()
+        fetchDebugShouldUseFakeApi()
         fetchDebugShouldDelay()
         fetchDebugShouldShowNavSnackbars()
     }
@@ -114,7 +124,12 @@ class MenuViewModelBrain(
         updateState { (it as State).copy(appInfo = null) }
         flow { emit(Unit) }
             .onEach { _ ->
-                updateState { (it as State).copy(appInfo = appInfo) }
+                updateState {
+                    (it as State).copy(
+                        appInfo = appInfo,
+                        formattedBuildDate = threeTenTime.longDateTextFromMillis(appInfo.buildTimeMs ?: 0)
+                    )
+                }
             }
             .runInBackground()
     }
@@ -135,6 +150,16 @@ class MenuViewModelBrain(
             .getShouldShowDebug()
             .onEach { value ->
                 updateState { (it as State).copy(shouldShowDebug = value) }
+            }
+            .runInBackground()
+    }
+
+    private fun fetchDebugShouldUseFakeApi() {
+        updateState { (it as State).copy(debugShouldUseFakeApi = null) }
+        debugSettingsManager
+            .getShouldUseFakeApi()
+            .onEach { value ->
+                updateState { (it as State).copy(debugShouldUseFakeApi = value) }
             }
             .runInBackground()
     }
