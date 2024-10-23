@@ -17,10 +17,8 @@
 package com.vgleadsheets.plugins.components
 
 import com.android.build.api.dsl.CommonExtension
-import java.lang.Runtime
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
@@ -57,9 +55,9 @@ internal fun Project.configureAndroidCompose(
 
 private fun Project.configureKotlinCompose() {
     extensions.configure<ComposeCompilerGradlePluginExtension> {
-        stabilityConfigurationFile = rootProject.layout.projectDirectory.file("compose-stability.conf")
-        reportsDestination = project.layout.buildDirectory.dir("compose_compiler/reports")
-        metricsDestination = project.layout.buildDirectory.dir("compose_compiler/metrics")
+        stabilityConfigurationFile.set(rootProject.layout.projectDirectory.file("compose-stability.conf"))
+        reportsDestination.set(project.layout.buildDirectory.dir("compose_compiler/reports"))
+        metricsDestination.set(project.layout.buildDirectory.dir("compose_compiler/metrics"))
     }
 
     tasks.withType<Test> {
