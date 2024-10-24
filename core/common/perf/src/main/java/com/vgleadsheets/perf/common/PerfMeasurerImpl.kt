@@ -22,13 +22,13 @@ class PerfMeasurerImpl(
 ) : PerfMeasurer {
     private val perfCoroutineScope = CoroutineScope(dispatchers.main)
 
-    private val loadTimeScreens = mapOf<PerfSpec, ScreenLoadStatus>()
+    private val loadTimeScreens = mutableMapOf<PerfSpec, ScreenLoadStatus>()
 
-    private val invalidateScreens = mapOf<PerfSpec, MutableList<InvalidateInfo>>()
+    private val invalidateScreens = mutableMapOf<PerfSpec, MutableList<InvalidateInfo>>()
 
-    private val frameTimeScreens = mapOf<PerfSpec, MutableList<FrameInfo>>()
+    private val frameTimeScreens = mutableMapOf<PerfSpec, MutableList<FrameInfo>>()
 
-    private val failureTimers = mapOf<PerfSpec, Job?>()
+    private val failureTimers = mutableMapOf<PerfSpec, Job?>()
 
     private val screenLoadSink = MutableSharedFlow<Map<PerfSpec, ScreenLoadStatus>>()
 
