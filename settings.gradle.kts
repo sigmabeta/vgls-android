@@ -61,7 +61,7 @@ include(
     ":core:android:resources",
     ":core:android:scaffold",
     ":core:android:storage:common",
-    ":core:android:tracking",
+    ":core:android:analytics",
     ":core:android:ui:components",
     ":core:android:ui:colors",
     ":core:android:ui:icons",
@@ -95,7 +95,7 @@ include(
     ":core:common:settings:general",
     ":core:common:settings:environment",
     ":core:common:settings:part",
-    ":core:common:tracking",
+    ":core:common:analytics",
     ":core:common:time",
     ":core:common:ui:components",
     ":core:common:ui:icons",
@@ -104,7 +104,7 @@ include(
     ":core:common:versions",
 
     ":core:fake:perf",
-    ":core:fake:tracking",
+    ":core:fake:analytics",
 
     ":features:remaster:all",
     ":features:remaster:browse",

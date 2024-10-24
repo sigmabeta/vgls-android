@@ -2,6 +2,7 @@ package com.vgleadsheets.viewmodel.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
@@ -12,6 +13,7 @@ import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.perf.common.PerfMeasurer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.launchIn
@@ -22,6 +24,8 @@ class ListViewModel @AssistedInject constructor(
     private val hatchet: Hatchet,
     private val eventDispatcher: EventDispatcher,
     private val showDebugProvider: ShowDebugProvider,
+    private val analytics: Analytics,
+    private val perfMeasurer: PerfMeasurer,
     @Assisted destination: Destination,
     @Assisted idArg: Long,
     @Assisted stringArg: String?,

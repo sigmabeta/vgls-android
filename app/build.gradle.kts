@@ -149,10 +149,10 @@ dependencies {
         implementation(libs.firebase.crashlytics)
 
         implementation(projects.core.android.firebase)
-        implementation(projects.core.android.tracking)
+        implementation(projects.core.android.analytics)
     } else {
         implementation(projects.core.fake.perf)
-        implementation(projects.core.fake.tracking)
+        implementation(projects.core.fake.analytics)
     }
 
     // Memory leak detection (Uncomment to enable)
