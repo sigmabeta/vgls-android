@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.parts
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
@@ -13,10 +14,12 @@ import kotlinx.coroutines.flow.onEach
 class PartsListViewModelBrain(
     stringProvider: StringProvider,
     hatchet: Hatchet,
+    private val analytics: Analytics,
     private val scheduler: VglsScheduler,
     private val selectedPartManager: SelectedPartManager,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {

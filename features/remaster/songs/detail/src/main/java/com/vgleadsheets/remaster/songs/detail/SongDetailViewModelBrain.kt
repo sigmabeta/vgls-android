@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.songs.detail
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -35,10 +36,12 @@ class SongDetailViewModelBrain(
     private val tagRepository: TagRepository,
     private val scheduler: VglsScheduler,
     private val urlInfoProvider: UrlInfoProvider,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {

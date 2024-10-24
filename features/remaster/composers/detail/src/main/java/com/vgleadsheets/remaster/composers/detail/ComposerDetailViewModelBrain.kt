@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.composers.detail
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -27,10 +28,12 @@ class ComposerDetailViewModelBrain(
     private val gameRepository: GameRepository,
     private val favoriteRepository: FavoriteRepository,
     private val scheduler: VglsScheduler,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {

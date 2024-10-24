@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.composers.list
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -16,10 +17,12 @@ import kotlinx.coroutines.flow.onEach
 class ComposerListViewModelBrain(
     private val composerRepository: ComposerRepository,
     private val scheduler: VglsScheduler,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {

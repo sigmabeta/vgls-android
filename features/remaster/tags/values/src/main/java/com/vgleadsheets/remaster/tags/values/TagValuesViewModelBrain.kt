@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.tags.values
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -17,10 +18,12 @@ import kotlinx.coroutines.flow.onEach
 class TagValuesViewModelBrain(
     private val tagRepository: TagRepository,
     private val scheduler: VglsScheduler,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {

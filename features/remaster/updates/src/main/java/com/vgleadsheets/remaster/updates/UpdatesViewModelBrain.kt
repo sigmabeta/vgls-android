@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.updates
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appinfo.AppInfo
@@ -13,11 +14,13 @@ import com.vgleadsheets.ui.StringProvider
 class UpdatesViewModelBrain(
     stringProvider: StringProvider,
     hatchet: Hatchet,
+    private val analytics: Analytics,
     private val scheduler: VglsScheduler,
     private val threeTenTime: ThreeTenTime,
     private val appInfo: AppInfo,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {

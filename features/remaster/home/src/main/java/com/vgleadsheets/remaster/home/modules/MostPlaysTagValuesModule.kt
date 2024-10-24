@@ -13,8 +13,8 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import javax.inject.Inject
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class MostPlaysTagValuesModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,

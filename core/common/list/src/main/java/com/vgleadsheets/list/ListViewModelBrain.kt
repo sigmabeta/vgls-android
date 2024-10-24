@@ -1,5 +1,6 @@
 package com.vgleadsheets.list
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.logging.Hatchet
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 
 abstract class ListViewModelBrain(
     private val stringProvider: StringProvider,
+    private val analytics: Analytics,
     private val hatchet: Hatchet,
     private val scheduler: VglsScheduler,
 ) {

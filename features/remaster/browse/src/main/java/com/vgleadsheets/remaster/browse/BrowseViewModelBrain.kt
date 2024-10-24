@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.browse
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -13,11 +14,13 @@ import kotlinx.coroutines.flow.onEach
 
 class BrowseViewModelBrain(
     private val tagRepository: TagRepository,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
     scheduler: VglsScheduler,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {

@@ -27,8 +27,8 @@ import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
-import java.util.Random
 import kotlinx.collections.immutable.persistentListOf
+import java.util.Random
 
 @DevicePreviews
 @Composable

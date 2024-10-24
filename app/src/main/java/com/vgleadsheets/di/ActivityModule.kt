@@ -1,6 +1,7 @@
 package com.vgleadsheets.di
 
 import android.content.Context
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory
@@ -62,6 +63,7 @@ class ActivityModule {
         userContentGenerator: UserContentGenerator,
         userContentMigrator: UserContentMigrator,
         threeTenTime: ThreeTenTime,
+        analytics: Analytics,
     ): BrainProvider =
         FeatureDirectory(
             dispatchers = dispatchers,
@@ -82,6 +84,7 @@ class ActivityModule {
             userContentGenerator = userContentGenerator,
             userContentMigrator = userContentMigrator,
             debugSettingsManager = debugSettingsManager,
+            analytics = analytics,
             threeTenTime = threeTenTime,
         )
 }
