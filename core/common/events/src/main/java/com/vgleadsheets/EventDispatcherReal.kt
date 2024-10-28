@@ -1,9 +1,17 @@
-package com.vgleadsheets.appcomm
+package com.vgleadsheets
 
-class EventDispatcherReal : EventDispatcher {
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.appcomm.EventDispatcher
+import com.vgleadsheets.appcomm.EventSink
+import com.vgleadsheets.appcomm.VglsEvent
+
+class EventDispatcherReal(
+    private val analytics: Analytics,
+) : EventDispatcher {
     private val eventSinks = mutableSetOf<EventSink>()
 
     override val sendEvent: (VglsEvent) -> Unit = { event ->
+        analytics.logVglsEvent(event)
         sendToSinks(event)
     }
 

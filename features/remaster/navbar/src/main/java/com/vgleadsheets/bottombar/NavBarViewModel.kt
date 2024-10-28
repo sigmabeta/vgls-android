@@ -1,6 +1,7 @@
 package com.vgleadsheets.bottombar
 
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NavBarViewModel @Inject constructor(
     override val dispatchers: VglsDispatchers,
+    override val analytics: Analytics,
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
@@ -25,7 +27,11 @@ class NavBarViewModel @Inject constructor(
         eventDispatcher.addEventSink(this)
     }
 
+    override val screenIdentifier = null
+
     override fun initialState() = NavBarState()
+
+    override fun sendInitAction() = Unit
 
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {

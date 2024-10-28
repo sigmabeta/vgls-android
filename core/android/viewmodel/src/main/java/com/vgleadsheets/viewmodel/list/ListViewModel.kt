@@ -42,7 +42,6 @@ class ListViewModel @AssistedInject constructor(
     val showDebug = showDebugProvider.showDebugFlow
 
     init {
-
         val initAction = when {
             (idArg > 0L) -> VglsAction.InitWithId(idArg)
             stringArg != null -> VglsAction.InitWithString(stringArg)

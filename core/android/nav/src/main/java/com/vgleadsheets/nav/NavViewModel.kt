@@ -10,6 +10,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -41,6 +42,7 @@ class NavViewModel @Inject constructor(
     override val dispatchers: VglsDispatchers,
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
+    override val analytics: Analytics,
     override val eventDispatcher: EventDispatcher,
     private val notifManager: NotifManager,
     private val updateManager: UpdateManager,
@@ -65,7 +67,11 @@ class NavViewModel @Inject constructor(
     private val activityEventChannel = Channel<ActivityEvent>()
     val activityEvents: ReceiveChannel<ActivityEvent> = activityEventChannel
 
+    override val screenIdentifier = null
+
     override fun initialState() = NavState()
+
+    override fun sendInitAction() = Unit
 
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {

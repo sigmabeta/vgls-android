@@ -3,5 +3,6 @@ plugins {
 }
 
 dependencies {
+    api(projects.core.common.analytics)
     api(projects.core.common.appcomm)
 }

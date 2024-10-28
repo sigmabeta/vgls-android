@@ -1,12 +1,13 @@
 package com.vgleadsheets.analytics
 
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
+
 @Suppress("TooManyFunctions")
 interface Analytics {
     fun logScreenView(
+        action: VglsAction,
         screen: AnalyticsScreen,
-        details: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
     )
 
     /**
@@ -41,25 +42,14 @@ interface Analytics {
         fromDetails: String
     )
 
-    /**
-     * Clicks
-     */
+    fun logVglsAction(
+        action: VglsAction,
+        fromScreen: AnalyticsScreen,
+    )
 
-    fun logShadowClick()
-
-    fun logSearchButtonClick()
-
-    fun logRefreshClick()
-
-    fun logAppBarButtonClick()
-
-    fun logBottomMenuButtonClick()
-
-    fun logChangePartClick()
-
-    fun logScreenLinkClick(screenId: String, fromScreen: AnalyticsScreen, analyticsDetails: String)
-
-    fun logRandomClick()
+    fun logVglsEvent(
+        event: VglsEvent,
+    )
 
     /**
      * Misc events
@@ -67,12 +57,7 @@ interface Analytics {
 
     fun logAutoRefresh()
 
-    fun logSearch(query: String)
-    fun logSearchSuccess(query: String, toScreen: AnalyticsScreen, toDetails: String)
-
-    fun logPartSelect(transposition: String)
     fun logRandomSongView(songName: String, gameName: String, transposition: String)
 
-    fun logStickerBr()
     fun logError(message: String)
 }

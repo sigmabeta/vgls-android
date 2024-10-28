@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.composers.list
 
 import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -26,6 +27,8 @@ class ComposerListViewModelBrain(
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.LIST_COMPOSER
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.menu
 
 import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.appinfo.AppInfo
@@ -34,6 +35,8 @@ class MenuViewModelBrain(
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.SETTINGS
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

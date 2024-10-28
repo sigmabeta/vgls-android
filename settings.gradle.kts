@@ -81,6 +81,7 @@ include(
     ":core:common:database",
     ":core:common:debug",
     ":core:common:downloader",
+    ":core:common:events",
     ":core:common:images",
     ":core:common:list",
     ":core:common:logging",

@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.home
 
 import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
@@ -36,6 +37,8 @@ class HomeViewModelBrain(
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.HOME
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

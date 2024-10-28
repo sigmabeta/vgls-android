@@ -8,7 +8,7 @@ enum class AnalyticsScreen {
     LIST_GAME,
     LIST_COMPOSER,
     LIST_SHEET,
-    LIST_JAM,
+    LIST_JAM, // Legacy
     LIST_TAG_VALUE,
     LIST_TAG_KEY,
     LIST_TAG_VALUE_SONG,
@@ -27,5 +27,13 @@ enum class AnalyticsScreen {
     NONE,
 
     // TODO
-    DEEPLINK
+    DEEPLINK,
+
+    // Remastered Screens
+    HOME,
+    BROWSE,
+    PART_PICKER,
+    LIST_DIFFICULTY_TYPES,
+    LIST_DIFFICULTY_VALUES,
+    UPDATES,
 }

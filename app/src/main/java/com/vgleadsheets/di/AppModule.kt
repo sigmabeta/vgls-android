@@ -4,8 +4,9 @@ import android.content.Context
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
+import com.vgleadsheets.EventDispatcherReal
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.EventDispatcherReal
 import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.common.debug.ShowDebugProvider
@@ -181,7 +182,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    internal fun provideEventDispatcher(): EventDispatcher = EventDispatcherReal()
+    internal fun provideEventDispatcher(
+        analytics: Analytics
+    ): EventDispatcher = EventDispatcherReal(
+        analytics = analytics,
+    )
 
     @Provides
     @Singleton

@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.difficulty.list
 
 import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -26,6 +27,8 @@ class DifficultyListViewModelBrain(
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.LIST_DIFFICULTY_TYPES
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

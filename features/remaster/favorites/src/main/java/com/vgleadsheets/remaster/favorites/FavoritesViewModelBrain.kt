@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.favorites
 
 import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -28,6 +29,8 @@ class FavoritesViewModelBrain(
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.LIST_FAVORITE
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

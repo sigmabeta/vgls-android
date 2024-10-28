@@ -1,6 +1,8 @@
 package com.vgleadsheets.list
 
 import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
+import com.vgleadsheets.analytics.isInitAction
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.logging.Hatchet
@@ -28,6 +30,8 @@ abstract class ListViewModelBrain(
 ) {
     abstract fun initialState(): ListState
 
+    abstract val screenIdentifier: AnalyticsScreen
+
     protected abstract fun handleAction(action: VglsAction)
 
     protected open fun handleEvent(event: VglsEvent) {}
@@ -45,6 +49,12 @@ abstract class ListViewModelBrain(
 
     fun sendAction(action: VglsAction) {
         hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
+
+        if (action.isInitAction()) {
+            analytics.logScreenView(action, screenIdentifier)
+        } else {
+            analytics.logVglsAction(action, screenIdentifier)
+        }
 
         if (action is VglsAction.DeviceBack) {
             emitEvent(VglsEvent.NavigateBack(this.javaClass.simpleName))

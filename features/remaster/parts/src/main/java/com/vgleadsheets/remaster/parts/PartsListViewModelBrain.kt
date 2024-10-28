@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.parts
 
 import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
@@ -23,6 +24,8 @@ class PartsListViewModelBrain(
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.PART_PICKER
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

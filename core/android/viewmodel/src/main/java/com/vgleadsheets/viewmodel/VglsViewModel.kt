@@ -2,6 +2,9 @@ package com.vgleadsheets.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
+import com.vgleadsheets.analytics.isInitAction
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
@@ -33,6 +36,7 @@ abstract class VglsViewModel<StateType : VglsState> :
     ActionSink,
     EventSink {
     protected abstract val hatchet: Hatchet
+    protected abstract val analytics: Analytics
     protected abstract val dispatchers: VglsDispatchers
     protected abstract val delayManager: DelayManager
     protected abstract val eventDispatcher: EventDispatcher
@@ -58,13 +62,25 @@ abstract class VglsViewModel<StateType : VglsState> :
         .onEach { eventDispatcher.sendEvent(it) }
         .launchIn(viewModelScope)
 
+    abstract val screenIdentifier: AnalyticsScreen?
+
     abstract fun initialState(): StateType
 
     protected abstract fun handleAction(action: VglsAction)
 
     protected abstract fun handleEvent(event: VglsEvent)
 
+    protected abstract fun sendInitAction()
+
     override fun sendAction(action: VglsAction) {
+        if (screenIdentifier != null) {
+            if (action.isInitAction()) {
+                analytics.logScreenView(action, screenIdentifier!!)
+            } else {
+                analytics.logVglsAction(action, screenIdentifier!!)
+            }
+        }
+
         if (action is VglsAction.DeviceBack) {
             emitEvent(VglsEvent.NavigateBack(this.javaClass.simpleName))
             return
