@@ -18,10 +18,6 @@ class NoopAnalytics(
 
     override fun logError(message: String) = Unit
 
-    override fun logWebLaunch(url: String, fromScreen: AnalyticsScreen, fromDetails: String) {
-        hatchet.d("Web browser launched with url $url from screen: $fromScreen:$fromDetails")
-    }
-
     override fun logScreenView(
         action: VglsAction,
         screen: AnalyticsScreen
@@ -49,13 +45,9 @@ class NoopAnalytics(
         id: Long,
         songName: String,
         gameName: String,
-        transposition: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
+        transposition: String?
     ) {
-        hatchet.i(
-            "Song $gameName - $songName, for $transposition; viewed from screen: $fromScreen:$fromDetails"
-        )
+        hatchet.i("Song $gameName - $songName, for $transposition")
     }
 
     override fun logVglsAction(action: VglsAction, fromScreen: AnalyticsScreen) {

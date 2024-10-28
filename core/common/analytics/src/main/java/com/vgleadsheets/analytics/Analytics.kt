@@ -31,15 +31,7 @@ interface Analytics {
         id: Long,
         songName: String,
         gameName: String,
-        transposition: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
-    )
-
-    fun logWebLaunch(
-        url: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
+        transposition: String?,
     )
 
     fun logVglsAction(

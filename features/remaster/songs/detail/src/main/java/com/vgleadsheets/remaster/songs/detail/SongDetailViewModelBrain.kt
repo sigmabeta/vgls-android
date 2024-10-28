@@ -23,10 +23,14 @@ import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfo
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class SongDetailViewModelBrain(
@@ -73,6 +77,7 @@ class SongDetailViewModelBrain(
         fetchTagValues(id)
         checkFavoriteStatus(id)
         checkAltSelectionStatus(id)
+        setupAnalytics()
     }
 
     private fun fetchUrlInfo() {
@@ -147,6 +152,33 @@ class SongDetailViewModelBrain(
             .onEach { isAltSelected -> updateIsAltSelected(LCE.Content(isAltSelected)) }
             .catch { updateIsAltSelected(LCE.Error(LOAD_OPERATION_IS_ALT_SELECTED, it)) }
             .runInBackground()
+    }
+
+    private fun setupAnalytics() {
+
+        internalUiState
+            .map { it as State }
+            .filter { it.song is LCE.Content && it.sheetUrlInfo is LCE.Content }
+            .take(1)
+            .onEach(::reportSongView)
+            .flowOn(scheduler.dispatchers.network)
+            .launchIn(scheduler.coroutineScope)
+    }
+
+    fun reportSongView(state: State) {
+        val song = state.song
+        if (song is LCE.Content) {
+            val songData = song.data
+
+            val partId = state.sheetUrlInfo.getPart()
+
+            analytics.logSongView(
+                id = songData.id,
+                songName = songData.name,
+                gameName = songData.gameName,
+                transposition = partId,
+            )
+        }
     }
 
     private fun onAddFavoriteClicked() {
@@ -277,6 +309,12 @@ class SongDetailViewModelBrain(
                 isAltSelected = isAltSelected
             )
         }
+    }
+
+    private fun LCE<UrlInfo>.getPart() = if (this is LCE.Content) {
+        data.partId
+    } else {
+        null
     }
 
     companion object {

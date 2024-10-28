@@ -65,9 +65,7 @@ class FirebaseAnalyticsImpl(
         id: Long,
         songName: String,
         gameName: String,
-        transposition: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
+        transposition: String?
     ) {
         val details = Bundle()
 
@@ -76,24 +74,8 @@ class FirebaseAnalyticsImpl(
         details.putString(PARAM_GAME_NAME, gameName)
         details.putString(PARAM_SHEET_TITLE, "$gameName|$songName")
         details.putString(PARAM_TRANSPOSITION, transposition)
-        details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
-        details.putString(PARAM_FROM_DETAILS, fromDetails)
 
         logEventInBackground(EVENT_SONG_VIEW, details)
-    }
-
-    override fun logWebLaunch(
-        url: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
-    ) {
-        val detailsBundle = Bundle()
-
-        detailsBundle.putString(PARAM_SCREEN_DETAILS, url)
-        detailsBundle.putString(PARAM_FROM_SCREEN, fromScreen.toString())
-        detailsBundle.putString(PARAM_FROM_DETAILS, fromDetails)
-
-        logEventInBackground(EVENT_LAUNCH_WEB, detailsBundle)
     }
 
     override fun logVglsAction(action: VglsAction, fromScreen: AnalyticsScreen) {
