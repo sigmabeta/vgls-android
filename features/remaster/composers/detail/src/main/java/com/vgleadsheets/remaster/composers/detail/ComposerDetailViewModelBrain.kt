@@ -154,6 +154,14 @@ class ComposerDetailViewModelBrain(
     }
 
     private fun updateComposer(composer: LCE<Composer>) {
+        if (composer is LCE.Content) {
+            val composerData = composer.data
+
+            analytics.logComposerView(
+                composerName = composerData.name,
+            )
+        }
+
         updateState {
             (it as State).copy(
                 composer = composer

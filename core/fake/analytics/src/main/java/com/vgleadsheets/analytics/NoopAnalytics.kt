@@ -26,19 +26,15 @@ class NoopAnalytics(
     }
 
     override fun logGameView(
-        gameName: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
+        gameName: String
     ) {
-        hatchet.d("Game $gameName viewed from screen: $fromScreen:$fromDetails")
+        hatchet.d("Game $gameName viewed")
     }
 
     override fun logComposerView(
-        composerName: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
+        composerName: String
     ) {
-        hatchet.d("Composer $composerName viewed from screen: $fromScreen:$fromDetails")
+        hatchet.d("Composer $composerName viewed")
     }
 
     override fun logSongView(

@@ -16,14 +16,10 @@ interface Analytics {
 
     fun logGameView(
         gameName: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
     )
 
     fun logComposerView(
         composerName: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
     )
 
     @Suppress("LongParameterList")

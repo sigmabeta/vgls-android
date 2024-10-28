@@ -34,29 +34,21 @@ class FirebaseAnalyticsImpl(
      */
 
     override fun logGameView(
-        gameName: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
+        gameName: String
     ) {
         val details = Bundle()
 
         details.putString(PARAM_GAME_NAME, gameName)
-        details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
-        details.putString(PARAM_FROM_DETAILS, fromDetails)
 
         logEventInBackground(EVENT_GAME_VIEW, details)
     }
 
     override fun logComposerView(
-        composerName: String,
-        fromScreen: AnalyticsScreen,
-        fromDetails: String
+        composerName: String
     ) {
         val details = Bundle()
 
         details.putString(PARAM_COMPOSER_NAME, composerName)
-        details.putString(PARAM_FROM_SCREEN, fromScreen.toString())
-        details.putString(PARAM_FROM_DETAILS, fromDetails)
 
         logEventInBackground(EVENT_COMPOSER_VIEW, details)
     }
@@ -134,12 +126,10 @@ class FirebaseAnalyticsImpl(
         const val EVENT_VGLS_ACTION = "vgls_action"
         const val EVENT_VGLS_EVENT = "vgls_event"
         const val EVENT_AUTO_REFRESH = "auto_refresh"
-        const val EVENT_FORCE_REFRESH = "force_refresh"
         const val EVENT_SCREEN_VIEW = "screen_view_custom"
         const val EVENT_SONG_VIEW = "song_view"
         const val EVENT_GAME_VIEW = "game_view"
         const val EVENT_COMPOSER_VIEW = "composer_view"
-        const val EVENT_LAUNCH_WEB = "launch_web"
         const val EVENT_RANDOM_VIEW = "song_view_random"
         const val EVENT_APP_ERROR = "error_app"
 
@@ -148,7 +138,6 @@ class FirebaseAnalyticsImpl(
         const val PARAM_VGLS_ACTION_NAME = "action_name"
         const val PARAM_VGLS_EVENT_NAME = "event_name"
         const val PARAM_FROM_SCREEN = "from_screen"
-        const val PARAM_FROM_DETAILS = "from_details"
         const val PARAM_GAME_NAME = "game_name"
         const val PARAM_SHEET_TITLE = "sheet_title"
         const val PARAM_ID = "id"

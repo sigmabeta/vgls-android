@@ -152,6 +152,14 @@ class GameDetailViewModelBrain(
     }
 
     private fun updateGame(game: LCE<Game>) {
+        if (game is LCE.Content) {
+            val gameData = game.data
+
+            analytics.logGameView(
+                gameName = gameData.name,
+            )
+        }
+
         updateState {
             (it as State).copy(
                 game = game
