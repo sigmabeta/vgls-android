@@ -94,6 +94,10 @@ class TopBarViewModel @Inject constructor(
     }
 
     private fun showTopBar() {
+        if (internalUiState.value.visibility == TopBarVisibility.VISIBLE) {
+            return
+        }
+
         hatchet.d("Showing top bar.")
         showTopBarJob = viewModelScope.launch {
             updateState {
@@ -104,6 +108,10 @@ class TopBarViewModel @Inject constructor(
     }
 
     private fun hideTopBar() {
+        if (internalUiState.value.visibility == TopBarVisibility.HIDDEN) {
+            return
+        }
+
         hatchet.d("Hiding top bar.")
         showTopBarJob?.cancel()
         updateState {
@@ -113,6 +121,10 @@ class TopBarViewModel @Inject constructor(
     }
 
     private fun updateTitle(title: TitleBarModel) {
+        if (internalUiState.value.model == title) {
+            return
+        }
+
         hatchet.v("Updating title: $title")
         updateState {
             it.copy(model = title)

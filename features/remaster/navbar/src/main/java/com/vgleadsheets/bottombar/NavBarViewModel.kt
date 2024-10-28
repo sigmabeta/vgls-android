@@ -50,6 +50,10 @@ class NavBarViewModel @Inject constructor(
     }
 
     private fun showNavBar() {
+        if (internalUiState.value.visibility == NavBarVisibility.VISIBLE) {
+            return
+        }
+
         hatchet.d("Showing nav bar.")
         viewModelScope.launch {
             updateState {
@@ -60,6 +64,10 @@ class NavBarViewModel @Inject constructor(
     }
 
     private fun hideNavBar() {
+        if (internalUiState.value.visibility == NavBarVisibility.HIDDEN) {
+            return
+        }
+
         hatchet.d("Hiding nav bar.")
         updateState {
             it.copy(visibility = NavBarVisibility.HIDDEN)

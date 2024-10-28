@@ -261,6 +261,10 @@ class NavViewModel @Inject constructor(
     }
 
     private fun showSystemUi() {
+        if (internalUiState.value.visibility == SystemUiVisibility.VISIBLE) {
+            return
+        }
+
         hatchet.d("Showing system UI.")
         updateState {
             it.copy(visibility = SystemUiVisibility.VISIBLE)
@@ -269,6 +273,10 @@ class NavViewModel @Inject constructor(
     }
 
     private fun hideSystemUi() {
+        if (internalUiState.value.visibility == SystemUiVisibility.HIDDEN) {
+            return
+        }
+
         hatchet.d("Hiding system UI.")
         viewModelScope.launch {
             updateState {
