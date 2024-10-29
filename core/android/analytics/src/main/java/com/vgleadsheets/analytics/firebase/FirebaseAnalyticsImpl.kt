@@ -77,7 +77,6 @@ class FirebaseAnalyticsImpl(
         detailsBundle.putString(PARAM_FROM_SCREEN, fromScreen.toString())
 
         logEventInBackground(EVENT_VGLS_ACTION, detailsBundle)
-
     }
 
     override fun logVglsEvent(event: VglsEvent) {
@@ -108,7 +107,7 @@ class FirebaseAnalyticsImpl(
 
         details.putString(PARAM_ERROR_MESSAGE, errorString)
         details.putString(PARAM_ERROR_OP_NAME, failedOperationName)
-        details.putString(PARAM_ERROR_THROWABLE, error.stackTraceToString().take(48))
+        details.putString(PARAM_ERROR_THROWABLE, error.stackTraceToString().take(ERR_STRING_LENGTH))
 
         logEventInBackground(EVENT_APP_ERROR, details)
     }
@@ -150,5 +149,7 @@ class FirebaseAnalyticsImpl(
         const val PARAM_ERROR_OP_NAME = "error_op_name"
         const val PARAM_ERROR_MESSAGE = "error_message"
         const val PARAM_ERROR_THROWABLE = "error_throwable"
+
+        const val ERR_STRING_LENGTH = 48
     }
 }

@@ -155,7 +155,6 @@ class SongDetailViewModelBrain(
     }
 
     private fun setupAnalytics() {
-
         internalUiState
             .map { it as State }
             .filter { it.song is LCE.Content && it.sheetUrlInfo is LCE.Content }
