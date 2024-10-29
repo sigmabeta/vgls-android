@@ -22,13 +22,17 @@ class ImagesModule {
         @Named("PdfImageLoaderBuilder") pdfBuilder: CoilBuilderFunction,
         @Named("OtherImageLoaderBuilder") otherBuilder: CoilBuilderFunction,
     ): ImageLoader {
-        return ImageLoader.Builder(context)
-            .logger(coilLogger)
-            .components {
+        val builder = ImageLoader.Builder(context)
+
+        return with(builder) {
+            logger(coilLogger)
+
+            components {
                 pdfBuilder.function(this)
                 otherBuilder.function(this)
             }
-            .build()
-            .also { loader -> SingletonImageLoader.setSafe { loader } }
+
+            build()
+        }.also { loader -> SingletonImageLoader.setSafe { loader } }
     }
 }

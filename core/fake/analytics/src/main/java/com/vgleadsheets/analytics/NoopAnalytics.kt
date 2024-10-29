@@ -16,7 +16,9 @@ class NoopAnalytics(
         hatchet.d("Random song loaded: $gameName - $songName; for $transposition")
     }
 
-    override fun logError(message: String) = Unit
+    override fun logError(failedOperationName: String, errorString: String, error: Throwable) {
+        hatchet.e("Logging error to analytics: $failedOperationName | $errorString | $error")
+    }
 
     override fun logScreenView(
         action: VglsAction,

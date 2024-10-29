@@ -8,7 +8,6 @@ import com.vgleadsheets.downloader.RealSheetDownloader
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.images.FakeOtherImageDecoder
 import com.vgleadsheets.images.FakeOtherImageFetcher
-import com.vgleadsheets.images.HatchetCoilLogger
 import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.images.LoadingIndicatorKeyer
 import com.vgleadsheets.logging.Hatchet
@@ -29,11 +28,6 @@ import javax.inject.Named
 @Module
 @InstallIn(SingletonComponent::class)
 class ImagesComponentsModule {
-    @Provides
-    internal fun provideLogger(hatchet: Hatchet) = HatchetCoilLogger(
-        hatchet = hatchet,
-    )
-
     @Provides
     internal fun providePdfToBitmapRenderer(hatchet: Hatchet) = PdfToBitmapRenderer(
         hatchet = hatchet,

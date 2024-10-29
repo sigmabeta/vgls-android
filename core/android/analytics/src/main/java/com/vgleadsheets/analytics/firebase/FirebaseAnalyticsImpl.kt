@@ -103,9 +103,12 @@ class FirebaseAnalyticsImpl(
         logEventInBackground(EVENT_RANDOM_VIEW, details)
     }
 
-    override fun logError(message: String) {
+    override fun logError(failedOperationName: String, errorString: String, error: Throwable) {
         val details = Bundle()
-        details.putString(PARAM_ERROR_MESSAGE, message)
+
+        details.putString(PARAM_ERROR_MESSAGE, errorString)
+        details.putString(PARAM_ERROR_OP_NAME, failedOperationName)
+        details.putString(PARAM_ERROR_THROWABLE, error.stackTraceToString().take(48))
 
         logEventInBackground(EVENT_APP_ERROR, details)
     }
@@ -144,6 +147,8 @@ class FirebaseAnalyticsImpl(
         const val PARAM_SONG_NAME = "song_name"
         const val PARAM_COMPOSER_NAME = "composer_name"
         const val PARAM_TRANSPOSITION = "transposition"
+        const val PARAM_ERROR_OP_NAME = "error_op_name"
         const val PARAM_ERROR_MESSAGE = "error_message"
+        const val PARAM_ERROR_THROWABLE = "error_throwable"
     }
 }

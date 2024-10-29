@@ -37,6 +37,6 @@ class FirebasePerfBackend(
     }
 
     override fun error(message: String) {
-        analytics.logError("Perf error: $message")
+        analytics.logError(,,)
     }
 }

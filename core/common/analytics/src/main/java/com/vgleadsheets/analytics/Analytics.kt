@@ -47,5 +47,9 @@ interface Analytics {
 
     fun logRandomSongView(songName: String, gameName: String, transposition: String)
 
-    fun logError(message: String)
+    fun logError(
+        failedOperationName: String,
+        errorString: String,
+        error: Throwable,
+    )
 }

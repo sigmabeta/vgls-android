@@ -1,5 +1,6 @@
 package com.vgleadsheets.list
 
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.NoopListModel
@@ -43,4 +44,12 @@ fun <InputType> ifNotNull(input: InputType?, content: (InputType) -> ListModel):
     } else {
         NoopListModel
     }
+}
+
+fun ListStateActual.getErrors(): List<ErrorStateListModel> {
+    val horizScrollers = listItems.filterIsInstance<HorizontalScrollerListModel>()
+    val scrollerErrorItems = horizScrollers
+        .flatMap { it.scrollingItems.filterIsInstance<ErrorStateListModel>() }
+
+    return listItems.filterIsInstance<ErrorStateListModel>() + scrollerErrorItems
 }

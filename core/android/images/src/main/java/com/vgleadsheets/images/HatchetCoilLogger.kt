@@ -1,13 +1,28 @@
 package com.vgleadsheets.images
 
+import android.util.Log
 import coil3.util.Logger
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.logging.Hatchet
 import javax.inject.Inject
 
-class HatchetCoilLogger @Inject constructor(private val hatchet: Hatchet) : Logger {
+class HatchetCoilLogger @Inject constructor(
+    private val hatchet: Hatchet,
+    private val analytics: Analytics,
+) : Logger {
     override var minLevel = Logger.Level.Verbose
 
     override fun log(tag: String, level: Logger.Level, message: String?, throwable: Throwable?) {
-        hatchet.log(level.ordinal + 2, message ?: throwable?.message ?: "Somehow a blank message")
+        if (throwable != null || message?.contains("Exception") == true) {
+            val errorString = message ?: throwable?.message ?: "Unknown error."
+            hatchet.log(Log.ERROR, errorString)
+            analytics.logError(
+                failedOperationName = "ImageLoading",
+                errorString = errorString,
+                error = throwable ?: RuntimeException(message?.substringAfter("java.")),
+            )
+        } else {
+            hatchet.log(level.ordinal + 2, message ?: "Somehow a blank message")
+        }
     }
 }
