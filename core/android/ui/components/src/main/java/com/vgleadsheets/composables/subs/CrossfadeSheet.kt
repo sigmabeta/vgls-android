@@ -2,6 +2,7 @@ package com.vgleadsheets.composables.subs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
@@ -54,7 +55,7 @@ fun CrossfadeSheet(
                 loadingIndicatorConfig = loadingIndicatorConfig,
                 sheetId = sheetId,
                 IllegalArgumentException("Oops it didn't work."),
-            )
+            ) { }
         }
         return
     }
@@ -114,7 +115,9 @@ fun CrossfadeSheet(
                     loadingIndicatorConfig = loadingIndicatorConfig,
                     sheetId = sheetId,
                     error = (state as AsyncImagePainter.State.Error).result.throwable,
-                )
+                ) {
+                    painter.restart()
+                }
             }
 
             else -> {}
@@ -129,7 +132,8 @@ private fun BoxScope.ErrorState(
     showDebug: Boolean,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
-    error: Throwable
+    error: Throwable,
+    errorOnClick: () -> Unit,
 ) {
     PlaceholderSheet(
         loadingIndicatorConfig = loadingIndicatorConfig,
@@ -139,6 +143,7 @@ private fun BoxScope.ErrorState(
 
     Box(
         modifier = Modifier
+            .clickable(onClick = errorOnClick)
             .matchParentSize()
             .background(Color(0, 0, 0, 128))
     ) { }
