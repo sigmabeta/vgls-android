@@ -22,25 +22,32 @@ class PdfToBitmapRenderer(private val hatchet: Hatchet,) {
         pageNumber: Int,
         width: Int?,
     ): Bitmap {
-        val fileDescriptor = ParcelFileDescriptor.open(
-            pdfFile,
-            ParcelFileDescriptor.MODE_READ_ONLY
-        )
+        try {
+            val fileDescriptor = ParcelFileDescriptor.open(
+                pdfFile,
+                ParcelFileDescriptor.MODE_READ_ONLY
+            )
 
-        hatchet.v("Generating sheet bitmap for page $pageNumber of file ${pdfFile.name} ")
+            hatchet.v("Generating sheet bitmap for page $pageNumber of file ${pdfFile.name} ")
 
-        val pdfRenderer = PdfRenderer(fileDescriptor)
-        val pageCount = pdfRenderer.pageCount
+            val pdfRenderer = PdfRenderer(fileDescriptor)
+            val pageCount = pdfRenderer.pageCount
 
-        require(pageNumber <= pageCount) {
-            "PDF only has $pageCount pages, can't render page $pageNumber."
+            require(pageNumber <= pageCount) {
+                "PDF only has $pageCount pages, can't render page $pageNumber."
+            }
+            val bitmap = createBitmap(pdfRenderer, pageNumber, width)
+
+            pdfRenderer.close()
+            fileDescriptor.close()
+
+            return bitmap
+        } catch (ex: Exception) {
+            if (pdfFile.exists()) {
+                pdfFile.delete()
+            }
+            throw ex
         }
-        val bitmap = createBitmap(pdfRenderer, pageNumber, width)
-
-        pdfRenderer.close()
-        fileDescriptor.close()
-
-        return bitmap
     }
 
     private fun createBitmap(
