@@ -17,6 +17,7 @@ class PdfToBitmapRenderer(private val hatchet: Hatchet,) {
         color = Color.WHITE
     }
 
+    @Suppress("TooGenericExceptionCaught")
     fun renderPdfToBitmap(
         pdfFile: File,
         pageNumber: Int,

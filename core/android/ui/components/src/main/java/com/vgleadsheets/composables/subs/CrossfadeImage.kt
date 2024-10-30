@@ -107,7 +107,6 @@ private fun RealImage(
             )
 
             else -> PlaceHolderImage(imagePlaceholder, modifier)
-
         }
     }
 }
@@ -193,6 +192,7 @@ private fun Dark() {
 }
 
 @Composable
+@Suppress("LongMethod", "MagicNumber")
 private fun Sample() {
     Column(
         modifier = Modifier.background(

@@ -127,6 +127,7 @@ fun CrossfadeSheet(
 }
 
 @Composable
+@Suppress("MagicNumber")
 private fun BoxScope.ErrorState(
     sourceInfo: SourceInfo,
     modifier: Modifier,
