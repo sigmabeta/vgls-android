@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
@@ -151,7 +152,7 @@ private fun BoxScope.ErrorState(
     EmptyListIndicator(
         model = ErrorStateListModel(
             failedOperationName = sourceInfo.toString(),
-            errorString = "Can't load this sheet. Check your network connection and try again?",
+            errorString = stringResource(com.vgleadsheets.ui.strings.R.string.error_image_network),
             error = error
         ),
         onBlack = true,
