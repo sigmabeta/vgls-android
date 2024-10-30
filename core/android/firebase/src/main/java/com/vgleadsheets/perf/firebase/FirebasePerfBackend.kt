@@ -37,6 +37,10 @@ class FirebasePerfBackend(
     }
 
     override fun error(message: String) {
-        analytics.logError(,,)
+        analytics.logError(
+            "PerfLogging",
+            message,
+            IllegalStateException(message),
+        )
     }
 }

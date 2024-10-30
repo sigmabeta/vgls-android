@@ -1,9 +1,9 @@
 package com.vgleadsheets.di
 
 import com.google.firebase.perf.FirebasePerformance
-import com.vgleadsheets.perf.tracking.common.PerfTrackingBackend
-import com.vgleadsheets.perf.tracking.firebase.FirebasePerfBackend
-import com.vgleadsheets.tracking.Tracker
+import com.vgleadsheets.perf.common.PerfBackend
+import com.vgleadsheets.perf.firebase.FirebasePerfBackend
+import com.vgleadsheets.analytics.Analytics
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,9 +21,9 @@ object PerfBackendModule {
     @Singleton
     fun providePerfBackend(
         firebase: FirebasePerformance,
-        tracker: Tracker
-    ): PerfTrackingBackend = FirebasePerfBackend(
+        analytics: Analytics
+    ): PerfBackend = FirebasePerfBackend(
         firebase,
-        tracker
+        analytics
     )
 }
