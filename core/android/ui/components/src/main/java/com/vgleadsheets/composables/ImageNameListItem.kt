@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.ImageNameListModel
-import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
@@ -35,24 +34,6 @@ import com.vgleadsheets.ui.themes.VglsMaterialMenu
 @Composable
 fun ImageNameListItem(
     model: ImageNameListModel,
-    actionSink: ActionSink,
-    modifier: Modifier,
-    padding: PaddingValues,
-) {
-    ImageNameListItem(
-        model.name,
-        model.sourceInfo,
-        model.imagePlaceholder,
-        model.clickAction,
-        actionSink,
-        modifier,
-        padding,
-    )
-}
-
-@Composable
-fun ImageNameListItem(
-    model: SearchResultListModel,
     actionSink: ActionSink,
     modifier: Modifier,
     padding: PaddingValues,
