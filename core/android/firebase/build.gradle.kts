@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    // Contains the PerfTracker interface
     api(projects.core.common.perf)
 
     // Firebase Perf
@@ -15,5 +14,5 @@ dependencies {
 }
 
 android {
-    namespace = "com.vgleadsheets.perf.tracking.firebase"
+    namespace = "com.vgleadsheets.perf.analytics.firebase"
 }

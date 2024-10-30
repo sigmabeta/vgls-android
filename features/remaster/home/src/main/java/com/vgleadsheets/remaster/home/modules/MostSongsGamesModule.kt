@@ -12,8 +12,8 @@ import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import javax.inject.Inject
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class MostSongsGamesModule @Inject constructor(
     private val gameRepository: GameRepository,

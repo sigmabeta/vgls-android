@@ -17,11 +17,11 @@ import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.time.TimeUtils
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import javax.inject.Inject
 
 class MostPlaysSongsModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,

@@ -1,5 +1,7 @@
 package com.vgleadsheets.remaster.difficulty.values
 
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -17,13 +19,17 @@ import kotlinx.coroutines.flow.onEach
 class DifficultyValuesViewModelBrain(
     private val tagRepository: TagRepository,
     private val scheduler: VglsScheduler,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.LIST_DIFFICULTY_VALUES
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

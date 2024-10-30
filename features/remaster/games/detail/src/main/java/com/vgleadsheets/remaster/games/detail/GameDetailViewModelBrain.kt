@@ -1,5 +1,7 @@
 package com.vgleadsheets.remaster.games.detail
 
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -27,13 +29,17 @@ class GameDetailViewModelBrain(
     private val composerRepository: ComposerRepository,
     private val favoriteRepository: FavoriteRepository,
     private val scheduler: VglsScheduler,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.DETAIL_GAME
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {
@@ -146,6 +152,14 @@ class GameDetailViewModelBrain(
     }
 
     private fun updateGame(game: LCE<Game>) {
+        if (game is LCE.Content) {
+            val gameData = game.data
+
+            analytics.logGameView(
+                gameName = gameData.name,
+            )
+        }
+
         updateState {
             (it as State).copy(
                 game = game

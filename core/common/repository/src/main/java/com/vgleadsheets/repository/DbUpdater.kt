@@ -30,11 +30,11 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.time.ThreeTenTime
-import java.util.Locale
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
+import java.util.Locale
 
 class DbUpdater(
     private val vglsApi: VglsApi,

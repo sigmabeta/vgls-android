@@ -1,5 +1,7 @@
 package com.vgleadsheets.remaster.home
 
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
@@ -22,6 +24,7 @@ import org.threeten.bp.LocalDate
 
 class HomeViewModelBrain(
     private val stringProvider: StringProvider,
+    private val analytics: Analytics,
     private val hatchet: Hatchet,
     private val scheduler: VglsScheduler,
     private val homeModuleProvider: HomeModuleProvider,
@@ -30,9 +33,12 @@ class HomeViewModelBrain(
     private val threeTenTime: ThreeTenTime,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.HOME
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

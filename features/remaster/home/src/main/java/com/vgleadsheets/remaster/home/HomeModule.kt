@@ -4,7 +4,6 @@ import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.list.DelayManager
-import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
+import kotlin.random.Random
 
 abstract class HomeModule(
     val priority: Priority,

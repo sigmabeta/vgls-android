@@ -2,26 +2,36 @@ package com.vgleadsheets.viewmodel.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
+import com.vgleadsheets.components.ErrorStateListModel
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.ListViewModelBrain
+import com.vgleadsheets.list.getErrors
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.perf.common.PerfMeasurer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class ListViewModel @AssistedInject constructor(
     brainProvider: BrainProvider,
     private val hatchet: Hatchet,
+    private val dispatchers: VglsDispatchers,
     private val eventDispatcher: EventDispatcher,
     private val showDebugProvider: ShowDebugProvider,
+    private val analytics: Analytics,
+    private val perfMeasurer: PerfMeasurer,
     @Assisted destination: Destination,
     @Assisted idArg: Long,
     @Assisted stringArg: String?,
@@ -37,8 +47,9 @@ class ListViewModel @AssistedInject constructor(
 
     val showDebug = showDebugProvider.showDebugFlow
 
-    init {
+    private val reportedErrors = mutableSetOf<ErrorStateListModel>()
 
+    init {
         val initAction = when {
             (idArg > 0L) -> VglsAction.InitWithId(idArg)
             stringArg != null -> VglsAction.InitWithString(stringArg)
@@ -46,6 +57,8 @@ class ListViewModel @AssistedInject constructor(
         }
 
         this.sendAction(initAction)
+
+        setupErrorReporting()
 
         brain.uiEvents
             .onEach { eventDispatcher.sendEvent(it) }
@@ -70,4 +83,29 @@ class ListViewModel @AssistedInject constructor(
     }
 
     override fun sendEvent(event: VglsEvent) = brain.sendEvent(event)
+
+    private fun setupErrorReporting() {
+        uiState
+            .map { it.getErrors() }
+            .onEach { list ->
+                list.forEach { reportError(it) }
+            }
+            .flowOn(dispatchers.computation)
+            .launchIn(viewModelScope)
+    }
+
+    private fun reportError(errorModel: ErrorStateListModel) {
+        if (reportedErrors.contains(errorModel)) {
+            return
+        }
+
+        reportedErrors.add(errorModel)
+
+        hatchet.e("Error: ${errorModel.failedOperationName} | ${errorModel.errorString}")
+        analytics.logError(
+            failedOperationName = errorModel.failedOperationName,
+            errorString = errorModel.errorString,
+            error = errorModel.error
+        )
+    }
 }

@@ -1,6 +1,8 @@
 package com.vgleadsheets.search
 
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
@@ -40,6 +42,7 @@ class SearchViewModel @AssistedInject constructor(
     override val dispatchers: VglsDispatchers,
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
+    override val analytics: Analytics,
     override val eventDispatcher: EventDispatcher,
     val stringProvider: StringProvider,
     private val searchRepository: SearchRepository,
@@ -52,13 +55,20 @@ class SearchViewModel @AssistedInject constructor(
 
     private val internalResultItemsFlow = MutableStateFlow(initialState().toListItems(stringProvider))
 
+    override val screenIdentifier = AnalyticsScreen.SEARCH
+
     init {
+        viewModelScope.launch(dispatchers.main) {
+            sendInitAction()
+        }
         eventDispatcher.addEventSink(this)
         getSearchHistory()
         setupSearchInputObservation()
     }
 
     override fun initialState() = SearchState()
+
+    override fun sendInitAction() = sendAction(VglsAction.InitNoArgs)
 
     override fun handleAction(action: VglsAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {

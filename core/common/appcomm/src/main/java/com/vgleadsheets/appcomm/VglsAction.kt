@@ -6,6 +6,7 @@ open class VglsAction {
     data object InitNoArgs : VglsAction()
     data class InitWithId(val id: Long) : VglsAction()
     data class InitWithString(val arg: String) : VglsAction()
+    data class InitWithPageNumber(val id: Long, val pageNumber: Long) : VglsAction()
 
     data object Resume : VglsAction()
     data object Pause : VglsAction()

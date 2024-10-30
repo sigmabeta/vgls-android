@@ -1,5 +1,7 @@
 package com.vgleadsheets.remaster.composers.detail
 
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -27,13 +29,17 @@ class ComposerDetailViewModelBrain(
     private val gameRepository: GameRepository,
     private val favoriteRepository: FavoriteRepository,
     private val scheduler: VglsScheduler,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.DETAIL_COMPOSER
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {
@@ -148,6 +154,14 @@ class ComposerDetailViewModelBrain(
     }
 
     private fun updateComposer(composer: LCE<Composer>) {
+        if (composer is LCE.Content) {
+            val composerData = composer.data
+
+            analytics.logComposerView(
+                composerName = composerData.name,
+            )
+        }
+
         updateState {
             (it as State).copy(
                 composer = composer

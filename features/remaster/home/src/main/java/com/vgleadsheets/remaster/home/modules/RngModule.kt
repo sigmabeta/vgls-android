@@ -11,8 +11,8 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
 
 class RngModule @Inject constructor(
     private val stringProvider: StringProvider,

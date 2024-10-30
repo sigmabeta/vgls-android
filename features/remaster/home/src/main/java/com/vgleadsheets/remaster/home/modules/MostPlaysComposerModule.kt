@@ -15,10 +15,10 @@ import com.vgleadsheets.time.TimeUtils
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
-import javax.inject.Inject
 import kotlinx.coroutines.flow.map
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import javax.inject.Inject
 
 class MostPlaysComposerModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,

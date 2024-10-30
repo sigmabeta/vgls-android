@@ -1,6 +1,8 @@
 package com.vgleadsheets.ui.viewer
 
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.EventSink
@@ -29,41 +31,51 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class ViewerViewModel @AssistedInject constructor(
-    override val hatchet: Hatchet,
     private val stringProvider: StringProvider,
     private val songRepository: SongRepository,
     private val songHistoryRepository: SongHistoryRepository,
     private val urlInfoProvider: UrlInfoProvider,
+    override val hatchet: Hatchet,
+    override val analytics: Analytics,
     override val dispatchers: VglsDispatchers,
     override val delayManager: DelayManager,
     override val eventDispatcher: EventDispatcher,
     override val showDebugProvider: ShowDebugProvider,
-    @Assisted("id") idArg: Long,
-    @Assisted("page") pageArg: Long,
+    @Assisted("id") val idArg: Long,
+    @Assisted("page") val pageArg: Long,
 ) : VglsViewModel<ViewerState>(),
     ActionSink,
     EventSink {
-    init {
-        val initAction = Action.InitWithPageNumber(
-            idArg,
-            pageArg
-        )
-        Runtime.getRuntime().availableProcessors()
-        this.sendAction(initAction)
-    }
 
     private var chromeVisibilityTimer: Job? = null
     private var buttonVisibilityTimer: Job? = null
     private var historyTimer: Job? = null
 
+    override val screenIdentifier = AnalyticsScreen.SHEET_VIEWER
+
+    init {
+        viewModelScope.launch(dispatchers.main) {
+            sendInitAction()
+        }
+    }
+
     override fun initialState() = ViewerState()
+
+    override fun sendInitAction() {
+        val initAction = VglsAction.InitWithPageNumber(
+            idArg,
+            pageArg
+        )
+
+        this.sendAction(initAction)
+    }
 
     override fun handleAction(action: VglsAction) {
         hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
         when (action) {
             is VglsAction.Resume -> resume()
             is VglsAction.Pause -> pause()
-            is Action.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
+            is VglsAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
             is Action.ScreenClicked -> emitEvent(VglsEvent.ShowUiChrome)
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
         }
@@ -85,6 +97,7 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun startLoading(id: Long, pageNumber: Long) {
+        hatchet.v("Loading song with id $id starting from pagenumber $pageNumber")
         fetchSong(id, pageNumber)
         fetchUrlInfo()
         checkAltSelectionStatus(id)

@@ -1,5 +1,7 @@
 package com.vgleadsheets.remaster.favorites
 
+import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -18,13 +20,17 @@ import kotlinx.coroutines.flow.onEach
 class FavoritesViewModelBrain(
     private val favoriteRepository: FavoriteRepository,
     private val scheduler: VglsScheduler,
+    private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
     stringProvider,
+    analytics,
     hatchet,
     scheduler,
 ) {
+    override val screenIdentifier = AnalyticsScreen.LIST_FAVORITE
+
     override fun initialState() = State()
 
     override fun handleAction(action: VglsAction) {

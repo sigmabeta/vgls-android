@@ -1,5 +1,6 @@
 package com.vgleadsheets.features
 
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.BrainProvider
@@ -52,6 +53,7 @@ class FeatureDirectory(
     private val delayManager: DelayManager,
     private val appInfo: AppInfo,
     private val urlInfoProvider: UrlInfoProvider,
+    private val analytics: Analytics,
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
     private val threeTenTime: ThreeTenTime,
@@ -76,6 +78,7 @@ class FeatureDirectory(
         return when (destination) {
             Destination.HOME -> HomeViewModelBrain(
                 stringProvider,
+                analytics,
                 hatchet,
                 scheduler,
                 homeModuleProvider,
@@ -86,6 +89,7 @@ class FeatureDirectory(
 
             Destination.BROWSE -> BrowseViewModelBrain(
                 tagRepository,
+                analytics,
                 stringProvider,
                 hatchet,
                 scheduler,
@@ -94,6 +98,7 @@ class FeatureDirectory(
             Destination.PART_PICKER -> PartsListViewModelBrain(
                 stringProvider,
                 hatchet,
+                analytics,
                 scheduler,
                 selectedPartManager,
             )
@@ -104,6 +109,7 @@ class FeatureDirectory(
                 composerRepository,
                 favoriteRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet,
             )
@@ -111,6 +117,7 @@ class FeatureDirectory(
             Destination.GAMES_LIST -> GameListViewModelBrain(
                 gameRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet,
             )
@@ -121,6 +128,7 @@ class FeatureDirectory(
                 gameRepository,
                 favoriteRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet,
             )
@@ -128,6 +136,7 @@ class FeatureDirectory(
             Destination.COMPOSERS_LIST -> ComposerListViewModelBrain(
                 composerRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet,
             )
@@ -140,6 +149,7 @@ class FeatureDirectory(
                 tagRepository,
                 scheduler,
                 urlInfoProvider,
+                analytics,
                 stringProvider,
                 hatchet,
             )
@@ -147,6 +157,7 @@ class FeatureDirectory(
             Destination.SONGS_LIST -> SongListViewModelBrain(
                 songRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet,
             )
@@ -154,6 +165,7 @@ class FeatureDirectory(
             Destination.FAVORITES -> FavoritesViewModelBrain(
                 favoriteRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet
             )
@@ -161,6 +173,7 @@ class FeatureDirectory(
             Destination.DIFFICULTY_LIST -> DifficultyListViewModelBrain(
                 tagRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet
             )
@@ -168,6 +181,7 @@ class FeatureDirectory(
             Destination.DIFFICULTY_VALUES_LIST -> DifficultyValuesViewModelBrain(
                 tagRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet
             )
@@ -175,6 +189,7 @@ class FeatureDirectory(
             Destination.TAGS_LIST -> TagListViewModelBrain(
                 tagRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet
             )
@@ -182,6 +197,7 @@ class FeatureDirectory(
             Destination.TAGS_VALUES_LIST -> TagValuesViewModelBrain(
                 tagRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet
             )
@@ -190,6 +206,7 @@ class FeatureDirectory(
                 tagRepository,
                 songRepository,
                 scheduler,
+                analytics,
                 stringProvider,
                 hatchet
             )
@@ -201,6 +218,7 @@ class FeatureDirectory(
                 userContentMigrator,
                 appInfo,
                 threeTenTime,
+                analytics,
                 stringProvider,
                 hatchet,
                 scheduler,
@@ -209,6 +227,7 @@ class FeatureDirectory(
             Destination.UPDATES -> UpdatesViewModelBrain(
                 stringProvider,
                 hatchet,
+                analytics,
                 scheduler,
                 threeTenTime,
                 appInfo,

@@ -130,6 +130,7 @@ dependencies {
     implementation(projects.core.common.appinfo)
     implementation(projects.core.common.downloader)
     implementation(projects.core.common.debug)
+    implementation(projects.core.common.events)
     implementation(projects.core.common.network)
     implementation(projects.core.common.settings.environment)
     implementation(projects.core.common.urlinfo)
@@ -149,10 +150,10 @@ dependencies {
         implementation(libs.firebase.crashlytics)
 
         implementation(projects.core.android.firebase)
-        implementation(projects.core.android.tracking)
+        implementation(projects.core.android.analytics)
     } else {
         implementation(projects.core.fake.perf)
-        implementation(projects.core.fake.tracking)
+        implementation(projects.core.fake.analytics)
     }
 
     // Memory leak detection (Uncomment to enable)

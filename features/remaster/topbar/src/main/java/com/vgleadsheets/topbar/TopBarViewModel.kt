@@ -1,6 +1,7 @@
 package com.vgleadsheets.topbar
 
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TopBarViewModel @Inject constructor(
     private val selectedPartManager: SelectedPartManager,
+    override val analytics: Analytics,
     override val dispatchers: VglsDispatchers,
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
@@ -31,7 +33,11 @@ class TopBarViewModel @Inject constructor(
 ) : VglsViewModel<TopBarState>() {
     private var showTopBarJob: Job? = null
 
+    override val screenIdentifier = null
+
     override fun initialState() = TopBarState()
+
+    override fun sendInitAction() = Unit
 
     init {
         eventDispatcher.addEventSink(this)
@@ -88,6 +94,10 @@ class TopBarViewModel @Inject constructor(
     }
 
     private fun showTopBar() {
+        if (internalUiState.value.visibility == TopBarVisibility.VISIBLE) {
+            return
+        }
+
         hatchet.d("Showing top bar.")
         showTopBarJob = viewModelScope.launch {
             updateState {
@@ -98,6 +108,10 @@ class TopBarViewModel @Inject constructor(
     }
 
     private fun hideTopBar() {
+        if (internalUiState.value.visibility == TopBarVisibility.HIDDEN) {
+            return
+        }
+
         hatchet.d("Hiding top bar.")
         showTopBarJob?.cancel()
         updateState {
@@ -107,6 +121,10 @@ class TopBarViewModel @Inject constructor(
     }
 
     private fun updateTitle(title: TitleBarModel) {
+        if (internalUiState.value.model == title) {
+            return
+        }
+
         hatchet.v("Updating title: $title")
         updateState {
             it.copy(model = title)

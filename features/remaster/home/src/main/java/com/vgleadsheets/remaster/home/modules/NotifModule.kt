@@ -11,8 +11,8 @@ import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.ui.StringProvider
-import javax.inject.Inject
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class NotifModule @Inject constructor(
     private val notifManager: NotifManager,
