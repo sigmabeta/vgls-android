@@ -4,14 +4,21 @@ import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
@@ -23,6 +30,10 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.components.ImageNameListModel
+import com.vgleadsheets.composables.ImageNameListItem
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.BitmapGenerator
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
@@ -35,18 +46,16 @@ fun CrossfadeImage(
     imagePlaceholder: Icon,
     contentDescription: String?,
     modifier: Modifier,
-    contentScale: ContentScale? = null,
     forceGenBitmap: Boolean = LocalInspectionMode.current,
+    simulateError: Boolean = false,
 ) {
-    val bgModifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)
-
     if (sourceInfo.info == null) {
-        PlaceHolderImage(imagePlaceholder, contentScale, bgModifier)
+        PlaceHolderImage(imagePlaceholder, modifier)
         return
     }
 
     if (forceGenBitmap) {
-        FakeImage(sourceInfo, contentScale, modifier)
+        FakeImage(sourceInfo, modifier)
         return
     }
 
@@ -54,9 +63,8 @@ fun CrossfadeImage(
         sourceInfo,
         imagePlaceholder,
         contentDescription,
+        simulateError,
         modifier,
-        bgModifier,
-        contentScale,
     )
 }
 
@@ -65,10 +73,14 @@ private fun RealImage(
     sourceInfo: SourceInfo,
     imagePlaceholder: Icon,
     contentDescription: String?,
+    simulateError: Boolean,
     modifier: Modifier,
-    bgModifier: Modifier,
-    contentScale: ContentScale?
 ) {
+    if (simulateError) {
+        ErrorImage(imagePlaceholder, contentDescription, modifier)
+        return
+    }
+
     val asyncPainter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(sourceInfo.info)
@@ -80,15 +92,21 @@ private fun RealImage(
         targetState = state,
         label = "Image Crossfade",
     ) { loadingState ->
-        if (loadingState is AsyncImagePainter.State.Success) {
-            Image(
+        when (loadingState) {
+            is AsyncImagePainter.State.Success -> Image(
                 painter = asyncPainter,
                 contentDescription = contentDescription,
-                contentScale = contentScale ?: ContentScale.Crop,
+                contentScale = ContentScale.Crop,
                 modifier = modifier,
             )
-        } else {
-            PlaceHolderImage(imagePlaceholder, contentScale, bgModifier)
+
+            is AsyncImagePainter.State.Error -> ErrorImage(
+                imagePlaceholder,
+                contentDescription,
+                modifier
+            )
+
+            else -> PlaceHolderImage(imagePlaceholder, modifier)
         }
     }
 }
@@ -96,21 +114,53 @@ private fun RealImage(
 @Composable
 private fun PlaceHolderImage(
     imagePlaceholder: Icon,
-    contentScale: ContentScale?,
-    bgModifier: Modifier
+    modifier: Modifier
 ) {
     Image(
         painter = painterResource(imagePlaceholder.id()),
         contentDescription = null,
-        contentScale = contentScale ?: ContentScale.Crop,
-        modifier = bgModifier,
+        contentScale = ContentScale.Crop,
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(4.dp),
     )
+}
+
+@Composable
+private fun ErrorImage(
+    imagePlaceholder: Icon,
+    contentDescription: String?,
+    modifier: Modifier
+) {
+    Box(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.errorContainer)
+            .fillMaxSize()
+            .padding(4.dp),
+    ) {
+        Image(
+            painter = painterResource(imagePlaceholder.id()),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error),
+            contentDescription = contentDescription,
+            contentScale = ContentScale.Crop,
+            modifier = modifier.fillMaxSize(),
+        )
+
+        val crossOutResource = com.vgleadsheets.ui.icons.R.drawable.ic_cross_out_error_24dp
+
+        Icon(
+            painter = painterResource(id = crossOutResource),
+            tint = Color.Unspecified,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
 }
 
 @Composable
 private fun FakeImage(
     sourceInfo: SourceInfo,
-    contentScale: ContentScale?,
     modifier: Modifier
 ) {
     Image(
@@ -120,7 +170,7 @@ private fun FakeImage(
             filterQuality = FilterQuality.None
         ),
         contentDescription = null,
-        contentScale = contentScale ?: ContentScale.Crop,
+        contentScale = ContentScale.Crop,
         modifier = modifier,
     )
 }
@@ -142,32 +192,67 @@ private fun Dark() {
 }
 
 @Composable
+@Suppress("LongMethod", "MagicNumber")
 private fun Sample() {
     Column(
         modifier = Modifier.background(
             color = MaterialTheme.colorScheme.background
         )
     ) {
+        ImageNameListItem(
+            ImageNameListModel(
+                1234L,
+                "Carrying the Weight of Life",
+                SourceInfo(info = null),
+                Icon.DESCRIPTION,
+                null,
+                clickAction = VglsAction.Noop,
+            ),
+            PreviewActionSink { },
+            Modifier,
+            PaddingValues(horizontal = 8.dp)
+        )
+
         Row {
             ElevatedRoundRect(
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier
+                    .size(64.dp)
+                    .padding(8.dp),
+                cornerRadius = 4.dp
+            ) {
+                CrossfadeImage(
+                    sourceInfo = SourceInfo("etc"),
+                    imagePlaceholder = Icon.PERSON,
+                    contentDescription = null,
+                    simulateError = true,
+                    forceGenBitmap = false,
+                    modifier = Modifier,
+                )
+            }
+
+            ElevatedRoundRect(
+                modifier = Modifier
+                    .size(64.dp)
+                    .padding(8.dp),
                 cornerRadius = 4.dp
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo(null),
-                    imagePlaceholder = Icon.PERSON,
+                    imagePlaceholder = Icon.DESCRIPTION,
                     contentDescription = null,
                     modifier = Modifier,
                 )
             }
 
             ElevatedRoundRect(
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier
+                    .size(64.dp)
+                    .padding(8.dp),
                 cornerRadius = 4.dp
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo("doesn't matter"),
-                    imagePlaceholder = Icon.PERSON,
+                    imagePlaceholder = Icon.DESCRIPTION,
                     contentDescription = null,
                     modifier = Modifier,
                 )
@@ -179,8 +264,21 @@ private fun Sample() {
                 Modifier.size(64.dp)
             ) {
                 CrossfadeImage(
-                    sourceInfo = SourceInfo(null),
+                    sourceInfo = SourceInfo("etc"),
                     imagePlaceholder = Icon.PERSON,
+                    contentDescription = null,
+                    simulateError = true,
+                    forceGenBitmap = false,
+                    modifier = Modifier,
+                )
+            }
+
+            ElevatedCircle(
+                Modifier.size(64.dp)
+            ) {
+                CrossfadeImage(
+                    sourceInfo = SourceInfo(null),
+                    imagePlaceholder = Icon.DESCRIPTION,
                     contentDescription = null,
                     modifier = Modifier,
                 )
@@ -191,7 +289,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo("doesn't matter"),
-                    imagePlaceholder = Icon.PERSON,
+                    imagePlaceholder = Icon.DESCRIPTION,
                     contentDescription = null,
                     modifier = Modifier,
                 )

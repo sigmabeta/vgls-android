@@ -79,7 +79,10 @@ class LoadingIndicatorGenerator @Inject constructor(
         }
 
         hatchet.v("Unique text rendering took $uniqueText ms.")
-        return bitmap
+        return bitmap.copy(
+            Bitmap.Config.ARGB_8888,
+            false
+        )
     }
 
     private fun createNewTemplateBitmap(

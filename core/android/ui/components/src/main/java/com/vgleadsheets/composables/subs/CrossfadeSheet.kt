@@ -2,7 +2,9 @@ package com.vgleadsheets.composables.subs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
@@ -50,8 +53,10 @@ fun CrossfadeSheet(
                 SourceInfo(sourceInfo ?: "Simulated Error"),
                 modifier,
                 showDebug,
-                IllegalArgumentException("Oops it didn't work.")
-            )
+                loadingIndicatorConfig = loadingIndicatorConfig,
+                sheetId = sheetId,
+                IllegalArgumentException("Oops it didn't work."),
+            ) { }
         }
         return
     }
@@ -65,7 +70,7 @@ fun CrossfadeSheet(
         return
     }
 
-    if (sourceInfo == null) {
+    if (sourceInfo.info == null) {
         PlaceholderSheet(
             loadingIndicatorConfig = loadingIndicatorConfig,
             seed = sheetId,
@@ -108,8 +113,12 @@ fun CrossfadeSheet(
                     sourceInfo = sourceInfo,
                     modifier = modifier,
                     showDebug = showDebug,
-                    error = (state as AsyncImagePainter.State.Error).result.throwable
-                )
+                    loadingIndicatorConfig = loadingIndicatorConfig,
+                    sheetId = sheetId,
+                    error = (state as AsyncImagePainter.State.Error).result.throwable,
+                ) {
+                    painter.restart()
+                }
             }
 
             else -> {}
@@ -118,18 +127,36 @@ fun CrossfadeSheet(
 }
 
 @Composable
-private fun ErrorState(
+@Suppress("MagicNumber")
+private fun BoxScope.ErrorState(
     sourceInfo: SourceInfo,
     modifier: Modifier,
     showDebug: Boolean,
-    error: Throwable
+    loadingIndicatorConfig: LoadingIndicatorConfig,
+    sheetId: Long,
+    error: Throwable,
+    errorOnClick: () -> Unit,
 ) {
+    PlaceholderSheet(
+        loadingIndicatorConfig = loadingIndicatorConfig,
+        seed = sheetId,
+        modifier = modifier
+    )
+
+    Box(
+        modifier = Modifier
+            .clickable(onClick = errorOnClick)
+            .matchParentSize()
+            .background(Color(0, 0, 0, 128))
+    ) { }
+
     EmptyListIndicator(
         model = ErrorStateListModel(
             failedOperationName = sourceInfo.toString(),
-            errorString = "Can't load this sheet. Check your network connection and try again?",
+            errorString = stringResource(com.vgleadsheets.ui.strings.R.string.error_image_network),
             error = error
         ),
+        onBlack = true,
         showDebug = showDebug,
         modifier = modifier
     )
