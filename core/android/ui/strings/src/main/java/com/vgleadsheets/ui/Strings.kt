@@ -110,6 +110,10 @@ fun StringId.id(): Int {
         StringId.NOTIF_TITLE_APP_UPDATE_FIRST_SINCE_REMASTER -> R.string.notif_app_update_remaster
         StringId.NOTIF_TITLE_APP_UPDATE_ERROR -> R.string.notif_app_update_error
 
+        StringId.SNACKBAR_SCREEN_OFF -> R.string.snack_screen_off
+
+        StringId.SNACKBAR_CTA_SCREEN_OFF -> R.string.snack_cta_screen_off
+
         StringId.ERROR_API_UPDATE -> R.string.error_api_update
         StringId.ERROR_DB_UPDATE -> R.string.error_db_update
         StringId.ERROR_BROKEN_SCREEN_TITLE -> R.string.error_broken_screen_title

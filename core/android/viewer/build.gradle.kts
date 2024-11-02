@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.core.android.viewmodel)
 
     implementation(projects.core.common.pdf)
+    api(projects.core.android.wakelocks)
 
     // T O D O these two deps are only necessary for previews. Can we somehow make them debug-only?
     implementation(libs.kotlinx.collections.immutable)

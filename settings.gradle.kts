@@ -73,6 +73,7 @@ include(
     ":core:android:ui:themes",
     ":core:android:viewer",
     ":core:android:viewmodel",
+    ":core:android:wakelocks",
 
     ":core:common:appinfo",
     ":core:common:appcomm",
@@ -103,6 +104,7 @@ include(
     ":core:common:ui:strings",
     ":core:common:urlinfo",
     ":core:common:versions",
+    ":core:common:wakelocks",
 
     ":core:fake:perf",
     ":core:fake:analytics",

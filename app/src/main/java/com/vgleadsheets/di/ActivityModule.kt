@@ -1,7 +1,9 @@
 package com.vgleadsheets.di
 
+import android.app.Activity
 import android.content.Context
 import com.vgleadsheets.analytics.Analytics
+import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory
@@ -24,12 +26,15 @@ import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.urlinfo.UrlInfoProvider
+import com.vgleadsheets.wakelocks.WakeLockManager
+import com.vgleadsheets.wakelocks.WakeLockManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.scopes.ActivityScoped
+import kotlinx.coroutines.CoroutineScope
 
 @Module
 @InstallIn(ActivityComponent::class)
@@ -87,4 +92,20 @@ class ActivityModule {
             analytics = analytics,
             threeTenTime = threeTenTime,
         )
+
+    @Provides
+    @ActivityScoped
+    fun provideWakeLockManager(
+        @ActivityContext context: Context,
+        eventDispatcher: EventDispatcher,
+        stringProvider: StringProvider,
+        coroutineScope: CoroutineScope,
+        dispatchers: VglsDispatchers,
+    ): WakeLockManager = WakeLockManagerImpl(
+        context as Activity,
+        eventDispatcher,
+        stringProvider,
+        coroutineScope,
+        dispatchers,
+    )
 }
