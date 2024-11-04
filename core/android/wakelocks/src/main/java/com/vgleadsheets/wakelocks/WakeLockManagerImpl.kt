@@ -60,7 +60,6 @@ class WakeLockManagerImpl(
         }
     }
 
-
     private suspend fun timerImpl() {
         withContext(dispatchers.main) {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

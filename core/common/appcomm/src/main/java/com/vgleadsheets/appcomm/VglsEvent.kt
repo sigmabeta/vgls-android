@@ -48,8 +48,8 @@ open class VglsEvent {
     data object GiantBombLinkClicked : VglsEvent()
     data object WebsiteLinkClicked : VglsEvent()
 
-    data object ScreenOnTimerStarted: VglsEvent()
-    data class ScreenOnTimerEnded(val reason: String): VglsEvent()
+    data object ScreenOnTimerStarted : VglsEvent()
+    data class ScreenOnTimerEnded(val reason: String) : VglsEvent()
 
     data object RestartApp : VglsEvent()
 }
