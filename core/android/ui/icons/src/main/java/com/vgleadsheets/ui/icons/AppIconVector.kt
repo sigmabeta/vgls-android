@@ -20,13 +20,22 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
             return _appIconVector!!
         }
         _appIconVector = Builder(
-            name = "AppIconVector", defaultWidth = 64.0.dp, defaultHeight =
-            64.0.dp, viewportWidth = 16.933f, viewportHeight = 16.933f
+            name = "AppIconVector",
+            defaultWidth = 64.0.dp,
+            defaultHeight =
+            64.0.dp,
+            viewportWidth = 16.933f,
+            viewportHeight = 16.933f
         ).apply {
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = null, fillAlpha = 0.0787796f,
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Miter,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                fillAlpha = 0.0787796f,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(3.299f, 2.051f)
                 curveTo(3.158f, 2.051f, 3.043f, 2.165f, 3.043f, 2.306f)
@@ -53,8 +62,12 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF292929)), stroke = null, strokeLineWidth = 0.0f,
-                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                fill = SolidColor(Color(0xFF292929)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
                 pathFillType = NonZero
             ) {
                 moveToRelative(3.425f, 2.117f)
@@ -71,9 +84,14 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFFffffff)), stroke = SolidColor(Color(0xFF000000)),
-                fillAlpha = 0.239345f, strokeLineWidth = 0.0f, strokeLineCap = Butt,
-                strokeLineJoin = Bevel, strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFFffffff)),
+                stroke = SolidColor(Color(0xFF000000)),
+                fillAlpha = 0.239345f,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(3.425f, 2.117f)
                 curveToRelative(-0.092f, 0.0f, -0.172f, 0.05f, -0.215f, 0.124f)
@@ -93,8 +111,11 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
             }
             path(
                 fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF404040)),
-                fillAlpha = 0.0f, strokeAlpha = 0.5f, strokeLineWidth = 0.132292f, strokeLineCap
-                = Butt, strokeLineJoin = Round, strokeLineMiter = 4.0f, pathFillType =
+                fillAlpha = 0.0f, strokeAlpha = 0.5f, strokeLineWidth = 0.132292f,
+                strokeLineCap =
+                Butt,
+                strokeLineJoin = Round, strokeLineMiter = 4.0f,
+                pathFillType =
                 NonZero
             ) {
                 moveTo(4.299f, 13.758f)
@@ -102,9 +123,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 horizontalLineToRelative(8.401f)
             }
             path(
-                fill = SolidColor(Color(0xFFababab)), stroke = SolidColor(Color(0x00000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Square, strokeLineJoin = Round,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFFababab)),
+                stroke = SolidColor(Color(0x00000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Square,
+                strokeLineJoin = Round,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(4.759f, 3.44f)
                 curveToRelative(-0.145f, 0.0f, -0.261f, 0.117f, -0.261f, 0.261f)
@@ -115,9 +140,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF8c33b3)), stroke = SolidColor(Color(0x00000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Square, strokeLineJoin = Round,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF8c33b3)),
+                stroke = SolidColor(Color(0x00000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Square,
+                strokeLineJoin = Round,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(4.498f, 11.642f)
                 verticalLineToRelative(1.591f)
@@ -128,9 +157,14 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFFdcdcdc)), stroke = SolidColor(Color(0x00000000)),
-                strokeAlpha = 0.50362f, strokeLineWidth = 0.080847f, strokeLineCap = Butt,
-                strokeLineJoin = Round, strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFFdcdcdc)),
+                stroke = SolidColor(Color(0x00000000)),
+                strokeAlpha = 0.50362f,
+                strokeLineWidth = 0.080847f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Round,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(4.498f, 4.762f)
                 horizontalLineToRelative(7.937f)
@@ -139,9 +173,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFFffffff)), stroke = SolidColor(Color(0x00000000)),
-                strokeLineWidth = 0.026f, strokeLineCap = Square, strokeLineJoin = Round,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFFffffff)),
+                stroke = SolidColor(Color(0x00000000)),
+                strokeLineWidth = 0.026f,
+                strokeLineCap = Square,
+                strokeLineJoin = Round,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(6.388f, 11.925f)
                 lineToRelative(-0.466f, 1.305f)
@@ -222,9 +260,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(5.022f, 9.758f)
                 lineTo(8.244f, 9.41f)
@@ -233,9 +275,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(5.022f, 9.439f)
                 lineTo(8.244f, 9.091f)
@@ -244,9 +290,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(8.157f, 7.966f)
                 arcToRelative(0.202f, 0.327f, 54.903f, true, false, 0.565f, -0.32f)
@@ -254,9 +304,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(8.15f, 7.883f)
                 lineToRelative(0.094f, 0.0f)
@@ -265,9 +319,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(7.098f, 8.211f)
                 arcToRelative(0.202f, 0.327f, 54.903f, true, false, 0.565f, -0.32f)
@@ -275,9 +333,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(7.092f, 8.128f)
                 lineToRelative(0.094f, 0.0f)
@@ -286,9 +348,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(6.04f, 8.424f)
                 arcToRelative(0.202f, 0.327f, 54.903f, true, false, 0.565f, -0.32f)
@@ -296,9 +362,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(6.033f, 8.34f)
                 lineToRelative(0.094f, 0.0f)
@@ -307,9 +377,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(4.982f, 8.626f)
                 arcToRelative(0.202f, 0.327f, 54.903f, true, false, 0.565f, -0.32f)
@@ -317,9 +391,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(4.975f, 8.543f)
                 lineToRelative(0.094f, 0.0f)
@@ -328,9 +406,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(12.164f, 7.337f)
                 lineToRelative(-1.147f, -0.033f)
@@ -339,9 +421,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(12.168f, 7.052f)
                 lineToRelative(-2.476f, -0.073f)
@@ -350,9 +436,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(12.162f, 8.323f)
                 arcToRelative(0.202f, 0.327f, 54.903f, true, false, -0.565f, 0.32f)
@@ -360,9 +450,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(12.168f, 8.406f)
                 lineToRelative(-0.094f, -0.0f)
@@ -371,9 +465,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(11.103f, 8.486f)
                 arcToRelative(0.202f, 0.327f, 54.903f, true, false, -0.565f, 0.32f)
@@ -381,9 +479,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(11.11f, 8.57f)
                 lineToRelative(-0.092f, -0.0f)
@@ -392,9 +494,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(9.78f, 8.158f)
                 arcToRelative(0.202f, 0.327f, 54.903f, true, false, -0.565f, 0.32f)
@@ -402,9 +508,13 @@ internal val VglsMaterialVectors.AppIconVector: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(9.787f, 8.242f)
                 lineToRelative(-0.094f, -0.0f)

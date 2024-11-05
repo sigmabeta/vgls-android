@@ -17,12 +17,19 @@ internal val VglsMaterialVectors.IcDescription24dp: ImageVector
             return _icDescription24dp!!
         }
         _icDescription24dp = Builder(
-            name = "IcDescription24dp", defaultWidth = 24.0.dp,
-            defaultHeight = 24.0.dp, viewportWidth = 24.0f, viewportHeight = 24.0f
+            name = "IcDescription24dp",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 24.0f,
+            viewportHeight = 24.0f
         ).apply {
             path(
-                fill = SolidColor(Color(0xFF999999)), stroke = null, strokeLineWidth = 0.0f,
-                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                fill = SolidColor(Color(0xFF999999)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
                 pathFillType = NonZero
             ) {
                 moveTo(14.0f, 2.0f)

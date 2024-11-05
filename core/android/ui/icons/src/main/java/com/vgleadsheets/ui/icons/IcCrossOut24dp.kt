@@ -17,12 +17,20 @@ internal val VglsMaterialVectors.IcCrossOut24dp: ImageVector
             return _icCrossOut24dp!!
         }
         _icCrossOut24dp = Builder(
-            name = "IcCrossOut24dp", defaultWidth = 13.0.dp, defaultHeight =
-            13.0.dp, viewportWidth = 100.0f, viewportHeight = 100.0f
+            name = "IcCrossOut24dp",
+            defaultWidth = 13.0.dp,
+            defaultHeight =
+            13.0.dp,
+            viewportWidth = 100.0f,
+            viewportHeight = 100.0f
         ).apply {
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
                 pathFillType = NonZero
             ) {
                 moveTo(13.0f, 17.0f)
@@ -32,8 +40,12 @@ internal val VglsMaterialVectors.IcCrossOut24dp: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
                 pathFillType = NonZero
             ) {
                 moveTo(13.0f, 17.0f)

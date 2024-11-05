@@ -29,4 +29,3 @@ sealed class NavBarItem(
         )
     }
 }
-

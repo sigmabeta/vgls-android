@@ -105,7 +105,6 @@ private fun EmptyListIndicator(
                     bottom = 8.dp
                 )
         ) {
-
             Icon(
                 imageVector = icon.vector(),
                 contentDescription = null,

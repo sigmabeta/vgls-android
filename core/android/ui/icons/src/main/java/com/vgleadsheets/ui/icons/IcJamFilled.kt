@@ -18,13 +18,22 @@ internal val VglsMaterialVectors.IcJamFilled: ImageVector
             return _icJamFilled!!
         }
         _icJamFilled = Builder(
-            name = "IcJamFilled", defaultWidth = 24.0.dp, defaultHeight =
-            24.0.dp, viewportWidth = 48.0f, viewportHeight = 48.0f
+            name = "IcJamFilled",
+            defaultWidth = 24.0.dp,
+            defaultHeight =
+            24.0.dp,
+            viewportWidth = 48.0f,
+            viewportHeight = 48.0f
         ).apply {
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.0f, strokeLineCap = Round, strokeLineJoin =
-                StrokeJoin.Companion.Round, strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Round,
+                strokeLineJoin =
+                StrokeJoin.Companion.Round,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(16.0f, 44.0f)
                 horizontalLineToRelative(16.0f)
@@ -48,9 +57,13 @@ internal val VglsMaterialVectors.IcJamFilled: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0x00000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 2.0f, strokeLineCap = Round, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0x00000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 2.0f,
+                strokeLineCap = Round,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(15.0f, 10.0f)
                 curveToRelative(-2.0f, 0.0f, -2.0f, 0.0f, -3.0f, 1.0f)
@@ -67,9 +80,14 @@ internal val VglsMaterialVectors.IcJamFilled: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 2.0f, strokeLineCap = Round, strokeLineJoin =
-                StrokeJoin.Companion.Round, strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 2.0f,
+                strokeLineCap = Round,
+                strokeLineJoin =
+                StrokeJoin.Companion.Round,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveTo(15.0f, 6.0f)
                 lineTo(33.0f, 6.0f)
@@ -83,17 +101,25 @@ internal val VglsMaterialVectors.IcJamFilled: ImageVector
                 close()
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.99870706f, strokeLineCap = Round, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.99870706f,
+                strokeLineCap = Round,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(34.5065f, 9.5f)
                 horizontalLineToRelative(4.9871f)
             }
             path(
-                fill = SolidColor(Color(0xFF000000)), stroke = SolidColor(Color(0xFF000000)),
-                strokeLineWidth = 0.99779046f, strokeLineCap = Round, strokeLineJoin = Bevel,
-                strokeLineMiter = 4.0f, pathFillType = NonZero
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 0.99779046f,
+                strokeLineCap = Round,
+                strokeLineJoin = Bevel,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
             ) {
                 moveToRelative(39.4954f, 6.0032f)
                 lineToRelative(-3.9908f, 2.9936f)
