@@ -8,10 +8,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.vector
 
 @Composable
 @Suppress("MagicNumber")
@@ -23,14 +23,14 @@ fun Rating(
         modifier = modifier
     ) {
         for (index in 1..4) {
-            val iconId = if (score >= index) {
-                com.vgleadsheets.ui.icons.R.drawable.ic_jam_filled
+            val icon = if (score >= index) {
+                com.vgleadsheets.ui.Icon.JAM_FILLED
             } else {
-                com.vgleadsheets.ui.icons.R.drawable.ic_jam_unfilled
+                com.vgleadsheets.ui.Icon.JAM_EMPTY
             }
 
             Icon(
-                painter = painterResource(id = iconId),
+                imageVector = icon.vector(),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onTertiaryContainer,
             )

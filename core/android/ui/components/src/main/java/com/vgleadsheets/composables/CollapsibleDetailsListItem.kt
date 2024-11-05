@@ -27,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +34,7 @@ import com.vgleadsheets.components.CollapsibleDetailsListModel
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.id
+import com.vgleadsheets.ui.vector
 import java.util.Random
 import kotlinx.collections.immutable.toImmutableList
 
@@ -76,7 +75,7 @@ fun CollapsibleDetailsListItem(
             val icon = if (collapsed) Icon.PLUS else Icon.MINUS
 
             Icon(
-                painter = painterResource(id = icon.id()),
+                imageVector = icon.vector(),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onBackground,
             )
@@ -121,7 +120,7 @@ private fun DetailItem(
             .padding(padding),
     ) {
         Icon(
-            painter = painterResource(id = Icon.JAM_FILLED.id()),
+            imageVector = Icon.JAM_FILLED.vector(),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier

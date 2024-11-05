@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
@@ -37,8 +36,8 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.BitmapGenerator
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.vector
 
 @Composable
 fun CrossfadeImage(
@@ -117,7 +116,7 @@ private fun PlaceHolderImage(
     modifier: Modifier
 ) {
     Image(
-        painter = painterResource(imagePlaceholder.id()),
+        imageVector = imagePlaceholder.vector(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = modifier
@@ -140,17 +139,15 @@ private fun ErrorImage(
             .padding(4.dp),
     ) {
         Image(
-            painter = painterResource(imagePlaceholder.id()),
+            imageVector = imagePlaceholder.vector(),
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error),
             contentDescription = contentDescription,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxSize(),
         )
 
-        val crossOutResource = com.vgleadsheets.ui.icons.R.drawable.ic_cross_out_error_24dp
-
         Icon(
-            painter = painterResource(id = crossOutResource),
+            imageVector = Icon.CROSSOUT.vector(),
             tint = Color.Unspecified,
             contentDescription = null,
             modifier = Modifier.fillMaxSize()

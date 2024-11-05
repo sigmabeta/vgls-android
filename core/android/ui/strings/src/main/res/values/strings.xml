@@ -21,6 +21,11 @@
     <string name="part_long_bass">Bass Clef</string>
     <string name="part_long_vocal">Vocalists</string>
 
+    <string name="nav_label_home">Home</string>
+    <string name="nav_label_browse">Browse</string>
+    <string name="nav_label_favorite">Favorites</string>
+    <string name="nav_label_search">Search</string>
+
     <string name="screen_title_parts">Select Part</string>
     <string name="screen_title_browse">Browse</string>
     <string name="screen_title_games">Browse by Game</string>

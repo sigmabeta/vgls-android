@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,8 +27,9 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.IconNameCaptionListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.vector
 
 @Composable
 fun IconNameCaptionListItem(
@@ -41,7 +41,7 @@ fun IconNameCaptionListItem(
     IconNameCaptionListItem(
         model.name,
         model.caption,
-        model.iconId,
+        model.icon,
         model.clickAction,
         actionSink,
         modifier,
@@ -53,7 +53,7 @@ fun IconNameCaptionListItem(
 fun IconNameCaptionListItem(
     name: String,
     caption: String,
-    iconId: Int,
+    icon: Icon,
     clickAction: VglsAction,
     actionSink: ActionSink,
     modifier: Modifier,
@@ -67,7 +67,7 @@ fun IconNameCaptionListItem(
             .padding(padding)
     ) {
         Icon(
-            painter = painterResource(id = iconId),
+            imageVector = icon.vector(),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
@@ -138,20 +138,6 @@ private fun Dark() {
     }
 }
 
-@Preview
-@Composable
-private fun Menu() {
-    VglsMaterialMenu {
-        Box(
-            modifier = Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
-        ) {
-            Sample()
-        }
-    }
-}
-
 @Composable
 @Suppress("MagicNumber")
 private fun Sample() {
@@ -160,7 +146,7 @@ private fun Sample() {
             1234L,
             "Moebius Battle",
             "ACE+",
-            com.vgleadsheets.ui.icons.R.drawable.ic_baseline_music_note_24,
+            Icon.DESCRIPTION,
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },

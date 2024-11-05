@@ -7,27 +7,36 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.vgleadsheets.appcomm.EventSink
+import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.bottombar.NavBarItem
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.topbar.RemasterTopBar
+import com.vgleadsheets.ui.id
+import com.vgleadsheets.ui.vector
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Suppress("MaxLineLength")
 fun VglsNavSuiteScaffold(
     layoutType: NavigationSuiteType,
-    navSuiteItems: NavigationSuiteScope.() -> Unit,
+    currentRoute: String?,
+    navEventSink: EventSink,
     topBarConfig: TopBarConfig,
     navBarState: NavBarState,
     snackbarHostState: SnackbarHostState,
@@ -36,13 +45,14 @@ fun VglsNavSuiteScaffold(
 ) {
     val colors: NavigationSuiteColors = NavigationSuiteDefaults.colors()
     val defaultItemColors = NavigationSuiteDefaults.itemColors()
-    val navItemProvider by rememberStateOfItems(navSuiteItems)
 
     Row(
         modifier = modifier.fillMaxSize()
     ) {
         val shouldNavBeVisible = navBarState.visibility == NavBarVisibility.VISIBLE
         val shouldNavBeRail = layoutType == NavigationSuiteType.NavigationRail
+        val navSuiteItems = navSuiteItems(shouldNavBeRail, currentRoute, navEventSink)
+        val navItemProvider by rememberStateOfItems(navSuiteItems)
 
         AnimatedVisibility(
             visible = shouldNavBeVisible && shouldNavBeRail,
@@ -78,6 +88,38 @@ fun VglsNavSuiteScaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
             content = { innerPadding -> screen(innerPadding) },
             modifier = modifier,
+        )
+    }
+}
+
+@Composable
+fun navSuiteItems(
+    shouldBeNavRail: Boolean,
+    currentRoute: String?,
+    navEventSink: EventSink,
+): NavigationSuiteScope.() -> Unit = {
+    val items = if (shouldBeNavRail) {
+        NavBarItem.RAIL_ITEMS
+    } else {
+        NavBarItem.BOTTOM_BAR_ITEMS
+    }
+
+    items.forEach { navItem ->
+        item(
+            icon = {
+                val label = stringResource(navItem.labelId.id())
+                Icon(navItem.icon.vector(), contentDescription = label)
+            },
+            label = {
+                val label = stringResource(navItem.labelId.id())
+                Text(label)
+            },
+            selected = currentRoute == navItem.route,
+            onClick = {
+                navEventSink.sendEvent(
+                    VglsEvent.NavigateSingleTopLevel(navItem.route, "NavBar")
+                )
+            }
         )
     }
 }
