@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberTopAppBarState
@@ -30,8 +28,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowHeightSizeClass
 import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.bottombar.NavBarItem
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarViewModel
 import com.vgleadsheets.list.WidthClass
@@ -134,7 +130,8 @@ fun AppContent(
 
     VglsNavSuiteScaffold(
         layoutType = layoutType,
-        navSuiteItems = navSuiteItems(currentRoute, navEventSink),
+        currentRoute = currentRoute,
+        navEventSink = navEventSink,
         topBarConfig = topBarConfig,
         navBarState = navBarState,
         snackbarHostState = snackbarHostState,
@@ -207,24 +204,5 @@ private fun handleSystemBars(
     when (navState.visibility) {
         SystemUiVisibility.VISIBLE -> showSystemBars()
         SystemUiVisibility.HIDDEN -> hideSystemBars()
-    }
-}
-
-@Composable
-fun navSuiteItems(
-    currentRoute: String?,
-    navEventSink: EventSink,
-): NavigationSuiteScope.() -> Unit = {
-    NavBarItem.entries.forEach { navItem ->
-        item(
-            icon = { Icon(navItem.icon, contentDescription = navItem.name) },
-            label = { Text(navItem.label) },
-            selected = currentRoute == navItem.route,
-            onClick = {
-                navEventSink.sendEvent(
-                    VglsEvent.NavigateSingleTopLevel(navItem.route, "NavBar")
-                )
-            }
-        )
     }
 }

@@ -79,6 +79,7 @@ private fun PreviewContent() {
     val navItemProvider by rememberStateOfItems(
         navSuiteItems(
             currentRoute = null,
+            shouldBeNavRail = false,
             navEventSink = { }
         )
     )

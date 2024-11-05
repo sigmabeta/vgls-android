@@ -22,9 +22,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,7 +40,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
@@ -52,8 +48,8 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.vector
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -160,7 +156,7 @@ private fun BoxScope.LyricsWarning() {
             .padding(horizontal = 8.dp)
     ) {
         Icon(
-            painter = painterResource(Icon.WARNING.id()),
+            imageVector = Icon.WARNING.vector(),
             tint = Color.White,
             contentDescription = null,
         )
@@ -190,13 +186,13 @@ private fun BoxScope.DirectionButton(
     val (buttonAlignment, imageVector, increment) = when (action) {
         Action.PrevButtonClicked -> Triple(
             Alignment.CenterStart,
-            Icons.Default.ArrowBack,
+            Icon.BACK,
             -1
         )
 
         Action.NextButtonClicked -> Triple(
             Alignment.CenterEnd,
-            Icons.Default.ArrowForward,
+            Icon.FORWARD,
             1
         )
 
@@ -260,7 +256,7 @@ private fun BoxScope.DirectionButton(
             )
     ) {
         Icon(
-            imageVector = imageVector,
+            imageVector = imageVector.vector(),
             contentDescription = null,
             tint = colorState,
             modifier = Modifier

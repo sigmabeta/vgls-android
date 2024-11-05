@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,9 +26,9 @@ import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.components.R
-import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.vector
 
 @Composable
 fun ActionItem(
@@ -48,7 +47,7 @@ fun ActionItem(
             )
     ) {
         Icon(
-            painterResource(id = model.icon.id()),
+            imageVector = model.icon.vector(),
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = null,
             modifier = Modifier

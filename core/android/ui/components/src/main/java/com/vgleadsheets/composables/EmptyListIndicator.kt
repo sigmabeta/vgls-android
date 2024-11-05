@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,8 +32,8 @@ import androidx.compose.ui.unit.sp
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.vector
 
 @Composable
 fun EmptyListIndicator(
@@ -106,10 +105,9 @@ private fun EmptyListIndicator(
                     bottom = 8.dp
                 )
         ) {
-            val crossOutResource = com.vgleadsheets.ui.icons.R.drawable.ic_cross_out_24dp
 
             Icon(
-                painter = painterResource(id = icon.id()),
+                imageVector = icon.vector(),
                 contentDescription = null,
                 tint = color,
                 modifier = Modifier
@@ -118,7 +116,7 @@ private fun EmptyListIndicator(
 
             if (showCrossOut) {
                 Icon(
-                    painter = painterResource(id = crossOutResource),
+                    imageVector = Icon.CROSSOUT.vector(),
                     tint = Color.Unspecified,
                     contentDescription = null,
                     modifier = Modifier

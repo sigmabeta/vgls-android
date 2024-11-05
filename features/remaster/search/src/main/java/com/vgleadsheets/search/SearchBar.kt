@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.subs.MenuActionIcon
+import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 
@@ -68,7 +69,7 @@ fun SearchBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             MenuActionIcon(
-                iconId = com.vgleadsheets.ui.icons.R.drawable.ic_arrow_back_black_24dp,
+                icon = Icon.BACK,
                 onClick = { actionSink.sendAction(VglsAction.AppBack) }
             )
 
@@ -113,8 +114,8 @@ fun SearchBar(
 
             AnimatedVisibility(visible = !textEmpty) {
                 MenuActionIcon(
-                    onClick = { actionSink.sendAction(VglsAction.SearchClearClicked) },
-                    iconId = com.vgleadsheets.ui.icons.R.drawable.ic_clear_black_24dp
+                    icon = Icon.CLEAR,
+                    onClick = { actionSink.sendAction(VglsAction.SearchClearClicked) }
                 )
             }
         }

@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,8 +26,8 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.vector
 
 @Composable
 @Suppress("LongMethod")
@@ -53,7 +52,7 @@ fun MenuItem(
         }
 
         Icon(
-            painterResource(id = model.icon.id()),
+            imageVector = model.icon.vector(),
             tint = color,
             contentDescription = null,
             modifier = Modifier

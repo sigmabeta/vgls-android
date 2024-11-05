@@ -2,8 +2,15 @@ package com.vgleadsheets.ui
 
 enum class Icon {
     ALBUM,
+    BACK,
+    BROWSE,
     CALENDAR,
+    CLEAR,
+    CROSSOUT,
     DESCRIPTION,
+    FAVORITE,
+    FORWARD,
+    HOME,
     JAM_EMPTY,
     JAM_FILLED,
     MINUS,
