@@ -107,6 +107,10 @@
     <string name="notif_app_update_remaster">VGLeadSheets remastered!</string>
     <string name="notif_app_update_error">App Update Error</string>
 
+    <string name="snack_screen_off">The display will turn off soon.</string>
+
+    <string name="snack_cta_screen_off">Keep on</string>
+
     <string name="error_api_update">Sheet Update Failed</string>
     <string name="error_db_update">Database Update Failed</string>
     <string name="error_broken_screen_title">App Error Occurred</string>

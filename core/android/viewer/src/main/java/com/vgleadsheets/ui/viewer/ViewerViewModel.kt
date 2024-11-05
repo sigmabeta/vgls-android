@@ -15,17 +15,21 @@ import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
+import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
+import com.vgleadsheets.wakelocks.WakeLockManager
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -35,6 +39,8 @@ class ViewerViewModel @AssistedInject constructor(
     private val songRepository: SongRepository,
     private val songHistoryRepository: SongHistoryRepository,
     private val urlInfoProvider: UrlInfoProvider,
+    private val generalSettingsManager: GeneralSettingsManager,
+    private val wakeLockManager: WakeLockManager,
     override val hatchet: Hatchet,
     override val analytics: Analytics,
     override val dispatchers: VglsDispatchers,
@@ -76,7 +82,7 @@ class ViewerViewModel @AssistedInject constructor(
             is VglsAction.Resume -> resume()
             is VglsAction.Pause -> pause()
             is VglsAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
-            is Action.ScreenClicked -> emitEvent(VglsEvent.ShowUiChrome)
+            is Action.ScreenClicked -> onScreenClicked()
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
         }
     }
@@ -101,6 +107,8 @@ class ViewerViewModel @AssistedInject constructor(
         fetchSong(id, pageNumber)
         fetchUrlInfo()
         checkAltSelectionStatus(id)
+        checkScreenOnSetting()
+        startScreenOnManagement()
     }
 
     private fun resume() {
@@ -166,13 +174,52 @@ class ViewerViewModel @AssistedInject constructor(
             .runInBackground()
     }
 
+    private fun checkScreenOnSetting() {
+        generalSettingsManager
+            .getKeepScreenOn()
+            .onEach { keepScreenOn -> updateKeepScreencOn(keepScreenOn) }
+            .flowOn(scheduler.dispatchers.disk)
+            .launchIn(viewModelScope)
+    }
+
+    private fun startScreenOnManagement() {
+        internalUiState
+            .mapNotNull { it.keepScreenOn }
+            .distinctUntilChanged()
+            .onEach { updateWakeLockManager(it) }
+            .flowOn(scheduler.dispatchers.computation)
+            .launchIn(viewModelScope)
+    }
+
+    private fun updateWakeLockManager(keepScreenOn: Boolean?) {
+        keepScreenOn ?: return
+
+        if (keepScreenOn) {
+            wakeLockManager.keepScreenOn()
+        } else {
+            wakeLockManager.allowScreenOff()
+        }
+    }
+
     private fun updateIsAltSelected(isAltSelected: LCE<Boolean>) {
         updateState {
             it.copy(isAltSelected = isAltSelected)
         }
     }
 
+    private fun updateKeepScreencOn(keepScreenOn: Boolean) {
+        updateState {
+            it.copy(keepScreenOn = keepScreenOn)
+        }
+    }
+
+    private fun onScreenClicked() {
+        maybeRestartScreenOnTimer()
+        emitEvent(VglsEvent.ShowUiChrome)
+    }
+
     private fun onButtonClicked() {
+        maybeRestartScreenOnTimer()
         showButtons()
         startHideButtonsTimer()
     }
@@ -186,6 +233,12 @@ class ViewerViewModel @AssistedInject constructor(
     private fun startTimers() {
         startHideChromeTimer()
         startRecordSongHistoryEntryTimerMaybe()
+    }
+
+    private fun maybeRestartScreenOnTimer() {
+        if (internalUiState.value.keepScreenOn == true) {
+            wakeLockManager.keepScreenOn()
+        }
     }
 
     private fun startHideChromeTimer() {

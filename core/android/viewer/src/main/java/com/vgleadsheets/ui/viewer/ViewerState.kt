@@ -20,6 +20,7 @@ data class ViewerState(
     val partApiId: String? = null,
     val initialPage: Int = 0,
     val buttonsVisible: Boolean = true,
+    val keepScreenOn: Boolean? = null,
     val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
     val isSongHistoryEntryRecorded: Boolean = false,
 ) : VglsState {
