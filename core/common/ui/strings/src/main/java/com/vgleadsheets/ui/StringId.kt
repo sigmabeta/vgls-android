@@ -6,6 +6,11 @@ import com.squareup.moshi.JsonClass
 enum class StringId {
     APP_NAME,
 
+    NAV_LABEL_HOME,
+    NAV_LABEL_BROWSE,
+    NAV_LABEL_FAVORITE,
+    NAV_LABEL_SEARCH,
+
     SCREEN_TITLE_PART_SELECTOR,
     SCREEN_TITLE_BROWSE,
     SCREEN_TITLE_BROWSE_GAMES,

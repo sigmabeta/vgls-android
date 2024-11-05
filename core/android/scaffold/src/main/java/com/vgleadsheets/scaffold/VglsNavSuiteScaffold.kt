@@ -20,12 +20,14 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.vgleadsheets.appcomm.EventSink
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.bottombar.NavBarItem
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.topbar.RemasterTopBar
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.vector
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -104,8 +106,14 @@ fun navSuiteItems(
 
     items.forEach { navItem ->
         item(
-            icon = { Icon(navItem.icon.vector(), contentDescription = navItem.label) },
-            label = { Text(navItem.label) },
+            icon = {
+                val label = stringResource(navItem.labelId.id())
+                Icon(navItem.icon.vector(), contentDescription = label)
+            },
+            label = {
+                val label = stringResource(navItem.labelId.id())
+                Text(label)
+            },
             selected = currentRoute == navItem.route,
             onClick = {
                 navEventSink.sendEvent(

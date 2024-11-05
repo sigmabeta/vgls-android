@@ -6,6 +6,12 @@ import com.vgleadsheets.ui.strings.R
 fun StringId.id(): Int {
     return when (this) {
         StringId.APP_NAME -> R.string.app_name
+
+        StringId.NAV_LABEL_HOME -> R.string.nav_label_home
+        StringId.NAV_LABEL_BROWSE -> R.string.nav_label_browse
+        StringId.NAV_LABEL_FAVORITE -> R.string.nav_label_favorite
+        StringId.NAV_LABEL_SEARCH -> R.string.nav_label_search
+
         StringId.SCREEN_TITLE_PART_SELECTOR -> R.string.screen_title_parts
         StringId.SCREEN_TITLE_BROWSE -> R.string.screen_title_browse
         StringId.SCREEN_TITLE_BROWSE_GAMES -> R.string.screen_title_games
