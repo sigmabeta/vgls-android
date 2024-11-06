@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -68,7 +70,7 @@ fun RemasterTopBar(
                         label = "Title Animation",
                     ) {
                         Text(
-                            text = it ?: resources.getString(R.string.title_default_top_app_bar),
+                            text = it ?: resources.getString(StringId.APP_NAME.id()),
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -96,16 +98,16 @@ fun RemasterTopBar(
                 }
             },
             navigationIcon = {
-                val (vector, stringId, action) = if (state.model.shouldShowBack) {
+                val (vector, string, action) = if (state.model.shouldShowBack) {
                     Triple(
                         Icons.AutoMirrored.Default.ArrowBack,
-                        com.vgleadsheets.ui.strings.R.string.cont_desc_app_back,
+                        StringId.ACCY_CDESC_TOPBAR_BACK,
                         VglsAction.AppBack
                     )
                 } else {
                     Triple(
                         Icons.Default.Menu,
-                        com.vgleadsheets.ui.strings.R.string.cont_desc_app_menu,
+                        StringId.ACCY_CDESC_TOPBAR_MENU,
                         TopBarAction.Menu
                     )
                 }
@@ -116,7 +118,7 @@ fun RemasterTopBar(
                 ) {
                     Icon(
                         imageVector = vector,
-                        contentDescription = resources.getString(stringId),
+                        contentDescription = resources.getString(string.id()),
                     )
                 }
             },

@@ -33,7 +33,8 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.subs.MenuActionIcon
 import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.components.R
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable
@@ -70,6 +71,7 @@ fun SearchBar(
         ) {
             MenuActionIcon(
                 icon = Icon.BACK,
+                contentDescription = StringId.ACCY_CDESC_TOPBAR_BACK,
                 onClick = { actionSink.sendAction(VglsAction.AppBack) }
             )
 
@@ -101,7 +103,7 @@ fun SearchBar(
 
                 this@Row.AnimatedVisibility(visible = textEmpty) {
                     Text(
-                        text = stringResource(id = R.string.hint_search),
+                        text = stringResource(StringId.HINT_SEARCH.id()),
                         style = MaterialTheme.typography.titleMedium.copy(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         ),
@@ -115,6 +117,7 @@ fun SearchBar(
             AnimatedVisibility(visible = !textEmpty) {
                 MenuActionIcon(
                     icon = Icon.CLEAR,
+                    contentDescription = StringId.ACCY_CDESC_SEARCH_CLEAR,
                     onClick = { actionSink.sendAction(VglsAction.SearchClearClicked) }
                 )
             }

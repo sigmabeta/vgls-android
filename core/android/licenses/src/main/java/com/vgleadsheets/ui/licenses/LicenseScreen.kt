@@ -11,7 +11,8 @@ import com.kevinnzou.web.WebView
 import com.kevinnzou.web.rememberWebViewState
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
-import com.vgleadsheets.licenses.R
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
 
 @Composable
 fun LicenseScreen(
@@ -43,7 +44,7 @@ fun LicenseScreen(
             EmptyListIndicator(
                 model = ErrorStateListModel(
                     failedOperationName = "webpageLoad",
-                    errorString = resources.getString(R.string.error_webview_failed),
+                    errorString = resources.getString(StringId.ERROR_WEBVIEW_FAILED.id()),
                     error = RuntimeException(errorMessage),
                 ),
                 showDebug = false,

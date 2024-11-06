@@ -11,17 +11,20 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.ui.Icon
+import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.components.R
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.vector
 
 @Composable
 fun MenuActionIcon(
     icon: Icon,
+    contentDescription: StringId,
     onClick: () -> Unit
 ) {
     Icon(
         imageVector = icon.vector(),
-        contentDescription = stringResource(id = R.string.cont_desc_app_menu),
+        contentDescription = stringResource(contentDescription.id()),
         tint = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = Modifier
             .clickable(onClick = onClick)
