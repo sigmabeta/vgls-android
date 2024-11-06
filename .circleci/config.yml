@@ -263,6 +263,9 @@ jobs:
           keys:
             - build-cache-v2-
       - run:
+          name: Setup Google Services JSON
+          command: echo $GOOGLE_SERVICES_JSON >> app/google-services.json
+      - run:
           name: Set target Google Play Track
           command: ./set-track-name.sh
       - run:
