@@ -137,7 +137,7 @@ dependencies {
     implementation(projects.core.common.versions)
     // End DI dependencies
 
-    implementation(projects.features.remaster.all)
+    implementation(projects.features.all)
 
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)

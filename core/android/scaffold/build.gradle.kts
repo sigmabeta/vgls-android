@@ -19,11 +19,11 @@ dependencies {
     implementation(projects.core.android.ui.themes)
     implementation(projects.core.android.viewmodel)
 
-    implementation(projects.features.remaster.navbar)
-    implementation(projects.features.remaster.topbar)
+    implementation(projects.features.navbar)
+    implementation(projects.features.topbar)
 
-    implementation(projects.features.remaster.search)
-    implementation(projects.features.remaster.viewer)
+    implementation(projects.features.search)
+    implementation(projects.features.viewer)
 }
 
 android {
