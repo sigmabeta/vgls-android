@@ -24,7 +24,6 @@ dependencies {
     implementation(projects.core.android.ui.list)
     implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.ui.themes)
-    implementation(projects.core.android.viewer)
 }
 
 android {

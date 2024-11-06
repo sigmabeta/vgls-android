@@ -29,6 +29,7 @@ dependencies {
     api(projects.features.remaster.tags.songs)
     api(projects.features.remaster.tags.values)
     api(projects.features.remaster.updates)
+    api(projects.features.remaster.viewer)
 }
 
 android {

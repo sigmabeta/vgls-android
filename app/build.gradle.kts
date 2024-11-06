@@ -126,7 +126,6 @@ dependencies {
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.themes)
     implementation(projects.core.android.ui.strings)
-    implementation(projects.core.android.viewer)
 
     implementation(projects.core.common.appinfo)
     implementation(projects.core.common.downloader)

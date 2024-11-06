@@ -71,7 +71,6 @@ include(
     ":core:android:ui:previews",
     ":core:android:ui:strings",
     ":core:android:ui:themes",
-    ":core:android:viewer",
     ":core:android:viewmodel",
     ":core:android:wakelocks",
 
@@ -130,4 +129,5 @@ include(
     ":features:remaster:tags:values",
     ":features:remaster:topbar",
     ":features:remaster:updates",
+    ":features:remaster:viewer",
 )
