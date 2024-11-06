@@ -125,6 +125,7 @@ fun StringId.id(): Int {
         StringId.ERROR_BROKEN_SCREEN_TITLE -> R.string.error_broken_screen_title
         StringId.ERROR_BROKEN_SCREEN_DESC -> R.string.error_broken_screen_desc
         StringId.ERROR_IMAGE_NETWORK -> R.string.error_image_network
+        StringId.ERROR_WEBVIEW_FAILED -> R.string.error_webview_failed
 
         StringId.TAG_CAPTION_AND_OTHERS -> R.string.tag_caption_and_others
         StringId.TAG_CAPTION_SEPARATOR -> R.string.tag_caption_separator
@@ -147,5 +148,13 @@ fun StringId.id(): Int {
 
         StringId.ACCY_CDESC_HERO_GAME -> R.string.accy_cdesc_hero_game
         StringId.ACCY_CDESC_HERO_COMPOSER -> R.string.accy_cdesc_hero_composer
+
+        StringId.ACCY_CDESC_TOPBAR_BACK -> R.string.accy_cdesc_topbar_back
+        StringId.ACCY_CDESC_TOPBAR_MENU -> R.string.accy_cdesc_topbar_menu
+
+        StringId.ACCY_CDESC_SEARCH_BACK -> R.string.accy_cdesc_search_back
+        StringId.ACCY_CDESC_SEARCH_CLEAR -> R.string.accy_cdesc_search_clear
+
+        StringId.HINT_SEARCH -> R.string.hint_search
     }
 }

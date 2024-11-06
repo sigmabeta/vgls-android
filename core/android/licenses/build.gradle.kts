@@ -16,6 +16,7 @@ dependencies {
     api(libs.androidx.lifecycle.runtimeCompose)
 
     implementation(projects.core.android.ui.components)
+    implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.viewmodel)
 
     api(projects.core.common.appcomm)

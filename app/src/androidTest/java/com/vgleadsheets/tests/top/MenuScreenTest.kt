@@ -24,7 +24,7 @@ class MenuScreenTest {
     @Test
     fun menuScreen_doesntCrash() {
         composeRule.onNodeWithText("VGLeadSheets").assertExists()
-        composeRule.onNodeWithContentDescription("App Menu").performClick()
+        composeRule.onNodeWithContentDescription("Open Settings Menu").performClick()
 
         composeRule.onNodeWithText("Settings").assertExists()
     }

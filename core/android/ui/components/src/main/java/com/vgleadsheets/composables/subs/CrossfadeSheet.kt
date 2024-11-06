@@ -29,6 +29,8 @@ import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
@@ -153,7 +155,7 @@ private fun BoxScope.ErrorState(
     EmptyListIndicator(
         model = ErrorStateListModel(
             failedOperationName = sourceInfo.toString(),
-            errorString = stringResource(com.vgleadsheets.ui.strings.R.string.error_image_network),
+            errorString = stringResource(StringId.ERROR_IMAGE_NETWORK.id()),
             error = error
         ),
         onBlack = true,
