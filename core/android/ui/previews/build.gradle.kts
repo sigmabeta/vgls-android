@@ -7,9 +7,9 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.features.remaster.all)
-    implementation(projects.features.remaster.navbar)
-    implementation(projects.features.remaster.topbar)
+    implementation(projects.features.all)
+    implementation(projects.features.navbar)
+    implementation(projects.features.topbar)
 
     implementation(projects.core.common.model)
     implementation(projects.core.common.ui.components)
@@ -24,7 +24,6 @@ dependencies {
     implementation(projects.core.android.ui.list)
     implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.ui.themes)
-    implementation(projects.core.android.viewer)
 }
 
 android {

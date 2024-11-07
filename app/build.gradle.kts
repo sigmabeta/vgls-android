@@ -126,7 +126,6 @@ dependencies {
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.themes)
     implementation(projects.core.android.ui.strings)
-    implementation(projects.core.android.viewer)
 
     implementation(projects.core.common.appinfo)
     implementation(projects.core.common.downloader)
@@ -138,7 +137,7 @@ dependencies {
     implementation(projects.core.common.versions)
     // End DI dependencies
 
-    implementation(projects.features.remaster.all)
+    implementation(projects.features.all)
 
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
