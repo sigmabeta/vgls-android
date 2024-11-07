@@ -229,8 +229,6 @@ class FeatureDirectory(
                 hatchet,
                 analytics,
                 scheduler,
-                threeTenTime,
-                appInfo,
             )
 
             Destination.SEARCH,
