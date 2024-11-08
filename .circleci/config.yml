@@ -61,7 +61,7 @@ jobs:
             - ~/.gradle
       - run:
           name: Get all Git tags
-          command: git fetch --tags -f
+          command: git fetch --prune --prune-tags && git fetch --tags -f
       - save_cache:
           key: source-v2-{{ .Branch }}-{{ .Revision }}
           paths:
