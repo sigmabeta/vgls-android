@@ -172,6 +172,47 @@ dependencies {
     kspAndroidTest(libs.hilt.compiler)
 }
 
+appVersioning {
+    releaseBuildOnly.set(true)
+
+    overrideVersionCode { gitTag, _, _ ->
+        val tagSegments = gitTag.rawTagName.split('.')
+
+        val major = tagSegments[0].toInt()
+        val minor = tagSegments[1].toInt()
+        val patch = tagSegments[2].toInt()
+
+        val commits = gitTag.commitsSinceLatestTag
+
+        val platType = 1 // replace with when statement if we ever support more than just mobile
+
+        val branch = when (System.getenv("CIRCLE_BRANCH")) {
+            "release" -> 9
+            "beta" -> 8
+            else -> 7
+        }
+
+        Versions.verifyRequirements("Major", major, Int.MAX_VALUE)
+        Versions.verifyRequirements("Minor", minor, Versions.MAX_MINOR_VERSIONS)
+        Versions.verifyRequirements("Patch", patch, Versions.MAX_PATCH_VERSIONS)
+        Versions.verifyRequirements("Commit count", commits, Versions.MAX_COMMITS)
+        Versions.verifyRequirements("Platform type", platType, Versions.MAX_PLAT_TYPES)
+        Versions.verifyRequirements("Branch", branch, Versions.MAX_BRANCHES)
+
+        major * Versions.MAJOR +
+            minor * Versions.MINOR +
+            patch * Versions.PATCH +
+            commits * Versions.COMMIT +
+            platType * Versions.PLAT_TYPE +
+            branch * Versions.BRANCH
+    }
+
+    overrideVersionName { gitTag, _, _ ->
+        val commits = gitTag.commitsSinceLatestTag
+        "${gitTag.rawTagName}.$commits"
+    }
+}
+
 fun checkShouldIncludeFirebase(): Boolean {
     return File("app/google-services.json").exists()
 }
@@ -197,4 +238,26 @@ fun ApplicationBuildType.addBranchNameToBuildConfig(butActuallyThough: Boolean) 
     }
 
     buildConfigField("String", "BUILD_BRANCH", "\"$branchName\"")
+}
+
+object Versions {
+    const val MAX_MINOR_VERSIONS = 10
+    const val MAX_PATCH_VERSIONS = 100
+    const val MAX_PLAT_TYPES = 10
+    const val MAX_COMMITS = 100
+    const val MAX_BRANCHES = 10
+
+    const val MAJOR = 10_000_000
+    const val MINOR = MAJOR / MAX_MINOR_VERSIONS
+    const val PATCH = MINOR / MAX_PATCH_VERSIONS
+
+    const val COMMIT = PATCH / MAX_COMMITS
+    const val PLAT_TYPE = COMMIT / MAX_PLAT_TYPES
+    const val BRANCH = PLAT_TYPE / MAX_BRANCHES
+
+    fun verifyRequirements(type: String, actual: Int, max: Int) {
+        require(actual < max) { "$type value $actual is equal to or greater than maximum $max." }
+
+        println("Version component $type: $actual")
+    }
 }
