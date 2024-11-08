@@ -176,6 +176,7 @@ appVersioning {
     releaseBuildOnly.set(true)
 
     overrideVersionCode { gitTag, _, _ ->
+        println("Generating version code. Git tag: ${gitTag.rawTagName}")
         val tagSegments = gitTag.rawTagName.split('.')
 
         val major = tagSegments[0].toInt()
