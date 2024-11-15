@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.components.SheetPageListModel
+import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.subs.CrossfadeSheet
 import com.vgleadsheets.images.LoadingIndicatorConfig
 
@@ -32,6 +33,38 @@ fun SheetPageItem(
         sheetId = model.dataId,
         fillMaxWidth = fillMaxWidth,
         showDebug = showDebug,
+        modifier = modifier
+            .padding(padding),
+    )
+}
+
+@Composable
+fun ZoomableSheetPageItem(
+    model: ZoomableSheetPageListModel,
+    actionSink: ActionSink,
+    fillMaxWidth: Boolean,
+    showDebug: Boolean,
+    modifier: Modifier,
+    padding: PaddingValues,
+    portrait: Boolean,
+) {
+    val contentDescription = "${model.title} from ${model.gameName}, page ${model.pageNumber + 1}"
+
+    ZoomableSheet(
+        sourceInfo = model.sourceInfo,
+        contentDescription = contentDescription,
+        loadingIndicatorConfig = LoadingIndicatorConfig(
+            model.title,
+            model.gameName,
+            model.composers,
+            model.pageNumber,
+        ),
+        sheetId = model.dataId,
+        fillMaxWidth = fillMaxWidth,
+        showDebug = showDebug,
+        actuallyZoomable = model.actuallyZoomable,
+        actionSink = actionSink,
+        portrait = portrait,
         modifier = modifier
             .padding(padding),
     )

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.SubcomposeAsyncImageScope
 import coil3.request.ImageRequest
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
@@ -41,6 +42,7 @@ fun CrossfadeSheet(
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
+    portrait: Boolean? = null,
     fillMaxWidth: Boolean,
     showDebug: Boolean,
     modifier: Modifier,
@@ -52,7 +54,7 @@ fun CrossfadeSheet(
             modifier = modifier.fillMaxSize()
         ) {
             ErrorState(
-                SourceInfo(sourceInfo ?: "Simulated Error"),
+                SourceInfo(sourceInfo),
                 modifier,
                 showDebug,
                 loadingIndicatorConfig = loadingIndicatorConfig,
@@ -88,43 +90,60 @@ fun CrossfadeSheet(
         },
         contentScale = ContentScale.Fit,
         contentDescription = contentDescription,
-        modifier = modifier
-            .defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
-            .aspectRatio(SheetConstants.ASPECT_RATIO),
-    ) {
-        val state by painter.state.collectAsState()
-        when (state) {
-            is AsyncImagePainter.State.Loading ->
-                PlaceholderSheet(
-                    loadingIndicatorConfig = loadingIndicatorConfig,
-                    seed = sheetId,
-                    modifier = modifier
-                )
+        modifier = modifier.imageSizeConfig(portrait),
+        content = subcomposeImageContent(
+            loadingIndicatorConfig,
+            sheetId,
+            contentDescription,
+            sourceInfo,
+            showDebug
+        ),
+    )
+}
 
-            is AsyncImagePainter.State.Success -> {
-                Image(
-                    painter = painter,
-                    contentDescription = contentDescription,
-                    contentScale = ContentScale.Fit,
-                    modifier = modifier,
-                )
-            }
+private fun Modifier.imageSizeConfig(portrait: Boolean?): Modifier {
+    return when (portrait) {
+        false -> this
+        else -> defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
+            .aspectRatio(SheetConstants.ASPECT_RATIO)
+    }
+}
 
-            is AsyncImagePainter.State.Error -> {
-                ErrorState(
-                    sourceInfo = sourceInfo,
-                    modifier = modifier,
-                    showDebug = showDebug,
-                    loadingIndicatorConfig = loadingIndicatorConfig,
-                    sheetId = sheetId,
-                    error = (state as AsyncImagePainter.State.Error).result.throwable,
-                ) {
-                    painter.restart()
-                }
-            }
-
-            else -> {}
+private fun subcomposeImageContent(
+    loadingIndicatorConfig: LoadingIndicatorConfig,
+    sheetId: Long,
+    contentDescription: String?,
+    sourceInfo: SourceInfo,
+    showDebug: Boolean
+): @Composable (SubcomposeAsyncImageScope.() -> Unit) = {
+    val state by painter.state.collectAsState()
+    when (state) {
+        is AsyncImagePainter.State.Success -> {
+            Image(
+                painter = painter,
+                contentDescription = contentDescription,
+                contentScale = ContentScale.Fit,
+            )
         }
+
+        is AsyncImagePainter.State.Error -> {
+            ErrorState(
+                sourceInfo = sourceInfo,
+                modifier = Modifier,
+                showDebug = showDebug,
+                loadingIndicatorConfig = loadingIndicatorConfig,
+                sheetId = sheetId,
+                error = (state as AsyncImagePainter.State.Error).result.throwable,
+            ) {
+                painter.restart()
+            }
+        }
+
+        else -> PlaceholderSheet(
+            loadingIndicatorConfig = loadingIndicatorConfig,
+            seed = sheetId,
+            modifier = Modifier
+        )
     }
 }
 

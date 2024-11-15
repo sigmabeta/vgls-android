@@ -10,13 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.components.SheetPageListModel
+import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.Content
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun BoxScope.SheetPager(
-    items: ImmutableList<SheetPageListModel>,
+    items: ImmutableList<ZoomableSheetPageListModel>,
     pagerState: PagerState,
     showDebug: Boolean,
     actionSink: ActionSink,
@@ -35,6 +35,7 @@ internal fun BoxScope.SheetPager(
         item.Content(
             sink = actionSink,
             mod = Modifier.fillMaxHeight(),
+            portrait = true,
             debug = showDebug,
             pad = PaddingValues()
         )

@@ -41,10 +41,7 @@ fun PreviewSheet(
             .background(Color.White)
     ) {
         if (loadingIndicatorConfig.pageNumber == 0) {
-            PreviewSheetTitle(
-                loadingIndicatorConfig,
-                modifier
-            )
+            PreviewSheetTitle(loadingIndicatorConfig)
         } else {
             PreviewSheetOther()
         }
@@ -55,7 +52,6 @@ fun PreviewSheet(
 @Suppress("MagicNumber")
 private fun BoxScope.PreviewSheetTitle(
     loadingIndicatorConfig: LoadingIndicatorConfig,
-    modifier: Modifier = Modifier
 ) {
     Text(
         text = loadingIndicatorConfig.title,

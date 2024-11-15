@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.composables.ZoomableSheetPageItem
 import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.ui.Icon
@@ -80,6 +82,20 @@ fun ViewerScreen(
 
         if (items.isEmpty()) {
             return
+        }
+
+        val singlePage = state.zoomEnabledForPage ?: if (state.pages().size <= 1) 0 else null
+        if (singlePage != null) {
+            ZoomableSheetPageItem(
+                model = state.pages()[singlePage],
+                actionSink = actionSink,
+                fillMaxWidth = true,
+                showDebug = showDebug,
+                modifier = Modifier,
+                padding = PaddingValues(),
+                portrait = !shouldScrollFreely
+            )
+            return@Box
         }
 
         val pagerState = rememberPagerState(

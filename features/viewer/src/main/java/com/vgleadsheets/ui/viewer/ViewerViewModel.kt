@@ -82,7 +82,9 @@ class ViewerViewModel @AssistedInject constructor(
             is VglsAction.Resume -> resume()
             is VglsAction.Pause -> pause()
             is VglsAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
-            is Action.ScreenClicked -> onScreenClicked()
+            is VglsAction.PageClicked -> maybeShowUi()
+            is VglsAction.PageDoubleClicked -> enableZoomForPage(action.pageNumber)
+            is Action.ScreenClicked -> maybeShowUi()
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
         }
     }
@@ -213,7 +215,7 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    private fun onScreenClicked() {
+    private fun maybeShowUi() {
         maybeRestartScreenOnTimer()
         emitEvent(VglsEvent.ShowUiChrome)
     }
@@ -309,6 +311,10 @@ class ViewerViewModel @AssistedInject constructor(
             historyTimer?.cancel()
             historyTimer = null
         }
+    }
+
+    private fun enableZoomForPage(pageNumber: Int) {
+        updateState { it.copy(zoomEnabledForPage = pageNumber) }
     }
 
     companion object {

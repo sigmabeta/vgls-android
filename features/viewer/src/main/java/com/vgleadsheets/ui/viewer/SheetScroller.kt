@@ -10,13 +10,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.components.SheetPageListModel
+import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.Content
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun SheetScroller(
-    items: ImmutableList<SheetPageListModel>,
+    items: ImmutableList<ZoomableSheetPageListModel>,
     listState: LazyListState,
     showDebug: Boolean,
     actionSink: ActionSink,
@@ -40,6 +40,7 @@ internal fun SheetScroller(
             it.Content(
                 sink = actionSink,
                 mod = Modifier.animateItem(),
+                portrait = false,
                 debug = showDebug,
                 pad = PaddingValues()
             )
