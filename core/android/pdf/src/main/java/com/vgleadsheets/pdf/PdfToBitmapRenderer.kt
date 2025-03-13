@@ -3,7 +3,9 @@ package com.vgleadsheets.pdf
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
@@ -64,7 +66,7 @@ class PdfToBitmapRenderer(private val hatchet: Hatchet,) {
                 .use { currentPage ->
                     val (scaledWidth, scaledHeight) = if (width != null) {
                         val scalingFactor = width / currentPage.width.toFloat()
-                        width to (scalingFactor * currentPage.height)
+                        width to (scalingFactor * currentPage.height).toInt()
                     } else {
                         currentPage.width to currentPage.height
                     }
@@ -73,13 +75,26 @@ class PdfToBitmapRenderer(private val hatchet: Hatchet,) {
 
                     newBitmap = createBlankBitmap(
                         width = scaledWidth,
-                        height = scaledHeight.toInt()
+                        height = scaledHeight
+                    )
+
+                    val transformMatrix = Matrix().apply {
+                        setScale(4f, 4f)
+                    }
+
+                    val clipRect = Rect(
+                        scaledWidth / 4,
+                        scaledHeight / 4,
+                        scaledWidth * 3 / 4,
+                        scaledHeight * 3 / 4,
                     )
 
                     currentPage.render(
                         newBitmap,
-                        null,
-                        null,
+//                        clipRect,
+                       null,
+                        transformMatrix,
+//                        null,
                         PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY
                     )
                 }
