@@ -53,6 +53,7 @@
     <string name="section_header_games_from_composer">Games on VGLS</string>
     <string name="section_header_difficulty_for_song">Difficulty</string>
     <string name="section_header_about_song">Details</string>
+    <string name="section_header_settings_data">App Data</string>
     <string name="section_header_settings_about">About VGLS</string>
     <string name="section_header_settings_debug">Debug</string>
 
@@ -66,6 +67,9 @@
     <string name="cta_favorites">Add a game, song, or composer to your favorites to find them here quickly.</string>
 
     <string name="label_song_also_known_as">Also Known As</string>
+    <string name="label_settings_check_for_updates">Check VGLS for sheet updates</string>
+    <string name="label_settings_clear_usage">Clear usage history</string>
+    <string name="label_settings_clear_sheets">Clear sheet database</string>
     <string name="label_settings_keep_screen_on">Sheets keep screen on</string>
     <string name="label_settings_license">Open-source Licenses</string>
     <string name="label_settings_website">VGLeadSheets.com</string>
@@ -82,6 +86,9 @@
     <string name="label_settings_debug_generate_records_legacy">Generate user history records (Legacy)</string>
     <string name="label_settings_debug_migrate_records">Migrate user history records</string>
     <string name="label_settings_debug_restart">Restart App</string>
+
+    <string name="caption_settings_clear_usage">Reset your play count history and suggestions</string>
+    <string name="caption_settings_clear_sheets">Try this if app can\'t load sheets</string>
 
     <string name="home_section_recent_songs">Jump Back In</string>
     <string name="home_section_most_songs_games">Popular Games</string>

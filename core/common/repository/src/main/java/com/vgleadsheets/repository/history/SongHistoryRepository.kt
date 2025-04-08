@@ -32,6 +32,14 @@ class SongHistoryRepository(
     private val dispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
 ) {
+    suspend fun clearUsage() {
+        songHistoryDataSource.nukeTable()
+        gamePlayCountDataSource.nukeTable()
+        composerPlayCountDataSource.nukeTable()
+        songPlayCountDataSource.nukeTable()
+        tagValuePlayCountDataSource.nukeTable()
+    }
+
     fun recordSongPlay(
         song: Song,
         currentTime: Long = System.currentTimeMillis(),

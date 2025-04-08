@@ -9,4 +9,6 @@ interface SongPlayCountDataSource {
     fun getPlayCount(songId: Long): Flow<SongPlayCount?>
 
     fun getMostPlays(): Flow<List<SongPlayCount>>
+
+    suspend fun nukeTable()
 }

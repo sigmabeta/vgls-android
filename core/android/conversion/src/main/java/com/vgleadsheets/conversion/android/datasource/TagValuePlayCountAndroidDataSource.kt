@@ -22,4 +22,6 @@ class TagValuePlayCountAndroidDataSource(
         .mapListTo {
             convert.entityToModel(it)
         }
+
+    override suspend fun nukeTable() = roomImpl.nukeTable()
 }

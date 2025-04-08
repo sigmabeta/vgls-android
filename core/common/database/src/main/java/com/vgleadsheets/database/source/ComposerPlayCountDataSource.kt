@@ -7,4 +7,6 @@ interface ComposerPlayCountDataSource {
     suspend fun incrementPlayCount(composerId: Long, mostRecentPlay: Long)
 
     fun getMostPlays(): Flow<List<ComposerPlayCount>>
+
+    suspend fun nukeTable()
 }

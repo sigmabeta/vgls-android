@@ -7,4 +7,6 @@ interface GamePlayCountDataSource {
     suspend fun incrementPlayCount(gameId: Long, mostRecentPlay: Long)
 
     fun getMostPlays(): Flow<List<GamePlayCount>>
+
+    suspend fun nukeTable()
 }

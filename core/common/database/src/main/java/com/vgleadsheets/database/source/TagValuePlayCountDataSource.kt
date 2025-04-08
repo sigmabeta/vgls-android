@@ -7,4 +7,6 @@ interface TagValuePlayCountDataSource {
     suspend fun incrementPlayCount(tagValueId: Long, mostRecentPlay: Long)
 
     fun getMostPlays(): Flow<List<TagValuePlayCount>>
+
+    suspend fun nukeTable()
 }

@@ -7,4 +7,6 @@ interface SongHistoryDataSource {
     suspend fun insert(model: SongHistoryEntry)
 
     fun getRecentSongs(): Flow<List<SongHistoryEntry>>
+
+    suspend fun nukeTable()
 }
