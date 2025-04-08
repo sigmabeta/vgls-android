@@ -84,6 +84,7 @@ class ViewerViewModel @AssistedInject constructor(
             is VglsAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
             is VglsAction.PageClicked -> maybeShowUi()
             is VglsAction.PageDoubleClicked -> enableZoomForPage(action.pageNumber)
+            is VglsAction.PageZoomedOutMax -> disableZoom()
             is Action.ScreenClicked -> maybeShowUi()
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
         }
@@ -315,6 +316,10 @@ class ViewerViewModel @AssistedInject constructor(
 
     private fun enableZoomForPage(pageNumber: Int) {
         updateState { it.copy(zoomEnabledForPage = pageNumber) }
+    }
+
+    private fun disableZoom() {
+        updateState { it.copy(zoomEnabledForPage = null) }
     }
 
     companion object {

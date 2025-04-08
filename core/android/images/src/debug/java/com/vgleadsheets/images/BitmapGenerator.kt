@@ -9,6 +9,7 @@ import android.graphics.Shader
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import kotlin.random.Random
+import androidx.core.graphics.createBitmap
 
 object BitmapGenerator {
     fun generateBitmap(
@@ -30,11 +31,7 @@ object BitmapGenerator {
             byteArray[index] = index.toByte()
         }
 
-        val bitmap = Bitmap.createBitmap(
-            width,
-            height,
-            Bitmap.Config.ARGB_8888,
-        )
+        val bitmap = createBitmap(width, height)
 
         val canvas = Canvas(bitmap)
         val paint = Paint()

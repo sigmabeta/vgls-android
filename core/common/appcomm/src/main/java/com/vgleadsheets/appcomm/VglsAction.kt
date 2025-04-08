@@ -29,5 +29,6 @@ open class VglsAction {
     data object KeepScreenOnSnackCtaClicked : VglsAction()
 
     data object PageClicked : VglsAction()
+    data object PageZoomedOutMax : VglsAction()
     data class PageDoubleClicked(val pageNumber: Int) : VglsAction()
 }

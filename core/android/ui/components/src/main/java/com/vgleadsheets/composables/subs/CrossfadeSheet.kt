@@ -65,7 +65,7 @@ fun CrossfadeSheet(
         return
     }
 
-    if (LocalInspectionMode.current) {
+    if (LocalInspectionMode.current || !simulateError) {
         PreviewSheet(
             loadingIndicatorConfig,
             fillMaxWidth,

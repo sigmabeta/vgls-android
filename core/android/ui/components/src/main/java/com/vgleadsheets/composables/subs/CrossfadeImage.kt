@@ -160,10 +160,11 @@ private fun FakeImage(
     sourceInfo: SourceInfo,
     modifier: Modifier
 ) {
+    val bitmap = BitmapGenerator.generateBitmap(sourceInfo.info.toString())
     Image(
         painter = BitmapPainter(
             // Kotlin compiler complains without .toString() here....
-            image = BitmapGenerator.generateBitmap(sourceInfo.info.toString()),
+            image = bitmap,
             filterQuality = FilterQuality.None
         ),
         contentDescription = null,

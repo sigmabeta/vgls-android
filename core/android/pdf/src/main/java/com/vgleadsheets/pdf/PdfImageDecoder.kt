@@ -31,7 +31,7 @@ class PdfImageDecoder(
         val width = computeWidth(options)
 
         val drawable = pdfToBitmapRenderer
-            .renderPdfToBitmap(pdfFile, metadata.pageNumber, width)
+            .renderToBitmap(pdfFile, metadata.pageNumber, width)
             .toDrawable(options.context.resources)
 
         return DecodeResult(

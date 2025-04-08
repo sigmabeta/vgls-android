@@ -13,18 +13,22 @@ import com.vgleadsheets.logging.Hatchet
 import java.io.File
 import kotlin.system.measureTimeMillis
 
-class PdfToBitmapRenderer(private val hatchet: Hatchet,) {
+class PdfToBitmapRenderer(
+    private val hatchet: Hatchet,
+) : BitmapRenderer {
     private val backgroundPaint = Paint().apply {
         isAntiAlias = false
         color = Color.WHITE
     }
 
     @Suppress("TooGenericExceptionCaught")
-    fun renderPdfToBitmap(
-        pdfFile: File,
+    override fun renderToBitmap(
+        pdfFile: File?,
         pageNumber: Int,
         width: Int?,
     ): Bitmap {
+        requireNotNull(pdfFile)
+
         try {
             val fileDescriptor = ParcelFileDescriptor.open(
                 pdfFile,
@@ -92,7 +96,7 @@ class PdfToBitmapRenderer(private val hatchet: Hatchet,) {
                     currentPage.render(
                         newBitmap,
 //                        clipRect,
-                       null,
+                        null,
                         transformMatrix,
 //                        null,
                         PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY
