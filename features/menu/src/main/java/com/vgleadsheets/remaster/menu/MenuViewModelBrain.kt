@@ -87,12 +87,12 @@ class MenuViewModelBrain(
                 } else {
                     updateState { (it as State).copy(refreshCheckStatus = LCE.Uninitialized) }
                 }
-
             }
             .catch { showError("An error occurred checking for updates.") }
             .runInBackground()
     }
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     private fun onClearUsageClicked() {
         updateState { (it as State).copy(usageDbClearStatus = LCE.Loading("clearUsage")) }
 
@@ -114,6 +114,7 @@ class MenuViewModelBrain(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     private fun onClearSheetsClicked() {
         updateState { (it as State).copy(sheetDbClearStatus = LCE.Loading("clearSheets")) }
 
