@@ -33,5 +33,16 @@ data class AppUpdate(
                 "Add shortcut to Favorites on wide screens."
             )
         )
+
+        val VERSION_2_0_4 = AppUpdate(
+            versionCode = 20004,
+            versionName = "2.0.4",
+            releaseDate = "April 8, 2025",
+            changes = listOf(
+                "Add button that manually checks for updates to the settings screen.",
+                "Add button that clears usage history to the settings screen.",
+                "Add button that clears sheet database to the settings screen."
+            )
+        )
     }
 }
