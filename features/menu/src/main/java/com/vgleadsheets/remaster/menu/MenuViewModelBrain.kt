@@ -2,6 +2,7 @@ package com.vgleadsheets.remaster.menu
 
 import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.analytics.AnalyticsScreen
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.appinfo.AppInfo
@@ -9,16 +10,22 @@ import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.repository.DbUpdater
+import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class MenuViewModelBrain(
+    private val dbUpdater: DbUpdater,
+    private val songHistoryRepository: SongHistoryRepository,
     private val generalSettingsManager: GeneralSettingsManager,
     private val debugSettingsManager: DebugSettingsManager,
     private val userContentGenerator: UserContentGenerator,
@@ -27,7 +34,7 @@ class MenuViewModelBrain(
     private val threeTenTime: ThreeTenTime,
     private val analytics: Analytics,
     stringProvider: StringProvider,
-    hatchet: Hatchet,
+    private val hatchet: Hatchet,
     private val scheduler: VglsScheduler,
 ) : ListViewModelBrain(
     stringProvider,
@@ -44,6 +51,9 @@ class MenuViewModelBrain(
             is VglsAction.InitNoArgs -> fetchSettings()
             is VglsAction.Resume -> return
             is VglsAction.Noop -> return
+            is Action.CheckUpdatesClicked -> onCheckUpdatesClicked()
+            is Action.ClearUsageClicked -> onClearUsageClicked()
+            is Action.ClearSheetsClicked -> onClearSheetsClicked()
             is Action.KeepScreenOnClicked -> onKeepScreenOnClicked()
             is Action.WebsiteLinkClicked -> onWebsiteLinkClicked()
             is Action.GiantBombClicked -> onGiantBombClicked()
@@ -57,6 +67,71 @@ class MenuViewModelBrain(
             is Action.GenerateUserContentLegacyClicked -> onGenerateUserContentLegacyClicked()
             is Action.MigrateUserContentLegacyClicked -> onMigrateUserContentLegacyClicked()
             is Action.RestartAppClicked -> onRestartAppClicked()
+        }
+    }
+
+    private fun onCheckUpdatesClicked() {
+        updateState { (it as State).copy(refreshCheckStatus = LCE.Loading("userRecordGeneration")) }
+
+        dbUpdater.refresh()
+            .onEach { success ->
+                if (success) {
+                    updateState { (it as State).copy(refreshCheckStatus = LCE.Content(Unit)) }
+                    emitEvent(
+                        VglsEvent.ShowSnackbar(
+                            "Update check successful!",
+                            false,
+                            source = "DebugMenu"
+                        )
+                    )
+                } else {
+                    updateState { (it as State).copy(refreshCheckStatus = LCE.Uninitialized) }
+                }
+
+            }
+            .catch { showError("An error occurred checking for updates.") }
+            .runInBackground()
+    }
+
+    private fun onClearUsageClicked() {
+        updateState { (it as State).copy(usageDbClearStatus = LCE.Loading("clearUsage")) }
+
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            try {
+                songHistoryRepository.clearUsage()
+
+                updateState { (it as State).copy(usageDbClearStatus = LCE.Content(Unit)) }
+                emitEvent(
+                    VglsEvent.ShowSnackbar(
+                        "Usage history clear successful!",
+                        false,
+                        source = "DebugMenu"
+                    )
+                )
+            } catch (error: Throwable) {
+                showError("An error occurred clearing usage history.")
+            }
+        }
+    }
+
+    private fun onClearSheetsClicked() {
+        updateState { (it as State).copy(sheetDbClearStatus = LCE.Loading("clearSheets")) }
+
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            try {
+                dbUpdater.clearSheets()
+
+                updateState { (it as State).copy(sheetDbClearStatus = LCE.Content(Unit)) }
+                emitEvent(
+                    VglsEvent.ShowSnackbar(
+                        "Sheet database clear successful!",
+                        false,
+                        source = "DebugMenu"
+                    )
+                )
+            } catch (error: Throwable) {
+                showError("An error occurred clearing sheet database.")
+            }
         }
     }
 
@@ -239,6 +314,18 @@ class MenuViewModelBrain(
                 updateState { (it as State).copy(songRecordsMigrated = songsAdded) }
             }
             .runInBackground()
+    }
+
+    private fun showError(message: String) {
+        hatchet.e("Error occurred: $message")
+        emitEvent(
+            VglsEvent.ShowSnackbar(
+                message = "An error occurred. Try again after an app update.",
+                withDismissAction = false,
+                actionDetails = null,
+                source = Destination.HOME.destName
+            )
+        )
     }
 
     private fun onRestartAppClicked() {

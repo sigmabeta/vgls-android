@@ -27,11 +27,13 @@ import com.vgleadsheets.remaster.tags.songs.TagValueSongsViewModelBrain
 import com.vgleadsheets.remaster.tags.values.TagValuesViewModelBrain
 import com.vgleadsheets.remaster.updates.UpdatesViewModelBrain
 import com.vgleadsheets.repository.ComposerRepository
+import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
@@ -43,6 +45,8 @@ import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
 
 class FeatureDirectory(
+    private val dbUpdater: DbUpdater,
+    private val songHistoryRepository: SongHistoryRepository,
     private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
@@ -212,6 +216,8 @@ class FeatureDirectory(
             )
 
             Destination.MENU -> MenuViewModelBrain(
+                dbUpdater,
+                songHistoryRepository,
                 generalSettingsManager,
                 debugSettingsManager,
                 userContentGenerator,

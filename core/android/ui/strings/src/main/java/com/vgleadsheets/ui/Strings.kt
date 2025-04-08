@@ -39,6 +39,7 @@ fun StringId.id(): Int {
         StringId.SECTION_HEADER_GAMES_FROM_COMPOSER -> R.string.section_header_games_from_composer
         StringId.SECTION_HEADER_DIFFICULTY_FOR_SONG -> R.string.section_header_difficulty_for_song
         StringId.SECTION_HEADER_ABOUT_SONG -> R.string.section_header_about_song
+        StringId.SECTION_HEADER_SETTINGS_DATA -> R.string.section_header_settings_data
         StringId.SECTION_HEADER_SETTINGS_ABOUT -> R.string.section_header_settings_about
         StringId.SECTION_HEADER_SETTINGS_DEBUG -> R.string.section_header_settings_debug
 
@@ -93,6 +94,9 @@ fun StringId.id(): Int {
         StringId.PART_LONG_BASS -> R.string.part_long_bass
         StringId.PART_LONG_VOCAL -> R.string.part_long_vocal
 
+        StringId.SETTINGS_LABEL_CHECK_FOR_UPDATES -> R.string.label_settings_check_for_updates
+        StringId.SETTINGS_LABEL_CLEAR_USAGE -> R.string.label_settings_clear_usage
+        StringId.SETTINGS_LABEL_CLEAR_SHEETS -> R.string.label_settings_clear_sheets
         StringId.SETTINGS_LABEL_KEEP_SCREEN_ON -> R.string.label_settings_keep_screen_on
         StringId.SETTINGS_LABEL_LICENSES -> R.string.label_settings_license
         StringId.SETTINGS_LABEL_WEBSITE -> R.string.label_settings_website
@@ -109,6 +113,9 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_APP_VERSION_NAME -> R.string.label_settings_version_name
         StringId.SETTINGS_LABEL_APP_VERSION_CODE -> R.string.label_settings_version_code
         StringId.SETTINGS_LABEL_APP_BUILD_DATE -> R.string.label_settings_build_date
+
+        StringId.SETTINGS_CAPTION_CLEAR_USAGE -> R.string.caption_settings_clear_usage
+        StringId.SETTINGS_CAPTION_CLEAR_SHEETS -> R.string.caption_settings_clear_sheets
 
         StringId.NOTIF_TITLE_DB_UPDATE_SUCCESS -> R.string.notif_db_update_success
         StringId.NOTIF_TITLE_APP_UPDATE_DEFAULT -> R.string.notif_app_update_default

@@ -3,6 +3,7 @@ package com.vgleadsheets.database.android.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
 import com.vgleadsheets.database.android.enitity.SongHistoryEntryEntity
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +16,9 @@ interface SongHistoryEntryRoomDao {
     @Query(QUERY_MOST_PLAYS)
     fun getMostPlays(): Flow<List<SongHistoryEntryEntity>>
 
+    @Query(QUERY_DELETE)
+    fun nukeTable()
+
     companion object {
         private const val TABLE = SongHistoryEntryEntity.TABLE
         private const val COLUMN_ID = "id"
@@ -23,5 +27,6 @@ interface SongHistoryEntryRoomDao {
         private const val NUM_RECORDS = "LIMIT 10"
 
         private const val QUERY_MOST_PLAYS = "$GET $TABLE $BY_TIMESTAMP $NUM_RECORDS"
+        private const val QUERY_DELETE = "$DELETE $TABLE"
     }
 }

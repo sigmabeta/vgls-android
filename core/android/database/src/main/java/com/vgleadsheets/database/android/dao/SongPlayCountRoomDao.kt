@@ -3,6 +3,7 @@ package com.vgleadsheets.database.android.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.AND
+import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.SET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.UPDATE
@@ -20,6 +21,9 @@ interface SongPlayCountRoomDao {
 
     @Query(QUERY_UPSERT)
     suspend fun incrementPlayCount(id: Long, mostRecentPlay: Long)
+
+    @Query(QUERY_DELETE)
+    fun nukeTable()
 
     companion object {
         private const val DEFAULT_PLAY_COUNT = 1
@@ -40,5 +44,6 @@ interface SongPlayCountRoomDao {
         private const val QUERY_INSERT = "INSERT INTO $TABLE VALUES $LIST_ARGS"
         private const val QUERY_MOST_PLAYS = "$GET $TABLE $BY_PLAY_COUNT $NUM_RECORDS"
         private const val QUERY_UPSERT = "$QUERY_INSERT $ON_CONFLICT $UPDATE $SET $SET_INCREMENT $AND $SET_NEW_DATE"
+        private const val QUERY_DELETE = "$DELETE $TABLE"
     }
 }

@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.menu
 
+import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.components.CheckableListModel
@@ -7,6 +8,7 @@ import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
+import com.vgleadsheets.components.NameCaptionListModel
 import com.vgleadsheets.components.NoopListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
@@ -16,6 +18,9 @@ import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 
 data class State(
+    val refreshCheckStatus: LCE<Unit> = LCE.Uninitialized,
+    val sheetDbClearStatus: LCE<Unit> = LCE.Uninitialized,
+    val usageDbClearStatus: LCE<Unit> = LCE.Uninitialized,
     val keepScreenOn: Boolean? = null,
     val appInfo: AppInfo? = null,
     val formattedBuildDate: String? = null,
@@ -34,7 +39,11 @@ data class State(
     )
 
     override fun toListItems(stringProvider: StringProvider): List<ListModel> = listOfNotNull(
+        checkVglsForUpdates(stringProvider),
         keepScreenOn(stringProvider),
+        sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DATA)),
+        clearUsageHistory(stringProvider),
+        clearSheetDb(stringProvider),
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_ABOUT)),
         appWhatsNew(stringProvider),
         website(stringProvider),
@@ -109,6 +118,49 @@ data class State(
     private fun sectionHeader(title: String) = SectionHeaderListModel(
         title = title
     )
+
+    private fun clearUsageHistory(stringProvider: StringProvider) = when (refreshCheckStatus) {
+        is LCE.Loading -> LoadingItemListModel(
+            loadingType = LoadingType.SINGLE_TEXT,
+            loadOperationName = "clearUsage",
+            loadPositionOffset = 0,
+        )
+
+        else -> NameCaptionListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_CLEAR_USAGE),
+            caption = stringProvider.getString(StringId.SETTINGS_CAPTION_CLEAR_USAGE),
+            clickAction = Action.ClearUsageClicked,
+            dataId = StringId.SETTINGS_LABEL_CLEAR_USAGE.hashCode().toLong()
+        )
+    }
+
+    private fun clearSheetDb(stringProvider: StringProvider) = when (refreshCheckStatus) {
+        is LCE.Loading -> LoadingItemListModel(
+            loadingType = LoadingType.SINGLE_TEXT,
+            loadOperationName = "clearUsage",
+            loadPositionOffset = 0,
+        )
+
+        else -> NameCaptionListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_CLEAR_SHEETS),
+            caption = stringProvider.getString(StringId.SETTINGS_CAPTION_CLEAR_SHEETS),
+            clickAction = Action.ClearSheetsClicked,
+            dataId = StringId.SETTINGS_LABEL_CLEAR_SHEETS.hashCode().toLong()
+        )
+    }
+
+    private fun checkVglsForUpdates(stringProvider: StringProvider) = when (refreshCheckStatus) {
+        is LCE.Loading -> LoadingItemListModel(
+            loadingType = LoadingType.SINGLE_TEXT,
+            loadOperationName = "updateCheck",
+            loadPositionOffset = 0,
+        )
+
+        else -> SingleTextListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_CHECK_FOR_UPDATES),
+            clickAction = Action.CheckUpdatesClicked
+        )
+    }
 
     private fun keepScreenOn(stringProvider: StringProvider) = CheckableListModel(
         name = stringProvider.getString(StringId.SETTINGS_LABEL_KEEP_SCREEN_ON),

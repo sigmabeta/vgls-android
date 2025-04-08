@@ -12,11 +12,13 @@ import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.repository.ComposerRepository
+import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
@@ -69,8 +71,12 @@ class ActivityModule {
         userContentMigrator: UserContentMigrator,
         threeTenTime: ThreeTenTime,
         analytics: Analytics,
+        dbUpdater: DbUpdater,
+        songHistoryRepository: SongHistoryRepository,
     ): BrainProvider =
         FeatureDirectory(
+            dbUpdater = dbUpdater,
+            songHistoryRepository = songHistoryRepository,
             dispatchers = dispatchers,
             delayManager = delayManager,
             appInfo = appInfo,
