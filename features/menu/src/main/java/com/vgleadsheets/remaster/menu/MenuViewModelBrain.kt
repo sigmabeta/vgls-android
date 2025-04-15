@@ -57,6 +57,7 @@ class MenuViewModelBrain(
             is Action.KeepScreenOnClicked -> onKeepScreenOnClicked()
             is Action.WebsiteLinkClicked -> onWebsiteLinkClicked()
             is Action.GiantBombClicked -> onGiantBombClicked()
+            is Action.PrivacyLinkClicked -> onPrivacyLinkClicked()
             is Action.WhatsNewClicked -> onWhatsNewClicked()
             is Action.BuildDateClicked -> onBuildDateClicked()
             is Action.LicensesLinkClicked -> onLicensesLinkClicked()
@@ -147,6 +148,10 @@ class MenuViewModelBrain(
 
     private fun onWebsiteLinkClicked() {
         emitEvent(VglsEvent.WebsiteLinkClicked)
+    }
+
+    private fun onPrivacyLinkClicked() {
+        emitEvent(VglsEvent.PrivacyLinkClicked)
     }
 
     private fun onGiantBombClicked() {
