@@ -41,7 +41,8 @@ data class AppUpdate(
             changes = listOf(
                 "Add button that manually checks for updates to the settings screen.",
                 "Add button that clears usage history to the settings screen.",
-                "Add button that clears sheet database to the settings screen."
+                "Add button that clears sheet database to the settings screen.",
+                "Wrote a privacy policy, accessible through the settings screen."
             )
         )
     }

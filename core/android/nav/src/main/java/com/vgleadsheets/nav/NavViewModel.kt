@@ -24,6 +24,7 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -35,7 +36,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
@@ -93,6 +93,7 @@ class NavViewModel @Inject constructor(
                 is VglsEvent.RefreshDb -> refreshDb()
                 is VglsEvent.GiantBombLinkClicked -> launchWebsite(URL_GB_WEBSITE)
                 is VglsEvent.SearchYoutubeClicked -> launchWebsite(getYoutubeSearchUrlForQuery(event.query))
+                is VglsEvent.PrivacyLinkClicked -> launchWebsite(URL_PRIVACY)
                 is VglsEvent.WebsiteLinkClicked -> launchWebsite(URL_VGLS_WEBSITE)
                 is VglsEvent.RestartApp -> restartApp()
             }
@@ -289,5 +290,6 @@ class NavViewModel @Inject constructor(
     companion object {
         private const val URL_VGLS_WEBSITE = "https://www.vgleadsheets.com/"
         private const val URL_GB_WEBSITE = "https://www.giantbomb.com/"
+        private const val URL_PRIVACY = "https://github.com/sigmabeta/vgls-android/blob/beta/PRIVACY.md/"
     }
 }

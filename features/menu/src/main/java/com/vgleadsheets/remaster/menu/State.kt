@@ -48,6 +48,7 @@ data class State(
         appWhatsNew(stringProvider),
         website(stringProvider),
         giantBomb(stringProvider),
+        privacy(stringProvider),
         appVersionName(stringProvider),
         appVersionCode(stringProvider),
         appBuildBranch(stringProvider),
@@ -182,6 +183,11 @@ data class State(
     private fun giantBomb(stringProvider: StringProvider) = SingleTextListModel(
         name = stringProvider.getString(StringId.SETTINGS_LABEL_GIANT_BOMB),
         clickAction = Action.GiantBombClicked
+    )
+
+    private fun privacy(stringProvider: StringProvider) = SingleTextListModel(
+        name = stringProvider.getString(StringId.SETTINGS_LABEL_PRIVACY),
+        clickAction = Action.PrivacyLinkClicked
     )
 
     private fun appVersionName(stringProvider: StringProvider) = LabelValueListModel(

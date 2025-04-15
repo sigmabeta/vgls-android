@@ -101,6 +101,7 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_LICENSES -> R.string.label_settings_license
         StringId.SETTINGS_LABEL_WEBSITE -> R.string.label_settings_website
         StringId.SETTINGS_LABEL_GIANT_BOMB -> R.string.label_settings_gb
+        StringId.SETTINGS_LABEL_PRIVACY -> R.string.label_settings_privacy
         StringId.SETTINGS_LABEL_DEBUG_FAKE_API -> R.string.label_settings_debug_fake
         StringId.SETTINGS_LABEL_DEBUG_DELAY -> R.string.label_settings_debug_delay
         StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS -> R.string.label_settings_debug_show_nav_snackbars
