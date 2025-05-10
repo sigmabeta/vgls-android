@@ -31,8 +31,8 @@ fun PdfTestScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
     ) {
-        var zoom by remember { mutableFloatStateOf(4f) }
-        var zoomTemporary by remember { mutableFloatStateOf(4f) }
+        var zoom by remember { mutableFloatStateOf(1f) }
+        var zoomTemporary by remember { mutableFloatStateOf(1f) }
 
         PdfDisplayer(
             pdfPath = "/data/user/0/com.vgleadsheets.debug/files/pdfs/Aerobiz - Europe/C.pdf",
@@ -53,7 +53,7 @@ fun PdfTestScreen(modifier: Modifier = Modifier) {
         ) {
             Slider(
                 value = zoomTemporary,
-                valueRange = 0.5f .. 8f,
+                valueRange = 0.5f .. 4f,
                 onValueChange = { zoomTemporary = it },
                 onValueChangeFinished = {
                     zoom = zoomTemporary

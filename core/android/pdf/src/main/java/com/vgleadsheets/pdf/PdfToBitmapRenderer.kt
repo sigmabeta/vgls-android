@@ -1,7 +1,6 @@
 package com.vgleadsheets.pdf
 
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
@@ -31,36 +30,44 @@ class PdfToBitmapRenderer(
         requireNotNull(pdfFile)
 
         try {
-            val fileDescriptor = ParcelFileDescriptor.open(
-                pdfFile,
-                ParcelFileDescriptor.MODE_READ_ONLY
-            )
+            var smallBitmap: Bitmap
 
-            hatchet.v("Generating sheet bitmap for page $pageNumber of file ${pdfFile.absolutePath} ")
+            val renderProcessTime = measureTimeMillis {
+                val fileDescriptor = ParcelFileDescriptor.open(
+                    pdfFile,
+                    ParcelFileDescriptor.MODE_READ_ONLY
+                )
 
-            val pdfRenderer = PdfRenderer(fileDescriptor)
-            val pageCount = pdfRenderer.pageCount
+                hatchet.v("Generating sheet bitmap for page $pageNumber of file ${pdfFile.absolutePath} ")
 
-            require(pageNumber <= pageCount) {
-                "PDF only has $pageCount pages, can't render page $pageNumber."
+                val pdfRenderer = PdfRenderer(fileDescriptor)
+                val pageCount = pdfRenderer.pageCount
+
+                require(pageNumber <= pageCount) {
+                    "PDF only has $pageCount pages, can't render page $pageNumber."
+                }
+                val largeBitmap = createBitmap(
+                    pdfRenderer,
+                    pageNumber,
+                    width,
+                    height,
+                    zoom,
+                )
+
+                smallBitmap = largeBitmap.copy(Bitmap.Config.ALPHA_8, false)
+                largeBitmap.recycle()
+
+                pdfRenderer.close()
+                fileDescriptor.close()
             }
-            val bitmap = createBitmap(
-                pdfRenderer,
-                pageNumber,
-                width,
-                height,
-                zoom,
-            )
 
-            pdfRenderer.close()
-            fileDescriptor.close()
-
-            // bitm
-
-            return bitmap
+            hatchet.v("Full PDF process took $renderProcessTime ms.")
+            return smallBitmap
         } catch (ex: Exception) {
+            hatchet.e("Failed to read PDF: ${ex.message}")
             if (pdfFile.exists()) {
                 pdfFile.delete()
+                hatchet.w("Deleted PDF file at ${pdfFile.path}")
             }
             throw ex
         }
@@ -215,16 +222,6 @@ class PdfToBitmapRenderer(
             width,
             height,
             Bitmap.Config.ARGB_8888
-        ).apply {
-            val canvas = Canvas(this)
-
-            canvas.drawRect(
-                0.0f,
-                0.0f,
-                width.toFloat(),
-                height.toFloat(),
-                backgroundPaint
-            )
-        }
+        )
     }
 }
