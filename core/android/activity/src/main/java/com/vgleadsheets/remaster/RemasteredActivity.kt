@@ -16,13 +16,13 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.perf.LocalLogger
-import com.vgleadsheets.scaffold.RemasterAppUi
+import com.vgleadsheets.scaffold.PdfTestScreen
 import com.vgleadsheets.ui.themes.VglsMaterial
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RemasteredActivity : ComponentActivity() {
@@ -51,11 +51,12 @@ class RemasteredActivity : ComponentActivity() {
         setContent {
             VglsMaterial {
                 CompositionLocalProvider(LocalLogger provides hatchet) {
-                    RemasterAppUi(
-                        showSystemBars,
-                        hideSystemBars,
-                        modifier = Modifier
-                    )
+                    // RemasterAppUi(
+                    //     showSystemBars,
+                    //     hideSystemBars,
+                    //     modifier = Modifier
+                    // )
+                    PdfTestScreen(modifier = Modifier)
                 }
             }
         }

@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import androidx.core.graphics.createBitmap
+import com.vgleadsheets.bitmaps.nextColor
 import com.vgleadsheets.pdf.BitmapRenderer
 import java.io.File
 import kotlin.random.Random
@@ -15,9 +16,16 @@ class FakeBitmapRenderer : BitmapRenderer {
         color = Color.WHITE
     }
 
-    override fun renderToBitmap(pdfFile: File?, pageNumber: Int, width: Int?): Bitmap {
+    @OptIn(ExperimentalStdlibApi::class)
+    override fun renderToBitmap(
+        pdfFile: File?,
+        pageNumber: Int,
+        width: Int,
+        height: Int,
+        zoom: Float,
+    ): Bitmap {
         val newBitmap: Bitmap
-        val scaledWidth = ((width ?: WIDTH_ARBITRARY) * 1f).toInt()
+        val scaledWidth = (width * 1f).toInt()
         val scaledHeight = (scaledWidth / ASPECT_RATIO).toInt()
         newBitmap = createBlankBitmap(
             width = scaledWidth,
@@ -26,32 +34,36 @@ class FakeBitmapRenderer : BitmapRenderer {
         val canvas = Canvas(newBitmap)
         val paint = Paint()
 
-        val possibleColors = listOf(
-            Color.RED,
-            Color.GREEN,
-            Color.BLUE,
-            Color.BLACK,
-            Color.CYAN,
-            Color.GRAY,
-            Color.MAGENTA,
-            Color.YELLOW
-        )
+        val rng = Random((pdfFile?.hashCode() ?: 0) + pageNumber)
+
+        val stripeCount = STRIPE_COUNT_MIN + rng.nextInt(STRIPE_COUNT_RANGE)
+        val possibleColors = List(8 + rng.nextInt(24)) {
+            rng.nextColor()
+        }
+
+        val switchOverPercentPerRow = SWITCH_SLOPE_MIN + (rng.nextInt(100) * SWITCH_SLOPE_RANGE)
+        paint.isAntiAlias = false
 
         repeat(scaledHeight) { row ->
-            val firstColorIndex = row
-                .div(STRIPE_HEIGHT_PX)
-                .mod(possibleColors.size)
+            val rowPercent = row.toFloat() / scaledHeight
+            val firstColorIndex = possibleColors.size.times(rowPercent).toInt()
 
-            paint.color = possibleColors[firstColorIndex]
-            paint.isAntiAlias = false
-            canvas.drawLine(0.0f, row.toFloat(), row.toFloat(), row.toFloat(), paint)
+            println("Row percent $rowPercent firstColorIndex $firstColorIndex")
 
-            val secondColorIndex = Random(row / STRIPE_HEIGHT_PX).nextInt()
-                .mod(possibleColors.size)
+            val switchOverAtPercent = switchOverPercentPerRow * rowPercent * 100
+            val switchOverAtPixel = scaledWidth * switchOverAtPercent
 
-            paint.color = possibleColors[secondColorIndex]
-            paint.isAntiAlias = false
-            canvas.drawLine(row.toFloat(), row.toFloat(), scaledWidth.toFloat(), row.toFloat(), paint)
+            val firstColor = possibleColors[firstColorIndex]
+            paint.color = firstColor
+            canvas.drawLine(0.0f, row.toFloat(), switchOverAtPixel, row.toFloat(), paint)
+
+            val secondColorIndex = firstColorIndex.plus(stripeCount).mod(possibleColors.size)
+
+            val secondColor = possibleColors[secondColorIndex]
+            paint.color = secondColor
+            canvas.drawLine(switchOverAtPixel, row.toFloat(), scaledWidth.toFloat(), row.toFloat(), paint)
+
+            println("First color 0x${firstColor.toHexString()} Second color 0x${secondColor.toHexString()}")
         }
 
         val bitmap = newBitmap
@@ -79,6 +91,10 @@ class FakeBitmapRenderer : BitmapRenderer {
     }
 }
 
-const val STRIPE_HEIGHT_PX = 10
+const val SWITCH_SLOPE_MIN = 0.00001f
+const val SWITCH_SLOPE_MAX = 0.0001f
+const val SWITCH_SLOPE_RANGE = SWITCH_SLOPE_MAX - SWITCH_SLOPE_MIN
+const val STRIPE_COUNT_MIN = 8
+const val STRIPE_COUNT_MAX = 32
+const val STRIPE_COUNT_RANGE = STRIPE_COUNT_MAX - STRIPE_COUNT_MIN
 const val ASPECT_RATIO = 0.77272f
-private const val WIDTH_ARBITRARY = 69

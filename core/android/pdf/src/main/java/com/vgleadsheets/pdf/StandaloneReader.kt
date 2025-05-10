@@ -7,6 +7,7 @@ interface StandaloneReader {
     suspend fun renderToDrawable(
         data: PdfConfigById,
         drawableWidth: Int,
+        drawableHeight: Int,
         resources: Resources
     ): Drawable
 }

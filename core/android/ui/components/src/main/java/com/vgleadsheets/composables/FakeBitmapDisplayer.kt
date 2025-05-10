@@ -16,10 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
 import com.vgleadsheets.pdf.fake.FakeBitmapRenderer
+import java.io.File
 import kotlin.random.Random
 
 @Composable
-fun FakePdfDisplayer(
+fun FakeBitmapDisplayer(
     modifier: Modifier = Modifier
 ) {
     val bitmapRenderer = remember { FakeBitmapRenderer() }
@@ -30,9 +31,14 @@ fun FakePdfDisplayer(
             .fillMaxWidth()
     ) {
         val bitmap = bitmapRenderer.renderToBitmap(
-            null,
+            // File("ttewy"),
+            // File("ty"),
+            File("ty89123"),
+            // null,
             0,
             width = 160,
+            height = 160,
+            zoom = 1.0f,
         ).asImageBitmap()
 
         Image(
@@ -70,7 +76,7 @@ private fun Sample(
     seed: Long,
     paddingValues: PaddingValues,
 ) {
-    FakePdfDisplayer(
+    FakeBitmapDisplayer(
         modifier = Modifier.padding(paddingValues)
     )
 }

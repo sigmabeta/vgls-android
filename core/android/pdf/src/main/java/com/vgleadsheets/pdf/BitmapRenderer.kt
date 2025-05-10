@@ -8,6 +8,8 @@ interface BitmapRenderer {
     fun renderToBitmap(
         pdfFile: File?,
         pageNumber: Int,
-        width: Int?,
+        width: Int = 160,
+        height: Int = 160,
+        zoom: Float,
     ): Bitmap
 }

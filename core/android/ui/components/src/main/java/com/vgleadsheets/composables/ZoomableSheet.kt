@@ -151,7 +151,7 @@ private fun Modifier.zoomableModifier(
         portrait,
     )
 
-    // println("Normalized sheet coordinates: $normalizedSheetCoord")
+    println("Normalized sheet coordinates: $normalizedSheetCoord")
 
     return pointerInput(Unit) {
         detectTransformGestures(
@@ -336,14 +336,15 @@ private fun BoxWithConstraintsScope.calculateNormalizedSheetCoord(
     scale: Float,
     portrait: Boolean,
 ): NormalizedSheetCoordinate {
+    val normalizedOffset = normalizeOffset(
+        offset = composableOffset,
+        scale = scale,
+        portrait = portrait,
+    )
     return NormalizedSheetCoordinate(
-        center = normalizeOffset(
-            offset = composableOffset,
-            scale = scale,
-            portrait = portrait,
-        ),
+        center = normalizedOffset,
         visibleBoundaries = normalizeBoundaries(
-            offset = composableOffset,
+            normalizedOffset = normalizedOffset,
             scale = scale,
             portrait = portrait
         ),
@@ -351,7 +352,7 @@ private fun BoxWithConstraintsScope.calculateNormalizedSheetCoord(
 }
 
 private fun BoxWithConstraintsScope.normalizeBoundaries(
-    offset: Offset,
+    normalizedOffset: Offset,
     scale: Float,
     portrait: Boolean,
 ): Rect {
@@ -363,20 +364,14 @@ private fun BoxWithConstraintsScope.normalizeBoundaries(
     val screenWidth = constraints.maxWidth
     val screenHeight = constraints.maxHeight
 
-    val halfNormalizedScaledScreenWidth = ((screenWidth / 2) / scale) / halfSheetWidth
-    val halfNormalizedScaledScreenHeight = ((screenHeight / 2) / scale) / halfSheetHeight
-
-    val normalizedScaledOffset = normalizeOffset(
-        offset,
-        scale,
-        portrait,
-    )
+    val halfNormalizedScaledScreenWidth = ((screenWidth / 4) / scale) / halfSheetWidth
+    val halfNormalizedScaledScreenHeight = ((screenHeight / 4) / scale) / halfSheetHeight
 
     return Rect(
-        left = (normalizedScaledOffset.x - halfNormalizedScaledScreenWidth),
-        right = (normalizedScaledOffset.x + halfNormalizedScaledScreenWidth),
-        top = (normalizedScaledOffset.y - halfNormalizedScaledScreenHeight),
-        bottom = (normalizedScaledOffset.y + halfNormalizedScaledScreenHeight),
+        left = (normalizedOffset.x - halfNormalizedScaledScreenWidth),
+        right = (normalizedOffset.x + halfNormalizedScaledScreenWidth),
+        top = (normalizedOffset.y - halfNormalizedScaledScreenHeight),
+        bottom = (normalizedOffset.y + halfNormalizedScaledScreenHeight),
     )
 }
 
@@ -392,9 +387,15 @@ private fun BoxWithConstraintsScope.normalizeOffset(
     val halfSheetWidth = sheetWidth / 2
     val halfSheetHeight = sheetHeight / 2
 
+    val normalizedXFromCenter = scaledOffset.x / halfSheetWidth
+    val normalizedYFromCenter = scaledOffset.y / halfSheetHeight
+
+    val normalizedXFromTopLeft = (normalizedXFromCenter + 1.0f) / 2.0f
+    val normalizedYFromTopLeft = (normalizedYFromCenter + 1.0f) / 2.0f
+
     return Offset(
-        scaledOffset.x / halfSheetWidth,
-        scaledOffset.y / halfSheetHeight,
+        normalizedXFromTopLeft,
+        normalizedYFromTopLeft,
     )
 }
 

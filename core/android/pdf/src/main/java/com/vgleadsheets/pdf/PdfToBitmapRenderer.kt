@@ -5,12 +5,12 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
-import android.graphics.Rect
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
 import com.vgleadsheets.logging.Hatchet
 import java.io.File
+import kotlin.math.min
 import kotlin.system.measureTimeMillis
 
 class PdfToBitmapRenderer(
@@ -25,7 +25,9 @@ class PdfToBitmapRenderer(
     override fun renderToBitmap(
         pdfFile: File?,
         pageNumber: Int,
-        width: Int?,
+        width: Int,
+        height: Int,
+        zoom: Float,
     ): Bitmap {
         requireNotNull(pdfFile)
 
@@ -35,7 +37,7 @@ class PdfToBitmapRenderer(
                 ParcelFileDescriptor.MODE_READ_ONLY
             )
 
-            hatchet.v("Generating sheet bitmap for page $pageNumber of file ${pdfFile.name} ")
+            hatchet.v("Generating sheet bitmap for page $pageNumber of file ${pdfFile.absolutePath} ")
 
             val pdfRenderer = PdfRenderer(fileDescriptor)
             val pageCount = pdfRenderer.pageCount
@@ -43,10 +45,18 @@ class PdfToBitmapRenderer(
             require(pageNumber <= pageCount) {
                 "PDF only has $pageCount pages, can't render page $pageNumber."
             }
-            val bitmap = createBitmap(pdfRenderer, pageNumber, width)
+            val bitmap = createBitmap(
+                pdfRenderer,
+                pageNumber,
+                width,
+                height,
+                zoom,
+            )
 
             pdfRenderer.close()
             fileDescriptor.close()
+
+            // bitm
 
             return bitmap
         } catch (ex: Exception) {
@@ -60,7 +70,9 @@ class PdfToBitmapRenderer(
     private fun createBitmap(
         pdfRenderer: PdfRenderer,
         pageNumber: Int,
-        width: Int?
+        maxWidth: Int,
+        maxHeight: Int,
+        zoom: Float,
     ): Bitmap {
         val newBitmap: Bitmap
         val openPage = pdfRenderer.openPage(pageNumber)
@@ -68,37 +80,53 @@ class PdfToBitmapRenderer(
         val pdfRenderTime = measureTimeMillis {
             openPage
                 .use { currentPage ->
-                    val (scaledWidth, scaledHeight) = if (width != null) {
-                        val scalingFactor = width / currentPage.width.toFloat()
-                        width to (scalingFactor * currentPage.height).toInt()
-                    } else {
-                        currentPage.width to currentPage.height
-                    }
+                    val pageAspectRatio = currentPage.width.toFloat() / currentPage.height
+                    val maxDimenAspectRatio = maxWidth.toFloat() / maxHeight
 
-                    hatchet.v("Scaled width: $scaledWidth ")
+                    val pdfWidth = currentPage.width
+                    val pdfHeight = currentPage.height
+
+                    val pageToMaximumScalingFactor = maxWidth / pdfWidth.toFloat()
+                    val zoomedScalingFactor = pageToMaximumScalingFactor * zoom
+
+                    val zoomedWidth = (pdfWidth * zoomedScalingFactor).toInt()
+                    val zoomedHeight = (pdfHeight * zoomedScalingFactor).toInt()
+
+                    val bitmapWidth = min(maxWidth, zoomedWidth)
+                    val bitmapHeight = min(maxHeight, zoomedHeight)
+
+                    hatchet.v("PDF page aspect ratio: $pageAspectRatio")
+                    hatchet.v("MaxDimen aspect ratio: $maxDimenAspectRatio")
+
+                    hatchet.v("PDF to max scaling factor: $pageToMaximumScalingFactor")
+                    hatchet.v("Zoomed     scaling factor: $zoomedScalingFactor")
+
+                    hatchet.v("Maximum      dimensions: $maxWidth x $maxHeight")
+                    hatchet.v("Specced page dimensions: $pdfWidth x $pdfHeight")
+                    hatchet.v("Zoomed  page dimensions: $zoomedWidth x $zoomedHeight")
+                    hatchet.v("Bitmap  page dimensions: $bitmapWidth x $bitmapHeight")
 
                     newBitmap = createBlankBitmap(
-                        width = scaledWidth,
-                        height = scaledHeight
+                        width = bitmapWidth,
+                        height = bitmapHeight,
                     )
 
-                    val transformMatrix = Matrix().apply {
-                        setScale(4f, 4f)
+                    val transformMatrix = defaultTransformMatrix(zoomedScalingFactor)
+
+                    val dXPercent = 0f
+                    val dYPercent = 0f
+
+                    val dXPixels = -zoomedWidth * dXPercent
+                    val dYPixels = -zoomedHeight * dYPercent
+
+                    transformMatrix.apply {
+                        postTranslate(dXPixels, dYPixels)
                     }
-
-                    val clipRect = Rect(
-                        scaledWidth / 4,
-                        scaledHeight / 4,
-                        scaledWidth * 3 / 4,
-                        scaledHeight * 3 / 4,
-                    )
 
                     currentPage.render(
                         newBitmap,
-//                        clipRect,
                         null,
                         transformMatrix,
-//                        null,
                         PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY
                     )
                 }
@@ -107,10 +135,24 @@ class PdfToBitmapRenderer(
         return newBitmap
     }
 
+    private fun defaultTransformMatrix(
+        scalingFactor: Float,
+    ): Matrix {
+        val transformMatrix = Matrix();
+
+        transformMatrix.postScale(
+            scalingFactor,
+            scalingFactor,
+        )
+
+        return transformMatrix
+    }
+
     private fun createBlankBitmap(
         width: Int,
-        height: Int
+        height: Int,
     ): Bitmap {
+        hatchet.v("Creating blank bitmap with dimensions $width x $height")
         return createBitmap(
             width,
             height,

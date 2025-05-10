@@ -12,13 +12,14 @@ class PdfStandaloneReader(
     override suspend fun renderToDrawable(
         data: PdfConfigById,
         drawableWidth: Int,
+        drawableHeight: Int,
         resources: Resources
     ): Drawable {
         val pdfFileResult = sheetDownloader.getSheet(data)
         val pdfFile = pdfFileResult.file
 
         val drawable = bitmapRenderer
-            .renderToBitmap(pdfFile, data.pageNumber, drawableWidth)
+            .renderToBitmap(pdfFile, data.pageNumber, drawableWidth, drawableHeight, 1.0f)
             .toDrawable(resources)
 
         return drawable

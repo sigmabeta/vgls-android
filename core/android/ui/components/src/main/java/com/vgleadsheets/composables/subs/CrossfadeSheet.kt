@@ -5,8 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -27,7 +25,6 @@ import coil3.request.ImageRequest
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
-import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.StringId
@@ -65,7 +62,7 @@ fun CrossfadeSheet(
         return
     }
 
-    if (LocalInspectionMode.current || !simulateError) {
+    if (LocalInspectionMode.current || simulateError) {
         PreviewSheet(
             loadingIndicatorConfig,
             fillMaxWidth,
@@ -104,8 +101,8 @@ fun CrossfadeSheet(
 private fun Modifier.imageSizeConfig(portrait: Boolean?): Modifier {
     return when (portrait) {
         false -> this
-        else -> defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
-            .aspectRatio(SheetConstants.ASPECT_RATIO)
+        else -> fillMaxSize() //defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
+            // .aspectRatio(SheetConstants.ASPECT_RATIO)
     }
 }
 
@@ -116,13 +113,14 @@ private fun subcomposeImageContent(
     sourceInfo: SourceInfo,
     showDebug: Boolean
 ): @Composable (SubcomposeAsyncImageScope.() -> Unit) = {
+
     val state by painter.state.collectAsState()
     when (state) {
         is AsyncImagePainter.State.Success -> {
             Image(
                 painter = painter,
                 contentDescription = contentDescription,
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.None,
             )
         }
 

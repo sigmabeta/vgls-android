@@ -8,7 +8,7 @@ import com.vgleadsheets.pdf.StandaloneReader
 class FakeStandaloneReader(
 
 ) : StandaloneReader {
-    override suspend fun renderToDrawable(data: PdfConfigById, drawableWidth: Int, resources: Resources): Drawable {
+    override suspend fun renderToDrawable(data: PdfConfigById, drawableWidth: Int, drawableHeight: Int, resources: Resources): Drawable {
         TODO("Not yet implemented")
     }
 }
