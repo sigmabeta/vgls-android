@@ -19,6 +19,8 @@ class PdfToBitmapRenderer(
         color = Color.WHITE
     }
 
+    var smallBitmap: Bitmap? = null
+
     @Suppress("TooGenericExceptionCaught")
     override fun renderToBitmap(
         pdfFile: File?,
@@ -28,10 +30,14 @@ class PdfToBitmapRenderer(
         zoom: Float,
     ): Bitmap {
         requireNotNull(pdfFile)
+        if (smallBitmap?.isRecycled == false) {
+            hatchet.v("Recycling old bitmap.")
+            smallBitmap?.recycle()
+            smallBitmap = null
+        }
 
         try {
-            var smallBitmap: Bitmap
-
+            var resultBitmap: Bitmap
             val renderProcessTime = measureTimeMillis {
                 val fileDescriptor = ParcelFileDescriptor.open(
                     pdfFile,
@@ -54,15 +60,18 @@ class PdfToBitmapRenderer(
                     zoom,
                 )
 
-                smallBitmap = largeBitmap.copy(Bitmap.Config.ALPHA_8, false)
+                resultBitmap = largeBitmap.copy(Bitmap.Config.ALPHA_8, false)
+                smallBitmap = resultBitmap
                 largeBitmap.recycle()
+
+                hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
 
                 pdfRenderer.close()
                 fileDescriptor.close()
             }
 
             hatchet.v("Full PDF process took $renderProcessTime ms.")
-            return smallBitmap
+            return resultBitmap
         } catch (ex: Exception) {
             hatchet.e("Failed to read PDF: ${ex.message}")
             if (pdfFile.exists()) {
