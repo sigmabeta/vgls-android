@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.LabelValueListModel
@@ -41,6 +42,7 @@ fun PdfTestScreen(modifier: Modifier = Modifier) {
         // Information view
         Column(
             modifier = Modifier
+                .alpha(0.8f)
                 .background(MaterialTheme.colorScheme.background)
                 .padding(top = 8.dp)
                 .padding(bottom = bottomInset.calculateBottomPadding())

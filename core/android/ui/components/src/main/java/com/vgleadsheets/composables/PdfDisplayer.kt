@@ -1,6 +1,7 @@
 package com.vgleadsheets.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.pdf.PdfToBitmapRenderer
@@ -27,23 +29,31 @@ fun PdfDisplayer(
     val logger = LocalLogger.current
     val bitmapRenderer = remember { PdfToBitmapRenderer(logger) }
 
-    val bitmap = bitmapRenderer.renderToBitmap(
-        File(pdfPath),
-        0,
-        width = 1080,
-        height = 2424,
-        zoom = zoom
-    ).asImageBitmap()
-
-    Image(
-        painter = BitmapPainter(
-            image = bitmap,
-            filterQuality = FilterQuality.None,
-        ),
-        contentDescription = null,
-        contentScale = ContentScale.None,
+    BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
-    )
+    ) {
+        val (maxWidthPx, maxHeightPx) = with(LocalDensity.current) {
+            this@BoxWithConstraints.maxWidth.toPx().toInt() to this@BoxWithConstraints.maxHeight.toPx().toInt()
+        }
+
+        val bitmap = bitmapRenderer.renderToBitmap(
+            File(pdfPath),
+            0,
+            width = maxWidthPx,
+            height = maxHeightPx,
+            zoom = zoom
+        ).asImageBitmap()
+
+        Image(
+            painter = BitmapPainter(
+                image = bitmap,
+                filterQuality = FilterQuality.None,
+            ),
+            contentDescription = null,
+            contentScale = ContentScale.None,
+            modifier = modifier.fillMaxSize(),
+        )
+    }
 }
 
 @Preview
