@@ -32,6 +32,7 @@ fun PdfTestScreen(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         var zoom by remember { mutableFloatStateOf(4f) }
+        var zoomTemporary by remember { mutableFloatStateOf(4f) }
 
         PdfDisplayer(
             pdfPath = "/data/user/0/com.vgleadsheets.debug/files/pdfs/Aerobiz - Europe/C.pdf",
@@ -51,9 +52,12 @@ fun PdfTestScreen(modifier: Modifier = Modifier) {
                 .align(Alignment.BottomCenter)
         ) {
             Slider(
-                value = zoom,
+                value = zoomTemporary,
                 valueRange = 0.5f .. 8f,
-                onValueChange = { zoom = it }
+                onValueChange = { zoomTemporary = it },
+                onValueChangeFinished = {
+                    zoom = zoomTemporary
+                }
             )
 
             val zoomString = String.format(Locale.getDefault(), "%.2f", zoom)
