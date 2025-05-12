@@ -1,16 +1,11 @@
 package com.vgleadsheets.composables.previews
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,26 +21,26 @@ import com.vgleadsheets.images.LoadingIndicatorConfig
 @Composable
 fun PreviewSheet(
     loadingIndicatorConfig: LoadingIndicatorConfig,
-    fillMaxWidth: Boolean,
     modifier: Modifier
 ) {
-    val actualModifierLol = if (fillMaxWidth) {
-        modifier.fillMaxWidth()
-    } else {
-        modifier.width(300.dp)
-    }
-
-    Box(
-        modifier = actualModifierLol
-            .aspectRatio(SheetConstants.ASPECT_RATIO)
-            .background(Color.White)
-    ) {
-        if (loadingIndicatorConfig.pageNumber == 0) {
-            PreviewSheetTitle(loadingIndicatorConfig)
-        } else {
-            PreviewSheetOther()
-        }
-    }
+    TODO()
+    // val actualModifierLol = if (fillMaxWidth) {
+    //     modifier.fillMaxWidth()
+    // } else {
+    //     modifier.width(300.dp)
+    // }
+    //
+    // Box(
+    //     modifier = actualModifierLol
+    //         .aspectRatio(SheetConstants.ASPECT_RATIO)
+    //         .background(Color.White)
+    // ) {
+    //     if (loadingIndicatorConfig.pageNumber == 0) {
+    //         PreviewSheetTitle(loadingIndicatorConfig)
+    //     } else {
+    //         PreviewSheetOther()
+    //     }
+    // }
 }
 
 @Composable

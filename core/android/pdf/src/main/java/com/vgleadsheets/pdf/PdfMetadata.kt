@@ -5,5 +5,7 @@ import coil3.decode.ImageSource
 
 @OptIn(ExperimentalCoilApi::class)
 data class PdfMetadata(
-    val pageNumber: Int
+    val pageNumber: Int,
+    val maxWidth: Int,
+    val maxHeight: Int,
 ) : ImageSource.Metadata()

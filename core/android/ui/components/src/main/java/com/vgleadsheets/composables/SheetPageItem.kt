@@ -14,7 +14,6 @@ import com.vgleadsheets.images.LoadingIndicatorConfig
 fun SheetPageItem(
     model: SheetPageListModel,
     actionSink: ActionSink,
-    fillMaxWidth: Boolean,
     showDebug: Boolean,
     modifier: Modifier,
     padding: PaddingValues,
@@ -22,7 +21,7 @@ fun SheetPageItem(
     val contentDescription = "${model.title} from ${model.gameName}, page ${model.pageNumber + 1}"
 
     CrossfadeSheet(
-        sourceInfo = model.sourceInfo,
+        pdfConfigById = model.pdfConfigById,
         contentDescription = contentDescription,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
@@ -31,7 +30,6 @@ fun SheetPageItem(
             model.pageNumber,
         ),
         sheetId = model.dataId,
-        fillMaxWidth = fillMaxWidth,
         showDebug = showDebug,
         modifier = modifier
             .padding(padding),
@@ -42,7 +40,6 @@ fun SheetPageItem(
 fun ZoomableSheetPageItem(
     model: ZoomableSheetPageListModel,
     actionSink: ActionSink,
-    fillMaxWidth: Boolean,
     showDebug: Boolean,
     modifier: Modifier,
     padding: PaddingValues,
@@ -51,7 +48,7 @@ fun ZoomableSheetPageItem(
     val contentDescription = "${model.title} from ${model.gameName}, page ${model.pageNumber + 1}"
 
     ZoomableSheet(
-        sourceInfo = model.sourceInfo,
+        pdfConfigById = model.pdfConfigById,
         contentDescription = contentDescription,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
@@ -60,7 +57,6 @@ fun ZoomableSheetPageItem(
             model.pageNumber,
         ),
         sheetId = model.dataId,
-        fillMaxWidth = fillMaxWidth,
         showDebug = showDebug,
         actuallyZoomable = model.actuallyZoomable,
         actionSink = actionSink,

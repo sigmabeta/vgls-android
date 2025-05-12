@@ -89,7 +89,6 @@ fun ViewerScreen(
             ZoomableSheetPageItem(
                 model = state.pages()[singlePage],
                 actionSink = actionSink,
-                fillMaxWidth = true,
                 showDebug = showDebug,
                 modifier = Modifier,
                 padding = PaddingValues(),

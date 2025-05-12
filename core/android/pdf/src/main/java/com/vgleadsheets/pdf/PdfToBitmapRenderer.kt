@@ -1,9 +1,7 @@
 package com.vgleadsheets.pdf
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.Matrix
-import android.graphics.Paint
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
@@ -14,12 +12,10 @@ import kotlin.system.measureTimeMillis
 class PdfToBitmapRenderer(
     private val hatchet: Hatchet,
 ) : BitmapRenderer {
-    private val backgroundPaint = Paint().apply {
-        isAntiAlias = false
-        color = Color.WHITE
-    }
-
     var smallBitmap: Bitmap? = null
+    var pdfPath: String? = null
+    var pdfRenderer: PdfRenderer? = null
+
 
     @Suppress("TooGenericExceptionCaught")
     override fun renderToBitmap(
@@ -29,7 +25,8 @@ class PdfToBitmapRenderer(
         height: Int,
         zoom: Float,
     ): Bitmap {
-        requireNotNull(pdfFile)
+        requireNotNull(pdfFile) { "PDF files cannot be null in the actual implementation." }
+
         if (smallBitmap?.isRecycled == false) {
             hatchet.v("Recycling old bitmap.")
             smallBitmap?.recycle()
@@ -39,21 +36,35 @@ class PdfToBitmapRenderer(
         try {
             var resultBitmap: Bitmap
             val renderProcessTime = measureTimeMillis {
-                val fileDescriptor = ParcelFileDescriptor.open(
-                    pdfFile,
-                    ParcelFileDescriptor.MODE_READ_ONLY
-                )
+                hatchet.d("Generating sheet bitmap for page $pageNumber of file ${pdfFile.absolutePath} ")
 
-                hatchet.v("Generating sheet bitmap for page $pageNumber of file ${pdfFile.absolutePath} ")
+                val localPdfRenderer = if (pdfPath == pdfFile.absolutePath) {
+                    requireNotNull(pdfRenderer) { "PDF renderer should not be null, but somehow is?" }
+                } else {
+                    pdfRenderer?.let {
+                        hatchet.v("Closing old renderer and opening a new one.")
+                        it.close()
+                    }
 
-                val pdfRenderer = PdfRenderer(fileDescriptor)
-                val pageCount = pdfRenderer.pageCount
+                    pdfPath = pdfFile.absolutePath
+                    val fileDescriptor = ParcelFileDescriptor.open(
+                        pdfFile,
+                        ParcelFileDescriptor.MODE_READ_ONLY
+                    )
 
-                require(pageNumber <= pageCount) {
-                    "PDF only has $pageCount pages, can't render page $pageNumber."
+                    val newRenderer = PdfRenderer(fileDescriptor)
+                    pdfRenderer = newRenderer
+
+                    fileDescriptor.close()
+                    newRenderer
                 }
+
+                require(pageNumber <= localPdfRenderer.pageCount) {
+                    "PDF only has ${localPdfRenderer.pageCount} pages, can't render page $pageNumber."
+                }
+
                 val largeBitmap = createBitmap(
-                    pdfRenderer,
+                    localPdfRenderer,
                     pageNumber,
                     width,
                     height,
@@ -65,9 +76,6 @@ class PdfToBitmapRenderer(
                 largeBitmap.recycle()
 
                 hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
-
-                pdfRenderer.close()
-                fileDescriptor.close()
             }
 
             hatchet.v("Full PDF process took $renderProcessTime ms.")

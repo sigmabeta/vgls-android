@@ -25,8 +25,8 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.components.R
@@ -60,7 +60,6 @@ fun SheetPageCard(
             SheetPageItem(
                 model = model,
                 actionSink = actionSink,
-                fillMaxWidth = false,
                 showDebug = showDebug,
                 padding = PaddingValues(),
                 modifier = Modifier
@@ -128,12 +127,11 @@ private fun DarkPdf() {
 private fun SamplePdf() {
     SheetPageCard(
         model = SheetPageListModel(
-            sourceInfo = SourceInfo(
-                PdfConfigById(
-                    songId = 92,
-                    pageNumber = 0,
-                    isAltSelected = false,
-                )
+            pdfConfigById = PdfConfigById(
+                songId = 92,
+                pageNumber = 0,
+                isAltSelected = false,
+                pdfSize = PdfSize.MEDIUM,
             ),
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",

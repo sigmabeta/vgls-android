@@ -7,9 +7,10 @@ import coil3.decode.DecodeResult
 import coil3.decode.Decoder
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
+import com.vgleadsheets.logging.Hatchet
 
 class PdfImageDecoder(
-    private val pdfToBitmapRenderer: PdfToBitmapRenderer,
+    private val hatchet: Hatchet,
     private val result: SourceFetchResult,
     private val options: Options,
 ) : Decoder {
@@ -28,12 +29,15 @@ class PdfImageDecoder(
         }
 
         val pdfFile = source.file().toFile()
-        val width = computeWidth(options)
-        val height = computeHeight(options)
 
-        val drawable = pdfToBitmapRenderer
-            .renderToBitmap(pdfFile, metadata.pageNumber, width ?: 160, height ?: 160, 1.0f)
-            .toDrawable(options.context.resources)
+        val drawable = PdfToBitmapRenderer(hatchet)
+            .renderToBitmap(
+                pdfFile,
+                metadata.pageNumber,
+                metadata.maxWidth,
+                metadata.maxHeight,
+                1.0f
+            ).toDrawable(options.context.resources)
 
         return DecodeResult(
             isSampled = true,
@@ -42,14 +46,14 @@ class PdfImageDecoder(
     }
 
     class Factory(
-        private val pdfToBitmapRenderer: PdfToBitmapRenderer,
+        private val hatchet: Hatchet,
     ) : Decoder.Factory {
         override fun create(
             result: SourceFetchResult,
             options: Options,
             imageLoader: ImageLoader
         ) = PdfImageDecoder(
-            pdfToBitmapRenderer,
+            hatchet,
             result,
             options,
         )

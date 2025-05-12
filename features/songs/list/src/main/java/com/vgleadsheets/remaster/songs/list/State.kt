@@ -8,6 +8,7 @@ import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -34,6 +35,7 @@ data class State(
                         songId = song.id,
                         isAltSelected = false,
                         pageNumber = 0,
+                        pdfSize = PdfSize.THUMBNAIL,
                     )
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,

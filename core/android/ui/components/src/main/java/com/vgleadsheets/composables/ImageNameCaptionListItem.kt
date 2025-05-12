@@ -29,6 +29,7 @@ import com.vgleadsheets.components.SearchResultListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
+import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -93,7 +94,7 @@ private fun ImageNameCaptionListItem(
     ) {
         ElevatedCircle(
             modifier = Modifier
-                .size(48.dp)
+                .size(ImageSize.THUMBNAIL.size)
                 .align(Alignment.CenterVertically)
         ) {
             CrossfadeImage(

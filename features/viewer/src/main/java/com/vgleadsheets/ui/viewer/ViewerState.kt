@@ -5,10 +5,10 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.ZoomableSheetPageListModel
-import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
@@ -52,12 +52,11 @@ data class ViewerState(
         if (singlePage != null) {
             listOf(
                 ZoomableSheetPageListModel(
-                    sourceInfo = SourceInfo(
-                        info = PdfConfigById(
-                            songId = song.id,
-                            pageNumber = singlePage,
-                            isAltSelected = altSelection,
-                        )
+                    pdfConfigById = PdfConfigById(
+                        songId = song.id,
+                        pageNumber = singlePage,
+                        isAltSelected = altSelection,
+                        pdfSize = PdfSize.FILL,
                     ),
                     title = song.name,
                     gameName = song.gameName,
@@ -70,12 +69,11 @@ data class ViewerState(
         } else {
             List(actualPageCount) { pageNumber ->
                 ZoomableSheetPageListModel(
-                    sourceInfo = SourceInfo(
-                        info = PdfConfigById(
-                            songId = song.id,
-                            pageNumber = pageNumber,
-                            isAltSelected = altSelection,
-                        )
+                    pdfConfigById = PdfConfigById(
+                        songId = song.id,
+                        pageNumber = pageNumber,
+                        isAltSelected = altSelection,
+                        pdfSize = PdfSize.FILL,
                     ),
                     title = song.name,
                     gameName = song.gameName,
@@ -87,17 +85,7 @@ data class ViewerState(
             }
         }
     } else {
-        listOf(
-            ZoomableSheetPageListModel(
-                sourceInfo = SourceInfo(null),
-                title = song?.name.orEmpty(),
-                gameName = song?.gameName.orEmpty(),
-                composers = song?.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                pageNumber = 0,
-                actuallyZoomable = false,
-                clickAction = VglsAction.Noop,
-            )
-        )
+        emptyList()
     }.toImmutableList()
 
     fun shouldShowLyricsWarning(): Boolean {

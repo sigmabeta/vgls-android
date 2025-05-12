@@ -25,6 +25,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
@@ -110,7 +111,8 @@ data class State(
                             pageNumber,
                             beeg = false,
                             showLyricsMissingWarning = false,
-                            altSelection
+                            altSelection,
+                            PdfSize.LARGE
                         )
                     }.toImmutableList()
                 )
@@ -123,7 +125,8 @@ data class State(
                             pageNumber,
                             beeg = false,
                             showLyricsMissingWarning = true,
-                            altSelection
+                            altSelection,
+                            pdfSize = PdfSize.FILL
                         )
                     }.toImmutableList()
                 )
@@ -146,6 +149,7 @@ data class State(
             beeg = true,
             showLyricsMissingWarning = showLyricsMissingWarning,
             altSelectionValue = altSelectionValue,
+            pdfSize = PdfSize.FILL,
         )
     )
 
@@ -155,6 +159,7 @@ data class State(
         beeg: Boolean,
         showLyricsMissingWarning: Boolean,
         altSelectionValue: Boolean,
+        pdfSize: PdfSize,
     ) = SheetPageCardListModel(
         SheetPageListModel(
             title = song.name,
@@ -164,12 +169,11 @@ data class State(
             clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
             showLyricsWarning = showLyricsMissingWarning,
             beeg = beeg,
-            sourceInfo = SourceInfo(
-                PdfConfigById(
-                    songId = song.id,
-                    pageNumber = pageNumber,
-                    isAltSelected = altSelectionValue,
-                )
+            pdfConfigById = PdfConfigById(
+                songId = song.id,
+                pageNumber = pageNumber,
+                isAltSelected = altSelectionValue,
+                pdfSize = pdfSize,
             ),
         )
     )

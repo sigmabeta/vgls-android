@@ -16,6 +16,9 @@ class PdfImageFetcher(
     private val data: PdfConfigById,
 ) : Fetcher {
     override suspend fun fetch(): SourceFetchResult {
+        val maxWidth = requireNotNull(data.maxWidth) { "PDFs must have a width specified."}
+        val maxHeight = requireNotNull(data.maxHeight) { "PDFs must have a width specified."}
+
         val pdfFileResult = sheetDownloader.getSheet(data)
         val pdfFile = pdfFileResult.file
 
@@ -25,7 +28,11 @@ class PdfImageFetcher(
             source = ImageSource(
                 file = pdfPath,
                 fileSystem = FileSystem.SYSTEM,
-                metadata = PdfMetadata(data.pageNumber)
+                metadata = PdfMetadata(
+                    data.pageNumber,
+                    maxWidth,
+                    maxHeight
+                )
             ),
             dataSource = pdfFileResult.sourceType.toCoilDataSource(),
             mimeType = MIMETYPE

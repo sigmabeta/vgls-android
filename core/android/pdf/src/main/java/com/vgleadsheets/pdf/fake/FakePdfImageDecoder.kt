@@ -9,8 +9,6 @@ import coil3.fetch.SourceFetchResult
 import coil3.request.Options
 import com.vgleadsheets.bitmaps.FakePdfImageGenerator
 import com.vgleadsheets.pdf.PdfMetadata
-import com.vgleadsheets.pdf.computeHeight
-import com.vgleadsheets.pdf.computeWidth
 
 class FakePdfImageDecoder(
     private val generator: FakePdfImageGenerator,
@@ -31,9 +29,6 @@ class FakePdfImageDecoder(
             return null
         }
 
-        val width = computeWidth(options)
-        val height = computeHeight(options)
-
         val pdfFile = source.file().toFile()
         val path = pdfFile.path
         val pathSplit = path.split("/")
@@ -43,7 +38,7 @@ class FakePdfImageDecoder(
         val gameName = relevantPartSplit.first().trim()
 
         val bitmap = generator.generateLoadingSheet(
-            width!!,
+            metadata.maxWidth,
             title,
             gameName,
             listOf("Composer One")

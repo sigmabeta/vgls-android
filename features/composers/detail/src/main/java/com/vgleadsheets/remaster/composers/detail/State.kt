@@ -18,6 +18,7 @@ import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
@@ -125,6 +126,7 @@ data class State(
                     songId = song.id,
                     pageNumber = 0,
                     isAltSelected = false,
+                    pdfSize = PdfSize.THUMBNAIL,
                 )
             )
 

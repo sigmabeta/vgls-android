@@ -19,6 +19,7 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.search.SearchViewModel.Companion.MINIMUM_LENGTH_QUERY
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
@@ -126,6 +127,7 @@ data class SearchState(
                         songId = song.id,
                         pageNumber = 0,
                         isAltSelected = false,
+                        pdfSize = PdfSize.THUMBNAIL,
                     )
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,

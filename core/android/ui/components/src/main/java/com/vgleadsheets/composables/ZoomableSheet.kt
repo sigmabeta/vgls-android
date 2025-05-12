@@ -31,8 +31,8 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.composables.subs.CrossfadeSheet
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlin.math.absoluteValue
@@ -44,11 +44,10 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 @Suppress("LongMethod", "ReturnCount")
 fun ZoomableSheet(
-    sourceInfo: SourceInfo,
+    pdfConfigById: PdfConfigById,
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
-    fillMaxWidth: Boolean,
     actuallyZoomable: Boolean,
     showDebug: Boolean,
     actionSink: ActionSink,
@@ -56,7 +55,7 @@ fun ZoomableSheet(
     modifier: Modifier,
     simulateError: Boolean = false
 ) {
-    val pageNumber = (sourceInfo.info as? PdfConfigById)?.pageNumber
+    val pageNumber = pdfConfigById.pageNumber
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -75,12 +74,10 @@ fun ZoomableSheet(
             )
 
         CrossfadeSheet(
-            sourceInfo = sourceInfo,
+            pdfConfigById = pdfConfigById,
             contentDescription = contentDescription,
             loadingIndicatorConfig = loadingIndicatorConfig,
             sheetId = sheetId,
-            portrait = portrait,
-            fillMaxWidth = fillMaxWidth,
             showDebug = showDebug,
             modifier = actualModifier,
             simulateError = simulateError
@@ -445,7 +442,7 @@ private fun Portrait() {
 @Composable
 private fun SampleSheetPageOne() {
     ZoomableSheet(
-        sourceInfo = SourceInfo("Doesn't matter"),
+        pdfConfigById = samplePdfConfig(),
         contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
@@ -456,7 +453,6 @@ private fun SampleSheetPageOne() {
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        fillMaxWidth = true,
         actuallyZoomable = true,
         showDebug = true,
         modifier = Modifier.fillMaxSize(),
@@ -527,3 +523,10 @@ private fun Offset.requireMinimum(minimum: Float): Offset {
 
     return Offset(newX, newY)
 }
+
+private fun samplePdfConfig() = PdfConfigById(
+    0,
+    0,
+    false,
+    PdfSize.MEDIUM,
+)

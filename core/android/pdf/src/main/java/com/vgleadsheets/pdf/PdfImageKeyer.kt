@@ -8,12 +8,9 @@ class PdfImageKeyer(
     private val urlInfoProvider: UrlInfoProvider,
 ) : Keyer<PdfConfigById> {
     override fun key(data: PdfConfigById, options: Options): String {
-        val width = computeWidth(options)
-        val height = computeHeight(options)
-
         val cacheKey = data.cacheKey(
-            width,
-            height,
+            data.maxWidth,
+            data.maxHeight,
             urlInfoProvider.urlInfoFlow.value.partId ?: throw IllegalStateException("No part selected.")
         )
         return cacheKey
