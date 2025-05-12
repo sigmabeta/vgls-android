@@ -40,7 +40,7 @@ class PdfImageDecoder(
             ).toDrawable(options.context.resources)
 
         return DecodeResult(
-            isSampled = true,
+            isSampled = false,
             image = drawable.asImage(),
         )
     }
