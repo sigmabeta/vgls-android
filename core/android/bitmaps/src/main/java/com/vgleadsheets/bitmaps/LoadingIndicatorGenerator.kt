@@ -286,38 +286,36 @@ class LoadingIndicatorGenerator @Inject constructor(
         const val DEFAULT_SHEET_WIDTH = 612.0f
         const val DEFAULT_SHEET_HEIGHT = 792.0f
 
-        // const val
+        const val TEXT_SIZE_SHEET_TITLE = 27.84f
+        const val TEXT_SIZE_GAME_NAME = 13.92f
+        const val TEXT_SIZE_TRANSPOSITION = 19.2f
 
-        const val TEXT_SIZE_SHEET_TITLE = 116.0f
-        const val TEXT_SIZE_GAME_NAME = 58.0f
-        const val TEXT_SIZE_TRANSPOSITION = 80.0f
+        const val TEXT_SIZE_COMPOSERS = 12.0f
+        const val TEXT_SIZE_COPYRIGHT = 8.16f
 
-        const val TEXT_SIZE_COMPOSERS = 50.0f
-        const val TEXT_SIZE_COPYRIGHT = 34.0f
+        const val LEFT_CLEAR_BOX = 24
+        const val TOP_CLEAR_BOX = 24
+        const val RIGHT_CLEAR_BOX = 585.84
+        const val BOTTOM_CLEAR_BOX = 91.2
 
-        const val LEFT_CLEAR_BOX = 100
-        const val TOP_CLEAR_BOX = 100
-        const val RIGHT_CLEAR_BOX = 2442
-        const val BOTTOM_CLEAR_BOX = 380
+        const val Y_POS_SHEET_TITLE = 50.4f
+        const val Y_POS_GAME_NAME = 67.68f
+        const val Y_POS_TRANSPOSITION = 42.0f
 
-        const val Y_POS_SHEET_TITLE = 210.0f
-        const val Y_POS_GAME_NAME = 282.0f
-        const val Y_POS_TRANSPOSITION = 175.0f
+        const val Y_POS_COMPOSERS = 86.4f
+        const val Y_POS_TRANSCRIBER = 104.4f
+        const val Y_POS_COPYRIGHT = 775.68f
 
-        const val Y_POS_COMPOSERS = 360.0f
-        const val Y_POS_TRANSCRIBER = 435.0f
-        const val Y_POS_COPYRIGHT = 3232.0f
+        const val X_POS_COMPOSERS = 583.2f
+        const val X_POS_TRANSPOSITION = 28.8f
 
-        const val X_POS_COMPOSERS = 2430.0f
-        const val X_POS_TRANSPOSITION = 120.0f
+        const val X_POS_FIRST_STAFF = 28.32f
+        const val Y_POS_FIRST_STAFF = 129.6f
 
-        const val X_POS_FIRST_STAFF = 118.0f
-        const val Y_POS_FIRST_STAFF = 540.0f
+        const val Y_DISPLACEMENT_STAFF = 64.8
 
-        const val Y_DISPLACEMENT_STAFF = 270
-
-        const val WIDTH_STAFF = 2313
-        const val HEIGHT_STAFF = 178
+        const val WIDTH_STAFF = 555.12
+        const val HEIGHT_STAFF = 42.72
 
         const val STAFF_COUNT = 10
     }

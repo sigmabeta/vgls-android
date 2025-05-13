@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
+import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
@@ -88,7 +91,7 @@ private fun BoxScope.Content(
     showDebug: Boolean,
     scope: BoxWithConstraintsScope?,
     modifier: Modifier,
-    simulateError: Boolean = false
+    simulateError: Boolean
 ) {
     val pdfConfigByIdWithSize = withSize(
         pdfConfigById,
@@ -100,14 +103,7 @@ private fun BoxScope.Content(
         scope
     )
 
-    val bgColor = if (BuildConfig.DEBUG) {
-        Color(1f, 1f, 0.8f, 1f)
-    } else {
-        Color.White
-    }
-
-    val bgModifier = modifier
-        .background(bgColor)
+    val bgModifier = modifier.bgModifier()
 
     if (simulateError) {
         Box(
@@ -116,7 +112,7 @@ private fun BoxScope.Content(
         ) {
             ErrorState(
                 pdfConfigByIdWithSize,
-                bgModifier,
+                modifier,
                 showDebug,
                 loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                 sheetId = sheetId,
@@ -129,7 +125,7 @@ private fun BoxScope.Content(
     if (LocalInspectionMode.current) {
         PreviewSheet(
             loadingIndicatorConfigWithSize,
-            modifier
+            modifier.bgModifier()
         )
         return
     }
@@ -156,7 +152,7 @@ private fun BoxScope.Content(
         is AsyncImagePainter.State.Error -> {
             ErrorState(
                 pdfConfigById = pdfConfigByIdWithSize,
-                modifier = bgModifier,
+                modifier = modifier,
                 showDebug = showDebug,
                 loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                 sheetId = sheetId,
@@ -172,6 +168,17 @@ private fun BoxScope.Content(
             modifier = bgModifier,
         )
     }
+}
+
+@Composable
+private fun Modifier.bgModifier(): Modifier {
+    val bgColor = if (BuildConfig.DEBUG) {
+        Color(1f, 1f, 0.8f, 1f)
+    } else {
+        Color.White
+    }
+
+    return background(bgColor)
 }
 
 @Composable
@@ -238,15 +245,20 @@ private fun BoxScope.ErrorState(
     PlaceholderSheet(
         loadingIndicatorConfig = loadingIndicatorConfig,
         seed = sheetId,
-        modifier = modifier
+        modifier = modifier.bgModifier()
     )
 
+    // Transparent, clickable overlay
     Box(
         modifier = Modifier
             .clickable(onClick = errorOnClick)
             .matchParentSize()
             .background(Color(0, 0, 0, 128))
     ) { }
+
+    val height = with(LocalDensity.current) {
+        loadingIndicatorConfig.maxHeight?.toDp()
+    } ?: 32.dp
 
     EmptyListIndicator(
         model = ErrorStateListModel(
@@ -257,6 +269,8 @@ private fun BoxScope.ErrorState(
         onBlack = true,
         showDebug = showDebug,
         modifier = modifier
+            .height(height)
+            .aspectRatio(SheetConstants.ASPECT_RATIO)
     )
 }
 
