@@ -17,6 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +30,8 @@ import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
@@ -73,11 +77,31 @@ fun ImageNameListItem(
                 .size(ImageSize.THUMBNAIL.size)
                 .align(Alignment.CenterVertically)
         ) {
+            val info = sourceInfo.info
+            val (actualSourceInfo, bgModifier) = if (info is PdfConfigById) {
+                with(LocalDensity.current) {
+                    SourceInfo(
+                        info.copy(
+                            maxWidth = ImageSize.THUMBNAIL.size.toPx().toInt(),
+                            maxHeight = ImageSize.THUMBNAIL.size.toPx().toInt(),
+                        )
+                    )
+                } to Modifier.background(
+                    if (BuildConfig.DEBUG) {
+                        Color(1f, 1f, 0.8f, 1f)
+                    } else {
+                        Color.White
+                    }
+                )
+            } else {
+                sourceInfo to Modifier
+            }
+
             CrossfadeImage(
-                sourceInfo = sourceInfo,
+                sourceInfo = actualSourceInfo,
                 imagePlaceholder = imagePlaceholder,
                 contentDescription = null,
-                modifier = Modifier
+                modifier = bgModifier,
             )
         }
 
