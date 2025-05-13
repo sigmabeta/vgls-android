@@ -27,12 +27,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.composables.subs.CrossfadeSheet
 import com.vgleadsheets.images.LoadingIndicatorConfig
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlin.math.absoluteValue
@@ -448,6 +448,7 @@ private fun SampleSheetPageOne() {
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
@@ -528,5 +529,7 @@ private fun samplePdfConfig() = PdfConfigById(
     0,
     0,
     false,
-    PdfSize.MEDIUM,
+    samplePdfSize(),
 )
+
+private fun samplePdfSize(): PdfSize = PdfSize.MEDIUM

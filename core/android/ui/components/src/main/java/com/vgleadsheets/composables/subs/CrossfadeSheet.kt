@@ -30,8 +30,8 @@ import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.id
@@ -94,6 +94,11 @@ private fun BoxScope.Content(
         scope
     )
 
+    val loadingIndicatorConfigWithSize = withSize(
+        loadingIndicatorConfig,
+        scope
+    )
+
     val bgColor = if (BuildConfig.DEBUG) {
         Color(1f, 1f, 0.8f, 1f)
     } else {
@@ -111,7 +116,7 @@ private fun BoxScope.Content(
                 pdfConfigByIdWithSize,
                 bgModifier,
                 showDebug,
-                loadingIndicatorConfig = loadingIndicatorConfig,
+                loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                 sheetId = sheetId,
                 IllegalArgumentException("Oops it didn't work."),
             ) { }
@@ -121,7 +126,7 @@ private fun BoxScope.Content(
 
     if (LocalInspectionMode.current) {
         PreviewSheet(
-            loadingIndicatorConfig,
+            loadingIndicatorConfigWithSize,
             modifier
         )
         return
@@ -151,7 +156,7 @@ private fun BoxScope.Content(
                 pdfConfigById = pdfConfigByIdWithSize,
                 modifier = bgModifier,
                 showDebug = showDebug,
-                loadingIndicatorConfig = loadingIndicatorConfig,
+                loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                 sheetId = sheetId,
                 error = (painterState as AsyncImagePainter.State.Error).result.throwable,
             ) {
@@ -160,7 +165,7 @@ private fun BoxScope.Content(
         }
 
         else -> PlaceholderSheet(
-            loadingIndicatorConfig = loadingIndicatorConfig,
+            loadingIndicatorConfig = loadingIndicatorConfigWithSize,
             seed = sheetId,
             modifier = bgModifier,
         )
@@ -176,6 +181,28 @@ private fun BoxScope.withSize(
         val scopeWidth = scope?.maxWidth ?: Int.MAX_VALUE.dp
         val scopeHeight = scope?.maxHeight ?: Int.MAX_VALUE.dp
         val (maxWidth, maxHeight) = when (withoutSize.pdfSize) {
+            PdfSize.THUMBNAIL -> ImageSize.THUMBNAIL.size to ImageSize.THUMBNAIL.size
+            PdfSize.MEDIUM ->  scopeWidth to ImageSize.MEDIUM_HEIGHT.size
+            PdfSize.LARGE -> scopeWidth to ImageSize.LARGE_HEIGHT.size
+            PdfSize.FILL -> scopeWidth to scopeHeight
+        }
+
+        return@withSize withoutSize.copy(
+            maxWidth = maxWidth.toPx().toInt(),
+            maxHeight = maxHeight.toPx().toInt(),
+        )
+    }
+}
+
+@Composable
+private fun BoxScope.withSize(
+    withoutSize: LoadingIndicatorConfig,
+    scope: BoxWithConstraintsScope?
+): LoadingIndicatorConfig {
+    with(LocalDensity.current) {
+        val scopeWidth = scope?.maxWidth ?: Int.MAX_VALUE.dp
+        val scopeHeight = scope?.maxHeight ?: Int.MAX_VALUE.dp
+        val (maxWidth, maxHeight) = when (withoutSize.loaderSize) {
             PdfSize.THUMBNAIL -> ImageSize.THUMBNAIL.size to ImageSize.THUMBNAIL.size
             PdfSize.MEDIUM ->  scopeWidth to ImageSize.MEDIUM_HEIGHT.size
             PdfSize.LARGE -> scopeWidth to ImageSize.LARGE_HEIGHT.size
@@ -290,6 +317,7 @@ private fun SampleLoading() {
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
@@ -309,6 +337,7 @@ private fun SampleSheetPageOne() {
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
@@ -328,6 +357,7 @@ private fun SampleSheetPageTwo() {
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 1,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
@@ -347,6 +377,7 @@ private fun SampleError() {
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
@@ -362,5 +393,7 @@ private fun samplePdfConfig() = PdfConfigById(
     0,
     0,
     false,
-    PdfSize.MEDIUM,
+    samplePdfSize(),
 )
+
+private fun samplePdfSize(): PdfSize = PdfSize.MEDIUM

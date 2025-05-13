@@ -5,6 +5,7 @@ import android.graphics.Matrix
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
+import com.vgleadsheets.bitmaps.ScalingType
 import com.vgleadsheets.logging.Hatchet
 import java.io.File
 import kotlin.system.measureTimeMillis

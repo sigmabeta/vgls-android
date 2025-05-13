@@ -1,5 +1,7 @@
 package com.vgleadsheets.pdf
 
+import com.vgleadsheets.images.PdfSize
+
 data class PdfConfigById(
     val songId: Long,
     val pageNumber: Int,

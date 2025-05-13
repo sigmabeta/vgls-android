@@ -4,11 +4,11 @@ import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider

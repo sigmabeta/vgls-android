@@ -15,6 +15,7 @@ import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SinglePageListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
@@ -25,7 +26,6 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId

@@ -31,7 +31,7 @@ class PdfImageFetcher(
                 metadata = PdfMetadata(
                     data.pageNumber,
                     maxWidth,
-                    maxHeight
+                    maxHeight,
                 )
             ),
             dataSource = pdfFileResult.sourceType.toCoilDataSource(),

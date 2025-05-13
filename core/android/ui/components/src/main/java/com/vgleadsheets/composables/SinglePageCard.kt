@@ -20,8 +20,8 @@ import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SinglePageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList

@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,8 +47,8 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.composables.ZoomableSheetPageItem
-import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
@@ -63,8 +64,8 @@ fun ViewerScreen(
     showDebug: Boolean,
     modifier: Modifier
 ) {
-    var width by remember { mutableStateOf(1) }
-    var height by remember { mutableStateOf(1) }
+    var width by remember { mutableIntStateOf(1) }
+    var height by remember { mutableIntStateOf(1) }
 
     Box(
         modifier = modifier

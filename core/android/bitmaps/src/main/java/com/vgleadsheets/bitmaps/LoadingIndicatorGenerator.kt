@@ -10,6 +10,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.createBitmap
 import com.vgleadsheets.logging.Hatchet
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -43,56 +44,161 @@ class LoadingIndicatorGenerator @Inject constructor(
         )
     }
 
-    private var prevWidth = 0
-
-    private var prevBitmap: Bitmap? = null
-
     @Synchronized
     fun generateLoadingSheet(
-        width: Int,
         title: String,
         gameName: String,
         composers: List<String>,
+        maxWidth: Int,
+        maxHeight: Int,
     ): Bitmap {
-        hatchet.v(
-            "Generating $width px wide loading image for song $title from $gameName"
-        )
+        var resultBitmap: Bitmap
+        val renderProcessTime = measureTimeMillis {
+            hatchet.d("Generating loading sheet bitmap for song $gameName - $title")
 
-        val scalingFactor = width / DEFAULT_SHEET_WIDTH
-        val scaledHeight = scalingFactor * DEFAULT_SHEET_HEIGHT
-
-        if (width != prevWidth) {
-            prevWidth = width
-            prevBitmap = createNewTemplateBitmap(width, scaledHeight, scalingFactor)
-        }
-
-        val bitmap = prevBitmap
-        checkNotNull(bitmap) { "Failed to allocate bitmap." }
-        val uniqueText = measureTimeMillis {
-            renderUniqueText(
-                bitmap,
-                scalingFactor,
+            val largeBitmap = createBitmap(
                 title,
                 gameName,
                 composers,
+                maxWidth,
+                maxHeight,
             )
+
+            resultBitmap = largeBitmap.copy(Bitmap.Config.ALPHA_8, false)
+            largeBitmap.recycle()
+
+            hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
         }
 
-        hatchet.v("Unique text rendering took $uniqueText ms.")
-        return bitmap.copy(
-            Bitmap.Config.ARGB_8888,
-            false
-        )
+        hatchet.v("Full PDF process took $renderProcessTime ms.")
+        return resultBitmap
+    }
+
+    private fun createBitmap(
+        title: String,
+        gameName: String,
+        composers: List<String>,
+        maxWidth: Int,
+        maxHeight: Int,
+    ): Bitmap {
+        val newBitmap: Bitmap
+
+        val pdfRenderTime = measureTimeMillis {
+            val pageAspectRatio = SheetConstants.ASPECT_RATIO
+            val maxDimenAspectRatio = maxWidth.toFloat() / maxHeight
+
+            val pdfWidth = DEFAULT_SHEET_WIDTH.toInt()
+            val pdfHeight = DEFAULT_SHEET_HEIGHT.toInt()
+
+            val pageToMaximumScalingFactor = computePageToMaxScalingFactor(maxWidth, maxHeight, pdfWidth, pdfHeight)
+
+            val zoomedWidth = (pdfWidth * pageToMaximumScalingFactor).toInt()
+            val zoomedHeight = (pdfHeight * pageToMaximumScalingFactor).toInt()
+
+            val scalingType = computeScalingType(maxWidth, maxHeight, zoomedWidth, zoomedHeight)
+
+            val bitmapWidth = computeBitmapWidth(scalingType, zoomedWidth, maxWidth)
+            val bitmapHeight = computeBitmapHeight(scalingType, zoomedHeight, maxHeight)
+
+            hatchet.v("Loader  aspect ratio: $pageAspectRatio")
+            hatchet.v("MaxDimen aspect ratio: $maxDimenAspectRatio")
+
+            hatchet.v("Loader to max scaling factor: $pageToMaximumScalingFactor")
+
+            hatchet.v("Maximum      dimensions: $maxWidth x $maxHeight")
+            hatchet.v("Specced page dimensions: $pdfWidth x $pdfHeight")
+            hatchet.v("Zoomed  page dimensions: $zoomedWidth x $zoomedHeight")
+            hatchet.v("Bitmap  page dimensions: $bitmapWidth x $bitmapHeight")
+            hatchet.v("Scaling type: $scalingType")
+
+            newBitmap = createNewTemplateBitmap(
+                width = bitmapWidth,
+                height = bitmapHeight,
+                pageToMaximumScalingFactor
+            )
+
+            val uniqueText = measureTimeMillis {
+                renderUniqueText(
+                    newBitmap,
+                    pageToMaximumScalingFactor,
+                    title,
+                    gameName,
+                    composers,
+                )
+            }
+
+            hatchet.v("Unique text rendering took $uniqueText ms.")
+        }
+
+        hatchet.v("PDF page rendering took $pdfRenderTime ms.")
+        return newBitmap
+    }
+
+    private fun computePageToMaxScalingFactor(
+        maxWidth: Int,
+        maxHeight: Int,
+        pdfWidth: Int,
+        pdfHeight: Int
+    ): Float {
+        return if (maxWidth < maxHeight) {
+            maxWidth / pdfWidth.toFloat()
+        } else {
+            maxHeight / pdfHeight.toFloat()
+        }
+    }
+
+    private fun computeScalingType(
+        maxWidth: Int,
+        maxHeight: Int,
+        targetWidth: Int,
+        targetHeight: Int,
+    ): ScalingType {
+        return if (targetWidth > maxWidth) {
+            if (targetHeight > maxHeight) {
+                ScalingType.MAX
+            } else {
+                ScalingType.FILL_WIDTH_ADJUST_HEIGHT
+            }
+        } else {
+            if (targetHeight > maxHeight) {
+                ScalingType.FILL_HEIGHT_ADJUST_WIDTH
+            } else {
+                ScalingType.NONE
+            }
+        }
+    }
+
+    private fun computeBitmapWidth(
+        scalingType: ScalingType,
+        targetWidth: Int,
+        maxWidth: Int
+    ): Int {
+        return when (scalingType) {
+            ScalingType.NONE, ScalingType.FILL_HEIGHT_ADJUST_WIDTH -> targetWidth
+            ScalingType.FILL_WIDTH_ADJUST_HEIGHT, ScalingType.MAX -> return maxWidth
+        }
+    }
+
+    private fun computeBitmapHeight(
+        scalingType: ScalingType,
+        targetHeight: Int,
+        maxHeight: Int
+    ): Int {
+        return when (scalingType) {
+            ScalingType.NONE, ScalingType.FILL_WIDTH_ADJUST_HEIGHT -> targetHeight
+            ScalingType.FILL_HEIGHT_ADJUST_WIDTH, ScalingType.MAX -> return maxHeight
+        }
     }
 
     private fun createNewTemplateBitmap(
         width: Int,
-        scaledHeight: Float,
+        height: Int,
         scalingFactor: Float
     ): Bitmap {
-        val newBitmap = Bitmap.createBitmap(
+        hatchet.v("Creating blank bitmap with dimensions $width x $height")
+        val newBitmap = createBitmap(
             width,
-            scaledHeight.toInt(),
+            height,
             Bitmap.Config.ARGB_8888
         )
 

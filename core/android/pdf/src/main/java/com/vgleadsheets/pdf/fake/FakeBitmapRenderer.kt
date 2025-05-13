@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import androidx.core.graphics.createBitmap
+import com.vgleadsheets.bitmaps.SheetConstants.ASPECT_RATIO
 import com.vgleadsheets.bitmaps.nextColor
 import com.vgleadsheets.pdf.BitmapRenderer
 import java.io.File
@@ -97,4 +98,3 @@ const val SWITCH_SLOPE_RANGE = SWITCH_SLOPE_MAX - SWITCH_SLOPE_MIN
 const val STRIPE_COUNT_MIN = 8
 const val STRIPE_COUNT_MAX = 32
 const val STRIPE_COUNT_RANGE = STRIPE_COUNT_MAX - STRIPE_COUNT_MIN
-const val ASPECT_RATIO = 0.77272f

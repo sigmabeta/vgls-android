@@ -11,6 +11,7 @@ import com.vgleadsheets.components.SearchHistoryListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.checkForDupes
@@ -19,7 +20,6 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.search.SearchViewModel.Companion.MINIMUM_LENGTH_QUERY
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId

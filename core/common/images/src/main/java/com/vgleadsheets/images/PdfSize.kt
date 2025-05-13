@@ -1,4 +1,4 @@
-package com.vgleadsheets.pdf
+package com.vgleadsheets.images
 
 enum class PdfSize {
     THUMBNAIL,

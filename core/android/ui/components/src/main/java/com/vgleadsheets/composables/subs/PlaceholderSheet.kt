@@ -9,7 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,8 +20,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.vgleadsheets.composables.previews.FullscreenBlack
-import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.images.LoadingIndicatorConfig
+import com.vgleadsheets.images.PdfSize
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -66,7 +65,6 @@ private fun Page(
         contentAlignment = Center,
         content = content,
         modifier = modifier
-            .aspectRatio(SheetConstants.ASPECT_RATIO)
             .background(Color.White)
     )
 }
@@ -103,6 +101,7 @@ private fun SampleLoadingKirby() {
         listOf(
             "Hirokazu Ando",
         ).toImmutableList(),
+        loaderSize = PdfSize.MEDIUM,
         pageNumber = 0
     )
     PlaceholderSheet(
@@ -121,6 +120,7 @@ private fun SampleLoadingArms() {
             "Atsuko Asahi",
             "Yasuaki Iwata"
         ).toImmutableList(),
+        loaderSize = PdfSize.MEDIUM,
         pageNumber = 0
     )
     PlaceholderSheet(

@@ -1,4 +1,4 @@
-package com.vgleadsheets.pdf
+package com.vgleadsheets.bitmaps
 
 enum class ScalingType {
     NONE,

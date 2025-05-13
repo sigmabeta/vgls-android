@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.LoadingItemListModel
 import com.vgleadsheets.components.LoadingType
@@ -15,7 +17,6 @@ import com.vgleadsheets.composables.previews.BigImageConstants
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.previews.NotifConstants
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.composables.previews.SheetConstants
 import com.vgleadsheets.composables.previews.SquareConstants
 import com.vgleadsheets.composables.previews.WideItemConstants
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
@@ -37,7 +38,7 @@ fun LoadingItem(
     val randomDelay = randomizer.nextInt(200)
 
     val (width, ratio) = when (loadingType) {
-        LoadingType.SHEET -> SheetConstants.MIN_WIDTH to SheetConstants.ASPECT_RATIO
+        LoadingType.SHEET -> SheetConstants.MIN_WIDTH.dp to SheetConstants.ASPECT_RATIO
         LoadingType.SQUARE -> SquareConstants.MIN_WIDTH to SquareConstants.ASPECT_RATIO
         LoadingType.NOTIF -> NotifConstants.MIN_WIDTH to NotifConstants.ASPECT_RATIO
         LoadingType.WIDE_ITEM -> WideItemConstants.MIN_WIDTH to WideItemConstants.ASPECT_RATIO

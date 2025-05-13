@@ -5,10 +5,10 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsState
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.ZoomableSheetPageListModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.pdf.PdfSize
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
