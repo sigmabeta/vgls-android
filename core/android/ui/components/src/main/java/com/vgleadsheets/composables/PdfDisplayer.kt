@@ -22,6 +22,7 @@ import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.pdf.PdfToBitmapRenderer
 import com.vgleadsheets.perf.LocalLogger
 import java.io.File
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 @Composable
@@ -37,7 +38,7 @@ fun PdfDisplayer(
         modifier = modifier.fillMaxSize(),
     ) {
         val (maxWidthPx, maxHeightPx) = with(LocalDensity.current) {
-            this@BoxWithConstraints.maxWidth.toPx().toInt() to this@BoxWithConstraints.maxHeight.toPx().toInt()
+            this@BoxWithConstraints.maxWidth.toPx().roundToInt() to this@BoxWithConstraints.maxHeight.toPx().roundToInt()
         }
 
         val bitmap = bitmapRenderer.renderToBitmap(

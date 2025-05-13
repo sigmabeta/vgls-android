@@ -9,6 +9,7 @@ import com.vgleadsheets.bitmaps.SheetConstants.ASPECT_RATIO
 import com.vgleadsheets.bitmaps.nextColor
 import com.vgleadsheets.pdf.BitmapRenderer
 import java.io.File
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class FakeBitmapRenderer : BitmapRenderer {
@@ -26,8 +27,8 @@ class FakeBitmapRenderer : BitmapRenderer {
         zoom: Float,
     ): Bitmap {
         val newBitmap: Bitmap
-        val scaledWidth = (width * 1f).toInt()
-        val scaledHeight = (scaledWidth / ASPECT_RATIO).toInt()
+        val scaledWidth = (width * 1f).roundToInt()
+        val scaledHeight = (scaledWidth / ASPECT_RATIO).roundToInt()
         newBitmap = createBlankBitmap(
             width = scaledWidth,
             height = scaledHeight
@@ -47,7 +48,7 @@ class FakeBitmapRenderer : BitmapRenderer {
 
         repeat(scaledHeight) { row ->
             val rowPercent = row.toFloat() / scaledHeight
-            val firstColorIndex = possibleColors.size.times(rowPercent).toInt()
+            val firstColorIndex = possibleColors.size.times(rowPercent).roundToInt()
 
             println("Row percent $rowPercent firstColorIndex $firstColorIndex")
 

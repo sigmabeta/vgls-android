@@ -3,6 +3,7 @@ package com.vgleadsheets.bitmaps
 import android.graphics.Bitmap
 import androidx.core.graphics.createBitmap
 import com.vgleadsheets.logging.Hatchet
+import kotlin.math.roundToInt
 
 object BitmapUtils {
     fun computeBitmapSize(
@@ -16,8 +17,8 @@ object BitmapUtils {
         val pageToMaximumScalingFactor = computePageToMaxScalingFactor(maxWidth, maxHeight, docWidth, docHeight)
         val zoomedScalingFactor = pageToMaximumScalingFactor * zoom
 
-        val zoomedWidth = (docWidth * zoomedScalingFactor).toInt()
-        val zoomedHeight = (docHeight * zoomedScalingFactor).toInt()
+        val zoomedWidth = (docWidth * zoomedScalingFactor).roundToInt()
+        val zoomedHeight = (docHeight * zoomedScalingFactor).roundToInt()
 
         val scalingType = computeScalingType(maxWidth, maxHeight, zoomedWidth, zoomedHeight)
 
@@ -87,6 +88,17 @@ object BitmapUtils {
         }
     }
 
+    private fun computeBitmapHeight(
+        scalingType: ScalingType,
+        targetHeight: Int,
+        maxHeight: Int
+    ): Int {
+        return when (scalingType) {
+            ScalingType.NONE, ScalingType.FILL_WIDTH_ADJUST_HEIGHT -> targetHeight
+            ScalingType.FILL_HEIGHT_ADJUST_WIDTH, ScalingType.MAX -> return maxHeight
+        }
+    }
+
     private fun computePageToMaxScalingFactor(
         maxWidth: Int,
         maxHeight: Int,
@@ -97,17 +109,6 @@ object BitmapUtils {
             maxWidth / pdfWidth.toFloat()
         } else {
             maxHeight / pdfHeight.toFloat()
-        }
-    }
-
-    private fun computeBitmapHeight(
-        scalingType: ScalingType,
-        targetHeight: Int,
-        maxHeight: Int
-    ): Int {
-        return when (scalingType) {
-            ScalingType.NONE, ScalingType.FILL_WIDTH_ADJUST_HEIGHT -> targetHeight
-            ScalingType.FILL_HEIGHT_ADJUST_WIDTH, ScalingType.MAX -> return maxHeight
         }
     }
 }

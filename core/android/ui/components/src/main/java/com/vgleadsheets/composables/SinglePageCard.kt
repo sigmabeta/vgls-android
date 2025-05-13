@@ -98,7 +98,6 @@ private fun SamplePdf() {
                         "Hirokazu Ando",
                     ).toImmutableList(),
                     pageNumber = 0,
-                    beeg = true,
                     clickAction = VglsAction.Noop,
                 ),
             ),

@@ -60,7 +60,6 @@ class RecentSongsModule @Inject constructor(
                                     gameName = song.gameName,
                                     clickAction = Action.RecentSongClicked(song.id),
                                     composers = persistentListOf(),
-                                    beeg = false,
                                     pageNumber = 0,
                                 )
                             )

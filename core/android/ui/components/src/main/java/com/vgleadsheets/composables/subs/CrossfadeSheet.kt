@@ -36,6 +36,7 @@ import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
+import kotlin.math.roundToInt
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -105,7 +106,8 @@ private fun BoxScope.Content(
         Color.White
     }
 
-    val bgModifier = modifier.background(bgColor)
+    val bgModifier = modifier
+        .background(bgColor)
 
     if (simulateError) {
         Box(
@@ -187,9 +189,12 @@ private fun BoxScope.withSize(
             PdfSize.FILL -> scopeWidth to scopeHeight
         }
 
+        val maxWidthInt = maxWidth.toPx().roundToInt()
+        val maxHeightInt = maxHeight.toPx().roundToInt()
+
         return@withSize withoutSize.copy(
-            maxWidth = maxWidth.toPx().toInt(),
-            maxHeight = maxHeight.toPx().toInt(),
+            maxWidth = maxWidthInt,
+            maxHeight = maxHeightInt,
         )
     }
 }
@@ -209,9 +214,12 @@ private fun BoxScope.withSize(
             PdfSize.FILL -> scopeWidth to scopeHeight
         }
 
+        val maxWidthInt = maxWidth.toPx().roundToInt()
+        val maxHeightInt = maxHeight.toPx().roundToInt()
+
         return@withSize withoutSize.copy(
-            maxWidth = maxWidth.toPx().toInt(),
-            maxHeight = maxHeight.toPx().toInt(),
+            maxWidth = maxWidthInt,
+            maxHeight = maxHeightInt,
         )
     }
 }

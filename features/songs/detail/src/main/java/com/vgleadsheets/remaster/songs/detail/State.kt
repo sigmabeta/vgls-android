@@ -168,7 +168,6 @@ data class State(
             pageNumber = pageNumber,
             clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
             showLyricsWarning = showLyricsMissingWarning,
-            beeg = beeg,
             pdfConfigById = PdfConfigById(
                 songId = song.id,
                 pageNumber = pageNumber,

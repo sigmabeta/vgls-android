@@ -15,6 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlin.math.roundToInt
 import kotlin.system.measureTimeMillis
 
 @Singleton
@@ -151,10 +152,10 @@ class LoadingIndicatorGenerator @Inject constructor(
         val textRenderingMillis = measureTimeMillis {
             canvas.drawRect(
                 Rect(
-                    (LEFT_CLEAR_BOX * scalingFactor).toInt(),
-                    (TOP_CLEAR_BOX * scalingFactor).toInt(),
-                    (RIGHT_CLEAR_BOX * scalingFactor).toInt(),
-                    (BOTTOM_CLEAR_BOX * scalingFactor).toInt(),
+                    (LEFT_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (TOP_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (RIGHT_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (BOTTOM_CLEAR_BOX * scalingFactor).roundToInt(),
                 ),
                 clearPaint
             )
@@ -282,8 +283,8 @@ class LoadingIndicatorGenerator @Inject constructor(
 
         const val TEXT_NOW_LOADING = "Please wait, now loading..."
 
-        const val DEFAULT_SHEET_WIDTH = 2550.0f
-        const val DEFAULT_SHEET_HEIGHT = 3300.0f
+        const val DEFAULT_SHEET_WIDTH = 612.0f
+        const val DEFAULT_SHEET_HEIGHT = 792.0f
 
         // const val
 

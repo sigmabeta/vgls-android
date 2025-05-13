@@ -64,7 +64,6 @@ class MostPlaysSongsModule @Inject constructor(
                                     gameName = song.gameName,
                                     clickAction = Action.MostPlaysSongClicked(song.id),
                                     composers = persistentListOf(),
-                                    beeg = false,
                                     pageNumber = 0,
                                 )
                             )

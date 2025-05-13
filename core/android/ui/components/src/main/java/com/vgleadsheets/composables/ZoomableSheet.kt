@@ -37,6 +37,7 @@ import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlin.math.absoluteValue
 import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlinx.collections.immutable.toImmutableList
 
@@ -507,17 +508,17 @@ private fun Offset.toWordsDirectional(): String {
     }
 
     val magnitude = sqrt(x.pow(2) + y.pow(2))
-    return "$directionX | $directionY: ${magnitude.toInt()}"
+    return "$directionX | $directionY: ${magnitude.roundToInt()}"
 }
 
 private fun Offset.requireMinimum(minimum: Float): Offset {
     val newX = if (x.absoluteValue < minimum) {
-        x.toInt().toFloat()
+        x.roundToInt().toFloat()
     } else {
         x
     }
     val newY = if (y.absoluteValue < minimum) {
-        y.toInt().toFloat()
+        y.roundToInt().toFloat()
     } else {
         y
     }

@@ -35,6 +35,7 @@ import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import kotlin.math.roundToInt
 
 @Composable
 fun ImageNameListItem(
@@ -82,8 +83,8 @@ fun ImageNameListItem(
                 with(LocalDensity.current) {
                     SourceInfo(
                         info.copy(
-                            maxWidth = ImageSize.THUMBNAIL.size.toPx().toInt(),
-                            maxHeight = ImageSize.THUMBNAIL.size.toPx().toInt(),
+                            maxWidth = ImageSize.THUMBNAIL.size.toPx().roundToInt(),
+                            maxHeight = ImageSize.THUMBNAIL.size.toPx().roundToInt(),
                         )
                     )
                 } to Modifier.background(
