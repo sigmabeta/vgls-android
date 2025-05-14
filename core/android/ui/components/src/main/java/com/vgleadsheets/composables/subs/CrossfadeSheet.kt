@@ -1,5 +1,6 @@
 package com.vgleadsheets.composables.subs
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -139,34 +140,36 @@ private fun BoxScope.Content(
 
     val painterState by painter.state.collectAsState()
 
-    when (painterState) {
-        is AsyncImagePainter.State.Success -> {
-            Image(
-                painter = painter,
-                contentDescription = contentDescription,
-                contentScale = ContentScale.None,
+    Crossfade(painterState) {
+        when (it) {
+            is AsyncImagePainter.State.Success -> {
+                Image(
+                    painter = painter,
+                    contentDescription = contentDescription,
+                    contentScale = ContentScale.None,
+                    modifier = bgModifier,
+                )
+            }
+
+            is AsyncImagePainter.State.Error -> {
+                ErrorState(
+                    pdfConfigById = pdfConfigByIdWithSize,
+                    modifier = modifier,
+                    showDebug = showDebug,
+                    loadingIndicatorConfig = loadingIndicatorConfigWithSize,
+                    sheetId = sheetId,
+                    error = (painterState as AsyncImagePainter.State.Error).result.throwable,
+                ) {
+                    painter.restart()
+                }
+            }
+
+            else -> PlaceholderSheet(
+                loadingIndicatorConfig = loadingIndicatorConfigWithSize,
+                seed = sheetId,
                 modifier = bgModifier,
             )
         }
-
-        is AsyncImagePainter.State.Error -> {
-            ErrorState(
-                pdfConfigById = pdfConfigByIdWithSize,
-                modifier = modifier,
-                showDebug = showDebug,
-                loadingIndicatorConfig = loadingIndicatorConfigWithSize,
-                sheetId = sheetId,
-                error = (painterState as AsyncImagePainter.State.Error).result.throwable,
-            ) {
-                painter.restart()
-            }
-        }
-
-        else -> PlaceholderSheet(
-            loadingIndicatorConfig = loadingIndicatorConfigWithSize,
-            seed = sheetId,
-            modifier = bgModifier,
-        )
     }
 }
 
@@ -191,7 +194,7 @@ private fun BoxScope.withSize(
         val scopeHeight = scope?.maxHeight ?: Int.MAX_VALUE.dp
         val (maxWidth, maxHeight) = when (withoutSize.pdfSize) {
             PdfSize.THUMBNAIL -> ImageSize.THUMBNAIL.size to ImageSize.THUMBNAIL.size
-            PdfSize.MEDIUM ->  scopeWidth to ImageSize.MEDIUM_HEIGHT.size
+            PdfSize.MEDIUM -> scopeWidth to ImageSize.MEDIUM_HEIGHT.size
             PdfSize.LARGE -> scopeWidth to ImageSize.LARGE_HEIGHT.size
             PdfSize.FILL -> scopeWidth to scopeHeight
         }
@@ -216,7 +219,7 @@ private fun BoxScope.withSize(
         val scopeHeight = scope?.maxHeight ?: Int.MAX_VALUE.dp
         val (maxWidth, maxHeight) = when (withoutSize.loaderSize) {
             PdfSize.THUMBNAIL -> ImageSize.THUMBNAIL.size to ImageSize.THUMBNAIL.size
-            PdfSize.MEDIUM ->  scopeWidth to ImageSize.MEDIUM_HEIGHT.size
+            PdfSize.MEDIUM -> scopeWidth to ImageSize.MEDIUM_HEIGHT.size
             PdfSize.LARGE -> scopeWidth to ImageSize.LARGE_HEIGHT.size
             PdfSize.FILL -> scopeWidth to scopeHeight
         }

@@ -62,53 +62,65 @@ object BitmapUtils {
         targetWidth: Int,
         targetHeight: Int,
     ): ScalingType {
-        return if (targetWidth > maxWidth) {
-            if (targetHeight > maxHeight) {
-                ScalingType.MAX
-            } else {
-                ScalingType.FILL_WIDTH_ADJUST_HEIGHT
+        if (maxWidth == maxHeight) {
+            if (targetHeight > targetWidth) {
+                return ScalingType.FILL_HEIGHT_ADJUST_WIDTH
             }
-        } else {
+
+            return ScalingType.FILL_WIDTH_ADJUST_HEIGHT
+        }
+
+        if (targetWidth > maxWidth) {
             if (targetHeight > maxHeight) {
-                ScalingType.FILL_HEIGHT_ADJUST_WIDTH
-            } else {
-                ScalingType.NONE
+                return ScalingType.MAX
             }
+            return ScalingType.FILL_WIDTH_ADJUST_HEIGHT
         }
-    }
 
-    private fun computeBitmapWidth(
-        scalingType: ScalingType,
-        targetWidth: Int,
-        maxWidth: Int
-    ): Int {
-        return when (scalingType) {
-            ScalingType.NONE, ScalingType.FILL_HEIGHT_ADJUST_WIDTH -> targetWidth
-            ScalingType.FILL_WIDTH_ADJUST_HEIGHT, ScalingType.MAX -> return maxWidth
-        }
-    }
 
-    private fun computeBitmapHeight(
-        scalingType: ScalingType,
-        targetHeight: Int,
-        maxHeight: Int
-    ): Int {
-        return when (scalingType) {
-            ScalingType.NONE, ScalingType.FILL_WIDTH_ADJUST_HEIGHT -> targetHeight
-            ScalingType.FILL_HEIGHT_ADJUST_WIDTH, ScalingType.MAX -> return maxHeight
+        if (targetHeight > maxHeight) {
+            return ScalingType.FILL_HEIGHT_ADJUST_WIDTH
         }
-    }
 
-    private fun computePageToMaxScalingFactor(
-        maxWidth: Int,
-        maxHeight: Int,
-        pdfWidth: Int,
-        pdfHeight: Int
-    ): Float {
-        return if (maxWidth < maxHeight) {
-            maxWidth / pdfWidth.toFloat()
-        } else {
-            maxHeight / pdfHeight.toFloat()
+        if (maxHeight > maxWidth) {
+            return ScalingType.FILL_WIDTH_ADJUST_HEIGHT
         }
+
+        return ScalingType.FILL_HEIGHT_ADJUST_WIDTH
+    }
+}
+
+private fun computeBitmapWidth(
+    scalingType: ScalingType,
+    targetWidth: Int,
+    maxWidth: Int
+): Int {
+    return when (scalingType) {
+        ScalingType.FILL_HEIGHT_ADJUST_WIDTH -> targetWidth
+        ScalingType.FILL_WIDTH_ADJUST_HEIGHT, ScalingType.MAX -> return maxWidth
+    }
+}
+
+private fun computeBitmapHeight(
+    scalingType: ScalingType,
+    targetHeight: Int,
+    maxHeight: Int
+): Int {
+    return when (scalingType) {
+        ScalingType.FILL_WIDTH_ADJUST_HEIGHT -> targetHeight
+        ScalingType.FILL_HEIGHT_ADJUST_WIDTH, ScalingType.MAX -> return maxHeight
+    }
+}
+
+private fun computePageToMaxScalingFactor(
+    maxWidth: Int,
+    maxHeight: Int,
+    pdfWidth: Int,
+    pdfHeight: Int
+): Float {
+    return if (maxWidth < maxHeight) {
+        maxWidth / pdfWidth.toFloat()
+    } else {
+        maxHeight / pdfHeight.toFloat()
     }
 }

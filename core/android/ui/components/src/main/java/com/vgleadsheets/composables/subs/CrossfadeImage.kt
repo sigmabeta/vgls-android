@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -35,6 +36,7 @@ import com.vgleadsheets.composables.ImageNameListItem
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.BitmapGenerator
 import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
@@ -86,7 +88,35 @@ private fun RealImage(
             .build()
     )
 
+    val info = sourceInfo.info
+    if (info is PdfConfigById) {
+        RealPdfImage(
+            asyncPainter,
+            info,
+            imagePlaceholder,
+            contentDescription,
+            simulateError,
+            modifier,)
+    } else {
+        RealStandardImage(
+            asyncPainter,
+            imagePlaceholder,
+            contentDescription,
+            modifier,
+        )
+    }
+
+}
+
+@Composable
+fun RealStandardImage(
+    asyncPainter: AsyncImagePainter,
+    imagePlaceholder: Icon,
+    contentDescription: String?,
+    modifier: Modifier,
+) {
     val state by asyncPainter.state.collectAsState()
+
     Crossfade(
         targetState = state,
         label = "Image Crossfade",
@@ -111,12 +141,52 @@ private fun RealImage(
 }
 
 @Composable
+fun RealPdfImage(
+    asyncPainter: AsyncImagePainter,
+    pdfConfig: PdfConfigById,
+    imagePlaceholder: Icon,
+    contentDescription: String?,
+    simulateError: Boolean,
+    modifier: Modifier,
+) {
+    val state by asyncPainter.state.collectAsState()
+
+    Box(
+        modifier = modifier
+    ) {
+        Crossfade(
+            targetState = state,
+            label = "Image Crossfade",
+            modifier = Modifier.align(Alignment.Center),
+        ) { loadingState ->
+            when (loadingState) {
+                is AsyncImagePainter.State.Success -> Image(
+                    painter = asyncPainter,
+                    contentDescription = contentDescription,
+                    contentScale = ContentScale.None,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+
+                is AsyncImagePainter.State.Error -> ErrorImage(
+                    imagePlaceholder,
+                    contentDescription,
+                    modifier
+                )
+
+                else -> PlaceHolderImage(imagePlaceholder, modifier)
+            }
+        }
+    }
+}
+
+@Composable
 private fun PlaceHolderImage(
     imagePlaceholder: Icon,
     modifier: Modifier
 ) {
     Image(
         imageVector = imagePlaceholder.vector(),
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = modifier
