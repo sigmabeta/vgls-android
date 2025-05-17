@@ -8,6 +8,7 @@ import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.logging.Hatchet
 import java.io.File
 import kotlin.system.measureTimeMillis
+import kotlinx.coroutines.delay
 
 class PdfToBitmapRenderer(
     private val hatchet: Hatchet,
@@ -18,7 +19,7 @@ class PdfToBitmapRenderer(
 
 
     @Suppress("TooGenericExceptionCaught")
-    override fun renderToBitmap(
+    override suspend fun renderToBitmap(
         pdfFile: File?,
         pageNumber: Int,
         width: Int,
@@ -74,6 +75,7 @@ class PdfToBitmapRenderer(
                 resultBitmap = largeBitmap.copy(Bitmap.Config.ALPHA_8, false)
                 smallBitmap = resultBitmap
                 largeBitmap.recycle()
+                delay(3_000L)
 
                 hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
             }

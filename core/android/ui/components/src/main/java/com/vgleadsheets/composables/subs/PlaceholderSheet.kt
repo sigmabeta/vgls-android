@@ -6,16 +6,14 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
@@ -50,6 +48,7 @@ fun PlaceholderSheet(
             contentScale = ContentScale.Fit,
             contentDescription = null,
             modifier = modifier
+                .wrapContentSize()
                 .alpha(animatedAlphaValue)
                 .fillMaxWidth(),
         )
@@ -62,10 +61,8 @@ private fun Page(
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(
-        contentAlignment = Center,
         content = content,
         modifier = modifier
-            .background(Color.White)
     )
 }
 

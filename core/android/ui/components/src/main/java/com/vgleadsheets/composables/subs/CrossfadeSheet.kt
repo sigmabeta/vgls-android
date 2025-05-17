@@ -99,6 +99,8 @@ private fun BoxScope.Content(
         scope
     )
 
+    println("$pdfConfigByIdWithSize")
+
     val loadingIndicatorConfigWithSize = withSize(
         loadingIndicatorConfig,
         scope
@@ -140,25 +142,28 @@ private fun BoxScope.Content(
 
     val painterState by painter.state.collectAsState()
 
-    Crossfade(painterState) {
+    Crossfade(
+        targetState = painterState,
+        modifier = bgModifier
+            .align(Alignment.Center),
+    ) {
         when (it) {
             is AsyncImagePainter.State.Success -> {
                 Image(
                     painter = painter,
                     contentDescription = contentDescription,
                     contentScale = ContentScale.None,
-                    modifier = bgModifier,
                 )
             }
 
             is AsyncImagePainter.State.Error -> {
                 ErrorState(
                     pdfConfigById = pdfConfigByIdWithSize,
-                    modifier = modifier,
                     showDebug = showDebug,
                     loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                     sheetId = sheetId,
                     error = (painterState as AsyncImagePainter.State.Error).result.throwable,
+                    modifier = Modifier,
                 ) {
                     painter.restart()
                 }
@@ -167,7 +172,7 @@ private fun BoxScope.Content(
             else -> PlaceholderSheet(
                 loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                 seed = sheetId,
-                modifier = bgModifier,
+                modifier = Modifier,
             )
         }
     }
@@ -228,8 +233,8 @@ private fun BoxScope.withSize(
         val maxHeightInt = maxHeight.toPx().roundToInt()
 
         return@withSize withoutSize.copy(
-            maxWidth = maxWidthInt,
-            maxHeight = maxHeightInt,
+            maxWidth = withoutSize.maxWidth ?: maxWidthInt,
+            maxHeight = withoutSize.maxHeight ?: maxHeightInt,
         )
     }
 }

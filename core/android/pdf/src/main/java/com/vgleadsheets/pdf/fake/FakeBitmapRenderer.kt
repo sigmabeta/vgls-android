@@ -19,7 +19,7 @@ class FakeBitmapRenderer : BitmapRenderer {
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    override fun renderToBitmap(
+    override suspend fun renderToBitmap(
         pdfFile: File?,
         pageNumber: Int,
         width: Int,

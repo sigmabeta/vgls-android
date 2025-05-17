@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -65,13 +66,16 @@ fun ZoomableSheet(
             .maybeBackground(actuallyZoomable)
 
     ) {
+        var scale by remember { mutableFloatStateOf(1f) }
+
         val actualModifier = Modifier
-            .fillMaxSize()
+            .wrapContentSize()
             .maybeZoomable(
                 actuallyZoomable,
                 actionSink,
                 portrait,
-                this
+                this,
+                onScaleUpdate = { newScale -> scale = newScale }
             )
 
         CrossfadeSheet(
@@ -92,8 +96,9 @@ private fun Modifier.maybeZoomable(
     actionSink: ActionSink,
     portrait: Boolean,
     boxWithConstraintsScope: BoxWithConstraintsScope,
+    onScaleUpdate: (Float) -> Unit,
 ) = if (actuallyZoomable) {
-    this.zoomableModifier(portrait, actionSink, boxWithConstraintsScope)
+    this.zoomableModifier(portrait, actionSink, boxWithConstraintsScope, onScaleUpdate)
 } else {
     this
 }
@@ -124,6 +129,7 @@ private fun Modifier.zoomableModifier(
     portrait: Boolean,
     actionSink: ActionSink,
     boxWithConstraintsScope: BoxWithConstraintsScope,
+    onScaleUpdate: (Float) -> Unit,
 ): Modifier {
     var zoomed by remember { mutableStateOf(false) }
     var scale by remember { mutableFloatStateOf(1f) }
@@ -141,15 +147,8 @@ private fun Modifier.zoomableModifier(
     if (zoomCommand != AnimationCommand.NONE) {
         scale = animScale
         offset = animOffset
+        onScaleUpdate(animScale)
     }
-
-    val normalizedSheetCoord = boxWithConstraintsScope.calculateNormalizedSheetCoord(
-        offset,
-        scale,
-        portrait,
-    )
-
-    println("Normalized sheet coordinates: $normalizedSheetCoord")
 
     return pointerInput(Unit) {
         detectTransformGestures(
@@ -158,15 +157,9 @@ private fun Modifier.zoomableModifier(
                 val coercedScale = (scale * zoomChange).coerceIn(ZOOM_NONE, ZOOM_MAX)
 
                 scale = coercedScale
+                onScaleUpdate(coercedScale)
 
                 offset = if (zoomChange in 0.995f..1.005f) {
-                    // println("Prev: ${offset.toStringDirectional()} + panchange ${panChange.toStringDirectional()}")
-                    // println(
-                    //     "======== Pan Gesture ======== \n" +
-                    //         "\tOffset:  ${offset.requireMinimum(1.0f).toWordsDirectional()} \n" +
-                    //         "\tMove by: ${panChange.toWordsDirectional()}"
-                    // )
-
                     boxWithConstraintsScope.calculateOffsetFromPrevious(
                         offset,
                         panChange,
@@ -175,8 +168,6 @@ private fun Modifier.zoomableModifier(
                     )
                 } else {
                     val gestureCenterAsOffset = -boxWithConstraintsScope.calculateOffsetFromTopLeftNoCoerce(centroid)
-                    // val gestureCenterNormalized = boxWithConstraintsScope.normalizeOffset(gestureCenterAsOffset, coercedScale, portrait)
-                    // val prevOffsetNormalized = boxWithConstraintsScope.normalizeOffset(offset, coercedScale, portrait)
 
                     val zoomComponent = if (zoomChange > 1f) {
                         8
@@ -184,20 +175,11 @@ private fun Modifier.zoomableModifier(
                         -32
                     }
 
-                    // println("Zoom change $zoomChange Zoom component: $zoomComponent")
-
                     val scaleFactor = zoomComponent.toFloat() //* coercedScale
                     val moveBy = (gestureCenterAsOffset / scaleFactor).requireMinimum(1.0f)
                     val sum = (moveBy - offset)
 
                     val result = boxWithConstraintsScope.coerceOffset(sum, coercedScale, portrait)
-                    println(
-                        // "======== Zoom Gesture ======== \n" +
-                        // "\tOffset:  ${offset.requireMinimum(1.0f).toWordsDirectional()} \n" +
-                        // "\tGesture: ${gestureCenterAsOffset.toWordsDirectional()} \n" +
-                        "\tMove by: ${moveBy.toWordsDirectional()} to ${result.toStringDirectional()} $coercedScale"
-                        // "\tNew Off: ${sum.toWordsDirectional()}"
-                    )
                     result
                 }
             }
