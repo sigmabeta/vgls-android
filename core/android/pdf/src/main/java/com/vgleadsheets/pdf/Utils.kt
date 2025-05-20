@@ -13,3 +13,6 @@ private fun PdfConfigById.keyCommonSection(
     width: Int?,
     height: Int?
 ): String = "$songId-$partApiId-alt=$isAltSelected-$pageNumber-$width-$height"
+
+const val WIDTH_DEFAULT_PDF_4X_1080P = 4320
+const val HEIGHT_DEFAULT_PDF_4X_1080P = 5591

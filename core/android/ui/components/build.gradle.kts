@@ -18,6 +18,8 @@ dependencies {
     implementation(projects.core.android.ui.strings)
 
     implementation(libs.kotlin.reflect)
+
+    implementation(libs.zoomable.image.coil3)
 }
 
 android {

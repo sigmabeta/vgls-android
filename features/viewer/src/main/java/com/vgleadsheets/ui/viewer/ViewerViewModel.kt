@@ -249,7 +249,7 @@ class ViewerViewModel @AssistedInject constructor(
         chromeVisibilityTimer = viewModelScope.launch(scheduler.dispatchers.computation) {
             hatchet.v("Hiding UI chrome in $DURATION_CHROME_VISIBILITY ms.")
             delay(DURATION_CHROME_VISIBILITY)
-            emitEvent(VglsEvent.HideUiChrome)
+            // emitEvent(VglsEvent.HideUiChrome)
         }
     }
 

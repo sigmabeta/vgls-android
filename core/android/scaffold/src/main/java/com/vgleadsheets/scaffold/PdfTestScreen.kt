@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -23,24 +24,27 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.LabelValueListModel
 import com.vgleadsheets.composables.LabelValueListItem
-import com.vgleadsheets.composables.PdfDisplayer
+import com.vgleadsheets.composables.ZoomableImageTest
 import java.util.Locale
 
 @Composable
 fun PdfTestScreen(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
         var zoom by remember { mutableFloatStateOf(1f) }
         var zoomTemporary by remember { mutableFloatStateOf(1f) }
 
-        PdfDisplayer(
-            pdfPath = "/data/user/0/com.vgleadsheets.debug/files/pdfs/Aerobiz - Europe/C.pdf",
-            zoom = zoom
-        )
-        val bottomInset = WindowInsets.navigationBars.asPaddingValues()
+        ZoomableImageTest(Modifier)
+
+        // PdfDisplayer(
+        //     pdfPath = "/data/user/0/com.vgleadsheets.debug/files/pdfs/Aerobiz - Europe/C.pdf",
+        //     zoom = zoom
+        // )
+
 
         // Information view
+        val bottomInset = WindowInsets.navigationBars.asPaddingValues()
         Column(
             modifier = Modifier
                 .alpha(0.8f)

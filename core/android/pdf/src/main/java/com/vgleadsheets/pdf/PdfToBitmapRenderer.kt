@@ -8,7 +8,6 @@ import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.logging.Hatchet
 import java.io.File
 import kotlin.system.measureTimeMillis
-import kotlinx.coroutines.delay
 
 class PdfToBitmapRenderer(
     private val hatchet: Hatchet,
@@ -75,7 +74,7 @@ class PdfToBitmapRenderer(
                 resultBitmap = largeBitmap.copy(Bitmap.Config.ALPHA_8, false)
                 smallBitmap = resultBitmap
                 largeBitmap.recycle()
-                delay(3_000L)
+                // delay(2L * min(width, height))
 
                 hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
             }

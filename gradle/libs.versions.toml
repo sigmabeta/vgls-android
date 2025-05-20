@@ -45,6 +45,7 @@ supportSqlite = "3.45.0"
 threeten = "1.4.0"
 tracing = "1.7.4"
 webview = "0.33.6"
+zoomable = "0.15.1"
 
 [libraries]
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
@@ -106,6 +107,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 support-sqlite = { group = "com.github.requery", name = "sqlite-android", version.ref = "supportSqlite" }
 threeten = { group = "com.jakewharton.threetenabp", name = "threetenabp", version.ref = "threeten" }
 webview = { group = "io.github.kevinnzou", name = "compose-webview", version.ref = "webview" }
+zoomable-image-coil3 = { group = "me.saket.telephoto", name = "zoomable-image-coil3", version.ref = "zoomable" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

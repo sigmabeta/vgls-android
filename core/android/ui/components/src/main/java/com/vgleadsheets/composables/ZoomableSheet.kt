@@ -1,46 +1,54 @@
 package com.vgleadsheets.composables
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.bitmaps.SheetConstants
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.composables.subs.CrossfadeSheet
+import com.vgleadsheets.composables.previews.PreviewSheet
+import com.vgleadsheets.composables.subs.PlaceholderSheet
+import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import com.vgleadsheets.perf.BuildConfig
+import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlinx.collections.immutable.toImmutableList
+import me.saket.telephoto.subsamplingimage.SubSamplingImage
+import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.rememberZoomableState
+import me.saket.telephoto.zoomable.zoomable
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -58,7 +66,7 @@ fun ZoomableSheet(
     simulateError: Boolean = false
 ) {
     val pageNumber = pdfConfigById.pageNumber
-    BoxWithConstraints(
+    Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxSize()
@@ -66,41 +74,210 @@ fun ZoomableSheet(
             .maybeBackground(actuallyZoomable)
 
     ) {
-        var scale by remember { mutableFloatStateOf(1f) }
+        if (pdfConfigById.pdfSize == PdfSize.FILL) {
+            BoxWithConstraints {
+                Content(
+                    pdfConfigById = pdfConfigById,
+                    contentDescription = contentDescription,
+                    loadingIndicatorConfig = loadingIndicatorConfig,
+                    sheetId = sheetId,
+                    showDebug = showDebug,
+                    scope = this,
+                    modifier = modifier,
+                    simulateError = simulateError
+                )
+            }
+        } else {
+            Box {
+                Content(
+                    pdfConfigById = pdfConfigById,
+                    contentDescription = contentDescription,
+                    loadingIndicatorConfig = loadingIndicatorConfig,
+                    sheetId = sheetId,
+                    showDebug = showDebug,
+                    modifier = modifier,
+                    simulateError = simulateError,
+                    scope = null
+                )
+            }
+        }
+    }
+}
 
-        val actualModifier = Modifier
-            .wrapContentSize()
-            .maybeZoomable(
-                actuallyZoomable,
-                actionSink,
-                portrait,
-                this,
-                onScaleUpdate = { newScale -> scale = newScale }
-            )
+@Composable
+private fun BoxScope.Content(
+    pdfConfigById: PdfConfigById,
+    contentDescription: String?,
+    loadingIndicatorConfig: LoadingIndicatorConfig,
+    sheetId: Long,
+    showDebug: Boolean,
+    scope: BoxWithConstraintsScope?,
+    modifier: Modifier,
+    simulateError: Boolean
+) {
+    val pdfConfigByIdWithSize = withSize(
+        pdfConfigById,
+        scope
+    )
 
-        CrossfadeSheet(
-            pdfConfigById = pdfConfigById,
-            contentDescription = contentDescription,
-            loadingIndicatorConfig = loadingIndicatorConfig,
-            sheetId = sheetId,
-            showDebug = showDebug,
-            modifier = actualModifier,
-            simulateError = simulateError
+    println("$pdfConfigByIdWithSize")
+
+    val loadingIndicatorConfigWithSize = withSize(
+        loadingIndicatorConfig,
+        scope
+    )
+
+    val bgModifier = modifier.bgModifier()
+
+    if (simulateError) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = bgModifier.fillMaxSize()
+        ) {
+            ErrorState(
+                pdfConfigByIdWithSize,
+                modifier,
+                showDebug,
+                loadingIndicatorConfig = loadingIndicatorConfigWithSize,
+                sheetId = sheetId,
+                IllegalArgumentException("Oops it didn't work."),
+            ) { }
+        }
+        return
+    }
+
+    if (LocalInspectionMode.current) {
+        PreviewSheet(
+            loadingIndicatorConfigWithSize,
+            modifier.bgModifier()
+        )
+        return
+    }
+
+    val imageSourceFactory = LocalPdfSubsampler.current
+    val imageSource = remember { imageSourceFactory.create(data = pdfConfigById) }
+
+    val zoomableState = rememberZoomableState(
+        zoomSpec = ZoomSpec(
+            maxZoomFactor = 4f,
+        )
+    )
+    val imageState = rememberSubSamplingImageState(
+        zoomableState = zoomableState,
+        imageSource = imageSource,
+    )
+
+    SubSamplingImage(
+        state = imageState,
+        contentDescription = contentDescription,
+        modifier = bgModifier
+            .fillMaxSize()
+            .zoomable(zoomableState)
+    )
+}
+
+@Composable
+private fun Modifier.bgModifier(): Modifier {
+    val bgColor = if (BuildConfig.DEBUG) {
+        Color(1f, 1f, 0.8f, 1f)
+    } else {
+        Color.White
+    }
+
+    return background(bgColor)
+}
+
+@Composable
+private fun BoxScope.withSize(
+    withoutSize: PdfConfigById,
+    scope: BoxWithConstraintsScope?
+): PdfConfigById {
+    with(LocalDensity.current) {
+        val scopeWidth = scope?.maxWidth ?: Int.MAX_VALUE.dp
+        val scopeHeight = scope?.maxHeight ?: Int.MAX_VALUE.dp
+        val (maxWidth, maxHeight) = when (withoutSize.pdfSize) {
+            PdfSize.THUMBNAIL -> ImageSize.THUMBNAIL.size to ImageSize.THUMBNAIL.size
+            PdfSize.MEDIUM -> scopeWidth to ImageSize.MEDIUM_HEIGHT.size
+            PdfSize.LARGE -> scopeWidth to ImageSize.LARGE_HEIGHT.size
+            PdfSize.FILL -> scopeWidth to scopeHeight
+        }
+
+        val maxWidthInt = maxWidth.toPx().roundToInt()
+        val maxHeightInt = maxHeight.toPx().roundToInt()
+
+        return@withSize withoutSize.copy(
+            maxWidth = maxWidthInt,
+            maxHeight = maxHeightInt,
         )
     }
 }
 
 @Composable
-private fun Modifier.maybeZoomable(
-    actuallyZoomable: Boolean,
-    actionSink: ActionSink,
-    portrait: Boolean,
-    boxWithConstraintsScope: BoxWithConstraintsScope,
-    onScaleUpdate: (Float) -> Unit,
-) = if (actuallyZoomable) {
-    this.zoomableModifier(portrait, actionSink, boxWithConstraintsScope, onScaleUpdate)
-} else {
-    this
+private fun BoxScope.withSize(
+    withoutSize: LoadingIndicatorConfig,
+    scope: BoxWithConstraintsScope?
+): LoadingIndicatorConfig {
+    with(LocalDensity.current) {
+        val scopeWidth = scope?.maxWidth ?: Int.MAX_VALUE.dp
+        val scopeHeight = scope?.maxHeight ?: Int.MAX_VALUE.dp
+        val (maxWidth, maxHeight) = when (withoutSize.loaderSize) {
+            PdfSize.THUMBNAIL -> ImageSize.THUMBNAIL.size to ImageSize.THUMBNAIL.size
+            PdfSize.MEDIUM -> scopeWidth to ImageSize.MEDIUM_HEIGHT.size
+            PdfSize.LARGE -> scopeWidth to ImageSize.LARGE_HEIGHT.size
+            PdfSize.FILL -> scopeWidth to scopeHeight
+        }
+
+        val maxWidthInt = maxWidth.toPx().roundToInt()
+        val maxHeightInt = maxHeight.toPx().roundToInt()
+
+        return@withSize withoutSize.copy(
+            maxWidth = withoutSize.maxWidth ?: maxWidthInt,
+            maxHeight = withoutSize.maxHeight ?: maxHeightInt,
+        )
+    }
+}
+
+@Composable
+@Suppress("MagicNumber")
+private fun BoxScope.ErrorState(
+    pdfConfigById: PdfConfigById,
+    modifier: Modifier,
+    showDebug: Boolean,
+    loadingIndicatorConfig: LoadingIndicatorConfig,
+    sheetId: Long,
+    error: Throwable,
+    errorOnClick: () -> Unit,
+) {
+    PlaceholderSheet(
+        loadingIndicatorConfig = loadingIndicatorConfig,
+        seed = sheetId,
+        modifier = modifier.bgModifier()
+    )
+
+    // Transparent, clickable overlay
+    Box(
+        modifier = Modifier
+            .clickable(onClick = errorOnClick)
+            .matchParentSize()
+            .background(Color(0, 0, 0, 128))
+    ) { }
+
+    val height = with(LocalDensity.current) {
+        loadingIndicatorConfig.maxHeight?.toDp()
+    } ?: 32.dp
+
+    EmptyListIndicator(
+        model = ErrorStateListModel(
+            failedOperationName = "Load PDF with ID ${pdfConfigById.songId}",
+            errorString = stringResource(StringId.ERROR_IMAGE_NETWORK.id()),
+            error = error
+        ),
+        onBlack = true,
+        showDebug = showDebug,
+        modifier = modifier
+            .height(height)
+            .aspectRatio(SheetConstants.ASPECT_RATIO)
+    )
 }
 
 @Composable
@@ -122,290 +299,6 @@ private fun Modifier.maybeClickable(
     )
 } else {
     this
-}
-
-@Composable
-private fun Modifier.zoomableModifier(
-    portrait: Boolean,
-    actionSink: ActionSink,
-    boxWithConstraintsScope: BoxWithConstraintsScope,
-    onScaleUpdate: (Float) -> Unit,
-): Modifier {
-    var zoomed by remember { mutableStateOf(false) }
-    var scale by remember { mutableFloatStateOf(1f) }
-    var offset by remember { mutableStateOf(Offset.Zero) }
-    var zoomCommand by remember { mutableStateOf(AnimationCommand.ZOOM_OUT) }
-    var doubleTapOffset by remember { mutableStateOf(Offset.Zero) }
-
-    zoomed = scale != ZOOM_NONE
-
-    val animScale = getAnimatedScale(zoomCommand, scale)
-    val animOffset = getAnimatedOffset(zoomCommand, doubleTapOffset, offset) {
-        zoomCommand = AnimationCommand.NONE
-    }
-
-    if (zoomCommand != AnimationCommand.NONE) {
-        scale = animScale
-        offset = animOffset
-        onScaleUpdate(animScale)
-    }
-
-    return pointerInput(Unit) {
-        detectTransformGestures(
-            onGesture = { centroid, panChange, zoomChange, _ ->
-                zoomCommand = AnimationCommand.NONE
-                val coercedScale = (scale * zoomChange).coerceIn(ZOOM_NONE, ZOOM_MAX)
-
-                scale = coercedScale
-                onScaleUpdate(coercedScale)
-
-                offset = if (zoomChange in 0.995f..1.005f) {
-                    boxWithConstraintsScope.calculateOffsetFromPrevious(
-                        offset,
-                        panChange,
-                        coercedScale,
-                        portrait,
-                    )
-                } else {
-                    val gestureCenterAsOffset = -boxWithConstraintsScope.calculateOffsetFromTopLeftNoCoerce(centroid)
-
-                    val zoomComponent = if (zoomChange > 1f) {
-                        8
-                    } else {
-                        -32
-                    }
-
-                    val scaleFactor = zoomComponent.toFloat() //* coercedScale
-                    val moveBy = (gestureCenterAsOffset / scaleFactor).requireMinimum(1.0f)
-                    val sum = (moveBy - offset)
-
-                    val result = boxWithConstraintsScope.coerceOffset(sum, coercedScale, portrait)
-                    result
-                }
-            }
-        )
-    }
-        .pointerInput(Unit) {
-            detectTapGestures(
-                onDoubleTap = { tapCoordinatesFromTopLeft ->
-                    if (!zoomed) {
-                        zoomCommand = AnimationCommand.ZOOM_IN
-                        doubleTapOffset = boxWithConstraintsScope.calculateOffsetFromTopLeft(
-                            tapCoordinatesFromTopLeft,
-                            ZOOM_DOUBLETAP,
-                            portrait,
-                        )
-                    } else {
-                        zoomCommand = AnimationCommand.ZOOM_OUT
-                    }
-                },
-            )
-        }
-        .graphicsLayer(
-            scaleX = scale,
-            scaleY = scale,
-            translationX = offset.x,
-            translationY = offset.y
-        )
-}
-
-@Composable
-private fun getAnimatedScale(animationCommand: AnimationCommand, previous: Float) = animateFloatAsState(
-    when (animationCommand) {
-        AnimationCommand.ZOOM_IN -> ZOOM_DOUBLETAP
-        AnimationCommand.ZOOM_OUT -> ZOOM_NONE
-        else -> previous
-    }
-).value
-
-@Composable
-private fun getAnimatedOffset(
-    animationCommand: AnimationCommand,
-    doubleTapOffset: Offset,
-    previousOffset: Offset,
-    onAnimationFinish: (Offset) -> Unit
-) = animateOffsetAsState(
-    targetValue = when (animationCommand) {
-        AnimationCommand.ZOOM_IN -> doubleTapOffset
-        AnimationCommand.ZOOM_OUT -> Offset.Zero
-        else -> previousOffset
-    },
-    finishedListener = onAnimationFinish
-).value
-
-private fun BoxWithConstraintsScope.calculateOffsetFromTopLeft(
-    coordsFromTopLeft: Offset,
-    scale: Float,
-    portrait: Boolean,
-): Offset {
-    val maxOffset = calculateMaxOffset(scale, portrait)
-    val topLeft = Offset(
-        constraints.maxWidth / -2f,
-        constraints.maxHeight / -2f,
-    )
-
-    val result = Offset(
-        x = -(topLeft.x + coordsFromTopLeft.x).coerceIn(-maxOffset.x, maxOffset.x),
-        y = -(topLeft.y + coordsFromTopLeft.y).coerceIn(-maxOffset.y, maxOffset.y),
-    )
-
-    return result
-}
-
-private fun BoxWithConstraintsScope.calculateOffsetFromTopLeftNoCoerce(
-    coordsFromTopLeft: Offset,
-): Offset {
-    val topLeft = Offset(
-        constraints.maxWidth / -2f,
-        constraints.maxHeight / -2f,
-    )
-
-    val result = Offset(
-        x = -(topLeft.x + coordsFromTopLeft.x),
-        y = -(topLeft.y + coordsFromTopLeft.y),
-    )
-
-    return result
-}
-
-private fun BoxWithConstraintsScope.coerceOffset(
-    offset: Offset,
-    scale: Float,
-    portrait: Boolean,
-): Offset {
-    val maxOffset = calculateMaxOffset(scale, portrait)
-
-    val result = Offset(
-        x = -(offset.x).coerceIn(-maxOffset.x, maxOffset.x),
-        y = -(offset.y).coerceIn(-maxOffset.y, maxOffset.y),
-    )
-
-    return result
-}
-
-private fun BoxWithConstraintsScope.calculateOffsetFromPrevious(
-    prevOffset: Offset,
-    offsetChange: Offset,
-    scale: Float,
-    portrait: Boolean,
-): Offset {
-    val maxOffset = calculateMaxOffset(scale, portrait)
-
-    return Offset(
-        x = (prevOffset.x + offsetChange.x).coerceIn(-maxOffset.x, maxOffset.x),
-        y = (prevOffset.y + offsetChange.y).coerceIn(-maxOffset.y, maxOffset.y)
-    )
-}
-
-private fun BoxWithConstraintsScope.calculateMaxOffset(
-    scale: Float,
-    portrait: Boolean,
-): Offset {
-    val (width, height) = calculateScaledSheetWidthAndHeight(scale, portrait)
-
-    val constraints = constraints
-
-    val maxOffsetX = (width - constraints.maxWidth).coerceAtLeast(0f) / 2
-    val maxOffsetY = (height - constraints.maxHeight).coerceAtLeast(0f) / 2
-
-    return Offset(maxOffsetX, maxOffsetY)
-}
-
-private fun BoxWithConstraintsScope.calculateNormalizedSheetCoord(
-    composableOffset: Offset,
-    scale: Float,
-    portrait: Boolean,
-): NormalizedSheetCoordinate {
-    val normalizedOffset = normalizeOffset(
-        offset = composableOffset,
-        scale = scale,
-        portrait = portrait,
-    )
-    return NormalizedSheetCoordinate(
-        center = normalizedOffset,
-        visibleBoundaries = normalizeBoundaries(
-            normalizedOffset = normalizedOffset,
-            scale = scale,
-            portrait = portrait
-        ),
-    )
-}
-
-private fun BoxWithConstraintsScope.normalizeBoundaries(
-    normalizedOffset: Offset,
-    scale: Float,
-    portrait: Boolean,
-): Rect {
-    val (sheetWidth, sheetHeight) = calculateSheetWidthAndHeight(portrait)
-
-    val halfSheetWidth = sheetWidth / 2
-    val halfSheetHeight = sheetHeight / 2
-
-    val screenWidth = constraints.maxWidth
-    val screenHeight = constraints.maxHeight
-
-    val halfNormalizedScaledScreenWidth = ((screenWidth / 4) / scale) / halfSheetWidth
-    val halfNormalizedScaledScreenHeight = ((screenHeight / 4) / scale) / halfSheetHeight
-
-    return Rect(
-        left = (normalizedOffset.x - halfNormalizedScaledScreenWidth),
-        right = (normalizedOffset.x + halfNormalizedScaledScreenWidth),
-        top = (normalizedOffset.y - halfNormalizedScaledScreenHeight),
-        bottom = (normalizedOffset.y + halfNormalizedScaledScreenHeight),
-    )
-}
-
-private fun BoxWithConstraintsScope.normalizeOffset(
-    offset: Offset,
-    scale: Float,
-    portrait: Boolean,
-): Offset {
-    val scaledOffset = -offset / scale
-
-    val (sheetWidth, sheetHeight) = calculateSheetWidthAndHeight(portrait)
-
-    val halfSheetWidth = sheetWidth / 2
-    val halfSheetHeight = sheetHeight / 2
-
-    val normalizedXFromCenter = scaledOffset.x / halfSheetWidth
-    val normalizedYFromCenter = scaledOffset.y / halfSheetHeight
-
-    val normalizedXFromTopLeft = (normalizedXFromCenter + 1.0f) / 2.0f
-    val normalizedYFromTopLeft = (normalizedYFromCenter + 1.0f) / 2.0f
-
-    return Offset(
-        normalizedXFromTopLeft,
-        normalizedYFromTopLeft,
-    )
-}
-
-private fun BoxWithConstraintsScope.calculateScaledSheetWidthAndHeight(
-    scale: Float,
-    portrait: Boolean,
-) = if (portrait) {
-    val width = constraints.maxWidth.toFloat()
-    val height = width / SheetConstants.ASPECT_RATIO
-
-    scale * width to scale * height
-} else {
-    val height = constraints.maxHeight.toFloat()
-    val width = height * SheetConstants.ASPECT_RATIO
-
-    scale * width to scale * height
-}
-
-private fun BoxWithConstraintsScope.calculateSheetWidthAndHeight(
-    portrait: Boolean,
-) = if (portrait) {
-    val width = constraints.maxWidth.toFloat()
-    val height = width / SheetConstants.ASPECT_RATIO
-
-    width to height
-} else {
-    val height = constraints.maxHeight.toFloat()
-    val width = height * SheetConstants.ASPECT_RATIO
-
-    width to height
 }
 
 @Preview

@@ -112,7 +112,7 @@ private fun computeBitmapHeight(
     }
 }
 
-private fun computePageToMaxScalingFactor(
+fun computePageToMaxScalingFactor(
     maxWidth: Int,
     maxHeight: Int,
     pdfWidth: Int,
