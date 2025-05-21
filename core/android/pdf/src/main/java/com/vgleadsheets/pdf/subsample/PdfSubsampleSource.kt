@@ -15,18 +15,19 @@ class PdfSubsampleSource(
         val pdfFileResult = sheetDownloader.getSheet(data)
         val pdfFile = pdfFileResult.file
 
+        val maxWidth = requireNotNull(data.maxWidth) { "Max Width is required." }
+        val maxHeight = requireNotNull(data.maxHeight) { "Max Height is required." }
+
         return PdfRegionDecoder.Factory(
             pdfFile,
             data.pageNumber,
+            maxWidth,
+            maxHeight,
             hatchet,
         )
     }
 
     override val preview: ImageBitmap? = null
-
-    override fun close() {
-        super.close()
-    }
 
     class Factory(
         private val hatchet: Hatchet,

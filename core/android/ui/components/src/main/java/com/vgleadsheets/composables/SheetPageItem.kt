@@ -73,7 +73,6 @@ fun ZoomableSheetPageItem(
         showDebug = showDebug,
         actuallyZoomable = model.actuallyZoomable,
         actionSink = actionSink,
-        portrait = portrait,
         modifier = modifier
             .wrapContentSize()
             .padding(padding),

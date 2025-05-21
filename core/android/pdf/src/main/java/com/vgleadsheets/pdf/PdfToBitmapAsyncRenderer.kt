@@ -19,6 +19,13 @@ class PdfToBitmapAsyncRenderer(
     private val pdfPath: String,
 ) {
     private var pdfRenderer: PdfRenderer? = null
+    private var fileDescriptor: ParcelFileDescriptor? = null
+
+    fun close() {
+        hatchet.i("Closing Async Renderer for page $pageNumber of $pdfPath")
+        pdfRenderer?.close()
+        fileDescriptor?.close()
+    }
 
     @Suppress("TooGenericExceptionCaught")
     suspend fun renderToBitmap(
@@ -44,7 +51,6 @@ class PdfToBitmapAsyncRenderer(
                     val newRenderer = PdfRenderer(fileDescriptor)
                     pdfRenderer = newRenderer
 
-                    fileDescriptor.close()
                     newRenderer
                 }
 
@@ -94,7 +100,7 @@ class PdfToBitmapAsyncRenderer(
         val pdfRenderTime = measureTimeMillis {
             openPage
                 .use { currentPage ->
-                     newBitmap = createBlankBitmap(
+                    newBitmap = createBlankBitmap(
                         width = width,
                         height = height,
                     )

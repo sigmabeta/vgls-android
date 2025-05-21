@@ -12,9 +12,10 @@ import kotlin.system.measureTimeMillis
 class PdfToBitmapRenderer(
     private val hatchet: Hatchet,
 ) : BitmapRenderer {
-    var smallBitmap: Bitmap? = null
-    var pdfPath: String? = null
-    var pdfRenderer: PdfRenderer? = null
+    private var smallBitmap: Bitmap? = null
+    private var fileDescriptor: ParcelFileDescriptor? = null
+    private var pdfPath: String? = null
+    private var pdfRenderer: PdfRenderer? = null
 
 
     @Suppress("TooGenericExceptionCaught")
@@ -41,21 +42,19 @@ class PdfToBitmapRenderer(
                 val localPdfRenderer = if (pdfPath == pdfFile.absolutePath) {
                     requireNotNull(pdfRenderer) { "PDF renderer should not be null, but somehow is?" }
                 } else {
-                    pdfRenderer?.let {
-                        hatchet.v("Closing old renderer and opening a new one.")
-                        it.close()
-                    }
+                    closeRenderer()
 
                     pdfPath = pdfFile.absolutePath
-                    val fileDescriptor = ParcelFileDescriptor.open(
+                    val descriptor = ParcelFileDescriptor.open(
                         pdfFile,
                         ParcelFileDescriptor.MODE_READ_ONLY
                     )
 
-                    val newRenderer = PdfRenderer(fileDescriptor)
-                    pdfRenderer = newRenderer
+                    val newRenderer = PdfRenderer(descriptor)
 
-                    fileDescriptor.close()
+                    pdfRenderer = newRenderer
+                    fileDescriptor = descriptor
+
                     newRenderer
                 }
 
@@ -77,6 +76,8 @@ class PdfToBitmapRenderer(
                 // delay(2L * min(width, height))
 
                 hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
+
+                closeRenderer()
             }
 
             hatchet.v("Full PDF process took $renderProcessTime ms.")
@@ -153,5 +154,12 @@ class PdfToBitmapRenderer(
         )
 
         return transformMatrix
+    }
+
+    private fun closeRenderer() {
+        pdfRenderer?.let {
+            fileDescriptor?.close()
+            it.close()
+        }
     }
 }

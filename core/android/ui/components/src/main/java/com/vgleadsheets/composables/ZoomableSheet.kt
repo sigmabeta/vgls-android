@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,11 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,22 +32,19 @@ import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
-import kotlin.math.absoluteValue
-import kotlin.math.pow
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
 import kotlinx.collections.immutable.toImmutableList
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
 import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.rememberZoomableState
 import me.saket.telephoto.zoomable.zoomable
-
+import kotlin.math.roundToInt
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Suppress("LongMethod", "ReturnCount")
@@ -61,7 +56,6 @@ fun ZoomableSheet(
     actuallyZoomable: Boolean,
     showDebug: Boolean,
     actionSink: ActionSink,
-    portrait: Boolean,
     modifier: Modifier,
     simulateError: Boolean = false
 ) {
@@ -72,62 +66,43 @@ fun ZoomableSheet(
             .fillMaxSize()
             .maybeClickable(pageNumber, actionSink)
             .maybeBackground(actuallyZoomable)
-
     ) {
-        if (pdfConfigById.pdfSize == PdfSize.FILL) {
-            BoxWithConstraints {
-                Content(
-                    pdfConfigById = pdfConfigById,
-                    contentDescription = contentDescription,
-                    loadingIndicatorConfig = loadingIndicatorConfig,
-                    sheetId = sheetId,
-                    showDebug = showDebug,
-                    scope = this,
-                    modifier = modifier,
-                    simulateError = simulateError
-                )
-            }
-        } else {
-            Box {
-                Content(
-                    pdfConfigById = pdfConfigById,
-                    contentDescription = contentDescription,
-                    loadingIndicatorConfig = loadingIndicatorConfig,
-                    sheetId = sheetId,
-                    showDebug = showDebug,
-                    modifier = modifier,
-                    simulateError = simulateError,
-                    scope = null
-                )
-            }
-        }
+        Content(
+            pdfConfigById = pdfConfigById,
+            contentDescription = contentDescription,
+            loadingIndicatorConfig = loadingIndicatorConfig,
+            sheetId = sheetId,
+            showDebug = showDebug,
+            modifier = modifier,
+            simulateError = simulateError,
+        )
     }
 }
 
 @Composable
-private fun BoxScope.Content(
+private fun Content(
     pdfConfigById: PdfConfigById,
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
     showDebug: Boolean,
-    scope: BoxWithConstraintsScope?,
     modifier: Modifier,
     simulateError: Boolean
 ) {
-    val pdfConfigByIdWithSize = withSize(
-        pdfConfigById,
-        scope
+    val windowInfo = LocalWindowInfo.current
+    val containerSize = windowInfo.containerSize
+
+    val pdfConfigByIdWithSize = pdfConfigById.copy(
+        maxWidth = containerSize.width,
+        maxHeight = containerSize.height,
     )
 
-    println("$pdfConfigByIdWithSize")
-
-    val loadingIndicatorConfigWithSize = withSize(
-        loadingIndicatorConfig,
-        scope
+    val loadingIndicatorConfigWithSize = loadingIndicatorConfig.copy(
+        maxWidth = containerSize.width,
+        maxHeight = containerSize.height,
     )
 
-    val bgModifier = modifier.bgModifier()
+    val bgModifier = modifier
 
     if (simulateError) {
         Box(
@@ -149,17 +124,17 @@ private fun BoxScope.Content(
     if (LocalInspectionMode.current) {
         PreviewSheet(
             loadingIndicatorConfigWithSize,
-            modifier.bgModifier()
+            modifier
         )
         return
     }
 
     val imageSourceFactory = LocalPdfSubsampler.current
-    val imageSource = remember { imageSourceFactory.create(data = pdfConfigById) }
+    val imageSource = remember { imageSourceFactory.create(data = pdfConfigByIdWithSize) }
 
     val zoomableState = rememberZoomableState(
         zoomSpec = ZoomSpec(
-            maxZoomFactor = 4f,
+            maxZoomFactor = ZOOM_MAX_PDF.toFloat(),
         )
     )
     val imageState = rememberSubSamplingImageState(
@@ -174,17 +149,6 @@ private fun BoxScope.Content(
             .fillMaxSize()
             .zoomable(zoomableState)
     )
-}
-
-@Composable
-private fun Modifier.bgModifier(): Modifier {
-    val bgColor = if (BuildConfig.DEBUG) {
-        Color(1f, 1f, 0.8f, 1f)
-    } else {
-        Color.White
-    }
-
-    return background(bgColor)
 }
 
 @Composable
@@ -251,7 +215,7 @@ private fun BoxScope.ErrorState(
     PlaceholderSheet(
         loadingIndicatorConfig = loadingIndicatorConfig,
         seed = sheetId,
-        modifier = modifier.bgModifier()
+        modifier = modifier
     )
 
     // Transparent, clickable overlay
@@ -333,72 +297,8 @@ private fun SampleSheetPageOne() {
         actuallyZoomable = true,
         showDebug = true,
         modifier = Modifier.fillMaxSize(),
-        portrait = true,
         actionSink = PreviewActionSink { },
     )
-}
-
-private const val ZOOM_NONE = 1.0f
-private const val ZOOM_DOUBLETAP = 2.0f
-private const val ZOOM_MAX = 8.0f
-
-private enum class AnimationCommand {
-    NONE,
-    ZOOM_IN,
-    ZOOM_OUT,
-}
-
-private data class NormalizedSheetCoordinate(
-    val center: Offset,
-    val visibleBoundaries: Rect
-)
-
-private fun Offset.toStringDirectional(): String {
-    val directionX = if (this.x > 0) {
-        "Right"
-    } else {
-        "Left"
-    }
-    val directionY = if (this.y < 0) {
-        "Top"
-    } else {
-        "Bottom"
-    }
-
-    return "$directionX: $x | $directionY: $y"
-}
-
-private fun Offset.toWordsDirectional(): String {
-    val directionX = when {
-        x > 0 -> "Rght"
-        x < 0 -> "Left"
-        else -> "None"
-
-    }
-
-    val directionY = when {
-        y < 0 -> "Up  "
-        y > 0 -> "Down"
-        else -> "None"
-    }
-
-    val magnitude = sqrt(x.pow(2) + y.pow(2))
-    return "$directionX | $directionY: ${magnitude.roundToInt()}"
-}
-
-private fun Offset.requireMinimum(minimum: Float): Offset {
-    val newX = if (x.absoluteValue < minimum) {
-        x.roundToInt().toFloat()
-    } else {
-        x
-    }
-    val newY = if (y.absoluteValue < minimum) {
-        y.roundToInt().toFloat()
-    } else {
-        y
-    }
-
-    return Offset(newX, newY)
 }
 
 private fun samplePdfConfig() = PdfConfigById(

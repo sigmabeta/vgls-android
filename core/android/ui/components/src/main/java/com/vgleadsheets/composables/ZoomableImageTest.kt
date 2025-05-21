@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil3.request.ImageRequest
+import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.coil3.ZoomableAsyncImage
 import me.saket.telephoto.zoomable.rememberZoomableImageState
@@ -23,7 +24,7 @@ fun ZoomableImageTest(modifier: Modifier = Modifier) {
 
 
     val zoomableState = rememberZoomableState(
-        zoomSpec = ZoomSpec(maxZoomFactor = 4f)
+        zoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat())
     )
 
     ZoomableAsyncImage(
