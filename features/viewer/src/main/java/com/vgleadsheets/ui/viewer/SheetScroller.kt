@@ -11,15 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.components.ZoomableSheetPageListModel
-import com.vgleadsheets.composables.Content
+import com.vgleadsheets.composables.ZoomableSheetPageItem
+import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import kotlinx.collections.immutable.ImmutableList
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.ZoomableState
+import me.saket.telephoto.zoomable.rememberZoomableState
 
 @Composable
 internal fun SheetScroller(
     items: ImmutableList<ZoomableSheetPageListModel>,
     listState: LazyListState,
-    showDebug: Boolean,
     actionSink: ActionSink,
+    zoomSpec: ZoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat()),
+    zoomableState: ZoomableState = rememberZoomableState(zoomSpec),
 ) {
     if (items.isEmpty()) {
         // To fill the screen and prevent janky animation
@@ -37,12 +42,13 @@ internal fun SheetScroller(
             key = { it.dataId },
             contentType = { it.layoutId() }
         ) {
-            it.Content(
-                sink = actionSink,
-                mod = Modifier.animateItem(),
-                portrait = false,
-                debug = showDebug,
-                pad = PaddingValues()
+            ZoomableSheetPageItem(
+                model = it,
+                actionSink = actionSink,
+                modifier = Modifier.animateItem(),
+                padding = PaddingValues(),
+                zoomableState = zoomableState,
+                zoomSpec = zoomSpec,
             )
         }
     }

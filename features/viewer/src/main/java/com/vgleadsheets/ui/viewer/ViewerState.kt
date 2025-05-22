@@ -61,7 +61,6 @@ data class ViewerState(
                     title = song.name,
                     gameName = song.gameName,
                     composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                    actuallyZoomable = true,
                     pageNumber = singlePage,
                     clickAction = VglsAction.Noop,
                 )
@@ -78,7 +77,6 @@ data class ViewerState(
                     title = song.name,
                     gameName = song.gameName,
                     composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                    actuallyZoomable = false,
                     pageNumber = pageNumber,
                     clickAction = VglsAction.Noop,
                 )

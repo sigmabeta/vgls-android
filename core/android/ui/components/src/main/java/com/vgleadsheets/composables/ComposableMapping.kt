@@ -48,7 +48,6 @@ fun ListModel.Content(
     debug: Boolean,
     mod: Modifier,
     pad: PaddingValues,
-    portrait: Boolean = true,
 ) {
     WithMeasurementComponent(
         this.javaClass.simpleName,
@@ -88,10 +87,8 @@ fun ListModel.Content(
             is ZoomableSheetPageListModel -> ZoomableSheetPageItem(
                 model = this,
                 actionSink = sink,
-                showDebug = debug,
                 modifier = mod,
                 padding = pad,
-                portrait = portrait
             )
             is LoadingItemListModel -> {
                 when (loadingType) {

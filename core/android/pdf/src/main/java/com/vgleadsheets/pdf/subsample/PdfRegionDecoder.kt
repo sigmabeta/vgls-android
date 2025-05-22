@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import com.vgleadsheets.bitmaps.BitmapUtils
+import com.vgleadsheets.logging.BluntHatchet
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfToBitmapAsyncRenderer
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
@@ -29,7 +30,7 @@ class PdfRegionDecoder(
 
     init {
         val bitmapSize = BitmapUtils.computeBitmapSize(
-            hatchet,
+            BluntHatchet(),
             maxWidth,
             maxHeight,
             612,

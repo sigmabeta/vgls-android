@@ -11,7 +11,6 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -39,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -48,13 +48,16 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.bitmaps.SheetConstants
-import com.vgleadsheets.composables.ZoomableSheetPageItem
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.rememberZoomableState
 
 @Composable
 @Suppress("LongMethod", "MaxLineLength")
@@ -77,25 +80,29 @@ fun ViewerScreen(
                 height = layoutCoords.size.height
             }
     ) {
-        val shouldScrollFreely by remember { derivedStateOf { width.toFloat() / height > SheetConstants.ASPECT_RATIO } }
 
-        val items = state.pages()
+        val zoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat())
+        val zoomableState = rememberZoomableState(zoomSpec)
+
+        val shouldScrollFreely by remember { derivedStateOf { width.toFloat() / height > SheetConstants.ASPECT_RATIO } }
+        val singlePage = state.zoomEnabledForPage ?: if (state.pages().size <= 1) 0 else null
+
+        val items = if (singlePage != null) {
+            state.pages().filterIndexed { index, model -> index == singlePage }.toImmutableList()
+        } else {
+            state.pages()
+        }
+
+        val needsOffsetReset by remember { derivedStateOf { state.zoomEnabledForPage != null && state.pages().size > 1 } }
+
+        LaunchedEffect(needsOffsetReset) {
+            if (needsOffsetReset) {
+                zoomableState.zoomTo(1.1f, Offset.Zero)
+            }
+        }
 
         if (items.isEmpty()) {
             return
-        }
-
-        val singlePage = state.zoomEnabledForPage ?: if (state.pages().size <= 1) 0 else null
-        if (singlePage != null) {
-            ZoomableSheetPageItem(
-                model = state.pages()[singlePage],
-                actionSink = actionSink,
-                showDebug = showDebug,
-                modifier = Modifier,
-                padding = PaddingValues(),
-                portrait = !shouldScrollFreely
-            )
-            return@Box
         }
 
         val pagerState = rememberPagerState(
@@ -109,26 +116,32 @@ fun ViewerScreen(
         if (shouldScrollFreely) {
             val index by remember { derivedStateOf { scrollerState.firstVisibleItemIndex } }
             LaunchedEffect(index) {
-                pagerState.scrollToPage(index)
+                if (singlePage == null) {
+                    pagerState.scrollToPage(index)
+                }
             }
 
             SheetScroller(
                 items,
                 scrollerState,
-                showDebug,
                 actionSink,
+                zoomSpec,
+                zoomableState
             )
         } else {
             val index by remember { derivedStateOf { pagerState.currentPage } }
             LaunchedEffect(index) {
-                scrollerState.scrollToItem(index)
+                if (singlePage == null) {
+                    scrollerState.scrollToItem(index)
+                }
             }
 
             SheetPager(
                 items,
                 pagerState,
-                showDebug,
-                actionSink
+                actionSink,
+                zoomSpec,
+                zoomableState
             )
         }
 

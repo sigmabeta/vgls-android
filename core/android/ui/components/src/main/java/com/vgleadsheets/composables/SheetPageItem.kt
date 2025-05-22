@@ -13,6 +13,10 @@ import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.subs.CrossfadeSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
+import com.vgleadsheets.pdf.ZOOM_MAX_PDF
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.ZoomableState
+import me.saket.telephoto.zoomable.rememberZoomableState
 
 @Composable
 fun SheetPageItem(
@@ -45,10 +49,10 @@ fun SheetPageItem(
 fun ZoomableSheetPageItem(
     model: ZoomableSheetPageListModel,
     actionSink: ActionSink,
-    showDebug: Boolean,
     modifier: Modifier,
     padding: PaddingValues,
-    portrait: Boolean,
+    zoomSpec: ZoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat()),
+    zoomableState: ZoomableState = rememberZoomableState(zoomSpec),
 ) {
     val contentDescription = "${model.title} from ${model.gameName}, page ${model.pageNumber + 1}"
 
@@ -60,6 +64,8 @@ fun ZoomableSheetPageItem(
     ZoomableSheet(
         pdfConfigById = model.pdfConfigById,
         contentDescription = contentDescription,
+        zoomableState = zoomableState,
+        actionSink = actionSink,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
             model.gameName,
@@ -69,10 +75,6 @@ fun ZoomableSheetPageItem(
             maxWidth = maxWidthPx.toInt(),
             maxHeight = maxHeightPx.toInt(),
         ),
-        sheetId = model.dataId,
-        showDebug = showDebug,
-        actuallyZoomable = model.actuallyZoomable,
-        actionSink = actionSink,
         modifier = modifier
             .wrapContentSize()
             .padding(padding),

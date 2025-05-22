@@ -83,7 +83,7 @@ class ViewerViewModel @AssistedInject constructor(
             is VglsAction.Pause -> pause()
             is VglsAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
             is VglsAction.PageClicked -> maybeShowUi()
-            is VglsAction.PageDoubleClicked -> enableZoomForPage(action.pageNumber)
+            is VglsAction.PageZoomedIn -> enableZoomForPage(action.pageNumber)
             is VglsAction.PageZoomedOutMax -> disableZoom()
             is Action.ScreenClicked -> maybeShowUi()
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()

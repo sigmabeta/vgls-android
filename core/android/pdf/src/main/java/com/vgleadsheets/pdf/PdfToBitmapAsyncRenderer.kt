@@ -35,7 +35,6 @@ class PdfToBitmapAsyncRenderer(
         dXPixels: Int,
         dYPixels: Int,
     ): Bitmap {
-        hatchet.v("Rendering $width x $height zoom $zoom offset $dXPixels x $dYPixels")
         val pdfFile = File(pdfPath)
         try {
             var resultBitmap: Bitmap
@@ -58,7 +57,7 @@ class PdfToBitmapAsyncRenderer(
                     "PDF only has ${localPdfRenderer.pageCount} pages, can't render page $pageNumber."
                 }
 
-                resultBitmap = createABitmap(
+                val largeBitmap = createABitmap(
                     localPdfRenderer,
                     pageNumber,
                     width,
@@ -67,8 +66,8 @@ class PdfToBitmapAsyncRenderer(
                     dXPixels,
                     dYPixels
                 )
-
-                // delay(2L * min(width, height))
+                resultBitmap = largeBitmap.copy(Bitmap.Config.RGB_565, false)
+                largeBitmap.recycle()
 
                 hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
             }
@@ -140,7 +139,6 @@ class PdfToBitmapAsyncRenderer(
         width: Int,
         height: Int,
     ): Bitmap {
-        hatchet.v("Creating blank bitmap with dimensions $width x $height")
         return createBitmap(
             width,
             height,
@@ -157,57 +155,6 @@ class PdfToBitmapAsyncRenderer(
             )
         }
     }
-
-
-    // private suspend fun createBitmap(
-    //     pdfRenderer: PdfRenderer,
-    //     pageNumber: Int,
-    //     maxWidth: Int,
-    //     maxHeight: Int,
-    //     zoom: Float,
-    //     dXPercent: Float,
-    //     dYPercent: Float,
-    // ): Bitmap {
-    //     val newBitmap: Bitmap
-    //     val openPage = pdfRenderer.openPage(pageNumber)
-    //
-    //     val pdfRenderTime = measureTimeMillis {
-    //         openPage
-    //             .use { currentPage ->
-    //                 val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
-    //                     hatchet,
-    //                     maxWidth,
-    //                     maxHeight,
-    //                     currentPage.width,
-    //                     currentPage.height,
-    //                     zoom
-    //                 )
-    //
-    //                 newBitmap = BitmapUtils.createBlankBitmap(
-    //                     width = bitmapSizeInfo.width,
-    //                     height = bitmapSizeInfo.height,
-    //                 )
-    //
-    //                 val transformMatrix = defaultTransformMatrix(bitmapSizeInfo.zoomedScalingFactor)
-    //
-    //                 val dXPixels = -bitmapSizeInfo.zoomedWidth * dXPercent
-    //                 val dYPixels = -bitmapSizeInfo.zoomedHeight * dYPercent
-    //
-    //                 transformMatrix.apply {
-    //                     postTranslate(dXPixels, dYPixels)
-    //                 }
-    //
-    //                 currentPage.render(
-    //                     newBitmap,
-    //                     null,
-    //                     transformMatrix,
-    //                     PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY
-    //                 )
-    //             }
-    //     }
-    //     hatchet.v("PDF page rendering took $pdfRenderTime ms.")
-    //     return newBitmap
-    // }
 
     private fun defaultTransformMatrix(
         scalingFactor: Float,

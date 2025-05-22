@@ -10,7 +10,6 @@ data class ZoomableSheetPageListModel(
     val gameName: String,
     val composers: ImmutableList<String>,
     val pageNumber: Int,
-    val actuallyZoomable: Boolean,
     val clickAction: VglsAction,
     override val dataId: Long = ("$gameName - $title: Page $pageNumber").hashCode().toLong()
 ) : ListModel() {

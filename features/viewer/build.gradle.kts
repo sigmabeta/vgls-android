@@ -11,9 +11,11 @@ android {
 dependencies {
     api(libs.androidx.navigation.compose)
     api(libs.androidx.lifecycle.runtimeCompose)
+    api(libs.zoomable.image.coil3)
 
     api(projects.core.common.nav)
     implementation(projects.core.android.bitmaps)
+    implementation(projects.core.android.pdf)
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.icons)
     implementation(projects.core.android.viewmodel)
