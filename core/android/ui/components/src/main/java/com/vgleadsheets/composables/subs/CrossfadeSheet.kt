@@ -99,8 +99,6 @@ private fun BoxScope.Content(
         scope
     )
 
-    println("$pdfConfigByIdWithSize")
-
     val loadingIndicatorConfigWithSize = withSize(
         loadingIndicatorConfig,
         scope

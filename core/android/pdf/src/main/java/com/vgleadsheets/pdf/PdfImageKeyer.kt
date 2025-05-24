@@ -8,7 +8,6 @@ class PdfImageKeyer(
     private val urlInfoProvider: UrlInfoProvider,
 ) : Keyer<PdfConfigById> {
     override fun key(data: PdfConfigById, options: Options): String {
-        println("Keying ${data.songId}")
         val cacheKey = data.cacheKey(
             data.maxWidth,
             data.maxHeight,

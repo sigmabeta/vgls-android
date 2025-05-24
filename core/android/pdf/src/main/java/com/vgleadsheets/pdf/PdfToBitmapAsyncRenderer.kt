@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
-import com.vgleadsheets.bitmaps.computePageToMaxScalingFactor
+import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.logging.Hatchet
 import java.io.File
 import kotlin.system.measureTimeMillis
@@ -35,6 +35,7 @@ class PdfToBitmapAsyncRenderer(
         dXPixels: Int,
         dYPixels: Int,
     ): Bitmap {
+        hatchet.v("Rendering $width x $height zoom $zoom offset $dXPixels x $dYPixels")
         val pdfFile = File(pdfPath)
         try {
             var resultBitmap: Bitmap
@@ -99,20 +100,21 @@ class PdfToBitmapAsyncRenderer(
         val pdfRenderTime = measureTimeMillis {
             openPage
                 .use { currentPage ->
-                    newBitmap = createBlankBitmap(
-                        width = width,
-                        height = height,
-                    )
-
-                    val pageToMaximumScalingFactor = computePageToMaxScalingFactor(
+                    val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
+                        hatchet,
                         width,
                         height,
                         currentPage.width,
                         currentPage.height,
+                        zoom
                     )
 
-                    val zoomedScalingFactor = pageToMaximumScalingFactor * zoom
-                    val transformMatrix = defaultTransformMatrix(zoomedScalingFactor)
+                    newBitmap = createBlankBitmap(
+                        width = bitmapSizeInfo.width,
+                        height = bitmapSizeInfo.height,
+                    )
+
+                    val transformMatrix = defaultTransformMatrix(bitmapSizeInfo.zoomedScalingFactor)
 
                     transformMatrix.apply {
                         postTranslate(-dXPixels.toFloat(), -dYPixels.toFloat())

@@ -5,18 +5,20 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import com.vgleadsheets.bitmaps.BitmapUtils
-import com.vgleadsheets.logging.BluntHatchet
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfToBitmapAsyncRenderer
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
-import me.saket.telephoto.subsamplingimage.internal.ImageRegionDecoder
 import java.io.File
+import kotlinx.coroutines.withContext
+import me.saket.telephoto.subsamplingimage.internal.ImageRegionDecoder
 
 class PdfRegionDecoder(
     pdfFile: File,
     pageNumber: Int,
     maxWidth: Int,
     maxHeight: Int,
+    private val vglsDispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
 ) : ImageRegionDecoder {
     private val renderer = PdfToBitmapAsyncRenderer(
@@ -30,7 +32,7 @@ class PdfRegionDecoder(
 
     init {
         val bitmapSize = BitmapUtils.computeBitmapSize(
-            BluntHatchet(),
+            hatchet,
             maxWidth,
             maxHeight,
             612,
@@ -52,13 +54,16 @@ class PdfRegionDecoder(
 
     override suspend fun decodeRegion(region: IntRect, sampleSize: Int): ImageRegionDecoder.DecodeResult {
         val zoom = ZOOM_MAX_PDF.toFloat() / sampleSize
-        val regionBitmap = renderer.renderToBitmap(
-            width = actualWidth,
-            height = actualHeight,
-            zoom = zoom,
-            dXPixels = region.left / sampleSize,
-            dYPixels = region.top / sampleSize,
-        )
+
+        val regionBitmap = withContext(vglsDispatchers.computation) {
+            renderer.renderToBitmap(
+                width = region.width / sampleSize,
+                height = region.height / sampleSize,
+                zoom = zoom,
+                dXPixels = region.left / sampleSize,
+                dYPixels = region.top / sampleSize,
+            )
+        }
 
         return ImageRegionDecoder.DecodeResult(
             painter = BitmapPainter(regionBitmap.asImageBitmap()),
@@ -71,6 +76,7 @@ class PdfRegionDecoder(
         private val pageNumber: Int,
         private val maxWidth: Int,
         private val maxHeight: Int,
+        private val vglsDispatchers: VglsDispatchers,
         private val hatchet: Hatchet,
     ) : ImageRegionDecoder.Factory {
         override suspend fun create(params: ImageRegionDecoder.FactoryParams): ImageRegionDecoder {
@@ -79,6 +85,7 @@ class PdfRegionDecoder(
                 pageNumber,
                 maxWidth,
                 maxHeight,
+                vglsDispatchers,
                 hatchet,
             )
         }

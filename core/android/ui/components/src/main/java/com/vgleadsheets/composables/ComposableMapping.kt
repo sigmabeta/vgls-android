@@ -36,7 +36,6 @@ import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.SubsectionHeaderListModel
 import com.vgleadsheets.components.SubsectionListModel
 import com.vgleadsheets.components.WideItemListModel
-import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.perf.DURATION_THRESHOLD_ERROR_COMPONENT_DEVICE
 import com.vgleadsheets.perf.DURATION_THRESHOLD_WARNING_COMPONENT_DEVICE
 import com.vgleadsheets.perf.WithMeasurementComponent
@@ -84,12 +83,6 @@ fun ListModel.Content(
             is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
             is SubsectionListModel -> Subsection(model = this, actionSink = sink, modifier = mod, padding = pad)
             is WideItemListModel -> WideItem(model = this, actionSink = sink, modifier = mod, padding = pad)
-            is ZoomableSheetPageListModel -> ZoomableSheetPageItem(
-                model = this,
-                actionSink = sink,
-                modifier = mod,
-                padding = pad,
-            )
             is LoadingItemListModel -> {
                 when (loadingType) {
                     LoadingType.SHEET, LoadingType.SQUARE, LoadingType.NOTIF, LoadingType.WIDE_ITEM, LoadingType.BIG_IMAGE -> LoadingItem(

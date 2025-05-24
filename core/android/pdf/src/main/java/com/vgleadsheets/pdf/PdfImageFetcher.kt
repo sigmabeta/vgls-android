@@ -16,7 +16,6 @@ class PdfImageFetcher(
     private val data: PdfConfigById,
 ) : Fetcher {
     override suspend fun fetch(): SourceFetchResult {
-        println("Fetching ${data.songId}")
         val maxWidth = requireNotNull(data.maxWidth) { "PDFs must have a width specified."}
         val maxHeight = requireNotNull(data.maxHeight) { "PDFs must have a width specified."}
 

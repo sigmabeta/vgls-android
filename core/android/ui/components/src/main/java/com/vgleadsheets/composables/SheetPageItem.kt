@@ -1,8 +1,8 @@
 package com.vgleadsheets.composables
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -13,10 +13,6 @@ import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.subs.CrossfadeSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.pdf.ZOOM_MAX_PDF
-import me.saket.telephoto.zoomable.ZoomSpec
-import me.saket.telephoto.zoomable.ZoomableState
-import me.saket.telephoto.zoomable.rememberZoomableState
 
 @Composable
 fun SheetPageItem(
@@ -51,8 +47,6 @@ fun ZoomableSheetPageItem(
     actionSink: ActionSink,
     modifier: Modifier,
     padding: PaddingValues,
-    zoomSpec: ZoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat()),
-    zoomableState: ZoomableState = rememberZoomableState(zoomSpec),
 ) {
     val contentDescription = "${model.title} from ${model.gameName}, page ${model.pageNumber + 1}"
 
@@ -64,7 +58,6 @@ fun ZoomableSheetPageItem(
     ZoomableSheet(
         pdfConfigById = model.pdfConfigById,
         contentDescription = contentDescription,
-        zoomableState = zoomableState,
         actionSink = actionSink,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
@@ -76,7 +69,7 @@ fun ZoomableSheetPageItem(
             maxHeight = maxHeightPx.toInt(),
         ),
         modifier = modifier
-            .wrapContentSize()
+            .fillMaxSize()
             .padding(padding),
     )
 }

@@ -1,5 +1,6 @@
 package com.vgleadsheets.di.images
 
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.subsample.PdfSubsampleSource
@@ -15,8 +16,10 @@ class PdfModule {
     internal fun providePdfSubsampleSourceFactory(
         hatchet: Hatchet,
         sheetDownloader: SheetDownloader,
+        vglsDispatchers: VglsDispatchers,
     ) = PdfSubsampleSource.Factory(
         hatchet = hatchet,
-        sheetDownloader = sheetDownloader
+        sheetDownloader = sheetDownloader,
+        vglsDispatchers = vglsDispatchers,
     )
 }

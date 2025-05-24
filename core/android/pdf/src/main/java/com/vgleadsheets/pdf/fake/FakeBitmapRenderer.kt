@@ -50,8 +50,6 @@ class FakeBitmapRenderer : BitmapRenderer {
             val rowPercent = row.toFloat() / scaledHeight
             val firstColorIndex = possibleColors.size.times(rowPercent).roundToInt()
 
-            println("Row percent $rowPercent firstColorIndex $firstColorIndex")
-
             val switchOverAtPercent = switchOverPercentPerRow * rowPercent * 100
             val switchOverAtPixel = scaledWidth * switchOverAtPercent
 
@@ -64,8 +62,6 @@ class FakeBitmapRenderer : BitmapRenderer {
             val secondColor = possibleColors[secondColorIndex]
             paint.color = secondColor
             canvas.drawLine(switchOverAtPixel, row.toFloat(), scaledWidth.toFloat(), row.toFloat(), paint)
-
-            println("First color 0x${firstColor.toHexString()} Second color 0x${secondColor.toHexString()}")
         }
 
         val bitmap = newBitmap

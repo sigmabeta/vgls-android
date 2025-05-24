@@ -121,16 +121,6 @@ class PdfToBitmapRenderer(
 
                     val transformMatrix = defaultTransformMatrix(bitmapSizeInfo.zoomedScalingFactor)
 
-                    val dXPercent = 0f
-                    val dYPercent = 0f
-
-                    val dXPixels = -bitmapSizeInfo.zoomedWidth * dXPercent
-                    val dYPixels = -bitmapSizeInfo.zoomedHeight * dYPercent
-
-                    transformMatrix.apply {
-                        postTranslate(dXPixels, dYPixels)
-                    }
-
                     currentPage.render(
                         newBitmap,
                         null,

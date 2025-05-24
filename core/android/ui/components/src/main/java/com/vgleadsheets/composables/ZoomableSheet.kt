@@ -4,13 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,12 +19,13 @@ import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
-import me.saket.telephoto.zoomable.ZoomableState
+import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.rememberZoomableState
 import me.saket.telephoto.zoomable.zoomable
 
@@ -38,7 +37,6 @@ fun ZoomableSheet(
     loadingIndicatorConfig: LoadingIndicatorConfig,
     actionSink: ActionSink,
     modifier: Modifier,
-    zoomableState: ZoomableState,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -51,7 +49,6 @@ fun ZoomableSheet(
             loadingIndicatorConfig = loadingIndicatorConfig,
             actionSink = actionSink,
             modifier = modifier,
-            zoomableState = zoomableState,
         )
     }
 }
@@ -62,7 +59,6 @@ private fun Content(
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     actionSink: ActionSink,
-    zoomableState: ZoomableState,
     modifier: Modifier,
 ) {
     val windowInfo = LocalWindowInfo.current
@@ -86,6 +82,12 @@ private fun Content(
         return
     }
 
+    val zoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat())
+    val zoomableState = rememberZoomableState(
+        zoomSpec,
+    )
+    zoomableState.contentScale = ContentScale.Fit
+
     val imageSourceFactory = LocalPdfSubsampler.current
     val imageSource = remember { imageSourceFactory.create(data = pdfConfigByIdWithSize) }
 
@@ -94,26 +96,17 @@ private fun Content(
         imageSource = imageSource,
     )
 
-    val isZoomed by remember { derivedStateOf { (zoomableState.zoomFraction ?: 0f) > 0f } }
+    val zoomableModifier = modifier
+        .fillMaxSize()
+        .zoomable(
+            state = zoomableState,
+            onClick = { actionSink.sendAction(VglsAction.PageClicked) },
+        )
 
-    LaunchedEffect(isZoomed) {
-        if (isZoomed) {
-            actionSink.sendAction(VglsAction.PageZoomedIn(pdfConfigById.pageNumber))
-        } else {
-            actionSink.sendAction(VglsAction.PageZoomedOutMax)
-        }
-    }
-
-    zoomableState.zoomFraction
     SubSamplingImage(
         state = imageState,
         contentDescription = contentDescription,
-        modifier = modifier
-            .fillMaxSize()
-            .zoomable(
-                state = zoomableState,
-                onClick = { actionSink.sendAction(VglsAction.PageClicked) },
-            ),
+        modifier = zoomableModifier
     )
 }
 
@@ -147,7 +140,6 @@ private fun SampleSheetPageOne() {
         ),
         modifier = Modifier.fillMaxSize(),
         actionSink = PreviewActionSink { },
-        zoomableState = rememberZoomableState(),
     )
 }
 

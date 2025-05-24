@@ -16,7 +16,6 @@ class PdfImageDecoder(
 ) : Decoder {
     @Suppress("ReturnCount")
     override suspend fun decode(): DecodeResult? {
-        println("Decoding ${result.source.file().name}")
         // Check the source is actually a pdf
         if (result.mimeType != PdfImageFetcher.MIMETYPE) {
             return null
