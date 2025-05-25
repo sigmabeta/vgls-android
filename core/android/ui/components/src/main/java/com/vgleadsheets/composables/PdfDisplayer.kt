@@ -31,26 +31,6 @@ fun PdfDisplayer(
             this@BoxWithConstraints.maxWidth.toPx().roundToInt() to this@BoxWithConstraints.maxHeight.toPx().roundToInt()
         }
 
-        // val bitmap = bitmapRenderer.renderToBitmap(
-        //     File(pdfPath),
-        //     0,
-        //     width = maxWidthPx,
-        //     height = maxHeightPx,
-        //     zoom = zoom
-        // ).asImageBitmap()
-        //
-        // Image(
-        //     painter = BitmapPainter(
-        //         image = bitmap,
-        //         filterQuality = FilterQuality.None,
-        //     ),
-        //     contentDescription = null,
-        //     contentScale = ContentScale.None,
-        //     modifier = modifier
-        //         .align(Alignment.Center)
-        //         .background(Color.White)
-        //         .wrapContentSize(),
-        // )
     }
 }
 

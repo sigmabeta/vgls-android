@@ -10,12 +10,13 @@ import androidx.core.graphics.createBitmap
 import com.vgleadsheets.bitmaps.BitmapSizeInfo
 import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.logging.Hatchet
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.system.measureTimeMillis
 
-class PdfToBitmapAsyncRenderer(
+class PdfToBitmapFullDocAsyncRenderer(
     private val pdfRenderer: PdfRenderer,
     private val hatchet: Hatchet,
-    private val pageNumber: Int,
     private val maxWidth: Int,
     private val maxHeight: Int,
 ) : AsyncRenderer {
@@ -23,7 +24,7 @@ class PdfToBitmapAsyncRenderer(
         val bitmapSizeInfo = getBitmapSizeInfo(
             maxWidth,
             maxHeight,
-        )  
+        )
         return bitmapSizeInfo.width to bitmapSizeInfo.height
     }
 
@@ -39,20 +40,14 @@ class PdfToBitmapAsyncRenderer(
         try {
             var resultBitmap: Bitmap
             val renderProcessTime = measureTimeMillis {
-                require(pageNumber <= pdfRenderer.pageCount) {
-                    "PDF only has ${pdfRenderer.pageCount} pages, can't render page $pageNumber."
-                }
-
                 val largeBitmap = createABitmap(
                     pdfRenderer,
-                    pageNumber,
                     width,
                     height,
                     zoom,
                     dXPixels,
                     dYPixels
                 )
-
                 resultBitmap = largeBitmap.copy(Bitmap.Config.RGB_565, false)
                 largeBitmap.recycle()
 
@@ -68,53 +63,76 @@ class PdfToBitmapAsyncRenderer(
     }
 
     private fun getBitmapSizeInfo(maxWidth: Int, maxHeight: Int): BitmapSizeInfo {
-        val (docWidth, docHeight) = pdfRenderer
-            .openPage(pageNumber)
-            .use { it.width to it.height }
+        val (pageWidth, pageHeight) = getPageDimensions()
+        val pageCount = pdfRenderer.pageCount
 
         return BitmapUtils.computeBitmapSize(
             hatchet,
             maxWidth,
             maxHeight,
-            docWidth,
-            docHeight,
+            pageWidth * pageCount,
+            pageHeight,
             1f
         )
     }
 
+    private fun getPageDimensions() = synchronized(pdfRenderer) {
+        pdfRenderer
+            .openPage(0)
+            .use { it.width to it.height }
+    }
+
     private fun createABitmap(
         pdfRenderer: PdfRenderer,
-        pageNumber: Int,
         width: Int,
         height: Int,
         zoom: Float,
         dXPixels: Int,
         dYPixels: Int,
     ): Bitmap {
-        val newBitmap: Bitmap
+        val pageCount = pdfRenderer.pageCount
+        val (pageWidth, pageHeight) = getPageDimensions()
+        val totalDocWidth = pageWidth * pageCount
 
-        synchronized(pdfRenderer) {
-            val pdfRenderTime = measureTimeMillis {
-                pdfRenderer.openPage(pageNumber)
+        val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
+            hatchet,
+            width,
+            height,
+            totalDocWidth,
+            pageHeight,
+            zoom
+        )
+
+        val leftMostCoord = dXPixels
+        val rightMostCoord = dXPixels + bitmapSizeInfo.width
+
+        val scaledPageWidth = pageWidth * bitmapSizeInfo.zoomedScalingFactor
+        val scaledDocWidth = (scaledPageWidth * pageCount).toInt()
+
+        val firstPageToDisplay = max(0, (leftMostCoord / scaledPageWidth).toInt())
+        val lastPageToDisplay = min(pageCount - 1, (rightMostCoord / scaledPageWidth).toInt())
+
+        println("Page width is $scaledPageWidth x Page count $pageCount Total doc width $scaledDocWidth")
+        println("Rendering columns $leftMostCoord through $rightMostCoord")
+        println("Rendering pages $firstPageToDisplay through $lastPageToDisplay")
+
+        val newBitmap = createBlankBitmap(
+            width = bitmapSizeInfo.width,
+            height = bitmapSizeInfo.height,
+        )
+
+        for (pageNumber in firstPageToDisplay..lastPageToDisplay) {
+            val pageDXPixels = dXPixels - (scaledPageWidth * pageNumber)
+            println("Rendering page $pageNumber, which starts at pixel column $pageDXPixels")
+
+            synchronized(pdfRenderer) {
+                pdfRenderer
+                    .openPage(pageNumber)
                     .use { currentPage ->
-                        val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
-                            hatchet,
-                            width,
-                            height,
-                            currentPage.width,
-                            currentPage.height,
-                            zoom
-                        )
-
-                        newBitmap = createBlankBitmap(
-                            width = bitmapSizeInfo.width,
-                            height = bitmapSizeInfo.height,
-                        )
-
                         val transformMatrix = defaultTransformMatrix(bitmapSizeInfo.zoomedScalingFactor)
 
                         transformMatrix.apply {
-                            postTranslate(-dXPixels.toFloat(), -dYPixels.toFloat())
+                            postTranslate(-pageDXPixels.toFloat(), -dYPixels.toFloat())
                         }
 
                         currentPage.render(
@@ -125,7 +143,6 @@ class PdfToBitmapAsyncRenderer(
                         )
                     }
             }
-            hatchet.v("PDF page rendering took $pdfRenderTime ms.")
         }
         return newBitmap
     }

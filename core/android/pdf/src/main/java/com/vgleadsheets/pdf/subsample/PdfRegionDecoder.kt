@@ -1,55 +1,56 @@
 package com.vgleadsheets.pdf.subsample
 
+import android.graphics.pdf.PdfRenderer
+import android.os.ParcelFileDescriptor
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
-import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfToBitmapAsyncRenderer
+import com.vgleadsheets.pdf.PdfToBitmapFullDocAsyncRenderer
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import java.io.File
 import kotlinx.coroutines.withContext
 import me.saket.telephoto.subsamplingimage.internal.ImageRegionDecoder
 
 class PdfRegionDecoder(
-    pdfFile: File,
-    pageNumber: Int,
+    private val pdfFile: File,
+    pageNumber: Int?,
     maxWidth: Int,
     maxHeight: Int,
     private val vglsDispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
 ) : ImageRegionDecoder {
-    private val renderer = PdfToBitmapAsyncRenderer(
-        hatchet,
-        pageNumber,
-        pdfFile.absolutePath
-    )
-
-    private val actualWidth: Int
-    private val actualHeight: Int
-
-    init {
-        val bitmapSize = BitmapUtils.computeBitmapSize(
+    private var pdfRenderer = createPdfRenderer(pdfFile.absolutePath)
+    private val renderer = if (pageNumber == null) {
+        PdfToBitmapFullDocAsyncRenderer(
+            pdfRenderer,
             hatchet,
             maxWidth,
             maxHeight,
-            612,
-            792,
-            1f
         )
-        actualWidth = bitmapSize.width
-        actualHeight = bitmapSize.height
+    } else {
+        PdfToBitmapAsyncRenderer(
+            pdfRenderer,
+            hatchet,
+            pageNumber,
+            maxWidth,
+            maxHeight,
+        )
     }
 
-    override val imageSize = IntSize(
-        actualWidth * ZOOM_MAX_PDF,
-        actualHeight * ZOOM_MAX_PDF,
-    )
+    override val imageSize = renderer.getActualDimensions().let {
+        IntSize(
+            it.first * ZOOM_MAX_PDF,
+            it.second * ZOOM_MAX_PDF,
+        )
+    }
 
     override fun close() {
-        renderer.close()
+        hatchet.i("Closing Full-Doc renderer for ${pdfFile.absolutePath}")
+        pdfRenderer.close()
     }
 
     override suspend fun decodeRegion(region: IntRect, sampleSize: Int): ImageRegionDecoder.DecodeResult {
@@ -71,9 +72,19 @@ class PdfRegionDecoder(
         )
     }
 
+    private fun createPdfRenderer(pdfPath: String): PdfRenderer {
+        val pdfFile = File(pdfPath)
+        val fileDescriptor = ParcelFileDescriptor.open(
+            pdfFile,
+            ParcelFileDescriptor.MODE_READ_ONLY
+        )
+
+        return PdfRenderer(fileDescriptor)
+    }
+
     class Factory(
         private val pdfFile: File,
-        private val pageNumber: Int,
+        private val pageNumber: Int?,
         private val maxWidth: Int,
         private val maxHeight: Int,
         private val vglsDispatchers: VglsDispatchers,

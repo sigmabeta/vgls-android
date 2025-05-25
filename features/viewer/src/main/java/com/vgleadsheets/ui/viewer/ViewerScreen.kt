@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,6 +47,7 @@ import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.components.ZoomableSheetPageListModel
+import com.vgleadsheets.composables.ZoomableFullDocItem
 import com.vgleadsheets.composables.ZoomableSheetPageItem
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.ui.Icon
@@ -107,26 +106,25 @@ fun ViewerScreen(
             initialPage = state.initialPage
         ) { items.size }
 
-        val scrollerState = rememberLazyListState(
-            initialFirstVisibleItemIndex = state.initialPage
-        )
-
         if (shouldScrollFreely) {
-            val index by remember { derivedStateOf { scrollerState.firstVisibleItemIndex } }
-            LaunchedEffect(index) {
-                pagerState.scrollToPage(index)
-            }
+            // TODO Calculate scroll pixels / first visible item
+            // val index by remember { derivedStateOf { scrollerState.firstVisibleItemIndex } }
+            // LaunchedEffect(index) {
+            //     pagerState.scrollToPage(index)
+            // }
 
-            SheetScroller(
-                items,
-                scrollerState,
-                actionSink,
+            ZoomableFullDocItem(
+                model = items.first(),
+                actionSink = actionSink,
+                modifier = Modifier,
+                padding = PaddingValues(),
             )
         } else {
-            val index by remember { derivedStateOf { pagerState.currentPage } }
-            LaunchedEffect(index) {
-                scrollerState.scrollToItem(index)
-            }
+            // TODO Calculate scroll pixels / first visible item
+            // val index by remember { derivedStateOf { pagerState.currentPage } }
+            // LaunchedEffect(index) {
+            //     scrollerState.scrollToItem(index)
+            // }
 
             SheetPager(
                 items,
@@ -135,7 +133,7 @@ fun ViewerScreen(
             )
         }
 
-        PageControls(pagerState, shouldScrollFreely, scrollerState, items, state, actionSink)
+        PageControls(pagerState, shouldScrollFreely, items, state, actionSink)
 
         if (state.shouldShowLyricsWarning()) {
             LyricsWarning()
@@ -147,7 +145,6 @@ fun ViewerScreen(
 private fun BoxScope.PageControls(
     pagerState: PagerState,
     shouldScrollFreely: Boolean,
-    scrollerState: LazyListState,
     items: ImmutableList<ZoomableSheetPageListModel>,
     state: ViewerState,
     actionSink: ActionSink
@@ -155,21 +152,25 @@ private fun BoxScope.PageControls(
     val currentPage = pagerState.currentPage
 
     val prevEnabled = if (shouldScrollFreely) {
-        scrollerState.canScrollBackward
+        // TODO Back button
+        // scrollerState.canScrollBackward
+        false
     } else {
         currentPage > 0
     }
 
     val nextEnabled = if (shouldScrollFreely) {
-        scrollerState.canScrollForward
+        // TODO Forward button
+        // scrollerState.canScrollForward
+        false
     } else {
         currentPage < items.size - 1
     }
 
     val visible = state.buttonsVisible
 
-    DirectionButton(Action.PrevButtonClicked, prevEnabled, visible, actionSink, shouldScrollFreely, pagerState, scrollerState)
-    DirectionButton(Action.NextButtonClicked, nextEnabled, visible, actionSink, shouldScrollFreely, pagerState, scrollerState)
+    DirectionButton(Action.PrevButtonClicked, prevEnabled, visible, actionSink, shouldScrollFreely, pagerState)
+    DirectionButton(Action.NextButtonClicked, nextEnabled, visible, actionSink, shouldScrollFreely, pagerState)
 }
 
 @Composable
@@ -210,7 +211,6 @@ private fun BoxScope.DirectionButton(
     actionSink: ActionSink,
     shouldScrollFreely: Boolean,
     pagerState: PagerState,
-    scrollerState: LazyListState,
 ) {
     val (buttonAlignment, imageVector, increment) = when (action) {
         Action.PrevButtonClicked -> Triple(
@@ -243,9 +243,10 @@ private fun BoxScope.DirectionButton(
         actionSink.sendAction(action)
         scrollScope.launch {
             if (shouldScrollFreely) {
-                val newIndex = (scrollerState.firstVisibleItemIndex + increment)
-                    .coerceIn(0..scrollerState.layoutInfo.totalItemsCount)
-                scrollerState.animateScrollToItem(newIndex)
+                // TODO Onclick
+                // val newIndex = (scrollerState.firstVisibleItemIndex + increment)
+                //     .coerceIn(0..scrollerState.layoutInfo.totalItemsCount)
+                // scrollerState.animateScrollToItem(newIndex)
             } else {
                 pagerState.animateScrollToPage(pagerState.currentPage + increment)
             }
