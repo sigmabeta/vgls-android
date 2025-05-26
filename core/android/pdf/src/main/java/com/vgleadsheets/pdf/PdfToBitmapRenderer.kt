@@ -107,6 +107,7 @@ class PdfToBitmapRenderer(
                 .use { currentPage ->
                     val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
                         hatchet,
+                        pageCount = 1,
                         maxWidth,
                         maxHeight,
                         currentPage.width,
@@ -115,8 +116,8 @@ class PdfToBitmapRenderer(
                     )
 
                     newBitmap = BitmapUtils.createBlankBitmap(
-                        width = bitmapSizeInfo.width,
-                        height = bitmapSizeInfo.height,
+                        width = bitmapSizeInfo.pageWidth,
+                        height = bitmapSizeInfo.pageHeight,
                     )
 
                     val transformMatrix = defaultTransformMatrix(bitmapSizeInfo.zoomedScalingFactor)

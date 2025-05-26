@@ -12,6 +12,7 @@ import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.logging.Hatchet
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.roundToInt
 import kotlin.system.measureTimeMillis
 
 class PdfToBitmapFullDocAsyncRenderer(
@@ -25,7 +26,7 @@ class PdfToBitmapFullDocAsyncRenderer(
             maxWidth,
             maxHeight,
         )
-        return bitmapSizeInfo.width to bitmapSizeInfo.height
+        return bitmapSizeInfo.docWidth to bitmapSizeInfo.pageHeight
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -68,9 +69,10 @@ class PdfToBitmapFullDocAsyncRenderer(
 
         return BitmapUtils.computeBitmapSize(
             hatchet,
+            pageCount,
             maxWidth,
             maxHeight,
-            pageWidth * pageCount,
+            pageWidth,
             pageHeight,
             1f
         )
@@ -96,6 +98,7 @@ class PdfToBitmapFullDocAsyncRenderer(
 
         val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
             hatchet,
+            pageCount,
             width,
             height,
             totalDocWidth,
@@ -104,26 +107,26 @@ class PdfToBitmapFullDocAsyncRenderer(
         )
 
         val leftMostCoord = dXPixels
-        val rightMostCoord = dXPixels + bitmapSizeInfo.width
+        val rightMostCoord = dXPixels + bitmapSizeInfo.pageWidth
 
         val scaledPageWidth = pageWidth * bitmapSizeInfo.zoomedScalingFactor
-        val scaledDocWidth = (scaledPageWidth * pageCount).toInt()
+        val scaledDocWidth = (scaledPageWidth * pageCount).roundToInt()
 
         val firstPageToDisplay = max(0, (leftMostCoord / scaledPageWidth).toInt())
         val lastPageToDisplay = min(pageCount - 1, (rightMostCoord / scaledPageWidth).toInt())
 
-        println("Page width is $scaledPageWidth x Page count $pageCount Total doc width $scaledDocWidth")
-        println("Rendering columns $leftMostCoord through $rightMostCoord")
-        println("Rendering pages $firstPageToDisplay through $lastPageToDisplay")
+        hatchet.v("Page width is $scaledPageWidth x Page count $pageCount Total doc width $scaledDocWidth")
+        hatchet.v("Rendering columns $leftMostCoord through $rightMostCoord")
+        hatchet.v("Rendering pages $firstPageToDisplay through $lastPageToDisplay")
 
         val newBitmap = createBlankBitmap(
-            width = bitmapSizeInfo.width,
-            height = bitmapSizeInfo.height,
+            width = bitmapSizeInfo.pageWidth,
+            height = bitmapSizeInfo.pageHeight,
         )
 
         for (pageNumber in firstPageToDisplay..lastPageToDisplay) {
             val pageDXPixels = dXPixels - (scaledPageWidth * pageNumber)
-            println("Rendering page $pageNumber, which starts at pixel column $pageDXPixels")
+            hatchet.v("Rendering page $pageNumber, which starts at pixel column $pageDXPixels")
 
             synchronized(pdfRenderer) {
                 pdfRenderer

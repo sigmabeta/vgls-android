@@ -18,6 +18,7 @@ import kotlinx.collections.immutable.ImmutableList
 internal fun BoxScope.SheetPager(
     items: ImmutableList<ZoomableSheetPageListModel>,
     pagerState: PagerState,
+    allowPaging: Boolean,
     actionSink: ActionSink,
 ) {
     if (items.isEmpty()) {
@@ -28,7 +29,8 @@ internal fun BoxScope.SheetPager(
 
     HorizontalPager(
         state = pagerState,
-        modifier = Modifier.align(Alignment.Center)
+        modifier = Modifier.align(Alignment.Center),
+        userScrollEnabled = allowPaging,
     ) { page ->
         val item = items[page]
         ZoomableSheetPageItem(

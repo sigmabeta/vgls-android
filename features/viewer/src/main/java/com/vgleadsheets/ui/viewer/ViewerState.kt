@@ -21,7 +21,7 @@ data class ViewerState(
     val initialPage: Int = 0,
     val buttonsVisible: Boolean = true,
     val keepScreenOn: Boolean? = null,
-    val zoomEnabledForPage: Int? = null,
+    val isZoomedIn: Boolean = false,
     val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
     val isSongHistoryEntryRecorded: Boolean = false,
 ) : VglsState {
@@ -47,7 +47,7 @@ data class ViewerState(
             song.pageCount(actualPartApiId, isAltSelected.data) to isAltSelected.data
         }
 
-        val singlePage = if (actualPageCount == 1) 0 else zoomEnabledForPage
+        val singlePage = if (actualPageCount == 1) 0 else null
 
         if (singlePage != null) {
             listOf(

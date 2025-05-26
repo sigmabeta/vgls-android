@@ -129,6 +129,7 @@ fun ViewerScreen(
             SheetPager(
                 items,
                 pagerState,
+                !state.isZoomedIn,
                 actionSink,
             )
         }
@@ -151,13 +152,14 @@ private fun BoxScope.PageControls(
 ) {
     val currentPage = pagerState.currentPage
 
+    val zoomedIn = state.isZoomedIn
     val prevEnabled = if (shouldScrollFreely) {
         // TODO Back button
         // scrollerState.canScrollBackward
         false
     } else {
         currentPage > 0
-    }
+    } && !zoomedIn
 
     val nextEnabled = if (shouldScrollFreely) {
         // TODO Forward button
@@ -165,9 +167,9 @@ private fun BoxScope.PageControls(
         false
     } else {
         currentPage < items.size - 1
-    }
+    } && !zoomedIn
 
-    val visible = state.buttonsVisible
+    val visible = state.buttonsVisible && !zoomedIn
 
     DirectionButton(Action.PrevButtonClicked, prevEnabled, visible, actionSink, shouldScrollFreely, pagerState)
     DirectionButton(Action.NextButtonClicked, nextEnabled, visible, actionSink, shouldScrollFreely, pagerState)

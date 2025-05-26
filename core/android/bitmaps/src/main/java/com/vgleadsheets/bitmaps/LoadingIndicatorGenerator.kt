@@ -89,6 +89,7 @@ class LoadingIndicatorGenerator @Inject constructor(
 
             val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
                 hatchet,
+                pageCount = 1,
                 maxWidth,
                 maxHeight,
                 docWidth,
@@ -97,8 +98,8 @@ class LoadingIndicatorGenerator @Inject constructor(
             )
 
             newBitmap = BitmapUtils.createBlankBitmap(
-                width = bitmapSizeInfo.width,
-                height = bitmapSizeInfo.height,
+                width = bitmapSizeInfo.pageWidth,
+                height = bitmapSizeInfo.pageHeight,
             )
 
             val canvas = Canvas(newBitmap)

@@ -8,11 +8,6 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.vgleadsheets.composables.ZoomableSheet
-import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.images.PdfSize
-import com.vgleadsheets.pdf.PdfConfigById
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun PdfTestScreen(modifier: Modifier = Modifier) {
@@ -25,24 +20,31 @@ fun PdfTestScreen(modifier: Modifier = Modifier) {
         val (id, pageNumber) = 405L to null as Int? // Multipage
         //val (id, pageNumber) = 603L to 0 as Int? // Multipage
 
-        ZoomableSheet(
-            pdfConfigById = PdfConfigById(
-                songId = id,
-                pageNumber = pageNumber,
-                isAltSelected = false,
-                pdfSize = PdfSize.FILL,
-            ),
-            contentDescription = null,
-            loadingIndicatorConfig = LoadingIndicatorConfig(
-                title = "Song",
-                gameName = "Game",
-                composers = persistentListOf(),
-                pageNumber = 0,
-                loaderSize = PdfSize.FILL,
-            ),
-            actionSink = { },
-            modifier = Modifier.fillMaxSize()
-        )
+        // ZoomableSheet(
+        //     pdfConfigById = PdfConfigById(
+        //         songId = id,
+        //         pageNumber = pageNumber,
+        //         isAltSelected = false,
+        //         pdfSize = PdfSize.FILL,
+        //     ),
+        //     contentDescription = null,
+        //     loadingIndicatorConfig = LoadingIndicatorConfig(
+        //         title = "Song",
+        //         gameName = "Game",
+        //         composers = persistentListOf(),
+        //         pageNumber = 0,
+        //         loaderSize = PdfSize.FILL,
+        //     ),
+        //     actionSink = { },
+        //     modifier = Modifier.fillMaxSize()
+        // )
+
+        // ZoomableFullDocItem(
+        //     model = ZoomableSheetPageListModel(),
+        //     actionSink = TODO(),
+        //     modifier = TODO(),
+        //     padding = TODO()
+        // )
 
         // Information view
         // val bottomInset = WindowInsets.navigationBars.asPaddingValues()

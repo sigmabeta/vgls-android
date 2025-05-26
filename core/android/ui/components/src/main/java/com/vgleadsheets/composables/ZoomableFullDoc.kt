@@ -126,7 +126,7 @@ private fun Content(
     val zoomableState = rememberZoomableState(
         zoomSpec,
     )
-    zoomableState.contentScale = ContentScale.Fit
+    zoomableState.contentScale = ContentScale.FillHeight
 
     val imageSourceFactory = LocalPdfSubsampler.current
     val imageSource = remember { imageSourceFactory.create(data = pdfConfigByIdWithSize) }

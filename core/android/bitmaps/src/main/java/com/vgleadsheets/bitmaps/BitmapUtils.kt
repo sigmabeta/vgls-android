@@ -8,6 +8,7 @@ import kotlin.math.roundToInt
 object BitmapUtils {
     fun computeBitmapSize(
         hatchet: Hatchet,
+        pageCount: Int,
         maxWidth: Int,
         maxHeight: Int,
         docWidth: Int,
@@ -36,12 +37,13 @@ object BitmapUtils {
         hatchet.v("Scaling type: $scalingType")
 
         return BitmapSizeInfo(
-            width = bitmapWidth,
-            height = bitmapHeight,
+            docWidth = bitmapWidth * pageCount,
+            pageWidth = bitmapWidth,
+            pageHeight = bitmapHeight,
             pageToMaximumScalingFactor = pageToMaximumScalingFactor,
             zoomedScalingFactor = zoomedScalingFactor,
-            zoomedWidth = zoomedWidth,
-            zoomedHeight = zoomedHeight
+            zoomedPageWidth = zoomedWidth,
+            zoomedPageHeight = zoomedHeight
         )
     }
 

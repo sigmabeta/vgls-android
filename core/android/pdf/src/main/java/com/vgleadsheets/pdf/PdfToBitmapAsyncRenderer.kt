@@ -24,7 +24,7 @@ class PdfToBitmapAsyncRenderer(
             maxWidth,
             maxHeight,
         )  
-        return bitmapSizeInfo.width to bitmapSizeInfo.height
+        return bitmapSizeInfo.pageWidth to bitmapSizeInfo.pageHeight
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -74,6 +74,7 @@ class PdfToBitmapAsyncRenderer(
 
         return BitmapUtils.computeBitmapSize(
             hatchet,
+            pageCount = 1,
             maxWidth,
             maxHeight,
             docWidth,
@@ -99,6 +100,7 @@ class PdfToBitmapAsyncRenderer(
                     .use { currentPage ->
                         val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
                             hatchet,
+                            pageCount = 1,
                             width,
                             height,
                             currentPage.width,
@@ -107,8 +109,8 @@ class PdfToBitmapAsyncRenderer(
                         )
 
                         newBitmap = createBlankBitmap(
-                            width = bitmapSizeInfo.width,
-                            height = bitmapSizeInfo.height,
+                            width = bitmapSizeInfo.pageWidth,
+                            height = bitmapSizeInfo.pageHeight,
                         )
 
                         val transformMatrix = defaultTransformMatrix(bitmapSizeInfo.zoomedScalingFactor)
