@@ -147,6 +147,19 @@ class PdfToBitmapFullDocAsyncRenderer(
                     }
             }
         }
+
+        BitmapUtils.renderDebugInfo(
+            circle = false,
+            text = false,
+            border = true,
+            bitmap = newBitmap,
+            dXPixels = dXPixels,
+            dYPixels = dYPixels,
+            zoom = zoom,
+            width = width,
+            height = height
+        )
+
         return newBitmap
     }
 

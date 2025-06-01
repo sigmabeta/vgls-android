@@ -21,7 +21,6 @@ import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
@@ -109,7 +108,6 @@ data class State(
                         sheetPage(
                             data,
                             pageNumber,
-                            beeg = false,
                             showLyricsMissingWarning = false,
                             altSelection,
                             PdfSize.LARGE
@@ -119,16 +117,13 @@ data class State(
 
                 pageCount == 0 -> HorizontalScrollerListModel(
                     dataId = data.id,
-                    scrollingItems = List(data.pageCount(Part.C.apiId, altSelection)) { pageNumber ->
-                        sheetPage(
+                    scrollingItems = listOf(
+                        singlePage(
                             data,
-                            pageNumber,
-                            beeg = false,
-                            showLyricsMissingWarning = true,
+                            showLyricsMissingWarning = false,
                             altSelection,
-                            pdfSize = PdfSize.FILL
                         )
-                    }.toImmutableList()
+                    ).toImmutableList()
                 )
 
                 else -> singlePage(data, false, altSelection)
@@ -146,17 +141,15 @@ data class State(
         sheetPageCardModel = sheetPage(
             song = song,
             pageNumber = 0,
-            beeg = true,
             showLyricsMissingWarning = showLyricsMissingWarning,
             altSelectionValue = altSelectionValue,
-            pdfSize = PdfSize.FILL,
+            pdfSize = PdfSize.LARGE,
         )
     )
 
     private fun sheetPage(
         song: Song,
         pageNumber: Int,
-        beeg: Boolean,
         showLyricsMissingWarning: Boolean,
         altSelectionValue: Boolean,
         pdfSize: PdfSize,

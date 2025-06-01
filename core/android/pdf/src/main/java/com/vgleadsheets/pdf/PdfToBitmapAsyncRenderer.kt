@@ -53,6 +53,19 @@ class PdfToBitmapAsyncRenderer(
                     dYPixels
                 )
 
+
+                BitmapUtils.renderDebugInfo(
+                    circle = false,
+                    text = false,
+                    border = true,
+                    bitmap = largeBitmap,
+                    dXPixels = dXPixels,
+                    dYPixels = dYPixels,
+                    zoom = zoom,
+                    width = width,
+                    height = height
+                )
+
                 resultBitmap = largeBitmap.copy(Bitmap.Config.RGB_565, false)
                 largeBitmap.recycle()
 

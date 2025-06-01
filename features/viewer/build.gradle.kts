@@ -11,7 +11,6 @@ android {
 dependencies {
     api(libs.androidx.navigation.compose)
     api(libs.androidx.lifecycle.runtimeCompose)
-    api(libs.zoomable.image.coil3)
 
     api(projects.core.common.nav)
     implementation(projects.core.android.bitmaps)

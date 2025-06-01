@@ -10,19 +10,12 @@ import androidx.core.graphics.createBitmap
 import com.vgleadsheets.pdf.AsyncRenderer
 import kotlin.math.min
 
-class FakeAsyncRenderer: AsyncRenderer {
-    private val pageCount = 1
+class FakeAsyncRenderer : AsyncRenderer {
+    private val pageCount = 5
     private val pageWidth = 1236
     private val pageHeight = 1600
 
     override fun getActualDimensions() = (pageWidth * pageCount) to pageHeight
-
-    private val textPaint =
-        Paint().apply {
-            isAntiAlias = true
-            color = Color.BLACK
-            textSize = 96f
-        }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun renderToBitmap(width: Int, height: Int, zoom: Float, dXPixels: Int, dYPixels: Int): Bitmap {
@@ -31,12 +24,43 @@ class FakeAsyncRenderer: AsyncRenderer {
             height = height,
         )
 
+        renderDebugInfo(newBitmap, dXPixels, dYPixels, zoom, width, height)
+
+        return newBitmap
+    }
+
+    private fun renderDebugInfo(
+        newBitmap: Bitmap,
+        dXPixels: Int,
+        dYPixels: Int,
+        zoom: Float,
+        width: Int,
+        height: Int
+    ) {
+        val textPaint = Paint().apply {
+            isAntiAlias = true
+            color = Color.BLACK
+            textSize = 96f
+        }
+
         val circlePaint = Paint().apply {
+            isAntiAlias = true
+        }
+
+        val linePaint = Paint().apply {
             isAntiAlias = false
-            color = Triple(dXPixels, dYPixels, zoom).hashCode()
+            strokeWidth = 8f
             alpha = 255
         }
+
         val canvas = Canvas(newBitmap)
+        val tileColor = Triple(dXPixels, dYPixels, zoom).hashCode()
+
+        circlePaint.color = tileColor
+        circlePaint.alpha = 255
+
+        linePaint.color = tileColor
+        linePaint.alpha = 255
 
         canvas.drawCircle(
             width.toFloat() / 2,
@@ -66,7 +90,20 @@ class FakeAsyncRenderer: AsyncRenderer {
             textPaint,
         )
 
-        return newBitmap
+        val top = 4f
+        val left = 4f
+        val right = width.toFloat() - 4f
+        val bottom = height.toFloat() - 4f
+
+        canvas.drawLines(
+            floatArrayOf(
+                left, top, right, top,
+                right, top, right, bottom,
+                right, bottom, left, bottom,
+                left, bottom, left, top,
+            ),
+            linePaint,
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
