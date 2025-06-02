@@ -10,6 +10,33 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 object BitmapUtils {
+
+    fun createBitmapWithBackground(
+        width: Int,
+        height: Int,
+    ): Bitmap {
+        val backgroundPaint = Paint().apply {
+            isAntiAlias = false
+            color = Color.WHITE
+        }
+
+        return createBitmap(
+            width,
+            height,
+            Bitmap.Config.ARGB_8888
+        ).apply {
+            val canvas = Canvas(this)
+
+            canvas.drawRect(
+                0.0f,
+                0.0f,
+                width.toFloat(),
+                height.toFloat(),
+                backgroundPaint
+            )
+        }
+    }
+
     fun computeBitmapSize(
         hatchet: Hatchet,
         pageCount: Int,

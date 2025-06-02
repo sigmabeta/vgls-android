@@ -1,12 +1,7 @@
 package com.vgleadsheets.pdf
 
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.Paint
 import android.graphics.pdf.PdfRenderer
-import androidx.core.graphics.createBitmap
 import com.vgleadsheets.bitmaps.BitmapSizeInfo
 import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.logging.Hatchet
@@ -52,7 +47,6 @@ class PdfToBitmapAsyncRenderer(
                     dXPixels,
                     dYPixels
                 )
-
 
                 BitmapUtils.renderDebugInfo(
                     circle = false,
@@ -121,7 +115,7 @@ class PdfToBitmapAsyncRenderer(
                             zoom
                         )
 
-                        newBitmap = createBlankBitmap(
+                        newBitmap = BitmapUtils.createBitmapWithBackground(
                             width = bitmapSizeInfo.pageWidth,
                             height = bitmapSizeInfo.pageHeight,
                         )
@@ -143,44 +137,5 @@ class PdfToBitmapAsyncRenderer(
             hatchet.v("PDF page rendering took $pdfRenderTime ms.")
         }
         return newBitmap
-    }
-
-    private val backgroundPaint = Paint().apply {
-        isAntiAlias = false
-        color = Color.WHITE
-    }
-
-    private fun createBlankBitmap(
-        width: Int,
-        height: Int,
-    ): Bitmap {
-        return createBitmap(
-            width,
-            height,
-            Bitmap.Config.ARGB_8888
-        ).apply {
-            val canvas = Canvas(this)
-
-            canvas.drawRect(
-                0.0f,
-                0.0f,
-                width.toFloat(),
-                height.toFloat(),
-                backgroundPaint
-            )
-        }
-    }
-
-    private fun defaultTransformMatrix(
-        scalingFactor: Float,
-    ): Matrix {
-        val transformMatrix = Matrix();
-
-        transformMatrix.postScale(
-            scalingFactor,
-            scalingFactor,
-        )
-
-        return transformMatrix
     }
 }
