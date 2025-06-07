@@ -91,7 +91,7 @@ object BitmapUtils {
     }
 
     fun renderDebugInfo(
-        text: Boolean = true,
+        text: Boolean = false,
         circle: Boolean = false,
         lines: Boolean = true,
         bitmap: Bitmap,
