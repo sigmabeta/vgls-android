@@ -7,6 +7,7 @@ import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.logging.Hatchet
 import kotlin.system.measureTimeMillis
 
+@Suppress("MagicNumber")
 class PdfToBitmapAsyncRenderer(
     private val pdfRenderer: PdfRenderer,
     private val hatchet: Hatchet,
@@ -18,7 +19,8 @@ class PdfToBitmapAsyncRenderer(
         val bitmapSizeInfo = getBitmapSizeInfo(
             maxWidth,
             maxHeight,
-        ) return bitmapSizeInfo.pageWidth to bitmapSizeInfo.pageHeight
+        )
+        return bitmapSizeInfo.pageWidth to bitmapSizeInfo.pageHeight
     }
 
     @Suppress("TooGenericExceptionCaught")

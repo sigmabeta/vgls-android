@@ -9,6 +9,7 @@ import com.vgleadsheets.logging.Hatchet
 import java.io.File
 import kotlin.system.measureTimeMillis
 
+@Suppress("MagicNumber")
 class PdfToBitmapRenderer(
     private val hatchet: Hatchet,
 ) : BitmapRenderer {

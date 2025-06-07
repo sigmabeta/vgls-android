@@ -9,6 +9,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.system.measureTimeMillis
 
+@Suppress("MagicNumber")
 class PdfToBitmapFullDocAsyncRenderer(
     private val pdfRenderer: PdfRenderer,
     private val hatchet: Hatchet,

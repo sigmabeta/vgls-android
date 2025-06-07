@@ -56,6 +56,7 @@ fun ImageNameListItem(
 }
 
 @Composable
+@Suppress("MagicNumber")
 fun ImageNameListItem(
     name: String,
     sourceInfo: SourceInfo,

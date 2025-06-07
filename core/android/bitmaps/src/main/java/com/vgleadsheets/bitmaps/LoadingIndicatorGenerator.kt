@@ -44,6 +44,7 @@ class LoadingIndicatorGenerator @Inject constructor(
         )
     }
 
+    @Suppress("MagicNumber")
     @Synchronized
     fun generateLoadingSheet(
         title: String,

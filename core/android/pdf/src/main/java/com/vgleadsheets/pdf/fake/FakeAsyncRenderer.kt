@@ -7,6 +7,7 @@ import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.pdf.AsyncRenderer
 import kotlin.system.measureTimeMillis
 
+@Suppress("MagicNumber")
 class FakeAsyncRenderer : AsyncRenderer {
     private val pageCount = 1
     private val pageWidth = 1236

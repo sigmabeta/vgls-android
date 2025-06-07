@@ -79,6 +79,7 @@ fun ImageNameCaptionListItem(
 }
 
 @Composable
+@Suppress("LongMethod", "MagicNumber")
 private fun ImageNameCaptionListItem(
     name: String,
     caption: String,

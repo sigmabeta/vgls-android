@@ -67,7 +67,6 @@ class PdfRegionDecoder(
 
         val zoom = maxSampleSize.size.toFloat() / sampleSize
 
-        hatchet.i("Decoding zoom $zoom samplesize $sampleSize region ${region.width} x ${region.height} imagesize $imageSize")
         val regionBitmap = withContext(vglsDispatchers.computation) {
             renderer.renderToBitmap(
                 width = region.width / sampleSize,

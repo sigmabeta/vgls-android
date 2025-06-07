@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Composable
+@Suppress("MagicNumber")
 fun PdfTestScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize()

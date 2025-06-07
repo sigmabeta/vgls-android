@@ -10,8 +10,8 @@ import com.vgleadsheets.logging.Hatchet
 import kotlin.math.min
 import kotlin.math.roundToInt
 
+@Suppress("MagicNumber")
 object BitmapUtils {
-
     fun createBitmapWithBackground(
         width: Int,
         height: Int,
@@ -131,6 +131,7 @@ object BitmapUtils {
         }
     }
 
+    @Suppress("LongMethod")
     private fun renderText(
         canvas: Canvas,
         width: Int,
@@ -289,6 +290,7 @@ object BitmapUtils {
         )
     }
 
+    @Suppress("ReturnCount")
     private fun computeScalingType(
         maxWidth: Int,
         maxHeight: Int,

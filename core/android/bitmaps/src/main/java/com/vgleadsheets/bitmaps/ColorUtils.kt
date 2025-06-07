@@ -2,6 +2,7 @@ package com.vgleadsheets.bitmaps
 
 import kotlin.random.Random
 
+@Suppress("MagicNumber")
 fun Random.nextColor(): Int {
     val alpha = 255
     val red = nextInt(255)

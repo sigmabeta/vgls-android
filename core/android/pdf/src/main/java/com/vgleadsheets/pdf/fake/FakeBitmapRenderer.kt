@@ -12,6 +12,7 @@ import java.io.File
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
+@Suppress("MagicNumber")
 class FakeBitmapRenderer : BitmapRenderer {
     private val backgroundPaint = Paint().apply {
         isAntiAlias = false

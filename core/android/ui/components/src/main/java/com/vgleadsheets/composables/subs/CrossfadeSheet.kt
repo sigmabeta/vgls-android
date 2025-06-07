@@ -40,8 +40,8 @@ import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
-import kotlin.math.roundToInt
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.math.roundToInt
 
 @Composable
 @Suppress("LongMethod", "ReturnCount")
@@ -84,6 +84,7 @@ fun CrossfadeSheet(
 }
 
 @Composable
+@Suppress("LongMethod")
 private fun BoxScope.Content(
     pdfConfigById: PdfConfigById,
     contentDescription: String?,
@@ -176,6 +177,7 @@ private fun BoxScope.Content(
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 private fun Modifier.bgModifier(): Modifier {
     val bgColor = if (BuildConfig.DEBUG) {
