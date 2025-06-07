@@ -12,7 +12,7 @@ class PdfSubsampleSource(
     private val hatchet: Hatchet,
     private val sheetDownloader: SheetDownloader,
     private val vglsDispatchers: VglsDispatchers,
-): SubSamplingImageSource {
+) : SubSamplingImageSource {
     override suspend fun decoder(): PdfRegionDecoder.Factory {
         val pdfFileResult = sheetDownloader.getSheet(data)
         val pdfFile = pdfFileResult.file
@@ -36,7 +36,7 @@ class PdfSubsampleSource(
         private val hatchet: Hatchet,
         private val sheetDownloader: SheetDownloader,
         private val vglsDispatchers: VglsDispatchers,
-    ): PdfSubsampleSourceFactory {
+    ) : PdfSubsampleSourceFactory {
         override fun create(
             data: PdfConfigById,
         ) = PdfSubsampleSource(

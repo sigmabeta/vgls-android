@@ -1,15 +1,14 @@
 package com.vgleadsheets.images
 
 import android.animation.ArgbEvaluator
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import kotlin.random.Random
 import androidx.core.graphics.createBitmap
+import kotlin.random.Random
 
 object BitmapGenerator {
     fun generateBitmap(

@@ -166,7 +166,7 @@ object BitmapUtils {
         )
 
         val widthBg = Rect(
-            width *  6 / 16,
+            width * 6 / 16,
             height * 1 / 16,
             width * 10 / 16,
             height * 3 / 16,
@@ -214,7 +214,6 @@ object BitmapUtils {
             height.toFloat() * 2 / 16,
             textPaint,
         )
-
     }
 
     private fun renderCircle(
@@ -310,7 +309,6 @@ object BitmapUtils {
             }
             return ScalingType.FILL_WIDTH_ADJUST_HEIGHT
         }
-
 
         if (targetHeight > maxHeight) {
             return ScalingType.FILL_HEIGHT_ADJUST_WIDTH

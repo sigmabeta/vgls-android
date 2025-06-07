@@ -94,7 +94,6 @@ class PdfRegionDecoder(
         return PdfRenderer(fileDescriptor)
     }
 
-
     class Factory(
         private val pdfFile: File,
         private val pageNumber: Int?,
@@ -152,6 +151,4 @@ private value class ImageSampleSize(val size: Int) {
             "Incorrect size = $size. BitmapRegionDecoder requires values based on powers of 2."
         }
     }
-
-
 }

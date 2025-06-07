@@ -96,7 +96,8 @@ private fun RealImage(
             imagePlaceholder,
             contentDescription,
             simulateError,
-            modifier,)
+            modifier,
+        )
     } else {
         RealStandardImage(
             asyncPainter,
@@ -105,7 +106,6 @@ private fun RealImage(
             modifier,
         )
     }
-
 }
 
 @Composable

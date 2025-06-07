@@ -367,7 +367,6 @@ private fun BoxScope.DirectionButton(
 
 private suspend fun ZoomableState.scrollToPage(page: Int, defaultPageWidth: Float) {
     toPage(page, defaultPageWidth, ZoomableState.DefaultPanAnimationSpec)
-
 }
 
 private suspend fun ZoomableState.snapToPage(page: Int, defaultPageWidth: Float) {

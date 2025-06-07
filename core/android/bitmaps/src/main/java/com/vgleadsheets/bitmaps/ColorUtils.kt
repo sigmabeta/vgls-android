@@ -9,8 +9,4 @@ fun Random.nextColor(): Int {
     val blue = nextInt(255)
 
     return (alpha and 0xff) shl 24 or ((red and 0xff) shl 16) or ((green and 0xff) shl 8) or (blue and 0xff)
-
 }
-
-
-

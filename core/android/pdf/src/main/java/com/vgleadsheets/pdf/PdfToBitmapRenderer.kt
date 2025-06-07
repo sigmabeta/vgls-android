@@ -17,7 +17,6 @@ class PdfToBitmapRenderer(
     private var pdfPath: String? = null
     private var pdfRenderer: PdfRenderer? = null
 
-
     @Suppress("TooGenericExceptionCaught")
     override suspend fun renderToBitmap(
         pdfFile: File?,
@@ -137,7 +136,7 @@ class PdfToBitmapRenderer(
     private fun defaultTransformMatrix(
         scalingFactor: Float,
     ): Matrix {
-        val transformMatrix = Matrix();
+        val transformMatrix = Matrix()
 
         transformMatrix.postScale(
             scalingFactor,

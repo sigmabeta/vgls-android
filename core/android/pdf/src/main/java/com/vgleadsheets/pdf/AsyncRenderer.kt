@@ -14,8 +14,8 @@ interface AsyncRenderer {
         dYPixels: Int,
     ): Bitmap
 
-    fun defaultTransformMatrix(scalingFactor: Float, ): Matrix {
-        val transformMatrix = Matrix();
+    fun defaultTransformMatrix(scalingFactor: Float,): Matrix {
+        val transformMatrix = Matrix()
 
         transformMatrix.postScale(
             scalingFactor,

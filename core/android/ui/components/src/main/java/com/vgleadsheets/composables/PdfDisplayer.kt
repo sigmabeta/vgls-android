@@ -30,7 +30,6 @@ fun PdfDisplayer(
         val (maxWidthPx, maxHeightPx) = with(LocalDensity.current) {
             this@BoxWithConstraints.maxWidth.toPx().roundToInt() to this@BoxWithConstraints.maxHeight.toPx().roundToInt()
         }
-
     }
 }
 

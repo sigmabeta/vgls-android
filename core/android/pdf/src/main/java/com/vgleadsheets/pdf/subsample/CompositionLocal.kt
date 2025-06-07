@@ -10,4 +10,3 @@ val LocalPdfSubsampler = staticCompositionLocalOf<PdfSubsampleSourceFactory> {
          }
      }
  }
-
