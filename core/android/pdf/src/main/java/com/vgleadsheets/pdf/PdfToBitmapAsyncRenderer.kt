@@ -33,12 +33,13 @@ class PdfToBitmapAsyncRenderer(
         hatchet.v("Rendering $width x $height zoom $zoom offset $dXPixels x $dYPixels")
         try {
             var resultBitmap: Bitmap
+            val largeBitmap: Bitmap
             val renderProcessTime = measureTimeMillis {
                 require(pageNumber <= pdfRenderer.pageCount) {
                     "PDF only has ${pdfRenderer.pageCount} pages, can't render page $pageNumber."
                 }
 
-                val largeBitmap = createABitmap(
+                largeBitmap = createABitmap(
                     pdfRenderer,
                     pageNumber,
                     width,
@@ -47,25 +48,21 @@ class PdfToBitmapAsyncRenderer(
                     dXPixels,
                     dYPixels
                 )
-
-                BitmapUtils.renderDebugInfo(
-                    circle = false,
-                    text = false,
-                    border = true,
-                    bitmap = largeBitmap,
-                    dXPixels = dXPixels,
-                    dYPixels = dYPixels,
-                    zoom = zoom,
-                    width = width,
-                    height = height
-                )
-
-                resultBitmap = largeBitmap.copy(Bitmap.Config.RGB_565, false)
-                largeBitmap.recycle()
-
-                hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
             }
 
+            BitmapUtils.renderDebugInfo(
+                bitmap = largeBitmap,
+                dXPixels = dXPixels,
+                dYPixels = dYPixels,
+                renderTimeMs = renderProcessTime,
+                width = width,
+                height = height
+            )
+
+            resultBitmap = largeBitmap.copy(Bitmap.Config.RGB_565, false)
+            largeBitmap.recycle()
+
+            hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
             hatchet.v("Full PDF process took $renderProcessTime ms.")
             return resultBitmap
         } catch (ex: Exception) {

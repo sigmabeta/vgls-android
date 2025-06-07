@@ -13,6 +13,7 @@ import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.subs.CrossfadeSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
+import me.saket.telephoto.zoomable.ZoomSpec
 
 @Composable
 fun SheetPageItem(
@@ -45,6 +46,7 @@ fun SheetPageItem(
 fun ZoomableSheetPageItem(
     model: ZoomableSheetPageListModel,
     actionSink: ActionSink,
+    zoomSpec: ZoomSpec,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
@@ -58,7 +60,6 @@ fun ZoomableSheetPageItem(
     ZoomableSheet(
         pdfConfigById = model.pdfConfigById,
         contentDescription = contentDescription,
-        actionSink = actionSink,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
             model.gameName,
@@ -68,6 +69,8 @@ fun ZoomableSheetPageItem(
             maxWidth = maxWidthPx.toInt(),
             maxHeight = maxHeightPx.toInt(),
         ),
+        zoomSpec = zoomSpec,
+        actionSink = actionSink,
         modifier = modifier
             .fillMaxSize()
             .padding(padding),

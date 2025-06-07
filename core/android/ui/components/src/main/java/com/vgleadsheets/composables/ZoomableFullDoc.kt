@@ -1,6 +1,5 @@
 package com.vgleadsheets.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,36 +11,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.components.ZoomableSheetPageListModel
-import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
-import com.vgleadsheets.ui.themes.VglsMaterial
-import kotlinx.collections.immutable.toImmutableList
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
-import me.saket.telephoto.zoomable.ZoomSpec
-import me.saket.telephoto.zoomable.rememberZoomableState
+import me.saket.telephoto.zoomable.ZoomableState
 import me.saket.telephoto.zoomable.zoomable
 
 @Composable
 fun ZoomableFullDocItem(
     model: ZoomableSheetPageListModel,
     actionSink: ActionSink,
+    zoomableState: ZoomableState,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
@@ -55,7 +47,6 @@ fun ZoomableFullDocItem(
     ZoomableFullDoc(
         pdfConfigById = model.pdfConfigById,
         contentDescription = contentDescription,
-        actionSink = actionSink,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             model.title,
             model.gameName,
@@ -65,6 +56,8 @@ fun ZoomableFullDocItem(
             maxWidth = maxWidthPx.toInt(),
             maxHeight = maxHeightPx.toInt(),
         ),
+        zoomableState = zoomableState,
+        actionSink = actionSink,
         modifier = modifier
             .fillMaxSize()
             .padding(padding),
@@ -77,6 +70,7 @@ private fun ZoomableFullDoc(
     pdfConfigById: PdfConfigById,
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
+    zoomableState: ZoomableState,
     actionSink: ActionSink,
     modifier: Modifier,
 ) {
@@ -91,6 +85,7 @@ private fun ZoomableFullDoc(
             loadingIndicatorConfig = loadingIndicatorConfig,
             actionSink = actionSink,
             modifier = modifier,
+            zoomableState = zoomableState,
         )
     }
 }
@@ -100,6 +95,7 @@ private fun Content(
     pdfConfigById: PdfConfigById,
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
+    zoomableState: ZoomableState,
     actionSink: ActionSink,
     modifier: Modifier,
 ) {
@@ -125,10 +121,6 @@ private fun Content(
         return
     }
 
-    val zoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat())
-    val zoomableState = rememberZoomableState(
-        zoomSpec,
-    )
     zoomableState.contentScale = ContentScale.FillHeight
 
     val imageSourceFactory = LocalPdfSubsampler.current
@@ -145,7 +137,6 @@ private fun Content(
             state = zoomableState,
             onClick = { actionSink.sendAction(VglsAction.PageClicked) },
         )
-
 
     val isZoomedIn: Boolean by remember {
         derivedStateOf {
@@ -168,44 +159,3 @@ private fun Content(
     )
 }
 
-@Preview
-@Composable
-private fun Portrait() {
-    VglsMaterial {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.Black)
-        ) {
-            SampleSheetPageOne()
-        }
-    }
-}
-
-@Composable
-private fun SampleSheetPageOne() {
-    ZoomableSheet(
-        pdfConfigById = samplePdfConfig(),
-        contentDescription = null,
-        loadingIndicatorConfig = LoadingIndicatorConfig(
-            title = "A Trip to Alivel Mall",
-            gameName = "Kirby and the Forgotten Land",
-            pageNumber = 0,
-            loaderSize = samplePdfSize(),
-            composers = listOf(
-                "Hirokazu Ando",
-            ).toImmutableList()
-        ),
-        modifier = Modifier.fillMaxSize(),
-        actionSink = PreviewActionSink { },
-    )
-}
-
-private fun samplePdfConfig() = PdfConfigById(
-    0,
-    0,
-    false,
-    samplePdfSize(),
-)
-
-private fun samplePdfSize(): PdfSize = PdfSize.MEDIUM

@@ -38,6 +38,7 @@ fun ZoomableSheet(
     pdfConfigById: PdfConfigById,
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
+    zoomSpec: ZoomSpec,
     actionSink: ActionSink,
     modifier: Modifier,
 ) {
@@ -50,6 +51,7 @@ fun ZoomableSheet(
             pdfConfigById = pdfConfigById,
             contentDescription = contentDescription,
             loadingIndicatorConfig = loadingIndicatorConfig,
+            zoomSpec = zoomSpec,
             actionSink = actionSink,
             modifier = modifier,
         )
@@ -61,6 +63,7 @@ private fun Content(
     pdfConfigById: PdfConfigById,
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
+    zoomSpec: ZoomSpec,
     actionSink: ActionSink,
     modifier: Modifier,
 ) {
@@ -85,7 +88,6 @@ private fun Content(
         return
     }
 
-    val zoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat())
     val zoomableState = rememberZoomableState(
         zoomSpec,
     )
@@ -155,8 +157,9 @@ private fun SampleSheetPageOne() {
                 "Hirokazu Ando",
             ).toImmutableList()
         ),
-        modifier = Modifier.fillMaxSize(),
+        zoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat()),
         actionSink = PreviewActionSink { },
+        modifier = Modifier.fillMaxSize(),
     )
 }
 

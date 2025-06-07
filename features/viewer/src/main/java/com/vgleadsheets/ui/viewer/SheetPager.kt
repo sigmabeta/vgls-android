@@ -13,10 +13,12 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.ZoomableSheetPageItem
 import kotlinx.collections.immutable.ImmutableList
+import me.saket.telephoto.zoomable.ZoomSpec
 
 @Composable
 internal fun BoxScope.SheetPager(
     items: ImmutableList<ZoomableSheetPageListModel>,
+    zoomSpec: ZoomSpec,
     pagerState: PagerState,
     allowPaging: Boolean,
     actionSink: ActionSink,
@@ -35,6 +37,7 @@ internal fun BoxScope.SheetPager(
         val item = items[page]
         ZoomableSheetPageItem(
             model = item,
+            zoomSpec = zoomSpec,
             actionSink = actionSink,
             modifier = Modifier.fillMaxHeight(),
             padding = PaddingValues(),

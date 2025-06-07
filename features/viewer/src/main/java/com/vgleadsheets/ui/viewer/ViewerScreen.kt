@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalTelephotoApi::class)
+
 package com.vgleadsheets.ui.viewer
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -37,9 +40,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
@@ -50,12 +55,21 @@ import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.ZoomableFullDocItem
 import com.vgleadsheets.composables.ZoomableSheetPageItem
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import me.saket.telephoto.ExperimentalTelephotoApi
+import me.saket.telephoto.zoomable.Viewport
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.ZoomableContent
+import me.saket.telephoto.zoomable.rememberZoomableState
+import me.saket.telephoto.zoomable.spatial.CoordinateSpace
+import me.saket.telephoto.zoomable.spatial.SpatialOffset
+import kotlin.math.absoluteValue
 
 @Composable
 @Suppress("LongMethod", "MaxLineLength")
@@ -87,12 +101,15 @@ fun ViewerScreen(
 
         val singlePage = if (items.size <= 1) 0 else null
 
+        val zoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat())
+
         if (singlePage != null) {
             ZoomableSheetPageItem(
                 model = items.first(),
                 actionSink = actionSink,
                 modifier = Modifier,
                 padding = PaddingValues(),
+                zoomSpec = zoomSpec,
             )
 
             if (state.shouldShowLyricsWarning()) {
@@ -106,18 +123,55 @@ fun ViewerScreen(
             initialPage = state.initialPage
         ) { items.size }
 
+        val zoomableState = rememberZoomableState(zoomSpec)
+
+        val windowInfo = LocalWindowInfo.current
+        val containerSize = windowInfo.containerSize
+
+        val defaultPageHeight = containerSize.height
+        val defaultPageWidth = defaultPageHeight * SheetConstants.ASPECT_RATIO
+
+        val scale = zoomableState.contentTransformation.scaleMetadata.userZoom
+        val offsetX = zoomableState.contentTransformation.offset.x.absoluteValue
+
+        val currentPageWidth = defaultPageWidth * scale
+        val firstVisiblePage = (offsetX / currentPageWidth).toInt()
+
+        println("FirstVisible $firstVisiblePage Scale $scale Pagewidth $currentPageWidth Offset $offsetX")
+
         if (shouldScrollFreely) {
-            // TODO Calculate scroll pixels / first visible item
-            // val index by remember { derivedStateOf { scrollerState.firstVisibleItemIndex } }
-            // LaunchedEffect(index) {
-            //     pagerState.scrollToPage(index)
-            // }
+            val index by remember { derivedStateOf { firstVisiblePage } }
+            LaunchedEffect(index) {
+                pagerState.scrollToPage(index)
+            }
+
+            if (scale != 0f) {
+                LaunchedEffect(state.initialPage) {
+                    zoomableState.panBy(
+                        offset = SpatialOffset(
+                            offset = Offset(Int.MAX_VALUE.toFloat(), 0f),
+                            space = CoordinateSpace.ZoomableContent,
+                        ),
+                        animationSpec = snap()
+                    )
+
+                    val x = state.initialPage * -currentPageWidth
+                    zoomableState.panBy(
+                        offset = SpatialOffset(
+                            offset = Offset(x, 0f),
+                            space = CoordinateSpace.Viewport,
+                        ),
+                        animationSpec = snap()
+                    )
+                }
+            }
 
             ZoomableFullDocItem(
                 model = items.first(),
                 actionSink = actionSink,
                 modifier = Modifier,
                 padding = PaddingValues(),
+                zoomableState = zoomableState,
             )
         } else {
             // TODO Calculate scroll pixels / first visible item
@@ -127,10 +181,11 @@ fun ViewerScreen(
             // }
 
             SheetPager(
-                items,
-                pagerState,
-                !state.isZoomedIn,
-                actionSink,
+                items = items,
+                zoomSpec = zoomSpec,
+                pagerState = pagerState,
+                allowPaging = !state.isZoomedIn,
+                actionSink = actionSink,
             )
         }
 
@@ -150,16 +205,18 @@ private fun BoxScope.PageControls(
     state: ViewerState,
     actionSink: ActionSink
 ) {
-    val currentPage = pagerState.currentPage
+    if (state.isZoomedIn) {
+        return
+    }
 
-    val zoomedIn = state.isZoomedIn
+    val currentPage = pagerState.currentPage
     val prevEnabled = if (shouldScrollFreely) {
         // TODO Back button
         // scrollerState.canScrollBackward
         false
     } else {
         currentPage > 0
-    } && !zoomedIn
+    }
 
     val nextEnabled = if (shouldScrollFreely) {
         // TODO Forward button
@@ -167,9 +224,9 @@ private fun BoxScope.PageControls(
         false
     } else {
         currentPage < items.size - 1
-    } && !zoomedIn
+    }
 
-    val visible = state.buttonsVisible && !zoomedIn
+    val visible = state.buttonsVisible
 
     DirectionButton(Action.PrevButtonClicked, prevEnabled, visible, actionSink, shouldScrollFreely, pagerState)
     DirectionButton(Action.NextButtonClicked, nextEnabled, visible, actionSink, shouldScrollFreely, pagerState)

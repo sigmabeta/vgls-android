@@ -45,7 +45,7 @@ supportSqlite = "3.45.0"
 threeten = "1.4.0"
 tracing = "1.7.4"
 webview = "0.33.6"
-zoomable = "0.16.0"
+zoomable = "0.17.0-SNAPSHOT"
 
 [libraries]
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
