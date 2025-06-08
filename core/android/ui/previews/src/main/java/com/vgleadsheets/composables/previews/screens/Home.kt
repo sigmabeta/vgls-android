@@ -11,7 +11,7 @@ import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
@@ -130,17 +130,15 @@ private fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails,
                 SheetPageListModel(
                     dataId = song.id,
                     title = song.name,
-                    sourceInfo = SourceInfo(
-                        PdfConfigById(
-                            songId = song.id,
-                            isAltSelected = false,
-                            pageNumber = 0,
-                        )
+                    pdfConfigById = PdfConfigById(
+                        songId = song.id,
+                        isAltSelected = false,
+                        pageNumber = 0,
+                        pdfSize = PdfSize.MEDIUM,
                     ),
                     gameName = song.gameName,
                     clickAction = VglsAction.Noop,
                     composers = persistentListOf(),
-                    beeg = false,
                     pageNumber = 0,
                 )
             )
