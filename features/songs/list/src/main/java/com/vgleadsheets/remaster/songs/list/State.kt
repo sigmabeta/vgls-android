@@ -4,6 +4,7 @@ import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Song
@@ -34,6 +35,7 @@ data class State(
                         songId = song.id,
                         isAltSelected = false,
                         pageNumber = 0,
+                        pdfSize = PdfSize.THUMBNAIL,
                     )
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,

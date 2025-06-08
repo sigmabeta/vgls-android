@@ -3,9 +3,9 @@ package com.vgleadsheets.ui.viewer
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsState
-import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.components.ZoomableSheetPageListModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
@@ -21,6 +21,7 @@ data class ViewerState(
     val initialPage: Int = 0,
     val buttonsVisible: Boolean = true,
     val keepScreenOn: Boolean? = null,
+    val isZoomedIn: Boolean = false,
     val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
     val isSongHistoryEntryRecorded: Boolean = false,
 ) : VglsState {
@@ -32,7 +33,7 @@ data class ViewerState(
         )
     }
 
-    fun pages(): ImmutableList<SheetPageListModel> = if (song != null && partApiId != null) {
+    fun pages(): ImmutableList<ZoomableSheetPageListModel> = if (song != null && partApiId != null) {
         val pageCount = song.pageCount(partApiId, false)
         val actualPartApiId = if (pageCount > 0) {
             partApiId
@@ -46,35 +47,43 @@ data class ViewerState(
             song.pageCount(actualPartApiId, isAltSelected.data) to isAltSelected.data
         }
 
-        List(actualPageCount) { pageNumber ->
-            SheetPageListModel(
-                SourceInfo(
-                    PdfConfigById(
+        val singlePage = if (actualPageCount == 1) 0 else null
+
+        if (singlePage != null) {
+            listOf(
+                ZoomableSheetPageListModel(
+                    pdfConfigById = PdfConfigById(
+                        songId = song.id,
+                        pageNumber = singlePage,
+                        isAltSelected = altSelection,
+                        pdfSize = PdfSize.FILL,
+                    ),
+                    title = song.name,
+                    gameName = song.gameName,
+                    composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                    pageNumber = singlePage,
+                    clickAction = VglsAction.Noop,
+                )
+            )
+        } else {
+            List(actualPageCount) { pageNumber ->
+                ZoomableSheetPageListModel(
+                    pdfConfigById = PdfConfigById(
                         songId = song.id,
                         pageNumber = pageNumber,
                         isAltSelected = altSelection,
-                    )
-                ),
-                song.name,
-                song.gameName,
-                song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                pageNumber,
-                beeg = true,
-                VglsAction.Noop,
-            )
+                        pdfSize = PdfSize.FILL,
+                    ),
+                    title = song.name,
+                    gameName = song.gameName,
+                    composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                    pageNumber = pageNumber,
+                    clickAction = VglsAction.Noop,
+                )
+            }
         }
     } else {
-        listOf(
-            SheetPageListModel(
-                sourceInfo = SourceInfo(null),
-                title = song?.name.orEmpty(),
-                gameName = song?.gameName.orEmpty(),
-                composers = song?.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                pageNumber = 0,
-                beeg = true,
-                clickAction = VglsAction.Noop,
-            )
-        )
+        emptyList()
     }.toImmutableList()
 
     fun shouldShowLyricsWarning(): Boolean {

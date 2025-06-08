@@ -15,6 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlin.math.roundToInt
 import kotlin.system.measureTimeMillis
 
 @Singleton
@@ -43,79 +44,99 @@ class LoadingIndicatorGenerator @Inject constructor(
         )
     }
 
-    private var prevWidth = 0
-
-    private var prevBitmap: Bitmap? = null
-
+    @Suppress("MagicNumber")
     @Synchronized
     fun generateLoadingSheet(
-        width: Int,
         title: String,
         gameName: String,
         composers: List<String>,
+        maxWidth: Int,
+        maxHeight: Int,
     ): Bitmap {
-        hatchet.v(
-            "Generating $width px wide loading image for song $title from $gameName"
-        )
+        var resultBitmap: Bitmap
+        val renderProcessTime = measureTimeMillis {
+            hatchet.d("Generating loading sheet bitmap for song $gameName - $title")
 
-        val scalingFactor = width / DEFAULT_SHEET_WIDTH
-        val scaledHeight = scalingFactor * DEFAULT_SHEET_HEIGHT
-
-        if (width != prevWidth) {
-            prevWidth = width
-            prevBitmap = createNewTemplateBitmap(width, scaledHeight, scalingFactor)
-        }
-
-        val bitmap = prevBitmap
-        checkNotNull(bitmap) { "Failed to allocate bitmap." }
-        val uniqueText = measureTimeMillis {
-            renderUniqueText(
-                bitmap,
-                scalingFactor,
+            val largeBitmap = createBitmap(
                 title,
                 gameName,
                 composers,
+                maxWidth,
+                maxHeight,
             )
+
+            resultBitmap = largeBitmap.copy(Bitmap.Config.ALPHA_8, false)
+            largeBitmap.recycle()
+
+            hatchet.v("Result bitmap size: ${resultBitmap.byteCount / 1_024 / 1_024f} MiB.")
         }
 
-        hatchet.v("Unique text rendering took $uniqueText ms.")
-        return bitmap.copy(
-            Bitmap.Config.ARGB_8888,
-            false
-        )
+        hatchet.v("Full PDF process took $renderProcessTime ms.")
+        return resultBitmap
     }
 
-    private fun createNewTemplateBitmap(
-        width: Int,
-        scaledHeight: Float,
-        scalingFactor: Float
+    private fun createBitmap(
+        title: String,
+        gameName: String,
+        composers: List<String>,
+        maxWidth: Int,
+        maxHeight: Int,
     ): Bitmap {
-        val newBitmap = Bitmap.createBitmap(
-            width,
-            scaledHeight.toInt(),
-            Bitmap.Config.ARGB_8888
-        )
+        val newBitmap: Bitmap
 
-        val canvas = Canvas(newBitmap)
-        val centerXpos = (canvas.width / 2) / scalingFactor
+        val pdfRenderTime = measureTimeMillis {
+            val docWidth = DEFAULT_SHEET_WIDTH.toInt()
+            val docHeight = DEFAULT_SHEET_HEIGHT.toInt()
 
-        val stavesRenderingMillis = measureTimeMillis {
-            renderBlankStaves(
-                canvas,
-                scalingFactor
+            val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
+                hatchet,
+                pageCount = 1,
+                maxWidth,
+                maxHeight,
+                docWidth,
+                docHeight,
+                1.0f
             )
+
+            newBitmap = BitmapUtils.createBlankBitmap(
+                width = bitmapSizeInfo.pageWidth,
+                height = bitmapSizeInfo.pageHeight,
+            )
+
+            val canvas = Canvas(newBitmap)
+            val centerXpos = (canvas.width / 2) / bitmapSizeInfo.pageToMaximumScalingFactor
+
+            val stavesRenderingMillis = measureTimeMillis {
+                renderBlankStaves(
+                    canvas,
+                    bitmapSizeInfo.pageToMaximumScalingFactor,
+                )
+            }
+
+            val commonTextRenderingMillis = measureTimeMillis {
+                renderCommonText(
+                    canvas,
+                    bitmapSizeInfo.pageToMaximumScalingFactor,
+                    centerXpos
+                )
+            }
+
+            hatchet.v("Common text rendering took $commonTextRenderingMillis ms")
+            hatchet.v("Staff rendering took $stavesRenderingMillis ms")
+            val uniqueText = measureTimeMillis {
+                renderUniqueText(
+                    newBitmap,
+                    bitmapSizeInfo.pageToMaximumScalingFactor,
+                    title,
+                    gameName,
+                    composers,
+                )
+            }
+
+            hatchet.v("Unique text rendering took $uniqueText ms.")
         }
 
-        val commonTextRenderingMillis = measureTimeMillis {
-            renderCommonText(
-                canvas,
-                scalingFactor,
-                centerXpos
-            )
-        }
-
-        hatchet.v("Common text rendering took $commonTextRenderingMillis ms")
-        hatchet.v("Staff rendering took $stavesRenderingMillis ms")
+        hatchet.v("PDF page rendering took $pdfRenderTime ms.")
         return newBitmap
     }
 
@@ -133,10 +154,10 @@ class LoadingIndicatorGenerator @Inject constructor(
         val textRenderingMillis = measureTimeMillis {
             canvas.drawRect(
                 Rect(
-                    (LEFT_CLEAR_BOX * scalingFactor).toInt(),
-                    (TOP_CLEAR_BOX * scalingFactor).toInt(),
-                    (RIGHT_CLEAR_BOX * scalingFactor).toInt(),
-                    (BOTTOM_CLEAR_BOX * scalingFactor).toInt(),
+                    (LEFT_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (TOP_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (RIGHT_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (BOTTOM_CLEAR_BOX * scalingFactor).roundToInt(),
                 ),
                 clearPaint
             )
@@ -264,41 +285,39 @@ class LoadingIndicatorGenerator @Inject constructor(
 
         const val TEXT_NOW_LOADING = "Please wait, now loading..."
 
-        const val DEFAULT_SHEET_WIDTH = 2550.0f
-        const val DEFAULT_SHEET_HEIGHT = 3300.0f
+        const val DEFAULT_SHEET_WIDTH = 612.0f
+        const val DEFAULT_SHEET_HEIGHT = 792.0f
 
-        // const val
+        const val TEXT_SIZE_SHEET_TITLE = 27.84f
+        const val TEXT_SIZE_GAME_NAME = 13.92f
+        const val TEXT_SIZE_TRANSPOSITION = 19.2f
 
-        const val TEXT_SIZE_SHEET_TITLE = 116.0f
-        const val TEXT_SIZE_GAME_NAME = 58.0f
-        const val TEXT_SIZE_TRANSPOSITION = 80.0f
+        const val TEXT_SIZE_COMPOSERS = 12.0f
+        const val TEXT_SIZE_COPYRIGHT = 8.16f
 
-        const val TEXT_SIZE_COMPOSERS = 50.0f
-        const val TEXT_SIZE_COPYRIGHT = 34.0f
+        const val LEFT_CLEAR_BOX = 24
+        const val TOP_CLEAR_BOX = 24
+        const val RIGHT_CLEAR_BOX = 585.84
+        const val BOTTOM_CLEAR_BOX = 91.2
 
-        const val LEFT_CLEAR_BOX = 100
-        const val TOP_CLEAR_BOX = 100
-        const val RIGHT_CLEAR_BOX = 2442
-        const val BOTTOM_CLEAR_BOX = 380
+        const val Y_POS_SHEET_TITLE = 50.4f
+        const val Y_POS_GAME_NAME = 67.68f
+        const val Y_POS_TRANSPOSITION = 42.0f
 
-        const val Y_POS_SHEET_TITLE = 210.0f
-        const val Y_POS_GAME_NAME = 282.0f
-        const val Y_POS_TRANSPOSITION = 175.0f
+        const val Y_POS_COMPOSERS = 86.4f
+        const val Y_POS_TRANSCRIBER = 104.4f
+        const val Y_POS_COPYRIGHT = 775.68f
 
-        const val Y_POS_COMPOSERS = 360.0f
-        const val Y_POS_TRANSCRIBER = 435.0f
-        const val Y_POS_COPYRIGHT = 3232.0f
+        const val X_POS_COMPOSERS = 583.2f
+        const val X_POS_TRANSPOSITION = 28.8f
 
-        const val X_POS_COMPOSERS = 2430.0f
-        const val X_POS_TRANSPOSITION = 120.0f
+        const val X_POS_FIRST_STAFF = 28.32f
+        const val Y_POS_FIRST_STAFF = 129.6f
 
-        const val X_POS_FIRST_STAFF = 118.0f
-        const val Y_POS_FIRST_STAFF = 540.0f
+        const val Y_DISPLACEMENT_STAFF = 64.8
 
-        const val Y_DISPLACEMENT_STAFF = 270
-
-        const val WIDTH_STAFF = 2313
-        const val HEIGHT_STAFF = 178
+        const val WIDTH_STAFF = 555.12
+        const val HEIGHT_STAFF = 42.72
 
         const val STAFF_COUNT = 10
     }

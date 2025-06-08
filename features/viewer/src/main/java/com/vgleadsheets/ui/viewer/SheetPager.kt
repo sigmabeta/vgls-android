@@ -10,15 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.components.SheetPageListModel
-import com.vgleadsheets.composables.Content
+import com.vgleadsheets.components.ZoomableSheetPageListModel
+import com.vgleadsheets.composables.ZoomableSheetPageItem
 import kotlinx.collections.immutable.ImmutableList
+import me.saket.telephoto.zoomable.ZoomSpec
 
 @Composable
 internal fun BoxScope.SheetPager(
-    items: ImmutableList<SheetPageListModel>,
+    items: ImmutableList<ZoomableSheetPageListModel>,
+    zoomSpec: ZoomSpec,
     pagerState: PagerState,
-    showDebug: Boolean,
+    allowPaging: Boolean,
     actionSink: ActionSink,
 ) {
     if (items.isEmpty()) {
@@ -29,14 +31,16 @@ internal fun BoxScope.SheetPager(
 
     HorizontalPager(
         state = pagerState,
-        modifier = Modifier.align(Alignment.Center)
+        modifier = Modifier.align(Alignment.Center),
+        userScrollEnabled = allowPaging,
     ) { page ->
         val item = items[page]
-        item.Content(
-            sink = actionSink,
-            mod = Modifier.fillMaxHeight(),
-            debug = showDebug,
-            pad = PaddingValues()
+        ZoomableSheetPageItem(
+            model = item,
+            zoomSpec = zoomSpec,
+            actionSink = actionSink,
+            modifier = Modifier.fillMaxHeight(),
+            padding = PaddingValues(),
         )
     }
 }

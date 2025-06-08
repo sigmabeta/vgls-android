@@ -34,7 +34,16 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") } // For SupportSQLite
+
+        // For SupportSQLite
+        maven {
+            url = uri("https://jitpack.io")
+        }
+
+        // For Telephoto
+        maven {
+            setUrl("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
     }
 }
 

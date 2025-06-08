@@ -82,7 +82,10 @@ class ViewerViewModel @AssistedInject constructor(
             is VglsAction.Resume -> resume()
             is VglsAction.Pause -> pause()
             is VglsAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
-            is Action.ScreenClicked -> onScreenClicked()
+            is VglsAction.PageClicked -> maybeShowUi()
+            is VglsAction.PageZoomedIn -> enableZoom()
+            is VglsAction.PageZoomedOutMax -> disableZoom()
+            is Action.ScreenClicked -> maybeShowUi()
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
         }
     }
@@ -213,7 +216,7 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    private fun onScreenClicked() {
+    private fun maybeShowUi() {
         maybeRestartScreenOnTimer()
         emitEvent(VglsEvent.ShowUiChrome)
     }
@@ -309,6 +312,19 @@ class ViewerViewModel @AssistedInject constructor(
             historyTimer?.cancel()
             historyTimer = null
         }
+    }
+
+    private fun enableZoom() {
+        updateState { it.copy(isZoomedIn = true) }
+        maybeRestartScreenOnTimer()
+    }
+
+    private fun disableZoom() {
+        updateState { it.copy(isZoomedIn = false) }
+
+        maybeRestartScreenOnTimer()
+        showButtons()
+        startHideButtonsTimer()
     }
 
     companion object {

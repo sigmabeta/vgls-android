@@ -15,12 +15,12 @@ import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.SinglePageListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
@@ -108,24 +108,22 @@ data class State(
                         sheetPage(
                             data,
                             pageNumber,
-                            beeg = false,
                             showLyricsMissingWarning = false,
-                            altSelection
+                            altSelection,
+                            PdfSize.LARGE
                         )
                     }.toImmutableList()
                 )
 
                 pageCount == 0 -> HorizontalScrollerListModel(
                     dataId = data.id,
-                    scrollingItems = List(data.pageCount(Part.C.apiId, altSelection)) { pageNumber ->
-                        sheetPage(
+                    scrollingItems = listOf(
+                        singlePage(
                             data,
-                            pageNumber,
-                            beeg = false,
-                            showLyricsMissingWarning = true,
-                            altSelection
+                            showLyricsMissingWarning = false,
+                            altSelection,
                         )
-                    }.toImmutableList()
+                    ).toImmutableList()
                 )
 
                 else -> singlePage(data, false, altSelection)
@@ -143,18 +141,18 @@ data class State(
         sheetPageCardModel = sheetPage(
             song = song,
             pageNumber = 0,
-            beeg = true,
             showLyricsMissingWarning = showLyricsMissingWarning,
             altSelectionValue = altSelectionValue,
+            pdfSize = PdfSize.LARGE,
         )
     )
 
     private fun sheetPage(
         song: Song,
         pageNumber: Int,
-        beeg: Boolean,
         showLyricsMissingWarning: Boolean,
         altSelectionValue: Boolean,
+        pdfSize: PdfSize,
     ) = SheetPageCardListModel(
         SheetPageListModel(
             title = song.name,
@@ -163,13 +161,11 @@ data class State(
             pageNumber = pageNumber,
             clickAction = Action.SongThumbnailClicked(song.id, pageNumber),
             showLyricsWarning = showLyricsMissingWarning,
-            beeg = beeg,
-            sourceInfo = SourceInfo(
-                PdfConfigById(
-                    songId = song.id,
-                    pageNumber = pageNumber,
-                    isAltSelected = altSelectionValue,
-                )
+            pdfConfigById = PdfConfigById(
+                songId = song.id,
+                pageNumber = pageNumber,
+                isAltSelected = altSelectionValue,
+                pdfSize = pdfSize,
             ),
         )
     )

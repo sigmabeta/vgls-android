@@ -5,7 +5,9 @@ import coil3.request.Options
 
 class LoadingIndicatorKeyer : Keyer<LoadingIndicatorConfig> {
     override fun key(data: LoadingIndicatorConfig, options: Options): String {
-        val width = options.size.width
-        return "loading-${data.title}-${data.gameName}-C-$width"
+        val width = data.maxWidth
+        val height = data.maxHeight
+        val cacheKey = "loading-${data.title}-${data.gameName}-C-$width-$height"
+        return cacheKey
     }
 }

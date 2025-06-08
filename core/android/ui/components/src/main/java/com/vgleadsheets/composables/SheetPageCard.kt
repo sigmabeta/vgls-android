@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -25,7 +24,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.StringId
@@ -43,15 +42,8 @@ fun SheetPageCard(
     modifier: Modifier,
     padding: PaddingValues,
 ) {
-    val maxHeight = if (model.beeg) {
-        600.dp
-    } else {
-        400.dp
-    }
-
     ElevatedCard(
         modifier = modifier
-            .heightIn(max = maxHeight)
             .padding(padding)
             .padding(bottom = 16.dp)
             .wrapContentSize()
@@ -60,7 +52,6 @@ fun SheetPageCard(
             SheetPageItem(
                 model = model,
                 actionSink = actionSink,
-                fillMaxWidth = false,
                 showDebug = showDebug,
                 padding = PaddingValues(),
                 modifier = Modifier
@@ -128,12 +119,11 @@ private fun DarkPdf() {
 private fun SamplePdf() {
     SheetPageCard(
         model = SheetPageListModel(
-            sourceInfo = SourceInfo(
-                PdfConfigById(
-                    songId = 92,
-                    pageNumber = 0,
-                    isAltSelected = false,
-                )
+            pdfConfigById = PdfConfigById(
+                songId = 92,
+                pageNumber = 0,
+                isAltSelected = false,
+                pdfSize = PdfSize.MEDIUM,
             ),
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
@@ -141,7 +131,6 @@ private fun SamplePdf() {
                 "Hirokazu Ando",
             ).toImmutableList(),
             pageNumber = 0,
-            beeg = false,
             clickAction = VglsAction.Noop,
         ),
         PreviewActionSink { },

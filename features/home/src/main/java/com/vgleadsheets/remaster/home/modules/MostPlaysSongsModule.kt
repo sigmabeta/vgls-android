@@ -4,7 +4,7 @@ import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel
-import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SongPlayCount
@@ -17,11 +17,11 @@ import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.time.TimeUtils
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
+import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
-import javax.inject.Inject
 
 class MostPlaysSongsModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
@@ -55,17 +55,15 @@ class MostPlaysSongsModule @Inject constructor(
                                 SheetPageListModel(
                                     dataId = song.id,
                                     title = song.name,
-                                    sourceInfo = SourceInfo(
-                                        PdfConfigById(
-                                            songId = song.id,
-                                            pageNumber = 0,
-                                            isAltSelected = false,
-                                        )
+                                    pdfConfigById = PdfConfigById(
+                                        songId = song.id,
+                                        pageNumber = 0,
+                                        isAltSelected = false,
+                                        pdfSize = PdfSize.MEDIUM,
                                     ),
                                     gameName = song.gameName,
                                     clickAction = Action.MostPlaysSongClicked(song.id),
                                     composers = persistentListOf(),
-                                    beeg = false,
                                     pageNumber = 0,
                                 )
                             )

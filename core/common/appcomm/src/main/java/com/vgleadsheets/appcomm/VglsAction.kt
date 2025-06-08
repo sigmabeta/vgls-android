@@ -27,4 +27,8 @@ open class VglsAction {
     data object AppSeeWhatsNewClicked : VglsAction()
 
     data object KeepScreenOnSnackCtaClicked : VglsAction()
+
+    data object PageClicked : VglsAction()
+    data object PageZoomedOutMax : VglsAction()
+    data object PageZoomedIn : VglsAction()
 }

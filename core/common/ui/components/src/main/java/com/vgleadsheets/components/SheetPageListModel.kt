@@ -1,16 +1,15 @@
 package com.vgleadsheets.components
 
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.pdf.PdfConfigById
 import kotlinx.collections.immutable.ImmutableList
 
 data class SheetPageListModel(
-    val sourceInfo: SourceInfo,
+    val pdfConfigById: PdfConfigById,
     val title: String,
     val gameName: String,
     val composers: ImmutableList<String>,
     val pageNumber: Int,
-    val beeg: Boolean,
     val clickAction: VglsAction,
     val showLyricsWarning: Boolean = false,
     override val dataId: Long = ("$gameName - $title: Page $pageNumber").hashCode().toLong()

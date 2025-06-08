@@ -13,6 +13,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlin.math.roundToInt
 import kotlin.system.measureTimeMillis
 
 @Singleton
@@ -87,7 +88,7 @@ class FakePdfImageGenerator @Inject constructor(
     ): Bitmap {
         val newBitmap = Bitmap.createBitmap(
             width,
-            scaledHeight.toInt(),
+            scaledHeight.roundToInt(),
             Bitmap.Config.ARGB_8888
         )
 
@@ -130,10 +131,10 @@ class FakePdfImageGenerator @Inject constructor(
         val textRenderingMillis = measureTimeMillis {
             canvas.drawRect(
                 Rect(
-                    (LEFT_CLEAR_BOX * scalingFactor).toInt(),
-                    (TOP_CLEAR_BOX * scalingFactor).toInt(),
-                    (RIGHT_CLEAR_BOX * scalingFactor).toInt(),
-                    (BOTTOM_CLEAR_BOX * scalingFactor).toInt(),
+                    (LEFT_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (TOP_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (RIGHT_CLEAR_BOX * scalingFactor).roundToInt(),
+                    (BOTTOM_CLEAR_BOX * scalingFactor).roundToInt(),
                 ),
                 clearPaint
             )
@@ -209,12 +210,12 @@ class FakePdfImageGenerator @Inject constructor(
         canvas: Canvas,
         scalingFactor: Float
     ) {
-        val firstStaffXPosition = (X_POS_FIRST_STAFF * scalingFactor).toInt()
-        val firstStaffYPosition = (Y_POS_FIRST_STAFF * scalingFactor).toInt()
-        val staffYDisplacement = (Y_DISPLACEMENT_STAFF * scalingFactor).toInt()
+        val firstStaffXPosition = (X_POS_FIRST_STAFF * scalingFactor).roundToInt()
+        val firstStaffYPosition = (Y_POS_FIRST_STAFF * scalingFactor).roundToInt()
+        val staffYDisplacement = (Y_DISPLACEMENT_STAFF * scalingFactor).roundToInt()
 
-        val scaledStaffWidth = (WIDTH_STAFF * scalingFactor).toInt()
-        val scaledStaffHeight = (HEIGHT_STAFF * scalingFactor).toInt()
+        val scaledStaffWidth = (WIDTH_STAFF * scalingFactor).roundToInt()
+        val scaledStaffHeight = (HEIGHT_STAFF * scalingFactor).roundToInt()
 
         for (staffNumber in 0 until STAFF_COUNT) {
             val staffYPos = firstStaffYPosition + (staffNumber * staffYDisplacement)

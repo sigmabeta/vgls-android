@@ -11,6 +11,7 @@ import com.vgleadsheets.components.SearchHistoryListModel
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SquareItemListModel
 import com.vgleadsheets.components.TitleBarModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.checkForDupes
@@ -126,6 +127,7 @@ data class SearchState(
                         songId = song.id,
                         pageNumber = 0,
                         isAltSelected = false,
+                        pdfSize = PdfSize.THUMBNAIL,
                     )
                 ),
                 imagePlaceholder = Icon.DESCRIPTION,

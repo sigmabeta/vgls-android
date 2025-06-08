@@ -1,4 +1,4 @@
-package com.vgleadsheets.images
+package com.vgleadsheets.composables.utils
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable

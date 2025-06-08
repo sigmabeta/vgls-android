@@ -1,14 +1,17 @@
 package com.vgleadsheets.composables.subs
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,45 +20,103 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
-import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
+import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
-import com.vgleadsheets.composables.previews.SheetConstants
+import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.images.SourceInfo
+import com.vgleadsheets.images.PdfSize
+import com.vgleadsheets.pdf.PdfConfigById
+import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.math.roundToInt
 
 @Composable
 @Suppress("LongMethod", "ReturnCount")
 fun CrossfadeSheet(
-    sourceInfo: SourceInfo,
+    pdfConfigById: PdfConfigById,
     contentDescription: String?,
     loadingIndicatorConfig: LoadingIndicatorConfig,
     sheetId: Long,
-    fillMaxWidth: Boolean,
     showDebug: Boolean,
     modifier: Modifier,
     simulateError: Boolean = false
 ) {
+    if (pdfConfigById.pdfSize == PdfSize.FILL) {
+        BoxWithConstraints {
+            Content(
+                pdfConfigById = pdfConfigById,
+                contentDescription = contentDescription,
+                loadingIndicatorConfig = loadingIndicatorConfig,
+                sheetId = sheetId,
+                showDebug = showDebug,
+                scope = this@BoxWithConstraints,
+                modifier = modifier,
+                simulateError = simulateError
+            )
+        }
+    } else {
+        Box {
+            Content(
+                pdfConfigById = pdfConfigById,
+                contentDescription = contentDescription,
+                loadingIndicatorConfig = loadingIndicatorConfig,
+                sheetId = sheetId,
+                showDebug = showDebug,
+                modifier = modifier,
+                simulateError = simulateError,
+                scope = null
+            )
+        }
+    }
+}
+
+@Composable
+@Suppress("LongMethod")
+private fun BoxScope.Content(
+    pdfConfigById: PdfConfigById,
+    contentDescription: String?,
+    loadingIndicatorConfig: LoadingIndicatorConfig,
+    sheetId: Long,
+    showDebug: Boolean,
+    scope: BoxWithConstraintsScope?,
+    modifier: Modifier,
+    simulateError: Boolean
+) {
+    val pdfConfigByIdWithSize = withSize(
+        pdfConfigById,
+        scope
+    )
+
+    val loadingIndicatorConfigWithSize = withSize(
+        loadingIndicatorConfig,
+        scope
+    )
+
+    val bgModifier = modifier.bgModifier()
+
     if (simulateError) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = modifier.fillMaxSize()
+            modifier = bgModifier.fillMaxSize()
         ) {
             ErrorState(
-                SourceInfo(sourceInfo ?: "Simulated Error"),
+                pdfConfigByIdWithSize,
                 modifier,
                 showDebug,
-                loadingIndicatorConfig = loadingIndicatorConfig,
+                loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                 sheetId = sheetId,
                 IllegalArgumentException("Oops it didn't work."),
             ) { }
@@ -65,73 +126,123 @@ fun CrossfadeSheet(
 
     if (LocalInspectionMode.current) {
         PreviewSheet(
-            loadingIndicatorConfig,
-            fillMaxWidth,
-            modifier
+            loadingIndicatorConfigWithSize,
+            modifier.bgModifier()
         )
         return
     }
 
-    if (sourceInfo.info == null) {
-        PlaceholderSheet(
-            loadingIndicatorConfig = loadingIndicatorConfig,
-            seed = sheetId,
-            modifier = modifier
-        )
-        return
-    }
-
-    SubcomposeAsyncImage(
+    val painter = rememberAsyncImagePainter(
         model = with(ImageRequest.Builder(LocalContext.current)) {
-            data(sourceInfo.info)
+            data(pdfConfigByIdWithSize)
             build()
-        },
-        contentScale = ContentScale.Fit,
-        contentDescription = contentDescription,
-        modifier = modifier
-            .defaultMinSize(minWidth = SheetConstants.MIN_WIDTH)
-            .aspectRatio(SheetConstants.ASPECT_RATIO),
-    ) {
-        val state by painter.state.collectAsState()
-        when (state) {
-            is AsyncImagePainter.State.Loading ->
-                PlaceholderSheet(
-                    loadingIndicatorConfig = loadingIndicatorConfig,
-                    seed = sheetId,
-                    modifier = modifier
-                )
+        }
+    )
 
+    val painterState by painter.state.collectAsState()
+
+    Crossfade(
+        targetState = painterState,
+        modifier = bgModifier
+            .align(Alignment.Center),
+    ) {
+        when (it) {
             is AsyncImagePainter.State.Success -> {
                 Image(
                     painter = painter,
                     contentDescription = contentDescription,
-                    contentScale = ContentScale.Fit,
-                    modifier = modifier,
+                    contentScale = ContentScale.None,
                 )
             }
 
             is AsyncImagePainter.State.Error -> {
                 ErrorState(
-                    sourceInfo = sourceInfo,
-                    modifier = modifier,
+                    pdfConfigById = pdfConfigByIdWithSize,
                     showDebug = showDebug,
-                    loadingIndicatorConfig = loadingIndicatorConfig,
+                    loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                     sheetId = sheetId,
-                    error = (state as AsyncImagePainter.State.Error).result.throwable,
+                    error = (painterState as AsyncImagePainter.State.Error).result.throwable,
+                    modifier = Modifier,
                 ) {
                     painter.restart()
                 }
             }
 
-            else -> {}
+            else -> PlaceholderSheet(
+                loadingIndicatorConfig = loadingIndicatorConfigWithSize,
+                seed = sheetId,
+                modifier = Modifier,
+            )
         }
+    }
+}
+
+@Suppress("MagicNumber")
+@Composable
+private fun Modifier.bgModifier(): Modifier {
+    val bgColor = if (BuildConfig.DEBUG) {
+        Color(1f, 1f, 0.8f, 1f)
+    } else {
+        Color.White
+    }
+
+    return background(bgColor)
+}
+
+@Composable
+private fun BoxScope.withSize(
+    withoutSize: PdfConfigById,
+    scope: BoxWithConstraintsScope?
+): PdfConfigById {
+    with(LocalDensity.current) {
+        val scopeWidth = scope?.maxWidth ?: Int.MAX_VALUE.dp
+        val scopeHeight = scope?.maxHeight ?: Int.MAX_VALUE.dp
+        val (maxWidth, maxHeight) = when (withoutSize.pdfSize) {
+            PdfSize.THUMBNAIL -> ImageSize.THUMBNAIL.size to ImageSize.THUMBNAIL.size
+            PdfSize.MEDIUM -> scopeWidth to ImageSize.MEDIUM_HEIGHT.size
+            PdfSize.LARGE -> scopeWidth to ImageSize.LARGE_HEIGHT.size
+            PdfSize.FILL -> scopeWidth to scopeHeight
+        }
+
+        val maxWidthInt = maxWidth.toPx().roundToInt()
+        val maxHeightInt = maxHeight.toPx().roundToInt()
+
+        return@withSize withoutSize.copy(
+            maxWidth = maxWidthInt,
+            maxHeight = maxHeightInt,
+        )
+    }
+}
+
+@Composable
+private fun BoxScope.withSize(
+    withoutSize: LoadingIndicatorConfig,
+    scope: BoxWithConstraintsScope?
+): LoadingIndicatorConfig {
+    with(LocalDensity.current) {
+        val scopeWidth = scope?.maxWidth ?: Int.MAX_VALUE.dp
+        val scopeHeight = scope?.maxHeight ?: Int.MAX_VALUE.dp
+        val (maxWidth, maxHeight) = when (withoutSize.loaderSize) {
+            PdfSize.THUMBNAIL -> ImageSize.THUMBNAIL.size to ImageSize.THUMBNAIL.size
+            PdfSize.MEDIUM -> scopeWidth to ImageSize.MEDIUM_HEIGHT.size
+            PdfSize.LARGE -> scopeWidth to ImageSize.LARGE_HEIGHT.size
+            PdfSize.FILL -> scopeWidth to scopeHeight
+        }
+
+        val maxWidthInt = maxWidth.toPx().roundToInt()
+        val maxHeightInt = maxHeight.toPx().roundToInt()
+
+        return@withSize withoutSize.copy(
+            maxWidth = withoutSize.maxWidth ?: maxWidthInt,
+            maxHeight = withoutSize.maxHeight ?: maxHeightInt,
+        )
     }
 }
 
 @Composable
 @Suppress("MagicNumber")
 private fun BoxScope.ErrorState(
-    sourceInfo: SourceInfo,
+    pdfConfigById: PdfConfigById,
     modifier: Modifier,
     showDebug: Boolean,
     loadingIndicatorConfig: LoadingIndicatorConfig,
@@ -142,9 +253,10 @@ private fun BoxScope.ErrorState(
     PlaceholderSheet(
         loadingIndicatorConfig = loadingIndicatorConfig,
         seed = sheetId,
-        modifier = modifier
+        modifier = modifier.bgModifier()
     )
 
+    // Transparent, clickable overlay
     Box(
         modifier = Modifier
             .clickable(onClick = errorOnClick)
@@ -152,15 +264,21 @@ private fun BoxScope.ErrorState(
             .background(Color(0, 0, 0, 128))
     ) { }
 
+    val height = with(LocalDensity.current) {
+        loadingIndicatorConfig.maxHeight?.toDp()
+    } ?: 32.dp
+
     EmptyListIndicator(
         model = ErrorStateListModel(
-            failedOperationName = sourceInfo.toString(),
+            failedOperationName = "Load PDF with ID ${pdfConfigById.songId}",
             errorString = stringResource(StringId.ERROR_IMAGE_NETWORK.id()),
             error = error
         ),
         onBlack = true,
         showDebug = showDebug,
         modifier = modifier
+            .height(height)
+            .aspectRatio(SheetConstants.ASPECT_RATIO)
     )
 }
 
@@ -223,18 +341,18 @@ private fun PortraitError() {
 @Composable
 private fun SampleLoading() {
     CrossfadeSheet(
-        sourceInfo = SourceInfo("Doesn't matter"),
+        pdfConfigById = samplePdfConfig(),
         contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        fillMaxWidth = true,
         showDebug = true,
         modifier = Modifier.fillMaxSize(),
     )
@@ -243,18 +361,18 @@ private fun SampleLoading() {
 @Composable
 private fun SampleSheetPageOne() {
     CrossfadeSheet(
-        sourceInfo = SourceInfo("nope"),
+        pdfConfigById = samplePdfConfig(),
         contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        fillMaxWidth = true,
         showDebug = true,
         modifier = Modifier.fillMaxSize(),
     )
@@ -263,18 +381,18 @@ private fun SampleSheetPageOne() {
 @Composable
 private fun SampleSheetPageTwo() {
     CrossfadeSheet(
-        sourceInfo = SourceInfo("nope"),
+        pdfConfigById = samplePdfConfig(),
         contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 1,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        fillMaxWidth = true,
         showDebug = true,
         modifier = Modifier.fillMaxSize(),
     )
@@ -283,20 +401,29 @@ private fun SampleSheetPageTwo() {
 @Composable
 private fun SampleError() {
     CrossfadeSheet(
-        sourceInfo = SourceInfo("nope"),
+        pdfConfigById = samplePdfConfig(),
         contentDescription = null,
         loadingIndicatorConfig = LoadingIndicatorConfig(
             title = "A Trip to Alivel Mall",
             gameName = "Kirby and the Forgotten Land",
             pageNumber = 0,
+            loaderSize = samplePdfSize(),
             composers = listOf(
                 "Hirokazu Ando",
             ).toImmutableList()
         ),
         sheetId = 1234L,
-        fillMaxWidth = true,
         showDebug = true,
         modifier = Modifier.fillMaxWidth(),
         simulateError = true,
     )
 }
+
+private fun samplePdfConfig() = PdfConfigById(
+    0,
+    0,
+    false,
+    samplePdfSize(),
+)
+
+private fun samplePdfSize(): PdfSize = PdfSize.MEDIUM

@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(libs.coil.kt.core)
     implementation(libs.androidx.core.ktx)
+    api(libs.zoomable.image.coil3)
 
     implementation(projects.core.android.bitmaps)
 

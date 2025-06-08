@@ -7,44 +7,39 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vgleadsheets.bitmaps.R
+import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.images.LoadingIndicatorConfig
 
 @Composable
 fun PreviewSheet(
     loadingIndicatorConfig: LoadingIndicatorConfig,
-    fillMaxWidth: Boolean,
     modifier: Modifier
 ) {
-    val actualModifierLol = if (fillMaxWidth) {
-        modifier.fillMaxWidth()
-    } else {
-        modifier.width(300.dp)
-    }
+    val height = with(LocalDensity.current) {
+        loadingIndicatorConfig.maxHeight?.toDp()
+    } ?: 32.dp
 
     Box(
-        modifier = actualModifierLol
+        modifier = modifier
+            .height(height)
             .aspectRatio(SheetConstants.ASPECT_RATIO)
             .background(Color.White)
     ) {
         if (loadingIndicatorConfig.pageNumber == 0) {
-            PreviewSheetTitle(
-                loadingIndicatorConfig,
-                modifier
-            )
+            PreviewSheetTitle(loadingIndicatorConfig)
         } else {
             PreviewSheetOther()
         }
@@ -55,7 +50,6 @@ fun PreviewSheet(
 @Suppress("MagicNumber")
 private fun BoxScope.PreviewSheetTitle(
     loadingIndicatorConfig: LoadingIndicatorConfig,
-    modifier: Modifier = Modifier
 ) {
     Text(
         text = loadingIndicatorConfig.title,

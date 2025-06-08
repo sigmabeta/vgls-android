@@ -27,6 +27,7 @@ import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.IconNameCaptionListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
@@ -71,7 +72,7 @@ fun IconNameCaptionListItem(
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
-                .size(48.dp)
+                .size(ImageSize.THUMBNAIL.size)
                 .padding(8.dp)
                 .align(Alignment.CenterVertically)
         )

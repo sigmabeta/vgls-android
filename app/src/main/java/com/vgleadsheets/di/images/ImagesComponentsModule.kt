@@ -14,7 +14,6 @@ import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer
-import com.vgleadsheets.pdf.PdfToBitmapRenderer
 import com.vgleadsheets.pdf.fake.FakePdfImageDecoder
 import com.vgleadsheets.pdf.fake.FakePdfImageKeyer
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -22,17 +21,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import javax.inject.Named
+import okhttp3.OkHttpClient
 
 @Module
 @InstallIn(SingletonComponent::class)
 class ImagesComponentsModule {
-    @Provides
-    internal fun providePdfToBitmapRenderer(hatchet: Hatchet) = PdfToBitmapRenderer(
-        hatchet = hatchet,
-    )
-
     @Provides
     internal fun provideLoadingIndicatorKeyer() = LoadingIndicatorKeyer()
 
@@ -49,8 +43,8 @@ class ImagesComponentsModule {
     )
 
     @Provides
-    internal fun providePdfImageDecoderFactory(pdfToBitmapRenderer: PdfToBitmapRenderer) = PdfImageDecoder.Factory(
-        pdfToBitmapRenderer = pdfToBitmapRenderer
+    internal fun providePdfImageDecoderFactory(hatchet: Hatchet) = PdfImageDecoder.Factory(
+        hatchet = hatchet,
     )
 
     @Provides

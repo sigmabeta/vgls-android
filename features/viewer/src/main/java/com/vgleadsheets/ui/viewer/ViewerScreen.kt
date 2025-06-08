@@ -1,8 +1,12 @@
+@file:OptIn(ExperimentalTelephotoApi::class)
+
 package com.vgleadsheets.ui.viewer
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -11,14 +15,13 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,29 +32,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.composables.previews.SheetConstants
+import com.vgleadsheets.bitmaps.SheetConstants
+import com.vgleadsheets.components.ZoomableSheetPageListModel
+import com.vgleadsheets.composables.ZoomableFullDocItem
+import com.vgleadsheets.composables.ZoomableSheetPageItem
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import me.saket.telephoto.ExperimentalTelephotoApi
+import me.saket.telephoto.zoomable.Viewport
+import me.saket.telephoto.zoomable.ZoomSpec
+import me.saket.telephoto.zoomable.ZoomableState
+import me.saket.telephoto.zoomable.rememberZoomableState
+import me.saket.telephoto.zoomable.spatial.CoordinateSpace
+import me.saket.telephoto.zoomable.spatial.SpatialOffset
+import kotlin.math.absoluteValue
+import kotlin.math.ceil
+import kotlin.math.floor
 
 @Composable
 @Suppress("LongMethod", "MaxLineLength")
@@ -61,8 +80,8 @@ fun ViewerScreen(
     showDebug: Boolean,
     modifier: Modifier
 ) {
-    var width by remember { mutableStateOf(1) }
-    var height by remember { mutableStateOf(1) }
+    var width by remember { mutableIntStateOf(1) }
+    var height by remember { mutableIntStateOf(1) }
 
     Box(
         modifier = modifier
@@ -75,72 +94,140 @@ fun ViewerScreen(
             }
     ) {
         val shouldScrollFreely by remember { derivedStateOf { width.toFloat() / height > SheetConstants.ASPECT_RATIO } }
-
         val items = state.pages()
 
         if (items.isEmpty()) {
             return
         }
 
+        val singlePage = if (items.size <= 1) 0 else null
+
+        val zoomSpec = ZoomSpec(maxZoomFactor = ZOOM_MAX_PDF.toFloat())
+
+        if (singlePage != null) {
+            ZoomableSheetPageItem(
+                model = items.first(),
+                actionSink = actionSink,
+                modifier = Modifier,
+                padding = PaddingValues(),
+                zoomSpec = zoomSpec,
+            )
+
+            if (state.shouldShowLyricsWarning()) {
+                LyricsWarning()
+            }
+
+            return@Box
+        }
+
         val pagerState = rememberPagerState(
             initialPage = state.initialPage
         ) { items.size }
 
-        val scrollerState = rememberLazyListState(
-            initialFirstVisibleItemIndex = state.initialPage
-        )
+        val zoomableState = rememberZoomableState(zoomSpec)
+
+        val defaultPageWidth = calculateDefaultPageWidth()
+        val scale = zoomableState.contentTransformation.scaleMetadata.userZoom
+
+        val firstVisiblePage = zoomableState.calculateFirstVisiblePage()
 
         if (shouldScrollFreely) {
-            val index by remember { derivedStateOf { scrollerState.firstVisibleItemIndex } }
-            LaunchedEffect(index) {
-                pagerState.scrollToPage(index)
+            LaunchedEffect(firstVisiblePage) {
+                pagerState.scrollToPage(firstVisiblePage)
             }
 
-            SheetScroller(
-                items,
-                scrollerState,
-                showDebug,
-                actionSink,
+            if (scale != 0f) {
+                LaunchedEffect(state.initialPage) {
+                    zoomableState.snapToPage(state.initialPage, defaultPageWidth)
+                }
+            }
+
+            ZoomableFullDocItem(
+                model = items.first(),
+                actionSink = actionSink,
+                modifier = Modifier,
+                padding = PaddingValues(),
+                zoomableState = zoomableState,
             )
         } else {
-            val index by remember { derivedStateOf { pagerState.currentPage } }
-            LaunchedEffect(index) {
-                scrollerState.scrollToItem(index)
+            LaunchedEffect(pagerState.currentPage) {
+                zoomableState.snapToPage(pagerState.currentPage, defaultPageWidth)
             }
 
             SheetPager(
-                items,
-                pagerState,
-                showDebug,
-                actionSink
+                items = items,
+                zoomSpec = zoomSpec,
+                pagerState = pagerState,
+                allowPaging = !state.isZoomedIn,
+                actionSink = actionSink,
             )
         }
 
-        if (items.size > 1) {
-            val currentPage = pagerState.currentPage
-
-            val prevEnabled = if (shouldScrollFreely) {
-                scrollerState.canScrollBackward
-            } else {
-                currentPage > 0
-            }
-
-            val nextEnabled = if (shouldScrollFreely) {
-                scrollerState.canScrollForward
-            } else {
-                currentPage < items.size - 1
-            }
-
-            val visible = state.buttonsVisible
-
-            DirectionButton(Action.PrevButtonClicked, prevEnabled, visible, actionSink, shouldScrollFreely, pagerState, scrollerState)
-            DirectionButton(Action.NextButtonClicked, nextEnabled, visible, actionSink, shouldScrollFreely, pagerState, scrollerState)
-        }
+        PageControls(zoomableState, pagerState, shouldScrollFreely, items, state, actionSink)
 
         if (state.shouldShowLyricsWarning()) {
             LyricsWarning()
         }
     }
+}
+
+@Composable
+private fun BoxScope.PageControls(
+    zoomableState: ZoomableState,
+    pagerState: PagerState,
+    shouldScrollFreely: Boolean,
+    items: ImmutableList<ZoomableSheetPageListModel>,
+    state: ViewerState,
+    actionSink: ActionSink
+) {
+    if (state.isZoomedIn) {
+        return
+    }
+
+    val scrollPosition = zoomableState.contentTransformation.offset.x.absoluteValue
+
+    val pageWidth = calculateDefaultPageWidth()
+    val pagerPage = pagerState.currentPage
+
+    val prevEnabled = if (shouldScrollFreely) {
+        val firstFullVisiblePage = ceil(scrollPosition / pageWidth).toInt()
+        firstFullVisiblePage > 0
+    } else {
+        pagerPage > 0
+    }
+
+    val nextEnabled = if (shouldScrollFreely) {
+        val rightMostPixel = scrollPosition + getWindowWidth()
+        val lastFullVisiblePage = floor(rightMostPixel / pageWidth.toInt()).toInt()
+
+        lastFullVisiblePage <= items.size - 1
+    } else {
+        pagerPage < items.size - 1
+    }
+
+    val visible = state.buttonsVisible
+
+    DirectionButton(
+        Action.PrevButtonClicked,
+        prevEnabled,
+        visible,
+        actionSink,
+        shouldScrollFreely,
+        items.size,
+        pagerState,
+        zoomableState
+    )
+
+    DirectionButton(
+        Action.NextButtonClicked,
+        nextEnabled,
+        visible,
+        actionSink,
+        shouldScrollFreely,
+        items.size,
+        pagerState,
+        zoomableState
+    )
 }
 
 @Composable
@@ -180,8 +267,9 @@ private fun BoxScope.DirectionButton(
     visible: Boolean,
     actionSink: ActionSink,
     shouldScrollFreely: Boolean,
+    pageCount: Int,
     pagerState: PagerState,
-    scrollerState: LazyListState,
+    zoomableState: ZoomableState,
 ) {
     val (buttonAlignment, imageVector, increment) = when (action) {
         Action.PrevButtonClicked -> Triple(
@@ -205,25 +293,35 @@ private fun BoxScope.DirectionButton(
     val color = if (enabled) Color.White else Color.Gray
     val colorState by animateColorAsState(color)
 
-    val scrollScope = rememberCoroutineScope()
+    val firstVisiblePage = zoomableState.calculateFirstVisiblePage()
+    val defaultPageWidth = calculateDefaultPageWidth()
+    var targetPage by remember { mutableStateOf<Int?>(null) }
 
-    val dragThresholdPx = with(LocalDensity.current) {
-        96.dp.toPx()
-    }
-    val onClick: () -> Unit = {
-        actionSink.sendAction(action)
-        scrollScope.launch {
+    LaunchedEffect(targetPage) {
+        val localTargetPage = targetPage
+        if (localTargetPage != null) {
             if (shouldScrollFreely) {
-                val newIndex = (scrollerState.firstVisibleItemIndex + increment)
-                    .coerceIn(0..scrollerState.layoutInfo.totalItemsCount)
-                scrollerState.animateScrollToItem(newIndex)
+                zoomableState.scrollToPage(localTargetPage, defaultPageWidth)
             } else {
-                pagerState.animateScrollToPage(pagerState.currentPage + increment)
+                pagerState.animateScrollToPage(localTargetPage)
             }
+            targetPage = null
         }
     }
 
+    val onClick: () -> Unit = {
+        actionSink.sendAction(action)
+        if (shouldScrollFreely) {
+            val result = ((targetPage ?: firstVisiblePage) + increment).coerceIn(0..pageCount)
+            targetPage = result
+        } else {
+            targetPage = pagerState.currentPage + increment
+        }
+    }
+
+    val dragThresholdPx = with(LocalDensity.current) { 96.dp.toPx() }
     var cumulativeDrag by remember { mutableStateOf(0.0f) }
+
     val dragState = rememberDraggableState { offset ->
         cumulativeDrag += offset
 
@@ -265,6 +363,65 @@ private fun BoxScope.DirectionButton(
                 .aspectRatio(1.0f)
         )
     }
+}
+
+private suspend fun ZoomableState.scrollToPage(page: Int, defaultPageWidth: Float) {
+    toPage(page, defaultPageWidth, ZoomableState.DefaultPanAnimationSpec)
+}
+
+private suspend fun ZoomableState.snapToPage(page: Int, defaultPageWidth: Float) {
+    toPage(page, defaultPageWidth, snap())
+}
+
+private suspend fun ZoomableState.toPage(page: Int, defaultPageWidth: Float, animationSpec: AnimationSpec<Offset>) {
+    val scale = contentTransformation.scaleMetadata.userZoom
+
+    val currentPageWidth = defaultPageWidth * scale
+
+    val currentScrollPosition = contentTransformation.offset.x.absoluteValue
+    val targetScrollPosition = page * currentPageWidth
+    val diff = targetScrollPosition - currentScrollPosition
+
+    panBy(
+        offset = SpatialOffset(
+            offset = Offset(-diff, 0f),
+            space = CoordinateSpace.Viewport,
+        ),
+        animationSpec = animationSpec
+    )
+}
+
+@Composable
+private fun ZoomableState.calculateFirstVisiblePage(): Int {
+    val defaultPageWidth = calculateDefaultPageWidth()
+
+    val offsetX = contentTransformation.offset.x.absoluteValue
+    val scale = contentTransformation.scaleMetadata.userZoom
+
+    val currentPageWidth = defaultPageWidth * scale
+
+    return (offsetX / currentPageWidth).toInt()
+}
+
+@Composable
+private fun calculateDefaultPageWidth(): Float {
+    val windowInfo = LocalWindowInfo.current
+    val containerSize = windowInfo.containerSize
+
+    return remember(containerSize) {
+        val defaultPageHeight = containerSize.height
+        val defaultPageWidth = defaultPageHeight * SheetConstants.ASPECT_RATIO
+
+        defaultPageWidth
+    }
+}
+
+@Composable
+private fun getWindowWidth(): Int {
+    val windowInfo = LocalWindowInfo.current
+    val containerSize = windowInfo.containerSize
+
+    return containerSize.width
 }
 
 private const val WIDTH_PERCENT_ICON = 0.5f

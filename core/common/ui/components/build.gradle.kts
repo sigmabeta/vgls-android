@@ -7,5 +7,6 @@ dependencies {
 
     api(projects.core.common.appcomm)
     api(projects.core.common.images)
+    api(projects.core.common.pdf)
     api(projects.core.common.ui.icons)
 }

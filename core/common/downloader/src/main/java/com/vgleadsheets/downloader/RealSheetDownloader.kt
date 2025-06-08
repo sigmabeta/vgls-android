@@ -7,10 +7,10 @@ import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import kotlinx.coroutines.flow.first
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 class RealSheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
@@ -20,7 +20,6 @@ class RealSheetDownloader @Inject constructor(
     private val hatchet: Hatchet,
 ) : SheetDownloader {
     override suspend fun getSheet(config: PdfConfigById): SheetFileResult {
-        hatchet.v("Download request for $config")
         val song = songRepository.getSong(config.songId).first()
 
         val fileName = song.filename
@@ -46,7 +45,7 @@ class RealSheetDownloader @Inject constructor(
                 SheetSourceType.DISK
             )
         }
-
+        hatchet.v("Download request for $config")
         downloadSheet(fileName, actualPartApiId, isAlternate, targetFile)
 
         return SheetFileResult(

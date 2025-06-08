@@ -11,6 +11,7 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.WideItemListModel
+import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
@@ -125,6 +126,7 @@ data class State(
                     songId = song.id,
                     pageNumber = 0,
                     isAltSelected = false,
+                    pdfSize = PdfSize.THUMBNAIL,
                 )
             )
 

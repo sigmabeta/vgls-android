@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.kotlin.stdlib)
+
     implementation(projects.core.android.ui.fonts)
 }
 

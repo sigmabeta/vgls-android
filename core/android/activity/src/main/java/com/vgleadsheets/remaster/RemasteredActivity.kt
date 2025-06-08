@@ -15,14 +15,17 @@ import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
+import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
+import com.vgleadsheets.pdf.subsample.PdfSubsampleSource
 import com.vgleadsheets.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.ui.themes.VglsMaterial
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RemasteredActivity : ComponentActivity() {
@@ -31,6 +34,9 @@ class RemasteredActivity : ComponentActivity() {
 
     @Inject
     lateinit var activityDependencyInitializer: ActivityDependencyInitializer
+
+    @Inject
+    lateinit var pdfSubsampleSourceFactory: PdfSubsampleSource.Factory
 
     private val navViewModel: NavViewModel by viewModels()
 
@@ -50,12 +56,15 @@ class RemasteredActivity : ComponentActivity() {
 
         setContent {
             VglsMaterial {
-                CompositionLocalProvider(LocalLogger provides hatchet) {
-                    RemasterAppUi(
-                        showSystemBars,
-                        hideSystemBars,
-                        modifier = Modifier
-                    )
+                CompositionLocalProvider(LocalPdfSubsampler provides pdfSubsampleSourceFactory) {
+                    CompositionLocalProvider(LocalLogger provides hatchet) {
+                        RemasterAppUi(
+                            showSystemBars,
+                            hideSystemBars,
+                            modifier = Modifier
+                        )
+                        // PdfTestScreen(modifier = Modifier)
+                    }
                 }
             }
         }
@@ -101,8 +110,8 @@ class RemasteredActivity : ComponentActivity() {
         hatchet.v("Device screen scaling factor: ${displayMetrics.density}")
         hatchet.v("Device screen size: ${widthPixels}x$heightPixels")
         hatchet.v(
-            "Device screen size (scaled): ${(widthPixels / displayMetrics.density).toInt()}" +
-                "x${(heightPixels / displayMetrics.density).toInt()}"
+            "Device screen size (scaled): ${(widthPixels / displayMetrics.density).roundToInt()}" +
+                "x${(heightPixels / displayMetrics.density).roundToInt()}"
         )
     }
 }
