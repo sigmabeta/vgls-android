@@ -1,6 +1,7 @@
 package com.vgleadsheets.composables.previews
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ fun PreviewSheet(
         modifier = modifier
             .height(height)
             .aspectRatio(SheetConstants.ASPECT_RATIO)
+            .background(Color.White)
     ) {
         if (loadingIndicatorConfig.pageNumber == 0) {
             PreviewSheetTitle(loadingIndicatorConfig)
