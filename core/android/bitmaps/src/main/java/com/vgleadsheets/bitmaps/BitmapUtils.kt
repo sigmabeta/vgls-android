@@ -93,7 +93,7 @@ object BitmapUtils {
     fun renderDebugInfo(
         text: Boolean = false,
         circle: Boolean = false,
-        lines: Boolean = true,
+        lines: Boolean = false,
         bitmap: Bitmap,
         dXPixels: Int,
         dYPixels: Int,
