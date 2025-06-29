@@ -142,14 +142,22 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun fetchSong(id: Long, pageNumber: Long) {
+        val operationName = "fetchSong"
         songRepository
             .getSong(id)
             .onEach { song ->
                 updateState {
                     it.copy(
-                        song = song,
+                        song = LCE.Content(song),
                         initialPage = pageNumber.toInt(),
                         isSongHistoryEntryRecorded = false,
+                    )
+                }
+            }
+            .catch { error ->
+                updateState {
+                    it.copy(
+                        song = LCE.Error(operationName, error)
                     )
                 }
             }
@@ -270,15 +278,17 @@ class ViewerViewModel @AssistedInject constructor(
             .filter { it.song != null && !it.isSongHistoryEntryRecorded }
             .take(1)
             .onEach { state ->
-                hatchet.v("Starting song history entry timer.")
-                delay(DURATION_HISTORY_RECORD)
-                hatchet.d("Recording song history entry for ${state.song!!.name}.")
+                if (state.song is LCE.Content) {
+                    hatchet.v("Starting song history entry timer.")
+                    delay(DURATION_HISTORY_RECORD)
+                    hatchet.d("Recording song history entry for ${state.song.data.name}.")
 
-                songHistoryRepository.recordSongPlay(state.song, System.currentTimeMillis())
-                updateState {
-                    it.copy(isSongHistoryEntryRecorded = true)
+                    songHistoryRepository.recordSongPlay(state.song.data, System.currentTimeMillis())
+                    updateState {
+                        it.copy(isSongHistoryEntryRecorded = true)
+                    }
+                    historyTimer = null
                 }
-                historyTimer = null
             }
             .flowOn(dispatchers.disk)
             .launchIn(viewModelScope)
