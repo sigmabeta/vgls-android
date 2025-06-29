@@ -120,10 +120,10 @@ data class State(
         title = title
     )
 
-    private fun clearUsageHistory(stringProvider: StringProvider) = when (refreshCheckStatus) {
+    private fun clearUsageHistory(stringProvider: StringProvider) = when (usageDbClearStatus) {
         is LCE.Loading -> LoadingItemListModel(
             loadingType = LoadingType.SINGLE_TEXT,
-            loadOperationName = "clearUsage",
+            loadOperationName = usageDbClearStatus.operationName,
             loadPositionOffset = 0,
         )
 
@@ -135,10 +135,10 @@ data class State(
         )
     }
 
-    private fun clearSheetDb(stringProvider: StringProvider) = when (refreshCheckStatus) {
+    private fun clearSheetDb(stringProvider: StringProvider) = when (sheetDbClearStatus) {
         is LCE.Loading -> LoadingItemListModel(
             loadingType = LoadingType.SINGLE_TEXT,
-            loadOperationName = "clearUsage",
+            loadOperationName = sheetDbClearStatus.operationName,
             loadPositionOffset = 0,
         )
 
