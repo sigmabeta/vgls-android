@@ -45,7 +45,6 @@ fun SheetPageCard(
     ElevatedCard(
         modifier = modifier
             .padding(padding)
-            .padding(bottom = 16.dp)
             .wrapContentSize()
     ) {
         Box {

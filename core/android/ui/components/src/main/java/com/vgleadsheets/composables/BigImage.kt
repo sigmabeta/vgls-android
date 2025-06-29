@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,6 +30,7 @@ fun BigImage(
     ElevatedRoundRect(
         modifier = modifier
             .padding(padding)
+            .heightIn(max = 384.dp)
             .fillMaxWidth()
             .clickable(onClick = { actionSink.sendAction(model.clickAction) }),
         cornerRadius = 16.dp,
