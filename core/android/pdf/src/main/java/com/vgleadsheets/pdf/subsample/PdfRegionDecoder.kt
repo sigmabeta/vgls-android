@@ -7,15 +7,16 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import com.vgleadsheets.coroutines.VglsDispatchers
+import com.vgleadsheets.logging.BluntHatchet
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.pdf.PdfToBitmapAsyncRenderer
 import com.vgleadsheets.pdf.PdfToBitmapFullDocAsyncRenderer
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
-import kotlinx.coroutines.withContext
-import me.saket.telephoto.subsamplingimage.internal.ImageRegionDecoder
 import java.io.File
 import kotlin.math.absoluteValue
 import kotlin.math.min
+import kotlinx.coroutines.withContext
+import me.saket.telephoto.subsamplingimage.internal.ImageRegionDecoder
 
 class PdfRegionDecoder(
     private val pdfFile: File,
@@ -31,14 +32,14 @@ class PdfRegionDecoder(
         if (pageNumber == null) {
             PdfToBitmapFullDocAsyncRenderer(
                 pdfRenderer,
-                hatchet,
+                BluntHatchet(),
                 maxWidth,
                 maxHeight,
             )
         } else {
             PdfToBitmapAsyncRenderer(
                 pdfRenderer,
-                hatchet,
+                BluntHatchet(),
                 pageNumber,
                 maxWidth,
                 maxHeight,
