@@ -32,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,16 +41,17 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.components.ZoomableSheetPageListModel
+import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.ZoomableFullDocItem
 import com.vgleadsheets.composables.ZoomableSheetPageItem
 import com.vgleadsheets.model.Song
@@ -59,6 +59,9 @@ import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
+import kotlin.math.absoluteValue
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import me.saket.telephoto.ExperimentalTelephotoApi
@@ -68,9 +71,6 @@ import me.saket.telephoto.zoomable.ZoomableState
 import me.saket.telephoto.zoomable.rememberZoomableState
 import me.saket.telephoto.zoomable.spatial.CoordinateSpace
 import me.saket.telephoto.zoomable.spatial.SpatialOffset
-import kotlin.math.absoluteValue
-import kotlin.math.ceil
-import kotlin.math.floor
 
 @Composable
 @Suppress("LongMethod", "MaxLineLength")
@@ -80,22 +80,29 @@ fun ViewerScreen(
     showDebug: Boolean,
     modifier: Modifier
 ) {
-    var width by remember { mutableIntStateOf(1) }
-    var height by remember { mutableIntStateOf(1) }
+    val error = state.error()
+    if (error.isNotEmpty()) {
+        EmptyListIndicator(
+            model = error.first(),
+            modifier = modifier,
+            showDebug = showDebug,
+            onBlack = true
+        )
+        return
+    }
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(Color.Black)
             .clickable { actionSink.sendAction(Action.ScreenClicked) }
-            .onGloballyPositioned { layoutCoords ->
-                width = layoutCoords.size.width
-                height = layoutCoords.size.height
-            }
     ) {
-        val shouldScrollFreely by remember { derivedStateOf { width.toFloat() / height > SheetConstants.ASPECT_RATIO } }
-        val items = state.pages()
+        val windowSize = getWindowSize()
+        val shouldScrollFreely by remember {
+            derivedStateOf { windowSize.width.toFloat() / windowSize.height > SheetConstants.ASPECT_RATIO }
+        }
 
+        val items = state.pages()
         if (items.isEmpty()) {
             return
         }
@@ -197,7 +204,7 @@ private fun BoxScope.PageControls(
     }
 
     val nextEnabled = if (shouldScrollFreely) {
-        val rightMostPixel = scrollPosition + getWindowWidth()
+        val rightMostPixel = scrollPosition + getWindowSize().width
         val lastFullVisiblePage = floor(rightMostPixel / pageWidth.toInt()).toInt()
 
         lastFullVisiblePage <= items.size - 1
@@ -417,11 +424,9 @@ private fun calculateDefaultPageWidth(): Float {
 }
 
 @Composable
-private fun getWindowWidth(): Int {
+private fun getWindowSize(): IntSize {
     val windowInfo = LocalWindowInfo.current
-    val containerSize = windowInfo.containerSize
-
-    return containerSize.width
+    return windowInfo.containerSize
 }
 
 private const val WIDTH_PERCENT_ICON = 0.5f
@@ -555,22 +560,24 @@ private fun Sheets(
     var visible by remember { mutableStateOf(true) }
 
     val state = ViewerState(
-        song = Song(
-            1234L,
-            name = "A Trip to Alivel Mall",
-            gameName = "Kirby and the Forgotten Land",
-            hasVocals = false,
-            pageCount = pageCount,
-            composers = emptyList(),
-            filename = "Whatever",
-            isAvailableOffline = true,
-            lyricPageCount = 4,
-            playCount = 1234,
-            game = null,
-            gameId = 123435L,
-            altPageCount = 5,
-            isAltSelected = false,
-            isFavorite = true,
+        song = LCE.Content(
+            Song(
+                1234L,
+                name = "A Trip to Alivel Mall",
+                gameName = "Kirby and the Forgotten Land",
+                hasVocals = false,
+                pageCount = pageCount,
+                composers = emptyList(),
+                filename = "Whatever",
+                isAvailableOffline = true,
+                lyricPageCount = 4,
+                playCount = 1234,
+                game = null,
+                gameId = 123435L,
+                altPageCount = 5,
+                isAltSelected = false,
+                isFavorite = true,
+            )
         ),
         partApiId = "Bass",
         initialPage = visiblePage,

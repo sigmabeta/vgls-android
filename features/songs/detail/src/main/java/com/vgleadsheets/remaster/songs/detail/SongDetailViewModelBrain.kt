@@ -185,6 +185,7 @@ class SongDetailViewModelBrain(
         val song = state.song
         if (song !is LCE.Content) return
 
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_IS_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.addFavoriteSong(song.data.id)
         }
@@ -195,6 +196,7 @@ class SongDetailViewModelBrain(
         val song = state.song
         if (song !is LCE.Content) return
 
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_IS_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.removeFavoriteSong(song.data.id)
         }

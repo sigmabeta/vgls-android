@@ -1,4 +1,4 @@
-package com.vgleadsheets.bottombar
+package com.vgleadsheets.scaffold.systemui
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.analytics.Analytics
@@ -9,43 +9,44 @@ import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.nav.SystemUiVisibility
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class NavBarViewModel @Inject constructor(
-    override val dispatchers: VglsDispatchers,
+class SystemUiViewModel@Inject constructor(
     override val analytics: Analytics,
+    override val dispatchers: VglsDispatchers,
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,
     override val showDebugProvider: ShowDebugProvider,
-) : VglsViewModel<NavBarState>() {
+) : VglsViewModel<SystemUiState>() {
+    override val screenIdentifier = null
+
+    override fun initialState() = SystemUiState()
+
+    override fun sendInitAction() = Unit
+
     init {
         eventDispatcher.addEventSink(this)
     }
 
-    override val screenIdentifier = null
+    override fun sendAction(action: VglsAction) = handleAction(action)
 
-    override fun initialState() = NavBarState()
+    override fun sendEvent(event: VglsEvent) = handleEvent(event)
 
-    override fun sendInitAction() = Unit
-
-    override fun handleAction(action: VglsAction) {
-        viewModelScope.launch(scheduler.dispatchers.main) {
-            hatchet.v("${this.javaClass.simpleName} - Handling action: $action")
-        }
-    }
+    override fun handleAction(action: VglsAction) = Unit
 
     override fun handleEvent(event: VglsEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
-            hatchet.v("${this@NavBarViewModel.javaClass.simpleName} - Handling event: $event")
+            hatchet.v("${this@SystemUiViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.NavigateSuccessTo -> updateCurrentDestination(event.destination)
-                is VglsEvent.HideUiChrome -> hideNavBar()
-                is VglsEvent.ShowUiChrome -> showNavBar()
+                is VglsEvent.HideUiChrome -> hideSystemUi()
+                is VglsEvent.ShowUiChrome -> showSystemUi()
             }
         }
     }
@@ -54,23 +55,23 @@ class NavBarViewModel @Inject constructor(
         it.copy(currentDestination = destination)
     }
 
-    private fun showNavBar() {
-        if (internalUiState.value.visibility == NavBarVisibility.VISIBLE) {
+    private fun showSystemUi() {
+        if (internalUiState.value.visibility == SystemUiVisibility.VISIBLE) {
             return
         }
 
         updateState {
-            it.copy(visibility = NavBarVisibility.VISIBLE)
+            it.copy(visibility = SystemUiVisibility.VISIBLE)
         }
     }
 
-    private fun hideNavBar() {
-        if (internalUiState.value.visibility == NavBarVisibility.HIDDEN) {
+    private fun hideSystemUi() {
+        if (internalUiState.value.visibility == SystemUiVisibility.HIDDEN) {
             return
         }
 
         updateState {
-            it.copy(visibility = NavBarVisibility.HIDDEN)
+            it.copy(visibility = SystemUiVisibility.HIDDEN)
         }
     }
 }

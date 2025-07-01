@@ -237,6 +237,7 @@ class FeatureDirectory(
                 scheduler,
             )
 
+            Destination.NONE,
             Destination.SEARCH,
             Destination.SONG_VIEWER,
             Destination.LICENSES -> throw IllegalArgumentException("Not a list view: $destination")

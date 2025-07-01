@@ -7,6 +7,7 @@ import coil3.decode.DecodeResult
 import coil3.decode.Decoder
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
+import com.vgleadsheets.logging.BluntHatchet
 import com.vgleadsheets.logging.Hatchet
 
 class PdfImageDecoder(
@@ -30,7 +31,7 @@ class PdfImageDecoder(
 
         val pdfFile = source.file().toFile()
 
-        val drawable = PdfToBitmapRenderer(hatchet)
+        val drawable = PdfToBitmapRenderer(BluntHatchet())
             .renderToBitmap(
                 pdfFile,
                 metadata.pageNumber,

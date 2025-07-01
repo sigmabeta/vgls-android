@@ -23,7 +23,7 @@ internal fun RemasterBottomBar(
     layoutType: NavigationSuiteType,
     navItemProvider: NavigationSuiteItemProvider,
 ) {
-    val shouldNavBeVisible = state.visibility == NavBarVisibility.VISIBLE
+    val shouldNavBeVisible = state.actualVisibility == NavBarVisibility.VISIBLE
     val shouldNavBeBar = layoutType == NavigationSuiteType.NavigationBar
 
     AnimatedVisibility(
@@ -84,7 +84,7 @@ private fun PreviewContent() {
         )
     )
     RemasterBottomBar(
-        NavBarState(NavBarVisibility.VISIBLE),
+        NavBarState(),
         NavigationSuiteType.NavigationBar,
         navItemProvider,
     )

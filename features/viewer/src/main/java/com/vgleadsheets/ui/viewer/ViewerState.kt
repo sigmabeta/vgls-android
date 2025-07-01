@@ -3,6 +3,7 @@ package com.vgleadsheets.ui.viewer
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsState
+import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.images.PdfSize
@@ -16,7 +17,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 data class ViewerState(
-    val song: Song? = null,
+    val song: LCE<Song> = LCE.Uninitialized,
     val partApiId: String? = null,
     val initialPage: Int = 0,
     val buttonsVisible: Boolean = true,
@@ -26,69 +27,87 @@ data class ViewerState(
     val isSongHistoryEntryRecorded: Boolean = false,
 ) : VglsState {
     fun title(stringProvider: StringProvider): TitleBarModel {
-        val gameName = song?.gameName
-        return TitleBarModel(
-            title = song?.name,
-            subtitle = gameName?.let { stringProvider.getStringOneArg(StringId.SCREEN_SUBTITLE_SONG_DETAIL, it) } ?: "",
-        )
-    }
-
-    fun pages(): ImmutableList<ZoomableSheetPageListModel> = if (song != null && partApiId != null) {
-        val pageCount = song.pageCount(partApiId, false)
-        val actualPartApiId = if (pageCount > 0) {
-            partApiId
-        } else {
-            Part.C.apiId
-        }
-
-        val (actualPageCount, altSelection) = if (isAltSelected !is LCE.Content) {
-            0 to false
-        } else {
-            song.pageCount(actualPartApiId, isAltSelected.data) to isAltSelected.data
-        }
-
-        val singlePage = if (actualPageCount == 1) 0 else null
-
-        if (singlePage != null) {
-            listOf(
-                ZoomableSheetPageListModel(
-                    pdfConfigById = PdfConfigById(
-                        songId = song.id,
-                        pageNumber = singlePage,
-                        isAltSelected = altSelection,
-                        pdfSize = PdfSize.FILL,
-                    ),
-                    title = song.name,
-                    gameName = song.gameName,
-                    composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                    pageNumber = singlePage,
-                    clickAction = VglsAction.Noop,
-                )
+        return if (song is LCE.Content) {
+            val gameName = song.data.gameName
+            TitleBarModel(
+                title = song.data.name,
+                subtitle = stringProvider.getStringOneArg(StringId.SCREEN_SUBTITLE_SONG_DETAIL, gameName),
             )
         } else {
-            List(actualPageCount) { pageNumber ->
-                ZoomableSheetPageListModel(
-                    pdfConfigById = PdfConfigById(
-                        songId = song.id,
-                        pageNumber = pageNumber,
-                        isAltSelected = altSelection,
-                        pdfSize = PdfSize.FILL,
-                    ),
-                    title = song.name,
-                    gameName = song.gameName,
-                    composers = song.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
-                    pageNumber = pageNumber,
-                    clickAction = VglsAction.Noop,
-                )
-            }
+            TitleBarModel()
         }
+    }
+
+    fun pages(): ImmutableList<ZoomableSheetPageListModel> {
+        return if (song is LCE.Content && partApiId != null) {
+            val pageCount = song.data.pageCount(partApiId, false)
+            val actualPartApiId = if (pageCount > 0) {
+                partApiId
+            } else {
+                Part.C.apiId
+            }
+
+            val (actualPageCount, altSelection) = if (isAltSelected !is LCE.Content) {
+                0 to false
+            } else {
+                song.data.pageCount(actualPartApiId, isAltSelected.data) to isAltSelected.data
+            }
+
+            val singlePage = if (actualPageCount == 1) 0 else null
+
+            if (singlePage != null) {
+                persistentListOf(
+                    ZoomableSheetPageListModel(
+                        pdfConfigById = PdfConfigById(
+                            songId = song.data.id,
+                            pageNumber = singlePage,
+                            isAltSelected = altSelection,
+                            pdfSize = PdfSize.FILL,
+                        ),
+                        title = song.data.name,
+                        gameName = song.data.gameName,
+                        composers = song.data.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                        pageNumber = singlePage,
+                        clickAction = VglsAction.Noop,
+                    )
+                )
+            } else {
+                List(actualPageCount) { pageNumber ->
+                    ZoomableSheetPageListModel(
+                        pdfConfigById = PdfConfigById(
+                            songId = song.data.id,
+                            pageNumber = pageNumber,
+                            isAltSelected = altSelection,
+                            pdfSize = PdfSize.FILL,
+                        ),
+                        title = song.data.name,
+                        gameName = song.data.gameName,
+                        composers = song.data.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+                        pageNumber = pageNumber,
+                        clickAction = VglsAction.Noop,
+                    )
+                }.toImmutableList()
+            }
+        } else {
+            persistentListOf()
+        }
+    }
+
+    fun error(): ImmutableList<ErrorStateListModel> = if (song is LCE.Error) {
+        persistentListOf(
+            ErrorStateListModel(
+                failedOperationName = song.operationName,
+                errorString = "Could not find this song. Try again later.",
+                error = song.error
+            )
+        )
     } else {
-        emptyList()
-    }.toImmutableList()
+        persistentListOf()
+    }
 
     fun shouldShowLyricsWarning(): Boolean {
-        return if (song != null && partApiId != null) {
-            song.pageCount(partApiId, false) <= 0
+        return if (song is LCE.Content && partApiId != null) {
+            song.data.pageCount(partApiId, false) <= 0
         } else {
             false
         }

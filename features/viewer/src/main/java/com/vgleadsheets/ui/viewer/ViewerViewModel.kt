@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class ViewerViewModel @AssistedInject constructor(
@@ -81,6 +82,8 @@ class ViewerViewModel @AssistedInject constructor(
         when (action) {
             is VglsAction.Resume -> resume()
             is VglsAction.Pause -> pause()
+            is VglsAction.AppBack -> onBackPressed()
+            is VglsAction.DeviceBack -> onBackPressed()
             is VglsAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
             is VglsAction.PageClicked -> maybeShowUi()
             is VglsAction.PageZoomedIn -> enableZoom()
@@ -125,6 +128,10 @@ class ViewerViewModel @AssistedInject constructor(
         eventDispatcher.removeEventSink(this)
     }
 
+    private fun onBackPressed() {
+        stopTimers()
+    }
+
     private fun updateTitle() {
         val state = internalUiState.value
         val titleModel = state.title(stringProvider)
@@ -142,14 +149,22 @@ class ViewerViewModel @AssistedInject constructor(
     }
 
     private fun fetchSong(id: Long, pageNumber: Long) {
+        val operationName = "fetchSong"
         songRepository
             .getSong(id)
             .onEach { song ->
                 updateState {
                     it.copy(
-                        song = song,
+                        song = LCE.Content(song),
                         initialPage = pageNumber.toInt(),
                         isSongHistoryEntryRecorded = false,
+                    )
+                }
+            }
+            .catch { error ->
+                updateState {
+                    it.copy(
+                        song = LCE.Error(operationName, error)
                     )
                 }
             }
@@ -247,38 +262,60 @@ class ViewerViewModel @AssistedInject constructor(
     private fun startHideChromeTimer() {
         chromeVisibilityTimer?.cancel()
         chromeVisibilityTimer = viewModelScope.launch(scheduler.dispatchers.computation) {
-            hatchet.v("Hiding UI chrome in $DURATION_CHROME_VISIBILITY ms.")
+            hatchet.v("Starting timer: Hiding UI chrome in $DURATION_CHROME_VISIBILITY ms.")
             delay(DURATION_CHROME_VISIBILITY)
+
+            if (!coroutineContext.isActive) {
+                hatchet.w("Timer cancelled: Hide chrome")
+                return@launch
+            }
+
             emitEvent(VglsEvent.HideUiChrome)
+            chromeVisibilityTimer = null
         }
     }
 
     private fun startHideButtonsTimer() {
         buttonVisibilityTimer?.cancel()
-        buttonVisibilityTimer = viewModelScope.launch {
-            hatchet.v("Hiding buttons in $DURATION_BUTTON_VISIBILITY ms.")
+        buttonVisibilityTimer = viewModelScope.launch(scheduler.dispatchers.computation) {
+            hatchet.v("Starting timer: Hiding buttons in $DURATION_BUTTON_VISIBILITY ms.")
             delay(DURATION_BUTTON_VISIBILITY)
+
+            if (!coroutineContext.isActive) {
+                hatchet.w("Timer cancelled: Hide buttons")
+                return@launch
+            }
+
             updateState {
                 it.copy(buttonsVisible = false)
             }
+            buttonVisibilityTimer = null
         }
     }
 
     private fun startRecordSongHistoryEntryTimerMaybe() {
         historyTimer?.cancel()
         historyTimer = internalUiState
-            .filter { it.song != null && !it.isSongHistoryEntryRecorded }
+            .filter { it.song is LCE.Content && !it.isSongHistoryEntryRecorded }
             .take(1)
             .onEach { state ->
-                hatchet.v("Starting song history entry timer.")
-                delay(DURATION_HISTORY_RECORD)
-                hatchet.d("Recording song history entry for ${state.song!!.name}.")
+                if (state.song is LCE.Content) {
+                    hatchet.v("Starting timer: Recording song history entry in $DURATION_HISTORY_RECORD ms..")
+                    delay(DURATION_HISTORY_RECORD)
 
-                songHistoryRepository.recordSongPlay(state.song, System.currentTimeMillis())
-                updateState {
-                    it.copy(isSongHistoryEntryRecorded = true)
+                    if (historyTimer?.isActive == false) {
+                        hatchet.w("Timer cancelled: Record song history entry")
+                        return@onEach
+                    }
+
+                    hatchet.d("Recording song history entry for ${state.song.data.name}.")
+
+                    songHistoryRepository.recordSongPlay(state.song.data, System.currentTimeMillis())
+                    updateState {
+                        it.copy(isSongHistoryEntryRecorded = true)
+                    }
+                    historyTimer = null
                 }
-                historyTimer = null
             }
             .flowOn(dispatchers.disk)
             .launchIn(viewModelScope)
@@ -288,11 +325,12 @@ class ViewerViewModel @AssistedInject constructor(
         stopHideChromeTimer()
         stopHideButtonsTimer()
         stopHistoryTimer()
+        wakeLockManager.allowScreenOff()
     }
 
     private fun stopHideChromeTimer() {
         if (chromeVisibilityTimer != null) {
-            hatchet.i("HideChrome timer stopped.")
+            hatchet.i("Stopping timer: Hide Chrome.")
             chromeVisibilityTimer?.cancel()
             chromeVisibilityTimer = null
         }
@@ -300,7 +338,7 @@ class ViewerViewModel @AssistedInject constructor(
 
     private fun stopHideButtonsTimer() {
         if (buttonVisibilityTimer != null) {
-            hatchet.i("HideButtons timer stopped.")
+            hatchet.i("Stopping timer: Hide Buttons.")
             buttonVisibilityTimer?.cancel()
             buttonVisibilityTimer = null
         }
@@ -308,7 +346,7 @@ class ViewerViewModel @AssistedInject constructor(
 
     private fun stopHistoryTimer() {
         if (historyTimer != null) {
-            hatchet.i("Song history entry timer stopped.")
+            hatchet.i("Stopping timer: Song History Entry.")
             historyTimer?.cancel()
             historyTimer = null
         }

@@ -10,6 +10,7 @@ import com.vgleadsheets.urlinfo.UrlInfoProvider
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 
 class RealSheetDownloader @Inject constructor(
@@ -20,7 +21,10 @@ class RealSheetDownloader @Inject constructor(
     private val hatchet: Hatchet,
 ) : SheetDownloader {
     override suspend fun getSheet(config: PdfConfigById): SheetFileResult {
-        val song = songRepository.getSong(config.songId).first()
+        val song = songRepository
+            .getSong(config.songId)
+            .catch { throw IllegalArgumentException("No song found with id ${config.songId}.") }
+            .first()
 
         val fileName = song.filename
         val partApiId = urlInfoProvider.urlInfoFlow.value.partId ?: throw IllegalStateException("No part selected.")
