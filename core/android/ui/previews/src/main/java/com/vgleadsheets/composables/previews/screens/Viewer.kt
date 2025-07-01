@@ -110,7 +110,7 @@ private fun viewerScreenState(): ViewerState {
     val song = modelGenerator.randomSong()
 
     val screenState = ViewerState(
-        song = song,
+        song = LCE.Content(song),
         partApiId = Part.E.apiId,
         initialPage = 0,
         buttonsVisible = true,
@@ -120,7 +120,7 @@ private fun viewerScreenState(): ViewerState {
 }
 
 private fun loadingScreenState() = ViewerState(
-    song = null,
+    song = LCE.Loading("loadingSong"),
     partApiId = Part.E.apiId,
     initialPage = 0,
     buttonsVisible = true,
