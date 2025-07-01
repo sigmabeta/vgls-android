@@ -109,7 +109,7 @@ class ComposerDetailViewModelBrain(
     private fun checkFavoriteStatus(id: Long) {
         updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
         favoriteRepository
-            .isFavoriteGame(id)
+            .isFavoriteComposer(id)
             .onEach { isFavorite -> updateIsFavorite(LCE.Content(isFavorite)) }
             .catch { updateIsFavorite(LCE.Error(LOAD_OPERATION_FAVORITE, it)) }
             .runInBackground()
