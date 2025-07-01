@@ -50,7 +50,7 @@ fun RemasterTopBar(
 ) {
     AnimatedVisibility(
         modifier = Modifier.fillMaxWidth(),
-        visible = state.visibility == TopBarVisibility.VISIBLE,
+        visible = state.actualVisibility == TopBarVisibility.VISIBLE,
         label = "TopBarVisibility"
     ) {
         val resources = LocalContext.current.resources

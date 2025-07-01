@@ -14,12 +14,11 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
+import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class TopBarViewModel @Inject constructor(
@@ -31,8 +30,6 @@ class TopBarViewModel @Inject constructor(
     override val eventDispatcher: EventDispatcher,
     override val showDebugProvider: ShowDebugProvider,
 ) : VglsViewModel<TopBarState>() {
-    private var showTopBarJob: Job? = null
-
     override val screenIdentifier = null
 
     override fun initialState() = TopBarState()
@@ -79,6 +76,7 @@ class TopBarViewModel @Inject constructor(
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.v("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
+                is VglsEvent.NavigateSuccessTo -> updateCurrentDestination(event.destination)
                 is VglsEvent.HideTopBar -> hideTopBar()
                 is VglsEvent.HideUiChrome -> hideTopBar()
                 is VglsEvent.ShowUiChrome -> showTopBar()
@@ -93,18 +91,18 @@ class TopBarViewModel @Inject constructor(
         }
     }
 
+    private fun updateCurrentDestination(destination: String) = updateState {
+        it.copy(currentDestination = destination)
+    }
+
     private fun showTopBar() {
         if (internalUiState.value.visibility == TopBarVisibility.VISIBLE) {
             return
         }
 
-        hatchet.d("Showing top bar.")
-        showTopBarJob = viewModelScope.launch {
-            updateState {
-                it.copy(visibility = TopBarVisibility.VISIBLE)
-            }
+        updateState {
+            it.copy(visibility = TopBarVisibility.VISIBLE)
         }
-        emitEvent(VglsEvent.TopBarBecameShown)
     }
 
     private fun hideTopBar() {
@@ -112,12 +110,9 @@ class TopBarViewModel @Inject constructor(
             return
         }
 
-        hatchet.d("Hiding top bar.")
-        showTopBarJob?.cancel()
         updateState {
             it.copy(visibility = TopBarVisibility.HIDDEN)
         }
-        emitEvent(VglsEvent.TopBarBecameHidden)
     }
 
     private fun updateTitle(title: TitleBarModel) {

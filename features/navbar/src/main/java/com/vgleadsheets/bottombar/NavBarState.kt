@@ -1,7 +1,21 @@
 package com.vgleadsheets.bottombar
 
 import com.vgleadsheets.appcomm.VglsState
+import com.vgleadsheets.nav.Destination
 
 data class NavBarState(
-    val visibility: NavBarVisibility = NavBarVisibility.VISIBLE
-) : VglsState
+    val currentDestination: String = Destination.NONE.name,
+    val visibility: NavBarVisibility = NavBarVisibility.VISIBLE,
+)  : VglsState {
+    val actualVisibility = if (visibility == NavBarVisibility.VISIBLE) {
+        NavBarVisibility.VISIBLE
+    } else {
+        if (canScreenHideNavBar()) {
+            NavBarVisibility.HIDDEN
+        } else {
+            NavBarVisibility.VISIBLE
+        }
+    }
+
+    private fun canScreenHideNavBar(): Boolean = currentDestination.contains(Destination.SONG_VIEWER.destName)
+}

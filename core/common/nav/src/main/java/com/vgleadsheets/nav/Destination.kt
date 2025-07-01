@@ -25,6 +25,7 @@ enum class Destination(
     FAVORITES("favorites", ArgType.NONE),
     LICENSES("licenses", ArgType.NONE),
     UPDATES("updates", ArgType.NONE),
+    NONE("none", ArgType.NONE)
     ;
 
     fun noArgs() = destName

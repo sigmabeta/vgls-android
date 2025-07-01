@@ -32,9 +32,7 @@ import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarViewModel
 import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.nav.NavState
 import com.vgleadsheets.nav.NavViewModel
-import com.vgleadsheets.nav.SystemUiVisibility
 import com.vgleadsheets.search.searchScreenNavEntry
 import com.vgleadsheets.topbar.TopBarViewModel
 import com.vgleadsheets.ui.licenses.licensesScreenNavEntry
@@ -45,8 +43,6 @@ import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
 @Suppress("MaxLineLength")
 @Composable
 fun RemasterAppUi(
-    showSystemBars: () -> Unit,
-    hideSystemBars: () -> Unit,
     modifier: Modifier
 ) {
     val navController = rememberNavController()
@@ -70,9 +66,6 @@ fun RemasterAppUi(
     navViewModel.snackbarScope = snackbarScope
     navViewModel.snackbarHostState = snackbarHostState
     navViewModel.topBarExpander = topBarExpander
-
-    val navState by navViewModel.uiState.collectAsState()
-    handleSystemBars(navState, showSystemBars, hideSystemBars)
 
     val topBarViewModel: TopBarViewModel = hiltViewModel()
     val topBarVmState by topBarViewModel.uiState.collectAsState()
@@ -193,16 +186,5 @@ private fun NavHostAndSuch(
         licensesScreenNavEntry(
             globalModifier = globalModifier,
         )
-    }
-}
-
-private fun handleSystemBars(
-    navState: NavState,
-    showSystemBars: () -> Unit,
-    hideSystemBars: () -> Unit
-) {
-    when (navState.visibility) {
-        SystemUiVisibility.VISIBLE -> showSystemBars()
-        SystemUiVisibility.HIDDEN -> hideSystemBars()
     }
 }

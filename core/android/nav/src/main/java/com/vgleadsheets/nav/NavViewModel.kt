@@ -215,12 +215,14 @@ class NavViewModel @Inject constructor(
 
             if (topLevel) {
                 navController.navigate(destination) {
-                     popUpTo(navController.graph.startDestinationId)
-                     launchSingleTop = true
-                 }
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
             } else {
                 navController.navigate(destination)
             }
+
+            eventDispatcher.sendEvent(VglsEvent.NavigateSuccessTo(destination))
         } catch (ex: IllegalArgumentException) {
             sendEvent(
                 VglsEvent.ShowSnackbar(
@@ -245,8 +247,12 @@ class NavViewModel @Inject constructor(
             return
         }
 
+        val newRoute = navController.currentDestination?.route
+        if (newRoute != null) {
+            eventDispatcher.sendEvent(VglsEvent.NavigateSuccessTo(newRoute))
+        }
+
         if (internalShowSnackbarState.value) {
-            val newRoute = navController.currentDestination?.route
             val message = "Popping stack from $oldRoute to $newRoute"
             showSnackbar(
                 VglsEvent.ShowSnackbar(message, false, source = "Navigation")
@@ -279,12 +285,10 @@ class NavViewModel @Inject constructor(
         }
 
         hatchet.d("Hiding system UI.")
-        viewModelScope.launch {
-            updateState {
-                it.copy(visibility = SystemUiVisibility.HIDDEN)
-            }
-            emitEvent(VglsEvent.SystemBarsBecameHidden)
+        updateState {
+            it.copy(visibility = SystemUiVisibility.HIDDEN)
         }
+        emitEvent(VglsEvent.SystemBarsBecameHidden)
     }
 
     companion object {

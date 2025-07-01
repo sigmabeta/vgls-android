@@ -6,6 +6,7 @@ open class VglsEvent {
     data class NavigateBack(override val source: String) : VglsEvent()
     data class NavigateTo(val destination: String, override val source: String) : VglsEvent()
     data class NavigateSingleTopLevel(val destination: String, override val source: String) : VglsEvent()
+    data class NavigateSuccessTo(val destination: String) : VglsEvent()
 
     data class ShowSnackbar(
         val message: String,
@@ -34,10 +35,6 @@ open class VglsEvent {
 
     data object SystemBarsBecameShown : VglsEvent()
     data object SystemBarsBecameHidden : VglsEvent()
-    data object TopBarBecameShown : VglsEvent()
-    data object TopBarBecameHidden : VglsEvent()
-    data object NavBarBecameShown : VglsEvent()
-    data object NavBarBecameHidden : VglsEvent()
 
     data class ClearNotif(val id: Long) : VglsEvent()
 

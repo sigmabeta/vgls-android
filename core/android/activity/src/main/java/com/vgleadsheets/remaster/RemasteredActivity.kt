@@ -15,10 +15,13 @@ import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
+import com.vgleadsheets.nav.SystemUiVisibility
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import com.vgleadsheets.pdf.subsample.PdfSubsampleSource
 import com.vgleadsheets.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
+import com.vgleadsheets.scaffold.systemui.SystemUiState
+import com.vgleadsheets.scaffold.systemui.SystemUiViewModel
 import com.vgleadsheets.ui.themes.VglsMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,6 +43,8 @@ class RemasteredActivity : ComponentActivity() {
 
     private val navViewModel: NavViewModel by viewModels()
 
+    private val systemUiViewModel: SystemUiViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,18 +54,14 @@ class RemasteredActivity : ComponentActivity() {
 
         val windowInsetController = WindowInsetsControllerCompat(window, window.decorView)
 
-        val hideSystemBars = { windowInsetController.hide(WindowInsetsCompat.Type.systemBars()) }
-        val showSystemBars = { windowInsetController.show(WindowInsetsCompat.Type.systemBars()) }
-
         setupNavEventListener()
+        setupSystemUiListener(windowInsetController)
 
         setContent {
             VglsMaterial {
                 CompositionLocalProvider(LocalPdfSubsampler provides pdfSubsampleSourceFactory) {
                     CompositionLocalProvider(LocalLogger provides hatchet) {
                         RemasterAppUi(
-                            showSystemBars,
-                            hideSystemBars,
                             modifier = Modifier
                         )
                         // PdfTestScreen(modifier = Modifier)
@@ -89,11 +90,25 @@ class RemasteredActivity : ComponentActivity() {
             .launchIn(navViewModel.viewModelScope)
     }
 
+    private fun setupSystemUiListener(windowInsetController: WindowInsetsControllerCompat) {
+        systemUiViewModel.uiState
+            .onEach { handleSystemUiState(it, windowInsetController) }
+            .launchIn(systemUiViewModel.viewModelScope)
+    }
+
     private fun handleNavEvent(event: ActivityEvent) {
         when (event) {
             ActivityEvent.Finish -> finish()
             is ActivityEvent.LaunchIntent -> startActivity(event.intent)
             ActivityEvent.Restart -> restartApp()
+        }
+    }
+
+    private fun handleSystemUiState(state: SystemUiState, windowInsetController: WindowInsetsControllerCompat) {
+        if (state.actualVisibility == SystemUiVisibility.VISIBLE) {
+            windowInsetController.show(WindowInsetsCompat.Type.systemBars())
+        } else {
+            windowInsetController.hide(WindowInsetsCompat.Type.systemBars())
         }
     }
 
