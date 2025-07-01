@@ -6,7 +6,7 @@ import com.vgleadsheets.nav.Destination
 data class NavBarState(
     val currentDestination: String = Destination.NONE.name,
     val visibility: NavBarVisibility = NavBarVisibility.VISIBLE,
-)  : VglsState {
+) : VglsState {
     val actualVisibility = if (visibility == NavBarVisibility.VISIBLE) {
         NavBarVisibility.VISIBLE
     } else {

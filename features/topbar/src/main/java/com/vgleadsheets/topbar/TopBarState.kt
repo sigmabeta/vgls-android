@@ -21,7 +21,8 @@ data class TopBarState(
     }
 
     private fun canScreenHideTopBar(): Boolean = listOf(
-        Destination.SONG_VIEWER.destName, Destination.SEARCH.destName
+        Destination.SONG_VIEWER.destName,
+        Destination.SEARCH.destName
     ).any {
         currentDestination.contains(it)
     }

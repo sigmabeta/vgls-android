@@ -20,4 +20,3 @@ data class SystemUiState(
 
     private fun canScreenHideSystemUi(): Boolean = currentDestination.contains(Destination.SONG_VIEWER.destName)
 }
-
