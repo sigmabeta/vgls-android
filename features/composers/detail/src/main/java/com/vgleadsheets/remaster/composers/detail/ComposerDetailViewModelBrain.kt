@@ -120,6 +120,7 @@ class ComposerDetailViewModelBrain(
         val composer = state.composer
         if (composer !is LCE.Content) return
 
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.addFavoriteComposer(composer.data.id)
         }
@@ -130,6 +131,7 @@ class ComposerDetailViewModelBrain(
         val composer = state.composer
         if (composer !is LCE.Content) return
 
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.removeFavoriteComposer(composer.data.id)
         }

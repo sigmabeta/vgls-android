@@ -118,6 +118,7 @@ class GameDetailViewModelBrain(
         val game = state.game
         if (game !is LCE.Content) return
 
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.addFavoriteGame(game.data.id)
         }
@@ -128,6 +129,7 @@ class GameDetailViewModelBrain(
         val game = state.game
         if (game !is LCE.Content) return
 
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.removeFavoriteGame(game.data.id)
         }
