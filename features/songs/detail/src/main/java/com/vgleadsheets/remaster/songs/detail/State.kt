@@ -107,6 +107,7 @@ data class State(
             Part.C.apiId
         }
 
+        val showLyricsMissingWarning = selectedPart == Part.VOCAL.apiId && actualPartApiId != Part.VOCAL.apiId
         val actualPageCount = data.pageCount(actualPartApiId, isAltSelected.data)
 
         listOf(
@@ -117,7 +118,7 @@ data class State(
                         sheetPage(
                             data,
                             pageNumber,
-                            showLyricsMissingWarning = false,
+                            showLyricsMissingWarning,
                             altSelection,
                             PdfSize.LARGE
                         )
