@@ -53,7 +53,7 @@ data class ViewerState(
                 song.data.pageCount(actualPartApiId, isAltSelected.data) to isAltSelected.data
             }
 
-            val singlePage = if (actualPageCount == 1) 0 else null
+            val singlePage = if (actualPageCount <= 1) 0 else null
 
             if (singlePage != null) {
                 persistentListOf(

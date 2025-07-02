@@ -21,6 +21,7 @@ import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
@@ -100,11 +101,19 @@ data class State(
         val altSelection = isAltSelected.data
         val pageCount = data.pageCount(selectedPart, altSelection)
 
+        val actualPartApiId = if (pageCount > 0) {
+            selectedPart
+        } else {
+            Part.C.apiId
+        }
+
+        val actualPageCount = data.pageCount(actualPartApiId, isAltSelected.data)
+
         listOf(
-            when {
-                pageCount > 1 -> HorizontalScrollerListModel(
+            if (actualPageCount > 1) {
+                HorizontalScrollerListModel(
                     dataId = data.id,
-                    scrollingItems = List(pageCount) { pageNumber ->
+                    scrollingItems = List(actualPageCount) { pageNumber ->
                         sheetPage(
                             data,
                             pageNumber,
@@ -114,19 +123,8 @@ data class State(
                         )
                     }.toImmutableList()
                 )
-
-                pageCount == 0 -> HorizontalScrollerListModel(
-                    dataId = data.id,
-                    scrollingItems = listOf(
-                        singlePage(
-                            data,
-                            showLyricsMissingWarning = false,
-                            altSelection,
-                        )
-                    ).toImmutableList()
-                )
-
-                else -> singlePage(data, false, altSelection)
+            } else {
+                singlePage(data, false, altSelection)
             }
         )
     }
