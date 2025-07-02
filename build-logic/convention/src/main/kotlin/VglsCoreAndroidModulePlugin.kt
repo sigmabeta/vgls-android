@@ -17,7 +17,7 @@ class VglsCoreAndroidModulePlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
-                defaultConfig.targetSdk = 34
+                defaultConfig.targetSdk = 36
             }
 
             dependencies {
