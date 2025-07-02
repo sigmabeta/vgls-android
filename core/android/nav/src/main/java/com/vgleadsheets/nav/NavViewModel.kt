@@ -263,7 +263,9 @@ class NavViewModel @Inject constructor(
     private fun printBackstackStatus(navBackStackEntries: List<NavBackStackEntry>) {
         hatchet.d("Nav backstack updated.")
         navBackStackEntries.forEach { entry ->
-            hatchet.v("Dest: ${entry.destination.route} State: ${entry.lifecycle.currentState} Args: ${entry.arguments}")
+            hatchet.v("Dest: ${entry.destination.route} " +
+                "State: ${entry.lifecycle.currentState} " +
+                "Args: ${entry.arguments}")
         }
     }
 
