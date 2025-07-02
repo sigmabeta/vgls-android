@@ -20,14 +20,4 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.paparazzi) apply false
-
-    alias(libs.plugins.vgls.android.app) apply false
-    alias(libs.plugins.vgls.compose.android.app) apply false
-    alias(libs.plugins.vgls.compose.android.module) apply false
-    alias(libs.plugins.vgls.feature.android) apply false
-    alias(libs.plugins.vgls.feature.compose.android) apply false
-    alias(libs.plugins.vgls.core.android) apply false
-    alias(libs.plugins.vgls.core.jvm) apply false
-    alias(libs.plugins.vgls.di.android) apply false
-    alias(libs.plugins.vgls.di.jvm) apply false
 }
