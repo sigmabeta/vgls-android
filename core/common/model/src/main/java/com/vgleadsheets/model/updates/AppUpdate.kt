@@ -45,5 +45,15 @@ data class AppUpdate(
                 "Wrote a privacy policy, accessible through the settings screen."
             )
         )
+
+        val VERSION_2_0_5 = AppUpdate(
+            versionCode = 20005,
+            versionName = "2.0.5",
+            releaseDate = "July 2, 2025",
+            changes = listOf(
+                "Sheets are now zoomable. Because they're rendered as PDFs, zooming in renders more detail.",
+                "Fix multiple crashes and minor bugs."
+            )
+        )
     }
 }
