@@ -14,4 +14,4 @@ private fun PdfConfigById.keyCommonSection(
     height: Int?
 ): String = "$songId-$partApiId-alt=$isAltSelected-$pageNumber-$width-$height"
 
-const val ZOOM_MAX_PDF = 8
+const val ZOOM_MAX_PDF = 4
