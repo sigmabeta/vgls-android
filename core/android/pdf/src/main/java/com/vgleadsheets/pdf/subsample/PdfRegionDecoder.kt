@@ -2,8 +2,10 @@ package com.vgleadsheets.pdf.subsample
 
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import com.vgleadsheets.coroutines.VglsDispatchers
@@ -59,11 +61,19 @@ class PdfRegionDecoder(
     override fun close() {
         hatchet.i("Closing PDF renderer for ${pdfFile.absolutePath}")
         pdfEngine?.close()
+        renderer = null
         pdfEngine = null
     }
 
     override suspend fun decodeRegion(region: IntRect, sampleSize: Int): ImageRegionDecoder.DecodeResult {
-        val renderer = requireNotNull(renderer)
+        val renderer: AsyncRenderer? = renderer
+
+        if (renderer == null) {
+            return ImageRegionDecoder.DecodeResult(
+                painter = ColorPainter(Color.White),
+                hasUltraHdrContent = false
+            )
+        }
 
         val viewportSize = IntSize(maxWidth, maxHeight)
         val unscaledImageSize = imageSize
