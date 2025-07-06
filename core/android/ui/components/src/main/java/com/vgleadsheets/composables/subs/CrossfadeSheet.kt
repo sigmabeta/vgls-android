@@ -161,7 +161,7 @@ private fun BoxScope.Content(
                     showDebug = showDebug,
                     loadingIndicatorConfig = loadingIndicatorConfigWithSize,
                     sheetId = sheetId,
-                    error = (painterState as AsyncImagePainter.State.Error).result.throwable,
+                    error = it.result.throwable,
                     modifier = Modifier,
                 ) {
                     painter.restart()
