@@ -150,6 +150,6 @@ class FirebaseAnalyticsImpl(
         const val PARAM_ERROR_MESSAGE = "error_message"
         const val PARAM_ERROR_THROWABLE = "error_throwable"
 
-        const val ERR_STRING_LENGTH = 48
+        const val ERR_STRING_LENGTH = 128
     }
 }

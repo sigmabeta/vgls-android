@@ -2,21 +2,24 @@ package com.vgleadsheets.pdf.subsample
 
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.BluntHatchet
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.pdf.AsyncRenderer
 import com.vgleadsheets.pdf.PdfToBitmapAsyncRenderer
 import com.vgleadsheets.pdf.PdfToBitmapFullDocAsyncRenderer
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
+import kotlinx.coroutines.withContext
+import me.saket.telephoto.subsamplingimage.internal.ImageRegionDecoder
 import java.io.File
 import kotlin.math.absoluteValue
 import kotlin.math.min
-import kotlinx.coroutines.withContext
-import me.saket.telephoto.subsamplingimage.internal.ImageRegionDecoder
 
 class PdfRegionDecoder(
     private val pdfFile: File,
@@ -26,19 +29,19 @@ class PdfRegionDecoder(
     private val vglsDispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
 ) : ImageRegionDecoder {
-    private var pdfRenderer = createPdfRenderer(pdfFile.absolutePath)
-    private val renderer =
+    private var pdfEngine: PdfRenderer? = createPdfRenderer(pdfFile.absolutePath)
+    private var renderer: AsyncRenderer? =
 //        FakeAsyncRenderer()
         if (pageNumber == null) {
             PdfToBitmapFullDocAsyncRenderer(
-                pdfRenderer,
+                requireNotNull(pdfEngine),
                 BluntHatchet(),
                 maxWidth,
                 maxHeight,
             )
         } else {
             PdfToBitmapAsyncRenderer(
-                pdfRenderer,
+                requireNotNull(pdfEngine),
                 BluntHatchet(),
                 pageNumber,
                 maxWidth,
@@ -46,19 +49,32 @@ class PdfRegionDecoder(
             )
         }
 
-    override val imageSize = renderer.getActualDimensions().let {
-        IntSize(
-            it.first * ZOOM_MAX_PDF,
-            it.second * ZOOM_MAX_PDF,
-        )
-    }
+    override val imageSize = requireNotNull(renderer)
+        .getActualDimensions()
+        .let {
+            IntSize(
+                it.first * ZOOM_MAX_PDF,
+                it.second * ZOOM_MAX_PDF,
+            )
+        }
 
     override fun close() {
         hatchet.i("Closing PDF renderer for ${pdfFile.absolutePath}")
-        pdfRenderer.close()
+        pdfEngine?.close()
+        renderer = null
+        pdfEngine = null
     }
 
     override suspend fun decodeRegion(region: IntRect, sampleSize: Int): ImageRegionDecoder.DecodeResult {
+        val renderer: AsyncRenderer? = renderer
+
+        if (renderer == null) {
+            return ImageRegionDecoder.DecodeResult(
+                painter = ColorPainter(Color.White),
+                hasUltraHdrContent = false
+            )
+        }
+
         val viewportSize = IntSize(maxWidth, maxHeight)
         val unscaledImageSize = imageSize
         val maxSampleSize = ImageSampleSize.calculateFor(
