@@ -1,8 +1,7 @@
 package com.vgleadsheets.ui.viewer
 
-import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,7 +45,10 @@ fun viewerViewModel(
     idArg: Long,
     pageArg: Long,
 ): ViewerViewModel {
-    val activity = LocalContext.current as Activity
+    val activity = LocalActivity.current
+
+    requireNotNull(activity)
+
     val entryPoint = EntryPointAccessors.fromActivity(activity, Provider::class.java)
     val factory = entryPoint.viewerViewModelFactory()
 

@@ -24,7 +24,6 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -36,6 +35,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
@@ -263,7 +263,11 @@ class NavViewModel @Inject constructor(
     private fun printBackstackStatus(navBackStackEntries: List<NavBackStackEntry>) {
         hatchet.d("Nav backstack updated.")
         navBackStackEntries.forEach { entry ->
-            hatchet.v("Dest: ${entry.destination.route} State: ${entry.maxLifecycle} Args: ${entry.arguments}")
+            hatchet.v(
+                "Dest: ${entry.destination.route} " +
+                "State: ${entry.lifecycle.currentState} " +
+                "Args: ${entry.arguments}"
+            )
         }
     }
 

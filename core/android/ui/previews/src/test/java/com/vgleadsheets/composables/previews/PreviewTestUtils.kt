@@ -8,7 +8,7 @@ import com.vgleadsheets.list.WidthClass
 import kotlin.math.round
 
 object PreviewTestUtils {
-    internal const val SUFFIX_TESTNAME = "{1}: {2}x{3}"
+    internal const val SUFFIX_TESTNAME = "{1} {2}x{3}"
 
     private val INTERESTING_DEVICES_INTERNAL = listOf(
         "Small Tablet" to DeviceConfig.NEXUS_7,
