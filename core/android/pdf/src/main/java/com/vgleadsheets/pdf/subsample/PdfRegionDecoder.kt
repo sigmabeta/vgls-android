@@ -60,8 +60,8 @@ class PdfRegionDecoder(
 
     override fun close() {
         hatchet.i("Closing PDF renderer for ${pdfFile.absolutePath}")
-        pdfEngine?.close()
         renderer = null
+        pdfEngine?.close()
         pdfEngine = null
     }
 
