@@ -15,10 +15,12 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.vgleadsheets.ui.icons.IcAlbum24dp
 import com.vgleadsheets.ui.icons.IcBarChart24dp
+import com.vgleadsheets.ui.icons.IcCloudDone24dp
 import com.vgleadsheets.ui.icons.IcCrossOut24dp
 import com.vgleadsheets.ui.icons.IcDescription24dp
 import com.vgleadsheets.ui.icons.IcJamFilled
 import com.vgleadsheets.ui.icons.IcJamUnfilled
+import com.vgleadsheets.ui.icons.IcOutlineCloudDownload24dp
 import com.vgleadsheets.ui.icons.IcPlayCircleFilled24
 import com.vgleadsheets.ui.icons.IcRemove24dp
 import com.vgleadsheets.ui.icons.IcTagBlack24dp
@@ -32,19 +34,20 @@ fun Icon.vector(): ImageVector {
         Icon.CLEAR -> Icons.Default.Clear
         Icon.CROSSOUT -> VglsMaterialVectors.IcCrossOut24dp
         Icon.DESCRIPTION -> VglsMaterialVectors.IcDescription24dp
-        Icon.FAVORITE -> VglsMaterialVectors.IcJamFilled
+        Icon.DIFFICULTY -> VglsMaterialVectors.IcBarChart24dp
         Icon.FORWARD -> Icons.AutoMirrored.Default.ArrowForward
         Icon.HOME -> Icons.Default.Home
         Icon.JAM_EMPTY -> VglsMaterialVectors.IcJamUnfilled
         Icon.JAM_FILLED -> VglsMaterialVectors.IcJamFilled
         Icon.MINUS -> VglsMaterialVectors.IcRemove24dp
+        Icon.OFFLINE_FILLED -> VglsMaterialVectors.IcCloudDone24dp
+        Icon.OFFLINE_OUTLINE -> VglsMaterialVectors.IcOutlineCloudDownload24dp
         Icon.PERSON -> Icons.Default.Person
         Icon.PLUS -> Icons.Default.Add
         Icon.REFRESH -> Icons.Default.Refresh
-        Icon.DIFFICULTY -> VglsMaterialVectors.IcBarChart24dp
-        Icon.TAG -> VglsMaterialVectors.IcTagBlack24dp
         Icon.SEARCH -> Icons.Default.Search
         Icon.SEARCH_YOUTUBE -> VglsMaterialVectors.IcPlayCircleFilled24
+        Icon.TAG -> VglsMaterialVectors.IcTagBlack24dp
         Icon.WARNING -> Icons.Default.Warning
     }
 }
