@@ -45,6 +45,8 @@ fun StringId.id(): Int {
 
         StringId.CTA_FAVORITE_ADD -> R.string.cta_favorite_add
         StringId.CTA_FAVORITE_REMOVE -> R.string.cta_favorite_remove
+        StringId.CTA_OFFLINE_ADD -> R.string.cta_offline_add
+        StringId.CTA_OFFLINE_REMOVE -> R.string.cta_offline_remove
         StringId.CTA_ALT_SELECT -> R.string.cta_alt_select
         StringId.CTA_ALT_UNSELECT -> R.string.cta_alt_unselect
         StringId.CTA_SEARCH_YOUTUBE -> R.string.cta_search_youtube

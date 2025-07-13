@@ -59,6 +59,8 @@
 
     <string name="cta_favorite_add">Add to Favorites</string>
     <string name="cta_favorite_remove">Remove from Favorites</string>
+    <string name="cta_offline_add">Make available offline</string>
+    <string name="cta_offline_remove">Is available offline</string>
     <string name="cta_alt_select">Show musician-friendly version</string>
     <string name="cta_alt_unselect">Show standard version</string>
     <string name="cta_search_youtube">Search song on YouTube</string>

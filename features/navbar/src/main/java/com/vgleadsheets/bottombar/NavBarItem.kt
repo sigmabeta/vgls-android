@@ -11,7 +11,7 @@ sealed class NavBarItem(
 ) {
     data object Home : NavBarItem(Destination.HOME.noArgs(), Icon.HOME, StringId.NAV_LABEL_HOME)
     data object Browse : NavBarItem(Destination.BROWSE.noArgs(), Icon.BROWSE, StringId.NAV_LABEL_BROWSE)
-    data object Favorites : NavBarItem(Destination.FAVORITES.noArgs(), Icon.FAVORITE, StringId.NAV_LABEL_FAVORITE)
+    data object Favorites : NavBarItem(Destination.FAVORITES.noArgs(), Icon.JAM_FILLED, StringId.NAV_LABEL_FAVORITE)
     data object Search : NavBarItem(Destination.SEARCH.noArgs(), Icon.SEARCH, StringId.NAV_LABEL_SEARCH)
 
     companion object {
