@@ -15,6 +15,7 @@ import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
@@ -63,6 +64,7 @@ class ActivityModule {
         composerRepository: ComposerRepository,
         randomRepository: RandomRepository,
         favoriteRepository: FavoriteRepository,
+        offlineRepository: OfflineRepository,
         tagRepository: TagRepository,
         homeModuleProvider: HomeModuleProvider,
         generalSettingsManager: GeneralSettingsManager,
@@ -89,6 +91,7 @@ class ActivityModule {
             songRepository = songRepository,
             randomRepository = randomRepository,
             favoriteRepository = favoriteRepository,
+            offlineRepository = offlineRepository,
             tagRepository = tagRepository,
             homeModuleProvider = homeModuleProvider,
             generalSettingsManager = generalSettingsManager,
