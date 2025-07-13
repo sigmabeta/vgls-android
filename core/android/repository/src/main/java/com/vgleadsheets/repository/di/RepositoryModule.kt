@@ -18,6 +18,7 @@ import com.vgleadsheets.database.source.FavoriteComposerDataSource
 import com.vgleadsheets.database.source.FavoriteGameDataSource
 import com.vgleadsheets.database.source.FavoriteSongDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
+import com.vgleadsheets.database.source.OfflineSongDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
@@ -29,6 +30,7 @@ import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.repository.SongRepository
@@ -220,6 +222,16 @@ object RepositoryModule {
         favoriteSongDataSource,
         favoriteGameDataSource,
         favoriteComposerDataSource,
+    )
+
+    @Provides
+    @Singleton
+    fun provideOfflineRepository(
+        songDataSource: SongDataSource,
+        offlineSongDataSource: OfflineSongDataSource,
+    ) = OfflineRepository(
+        songDataSource,
+        offlineSongDataSource,
     )
 
     @Provides

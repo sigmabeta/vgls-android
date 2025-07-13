@@ -30,6 +30,7 @@ import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
@@ -52,6 +53,7 @@ class FeatureDirectory(
     private val composerRepository: ComposerRepository,
     private val randomRepository: RandomRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val offlineRepository: OfflineRepository,
     private val tagRepository: TagRepository,
     private val dispatchers: VglsDispatchers,
     private val delayManager: DelayManager,
@@ -150,6 +152,7 @@ class FeatureDirectory(
                 gameRepository,
                 composerRepository,
                 favoriteRepository,
+                offlineRepository,
                 tagRepository,
                 scheduler,
                 urlInfoProvider,
