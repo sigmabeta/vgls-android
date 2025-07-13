@@ -9,6 +9,7 @@ import com.vgleadsheets.conversion.android.converter.FavoriteSongConverter
 import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.android.converter.GamePlayCountConverter
+import com.vgleadsheets.conversion.android.converter.OfflineSongConverter
 import com.vgleadsheets.conversion.android.converter.SearchHistoryConverter
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
@@ -93,4 +94,8 @@ object ConverterModule {
     @Provides
     @Singleton
     fun favoriteComposerConverter() = FavoriteComposerConverter()
+
+    @Provides
+    @Singleton
+    fun offlineSongConverter() = OfflineSongConverter()
 }

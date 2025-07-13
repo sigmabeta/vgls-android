@@ -82,6 +82,7 @@ private fun songScreenState(pageCount: Int): State {
         tagValues = LCE.Content(tags),
         sheetUrlInfo = LCE.Content(UrlInfo(partId = "C")),
         isFavorite = LCE.Content(false),
+        isAvailableOffline = LCE.Content(true),
         isAltSelected = LCE.Content(false),
     )
     return screenState

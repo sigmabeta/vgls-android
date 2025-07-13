@@ -8,6 +8,7 @@ import com.vgleadsheets.database.BuildConfig
 import com.vgleadsheets.database.android.DatabaseVersions
 import com.vgleadsheets.database.android.Migrations
 import com.vgleadsheets.database.android.UserContentDatabase
+import com.vgleadsheets.database.android.UserContentMigrations
 import com.vgleadsheets.database.android.VglsDatabase
 import dagger.Module
 import dagger.Provides
@@ -55,13 +56,12 @@ object DatabaseModule {
                 Migrations.AddAlternates,
                 Migrations.AddSongCounts,
             )
-            .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
+            .fallbackToDestructiveMigrationFrom(dropAllTables = true, *DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }
 
     @Singleton
     @Provides
-    @Suppress("SpreadOperator")
     fun provideUserContentDatabase(
         @ApplicationContext context: Context,
         sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
@@ -72,8 +72,10 @@ object DatabaseModule {
                 UserContentDatabase::class.java,
                 "user-content-database"
             )
+            .addMigrations(
+                UserContentMigrations.AddedOffline,
+            )
             .openHelperFactory(sqlOpenHelperFactory)
-            .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }
 
@@ -184,6 +186,12 @@ object DatabaseModule {
     fun favoriteComposerDao(
         database: UserContentDatabase
     ) = database.favoriteComposerDao()
+
+    @Provides
+    @Singleton
+    fun offlineSongDao(
+        database: UserContentDatabase
+    ) = database.offlineSongDao()
 
     @Provides
     @Singleton
