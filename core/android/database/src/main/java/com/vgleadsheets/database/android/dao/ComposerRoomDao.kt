@@ -22,8 +22,8 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
-import com.vgleadsheets.database.android.enitity.ComposerEntity
-import com.vgleadsheets.database.android.enitity.DeletionId
+import com.vgleadsheets.database.android.entity.ComposerEntity
+import com.vgleadsheets.database.android.entity.DeletionId
 import com.vgleadsheets.database.android.join.SongComposerJoin
 import kotlinx.coroutines.flow.Flow
 

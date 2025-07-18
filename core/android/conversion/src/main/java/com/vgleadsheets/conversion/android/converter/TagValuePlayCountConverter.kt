@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.database.android.enitity.TagValuePlayCountEntity
+import com.vgleadsheets.database.android.entity.TagValuePlayCountEntity
 import com.vgleadsheets.model.history.TagValuePlayCount
 
 class TagValuePlayCountConverter : Converter<TagValuePlayCount, TagValuePlayCountEntity> {

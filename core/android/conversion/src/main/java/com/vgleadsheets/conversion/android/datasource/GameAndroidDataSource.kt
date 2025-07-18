@@ -4,7 +4,7 @@ import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.GameRoomDao
-import com.vgleadsheets.database.android.enitity.GameEntity
+import com.vgleadsheets.database.android.entity.GameEntity
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.model.Game
 import kotlinx.coroutines.flow.map

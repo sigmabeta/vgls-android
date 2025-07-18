@@ -5,8 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
-import com.vgleadsheets.database.android.enitity.DeletionId
-import com.vgleadsheets.database.android.enitity.SearchHistoryEntryEntity
+import com.vgleadsheets.database.android.entity.DeletionId
+import com.vgleadsheets.database.android.entity.SearchHistoryEntryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

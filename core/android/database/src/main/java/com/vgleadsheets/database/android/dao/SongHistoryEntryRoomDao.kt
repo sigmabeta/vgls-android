@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
-import com.vgleadsheets.database.android.enitity.SongHistoryEntryEntity
+import com.vgleadsheets.database.android.entity.SongHistoryEntryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

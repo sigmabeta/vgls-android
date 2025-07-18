@@ -3,7 +3,7 @@ package com.vgleadsheets.conversion.android
 import com.vgleadsheets.conversion.Converter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.RoomDao
-import com.vgleadsheets.database.android.enitity.DeletionId
+import com.vgleadsheets.database.android.entity.DeletionId
 import com.vgleadsheets.database.dao.DataSource
 import kotlinx.coroutines.flow.map
 

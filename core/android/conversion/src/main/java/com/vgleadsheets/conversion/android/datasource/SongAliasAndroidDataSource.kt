@@ -4,7 +4,7 @@ import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.SongAliasRoomDao
-import com.vgleadsheets.database.android.enitity.SongAliasEntity
+import com.vgleadsheets.database.android.entity.SongAliasEntity
 import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.model.alias.SongAlias
 

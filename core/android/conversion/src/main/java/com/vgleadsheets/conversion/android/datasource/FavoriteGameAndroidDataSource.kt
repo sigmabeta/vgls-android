@@ -3,8 +3,8 @@ package com.vgleadsheets.conversion.android.datasource
 import com.vgleadsheets.conversion.android.converter.FavoriteGameConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.FavoriteGameRoomDao
-import com.vgleadsheets.database.android.enitity.DeletionId
-import com.vgleadsheets.database.android.enitity.FavoriteGameEntity
+import com.vgleadsheets.database.android.entity.DeletionId
+import com.vgleadsheets.database.android.entity.FavoriteGameEntity
 import com.vgleadsheets.database.source.FavoriteGameDataSource
 import kotlinx.coroutines.flow.map
 

@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.database.android.enitity.GamePlayCountEntity
+import com.vgleadsheets.database.android.entity.GamePlayCountEntity
 import com.vgleadsheets.model.history.GamePlayCount
 
 class GamePlayCountConverter : Converter<GamePlayCount, GamePlayCountEntity> {

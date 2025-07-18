@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_PRIMARY_KEY_ID
-import com.vgleadsheets.database.android.enitity.ComposerEntity
-import com.vgleadsheets.database.android.enitity.SongEntity
+import com.vgleadsheets.database.android.entity.ComposerEntity
+import com.vgleadsheets.database.android.entity.SongEntity
 import com.vgleadsheets.database.android.join.SongComposerJoin.Companion.COLUMN_FOREIGN_KEY_ONE
 import com.vgleadsheets.database.android.join.SongComposerJoin.Companion.COLUMN_FOREIGN_KEY_TWO
 import com.vgleadsheets.database.android.join.SongComposerJoin.Companion.TABLE

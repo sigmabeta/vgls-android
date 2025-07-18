@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.database.android.enitity.GameEntity
+import com.vgleadsheets.database.android.entity.GameEntity
 import com.vgleadsheets.model.Game
 
 class GameConverter : Converter<Game, GameEntity> {

@@ -4,7 +4,7 @@ import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
-import com.vgleadsheets.database.android.enitity.TagKeyEntity
+import com.vgleadsheets.database.android.entity.TagKeyEntity
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.model.tag.TagKey
 

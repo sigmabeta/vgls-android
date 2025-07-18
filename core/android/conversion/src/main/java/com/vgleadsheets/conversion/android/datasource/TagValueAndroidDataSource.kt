@@ -4,7 +4,7 @@ import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
-import com.vgleadsheets.database.android.enitity.TagValueEntity
+import com.vgleadsheets.database.android.entity.TagValueEntity
 import com.vgleadsheets.database.android.join.SongTagValueJoin
 import com.vgleadsheets.database.dao.TagValueDataSource
 import com.vgleadsheets.model.relation.SongTagValueRelation

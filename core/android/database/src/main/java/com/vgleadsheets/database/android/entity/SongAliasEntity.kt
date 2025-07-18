@@ -1,11 +1,11 @@
-package com.vgleadsheets.database.android.enitity
+package com.vgleadsheets.database.android.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_PRIMARY_KEY_ID
-import com.vgleadsheets.database.android.enitity.SongAliasEntity.Companion.COLUMN_FOREIGN_KEY
-import com.vgleadsheets.database.android.enitity.SongAliasEntity.Companion.TABLE
+import com.vgleadsheets.database.android.entity.SongAliasEntity.Companion.COLUMN_FOREIGN_KEY
+import com.vgleadsheets.database.android.entity.SongAliasEntity.Companion.TABLE
 
 @Entity(
     tableName = TABLE,

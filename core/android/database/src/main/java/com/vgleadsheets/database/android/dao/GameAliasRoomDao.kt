@@ -12,9 +12,9 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSEN
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
-import com.vgleadsheets.database.android.enitity.DeletionId
-import com.vgleadsheets.database.android.enitity.GameAliasEntity
-import com.vgleadsheets.database.android.enitity.GameEntity
+import com.vgleadsheets.database.android.entity.DeletionId
+import com.vgleadsheets.database.android.entity.GameAliasEntity
+import com.vgleadsheets.database.android.entity.GameEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

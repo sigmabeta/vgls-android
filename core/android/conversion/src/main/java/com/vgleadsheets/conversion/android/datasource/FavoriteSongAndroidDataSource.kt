@@ -3,8 +3,8 @@ package com.vgleadsheets.conversion.android.datasource
 import com.vgleadsheets.conversion.android.converter.FavoriteSongConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.FavoriteSongRoomDao
-import com.vgleadsheets.database.android.enitity.DeletionId
-import com.vgleadsheets.database.android.enitity.FavoriteSongEntity
+import com.vgleadsheets.database.android.entity.DeletionId
+import com.vgleadsheets.database.android.entity.FavoriteSongEntity
 import com.vgleadsheets.database.source.FavoriteSongDataSource
 import kotlinx.coroutines.flow.map
 

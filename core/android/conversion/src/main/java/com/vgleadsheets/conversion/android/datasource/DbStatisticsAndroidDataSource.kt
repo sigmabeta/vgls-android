@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.datasource
 
 import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
-import com.vgleadsheets.database.android.enitity.TimeEntity
+import com.vgleadsheets.database.android.entity.TimeEntity
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import com.vgleadsheets.model.time.Time
 import kotlinx.coroutines.flow.map

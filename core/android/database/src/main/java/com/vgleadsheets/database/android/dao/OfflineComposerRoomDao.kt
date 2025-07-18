@@ -7,25 +7,27 @@ import androidx.room.Query
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
 import com.vgleadsheets.database.android.entity.DeletionId
-import com.vgleadsheets.database.android.entity.OfflineSongEntity
+import com.vgleadsheets.database.android.entity.OfflineComposerEntity
+
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface OfflineSongRoomDao {
+interface OfflineComposerRoomDao {
     @Insert
-    suspend fun insert(entity: OfflineSongEntity)
+    suspend fun insert(entity: OfflineComposerEntity)
 
-    @Delete(entity = OfflineSongEntity::class)
+    @Delete(entity = OfflineComposerEntity::class)
     suspend fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_SINGLE)
-    fun getOfflineSong(id: Long): Flow<OfflineSongEntity?>
+    fun getOfflineComposer(id: Long): Flow<OfflineComposerEntity?>
 
     @Query(QUERY_ALL)
-    fun getAll(): Flow<List<OfflineSongEntity>>
+    fun getAll(): Flow<List<OfflineComposerEntity>>
+
 
     companion object {
-        private const val TABLE = OfflineSongEntity.TABLE
+        private const val TABLE = OfflineComposerEntity.TABLE
 
         const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         const val QUERY_ALL = "$GET $TABLE"

@@ -10,8 +10,8 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_ALPHABETIC
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.OPTION_CASE_INSENSITIVE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
-import com.vgleadsheets.database.android.enitity.DeletionId
-import com.vgleadsheets.database.android.enitity.TagKeyEntity
+import com.vgleadsheets.database.android.entity.DeletionId
+import com.vgleadsheets.database.android.entity.TagKeyEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

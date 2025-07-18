@@ -4,7 +4,7 @@ import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.ComposerConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.ComposerRoomDao
-import com.vgleadsheets.database.android.enitity.ComposerEntity
+import com.vgleadsheets.database.android.entity.ComposerEntity
 import com.vgleadsheets.database.android.join.SongComposerJoin
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.model.Composer

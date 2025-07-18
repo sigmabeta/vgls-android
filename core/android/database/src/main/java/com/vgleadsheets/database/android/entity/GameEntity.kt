@@ -1,8 +1,8 @@
-package com.vgleadsheets.database.android.enitity
+package com.vgleadsheets.database.android.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.vgleadsheets.database.android.enitity.GameEntity.Companion.TABLE
+import com.vgleadsheets.database.android.entity.GameEntity.Companion.TABLE
 
 @Entity(tableName = TABLE)
 data class GameEntity(

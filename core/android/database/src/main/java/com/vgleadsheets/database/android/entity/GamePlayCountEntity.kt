@@ -1,18 +1,18 @@
-package com.vgleadsheets.database.android.enitity
+package com.vgleadsheets.database.android.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.vgleadsheets.database.android.enitity.SongPlayCountEntity.Companion.TABLE
+import com.vgleadsheets.database.android.entity.GamePlayCountEntity.Companion.TABLE
 
 @Entity(
     tableName = TABLE
 )
-data class SongPlayCountEntity(
+data class GamePlayCountEntity(
     @PrimaryKey val id: Long,
     val playCount: Int,
     val mostRecentPlay: Long,
 ) {
     companion object {
-        const val TABLE = "song_play_count"
+        const val TABLE = "game_play_count"
     }
 }

@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.database.android.enitity.ComposerAliasEntity
+import com.vgleadsheets.database.android.entity.ComposerAliasEntity
 import com.vgleadsheets.model.alias.ComposerAlias
 
 class ComposerAliasConverter :

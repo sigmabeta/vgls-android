@@ -12,15 +12,15 @@ import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
 import com.vgleadsheets.database.android.dao.TagValueRoomDao
 import com.vgleadsheets.database.android.dao.TransactionDao
-import com.vgleadsheets.database.android.enitity.ComposerAliasEntity
-import com.vgleadsheets.database.android.enitity.ComposerEntity
-import com.vgleadsheets.database.android.enitity.GameAliasEntity
-import com.vgleadsheets.database.android.enitity.GameEntity
-import com.vgleadsheets.database.android.enitity.SongAliasEntity
-import com.vgleadsheets.database.android.enitity.SongEntity
-import com.vgleadsheets.database.android.enitity.TagKeyEntity
-import com.vgleadsheets.database.android.enitity.TagValueEntity
-import com.vgleadsheets.database.android.enitity.TimeEntity
+import com.vgleadsheets.database.android.entity.ComposerAliasEntity
+import com.vgleadsheets.database.android.entity.ComposerEntity
+import com.vgleadsheets.database.android.entity.GameAliasEntity
+import com.vgleadsheets.database.android.entity.GameEntity
+import com.vgleadsheets.database.android.entity.SongAliasEntity
+import com.vgleadsheets.database.android.entity.SongEntity
+import com.vgleadsheets.database.android.entity.TagKeyEntity
+import com.vgleadsheets.database.android.entity.TagValueEntity
+import com.vgleadsheets.database.android.entity.TimeEntity
 import com.vgleadsheets.database.android.join.SongComposerJoin
 import com.vgleadsheets.database.android.join.SongTagValueJoin
 

@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.database.android.enitity.TagValueEntity
+import com.vgleadsheets.database.android.entity.TagValueEntity
 import com.vgleadsheets.model.tag.TagValue
 
 class TagValueConverter :

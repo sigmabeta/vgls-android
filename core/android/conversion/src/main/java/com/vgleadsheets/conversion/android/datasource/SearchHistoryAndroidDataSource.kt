@@ -3,7 +3,7 @@ package com.vgleadsheets.conversion.android.datasource
 import com.vgleadsheets.conversion.android.converter.SearchHistoryConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.SearchHistoryEntryRoomDao
-import com.vgleadsheets.database.android.enitity.DeletionId
+import com.vgleadsheets.database.android.entity.DeletionId
 import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import kotlinx.coroutines.flow.Flow

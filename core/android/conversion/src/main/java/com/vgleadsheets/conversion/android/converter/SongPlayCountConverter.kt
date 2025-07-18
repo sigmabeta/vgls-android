@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.database.android.enitity.SongPlayCountEntity
+import com.vgleadsheets.database.android.entity.SongPlayCountEntity
 import com.vgleadsheets.model.history.SongPlayCount
 
 class SongPlayCountConverter : Converter<SongPlayCount, SongPlayCountEntity> {

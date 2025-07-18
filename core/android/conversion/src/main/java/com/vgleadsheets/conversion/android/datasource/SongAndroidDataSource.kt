@@ -4,7 +4,7 @@ import com.vgleadsheets.conversion.android.AndroidDataSource
 import com.vgleadsheets.conversion.android.converter.SongConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.SongRoomDao
-import com.vgleadsheets.database.android.enitity.SongEntity
+import com.vgleadsheets.database.android.entity.SongEntity
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.model.Song
 import kotlinx.coroutines.flow.map

@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.database.android.enitity.SearchHistoryEntryEntity
+import com.vgleadsheets.database.android.entity.SearchHistoryEntryEntity
 import com.vgleadsheets.model.history.SearchHistoryEntry
 
 class SearchHistoryConverter : Converter<SearchHistoryEntry, SearchHistoryEntryEntity> {

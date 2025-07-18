@@ -5,9 +5,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.vgleadsheets.database.android.dao.RoomDao
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_OFFLINE
-import com.vgleadsheets.database.android.enitity.ComposerEntity
-import com.vgleadsheets.database.android.enitity.GameEntity
-import com.vgleadsheets.database.android.enitity.SongEntity
+import com.vgleadsheets.database.android.entity.ComposerEntity
+import com.vgleadsheets.database.android.entity.GameEntity
+import com.vgleadsheets.database.android.entity.SongEntity
 
 object Migrations {
     object RemoveJams : Migration(

@@ -1,28 +1,28 @@
-package com.vgleadsheets.database.android.enitity
+package com.vgleadsheets.database.android.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_PRIMARY_KEY_ID
-import com.vgleadsheets.database.android.enitity.ComposerAliasEntity.Companion.TABLE
+import com.vgleadsheets.database.android.entity.GameAliasEntity.Companion.TABLE
 
 @Entity(
     tableName = TABLE,
     foreignKeys = [
         ForeignKey(
-            entity = ComposerEntity::class,
+            entity = GameEntity::class,
             parentColumns = arrayOf(COLUMN_PRIMARY_KEY_ID),
-            childColumns = arrayOf(ComposerEntity.COLUMN_FOREIGN_KEY),
+            childColumns = arrayOf(GameEntity.COLUMN_FOREIGN_KEY_ALIAS),
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
-data class ComposerAliasEntity(
-    val composerId: Long,
+data class GameAliasEntity(
+    val gameId: Long,
     val name: String,
     @PrimaryKey(autoGenerate = true) val id: Long? = null
 ) {
     companion object {
-        const val TABLE = "alias_composer"
+        const val TABLE = "alias_game"
     }
 }

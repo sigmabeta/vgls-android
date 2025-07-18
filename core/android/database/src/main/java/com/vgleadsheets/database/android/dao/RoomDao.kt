@@ -1,6 +1,6 @@
 package com.vgleadsheets.database.android.dao
 
-import com.vgleadsheets.database.android.enitity.DeletionId
+import com.vgleadsheets.database.android.entity.DeletionId
 import kotlinx.coroutines.flow.Flow
 
 interface RoomDao<EntityType> {

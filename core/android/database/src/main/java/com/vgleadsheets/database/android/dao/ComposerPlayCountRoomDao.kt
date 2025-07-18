@@ -7,7 +7,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.DELETE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.GET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.SET
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.UPDATE
-import com.vgleadsheets.database.android.enitity.ComposerPlayCountEntity
+import com.vgleadsheets.database.android.entity.ComposerPlayCountEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

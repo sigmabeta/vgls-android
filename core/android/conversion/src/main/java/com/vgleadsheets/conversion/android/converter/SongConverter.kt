@@ -1,7 +1,7 @@
 package com.vgleadsheets.conversion.android.converter
 
 import com.vgleadsheets.conversion.Converter
-import com.vgleadsheets.database.android.enitity.SongEntity
+import com.vgleadsheets.database.android.entity.SongEntity
 import com.vgleadsheets.model.Song
 
 class SongConverter : Converter<Song, SongEntity> {

@@ -3,8 +3,8 @@ package com.vgleadsheets.conversion.android.datasource
 import com.vgleadsheets.conversion.android.converter.OfflineSongConverter
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.android.dao.OfflineSongRoomDao
-import com.vgleadsheets.database.android.enitity.DeletionId
-import com.vgleadsheets.database.android.enitity.OfflineSongEntity
+import com.vgleadsheets.database.android.entity.DeletionId
+import com.vgleadsheets.database.android.entity.OfflineSongEntity
 import com.vgleadsheets.database.source.OfflineSongDataSource
 import kotlinx.coroutines.flow.map
 
