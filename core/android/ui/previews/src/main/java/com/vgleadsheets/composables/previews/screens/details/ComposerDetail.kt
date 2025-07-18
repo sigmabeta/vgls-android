@@ -76,7 +76,7 @@ private fun composerScreenLoadingState(): State {
         composer = LCE.Loading(stringGenerator.generateName()),
         songs = LCE.Loading(stringGenerator.generateName()),
         games = LCE.Loading(stringGenerator.generateName()),
-        isFavorite = LCE.Loading(stringGenerator.generateName()),,
+        isFavorite = LCE.Loading(stringGenerator.generateName()),
     )
     return screenState
 }

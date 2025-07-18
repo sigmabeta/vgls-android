@@ -104,5 +104,3 @@ object ConverterModule {
     @Singleton
     fun offlineComposerConverter() = OfflineComposerConverter()
 }
-
-

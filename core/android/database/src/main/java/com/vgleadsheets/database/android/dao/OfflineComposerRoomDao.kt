@@ -25,7 +25,6 @@ interface OfflineComposerRoomDao {
     @Query(QUERY_ALL)
     fun getAll(): Flow<List<OfflineComposerEntity>>
 
-
     companion object {
         private const val TABLE = OfflineComposerEntity.TABLE
 

@@ -231,7 +231,6 @@ class ComposerDetailViewModelBrain(
         }
     }
 
-
     private fun updateIsFavorite(isFavorite: LCE<Boolean>) {
         updateState {
             (it as State).copy(
@@ -246,6 +245,5 @@ class ComposerDetailViewModelBrain(
         internal const val LOAD_OPERATION_GAMES = "composers.detail.games"
         internal const val LOAD_OPERATION_IS_FAVORITE = "composers.detail.favorite"
         internal const val LOAD_OPERATION_IS_OFFLINE = "composers.detail.offline"
-
     }
 }
