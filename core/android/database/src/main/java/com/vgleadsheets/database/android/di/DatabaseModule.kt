@@ -195,6 +195,12 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun offlineComposerDao(
+        database: UserContentDatabase
+    ) = database.offlineComposerDao()
+
+    @Provides
+    @Singleton
     fun alternateSettingDao(
         database: UserContentDatabase
     ) = database.alternateSettingDao()

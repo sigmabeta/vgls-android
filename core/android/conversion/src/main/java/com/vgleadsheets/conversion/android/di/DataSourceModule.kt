@@ -9,6 +9,7 @@ import com.vgleadsheets.conversion.android.converter.FavoriteSongConverter
 import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.android.converter.GamePlayCountConverter
+import com.vgleadsheets.conversion.android.converter.OfflineComposerConverter
 import com.vgleadsheets.conversion.android.converter.OfflineSongConverter
 import com.vgleadsheets.conversion.android.converter.SearchHistoryConverter
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
@@ -29,6 +30,7 @@ import com.vgleadsheets.conversion.android.datasource.FavoriteSongAndroidDataSou
 import com.vgleadsheets.conversion.android.datasource.GameAliasAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.GameAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.GamePlayCountAndroidDataSource
+import com.vgleadsheets.conversion.android.datasource.OfflineComposerAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.OfflineSongAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SearchHistoryAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SongAliasAndroidDataSource
@@ -49,6 +51,7 @@ import com.vgleadsheets.database.android.dao.FavoriteSongRoomDao
 import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.dao.GamePlayCountRoomDao
 import com.vgleadsheets.database.android.dao.GameRoomDao
+import com.vgleadsheets.database.android.dao.OfflineComposerRoomDao
 import com.vgleadsheets.database.android.dao.OfflineSongRoomDao
 import com.vgleadsheets.database.android.dao.SearchHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongAliasRoomDao
@@ -73,6 +76,7 @@ import com.vgleadsheets.database.source.FavoriteComposerDataSource
 import com.vgleadsheets.database.source.FavoriteGameDataSource
 import com.vgleadsheets.database.source.FavoriteSongDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
+import com.vgleadsheets.database.source.OfflineComposerDataSource
 import com.vgleadsheets.database.source.OfflineSongDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
@@ -271,6 +275,16 @@ object DataSourceModule {
         roomImpl: OfflineSongRoomDao,
         converter: OfflineSongConverter
     ): OfflineSongDataSource = OfflineSongAndroidDataSource(
+        roomImpl,
+        converter,
+    )
+
+    @Provides
+    @Singleton
+    fun offlineComposerDataSource(
+        roomImpl: OfflineComposerRoomDao,
+        converter: OfflineComposerConverter
+    ): OfflineComposerDataSource = OfflineComposerAndroidDataSource(
         roomImpl,
         converter,
     )

@@ -15,6 +15,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.flow.catch
@@ -28,6 +29,7 @@ class ComposerDetailViewModelBrain(
     private val composerRepository: ComposerRepository,
     private val gameRepository: GameRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val offlineRepository: OfflineRepository,
     private val scheduler: VglsScheduler,
     private val analytics: Analytics,
     stringProvider: StringProvider,
@@ -49,6 +51,8 @@ class ComposerDetailViewModelBrain(
             is Action.GameClicked -> onGameClicked(action.id)
             is Action.AddFavoriteClicked -> onAddFavoriteClicked()
             is Action.RemoveFavoriteClicked -> onRemoveFavoriteClicked()
+            is Action.EnableOfflineClicked -> onEnableOfflineClicked()
+            is Action.DisableOfflineClicked -> onDisableOfflineClicked()
         }
     }
 
@@ -56,6 +60,7 @@ class ComposerDetailViewModelBrain(
         fetchComposer(id)
         fetchSongs(id)
         fetchGames()
+        checkOfflineStatus(id)
         checkFavoriteStatus(id)
     }
 
@@ -106,12 +111,21 @@ class ComposerDetailViewModelBrain(
         return games
     }
 
+    private fun checkOfflineStatus(id: Long) {
+        updateIsAvailableOffline(LCE.Loading(LOAD_OPERATION_IS_OFFLINE))
+        offlineRepository
+            .isOfflineComposer(id)
+            .onEach { isOffline -> updateIsAvailableOffline(LCE.Content(isOffline)) }
+            .catch { updateIsAvailableOffline(LCE.Error(LOAD_OPERATION_IS_OFFLINE, it)) }
+            .runInBackground()
+    }
+
     private fun checkFavoriteStatus(id: Long) {
-        updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_IS_FAVORITE))
         favoriteRepository
             .isFavoriteComposer(id)
             .onEach { isFavorite -> updateIsFavorite(LCE.Content(isFavorite)) }
-            .catch { updateIsFavorite(LCE.Error(LOAD_OPERATION_FAVORITE, it)) }
+            .catch { updateIsFavorite(LCE.Error(LOAD_OPERATION_IS_FAVORITE, it)) }
             .runInBackground()
     }
 
@@ -120,7 +134,7 @@ class ComposerDetailViewModelBrain(
         val composer = state.composer
         if (composer !is LCE.Content) return
 
-        updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_IS_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.addFavoriteComposer(composer.data.id)
         }
@@ -131,9 +145,31 @@ class ComposerDetailViewModelBrain(
         val composer = state.composer
         if (composer !is LCE.Content) return
 
-        updateIsFavorite(LCE.Loading(LOAD_OPERATION_FAVORITE))
+        updateIsFavorite(LCE.Loading(LOAD_OPERATION_IS_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.removeFavoriteComposer(composer.data.id)
+        }
+    }
+
+    private fun onEnableOfflineClicked() {
+        val state = internalUiState.value as State
+        val composer = state.composer
+        if (composer !is LCE.Content) return
+
+        updateIsAvailableOffline(LCE.Loading(LOAD_OPERATION_IS_OFFLINE))
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            offlineRepository.addOfflineComposer(composer.data.id)
+        }
+    }
+
+    private fun onDisableOfflineClicked() {
+        val state = internalUiState.value as State
+        val composer = state.composer
+        if (composer !is LCE.Content) return
+
+        updateIsAvailableOffline(LCE.Loading(LOAD_OPERATION_IS_OFFLINE))
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            offlineRepository.removeOfflineComposer(composer.data.id)
         }
     }
 
@@ -166,7 +202,7 @@ class ComposerDetailViewModelBrain(
 
         updateState {
             (it as State).copy(
-                composer = composer
+                composer = composer,
             )
         }
     }
@@ -174,7 +210,7 @@ class ComposerDetailViewModelBrain(
     private fun updateSongs(songs: LCE<List<Song>>) {
         updateState {
             (it as State).copy(
-                songs = songs
+                songs = songs,
             )
         }
     }
@@ -182,7 +218,15 @@ class ComposerDetailViewModelBrain(
     private fun updateGames(games: LCE<List<Game>>) {
         updateState {
             (it as State).copy(
-                games = games
+                games = games,
+            )
+        }
+    }
+
+    private fun updateIsAvailableOffline(isAvailableOffline: LCE<Boolean>) {
+        updateState {
+            (it as State).copy(
+                isAvailableOffline = isAvailableOffline
             )
         }
     }
@@ -190,7 +234,7 @@ class ComposerDetailViewModelBrain(
     private fun updateIsFavorite(isFavorite: LCE<Boolean>) {
         updateState {
             (it as State).copy(
-                isFavorite = isFavorite
+                isFavorite = isFavorite,
             )
         }
     }
@@ -199,6 +243,7 @@ class ComposerDetailViewModelBrain(
         internal const val LOAD_OPERATION_COMPOSER = "composers.detail"
         internal const val LOAD_OPERATION_SONGS = "composers.detail.songs"
         internal const val LOAD_OPERATION_GAMES = "composers.detail.games"
-        internal const val LOAD_OPERATION_FAVORITE = "composers.detail.favorite"
+        internal const val LOAD_OPERATION_IS_FAVORITE = "composers.detail.favorite"
+        internal const val LOAD_OPERATION_IS_OFFLINE = "composers.detail.offline"
     }
 }
