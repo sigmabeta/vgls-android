@@ -7,4 +7,6 @@ sealed class Action : VglsAction() {
     data class SongClicked(val id: Long) : Action()
     data object AddFavoriteClicked : Action()
     data object RemoveFavoriteClicked : Action()
+    data object EnableOfflineClicked : Action()
+    data object DisableOfflineClicked : Action()
 }

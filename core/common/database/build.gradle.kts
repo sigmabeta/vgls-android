@@ -5,4 +5,5 @@ plugins {
 dependencies {
     api(projects.core.common.coroutines)
     api(projects.core.common.model)
+    implementation(project(":core:common:conversion"))
 }

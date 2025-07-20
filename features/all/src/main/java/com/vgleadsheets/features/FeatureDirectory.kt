@@ -133,6 +133,7 @@ class FeatureDirectory(
                 composerRepository,
                 gameRepository,
                 favoriteRepository,
+                offlineRepository,
                 scheduler,
                 analytics,
                 stringProvider,

@@ -31,6 +31,7 @@ data class State(
     val songs: LCE<List<Song>> = LCE.Uninitialized,
     val games: LCE<List<Game>> = LCE.Uninitialized,
     val isFavorite: LCE<Boolean> = LCE.Uninitialized,
+    val isAvailableOffline: LCE<Boolean> = LCE.Uninitialized,
 ) : ListState() {
     override val columnType = ColumnType.Staggered(320, false)
 
@@ -84,6 +85,7 @@ data class State(
         loadingWithHeader = false,
     ) {
         listOf(
+            offlineCtaItem(stringProvider),
             favoriteCtaItem(stringProvider),
         ).flatten()
     }
@@ -159,6 +161,37 @@ data class State(
                 Icon.JAM_EMPTY,
                 StringId.CTA_FAVORITE_ADD,
                 Action.AddFavoriteClicked,
+            )
+        }
+
+        listOf(
+            CtaListModel(
+                icon = icon,
+                name = stringProvider.getString(label),
+                clickAction = action,
+            )
+        )
+    }
+
+    @Suppress("MagicNumber")
+    private fun offlineCtaItem(
+        stringProvider: StringProvider
+    ) = isAvailableOffline.withStandardErrorAndLoading(
+        loadingType = LoadingType.TEXT_IMAGE,
+        loadingItemCount = 1,
+        loadingWithHeader = false
+    ) {
+        val (icon, label, action) = if (data) {
+            Triple(
+                Icon.OFFLINE_FILLED,
+                StringId.CTA_OFFLINE_REMOVE,
+                Action.DisableOfflineClicked,
+            )
+        } else {
+            Triple(
+                Icon.OFFLINE_OUTLINE,
+                StringId.CTA_OFFLINE_ADD,
+                Action.EnableOfflineClicked,
             )
         }
 
