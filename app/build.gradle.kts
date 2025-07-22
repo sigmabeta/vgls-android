@@ -132,6 +132,7 @@ dependencies {
     implementation(projects.core.common.debug)
     implementation(projects.core.common.events)
     implementation(projects.core.common.network)
+    implementation(projects.core.common.offline)
     implementation(projects.core.common.settings.environment)
     implementation(projects.core.common.urlinfo)
     implementation(projects.core.common.versions)

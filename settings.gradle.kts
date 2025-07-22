@@ -83,6 +83,7 @@ include(
     ":core:android:viewmodel",
     ":core:android:wakelocks",
 
+    ":core:common:analytics",
     ":core:common:appinfo",
     ":core:common:appcomm",
     ":core:common:conversion",
@@ -98,6 +99,7 @@ include(
     ":core:common:nav",
     ":core:common:network",
     ":core:common:notif",
+    ":core:common:offline",
     ":core:common:pdf",
     ":core:common:perf",
     ":core:common:repository",
@@ -105,7 +107,6 @@ include(
     ":core:common:settings:general",
     ":core:common:settings:environment",
     ":core:common:settings:part",
-    ":core:common:analytics",
     ":core:common:time",
     ":core:common:ui:components",
     ":core:common:ui:icons",

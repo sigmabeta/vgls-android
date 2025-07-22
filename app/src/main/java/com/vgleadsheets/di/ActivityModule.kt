@@ -10,6 +10,7 @@ import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.offline.OfflineDownloader
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
@@ -75,31 +76,33 @@ class ActivityModule {
         analytics: Analytics,
         dbUpdater: DbUpdater,
         songHistoryRepository: SongHistoryRepository,
+        offlineDownloader: OfflineDownloader,
     ): BrainProvider =
         FeatureDirectory(
             dbUpdater = dbUpdater,
             songHistoryRepository = songHistoryRepository,
-            dispatchers = dispatchers,
-            delayManager = delayManager,
-            appInfo = appInfo,
-            urlInfoProvider = urlInfoProvider,
-            stringProvider = stringProvider,
-            hatchet = hatchet,
-            selectedPartManager = selectedPartManager,
+            songRepository = songRepository,
             gameRepository = gameRepository,
             composerRepository = composerRepository,
-            songRepository = songRepository,
             randomRepository = randomRepository,
             favoriteRepository = favoriteRepository,
             offlineRepository = offlineRepository,
             tagRepository = tagRepository,
-            homeModuleProvider = homeModuleProvider,
+            dispatchers = dispatchers,
+            delayManager = delayManager,
+            appInfo = appInfo,
+            urlInfoProvider = urlInfoProvider,
+            analytics = analytics,
+            stringProvider = stringProvider,
+            hatchet = hatchet,
+            threeTenTime = threeTenTime,
+            selectedPartManager = selectedPartManager,
             generalSettingsManager = generalSettingsManager,
+            debugSettingsManager = debugSettingsManager,
             userContentGenerator = userContentGenerator,
             userContentMigrator = userContentMigrator,
-            debugSettingsManager = debugSettingsManager,
-            analytics = analytics,
-            threeTenTime = threeTenTime,
+            homeModuleProvider = homeModuleProvider,
+            offlineDownloader = offlineDownloader,
         )
 
     @Provides

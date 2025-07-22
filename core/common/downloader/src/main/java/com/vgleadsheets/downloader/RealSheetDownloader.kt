@@ -58,6 +58,31 @@ class RealSheetDownloader @Inject constructor(
         )
     }
 
+    override suspend fun downloadFile(
+        fileName: String,
+        partApiId: String,
+        isAlternate: Boolean,
+    ) {
+        val targetFile = fileReference(
+            storageDirectoryProvider.getStorageDirectory(),
+            fileName,
+            partApiId,
+            isAlternate
+        )
+        downloadSheet(fileName, partApiId, isAlternate, targetFile)
+    }
+
+    override suspend fun doesFileExist(
+        fileName: String,
+        partApiId: String,
+        isAlternate: Boolean,
+    ) = fileReference(
+        storageDirectoryProvider.getStorageDirectory(),
+        fileName,
+        partApiId,
+        isAlternate
+    ).exists()
+
     @Suppress("MagicNumber")
     private suspend fun downloadSheet(
         fileName: String,
@@ -69,9 +94,9 @@ class RealSheetDownloader @Inject constructor(
         val gameDirectory = songDirectory.parentFile
         val pdfsDirectory = gameDirectory.parentFile
 
-        pdfsDirectory.ensureExists()
-        gameDirectory.ensureExists()
-        songDirectory.ensureExists()
+        pdfsDirectory.ensureDirectoryExists()
+        gameDirectory.ensureDirectoryExists()
+        songDirectory.ensureDirectoryExists()
 
         val suffixedFileName = "$fileName${isAlternate.altSuffix()}.pdf"
 

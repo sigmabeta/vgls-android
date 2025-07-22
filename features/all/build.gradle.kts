@@ -7,6 +7,7 @@ dependencies {
     api(projects.core.android.activity)
 
     api(projects.core.common.list)
+    api(projects.core.common.offline)
     api(projects.core.common.nav)
     api(projects.core.common.notif)
 
