@@ -58,8 +58,8 @@ private fun composerScreenState(): State {
 
     val screenState = State(
         composer = LCE.Content(composer),
-        songs = LCE.Content(songs),
         games = LCE.Content(games),
+        songs = LCE.Content(songs),
         isFavorite = LCE.Content(false),
         isAvailableOffline = LCE.Content(true),
     )
@@ -74,8 +74,8 @@ private fun composerScreenLoadingState(): State {
 
     val screenState = State(
         composer = LCE.Loading(stringGenerator.generateName()),
-        songs = LCE.Loading(stringGenerator.generateName()),
         games = LCE.Loading(stringGenerator.generateName()),
+        songs = LCE.Loading(stringGenerator.generateName()),
         isFavorite = LCE.Loading(stringGenerator.generateName()),
     )
     return screenState
