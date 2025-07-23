@@ -73,7 +73,8 @@ object DatabaseModule {
                 "user-content-database"
             )
             .addMigrations(
-                UserContentMigrations.AddedOffline,
+                UserContentMigrations.AddedOfflineSongs,
+                UserContentMigrations.AddedOfflineComposers,
             )
             .openHelperFactory(sqlOpenHelperFactory)
             .build()
