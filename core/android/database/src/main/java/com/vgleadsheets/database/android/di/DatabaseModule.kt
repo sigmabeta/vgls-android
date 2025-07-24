@@ -73,7 +73,8 @@ object DatabaseModule {
                 "user-content-database"
             )
             .addMigrations(
-                UserContentMigrations.AddedOffline,
+                UserContentMigrations.AddedOfflineSongs,
+                UserContentMigrations.AddedOfflineComposers,
             )
             .openHelperFactory(sqlOpenHelperFactory)
             .build()
@@ -192,6 +193,12 @@ object DatabaseModule {
     fun offlineSongDao(
         database: UserContentDatabase
     ) = database.offlineSongDao()
+
+    @Provides
+    @Singleton
+    fun offlineComposerDao(
+        database: UserContentDatabase
+    ) = database.offlineComposerDao()
 
     @Provides
     @Singleton
