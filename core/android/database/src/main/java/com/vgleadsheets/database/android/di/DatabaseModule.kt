@@ -113,6 +113,12 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun offlineUpdateDao(
+        database: VglsDatabase
+    ) = database.offlineUpdateDao()
+
+    @Provides
+    @Singleton
     fun songDao(
         database: VglsDatabase
     ) = database.songDao()

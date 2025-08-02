@@ -25,6 +25,7 @@ enum class Destination(
     FAVORITES("favorites", ArgType.NONE),
     LICENSES("licenses", ArgType.NONE),
     UPDATES("updates", ArgType.NONE),
+    OFFLINE("offline", ArgType.NONE),
     NONE("none", ArgType.NONE)
     ;
 

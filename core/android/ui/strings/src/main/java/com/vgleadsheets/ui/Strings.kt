@@ -23,6 +23,7 @@ fun StringId.id(): Int {
         StringId.SCREEN_TITLE_BROWSE_FAVORITES -> R.string.screen_title_favorites
         StringId.SCREEN_TITLE_SEARCH -> R.string.screen_title_search
         StringId.SCREEN_TITLE_SETTINGS -> R.string.screen_title_settings
+        StringId.SCREEN_TITLE_OFFLINE -> R.string.screen_title_offline
         StringId.SCREEN_TITLE_UPDATES -> R.string.screen_title_updates
         StringId.SCREEN_TITLE_LICENSES -> R.string.screen_title_licenses
 
@@ -97,6 +98,7 @@ fun StringId.id(): Int {
         StringId.PART_LONG_VOCAL -> R.string.part_long_vocal
 
         StringId.SETTINGS_LABEL_CHECK_FOR_UPDATES -> R.string.label_settings_check_for_updates
+        StringId.SETTINGS_LABEL_OFFLINE -> R.string.label_settings_offline
         StringId.SETTINGS_LABEL_CLEAR_USAGE -> R.string.label_settings_clear_usage
         StringId.SETTINGS_LABEL_CLEAR_SHEETS -> R.string.label_settings_clear_sheets
         StringId.SETTINGS_LABEL_KEEP_SCREEN_ON -> R.string.label_settings_keep_screen_on

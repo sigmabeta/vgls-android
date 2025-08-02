@@ -19,6 +19,7 @@ import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.remaster.home.HomeViewModelBrain
 import com.vgleadsheets.remaster.menu.MenuViewModelBrain
+import com.vgleadsheets.remaster.offline.OfflineStatusViewModelBrain
 import com.vgleadsheets.remaster.parts.PartsListViewModelBrain
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
@@ -236,6 +237,13 @@ class FeatureDirectory(
             )
 
             Destination.UPDATES -> UpdatesViewModelBrain(
+                stringProvider,
+                hatchet,
+                analytics,
+                scheduler,
+            )
+
+            Destination.OFFLINE -> OfflineStatusViewModelBrain(
                 stringProvider,
                 hatchet,
                 analytics,
