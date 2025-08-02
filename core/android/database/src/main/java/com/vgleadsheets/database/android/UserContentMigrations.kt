@@ -19,9 +19,15 @@ object UserContentMigrations {
     ) {
         override fun migrate(database: SupportSQLiteDatabase) {
             database.execSQL(AddedOfflineSqlStatements.CREATE_OFFLINE_COMPOSERS)
+        }
+    }
 
-            // TODO
-            // database.execSQL(AddedOfflineSqlStatements.CREATE_OFFLINE_GAMES)
+    object AddedOfflineGames : Migration(
+        UserContentDatabaseVersions.ADDED_OFFLINE_COMPOSERS,
+        UserContentDatabaseVersions.ADDED_OFFLINE_GAMES
+    ) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL(AddedOfflineSqlStatements.CREATE_OFFLINE_GAMES)
         }
     }
 
@@ -30,8 +36,6 @@ object UserContentMigrations {
         // Copied from generated code in `UserContentDatabase_Impl.kt`
         const val CREATE_OFFLINE_SONGS = "CREATE TABLE IF NOT EXISTS `offline_song` (`id` INTEGER NOT NULL, PRIMARY KEY(`id`))"
         const val CREATE_OFFLINE_COMPOSERS = "CREATE TABLE IF NOT EXISTS `offline_composer` (`id` INTEGER NOT NULL, PRIMARY KEY(`id`))"
-
-        // TODO
-        // const val CREATE_OFFLINE_GAMES = "CREATE TABLE IF NOT EXISTS `offline_game` (`id` INTEGER NOT NULL, PRIMARY KEY(`id`))"
+        const val CREATE_OFFLINE_GAMES = "CREATE TABLE IF NOT EXISTS `offline_game` (`id` INTEGER NOT NULL, PRIMARY KEY(`id`))"
     }
 }

@@ -10,6 +10,7 @@ import com.vgleadsheets.database.android.dao.FavoriteSongRoomDao
 import com.vgleadsheets.database.android.dao.GamePlayCountRoomDao
 import com.vgleadsheets.database.android.dao.OfflineComposerRoomDao
 import com.vgleadsheets.database.android.dao.OfflineSongRoomDao
+import com.vgleadsheets.database.android.dao.OfflineGameRoomDao
 import com.vgleadsheets.database.android.dao.SearchHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongPlayCountRoomDao
@@ -22,6 +23,7 @@ import com.vgleadsheets.database.android.enitity.FavoriteSongEntity
 import com.vgleadsheets.database.android.enitity.GamePlayCountEntity
 import com.vgleadsheets.database.android.enitity.OfflineComposerEntity
 import com.vgleadsheets.database.android.enitity.OfflineSongEntity
+import com.vgleadsheets.database.android.enitity.OfflineGameEntity
 import com.vgleadsheets.database.android.enitity.SearchHistoryEntryEntity
 import com.vgleadsheets.database.android.enitity.SongHistoryEntryEntity
 import com.vgleadsheets.database.android.enitity.SongPlayCountEntity
@@ -40,9 +42,10 @@ import com.vgleadsheets.database.android.enitity.TagValuePlayCountEntity
         FavoriteComposerEntity::class,
         OfflineSongEntity::class,
         OfflineComposerEntity::class,
+        OfflineGameEntity::class,
         AlternateSettingEntity::class,
     ],
-    version = UserContentDatabaseVersions.ADDED_OFFLINE_COMPOSERS,
+    version = UserContentDatabaseVersions.ADDED_OFFLINE_GAMES,
 )
 abstract class UserContentDatabase : RoomDatabase() {
     abstract fun songHistoryEntryDao(): SongHistoryEntryRoomDao
@@ -56,5 +59,6 @@ abstract class UserContentDatabase : RoomDatabase() {
     abstract fun favoriteComposerDao(): FavoriteComposerRoomDao
     abstract fun offlineSongDao(): OfflineSongRoomDao
     abstract fun offlineComposerDao(): OfflineComposerRoomDao
+    abstract fun offlineGameDao(): OfflineGameRoomDao
     abstract fun alternateSettingDao(): AlternateSettingRoomDao
 }
