@@ -9,4 +9,3 @@ class OfflineGameConverter : Converter<Offline, OfflineGameEntity> {
 
     override fun OfflineGameEntity.toModel() = Offline(id)
 }
-
