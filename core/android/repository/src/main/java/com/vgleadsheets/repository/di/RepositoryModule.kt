@@ -20,6 +20,7 @@ import com.vgleadsheets.database.source.FavoriteSongDataSource
 import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.OfflineComposerDataSource
 import com.vgleadsheets.database.source.OfflineSongDataSource
+import com.vgleadsheets.database.source.OfflineGameDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
@@ -232,11 +233,13 @@ object RepositoryModule {
         composerDataSource: ComposerDataSource,
         offlineSongDataSource: OfflineSongDataSource,
         offlineComposerDataSource: OfflineComposerDataSource,
+        offlineGameDataSource: OfflineGameDataSource,
     ) = OfflineRepository(
         songDataSource,
         composerDataSource,
         offlineSongDataSource,
         offlineComposerDataSource,
+        offlineGameDataSource,
     )
 
     @Provides

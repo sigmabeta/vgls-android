@@ -114,6 +114,7 @@ class FeatureDirectory(
                 gameRepository,
                 composerRepository,
                 favoriteRepository,
+                offlineRepository,
                 scheduler,
                 analytics,
                 stringProvider,

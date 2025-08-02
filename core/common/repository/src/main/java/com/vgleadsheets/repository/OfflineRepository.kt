@@ -5,12 +5,14 @@ import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.source.OfflineComposerDataSource
 import com.vgleadsheets.database.source.OfflineSongDataSource
+import com.vgleadsheets.database.source.OfflineGameDataSource
 
 class OfflineRepository(
     private val songDataSource: SongDataSource,
     private val composerDataSource: ComposerDataSource,
     private val offlineSongDataSource: OfflineSongDataSource,
     private val offlineComposerDataSource: OfflineComposerDataSource,
+    private val offlineGameDataSource: OfflineGameDataSource,
 ) {
     suspend fun addOfflineSong(id: Long) {
         offlineSongDataSource.addOffline(id)
@@ -43,4 +45,14 @@ class OfflineRepository(
         }
 
     fun isOfflineComposer(id: Long) = offlineComposerDataSource.isOfflineComposer(id)
+
+    suspend fun addOfflineGame(id: Long) {
+        offlineGameDataSource.addOffline(id)
+    }
+
+    suspend fun removeOfflineGame(id: Long) {
+        offlineGameDataSource.removeOffline(id)
+    }
+
+    fun isOfflineGame(id: Long) = offlineGameDataSource.isOfflineGame(id)
 }
