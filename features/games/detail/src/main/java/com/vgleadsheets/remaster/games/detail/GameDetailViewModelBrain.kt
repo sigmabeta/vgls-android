@@ -116,7 +116,6 @@ class GameDetailViewModelBrain(
             .onEach { isOffline -> updateIsAvailableOffline(LCE.Content(isOffline)) }
             .catch { updateIsAvailableOffline(LCE.Error(LOAD_OPERATION_IS_OFFLINE, it)) }
             .runInBackground()
-
     }
 
     private fun checkFavoriteStatus(id: Long) {
