@@ -18,6 +18,7 @@ androidXTest = "1.6.2"
 androidXTestRules = "1.6.1"
 androidXTestExtJunit = "1.2.1"
 androidxWindowManager = "1.4.0"
+androidxWorkManager = "2.10.2"
 coil = "3.2.0"
 detekt = "1.23.8"
 firebaseBom = "33.16.0"
@@ -27,6 +28,7 @@ gitVersion = "1.5.0"
 gradlePublisher = "3.12.1"
 gmsPlugin = "4.4.3"
 hilt = "2.56.2"
+hilt-work = "1.2.0"
 jankStatsVersion = "1.0.0-beta01"
 junit4 = "4.13.2"
 kotlin = "2.2.0"
@@ -69,6 +71,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-core-splash = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash" }
 androidx-dataStore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDataStore" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hilt-work" }
 androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
@@ -77,6 +80,7 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidXTest" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidXTestRules" }
 androidx-window-manager = { module = "androidx.window:window", version.ref = "androidxWindowManager" }
+androidx-work-manager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWorkManager" }
 coil-kt-core = { group = "io.coil-kt.coil3", name = "coil-core", version.ref = "coil" }
 coil-kt-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
@@ -86,7 +90,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -141,6 +145,7 @@ vgls-compose-android-module = { id = "vgleadsheets.compose.android.module", vers
 vgls-core-android = { id = "vgleadsheets.core.android", version = "1.0" }
 vgls-core-jvm = { id = "vgleadsheets.core.jvm", version = "1.0" }
 vgls-di-android = { id = "vgleadsheets.di.android", version = "1.0" }
+vgls-di-worker-android = { id = "vgleadsheets.di.worker.android", version = "1.0" }
 vgls-di-jvm = { id = "vgleadsheets.di.jvm", version = "1.0" }
 vgls-feature-android = { id = "vgleadsheets.feature.android", version = "1.0" }
 vgls-feature-compose-android = { id = "vgleadsheets.feature.compose.android", version = "1.0" }

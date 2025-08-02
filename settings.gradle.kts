@@ -64,6 +64,7 @@ include(
     ":core:android:licenses",
     ":core:android:logging",
     ":core:android:nav",
+    ":core:android:offline",
     ":core:android:perf",
     ":core:android:pdf",
     ":core:android:repository",

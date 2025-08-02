@@ -102,7 +102,6 @@ class ActivityModule {
             userContentGenerator = userContentGenerator,
             userContentMigrator = userContentMigrator,
             homeModuleProvider = homeModuleProvider,
-            offlineDownloader = offlineDownloader,
         )
 
     @Provides

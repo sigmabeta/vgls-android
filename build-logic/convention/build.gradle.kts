@@ -70,6 +70,12 @@ gradlePlugin {
             version = "1.0"
         }
 
+        register("diWorkerModule") {
+            id = "vgleadsheets.di.worker.android"
+            implementationClass = "VglsDiWorkerAndroidModulePlugin"
+            version = "1.0"
+        }
+
         register("featureAndroidModule") {
             id = "vgleadsheets.feature.android"
             implementationClass = "VglsFeatureAndroidModulePlugin"
