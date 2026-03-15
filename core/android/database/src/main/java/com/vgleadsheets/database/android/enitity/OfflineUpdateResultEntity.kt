@@ -7,7 +7,7 @@ import com.vgleadsheets.database.android.enitity.OfflineUpdateResultEntity.Compa
 @Suppress("ConstructorParameterNaming")
 @Entity(tableName = TABLE)
 data class OfflineUpdateResultEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     val date_time: String, // in ISO8601 format
     val server_update_time: String, // in ISO8601 format
     val new_songs: Int,
