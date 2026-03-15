@@ -9,6 +9,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -39,8 +40,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,9 +67,6 @@ import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
-import kotlin.math.absoluteValue
-import kotlin.math.ceil
-import kotlin.math.floor
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import me.saket.telephoto.ExperimentalTelephotoApi
@@ -71,6 +76,9 @@ import me.saket.telephoto.zoomable.ZoomableState
 import me.saket.telephoto.zoomable.rememberZoomableState
 import me.saket.telephoto.zoomable.spatial.CoordinateSpace
 import me.saket.telephoto.zoomable.spatial.SpatialOffset
+import kotlin.math.absoluteValue
+import kotlin.math.ceil
+import kotlin.math.floor
 
 @Composable
 @Suppress("LongMethod", "MaxLineLength")
@@ -170,12 +178,105 @@ fun ViewerScreen(
             )
         }
 
-        PageControls(zoomableState, pagerState, shouldScrollFreely, items, state, actionSink)
+        val previousPage = prevPage(shouldScrollFreely, firstVisiblePage, pagerState.currentPage)
+        val nextPage = nextPage(shouldScrollFreely, firstVisiblePage, pagerState.currentPage, items.size)
+        var scrollTargetPage by remember { mutableStateOf<Int?>(null) }
+
+        val onPreviousClick = {
+            actionSink.sendAction(Action.LeftArrowPressed)
+            scrollTargetPage = previousPage
+        }
+
+        val onNextClick = {
+            actionSink.sendAction(Action.RightArrowPressed)
+            scrollTargetPage = nextPage
+        }
+
+        ScrollHandler(
+            scrollTargetPage = scrollTargetPage,
+            shouldScrollFreely = shouldScrollFreely,
+            zoomableState = zoomableState,
+            defaultPageWidth = defaultPageWidth,
+            pagerState = pagerState
+        )
+
+        PageControls(
+            zoomableState = zoomableState,
+            pagerState = pagerState,
+            shouldScrollFreely = shouldScrollFreely,
+            items = items,
+            state = state,
+            defaultPageWidth = defaultPageWidth,
+            onPreviousClick = onPreviousClick,
+            onNextClick = onNextClick
+        )
+
+        ArrowPressHandler(
+            onPreviousClick = onPreviousClick,
+            onNextClick = onNextClick,
+            onBackPress = { actionSink.sendAction(VglsAction.DeviceBack) },
+        )
 
         if (state.shouldShowLyricsWarning()) {
             LyricsWarning()
         }
     }
+}
+
+@Composable
+private fun ScrollHandler(
+    scrollTargetPage: Int?,
+    shouldScrollFreely: Boolean,
+    zoomableState: ZoomableState,
+    defaultPageWidth: Float,
+    pagerState: PagerState
+) {
+    LaunchedEffect(scrollTargetPage) {
+        if (scrollTargetPage != null) {
+            if (shouldScrollFreely) {
+                zoomableState.scrollToPage(scrollTargetPage, defaultPageWidth)
+            } else {
+                pagerState.animateScrollToPage(scrollTargetPage)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ArrowPressHandler(
+    onPreviousClick: () -> Unit,
+    onNextClick: () -> Unit,
+    onBackPress: () -> Unit,
+) {
+    val keyFocusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) { keyFocusRequester.requestFocus() }
+
+    Box(
+        modifier = Modifier
+            .focusRequester(keyFocusRequester)
+            .focusable()
+            .onKeyEvent { keyEvent ->
+                if (keyEvent.type != KeyEventType.KeyDown) return@onKeyEvent false
+                when (keyEvent.key) {
+                    Key.DirectionLeft -> {
+                        onPreviousClick()
+                        true
+                    }
+
+                    Key.DirectionRight -> {
+                        onNextClick()
+                        true
+                    }
+
+                    Key.Back -> {
+                        onBackPress()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+    )
 }
 
 @Composable
@@ -185,7 +286,9 @@ private fun BoxScope.PageControls(
     shouldScrollFreely: Boolean,
     items: ImmutableList<ZoomableSheetPageListModel>,
     state: ViewerState,
-    actionSink: ActionSink
+    defaultPageWidth: Float,
+    onPreviousClick: () -> Unit,
+    onNextClick: () -> Unit,
 ) {
     if (state.isZoomedIn) {
         return
@@ -193,7 +296,7 @@ private fun BoxScope.PageControls(
 
     val scrollPosition = zoomableState.contentTransformation.offset.x.absoluteValue
 
-    val pageWidth = calculateDefaultPageWidth()
+    val pageWidth = defaultPageWidth
     val pagerPage = pagerState.currentPage
 
     val prevEnabled = if (shouldScrollFreely) {
@@ -215,25 +318,17 @@ private fun BoxScope.PageControls(
     val visible = state.buttonsVisible
 
     DirectionButton(
-        Action.PrevButtonClicked,
-        prevEnabled,
-        visible,
-        actionSink,
-        shouldScrollFreely,
-        items.size,
-        pagerState,
-        zoomableState
+        action = Action.PrevButtonClicked,
+        enabled = prevEnabled,
+        visible = visible,
+        onClick = onPreviousClick,
     )
 
     DirectionButton(
-        Action.NextButtonClicked,
-        nextEnabled,
-        visible,
-        actionSink,
-        shouldScrollFreely,
-        items.size,
-        pagerState,
-        zoomableState
+        action = Action.NextButtonClicked,
+        enabled = nextEnabled,
+        visible = visible,
+        onClick = onNextClick,
     )
 }
 
@@ -272,25 +367,11 @@ private fun BoxScope.DirectionButton(
     action: Action,
     enabled: Boolean,
     visible: Boolean,
-    actionSink: ActionSink,
-    shouldScrollFreely: Boolean,
-    pageCount: Int,
-    pagerState: PagerState,
-    zoomableState: ZoomableState,
+    onClick: () -> Unit,
 ) {
-    val (buttonAlignment, imageVector, increment) = when (action) {
-        Action.PrevButtonClicked -> Triple(
-            Alignment.CenterStart,
-            Icon.BACK,
-            -1
-        )
-
-        Action.NextButtonClicked -> Triple(
-            Alignment.CenterEnd,
-            Icon.FORWARD,
-            1
-        )
-
+    val (buttonAlignment, imageVector) = when (action) {
+        Action.PrevButtonClicked -> Pair(Alignment.CenterStart, Icon.BACK)
+        Action.NextButtonClicked -> Pair(Alignment.CenterEnd, Icon.FORWARD)
         else -> throw IllegalArgumentException("Needs to be a direction lol")
     }
 
@@ -299,32 +380,6 @@ private fun BoxScope.DirectionButton(
 
     val color = if (enabled) Color.White else Color.Gray
     val colorState by animateColorAsState(color)
-
-    val firstVisiblePage = zoomableState.calculateFirstVisiblePage()
-    val defaultPageWidth = calculateDefaultPageWidth()
-    var targetPage by remember { mutableStateOf<Int?>(null) }
-
-    LaunchedEffect(targetPage) {
-        val localTargetPage = targetPage
-        if (localTargetPage != null) {
-            if (shouldScrollFreely) {
-                zoomableState.scrollToPage(localTargetPage, defaultPageWidth)
-            } else {
-                pagerState.animateScrollToPage(localTargetPage)
-            }
-            targetPage = null
-        }
-    }
-
-    val onClick: () -> Unit = {
-        actionSink.sendAction(action)
-        if (shouldScrollFreely) {
-            val result = ((targetPage ?: firstVisiblePage) + increment).coerceIn(0..pageCount)
-            targetPage = result
-        } else {
-            targetPage = pagerState.currentPage + increment
-        }
-    }
 
     val dragThresholdPx = with(LocalDensity.current) { 96.dp.toPx() }
     var cumulativeDrag by remember { mutableStateOf(0.0f) }
@@ -370,6 +425,16 @@ private fun BoxScope.DirectionButton(
                 .aspectRatio(1.0f)
         )
     }
+}
+
+private fun prevPage(shouldScrollFreely: Boolean, freeScrollPage: Int, pagerPage: Int): Int {
+    val current = if (shouldScrollFreely) freeScrollPage else pagerPage
+    return (current - 1).coerceAtLeast(0)
+}
+
+private fun nextPage(shouldScrollFreely: Boolean, freeScrollPage: Int, pagerPage: Int, pageCount: Int): Int {
+    val current = if (shouldScrollFreely) freeScrollPage else pagerPage
+    return (current + 1).coerceAtMost(pageCount - 1)
 }
 
 private suspend fun ZoomableState.scrollToPage(page: Int, defaultPageWidth: Float) {

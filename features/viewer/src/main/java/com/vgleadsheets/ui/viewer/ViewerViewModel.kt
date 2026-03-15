@@ -90,6 +90,7 @@ class ViewerViewModel @AssistedInject constructor(
             is VglsAction.PageZoomedOutMax -> disableZoom()
             is Action.ScreenClicked -> maybeShowUi()
             is Action.PrevButtonClicked, Action.NextButtonClicked -> onButtonClicked()
+            is Action.LeftArrowPressed, Action.RightArrowPressed -> onButtonClicked()
         }
     }
 
