@@ -67,7 +67,7 @@ object Migrations {
     ) {
         @Suppress("MaxLineLength")
         override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("CREATE TABLE IF NOT EXISTS `${OfflineUpdateResultEntity.TABLE}` (`id` INTEGER NOT NULL, `date_time` TEXT NOT NULL, `server_update_time` TEXT NOT NULL, `new_songs` INTEGER NOT NULL, `new_games` INTEGER NOT NULL, `new_composers` INTEGER NOT NULL, `updated_songs` INTEGER NOT NULL, `successful_offlines` INTEGER NOT NULL, PRIMARY KEY(`id`))")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `${OfflineUpdateResultEntity.TABLE}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date_time` TEXT NOT NULL, `server_update_time` TEXT NOT NULL, `updated_songs` INTEGER NOT NULL, `successful_offlines` INTEGER NOT NULL, `status` TEXT NOT NULL)")
         }
     }
 

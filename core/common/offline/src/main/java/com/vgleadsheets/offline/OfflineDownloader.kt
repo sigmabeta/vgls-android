@@ -4,6 +4,7 @@ import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.repository.OfflineRepository
 import kotlinx.coroutines.flow.first
 
@@ -14,37 +15,59 @@ class OfflineDownloader(
 ) {
     suspend fun checkAll() {
         var consecutiveFailures = 0
-        consecutiveFailures = checkSongList("songs", offlineRepo.getAllSongs().first(), consecutiveFailures)
-        consecutiveFailures = checkSongList("composer songs", offlineRepo.getAllComposerSongs().first(), consecutiveFailures)
-        checkSongList("game songs", offlineRepo.getAllGameSongs().first(), consecutiveFailures)
+        var successfulOfflines = 0
+
+        var result = checkSongList("songs", offlineRepo.getAllSongs().first(), consecutiveFailures)
+        consecutiveFailures = result.first
+        successfulOfflines += result.second
+
+        result = checkSongList("composer songs", offlineRepo.getAllComposerSongs().first(), consecutiveFailures)
+        consecutiveFailures = result.first
+        successfulOfflines += result.second
+
+        result = checkSongList("game songs", offlineRepo.getAllGameSongs().first(), consecutiveFailures)
+        consecutiveFailures = result.first
+        successfulOfflines += result.second
+
+        val status = if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+            OfflineJobStatus.ABORTED
+        } else {
+            OfflineJobStatus.COMPLETED
+        }
+        offlineRepo.insertUpdateResult(successfulOfflines, status)
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private suspend fun checkSongList(label: String, songs: List<Song>, initialConsecutiveFailures: Int): Int {
+    private suspend fun checkSongList(
+        label: String,
+        songs: List<Song>,
+        initialConsecutiveFailures: Int,
+    ): Pair<Int, Int> {
         hatchet.i("Checking that all offline $label are downloaded.")
         var consecutiveFailures = initialConsecutiveFailures
+        var successfulDownloads = 0
         for (song in songs) {
             if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
                 hatchet.w("$MAX_CONSECUTIVE_FAILURES consecutive failures — aborting offline download.")
-                return consecutiveFailures
+                return consecutiveFailures to successfulDownloads
             }
             try {
                 hatchet.d("Checking song ${song.gameName} - ${song.name}")
-                checkSong(song)
+                if (checkSong(song)) successfulDownloads++
                 consecutiveFailures = 0
             } catch (e: Exception) {
                 hatchet.e("Failed to download ${song.gameName} - ${song.name}: ${e.message}")
                 consecutiveFailures++
             }
         }
-        return consecutiveFailures
+        return consecutiveFailures to successfulDownloads
     }
 
     companion object {
         private const val MAX_CONSECUTIVE_FAILURES = 3
     }
 
-    private suspend fun checkSong(song: Song) {
+    private suspend fun checkSong(song: Song): Boolean {
         val hasVocals = song.hasVocals
         val hasAlts = song.altPageCount > 0
 
@@ -67,6 +90,7 @@ class OfflineDownloader(
                 }
             }
 
+        var anyDownloaded = false
         variants.forEach { (part, isAlt) ->
             val exists = sheetDownloader.doesFileExist(
                 fileName = song.filename,
@@ -85,6 +109,8 @@ class OfflineDownloader(
                 partApiId = part.apiId,
                 isAlternate = isAlt,
             )
+            anyDownloaded = true
         }
+        return anyDownloaded
     }
 }

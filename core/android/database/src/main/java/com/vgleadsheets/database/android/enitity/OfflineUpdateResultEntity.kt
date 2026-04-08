@@ -7,14 +7,12 @@ import com.vgleadsheets.database.android.enitity.OfflineUpdateResultEntity.Compa
 @Suppress("ConstructorParameterNaming")
 @Entity(tableName = TABLE)
 data class OfflineUpdateResultEntity(
-    @PrimaryKey val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val date_time: String, // in ISO8601 format
     val server_update_time: String, // in ISO8601 format
-    val new_songs: Int,
-    val new_games: Int,
-    val new_composers: Int,
     val updated_songs: Int,
     val successful_offlines: Int,
+    val status: String,
 ) {
 
     companion object {
