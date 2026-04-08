@@ -11,6 +11,8 @@ import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.offline.OfflineDownloader
+import com.vgleadsheets.offline.OfflineWorkScheduler
+import com.vgleadsheets.offline.WorkManagerOfflineWorkScheduler
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
@@ -77,6 +79,7 @@ class ActivityModule {
         dbUpdater: DbUpdater,
         songHistoryRepository: SongHistoryRepository,
         offlineDownloader: OfflineDownloader,
+        offlineWorkScheduler: OfflineWorkScheduler,
     ): BrainProvider =
         FeatureDirectory(
             dbUpdater = dbUpdater,
@@ -102,7 +105,14 @@ class ActivityModule {
             userContentGenerator = userContentGenerator,
             userContentMigrator = userContentMigrator,
             homeModuleProvider = homeModuleProvider,
+            offlineWorkScheduler = offlineWorkScheduler,
         )
+
+    @Provides
+    @ActivityScoped
+    fun provideOfflineWorkScheduler(
+        @ActivityContext context: Context,
+    ): OfflineWorkScheduler = WorkManagerOfflineWorkScheduler(context)
 
     @Provides
     @ActivityScoped

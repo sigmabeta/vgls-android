@@ -12,6 +12,7 @@ import com.vgleadsheets.conversion.android.converter.GamePlayCountConverter
 import com.vgleadsheets.conversion.android.converter.OfflineComposerConverter
 import com.vgleadsheets.conversion.android.converter.OfflineGameConverter
 import com.vgleadsheets.conversion.android.converter.OfflineSongConverter
+import com.vgleadsheets.conversion.android.converter.OfflineUpdateResultConverter
 import com.vgleadsheets.conversion.android.converter.SearchHistoryConverter
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
@@ -34,6 +35,7 @@ import com.vgleadsheets.conversion.android.datasource.GamePlayCountAndroidDataSo
 import com.vgleadsheets.conversion.android.datasource.OfflineComposerAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.OfflineGameAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.OfflineSongAndroidDataSource
+import com.vgleadsheets.conversion.android.datasource.OfflineUpdateResultAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SearchHistoryAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SongAliasAndroidDataSource
 import com.vgleadsheets.conversion.android.datasource.SongAndroidDataSource
@@ -56,6 +58,7 @@ import com.vgleadsheets.database.android.dao.GameRoomDao
 import com.vgleadsheets.database.android.dao.OfflineComposerRoomDao
 import com.vgleadsheets.database.android.dao.OfflineGameRoomDao
 import com.vgleadsheets.database.android.dao.OfflineSongRoomDao
+import com.vgleadsheets.database.android.dao.OfflineUpdateRoomDao
 import com.vgleadsheets.database.android.dao.SearchHistoryEntryRoomDao
 import com.vgleadsheets.database.android.dao.SongAliasRoomDao
 import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
@@ -82,6 +85,7 @@ import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.OfflineComposerDataSource
 import com.vgleadsheets.database.source.OfflineGameDataSource
 import com.vgleadsheets.database.source.OfflineSongDataSource
+import com.vgleadsheets.database.source.OfflineUpdateResultDataSource
 import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
@@ -309,5 +313,15 @@ object DataSourceModule {
         roomImpl: AlternateSettingRoomDao,
     ): AlternateSettingDataSource = AlternateSettingAndroidDataSource(
         roomImpl,
+    )
+
+    @Provides
+    @Singleton
+    fun offlineUpdateResultDataSource(
+        roomImpl: OfflineUpdateRoomDao,
+        converter: OfflineUpdateResultConverter,
+    ): OfflineUpdateResultDataSource = OfflineUpdateResultAndroidDataSource(
+        roomImpl,
+        converter,
     )
 }

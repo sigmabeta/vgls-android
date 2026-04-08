@@ -14,6 +14,8 @@ interface SongDataSource : DataSource<Song> {
 
     fun getSongsForComposer(composerId: Long): Flow<List<Song>>
 
+    fun getSongsForComposerSync(composerId: Long): List<Song>
+
     fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
 
     fun incrementPlayCount(songId: Long)

@@ -119,6 +119,7 @@ dependencies {
     implementation(projects.core.android.database)
     implementation(projects.core.android.images)
     implementation(projects.core.android.logging)
+    implementation(projects.core.android.offline)
     implementation(projects.core.android.pdf)
     implementation(projects.core.android.repository)
     implementation(projects.core.android.resources)
@@ -140,6 +141,7 @@ dependencies {
 
     implementation(projects.features.all)
 
+    implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
 

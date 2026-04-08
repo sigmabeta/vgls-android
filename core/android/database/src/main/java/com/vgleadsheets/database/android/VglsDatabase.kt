@@ -41,7 +41,7 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
         TagValueEntity::class,
         ComposerAliasEntity::class
     ],
-    version = DatabaseVersions.ADDED_SONG_COUNTS,
+    version = DatabaseVersions.ADDED_OFFLINE_UPDATE_RESULTS,
 )
 abstract class VglsDatabase : RoomDatabase() {
     abstract fun composerAliasDao(): ComposerAliasRoomDao

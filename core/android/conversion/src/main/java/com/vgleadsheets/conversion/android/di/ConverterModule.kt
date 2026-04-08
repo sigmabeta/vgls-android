@@ -10,8 +10,9 @@ import com.vgleadsheets.conversion.android.converter.GameAliasConverter
 import com.vgleadsheets.conversion.android.converter.GameConverter
 import com.vgleadsheets.conversion.android.converter.GamePlayCountConverter
 import com.vgleadsheets.conversion.android.converter.OfflineComposerConverter
-import com.vgleadsheets.conversion.android.converter.OfflineSongConverter
 import com.vgleadsheets.conversion.android.converter.OfflineGameConverter
+import com.vgleadsheets.conversion.android.converter.OfflineSongConverter
+import com.vgleadsheets.conversion.android.converter.OfflineUpdateResultConverter
 import com.vgleadsheets.conversion.android.converter.SearchHistoryConverter
 import com.vgleadsheets.conversion.android.converter.SongAliasConverter
 import com.vgleadsheets.conversion.android.converter.SongConverter
@@ -108,4 +109,8 @@ object ConverterModule {
     @Provides
     @Singleton
     fun offlineGameConverter() = OfflineGameConverter()
+
+    @Provides
+    @Singleton
+    fun offlineUpdateResultConverter() = OfflineUpdateResultConverter()
 }

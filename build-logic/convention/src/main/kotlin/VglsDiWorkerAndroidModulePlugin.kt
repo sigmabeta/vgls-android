@@ -14,6 +14,7 @@ class VglsDiWorkerAndroidModulePlugin : Plugin<Project> {
             dependencies {
                 add("implementation", libs.findLibrary("androidx-hilt-work").get())
                 add("implementation", libs.findLibrary("androidx-work-manager").get())
+                "ksp"(libs.findLibrary("androidx-hilt-compiler").get())
             }
         }
     }

@@ -1,38 +1,51 @@
 package com.vgleadsheets.offline
 
-import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.repository.OfflineRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 class OfflineDownloader(
     private val offlineRepo: OfflineRepository,
     private val sheetDownloader: SheetDownloader,
     private val hatchet: Hatchet,
-    private val scope: CoroutineScope,
-    private val dispatchers: VglsDispatchers,
 ) {
-    fun checkAll() {
+    suspend fun checkAll() {
         checkAllSongs()
+        checkAllComposers()
+        checkAllGames()
     }
 
-    private fun checkAllSongs() {
+    private suspend fun checkAllSongs() {
         hatchet.i("Checking that all offline songs are downloaded.")
-        scope.launch(dispatchers.disk) {
-            offlineRepo.getAllSongs()
-                .filter { it.isNotEmpty() }
-                .first()
-                .onEach {
-                    hatchet.d("Checking song ${it.gameName} - ${it.name}")
-                    checkSong(it)
-                }
-        }
+        offlineRepo.getAllSongs()
+            .first()
+            .onEach {
+                hatchet.d("Checking song ${it.gameName} - ${it.name}")
+                checkSong(it)
+            }
+    }
+
+    private suspend fun checkAllComposers() {
+        hatchet.i("Checking that all offline composer songs are downloaded.")
+        offlineRepo.getAllComposerSongs()
+            .first()
+            .onEach {
+                hatchet.d("Checking composer song ${it.gameName} - ${it.name}")
+                checkSong(it)
+            }
+    }
+
+    private suspend fun checkAllGames() {
+        hatchet.i("Checking that all offline game songs are downloaded.")
+        offlineRepo.getAllGameSongs()
+            .first()
+            .onEach {
+                hatchet.d("Checking game song ${it.gameName} - ${it.name}")
+                checkSong(it)
+            }
     }
 
     private suspend fun checkSong(song: Song) {

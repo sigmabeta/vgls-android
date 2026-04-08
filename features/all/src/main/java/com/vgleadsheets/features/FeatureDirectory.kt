@@ -8,6 +8,7 @@ import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
 import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
@@ -70,6 +71,7 @@ class FeatureDirectory(
     private val userContentGenerator: UserContentGenerator,
     private val userContentMigrator: UserContentMigrator,
     private val homeModuleProvider: HomeModuleProvider,
+    private val offlineWorkScheduler: OfflineWorkScheduler,
 ) : BrainProvider {
     @Suppress("LongMethod")
     override fun provideBrain(
@@ -234,6 +236,7 @@ class FeatureDirectory(
                 stringProvider,
                 hatchet,
                 scheduler,
+                offlineWorkScheduler,
             )
 
             Destination.UPDATES -> UpdatesViewModelBrain(

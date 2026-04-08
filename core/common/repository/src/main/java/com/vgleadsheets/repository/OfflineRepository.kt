@@ -4,8 +4,9 @@ import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.source.OfflineComposerDataSource
-import com.vgleadsheets.database.source.OfflineSongDataSource
 import com.vgleadsheets.database.source.OfflineGameDataSource
+import com.vgleadsheets.database.source.OfflineSongDataSource
+import kotlinx.coroutines.flow.map
 
 class OfflineRepository(
     private val songDataSource: SongDataSource,
@@ -55,4 +56,20 @@ class OfflineRepository(
     }
 
     fun isOfflineGame(id: Long) = offlineGameDataSource.isOfflineGame(id)
+
+    fun getAllGameSongs() = offlineGameDataSource
+        .getAll()
+        .map { games ->
+            games.flatMap { offline ->
+                songDataSource.getSongsForGameSync(offline.id)
+            }
+        }
+
+    fun getAllComposerSongs() = offlineComposerDataSource
+        .getAll()
+        .map { composers ->
+            composers.flatMap { offline ->
+                songDataSource.getSongsForComposerSync(offline.id)
+            }
+        }
 }

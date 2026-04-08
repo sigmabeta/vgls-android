@@ -55,6 +55,7 @@ object DatabaseModule {
                 Migrations.AddFavorites,
                 Migrations.AddAlternates,
                 Migrations.AddSongCounts,
+                Migrations.AddOfflineUpdateResults,
             )
             .fallbackToDestructiveMigrationFrom(dropAllTables = true, *DatabaseVersions.WITHOUT_MIGRATION)
             .build()

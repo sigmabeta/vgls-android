@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.core.android.database)
 
     implementation(projects.core.common.network)
+    implementation(libs.threeten)
 }
 
 android {
