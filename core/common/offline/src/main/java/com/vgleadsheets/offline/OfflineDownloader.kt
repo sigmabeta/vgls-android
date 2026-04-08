@@ -13,39 +13,35 @@ class OfflineDownloader(
     private val hatchet: Hatchet,
 ) {
     suspend fun checkAll() {
-        checkAllSongs()
-        checkAllComposers()
-        checkAllGames()
+        var consecutiveFailures = 0
+        consecutiveFailures = checkSongList("songs", offlineRepo.getAllSongs().first(), consecutiveFailures)
+        consecutiveFailures = checkSongList("composer songs", offlineRepo.getAllComposerSongs().first(), consecutiveFailures)
+        checkSongList("game songs", offlineRepo.getAllGameSongs().first(), consecutiveFailures)
     }
 
-    private suspend fun checkAllSongs() {
-        hatchet.i("Checking that all offline songs are downloaded.")
-        offlineRepo.getAllSongs()
-            .first()
-            .onEach {
-                hatchet.d("Checking song ${it.gameName} - ${it.name}")
-                checkSong(it)
+    @Suppress("TooGenericExceptionCaught")
+    private suspend fun checkSongList(label: String, songs: List<Song>, initialConsecutiveFailures: Int): Int {
+        hatchet.i("Checking that all offline $label are downloaded.")
+        var consecutiveFailures = initialConsecutiveFailures
+        for (song in songs) {
+            if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+                hatchet.w("$MAX_CONSECUTIVE_FAILURES consecutive failures — aborting offline download.")
+                return consecutiveFailures
             }
+            try {
+                hatchet.d("Checking song ${song.gameName} - ${song.name}")
+                checkSong(song)
+                consecutiveFailures = 0
+            } catch (e: Exception) {
+                hatchet.e("Failed to download ${song.gameName} - ${song.name}: ${e.message}")
+                consecutiveFailures++
+            }
+        }
+        return consecutiveFailures
     }
 
-    private suspend fun checkAllComposers() {
-        hatchet.i("Checking that all offline composer songs are downloaded.")
-        offlineRepo.getAllComposerSongs()
-            .first()
-            .onEach {
-                hatchet.d("Checking composer song ${it.gameName} - ${it.name}")
-                checkSong(it)
-            }
-    }
-
-    private suspend fun checkAllGames() {
-        hatchet.i("Checking that all offline game songs are downloaded.")
-        offlineRepo.getAllGameSongs()
-            .first()
-            .onEach {
-                hatchet.d("Checking game song ${it.gameName} - ${it.name}")
-                checkSong(it)
-            }
+    companion object {
+        private const val MAX_CONSECUTIVE_FAILURES = 3
     }
 
     private suspend fun checkSong(song: Song) {
