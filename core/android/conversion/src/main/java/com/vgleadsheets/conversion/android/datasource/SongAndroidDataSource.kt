@@ -37,6 +37,10 @@ SongDataSource {
         .getForComposer(composerId)
         .mapListTo { convert.entityToModel(it) }
 
+    override fun getSongsForComposerSync(composerId: Long) = roomImpl
+        .getForComposerSync(composerId)
+        .map { convert.entityToModel(it) }
+
     override fun getSongsForTagValue(tagValueId: Long) = roomImpl
         .getForTagValue(tagValueId)
         .mapListTo { convert.entityToModel(it) }

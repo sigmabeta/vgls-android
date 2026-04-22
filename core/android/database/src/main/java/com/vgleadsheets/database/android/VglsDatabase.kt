@@ -7,6 +7,7 @@ import com.vgleadsheets.database.android.dao.ComposerRoomDao
 import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
 import com.vgleadsheets.database.android.dao.GameAliasRoomDao
 import com.vgleadsheets.database.android.dao.GameRoomDao
+import com.vgleadsheets.database.android.dao.OfflineUpdateRoomDao
 import com.vgleadsheets.database.android.dao.SongAliasRoomDao
 import com.vgleadsheets.database.android.dao.SongRoomDao
 import com.vgleadsheets.database.android.dao.TagKeyRoomDao
@@ -16,6 +17,7 @@ import com.vgleadsheets.database.android.enitity.ComposerAliasEntity
 import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.enitity.GameAliasEntity
 import com.vgleadsheets.database.android.enitity.GameEntity
+import com.vgleadsheets.database.android.enitity.OfflineUpdateResultEntity
 import com.vgleadsheets.database.android.enitity.SongAliasEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.android.enitity.TagKeyEntity
@@ -33,12 +35,13 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
         SongTagValueJoin::class,
         SongAliasEntity::class,
         TimeEntity::class,
+        OfflineUpdateResultEntity::class,
         GameAliasEntity::class,
         TagKeyEntity::class,
         TagValueEntity::class,
         ComposerAliasEntity::class
     ],
-    version = DatabaseVersions.ADDED_SONG_COUNTS,
+    version = DatabaseVersions.ADDED_OFFLINE_UPDATE_RESULTS,
 )
 abstract class VglsDatabase : RoomDatabase() {
     abstract fun composerAliasDao(): ComposerAliasRoomDao
@@ -46,6 +49,7 @@ abstract class VglsDatabase : RoomDatabase() {
     abstract fun dbStatisticsDao(): DbStatisticsRoomDao
     abstract fun gameAliasDao(): GameAliasRoomDao
     abstract fun gameDao(): GameRoomDao
+    abstract fun offlineUpdateDao(): OfflineUpdateRoomDao
     abstract fun songDao(): SongRoomDao
     abstract fun songAliasDao(): SongAliasRoomDao
     abstract fun tagKeyDao(): TagKeyRoomDao

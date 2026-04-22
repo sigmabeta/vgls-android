@@ -7,6 +7,7 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_FAVORITE
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.COLUMN_OFFLINE
 import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.enitity.GameEntity
+import com.vgleadsheets.database.android.enitity.OfflineUpdateResultEntity
 import com.vgleadsheets.database.android.enitity.SongEntity
 
 object Migrations {
@@ -57,6 +58,16 @@ object Migrations {
         override fun migrate(database: SupportSQLiteDatabase) {
             database.execSQL("$MIGRATE ${ComposerEntity.TABLE} $ADD songCount $WITH_DEFAULT_ZERO")
             database.execSQL("$MIGRATE ${GameEntity.TABLE} $ADD songCount $WITH_DEFAULT_ZERO")
+        }
+    }
+
+    object AddOfflineUpdateResults : Migration(
+        DatabaseVersions.ADDED_SONG_COUNTS,
+        DatabaseVersions.ADDED_OFFLINE_UPDATE_RESULTS,
+    ) {
+        @Suppress("MaxLineLength")
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `${OfflineUpdateResultEntity.TABLE}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date_time` TEXT NOT NULL, `server_update_time` TEXT NOT NULL, `updated_songs` INTEGER NOT NULL, `successful_offlines` INTEGER NOT NULL, `status` TEXT NOT NULL)")
         }
     }
 

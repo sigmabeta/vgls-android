@@ -8,6 +8,7 @@ import com.vgleadsheets.database.BuildConfig
 import com.vgleadsheets.database.android.DatabaseVersions
 import com.vgleadsheets.database.android.Migrations
 import com.vgleadsheets.database.android.UserContentDatabase
+import com.vgleadsheets.database.android.UserContentMigrations
 import com.vgleadsheets.database.android.VglsDatabase
 import dagger.Module
 import dagger.Provides
@@ -54,14 +55,14 @@ object DatabaseModule {
                 Migrations.AddFavorites,
                 Migrations.AddAlternates,
                 Migrations.AddSongCounts,
+                Migrations.AddOfflineUpdateResults,
             )
-            .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
+            .fallbackToDestructiveMigrationFrom(dropAllTables = true, *DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }
 
     @Singleton
     @Provides
-    @Suppress("SpreadOperator")
     fun provideUserContentDatabase(
         @ApplicationContext context: Context,
         sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
@@ -72,8 +73,12 @@ object DatabaseModule {
                 UserContentDatabase::class.java,
                 "user-content-database"
             )
+            .addMigrations(
+                UserContentMigrations.AddedOfflineSongs,
+                UserContentMigrations.AddedOfflineComposers,
+                UserContentMigrations.AddedOfflineGames,
+            )
             .openHelperFactory(sqlOpenHelperFactory)
-            .fallbackToDestructiveMigrationFrom(*DatabaseVersions.WITHOUT_MIGRATION)
             .build()
     }
 
@@ -106,6 +111,12 @@ object DatabaseModule {
     fun gameDao(
         database: VglsDatabase
     ) = database.gameDao()
+
+    @Provides
+    @Singleton
+    fun offlineUpdateDao(
+        database: VglsDatabase
+    ) = database.offlineUpdateDao()
 
     @Provides
     @Singleton
@@ -184,6 +195,24 @@ object DatabaseModule {
     fun favoriteComposerDao(
         database: UserContentDatabase
     ) = database.favoriteComposerDao()
+
+    @Provides
+    @Singleton
+    fun offlineSongDao(
+        database: UserContentDatabase
+    ) = database.offlineSongDao()
+
+    @Provides
+    @Singleton
+    fun offlineComposerDao(
+        database: UserContentDatabase
+    ) = database.offlineComposerDao()
+
+    @Provides
+    @Singleton
+    fun offlineGameDao(
+        database: UserContentDatabase
+    ) = database.offlineGameDao()
 
     @Provides
     @Singleton

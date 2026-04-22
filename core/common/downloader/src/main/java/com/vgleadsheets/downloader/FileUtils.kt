@@ -20,7 +20,7 @@ fun Boolean.altSuffix() = if (this) {
     ""
 }
 
-fun File.ensureExists() {
+fun File.ensureDirectoryExists() {
     if (exists()) {
         return
     }

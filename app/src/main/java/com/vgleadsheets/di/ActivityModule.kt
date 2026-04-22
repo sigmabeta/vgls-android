@@ -10,11 +10,15 @@ import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.offline.OfflineDownloader
+import com.vgleadsheets.offline.OfflineWorkScheduler
+import com.vgleadsheets.offline.WorkManagerOfflineWorkScheduler
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
@@ -63,6 +67,7 @@ class ActivityModule {
         composerRepository: ComposerRepository,
         randomRepository: RandomRepository,
         favoriteRepository: FavoriteRepository,
+        offlineRepository: OfflineRepository,
         tagRepository: TagRepository,
         homeModuleProvider: HomeModuleProvider,
         generalSettingsManager: GeneralSettingsManager,
@@ -73,31 +78,41 @@ class ActivityModule {
         analytics: Analytics,
         dbUpdater: DbUpdater,
         songHistoryRepository: SongHistoryRepository,
+        offlineDownloader: OfflineDownloader,
+        offlineWorkScheduler: OfflineWorkScheduler,
     ): BrainProvider =
         FeatureDirectory(
             dbUpdater = dbUpdater,
             songHistoryRepository = songHistoryRepository,
+            songRepository = songRepository,
+            gameRepository = gameRepository,
+            composerRepository = composerRepository,
+            randomRepository = randomRepository,
+            favoriteRepository = favoriteRepository,
+            offlineRepository = offlineRepository,
+            tagRepository = tagRepository,
             dispatchers = dispatchers,
             delayManager = delayManager,
             appInfo = appInfo,
             urlInfoProvider = urlInfoProvider,
+            analytics = analytics,
             stringProvider = stringProvider,
             hatchet = hatchet,
+            threeTenTime = threeTenTime,
             selectedPartManager = selectedPartManager,
-            gameRepository = gameRepository,
-            composerRepository = composerRepository,
-            songRepository = songRepository,
-            randomRepository = randomRepository,
-            favoriteRepository = favoriteRepository,
-            tagRepository = tagRepository,
-            homeModuleProvider = homeModuleProvider,
             generalSettingsManager = generalSettingsManager,
+            debugSettingsManager = debugSettingsManager,
             userContentGenerator = userContentGenerator,
             userContentMigrator = userContentMigrator,
-            debugSettingsManager = debugSettingsManager,
-            analytics = analytics,
-            threeTenTime = threeTenTime,
+            homeModuleProvider = homeModuleProvider,
+            offlineWorkScheduler = offlineWorkScheduler,
         )
+
+    @Provides
+    @ActivityScoped
+    fun provideOfflineWorkScheduler(
+        @ActivityContext context: Context,
+    ): OfflineWorkScheduler = WorkManagerOfflineWorkScheduler(context)
 
     @Provides
     @ActivityScoped

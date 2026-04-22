@@ -17,6 +17,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.ui.StringProvider
@@ -38,6 +39,7 @@ class SongDetailViewModelBrain(
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val offlineRepository: OfflineRepository,
     private val tagRepository: TagRepository,
     private val scheduler: VglsScheduler,
     private val urlInfoProvider: UrlInfoProvider,
@@ -63,6 +65,8 @@ class SongDetailViewModelBrain(
             is Action.TagValueClicked -> onTagValueClicked(action.id)
             is Action.AddFavoriteClicked -> onAddFavoriteClicked()
             is Action.RemoveFavoriteClicked -> onRemoveFavoriteClicked()
+            is Action.EnableOfflineClicked -> onEnableOfflineClicked()
+            is Action.DisableOfflineClicked -> onDisableOfflineClicked()
             is Action.ToggleAltSelectedClicked -> onToggleAltSelectedClicked()
             is Action.SearchYoutubeClicked -> onSearchYoutubeClicked()
         }
@@ -75,6 +79,7 @@ class SongDetailViewModelBrain(
         fetchGame()
         fetchAliases(id)
         fetchTagValues(id)
+        checkOfflineStatus(id)
         checkFavoriteStatus(id)
         checkAltSelectionStatus(id)
         setupAnalytics()
@@ -133,6 +138,15 @@ class SongDetailViewModelBrain(
             .flatMapConcat { gameRepository.getGame(it.data.gameId) }
             .onEach { game -> updateGame(LCE.Content(game)) }
             .catch { updateGame(LCE.Error(LOAD_OPERATION_GAME, it)) }
+            .runInBackground()
+    }
+
+    private fun checkOfflineStatus(id: Long) {
+        updateIsAvailableOffline(LCE.Loading(LOAD_OPERATION_IS_OFFLINE))
+        offlineRepository
+            .isOfflineSong(id)
+            .onEach { isOffline -> updateIsAvailableOffline(LCE.Content(isOffline)) }
+            .catch { updateIsAvailableOffline(LCE.Error(LOAD_OPERATION_IS_OFFLINE, it)) }
             .runInBackground()
     }
 
@@ -199,6 +213,28 @@ class SongDetailViewModelBrain(
         updateIsFavorite(LCE.Loading(LOAD_OPERATION_IS_FAVORITE))
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             favoriteRepository.removeFavoriteSong(song.data.id)
+        }
+    }
+
+    private fun onEnableOfflineClicked() {
+        val state = internalUiState.value as State
+        val song = state.song
+        if (song !is LCE.Content) return
+
+        updateIsAvailableOffline(LCE.Loading(LOAD_OPERATION_IS_OFFLINE))
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            offlineRepository.addOfflineSong(song.data.id)
+        }
+    }
+
+    private fun onDisableOfflineClicked() {
+        val state = internalUiState.value as State
+        val song = state.song
+        if (song !is LCE.Content) return
+
+        updateIsAvailableOffline(LCE.Loading(LOAD_OPERATION_IS_OFFLINE))
+        scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            offlineRepository.removeOfflineSong(song.data.id)
         }
     }
 
@@ -296,6 +332,14 @@ class SongDetailViewModelBrain(
         }
     }
 
+    private fun updateIsAvailableOffline(isAvailableOffline: LCE<Boolean>) {
+        updateState {
+            (it as State).copy(
+                isAvailableOffline = isAvailableOffline
+            )
+        }
+    }
+
     private fun updateIsFavorite(isFavorite: LCE<Boolean>) {
         updateState {
             (it as State).copy(
@@ -326,6 +370,7 @@ class SongDetailViewModelBrain(
         internal const val LOAD_OPERATION_ALIASES = "songs.detail.aliases"
         internal const val LOAD_OPERATION_TAG_VALUES = "songs.detail.tagvalues"
         internal const val LOAD_OPERATION_IS_FAVORITE = "songs.detail.favorite"
+        internal const val LOAD_OPERATION_IS_OFFLINE = "songs.detail.offline"
         internal const val LOAD_OPERATION_IS_ALT_SELECTED = "songs.detail.alternate"
     }
 }

@@ -7,6 +7,7 @@ dependencies {
     api(projects.core.android.activity)
 
     api(projects.core.common.list)
+    api(projects.core.common.offline)
     api(projects.core.common.nav)
     api(projects.core.common.notif)
 
@@ -20,6 +21,7 @@ dependencies {
     api(projects.features.composers.detail)
     api(projects.features.favorites)
     api(projects.features.menu)
+    api(projects.features.offline)
     api(projects.features.parts)
     api(projects.features.songs.list)
     api(projects.features.songs.detail)

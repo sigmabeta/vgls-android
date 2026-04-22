@@ -61,6 +61,7 @@ private fun composerScreenState(): State {
         games = LCE.Content(games),
         songs = LCE.Content(songs),
         isFavorite = LCE.Content(false),
+        isAvailableOffline = LCE.Content(true),
     )
     return screenState
 }

@@ -32,6 +32,7 @@ data class State(
     val songRecordsGenerated: Int? = 0,
     val songRecordsGeneratedLegacy: Int? = 0,
     val songRecordsMigrated: Int? = 0,
+    val offlineDownloadStatus: LCE<Unit> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = stringProvider.getString(StringId.SCREEN_TITLE_SETTINGS),
@@ -61,8 +62,24 @@ data class State(
         generateUserRecords(stringProvider),
         generateUserRecordsLegacy(stringProvider),
         migrateUserRecordsLegacy(stringProvider),
+        runOfflineDownload(stringProvider),
         restartApp(stringProvider),
     )
+
+    private fun runOfflineDownload(stringProvider: StringProvider) = ifShowDebugEnabled {
+        if (offlineDownloadStatus is LCE.Loading) {
+            LoadingItemListModel(
+                loadingType = LoadingType.SINGLE_TEXT,
+                loadOperationName = "offlineDownload",
+                loadPositionOffset = 0,
+            )
+        } else {
+            SingleTextListModel(
+                name = "Run offline download job",
+                clickAction = Action.RunOfflineDownloadClicked,
+            )
+        }
+    }
 
     private fun restartApp(stringProvider: StringProvider) = ifShowDebugEnabled {
         SingleTextListModel(

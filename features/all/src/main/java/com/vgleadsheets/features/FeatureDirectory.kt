@@ -8,6 +8,7 @@ import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
 import com.vgleadsheets.remaster.composers.list.ComposerListViewModelBrain
@@ -19,6 +20,7 @@ import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.remaster.home.HomeViewModelBrain
 import com.vgleadsheets.remaster.menu.MenuViewModelBrain
+import com.vgleadsheets.remaster.offline.OfflineStatusViewModelBrain
 import com.vgleadsheets.remaster.parts.PartsListViewModelBrain
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
@@ -30,6 +32,7 @@ import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
+import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
@@ -52,6 +55,7 @@ class FeatureDirectory(
     private val composerRepository: ComposerRepository,
     private val randomRepository: RandomRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val offlineRepository: OfflineRepository,
     private val tagRepository: TagRepository,
     private val dispatchers: VglsDispatchers,
     private val delayManager: DelayManager,
@@ -67,6 +71,7 @@ class FeatureDirectory(
     private val userContentGenerator: UserContentGenerator,
     private val userContentMigrator: UserContentMigrator,
     private val homeModuleProvider: HomeModuleProvider,
+    private val offlineWorkScheduler: OfflineWorkScheduler,
 ) : BrainProvider {
     @Suppress("LongMethod")
     override fun provideBrain(
@@ -112,6 +117,7 @@ class FeatureDirectory(
                 gameRepository,
                 composerRepository,
                 favoriteRepository,
+                offlineRepository,
                 scheduler,
                 analytics,
                 stringProvider,
@@ -131,6 +137,7 @@ class FeatureDirectory(
                 composerRepository,
                 gameRepository,
                 favoriteRepository,
+                offlineRepository,
                 scheduler,
                 analytics,
                 stringProvider,
@@ -150,6 +157,7 @@ class FeatureDirectory(
                 gameRepository,
                 composerRepository,
                 favoriteRepository,
+                offlineRepository,
                 tagRepository,
                 scheduler,
                 urlInfoProvider,
@@ -228,9 +236,17 @@ class FeatureDirectory(
                 stringProvider,
                 hatchet,
                 scheduler,
+                offlineWorkScheduler,
             )
 
             Destination.UPDATES -> UpdatesViewModelBrain(
+                stringProvider,
+                hatchet,
+                analytics,
+                scheduler,
+            )
+
+            Destination.OFFLINE -> OfflineStatusViewModelBrain(
                 stringProvider,
                 hatchet,
                 analytics,

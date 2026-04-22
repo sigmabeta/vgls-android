@@ -36,6 +36,11 @@ object DatabaseVersions {
     */
     const val ADDED_SONG_COUNTS = 15
 
+    /**
+     *  - Added offline_update table for tracking download job results.
+     */
+    const val ADDED_OFFLINE_UPDATE_RESULTS = 16
+
     // Doesn't need to be changed.
     val WITHOUT_MIGRATION = (1 until ADDED_PLAY_COUNTS).toList().toIntArray()
 }

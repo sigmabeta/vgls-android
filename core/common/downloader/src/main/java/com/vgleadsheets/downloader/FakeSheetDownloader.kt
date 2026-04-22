@@ -5,8 +5,8 @@ import com.vgleadsheets.model.Part
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 class FakeSheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
@@ -38,4 +38,21 @@ class FakeSheetDownloader @Inject constructor(
             SheetSourceType.DISK
         )
     }
+
+    override suspend fun downloadFile(
+        fileName: String,
+        partApiId: String,
+        isAlternate: Boolean,
+    ) = Unit
+
+    override suspend fun doesFileExist(
+        fileName: String,
+        partApiId: String,
+        isAlternate: Boolean,
+    ) = fileReference(
+        storageDirectoryProvider.getStorageDirectory(),
+        fileName,
+        partApiId,
+        isAlternate
+    ).exists()
 }

@@ -10,6 +10,7 @@ import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.VglsScheduler
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
@@ -36,6 +37,7 @@ class MenuViewModelBrain(
     stringProvider: StringProvider,
     private val hatchet: Hatchet,
     private val scheduler: VglsScheduler,
+    private val offlineWorkScheduler: OfflineWorkScheduler,
 ) : ListViewModelBrain(
     stringProvider,
     analytics,
@@ -68,6 +70,7 @@ class MenuViewModelBrain(
             is Action.GenerateUserContentLegacyClicked -> onGenerateUserContentLegacyClicked()
             is Action.MigrateUserContentLegacyClicked -> onMigrateUserContentLegacyClicked()
             is Action.RestartAppClicked -> onRestartAppClicked()
+            is Action.RunOfflineDownloadClicked -> onRunOfflineDownloadClicked()
         }
     }
 
@@ -330,6 +333,19 @@ class MenuViewModelBrain(
                 withDismissAction = false,
                 actionDetails = null,
                 source = Destination.HOME.destName
+            )
+        )
+    }
+
+    private fun onRunOfflineDownloadClicked() {
+        updateState { (it as State).copy(offlineDownloadStatus = LCE.Loading("offlineDownload")) }
+        offlineWorkScheduler.scheduleDownload()
+        updateState { (it as State).copy(offlineDownloadStatus = LCE.Content(Unit)) }
+        emitEvent(
+            VglsEvent.ShowSnackbar(
+                "Offline download job enqueued!",
+                false,
+                source = "DebugMenu"
             )
         )
     }

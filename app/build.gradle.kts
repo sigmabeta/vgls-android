@@ -119,6 +119,7 @@ dependencies {
     implementation(projects.core.android.database)
     implementation(projects.core.android.images)
     implementation(projects.core.android.logging)
+    implementation(projects.core.android.offline)
     implementation(projects.core.android.pdf)
     implementation(projects.core.android.repository)
     implementation(projects.core.android.resources)
@@ -132,6 +133,7 @@ dependencies {
     implementation(projects.core.common.debug)
     implementation(projects.core.common.events)
     implementation(projects.core.common.network)
+    implementation(projects.core.common.offline)
     implementation(projects.core.common.settings.environment)
     implementation(projects.core.common.urlinfo)
     implementation(projects.core.common.versions)
@@ -139,6 +141,7 @@ dependencies {
 
     implementation(projects.features.all)
 
+    implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
 
