@@ -23,6 +23,5 @@ class OfflineStatusViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
-    }
+    override fun handleAction(action: VglsAction) = Unit
 }

@@ -10,7 +10,7 @@ data class State(
     val whatever: String = "",
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_SETTINGS),
+        title = stringProvider.getString(StringId.SCREEN_TITLE_OFFLINE),
         shouldShowBack = true
     )
 
