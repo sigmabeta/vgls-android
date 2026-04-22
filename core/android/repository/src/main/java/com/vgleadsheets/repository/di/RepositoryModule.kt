@@ -232,6 +232,7 @@ object RepositoryModule {
     fun provideOfflineRepository(
         songDataSource: SongDataSource,
         composerDataSource: ComposerDataSource,
+        gameDataSource: GameDataSource,
         offlineSongDataSource: OfflineSongDataSource,
         offlineComposerDataSource: OfflineComposerDataSource,
         offlineGameDataSource: OfflineGameDataSource,
@@ -241,6 +242,7 @@ object RepositoryModule {
     ) = OfflineRepository(
         songDataSource,
         composerDataSource,
+        gameDataSource,
         offlineSongDataSource,
         offlineComposerDataSource,
         offlineGameDataSource,

@@ -21,7 +21,7 @@ dependencies {
     api(projects.features.composers.detail)
     api(projects.features.favorites)
     api(projects.features.menu)
-    api(projects.features.offline)
+    api(projects.features.offline.content)
     api(projects.features.parts)
     api(projects.features.songs.list)
     api(projects.features.songs.detail)

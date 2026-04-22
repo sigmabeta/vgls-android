@@ -36,6 +36,13 @@ data class State(
                 selected = false
             ),
             MenuItemListModel(
+                name = stringProvider.getString(StringId.BROWSE_LINK_OFFLINE),
+                caption = null,
+                icon = Icon.OFFLINE_OUTLINE,
+                clickAction = Action.DestinationClicked(Destination.OFFLINE.noArgs()),
+                selected = false
+            ),
+            MenuItemListModel(
                 name = stringProvider.getString(StringId.BROWSE_LINK_GAME),
                 caption = null,
                 icon = Icon.ALBUM,

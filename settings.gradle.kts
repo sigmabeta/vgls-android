@@ -132,6 +132,7 @@ include(
     ":features:menu",
     ":features:navbar",
     ":features:offline",
+    ":features:offline:content",
     ":features:parts",
     ":features:search",
     ":features:songs:detail",

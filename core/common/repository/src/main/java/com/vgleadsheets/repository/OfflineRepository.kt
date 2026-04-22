@@ -3,6 +3,7 @@ package com.vgleadsheets.repository
 import com.vgleadsheets.conversion.mapListTo
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
+import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.source.OfflineComposerDataSource
 import com.vgleadsheets.database.source.OfflineGameDataSource
@@ -21,6 +22,7 @@ import org.threeten.bp.ZonedDateTime
 class OfflineRepository(
     private val songDataSource: SongDataSource,
     private val composerDataSource: ComposerDataSource,
+    private val gameDataSource: GameDataSource,
     private val offlineSongDataSource: OfflineSongDataSource,
     private val offlineComposerDataSource: OfflineComposerDataSource,
     private val offlineGameDataSource: OfflineGameDataSource,
@@ -69,6 +71,12 @@ class OfflineRepository(
     }
 
     fun isOfflineGame(id: Long) = offlineGameDataSource.isOfflineGame(id)
+
+    fun getAllGames() = offlineGameDataSource
+        .getAll()
+        .mapListTo {
+            gameDataSource.getOneByIdSync(it.id)
+        }
 
     fun getAllGameSongs() = offlineGameDataSource
         .getAll()
