@@ -34,7 +34,10 @@ class OfflineDownloader(
         } else {
             OfflineJobStatus.COMPLETED
         }
-        offlineRepo.insertUpdateResult(successfulOfflines, status)
+
+        if (successfulOfflines > 0 || status == OfflineJobStatus.ABORTED) {
+            offlineRepo.insertUpdateResult(successfulOfflines, status)
+        }
     }
 
     @Suppress("TooGenericExceptionCaught")
