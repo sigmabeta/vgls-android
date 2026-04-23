@@ -54,6 +54,7 @@ fun StringId.id(): Int {
         StringId.CTA_SEARCH -> R.string.cta_search
         StringId.CTA_SEARCH_OTHER_QUERY -> R.string.cta_search_other_query
         StringId.CTA_FAVORITES -> R.string.cta_favorites
+        StringId.CTA_OFFLINE -> R.string.cta_offline
 
         StringId.LABEL_SONG_ALSO_KNOWN_AS -> R.string.label_song_also_known_as
 
@@ -71,6 +72,7 @@ fun StringId.id(): Int {
         StringId.HOME_ACTION_RANDOM_GAME -> R.string.home_action_random_game
         StringId.HOME_ACTION_RANDOM_COMPOSER -> R.string.home_action_random_composer
 
+        StringId.BROWSE_LINK_OFFLINE -> R.string.browse_link_offline
         StringId.BROWSE_LINK_FAVORITES -> R.string.browse_link_favorites
         StringId.BROWSE_LINK_GAME -> R.string.browse_link_game
         StringId.BROWSE_LINK_COMPOSER -> R.string.browse_link_composer

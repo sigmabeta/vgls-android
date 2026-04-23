@@ -37,7 +37,7 @@
     <string name="screen_title_favorites">Browse Favorites </string>
     <string name="screen_title_search">Search</string>
     <string name="screen_title_settings">Settings</string>
-    <string name="screen_title_offline">Offline Content Status</string>
+    <string name="screen_title_offline">Offline Content</string>
     <string name="screen_title_updates">App Updates</string>
     <string name="screen_title_licenses">Open-source Licenses</string>
 
@@ -68,6 +68,7 @@
     <string name="cta_search">Enter some text to search VGLS for a song, composer, or game.</string>
     <string name="cta_search_other_query">Nothing found. Try a broader search?</string>
     <string name="cta_favorites">Add a game, song, or composer to your favorites to find them here quickly.</string>
+    <string name="cta_offline">Games, songs, and composers that you\'ve asked to keep available offline. Once you\'ve marked some, they\'ll be here.</string>
 
     <string name="label_song_also_known_as">Also Known As</string>
     <string name="label_settings_check_for_updates">Check VGLS for sheet updates</string>
@@ -109,6 +110,7 @@
     <string name="home_action_random_game">Random Game</string>
     <string name="home_action_random_composer">Random Composer</string>
 
+    <string name="browse_link_offline">Offline-available</string>
     <string name="browse_link_favorites">Favorites</string>
     <string name="browse_link_game">By Game</string>
     <string name="browse_link_composer">By Composer</string>
