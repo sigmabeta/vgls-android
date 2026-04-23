@@ -26,6 +26,7 @@ enum class Destination(
     LICENSES("licenses", ArgType.NONE),
     UPDATES("updates", ArgType.NONE),
     OFFLINE("offline", ArgType.NONE),
+    OFFLINE_UPDATES("offline/updates", ArgType.NONE),
     NONE("none", ArgType.NONE)
     ;
 

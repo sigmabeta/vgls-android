@@ -21,6 +21,7 @@ import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.remaster.home.HomeViewModelBrain
 import com.vgleadsheets.remaster.menu.MenuViewModelBrain
 import com.vgleadsheets.remaster.offline.content.OfflineContentViewModelBrain
+import com.vgleadsheets.remaster.offline.updates.OfflineUpdatesViewModelBrain
 import com.vgleadsheets.remaster.parts.PartsListViewModelBrain
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain
 import com.vgleadsheets.remaster.songs.list.SongListViewModelBrain
@@ -252,6 +253,15 @@ class FeatureDirectory(
                 analytics,
                 stringProvider,
                 hatchet,
+            )
+
+            Destination.OFFLINE_UPDATES -> OfflineUpdatesViewModelBrain(
+                offlineRepository,
+                threeTenTime,
+                stringProvider,
+                hatchet,
+                analytics,
+                scheduler,
             )
 
             Destination.NONE,

@@ -94,6 +94,8 @@ class OfflineRepository(
             }
         }
 
+    fun getAllUpdateResults() = offlineUpdateResultDataSource.getAll()
+
     suspend fun insertUpdateResult(successfulOfflines: Int, status: OfflineJobStatus) {
         val serverUpdateTimeMs = dbStatisticsDataSource
             .getTime(TimeType.LAST_VGLS_UPDATE.ordinal)

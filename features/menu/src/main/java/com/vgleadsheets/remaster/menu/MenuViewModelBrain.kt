@@ -71,6 +71,7 @@ class MenuViewModelBrain(
             is Action.MigrateUserContentLegacyClicked -> onMigrateUserContentLegacyClicked()
             is Action.RestartAppClicked -> onRestartAppClicked()
             is Action.RunOfflineDownloadClicked -> onRunOfflineDownloadClicked()
+            is Action.OfflineUpdatesClicked -> onOfflineUpdatesClicked()
         }
     }
 
@@ -163,6 +164,10 @@ class MenuViewModelBrain(
 
     private fun onWhatsNewClicked() {
         navigateTo(Destination.UPDATES.noArgs())
+    }
+
+    private fun onOfflineUpdatesClicked() {
+        navigateTo(Destination.OFFLINE_UPDATES.noArgs())
     }
 
     @Suppress("MagicNumber")

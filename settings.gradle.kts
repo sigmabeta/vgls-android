@@ -133,6 +133,7 @@ include(
     ":features:navbar",
     ":features:offline",
     ":features:offline:content",
+    ":features:offline:updates",
     ":features:parts",
     ":features:search",
     ":features:songs:detail",
