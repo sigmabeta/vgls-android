@@ -5,8 +5,9 @@ import com.vgleadsheets.model.Part
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import java.io.File
+import javax.inject.Inject
 
 class FakeSheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
@@ -55,4 +56,9 @@ class FakeSheetDownloader @Inject constructor(
         partApiId,
         isAlternate
     ).exists()
+
+    override suspend fun clearFilesForSong(fileName: String) {
+        File(storageDirectoryProvider.getStorageDirectory(), "pdfs/$fileName")
+            .deleteRecursively()
+    }
 }

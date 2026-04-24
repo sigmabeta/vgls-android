@@ -30,11 +30,12 @@ import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
 import com.vgleadsheets.time.ThreeTenTime
-import java.util.Locale
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
+import org.threeten.bp.Instant
+import java.util.Locale
 
 class DbUpdater(
     private val vglsApi: VglsApi,
@@ -278,6 +279,9 @@ class DbUpdater(
         songAliases: MutableList<SongAlias>
     ) {
         val dbSong = dbSongsMap[apiSong.id]
+        val lastModifiedOnServer = apiSong.lastModified?.let {
+            runCatching { Instant.parse(it).toEpochMilli() }.getOrDefault(0L)
+        } ?: 0L
         val song = apiSong.asModel(
             apiGame.game_id,
             apiGame.game_name,
@@ -285,6 +289,8 @@ class DbUpdater(
             dbSong?.isFavorite ?: false,
             dbSong?.isAvailableOffline ?: false,
             dbSong?.isAltSelected ?: false,
+            lastModifiedOnServer,
+            dbSong?.lastDownloaded ?: 0L,
         )
 
         apiSong.composers.forEach { apiComposer ->

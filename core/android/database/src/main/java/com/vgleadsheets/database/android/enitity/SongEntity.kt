@@ -33,6 +33,8 @@ data class SongEntity(
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,
     val isAltSelected: Boolean,
+    val lastModifiedOnServer: Long,
+    val lastDownloaded: Long,
 ) {
     companion object {
         const val TABLE = "song"

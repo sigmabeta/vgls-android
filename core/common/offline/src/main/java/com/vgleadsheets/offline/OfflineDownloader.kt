@@ -6,11 +6,13 @@ import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.repository.OfflineRepository
+import com.vgleadsheets.time.ThreeTenTime
 import kotlinx.coroutines.flow.first
 
 class OfflineDownloader(
     private val offlineRepo: OfflineRepository,
     private val sheetDownloader: SheetDownloader,
+    private val threeTenTime: ThreeTenTime,
     private val hatchet: Hatchet,
 ) {
     suspend fun checkAll() {
@@ -93,9 +95,16 @@ class OfflineDownloader(
                 }
             }
 
+        val isStale = song.lastModifiedOnServer > 0 &&
+            song.lastDownloaded < song.lastModifiedOnServer
+        if (isStale) {
+            hatchet.i("Song ${song.gameName} - ${song.name} is stale; clearing local files for re-download.")
+            sheetDownloader.clearFilesForSong(song.filename)
+        }
+
         var anyDownloaded = false
         variants.forEach { (part, isAlt) ->
-            val exists = sheetDownloader.doesFileExist(
+            val exists = !isStale && sheetDownloader.doesFileExist(
                 fileName = song.filename,
                 partApiId = part.apiId,
                 isAlternate = isAlt,
@@ -114,6 +123,12 @@ class OfflineDownloader(
             )
             anyDownloaded = true
         }
+
+        if (anyDownloaded) {
+            val now = threeTenTime.now().toInstant().toEpochMilli()
+            offlineRepo.setSongLastDownloaded(song.id, now)
+        }
+
         return anyDownloaded
     }
 }

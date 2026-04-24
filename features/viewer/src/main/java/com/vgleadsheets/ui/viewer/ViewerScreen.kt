@@ -642,6 +642,8 @@ private fun Sheets(
                 altPageCount = 5,
                 isAltSelected = false,
                 isFavorite = true,
+                lastModifiedOnServer = 0L,
+                lastDownloaded = 0L,
             )
         ),
         partApiId = "Bass",

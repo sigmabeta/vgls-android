@@ -16,6 +16,8 @@ data class Song(
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,
     val isAltSelected: Boolean,
+    val lastModifiedOnServer: Long,
+    val lastDownloaded: Long,
 ) {
     @Suppress("ReturnCount")
     fun pageCount(selectedPart: String, altSelection: Boolean): Int {

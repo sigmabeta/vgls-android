@@ -71,6 +71,16 @@ object Migrations {
         }
     }
 
+    object AddSongModifiedTimes : Migration(
+        DatabaseVersions.ADDED_OFFLINE_UPDATE_RESULTS,
+        DatabaseVersions.ADDED_SONG_MODIFIED_TIMES,
+    ) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("$MIGRATE ${SongEntity.TABLE} $ADD lastModifiedOnServer $WITH_DEFAULT_ZERO")
+            database.execSQL("$MIGRATE ${SongEntity.TABLE} $ADD lastDownloaded $WITH_DEFAULT_ZERO")
+        }
+    }
+
     const val DELETE_JAMS = "${RoomDao.DROP} jam"
     const val DELETE_SETLIST = "${RoomDao.DROP} setlist_entry"
     const val DELETE_SONG_HISTORY = "${RoomDao.DROP} song_history_entry"

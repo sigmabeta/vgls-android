@@ -1,5 +1,6 @@
 package com.vgleadsheets.network.model
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -13,5 +14,6 @@ data class ApiSong(
     val lyricsPageCount: Int,
     val composers: List<ApiComposer>,
     val tags: Map<String, List<String>>,
-    val aliases: List<String>?
+    val aliases: List<String>?,
+    @Json(name = "last_modified") val lastModified: String?,
 )

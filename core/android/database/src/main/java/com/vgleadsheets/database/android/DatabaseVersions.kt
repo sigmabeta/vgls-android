@@ -41,6 +41,12 @@ object DatabaseVersions {
      */
     const val ADDED_OFFLINE_UPDATE_RESULTS = 16
 
+    /**
+     *  - Added "lastModifiedOnServer" to songs.
+     *  - Added "lastDownloaded" to songs.
+     */
+    const val ADDED_SONG_MODIFIED_TIMES = 17
+
     // Doesn't need to be changed.
     val WITHOUT_MIGRATION = (1 until ADDED_PLAY_COUNTS).toList().toIntArray()
 }

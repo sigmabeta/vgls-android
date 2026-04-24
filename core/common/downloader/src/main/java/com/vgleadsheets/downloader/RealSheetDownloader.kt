@@ -7,11 +7,11 @@ import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 
 class RealSheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
@@ -82,6 +82,11 @@ class RealSheetDownloader @Inject constructor(
         partApiId,
         isAlternate
     ).exists()
+
+    override suspend fun clearFilesForSong(fileName: String) {
+        File(storageDirectoryProvider.getStorageDirectory(), "pdfs/$fileName")
+            .deleteRecursively()
+    }
 
     @Suppress("MagicNumber")
     private suspend fun downloadSheet(

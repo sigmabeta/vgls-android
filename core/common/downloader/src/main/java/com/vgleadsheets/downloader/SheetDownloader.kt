@@ -16,4 +16,6 @@ interface SheetDownloader {
         partApiId: String,
         isAlternate: Boolean,
     ): Boolean
+
+    suspend fun clearFilesForSong(fileName: String)
 }

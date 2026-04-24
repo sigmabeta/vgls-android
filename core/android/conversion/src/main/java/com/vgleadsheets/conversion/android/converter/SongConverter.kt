@@ -18,7 +18,9 @@ class SongConverter : Converter<Song, SongEntity> {
         playCount,
         isFavorite,
         isAvailableOffline,
-        isAltSelected
+        isAltSelected,
+        lastModifiedOnServer,
+        lastDownloaded,
     )
 
     override fun SongEntity.toModel() = Song(
@@ -36,6 +38,8 @@ class SongConverter : Converter<Song, SongEntity> {
         playCount,
         isFavorite,
         isAvailableOffline,
-        isAltSelected
+        isAltSelected,
+        lastModifiedOnServer,
+        lastDownloaded,
     )
 }
