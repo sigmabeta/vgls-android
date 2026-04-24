@@ -24,5 +24,7 @@ interface SongDataSource : DataSource<Song> {
 
     fun toggleOffline(songId: Long)
 
+    suspend fun setLastDownloaded(songId: Long, timestamp: Long)
+
     fun getHighestId(): Flow<Long>
 }

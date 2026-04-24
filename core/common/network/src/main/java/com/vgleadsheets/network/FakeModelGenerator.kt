@@ -159,7 +159,8 @@ class FakeModelGenerator @Inject constructor(
             random.nextInt(MAX_PAGE_COUNT) + 1,
             getComposersForSong(),
             getTags(),
-            listOf()
+            listOf(),
+            FAKE_LAST_MODIFIED,
         )
     }
 
@@ -285,5 +286,7 @@ class FakeModelGenerator @Inject constructor(
         val PARTS_WITH_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto", "Vocals")
 
         val TAG_VALUES_NUMERIC = listOf("1", "2", "3", "4", "5")
+
+        const val FAKE_LAST_MODIFIED = "2025-01-01T00:00:00Z"
     }
 }

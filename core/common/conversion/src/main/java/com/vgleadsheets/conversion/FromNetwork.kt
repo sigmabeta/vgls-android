@@ -31,7 +31,9 @@ fun ApiSong.asModel(
     playCount: Int,
     isFavorite: Boolean,
     isAvailableOffline: Boolean,
-    isAltSelected: Boolean
+    isAltSelected: Boolean,
+    lastModifiedOnServer: Long,
+    lastDownloaded: Long,
 ) = Song(
     id,
     name,
@@ -47,7 +49,9 @@ fun ApiSong.asModel(
     playCount,
     isFavorite,
     isAvailableOffline,
-    isAltSelected
+    isAltSelected,
+    lastModifiedOnServer,
+    lastDownloaded,
 )
 
 fun ApiComposer.asModel(

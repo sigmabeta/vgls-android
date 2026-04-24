@@ -195,6 +195,8 @@ class FakeModelGenerator constructor(
         gameId = random.nextLong(),
         gameName = stringGenerator.generateTitle(),
         playCount = 0,
+        lastModifiedOnServer = 0L,
+        lastDownloaded = 0L,
     )
 
     @Suppress("MagicNumber")

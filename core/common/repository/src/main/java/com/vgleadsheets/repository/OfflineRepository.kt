@@ -34,6 +34,10 @@ class OfflineRepository(
         offlineSongDataSource.addOffline(id)
     }
 
+    suspend fun setSongLastDownloaded(songId: Long, timestamp: Long) {
+        songDataSource.setLastDownloaded(songId, timestamp)
+    }
+
     suspend fun removeOfflineSong(id: Long) {
         offlineSongDataSource.removeOffline(id)
     }
