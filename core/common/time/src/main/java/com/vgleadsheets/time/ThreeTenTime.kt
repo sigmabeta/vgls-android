@@ -15,4 +15,6 @@ interface ThreeTenTime {
     fun localDateFromString(date: String): LocalDate?
 
     fun longDateTextFromMillis(timestamp: Long): String?
+
+    fun longDateTimeText(dateTime: ZonedDateTime): String
 }

@@ -19,7 +19,6 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -71,29 +70,20 @@ class MenuViewModelBrain(
             is Action.MigrateUserContentLegacyClicked -> onMigrateUserContentLegacyClicked()
             is Action.RestartAppClicked -> onRestartAppClicked()
             is Action.RunOfflineDownloadClicked -> onRunOfflineDownloadClicked()
+            is Action.OfflineUpdatesClicked -> onOfflineUpdatesClicked()
         }
     }
 
     private fun onCheckUpdatesClicked() {
-        updateState { (it as State).copy(refreshCheckStatus = LCE.Loading("userRecordGeneration")) }
-
-        dbUpdater.refresh()
-            .onEach { success ->
-                if (success) {
-                    updateState { (it as State).copy(refreshCheckStatus = LCE.Content(Unit)) }
-                    emitEvent(
-                        VglsEvent.ShowSnackbar(
-                            "Update check successful!",
-                            false,
-                            source = "DebugMenu"
-                        )
-                    )
-                } else {
-                    updateState { (it as State).copy(refreshCheckStatus = LCE.Uninitialized) }
-                }
-            }
-            .catch { showError("An error occurred checking for updates.") }
-            .runInBackground()
+        offlineWorkScheduler.scheduleDownload()
+        updateState { (it as State).copy(refreshCheckStatus = LCE.Content(Unit)) }
+        emitEvent(
+            VglsEvent.ShowSnackbar(
+                "Update job enqueued!",
+                false,
+                source = "DebugMenu"
+            )
+        )
     }
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
@@ -163,6 +153,10 @@ class MenuViewModelBrain(
 
     private fun onWhatsNewClicked() {
         navigateTo(Destination.UPDATES.noArgs())
+    }
+
+    private fun onOfflineUpdatesClicked() {
+        navigateTo(Destination.OFFLINE_UPDATES.noArgs())
     }
 
     @Suppress("MagicNumber")

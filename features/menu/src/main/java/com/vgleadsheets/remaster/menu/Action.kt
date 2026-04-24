@@ -22,4 +22,5 @@ sealed class Action : VglsAction() {
     data object MigrateUserContentLegacyClicked : Action()
     data object RestartAppClicked : Action()
     data object RunOfflineDownloadClicked : Action()
+    data object OfflineUpdatesClicked : Action()
 }

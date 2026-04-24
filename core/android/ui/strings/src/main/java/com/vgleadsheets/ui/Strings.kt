@@ -26,6 +26,7 @@ fun StringId.id(): Int {
         StringId.SCREEN_TITLE_OFFLINE -> R.string.screen_title_offline
         StringId.SCREEN_TITLE_UPDATES -> R.string.screen_title_updates
         StringId.SCREEN_TITLE_LICENSES -> R.string.screen_title_licenses
+        StringId.SCREEN_TITLE_OFFLINE_UPDATES -> R.string.screen_title_offline_updates
 
         StringId.SCREEN_SUBTITLE_SONG_DETAIL -> R.string.screen_subtitle_song_detail
 
@@ -121,8 +122,19 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_APP_VERSION_CODE -> R.string.label_settings_version_code
         StringId.SETTINGS_LABEL_APP_BUILD_DATE -> R.string.label_settings_build_date
 
+        StringId.SETTINGS_LABEL_OFFLINE_UPDATES -> R.string.label_settings_offline_updates
+
         StringId.SETTINGS_CAPTION_CLEAR_USAGE -> R.string.caption_settings_clear_usage
         StringId.SETTINGS_CAPTION_CLEAR_SHEETS -> R.string.caption_settings_clear_sheets
+        StringId.SETTINGS_CAPTION_OFFLINE_UPDATES -> R.string.caption_settings_offline_updates
+
+        StringId.OFFLINE_UPDATE_FIELD_STATUS -> R.string.offline_update_field_status
+        StringId.OFFLINE_UPDATE_FIELD_SERVER_TIME -> R.string.offline_update_field_server_time
+        StringId.OFFLINE_UPDATE_FIELD_UPDATED_SONGS -> R.string.offline_update_field_updated_songs
+        StringId.OFFLINE_UPDATE_FIELD_SUCCESSFUL_OFFLINES -> R.string.offline_update_field_successful_offlines
+
+        StringId.OFFLINE_UPDATES_EMPTY -> R.string.offline_updates_empty
+        StringId.OFFLINE_UPDATES_ERROR -> R.string.offline_updates_error
 
         StringId.NOTIF_TITLE_DB_UPDATE_SUCCESS -> R.string.notif_db_update_success
         StringId.NOTIF_TITLE_APP_UPDATE_DEFAULT -> R.string.notif_app_update_default

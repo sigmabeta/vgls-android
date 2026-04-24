@@ -37,4 +37,5 @@ enum class AnalyticsScreen {
     LIST_DIFFICULTY_VALUES,
     UPDATES,
     LIST_OFFLINE,
+    OFFLINE_UPDATES,
 }

@@ -45,6 +45,7 @@ data class State(
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DATA)),
         clearUsageHistory(stringProvider),
         clearSheetDb(stringProvider),
+        offlineUpdateHistory(stringProvider),
         sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_ABOUT)),
         appWhatsNew(stringProvider),
         website(stringProvider),
@@ -132,6 +133,13 @@ data class State(
             )
         }
     }
+
+    private fun offlineUpdateHistory(stringProvider: StringProvider) = NameCaptionListModel(
+        name = stringProvider.getString(StringId.SETTINGS_LABEL_OFFLINE_UPDATES),
+        caption = stringProvider.getString(StringId.SETTINGS_CAPTION_OFFLINE_UPDATES),
+        clickAction = Action.OfflineUpdatesClicked,
+        dataId = StringId.SETTINGS_LABEL_OFFLINE_UPDATES.hashCode().toLong(),
+    )
 
     private fun sectionHeader(title: String) = SectionHeaderListModel(
         title = title

@@ -56,4 +56,12 @@ class ThreeTenImpl(
         val instant = if (timestamp == 0L) Instant.now() else Instant.ofEpochMilli(timestamp)
         formatter.format(instant)
     }
+
+    override fun longDateTimeText(dateTime: ZonedDateTime) = initialized {
+        val formatter = DateTimeFormatter
+            .ofLocalizedDateTime(FormatStyle.MEDIUM)
+            .withLocale(Locale.getDefault())
+
+        dateTime.withZoneSameInstant(ZoneId.systemDefault()).format(formatter)
+    }
 }

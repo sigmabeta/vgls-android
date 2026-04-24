@@ -40,6 +40,7 @@
     <string name="screen_title_offline">Offline Content</string>
     <string name="screen_title_updates">App Updates</string>
     <string name="screen_title_licenses">Open-source Licenses</string>
+    <string name="screen_title_offline_updates">Offline Update History</string>
 
     <string name="screen_subtitle_song_detail">from %1$s</string>
 
@@ -93,8 +94,19 @@
     <string name="label_settings_debug_migrate_records">Migrate user history records</string>
     <string name="label_settings_debug_restart">Restart App</string>
 
+    <string name="label_settings_offline_updates">Offline Update History</string>
+
     <string name="caption_settings_clear_usage">Reset your play count history and suggestions</string>
     <string name="caption_settings_clear_sheets">Try this if app can\'t load sheets</string>
+    <string name="caption_settings_offline_updates">View past offline sync runs</string>
+
+    <string name="offline_update_field_status">Status: %1$s</string>
+    <string name="offline_update_field_server_time">Server update time: %1$s</string>
+    <string name="offline_update_field_updated_songs">Updated songs: %1$d</string>
+    <string name="offline_update_field_successful_offlines">Successful offlines: %1$d</string>
+
+    <string name="offline_updates_empty">No offline sync runs yet.</string>
+    <string name="offline_updates_error">Failed to load offline update history.</string>
 
     <string name="home_section_recent_songs">Jump Back In</string>
     <string name="home_section_most_songs_games">Popular Games</string>
