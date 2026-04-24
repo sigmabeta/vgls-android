@@ -28,7 +28,7 @@ class WorkManagerOfflineWorkScheduler(
             .setRequiredNetworkType(NetworkType.UNMETERED)
             .build()
 
-        val request = PeriodicWorkRequestBuilder<OfflineDownloadWorker>(7, TimeUnit.DAYS)
+        val request = PeriodicWorkRequestBuilder<OfflineDownloadWorker>(PERIOD_DAYS, TimeUnit.DAYS)
             .setConstraints(constraints)
             .build()
 
@@ -43,5 +43,6 @@ class WorkManagerOfflineWorkScheduler(
     companion object {
         const val WORK_NAME = "offline_download"
         const val PERIODIC_WORK_NAME = "offline_download_periodic"
+        private const val PERIOD_DAYS = 7L
     }
 }
