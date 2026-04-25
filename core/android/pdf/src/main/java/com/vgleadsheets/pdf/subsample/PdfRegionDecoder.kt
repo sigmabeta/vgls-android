@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
+import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.BluntHatchet
 import com.vgleadsheets.logging.Hatchet
@@ -28,6 +29,7 @@ class PdfRegionDecoder(
     private val maxHeight: Int,
     private val vglsDispatchers: VglsDispatchers,
     private val hatchet: Hatchet,
+    private val renderOverlayProvider: RenderOverlayProvider,
 ) : ImageRegionDecoder {
     private var pdfEngine: PdfRenderer? = createPdfRenderer(pdfFile.absolutePath)
     private var renderer: AsyncRenderer? =
@@ -38,6 +40,7 @@ class PdfRegionDecoder(
                 BluntHatchet(),
                 maxWidth,
                 maxHeight,
+                renderOverlayProvider,
             )
         } else {
             PdfToBitmapAsyncRenderer(
@@ -46,6 +49,7 @@ class PdfRegionDecoder(
                 pageNumber,
                 maxWidth,
                 maxHeight,
+                renderOverlayProvider,
             )
         }
 
@@ -117,6 +121,7 @@ class PdfRegionDecoder(
         private val maxHeight: Int,
         private val vglsDispatchers: VglsDispatchers,
         private val hatchet: Hatchet,
+        private val renderOverlayProvider: RenderOverlayProvider,
     ) : ImageRegionDecoder.Factory {
         override suspend fun create(params: ImageRegionDecoder.FactoryParams): ImageRegionDecoder {
             return PdfRegionDecoder(
@@ -126,6 +131,7 @@ class PdfRegionDecoder(
                 maxHeight,
                 vglsDispatchers,
                 hatchet,
+                renderOverlayProvider,
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.vgleadsheets.pdf.subsample
 
 import androidx.compose.ui.graphics.ImageBitmap
+import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.logging.Hatchet
@@ -12,6 +13,7 @@ class PdfSubsampleSource(
     private val hatchet: Hatchet,
     private val sheetDownloader: SheetDownloader,
     private val vglsDispatchers: VglsDispatchers,
+    private val renderOverlayProvider: RenderOverlayProvider,
 ) : SubSamplingImageSource {
     override suspend fun decoder(): PdfRegionDecoder.Factory {
         val pdfFileResult = sheetDownloader.getSheet(data)
@@ -27,6 +29,7 @@ class PdfSubsampleSource(
             maxHeight,
             vglsDispatchers,
             hatchet,
+            renderOverlayProvider,
         )
     }
 
@@ -36,6 +39,7 @@ class PdfSubsampleSource(
         private val hatchet: Hatchet,
         private val sheetDownloader: SheetDownloader,
         private val vglsDispatchers: VglsDispatchers,
+        private val renderOverlayProvider: RenderOverlayProvider,
     ) : PdfSubsampleSourceFactory {
         override fun create(
             data: PdfConfigById,
@@ -44,6 +48,7 @@ class PdfSubsampleSource(
             hatchet,
             sheetDownloader,
             vglsDispatchers,
+            renderOverlayProvider,
         )
     }
 }

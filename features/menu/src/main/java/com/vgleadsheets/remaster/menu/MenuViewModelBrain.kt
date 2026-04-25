@@ -65,6 +65,7 @@ class MenuViewModelBrain(
             is Action.FakeApiClicked -> onFakeApiClicked()
             is Action.DebugDelayClicked -> onDebugDelayClicked()
             is Action.DebugShowNavSnackbarsClicked -> onDebugShowNavSnackbarsClicked()
+            is Action.DebugRenderOverlayClicked -> onDebugRenderOverlayClicked()
             is Action.GenerateUserContentClicked -> onGenerateUserContentClicked()
             is Action.GenerateUserContentLegacyClicked -> onGenerateUserContentLegacyClicked()
             is Action.MigrateUserContentLegacyClicked -> onMigrateUserContentLegacyClicked()
@@ -195,6 +196,12 @@ class MenuViewModelBrain(
         debugSettingsManager.setShouldShowSnackbars(!oldValue)
     }
 
+    private fun onDebugRenderOverlayClicked() {
+        val oldValue = (internalUiState.value as State).debugShouldShowRenderOverlay ?: return
+        updateState { (it as State).copy(debugShouldShowRenderOverlay = null) }
+        debugSettingsManager.setShouldShowRenderOverlay(!oldValue)
+    }
+
     private fun fetchSettings() {
         fetchKeepScreenOn()
         fetchAppInfo()
@@ -202,6 +209,7 @@ class MenuViewModelBrain(
         fetchDebugShouldUseFakeApi()
         fetchDebugShouldDelay()
         fetchDebugShouldShowNavSnackbars()
+        fetchDebugShouldShowRenderOverlay()
     }
 
     private fun fetchAppInfo() {
@@ -264,6 +272,16 @@ class MenuViewModelBrain(
             .getShouldShowSnackbars()
             .onEach { value ->
                 updateState { (it as State).copy(debugShouldShowNavSnackbars = value) }
+            }
+            .runInBackground()
+    }
+
+    private fun fetchDebugShouldShowRenderOverlay() {
+        updateState { (it as State).copy(debugShouldShowRenderOverlay = null) }
+        debugSettingsManager
+            .getShouldShowRenderOverlay()
+            .onEach { value ->
+                updateState { (it as State).copy(debugShouldShowRenderOverlay = value) }
             }
             .runInBackground()
     }

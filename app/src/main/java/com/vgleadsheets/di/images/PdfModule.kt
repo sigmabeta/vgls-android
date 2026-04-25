@@ -1,5 +1,6 @@
 package com.vgleadsheets.di.images
 
+import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.logging.Hatchet
@@ -17,9 +18,11 @@ class PdfModule {
         hatchet: Hatchet,
         sheetDownloader: SheetDownloader,
         vglsDispatchers: VglsDispatchers,
+        renderOverlayProvider: RenderOverlayProvider,
     ) = PdfSubsampleSource.Factory(
         hatchet = hatchet,
         sheetDownloader = sheetDownloader,
         vglsDispatchers = vglsDispatchers,
+        renderOverlayProvider = renderOverlayProvider,
     )
 }
