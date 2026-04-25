@@ -114,6 +114,7 @@ android {
 
 dependencies {
     // DI dependencies
+    implementation(projects.core.android.connectivity)
     implementation(projects.core.android.coroutines)
     implementation(projects.core.android.conversion)
     implementation(projects.core.android.database)

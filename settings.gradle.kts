@@ -56,6 +56,7 @@ include(
 
     ":core:android:activity",
     ":core:android:bitmaps",
+    ":core:android:connectivity",
     ":core:android:conversion",
     ":core:android:coroutines",
     ":core:android:database",
@@ -87,6 +88,7 @@ include(
     ":core:common:analytics",
     ":core:common:appinfo",
     ":core:common:appcomm",
+    ":core:common:connectivity",
     ":core:common:conversion",
     ":core:common:coroutines",
     ":core:common:database",
