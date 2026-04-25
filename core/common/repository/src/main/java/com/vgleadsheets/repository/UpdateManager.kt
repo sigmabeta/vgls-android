@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -89,15 +90,23 @@ class UpdateManager(
         return lastCheckAge > AGE_THRESHOLD
     }
 
+    @Suppress("ReturnCount")
+    suspend fun refreshAndAwait(): Boolean {
+        if (!refreshLastApiUpdateTime()) return false
+        val needsUpdate = dbUpdateTimeCheckFlow().first()
+        if (!needsUpdate) return true
+        return refreshInternal().first()
+    }
+
     @Suppress("TooGenericExceptionCaught")
-    private suspend fun refreshLastApiUpdateTime() {
+    private suspend fun refreshLastApiUpdateTime(): Boolean {
         hatchet.i("Requesting API update time check...")
 
         val lastUpdate = try {
             vglsApi.getLastUpdateTime()
         } catch (ex: Exception) {
             emitApiUpdateErrors(ex)
-            return
+            return false
         }
 
         val lastUpdateInstant = Instant.parse(lastUpdate.last_updated)
@@ -115,6 +124,7 @@ class UpdateManager(
 
         dbStatisticsDataSource.insert(lastUpdateTime)
         dbStatisticsDataSource.insert(lastAppCheckTime)
+        return true
     }
 
     private fun dbUpdateTimeCheckFlow() = combine(

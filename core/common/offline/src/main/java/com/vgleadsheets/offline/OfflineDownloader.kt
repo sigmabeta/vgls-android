@@ -6,6 +6,7 @@ import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.repository.OfflineRepository
+import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.time.ThreeTenTime
 import kotlinx.coroutines.flow.first
 
@@ -14,8 +15,16 @@ class OfflineDownloader(
     private val sheetDownloader: SheetDownloader,
     private val threeTenTime: ThreeTenTime,
     private val hatchet: Hatchet,
+    private val updateManager: UpdateManager,
 ) {
     suspend fun checkAll() {
+        val refreshSucceeded = updateManager.refreshAndAwait()
+        if (!refreshSucceeded) {
+            hatchet.e("DB refresh failed — aborting offline download.")
+            offlineRepo.insertUpdateResult(0, OfflineJobStatus.ABORTED_REFRESH_FAILED)
+            return
+        }
+
         var consecutiveFailures = 0
         var successfulOfflines = 0
 

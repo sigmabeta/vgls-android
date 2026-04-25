@@ -4,6 +4,7 @@ import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.offline.OfflineDownloader
 import com.vgleadsheets.repository.OfflineRepository
+import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.time.ThreeTenTime
 import dagger.Module
 import dagger.Provides
@@ -21,10 +22,12 @@ object OfflineModule {
         sheetDownloader: SheetDownloader,
         threeTenTime: ThreeTenTime,
         hatchet: Hatchet,
+        updateManager: UpdateManager,
     ): OfflineDownloader = OfflineDownloader(
         offlineRepo = offlineRepository,
         sheetDownloader = sheetDownloader,
         threeTenTime = threeTenTime,
         hatchet = hatchet,
+        updateManager = updateManager,
     )
 }
