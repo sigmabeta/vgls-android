@@ -29,6 +29,7 @@ data class State(
     val debugShouldUseFakeApi: Boolean? = null,
     val debugShouldDelay: Boolean? = null,
     val debugShouldShowNavSnackbars: Boolean? = null,
+    val debugShouldShowRenderOverlay: Boolean? = null,
     val songRecordsGenerated: Int? = 0,
     val songRecordsGeneratedLegacy: Int? = 0,
     val songRecordsMigrated: Int? = 0,
@@ -60,6 +61,7 @@ data class State(
         shouldUseFakeApi(stringProvider),
         shouldDelay(stringProvider),
         shouldShowNavSnackbars(stringProvider),
+        shouldShowRenderOverlay(stringProvider),
         generateUserRecords(stringProvider),
         generateUserRecordsLegacy(stringProvider),
         migrateUserRecordsLegacy(stringProvider),
@@ -276,6 +278,15 @@ data class State(
             clickAction = Action.DebugShowNavSnackbarsClicked,
             settingId = StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS.name,
             checked = debugShouldShowNavSnackbars,
+        )
+    }
+
+    private fun shouldShowRenderOverlay(stringProvider: StringProvider) = ifShowDebugEnabled {
+        CheckableListModel(
+            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_RENDER_OVERLAY),
+            clickAction = Action.DebugRenderOverlayClicked,
+            settingId = StringId.SETTINGS_LABEL_DEBUG_RENDER_OVERLAY.name,
+            checked = debugShouldShowRenderOverlay,
         )
     }
 

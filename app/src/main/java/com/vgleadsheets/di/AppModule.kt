@@ -9,6 +9,7 @@ import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.appinfo.AppInfo
+import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.dispatchers.DelayManagerImpl
@@ -59,6 +60,18 @@ object AppModule {
         coroutineScope: CoroutineScope,
         dispatchers: VglsDispatchers,
     ) = ShowDebugProvider(
+        debugSettingsManager,
+        coroutineScope,
+        dispatchers,
+    )
+
+    @Provides
+    @Singleton
+    fun provideRenderOverlayProvider(
+        debugSettingsManager: DebugSettingsManager,
+        coroutineScope: CoroutineScope,
+        dispatchers: VglsDispatchers,
+    ) = RenderOverlayProvider(
         debugSettingsManager,
         coroutineScope,
         dispatchers,

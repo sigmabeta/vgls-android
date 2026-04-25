@@ -9,6 +9,7 @@ dependencies {
 
     implementation(projects.core.android.bitmaps)
 
+    implementation(projects.core.common.debug)
     implementation(projects.core.common.downloader)
     implementation(projects.core.common.repository)
     implementation(projects.core.common.urlinfo)

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import com.vgleadsheets.bitmaps.BitmapSizeInfo
 import com.vgleadsheets.bitmaps.BitmapUtils
+import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.logging.Hatchet
 import kotlin.system.measureTimeMillis
 
@@ -14,6 +15,7 @@ class PdfToBitmapAsyncRenderer(
     private val pageNumber: Int,
     private val maxWidth: Int,
     private val maxHeight: Int,
+    private val renderOverlayProvider: RenderOverlayProvider,
 ) : AsyncRenderer {
     override fun getActualDimensions(): Pair<Int, Int> {
         val bitmapSizeInfo = getBitmapSizeInfo(
@@ -51,14 +53,16 @@ class PdfToBitmapAsyncRenderer(
                 )
             }
 
-            BitmapUtils.renderDebugInfo(
-                bitmap = largeBitmap,
-                dXPixels = dXPixels,
-                dYPixels = dYPixels,
-                renderTimeMs = renderProcessTime,
-                width = width,
-                height = height
-            )
+            if (renderOverlayProvider.showRenderOverlayFlow.value) {
+                BitmapUtils.renderDebugInfo(
+                    bitmap = largeBitmap,
+                    dXPixels = dXPixels,
+                    dYPixels = dYPixels,
+                    renderTimeMs = renderProcessTime,
+                    width = width,
+                    height = height
+                )
+            }
 
             resultBitmap = largeBitmap.copy(Bitmap.Config.RGB_565, false)
             largeBitmap.recycle()

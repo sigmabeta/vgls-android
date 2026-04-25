@@ -17,6 +17,7 @@ sealed class Action : VglsAction() {
     data object FakeApiClicked : Action()
     data object DebugDelayClicked : Action()
     data object DebugShowNavSnackbarsClicked : Action()
+    data object DebugRenderOverlayClicked : Action()
     data object GenerateUserContentClicked : Action()
     data object GenerateUserContentLegacyClicked : Action()
     data object MigrateUserContentLegacyClicked : Action()

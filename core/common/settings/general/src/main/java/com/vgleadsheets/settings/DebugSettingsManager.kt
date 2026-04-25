@@ -22,6 +22,10 @@ class DebugSettingsManager(
 
     fun setShouldShowSnackbars(value: Boolean) = setBoolean(SETTING_NAV_SHOW_SNACKBARS, value)
 
+    fun getShouldShowRenderOverlay() = getBoolean(SETTING_SHOW_RENDER_OVERLAY, false)
+
+    fun setShouldShowRenderOverlay(value: Boolean) = setBoolean(SETTING_SHOW_RENDER_OVERLAY, value)
+
     private fun setBoolean(key: String, value: Boolean) {
         storage.saveString(key, value.toString())
     }
@@ -35,5 +39,6 @@ class DebugSettingsManager(
         private const val SETTING_DELAY_LOADING_OPS = "setting.debug.delay"
         private const val SETTING_USE_FAKE_API = "setting.debug.fake"
         private const val SETTING_NAV_SHOW_SNACKBARS = "setting.debug.nav.snackbars"
+        private const val SETTING_SHOW_RENDER_OVERLAY = "setting.debug.render.overlay"
     }
 }
