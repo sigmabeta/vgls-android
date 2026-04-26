@@ -152,6 +152,9 @@ fun StringId.id(): Int {
         StringId.ERROR_BROKEN_SCREEN_TITLE -> R.string.error_broken_screen_title
         StringId.ERROR_BROKEN_SCREEN_DESC -> R.string.error_broken_screen_desc
         StringId.ERROR_IMAGE_NETWORK -> R.string.error_image_network
+        StringId.ERROR_IMAGE_OFFLINE -> R.string.error_image_offline
+        StringId.ERROR_IMAGE_NO_INTERNET -> R.string.error_image_no_internet
+        StringId.ERROR_IMAGE_API_UNREACHABLE -> R.string.error_image_api_unreachable
         StringId.ERROR_WEBVIEW_FAILED -> R.string.error_webview_failed
 
         StringId.TAG_CAPTION_AND_OTHERS -> R.string.tag_caption_and_others

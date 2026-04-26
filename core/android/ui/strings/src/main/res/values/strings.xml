@@ -148,6 +148,9 @@
     <string name="error_broken_screen_title">App Error Occurred</string>
     <string name="error_broken_screen_desc">This screen is not working at the moment. Check back after an app update.</string>
     <string name="error_image_network">Can\'t load this sheet. Check your connection, and click here to try again.</string>
+    <string name="error_image_offline">You\'re offline. Click here to try again once you\'re connected.</string>
+    <string name="error_image_no_internet">Connected, but there\'s no internet on this network. Click here to try again.</string>
+    <string name="error_image_api_unreachable">Can\'t reach the VGLS server right now. Click here to try again.</string>
     <string name="error_webview_failed">Failed to load open-source license information.</string>
 
     <string name="tag_caption_and_others">" and %1$d more…"</string>
