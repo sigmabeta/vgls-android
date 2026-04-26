@@ -6,17 +6,30 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.logging.Hatchet
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class AndroidNetworkStatusProvider(
     context: Context,
     private val hatchet: Hatchet,
+    dispatchers: VglsDispatchers,
+    private val apiProbe: suspend () -> Boolean,
 ) : NetworkStatusProvider {
     private val _status = MutableStateFlow(NetworkStatus.OFFLINE)
     override val status: StateFlow<NetworkStatus> = _status.asStateFlow()
+
+    private val scope = CoroutineScope(SupervisorJob() + dispatchers.network)
+    private val probeMutex = Mutex()
+    private var probeJob: Job? = null
 
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -53,15 +66,52 @@ class AndroidNetworkStatusProvider(
         }
     }
 
+    override suspend fun checkApiAvailability() {
+        val current = _status.value
+        if (current == NetworkStatus.OFFLINE || current == NetworkStatus.ONLINE_NO_INTERNET) return
+        probeMutex.withLock { runProbe() }
+    }
+
     private fun updateStatus(caps: NetworkCapabilities?) {
         setStatus(caps.toNetworkStatus())
     }
 
     private fun setStatus(new: NetworkStatus) {
         val old = _status.value
-        if (old != new) {
-            hatchet.v("$old -> $new")
-            _status.value = new
+        if (old == new) return
+
+        hatchet.v("$old -> $new")
+        _status.value = new
+
+        when (new) {
+            NetworkStatus.ONLINE -> launchProbe()
+            NetworkStatus.ONLINE_API_UNREACHABLE -> Unit
+            NetworkStatus.OFFLINE,
+            NetworkStatus.ONLINE_NO_INTERNET -> {
+                probeJob?.cancel()
+                probeJob = null
+            }
+        }
+    }
+
+    private fun launchProbe() {
+        probeJob?.cancel()
+        probeJob = scope.launch {
+            probeMutex.withLock { runProbe() }
+        }
+    }
+
+    private suspend fun runProbe() {
+        val success = try {
+            apiProbe()
+        } catch (e: Exception) {
+            false
+        }
+        val current = _status.value
+        if (success) {
+            if (current == NetworkStatus.ONLINE_API_UNREACHABLE) setStatus(NetworkStatus.ONLINE)
+        } else {
+            if (current == NetworkStatus.ONLINE) setStatus(NetworkStatus.ONLINE_API_UNREACHABLE)
         }
     }
 
