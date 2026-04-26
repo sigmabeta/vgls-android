@@ -1,5 +1,7 @@
 package com.vgleadsheets.downloader
 
+import com.vgleadsheets.connectivity.NetworkStatusProvider
+import com.vgleadsheets.connectivity.allowsVglsRequests
 import com.vgleadsheets.downloader.FileUtils.fileReference
 import com.vgleadsheets.logging.Hatchet
 import com.vgleadsheets.model.Part
@@ -19,6 +21,7 @@ class RealSheetDownloader @Inject constructor(
     private val songRepository: SongRepository,
     private val sheetDownloadApi: SheetDownloadApi,
     private val hatchet: Hatchet,
+    private val networkStatusProvider: NetworkStatusProvider,
 ) : SheetDownloader {
     override suspend fun getSheet(config: PdfConfigById): SheetFileResult {
         val song = songRepository
@@ -48,6 +51,10 @@ class RealSheetDownloader @Inject constructor(
                 targetFile,
                 SheetSourceType.DISK
             )
+        }
+        val status = networkStatusProvider.status.value
+        if (!status.allowsVglsRequests) {
+            throw IOException("Cannot download PDF for $config: VGLS network unavailable ($status)")
         }
         hatchet.v("Download request for $config")
         downloadSheet(fileName, actualPartApiId, isAlternate, targetFile)
