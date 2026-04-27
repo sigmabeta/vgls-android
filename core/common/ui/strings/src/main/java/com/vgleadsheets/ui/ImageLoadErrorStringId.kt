@@ -8,27 +8,31 @@ import java.net.SocketException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLException
 
-fun Throwable.imageLoadErrorStringId(): StringId {
-    val networkStatus = findCause<VglsNetworkUnavailableException>()?.networkStatus
-    if (networkStatus != null) {
-        return when (networkStatus) {
-            NetworkStatus.OFFLINE -> StringId.ERROR_IMAGE_OFFLINE
-            NetworkStatus.ONLINE_NO_INTERNET -> StringId.ERROR_IMAGE_NO_INTERNET
-            NetworkStatus.ONLINE_API_UNREACHABLE -> StringId.ERROR_IMAGE_API_UNREACHABLE
-            NetworkStatus.ONLINE -> StringId.ERROR_IMAGE_NETWORK
-        }
-    }
-    val httpCode = findCause<VglsHttpException>()?.code
-    if (httpCode != null) {
-        return when (httpCode / 100) {
-            4 -> StringId.ERROR_IMAGE_NOT_FOUND
-            else -> StringId.ERROR_IMAGE_SERVER_ERROR
-        }
-    }
-    if (findCause { it is SocketException || it is InterruptedIOException || it is UnknownHostException || it is SSLException } != null) {
-        return StringId.ERROR_IMAGE_API_UNREACHABLE
-    }
-    return StringId.ERROR_IMAGE_NETWORK
+private const val HTTP_CODE_CLASS_DIVISOR = 100
+private const val HTTP_CLIENT_ERROR_CLASS = 4
+
+fun Throwable.imageLoadErrorStringId(): StringId =
+    findCause<VglsNetworkUnavailableException>()?.networkStatus?.toStringId()
+        ?: findCause<VglsHttpException>()?.code?.toHttpStringId()
+        ?: if (isSocketLevelError()) StringId.ERROR_IMAGE_API_UNREACHABLE
+        else StringId.ERROR_IMAGE_NETWORK
+
+private fun NetworkStatus.toStringId() = when (this) {
+    NetworkStatus.OFFLINE -> StringId.ERROR_IMAGE_OFFLINE
+    NetworkStatus.ONLINE_NO_INTERNET -> StringId.ERROR_IMAGE_NO_INTERNET
+    NetworkStatus.ONLINE_API_UNREACHABLE -> StringId.ERROR_IMAGE_API_UNREACHABLE
+    NetworkStatus.ONLINE -> StringId.ERROR_IMAGE_NETWORK
+}
+
+private fun Int.toHttpStringId() = when (this / HTTP_CODE_CLASS_DIVISOR) {
+    HTTP_CLIENT_ERROR_CLASS -> StringId.ERROR_IMAGE_NOT_FOUND
+    else -> StringId.ERROR_IMAGE_SERVER_ERROR
+}
+
+private fun Throwable.isSocketLevelError(): Boolean {
+    val isNetworkInterruption = findCause { it is SocketException || it is InterruptedIOException } != null
+    val isDnsOrSslError = findCause { it is UnknownHostException || it is SSLException } != null
+    return isNetworkInterruption || isDnsOrSslError
 }
 
 private inline fun <reified T : Throwable> Throwable.findCause(): T? = findCause { it is T } as T?

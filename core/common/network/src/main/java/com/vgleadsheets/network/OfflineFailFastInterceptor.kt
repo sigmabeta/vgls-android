@@ -13,7 +13,10 @@ class OfflineFailFastInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val status = networkStatusProvider.status.value
         if (!status.allowsVglsRequests) {
-            throw VglsNetworkUnavailableException(status, "VGLS network unavailable ($status); skipping ${chain.request().url}")
+            throw VglsNetworkUnavailableException(
+                status,
+                "VGLS network unavailable ($status); skipping ${chain.request().url}"
+            )
         }
         return chain.proceed(chain.request())
     }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.io.IOException
 
 class AndroidNetworkStatusProvider(
     context: Context,
@@ -104,7 +105,8 @@ class AndroidNetworkStatusProvider(
     private suspend fun runProbe() {
         val success = try {
             apiProbe()
-        } catch (e: Exception) {
+        } catch (e: IOException) {
+            hatchet.d("API probe failed: ${e.message}")
             false
         }
         val current = _status.value

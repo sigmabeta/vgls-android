@@ -164,7 +164,13 @@ class UpdateManager(
     private fun emitApiUpdateErrors(ex: Throwable) {
         hatchet.e("Last update API call failed: ${ex.message}")
         ex.printStackTrace()
-        onLastUpdateCheckFailed(describeFailure(StringId.ERROR_UPDATE_API_PREFIX, ex, StringId.ERROR_UPDATE_REASON_GENERIC))
+        onLastUpdateCheckFailed(
+            describeFailure(
+                StringId.ERROR_UPDATE_API_PREFIX,
+                ex,
+                StringId.ERROR_UPDATE_REASON_GENERIC
+            )
+        )
     }
 
     private fun describeFailure(prefixId: StringId, ex: Throwable, genericFallbackId: StringId): String {

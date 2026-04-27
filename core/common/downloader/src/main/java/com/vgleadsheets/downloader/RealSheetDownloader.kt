@@ -56,7 +56,10 @@ class RealSheetDownloader @Inject constructor(
         }
         val status = networkStatusProvider.status.value
         if (!status.allowsVglsRequests) {
-            throw VglsNetworkUnavailableException(status, "Cannot download PDF for $config: VGLS network unavailable ($status)")
+            throw VglsNetworkUnavailableException(
+                status,
+                "Cannot download PDF for $config: VGLS network unavailable ($status)"
+            )
         }
         hatchet.v("Download request for $config")
         downloadSheet(fileName, actualPartApiId, isAlternate, targetFile)
