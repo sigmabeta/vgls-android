@@ -72,8 +72,7 @@ class FakeBitmapRenderer : BitmapRenderer {
     private fun createBlankBitmap(
         width: Int,
         height: Int
-    ): Bitmap {
-        return createBitmap(
+    ): Bitmap = createBitmap(
             width,
             height,
         ).apply {
@@ -87,7 +86,6 @@ class FakeBitmapRenderer : BitmapRenderer {
                 backgroundPaint
             )
         }
-    }
 }
 
 const val SWITCH_SLOPE_MIN = 0.00001f

@@ -1,13 +1,13 @@
 package com.vgleadsheets.perf.common
 
 import com.vgleadsheets.coroutines.VglsDispatchers
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.nanoseconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.nanoseconds
 
 @Suppress(
     "TooManyFunctions",
@@ -66,20 +66,15 @@ class PerfMeasurerImpl(
         startFailureTimer(spec)
     }
 
-    override fun onViewCreated(spec: PerfSpec) =
-        finishTrace(spec, PerfStage.VIEW_CREATED)
+    override fun onViewCreated(spec: PerfSpec) = finishTrace(spec, PerfStage.VIEW_CREATED)
 
-    override fun onTitleLoaded(spec: PerfSpec) =
-        finishTrace(spec, PerfStage.TITLE_LOADED)
+    override fun onTitleLoaded(spec: PerfSpec) = finishTrace(spec, PerfStage.TITLE_LOADED)
 
-    override fun onTransitionStarted(spec: PerfSpec) =
-        finishTrace(spec, PerfStage.TRANSITION_START)
+    override fun onTransitionStarted(spec: PerfSpec) = finishTrace(spec, PerfStage.TRANSITION_START)
 
-    override fun onPartialContentLoad(spec: PerfSpec) =
-        finishTrace(spec, PerfStage.PARTIAL_CONTENT_LOAD)
+    override fun onPartialContentLoad(spec: PerfSpec) = finishTrace(spec, PerfStage.PARTIAL_CONTENT_LOAD)
 
-    override fun onFullContentLoad(spec: PerfSpec) =
-        finishTrace(spec, PerfStage.FULL_CONTENT_LOAD)
+    override fun onFullContentLoad(spec: PerfSpec) = finishTrace(spec, PerfStage.FULL_CONTENT_LOAD)
 
     @Suppress("ReturnCount")
     override fun cancel(spec: PerfSpec) {
@@ -347,11 +342,9 @@ class PerfMeasurerImpl(
         failureTimers[spec] = null
     }
 
-    private fun getNotClearedTraces(screen: ScreenLoadStatus): List<PerfStage> {
-        return PerfStage.values()
+    private fun getNotClearedTraces(screen: ScreenLoadStatus): List<PerfStage> = PerfStage.values()
             .exceptCancelAndComplete()
             .filter { !screen.stageDurationMillis.containsKey(it) }
-    }
 
     private fun Array<PerfStage>.exceptCancelAndComplete() = this
         .filter {

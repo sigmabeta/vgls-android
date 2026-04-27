@@ -1,11 +1,13 @@
 [*.{kt,kts}]
-ktlint_code_style = android
-# possible values: number (e.g. 2), "unset" (makes ktlint ignore indentation completely)  
+ktlint_code_style = android_studio
 indent_size = 4
-# true (recommended) / false
 insert_final_newline = true
-# possible values: number (e.g. 120) (package name, imports & comments are ignored), "off"
-# it's automatically set to 100 on `ktlint --android ...` (per Android Kotlin Style Guide)
 max_line_length = off
 
-ktlint_disabled_rules = trailing-comma, import-ordering, indent, annotation
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+ktlint_standard_import-ordering = disabled
+ktlint_standard_indent = disabled
+ktlint_standard_annotation = disabled
+ktlint_function_naming_ignore_when_annotated_with = Composable
+ktlint_standard_backing-property-naming = disabled

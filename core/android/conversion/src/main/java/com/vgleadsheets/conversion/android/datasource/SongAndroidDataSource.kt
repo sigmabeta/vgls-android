@@ -51,8 +51,10 @@ SongDataSource {
 
     override fun toggleOffline(songId: Long) = roomImpl.toggleOffline(songId)
 
-    override suspend fun setLastDownloaded(songId: Long, timestamp: Long) =
-        roomImpl.setLastDownloaded(songId, timestamp)
+    override suspend fun setLastDownloaded(
+        songId: Long,
+        timestamp: Long
+    ) = roomImpl.setLastDownloaded(songId, timestamp)
 
     override fun getHighestId() = roomImpl
         .getHighestId()

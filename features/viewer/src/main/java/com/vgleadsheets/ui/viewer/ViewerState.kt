@@ -26,8 +26,7 @@ data class ViewerState(
     val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
     val isSongHistoryEntryRecorded: Boolean = false,
 ) : VglsState {
-    fun title(stringProvider: StringProvider): TitleBarModel {
-        return if (song is LCE.Content) {
+    fun title(stringProvider: StringProvider): TitleBarModel = if (song is LCE.Content) {
             val gameName = song.data.gameName
             TitleBarModel(
                 title = song.data.name,
@@ -36,10 +35,8 @@ data class ViewerState(
         } else {
             TitleBarModel()
         }
-    }
 
-    fun pages(): ImmutableList<ZoomableSheetPageListModel> {
-        return if (song is LCE.Content && partApiId != null) {
+    fun pages(): ImmutableList<ZoomableSheetPageListModel> = if (song is LCE.Content && partApiId != null) {
             val pageCount = song.data.pageCount(partApiId, false)
             val actualPartApiId = if (pageCount > 0) {
                 partApiId
@@ -91,7 +88,6 @@ data class ViewerState(
         } else {
             persistentListOf()
         }
-    }
 
     fun error(): ImmutableList<ErrorStateListModel> = if (song is LCE.Error) {
         persistentListOf(
@@ -105,11 +101,9 @@ data class ViewerState(
         persistentListOf()
     }
 
-    fun shouldShowLyricsWarning(): Boolean {
-        return if (song is LCE.Content && partApiId != null) {
+    fun shouldShowLyricsWarning(): Boolean = if (song is LCE.Content && partApiId != null) {
             song.data.pageCount(partApiId, false) <= 0
         } else {
             false
         }
-    }
 }

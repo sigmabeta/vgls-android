@@ -35,13 +35,11 @@ internal fun provideFactory(
     idArg: Long,
     stringArg: String?,
 ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return assistedFactory.create(
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = assistedFactory.create(
             destination,
             idArg,
             stringArg,
         ) as T
-    }
 }
 
 @Composable

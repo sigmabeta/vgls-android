@@ -13,8 +13,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -25,9 +25,7 @@ object StorageModule {
     @Singleton
     internal fun provideDebugDataStore(
         @ApplicationContext context: Context
-    ): DataStore<Preferences> {
-        return context.dataStore
-    }
+    ): DataStore<Preferences> = context.dataStore
 
     @Singleton
     @Provides

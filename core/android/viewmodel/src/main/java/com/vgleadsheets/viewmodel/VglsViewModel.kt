@@ -119,11 +119,9 @@ abstract class VglsViewModel<StateType : VglsState> :
 
     protected fun <ListType, ReturnType> Flow<List<ListType>>.mapList(
         mapper: (ListType) -> ReturnType
-    ): Flow<List<ReturnType>> {
-        return map { list ->
+    ): Flow<List<ReturnType>> = map { list ->
             list.map(mapper)
         }
-    }
 
     @Suppress("MagicNumber")
     protected fun <EmissionType> Flow<EmissionType>.runInBackground(

@@ -123,8 +123,7 @@ class PdfRegionDecoder(
         private val hatchet: Hatchet,
         private val renderOverlayProvider: RenderOverlayProvider,
     ) : ImageRegionDecoder.Factory {
-        override suspend fun create(params: ImageRegionDecoder.FactoryParams): ImageRegionDecoder {
-            return PdfRegionDecoder(
+        override suspend fun create(params: ImageRegionDecoder.FactoryParams): ImageRegionDecoder = PdfRegionDecoder(
                 pdfFile,
                 pageNumber,
                 maxWidth,
@@ -133,7 +132,6 @@ class PdfRegionDecoder(
                 hatchet,
                 renderOverlayProvider,
             )
-        }
     }
 }
 

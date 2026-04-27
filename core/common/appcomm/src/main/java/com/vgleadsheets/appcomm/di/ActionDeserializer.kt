@@ -10,27 +10,22 @@ import javax.inject.Singleton
 class ActionDeserializer @Inject constructor(
     private val hatchet: Hatchet,
 ) {
-    fun recreateAction(genericAction: GenericAction?): VglsAction? {
-        return when (genericAction?.type) {
+    fun recreateAction(genericAction: GenericAction?): VglsAction? = when (genericAction?.type) {
             "VglsAction.RefreshDbClicked" -> VglsAction.RefreshDbClicked
             "VglsAction.DbSeeWhatsNewClicked" -> VglsAction.DbSeeWhatsNewClicked
             "VglsAction.AppSeeWhatsNewClicked" -> VglsAction.AppSeeWhatsNewClicked
             null -> null
             else -> fromGeneric(genericAction)
         }
-    }
 
-    fun serializeAction(action: VglsAction?): GenericAction? {
-        return if (action != null) {
+    fun serializeAction(action: VglsAction?): GenericAction? = if (action != null) {
             toGeneric(action)
         } else {
             null
         }
-    }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun fromGeneric(genericAction: GenericAction): VglsAction? {
-        return try {
+    private fun fromGeneric(genericAction: GenericAction): VglsAction? = try {
             when (genericAction.type) {
                 "VglsAction.InitWithId" -> VglsAction.InitWithId(id = genericAction.argIdOne!!)
                 else -> null
@@ -39,15 +34,12 @@ class ActionDeserializer @Inject constructor(
             hatchet.e("Invalid arguments to action: ${ex.message}")
             null
         }
-    }
 
-    private fun toGeneric(action: VglsAction): GenericAction {
-        return when (action) {
+    private fun toGeneric(action: VglsAction): GenericAction = when (action) {
             is VglsAction.RefreshDbClicked -> GenericAction(type = "VglsAction.RefreshDbClicked")
             is VglsAction.DbSeeWhatsNewClicked -> GenericAction(type = "VglsAction.DbSeeWhatsNewClicked")
             is VglsAction.AppSeeWhatsNewClicked -> GenericAction(type = "VglsAction.AppSeeWhatsNewClicked")
             is VglsAction.InitWithId -> GenericAction(type = "VglsAction.InitWithId", argIdOne = action.id)
             else -> throw IllegalArgumentException("Not a supported action: $action")
         }
-    }
 }

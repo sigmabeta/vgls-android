@@ -58,9 +58,7 @@ class MostPlaysTagValuesModule @Inject constructor(
         .withErrorState()
 
     @Suppress("ReturnCount")
-    private fun shouldShow(pairs: List<Pair<TagValuePlayCount, TagValue>>): Boolean {
-        return pairs.size >= MINIMUM_ITEMS
-    }
+    private fun shouldShow(pairs: List<Pair<TagValuePlayCount, TagValue>>): Boolean = pairs.size >= MINIMUM_ITEMS
 
     companion object {
         private const val MINIMUM_ITEMS = 5

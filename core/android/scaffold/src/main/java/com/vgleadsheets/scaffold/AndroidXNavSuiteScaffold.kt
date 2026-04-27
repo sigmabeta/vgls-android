@@ -105,7 +105,9 @@ sealed interface NavigationSuiteScope {
     )
 }
 
-internal class NavigationSuiteScopeImpl : NavigationSuiteScope, NavigationSuiteItemProvider {
+internal class NavigationSuiteScopeImpl :
+    NavigationSuiteScope,
+    NavigationSuiteItemProvider {
 
     override fun item(
         selected: Boolean,

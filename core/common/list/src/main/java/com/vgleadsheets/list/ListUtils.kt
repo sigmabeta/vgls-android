@@ -30,21 +30,17 @@ fun checkForDupes(items: List<ListModel>) {
     }
 }
 
-fun ifTrue(condition: Boolean, content: () -> ListModel): ListModel {
-    return if (condition) {
+fun ifTrue(condition: Boolean, content: () -> ListModel): ListModel = if (condition) {
         content()
     } else {
         NoopListModel
     }
-}
 
-fun <InputType> ifNotNull(input: InputType?, content: (InputType) -> ListModel): ListModel {
-    return if (input != null) {
+fun <InputType> ifNotNull(input: InputType?, content: (InputType) -> ListModel): ListModel = if (input != null) {
         content(input)
     } else {
         NoopListModel
     }
-}
 
 fun ListStateActual.getErrors(): List<ErrorStateListModel> {
     val horizScrollers = listItems.filterIsInstance<HorizontalScrollerListModel>()

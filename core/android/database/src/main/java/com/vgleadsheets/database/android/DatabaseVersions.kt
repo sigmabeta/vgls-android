@@ -31,9 +31,9 @@ object DatabaseVersions {
     const val ADDED_ALTERNATES = 14
 
     /*
-    *  - Added "songCount" to games.
-    *  - Added "songCount" to composers.
-    */
+     *  - Added "songCount" to games.
+     *  - Added "songCount" to composers.
+     */
     const val ADDED_SONG_COUNTS = 15
 
     /**

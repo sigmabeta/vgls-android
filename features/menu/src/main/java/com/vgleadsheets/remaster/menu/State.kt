@@ -290,11 +290,9 @@ data class State(
         )
     }
 
-    private fun ifShowDebugEnabled(content: () -> ListModel): ListModel {
-        return if (shouldShowDebug == true) {
+    private fun ifShowDebugEnabled(content: () -> ListModel): ListModel = if (shouldShowDebug == true) {
             content()
         } else {
             NoopListModel
         }
-    }
 }

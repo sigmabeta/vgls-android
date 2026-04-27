@@ -375,7 +375,13 @@ private fun BoxScope.DirectionButton(
         else -> throw IllegalArgumentException("Needs to be a direction lol")
     }
 
-    val alpha = if (!visible) ALPHA_TRANSPARENT else if (enabled) ALPHA_ENABLED else ALPHA_DISABLED
+    val alpha = if (!visible) {
+        ALPHA_TRANSPARENT
+    } else if (enabled) {
+        ALPHA_ENABLED
+    } else {
+        ALPHA_DISABLED
+    }
     val alphaState by animateFloatAsState(alpha)
 
     val color = if (enabled) Color.White else Color.Gray
@@ -388,8 +394,8 @@ private fun BoxScope.DirectionButton(
         cumulativeDrag += offset
 
         if (
-            action == Action.PrevButtonClicked && (cumulativeDrag > dragThresholdPx) ||
-            action == Action.NextButtonClicked && (cumulativeDrag < -dragThresholdPx)
+            (action == Action.PrevButtonClicked && (cumulativeDrag > dragThresholdPx)) ||
+            (action == Action.NextButtonClicked && (cumulativeDrag < -dragThresholdPx))
         ) {
             onClick()
             cumulativeDrag = 0f

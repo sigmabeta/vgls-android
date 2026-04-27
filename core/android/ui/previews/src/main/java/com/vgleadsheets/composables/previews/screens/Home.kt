@@ -101,9 +101,7 @@ private fun rngModule(stringProvider: StringProvider): Pair<ModuleDetails, LCE<H
     val rngModule = RngModule(
         stringProvider,
         object : DelayManager {
-            override fun shouldDelay(): Boolean {
-                return false
-            }
+            override fun shouldDelay(): Boolean = false
         }
     )
 

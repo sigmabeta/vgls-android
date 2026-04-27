@@ -55,34 +55,63 @@ fun ListModel.Content(
     ) {
         when (this) {
             is CheckableListModel -> LabelCheckboxItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is CollapsibleDetailsListModel -> CollapsibleDetailsListItem(model = this, modifier = mod, padding = pad)
+
             is CtaListModel -> ActionItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is DropdownSettingListModel -> LabelDropdownListItem(model = this, modifier = mod, padding = pad)
+
             is EmptyStateListModel -> EmptyListIndicator(model = this, modifier = mod)
+
             is ErrorStateListModel -> EmptyListIndicator(model = this, showDebug = debug, modifier = mod)
+
             is HeroImageListModel -> BigImage(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is HorizontalScrollerListModel -> HorizontalScroller(model = this, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
+
             is IconNameCaptionListModel -> IconNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is ImageNameCaptionListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is ImageNameListModel -> ImageNameListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is LabelRatingStarListModel -> LabelRatingListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is LabelValueListModel -> LabelValueListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is MenuItemListModel -> MenuItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is NameCaptionListModel -> NameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is NotifListModel -> NotifListItem(model = this, actionSink = sink, modifier = mod)
+
             is SheetPageCardListModel -> SheetPageCard(model = this.sheetPageModel, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
+
             is SearchResultListModel -> ImageNameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is SectionListModel -> SectionListItem(model = this, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
+
             is SectionHeaderListModel -> SectionHeader(name = title, modifier = mod, padding = pad)
+
             is SearchHistoryListModel -> SearchHistoryListItem(model = this, modifier = mod, actionSink = sink, padding = pad)
+
             is SheetPageListModel -> SheetPageItem(model = this, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
+
             is SinglePageListModel -> SinglePageCard(model = this, actionSink = sink, showDebug = debug, modifier = mod, padding = pad)
+
             is SingleTextListModel -> LabelNoThingyItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is SmallTextListModel -> SmallText(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is SquareItemListModel -> SquareItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
+
             is SubsectionListModel -> Subsection(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is WideItemListModel -> WideItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+
             is LoadingItemListModel -> {
                 when (loadingType) {
                     LoadingType.SHEET, LoadingType.SQUARE, LoadingType.NOTIF, LoadingType.WIDE_ITEM, LoadingType.BIG_IMAGE -> LoadingItem(
@@ -93,6 +122,7 @@ fun ListModel.Content(
                     )
 
                     LoadingType.SECTION_HEADER -> LoadingSectionHeader(seed = dataId, modifier = mod, padding = pad)
+
                     else -> LoadingTextItem(seed = dataId, loadingType = loadingType, modifier = mod, padding = pad)
                 }
             }

@@ -3,15 +3,12 @@ package com.vgleadsheets.ui
 import com.vgleadsheets.ui.strings.R
 
 @Suppress("CyclomaticComplexMethod", "LongMethod")
-fun StringId.id(): Int {
-    return when (this) {
+fun StringId.id(): Int = when (this) {
         StringId.APP_NAME -> R.string.app_name
-
         StringId.NAV_LABEL_HOME -> R.string.nav_label_home
         StringId.NAV_LABEL_BROWSE -> R.string.nav_label_browse
         StringId.NAV_LABEL_FAVORITE -> R.string.nav_label_favorite
         StringId.NAV_LABEL_SEARCH -> R.string.nav_label_search
-
         StringId.SCREEN_TITLE_PART_SELECTOR -> R.string.screen_title_parts
         StringId.SCREEN_TITLE_BROWSE -> R.string.screen_title_browse
         StringId.SCREEN_TITLE_BROWSE_GAMES -> R.string.screen_title_games
@@ -27,9 +24,7 @@ fun StringId.id(): Int {
         StringId.SCREEN_TITLE_UPDATES -> R.string.screen_title_updates
         StringId.SCREEN_TITLE_LICENSES -> R.string.screen_title_licenses
         StringId.SCREEN_TITLE_OFFLINE_UPDATES -> R.string.screen_title_offline_updates
-
         StringId.SCREEN_SUBTITLE_SONG_DETAIL -> R.string.screen_subtitle_song_detail
-
         StringId.SECTION_HEADER_SEARCH_SONGS -> R.string.section_header_search_songs
         StringId.SECTION_HEADER_SEARCH_GAMES -> R.string.section_header_search_games
         StringId.SECTION_HEADER_SEARCH_COMPOSERS -> R.string.section_header_search_composers
@@ -44,7 +39,6 @@ fun StringId.id(): Int {
         StringId.SECTION_HEADER_SETTINGS_DATA -> R.string.section_header_settings_data
         StringId.SECTION_HEADER_SETTINGS_ABOUT -> R.string.section_header_settings_about
         StringId.SECTION_HEADER_SETTINGS_DEBUG -> R.string.section_header_settings_debug
-
         StringId.CTA_FAVORITE_ADD -> R.string.cta_favorite_add
         StringId.CTA_FAVORITE_REMOVE -> R.string.cta_favorite_remove
         StringId.CTA_OFFLINE_ADD -> R.string.cta_offline_add
@@ -56,9 +50,7 @@ fun StringId.id(): Int {
         StringId.CTA_SEARCH_OTHER_QUERY -> R.string.cta_search_other_query
         StringId.CTA_FAVORITES -> R.string.cta_favorites
         StringId.CTA_OFFLINE -> R.string.cta_offline
-
         StringId.LABEL_SONG_ALSO_KNOWN_AS -> R.string.label_song_also_known_as
-
         StringId.HOME_SECTION_RECENT_SONGS -> R.string.home_section_recent_songs
         StringId.HOME_SECTION_MOST_SONGS_GAMES -> R.string.home_section_most_songs_games
         StringId.HOME_SECTION_MOST_SONGS_COMPOSERS -> R.string.home_section_most_songs_composers
@@ -68,11 +60,9 @@ fun StringId.id(): Int {
         StringId.HOME_SECTION_MOST_PLAYS_COMPOSERS -> R.string.home_section_most_plays_composers
         StringId.HOME_SECTION_MOST_PLAYS_TAG_VALUES -> R.string.home_section_most_plays_tag_values
         StringId.HOME_SECTION_RNG -> R.string.home_section_rng
-
         StringId.HOME_ACTION_RANDOM_SONG -> R.string.home_action_random_song
         StringId.HOME_ACTION_RANDOM_GAME -> R.string.home_action_random_game
         StringId.HOME_ACTION_RANDOM_COMPOSER -> R.string.home_action_random_composer
-
         StringId.BROWSE_LINK_OFFLINE -> R.string.browse_link_offline
         StringId.BROWSE_LINK_FAVORITES -> R.string.browse_link_favorites
         StringId.BROWSE_LINK_GAME -> R.string.browse_link_game
@@ -81,7 +71,6 @@ fun StringId.id(): Int {
         StringId.BROWSE_LINK_DIFFICULTY -> R.string.browse_link_difficulty
         StringId.BROWSE_LINK_SHEETS -> R.string.browse_link_sheets
         StringId.BROWSE_LINK_PUBLISH_DATE -> R.string.browse_link_publish_date
-
         StringId.PART_MID_C -> R.string.part_mid_c
         StringId.PART_MID_B -> R.string.part_mid_b
         StringId.PART_MID_E -> R.string.part_mid_e
@@ -90,7 +79,6 @@ fun StringId.id(): Int {
         StringId.PART_MID_ALTO -> R.string.part_mid_alto
         StringId.PART_MID_BASS -> R.string.part_mid_bass
         StringId.PART_MID_VOCAL -> R.string.part_mid_vocal
-
         StringId.PART_LONG_C -> R.string.part_long_c
         StringId.PART_LONG_B -> R.string.part_long_b
         StringId.PART_LONG_E -> R.string.part_long_e
@@ -99,7 +87,6 @@ fun StringId.id(): Int {
         StringId.PART_LONG_ALTO -> R.string.part_long_alto
         StringId.PART_LONG_BASS -> R.string.part_long_bass
         StringId.PART_LONG_VOCAL -> R.string.part_long_vocal
-
         StringId.SETTINGS_LABEL_CHECK_FOR_UPDATES -> R.string.label_settings_check_for_updates
         StringId.SETTINGS_LABEL_OFFLINE -> R.string.label_settings_offline
         StringId.SETTINGS_LABEL_CLEAR_USAGE -> R.string.label_settings_clear_usage
@@ -122,31 +109,23 @@ fun StringId.id(): Int {
         StringId.SETTINGS_LABEL_APP_VERSION_NAME -> R.string.label_settings_version_name
         StringId.SETTINGS_LABEL_APP_VERSION_CODE -> R.string.label_settings_version_code
         StringId.SETTINGS_LABEL_APP_BUILD_DATE -> R.string.label_settings_build_date
-
         StringId.SETTINGS_LABEL_OFFLINE_UPDATES -> R.string.label_settings_offline_updates
-
         StringId.SETTINGS_CAPTION_CLEAR_USAGE -> R.string.caption_settings_clear_usage
         StringId.SETTINGS_CAPTION_CLEAR_SHEETS -> R.string.caption_settings_clear_sheets
         StringId.SETTINGS_CAPTION_OFFLINE_UPDATES -> R.string.caption_settings_offline_updates
-
         StringId.OFFLINE_UPDATE_FIELD_STATUS -> R.string.offline_update_field_status
         StringId.OFFLINE_UPDATE_FIELD_SERVER_TIME -> R.string.offline_update_field_server_time
         StringId.OFFLINE_UPDATE_FIELD_UPDATED_SONGS -> R.string.offline_update_field_updated_songs
         StringId.OFFLINE_UPDATE_FIELD_SUCCESSFUL_OFFLINES -> R.string.offline_update_field_successful_offlines
-
         StringId.OFFLINE_UPDATES_EMPTY -> R.string.offline_updates_empty
         StringId.OFFLINE_UPDATES_ERROR -> R.string.offline_updates_error
-
         StringId.NOTIF_TITLE_DB_UPDATE_SUCCESS -> R.string.notif_db_update_success
         StringId.NOTIF_TITLE_APP_UPDATE_DEFAULT -> R.string.notif_app_update_default
         StringId.NOTIF_TITLE_APP_UPDATE_FIRST_TIME -> R.string.notif_app_update_first
         StringId.NOTIF_TITLE_APP_UPDATE_FIRST_SINCE_REMASTER -> R.string.notif_app_update_remaster
         StringId.NOTIF_TITLE_APP_UPDATE_ERROR -> R.string.notif_app_update_error
-
         StringId.SNACKBAR_SCREEN_OFF -> R.string.snack_screen_off
-
         StringId.SNACKBAR_CTA_SCREEN_OFF -> R.string.snack_cta_screen_off
-
         StringId.ERROR_API_UPDATE -> R.string.error_api_update
         StringId.ERROR_DB_UPDATE -> R.string.error_db_update
         StringId.ERROR_UPDATE_API_PREFIX -> R.string.error_update_api_prefix
@@ -166,35 +145,26 @@ fun StringId.id(): Int {
         StringId.ERROR_IMAGE_SERVER_ERROR -> R.string.error_image_server_error
         StringId.ERROR_IMAGE_NOT_FOUND -> R.string.error_image_not_found
         StringId.ERROR_WEBVIEW_FAILED -> R.string.error_webview_failed
-
         StringId.TAG_CAPTION_AND_OTHERS -> R.string.tag_caption_and_others
         StringId.TAG_CAPTION_SEPARATOR -> R.string.tag_caption_separator
-
         StringId.DIFFICULTY_ONE -> R.string.difficulty_one
         StringId.DIFFICULTY_TWO -> R.string.difficulty_two
         StringId.DIFFICULTY_THREE -> R.string.difficulty_three
         StringId.DIFFICULTY_FOUR -> R.string.difficulty_four
-
         StringId.ACCY_OCL_CHECKBOX -> R.string.accy_ocl_checkbox
         StringId.ACCY_OCL_DROPDOWN -> R.string.accy_ocl_dropdown
         StringId.ACCY_OCL_RATING -> R.string.accy_ocl_rating
         StringId.ACCY_OCL_SHEET_CARD -> R.string.accy_ocl_sheet_card
         StringId.ACCY_OCL_SINGLE_LINE -> R.string.accy_ocl_single_line
         StringId.ACCY_OCL_VALUE -> R.string.accy_ocl_value
-
         StringId.ACCY_ST_DESC_LOADING -> R.string.accy_st_desc_loading
         StringId.ACCY_ST_DESC_CHECKED -> R.string.accy_st_desc_checked
         StringId.ACCY_ST_DESC_UNCHECKED -> R.string.accy_st_desc_unchecked
-
         StringId.ACCY_CDESC_HERO_GAME -> R.string.accy_cdesc_hero_game
         StringId.ACCY_CDESC_HERO_COMPOSER -> R.string.accy_cdesc_hero_composer
-
         StringId.ACCY_CDESC_TOPBAR_BACK -> R.string.accy_cdesc_topbar_back
         StringId.ACCY_CDESC_TOPBAR_MENU -> R.string.accy_cdesc_topbar_menu
-
         StringId.ACCY_CDESC_SEARCH_BACK -> R.string.accy_cdesc_search_back
         StringId.ACCY_CDESC_SEARCH_CLEAR -> R.string.accy_cdesc_search_clear
-
         StringId.HINT_SEARCH -> R.string.hint_search
     }
-}

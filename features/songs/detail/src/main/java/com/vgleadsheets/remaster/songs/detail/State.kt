@@ -48,8 +48,7 @@ data class State(
 ) : ListState() {
     override val columnType = ColumnType.Staggered(320, true)
 
-    override fun title(stringProvider: StringProvider): TitleBarModel {
-        return if (song is LCE.Content) {
+    override fun title(stringProvider: StringProvider): TitleBarModel = if (song is LCE.Content) {
             val gameName = song.data.gameName
             TitleBarModel(
                 title = song.data.name,
@@ -58,7 +57,6 @@ data class State(
         } else {
             TitleBarModel()
         }
-    }
 
     override fun toListItems(stringProvider: StringProvider): List<ListModel> {
         val sheetPreviewSection = sheetPreviewSection()
@@ -397,15 +395,13 @@ data class State(
         return emptyList()
     }
 
-    private fun searchYoutubeItem(stringProvider: StringProvider): List<CtaListModel> {
-        return listOf(
+    private fun searchYoutubeItem(stringProvider: StringProvider): List<CtaListModel> = listOf(
             CtaListModel(
                 icon = Icon.SEARCH_YOUTUBE,
                 name = stringProvider.getString(StringId.CTA_SEARCH_YOUTUBE),
                 clickAction = Action.SearchYoutubeClicked,
             )
         )
-    }
 
     @Suppress("ReturnCount")
     private fun dedupeTagValues(

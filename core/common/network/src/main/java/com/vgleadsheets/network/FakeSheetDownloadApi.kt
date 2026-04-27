@@ -8,12 +8,10 @@ class FakeSheetDownloadApi : SheetDownloadApi {
     override suspend fun downloadFile(
         fileName: String,
         partApiId: String,
-    ): Response<ResponseBody> {
-        return Response.success(
+    ): Response<ResponseBody> = Response.success(
             ResponseBody.create(
                 "application/pdf".toMediaType(),
                 ""
             )
         )
-    }
 }

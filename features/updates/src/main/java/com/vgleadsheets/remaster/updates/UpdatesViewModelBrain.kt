@@ -41,8 +41,7 @@ class UpdatesViewModelBrain(
         }
     }
 
-    private fun generateUpdates(): LCE.Content<List<AppUpdate>> {
-        return LCE.Content(
+    private fun generateUpdates(): LCE.Content<List<AppUpdate>> = LCE.Content(
             data = listOf(
                 AppUpdate.VERSION_2_0_5,
                 AppUpdate.VERSION_2_0_4,
@@ -50,5 +49,4 @@ class UpdatesViewModelBrain(
                 AppUpdate.VERSION_2_0_0,
             )
         )
-    }
 }

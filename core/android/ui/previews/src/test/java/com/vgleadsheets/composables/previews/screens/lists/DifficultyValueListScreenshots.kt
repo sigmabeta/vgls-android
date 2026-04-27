@@ -39,8 +39,6 @@ class DifficultyValueListScreenshots(
     companion object {
         @JvmStatic
         @Parameterized.Parameters(name = SUFFIX_TESTNAME)
-        fun getDeviceConfig(): Iterable<Array<Any>> {
-            return INTERESTING_DEVICES
-        }
+        fun getDeviceConfig(): Iterable<Array<Any>> = INTERESTING_DEVICES
     }
 }

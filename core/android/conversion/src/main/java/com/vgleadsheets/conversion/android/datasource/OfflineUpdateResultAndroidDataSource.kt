@@ -10,8 +10,7 @@ class OfflineUpdateResultAndroidDataSource(
     private val roomImpl: OfflineUpdateRoomDao,
     private val converter: OfflineUpdateResultConverter,
 ) : OfflineUpdateResultDataSource {
-    override suspend fun insert(entity: OfflineUpdateResult) =
-        roomImpl.insert(converter.modelToEntity(entity))
+    override suspend fun insert(entity: OfflineUpdateResult) = roomImpl.insert(converter.modelToEntity(entity))
 
     override fun getAll() = roomImpl
         .getAll()

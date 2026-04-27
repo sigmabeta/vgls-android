@@ -20,6 +20,5 @@ object ResourcesModule {
 
     @Provides
     @Singleton
-    fun provideResourceProvider(resources: Resources): ResourceProvider =
-        RealResourceProvider(resources)
+    fun provideResourceProvider(resources: Resources): ResourceProvider = RealResourceProvider(resources)
 }

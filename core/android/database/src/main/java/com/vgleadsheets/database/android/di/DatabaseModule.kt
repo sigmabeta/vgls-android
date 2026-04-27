@@ -42,8 +42,7 @@ object DatabaseModule {
     fun provideVglsDatabase(
         @ApplicationContext context: Context,
         sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
-    ): VglsDatabase {
-        return Room
+    ): VglsDatabase = Room
             .databaseBuilder(
                 context,
                 VglsDatabase::class.java,
@@ -60,15 +59,13 @@ object DatabaseModule {
             )
             .fallbackToDestructiveMigrationFrom(dropAllTables = true, *DatabaseVersions.WITHOUT_MIGRATION)
             .build()
-    }
 
     @Singleton
     @Provides
     fun provideUserContentDatabase(
         @ApplicationContext context: Context,
         sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
-    ): UserContentDatabase {
-        return Room
+    ): UserContentDatabase = Room
             .databaseBuilder(
                 context,
                 UserContentDatabase::class.java,
@@ -81,7 +78,6 @@ object DatabaseModule {
             )
             .openHelperFactory(sqlOpenHelperFactory)
             .build()
-    }
 
     @Provides
     @Singleton

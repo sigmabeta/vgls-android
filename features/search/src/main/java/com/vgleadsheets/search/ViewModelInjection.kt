@@ -31,11 +31,9 @@ internal fun provideFactory(
     assistedFactory: Factory,
     textUpdater: (String) -> Unit,
 ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return assistedFactory.create(
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = assistedFactory.create(
             textUpdater
         ) as T
-    }
 }
 
 @Composable

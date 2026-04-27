@@ -51,12 +51,10 @@ fun WidthClass.toWidthDpSynthetic() = when (this) {
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun WidthClass.toAdaptiveInfoSynthetic(): WindowAdaptiveInfo {
-    return WindowAdaptiveInfo(
+fun WidthClass.toAdaptiveInfoSynthetic(): WindowAdaptiveInfo = WindowAdaptiveInfo(
         WindowSizeClass.compute(toWidthDpSynthetic().toFloat(), 0f),
         calculatePosture(collectFoldingFeaturesAsState().value)
     )
-}
 
 @Composable
 fun currentWindowWidthClassSynthetic() = currentWindowAdaptiveInfo()

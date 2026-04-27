@@ -76,10 +76,11 @@ abstract class ListState : VglsState {
         loadingHorizScrollable: Boolean = false,
         loadingOperationNameOverride: String? = null,
         content: LCE.Content<ModelType>.() -> List<ListModel>
-    ): List<ListModel> {
-        return when (this) {
+    ): List<ListModel> = when (this) {
             is LCE.Content -> content()
+
             is LCE.Error -> error(error)
+
             is LCE.Loading -> loading(
                 operationName = loadingOperationNameOverride ?: this.operationName,
                 loadingType = loadingType,
@@ -90,7 +91,6 @@ abstract class ListState : VglsState {
 
             LCE.Uninitialized -> emptyList()
         }
-    }
 
     protected fun <ModelType> LCE<ModelType>.sectionWithStandardErrorAndLoading(
         sectionName: String,
@@ -104,7 +104,9 @@ abstract class ListState : VglsState {
     ): SectionListModel {
         val sectionItems = when (this) {
             is LCE.Content -> content()
+
             is LCE.Error -> error(error)
+
             is LCE.Loading -> loading(
                 operationName = sectionName,
                 loadingType = loadingType,

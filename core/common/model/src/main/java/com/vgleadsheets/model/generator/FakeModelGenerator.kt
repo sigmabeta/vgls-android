@@ -122,8 +122,7 @@ class FakeModelGenerator constructor(
         possibleGames = filteredGames
     }
 
-    private fun generateGame(): Game {
-        return Game(
+    private fun generateGame(): Game = Game(
             id = random.nextLong(),
             name = stringGenerator.generateTitle(),
             hasVocalSongs = random.nextBoolean(),
@@ -134,7 +133,6 @@ class FakeModelGenerator constructor(
             isFavorite = false,
             isAvailableOffline = false,
         )
-    }
 
     @Suppress("SwallowedException")
     private fun getSongs(): List<Song> {

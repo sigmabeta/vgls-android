@@ -145,5 +145,5 @@ include(
     ":features:tags:values",
     ":features:topbar",
     ":features:updates",
-    ":features:viewer",
+    ":features:viewer"
 )
