@@ -6,6 +6,7 @@ dependencies {
     api(projects.core.common.settings.general)
 
     implementation(projects.core.common.appcomm)
+    implementation(projects.core.common.connectivity)
     implementation(projects.core.common.conversion)
     implementation(projects.core.common.database)
     implementation(projects.core.common.logging)

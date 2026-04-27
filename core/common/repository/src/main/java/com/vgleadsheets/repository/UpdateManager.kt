@@ -2,6 +2,8 @@ package com.vgleadsheets.repository
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.di.ActionDeserializer
+import com.vgleadsheets.connectivity.NetworkStatus
+import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import com.vgleadsheets.logging.Hatchet
@@ -11,16 +13,16 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
-import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringId
+import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -41,7 +43,7 @@ class UpdateManager(
     private val dispatchers: VglsDispatchers,
     private val coroutineScope: CoroutineScope,
     private val notifManager: NotifManager,
-    private val userContentMigrator: UserContentMigrator,
+    private val stringProvider: StringProvider,
 ) {
     init {
         setupApiUpdateTimeCheckFlow()
@@ -55,8 +57,6 @@ class UpdateManager(
             dbStatisticsDataSource.insert(lastAppCheckTime)
         }
     }
-
-    fun getLastDbUpdateTime(): Flow<Time> = getLastDbUpdateTimeInternal()
 
     fun getLastApiUpdateTime(): Flow<Time> = getLastApiUpdateTimeInternal()
 
@@ -146,27 +146,44 @@ class UpdateManager(
         true
     }
 
-    @Suppress("TooGenericExceptionCaught")
     private fun refreshInternal(): Flow<Boolean> {
         hatchet.i("Requesting DB update...")
-        return try {
-            dbUpdater.refresh()
-        } catch (ex: Exception) {
-            emitDbUpdateErrors(ex)
-            flowOf(false)
-        }
+        return dbUpdater.refresh()
+            .catch { ex ->
+                emitDbUpdateErrors(ex)
+                emit(false)
+            }
     }
 
     private fun emitDbUpdateErrors(ex: Throwable) {
         hatchet.e("DB update failed: ${ex.message}")
         ex.printStackTrace()
-        onUpdateFailed(ex)
+        onUpdateFailed(describeFailure(StringId.ERROR_UPDATE_DB_PREFIX, ex, StringId.ERROR_UPDATE_DB_REASON_GENERIC))
     }
 
     private fun emitApiUpdateErrors(ex: Throwable) {
         hatchet.e("Last update API call failed: ${ex.message}")
         ex.printStackTrace()
-        onLastUpdateCheckFailed(ex)
+        onLastUpdateCheckFailed(describeFailure(StringId.ERROR_UPDATE_API_PREFIX, ex, StringId.ERROR_UPDATE_REASON_GENERIC))
+    }
+
+    private fun describeFailure(prefixId: StringId, ex: Throwable, genericFallbackId: StringId): String {
+        val networkStatus = (ex as? VglsNetworkUnavailableException)?.networkStatus
+        val reason = when (networkStatus) {
+            NetworkStatus.OFFLINE ->
+                stringProvider.getString(StringId.ERROR_UPDATE_REASON_OFFLINE)
+            NetworkStatus.ONLINE_NO_INTERNET ->
+                stringProvider.getString(StringId.ERROR_UPDATE_REASON_NO_INTERNET)
+            NetworkStatus.ONLINE_API_UNREACHABLE ->
+                stringProvider.getString(StringId.ERROR_UPDATE_REASON_API_UNREACHABLE)
+            NetworkStatus.ONLINE, null ->
+                stringProvider.getString(genericFallbackId)
+        }
+        return stringProvider.getStringTwoArgs(
+            StringId.ERROR_UPDATE_DESCRIPTION_FORMAT,
+            stringProvider.getString(prefixId),
+            reason,
+        )
     }
 
     private fun onUpdateSuccess() {
@@ -184,13 +201,13 @@ class UpdateManager(
         )
     }
 
-    private fun onLastUpdateCheckFailed(ex: Throwable) {
+    private fun onLastUpdateCheckFailed(description: String) {
         val title = StringId.ERROR_API_UPDATE
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),
                 title = title,
-                description = "Error on last update API call:\n\n ${ex.message ?: "No exception details available."}",
+                description = description,
                 actionLabel = "Try again",
                 category = NotifCategory.ERROR,
                 isOneTime = true,
@@ -199,13 +216,13 @@ class UpdateManager(
         )
     }
 
-    private fun onUpdateFailed(ex: Throwable) {
+    private fun onUpdateFailed(description: String) {
         val title = StringId.ERROR_DB_UPDATE
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),
                 title = title,
-                description = "Error on DB update:\n\n${ex.message ?: "No exception details available."}",
+                description = description,
                 actionLabel = "Try again",
                 category = NotifCategory.ERROR,
                 isOneTime = true,

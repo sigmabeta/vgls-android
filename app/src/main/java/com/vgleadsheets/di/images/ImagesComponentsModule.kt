@@ -11,7 +11,6 @@ import com.vgleadsheets.images.FakeOtherImageFetcher
 import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.images.LoadingIndicatorKeyer
 import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.network.OfflineFailFastInterceptor
 import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer
@@ -122,14 +121,8 @@ class ImagesComponentsModule {
     @Named("RealOtherImageLoaderBuilder")
     internal fun providesRealOtherBuilderFunction(
         @Named("VglsOkHttp") okHttpClient: OkHttpClient,
-        offlineFailFastInterceptor: OfflineFailFastInterceptor,
-    ): CoilBuilderFunction {
-        val imageClient = okHttpClient.newBuilder()
-            .addInterceptor(offlineFailFastInterceptor)
-            .build()
-        return CoilBuilderFunction {
-            add(OkHttpNetworkFetcherFactory(callFactory = { imageClient }))
-        }
+    ): CoilBuilderFunction = CoilBuilderFunction {
+        add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
     }
 
     @Provides

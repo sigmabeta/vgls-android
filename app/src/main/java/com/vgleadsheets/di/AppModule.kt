@@ -24,6 +24,8 @@ import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.storage.common.Storage
 import com.vgleadsheets.time.ThreeTenTime
+import com.vgleadsheets.ui.StringProvider
+import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.versions.AppVersionManager
 import dagger.Module
@@ -38,6 +40,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
+    @Provides
+    @Singleton
+    fun provideStringProvider(@ApplicationContext context: Context): StringProvider =
+        StringResources(context.resources)
+
     @Provides
     @Singleton
     @Named("CachePath") // Oh I love that app, it lets you send money to ppl

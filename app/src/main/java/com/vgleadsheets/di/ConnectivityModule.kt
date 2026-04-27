@@ -11,6 +11,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -21,19 +24,27 @@ object ConnectivityModule {
     fun provideNetworkStatusProvider(
         @ApplicationContext context: Context,
         hatchet: Hatchet,
-        vglsApi: VglsApi,
+        @Named("ProbeOkHttp") probeClient: OkHttpClient,
+        @Named("VglsApiUrl") apiBaseUrl: String?,
         dispatchers: VglsDispatchers,
     ): NetworkStatusProvider = AndroidNetworkStatusProvider(
         context = context,
         hatchet = hatchet,
         dispatchers = dispatchers,
         apiProbe = {
-            try {
-                vglsApi.getLastUpdateTime()
+            if (apiBaseUrl == null) {
                 true
-            } catch (e: Exception) {
-                hatchet.w("VGLS API probe failed: ${e.message}")
-                false
+            } else {
+                try {
+                    val request = Request.Builder()
+                        .url(apiBaseUrl + VglsApi.LAST_UPDATE_PATH)
+                        .get()
+                        .build()
+                    probeClient.newCall(request).execute().use { it.isSuccessful }
+                } catch (e: Exception) {
+                    hatchet.w("VGLS API probe failed: ${e.message}")
+                    false
+                }
             }
         },
     )
