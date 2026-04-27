@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     implementation(libs.moshi)
+    implementation(projects.core.common.connectivity)
 }

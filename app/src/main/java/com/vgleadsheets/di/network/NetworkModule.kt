@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.vgleadsheets.appinfo.AppInfo
 import com.vgleadsheets.di.HatchetOkHttpLogger
 import com.vgleadsheets.logging.Hatchet
+import com.vgleadsheets.network.OfflineFailFastInterceptor
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
 import dagger.Provides
@@ -96,8 +97,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Named("VglsOkHttp")
-    internal fun provideVglsOkClient(
+    @Named("ProbeOkHttp")
+    internal fun provideProbeOkClient(
         appInfo: AppInfo,
         @Named("HttpLoggingInterceptor") logger: Interceptor,
     ) = if (appInfo.isDebug) {
@@ -107,6 +108,16 @@ object NetworkModule {
     } else {
         OkHttpClient()
     }
+
+    @Provides
+    @Singleton
+    @Named("VglsOkHttp")
+    internal fun provideVglsOkClient(
+        @Named("ProbeOkHttp") base: OkHttpClient,
+        failFast: OfflineFailFastInterceptor,
+    ): OkHttpClient = base.newBuilder()
+        .addInterceptor(failFast)
+        .build()
 
     @Provides
     fun provideHatchetLogger(hatchet: Hatchet) = HatchetOkHttpLogger(hatchet)

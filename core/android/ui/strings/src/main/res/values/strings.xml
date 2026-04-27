@@ -147,7 +147,20 @@
     <string name="error_db_update">Database Update Failed</string>
     <string name="error_broken_screen_title">App Error Occurred</string>
     <string name="error_broken_screen_desc">This screen is not working at the moment. Check back after an app update.</string>
-    <string name="error_image_network">Can\'t load this sheet. Check your connection, and click here to try again.</string>
+    <string name="error_image_network">Something went wrong loading this sheet. Click here to try again.</string>
+    <string name="error_image_server_error">The VGLS server returned an error. Click here to try again.</string>
+    <string name="error_image_not_found">This sheet couldn\'t be found on the server. Click here to try again.</string>
+    <string name="error_image_offline">You\'re offline. Click here to try again once you\'re connected.</string>
+    <string name="error_image_no_internet">Connected, but there\'s no internet on this network. Click here to try again.</string>
+    <string name="error_image_api_unreachable">Can\'t reach the VGLS server right now. Click here to try again.</string>
+    <string name="error_update_api_prefix">Couldn\'t check for updates.</string>
+    <string name="error_update_db_prefix">Couldn\'t update the sheet database.</string>
+    <string name="error_update_reason_offline">You appear to be offline. Connect to a network and try again.</string>
+    <string name="error_update_reason_no_internet">Your network is connected but doesn\'t have internet access. If you\'re on public Wi-Fi, you may need to sign in to it first.</string>
+    <string name="error_update_reason_api_unreachable">VGLS servers are unreachable right now. Try again in a few minutes.</string>
+    <string name="error_update_reason_generic">Something went wrong. Please try again later.</string>
+    <string name="error_update_db_reason_generic">The database encountered an error. If this keeps happening, try clearing the sheet database from the Settings screen.</string>
+    <string name="error_update_description_format">%1$s\n\n%2$s</string>
     <string name="error_webview_failed">Failed to load open-source license information.</string>
 
     <string name="tag_caption_and_others">" and %1$d more…"</string>

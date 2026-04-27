@@ -30,7 +30,6 @@ import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
-import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.wakelocks.WakeLockManager
 import com.vgleadsheets.wakelocks.WakeLockManagerImpl
@@ -45,12 +44,6 @@ import kotlinx.coroutines.CoroutineScope
 @Module
 @InstallIn(ActivityComponent::class)
 class ActivityModule {
-    @Provides
-    @ActivityScoped
-    fun provideStringProvider(@ActivityContext context: Context): StringProvider {
-        return StringResources(context.resources)
-    }
-
     @Provides
     @ActivityScoped
     @Suppress("LongParameterList")

@@ -37,8 +37,8 @@ import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.perf.BuildConfig
-import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.id
+import com.vgleadsheets.ui.imageLoadErrorStringId
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.roundToInt
@@ -271,7 +271,7 @@ private fun BoxScope.ErrorState(
     EmptyListIndicator(
         model = ErrorStateListModel(
             failedOperationName = "Load PDF with ID ${pdfConfigById.songId}",
-            errorString = stringResource(StringId.ERROR_IMAGE_NETWORK.id()),
+            errorString = stringResource(error.imageLoadErrorStringId().id()),
             error = error
         ),
         onBlack = true,

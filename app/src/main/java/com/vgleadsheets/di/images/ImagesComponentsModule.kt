@@ -21,8 +21,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
 import okhttp3.OkHttpClient
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -121,10 +121,8 @@ class ImagesComponentsModule {
     @Named("RealOtherImageLoaderBuilder")
     internal fun providesRealOtherBuilderFunction(
         @Named("VglsOkHttp") okHttpClient: OkHttpClient,
-    ): CoilBuilderFunction {
-        return CoilBuilderFunction {
-            add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
-        }
+    ): CoilBuilderFunction = CoilBuilderFunction {
+        add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
     }
 
     @Provides

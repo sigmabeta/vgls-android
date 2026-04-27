@@ -44,6 +44,7 @@ import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.time.ThreeTenTime
+import com.vgleadsheets.ui.StringProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -129,7 +130,7 @@ object RepositoryModule {
         dbStatisticsDataSource: DbStatisticsDataSource,
         coroutineScope: CoroutineScope,
         notifManager: NotifManager,
-        userContentMigrator: UserContentMigrator,
+        stringProvider: StringProvider,
     ) = UpdateManager(
         vglsApi,
         dbUpdater,
@@ -140,7 +141,7 @@ object RepositoryModule {
         dispatchers,
         coroutineScope,
         notifManager,
-        userContentMigrator,
+        stringProvider,
     )
 
     @Provides

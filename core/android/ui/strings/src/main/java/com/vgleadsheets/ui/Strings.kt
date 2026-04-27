@@ -149,9 +149,22 @@ fun StringId.id(): Int {
 
         StringId.ERROR_API_UPDATE -> R.string.error_api_update
         StringId.ERROR_DB_UPDATE -> R.string.error_db_update
+        StringId.ERROR_UPDATE_API_PREFIX -> R.string.error_update_api_prefix
+        StringId.ERROR_UPDATE_DB_PREFIX -> R.string.error_update_db_prefix
+        StringId.ERROR_UPDATE_REASON_OFFLINE -> R.string.error_update_reason_offline
+        StringId.ERROR_UPDATE_REASON_NO_INTERNET -> R.string.error_update_reason_no_internet
+        StringId.ERROR_UPDATE_REASON_API_UNREACHABLE -> R.string.error_update_reason_api_unreachable
+        StringId.ERROR_UPDATE_REASON_GENERIC -> R.string.error_update_reason_generic
+        StringId.ERROR_UPDATE_DB_REASON_GENERIC -> R.string.error_update_db_reason_generic
+        StringId.ERROR_UPDATE_DESCRIPTION_FORMAT -> R.string.error_update_description_format
         StringId.ERROR_BROKEN_SCREEN_TITLE -> R.string.error_broken_screen_title
         StringId.ERROR_BROKEN_SCREEN_DESC -> R.string.error_broken_screen_desc
         StringId.ERROR_IMAGE_NETWORK -> R.string.error_image_network
+        StringId.ERROR_IMAGE_OFFLINE -> R.string.error_image_offline
+        StringId.ERROR_IMAGE_NO_INTERNET -> R.string.error_image_no_internet
+        StringId.ERROR_IMAGE_API_UNREACHABLE -> R.string.error_image_api_unreachable
+        StringId.ERROR_IMAGE_SERVER_ERROR -> R.string.error_image_server_error
+        StringId.ERROR_IMAGE_NOT_FOUND -> R.string.error_image_not_found
         StringId.ERROR_WEBVIEW_FAILED -> R.string.error_webview_failed
 
         StringId.TAG_CAPTION_AND_OTHERS -> R.string.tag_caption_and_others

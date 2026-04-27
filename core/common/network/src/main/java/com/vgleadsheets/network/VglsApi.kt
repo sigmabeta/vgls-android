@@ -8,6 +8,10 @@ interface VglsApi {
     @GET("digest?v3=true")
     suspend fun getDigest(): ApiDigest
 
-    @GET("digest/last-updated?rfc3339=true")
+    @GET(LAST_UPDATE_PATH)
     suspend fun getLastUpdateTime(): ApiTime
+
+    companion object {
+        const val LAST_UPDATE_PATH = "digest/last-updated?rfc3339=true"
+    }
 }
