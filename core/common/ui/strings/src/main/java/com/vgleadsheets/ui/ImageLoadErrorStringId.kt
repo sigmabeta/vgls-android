@@ -1,6 +1,7 @@
 package com.vgleadsheets.ui
 
 import com.vgleadsheets.connectivity.NetworkStatus
+import com.vgleadsheets.connectivity.VglsHttpException
 import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
 import java.io.InterruptedIOException
 import java.net.SocketException
@@ -15,6 +16,13 @@ fun Throwable.imageLoadErrorStringId(): StringId {
             NetworkStatus.ONLINE_NO_INTERNET -> StringId.ERROR_IMAGE_NO_INTERNET
             NetworkStatus.ONLINE_API_UNREACHABLE -> StringId.ERROR_IMAGE_API_UNREACHABLE
             NetworkStatus.ONLINE -> StringId.ERROR_IMAGE_NETWORK
+        }
+    }
+    val httpCode = findCause<VglsHttpException>()?.code
+    if (httpCode != null) {
+        return when (httpCode / 100) {
+            4 -> StringId.ERROR_IMAGE_NOT_FOUND
+            else -> StringId.ERROR_IMAGE_SERVER_ERROR
         }
     }
     if (findCause { it is SocketException || it is InterruptedIOException || it is UnknownHostException || it is SSLException } != null) {

@@ -13,6 +13,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okio.IOException
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -41,7 +42,7 @@ object ConnectivityModule {
                         .get()
                         .build()
                     probeClient.newCall(request).execute().use { it.isSuccessful }
-                } catch (e: Exception) {
+                } catch (e: IOException) {
                     hatchet.w("VGLS API probe failed: ${e.message}")
                     false
                 }

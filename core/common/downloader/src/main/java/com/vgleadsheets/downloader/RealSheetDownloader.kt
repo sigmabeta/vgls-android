@@ -1,6 +1,7 @@
 package com.vgleadsheets.downloader
 
 import com.vgleadsheets.connectivity.NetworkStatusProvider
+import com.vgleadsheets.connectivity.VglsHttpException
 import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
 import com.vgleadsheets.connectivity.allowsVglsRequests
 import com.vgleadsheets.downloader.FileUtils.fileReference
@@ -117,7 +118,8 @@ class RealSheetDownloader @Inject constructor(
         val response = sheetDownloadApi.downloadFile(suffixedFileName, partApiId)
 
         if (!response.isSuccessful) {
-            throw IOException(
+            throw VglsHttpException(
+                response.code(),
                 "Response \"${response.code()} - ${response.message()}\" received for filename $suffixedFileName"
             )
         }
