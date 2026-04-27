@@ -4,8 +4,7 @@ import com.vgleadsheets.conversion.Converter
 import com.vgleadsheets.database.android.enitity.TagValueEntity
 import com.vgleadsheets.model.tag.TagValue
 
-class TagValueConverter :
-    Converter<TagValue, TagValueEntity> {
+class TagValueConverter : Converter<TagValue, TagValueEntity> {
     override fun TagValue.toEntity() = TagValueEntity(
         id,
         name,

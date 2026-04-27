@@ -98,6 +98,7 @@ class ViewerViewModel @AssistedInject constructor(
         hatchet.d("${this.javaClass.simpleName} - Handling event: $event")
         when (event) {
             is VglsEvent.SystemBarsBecameHidden -> startHideButtonsTimer()
+
             is VglsEvent.SystemBarsBecameShown -> {
                 startHideChromeTimer()
                 showButtons()

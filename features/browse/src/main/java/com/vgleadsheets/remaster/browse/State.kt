@@ -19,8 +19,7 @@ data class State(
         shouldShowBack = false
     )
 
-    override fun toListItems(stringProvider: StringProvider): List<ListModel> =
-        listOf(
+    override fun toListItems(stringProvider: StringProvider): List<ListModel> = listOf(
             MenuItemListModel(
                 name = stringProvider.getString(StringId.BROWSE_LINK_SHEETS),
                 caption = null,

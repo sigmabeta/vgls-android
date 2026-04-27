@@ -5,9 +5,7 @@ data class TagKey(
     val name: String,
     val values: List<TagValue>?
 ) {
-    fun isDifficultyTag(): Boolean? {
-        return values?.all {
+    fun isDifficultyTag(): Boolean? = values?.all {
             it.isDifficultyValue()
         }
-    }
 }

@@ -218,9 +218,7 @@ appVersioning {
     }
 }
 
-fun checkShouldIncludeFirebase(): Boolean {
-    return File("app/google-services.json").exists()
-}
+fun checkShouldIncludeFirebase(): Boolean = File("app/google-services.json").exists()
 
 fun ApplicationBuildType.addTimeToBuildConfig(butActuallyThough: Boolean) {
     val timeMs = if (butActuallyThough) {

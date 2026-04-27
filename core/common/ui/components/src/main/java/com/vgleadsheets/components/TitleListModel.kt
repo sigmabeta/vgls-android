@@ -18,9 +18,7 @@ data class TitleListModel(
     override val dataId = "listitem.title.$title".hashCode().toLong()
     override val columns = ListModel.COLUMNS_ALL
 
-    override fun hashCode(): Int {
-        return title.hashCode() + subtitle.hashCode() + photoUrl.hashCode() + placeholder.hashCode()
-    }
+    override fun hashCode(): Int = title.hashCode() + subtitle.hashCode() + photoUrl.hashCode() + placeholder.hashCode()
 
     override fun equals(other: Any?): Boolean {
         if (other is TitleListModel) {

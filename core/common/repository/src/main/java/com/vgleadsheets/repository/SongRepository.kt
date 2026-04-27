@@ -12,8 +12,7 @@ class SongRepository(
     fun getAllSongs() = songDataSource
         .getAll()
 
-    fun getFavoriteSongs() =
-        songDataSource.getFavorites()
+    fun getFavoriteSongs() = songDataSource.getFavorites()
 
     fun getSongsForGame(gameId: Long) = songDataSource
         .getSongsForGame(gameId)

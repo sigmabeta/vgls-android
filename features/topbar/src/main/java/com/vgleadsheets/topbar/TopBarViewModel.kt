@@ -14,11 +14,11 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class TopBarViewModel @Inject constructor(
@@ -77,9 +77,13 @@ class TopBarViewModel @Inject constructor(
             hatchet.v("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
                 is VglsEvent.NavigateSuccessTo -> updateCurrentDestination(event.destination)
+
                 is VglsEvent.HideTopBar -> hideTopBar()
+
                 is VglsEvent.HideUiChrome -> hideTopBar()
+
                 is VglsEvent.ShowUiChrome -> showTopBar()
+
                 is VglsEvent.UpdateTitle -> updateTitle(
                     TitleBarModel(
                         event.title,

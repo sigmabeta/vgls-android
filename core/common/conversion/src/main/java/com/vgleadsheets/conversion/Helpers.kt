@@ -5,8 +5,6 @@ import kotlinx.coroutines.flow.map
 
 fun <ListType, ReturnType> Flow<List<ListType>>.mapListTo(
     mapper: (ListType) -> ReturnType
-): Flow<List<ReturnType>> {
-    return map { list ->
+): Flow<List<ReturnType>> = map { list ->
         list.map(mapper)
     }
-}

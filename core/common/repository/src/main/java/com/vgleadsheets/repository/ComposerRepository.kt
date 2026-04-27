@@ -10,8 +10,7 @@ class ComposerRepository(
     fun getAllComposers() = composerDataSource
         .getAll()
 
-    fun getFavoriteComposers() =
-        composerDataSource.getFavorites()
+    fun getFavoriteComposers() = composerDataSource.getFavorites()
 
     fun getComposersForSong(songId: Long) = composerDataSource
         .getComposersForSong(songId)

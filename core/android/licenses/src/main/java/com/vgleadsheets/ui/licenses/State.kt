@@ -8,10 +8,8 @@ import com.vgleadsheets.ui.StringProvider
 data class State(
     val licensePageUrl: String? = null
 ) : VglsState {
-    fun title(stringProvider: StringProvider): TitleBarModel {
-        return TitleBarModel(
+    fun title(stringProvider: StringProvider): TitleBarModel = TitleBarModel(
             title = stringProvider.getString(StringId.SCREEN_TITLE_LICENSES),
             shouldShowBack = true,
         )
-    }
 }

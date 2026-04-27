@@ -13,8 +13,7 @@ import okio.Path.Companion.toOkioPath
 import java.io.File
 
 class FakeOtherImageFetcher(val data: Uri) : Fetcher {
-    override suspend fun fetch(): FetchResult? {
-        return SourceFetchResult(
+    override suspend fun fetch(): FetchResult? = SourceFetchResult(
             source = ImageSource(
                 file = File(data.toString()).toOkioPath(),
                 fileSystem = FileSystem.SYSTEM,
@@ -22,7 +21,6 @@ class FakeOtherImageFetcher(val data: Uri) : Fetcher {
             dataSource = DataSource.MEMORY,
             mimeType = "application/notpdf"
         )
-    }
 
     class Factory : Fetcher.Factory<Uri> {
         override fun create(

@@ -82,13 +82,11 @@ object BitmapUtils {
     fun createBlankBitmap(
         width: Int,
         height: Int,
-    ): Bitmap {
-        return createBitmap(
+    ): Bitmap = createBitmap(
             width,
             height,
             Bitmap.Config.ARGB_8888
         )
-    }
 
     fun renderDebugInfo(
         text: Boolean = true,
@@ -351,10 +349,8 @@ fun computePageToMaxScalingFactor(
     maxHeight: Int,
     pdfWidth: Int,
     pdfHeight: Int
-): Float {
-    return if (maxWidth < maxHeight) {
+): Float = if (maxWidth < maxHeight) {
         maxWidth / pdfWidth.toFloat()
     } else {
         maxHeight / pdfHeight.toFloat()
     }
-}

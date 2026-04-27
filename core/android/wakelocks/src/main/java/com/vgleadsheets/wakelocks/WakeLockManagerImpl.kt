@@ -23,7 +23,8 @@ class WakeLockManagerImpl(
     private val stringProvider: StringProvider,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: VglsDispatchers,
-) : WakeLockManager, ActionSink {
+) : WakeLockManager,
+    ActionSink {
     private var screenOnTimerJob: Job? = null
 
     override fun keepScreenOn() {

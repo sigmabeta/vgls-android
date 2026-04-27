@@ -25,8 +25,7 @@ object AnalyticsModule {
         firebaseAnalytics: FirebaseAnalytics,
         dispatchers: VglsDispatchers,
         coroutineScope: CoroutineScope
-    ): Analytics =
-        FirebaseAnalyticsImpl(
+    ): Analytics = FirebaseAnalyticsImpl(
             firebaseAnalytics,
             dispatchers,
             coroutineScope,

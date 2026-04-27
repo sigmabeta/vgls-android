@@ -1,12 +1,8 @@
 package com.vgleadsheets.pdf
 
-fun PdfConfigById.cacheKey(width: Int?, height: Int?, partApiId: String): String {
-    return "pdf-${keyCommonSection(partApiId, width, height)}"
-}
+fun PdfConfigById.cacheKey(width: Int?, height: Int?, partApiId: String): String = "pdf-${keyCommonSection(partApiId, width, height)}"
 
-fun PdfConfigById.fakeCacheKey(width: Int?, height: Int?, partApiId: String): String {
-    return "fakepdf-${keyCommonSection(partApiId, width, height)}"
-}
+fun PdfConfigById.fakeCacheKey(width: Int?, height: Int?, partApiId: String): String = "fakepdf-${keyCommonSection(partApiId, width, height)}"
 
 private fun PdfConfigById.keyCommonSection(
     partApiId: String,

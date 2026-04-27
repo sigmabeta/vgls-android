@@ -18,7 +18,8 @@ class ComposerAndroidDataSource(
     ComposerRoomDao,
     Composer,
     ComposerEntity,
-    ComposerConverter>(
+    ComposerConverter
+    >(
     convert,
     roomImpl,
 ),
@@ -57,8 +58,7 @@ class ComposerAndroidDataSource(
         .getForSongSync(songId)
         .map { convert.entityToModel(it) }
 
-    override fun incrementSheetsPlayed(composerId: Long) =
-        roomImpl.incrementSheetsPlayed(composerId)
+    override fun incrementSheetsPlayed(composerId: Long) = roomImpl.incrementSheetsPlayed(composerId)
 
     override fun toggleFavorite(composerId: Long) = roomImpl.toggleFavorite(composerId)
 

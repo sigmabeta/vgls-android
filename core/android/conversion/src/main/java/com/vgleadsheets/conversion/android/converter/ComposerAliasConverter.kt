@@ -4,8 +4,7 @@ import com.vgleadsheets.conversion.Converter
 import com.vgleadsheets.database.android.enitity.ComposerAliasEntity
 import com.vgleadsheets.model.alias.ComposerAlias
 
-class ComposerAliasConverter :
-    Converter<ComposerAlias, ComposerAliasEntity> {
+class ComposerAliasConverter : Converter<ComposerAlias, ComposerAliasEntity> {
     override fun ComposerAlias.toEntity() = ComposerAliasEntity(
         composerId,
         name,

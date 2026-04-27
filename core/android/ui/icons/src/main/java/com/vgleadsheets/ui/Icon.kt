@@ -25,8 +25,7 @@ import com.vgleadsheets.ui.icons.IcPlayCircleFilled24
 import com.vgleadsheets.ui.icons.IcRemove24dp
 import com.vgleadsheets.ui.icons.IcTagBlack24dp
 
-fun Icon.vector(): ImageVector {
-    return when (this) {
+fun Icon.vector(): ImageVector = when (this) {
         Icon.ALBUM -> VglsMaterialVectors.IcAlbum24dp
         Icon.BACK -> Icons.AutoMirrored.Default.ArrowBack
         Icon.BROWSE -> Icons.AutoMirrored.Default.List
@@ -50,4 +49,3 @@ fun Icon.vector(): ImageVector {
         Icon.TAG -> VglsMaterialVectors.IcTagBlack24dp
         Icon.WARNING -> Icons.Default.Warning
     }
-}

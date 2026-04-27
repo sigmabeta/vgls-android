@@ -178,10 +178,13 @@ class UpdateManager(
         val reason = when (networkStatus) {
             NetworkStatus.OFFLINE ->
                 stringProvider.getString(StringId.ERROR_UPDATE_REASON_OFFLINE)
+
             NetworkStatus.ONLINE_NO_INTERNET ->
                 stringProvider.getString(StringId.ERROR_UPDATE_REASON_NO_INTERNET)
+
             NetworkStatus.ONLINE_API_UNREACHABLE ->
                 stringProvider.getString(StringId.ERROR_UPDATE_REASON_API_UNREACHABLE)
+
             NetworkStatus.ONLINE, null ->
                 stringProvider.getString(genericFallbackId)
         }

@@ -34,13 +34,11 @@ enum class Destination(
     fun forId(id: Long) = "$destName/$id"
     fun forTwoArgs(id: Long, second: Long) = "$destName/$id/$second"
     fun forString(arg: String) = "$destName/$arg"
-    fun template(): String {
-        return when (argType) {
+    fun template(): String = when (argType) {
             ArgType.NONE -> destName
             ArgType.TWO -> "$destName/{$ARG_TEMPLATE_ONE}/{$ARG_TEMPLATE_TWO}"
             else -> "$destName/{$ARG_TEMPLATE_ONE}"
         }
-    }
 }
 
 const val ARG_TEMPLATE_ONE = "arg_one"

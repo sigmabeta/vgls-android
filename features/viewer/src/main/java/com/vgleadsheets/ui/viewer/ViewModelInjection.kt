@@ -32,12 +32,10 @@ internal fun provideFactory(
     idArg: Long,
     pageArg: Long,
 ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return assistedFactory.create(
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = assistedFactory.create(
             idArg,
             pageArg,
         ) as T
-    }
 }
 
 @Composable

@@ -6,7 +6,5 @@ object BitmapGenerator {
     fun generateBitmap(
         sourceInfo: Any,
         squareImage: Boolean = true,
-    ): ImageBitmap {
-        throw RuntimeException("This shouldn't be used in release builds.")
-    }
+    ): ImageBitmap = throw RuntimeException("This shouldn't be used in release builds.")
 }

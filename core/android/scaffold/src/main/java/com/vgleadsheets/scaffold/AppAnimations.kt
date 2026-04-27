@@ -12,21 +12,13 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.ui.unit.IntOffset
 
-fun enterTransition(): EnterTransition {
-    return slideInHorizontally(enterOffsetSpec, rightOffset) + fadeIn(enterFadeSpec)
-}
+fun enterTransition(): EnterTransition = slideInHorizontally(enterOffsetSpec, rightOffset) + fadeIn(enterFadeSpec)
 
-fun popEnterTransition(): EnterTransition {
-    return slideInHorizontally(enterOffsetSpec, leftOffset) + fadeIn(enterFadeSpec)
-}
+fun popEnterTransition(): EnterTransition = slideInHorizontally(enterOffsetSpec, leftOffset) + fadeIn(enterFadeSpec)
 
-fun exitTransition(): ExitTransition {
-    return slideOutHorizontally(exitOffsetSpec, leftOffset) + fadeOut(exitFadeSpec)
-}
+fun exitTransition(): ExitTransition = slideOutHorizontally(exitOffsetSpec, leftOffset) + fadeOut(exitFadeSpec)
 
-fun popExitTransition(): ExitTransition {
-    return slideOutHorizontally(exitOffsetSpec, rightOffset) + fadeOut(exitFadeSpec)
-}
+fun popExitTransition(): ExitTransition = slideOutHorizontally(exitOffsetSpec, rightOffset) + fadeOut(exitFadeSpec)
 
 private const val DURATION_ANIMATION_ENTER = 500
 private const val DURATION_ANIMATION_EXIT = 300

@@ -42,8 +42,7 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideStringProvider(@ApplicationContext context: Context): StringProvider =
-        StringResources(context.resources)
+    fun provideStringProvider(@ApplicationContext context: Context): StringProvider = StringResources(context.resources)
 
     @Provides
     @Singleton
@@ -136,41 +135,33 @@ object AppModule {
     @Singleton
     internal fun provideEnvironmentManager(
         storage: Storage
-    ): EnvironmentManager {
-        return EnvironmentManager(
+    ): EnvironmentManager = EnvironmentManager(
             storage = storage
         )
-    }
 
     @Provides
     @Singleton
     internal fun provideGeneralSettingsManager(
         storage: Storage
-    ): GeneralSettingsManager {
-        return GeneralSettingsManager(
+    ): GeneralSettingsManager = GeneralSettingsManager(
             storage = storage
         )
-    }
 
     @Provides
     @Singleton
     internal fun provideDebugSettingsManager(
         storage: Storage
-    ): DebugSettingsManager {
-        return DebugSettingsManager(
+    ): DebugSettingsManager = DebugSettingsManager(
             storage = storage
         )
-    }
 
     @Provides
     @Singleton
     internal fun provideSelectedPartManager(
         storage: Storage
-    ): SelectedPartManager {
-        return SelectedPartManager(
+    ): SelectedPartManager = SelectedPartManager(
             storage = storage
         )
-    }
 
     @Provides
     @Singleton

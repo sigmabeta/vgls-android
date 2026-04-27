@@ -422,6 +422,5 @@ class DbUpdater(
             }
         }
 
-    private fun <ModelType> Collection<ModelType>.asIdSet(idExtractor: (ModelType) -> Long) =
-        map(idExtractor).toSet()
+    private fun <ModelType> Collection<ModelType>.asIdSet(idExtractor: (ModelType) -> Long) = map(idExtractor).toSet()
 }

@@ -7,6 +7,5 @@ interface Converter<ModelType, EntityType> {
 
     fun modelToEntity(model: ModelType): EntityType = model.toEntity()
 
-    fun entityToModel(entity: EntityType): ModelType =
-        entity.toModel()
+    fun entityToModel(entity: EntityType): ModelType = entity.toModel()
 }

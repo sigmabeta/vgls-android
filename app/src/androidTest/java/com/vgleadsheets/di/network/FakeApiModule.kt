@@ -25,7 +25,5 @@ object FakeApiModule {
 
     @Provides
     @Singleton
-    fun provideFakeSheetDownloadApi(): SheetDownloadApi {
-        return FakeSheetDownloadApi()
-    }
+    fun provideFakeSheetDownloadApi(): SheetDownloadApi = FakeSheetDownloadApi()
 }

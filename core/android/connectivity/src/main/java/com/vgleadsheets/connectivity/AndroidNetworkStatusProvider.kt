@@ -86,7 +86,9 @@ class AndroidNetworkStatusProvider(
 
         when (new) {
             NetworkStatus.ONLINE -> launchProbe()
+
             NetworkStatus.ONLINE_API_UNREACHABLE -> Unit
+
             NetworkStatus.OFFLINE,
             NetworkStatus.ONLINE_NO_INTERNET -> {
                 probeJob?.cancel()
@@ -124,7 +126,9 @@ class AndroidNetworkStatusProvider(
         return when {
             // NET_CAPABILITY_VALIDATED not available before API 23; assume ONLINE if transport is present.
             Build.VERSION.SDK_INT < Build.VERSION_CODES.M -> NetworkStatus.ONLINE
+
             hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) -> NetworkStatus.ONLINE
+
             else -> NetworkStatus.ONLINE_NO_INTERNET
         }
     }

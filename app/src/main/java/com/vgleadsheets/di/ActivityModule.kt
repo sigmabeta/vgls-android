@@ -73,8 +73,7 @@ class ActivityModule {
         songHistoryRepository: SongHistoryRepository,
         offlineDownloader: OfflineDownloader,
         offlineWorkScheduler: OfflineWorkScheduler,
-    ): BrainProvider =
-        FeatureDirectory(
+    ): BrainProvider = FeatureDirectory(
             dbUpdater = dbUpdater,
             songHistoryRepository = songHistoryRepository,
             songRepository = songRepository,

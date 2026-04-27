@@ -89,15 +89,13 @@ class ImagesComponentsModule {
         pdfImageKeyer: PdfImageKeyer,
         pdfImageFetcherFactory: PdfImageFetcher.Factory,
         pdfImageDecoderFactory: PdfImageDecoder.Factory,
-    ): CoilBuilderFunction {
-        return CoilBuilderFunction {
+    ): CoilBuilderFunction = CoilBuilderFunction {
             add(loadingIndicatorKeyer)
             add(loadingIndicatorFetcherFactory)
             add(pdfImageFetcherFactory)
             add(pdfImageKeyer)
             add(pdfImageDecoderFactory)
         }
-    }
 
     @Provides
     @Named("FakePdfImageLoaderBuilder")
@@ -107,15 +105,13 @@ class ImagesComponentsModule {
         pdfImageFetcherFactory: PdfImageFetcher.Factory,
         fakePdfImageKeyer: FakePdfImageKeyer,
         fakePdfImageDecoderFactory: FakePdfImageDecoder.Factory,
-    ): CoilBuilderFunction {
-        return CoilBuilderFunction {
+    ): CoilBuilderFunction = CoilBuilderFunction {
             add(loadingIndicatorKeyer)
             add(loadingIndicatorFetcherFactory)
             add(pdfImageFetcherFactory)
             add(fakePdfImageKeyer)
             add(fakePdfImageDecoderFactory)
         }
-    }
 
     @Provides
     @Named("RealOtherImageLoaderBuilder")
@@ -130,10 +126,8 @@ class ImagesComponentsModule {
     internal fun providesFakeOtherBuilderFunction(
         otherImageFetcherFactory: FakeOtherImageFetcher.Factory,
         otherImageDecoderFactory: FakeOtherImageDecoder.Factory,
-    ): CoilBuilderFunction {
-        return CoilBuilderFunction {
+    ): CoilBuilderFunction = CoilBuilderFunction {
             add(otherImageFetcherFactory)
             add(otherImageDecoderFactory)
         }
-    }
 }

@@ -7,6 +7,7 @@ fun VglsAction.isInitAction() = when (this) {
     is VglsAction.InitWithId,
     is VglsAction.InitWithString,
     is VglsAction.InitWithPageNumber -> true
+
     else -> false
 }
 
