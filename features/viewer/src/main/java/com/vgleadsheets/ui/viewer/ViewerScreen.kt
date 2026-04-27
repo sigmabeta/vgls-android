@@ -394,8 +394,8 @@ private fun BoxScope.DirectionButton(
         cumulativeDrag += offset
 
         if (
-            action == Action.PrevButtonClicked && (cumulativeDrag > dragThresholdPx) ||
-            action == Action.NextButtonClicked && (cumulativeDrag < -dragThresholdPx)
+            (action == Action.PrevButtonClicked && (cumulativeDrag > dragThresholdPx)) ||
+            (action == Action.NextButtonClicked && (cumulativeDrag < -dragThresholdPx))
         ) {
             onClick()
             cumulativeDrag = 0f
