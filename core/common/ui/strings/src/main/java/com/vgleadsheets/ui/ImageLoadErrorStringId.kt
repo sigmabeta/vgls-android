@@ -11,13 +11,15 @@ import javax.net.ssl.SSLException
 private const val HTTP_CODE_CLASS_DIVISOR = 100
 private const val HTTP_CLIENT_ERROR_CLASS = 4
 
-fun Throwable.imageLoadErrorStringId(): StringId = findCause<VglsNetworkUnavailableException>()?.networkStatus?.toStringId()
-        ?: findCause<VglsHttpException>()?.code?.toHttpStringId()
-        ?: if (isSocketLevelError()) {
-            StringId.ERROR_IMAGE_API_UNREACHABLE
-        } else {
-            StringId.ERROR_IMAGE_NETWORK
-        }
+fun Throwable.imageLoadErrorStringId(): StringId = findCause<VglsNetworkUnavailableException>()
+    ?.networkStatus
+    ?.toStringId()
+    ?: findCause<VglsHttpException>()?.code?.toHttpStringId()
+    ?: if (isSocketLevelError()) {
+        StringId.ERROR_IMAGE_API_UNREACHABLE
+    } else {
+        StringId.ERROR_IMAGE_NETWORK
+    }
 
 private fun NetworkStatus.toStringId() = when (this) {
     NetworkStatus.OFFLINE -> StringId.ERROR_IMAGE_OFFLINE
