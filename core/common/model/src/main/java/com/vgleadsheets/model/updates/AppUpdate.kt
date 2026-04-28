@@ -55,5 +55,19 @@ data class AppUpdate(
                 "Fix multiple crashes and minor bugs."
             )
         )
+
+        val VERSION_2_1_0 = AppUpdate(
+            versionCode = 21000,
+            versionName = "2.1.0",
+            releaseDate = "April 28, 2026",
+            changes = listOf(
+                "Page-turn pedals now work with the Viewer screen.",
+                "Sheets can now be marked as \"available offline\". The app will download all PDFs for that sheet.",
+                "\"Available offline\" sheets will be downloaded in the background, once a week, when plugged in and on wifi. This process will also check for new revisions of these sheets.",
+                "Games and composers can also be marked for offline availability; the app will offline all sheets associated with that game or composer.",
+                "Added a new screen that shows all content made available offline.",
+                "Added more descriptive error messages when in bad network conditions.",
+            )
+        )
     }
 }
