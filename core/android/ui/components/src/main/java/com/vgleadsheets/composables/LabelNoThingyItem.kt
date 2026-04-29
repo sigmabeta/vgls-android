@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.ui.StringId

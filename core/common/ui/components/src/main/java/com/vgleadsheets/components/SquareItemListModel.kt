@@ -1,6 +1,6 @@
 package com.vgleadsheets.components
 
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.ui.Icon
 
 data class SquareItemListModel(

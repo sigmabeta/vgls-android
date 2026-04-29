@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.composables.ImageNameListItem
 import com.vgleadsheets.composables.previews.PreviewActionSink

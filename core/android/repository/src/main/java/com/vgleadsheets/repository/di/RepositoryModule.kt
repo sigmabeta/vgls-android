@@ -1,6 +1,6 @@
 package com.vgleadsheets.repository.di
 
-import com.vgleadsheets.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.android.dao.TransactionDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource

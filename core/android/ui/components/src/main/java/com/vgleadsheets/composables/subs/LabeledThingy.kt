@@ -26,7 +26,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.components.LabelRatingStarListModel

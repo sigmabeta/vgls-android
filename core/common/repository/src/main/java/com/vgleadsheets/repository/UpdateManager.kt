@@ -1,9 +1,9 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.di.ActionDeserializer
-import com.vgleadsheets.connectivity.NetworkStatus
-import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.connectivity.NetworkStatus
+import net.sigmabeta.sage.connectivity.VglsNetworkUnavailableException
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import net.sigmabeta.sage.logging.Hatchet

@@ -2,8 +2,8 @@ package com.vgleadsheets.remaster.updates
 
 import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.analytics.AnalyticsScreen
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet

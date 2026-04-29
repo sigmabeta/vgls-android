@@ -1,8 +1,8 @@
 package com.vgleadsheets.network
 
-import com.vgleadsheets.connectivity.NetworkStatusProvider
-import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
-import com.vgleadsheets.connectivity.allowsVglsRequests
+import net.sigmabeta.sage.connectivity.NetworkStatusProvider
+import net.sigmabeta.sage.connectivity.VglsNetworkUnavailableException
+import net.sigmabeta.sage.connectivity.allowsVglsRequests
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

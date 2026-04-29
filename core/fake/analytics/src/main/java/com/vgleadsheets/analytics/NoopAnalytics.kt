@@ -1,7 +1,7 @@
 package com.vgleadsheets.analytics
 
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
 import net.sigmabeta.sage.logging.Hatchet
 
 @Suppress("TooManyFunctions")

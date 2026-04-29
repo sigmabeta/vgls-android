@@ -1,6 +1,6 @@
 package com.vgleadsheets.bottombar
 
-import com.vgleadsheets.appcomm.VglsState
+import net.sigmabeta.sage.appcomm.VglsState
 import net.sigmabeta.sage.nav.Destination
 
 data class NavBarState(

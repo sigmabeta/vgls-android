@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.browse
 
-import com.vgleadsheets.appcomm.LCE
+import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.NoopListModel

@@ -1,6 +1,6 @@
 package com.vgleadsheets.ui.licenses
 
-import com.vgleadsheets.appcomm.VglsState
+import net.sigmabeta.sage.appcomm.VglsState
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider

@@ -9,7 +9,7 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.vgleadsheets.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.ActionSink
 import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.ZoomableSheetPageItem
 import kotlinx.collections.immutable.ImmutableList

@@ -19,6 +19,6 @@ dependencies {
     implementation(projects.core.android.ui.strings)
     implementation(projects.core.android.viewmodel)
 
-    api(projects.core.common.appcomm)
+    api(libs.sage.common.appcomm)
     api(libs.sage.common.nav)
 }

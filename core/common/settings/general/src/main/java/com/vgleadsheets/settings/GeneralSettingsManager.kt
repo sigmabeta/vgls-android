@@ -1,6 +1,6 @@
 package com.vgleadsheets.settings
 
-import com.vgleadsheets.storage.common.Storage
+import net.sigmabeta.sage.storage.common.Storage
 import kotlinx.coroutines.flow.map
 
 class GeneralSettingsManager(

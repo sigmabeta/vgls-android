@@ -1,8 +1,8 @@
 package com.vgleadsheets.ui.viewer
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsState
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsState
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.components.ZoomableSheetPageListModel

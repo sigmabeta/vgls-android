@@ -3,9 +3,9 @@ package com.vgleadsheets.ui.licenses
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.analytics.AnalyticsScreen
-import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager

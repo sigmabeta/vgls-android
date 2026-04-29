@@ -1,9 +1,9 @@
 package com.vgleadsheets.downloader
 
-import com.vgleadsheets.connectivity.NetworkStatusProvider
-import com.vgleadsheets.connectivity.VglsHttpException
-import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
-import com.vgleadsheets.connectivity.allowsVglsRequests
+import net.sigmabeta.sage.connectivity.NetworkStatusProvider
+import net.sigmabeta.sage.connectivity.VglsHttpException
+import net.sigmabeta.sage.connectivity.VglsNetworkUnavailableException
+import net.sigmabeta.sage.connectivity.allowsVglsRequests
 import com.vgleadsheets.downloader.FileUtils.fileReference
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Part

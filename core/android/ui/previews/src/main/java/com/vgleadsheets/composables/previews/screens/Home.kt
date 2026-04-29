@@ -3,8 +3,8 @@ package com.vgleadsheets.composables.previews.screens
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SheetPageCardListModel
 import com.vgleadsheets.components.SheetPageListModel

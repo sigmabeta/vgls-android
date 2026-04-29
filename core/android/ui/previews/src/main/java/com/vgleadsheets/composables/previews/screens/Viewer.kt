@@ -3,7 +3,7 @@ package com.vgleadsheets.composables.previews.screens
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.vgleadsheets.appcomm.LCE
+import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ScreenPreview

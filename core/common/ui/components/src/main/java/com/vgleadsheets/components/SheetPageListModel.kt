@@ -1,6 +1,6 @@
 package com.vgleadsheets.components
 
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.pdf.PdfConfigById
 import kotlinx.collections.immutable.ImmutableList
 

@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
-import com.vgleadsheets.appcomm.LCE
+import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.SmallTextListModel
 import com.vgleadsheets.list.DelayManager

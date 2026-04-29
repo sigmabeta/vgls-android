@@ -3,11 +3,11 @@ package com.vgleadsheets.viewmodel.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.EventSink
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.components.ErrorStateListModel
 import net.sigmabeta.sage.coroutines.VglsDispatchers

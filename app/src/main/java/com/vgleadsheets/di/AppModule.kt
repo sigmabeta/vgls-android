@@ -6,8 +6,8 @@ import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.EventDispatcherReal
 import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
 import net.sigmabeta.sage.appinfo.AppInfo
 import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.common.debug.ShowDebugProvider
@@ -22,7 +22,7 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
-import com.vgleadsheets.storage.common.Storage
+import net.sigmabeta.sage.storage.common.Storage
 import net.sigmabeta.sage.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources

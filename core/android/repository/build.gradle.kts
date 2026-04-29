@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api(projects.core.common.repository)
-    api(projects.core.common.appcomm)
+    api(libs.sage.common.appcomm)
 
     implementation(projects.core.android.database)
 

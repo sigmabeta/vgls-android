@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.composers.detail
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.components.HeroImageListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel

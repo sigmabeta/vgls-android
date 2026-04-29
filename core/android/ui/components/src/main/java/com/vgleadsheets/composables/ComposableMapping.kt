@@ -3,7 +3,7 @@ package com.vgleadsheets.composables
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.vgleadsheets.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.ActionSink
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.CollapsibleDetailsListModel
 import com.vgleadsheets.components.CtaListModel

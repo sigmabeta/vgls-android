@@ -12,7 +12,7 @@ dependencies {
 
     implementation(projects.core.android.coroutines)
 
-    api(projects.core.common.appcomm)
+    api(libs.sage.common.appcomm)
     api(libs.sage.common.appinfo)
 
     implementation(projects.core.common.model)

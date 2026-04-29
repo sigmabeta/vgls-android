@@ -1,9 +1,9 @@
 package com.vgleadsheets
 
 import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.EventSink
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.VglsEvent
 
 class EventDispatcherReal(
     private val analytics: Analytics,

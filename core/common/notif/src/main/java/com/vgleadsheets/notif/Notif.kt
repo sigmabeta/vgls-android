@@ -1,7 +1,7 @@
 package com.vgleadsheets.notif
 
 import com.squareup.moshi.JsonClass
-import com.vgleadsheets.appcomm.GenericAction
+import net.sigmabeta.sage.appcomm.GenericAction
 import com.vgleadsheets.ui.StringId
 
 @JsonClass(generateAdapter = true)

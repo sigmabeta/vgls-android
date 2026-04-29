@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(libs.sage.common.coroutines)
-    api(projects.core.common.storage.common)
+    api(libs.sage.common.storage.common)
 }

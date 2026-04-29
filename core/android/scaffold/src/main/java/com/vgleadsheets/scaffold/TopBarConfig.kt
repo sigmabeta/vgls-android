@@ -2,7 +2,7 @@ package com.vgleadsheets.scaffold
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.topbar.TopBarState
 
 @OptIn(ExperimentalMaterial3Api::class)

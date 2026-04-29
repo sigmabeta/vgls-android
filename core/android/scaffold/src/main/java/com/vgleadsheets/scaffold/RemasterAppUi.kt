@@ -26,8 +26,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowHeightSizeClass
-import com.vgleadsheets.appcomm.EventSink
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarViewModel
 import com.vgleadsheets.list.WidthClass

@@ -1,6 +1,6 @@
 package com.vgleadsheets.topbar
 
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 
 sealed class TopBarAction : VglsAction() {
     data object Menu : TopBarAction()

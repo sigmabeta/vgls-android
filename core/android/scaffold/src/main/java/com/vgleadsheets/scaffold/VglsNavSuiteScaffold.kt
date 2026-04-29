@@ -21,8 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.vgleadsheets.appcomm.EventSink
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.VglsEvent
 import com.vgleadsheets.bottombar.NavBarItem
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility

@@ -3,7 +3,7 @@ package com.vgleadsheets.di
 import android.app.Activity
 import android.content.Context
 import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory

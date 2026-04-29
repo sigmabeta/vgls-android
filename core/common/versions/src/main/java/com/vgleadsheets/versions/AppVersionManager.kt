@@ -1,14 +1,14 @@
 package com.vgleadsheets.versions
 
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
-import com.vgleadsheets.storage.common.Storage
+import net.sigmabeta.sage.storage.common.Storage
 import com.vgleadsheets.ui.StringId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull

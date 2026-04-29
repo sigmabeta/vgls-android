@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
-import com.vgleadsheets.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.ActionSink
 import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.components.ZoomableSheetPageListModel

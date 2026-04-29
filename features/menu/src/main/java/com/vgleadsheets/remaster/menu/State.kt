@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.menu
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appinfo.AppInfo
 import com.vgleadsheets.components.CheckableListModel
 import com.vgleadsheets.components.LabelValueListModel

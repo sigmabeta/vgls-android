@@ -3,10 +3,10 @@ package com.vgleadsheets.wakelocks
 import android.app.Activity
 import android.view.WindowManager
 import net.sigmabeta.sage.wakelocks.WakeLockManager
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider

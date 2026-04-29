@@ -8,7 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.WidthClass
 import net.sigmabeta.sage.nav.ARG_TEMPLATE_ONE

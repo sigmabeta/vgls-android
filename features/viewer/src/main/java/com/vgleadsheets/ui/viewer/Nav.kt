@@ -9,7 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.nav.ARG_TEMPLATE_ONE
 import net.sigmabeta.sage.nav.ARG_TEMPLATE_TWO
 import net.sigmabeta.sage.nav.Destination

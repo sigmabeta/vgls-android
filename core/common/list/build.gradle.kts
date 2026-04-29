@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api(libs.kotlinx.collections.immutable)
 
-    api(projects.core.common.appcomm)
+    api(libs.sage.common.appcomm)
     api(projects.core.common.analytics)
     api(libs.sage.common.coroutines)
     api(libs.sage.common.logging)

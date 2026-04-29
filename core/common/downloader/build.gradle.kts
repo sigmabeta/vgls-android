@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.core.common.connectivity)
+    implementation(libs.sage.common.connectivity)
     implementation(libs.sage.common.logging)
     implementation(projects.core.common.network)
     implementation(projects.core.common.pdf)

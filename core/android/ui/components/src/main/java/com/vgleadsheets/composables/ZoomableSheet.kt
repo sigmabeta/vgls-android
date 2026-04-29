@@ -15,8 +15,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.images.LoadingIndicatorConfig

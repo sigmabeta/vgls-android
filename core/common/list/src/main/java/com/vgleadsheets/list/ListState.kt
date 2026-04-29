@@ -1,7 +1,7 @@
 package com.vgleadsheets.list
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsState
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsState
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.HorizontalScrollerListModel
 import com.vgleadsheets.components.ListModel

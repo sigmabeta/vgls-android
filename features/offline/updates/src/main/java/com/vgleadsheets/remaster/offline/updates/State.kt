@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.offline.updates
 
-import com.vgleadsheets.appcomm.LCE
+import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.components.CollapsibleDetailsListModel
 import com.vgleadsheets.components.EmptyStateListModel
 import com.vgleadsheets.components.ErrorStateListModel

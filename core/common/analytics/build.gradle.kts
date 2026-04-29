@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.common.appcomm)
+    api(libs.sage.common.appcomm)
 }

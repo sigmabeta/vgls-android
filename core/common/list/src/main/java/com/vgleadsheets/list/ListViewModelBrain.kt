@@ -3,8 +3,8 @@ package com.vgleadsheets.list
 import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.analytics.isInitAction
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineDispatcher

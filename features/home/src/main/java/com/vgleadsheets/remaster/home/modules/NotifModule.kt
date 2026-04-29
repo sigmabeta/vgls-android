@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.home.modules
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.NotifListModel
 import com.vgleadsheets.list.DelayManager

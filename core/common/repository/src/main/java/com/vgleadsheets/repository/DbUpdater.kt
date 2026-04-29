@@ -1,6 +1,6 @@
 package com.vgleadsheets.repository
 
-import com.vgleadsheets.appcomm.LCE
+import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.conversion.asModel
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.TransactionRunner

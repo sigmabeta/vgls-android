@@ -6,7 +6,7 @@ plugins {
 dependencies {
     implementation(libs.androidx.dataStore.preferences)
 
-    api(projects.core.common.storage.common)
+    api(libs.sage.common.storage.common)
 }
 
 android {

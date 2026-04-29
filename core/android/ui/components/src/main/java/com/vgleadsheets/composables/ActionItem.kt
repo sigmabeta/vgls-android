@@ -20,8 +20,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.components.CtaListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import net.sigmabeta.sage.ui.Icon

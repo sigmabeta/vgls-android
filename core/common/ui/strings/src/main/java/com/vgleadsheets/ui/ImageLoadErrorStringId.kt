@@ -1,8 +1,8 @@
 package com.vgleadsheets.ui
 
-import com.vgleadsheets.connectivity.NetworkStatus
-import com.vgleadsheets.connectivity.VglsHttpException
-import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
+import net.sigmabeta.sage.connectivity.NetworkStatus
+import net.sigmabeta.sage.connectivity.VglsHttpException
+import net.sigmabeta.sage.connectivity.VglsNetworkUnavailableException
 import java.io.InterruptedIOException
 import java.net.SocketException
 import java.net.UnknownHostException

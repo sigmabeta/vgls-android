@@ -12,7 +12,7 @@ dependencies {
     implementation(projects.core.android.ui.list)
     implementation(projects.core.android.ui.strings)
 
-    implementation(projects.core.common.appcomm)
+    implementation(libs.sage.common.appcomm)
     implementation(projects.core.common.urlinfo)
 
     // Only for previews

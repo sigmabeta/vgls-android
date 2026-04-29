@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.common.connectivity)
+    api(libs.sage.common.connectivity)
     implementation(libs.sage.common.coroutines)
     implementation(libs.sage.common.logging)
 }

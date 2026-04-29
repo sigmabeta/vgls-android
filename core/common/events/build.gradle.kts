@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(projects.core.common.analytics)
-    api(projects.core.common.appcomm)
+    api(libs.sage.common.appcomm)
 }

@@ -1,6 +1,9 @@
 includeBuild("../sage") {
     dependencySubstitution {
+        substitute(module("net.sigmabeta.sage:common-appcomm")).using(project(":common:appcomm"))
         substitute(module("net.sigmabeta.sage:common-appinfo")).using(project(":common:appinfo"))
+        substitute(module("net.sigmabeta.sage:common-connectivity")).using(project(":common:connectivity"))
+        substitute(module("net.sigmabeta.sage:common-storage-common")).using(project(":common:storage:common"))
         substitute(module("net.sigmabeta.sage:common-coroutines")).using(project(":common:coroutines"))
         substitute(module("net.sigmabeta.sage:common-logging")).using(project(":common:logging"))
         substitute(module("net.sigmabeta.sage:common-nav")).using(project(":common:nav"))
@@ -102,8 +105,6 @@ include(
     ":core:android:wakelocks",
 
     ":core:common:analytics",
-    ":core:common:appcomm",
-    ":core:common:connectivity",
     ":core:common:conversion",
     ":core:common:database",
     ":core:common:debug",
@@ -118,7 +119,6 @@ include(
     ":core:common:pdf",
     ":core:common:perf",
     ":core:common:repository",
-    ":core:common:storage:common",
     ":core:common:settings:general",
     ":core:common:settings:environment",
     ":core:common:settings:part",

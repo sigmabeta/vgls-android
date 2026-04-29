@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.updates
 
-import com.vgleadsheets.appcomm.LCE
+import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.components.CollapsibleDetailsListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel

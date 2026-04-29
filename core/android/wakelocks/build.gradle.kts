@@ -7,7 +7,7 @@ dependencies {
 
     api(libs.sage.common.wakelocks)
 
-    implementation(projects.core.common.appcomm)
+    implementation(libs.sage.common.appcomm)
     implementation(libs.sage.common.coroutines)
     implementation(projects.core.common.ui.strings)
 }

@@ -2,9 +2,9 @@ package com.vgleadsheets.topbar
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.components.TitleBarModel
 import net.sigmabeta.sage.coroutines.VglsDispatchers

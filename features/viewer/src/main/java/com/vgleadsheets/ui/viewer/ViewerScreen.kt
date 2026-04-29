@@ -54,9 +54,9 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.EmptyListIndicator

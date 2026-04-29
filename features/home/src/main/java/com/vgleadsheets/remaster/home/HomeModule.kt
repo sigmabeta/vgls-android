@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.home
 
-import com.vgleadsheets.appcomm.LCE
+import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.list.DelayManager

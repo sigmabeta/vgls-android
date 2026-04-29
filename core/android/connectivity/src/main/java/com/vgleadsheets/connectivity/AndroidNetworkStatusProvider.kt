@@ -6,6 +6,8 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import net.sigmabeta.sage.connectivity.NetworkStatus
+import net.sigmabeta.sage.connectivity.NetworkStatusProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import net.sigmabeta.sage.logging.Hatchet
 import kotlinx.coroutines.CoroutineScope

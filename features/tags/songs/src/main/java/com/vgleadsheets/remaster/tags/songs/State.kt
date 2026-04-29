@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.tags.songs
 
-import com.vgleadsheets.appcomm.LCE
+import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.components.ImageNameCaptionListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel

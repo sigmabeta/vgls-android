@@ -1,6 +1,6 @@
 package com.vgleadsheets.analytics
 
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 
 fun VglsAction.isInitAction() = when (this) {
     is VglsAction.InitNoArgs,

@@ -5,8 +5,8 @@ dependencies {
     api(projects.core.common.model)
     api(projects.core.common.settings.general)
 
-    implementation(projects.core.common.appcomm)
-    implementation(projects.core.common.connectivity)
+    implementation(libs.sage.common.appcomm)
+    implementation(libs.sage.common.connectivity)
     implementation(projects.core.common.conversion)
     implementation(projects.core.common.database)
     implementation(libs.sage.common.logging)

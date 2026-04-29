@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.home
 
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 
 sealed class Action : VglsAction() {
     data class MostSongsGameClicked(val gameId: Long) : Action()

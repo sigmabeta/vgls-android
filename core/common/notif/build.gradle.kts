@@ -6,12 +6,12 @@ plugins {
 dependencies {
     implementation(libs.moshi)
 
-    implementation(projects.core.common.appcomm)
+    implementation(libs.sage.common.appcomm)
     implementation(libs.sage.common.coroutines)
     implementation(libs.sage.common.logging)
     implementation(projects.core.common.model)
     implementation(projects.core.common.ui.strings)
-    implementation(projects.core.common.storage.common)
+    implementation(libs.sage.common.storage.common)
 
     ksp(libs.moshi.codegen)
 }

@@ -1,6 +1,6 @@
 package com.vgleadsheets.search
 
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsAction
 
 sealed class Action : VglsAction() {
     data class SearchHistoryEntryClicked(val query: String) : Action()
