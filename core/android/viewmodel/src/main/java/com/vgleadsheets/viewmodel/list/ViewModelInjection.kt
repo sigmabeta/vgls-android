@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.nav.Destination
 import dagger.assisted.AssistedFactory
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn

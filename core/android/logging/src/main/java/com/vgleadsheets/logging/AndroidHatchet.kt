@@ -2,6 +2,7 @@ package com.vgleadsheets.logging
 
 import android.util.Log
 import java.util.regex.Pattern
+import net.sigmabeta.sage.logging.Hatchet
 
 class AndroidHatchet : Hatchet {
     override fun v(message: String) {

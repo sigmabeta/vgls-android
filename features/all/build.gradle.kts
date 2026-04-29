@@ -8,7 +8,7 @@ dependencies {
 
     api(projects.core.common.list)
     api(projects.core.common.offline)
-    api(projects.core.common.nav)
+    api(libs.sage.common.nav)
     api(projects.core.common.notif)
 
     // List features here.

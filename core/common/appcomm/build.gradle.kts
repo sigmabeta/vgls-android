@@ -6,7 +6,7 @@ plugins {
 dependencies {
     implementation(libs.moshi)
 
-    implementation(projects.core.common.logging)
+    implementation(libs.sage.common.logging)
 
     ksp(libs.moshi.codegen)
 }

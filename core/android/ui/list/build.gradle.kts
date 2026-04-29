@@ -12,7 +12,7 @@ dependencies {
     api(libs.androidx.navigation.compose)
     api(libs.androidx.lifecycle.runtimeCompose)
 
-    api(projects.core.common.nav)
+    api(libs.sage.common.nav)
     implementation(projects.core.android.perf)
     implementation(projects.core.android.ui.components)
     implementation(projects.core.android.ui.strings)

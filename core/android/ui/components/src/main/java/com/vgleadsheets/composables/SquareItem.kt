@@ -32,7 +32,7 @@ import com.vgleadsheets.composables.previews.SquareConstants
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
 import com.vgleadsheets.images.SourceInfo
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 
 @Composable

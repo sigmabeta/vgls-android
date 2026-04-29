@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import androidx.core.graphics.createBitmap
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import kotlin.math.min
 import kotlin.math.roundToInt
 

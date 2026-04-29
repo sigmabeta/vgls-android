@@ -1,7 +1,7 @@
 package com.vgleadsheets.components
 
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 
 data class WideItemListModel(
     override val dataId: Long,

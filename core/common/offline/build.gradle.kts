@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation(projects.core.common.downloader)
-    implementation(projects.core.common.logging)
+    implementation(libs.sage.common.logging)
     implementation(projects.core.common.repository)
     implementation(projects.core.common.time)
 }

@@ -9,7 +9,7 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.updates.OfflineUpdateResult
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.persistentListOf

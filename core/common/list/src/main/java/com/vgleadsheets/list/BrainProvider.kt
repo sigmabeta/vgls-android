@@ -1,6 +1,6 @@
 package com.vgleadsheets.list
 
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.nav.Destination
 import kotlinx.coroutines.CoroutineScope
 
 interface BrainProvider {

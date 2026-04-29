@@ -2,7 +2,7 @@ package com.vgleadsheets.appcomm.di
 
 import com.vgleadsheets.appcomm.GenericAction
 import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -20,7 +20,7 @@ import com.vgleadsheets.components.ImageNameListModel
 import com.vgleadsheets.components.SectionListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.SourceInfo
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.themes.VglsMaterial
 import java.util.Random

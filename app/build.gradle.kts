@@ -129,7 +129,7 @@ dependencies {
     implementation(projects.core.android.ui.themes)
     implementation(projects.core.android.ui.strings)
 
-    implementation(projects.core.common.appinfo)
+    implementation(libs.sage.common.appinfo)
     implementation(projects.core.common.downloader)
     implementation(projects.core.common.debug)
     implementation(projects.core.common.events)

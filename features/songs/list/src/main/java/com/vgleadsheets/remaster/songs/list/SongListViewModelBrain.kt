@@ -7,9 +7,9 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.VglsScheduler
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.flow.catch

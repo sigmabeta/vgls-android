@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.core.common.ui.icons)
+    implementation(libs.sage.common.ui.icons)
 }
 
 android {

@@ -1,6 +1,6 @@
 package com.vgleadsheets.analytics
 
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

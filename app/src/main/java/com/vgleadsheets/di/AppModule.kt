@@ -8,13 +8,13 @@ import com.vgleadsheets.EventDispatcherReal
 import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.di.ActionDeserializer
-import com.vgleadsheets.appinfo.AppInfo
+import net.sigmabeta.sage.appinfo.AppInfo
 import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.dispatchers.DelayManagerImpl
 import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
 import com.vgleadsheets.repository.UpdateManager

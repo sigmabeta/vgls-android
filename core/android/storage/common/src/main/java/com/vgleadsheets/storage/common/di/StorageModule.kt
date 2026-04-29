@@ -5,7 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.storage.common.AndroidDataStore
 import com.vgleadsheets.storage.common.Storage
 import dagger.Module

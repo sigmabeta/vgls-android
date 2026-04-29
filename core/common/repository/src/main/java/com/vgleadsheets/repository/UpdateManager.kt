@@ -6,7 +6,7 @@ import com.vgleadsheets.connectivity.NetworkStatus
 import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi

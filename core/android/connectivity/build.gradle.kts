@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api(projects.core.common.connectivity)
     implementation(projects.core.common.coroutines)
-    implementation(projects.core.common.logging)
+    implementation(libs.sage.common.logging)
 }
 
 android {

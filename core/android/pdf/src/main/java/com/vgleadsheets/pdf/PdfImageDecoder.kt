@@ -7,8 +7,8 @@ import coil3.decode.DecodeResult
 import coil3.decode.Decoder
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
-import com.vgleadsheets.logging.BluntHatchet
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.BluntHatchet
+import net.sigmabeta.sage.logging.Hatchet
 
 class PdfImageDecoder(
     private val hatchet: Hatchet,

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.common.logging)
+    api(libs.sage.common.logging)
 }
 
 android {

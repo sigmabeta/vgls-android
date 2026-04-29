@@ -23,7 +23,7 @@ import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.list.ListStateActual
 import com.vgleadsheets.list.WidthClass
-import com.vgleadsheets.logging.BasicHatchet
+import net.sigmabeta.sage.logging.BasicHatchet
 import com.vgleadsheets.perf.DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW
 import com.vgleadsheets.perf.DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW
 import com.vgleadsheets.perf.LocalLogger

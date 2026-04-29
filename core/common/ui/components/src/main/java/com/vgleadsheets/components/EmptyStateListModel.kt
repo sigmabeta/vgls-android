@@ -1,6 +1,6 @@
 package com.vgleadsheets.components
 
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 
 data class EmptyStateListModel(
     val icon: Icon,

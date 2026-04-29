@@ -2,7 +2,7 @@ package com.vgleadsheets.notif
 
 import com.squareup.moshi.JsonAdapter
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.storage.common.Storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

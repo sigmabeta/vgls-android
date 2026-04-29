@@ -2,7 +2,7 @@ package com.vgleadsheets.analytics
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 
 @Suppress("TooManyFunctions")
 class NoopAnalytics(

@@ -1,13 +1,13 @@
 package com.vgleadsheets.features
 
 import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.appinfo.AppInfo
+import net.sigmabeta.sage.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.list.ListViewModelBrain
-import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain

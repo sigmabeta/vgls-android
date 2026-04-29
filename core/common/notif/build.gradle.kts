@@ -8,7 +8,7 @@ dependencies {
 
     implementation(projects.core.common.appcomm)
     implementation(projects.core.common.coroutines)
-    implementation(projects.core.common.logging)
+    implementation(libs.sage.common.logging)
     implementation(projects.core.common.model)
     implementation(projects.core.common.ui.strings)
     implementation(projects.core.common.storage.common)

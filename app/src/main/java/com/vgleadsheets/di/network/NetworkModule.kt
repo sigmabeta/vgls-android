@@ -1,9 +1,9 @@
 package com.vgleadsheets.di.network
 
 import com.squareup.moshi.Moshi
-import com.vgleadsheets.appinfo.AppInfo
+import net.sigmabeta.sage.appinfo.AppInfo
 import com.vgleadsheets.di.HatchetOkHttpLogger
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.network.OfflineFailFastInterceptor
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module

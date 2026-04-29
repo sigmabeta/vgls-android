@@ -14,8 +14,8 @@ import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.getErrors
-import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.perf.common.PerfMeasurer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject

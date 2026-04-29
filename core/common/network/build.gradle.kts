@@ -8,7 +8,7 @@ dependencies {
 
     // Module deps
     implementation(projects.core.common.connectivity)
-    implementation(projects.core.common.logging)
+    implementation(libs.sage.common.logging)
     implementation(projects.core.common.model)
     implementation(libs.kotlinx.coroutines.core)
 

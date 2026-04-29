@@ -28,7 +28,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.components.IconNameCaptionListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.utils.ImageSize
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
 

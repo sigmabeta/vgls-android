@@ -2,6 +2,7 @@ package com.vgleadsheets.wakelocks
 
 import android.app.Activity
 import android.view.WindowManager
+import net.sigmabeta.sage.wakelocks.WakeLockManager
 import com.vgleadsheets.appcomm.ActionSink
 import com.vgleadsheets.appcomm.EventDispatcher
 import com.vgleadsheets.appcomm.VglsAction

@@ -1,7 +1,7 @@
 package com.vgleadsheets.bottombar
 
-import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.nav.Destination
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.StringId
 
 sealed class NavBarItem(

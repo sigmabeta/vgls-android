@@ -64,7 +64,7 @@ import com.vgleadsheets.composables.ZoomableFullDocItem
 import com.vgleadsheets.composables.ZoomableSheetPageItem
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.vector
 import kotlinx.collections.immutable.ImmutableList

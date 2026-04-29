@@ -1,9 +1,9 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.logging.AndroidHatchet
-import com.vgleadsheets.logging.BluntHatchet
+import net.sigmabeta.sage.logging.BluntHatchet
 import com.vgleadsheets.logging.BuildConfig
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

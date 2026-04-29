@@ -2,7 +2,7 @@ package com.vgleadsheets.repository.history
 
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.SongDataSource
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.settings.GeneralSettingsManager
 import kotlinx.coroutines.CoroutineScope

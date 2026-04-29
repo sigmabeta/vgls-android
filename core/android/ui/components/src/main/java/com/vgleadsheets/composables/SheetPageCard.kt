@@ -26,7 +26,7 @@ import com.vgleadsheets.components.SheetPageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.id

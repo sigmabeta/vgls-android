@@ -5,8 +5,8 @@ package com.vgleadsheets.perf
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.vgleadsheets.logging.BasicHatchet
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.BasicHatchet
+import net.sigmabeta.sage.logging.Hatchet
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.measureTime

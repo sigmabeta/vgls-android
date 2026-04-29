@@ -8,8 +8,8 @@ dependencies {
     api(projects.core.common.appcomm)
     api(projects.core.common.analytics)
     api(projects.core.common.coroutines)
-    api(projects.core.common.logging)
-    api(projects.core.common.nav)
+    api(libs.sage.common.logging)
+    api(libs.sage.common.nav)
     api(projects.core.common.ui.strings)
 
     // For ListModel

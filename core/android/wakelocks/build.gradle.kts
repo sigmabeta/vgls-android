@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation(libs.androidx.activity)
 
-    api(projects.core.common.wakelocks)
+    api(libs.sage.common.wakelocks)
 
     implementation(projects.core.common.appcomm)
     implementation(projects.core.common.coroutines)

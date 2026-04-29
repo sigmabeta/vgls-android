@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Context
 import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appinfo.AppInfo
+import net.sigmabeta.sage.appinfo.AppInfo
 import com.vgleadsheets.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.offline.OfflineDownloader
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.offline.WorkManagerOfflineWorkScheduler
@@ -31,7 +31,7 @@ import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import com.vgleadsheets.wakelocks.WakeLockManager
+import net.sigmabeta.sage.wakelocks.WakeLockManager
 import com.vgleadsheets.wakelocks.WakeLockManagerImpl
 import dagger.Module
 import dagger.Provides

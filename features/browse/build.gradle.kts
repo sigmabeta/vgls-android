@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api(projects.core.common.list)
-    api(projects.core.common.nav)
+    api(libs.sage.common.nav)
     api(projects.core.common.repository)
     api(projects.core.common.ui.components)
 }

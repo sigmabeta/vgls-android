@@ -5,7 +5,7 @@ import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.analytics.isInitAction
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job

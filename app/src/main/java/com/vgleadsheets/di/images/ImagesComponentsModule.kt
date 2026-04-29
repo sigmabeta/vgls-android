@@ -10,7 +10,7 @@ import com.vgleadsheets.images.FakeOtherImageDecoder
 import com.vgleadsheets.images.FakeOtherImageFetcher
 import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.images.LoadingIndicatorKeyer
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer

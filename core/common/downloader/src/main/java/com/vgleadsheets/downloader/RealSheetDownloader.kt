@@ -5,7 +5,7 @@ import com.vgleadsheets.connectivity.VglsHttpException
 import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
 import com.vgleadsheets.connectivity.allowsVglsRequests
 import com.vgleadsheets.downloader.FileUtils.fileReference
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.pdf.PdfConfigById

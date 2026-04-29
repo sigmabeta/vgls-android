@@ -11,7 +11,7 @@ dependencies {
     api(projects.core.common.coroutines)
     api(projects.core.common.debug)
     api(projects.core.common.list)
-    api(projects.core.common.nav)
+    api(libs.sage.common.nav)
     api(projects.core.common.perf)
     api(projects.core.common.repository)
     api(projects.core.common.urlinfo)

@@ -2,7 +2,7 @@ package com.vgleadsheets.components
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.images.SourceInfo
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 
 data class HeroImageListModel(
     val sourceInfo: SourceInfo,

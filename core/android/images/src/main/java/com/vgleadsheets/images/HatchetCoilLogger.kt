@@ -3,7 +3,7 @@ package com.vgleadsheets.images
 import android.util.Log
 import coil3.util.Logger
 import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import javax.inject.Inject
 
 class HatchetCoilLogger @Inject constructor(

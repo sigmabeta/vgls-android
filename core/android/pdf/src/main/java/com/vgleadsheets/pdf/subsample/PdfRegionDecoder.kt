@@ -10,8 +10,8 @@ import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.logging.BluntHatchet
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.BluntHatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.pdf.AsyncRenderer
 import com.vgleadsheets.pdf.PdfToBitmapAsyncRenderer
 import com.vgleadsheets.pdf.PdfToBitmapFullDocAsyncRenderer

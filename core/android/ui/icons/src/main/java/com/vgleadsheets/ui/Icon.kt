@@ -1,6 +1,7 @@
 package com.vgleadsheets.ui
 
 import androidx.compose.material.icons.Icons
+import net.sigmabeta.sage.ui.Icon
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.List

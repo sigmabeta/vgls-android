@@ -24,9 +24,9 @@ fun Rating(
     ) {
         for (index in 1..4) {
             val icon = if (score >= index) {
-                com.vgleadsheets.ui.Icon.JAM_FILLED
+                net.sigmabeta.sage.ui.Icon.JAM_FILLED
             } else {
-                com.vgleadsheets.ui.Icon.JAM_EMPTY
+                net.sigmabeta.sage.ui.Icon.JAM_EMPTY
             }
 
             Icon(

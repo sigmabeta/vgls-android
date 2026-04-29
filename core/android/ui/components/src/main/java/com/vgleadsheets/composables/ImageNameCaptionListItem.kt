@@ -35,7 +35,7 @@ import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.SourceInfo
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.perf.BuildConfig
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu
 import kotlin.math.roundToInt

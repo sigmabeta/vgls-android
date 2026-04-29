@@ -5,7 +5,7 @@ import android.graphics.pdf.PdfRenderer
 import com.vgleadsheets.bitmaps.BitmapSizeInfo
 import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.common.debug.RenderOverlayProvider
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import kotlin.system.measureTimeMillis
 
 @Suppress("MagicNumber")

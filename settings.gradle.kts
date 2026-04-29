@@ -1,4 +1,12 @@
-includeBuild("../sage")
+includeBuild("../sage") {
+    dependencySubstitution {
+        substitute(module("net.sigmabeta.sage:common-appinfo")).using(project(":common:appinfo"))
+        substitute(module("net.sigmabeta.sage:common-logging")).using(project(":common:logging"))
+        substitute(module("net.sigmabeta.sage:common-nav")).using(project(":common:nav"))
+        substitute(module("net.sigmabeta.sage:common-ui-icons")).using(project(":common:ui:icons"))
+        substitute(module("net.sigmabeta.sage:common-wakelocks")).using(project(":common:wakelocks"))
+    }
+}
 includeBuild("build-logic")
 
 pluginManagement {
@@ -92,7 +100,6 @@ include(
     ":core:android:wakelocks",
 
     ":core:common:analytics",
-    ":core:common:appinfo",
     ":core:common:appcomm",
     ":core:common:connectivity",
     ":core:common:conversion",
@@ -103,9 +110,7 @@ include(
     ":core:common:events",
     ":core:common:images",
     ":core:common:list",
-    ":core:common:logging",
     ":core:common:model",
-    ":core:common:nav",
     ":core:common:network",
     ":core:common:notif",
     ":core:common:offline",
@@ -118,11 +123,9 @@ include(
     ":core:common:settings:part",
     ":core:common:time",
     ":core:common:ui:components",
-    ":core:common:ui:icons",
     ":core:common:ui:strings",
     ":core:common:urlinfo",
     ":core:common:versions",
-    ":core:common:wakelocks",
 
     ":core:fake:perf",
     ":core:fake:analytics",

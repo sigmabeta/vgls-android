@@ -1,7 +1,7 @@
 package com.vgleadsheets.offline
 
 import com.vgleadsheets.downloader.SheetDownloader
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.updates.OfflineJobStatus

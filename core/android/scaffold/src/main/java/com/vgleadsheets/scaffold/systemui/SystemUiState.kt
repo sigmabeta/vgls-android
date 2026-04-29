@@ -1,7 +1,7 @@
 package com.vgleadsheets.scaffold.systemui
 
 import com.vgleadsheets.appcomm.VglsState
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.nav.SystemUiVisibility
 
 data class SystemUiState(

@@ -11,9 +11,9 @@ import androidx.navigation.navArgument
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.WidthClass
-import com.vgleadsheets.nav.ARG_TEMPLATE_ONE
-import com.vgleadsheets.nav.ArgType
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.nav.ARG_TEMPLATE_ONE
+import net.sigmabeta.sage.nav.ArgType
+import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.perf.DURATION_THRESHOLD_ERROR_SCREEN_DEVICE
 import com.vgleadsheets.perf.DURATION_THRESHOLD_WARNING_SCREEN_DEVICE
 import com.vgleadsheets.perf.WithMeasurementScreen

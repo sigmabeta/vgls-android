@@ -8,5 +8,5 @@ dependencies {
     api(projects.core.common.analytics)
 
     implementation(projects.core.common.coroutines)
-    implementation(projects.core.common.logging)
+    implementation(libs.sage.common.logging)
 }

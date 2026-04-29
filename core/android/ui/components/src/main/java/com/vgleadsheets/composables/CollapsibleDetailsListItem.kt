@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.CollapsibleDetailsListModel
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.model.generator.StringGenerator
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.vector
 import java.util.Random
 import kotlinx.collections.immutable.toImmutableList

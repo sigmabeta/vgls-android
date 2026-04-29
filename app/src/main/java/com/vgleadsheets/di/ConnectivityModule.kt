@@ -4,7 +4,7 @@ import android.content.Context
 import com.vgleadsheets.connectivity.AndroidNetworkStatusProvider
 import com.vgleadsheets.connectivity.NetworkStatusProvider
 import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides

@@ -1,7 +1,7 @@
 package com.vgleadsheets.ui.list
 
 import androidx.navigation.NavType
-import com.vgleadsheets.nav.ArgType
+import net.sigmabeta.sage.nav.ArgType
 
 fun ArgType.toNavType(): NavType<*> = when (this) {
         ArgType.NONE -> NavType.LongType

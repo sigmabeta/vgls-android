@@ -6,8 +6,8 @@ import com.vgleadsheets.components.MenuItemListModel
 import com.vgleadsheets.components.NoopListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
-import com.vgleadsheets.nav.Destination
-import com.vgleadsheets.ui.Icon
+import net.sigmabeta.sage.nav.Destination
+import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 
