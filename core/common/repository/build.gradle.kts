@@ -12,7 +12,7 @@ dependencies {
     implementation(libs.sage.common.logging)
     implementation(projects.core.common.network)
     implementation(projects.core.common.notif)
-    implementation(projects.core.common.time)
+    implementation(libs.sage.common.time)
     implementation(projects.core.common.analytics)
     implementation(projects.core.common.ui.strings)
 }

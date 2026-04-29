@@ -1,8 +1,10 @@
 includeBuild("../sage") {
     dependencySubstitution {
         substitute(module("net.sigmabeta.sage:common-appinfo")).using(project(":common:appinfo"))
+        substitute(module("net.sigmabeta.sage:common-coroutines")).using(project(":common:coroutines"))
         substitute(module("net.sigmabeta.sage:common-logging")).using(project(":common:logging"))
         substitute(module("net.sigmabeta.sage:common-nav")).using(project(":common:nav"))
+        substitute(module("net.sigmabeta.sage:common-time")).using(project(":common:time"))
         substitute(module("net.sigmabeta.sage:common-ui-icons")).using(project(":common:ui:icons"))
         substitute(module("net.sigmabeta.sage:common-wakelocks")).using(project(":common:wakelocks"))
     }
@@ -103,7 +105,6 @@ include(
     ":core:common:appcomm",
     ":core:common:connectivity",
     ":core:common:conversion",
-    ":core:common:coroutines",
     ":core:common:database",
     ":core:common:debug",
     ":core:common:downloader",
@@ -121,7 +122,6 @@ include(
     ":core:common:settings:general",
     ":core:common:settings:environment",
     ":core:common:settings:part",
-    ":core:common:time",
     ":core:common:ui:components",
     ":core:common:ui:strings",
     ":core:common:urlinfo",

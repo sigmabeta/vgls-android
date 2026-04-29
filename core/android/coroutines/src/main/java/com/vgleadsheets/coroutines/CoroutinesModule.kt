@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 
 @InstallIn(SingletonComponent::class)
 @Module

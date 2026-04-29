@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.common.coroutines)
+    api(libs.sage.common.coroutines)
     api(projects.core.common.storage.common)
 }

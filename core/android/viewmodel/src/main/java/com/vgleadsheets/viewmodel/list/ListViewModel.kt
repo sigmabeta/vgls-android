@@ -10,7 +10,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.common.debug.ShowDebugProvider
 import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.ListViewModelBrain
 import com.vgleadsheets.list.getErrors

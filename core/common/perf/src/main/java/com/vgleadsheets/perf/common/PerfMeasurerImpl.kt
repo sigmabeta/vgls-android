@@ -1,6 +1,6 @@
 package com.vgleadsheets.perf.common
 
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

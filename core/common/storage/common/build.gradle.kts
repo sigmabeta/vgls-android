@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.common.coroutines)
+    api(libs.sage.common.coroutines)
 }

@@ -5,7 +5,7 @@ import android.content.Context
 import com.vgleadsheets.analytics.Analytics
 import com.vgleadsheets.appcomm.EventDispatcher
 import net.sigmabeta.sage.appinfo.AppInfo
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.list.BrainProvider
 import com.vgleadsheets.list.DelayManager
@@ -28,7 +28,7 @@ import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import net.sigmabeta.sage.wakelocks.WakeLockManager

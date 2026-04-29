@@ -3,7 +3,7 @@ package com.vgleadsheets.analytics
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.vgleadsheets.analytics.firebase.FirebaseAnalyticsImpl
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

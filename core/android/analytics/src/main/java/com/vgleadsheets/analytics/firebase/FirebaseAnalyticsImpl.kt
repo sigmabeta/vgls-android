@@ -7,7 +7,7 @@ import com.vgleadsheets.analytics.AnalyticsScreen
 import com.vgleadsheets.analytics.getDetails
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

@@ -1,6 +1,6 @@
 package com.vgleadsheets.features
 
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.list.VglsScheduler
 import kotlinx.coroutines.CoroutineScope

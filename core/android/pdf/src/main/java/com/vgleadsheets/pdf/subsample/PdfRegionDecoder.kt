@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import com.vgleadsheets.common.debug.RenderOverlayProvider
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import net.sigmabeta.sage.logging.BluntHatchet
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.pdf.AsyncRenderer

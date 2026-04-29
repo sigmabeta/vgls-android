@@ -12,7 +12,7 @@ import com.vgleadsheets.database.source.OfflineUpdateResultDataSource
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.model.updates.OfflineUpdateResult
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import org.threeten.bp.Instant

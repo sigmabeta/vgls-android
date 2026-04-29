@@ -1,6 +1,6 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.remaster.home.HomeModuleProvider
 import com.vgleadsheets.remaster.home.modules.MostPlaysComposerModule
 import com.vgleadsheets.remaster.home.modules.MostPlaysGamesModule

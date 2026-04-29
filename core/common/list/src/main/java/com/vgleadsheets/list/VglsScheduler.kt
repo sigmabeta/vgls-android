@@ -1,6 +1,6 @@
 package com.vgleadsheets.list
 
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import kotlinx.coroutines.CoroutineScope
 
 interface VglsScheduler {

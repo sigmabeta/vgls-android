@@ -2,7 +2,7 @@ package com.vgleadsheets.versions
 
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.di.ActionDeserializer
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory

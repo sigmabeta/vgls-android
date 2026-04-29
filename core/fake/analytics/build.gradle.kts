@@ -7,6 +7,6 @@ dependencies {
     // Contains the Tracker interface
     api(projects.core.common.analytics)
 
-    implementation(projects.core.common.coroutines)
+    implementation(libs.sage.common.coroutines)
     implementation(libs.sage.common.logging)
 }

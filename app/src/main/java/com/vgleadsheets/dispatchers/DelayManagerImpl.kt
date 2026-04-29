@@ -1,6 +1,6 @@
 package com.vgleadsheets.dispatchers
 
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.list.DelayManager
 import com.vgleadsheets.settings.DebugSettingsManager
 import kotlinx.coroutines.CoroutineScope

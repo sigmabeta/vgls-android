@@ -1,7 +1,7 @@
 package com.vgleadsheets.notif
 
 import com.squareup.moshi.JsonAdapter
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.storage.common.Storage
 import kotlinx.coroutines.CoroutineScope

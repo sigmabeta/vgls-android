@@ -2,7 +2,7 @@ package com.vgleadsheets.repository
 
 import com.vgleadsheets.appcomm.LCE
 import com.vgleadsheets.conversion.asModel
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.TransactionRunner
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
@@ -29,7 +29,7 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

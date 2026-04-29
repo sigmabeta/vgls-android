@@ -14,7 +14,7 @@ import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.collections.immutable.persistentListOf

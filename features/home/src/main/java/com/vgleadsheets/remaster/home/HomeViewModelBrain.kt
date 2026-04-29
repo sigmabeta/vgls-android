@@ -10,7 +10,7 @@ import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.TagRepository
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch

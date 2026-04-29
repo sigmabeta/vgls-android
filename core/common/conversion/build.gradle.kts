@@ -4,6 +4,6 @@ plugins {
 
 dependencies {
     api(projects.core.common.model)
-    implementation(projects.core.common.coroutines)
+    implementation(libs.sage.common.coroutines)
     implementation(projects.core.common.network)
 }

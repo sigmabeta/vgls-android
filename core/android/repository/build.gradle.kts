@@ -9,11 +9,11 @@ dependencies {
 
     implementation(projects.core.android.database)
 
-    implementation(projects.core.common.coroutines)
+    implementation(libs.sage.common.coroutines)
     implementation(projects.core.common.conversion)
     implementation(projects.core.common.network)
     implementation(projects.core.common.notif)
-    implementation(projects.core.common.time)
+    implementation(libs.sage.common.time)
     implementation(projects.core.common.ui.strings)
     implementation(projects.core.common.analytics)
 }

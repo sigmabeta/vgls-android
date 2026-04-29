@@ -7,7 +7,7 @@ dependencies {
 
     api(projects.core.common.appcomm)
     api(projects.core.common.analytics)
-    api(projects.core.common.coroutines)
+    api(libs.sage.common.coroutines)
     api(libs.sage.common.logging)
     api(libs.sage.common.nav)
     api(projects.core.common.ui.strings)

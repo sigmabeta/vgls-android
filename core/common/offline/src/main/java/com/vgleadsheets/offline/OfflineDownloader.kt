@@ -7,7 +7,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.UpdateManager
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import kotlinx.coroutines.flow.first
 
 class OfflineDownloader(

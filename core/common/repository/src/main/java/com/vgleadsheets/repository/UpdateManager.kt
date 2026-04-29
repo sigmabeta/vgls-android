@@ -4,7 +4,7 @@ import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.di.ActionDeserializer
 import com.vgleadsheets.connectivity.NetworkStatus
 import com.vgleadsheets.connectivity.VglsNetworkUnavailableException
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.time.Time
@@ -13,7 +13,7 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope

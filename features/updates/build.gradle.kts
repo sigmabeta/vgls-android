@@ -11,5 +11,5 @@ dependencies {
     api(projects.core.common.repository)
     api(projects.core.common.ui.components)
     api(projects.core.common.ui.strings)
-    api(projects.core.common.time)
+    api(libs.sage.common.time)
 }

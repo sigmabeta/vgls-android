@@ -1,7 +1,7 @@
 package com.vgleadsheets.repository.di
 
 import com.vgleadsheets.appcomm.di.ActionDeserializer
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.android.dao.TransactionDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
@@ -43,7 +43,7 @@ import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.GeneralSettingsManager
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import dagger.Module
 import dagger.Provides

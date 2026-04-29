@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     api(projects.core.common.connectivity)
-    implementation(projects.core.common.coroutines)
+    implementation(libs.sage.common.coroutines)
     implementation(libs.sage.common.logging)
 }
 

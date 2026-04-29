@@ -1,6 +1,6 @@
 package com.vgleadsheets.repository.history
 
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.SongDataSource
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Song

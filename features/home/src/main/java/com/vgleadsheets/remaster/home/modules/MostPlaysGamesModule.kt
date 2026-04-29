@@ -11,7 +11,7 @@ import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import com.vgleadsheets.time.TimeUtils
+import net.sigmabeta.sage.time.TimeUtils
 import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.StringId
 import com.vgleadsheets.ui.StringProvider

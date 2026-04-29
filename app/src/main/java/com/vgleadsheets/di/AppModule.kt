@@ -11,7 +11,7 @@ import com.vgleadsheets.appcomm.di.ActionDeserializer
 import net.sigmabeta.sage.appinfo.AppInfo
 import com.vgleadsheets.common.debug.RenderOverlayProvider
 import com.vgleadsheets.common.debug.ShowDebugProvider
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.dispatchers.DelayManagerImpl
 import com.vgleadsheets.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
@@ -23,7 +23,7 @@ import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.storage.common.Storage
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import com.vgleadsheets.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.urlinfo.UrlInfoProvider

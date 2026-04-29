@@ -7,7 +7,7 @@ dependencies {
     implementation(libs.moshi)
 
     implementation(projects.core.common.appcomm)
-    implementation(projects.core.common.coroutines)
+    implementation(libs.sage.common.coroutines)
     implementation(libs.sage.common.logging)
     implementation(projects.core.common.model)
     implementation(projects.core.common.ui.strings)

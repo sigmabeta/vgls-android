@@ -1,7 +1,7 @@
 package com.vgleadsheets.repository.history
 
 import com.vgleadsheets.conversion.mapListTo
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.SongDataSource

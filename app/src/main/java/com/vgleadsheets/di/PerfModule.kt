@@ -1,6 +1,6 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.perf.common.PerfBackend
 import com.vgleadsheets.perf.common.PerfMeasurer
 import com.vgleadsheets.perf.common.PerfMeasurerImpl

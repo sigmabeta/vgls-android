@@ -8,7 +8,7 @@ dependencies {
     api(libs.androidx.lifecycle.viewModelCompose)
 
     api(projects.core.common.analytics)
-    api(projects.core.common.coroutines)
+    api(libs.sage.common.coroutines)
     api(projects.core.common.debug)
     api(projects.core.common.list)
     api(libs.sage.common.nav)
