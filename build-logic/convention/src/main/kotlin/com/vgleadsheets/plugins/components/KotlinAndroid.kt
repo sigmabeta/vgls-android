@@ -105,6 +105,6 @@ private fun Project.configureDetekt() {
     }
 
     extensions.configure<DetektExtension> {
-        config.setFrom("${rootDir.absolutePath}/detekt-config-vgls.yml")
+        config.setFrom("${rootDir.absolutePath}/detekt-config.yml")
     }
 }

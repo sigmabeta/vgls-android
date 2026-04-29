@@ -1,3 +1,4 @@
+includeBuild("../sage")
 includeBuild("build-logic")
 
 pluginManagement {
@@ -43,6 +44,11 @@ dependencyResolutionManagement {
         // For Telephoto
         maven {
             setUrl("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
+    }
+    versionCatalogs {
+        create("libs") {
+            from(files("../sage/gradle/libs.versions.toml"))
         }
     }
 }
