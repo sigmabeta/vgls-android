@@ -18,7 +18,7 @@ import com.vgleadsheets.components.LabelRatingStarListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu

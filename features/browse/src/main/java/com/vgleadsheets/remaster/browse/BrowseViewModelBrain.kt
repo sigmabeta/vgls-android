@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.browse
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
@@ -10,7 +10,7 @@ import com.vgleadsheets.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.TagRepository
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.onEach
 
 class BrowseViewModelBrain(

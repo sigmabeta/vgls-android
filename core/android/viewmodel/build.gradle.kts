@@ -7,7 +7,7 @@ plugins {
 dependencies {
     api(libs.androidx.lifecycle.viewModelCompose)
 
-    api(projects.core.common.analytics)
+    api(libs.sage.common.analytics)
     api(libs.sage.common.coroutines)
     api(projects.core.common.debug)
     api(projects.core.common.list)

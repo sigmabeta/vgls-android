@@ -20,8 +20,8 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.collections.immutable.toImmutableList
 
 @Suppress("MagicNumber")

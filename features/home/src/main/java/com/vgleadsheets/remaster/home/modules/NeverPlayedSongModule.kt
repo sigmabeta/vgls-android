@@ -15,8 +15,8 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import net.sigmabeta.sage.time.ThreeTenTime
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter

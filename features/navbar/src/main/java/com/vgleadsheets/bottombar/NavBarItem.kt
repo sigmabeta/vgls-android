@@ -2,7 +2,7 @@ package com.vgleadsheets.bottombar
 
 import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 
 sealed class NavBarItem(
     val route: String,

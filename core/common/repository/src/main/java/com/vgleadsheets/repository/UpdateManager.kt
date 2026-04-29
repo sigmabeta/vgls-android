@@ -14,8 +14,8 @@ import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import net.sigmabeta.sage.time.ThreeTenTime
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

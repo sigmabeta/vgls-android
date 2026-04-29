@@ -28,8 +28,8 @@ import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList

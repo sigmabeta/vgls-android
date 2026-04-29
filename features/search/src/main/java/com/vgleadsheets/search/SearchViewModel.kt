@@ -1,8 +1,8 @@
 package com.vgleadsheets.search
 
 import androidx.lifecycle.viewModelScope
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.EventSink
@@ -19,7 +19,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.SearchRepository
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject

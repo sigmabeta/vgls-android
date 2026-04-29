@@ -2,9 +2,9 @@ package com.vgleadsheets.analytics.firebase
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
-import com.vgleadsheets.analytics.getDetails
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.getDetails
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
 import net.sigmabeta.sage.coroutines.VglsDispatchers

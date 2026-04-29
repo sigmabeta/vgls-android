@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.menu
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
@@ -18,7 +18,7 @@ import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch

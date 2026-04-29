@@ -1,6 +1,8 @@
 package com.vgleadsheets.ui
 
 import android.content.res.Resources
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 class StringResources(
     private val resources: Resources,

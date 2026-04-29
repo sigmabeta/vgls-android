@@ -8,7 +8,7 @@ import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.id
 
 @Composable

@@ -9,7 +9,7 @@ dependencies {
 
     implementation(libs.sage.common.appcomm)
     implementation(libs.sage.common.coroutines)
-    implementation(projects.core.common.ui.strings)
+    implementation(libs.sage.common.ui.strings)
 }
 
 android {

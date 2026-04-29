@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     // Contains the Tracker interface
-    api(projects.core.common.analytics)
+    api(libs.sage.common.analytics)
 
     // Firebase (Must be here or else we can"t log events
     implementation(platform(libs.firebase.bom))

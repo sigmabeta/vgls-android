@@ -44,7 +44,7 @@ import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

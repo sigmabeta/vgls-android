@@ -1,7 +1,7 @@
 package com.vgleadsheets.topbar
 
 import androidx.lifecycle.viewModelScope
-import com.vgleadsheets.analytics.Analytics
+import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent

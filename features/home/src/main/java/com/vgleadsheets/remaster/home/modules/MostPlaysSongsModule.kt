@@ -15,8 +15,8 @@ import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import net.sigmabeta.sage.time.TimeUtils
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map

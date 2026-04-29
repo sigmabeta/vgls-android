@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.common.analytics)
+    api(libs.sage.common.analytics)
     api(libs.sage.common.appcomm)
 }

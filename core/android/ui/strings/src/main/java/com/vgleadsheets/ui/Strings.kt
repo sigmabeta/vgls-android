@@ -1,6 +1,7 @@
 package com.vgleadsheets.ui
 
 import com.vgleadsheets.ui.strings.R
+import net.sigmabeta.sage.ui.StringId
 
 @Suppress("CyclomaticComplexMethod", "LongMethod")
 fun StringId.id(): Int = when (this) {

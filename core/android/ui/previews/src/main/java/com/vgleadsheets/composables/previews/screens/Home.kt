@@ -25,7 +25,7 @@ import com.vgleadsheets.remaster.home.State
 import com.vgleadsheets.remaster.home.modules.RngModule
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 import kotlinx.collections.immutable.persistentListOf
 import java.util.Random

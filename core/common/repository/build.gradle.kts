@@ -13,6 +13,6 @@ dependencies {
     implementation(projects.core.common.network)
     implementation(projects.core.common.notif)
     implementation(libs.sage.common.time)
-    implementation(projects.core.common.analytics)
-    implementation(projects.core.common.ui.strings)
+    implementation(libs.sage.common.analytics)
+    implementation(libs.sage.common.ui.strings)
 }

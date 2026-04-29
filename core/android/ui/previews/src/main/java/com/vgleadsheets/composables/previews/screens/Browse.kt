@@ -9,7 +9,7 @@ import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.remaster.browse.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 
 @DevicePreviews

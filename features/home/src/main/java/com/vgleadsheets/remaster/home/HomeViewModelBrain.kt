@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.home
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
 import com.vgleadsheets.list.ListViewModelBrain
@@ -11,7 +11,7 @@ import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.TagRepository
 import net.sigmabeta.sage.time.ThreeTenTime
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull

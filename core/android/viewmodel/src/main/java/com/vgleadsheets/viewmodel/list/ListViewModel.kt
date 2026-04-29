@@ -2,7 +2,7 @@ package com.vgleadsheets.viewmodel.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vgleadsheets.analytics.Analytics
+import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.EventSink

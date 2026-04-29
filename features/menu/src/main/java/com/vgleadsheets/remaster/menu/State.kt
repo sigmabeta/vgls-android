@@ -14,8 +14,8 @@ import com.vgleadsheets.components.SectionHeaderListModel
 import com.vgleadsheets.components.SingleTextListModel
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val refreshCheckStatus: LCE<Unit> = LCE.Uninitialized,

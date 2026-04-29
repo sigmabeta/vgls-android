@@ -9,7 +9,7 @@ import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
 import net.sigmabeta.sage.storage.common.Storage
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch

@@ -5,8 +5,8 @@ import com.vgleadsheets.components.ListModel
 import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.collections.immutable.persistentListOf
 
 data class State(

@@ -13,7 +13,7 @@ dependencies {
 
     api(projects.core.android.bitmaps)
 
-    implementation(projects.core.common.analytics)
+    implementation(libs.sage.common.analytics)
     implementation(projects.core.common.images)
     implementation(projects.core.common.model)
 }

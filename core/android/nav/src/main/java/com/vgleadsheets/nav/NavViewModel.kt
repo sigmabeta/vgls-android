@@ -10,7 +10,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
-import com.vgleadsheets.analytics.Analytics
+import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
@@ -21,7 +21,7 @@ import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.settings.DebugSettingsManager
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

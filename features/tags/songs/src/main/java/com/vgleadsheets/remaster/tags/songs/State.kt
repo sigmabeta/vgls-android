@@ -11,8 +11,8 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val tagValue: LCE<TagValue> = LCE.Uninitialized,

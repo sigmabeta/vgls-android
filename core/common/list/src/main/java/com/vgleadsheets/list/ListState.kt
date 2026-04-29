@@ -10,8 +10,8 @@ import com.vgleadsheets.components.LoadingType
 import com.vgleadsheets.components.NoopListModel
 import com.vgleadsheets.components.SectionListModel
 import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 

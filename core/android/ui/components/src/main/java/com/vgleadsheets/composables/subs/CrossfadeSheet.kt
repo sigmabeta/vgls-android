@@ -38,7 +38,7 @@ import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
 import com.vgleadsheets.perf.BuildConfig
 import com.vgleadsheets.ui.id
-import com.vgleadsheets.ui.imageLoadErrorStringId
+import net.sigmabeta.sage.ui.imageLoadErrorStringId
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.roundToInt

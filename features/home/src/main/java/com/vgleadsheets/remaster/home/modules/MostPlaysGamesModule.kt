@@ -13,8 +13,8 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import net.sigmabeta.sage.time.TimeUtils
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.map
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant

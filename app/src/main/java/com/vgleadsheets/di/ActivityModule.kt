@@ -2,7 +2,7 @@ package com.vgleadsheets.di
 
 import android.app.Activity
 import android.content.Context
-import com.vgleadsheets.analytics.Analytics
+import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.coroutines.VglsDispatchers
@@ -29,7 +29,7 @@ import com.vgleadsheets.settings.DebugSettingsManager
 import com.vgleadsheets.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import net.sigmabeta.sage.time.ThreeTenTime
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import net.sigmabeta.sage.wakelocks.WakeLockManager
 import com.vgleadsheets.wakelocks.WakeLockManagerImpl

@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.games.detail
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
@@ -17,7 +17,7 @@ import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.OfflineRepository
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map

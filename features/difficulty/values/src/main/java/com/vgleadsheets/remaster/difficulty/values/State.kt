@@ -7,8 +7,8 @@ import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val difficultyType: LCE<TagKey> = LCE.Uninitialized,

@@ -1,8 +1,8 @@
 package com.vgleadsheets.ui.viewer
 
 import androidx.lifecycle.viewModelScope
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.EventSink
@@ -16,7 +16,7 @@ import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.settings.GeneralSettingsManager
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
 import net.sigmabeta.sage.wakelocks.WakeLockManager

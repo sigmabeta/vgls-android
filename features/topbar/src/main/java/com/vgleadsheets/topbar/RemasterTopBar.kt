@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 

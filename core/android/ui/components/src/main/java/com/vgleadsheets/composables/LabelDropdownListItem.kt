@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.components.DropdownSettingListModel
 import com.vgleadsheets.composables.subs.Dropdown
 import com.vgleadsheets.composables.subs.LabeledThingy
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import com.vgleadsheets.ui.themes.VglsMaterialMenu

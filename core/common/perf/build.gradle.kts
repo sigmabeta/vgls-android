@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(libs.sage.common.coroutines)
-    api(projects.core.common.analytics)
+    api(libs.sage.common.analytics)
 }

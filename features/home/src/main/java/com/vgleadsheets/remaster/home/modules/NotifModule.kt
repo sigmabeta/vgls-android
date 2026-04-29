@@ -10,7 +10,7 @@ import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

@@ -2,7 +2,8 @@ package com.vgleadsheets.analytics
 
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.vgleadsheets.analytics.firebase.FirebaseAnalyticsImpl
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.firebase.FirebaseAnalyticsImpl
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import dagger.Module
 import dagger.Provides

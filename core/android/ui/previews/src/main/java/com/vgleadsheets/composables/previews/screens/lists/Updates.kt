@@ -11,7 +11,7 @@ import com.vgleadsheets.list.WidthClass
 import com.vgleadsheets.model.updates.AppUpdate
 import com.vgleadsheets.remaster.updates.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 
 @DevicePreviews

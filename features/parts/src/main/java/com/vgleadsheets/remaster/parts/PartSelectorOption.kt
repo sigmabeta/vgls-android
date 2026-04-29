@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.parts
 
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 
 enum class PartSelectorOption(
     val apiId: String,

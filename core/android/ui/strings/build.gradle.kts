@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    api(projects.core.common.ui.strings)
+    api(libs.sage.common.ui.strings)
 }

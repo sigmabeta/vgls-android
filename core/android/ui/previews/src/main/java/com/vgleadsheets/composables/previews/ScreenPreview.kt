@@ -32,7 +32,7 @@ import com.vgleadsheets.scaffold.AppContent
 import com.vgleadsheets.scaffold.TopBarConfig
 import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarVisibility
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.ui.list.GridScreen
 import com.vgleadsheets.ui.list.ListScreen

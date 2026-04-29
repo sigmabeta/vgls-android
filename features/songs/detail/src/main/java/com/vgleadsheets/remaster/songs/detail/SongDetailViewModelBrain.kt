@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.songs.detail
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
@@ -20,7 +20,7 @@ import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfo
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.flow.catch

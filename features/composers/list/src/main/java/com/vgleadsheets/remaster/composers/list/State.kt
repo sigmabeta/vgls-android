@@ -8,8 +8,8 @@ import com.vgleadsheets.list.ColumnType
 import com.vgleadsheets.list.ListState
 import com.vgleadsheets.model.Composer
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 @Suppress("MagicNumber")
 data class State(

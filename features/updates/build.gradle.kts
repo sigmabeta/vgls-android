@@ -10,6 +10,6 @@ dependencies {
     api(libs.sage.common.nav)
     api(projects.core.common.repository)
     api(projects.core.common.ui.components)
-    api(projects.core.common.ui.strings)
+    api(libs.sage.common.ui.strings)
     api(libs.sage.common.time)
 }

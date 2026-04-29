@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.favorites
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
@@ -13,7 +13,7 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.FavoriteRepository
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 

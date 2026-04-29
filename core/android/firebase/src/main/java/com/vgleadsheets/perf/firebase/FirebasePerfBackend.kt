@@ -2,7 +2,7 @@ package com.vgleadsheets.perf.firebase
 
 import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.perf.metrics.Trace
-import com.vgleadsheets.analytics.Analytics
+import net.sigmabeta.sage.analytics.Analytics
 import com.vgleadsheets.perf.common.PerfBackend
 import com.vgleadsheets.perf.common.PerfStage
 

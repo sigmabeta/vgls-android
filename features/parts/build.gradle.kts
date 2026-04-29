@@ -9,5 +9,5 @@ dependencies {
     api(libs.sage.common.nav)
     api(projects.core.common.settings.part)
     api(projects.core.common.ui.components)
-    api(projects.core.common.ui.strings)
+    api(libs.sage.common.ui.strings)
 }

@@ -1,5 +1,8 @@
 package com.vgleadsheets.analytics
 
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.getDetails
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
 import net.sigmabeta.sage.logging.Hatchet

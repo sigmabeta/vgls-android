@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.EventDispatcherReal
-import com.vgleadsheets.analytics.Analytics
+import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.di.ActionDeserializer
 import net.sigmabeta.sage.appinfo.AppInfo
@@ -24,7 +24,7 @@ import com.vgleadsheets.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import net.sigmabeta.sage.storage.common.Storage
 import net.sigmabeta.sage.time.ThreeTenTime
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.ui.StringResources
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.versions.AppVersionManager

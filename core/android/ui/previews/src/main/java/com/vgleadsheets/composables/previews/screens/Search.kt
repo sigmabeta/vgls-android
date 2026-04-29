@@ -14,7 +14,7 @@ import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import com.vgleadsheets.search.SearchScreen
 import com.vgleadsheets.search.SearchState
 import com.vgleadsheets.topbar.TopBarVisibility
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import java.util.Random
 
 @DevicePreviews

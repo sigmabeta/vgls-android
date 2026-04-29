@@ -1,5 +1,6 @@
 includeBuild("../sage") {
     dependencySubstitution {
+        substitute(module("net.sigmabeta.sage:common-analytics")).using(project(":common:analytics"))
         substitute(module("net.sigmabeta.sage:common-appcomm")).using(project(":common:appcomm"))
         substitute(module("net.sigmabeta.sage:common-appinfo")).using(project(":common:appinfo"))
         substitute(module("net.sigmabeta.sage:common-connectivity")).using(project(":common:connectivity"))
@@ -9,6 +10,7 @@ includeBuild("../sage") {
         substitute(module("net.sigmabeta.sage:common-nav")).using(project(":common:nav"))
         substitute(module("net.sigmabeta.sage:common-time")).using(project(":common:time"))
         substitute(module("net.sigmabeta.sage:common-ui-icons")).using(project(":common:ui:icons"))
+        substitute(module("net.sigmabeta.sage:common-ui-strings")).using(project(":common:ui:strings"))
         substitute(module("net.sigmabeta.sage:common-wakelocks")).using(project(":common:wakelocks"))
     }
 }
@@ -104,7 +106,6 @@ include(
     ":core:android:viewmodel",
     ":core:android:wakelocks",
 
-    ":core:common:analytics",
     ":core:common:conversion",
     ":core:common:database",
     ":core:common:debug",
@@ -123,7 +124,6 @@ include(
     ":core:common:settings:environment",
     ":core:common:settings:part",
     ":core:common:ui:components",
-    ":core:common:ui:strings",
     ":core:common:urlinfo",
     ":core:common:versions",
 

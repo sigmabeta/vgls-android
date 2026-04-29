@@ -11,7 +11,7 @@ import com.kevinnzou.web.WebView
 import com.kevinnzou.web.rememberWebViewState
 import com.vgleadsheets.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.id
 
 @Composable

@@ -8,8 +8,8 @@ import com.vgleadsheets.components.TitleBarModel
 import com.vgleadsheets.list.ListState
 import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val publishDateId: LCE<Long?> = LCE.Uninitialized

@@ -33,7 +33,7 @@ import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.composables.subs.MenuActionIcon
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 

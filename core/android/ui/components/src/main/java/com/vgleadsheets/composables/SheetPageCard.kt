@@ -27,7 +27,7 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.PdfSize
 import com.vgleadsheets.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial

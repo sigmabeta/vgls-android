@@ -25,7 +25,7 @@ import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.utils.nextPercentageFloat
-import com.vgleadsheets.ui.StringId
+import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.id
 import com.vgleadsheets.ui.themes.VglsMaterial
 import kotlin.random.Random

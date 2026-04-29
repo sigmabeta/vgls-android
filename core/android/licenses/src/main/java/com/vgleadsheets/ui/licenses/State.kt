@@ -2,8 +2,8 @@ package com.vgleadsheets.ui.licenses
 
 import net.sigmabeta.sage.appcomm.VglsState
 import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val licensePageUrl: String? = null
