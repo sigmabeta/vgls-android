@@ -15,8 +15,8 @@ class VglsFeatureAndroidModulePlugin : Plugin<Project> {
                 add("implementation", project(":vgls:android:ui:components"))
                 add("implementation", project(":vgls:android:viewmodel"))
 
-                add("implementation", "net.sigmabeta.sage:common-coroutines")
-                add("implementation", "net.sigmabeta.sage:common-nav")
+                add("implementation", "net.sigmabeta.sage:coroutines")
+                add("implementation", "net.sigmabeta.sage:nav")
                 add("implementation", project(":vgls:common:repository"))
             }
         }
