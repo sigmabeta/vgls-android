@@ -10,14 +10,14 @@ class VglsFeatureAndroidModulePlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("implementation", project(":core:android:images"))
-                add("implementation", project(":core:android:nav"))
-                add("implementation", project(":core:android:ui:components"))
-                add("implementation", project(":core:android:viewmodel"))
+                add("implementation", project(":vgls:android:images"))
+                add("implementation", project(":vgls:android:nav"))
+                add("implementation", project(":vgls:android:ui:components"))
+                add("implementation", project(":vgls:android:viewmodel"))
 
-                add("implementation", project(":core:common:coroutines"))
-                add("implementation", project(":core:common:nav"))
-                add("implementation", project(":core:common:repository"))
+                add("implementation", "net.sigmabeta.sage:coroutines")
+                add("implementation", "net.sigmabeta.sage:nav")
+                add("implementation", project(":vgls:common:repository"))
             }
         }
     }

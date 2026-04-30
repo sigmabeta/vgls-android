@@ -1,14 +1,14 @@
 plugins {
-    alias(libs.plugins.vgls.core.jvm)
+    alias(libs.plugins.sage.jvm)
     alias(libs.plugins.vgls.di.jvm)
 }
 
 dependencies {
-    implementation(projects.core.common.list)
-    implementation(projects.core.common.notif)
-    implementation(projects.core.common.offline)
-    implementation(projects.core.common.pdf)
-    implementation(projects.core.common.repository)
-    implementation(projects.core.common.time)
-    implementation(projects.core.common.ui.components)
+    implementation(libs.sage.common.list)
+    implementation(projects.vgls.common.notif)
+    implementation(projects.vgls.common.offline)
+    implementation(libs.sage.common.pdf)
+    implementation(projects.vgls.common.repository)
+    implementation(libs.sage.common.time)
+    implementation(libs.sage.common.ui.components)
 }

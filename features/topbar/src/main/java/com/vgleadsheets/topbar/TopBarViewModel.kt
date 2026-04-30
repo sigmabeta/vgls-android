@@ -1,16 +1,16 @@
 package com.vgleadsheets.topbar
 
 import androidx.lifecycle.viewModelScope
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.appcomm.EventDispatcher
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.common.debug.ShowDebugProvider
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.coroutines.VglsDispatchers
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

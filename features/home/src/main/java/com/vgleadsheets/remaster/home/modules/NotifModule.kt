@@ -1,16 +1,16 @@
 package com.vgleadsheets.remaster.home.modules
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.di.ActionDeserializer
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.NotifListModel
-import com.vgleadsheets.list.DelayManager
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.NotifListModel
+import net.sigmabeta.sage.list.DelayManager
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

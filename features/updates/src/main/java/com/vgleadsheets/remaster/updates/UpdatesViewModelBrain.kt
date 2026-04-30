@@ -1,14 +1,14 @@
 package com.vgleadsheets.remaster.updates
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.list.ListViewModelBrain
-import com.vgleadsheets.list.VglsScheduler
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.updates.AppUpdate
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 
 class UpdatesViewModelBrain(
     stringProvider: StringProvider,

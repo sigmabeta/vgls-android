@@ -1,13 +1,13 @@
 package com.vgleadsheets.features
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.appinfo.AppInfo
-import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.list.BrainProvider
-import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.list.ListViewModelBrain
-import com.vgleadsheets.logging.Hatchet
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appinfo.AppInfo
+import net.sigmabeta.sage.coroutines.VglsDispatchers
+import net.sigmabeta.sage.list.BrainProvider
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
@@ -40,11 +40,11 @@ import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
-import com.vgleadsheets.settings.DebugSettingsManager
-import com.vgleadsheets.settings.GeneralSettingsManager
+import net.sigmabeta.sage.settings.DebugSettingsManager
+import net.sigmabeta.sage.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
-import com.vgleadsheets.time.ThreeTenTime
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
 

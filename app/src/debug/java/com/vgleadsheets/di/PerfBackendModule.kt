@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.perf.common.PerfBackend
-import com.vgleadsheets.perf.noop.NoopBackend
+import net.sigmabeta.sage.perf.PerfBackend
+import net.sigmabeta.sage.perf.NoopBackend
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,10 +1,10 @@
 package com.vgleadsheets.di
 
 import android.content.Context
-import com.vgleadsheets.connectivity.AndroidNetworkStatusProvider
-import com.vgleadsheets.connectivity.NetworkStatusProvider
-import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.android.connectivity.AndroidNetworkStatusProvider
+import net.sigmabeta.sage.connectivity.NetworkStatusProvider
+import net.sigmabeta.sage.coroutines.VglsDispatchers
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides

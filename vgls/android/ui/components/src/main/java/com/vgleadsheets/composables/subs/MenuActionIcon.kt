@@ -1,0 +1,37 @@
+package com.vgleadsheets.composables.subs
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import net.sigmabeta.sage.ui.Icon
+import net.sigmabeta.sage.ui.StringId
+import com.vgleadsheets.ui.components.R
+import net.sigmabeta.sage.ui.id
+import net.sigmabeta.sage.ui.vector
+
+@Composable
+fun MenuActionIcon(
+    icon: Icon,
+    contentDescription: StringId,
+    onClick: () -> Unit
+) {
+    Icon(
+        imageVector = icon.vector(),
+        contentDescription = stringResource(contentDescription.id()),
+        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .defaultMinSize(
+                minHeight = dimensionResource(id = R.dimen.min_clickable_size),
+                minWidth = dimensionResource(id = R.dimen.min_clickable_size),
+            )
+            .padding(12.dp)
+    )
+}

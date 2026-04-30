@@ -28,8 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.components.ListModel
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.components.ListModel
 import com.vgleadsheets.composables.Content
 import kotlinx.collections.immutable.ImmutableList
 

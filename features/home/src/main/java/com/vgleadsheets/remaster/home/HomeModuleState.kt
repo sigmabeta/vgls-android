@@ -1,11 +1,11 @@
 package com.vgleadsheets.remaster.home
 
-import com.vgleadsheets.components.HorizontalScrollerListModel
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingItemListModel
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.list.ifNotNull
+import net.sigmabeta.sage.components.HorizontalScrollerListModel
+import net.sigmabeta.sage.components.ListModel
+import net.sigmabeta.sage.components.LoadingItemListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SectionHeaderListModel
+import net.sigmabeta.sage.list.ifNotNull
 import kotlinx.collections.immutable.toImmutableList
 
 data class HomeModuleState(

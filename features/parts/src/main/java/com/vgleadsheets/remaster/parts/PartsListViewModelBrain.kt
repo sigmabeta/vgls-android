@@ -1,15 +1,15 @@
 package com.vgleadsheets.remaster.parts
 
-import com.vgleadsheets.analytics.Analytics
-import com.vgleadsheets.analytics.AnalyticsScreen
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsEvent
-import com.vgleadsheets.list.ListViewModelBrain
-import com.vgleadsheets.list.VglsScheduler
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.settings.part.SelectedPartManager
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.onEach
 
 class PartsListViewModelBrain(

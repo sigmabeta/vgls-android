@@ -1,8 +1,8 @@
 package com.vgleadsheets.topbar
 
-import com.vgleadsheets.appcomm.VglsState
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.appcomm.VglsState
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.nav.Destination
 
 data class TopBarState(
     val model: TitleBarModel = TitleBarModel(),

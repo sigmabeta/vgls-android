@@ -35,11 +35,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.id
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.id
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 @Suppress("LongMethod")

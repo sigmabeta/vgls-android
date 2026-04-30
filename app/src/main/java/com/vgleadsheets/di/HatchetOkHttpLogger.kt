@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
 import android.util.Log
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import javax.inject.Inject
 import okhttp3.logging.HttpLoggingInterceptor
 

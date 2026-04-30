@@ -1,9 +1,9 @@
 package com.vgleadsheets.di.images
 
-import com.vgleadsheets.common.debug.RenderOverlayProvider
-import com.vgleadsheets.coroutines.VglsDispatchers
+import net.sigmabeta.sage.debug.RenderOverlayProvider
+import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.downloader.SheetDownloader
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.pdf.subsample.PdfSubsampleSource
 import dagger.Module
 import dagger.Provides

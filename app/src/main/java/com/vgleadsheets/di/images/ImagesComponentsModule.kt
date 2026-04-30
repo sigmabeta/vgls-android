@@ -1,8 +1,8 @@
 package com.vgleadsheets.di.images
 
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
-import com.vgleadsheets.bitmaps.FakePdfImageGenerator
-import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
+import net.sigmabeta.sage.android.bitmaps.FakePdfImageGenerator
+import net.sigmabeta.sage.android.bitmaps.LoadingIndicatorGenerator
 import com.vgleadsheets.downloader.FakeSheetDownloader
 import com.vgleadsheets.downloader.RealSheetDownloader
 import com.vgleadsheets.downloader.SheetDownloader
@@ -10,7 +10,7 @@ import com.vgleadsheets.images.FakeOtherImageDecoder
 import com.vgleadsheets.images.FakeOtherImageFetcher
 import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.images.LoadingIndicatorKeyer
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer

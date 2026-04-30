@@ -1,11 +1,11 @@
 plugins {
-    alias(libs.plugins.vgls.core.jvm)
+    alias(libs.plugins.sage.jvm)
     alias(libs.plugins.vgls.di.jvm)
 }
 
 dependencies {
-    api(projects.core.common.list)
-    api(projects.core.common.nav)
-    api(projects.core.common.repository)
-    api(projects.core.common.ui.components)
+    api(libs.sage.common.list)
+    api(libs.sage.common.nav)
+    api(projects.vgls.common.repository)
+    api(libs.sage.common.ui.components)
 }

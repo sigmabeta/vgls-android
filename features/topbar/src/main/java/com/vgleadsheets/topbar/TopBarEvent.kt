@@ -1,5 +1,5 @@
 package com.vgleadsheets.topbar
 
-import com.vgleadsheets.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.VglsEvent
 
 sealed class TopBarEvent(override val source: String) : VglsEvent()

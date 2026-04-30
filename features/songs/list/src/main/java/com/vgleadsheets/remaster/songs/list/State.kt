@@ -1,17 +1,17 @@
 package com.vgleadsheets.remaster.songs.list
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.images.PdfSize
-import com.vgleadsheets.images.SourceInfo
-import com.vgleadsheets.list.ListState
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.components.ImageNameCaptionListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.images.PdfSize
+import net.sigmabeta.sage.images.SourceInfo
+import net.sigmabeta.sage.list.ListState
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.pdf.PdfConfigById
+import net.sigmabeta.sage.ui.Icon
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val songs: LCE<List<Song>> = LCE.Uninitialized,

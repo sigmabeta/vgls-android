@@ -4,10 +4,10 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.android.ui.strings)
+    api(libs.sage.android.ui.strings)
 
     // Only for previews
-    implementation(projects.core.android.ui.themes)
+    implementation(libs.sage.android.ui.themes)
 }
 
 android {

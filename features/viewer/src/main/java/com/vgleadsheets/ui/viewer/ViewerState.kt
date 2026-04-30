@@ -1,17 +1,17 @@
 package com.vgleadsheets.ui.viewer
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appcomm.VglsState
-import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.components.ZoomableSheetPageListModel
-import com.vgleadsheets.images.PdfSize
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsState
+import net.sigmabeta.sage.components.ErrorStateListModel
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.components.ZoomableSheetPageListModel
+import net.sigmabeta.sage.images.PdfSize
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.pdf.PdfConfigById
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList

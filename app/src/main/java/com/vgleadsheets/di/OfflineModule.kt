@@ -1,11 +1,11 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.downloader.SheetDownloader
-import com.vgleadsheets.logging.Hatchet
+import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.offline.OfflineDownloader
 import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.UpdateManager
-import com.vgleadsheets.time.ThreeTenTime
+import net.sigmabeta.sage.time.ThreeTenTime
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

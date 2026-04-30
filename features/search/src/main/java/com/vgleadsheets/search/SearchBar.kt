@@ -29,13 +29,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.appcomm.ActionSink
-import com.vgleadsheets.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.composables.subs.MenuActionIcon
-import com.vgleadsheets.ui.Icon
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.id
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.Icon
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.id
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 @Suppress("LongMethod", "MagicNumber")

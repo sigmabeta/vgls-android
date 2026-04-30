@@ -1,5 +1,10 @@
 version: 2
 
+submodule_init: &submodule_init
+  run:
+    name: Initialize submodules
+    command: git submodule sync && git submodule update --init --recursive
+
 workflows:
   version: 2
   build_analyze_deploy:
@@ -46,10 +51,11 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
       - checkout
+      - *submodule_init
       - restore_cache:
           key: jars-v2-
       - run:
@@ -63,9 +69,10 @@ jobs:
           name: Get all Git tags
           command: git fetch --prune --prune-tags && git fetch --tags -f
       - save_cache:
-          key: source-v2-{{ .Branch }}-{{ .Revision }}
+          key: source-v3-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
+            - "sage"
 
 
   kt-lint:
@@ -78,10 +85,11 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
       - checkout
+      - *submodule_init
       - restore_cache:
           key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
@@ -110,10 +118,11 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
       - checkout
+      - *submodule_init
       - restore_cache:
           key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
@@ -139,10 +148,11 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
       - checkout
+      - *submodule_init
       - restore_cache:
           key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
@@ -153,9 +163,9 @@ jobs:
           command: ./paparazzi-build-script.sh
       - run:
           name: Compare screenshot tests
-          command: ./gradlew :core:android:ui:previews:verifyPaparazziDebug --no-configuration-cache --no-daemon --max-workers=2
+          command: ./gradlew :vgls:android:ui:previews:verifyPaparazziDebug --no-configuration-cache --no-daemon --max-workers=2
       - store_artifacts:
-          path: core/android/ui/previews/build/paparazzi/failures/
+          path: vgls/android/ui/previews/build/paparazzi/failures/
           destination: failure-screenshots
       - save_cache:
           key: build-cache-screenshot-test-v2-{{ .Branch }}-{{ .Revision }}
@@ -175,10 +185,11 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
       - checkout
+      - *submodule_init
       - restore_cache:
           key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
@@ -211,10 +222,11 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
       - checkout
+      - *submodule_init
       - restore_cache:
           key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:
@@ -253,10 +265,11 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v3-{{ .Branch }}-{{ .Revision }}
+            - source-v3-{{ .Branch }}-
+            - source-v3-
       - checkout
+      - *submodule_init
       - restore_cache:
           key: jars-v2-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - restore_cache:

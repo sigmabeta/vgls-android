@@ -1,4 +1,15 @@
+// Propagate sdk.dir to SAGE submodule so Android Studio can find the SDK when building.
+val sageLocalProps = file("sage/local.properties")
+if (!sageLocalProps.exists()) {
+    val vglsLocalProps = file("local.properties")
+    if (vglsLocalProps.exists()) {
+        sageLocalProps.writeText(vglsLocalProps.readText())
+    }
+}
+
+includeBuild("sage/sage-build-logic")
 includeBuild("build-logic")
+includeBuild("sage")
 
 pluginManagement {
     repositories {
@@ -45,6 +56,11 @@ dependencyResolutionManagement {
             setUrl("https://oss.sonatype.org/content/repositories/snapshots/")
         }
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("$settingsDir/sage/gradle/libs.versions.toml"))
+        }
+    }
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -54,72 +70,33 @@ rootProject.name = "VGLeadSheets"
 include(
     ":app",
 
-    ":core:android:activity",
-    ":core:android:bitmaps",
-    ":core:android:connectivity",
-    ":core:android:conversion",
-    ":core:android:coroutines",
-    ":core:android:database",
-    ":core:android:firebase",
-    ":core:android:images",
-    ":core:android:licenses",
-    ":core:android:logging",
-    ":core:android:nav",
-    ":core:android:offline",
-    ":core:android:perf",
-    ":core:android:pdf",
-    ":core:android:repository",
-    ":core:android:resources",
-    ":core:android:scaffold",
-    ":core:android:storage:common",
-    ":core:android:analytics",
-    ":core:android:ui:components",
-    ":core:android:ui:colors",
-    ":core:android:ui:icons",
-    ":core:android:ui:strings",
-    ":core:android:ui:fonts",
-    ":core:android:ui:list",
-    ":core:android:ui:previews",
-    ":core:android:ui:strings",
-    ":core:android:ui:themes",
-    ":core:android:viewmodel",
-    ":core:android:wakelocks",
+    ":vgls:android:activity",
+    ":vgls:android:conversion",
+    ":vgls:android:database",
+    ":vgls:android:images",
+    ":vgls:android:licenses",
+    ":vgls:android:nav",
+    ":vgls:android:offline",
+    ":vgls:android:pdf",
+    ":vgls:android:repository",
+    ":vgls:android:scaffold",
+    ":vgls:android:storage:common",
+    ":vgls:android:ui:components",
+    ":vgls:android:ui:list",
+    ":vgls:android:ui:previews",
+    ":vgls:android:viewmodel",
 
-    ":core:common:analytics",
-    ":core:common:appinfo",
-    ":core:common:appcomm",
-    ":core:common:connectivity",
-    ":core:common:conversion",
-    ":core:common:coroutines",
-    ":core:common:database",
-    ":core:common:debug",
-    ":core:common:downloader",
-    ":core:common:events",
-    ":core:common:images",
-    ":core:common:list",
-    ":core:common:logging",
-    ":core:common:model",
-    ":core:common:nav",
-    ":core:common:network",
-    ":core:common:notif",
-    ":core:common:offline",
-    ":core:common:pdf",
-    ":core:common:perf",
-    ":core:common:repository",
-    ":core:common:storage:common",
-    ":core:common:settings:general",
-    ":core:common:settings:environment",
-    ":core:common:settings:part",
-    ":core:common:time",
-    ":core:common:ui:components",
-    ":core:common:ui:icons",
-    ":core:common:ui:strings",
-    ":core:common:urlinfo",
-    ":core:common:versions",
-    ":core:common:wakelocks",
-
-    ":core:fake:perf",
-    ":core:fake:analytics",
+    ":vgls:common:conversion",
+    ":vgls:common:database",
+    ":vgls:common:downloader",
+    ":vgls:common:model",
+    ":vgls:common:network",
+    ":vgls:common:notif",
+    ":vgls:common:offline",
+    ":vgls:common:repository",
+    ":vgls:common:settings:part",
+    ":vgls:common:urlinfo",
+    ":vgls:common:versions",
 
     ":features:all",
     ":features:browse",

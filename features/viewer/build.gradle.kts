@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.sage.android)
     alias(libs.plugins.vgls.di.android)
-    alias(libs.plugins.vgls.compose.android.module)
+    alias(libs.plugins.sage.compose.android)
 }
 
 android {
@@ -12,17 +12,17 @@ dependencies {
     api(libs.androidx.navigation.compose)
     api(libs.androidx.lifecycle.runtimeCompose)
 
-    api(projects.core.common.nav)
-    implementation(projects.core.android.bitmaps)
-    implementation(projects.core.android.pdf)
-    implementation(projects.core.android.ui.components)
-    implementation(projects.core.android.ui.icons)
-    implementation(projects.core.android.viewmodel)
+    api(libs.sage.common.nav)
+    implementation(libs.sage.android.bitmaps)
+    implementation(projects.vgls.android.pdf)
+    implementation(projects.vgls.android.ui.components)
+    implementation(libs.sage.android.ui.icons)
+    implementation(projects.vgls.android.viewmodel)
 
-    implementation(projects.core.common.pdf)
-    api(projects.core.android.wakelocks)
+    implementation(libs.sage.common.pdf)
+    api(libs.sage.android.wakelocks)
 
     // T O D O these two deps are only necessary for previews. Can we somehow make them debug-only?
     implementation(libs.kotlinx.collections.immutable)
-    implementation(projects.core.android.ui.themes)
+    implementation(libs.sage.android.ui.themes)
 }

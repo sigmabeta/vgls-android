@@ -1,14 +1,14 @@
 package com.vgleadsheets.remaster.difficulty.values
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.LabelRatingStarListModel
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.list.ListState
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.components.LabelRatingStarListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ListState
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val difficultyType: LCE<TagKey> = LCE.Uninitialized,

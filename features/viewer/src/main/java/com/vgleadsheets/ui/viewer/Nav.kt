@@ -9,10 +9,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.nav.ARG_TEMPLATE_ONE
-import com.vgleadsheets.nav.ARG_TEMPLATE_TWO
-import com.vgleadsheets.nav.Destination
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.nav.ARG_TEMPLATE_ONE
+import net.sigmabeta.sage.nav.ARG_TEMPLATE_TWO
+import net.sigmabeta.sage.nav.Destination
 
 fun NavGraphBuilder.viewerScreenNavEntry(
     globalModifier: Modifier,

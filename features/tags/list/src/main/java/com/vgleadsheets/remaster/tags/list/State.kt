@@ -1,13 +1,13 @@
 package com.vgleadsheets.remaster.tags.list
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.list.ListState
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.NameCaptionListModel
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ListState
 import com.vgleadsheets.model.tag.TagKey
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val tagKeys: LCE<List<TagKey>> = LCE.Uninitialized,

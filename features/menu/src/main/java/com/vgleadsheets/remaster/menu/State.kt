@@ -1,21 +1,21 @@
 package com.vgleadsheets.remaster.menu
 
-import com.vgleadsheets.appcomm.LCE
-import com.vgleadsheets.appcomm.VglsAction
-import com.vgleadsheets.appinfo.AppInfo
-import com.vgleadsheets.components.CheckableListModel
-import com.vgleadsheets.components.LabelValueListModel
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingItemListModel
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.NameCaptionListModel
-import com.vgleadsheets.components.NoopListModel
-import com.vgleadsheets.components.SectionHeaderListModel
-import com.vgleadsheets.components.SingleTextListModel
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.list.ListState
-import com.vgleadsheets.ui.StringId
-import com.vgleadsheets.ui.StringProvider
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appinfo.AppInfo
+import net.sigmabeta.sage.components.CheckableListModel
+import net.sigmabeta.sage.components.LabelValueListModel
+import net.sigmabeta.sage.components.ListModel
+import net.sigmabeta.sage.components.LoadingItemListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.NameCaptionListModel
+import net.sigmabeta.sage.components.NoopListModel
+import net.sigmabeta.sage.components.SectionHeaderListModel
+import net.sigmabeta.sage.components.SingleTextListModel
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ListState
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val refreshCheckStatus: LCE<Unit> = LCE.Uninitialized,

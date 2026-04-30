@@ -1,9 +1,9 @@
 package com.vgleadsheets.di
 
-import com.vgleadsheets.coroutines.VglsDispatchers
-import com.vgleadsheets.perf.common.PerfBackend
-import com.vgleadsheets.perf.common.PerfMeasurer
-import com.vgleadsheets.perf.common.PerfMeasurerImpl
+import net.sigmabeta.sage.coroutines.VglsDispatchers
+import net.sigmabeta.sage.perf.PerfBackend
+import net.sigmabeta.sage.perf.PerfMeasurer
+import net.sigmabeta.sage.perf.PerfMeasurerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
