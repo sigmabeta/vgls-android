@@ -1,3 +1,5 @@
+includeBuild("../sage/sage-build-logic")
+includeBuild("build-logic")
 includeBuild("../sage") {
     dependencySubstitution {
         substitute(module("net.sigmabeta.sage:common-analytics")).using(project(":common:analytics"))
@@ -39,7 +41,6 @@ includeBuild("../sage") {
         substitute(module("net.sigmabeta.sage:fake-perf")).using(project(":fake:perf"))
     }
 }
-includeBuild("build-logic")
 
 pluginManagement {
     repositories {
