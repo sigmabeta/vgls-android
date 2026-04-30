@@ -49,7 +49,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            from(files("sage/gradle/libs.versions.toml"))
+            from(files("$settingsDir/sage/gradle/libs.versions.toml"))
         }
     }
 }
