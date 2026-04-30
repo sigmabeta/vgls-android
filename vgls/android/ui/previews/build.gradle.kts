@@ -21,7 +21,7 @@ dependencies {
     implementation(projects.vgls.android.scaffold)
     implementation(projects.vgls.android.ui.components)
     implementation(libs.sage.android.ui.icons)
-    implementation(projects.vgls.android.ui.list)
+    implementation(libs.sage.android.ui.list)
     implementation(libs.sage.android.ui.strings)
     implementation(libs.sage.android.ui.themes)
 }
