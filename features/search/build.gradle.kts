@@ -7,13 +7,13 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
 
-    implementation(projects.core.android.pdf)
+    implementation(projects.vgls.android.pdf)
     implementation(libs.sage.android.ui.icons)
-    implementation(projects.core.android.ui.list)
+    implementation(projects.vgls.android.ui.list)
     implementation(libs.sage.android.ui.strings)
 
     implementation(libs.sage.common.appcomm)
-    implementation(projects.core.common.urlinfo)
+    implementation(projects.vgls.common.urlinfo)
 
     // Only for previews
     implementation(libs.sage.android.ui.themes)

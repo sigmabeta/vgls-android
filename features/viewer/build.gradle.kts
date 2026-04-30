@@ -14,10 +14,10 @@ dependencies {
 
     api(libs.sage.common.nav)
     implementation(libs.sage.android.bitmaps)
-    implementation(projects.core.android.pdf)
-    implementation(projects.core.android.ui.components)
+    implementation(projects.vgls.android.pdf)
+    implementation(projects.vgls.android.ui.components)
     implementation(libs.sage.android.ui.icons)
-    implementation(projects.core.android.viewmodel)
+    implementation(projects.vgls.android.viewmodel)
 
     implementation(libs.sage.common.pdf)
     api(libs.sage.android.wakelocks)

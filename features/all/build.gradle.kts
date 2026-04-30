@@ -4,12 +4,12 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.android.activity)
+    api(projects.vgls.android.activity)
 
     api(libs.sage.common.list)
-    api(projects.core.common.offline)
+    api(projects.vgls.common.offline)
     api(libs.sage.common.nav)
-    api(projects.core.common.notif)
+    api(projects.vgls.common.notif)
 
     // List features here.
     api(projects.features.home)

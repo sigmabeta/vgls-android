@@ -5,9 +5,9 @@ plugins {
 
 dependencies {
     api(libs.sage.common.list)
-    api(projects.core.common.model)
+    api(projects.vgls.common.model)
     api(libs.sage.common.nav)
-    api(projects.core.common.settings.part)
+    api(projects.vgls.common.settings.part)
     api(libs.sage.common.ui.components)
     api(libs.sage.common.ui.strings)
 }

@@ -5,10 +5,10 @@ plugins {
 
 dependencies {
     implementation(libs.sage.common.list)
-    implementation(projects.core.common.notif)
-    implementation(projects.core.common.offline)
+    implementation(projects.vgls.common.notif)
+    implementation(projects.vgls.common.offline)
     implementation(libs.sage.common.pdf)
-    implementation(projects.core.common.repository)
+    implementation(projects.vgls.common.repository)
     implementation(libs.sage.common.time)
     implementation(libs.sage.common.ui.components)
 }
