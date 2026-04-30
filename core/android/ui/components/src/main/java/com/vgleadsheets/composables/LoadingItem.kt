@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.bitmaps.SheetConstants
-import com.vgleadsheets.components.HorizontalScrollerListModel
-import com.vgleadsheets.components.LoadingItemListModel
-import com.vgleadsheets.components.LoadingType
+import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import net.sigmabeta.sage.components.HorizontalScrollerListModel
+import net.sigmabeta.sage.components.LoadingItemListModel
+import net.sigmabeta.sage.components.LoadingType
 import com.vgleadsheets.composables.previews.BigImageConstants
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.previews.NotifConstants

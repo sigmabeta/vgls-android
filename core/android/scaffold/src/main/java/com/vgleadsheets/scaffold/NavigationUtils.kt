@@ -14,7 +14,7 @@ import androidx.window.core.layout.WindowWidthSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass.Companion.COMPACT
 import androidx.window.core.layout.WindowWidthSizeClass.Companion.EXPANDED
 import androidx.window.core.layout.WindowWidthSizeClass.Companion.MEDIUM
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.WidthClass
 
 fun calculateNavSuiteType(
     adaptiveInfo: WindowAdaptiveInfo,

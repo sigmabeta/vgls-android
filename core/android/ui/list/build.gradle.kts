@@ -13,8 +13,8 @@ dependencies {
     api(libs.androidx.lifecycle.runtimeCompose)
 
     api(libs.sage.common.nav)
-    implementation(projects.core.android.perf)
+    implementation(libs.sage.android.perf)
     implementation(projects.core.android.ui.components)
-    implementation(projects.core.android.ui.strings)
+    implementation(libs.sage.android.ui.strings)
     implementation(projects.core.android.viewmodel)
 }

@@ -6,12 +6,37 @@ includeBuild("../sage") {
         substitute(module("net.sigmabeta.sage:common-connectivity")).using(project(":common:connectivity"))
         substitute(module("net.sigmabeta.sage:common-storage-common")).using(project(":common:storage:common"))
         substitute(module("net.sigmabeta.sage:common-coroutines")).using(project(":common:coroutines"))
+        substitute(module("net.sigmabeta.sage:common-debug")).using(project(":common:debug"))
+        substitute(module("net.sigmabeta.sage:common-events")).using(project(":common:events"))
+        substitute(module("net.sigmabeta.sage:common-images")).using(project(":common:images"))
+        substitute(module("net.sigmabeta.sage:common-list")).using(project(":common:list"))
         substitute(module("net.sigmabeta.sage:common-logging")).using(project(":common:logging"))
         substitute(module("net.sigmabeta.sage:common-nav")).using(project(":common:nav"))
+        substitute(module("net.sigmabeta.sage:common-pdf")).using(project(":common:pdf"))
+        substitute(module("net.sigmabeta.sage:common-perf")).using(project(":common:perf"))
+        substitute(module("net.sigmabeta.sage:common-settings-environment")).using(project(":common:settings:environment"))
+        substitute(module("net.sigmabeta.sage:common-settings-general")).using(project(":common:settings:general"))
         substitute(module("net.sigmabeta.sage:common-time")).using(project(":common:time"))
+        substitute(module("net.sigmabeta.sage:common-ui-components")).using(project(":common:ui:components"))
         substitute(module("net.sigmabeta.sage:common-ui-icons")).using(project(":common:ui:icons"))
         substitute(module("net.sigmabeta.sage:common-ui-strings")).using(project(":common:ui:strings"))
         substitute(module("net.sigmabeta.sage:common-wakelocks")).using(project(":common:wakelocks"))
+        substitute(module("net.sigmabeta.sage:android-analytics")).using(project(":android:analytics"))
+        substitute(module("net.sigmabeta.sage:android-bitmaps")).using(project(":android:bitmaps"))
+        substitute(module("net.sigmabeta.sage:android-connectivity")).using(project(":android:connectivity"))
+        substitute(module("net.sigmabeta.sage:android-coroutines")).using(project(":android:coroutines"))
+        substitute(module("net.sigmabeta.sage:android-firebase")).using(project(":android:firebase"))
+        substitute(module("net.sigmabeta.sage:android-logging")).using(project(":android:logging"))
+        substitute(module("net.sigmabeta.sage:android-perf")).using(project(":android:perf"))
+        substitute(module("net.sigmabeta.sage:android-resources")).using(project(":android:resources"))
+        substitute(module("net.sigmabeta.sage:android-ui-colors")).using(project(":android:ui:colors"))
+        substitute(module("net.sigmabeta.sage:android-ui-fonts")).using(project(":android:ui:fonts"))
+        substitute(module("net.sigmabeta.sage:android-ui-icons")).using(project(":android:ui:icons"))
+        substitute(module("net.sigmabeta.sage:android-ui-strings")).using(project(":android:ui:strings"))
+        substitute(module("net.sigmabeta.sage:android-ui-themes")).using(project(":android:ui:themes"))
+        substitute(module("net.sigmabeta.sage:android-wakelocks")).using(project(":android:wakelocks"))
+        substitute(module("net.sigmabeta.sage:fake-analytics")).using(project(":fake:analytics"))
+        substitute(module("net.sigmabeta.sage:fake-perf")).using(project(":fake:perf"))
     }
 }
 includeBuild("build-logic")
@@ -76,59 +101,32 @@ include(
     ":app",
 
     ":core:android:activity",
-    ":core:android:bitmaps",
-    ":core:android:connectivity",
     ":core:android:conversion",
-    ":core:android:coroutines",
     ":core:android:database",
-    ":core:android:firebase",
     ":core:android:images",
     ":core:android:licenses",
-    ":core:android:logging",
     ":core:android:nav",
     ":core:android:offline",
-    ":core:android:perf",
     ":core:android:pdf",
     ":core:android:repository",
-    ":core:android:resources",
     ":core:android:scaffold",
     ":core:android:storage:common",
-    ":core:android:analytics",
     ":core:android:ui:components",
-    ":core:android:ui:colors",
-    ":core:android:ui:icons",
-    ":core:android:ui:strings",
-    ":core:android:ui:fonts",
     ":core:android:ui:list",
     ":core:android:ui:previews",
-    ":core:android:ui:strings",
-    ":core:android:ui:themes",
     ":core:android:viewmodel",
-    ":core:android:wakelocks",
 
     ":core:common:conversion",
     ":core:common:database",
-    ":core:common:debug",
     ":core:common:downloader",
-    ":core:common:events",
-    ":core:common:images",
-    ":core:common:list",
     ":core:common:model",
     ":core:common:network",
     ":core:common:notif",
     ":core:common:offline",
-    ":core:common:pdf",
-    ":core:common:perf",
     ":core:common:repository",
-    ":core:common:settings:general",
-    ":core:common:settings:environment",
     ":core:common:settings:part",
-    ":core:common:ui:components",
     ":core:common:urlinfo",
     ":core:common:versions",
-
-    ":core:fake:perf",
-    ":core:fake:analytics",
 
     ":features:all",
     ":features:browse",

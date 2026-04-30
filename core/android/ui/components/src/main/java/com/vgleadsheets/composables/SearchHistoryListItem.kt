@@ -23,9 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.SearchHistoryListModel
+import net.sigmabeta.sage.components.SearchHistoryListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 fun SearchHistoryListItem(

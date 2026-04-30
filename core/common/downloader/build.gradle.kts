@@ -7,7 +7,7 @@ dependencies {
     implementation(libs.sage.common.connectivity)
     implementation(libs.sage.common.logging)
     implementation(projects.core.common.network)
-    implementation(projects.core.common.pdf)
+    implementation(libs.sage.common.pdf)
     implementation(projects.core.common.repository)
     implementation(projects.core.common.urlinfo)
 }

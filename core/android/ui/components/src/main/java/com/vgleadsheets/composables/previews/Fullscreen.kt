@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import com.vgleadsheets.ui.components.R
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 fun FullscreenBlack(

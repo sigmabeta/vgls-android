@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ScreenPreview
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.model.history.SearchHistoryEntry

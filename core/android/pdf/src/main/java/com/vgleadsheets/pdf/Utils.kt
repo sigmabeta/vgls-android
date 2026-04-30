@@ -1,5 +1,7 @@
 package com.vgleadsheets.pdf
 
+import net.sigmabeta.sage.pdf.PdfConfigById
+
 fun PdfConfigById.cacheKey(
     width: Int?,
     height: Int?,

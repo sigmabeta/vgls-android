@@ -1,10 +1,10 @@
 package com.vgleadsheets.remaster.difficulty.values
 
 import net.sigmabeta.sage.appcomm.LCE
-import com.vgleadsheets.components.LabelRatingStarListModel
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.list.ListState
+import net.sigmabeta.sage.components.LabelRatingStarListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ListState
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import net.sigmabeta.sage.ui.StringId

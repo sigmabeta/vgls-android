@@ -4,11 +4,11 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.core.common.list)
+    implementation(libs.sage.common.list)
     implementation(projects.core.common.notif)
     implementation(projects.core.common.offline)
-    implementation(projects.core.common.pdf)
+    implementation(libs.sage.common.pdf)
     implementation(projects.core.common.repository)
     implementation(libs.sage.common.time)
-    implementation(projects.core.common.ui.components)
+    implementation(libs.sage.common.ui.components)
 }

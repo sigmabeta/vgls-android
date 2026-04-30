@@ -20,11 +20,11 @@ import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.images.PdfSize
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.images.PdfSize
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState

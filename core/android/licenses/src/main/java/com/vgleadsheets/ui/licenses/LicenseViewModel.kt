@@ -6,9 +6,9 @@ import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
-import com.vgleadsheets.common.debug.ShowDebugProvider
+import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
-import com.vgleadsheets.list.DelayManager
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.viewmodel.VglsViewModel

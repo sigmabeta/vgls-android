@@ -1,9 +1,9 @@
 package com.vgleadsheets.remaster.home.modules
 
 import net.sigmabeta.sage.appcomm.LCE
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.list.DelayManager
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.list.DelayManager
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.history.GamePlayCount
 import com.vgleadsheets.remaster.home.Action

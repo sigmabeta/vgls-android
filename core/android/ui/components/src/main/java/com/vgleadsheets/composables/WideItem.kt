@@ -29,12 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.WideItemListModel
+import net.sigmabeta.sage.components.WideItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
-import com.vgleadsheets.images.SourceInfo
+import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 fun WideItem(

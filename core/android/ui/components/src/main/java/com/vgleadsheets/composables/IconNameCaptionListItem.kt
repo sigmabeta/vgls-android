@@ -25,12 +25,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.IconNameCaptionListModel
+import net.sigmabeta.sage.components.IconNameCaptionListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.utils.ImageSize
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.vector
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.vector
 
 @Composable
 fun IconNameCaptionListItem(

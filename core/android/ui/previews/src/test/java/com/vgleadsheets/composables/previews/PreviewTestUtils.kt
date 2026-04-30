@@ -4,7 +4,7 @@ import android.util.DisplayMetrics
 import app.cash.paparazzi.DeviceConfig
 import com.android.resources.Density
 import com.android.resources.NightMode
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.WidthClass
 import kotlin.math.round
 
 object PreviewTestUtils {

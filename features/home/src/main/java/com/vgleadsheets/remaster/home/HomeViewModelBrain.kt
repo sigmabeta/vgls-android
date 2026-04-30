@@ -4,8 +4,8 @@ import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
-import com.vgleadsheets.list.ListViewModelBrain
-import com.vgleadsheets.list.VglsScheduler
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.RandomRepository

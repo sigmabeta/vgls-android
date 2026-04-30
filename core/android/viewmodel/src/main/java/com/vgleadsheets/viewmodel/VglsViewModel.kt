@@ -11,10 +11,10 @@ import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
 import net.sigmabeta.sage.appcomm.VglsState
-import com.vgleadsheets.common.debug.ShowDebugProvider
+import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
-import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.list.VglsScheduler
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job

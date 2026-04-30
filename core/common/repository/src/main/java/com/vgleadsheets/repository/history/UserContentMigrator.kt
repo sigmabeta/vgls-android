@@ -4,7 +4,7 @@ import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.SongDataSource
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.settings.GeneralSettingsManager
+import net.sigmabeta.sage.settings.GeneralSettingsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest

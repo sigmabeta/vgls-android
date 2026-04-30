@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.games.detail.State

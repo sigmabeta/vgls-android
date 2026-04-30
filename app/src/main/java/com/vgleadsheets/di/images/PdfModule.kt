@@ -1,6 +1,6 @@
 package com.vgleadsheets.di.images
 
-import com.vgleadsheets.common.debug.RenderOverlayProvider
+import net.sigmabeta.sage.debug.RenderOverlayProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.downloader.SheetDownloader
 import net.sigmabeta.sage.logging.Hatchet

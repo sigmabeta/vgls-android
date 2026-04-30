@@ -6,11 +6,11 @@ import androidx.compose.ui.platform.LocalContext
 import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.remaster.browse.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import net.sigmabeta.sage.ui.StringProvider
-import com.vgleadsheets.ui.StringResources
+import net.sigmabeta.sage.ui.StringResources
 
 @DevicePreviews
 @Composable

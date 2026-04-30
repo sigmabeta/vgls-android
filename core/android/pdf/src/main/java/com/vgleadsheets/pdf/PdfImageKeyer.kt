@@ -3,6 +3,7 @@ package com.vgleadsheets.pdf
 import coil3.key.Keyer
 import coil3.request.Options
 import com.vgleadsheets.urlinfo.UrlInfoProvider
+import net.sigmabeta.sage.pdf.PdfConfigById
 
 class PdfImageKeyer(
     private val urlInfoProvider: UrlInfoProvider,

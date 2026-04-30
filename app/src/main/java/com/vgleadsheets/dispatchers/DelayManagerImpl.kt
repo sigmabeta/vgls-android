@@ -1,8 +1,8 @@
 package com.vgleadsheets.dispatchers
 
 import net.sigmabeta.sage.coroutines.VglsDispatchers
-import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.settings.DebugSettingsManager
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.settings.DebugSettingsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOn

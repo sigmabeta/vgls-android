@@ -14,14 +14,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.LabelRatingStarListModel
+import net.sigmabeta.sage.components.LabelRatingStarListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
 import net.sigmabeta.sage.ui.StringId
-import com.vgleadsheets.ui.id
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import net.sigmabeta.sage.ui.id
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelRatingListItem(

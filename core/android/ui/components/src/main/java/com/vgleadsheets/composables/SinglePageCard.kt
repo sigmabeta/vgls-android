@@ -16,14 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.SheetPageCardListModel
-import com.vgleadsheets.components.SheetPageListModel
-import com.vgleadsheets.components.SinglePageListModel
+import net.sigmabeta.sage.components.SheetPageCardListModel
+import net.sigmabeta.sage.components.SheetPageListModel
+import net.sigmabeta.sage.components.SinglePageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.images.PdfSize
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.images.PdfSize
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.ui.components.R
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

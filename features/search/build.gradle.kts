@@ -8,15 +8,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeCompose)
 
     implementation(projects.core.android.pdf)
-    implementation(projects.core.android.ui.icons)
+    implementation(libs.sage.android.ui.icons)
     implementation(projects.core.android.ui.list)
-    implementation(projects.core.android.ui.strings)
+    implementation(libs.sage.android.ui.strings)
 
     implementation(libs.sage.common.appcomm)
     implementation(projects.core.common.urlinfo)
 
     // Only for previews
-    implementation(projects.core.android.ui.themes)
+    implementation(libs.sage.android.ui.themes)
 }
 
 android {

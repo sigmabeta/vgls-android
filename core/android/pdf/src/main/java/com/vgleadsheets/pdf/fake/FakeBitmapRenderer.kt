@@ -5,8 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import androidx.core.graphics.createBitmap
-import com.vgleadsheets.bitmaps.SheetConstants.ASPECT_RATIO
-import com.vgleadsheets.bitmaps.nextColor
+import net.sigmabeta.sage.android.bitmaps.SheetConstants.ASPECT_RATIO
+import net.sigmabeta.sage.android.bitmaps.nextColor
 import com.vgleadsheets.pdf.BitmapRenderer
 import java.io.File
 import kotlin.math.roundToInt

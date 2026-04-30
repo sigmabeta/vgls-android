@@ -6,8 +6,8 @@ import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
 import net.sigmabeta.sage.appinfo.AppInfo
-import com.vgleadsheets.list.ListViewModelBrain
-import com.vgleadsheets.list.VglsScheduler
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
@@ -15,8 +15,8 @@ import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
-import com.vgleadsheets.settings.DebugSettingsManager
-import com.vgleadsheets.settings.GeneralSettingsManager
+import net.sigmabeta.sage.settings.DebugSettingsManager
+import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.flow

@@ -13,16 +13,16 @@ dependencies {
     api(libs.androidx.lifecycle.runtimeCompose)
 
     api(libs.sage.common.nav)
-    implementation(projects.core.android.bitmaps)
+    implementation(libs.sage.android.bitmaps)
     implementation(projects.core.android.pdf)
     implementation(projects.core.android.ui.components)
-    implementation(projects.core.android.ui.icons)
+    implementation(libs.sage.android.ui.icons)
     implementation(projects.core.android.viewmodel)
 
-    implementation(projects.core.common.pdf)
-    api(projects.core.android.wakelocks)
+    implementation(libs.sage.common.pdf)
+    api(libs.sage.android.wakelocks)
 
     // T O D O these two deps are only necessary for previews. Can we somehow make them debug-only?
     implementation(libs.kotlinx.collections.immutable)
-    implementation(projects.core.android.ui.themes)
+    implementation(libs.sage.android.ui.themes)
 }

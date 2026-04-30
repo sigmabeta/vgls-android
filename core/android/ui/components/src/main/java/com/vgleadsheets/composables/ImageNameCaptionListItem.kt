@@ -26,18 +26,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.ImageNameCaptionListModel
-import com.vgleadsheets.components.SearchResultListModel
+import net.sigmabeta.sage.components.ImageNameCaptionListModel
+import net.sigmabeta.sage.components.SearchResultListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.utils.ImageSize
-import com.vgleadsheets.images.SourceInfo
-import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.perf.BuildConfig
+import net.sigmabeta.sage.images.SourceInfo
+import net.sigmabeta.sage.pdf.PdfConfigById
+import net.sigmabeta.sage.perf.BuildConfig
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
 import kotlin.math.roundToInt
 
 @Composable

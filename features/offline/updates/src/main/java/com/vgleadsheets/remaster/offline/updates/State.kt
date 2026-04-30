@@ -1,13 +1,13 @@
 package com.vgleadsheets.remaster.offline.updates
 
 import net.sigmabeta.sage.appcomm.LCE
-import com.vgleadsheets.components.CollapsibleDetailsListModel
-import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.ErrorStateListModel
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.list.ListState
+import net.sigmabeta.sage.components.CollapsibleDetailsListModel
+import net.sigmabeta.sage.components.EmptyStateListModel
+import net.sigmabeta.sage.components.ErrorStateListModel
+import net.sigmabeta.sage.components.ListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ListState
 import com.vgleadsheets.model.updates.OfflineUpdateResult
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringId

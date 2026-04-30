@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
-import com.vgleadsheets.common.debug.RenderOverlayProvider
+import net.sigmabeta.sage.debug.RenderOverlayProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import net.sigmabeta.sage.logging.BluntHatchet
 import net.sigmabeta.sage.logging.Hatchet

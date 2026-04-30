@@ -18,25 +18,25 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import net.sigmabeta.sage.appcomm.ActionSink
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.list.ColumnType
-import com.vgleadsheets.list.ListState
-import com.vgleadsheets.list.ListStateActual
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ColumnType
+import net.sigmabeta.sage.list.ListState
+import net.sigmabeta.sage.list.ListStateActual
+import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.logging.BasicHatchet
-import com.vgleadsheets.perf.DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW
-import com.vgleadsheets.perf.DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW
-import com.vgleadsheets.perf.LocalLogger
-import com.vgleadsheets.perf.WithMeasurementScreen
+import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW
+import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW
+import net.sigmabeta.sage.android.perf.LocalLogger
+import net.sigmabeta.sage.android.perf.WithMeasurementScreen
 import com.vgleadsheets.scaffold.AppContent
 import com.vgleadsheets.scaffold.TopBarConfig
 import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarVisibility
 import net.sigmabeta.sage.ui.StringProvider
-import com.vgleadsheets.ui.StringResources
+import net.sigmabeta.sage.ui.StringResources
 import com.vgleadsheets.ui.list.GridScreen
 import com.vgleadsheets.ui.list.ListScreen
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 internal fun ListScreenPreview(

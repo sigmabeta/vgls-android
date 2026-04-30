@@ -34,8 +34,8 @@ import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.composables.subs.MenuActionIcon
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringId
-import com.vgleadsheets.ui.id
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.id
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 @Suppress("LongMethod", "MagicNumber")

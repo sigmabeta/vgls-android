@@ -17,12 +17,12 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.bitmaps.SheetConstants
-import com.vgleadsheets.components.ZoomableSheetPageListModel
+import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState

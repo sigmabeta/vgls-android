@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 internal fun RemasterBottomBar(

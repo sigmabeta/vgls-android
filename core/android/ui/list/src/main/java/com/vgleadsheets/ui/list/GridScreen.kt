@@ -21,10 +21,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.HorizontalScrollerListModel
-import com.vgleadsheets.components.SectionListModel
+import net.sigmabeta.sage.components.HorizontalScrollerListModel
+import net.sigmabeta.sage.components.SectionListModel
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.list.ListStateActual
+import net.sigmabeta.sage.list.ListStateActual
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

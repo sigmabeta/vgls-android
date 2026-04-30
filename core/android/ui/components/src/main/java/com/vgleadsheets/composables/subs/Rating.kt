@@ -9,9 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
-import com.vgleadsheets.ui.vector
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
+import net.sigmabeta.sage.ui.vector
 
 @Composable
 @Suppress("MagicNumber")

@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.ui.components.R
-import com.vgleadsheets.ui.id
-import com.vgleadsheets.ui.vector
+import net.sigmabeta.sage.ui.id
+import net.sigmabeta.sage.ui.vector
 
 @Composable
 fun MenuActionIcon(

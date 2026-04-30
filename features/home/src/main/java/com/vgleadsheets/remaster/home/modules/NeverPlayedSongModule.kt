@@ -1,13 +1,13 @@
 package com.vgleadsheets.remaster.home.modules
 
 import net.sigmabeta.sage.appcomm.LCE
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.SheetPageCardListModel
-import com.vgleadsheets.components.SheetPageListModel
-import com.vgleadsheets.images.PdfSize
-import com.vgleadsheets.list.DelayManager
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SheetPageCardListModel
+import net.sigmabeta.sage.components.SheetPageListModel
+import net.sigmabeta.sage.images.PdfSize
+import net.sigmabeta.sage.list.DelayManager
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState

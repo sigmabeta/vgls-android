@@ -1,6 +1,6 @@
 package com.vgleadsheets.downloader
 
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.pdf.PdfConfigById
 
 interface SheetDownloader {
     suspend fun getSheet(config: PdfConfigById): SheetFileResult

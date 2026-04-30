@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.components.LoadingType
+import net.sigmabeta.sage.components.LoadingType
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.subs.ElevatedPill

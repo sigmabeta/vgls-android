@@ -8,7 +8,7 @@ import com.vgleadsheets.downloader.FileUtils.fileReference
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.network.SheetDownloadApi
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.flow.catch

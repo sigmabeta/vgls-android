@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import net.sigmabeta.sage.appcomm.ActionSink
-import com.vgleadsheets.bitmaps.SheetConstants
-import com.vgleadsheets.components.SheetPageListModel
-import com.vgleadsheets.components.ZoomableSheetPageListModel
+import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import net.sigmabeta.sage.components.SheetPageListModel
+import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.subs.CrossfadeSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig

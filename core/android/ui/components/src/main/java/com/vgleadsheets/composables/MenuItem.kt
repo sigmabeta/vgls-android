@@ -24,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.MenuItemListModel
+import net.sigmabeta.sage.components.MenuItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.vector
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.vector
 
 @Composable
 @Suppress("LongMethod")

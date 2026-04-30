@@ -6,7 +6,7 @@ plugins {
 dependencies {
     api(projects.core.android.activity)
 
-    api(projects.core.common.list)
+    api(libs.sage.common.list)
     api(projects.core.common.offline)
     api(libs.sage.common.nav)
     api(projects.core.common.notif)

@@ -114,28 +114,28 @@ android {
 
 dependencies {
     // DI dependencies
-    implementation(projects.core.android.connectivity)
-    implementation(projects.core.android.coroutines)
+    implementation(libs.sage.android.connectivity)
+    implementation(libs.sage.android.coroutines)
     implementation(projects.core.android.conversion)
     implementation(projects.core.android.database)
     implementation(projects.core.android.images)
-    implementation(projects.core.android.logging)
+    implementation(libs.sage.android.logging)
     implementation(projects.core.android.offline)
     implementation(projects.core.android.pdf)
     implementation(projects.core.android.repository)
-    implementation(projects.core.android.resources)
+    implementation(libs.sage.android.resources)
     implementation(projects.core.android.storage.common)
     implementation(projects.core.android.ui.components)
-    implementation(projects.core.android.ui.themes)
-    implementation(projects.core.android.ui.strings)
+    implementation(libs.sage.android.ui.themes)
+    implementation(libs.sage.android.ui.strings)
 
     implementation(libs.sage.common.appinfo)
     implementation(projects.core.common.downloader)
-    implementation(projects.core.common.debug)
-    implementation(projects.core.common.events)
+    implementation(libs.sage.common.debug)
+    implementation(libs.sage.common.events)
     implementation(projects.core.common.network)
     implementation(projects.core.common.offline)
-    implementation(projects.core.common.settings.environment)
+    implementation(libs.sage.common.settings.environment)
     implementation(projects.core.common.urlinfo)
     implementation(projects.core.common.versions)
     // End DI dependencies
@@ -153,11 +153,11 @@ dependencies {
         implementation(libs.firebase.analytics)
         implementation(libs.firebase.crashlytics)
 
-        implementation(projects.core.android.firebase)
-        implementation(projects.core.android.analytics)
+        implementation(libs.sage.android.firebase)
+        implementation(libs.sage.android.analytics)
     } else {
-        implementation(projects.core.fake.perf)
-        implementation(projects.core.fake.analytics)
+        implementation(libs.sage.fake.perf)
+        implementation(libs.sage.fake.analytics)
     }
 
     // Memory leak detection (Uncomment to enable)

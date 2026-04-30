@@ -7,6 +7,7 @@ import coil3.fetch.Fetcher
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
 import com.vgleadsheets.downloader.SheetDownloader
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.downloader.SheetSourceType
 import okio.FileSystem
 import okio.Path.Companion.toOkioPath

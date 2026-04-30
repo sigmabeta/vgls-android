@@ -30,11 +30,11 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.components.CollapsibleDetailsListModel
+import net.sigmabeta.sage.components.CollapsibleDetailsListModel
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.model.generator.StringGenerator
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.vector
+import net.sigmabeta.sage.ui.vector
 import java.util.Random
 import kotlinx.collections.immutable.toImmutableList
 

@@ -1,8 +1,8 @@
 package com.vgleadsheets.urlinfo
 
 import net.sigmabeta.sage.coroutines.VglsDispatchers
-import com.vgleadsheets.settings.DebugSettingsManager
-import com.vgleadsheets.settings.environment.EnvironmentManager
+import net.sigmabeta.sage.settings.DebugSettingsManager
+import net.sigmabeta.sage.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

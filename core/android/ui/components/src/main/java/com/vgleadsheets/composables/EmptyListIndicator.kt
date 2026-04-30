@@ -30,11 +30,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vgleadsheets.components.EmptyStateListModel
-import com.vgleadsheets.components.ErrorStateListModel
+import net.sigmabeta.sage.components.EmptyStateListModel
+import net.sigmabeta.sage.components.ErrorStateListModel
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.vector
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.vector
 
 @Composable
 fun EmptyListIndicator(

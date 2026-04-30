@@ -1,7 +1,7 @@
 package com.vgleadsheets.di
 
 import android.content.Context
-import com.vgleadsheets.connectivity.AndroidNetworkStatusProvider
+import net.sigmabeta.sage.android.connectivity.AndroidNetworkStatusProvider
 import net.sigmabeta.sage.connectivity.NetworkStatusProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import net.sigmabeta.sage.logging.Hatchet

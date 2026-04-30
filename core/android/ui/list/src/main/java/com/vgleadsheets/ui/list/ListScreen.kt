@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.composables.Content
-import com.vgleadsheets.list.ListStateActual
+import net.sigmabeta.sage.list.ListStateActual
 
 @Composable
 fun ListScreen(

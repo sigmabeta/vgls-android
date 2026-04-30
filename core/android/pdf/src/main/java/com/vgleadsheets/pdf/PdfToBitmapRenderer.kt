@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
-import com.vgleadsheets.bitmaps.BitmapUtils
+import net.sigmabeta.sage.android.bitmaps.BitmapUtils
 import net.sigmabeta.sage.logging.Hatchet
 import java.io.File
 import kotlin.system.measureTimeMillis

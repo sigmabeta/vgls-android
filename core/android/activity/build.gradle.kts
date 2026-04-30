@@ -10,10 +10,10 @@ dependencies {
 
     implementation(projects.core.android.images)
     implementation(projects.core.android.nav)
-    implementation(projects.core.android.perf)
+    implementation(libs.sage.android.perf)
     implementation(projects.core.android.pdf)
     implementation(projects.core.android.scaffold)
-    implementation(projects.core.android.ui.themes)
+    implementation(libs.sage.android.ui.themes)
 
     implementation(projects.core.common.versions)
 }

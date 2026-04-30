@@ -12,11 +12,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.HeroImageListModel
+import net.sigmabeta.sage.components.HeroImageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
-import com.vgleadsheets.images.SourceInfo
+import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
 
 @Composable

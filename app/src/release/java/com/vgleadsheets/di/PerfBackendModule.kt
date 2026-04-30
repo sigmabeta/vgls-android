@@ -1,8 +1,8 @@
 package com.vgleadsheets.di
 
 import com.google.firebase.perf.FirebasePerformance
-import com.vgleadsheets.perf.common.PerfBackend
-import com.vgleadsheets.perf.firebase.FirebasePerfBackend
+import net.sigmabeta.sage.perf.PerfBackend
+import net.sigmabeta.sage.perf.firebase.FirebasePerfBackend
 import net.sigmabeta.sage.analytics.Analytics
 import dagger.Module
 import dagger.Provides

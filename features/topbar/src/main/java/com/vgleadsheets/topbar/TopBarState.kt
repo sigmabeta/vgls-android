@@ -1,7 +1,7 @@
 package com.vgleadsheets.topbar
 
 import net.sigmabeta.sage.appcomm.VglsState
-import com.vgleadsheets.components.TitleBarModel
+import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.nav.Destination
 
 data class TopBarState(

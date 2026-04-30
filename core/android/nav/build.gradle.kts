@@ -10,14 +10,14 @@ dependencies {
 
     api(projects.core.android.viewmodel)
 
-    implementation(projects.core.android.coroutines)
+    implementation(libs.sage.android.coroutines)
 
     api(libs.sage.common.appcomm)
     api(libs.sage.common.appinfo)
 
     implementation(projects.core.common.model)
     implementation(projects.core.common.notif)
-    implementation(projects.core.common.settings.general)
+    implementation(libs.sage.common.settings.general)
 }
 
 android {

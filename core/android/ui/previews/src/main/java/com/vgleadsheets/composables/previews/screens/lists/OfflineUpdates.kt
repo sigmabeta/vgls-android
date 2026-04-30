@@ -7,7 +7,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.model.updates.OfflineUpdateResult
 import com.vgleadsheets.remaster.offline.updates.State

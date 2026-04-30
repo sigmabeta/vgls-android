@@ -6,10 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.SingleTextListModel
+import net.sigmabeta.sage.components.SingleTextListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
 import net.sigmabeta.sage.ui.StringId
-import com.vgleadsheets.ui.id
+import net.sigmabeta.sage.ui.id
 
 @Composable
 fun LabelNoThingyItem(

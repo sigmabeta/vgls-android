@@ -6,7 +6,7 @@ import coil3.decode.DataSource
 import coil3.fetch.Fetcher
 import coil3.fetch.ImageFetchResult
 import coil3.request.Options
-import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
+import net.sigmabeta.sage.android.bitmaps.LoadingIndicatorGenerator
 import javax.inject.Inject
 
 class LoadingIndicatorFetcher(

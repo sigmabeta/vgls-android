@@ -1,8 +1,8 @@
 package com.vgleadsheets.features
 
 import net.sigmabeta.sage.coroutines.VglsDispatchers
-import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.list.VglsScheduler
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.VglsScheduler
 import kotlinx.coroutines.CoroutineScope
 
 class ViewModelScheduler(

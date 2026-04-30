@@ -19,13 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.components.SubsectionHeaderListModel
-import com.vgleadsheets.components.SubsectionListModel
-import com.vgleadsheets.components.WideItemListModel
+import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.SubsectionHeaderListModel
+import net.sigmabeta.sage.components.SubsectionListModel
+import net.sigmabeta.sage.components.WideItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalLayoutApi::class)

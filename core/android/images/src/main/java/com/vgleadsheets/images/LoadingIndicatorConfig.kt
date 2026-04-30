@@ -1,6 +1,7 @@
 package com.vgleadsheets.images
 
 import kotlinx.collections.immutable.ImmutableList
+import net.sigmabeta.sage.images.PdfSize
 
 data class LoadingIndicatorConfig(
     val title: String,

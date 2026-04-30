@@ -9,14 +9,14 @@ dependencies {
 
     api(libs.sage.common.analytics)
     api(libs.sage.common.coroutines)
-    api(projects.core.common.debug)
-    api(projects.core.common.list)
+    api(libs.sage.common.debug)
+    api(libs.sage.common.list)
     api(libs.sage.common.nav)
-    api(projects.core.common.perf)
+    api(libs.sage.common.perf)
     api(projects.core.common.repository)
     api(projects.core.common.urlinfo)
 
-    implementation(projects.core.common.ui.components)
+    implementation(libs.sage.common.ui.components)
 }
 
 android {

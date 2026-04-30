@@ -1,11 +1,11 @@
 package com.vgleadsheets.remaster.composers.list
 
 import net.sigmabeta.sage.appcomm.LCE
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.list.ColumnType
-import com.vgleadsheets.list.ListState
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ColumnType
+import net.sigmabeta.sage.list.ListState
 import com.vgleadsheets.model.Composer
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringId

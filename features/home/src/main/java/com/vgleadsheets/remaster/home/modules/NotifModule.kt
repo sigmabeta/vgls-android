@@ -2,9 +2,9 @@ package com.vgleadsheets.remaster.home.modules
 
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.di.ActionDeserializer
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.NotifListModel
-import com.vgleadsheets.list.DelayManager
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.NotifListModel
+import net.sigmabeta.sage.list.DelayManager
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.remaster.home.HomeModule

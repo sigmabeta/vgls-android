@@ -4,7 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.remaster.parts.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic

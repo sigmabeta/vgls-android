@@ -13,14 +13,14 @@ dependencies {
     implementation(projects.core.android.images)
     implementation(projects.core.android.licenses)
     implementation(projects.core.android.nav)
-    implementation(projects.core.android.perf)
+    implementation(libs.sage.android.perf)
     implementation(projects.core.android.ui.components)
-    implementation(projects.core.android.ui.icons)
+    implementation(libs.sage.android.ui.icons)
     implementation(projects.core.android.ui.list)
-    implementation(projects.core.android.ui.themes)
+    implementation(libs.sage.android.ui.themes)
     implementation(projects.core.android.viewmodel)
 
-    implementation(projects.core.common.pdf)
+    implementation(libs.sage.common.pdf)
 
     implementation(projects.features.navbar)
     implementation(projects.features.topbar)

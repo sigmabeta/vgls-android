@@ -2,7 +2,7 @@ package com.vgleadsheets.pdf.fake
 
 import coil3.key.Keyer
 import coil3.request.Options
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.pdf.fakeCacheKey
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 

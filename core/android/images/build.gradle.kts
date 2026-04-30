@@ -9,12 +9,12 @@ dependencies {
     api(libs.coil.kt.okhttp)
     api(libs.kotlinx.collections.immutable)
 
-    implementation(projects.core.common.images)
+    implementation(libs.sage.common.images)
 
-    api(projects.core.android.bitmaps)
+    api(libs.sage.android.bitmaps)
 
     implementation(libs.sage.common.analytics)
-    implementation(projects.core.common.images)
+    implementation(libs.sage.common.images)
     implementation(projects.core.common.model)
 }
 

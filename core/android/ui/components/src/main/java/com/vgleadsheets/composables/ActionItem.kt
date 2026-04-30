@@ -22,13 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.CtaListModel
+import net.sigmabeta.sage.components.CtaListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.components.R
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.themes.VglsMaterialMenu
-import com.vgleadsheets.ui.vector
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
+import net.sigmabeta.sage.ui.vector
 
 @Composable
 fun ActionItem(

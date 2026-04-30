@@ -1,11 +1,11 @@
 package com.vgleadsheets.pdf.subsample
 
 import androidx.compose.ui.graphics.ImageBitmap
-import com.vgleadsheets.common.debug.RenderOverlayProvider
+import net.sigmabeta.sage.debug.RenderOverlayProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.downloader.SheetDownloader
 import net.sigmabeta.sage.logging.Hatchet
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.pdf.PdfConfigById
 import me.saket.telephoto.subsamplingimage.SubSamplingImageSource
 
 class PdfSubsampleSource(

@@ -9,9 +9,9 @@ import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
-import com.vgleadsheets.common.debug.ShowDebugProvider
+import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
-import com.vgleadsheets.list.DelayManager
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game

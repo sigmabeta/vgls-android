@@ -18,11 +18,11 @@ import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.nav.SystemUiVisibility
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import com.vgleadsheets.pdf.subsample.PdfSubsampleSource
-import com.vgleadsheets.perf.LocalLogger
+import net.sigmabeta.sage.android.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.scaffold.systemui.SystemUiState
 import com.vgleadsheets.scaffold.systemui.SystemUiViewModel
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.math.roundToInt

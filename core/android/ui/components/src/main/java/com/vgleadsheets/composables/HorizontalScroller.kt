@@ -20,17 +20,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.HorizontalScrollerListModel
-import com.vgleadsheets.components.ImageNameListModel
-import com.vgleadsheets.components.LoadingItemListModel
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.SquareItemListModel
-import com.vgleadsheets.components.WideItemListModel
+import net.sigmabeta.sage.components.HorizontalScrollerListModel
+import net.sigmabeta.sage.components.ImageNameListModel
+import net.sigmabeta.sage.components.LoadingItemListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.WideItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.images.SourceInfo
+import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.components.R
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 import java.util.Random
 import kotlinx.collections.immutable.toImmutableList
 

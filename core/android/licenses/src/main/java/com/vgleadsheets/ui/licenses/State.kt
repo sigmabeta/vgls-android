@@ -1,7 +1,7 @@
 package com.vgleadsheets.ui.licenses
 
 import net.sigmabeta.sage.appcomm.VglsState
-import com.vgleadsheets.components.TitleBarModel
+import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 

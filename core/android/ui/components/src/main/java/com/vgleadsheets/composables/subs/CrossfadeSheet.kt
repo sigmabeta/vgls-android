@@ -28,18 +28,18 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
-import com.vgleadsheets.bitmaps.SheetConstants
-import com.vgleadsheets.components.ErrorStateListModel
+import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import net.sigmabeta.sage.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.images.PdfSize
-import com.vgleadsheets.pdf.PdfConfigById
-import com.vgleadsheets.perf.BuildConfig
-import com.vgleadsheets.ui.id
+import net.sigmabeta.sage.images.PdfSize
+import net.sigmabeta.sage.pdf.PdfConfigById
+import net.sigmabeta.sage.perf.BuildConfig
+import net.sigmabeta.sage.ui.id
 import net.sigmabeta.sage.ui.imageLoadErrorStringId
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.roundToInt
 

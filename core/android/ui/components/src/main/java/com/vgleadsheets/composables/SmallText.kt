@@ -21,11 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.HorizontalScrollerListModel
-import com.vgleadsheets.components.SmallTextListModel
+import net.sigmabeta.sage.components.HorizontalScrollerListModel
+import net.sigmabeta.sage.components.SmallTextListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.model.generator.StringGenerator
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 import java.util.Random
 import kotlinx.collections.immutable.toImmutableList
 

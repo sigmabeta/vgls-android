@@ -7,15 +7,15 @@ plugins {
 dependencies {
     implementation(projects.core.common.model)
 
-    api(projects.core.common.ui.components)
+    api(libs.sage.common.ui.components)
 
-    implementation(projects.core.android.bitmaps)
+    implementation(libs.sage.android.bitmaps)
     implementation(projects.core.android.images)
     implementation(projects.core.android.pdf)
-    implementation(projects.core.android.perf)
-    implementation(projects.core.android.ui.icons)
-    implementation(projects.core.android.ui.themes)
-    implementation(projects.core.android.ui.strings)
+    implementation(libs.sage.android.perf)
+    implementation(libs.sage.android.ui.icons)
+    implementation(libs.sage.android.ui.themes)
+    implementation(libs.sage.android.ui.strings)
 
     implementation(libs.kotlin.reflect)
 }

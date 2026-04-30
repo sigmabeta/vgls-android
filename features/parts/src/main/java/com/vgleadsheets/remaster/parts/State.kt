@@ -1,9 +1,9 @@
 package com.vgleadsheets.remaster.parts
 
-import com.vgleadsheets.components.ListModel
-import com.vgleadsheets.components.MenuItemListModel
-import com.vgleadsheets.components.TitleBarModel
-import com.vgleadsheets.list.ListState
+import net.sigmabeta.sage.components.ListModel
+import net.sigmabeta.sage.components.MenuItemListModel
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ListState
 import com.vgleadsheets.model.Part
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringId

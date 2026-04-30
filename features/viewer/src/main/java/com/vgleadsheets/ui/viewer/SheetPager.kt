@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import net.sigmabeta.sage.appcomm.ActionSink
-import com.vgleadsheets.components.ZoomableSheetPageListModel
+import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.ZoomableSheetPageItem
 import kotlinx.collections.immutable.ImmutableList
 import me.saket.telephoto.zoomable.ZoomSpec

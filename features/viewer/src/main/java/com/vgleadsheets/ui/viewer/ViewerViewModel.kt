@@ -9,13 +9,13 @@ import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
-import com.vgleadsheets.common.debug.ShowDebugProvider
+import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.coroutines.VglsDispatchers
-import com.vgleadsheets.list.DelayManager
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import com.vgleadsheets.settings.GeneralSettingsManager
+import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.viewmodel.VglsViewModel

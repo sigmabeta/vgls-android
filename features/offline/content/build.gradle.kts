@@ -4,11 +4,11 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.common.list)
+    api(libs.sage.common.list)
     api(projects.core.common.model)
     api(libs.sage.common.nav)
     api(projects.core.common.offline)
-    api(projects.core.common.pdf)
+    api(libs.sage.common.pdf)
     api(projects.core.common.repository)
-    api(projects.core.common.ui.components)
+    api(libs.sage.common.ui.components)
 }

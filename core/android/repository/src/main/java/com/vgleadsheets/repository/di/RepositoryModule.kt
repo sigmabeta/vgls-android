@@ -42,7 +42,7 @@ import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
-import com.vgleadsheets.settings.GeneralSettingsManager
+import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
 import dagger.Module

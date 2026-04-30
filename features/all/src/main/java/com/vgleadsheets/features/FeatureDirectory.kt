@@ -3,9 +3,9 @@ package com.vgleadsheets.features
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.coroutines.VglsDispatchers
-import com.vgleadsheets.list.BrainProvider
-import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.list.ListViewModelBrain
+import net.sigmabeta.sage.list.BrainProvider
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.ListViewModelBrain
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
@@ -40,8 +40,8 @@ import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
-import com.vgleadsheets.settings.DebugSettingsManager
-import com.vgleadsheets.settings.GeneralSettingsManager
+import net.sigmabeta.sage.settings.DebugSettingsManager
+import net.sigmabeta.sage.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider

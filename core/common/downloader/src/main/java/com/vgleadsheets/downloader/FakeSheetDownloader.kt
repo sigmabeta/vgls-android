@@ -2,7 +2,7 @@ package com.vgleadsheets.downloader
 
 import com.vgleadsheets.downloader.FileUtils.fileReference
 import com.vgleadsheets.model.Part
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.flow.first

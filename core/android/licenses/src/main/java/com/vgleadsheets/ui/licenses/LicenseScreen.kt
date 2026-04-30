@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.kevinnzou.web.WebView
 import com.kevinnzou.web.rememberWebViewState
-import com.vgleadsheets.components.ErrorStateListModel
+import net.sigmabeta.sage.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import net.sigmabeta.sage.ui.StringId
-import com.vgleadsheets.ui.id
+import net.sigmabeta.sage.ui.id
 
 @Composable
 fun LicenseScreen(

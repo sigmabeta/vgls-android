@@ -27,18 +27,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.CheckableListModel
-import com.vgleadsheets.components.DropdownSettingListModel
-import com.vgleadsheets.components.LabelRatingStarListModel
-import com.vgleadsheets.components.LabelValueListModel
-import com.vgleadsheets.components.SingleTextListModel
+import net.sigmabeta.sage.components.CheckableListModel
+import net.sigmabeta.sage.components.DropdownSettingListModel
+import net.sigmabeta.sage.components.LabelRatingStarListModel
+import net.sigmabeta.sage.components.LabelValueListModel
+import net.sigmabeta.sage.components.SingleTextListModel
 import com.vgleadsheets.composables.LabelCheckboxItem
 import com.vgleadsheets.composables.LabelDropdownListItem
 import com.vgleadsheets.composables.LabelNoThingyItem
 import com.vgleadsheets.composables.LabelRatingListItem
 import com.vgleadsheets.composables.LabelValueListItem
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

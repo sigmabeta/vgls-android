@@ -7,13 +7,13 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     api(libs.zoomable.image.coil3)
 
-    implementation(projects.core.android.bitmaps)
+    implementation(libs.sage.android.bitmaps)
 
-    implementation(projects.core.common.debug)
+    implementation(libs.sage.common.debug)
     implementation(projects.core.common.downloader)
     implementation(projects.core.common.repository)
     implementation(projects.core.common.urlinfo)
-    api(projects.core.common.pdf)
+    api(libs.sage.common.pdf)
 }
 
 android {

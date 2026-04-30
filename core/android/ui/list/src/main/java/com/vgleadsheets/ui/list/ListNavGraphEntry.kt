@@ -9,14 +9,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.list.ColumnType
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.ColumnType
+import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.nav.ARG_TEMPLATE_ONE
 import net.sigmabeta.sage.nav.ArgType
 import net.sigmabeta.sage.nav.Destination
-import com.vgleadsheets.perf.DURATION_THRESHOLD_ERROR_SCREEN_DEVICE
-import com.vgleadsheets.perf.DURATION_THRESHOLD_WARNING_SCREEN_DEVICE
-import com.vgleadsheets.perf.WithMeasurementScreen
+import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_ERROR_SCREEN_DEVICE
+import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_WARNING_SCREEN_DEVICE
+import net.sigmabeta.sage.android.perf.WithMeasurementScreen
 import com.vgleadsheets.viewmodel.list.listViewModel
 
 @Suppress("LongMethod")

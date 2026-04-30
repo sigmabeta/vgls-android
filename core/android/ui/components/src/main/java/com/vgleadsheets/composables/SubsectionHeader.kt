@@ -17,8 +17,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.components.SubsectionHeaderListModel
-import com.vgleadsheets.ui.themes.VglsMaterial
+import net.sigmabeta.sage.components.SubsectionHeaderListModel
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @OptIn(ExperimentalTextApi::class)
 @Composable

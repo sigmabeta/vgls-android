@@ -30,7 +30,7 @@ import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarViewModel
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.search.searchScreenNavEntry

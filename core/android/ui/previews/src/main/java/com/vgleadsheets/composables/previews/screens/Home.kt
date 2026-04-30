@@ -5,18 +5,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.LoadingType
-import com.vgleadsheets.components.SheetPageCardListModel
-import com.vgleadsheets.components.SheetPageListModel
-import com.vgleadsheets.components.SquareItemListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SheetPageCardListModel
+import net.sigmabeta.sage.components.SheetPageListModel
+import net.sigmabeta.sage.components.SquareItemListModel
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import com.vgleadsheets.images.PdfSize
-import com.vgleadsheets.list.DelayManager
-import com.vgleadsheets.list.WidthClass
+import net.sigmabeta.sage.images.PdfSize
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.ModuleDetails
@@ -26,7 +26,7 @@ import com.vgleadsheets.remaster.home.modules.RngModule
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
-import com.vgleadsheets.ui.StringResources
+import net.sigmabeta.sage.ui.StringResources
 import kotlinx.collections.immutable.persistentListOf
 import java.util.Random
 

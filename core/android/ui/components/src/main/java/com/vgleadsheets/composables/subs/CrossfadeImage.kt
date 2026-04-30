@@ -31,15 +31,15 @@ import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import net.sigmabeta.sage.appcomm.VglsAction
-import com.vgleadsheets.components.ImageNameListModel
+import net.sigmabeta.sage.components.ImageNameListModel
 import com.vgleadsheets.composables.ImageNameListItem
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.BitmapGenerator
-import com.vgleadsheets.images.SourceInfo
-import com.vgleadsheets.pdf.PdfConfigById
+import net.sigmabeta.sage.images.SourceInfo
+import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.themes.VglsMaterial
-import com.vgleadsheets.ui.vector
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.vector
 
 @Composable
 fun CrossfadeImage(

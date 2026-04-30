@@ -3,7 +3,7 @@ plugins {
 }
 dependencies {
     api(projects.core.common.model)
-    api(projects.core.common.settings.general)
+    api(libs.sage.common.settings.general)
 
     implementation(libs.sage.common.appcomm)
     implementation(libs.sage.common.connectivity)

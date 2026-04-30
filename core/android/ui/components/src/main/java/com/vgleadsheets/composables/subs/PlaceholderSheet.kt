@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.vgleadsheets.composables.previews.FullscreenBlack
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import com.vgleadsheets.images.PdfSize
+import net.sigmabeta.sage.images.PdfSize
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
