@@ -7,7 +7,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             from(files("../sage/gradle/libs.versions.toml"))
-        }
+        }Ktlin
     }
 }
 
