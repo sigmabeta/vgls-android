@@ -1,3 +1,12 @@
+// Propagate sdk.dir to SAGE submodule so Android Studio can find the SDK when building.
+val sageLocalProps = file("sage/local.properties")
+if (!sageLocalProps.exists()) {
+    val vglsLocalProps = file("local.properties")
+    if (vglsLocalProps.exists()) {
+        sageLocalProps.writeText(vglsLocalProps.readText())
+    }
+}
+
 includeBuild("sage/sage-build-logic")
 includeBuild("build-logic")
 includeBuild("sage")
