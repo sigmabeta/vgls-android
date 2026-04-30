@@ -15,27 +15,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import net.sigmabeta.sage.appcomm.ActionSink
+import androidx.compose.ui.res.dimensionResource
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
+import com.vgleadsheets.composables.Content
+import com.vgleadsheets.scaffold.AppContent
+import com.vgleadsheets.scaffold.TopBarConfig
+import com.vgleadsheets.topbar.TopBarState
+import com.vgleadsheets.topbar.TopBarVisibility
+import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW
+import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW
+import net.sigmabeta.sage.android.perf.LocalLogger
+import net.sigmabeta.sage.android.perf.WithMeasurementScreen
+import net.sigmabeta.sage.android.ui.list.GridScreen
+import net.sigmabeta.sage.android.ui.list.ListScreen
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
 import net.sigmabeta.sage.list.ListStateActual
 import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.logging.BasicHatchet
-import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW
-import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW
-import net.sigmabeta.sage.android.perf.LocalLogger
-import net.sigmabeta.sage.android.perf.WithMeasurementScreen
-import com.vgleadsheets.scaffold.AppContent
-import com.vgleadsheets.scaffold.TopBarConfig
-import com.vgleadsheets.topbar.TopBarState
-import com.vgleadsheets.topbar.TopBarVisibility
 import net.sigmabeta.sage.ui.StringProvider
 import net.sigmabeta.sage.ui.StringResources
-import com.vgleadsheets.ui.list.GridScreen
-import com.vgleadsheets.ui.list.ListScreen
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
@@ -137,6 +140,10 @@ private fun ListContent(
         "Calculated number of columns is zero for ${state.columnType} and $displayWidthClass."
     }
 
+    val sideMargin = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side)
+    val itemContent: @Composable (ListModel, ActionSink, Boolean, Modifier, PaddingValues) -> Unit =
+        { model, sink, debug, mod, pad -> model.Content(sink, debug, mod, pad) }
+
     if (numColumns > 1) {
         val (staggered, allowHorizScroller) = if (columnType is ColumnType.Staggered) {
             true to columnType.allowHorizScroller
@@ -151,14 +158,18 @@ private fun ListContent(
             numberOfColumns = numColumns,
             staggered = staggered,
             allowHorizScroller = allowHorizScroller,
+            sideMargin = sideMargin,
             modifier = Modifier.padding(innerPadding),
+            itemContent = itemContent,
         )
     } else {
         ListScreen(
             state = state,
             actionSink = actionSink,
             showDebug = false,
+            sideMargin = sideMargin,
             modifier = Modifier.padding(innerPadding),
+            itemContent = itemContent,
         )
     }
 }

@@ -14,6 +14,7 @@ dependencies {
 
     api(libs.sage.common.nav)
     implementation(libs.sage.android.perf)
+    implementation(libs.sage.android.ui.list)
     implementation(projects.vgls.android.ui.components)
     implementation(libs.sage.android.ui.strings)
     implementation(projects.vgls.android.viewmodel)
