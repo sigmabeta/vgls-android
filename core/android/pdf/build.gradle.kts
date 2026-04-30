@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.vgls.core.android)
+    alias(libs.plugins.sage.android)
 }
 
 dependencies {

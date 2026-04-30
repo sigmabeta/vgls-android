@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.vgls.core.jvm)
+    alias(libs.plugins.sage.jvm)
     alias(libs.plugins.vgls.di.jvm)
 }
 

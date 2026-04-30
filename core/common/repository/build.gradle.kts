@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.vgls.core.jvm)
+    alias(libs.plugins.sage.jvm)
 }
 dependencies {
     api(projects.core.common.model)

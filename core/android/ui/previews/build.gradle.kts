@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.paparazzi)
 
-    alias(libs.plugins.vgls.core.android)
-    alias(libs.plugins.vgls.compose.android.module)
+    alias(libs.plugins.sage.android)
+    alias(libs.plugins.sage.compose.android)
 }
 
 dependencies {

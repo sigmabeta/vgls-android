@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.vgls.core.android)
-    alias(libs.plugins.vgls.compose.android.module)
+    alias(libs.plugins.sage.android)
+    alias(libs.plugins.sage.compose.android)
     alias(libs.plugins.vgls.di.android)
 }
 
