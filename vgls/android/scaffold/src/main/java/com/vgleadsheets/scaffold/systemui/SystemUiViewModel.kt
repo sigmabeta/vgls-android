@@ -1,24 +1,24 @@
 package com.vgleadsheets.scaffold.systemui
 
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.nav.SystemUiVisibility
+import com.vgleadsheets.viewmodel.VglsViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.VglsAction
 import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
-import net.sigmabeta.sage.coroutines.VglsDispatchers
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
-import com.vgleadsheets.nav.SystemUiVisibility
-import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SystemUiViewModel@Inject constructor(
     override val analytics: Analytics,
-    override val dispatchers: VglsDispatchers,
+    override val dispatchers: SageDispatchers,
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,

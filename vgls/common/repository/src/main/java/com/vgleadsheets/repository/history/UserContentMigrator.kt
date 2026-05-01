@@ -1,10 +1,7 @@
 package com.vgleadsheets.repository.history
 
-import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.SongDataSource
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Song
-import net.sigmabeta.sage.settings.GeneralSettingsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
@@ -14,6 +11,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.settings.GeneralSettingsManager
 
 class UserContentMigrator(
     private val songHistoryRepository: SongHistoryRepository,
@@ -21,7 +21,7 @@ class UserContentMigrator(
     private val settingsManager: GeneralSettingsManager,
     private val hatchet: Hatchet,
     private val coroutineScope: CoroutineScope,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
 ) {
     init {
         autoMigrateIfNecessary()

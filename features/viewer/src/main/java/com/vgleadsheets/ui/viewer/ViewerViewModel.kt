@@ -1,25 +1,10 @@
 package com.vgleadsheets.ui.viewer
 
 import androidx.lifecycle.viewModelScope
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.EventSink
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.debug.ShowDebugProvider
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.list.DelayManager
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import net.sigmabeta.sage.settings.GeneralSettingsManager
-import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
-import net.sigmabeta.sage.wakelocks.WakeLockManager
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
@@ -34,6 +19,21 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.settings.GeneralSettingsManager
+import net.sigmabeta.sage.ui.StringProvider
+import net.sigmabeta.sage.wakelocks.WakeLockManager
 
 class ViewerViewModel @AssistedInject constructor(
     private val stringProvider: StringProvider,
@@ -44,7 +44,7 @@ class ViewerViewModel @AssistedInject constructor(
     private val wakeLockManager: WakeLockManager,
     override val hatchet: Hatchet,
     override val analytics: Analytics,
-    override val dispatchers: VglsDispatchers,
+    override val dispatchers: SageDispatchers,
     override val delayManager: DelayManager,
     override val eventDispatcher: EventDispatcher,
     override val showDebugProvider: ShowDebugProvider,

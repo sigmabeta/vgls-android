@@ -2,32 +2,32 @@ package com.vgleadsheets.viewmodel.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.EventSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.debug.ShowDebugProvider
-import net.sigmabeta.sage.components.ErrorStateListModel
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.list.BrainProvider
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.getErrors
-import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
-import net.sigmabeta.sage.perf.PerfMeasurer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.components.ErrorStateListModel
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.list.BrainProvider
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.getErrors
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
+import net.sigmabeta.sage.perf.PerfMeasurer
 
 class ListViewModel @AssistedInject constructor(
     brainProvider: BrainProvider,
     private val hatchet: Hatchet,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
     private val eventDispatcher: EventDispatcher,
     private val showDebugProvider: ShowDebugProvider,
     private val analytics: Analytics,

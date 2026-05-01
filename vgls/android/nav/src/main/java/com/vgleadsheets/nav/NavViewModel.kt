@@ -10,18 +10,8 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.debug.ShowDebugProvider
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.list.DelayManager
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
-import net.sigmabeta.sage.settings.DebugSettingsManager
-import net.sigmabeta.sage.ui.StringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -35,11 +25,21 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.settings.DebugSettingsManager
+import net.sigmabeta.sage.ui.StringId
 import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
-    override val dispatchers: VglsDispatchers,
+    override val dispatchers: SageDispatchers,
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val analytics: Analytics,

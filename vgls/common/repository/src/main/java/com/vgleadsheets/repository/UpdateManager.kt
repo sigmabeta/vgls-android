@@ -1,21 +1,12 @@
 package com.vgleadsheets.repository
 
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.di.ActionDeserializer
-import net.sigmabeta.sage.connectivity.NetworkStatus
-import net.sigmabeta.sage.connectivity.VglsNetworkUnavailableException
-import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
-import net.sigmabeta.sage.time.ThreeTenTime
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -29,6 +20,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.connectivity.NetworkStatus
+import net.sigmabeta.sage.connectivity.VglsNetworkUnavailableException
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.ui.StringId
+import net.sigmabeta.sage.ui.StringProvider
 import org.threeten.bp.Instant
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -40,7 +40,7 @@ class UpdateManager(
     private val threeTen: ThreeTenTime,
     private val actionDeserializer: ActionDeserializer,
     private val hatchet: Hatchet,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
     private val coroutineScope: CoroutineScope,
     private val notifManager: NotifManager,
     private val stringProvider: StringProvider,

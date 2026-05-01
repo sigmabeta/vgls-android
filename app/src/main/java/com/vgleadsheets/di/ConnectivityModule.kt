@@ -1,16 +1,16 @@
 package com.vgleadsheets.di
 
 import android.content.Context
-import net.sigmabeta.sage.android.connectivity.AndroidNetworkStatusProvider
-import net.sigmabeta.sage.connectivity.NetworkStatusProvider
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.sigmabeta.sage.android.connectivity.AndroidNetworkStatusProvider
+import net.sigmabeta.sage.connectivity.NetworkStatusProvider
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
@@ -27,7 +27,7 @@ object ConnectivityModule {
         hatchet: Hatchet,
         @Named("ProbeOkHttp") probeClient: OkHttpClient,
         @Named("VglsApiUrl") apiBaseUrl: String?,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
     ): NetworkStatusProvider = AndroidNetworkStatusProvider(
         context = context,
         hatchet = hatchet,

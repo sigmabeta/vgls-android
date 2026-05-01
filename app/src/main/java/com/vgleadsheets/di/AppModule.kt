@@ -4,28 +4,11 @@ import android.content.Context
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
-import net.sigmabeta.sage.events.EventDispatcherReal
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.di.ActionDeserializer
-import net.sigmabeta.sage.appinfo.AppInfo
-import net.sigmabeta.sage.debug.RenderOverlayProvider
-import net.sigmabeta.sage.debug.ShowDebugProvider
-import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.dispatchers.DelayManagerImpl
-import net.sigmabeta.sage.list.DelayManager
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
 import com.vgleadsheets.repository.UpdateManager
-import net.sigmabeta.sage.settings.DebugSettingsManager
-import net.sigmabeta.sage.settings.GeneralSettingsManager
-import net.sigmabeta.sage.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
-import net.sigmabeta.sage.storage.common.Storage
-import net.sigmabeta.sage.time.ThreeTenTime
-import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.StringResources
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.versions.AppVersionManager
 import dagger.Module
@@ -34,6 +17,23 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.appinfo.AppInfo
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.RenderOverlayProvider
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.events.EventDispatcherReal
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.settings.DebugSettingsManager
+import net.sigmabeta.sage.settings.GeneralSettingsManager
+import net.sigmabeta.sage.settings.environment.EnvironmentManager
+import net.sigmabeta.sage.storage.common.Storage
+import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.ui.StringProvider
+import net.sigmabeta.sage.ui.StringResources
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -64,7 +64,7 @@ object AppModule {
     fun provideShowDebugProvider(
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
     ) = ShowDebugProvider(
         debugSettingsManager,
         coroutineScope,
@@ -76,7 +76,7 @@ object AppModule {
     fun provideRenderOverlayProvider(
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
     ) = RenderOverlayProvider(
         debugSettingsManager,
         coroutineScope,
@@ -100,7 +100,7 @@ object AppModule {
         storage: Storage,
         @Named(NotifManager.DEP_NAME_JSON_ADAPTER_NOTIF) jsonAdapter: JsonAdapter<NotifState>,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
         hatchet: Hatchet,
     ) = NotifManager(
         storage = storage,
@@ -118,7 +118,7 @@ object AppModule {
         notifManager: NotifManager,
         actionDeserializer: ActionDeserializer,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
         hatchet: Hatchet,
     ) = AppVersionManager(
         storage = storage,
@@ -170,7 +170,7 @@ object AppModule {
         partManager: SelectedPartManager,
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers
+        dispatchers: SageDispatchers
     ) = UrlInfoProvider(
         environmentManager,
         partManager,
@@ -184,7 +184,7 @@ object AppModule {
     internal fun provideDispatcherConfigProvider(
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
     ): DelayManager = DelayManagerImpl(
         debugSettingsManager,
         dispatchers,

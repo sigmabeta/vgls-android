@@ -1,10 +1,9 @@
 import com.android.build.api.dsl.ApplicationBuildType
-import org.jetbrains.kotlin.config.JvmTarget
 
 plugins {
     alias(libs.plugins.vgls.android.app)
     alias(libs.plugins.vgls.compose.android.app)
-    alias(libs.plugins.vgls.di.android)
+    alias(libs.plugins.sage.di.android)
 
     alias(libs.plugins.git.version)
     alias(libs.plugins.gradle.publisher)
@@ -91,10 +90,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JvmTarget.JVM_17.description
     }
 
     testOptions {

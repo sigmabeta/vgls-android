@@ -1,7 +1,5 @@
 package com.vgleadsheets.repository.di
 
-import net.sigmabeta.sage.appcomm.di.ActionDeserializer
-import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.android.dao.TransactionDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
@@ -26,7 +24,6 @@ import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
 import com.vgleadsheets.database.source.TagValuePlayCountDataSource
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.ComposerRepository
@@ -42,14 +39,17 @@ import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
-import net.sigmabeta.sage.settings.GeneralSettingsManager
-import net.sigmabeta.sage.time.ThreeTenTime
-import net.sigmabeta.sage.ui.StringProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.settings.GeneralSettingsManager
+import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.ui.StringProvider
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -124,7 +124,7 @@ object RepositoryModule {
         vglsApi: VglsApi,
         dbUpdater: DbUpdater,
         threeTenTime: ThreeTenTime,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
         actionDeserializer: ActionDeserializer,
         hatchet: Hatchet,
         dbStatisticsDataSource: DbStatisticsDataSource,
@@ -151,7 +151,7 @@ object RepositoryModule {
         vglsApi: VglsApi,
         transactionDao: TransactionDao,
         threeTenTime: ThreeTenTime,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
         hatchet: Hatchet,
         composerAliasDataSource: ComposerAliasDataSource,
         composerDataSource: ComposerDataSource,
@@ -183,7 +183,7 @@ object RepositoryModule {
     @Singleton
     @Suppress("LongParameterList")
     fun provideSongHistoryRepository(
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
         hatchet: Hatchet,
         songHistoryDataSource: SongHistoryDataSource,
         gamePlayCountDataSource: GamePlayCountDataSource,
@@ -281,7 +281,7 @@ object RepositoryModule {
         songDataSource: SongDataSource,
         settingsManager: GeneralSettingsManager,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
         hatchet: Hatchet
     ) = UserContentMigrator(
         songHistoryRepository = songHistoryRepository,

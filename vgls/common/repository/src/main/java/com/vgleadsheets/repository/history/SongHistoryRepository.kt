@@ -1,7 +1,6 @@
 package com.vgleadsheets.repository.history
 
 import com.vgleadsheets.conversion.mapListTo
-import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.database.dao.GameDataSource
 import com.vgleadsheets.database.dao.SongDataSource
@@ -11,12 +10,13 @@ import com.vgleadsheets.database.source.GamePlayCountDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
 import com.vgleadsheets.database.source.TagValuePlayCountDataSource
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SongHistoryEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
 
 class SongHistoryRepository(
     private val songHistoryDataSource: SongHistoryDataSource,
@@ -29,7 +29,7 @@ class SongHistoryRepository(
     private val tagValueDataSource: TagValueDataSource,
     private val songDataSource: SongDataSource,
     private val coroutineScope: CoroutineScope,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
     private val hatchet: Hatchet,
 ) {
     suspend fun clearUsage() {

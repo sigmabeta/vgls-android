@@ -1,18 +1,18 @@
 package com.vgleadsheets.pdf.subsample
 
 import androidx.compose.ui.graphics.ImageBitmap
-import net.sigmabeta.sage.debug.RenderOverlayProvider
-import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.downloader.SheetDownloader
+import me.saket.telephoto.subsamplingimage.SubSamplingImageSource
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.RenderOverlayProvider
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.pdf.PdfConfigById
-import me.saket.telephoto.subsamplingimage.SubSamplingImageSource
 
 class PdfSubsampleSource(
     private val data: PdfConfigById,
     private val hatchet: Hatchet,
     private val sheetDownloader: SheetDownloader,
-    private val vglsDispatchers: VglsDispatchers,
+    private val sageDispatchers: SageDispatchers,
     private val renderOverlayProvider: RenderOverlayProvider,
 ) : SubSamplingImageSource {
     override suspend fun decoder(): PdfRegionDecoder.Factory {
@@ -27,7 +27,7 @@ class PdfSubsampleSource(
             data.pageNumber,
             maxWidth,
             maxHeight,
-            vglsDispatchers,
+            sageDispatchers,
             hatchet,
             renderOverlayProvider,
         )
@@ -38,7 +38,7 @@ class PdfSubsampleSource(
     class Factory(
         private val hatchet: Hatchet,
         private val sheetDownloader: SheetDownloader,
-        private val vglsDispatchers: VglsDispatchers,
+        private val sageDispatchers: SageDispatchers,
         private val renderOverlayProvider: RenderOverlayProvider,
     ) : PdfSubsampleSourceFactory {
         override fun create(
@@ -47,7 +47,7 @@ class PdfSubsampleSource(
             data,
             hatchet,
             sheetDownloader,
-            vglsDispatchers,
+            sageDispatchers,
             renderOverlayProvider,
         )
     }

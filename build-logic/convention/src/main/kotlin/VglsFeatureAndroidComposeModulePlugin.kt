@@ -1,4 +1,4 @@
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.vgleadsheets.plugins.components.configureAndroidCompose
 import com.vgleadsheets.plugins.components.libs
 import org.gradle.api.Plugin

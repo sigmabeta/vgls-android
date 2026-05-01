@@ -4,16 +4,16 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.storage.common.AndroidDataStore
-import net.sigmabeta.sage.storage.common.Storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.storage.common.Storage
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -32,7 +32,7 @@ object StorageModule {
     fun provideStorage(
         dataStore: DataStore<Preferences>,
         coroutineScope: CoroutineScope,
-        dispatchers: VglsDispatchers,
+        dispatchers: SageDispatchers,
         hatchet: Hatchet
     ): Storage = AndroidDataStore(
         dataStore = dataStore,
