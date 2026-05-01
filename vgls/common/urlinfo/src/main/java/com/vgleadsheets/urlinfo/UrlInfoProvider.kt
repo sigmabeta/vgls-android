@@ -1,8 +1,5 @@
 package com.vgleadsheets.urlinfo
 
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.settings.DebugSettingsManager
-import net.sigmabeta.sage.settings.environment.EnvironmentManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,13 +9,16 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.settings.DebugSettingsManager
+import net.sigmabeta.sage.settings.environment.EnvironmentManager
 
 class UrlInfoProvider(
     private val environmentManager: EnvironmentManager,
     private val partManager: SelectedPartManager,
     private val debugSettingsManager: DebugSettingsManager,
     private val coroutineScope: CoroutineScope,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
 ) {
     private val _urlInfoFlow = MutableStateFlow(UrlInfo())
     val urlInfoFlow = _urlInfoFlow.asStateFlow()

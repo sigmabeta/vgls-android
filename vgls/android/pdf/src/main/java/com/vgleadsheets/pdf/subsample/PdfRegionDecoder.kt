@@ -8,16 +8,16 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
-import net.sigmabeta.sage.debug.RenderOverlayProvider
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.logging.BluntHatchet
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.pdf.AsyncRenderer
 import com.vgleadsheets.pdf.PdfToBitmapAsyncRenderer
 import com.vgleadsheets.pdf.PdfToBitmapFullDocAsyncRenderer
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import kotlinx.coroutines.withContext
 import me.saket.telephoto.subsamplingimage.internal.ImageRegionDecoder
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.RenderOverlayProvider
+import net.sigmabeta.sage.logging.BluntHatchet
+import net.sigmabeta.sage.logging.Hatchet
 import java.io.File
 import kotlin.math.absoluteValue
 import kotlin.math.min
@@ -27,7 +27,7 @@ class PdfRegionDecoder(
     pageNumber: Int?,
     private val maxWidth: Int,
     private val maxHeight: Int,
-    private val vglsDispatchers: VglsDispatchers,
+    private val sageDispatchers: SageDispatchers,
     private val hatchet: Hatchet,
     private val renderOverlayProvider: RenderOverlayProvider,
 ) : ImageRegionDecoder {
@@ -88,7 +88,7 @@ class PdfRegionDecoder(
 
         val zoom = maxSampleSize.size.toFloat() / sampleSize
 
-        val regionBitmap = withContext(vglsDispatchers.computation) {
+        val regionBitmap = withContext(sageDispatchers.computation) {
             renderer.renderToBitmap(
                 width = region.width / sampleSize,
                 height = region.height / sampleSize,
@@ -119,7 +119,7 @@ class PdfRegionDecoder(
         private val pageNumber: Int?,
         private val maxWidth: Int,
         private val maxHeight: Int,
-        private val vglsDispatchers: VglsDispatchers,
+        private val sageDispatchers: SageDispatchers,
         private val hatchet: Hatchet,
         private val renderOverlayProvider: RenderOverlayProvider,
     ) : ImageRegionDecoder.Factory {
@@ -128,7 +128,7 @@ class PdfRegionDecoder(
                 pageNumber,
                 maxWidth,
                 maxHeight,
-                vglsDispatchers,
+                sageDispatchers,
                 hatchet,
                 renderOverlayProvider,
             )

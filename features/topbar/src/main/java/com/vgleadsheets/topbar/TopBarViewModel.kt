@@ -1,16 +1,6 @@
 package com.vgleadsheets.topbar
 
 import androidx.lifecycle.viewModelScope
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.debug.ShowDebugProvider
-import net.sigmabeta.sage.components.TitleBarModel
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.list.DelayManager
-import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,13 +8,23 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
 import javax.inject.Inject
 
 @HiltViewModel
 class TopBarViewModel @Inject constructor(
     private val selectedPartManager: SelectedPartManager,
     override val analytics: Analytics,
-    override val dispatchers: VglsDispatchers,
+    override val dispatchers: SageDispatchers,
     override val delayManager: DelayManager,
     override val hatchet: Hatchet,
     override val eventDispatcher: EventDispatcher,

@@ -1,18 +1,18 @@
 package com.vgleadsheets.versions
 
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.di.ActionDeserializer
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
-import net.sigmabeta.sage.storage.common.Storage
-import net.sigmabeta.sage.ui.StringId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.storage.common.Storage
+import net.sigmabeta.sage.ui.StringId
 
 class AppVersionManager(
     private val storage: Storage,
@@ -20,7 +20,7 @@ class AppVersionManager(
     private val notifManager: NotifManager,
     private val actionDeserializer: ActionDeserializer,
     private val coroutineScope: CoroutineScope,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
     private val hatchet: Hatchet,
 ) {
     fun reportAppVersion(versionCode: Int) {

@@ -1,13 +1,5 @@
 package com.vgleadsheets.features
 
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.appinfo.AppInfo
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.list.BrainProvider
-import net.sigmabeta.sage.list.DelayManager
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
@@ -40,13 +32,21 @@ import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
-import net.sigmabeta.sage.settings.DebugSettingsManager
-import net.sigmabeta.sage.settings.GeneralSettingsManager
 import com.vgleadsheets.settings.part.SelectedPartManager
-import net.sigmabeta.sage.time.ThreeTenTime
-import net.sigmabeta.sage.ui.StringProvider
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appinfo.AppInfo
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.list.BrainProvider
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
+import net.sigmabeta.sage.settings.DebugSettingsManager
+import net.sigmabeta.sage.settings.GeneralSettingsManager
+import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.ui.StringProvider
 
 class FeatureDirectory(
     private val dbUpdater: DbUpdater,
@@ -58,7 +58,7 @@ class FeatureDirectory(
     private val favoriteRepository: FavoriteRepository,
     private val offlineRepository: OfflineRepository,
     private val tagRepository: TagRepository,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
     private val delayManager: DelayManager,
     private val appInfo: AppInfo,
     private val urlInfoProvider: UrlInfoProvider,

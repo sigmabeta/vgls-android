@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.sage.android)
     alias(libs.plugins.sage.compose.android)
-    alias(libs.plugins.vgls.di.android)
+    alias(libs.plugins.sage.di.android)
 }
 
 dependencies {

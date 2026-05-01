@@ -1,8 +1,6 @@
 package com.vgleadsheets.repository
 
-import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.conversion.asModel
-import net.sigmabeta.sage.coroutines.VglsDispatchers
 import com.vgleadsheets.database.TransactionRunner
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
@@ -13,7 +11,6 @@ import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.ComposerAlias
@@ -29,11 +26,14 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
-import net.sigmabeta.sage.time.ThreeTenTime
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.time.ThreeTenTime
 import org.threeten.bp.Instant
 import java.util.Locale
 
@@ -41,7 +41,7 @@ class DbUpdater(
     private val vglsApi: VglsApi,
     private val transactionRunner: TransactionRunner,
     private val threeTen: ThreeTenTime,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
     private val hatchet: Hatchet,
     private val composerAliasDataSource: ComposerAliasDataSource,
     private val composerDataSource: ComposerDataSource,

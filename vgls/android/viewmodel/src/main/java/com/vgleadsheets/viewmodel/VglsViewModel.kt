@@ -2,20 +2,6 @@ package com.vgleadsheets.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
-import net.sigmabeta.sage.analytics.isInitAction
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.EventSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.appcomm.VglsState
-import net.sigmabeta.sage.debug.ShowDebugProvider
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.list.DelayManager
-import net.sigmabeta.sage.list.VglsScheduler
-import net.sigmabeta.sage.logging.Hatchet
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
@@ -30,6 +16,20 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.isInitAction
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.EventDispatcher
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.VglsState
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.logging.Hatchet
 
 abstract class VglsViewModel<StateType : VglsState> :
     ViewModel(),
@@ -37,7 +37,7 @@ abstract class VglsViewModel<StateType : VglsState> :
     EventSink {
     protected abstract val hatchet: Hatchet
     protected abstract val analytics: Analytics
-    protected abstract val dispatchers: VglsDispatchers
+    protected abstract val dispatchers: SageDispatchers
     protected abstract val delayManager: DelayManager
     protected abstract val eventDispatcher: EventDispatcher
     protected abstract val showDebugProvider: ShowDebugProvider

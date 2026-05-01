@@ -1,9 +1,6 @@
 package com.vgleadsheets.notif
 
 import com.squareup.moshi.JsonAdapter
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.storage.common.Storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,12 +11,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.storage.common.Storage
 
 class NotifManager(
     private val storage: Storage,
     private val notifStateJsonAdapter: JsonAdapter<NotifState>,
     private val coroutineScope: CoroutineScope,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
     private val hatchet: Hatchet,
 ) {
     private val internalNotifState = MutableStateFlow(NotifState())

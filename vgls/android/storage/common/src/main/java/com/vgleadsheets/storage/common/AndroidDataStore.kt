@@ -5,18 +5,18 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import net.sigmabeta.sage.coroutines.VglsDispatchers
-import net.sigmabeta.sage.storage.common.Storage
-import net.sigmabeta.sage.logging.Hatchet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.storage.common.Storage
 
 class AndroidDataStore(
     private val dataStore: DataStore<Preferences>,
     private val coroutineScope: CoroutineScope,
-    private val dispatchers: VglsDispatchers,
+    private val dispatchers: SageDispatchers,
     private val hatchet: Hatchet,
 ) : Storage {
     override fun saveString(key: String, value: String) {
