@@ -16,13 +16,13 @@ import javax.inject.Named
 object FakeImageLoaderBuilderModule {
     @Provides
     @Named("PdfImageLoaderBuilder")
-    internal fun providesComponentRegistryBuilderFunction(
+    fun providesComponentRegistryBuilderFunction(
         @Named("FakePdfImageLoaderBuilder") fake: CoilBuilderFunction,
     ): CoilBuilderFunction = fake
 
     @Provides
     @Named("OtherImageLoaderBuilder")
-    internal fun providesOtherBuilderFunction(
+    fun providesOtherBuilderFunction(
         @Named("FakeOtherImageLoaderBuilder") fake: CoilBuilderFunction,
     ): CoilBuilderFunction = fake
 }

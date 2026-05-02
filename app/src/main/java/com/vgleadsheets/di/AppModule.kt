@@ -133,7 +133,7 @@ object AppModule {
     // TODO this should only happen in debug builds; in release builds it should be a no-op
     @Provides
     @Singleton
-    internal fun provideEnvironmentManager(
+    fun provideEnvironmentManager(
         storage: Storage
     ): EnvironmentManager = EnvironmentManager(
             storage = storage
@@ -141,7 +141,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    internal fun provideGeneralSettingsManager(
+    fun provideGeneralSettingsManager(
         storage: Storage
     ): GeneralSettingsManager = GeneralSettingsManager(
             storage = storage
@@ -149,7 +149,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    internal fun provideDebugSettingsManager(
+    fun provideDebugSettingsManager(
         storage: Storage
     ): DebugSettingsManager = DebugSettingsManager(
             storage = storage
@@ -157,7 +157,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    internal fun provideSelectedPartManager(
+    fun provideSelectedPartManager(
         storage: Storage
     ): SelectedPartManager = SelectedPartManager(
             storage = storage
@@ -165,7 +165,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    internal fun provideUrlInfoProvider(
+    fun provideUrlInfoProvider(
         environmentManager: EnvironmentManager,
         partManager: SelectedPartManager,
         debugSettingsManager: DebugSettingsManager,
@@ -181,7 +181,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    internal fun provideDispatcherConfigProvider(
+    fun provideDispatcherConfigProvider(
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
@@ -193,7 +193,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    internal fun provideEventDispatcher(
+    fun provideEventDispatcher(
         analytics: Analytics
     ): EventDispatcher = EventDispatcherReal(
         analytics = analytics,

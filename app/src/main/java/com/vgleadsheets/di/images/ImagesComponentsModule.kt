@@ -1,8 +1,6 @@
 package com.vgleadsheets.di.images
 
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
-import net.sigmabeta.sage.android.bitmaps.FakePdfImageGenerator
-import net.sigmabeta.sage.android.bitmaps.LoadingIndicatorGenerator
 import com.vgleadsheets.downloader.FakeSheetDownloader
 import com.vgleadsheets.downloader.RealSheetDownloader
 import com.vgleadsheets.downloader.SheetDownloader
@@ -10,7 +8,6 @@ import com.vgleadsheets.images.FakeOtherImageDecoder
 import com.vgleadsheets.images.FakeOtherImageFetcher
 import com.vgleadsheets.images.LoadingIndicatorFetcher
 import com.vgleadsheets.images.LoadingIndicatorKeyer
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.pdf.PdfImageDecoder
 import com.vgleadsheets.pdf.PdfImageFetcher
 import com.vgleadsheets.pdf.PdfImageKeyer
@@ -21,6 +18,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import net.sigmabeta.sage.android.bitmaps.FakePdfImageGenerator
+import net.sigmabeta.sage.android.bitmaps.LoadingIndicatorGenerator
+import net.sigmabeta.sage.logging.Hatchet
 import okhttp3.OkHttpClient
 import javax.inject.Named
 
@@ -28,50 +28,50 @@ import javax.inject.Named
 @InstallIn(SingletonComponent::class)
 class ImagesComponentsModule {
     @Provides
-    internal fun provideLoadingIndicatorKeyer() = LoadingIndicatorKeyer()
+    fun provideLoadingIndicatorKeyer() = LoadingIndicatorKeyer()
 
     @Provides
-    internal fun provideLoadingIndicatorFetcherFactory(
+    fun provideLoadingIndicatorFetcherFactory(
         generator: LoadingIndicatorGenerator
     ) = LoadingIndicatorFetcher.Factory(
         generator = generator,
     )
 
     @Provides
-    internal fun providePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = PdfImageKeyer(
+    fun providePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = PdfImageKeyer(
         urlInfoProvider = urlInfoProvider
     )
 
     @Provides
-    internal fun providePdfImageDecoderFactory(hatchet: Hatchet) = PdfImageDecoder.Factory(
+    fun providePdfImageDecoderFactory(hatchet: Hatchet) = PdfImageDecoder.Factory(
         hatchet = hatchet,
     )
 
     @Provides
-    internal fun providePdfImageFetcherFactory(sheetDownloader: SheetDownloader) = PdfImageFetcher.Factory(
+    fun providePdfImageFetcherFactory(sheetDownloader: SheetDownloader) = PdfImageFetcher.Factory(
         sheetDownloader = sheetDownloader
     )
 
     @Provides
-    internal fun provideFakeOtherImageFetcherFactory() = FakeOtherImageFetcher.Factory()
+    fun provideFakeOtherImageFetcherFactory() = FakeOtherImageFetcher.Factory()
 
     @Provides
-    internal fun provideFakeOtherImageDecoderFactory() = FakeOtherImageDecoder.Factory()
+    fun provideFakeOtherImageDecoderFactory() = FakeOtherImageDecoder.Factory()
 
     @Provides
-    internal fun provideFakePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = FakePdfImageKeyer(
+    fun provideFakePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = FakePdfImageKeyer(
         urlInfoProvider = urlInfoProvider
     )
 
     @Provides
-    internal fun provideFakePdfImageDecoderFactory(
+    fun provideFakePdfImageDecoderFactory(
         generator: FakePdfImageGenerator
     ) = FakePdfImageDecoder.Factory(
         generator = generator,
     )
 
     @Provides
-    internal fun provideSheetDownloader(
+    fun provideSheetDownloader(
         @Named("VglsPdfUrl") baseUrl: String?,
         fakeSheetDownloader: FakeSheetDownloader,
         realSheetDownloader: RealSheetDownloader,
@@ -83,7 +83,7 @@ class ImagesComponentsModule {
 
     @Provides
     @Named("RealPdfImageLoaderBuilder")
-    internal fun providesRealComponentRegistryBuilderFunction(
+    fun providesRealComponentRegistryBuilderFunction(
         loadingIndicatorKeyer: LoadingIndicatorKeyer,
         loadingIndicatorFetcherFactory: LoadingIndicatorFetcher.Factory,
         pdfImageKeyer: PdfImageKeyer,
@@ -99,7 +99,7 @@ class ImagesComponentsModule {
 
     @Provides
     @Named("FakePdfImageLoaderBuilder")
-    internal fun providesFakeComponentRegistryBuilderFunction(
+    fun providesFakeComponentRegistryBuilderFunction(
         loadingIndicatorKeyer: LoadingIndicatorKeyer,
         loadingIndicatorFetcherFactory: LoadingIndicatorFetcher.Factory,
         pdfImageFetcherFactory: PdfImageFetcher.Factory,
@@ -115,7 +115,7 @@ class ImagesComponentsModule {
 
     @Provides
     @Named("RealOtherImageLoaderBuilder")
-    internal fun providesRealOtherBuilderFunction(
+    fun providesRealOtherBuilderFunction(
         @Named("VglsOkHttp") okHttpClient: OkHttpClient,
     ): CoilBuilderFunction = CoilBuilderFunction {
         add(OkHttpNetworkFetcherFactory(callFactory = { okHttpClient }))
@@ -123,7 +123,7 @@ class ImagesComponentsModule {
 
     @Provides
     @Named("FakeOtherImageLoaderBuilder")
-    internal fun providesFakeOtherBuilderFunction(
+    fun providesFakeOtherBuilderFunction(
         otherImageFetcherFactory: FakeOtherImageFetcher.Factory,
         otherImageDecoderFactory: FakeOtherImageDecoder.Factory,
     ): CoilBuilderFunction = CoilBuilderFunction {

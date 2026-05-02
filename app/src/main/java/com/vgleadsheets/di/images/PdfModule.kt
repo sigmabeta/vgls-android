@@ -14,7 +14,7 @@ import net.sigmabeta.sage.logging.Hatchet
 @InstallIn(SingletonComponent::class)
 class PdfModule {
     @Provides
-    internal fun providePdfSubsampleSourceFactory(
+    fun providePdfSubsampleSourceFactory(
         hatchet: Hatchet,
         sheetDownloader: SheetDownloader,
         sageDispatchers: SageDispatchers,

@@ -16,7 +16,7 @@ import javax.inject.Named
 class ImagesModule {
     @Provides
     @JvmSuppressWildcards
-    internal fun provideImageLoader(
+    fun provideImageLoader(
         @ApplicationContext context: Context,
         coilLogger: HatchetCoilLogger,
         @Named("PdfImageLoaderBuilder") pdfBuilder: CoilBuilderFunction,

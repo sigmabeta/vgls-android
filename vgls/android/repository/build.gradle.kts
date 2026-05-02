@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api(projects.vgls.common.repository)
+    api(projects.vgls.common.appcomm)
     api(libs.sage.common.appcomm)
 
     implementation(projects.vgls.android.database)
