@@ -29,9 +29,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.composables.subs.MenuActionIcon
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.id
@@ -72,7 +72,7 @@ fun SearchBar(
             MenuActionIcon(
                 icon = Icon.BACK,
                 contentDescription = StringId.ACCY_CDESC_TOPBAR_BACK,
-                onClick = { actionSink.sendAction(VglsAction.AppBack) }
+                onClick = { actionSink.sendAction(SageAction.AppBack) }
             )
 
             val textEmpty = text.isEmpty()
@@ -94,7 +94,7 @@ fun SearchBar(
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
                     onValueChange = {
                         textFieldUpdater(it)
-                        actionSink.sendAction(VglsAction.SearchQueryEntered(it))
+                        actionSink.sendAction(SageAction.SearchQueryEntered(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -118,7 +118,7 @@ fun SearchBar(
                 MenuActionIcon(
                     icon = Icon.CLEAR,
                     contentDescription = StringId.ACCY_CDESC_SEARCH_CLEAR,
-                    onClick = { actionSink.sendAction(VglsAction.SearchClearClicked) }
+                    onClick = { actionSink.sendAction(SageAction.SearchClearClicked) }
                 )
             }
         }

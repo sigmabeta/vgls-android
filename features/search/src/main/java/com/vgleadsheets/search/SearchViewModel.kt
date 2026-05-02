@@ -29,8 +29,8 @@ import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
@@ -68,27 +68,27 @@ class SearchViewModel @AssistedInject constructor(
 
     override fun initialState() = SearchState()
 
-    override fun sendInitAction() = sendAction(VglsAction.InitNoArgs)
+    override fun sendInitAction() = sendAction(SageAction.InitNoArgs)
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
 
             when (action) {
-                is VglsAction.Resume -> onResume()
-                is VglsAction.SearchClearClicked -> onSearchClearClicked()
-                is VglsAction.SearchQueryEntered -> startSearch(action.query)
+                is SageAction.Resume -> onResume()
+                is SageAction.SearchClearClicked -> onSearchClearClicked()
+                is SageAction.SearchQueryEntered -> startSearch(action.query)
                 is Action.SongClicked -> onSongClicked(action.id)
                 is Action.GameClicked -> onGameClicked(action.id)
                 is Action.ComposerClicked -> onComposerClicked(action.id)
                 is Action.SearchHistoryEntryClicked -> onSearchHistoryEntryClicked(action.query)
                 is Action.SearchHistoryEntryRemoveClicked -> searchRepository.removeFromSearchHistory(action.id)
-                is VglsAction.AppBack -> navigateBack()
+                is SageAction.AppBack -> navigateBack()
             }
         }
     }
 
-    override fun handleEvent(event: VglsEvent) {
+    override fun handleEvent(event: SageEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("${this@SearchViewModel.javaClass.simpleName} - Handling event: $event")
         }
@@ -110,8 +110,8 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     private fun onResume() {
-        emitEvent(VglsEvent.ShowUiChrome)
-        emitEvent(VglsEvent.HideTopBar)
+        emitEvent(SageEvent.ShowUiChrome)
+        emitEvent(SageEvent.HideTopBar)
     }
 
     private fun startSearch(query: String) {
@@ -135,7 +135,7 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun onSongClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.SONG_DETAIL.forId(id),
                 Destination.SEARCH.template()
             )
@@ -144,7 +144,7 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun onGameClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.GAME_DETAIL.forId(id),
                 Destination.SEARCH.template()
             )
@@ -153,7 +153,7 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun onComposerClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.COMPOSER_DETAIL.forId(id),
                 Destination.SEARCH.template()
             )
@@ -342,7 +342,7 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun navigateBack() {
         eventDispatcher.sendEvent(
-            VglsEvent.NavigateBack(
+            SageEvent.NavigateBack(
                 "Search"
             )
         )

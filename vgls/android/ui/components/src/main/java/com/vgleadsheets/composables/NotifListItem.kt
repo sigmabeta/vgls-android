@@ -28,12 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.NotifListModel
 import com.vgleadsheets.composables.previews.NotifConstants
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.components.R
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.NotifListModel
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
@@ -81,7 +81,7 @@ fun NotifListItem(
                 )
 
                 IconButton(
-                    onClick = { actionSink.sendAction(VglsAction.NotifClearClicked(model.dataId)) },
+                    onClick = { actionSink.sendAction(SageAction.NotifClearClicked(model.dataId)) },
                     modifier = Modifier
                         .height(48.dp)
                         .width(48.dp)
@@ -167,7 +167,7 @@ private fun Sample() {
                 "This App Is Cool",
                 "Here's what you need to know about how cool this app is. I might render on two lines. Isn't that awesome?",
                 "Find out more",
-                VglsAction.Noop,
+                SageAction.Noop,
                 false
             ),
             PreviewActionSink { },
@@ -180,7 +180,7 @@ private fun Sample() {
                 "Really Long Notif",
                 "Here's what you need to know about how cool this app is. I might render on two lines. Or even on three. heck, we might do four. Sky's the limit. Isn't that awesome?",
                 "That sure is long, all right",
-                VglsAction.Noop,
+                SageAction.Noop,
                 false
             ),
             PreviewActionSink { },
@@ -206,7 +206,7 @@ private fun Sample() {
                 "Situation Very Wrong",
                 "Everything is broken!",
                 "Fix it",
-                VglsAction.Noop,
+                SageAction.Noop,
                 true
             ),
             PreviewActionSink { },

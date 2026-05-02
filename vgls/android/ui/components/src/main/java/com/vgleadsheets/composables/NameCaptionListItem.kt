@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.NameCaptionListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.NameCaptionListModel
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
@@ -110,7 +110,7 @@ private fun Sample() {
             1234L,
             "Xenoblade Chronicles 3",
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
-            VglsAction.Noop,
+            SageAction.Noop,
         ),
         PreviewActionSink { },
         Modifier,

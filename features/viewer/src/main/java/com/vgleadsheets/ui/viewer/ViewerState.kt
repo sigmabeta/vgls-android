@@ -1,20 +1,20 @@
 package com.vgleadsheets.ui.viewer
 
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsState
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageState
 import net.sigmabeta.sage.components.ErrorStateListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import net.sigmabeta.sage.images.PdfSize
-import com.vgleadsheets.model.Part
-import com.vgleadsheets.model.Song
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 data class ViewerState(
     val song: LCE<Song> = LCE.Uninitialized,
@@ -25,7 +25,7 @@ data class ViewerState(
     val isZoomedIn: Boolean = false,
     val isAltSelected: LCE<Boolean> = LCE.Uninitialized,
     val isSongHistoryEntryRecorded: Boolean = false,
-) : VglsState {
+) : SageState {
     fun title(stringProvider: StringProvider): TitleBarModel = if (song is LCE.Content) {
             val gameName = song.data.gameName
             TitleBarModel(
@@ -65,7 +65,7 @@ data class ViewerState(
                         gameName = song.data.gameName,
                         composers = song.data.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
                         pageNumber = singlePage,
-                        clickAction = VglsAction.Noop,
+                        clickAction = SageAction.Noop,
                     )
                 )
             } else {
@@ -81,7 +81,7 @@ data class ViewerState(
                         gameName = song.data.gameName,
                         composers = song.data.composers?.map { it.name }?.toImmutableList() ?: persistentListOf(),
                         pageNumber = pageNumber,
-                        clickAction = VglsAction.Noop,
+                        clickAction = SageAction.Noop,
                     )
                 }.toImmutableList()
             }

@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.vgls.common.appcomm)
     api(libs.androidx.navigation.compose)
     api(libs.androidx.lifecycle.runtimeCompose)
 

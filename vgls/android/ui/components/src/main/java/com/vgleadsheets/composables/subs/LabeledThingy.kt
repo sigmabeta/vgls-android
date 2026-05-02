@@ -26,20 +26,20 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.CheckableListModel
-import net.sigmabeta.sage.components.DropdownSettingListModel
-import net.sigmabeta.sage.components.LabelRatingStarListModel
-import net.sigmabeta.sage.components.LabelValueListModel
-import net.sigmabeta.sage.components.SingleTextListModel
 import com.vgleadsheets.composables.LabelCheckboxItem
 import com.vgleadsheets.composables.LabelDropdownListItem
 import com.vgleadsheets.composables.LabelNoThingyItem
 import com.vgleadsheets.composables.LabelRatingListItem
 import com.vgleadsheets.composables.LabelValueListItem
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 import kotlinx.collections.immutable.toImmutableList
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.CheckableListModel
+import net.sigmabeta.sage.components.DropdownSettingListModel
+import net.sigmabeta.sage.components.LabelRatingStarListModel
+import net.sigmabeta.sage.components.LabelValueListModel
+import net.sigmabeta.sage.components.SingleTextListModel
+import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 fun LabeledThingy(
@@ -119,7 +119,7 @@ private fun Sample() {
             model = SingleTextListModel(
                 dataId = 1234L,
                 name = "Paths to the future",
-                clickAction = VglsAction.Noop
+                clickAction = SageAction.Noop
             ),
             actionSink = actionSink,
             modifier = Modifier,
@@ -130,7 +130,7 @@ private fun Sample() {
             LabelValueListModel(
                 "Days which are training days",
                 "Every",
-                VglsAction.Noop
+                SageAction.Noop
             ),
             PreviewActionSink {},
             Modifier,
@@ -141,7 +141,7 @@ private fun Sample() {
             LabelRatingStarListModel(
                 "Meatiness of current thing",
                 3,
-                VglsAction.Noop,
+                SageAction.Noop,
             ),
             PreviewActionSink {},
             Modifier,
@@ -154,7 +154,7 @@ private fun Sample() {
                 "someId",
                 "Sena seen in action",
                 checked = isChecked,
-                clickAction = VglsAction.Noop
+                clickAction = SageAction.Noop
             ),
             PreviewActionSink { isChecked = !isChecked },
             Modifier,

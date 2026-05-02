@@ -19,15 +19,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.HorizontalScrollerListModel
-import net.sigmabeta.sage.components.SmallTextListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.model.generator.StringGenerator
+import kotlinx.collections.immutable.toImmutableList
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.HorizontalScrollerListModel
+import net.sigmabeta.sage.components.SmallTextListModel
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 import java.util.Random
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SmallText(
@@ -122,7 +122,7 @@ private fun Sample() {
                         val name = stringGenerator.generateName()
                         SmallTextListModel(
                             name = name,
-                            clickAction = VglsAction.Noop,
+                            clickAction = SageAction.Noop,
                         )
                     }.toImmutableList()
                 ),

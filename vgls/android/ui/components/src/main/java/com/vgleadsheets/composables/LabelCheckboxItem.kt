@@ -20,10 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.CheckableListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.CheckableListModel
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.id
 import net.sigmabeta.sage.ui.themes.VglsMaterial
@@ -138,7 +138,7 @@ private fun Sample(name: String, isChecked: Boolean?, actionSink: ActionSink) {
             name,
             name,
             isChecked,
-            clickAction = VglsAction.Noop,
+            clickAction = SageAction.Noop,
         ),
         actionSink,
         Modifier,

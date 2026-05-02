@@ -3,20 +3,10 @@ package com.vgleadsheets.composables.previews.screens
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SheetPageCardListModel
-import net.sigmabeta.sage.components.SheetPageListModel
-import net.sigmabeta.sage.components.SquareItemListModel
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import net.sigmabeta.sage.images.PdfSize
-import net.sigmabeta.sage.list.DelayManager
-import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
-import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.ModuleDetails
@@ -24,10 +14,20 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.remaster.home.State
 import com.vgleadsheets.remaster.home.modules.RngModule
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
+import kotlinx.collections.immutable.persistentListOf
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SheetPageCardListModel
+import net.sigmabeta.sage.components.SheetPageListModel
+import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.images.PdfSize
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.WidthClass
+import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
 import net.sigmabeta.sage.ui.StringResources
-import kotlinx.collections.immutable.persistentListOf
 import java.util.Random
 
 @DevicePreviews
@@ -135,7 +135,7 @@ private fun sheetModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails,
                         pdfSize = PdfSize.MEDIUM,
                     ),
                     gameName = song.gameName,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                     composers = persistentListOf(),
                     pageNumber = 0,
                 )
@@ -166,7 +166,7 @@ private fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, 
                 name = game.name,
                 sourceInfo = game.photoUrl,
                 imagePlaceholder = Icon.ALBUM,
-                clickAction = VglsAction.Noop
+                clickAction = SageAction.Noop
             )
         },
     )
@@ -194,7 +194,7 @@ private fun composerModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetai
                 name = composer.name,
                 sourceInfo = composer.photoUrl,
                 imagePlaceholder = Icon.PERSON,
-                clickAction = VglsAction.Noop
+                clickAction = SageAction.Noop
             )
         },
     )

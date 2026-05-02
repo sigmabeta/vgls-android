@@ -1,5 +1,7 @@
 package com.vgleadsheets.repository
 
+import com.vgleadsheets.appcomm.ActionDeserializer
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.database.dao.DbStatisticsDataSource
 import com.vgleadsheets.model.time.Time
 import com.vgleadsheets.model.time.TimeType
@@ -20,8 +22,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.di.ActionDeserializer
 import net.sigmabeta.sage.connectivity.NetworkStatus
 import net.sigmabeta.sage.connectivity.VglsNetworkUnavailableException
 import net.sigmabeta.sage.coroutines.SageDispatchers

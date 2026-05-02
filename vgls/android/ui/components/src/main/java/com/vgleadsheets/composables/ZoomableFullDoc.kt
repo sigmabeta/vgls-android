@@ -15,19 +15,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.android.bitmaps.SheetConstants
-import net.sigmabeta.sage.components.ZoomableSheetPageListModel
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
-import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
 import me.saket.telephoto.zoomable.ZoomableState
 import me.saket.telephoto.zoomable.zoomable
+import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.components.ZoomableSheetPageListModel
+import net.sigmabeta.sage.pdf.PdfConfigById
 
 @Composable
 fun ZoomableFullDocItem(

@@ -12,8 +12,8 @@ import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.EventSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.components.ErrorStateListModel
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
@@ -51,9 +51,9 @@ class ListViewModel @AssistedInject constructor(
 
     init {
         val initAction = when {
-            (idArg > 0L) -> VglsAction.InitWithId(idArg)
-            stringArg != null -> VglsAction.InitWithString(stringArg)
-            else -> VglsAction.InitNoArgs
+            (idArg > 0L) -> SageAction.InitWithId(idArg)
+            stringArg != null -> SageAction.InitWithString(stringArg)
+            else -> SageAction.InitNoArgs
         }
 
         this.sendAction(initAction)
@@ -73,16 +73,16 @@ class ListViewModel @AssistedInject constructor(
         eventDispatcher.removeEventSink(this)
     }
 
-    override fun sendAction(action: VglsAction) {
+    override fun sendAction(action: SageAction) {
         when (action) {
-            is VglsAction.Resume -> onResume()
-            is VglsAction.Pause -> onPause()
+            is SageAction.Resume -> onResume()
+            is SageAction.Pause -> onPause()
             else -> {}
         }
         brain.sendAction(action)
     }
 
-    override fun sendEvent(event: VglsEvent) = brain.sendEvent(event)
+    override fun sendEvent(event: SageEvent) = brain.sendEvent(event)
 
     private fun setupErrorReporting() {
         uiState

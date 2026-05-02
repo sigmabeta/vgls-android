@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.nav.Destination
 
 fun NavGraphBuilder.licensesScreenNavEntry(
@@ -20,14 +20,14 @@ fun NavGraphBuilder.licensesScreenNavEntry(
         val viewModel: LicenseViewModel = hiltViewModel()
 
         DisposableEffect(Unit) {
-            viewModel.sendAction(VglsAction.Resume)
+            viewModel.sendAction(SageAction.Resume)
 
             onDispose {
-                viewModel.sendAction(VglsAction.Pause)
+                viewModel.sendAction(SageAction.Pause)
             }
         }
 
-        BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
+        BackHandler(true) { viewModel.sendAction(SageAction.DeviceBack) }
 
         val state by viewModel.uiState.collectAsStateWithLifecycle()
 

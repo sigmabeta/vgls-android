@@ -24,13 +24,13 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.SquareItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.previews.SquareConstants
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.SquareItemListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.themes.VglsMaterial
@@ -136,7 +136,7 @@ private fun Sample() {
                 "https://randomfox.ca/images/12.jpg",
                 Icon.ALBUM,
                 null,
-                VglsAction.Noop
+                SageAction.Noop
             ),
             PreviewActionSink {},
             Modifier.weight(1.0f),
@@ -150,7 +150,7 @@ private fun Sample() {
                 "https://randomfox.ca/images/1235.jpg",
                 Icon.ALBUM,
                 null,
-                VglsAction.Noop
+                SageAction.Noop
             ),
             PreviewActionSink {},
             Modifier.weight(1.0f),

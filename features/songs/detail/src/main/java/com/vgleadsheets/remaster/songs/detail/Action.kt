@@ -1,8 +1,8 @@
 package com.vgleadsheets.remaster.songs.detail
 
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 
-sealed class Action : VglsAction() {
+sealed class Action : SageAction() {
     data class SongThumbnailClicked(val id: Long, val pageNumber: Int) : Action()
     data class TagValueClicked(val id: Long) : Action()
     data class ComposerClicked(val id: Long) : Action()

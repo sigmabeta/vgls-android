@@ -1,17 +1,17 @@
 package com.vgleadsheets.remaster.offline.updates
 
+import com.vgleadsheets.repository.OfflineRepository
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.list.ListViewModelBrain
 import net.sigmabeta.sage.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import com.vgleadsheets.repository.OfflineRepository
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onEach
 
 class OfflineUpdatesViewModelBrain(
     private val offlineRepository: OfflineRepository,
@@ -30,11 +30,11 @@ class OfflineUpdatesViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> fetchResults()
-            is VglsAction.Resume -> return
-            is VglsAction.Noop -> return
+            is SageAction.InitNoArgs -> fetchResults()
+            is SageAction.Resume -> return
+            is SageAction.Noop -> return
         }
     }
 

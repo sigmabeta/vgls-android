@@ -30,11 +30,11 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.ImageNameListModel
 import com.vgleadsheets.composables.ImageNameListItem
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.BitmapGenerator
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.ImageNameListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
@@ -274,7 +274,7 @@ private fun Sample() {
                 SourceInfo(info = null),
                 Icon.DESCRIPTION,
                 null,
-                clickAction = VglsAction.Noop,
+                clickAction = SageAction.Noop,
             ),
             PreviewActionSink { },
             Modifier,

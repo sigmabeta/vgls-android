@@ -1,10 +1,10 @@
 package com.vgleadsheets.composables.previews
 
 import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 
-class PreviewActionSink(private val actionHandler: (VglsAction) -> Unit = {}) : ActionSink {
-    override fun sendAction(action: VglsAction) {
+class PreviewActionSink(private val actionHandler: (SageAction) -> Unit = {}) : ActionSink {
+    override fun sendAction(action: SageAction) {
         actionHandler(action)
     }
 }

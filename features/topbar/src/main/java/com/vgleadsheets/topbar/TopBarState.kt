@@ -1,6 +1,6 @@
 package com.vgleadsheets.topbar
 
-import net.sigmabeta.sage.appcomm.VglsState
+import net.sigmabeta.sage.appcomm.SageState
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.nav.Destination
 
@@ -9,7 +9,7 @@ data class TopBarState(
     val selectedPart: String? = null,
     val currentDestination: String = Destination.NONE.name,
     val visibility: TopBarVisibility = TopBarVisibility.VISIBLE
-) : VglsState {
+) : SageState {
     val actualVisibility = if (visibility == TopBarVisibility.VISIBLE) {
         TopBarVisibility.VISIBLE
     } else {

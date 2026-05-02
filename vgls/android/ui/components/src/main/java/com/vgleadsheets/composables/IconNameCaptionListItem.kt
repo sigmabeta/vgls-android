@@ -23,11 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.IconNameCaptionListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.utils.ImageSize
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.IconNameCaptionListModel
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 import net.sigmabeta.sage.ui.vector
@@ -55,7 +55,7 @@ fun IconNameCaptionListItem(
     name: String,
     caption: String,
     icon: Icon,
-    clickAction: VglsAction,
+    clickAction: SageAction,
     actionSink: ActionSink,
     modifier: Modifier,
     padding: PaddingValues,
@@ -148,7 +148,7 @@ private fun Sample() {
             "Moebius Battle",
             "ACE+",
             Icon.DESCRIPTION,
-            clickAction = VglsAction.Noop,
+            clickAction = SageAction.Noop,
         ),
         PreviewActionSink { },
         Modifier,

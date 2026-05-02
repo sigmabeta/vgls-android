@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.menu
 
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.components.CheckableListModel
 import net.sigmabeta.sage.components.LabelValueListModel
@@ -220,7 +220,7 @@ data class State(
     private fun appVersionName(stringProvider: StringProvider) = LabelValueListModel(
         label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_NAME),
         value = appInfo?.versionName,
-        clickAction = VglsAction.Noop
+        clickAction = SageAction.Noop
     )
 
     @Suppress("ReturnCount")
@@ -231,7 +231,7 @@ data class State(
         LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_CODE),
             value = value,
-            clickAction = VglsAction.Noop
+            clickAction = SageAction.Noop
         )
     }
 
@@ -250,7 +250,7 @@ data class State(
         LabelValueListModel(
             label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
             value = appInfo?.buildBranch,
-            clickAction = VglsAction.Noop
+            clickAction = SageAction.Noop
         )
     }
 

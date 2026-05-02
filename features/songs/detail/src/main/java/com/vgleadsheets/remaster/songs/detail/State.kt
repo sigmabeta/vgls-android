@@ -1,7 +1,17 @@
 package com.vgleadsheets.remaster.songs.detail
 
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.alias.SongAlias
+import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
+import com.vgleadsheets.urlinfo.UrlInfo
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.CtaListModel
 import net.sigmabeta.sage.components.HeroImageListModel
 import net.sigmabeta.sage.components.HorizontalScrollerListModel
@@ -19,20 +29,10 @@ import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.Composer
-import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Part
-import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.alias.SongAlias
-import com.vgleadsheets.model.tag.TagValue
 import net.sigmabeta.sage.pdf.PdfConfigById
-import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
-import com.vgleadsheets.urlinfo.UrlInfo
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 @Suppress("MagicNumber")
 data class State(
@@ -286,7 +286,7 @@ data class State(
                 LabelValueListModel(
                     label = stringProvider.getString(StringId.LABEL_SONG_ALSO_KNOWN_AS),
                     value = alias.name,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                     dataId = (alias.id ?: 0L) + ID_PREFIX_AKA,
                 )
             } + detailValues.map { detailValue ->

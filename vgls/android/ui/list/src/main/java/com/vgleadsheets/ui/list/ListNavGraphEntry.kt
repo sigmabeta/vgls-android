@@ -20,7 +20,7 @@ import net.sigmabeta.sage.android.ui.list.GridScreen
 import net.sigmabeta.sage.android.ui.list.ListScreen
 import net.sigmabeta.sage.android.ui.list.toNavType
 import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.WidthClass
@@ -67,14 +67,14 @@ fun NavGraphBuilder.listScreenEntry(
             )
 
             DisposableEffect(Unit) {
-                viewModel.sendAction(VglsAction.Resume)
+                viewModel.sendAction(SageAction.Resume)
 
                 onDispose {
-                    viewModel.sendAction(VglsAction.Pause)
+                    viewModel.sendAction(SageAction.Pause)
                 }
             }
 
-            BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
+            BackHandler(true) { viewModel.sendAction(SageAction.DeviceBack) }
             val state by viewModel.uiState.collectAsStateWithLifecycle()
             val showDebug by viewModel.showDebug.collectAsStateWithLifecycle()
 

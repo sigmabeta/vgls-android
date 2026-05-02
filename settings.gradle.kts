@@ -85,6 +85,7 @@ include(
     ":vgls:android:ui:previews",
     ":vgls:android:viewmodel",
 
+    ":vgls:common:appcomm",
     ":vgls:common:conversion",
     ":vgls:common:database",
     ":vgls:common:downloader",

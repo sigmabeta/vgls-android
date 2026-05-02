@@ -10,6 +10,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.get
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.viewmodel.VglsViewModel
@@ -27,8 +28,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
@@ -51,7 +52,7 @@ class NavViewModel @Inject constructor(
 ) : VglsViewModel<NavState>() {
     init {
         eventDispatcher.addEventSink(this)
-        sendAction(VglsAction.InitNoArgs)
+        sendAction(SageAction.InitNoArgs)
     }
 
     private val internalShowSnackbarState = MutableStateFlow(false)
@@ -73,23 +74,23 @@ class NavViewModel @Inject constructor(
 
     override fun sendInitAction() = Unit
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.v("${this.javaClass.simpleName} - Handling action: $action")
         }
     }
 
-    override fun handleEvent(event: VglsEvent) {
+    override fun handleEvent(event: SageEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.v("${this@NavViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
-                is VglsEvent.NavigateTo -> navigateTo(event.destination)
-                is VglsEvent.NavigateSingleTopLevel -> navigateToTopLevel(event.destination)
-                is VglsEvent.NavigateBack -> navigateBack()
-                is VglsEvent.ShowSnackbar -> showSnackbar(event)
-                is VglsEvent.HideUiChrome -> hideSystemUi()
-                is VglsEvent.ShowUiChrome -> showSystemUi()
-                is VglsEvent.ClearNotif -> clearNotif(event.id)
+                is SageEvent.NavigateTo -> navigateTo(event.destination)
+                is SageEvent.NavigateSingleTopLevel -> navigateToTopLevel(event.destination)
+                is SageEvent.NavigateBack -> navigateBack()
+                is SageEvent.ShowSnackbar -> showSnackbar(event)
+                is SageEvent.HideUiChrome -> hideSystemUi()
+                is SageEvent.ShowUiChrome -> showSystemUi()
+                is SageEvent.ClearNotif -> clearNotif(event.id)
                 is VglsEvent.RefreshDb -> refreshDb()
                 is VglsEvent.GiantBombLinkClicked -> launchWebsite(URL_GB_WEBSITE)
                 is VglsEvent.SearchYoutubeClicked -> launchWebsite(getYoutubeSearchUrlForQuery(event.query))
@@ -157,7 +158,7 @@ class NavViewModel @Inject constructor(
         }
     }
 
-    private fun showSnackbar(snackbarEvent: VglsEvent.ShowSnackbar) {
+    private fun showSnackbar(snackbarEvent: SageEvent.ShowSnackbar) {
         snackbarScope.launch {
             val actionDetails = snackbarEvent.actionDetails
             val result = snackbarHostState.showSnackbar(
@@ -175,11 +176,11 @@ class NavViewModel @Inject constructor(
 
             when (result) {
                 SnackbarResult.ActionPerformed -> {
-                    sink.sendAction(VglsAction.SnackbarActionClicked(actionDetails.clickAction))
+                    sink.sendAction(SageAction.SnackbarActionClicked(actionDetails.clickAction))
                 }
 
                 SnackbarResult.Dismissed -> {
-                    sink.sendAction(VglsAction.SnackbarDismissed(actionDetails.clickAction))
+                    sink.sendAction(SageAction.SnackbarDismissed(actionDetails.clickAction))
                 }
             }
         }
@@ -205,7 +206,7 @@ class NavViewModel @Inject constructor(
                 val message = "Navigating to $destination"
                 hatchet.v(message)
                 showSnackbar(
-                    VglsEvent.ShowSnackbar(message, false, source = "Navigation")
+                    SageEvent.ShowSnackbar(message, false, source = "Navigation")
                 )
             }
 
@@ -222,10 +223,10 @@ class NavViewModel @Inject constructor(
                 navController.navigate(destination)
             }
 
-            eventDispatcher.sendEvent(VglsEvent.NavigateSuccessTo(destination))
+            eventDispatcher.sendEvent(SageEvent.NavigateSuccessTo(destination))
         } catch (ex: IllegalArgumentException) {
             sendEvent(
-                VglsEvent.ShowSnackbar(
+                SageEvent.ShowSnackbar(
                     message = "Unimplemented screen: $destination",
                     withDismissAction = true,
                     source = "Navigation"
@@ -249,13 +250,13 @@ class NavViewModel @Inject constructor(
 
         val newRoute = navController.currentDestination?.route
         if (newRoute != null) {
-            eventDispatcher.sendEvent(VglsEvent.NavigateSuccessTo(newRoute))
+            eventDispatcher.sendEvent(SageEvent.NavigateSuccessTo(newRoute))
         }
 
         if (internalShowSnackbarState.value) {
             val message = "Popping stack from $oldRoute to $newRoute"
             showSnackbar(
-                VglsEvent.ShowSnackbar(message, false, source = "Navigation")
+                SageEvent.ShowSnackbar(message, false, source = "Navigation")
             )
         }
     }
@@ -280,7 +281,7 @@ class NavViewModel @Inject constructor(
         updateState {
             it.copy(visibility = SystemUiVisibility.VISIBLE)
         }
-        emitEvent(VglsEvent.SystemBarsBecameShown)
+        emitEvent(SageEvent.SystemBarsBecameShown)
     }
 
     private fun hideSystemUi() {
@@ -292,7 +293,7 @@ class NavViewModel @Inject constructor(
         updateState {
             it.copy(visibility = SystemUiVisibility.HIDDEN)
         }
-        emitEvent(VglsEvent.SystemBarsBecameHidden)
+        emitEvent(SageEvent.SystemBarsBecameHidden)
     }
 
     companion object {

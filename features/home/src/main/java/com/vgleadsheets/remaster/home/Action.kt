@@ -1,16 +1,16 @@
 package com.vgleadsheets.remaster.home
 
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 
-sealed class Action : VglsAction() {
+sealed class Action : SageAction() {
     data class MostSongsGameClicked(val gameId: Long) : Action()
-    data class MostSongsComposerClicked(val composerId: Long) : VglsAction()
-    data class MostPlaysGameClicked(val gameId: Long) : VglsAction()
-    data class MostPlaysComposerClicked(val composerId: Long) : VglsAction()
-    data class MostPlaysSongClicked(val songId: Long) : VglsAction()
-    data class MostPlaysTagValueClicked(val tagValueId: Long) : VglsAction()
-    data class RecentSongClicked(val songId: Long) : VglsAction()
-    data object RandomSongClicked : VglsAction()
-    data object RandomGameClicked : VglsAction()
-    data object RandomComposerClicked : VglsAction()
+    data class MostSongsComposerClicked(val composerId: Long) : SageAction()
+    data class MostPlaysGameClicked(val gameId: Long) : SageAction()
+    data class MostPlaysComposerClicked(val composerId: Long) : SageAction()
+    data class MostPlaysSongClicked(val songId: Long) : SageAction()
+    data class MostPlaysTagValueClicked(val tagValueId: Long) : SageAction()
+    data class RecentSongClicked(val songId: Long) : SageAction()
+    data object RandomSongClicked : SageAction()
+    data object RandomGameClicked : SageAction()
+    data object RandomComposerClicked : SageAction()
 }

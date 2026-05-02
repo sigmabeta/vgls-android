@@ -26,18 +26,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowHeightSizeClass
-import net.sigmabeta.sage.appcomm.EventSink
-import net.sigmabeta.sage.appcomm.VglsAction
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarViewModel
-import net.sigmabeta.sage.list.WidthClass
-import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.search.searchScreenNavEntry
 import com.vgleadsheets.topbar.TopBarViewModel
 import com.vgleadsheets.ui.licenses.licensesScreenNavEntry
 import com.vgleadsheets.ui.list.listScreenEntry
 import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.list.WidthClass
+import net.sigmabeta.sage.nav.Destination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("MaxLineLength")
@@ -72,7 +72,7 @@ fun RemasterAppUi(
     val topBarConfig = TopBarConfig(
         state = topBarVmState,
         behavior = scrollBehavior,
-        handleAction = remember { { action: VglsAction -> topBarViewModel.sendAction(action) } },
+        handleAction = remember { { action: SageAction -> topBarViewModel.sendAction(action) } },
     )
 
     val navBarViewModel: NavBarViewModel = hiltViewModel()

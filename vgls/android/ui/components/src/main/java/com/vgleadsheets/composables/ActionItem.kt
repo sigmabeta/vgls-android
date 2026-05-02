@@ -20,12 +20,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.CtaListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import net.sigmabeta.sage.ui.Icon
 import com.vgleadsheets.ui.components.R
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.CtaListModel
+import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
 import net.sigmabeta.sage.ui.vector
@@ -108,7 +108,7 @@ private fun Sample() {
         CtaListModel(
             Icon.JAM_EMPTY,
             "Find a path to the future",
-            VglsAction.Noop,
+            SageAction.Noop,
         ),
         PreviewActionSink { },
         padding = PaddingValues(horizontal = dimensionResource(id = R.dimen.margin_medium)),

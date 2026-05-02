@@ -1,8 +1,8 @@
 package com.vgleadsheets.remaster.menu
 
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 
-sealed class Action : VglsAction() {
+sealed class Action : SageAction() {
     data object CheckUpdatesClicked : Action()
     data object ClearUsageClicked : Action()
     data object ClearSheetsClicked : Action()

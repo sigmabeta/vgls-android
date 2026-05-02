@@ -22,10 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.MenuItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.MenuItemListModel
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 import net.sigmabeta.sage.ui.vector
 
@@ -146,7 +146,7 @@ private fun Sample(selected: Boolean) {
             caption = "Last updated Feb 3, 1963",
             icon = net.sigmabeta.sage.ui.Icon.REFRESH,
             selected = selected,
-            clickAction = VglsAction.Noop
+            clickAction = SageAction.Noop
         ),
         PreviewActionSink {},
         PaddingValues(),

@@ -17,16 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.composables.previews.PreviewActionSink
+import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.SquareItemListModel
 import net.sigmabeta.sage.components.SubsectionHeaderListModel
 import net.sigmabeta.sage.components.SubsectionListModel
 import net.sigmabeta.sage.components.WideItemListModel
-import com.vgleadsheets.composables.previews.PreviewActionSink
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.themes.VglsMaterial
-import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -161,7 +161,7 @@ private fun SampleWide() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                 ),
                 WideItemListModel(
                     3456L,
@@ -169,7 +169,7 @@ private fun SampleWide() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                 ),
                 WideItemListModel(
                     4567L,
@@ -177,7 +177,7 @@ private fun SampleWide() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                 ),
             ).toImmutableList()
         ),
@@ -203,7 +203,7 @@ private fun SampleSquare() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                 ),
                 SquareItemListModel(
                     3456L,
@@ -211,7 +211,7 @@ private fun SampleSquare() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                 ),
                 SquareItemListModel(
                     4567L,
@@ -219,7 +219,7 @@ private fun SampleSquare() {
                     null,
                     Icon.PERSON,
                     actionableId = null,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                 ),
             ).toImmutableList()
         ),

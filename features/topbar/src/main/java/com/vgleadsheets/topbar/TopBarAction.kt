@@ -1,8 +1,8 @@
 package com.vgleadsheets.topbar
 
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 
-sealed class TopBarAction : VglsAction() {
+sealed class TopBarAction : SageAction() {
     data object Menu : TopBarAction()
     data object OpenPartPicker : TopBarAction()
 }

@@ -1,7 +1,11 @@
 package com.vgleadsheets.remaster.games.detail
 
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Song
+import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.CtaListModel
 import net.sigmabeta.sage.components.HeroImageListModel
 import net.sigmabeta.sage.components.HorizontalScrollerListModel
@@ -15,14 +19,10 @@ import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.Composer
-import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Song
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.collections.immutable.toImmutableList
 
 @Suppress("MagicNumber")
 data class State(
@@ -70,7 +70,7 @@ data class State(
                         sourceInfo = SourceInfo(photoUrl),
                         imagePlaceholder = Icon.ALBUM,
                         contentDescription = stringProvider.getString(StringId.ACCY_CDESC_HERO_GAME),
-                        clickAction = VglsAction.Noop,
+                        clickAction = SageAction.Noop,
                     )
                 )
             } else {

@@ -18,21 +18,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.ui.components.R
+import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.HorizontalScrollerListModel
 import net.sigmabeta.sage.components.ImageNameListModel
 import net.sigmabeta.sage.components.LoadingItemListModel
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SquareItemListModel
 import net.sigmabeta.sage.components.WideItemListModel
-import com.vgleadsheets.composables.previews.PreviewActionSink
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.components.R
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 import java.util.Random
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @Suppress("MagicNumber")
@@ -125,7 +125,7 @@ private fun SquareItemSection(rng: Random, padding: PaddingValues) {
                     sourceInfo = rng.nextInt().toString(),
                     imagePlaceholder = Icon.ALBUM,
                     null,
-                    clickAction = VglsAction.Noop,
+                    clickAction = SageAction.Noop,
                 )
             }.toImmutableList()
         ),
@@ -183,7 +183,7 @@ private fun WideItemSection(rng: Random, padding: PaddingValues) {
                     sourceInfo = rng.nextInt().toString(),
                     Icon.PERSON,
                     null,
-                    clickAction = VglsAction.Noop
+                    clickAction = SageAction.Noop
                 )
             }.toImmutableList()
         ),
@@ -211,7 +211,7 @@ private fun VerticalSection(rng: Random, padding: PaddingValues) {
                 sourceInfo = SourceInfo(rng.nextInt().toString()),
                 Icon.DESCRIPTION,
                 null,
-                clickAction = VglsAction.Noop
+                clickAction = SageAction.Noop
             ),
             PreviewActionSink { },
             modifier = Modifier,
