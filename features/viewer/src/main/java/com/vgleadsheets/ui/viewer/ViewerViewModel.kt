@@ -1,6 +1,7 @@
 package com.vgleadsheets.ui.viewer
 
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
@@ -25,8 +26,8 @@ import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
@@ -69,7 +70,7 @@ class ViewerViewModel @AssistedInject constructor(
     override fun initialState() = ViewerState()
 
     override fun sendInitAction() {
-        val initAction = VglsAction.InitWithPageNumber(
+        val initAction = SageAction.InitWithPageNumber(
             idArg,
             pageArg
         )
@@ -77,14 +78,14 @@ class ViewerViewModel @AssistedInject constructor(
         this.sendAction(initAction)
     }
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
         when (action) {
-            is VglsAction.Resume -> resume()
-            is VglsAction.Pause -> pause()
-            is VglsAction.AppBack -> onBackPressed()
-            is VglsAction.DeviceBack -> onBackPressed()
-            is VglsAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
+            is SageAction.Resume -> resume()
+            is SageAction.Pause -> pause()
+            is SageAction.AppBack -> onBackPressed()
+            is SageAction.DeviceBack -> onBackPressed()
+            is SageAction.InitWithPageNumber -> startLoading(action.id, action.pageNumber)
             is VglsAction.PageClicked -> maybeShowUi()
             is VglsAction.PageZoomedIn -> enableZoom()
             is VglsAction.PageZoomedOutMax -> disableZoom()
@@ -94,12 +95,12 @@ class ViewerViewModel @AssistedInject constructor(
         }
     }
 
-    override fun handleEvent(event: VglsEvent) {
+    override fun handleEvent(event: SageEvent) {
         hatchet.d("${this.javaClass.simpleName} - Handling event: $event")
         when (event) {
-            is VglsEvent.SystemBarsBecameHidden -> startHideButtonsTimer()
+            is SageEvent.SystemBarsBecameHidden -> startHideButtonsTimer()
 
-            is VglsEvent.SystemBarsBecameShown -> {
+            is SageEvent.SystemBarsBecameShown -> {
                 startHideChromeTimer()
                 showButtons()
             }
@@ -140,7 +141,7 @@ class ViewerViewModel @AssistedInject constructor(
 
         if (titleModel.title != null) {
             emitEvent(
-                VglsEvent.UpdateTitle(
+                SageEvent.UpdateTitle(
                     title = titleModel.title,
                     subtitle = titleModel.subtitle,
                     shouldShowBack = titleModel.shouldShowBack,
@@ -235,7 +236,7 @@ class ViewerViewModel @AssistedInject constructor(
 
     private fun maybeShowUi() {
         maybeRestartScreenOnTimer()
-        emitEvent(VglsEvent.ShowUiChrome)
+        emitEvent(SageEvent.ShowUiChrome)
     }
 
     private fun onButtonClicked() {
@@ -272,7 +273,7 @@ class ViewerViewModel @AssistedInject constructor(
                 return@launch
             }
 
-            emitEvent(VglsEvent.HideUiChrome)
+            emitEvent(SageEvent.HideUiChrome)
             chromeVisibilityTimer = null
         }
     }

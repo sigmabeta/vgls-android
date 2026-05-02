@@ -4,6 +4,7 @@ import android.content.Context
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
+import com.vgleadsheets.appcomm.ActionDeserializer
 import com.vgleadsheets.dispatchers.DelayManagerImpl
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
@@ -19,7 +20,6 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.di.ActionDeserializer
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.RenderOverlayProvider

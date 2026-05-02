@@ -1,5 +1,7 @@
 package com.vgleadsheets.versions
 
+import com.vgleadsheets.appcomm.ActionDeserializer
+import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
@@ -7,8 +9,7 @@ import com.vgleadsheets.repository.UpdateManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.di.ActionDeserializer
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.storage.common.Storage
@@ -96,7 +97,7 @@ class AppVersionManager(
     private fun sendNotif(
         title: StringId,
         description: String,
-        action: VglsAction?,
+        action: SageAction?,
         actionLabel: String,
         isError: Boolean,
     ) {

@@ -1,17 +1,9 @@
 package com.vgleadsheets.remaster.home
 
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
-import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.appcomm.VglsAction
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.TagRepository
-import net.sigmabeta.sage.time.ThreeTenTime
-import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
@@ -20,6 +12,16 @@ import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
+import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.ui.StringProvider
 import org.threeten.bp.LocalDate
 
 class HomeViewModelBrain(
@@ -41,12 +43,12 @@ class HomeViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> setup()
-            is VglsAction.Resume -> return
-            is VglsAction.Pause -> return
-            is VglsAction.NotifClearClicked -> onNotifClearClicked(action.id)
+            is SageAction.InitNoArgs -> setup()
+            is SageAction.Resume -> return
+            is SageAction.Pause -> return
+            is SageAction.NotifClearClicked -> onNotifClearClicked(action.id)
             is VglsAction.DbSeeWhatsNewClicked -> onDbSeeWhatsNewClicked()
             is VglsAction.AppSeeWhatsNewClicked -> onAppSeeWhatsNewClicked()
             is VglsAction.RefreshDbClicked -> onRefreshDbClicked()
@@ -138,7 +140,7 @@ class HomeViewModelBrain(
 
     private fun navigateTo(destinationString: String) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 destinationString,
                 Destination.HOME.destName
             )
@@ -148,7 +150,7 @@ class HomeViewModelBrain(
     private fun showError(message: String) {
         hatchet.e("Error occurred: $message")
         emitEvent(
-            VglsEvent.ShowSnackbar(
+            SageEvent.ShowSnackbar(
                 message = "An error occurred. Try again after an app update.",
                 withDismissAction = false,
                 actionDetails = null,
@@ -157,9 +159,9 @@ class HomeViewModelBrain(
         )
     }
 
-    private fun onUnimplementedAction(action: VglsAction) {
+    private fun onUnimplementedAction(action: SageAction) {
         emitEvent(
-            VglsEvent.ShowSnackbar(
+            SageEvent.ShowSnackbar(
                 message = "Unimplemented action: $action.",
                 withDismissAction = false,
                 actionDetails = null,
@@ -169,7 +171,7 @@ class HomeViewModelBrain(
     }
 
     private fun onNotifClearClicked(id: Long) {
-        emitEvent(VglsEvent.ClearNotif(id))
+        emitEvent(SageEvent.ClearNotif(id))
     }
 
     private fun onRefreshDbClicked() {

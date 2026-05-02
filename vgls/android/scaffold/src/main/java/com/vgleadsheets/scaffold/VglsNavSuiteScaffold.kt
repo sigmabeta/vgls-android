@@ -21,12 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import net.sigmabeta.sage.appcomm.EventSink
-import net.sigmabeta.sage.appcomm.VglsEvent
 import com.vgleadsheets.bottombar.NavBarItem
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.topbar.RemasterTopBar
+import net.sigmabeta.sage.appcomm.EventSink
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.ui.id
 import net.sigmabeta.sage.ui.vector
 
@@ -117,7 +117,7 @@ fun navSuiteItems(
             selected = currentRoute == navItem.route,
             onClick = {
                 navEventSink.sendEvent(
-                    VglsEvent.NavigateSingleTopLevel(navItem.route, "NavBar")
+                    SageEvent.NavigateSingleTopLevel(navItem.route, "NavBar")
                 )
             }
         )

@@ -27,11 +27,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.WideItemListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.WideItemListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.themes.VglsMaterial
@@ -124,7 +124,7 @@ private fun Sample() {
                 "https://randomfox.ca/images/12.jpg",
                 Icon.PERSON,
                 null,
-                VglsAction.Noop
+                SageAction.Noop
             ),
             PreviewActionSink {},
             modifier = Modifier,
@@ -138,7 +138,7 @@ private fun Sample() {
                 "https://randomfox.ca/images/12.jpg",
                 Icon.PERSON,
                 null,
-                VglsAction.Noop
+                SageAction.Noop
             ),
             PreviewActionSink {},
             modifier = Modifier,

@@ -1,28 +1,28 @@
 package com.vgleadsheets.remaster.composers.detail
 
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.SongRepository
-import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
+import net.sigmabeta.sage.ui.StringProvider
 
 class ComposerDetailViewModelBrain(
     private val songRepository: SongRepository,
@@ -44,9 +44,9 @@ class ComposerDetailViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         when (action) {
-            is VglsAction.InitWithId -> startLoading(action.id)
+            is SageAction.InitWithId -> startLoading(action.id)
             is Action.SongClicked -> onSongClicked(action.id)
             is Action.GameClicked -> onGameClicked(action.id)
             is Action.AddFavoriteClicked -> onAddFavoriteClicked()
@@ -175,7 +175,7 @@ class ComposerDetailViewModelBrain(
 
     private fun onSongClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.SONG_DETAIL.forId(id),
                 Destination.COMPOSER_DETAIL.name
             )
@@ -184,7 +184,7 @@ class ComposerDetailViewModelBrain(
 
     private fun onGameClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.GAME_DETAIL.forId(id),
                 Destination.COMPOSER_DETAIL.name
             )

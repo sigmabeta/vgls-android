@@ -14,14 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.ui.components.R
 import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ImageNameListModel
 import net.sigmabeta.sage.components.SectionListModel
-import com.vgleadsheets.composables.previews.PreviewActionSink
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.ui.components.R
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 import java.util.Random
 
@@ -104,7 +104,7 @@ private fun VerticalSection(rng: Random, padding: PaddingValues) {
                 sourceInfo = SourceInfo(rng.nextInt().toString()),
                 Icon.DESCRIPTION,
                 null,
-                clickAction = VglsAction.Noop
+                clickAction = SageAction.Noop
             ),
             PreviewActionSink { },
             modifier = Modifier,

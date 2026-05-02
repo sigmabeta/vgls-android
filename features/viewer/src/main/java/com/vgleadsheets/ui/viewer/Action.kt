@@ -1,8 +1,8 @@
 package com.vgleadsheets.ui.viewer
 
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 
-sealed class Action : VglsAction() {
+sealed class Action : SageAction() {
     data object ScreenClicked : Action()
     data object PrevButtonClicked : Action()
     data object NextButtonClicked : Action()

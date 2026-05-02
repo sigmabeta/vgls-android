@@ -10,12 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.HeroImageListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.HeroImageListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
 
@@ -52,7 +52,7 @@ private fun LoadingGame() {
             sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.ALBUM,
             contentDescription = "",
-            clickAction = VglsAction.Noop,
+            clickAction = SageAction.Noop,
         ),
         PreviewActionSink { },
         modifier = Modifier,
@@ -68,7 +68,7 @@ private fun SuccessGame() {
             sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.DESCRIPTION,
             contentDescription = "",
-            clickAction = VglsAction.Noop,
+            clickAction = SageAction.Noop,
         ),
         PreviewActionSink { },
         modifier = Modifier,
@@ -84,7 +84,7 @@ private fun SuccessGameWithLabel() {
             sourceInfo = SourceInfo("whatever"),
             imagePlaceholder = Icon.DESCRIPTION,
             contentDescription = "",
-            clickAction = VglsAction.Noop,
+            clickAction = SageAction.Noop,
         ),
         PreviewActionSink { },
         modifier = Modifier,

@@ -1,19 +1,19 @@
 package com.vgleadsheets.remaster.songs.list
 
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.repository.SongRepository
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
 import net.sigmabeta.sage.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import com.vgleadsheets.model.Song
 import net.sigmabeta.sage.nav.Destination
-import com.vgleadsheets.repository.SongRepository
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onEach
 
 class SongListViewModelBrain(
     private val songRepository: SongRepository,
@@ -31,9 +31,9 @@ class SongListViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> startLoading()
+            is SageAction.InitNoArgs -> startLoading()
             is Action.SongClicked -> onSongClicked(action.id)
         }
     }
@@ -72,7 +72,7 @@ class SongListViewModelBrain(
 
     private fun onSongClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.SONG_DETAIL.forId(id),
                 Destination.SONGS_LIST.name
             )

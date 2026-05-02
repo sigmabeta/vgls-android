@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
@@ -41,30 +41,30 @@ class TopBarViewModel @Inject constructor(
         loadSelectedPart()
     }
 
-    override fun sendAction(action: VglsAction) = handleAction(action)
+    override fun sendAction(action: SageAction) = handleAction(action)
 
-    override fun sendEvent(event: VglsEvent) = handleEvent(event)
+    override fun sendEvent(event: SageEvent) = handleEvent(event)
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.v("${this.javaClass.simpleName} - Handling action: $action")
             when (action) {
                 is TopBarAction.Menu -> eventDispatcher.sendEvent(
-                    VglsEvent.NavigateTo(
+                    SageEvent.NavigateTo(
                         Destination.MENU.noArgs(),
                         "TopBar"
                     )
                 )
 
                 is TopBarAction.OpenPartPicker -> eventDispatcher.sendEvent(
-                    VglsEvent.NavigateTo(
+                    SageEvent.NavigateTo(
                         Destination.PART_PICKER.noArgs(),
                         "TopBar"
                     )
                 )
 
-                is VglsAction.AppBack -> eventDispatcher.sendEvent(
-                    VglsEvent.NavigateBack(
+                is SageAction.AppBack -> eventDispatcher.sendEvent(
+                    SageEvent.NavigateBack(
                         "TopBar"
                     )
                 )
@@ -72,19 +72,19 @@ class TopBarViewModel @Inject constructor(
         }
     }
 
-    override fun handleEvent(event: VglsEvent) {
+    override fun handleEvent(event: SageEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.v("${this@TopBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
-                is VglsEvent.NavigateSuccessTo -> updateCurrentDestination(event.destination)
+                is SageEvent.NavigateSuccessTo -> updateCurrentDestination(event.destination)
 
-                is VglsEvent.HideTopBar -> hideTopBar()
+                is SageEvent.HideTopBar -> hideTopBar()
 
-                is VglsEvent.HideUiChrome -> hideTopBar()
+                is SageEvent.HideUiChrome -> hideTopBar()
 
-                is VglsEvent.ShowUiChrome -> showTopBar()
+                is SageEvent.ShowUiChrome -> showTopBar()
 
-                is VglsEvent.UpdateTitle -> updateTitle(
+                is SageEvent.UpdateTitle -> updateTitle(
                     TitleBarModel(
                         event.title,
                         event.subtitle,

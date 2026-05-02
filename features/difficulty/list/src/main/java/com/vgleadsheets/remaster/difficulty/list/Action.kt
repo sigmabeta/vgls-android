@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.difficulty.list
 
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 
-sealed class Action : VglsAction() {
+sealed class Action : SageAction() {
     data class DifficultyTypeClicked(val id: Long) : Action()
 }

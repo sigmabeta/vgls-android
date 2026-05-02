@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.vgls.common.appcomm)
     api(libs.sage.common.appinfo)
     api(libs.sage.common.list)
     api(projects.vgls.common.model)

@@ -109,6 +109,7 @@ android {
 
 dependencies {
     // DI dependencies
+    implementation(projects.vgls.common.appcomm)
     implementation(libs.sage.android.connectivity)
     implementation(libs.sage.android.coroutines)
     implementation(projects.vgls.android.conversion)

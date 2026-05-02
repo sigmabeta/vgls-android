@@ -1,27 +1,28 @@
 package com.vgleadsheets.remaster.menu
 
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.appinfo.AppInfo
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
-import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
+import net.sigmabeta.sage.appinfo.AppInfo
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.settings.DebugSettingsManager
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class MenuViewModelBrain(
     private val dbUpdater: DbUpdater,
@@ -47,11 +48,11 @@ class MenuViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> fetchSettings()
-            is VglsAction.Resume -> return
-            is VglsAction.Noop -> return
+            is SageAction.InitNoArgs -> fetchSettings()
+            is SageAction.Resume -> return
+            is SageAction.Noop -> return
             is Action.CheckUpdatesClicked -> onCheckUpdatesClicked()
             is Action.ClearUsageClicked -> onClearUsageClicked()
             is Action.ClearSheetsClicked -> onClearSheetsClicked()
@@ -79,7 +80,7 @@ class MenuViewModelBrain(
         offlineWorkScheduler.scheduleDownload()
         updateState { (it as State).copy(refreshCheckStatus = LCE.Content(Unit)) }
         emitEvent(
-            VglsEvent.ShowSnackbar(
+            SageEvent.ShowSnackbar(
                 "Update job enqueued!",
                 false,
                 source = "DebugMenu"
@@ -97,7 +98,7 @@ class MenuViewModelBrain(
 
                 updateState { (it as State).copy(usageDbClearStatus = LCE.Content(Unit)) }
                 emitEvent(
-                    VglsEvent.ShowSnackbar(
+                    SageEvent.ShowSnackbar(
                         "Usage history clear successful!",
                         false,
                         source = "DebugMenu"
@@ -119,7 +120,7 @@ class MenuViewModelBrain(
 
                 updateState { (it as State).copy(sheetDbClearStatus = LCE.Content(Unit)) }
                 emitEvent(
-                    VglsEvent.ShowSnackbar(
+                    SageEvent.ShowSnackbar(
                         "Sheet database clear successful!",
                         false,
                         source = "DebugMenu"
@@ -292,7 +293,7 @@ class MenuViewModelBrain(
             .generateRandomUserData()
             .onEach { songsAdded ->
                 emitEvent(
-                    VglsEvent.ShowSnackbar(
+                    SageEvent.ShowSnackbar(
                         "Added $songsAdded songs.",
                         false,
                         source = "DebugMenu"
@@ -309,7 +310,7 @@ class MenuViewModelBrain(
             .generateRandomUserDataLegacy()
             .onEach { songsAdded ->
                 emitEvent(
-                    VglsEvent.ShowSnackbar(
+                    SageEvent.ShowSnackbar(
                         "Added $songsAdded songs to legacy data.",
                         false,
                         source = "DebugMenu"
@@ -326,7 +327,7 @@ class MenuViewModelBrain(
             .migrateUserData()
             .onEach { songsAdded ->
                 emitEvent(
-                    VglsEvent.ShowSnackbar(
+                    SageEvent.ShowSnackbar(
                         "Migrated $songsAdded songs from legacy data.",
                         false,
                         source = "DebugMenu"
@@ -340,7 +341,7 @@ class MenuViewModelBrain(
     private fun showError(message: String) {
         hatchet.e("Error occurred: $message")
         emitEvent(
-            VglsEvent.ShowSnackbar(
+            SageEvent.ShowSnackbar(
                 message = "An error occurred. Try again after an app update.",
                 withDismissAction = false,
                 actionDetails = null,
@@ -354,7 +355,7 @@ class MenuViewModelBrain(
         offlineWorkScheduler.scheduleDownload()
         updateState { (it as State).copy(offlineDownloadStatus = LCE.Content(Unit)) }
         emitEvent(
-            VglsEvent.ShowSnackbar(
+            SageEvent.ShowSnackbar(
                 "Offline download job enqueued!",
                 false,
                 source = "DebugMenu"
@@ -370,7 +371,7 @@ class MenuViewModelBrain(
 
     private fun navigateTo(destinationString: String) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 destinationString,
                 Destination.MENU.destName
             )

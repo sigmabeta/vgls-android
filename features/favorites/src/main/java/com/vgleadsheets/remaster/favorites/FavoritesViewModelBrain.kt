@@ -1,21 +1,21 @@
 package com.vgleadsheets.remaster.favorites
 
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import net.sigmabeta.sage.nav.Destination
 import com.vgleadsheets.repository.FavoriteRepository
-import net.sigmabeta.sage.ui.StringProvider
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
+import net.sigmabeta.sage.list.ListViewModelBrain
+import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.nav.Destination
+import net.sigmabeta.sage.ui.StringProvider
 
 class FavoritesViewModelBrain(
     private val favoriteRepository: FavoriteRepository,
@@ -33,9 +33,9 @@ class FavoritesViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> collectFavorites()
+            is SageAction.InitNoArgs -> collectFavorites()
             is Action.SongClicked -> onSongClicked(action.id)
             is Action.GameClicked -> onGameClicked(action.id)
             is Action.ComposerClicked -> onComposerClicked(action.id)
@@ -86,7 +86,7 @@ class FavoritesViewModelBrain(
 
     private fun onSongClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.SONG_DETAIL.forId(id),
                 Destination.FAVORITES.name
             )
@@ -95,7 +95,7 @@ class FavoritesViewModelBrain(
 
     private fun onGameClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.GAME_DETAIL.forId(id),
                 Destination.FAVORITES.name
             )
@@ -104,7 +104,7 @@ class FavoritesViewModelBrain(
 
     private fun onComposerClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.COMPOSER_DETAIL.forId(id),
                 Destination.FAVORITES.name
             )

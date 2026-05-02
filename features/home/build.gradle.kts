@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.vgls.common.appcomm)
     implementation(libs.sage.common.list)
     implementation(projects.vgls.common.notif)
     implementation(projects.vgls.common.offline)

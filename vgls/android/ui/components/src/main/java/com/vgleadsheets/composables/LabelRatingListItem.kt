@@ -12,12 +12,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.LabelRatingStarListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.LabelRatingStarListModel
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.id
 import net.sigmabeta.sage.ui.themes.VglsMaterial
@@ -96,7 +96,7 @@ private fun Sample() {
         LabelRatingStarListModel(
             "Days which are training days",
             3,
-            VglsAction.Noop
+            SageAction.Noop
         ),
         PreviewActionSink { },
         Modifier,

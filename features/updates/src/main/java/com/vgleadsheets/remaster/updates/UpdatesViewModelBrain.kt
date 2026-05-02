@@ -1,13 +1,13 @@
 package com.vgleadsheets.remaster.updates
 
+import com.vgleadsheets.model.updates.AppUpdate
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.list.ListViewModelBrain
 import net.sigmabeta.sage.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import com.vgleadsheets.model.updates.AppUpdate
 import net.sigmabeta.sage.ui.StringProvider
 
 class UpdatesViewModelBrain(
@@ -25,11 +25,11 @@ class UpdatesViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> fetchUpdates()
-            is VglsAction.Resume -> return
-            is VglsAction.Noop -> return
+            is SageAction.InitNoArgs -> fetchUpdates()
+            is SageAction.Resume -> return
+            is SageAction.Noop -> return
         }
     }
 

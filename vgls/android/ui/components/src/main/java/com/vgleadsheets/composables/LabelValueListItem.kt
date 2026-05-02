@@ -17,14 +17,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.LabelValueListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.utils.nextPercentageFloat
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.LabelValueListModel
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.id
 import net.sigmabeta.sage.ui.themes.VglsMaterial
@@ -39,7 +39,7 @@ fun LabelValueListItem(
 ) {
     val value = model.value
     val action = model.clickAction
-    val onClickLabel = if (action !is VglsAction.Noop) {
+    val onClickLabel = if (action !is SageAction.Noop) {
         stringResource(StringId.ACCY_OCL_VALUE.id())
     } else {
         null
@@ -138,7 +138,7 @@ private fun Sample() {
         LabelValueListModel(
             "Days which are training days",
             "Every",
-            VglsAction.Noop
+            SageAction.Noop
         ),
         PreviewActionSink {},
         Modifier,
@@ -152,7 +152,7 @@ private fun SampleLoading() {
         LabelValueListModel(
             "Please wait, now loading...",
             null,
-            VglsAction.Noop
+            SageAction.Noop
         ),
         PreviewActionSink {},
         Modifier,

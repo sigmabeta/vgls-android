@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
@@ -33,19 +33,19 @@ class NavBarViewModel @Inject constructor(
 
     override fun sendInitAction() = Unit
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.v("${this.javaClass.simpleName} - Handling action: $action")
         }
     }
 
-    override fun handleEvent(event: VglsEvent) {
+    override fun handleEvent(event: SageEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.v("${this@NavBarViewModel.javaClass.simpleName} - Handling event: $event")
             when (event) {
-                is VglsEvent.NavigateSuccessTo -> updateCurrentDestination(event.destination)
-                is VglsEvent.HideUiChrome -> hideNavBar()
-                is VglsEvent.ShowUiChrome -> showNavBar()
+                is SageEvent.NavigateSuccessTo -> updateCurrentDestination(event.destination)
+                is SageEvent.HideUiChrome -> hideNavBar()
+                is SageEvent.ShowUiChrome -> showNavBar()
             }
         }
     }

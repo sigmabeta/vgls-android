@@ -12,7 +12,7 @@ dependencies {
 
     implementation(libs.sage.android.coroutines)
 
-    api(libs.sage.common.appcomm)
+    api(projects.vgls.common.appcomm)
     api(libs.sage.common.appinfo)
 
     implementation(projects.vgls.common.model)

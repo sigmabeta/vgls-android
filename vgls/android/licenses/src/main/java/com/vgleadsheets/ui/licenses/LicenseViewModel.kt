@@ -7,8 +7,8 @@ import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.EventDispatcher
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
@@ -36,16 +36,16 @@ class LicenseViewModel @Inject constructor(
 
     override fun initialState() = State("file:///android_asset/open_source_licenses.html")
 
-    override fun sendInitAction() = sendAction(VglsAction.InitNoArgs)
+    override fun sendInitAction() = sendAction(SageAction.InitNoArgs)
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         hatchet.d("${this.javaClass.simpleName} - Handling action: $action")
         when (action) {
-            is VglsAction.Resume -> resume()
+            is SageAction.Resume -> resume()
         }
     }
 
-    override fun handleEvent(event: VglsEvent) {
+    override fun handleEvent(event: SageEvent) {
         hatchet.d("${this.javaClass.simpleName} - Handling event: $event")
     }
 
@@ -59,7 +59,7 @@ class LicenseViewModel @Inject constructor(
 
         if (titleModel.title != null) {
             emitEvent(
-                VglsEvent.UpdateTitle(
+                SageEvent.UpdateTitle(
                     title = titleModel.title,
                     shouldShowBack = titleModel.shouldShowBack,
                     source = "License",

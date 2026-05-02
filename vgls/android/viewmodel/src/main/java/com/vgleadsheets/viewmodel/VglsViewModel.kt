@@ -22,16 +22,16 @@ import net.sigmabeta.sage.analytics.isInitAction
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.EventSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
-import net.sigmabeta.sage.appcomm.VglsState
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
+import net.sigmabeta.sage.appcomm.SageState
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
 
-abstract class VglsViewModel<StateType : VglsState> :
+abstract class VglsViewModel<StateType : SageState> :
     ViewModel(),
     ActionSink,
     EventSink {
@@ -53,7 +53,7 @@ abstract class VglsViewModel<StateType : VglsState> :
     protected val internalUiState = MutableStateFlow(initialState())
     val uiState = internalUiState.asStateFlow()
 
-    protected val internalUiEvents = MutableSharedFlow<VglsEvent>(
+    protected val internalUiEvents = MutableSharedFlow<SageEvent>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
@@ -66,13 +66,13 @@ abstract class VglsViewModel<StateType : VglsState> :
 
     abstract fun initialState(): StateType
 
-    protected abstract fun handleAction(action: VglsAction)
+    protected abstract fun handleAction(action: SageAction)
 
-    protected abstract fun handleEvent(event: VglsEvent)
+    protected abstract fun handleEvent(event: SageEvent)
 
     protected abstract fun sendInitAction()
 
-    override fun sendAction(action: VglsAction) {
+    override fun sendAction(action: SageAction) {
         if (screenIdentifier != null) {
             if (action.isInitAction()) {
                 analytics.logScreenView(action, screenIdentifier!!)
@@ -81,8 +81,8 @@ abstract class VglsViewModel<StateType : VglsState> :
             }
         }
 
-        if (action is VglsAction.DeviceBack) {
-            emitEvent(VglsEvent.NavigateBack(this.javaClass.simpleName))
+        if (action is SageAction.DeviceBack) {
+            emitEvent(SageEvent.NavigateBack(this.javaClass.simpleName))
             return
         }
 
@@ -91,7 +91,7 @@ abstract class VglsViewModel<StateType : VglsState> :
         }
     }
 
-    override fun sendEvent(event: VglsEvent) {
+    override fun sendEvent(event: SageEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             handleEvent(event)
         }
@@ -101,7 +101,7 @@ abstract class VglsViewModel<StateType : VglsState> :
         eventDispatcher.removeEventSink(this)
     }
 
-    protected fun emitEvent(event: VglsEvent) {
+    protected fun emitEvent(event: SageEvent) {
         viewModelScope.launch(scheduler.dispatchers.main) {
             hatchet.d("Emitting event: $event")
             internalUiEvents.tryEmit(event)

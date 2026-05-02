@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import net.sigmabeta.sage.appcomm.VglsAction
+import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.nav.Destination
 
 fun NavGraphBuilder.searchScreenNavEntry(
@@ -25,14 +25,14 @@ fun NavGraphBuilder.searchScreenNavEntry(
         val viewModel: SearchViewModel = searchViewModel(textFieldUpdater)
 
         DisposableEffect(Unit) {
-            viewModel.sendAction(VglsAction.Resume)
+            viewModel.sendAction(SageAction.Resume)
 
             onDispose {
-                viewModel.sendAction(VglsAction.Pause)
+                viewModel.sendAction(SageAction.Pause)
             }
         }
 
-        BackHandler(true) { viewModel.sendAction(VglsAction.DeviceBack) }
+        BackHandler(true) { viewModel.sendAction(SageAction.DeviceBack) }
 
         val state by viewModel.uiState.collectAsStateWithLifecycle()
         val showDebug by viewModel.showDebug.collectAsStateWithLifecycle()

@@ -54,19 +54,11 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.android.bitmaps.SheetConstants
-import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.ZoomableFullDocItem
 import com.vgleadsheets.composables.ZoomableSheetPageItem
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
-import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.themes.VglsMaterial
-import net.sigmabeta.sage.ui.vector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import me.saket.telephoto.ExperimentalTelephotoApi
@@ -76,6 +68,14 @@ import me.saket.telephoto.zoomable.ZoomableState
 import me.saket.telephoto.zoomable.rememberZoomableState
 import me.saket.telephoto.zoomable.spatial.CoordinateSpace
 import me.saket.telephoto.zoomable.spatial.SpatialOffset
+import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.ZoomableSheetPageListModel
+import net.sigmabeta.sage.ui.Icon
+import net.sigmabeta.sage.ui.themes.VglsMaterial
+import net.sigmabeta.sage.ui.vector
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -214,7 +214,7 @@ fun ViewerScreen(
         ArrowPressHandler(
             onPreviousClick = onPreviousClick,
             onNextClick = onNextClick,
-            onBackPress = { actionSink.sendAction(VglsAction.DeviceBack) },
+            onBackPress = { actionSink.sendAction(SageAction.DeviceBack) },
         )
 
         if (state.shouldShowLyricsWarning()) {
@@ -658,7 +658,7 @@ private fun Sheets(
         isAltSelected = LCE.Content(false)
     )
 
-    val actionSink: (action: VglsAction) -> Unit = {
+    val actionSink: (action: SageAction) -> Unit = {
         when (it) {
             Action.PrevButtonClicked, Action.NextButtonClicked -> {
                 visible = true

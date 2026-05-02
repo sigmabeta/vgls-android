@@ -1,19 +1,19 @@
 package com.vgleadsheets.remaster.tags.list
 
+import com.vgleadsheets.model.tag.TagKey
+import com.vgleadsheets.repository.TagRepository
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.appcomm.VglsEvent
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
 import net.sigmabeta.sage.list.VglsScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import com.vgleadsheets.model.tag.TagKey
 import net.sigmabeta.sage.nav.Destination
-import com.vgleadsheets.repository.TagRepository
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onEach
 
 class TagListViewModelBrain(
     private val tagRepository: TagRepository,
@@ -31,9 +31,9 @@ class TagListViewModelBrain(
 
     override fun initialState() = State()
 
-    override fun handleAction(action: VglsAction) {
+    override fun handleAction(action: SageAction) {
         when (action) {
-            is VglsAction.InitNoArgs -> startLoading()
+            is SageAction.InitNoArgs -> startLoading()
             is Action.TagKeyClicked -> onTagClicked(action.id)
         }
     }
@@ -72,7 +72,7 @@ class TagListViewModelBrain(
 
     private fun onTagClicked(id: Long) {
         emitEvent(
-            VglsEvent.NavigateTo(
+            SageEvent.NavigateTo(
                 Destination.TAGS_VALUES_LIST.forId(id),
                 Destination.TAGS_LIST.name
             )

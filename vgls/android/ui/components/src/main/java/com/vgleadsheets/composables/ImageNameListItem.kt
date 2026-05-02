@@ -22,13 +22,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.ImageNameListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.utils.ImageSize
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.ImageNameListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.perf.BuildConfig
@@ -61,7 +61,7 @@ fun ImageNameListItem(
     name: String,
     sourceInfo: SourceInfo,
     imagePlaceholder: Icon,
-    clickAction: VglsAction,
+    clickAction: SageAction,
     actionSink: ActionSink,
     modifier: Modifier,
     padding: PaddingValues,
@@ -190,7 +190,7 @@ private fun Sample() {
             SourceInfo("https://randomfox.ca/images/12.jpg"),
             Icon.DESCRIPTION,
             null,
-            clickAction = VglsAction.Noop,
+            clickAction = SageAction.Noop,
         ),
         PreviewActionSink { },
         Modifier,

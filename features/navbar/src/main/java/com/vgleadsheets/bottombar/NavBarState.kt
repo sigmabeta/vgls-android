@@ -1,12 +1,12 @@
 package com.vgleadsheets.bottombar
 
-import net.sigmabeta.sage.appcomm.VglsState
+import net.sigmabeta.sage.appcomm.SageState
 import net.sigmabeta.sage.nav.Destination
 
 data class NavBarState(
     val currentDestination: String = Destination.NONE.name,
     val visibility: NavBarVisibility = NavBarVisibility.VISIBLE,
-) : VglsState {
+) : SageState {
     val actualVisibility = if (visibility == NavBarVisibility.VISIBLE) {
         NavBarVisibility.VISIBLE
     } else {

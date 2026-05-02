@@ -21,10 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.SearchHistoryListModel
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.SearchHistoryListModel
 import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
@@ -101,8 +101,8 @@ private fun Sample() {
         SearchHistoryListModel(
             1234L,
             "Stickerbush symphony",
-            VglsAction.Noop,
-            VglsAction.Noop,
+            SageAction.Noop,
+            SageAction.Noop,
         ),
         PreviewActionSink { },
         Modifier,

@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.appcomm.VglsAction
-import net.sigmabeta.sage.components.SingleTextListModel
 import com.vgleadsheets.composables.subs.LabeledThingy
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.SingleTextListModel
 import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.id
 
@@ -19,7 +19,7 @@ fun LabelNoThingyItem(
     padding: PaddingValues,
 ) {
     val action = model.clickAction
-    val onClickLabel = if (action !is VglsAction.Noop) {
+    val onClickLabel = if (action !is SageAction.Noop) {
         stringResource(StringId.ACCY_OCL_SINGLE_LINE.id(), model.name)
     } else {
         null

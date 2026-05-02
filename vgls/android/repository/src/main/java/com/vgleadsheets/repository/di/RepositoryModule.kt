@@ -1,5 +1,6 @@
 package com.vgleadsheets.repository.di
 
+import com.vgleadsheets.appcomm.ActionDeserializer
 import com.vgleadsheets.database.android.dao.TransactionDao
 import com.vgleadsheets.database.dao.ComposerAliasDataSource
 import com.vgleadsheets.database.dao.ComposerDataSource
@@ -44,7 +45,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
-import net.sigmabeta.sage.appcomm.di.ActionDeserializer
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.GeneralSettingsManager
