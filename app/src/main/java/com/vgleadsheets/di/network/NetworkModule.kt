@@ -1,9 +1,7 @@
 package com.vgleadsheets.di.network
 
 import com.squareup.moshi.Moshi
-import net.sigmabeta.sage.appinfo.AppInfo
 import com.vgleadsheets.di.HatchetOkHttpLogger
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.network.OfflineFailFastInterceptor
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dagger.Module
@@ -12,6 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import net.sigmabeta.sage.appinfo.AppInfo
+import net.sigmabeta.sage.logging.Hatchet
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,16 +27,16 @@ object NetworkModule {
     @Provides
     @Singleton
     @Named("RngSeed")
-    internal fun provideSeed() = SEED_RANDOM_NUMBER_GENERATOR
+    fun provideSeed() = SEED_RANDOM_NUMBER_GENERATOR
 
     @Provides
     @Singleton
-    internal fun provideRandom(@Named("RngSeed") seed: Long) = Random(seed)
+    fun provideRandom(@Named("RngSeed") seed: Long) = Random(seed)
 
     @Provides
     @Named("VglsUrl")
     @Singleton
-    internal fun provideVglsUrl(
+    fun provideVglsUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
         return runBlocking {
@@ -51,7 +51,7 @@ object NetworkModule {
     @Provides
     @Named("VglsApiUrl")
     @Singleton
-    internal fun provideVglsApiUrl(
+    fun provideVglsApiUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
         return runBlocking {
@@ -66,7 +66,7 @@ object NetworkModule {
     @Provides
     @Named("VglsImageUrl")
     @Singleton
-    internal fun provideVglsImageUrl(
+    fun provideVglsImageUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
         return runBlocking {
@@ -81,7 +81,7 @@ object NetworkModule {
     @Provides
     @Named("VglsPdfUrl")
     @Singleton
-    internal fun provideVglsPdfUrl(
+    fun provideVglsPdfUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
         val baseUrl = runBlocking {
@@ -98,7 +98,7 @@ object NetworkModule {
     @Provides
     @Singleton
     @Named("ProbeOkHttp")
-    internal fun provideProbeOkClient(
+    fun provideProbeOkClient(
         appInfo: AppInfo,
         @Named("HttpLoggingInterceptor") logger: Interceptor,
     ) = if (appInfo.isDebug) {
@@ -112,7 +112,7 @@ object NetworkModule {
     @Provides
     @Singleton
     @Named("VglsOkHttp")
-    internal fun provideVglsOkClient(
+    fun provideVglsOkClient(
         @Named("ProbeOkHttp") base: OkHttpClient,
         failFast: OfflineFailFastInterceptor,
     ): OkHttpClient = base.newBuilder()
@@ -124,7 +124,7 @@ object NetworkModule {
 
     @Provides
     @Named("HttpLoggingInterceptor")
-    internal fun provideHttpLoggingInterceptor(hatchetOkHttpLogger: HatchetOkHttpLogger): Interceptor {
+    fun provideHttpLoggingInterceptor(hatchetOkHttpLogger: HatchetOkHttpLogger): Interceptor {
         val logger = HttpLoggingInterceptor(hatchetOkHttpLogger)
         logger.level = HttpLoggingInterceptor.Level.HEADERS
         return logger
@@ -132,7 +132,7 @@ object NetworkModule {
 
     @Provides
     @Named("CacheInterceptor")
-    internal fun provideCacheInterceptor() = Interceptor { chain ->
+    fun provideCacheInterceptor() = Interceptor { chain ->
         val originalResponse = chain.proceed(chain.request())
         originalResponse.newBuilder()
             .header("Cache-Control", "max-age=$CACHE_MAX_AGE")
@@ -141,13 +141,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideMoshi(): Moshi = Moshi
+    fun provideMoshi(): Moshi = Moshi
         .Builder()
         .build()
 
     @Provides
     @Singleton
-    internal fun provideConverterFactory(
+    fun provideConverterFactory(
         moshiInstance: Moshi
     ): Converter.Factory = MoshiConverterFactory.create(moshiInstance)
 

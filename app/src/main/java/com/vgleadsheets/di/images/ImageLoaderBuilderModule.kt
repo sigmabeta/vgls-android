@@ -8,10 +8,10 @@ import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ImageLoaderBuilderModule {
+object ImageLoaderBuiFlderModule {
     @Provides
     @Named("PdfImageLoaderBuilder")
-    internal fun providesComponentRegistryBuilderFunction(
+    fun providesComponentRegistryBuilderFunction(
         @Named("VglsPdfUrl") baseUrl: String?,
         @Named("FakePdfImageLoaderBuilder") fake: CoilBuilderFunction,
         @Named("RealPdfImageLoaderBuilder") real: CoilBuilderFunction,
@@ -23,7 +23,7 @@ object ImageLoaderBuilderModule {
 
     @Provides
     @Named("OtherImageLoaderBuilder")
-    internal fun providesOtherBuilderFunction(
+    fun providesOtherBuilderFunction(
         @Named("VglsImageUrl") baseUrl: String?,
         @Named("FakeOtherImageLoaderBuilder") fake: CoilBuilderFunction,
         @Named("RealOtherImageLoaderBuilder") real: CoilBuilderFunction,

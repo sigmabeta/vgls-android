@@ -10,4 +10,6 @@ dependencies {
     api(projects.vgls.common.repository)
     api(libs.sage.common.storage.common)
     api(libs.sage.common.ui.strings)
+
+    implementation(projects.vgls.common.appcomm)
 }

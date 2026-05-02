@@ -7,7 +7,7 @@ plugins {
 
     alias(libs.plugins.git.version)
     alias(libs.plugins.gradle.publisher)
-    alias(libs.plugins.licenses)
+//    alias(libs.plugins.licenses) //  No support for AGP 9 yet
 }
 
 if (checkShouldIncludeFirebase()) {

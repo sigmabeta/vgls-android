@@ -23,7 +23,7 @@ object StorageModule {
 
     @Provides
     @Singleton
-    internal fun provideDebugDataStore(
+    fun provideDebugDataStore(
         @ApplicationContext context: Context
     ): DataStore<Preferences> = context.dataStore
 
