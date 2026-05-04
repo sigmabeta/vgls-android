@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
-import net.sigmabeta.sage.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.theme.AppTheme
 
 @Composable
 internal fun RemasterBottomBar(
@@ -61,7 +61,7 @@ internal fun RemasterBottomBar(
 @Preview
 @Composable
 private fun PreviewLight() {
-    VglsMaterial {
+    AppTheme {
         PreviewContent()
     }
 }
@@ -69,7 +69,7 @@ private fun PreviewLight() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun PreviewDark() {
-    VglsMaterial {
+    AppTheme {
         PreviewContent()
     }
 }

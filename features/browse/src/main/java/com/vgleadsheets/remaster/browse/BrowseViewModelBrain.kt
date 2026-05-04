@@ -1,16 +1,16 @@
 package com.vgleadsheets.remaster.browse
 
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.TagRepository
 import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.ui.StringProvider
 
 class BrowseViewModelBrain(
@@ -18,14 +18,14 @@ class BrowseViewModelBrain(
     private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
-    scheduler: VglsScheduler,
+    scheduler: SageScheduler,
 ) : ListViewModelBrain(
     stringProvider,
     analytics,
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.BROWSE
+    override val screenIdentifier = VglsAnalyticsScreen.BROWSE
 
     override fun initialState() = State()
 

@@ -9,10 +9,11 @@ android {
 }
 
 dependencies {
+    api(projects.vgls.common.analytics)
     api(libs.androidx.navigation.compose)
     api(libs.androidx.lifecycle.runtimeCompose)
-    api(libs.sage.android.wakelocks)
-    api(libs.sage.common.nav)
+    api(projects.vgls.android.wakelocks)
+    api(projects.vgls.common.nav)
 
     implementation(projects.vgls.android.pdf)
     implementation(projects.vgls.android.ui.components)
@@ -26,5 +27,6 @@ dependencies {
 
     // TODO these two deps are only necessary for previews. Can we somehow make them debug-only?
     debugImplementation(libs.kotlinx.collections.immutable)
-    debugImplementation(libs.sage.android.ui.themes)
+    debugImplementation(projects.vgls.android.ui.theme)
+    implementation(projects.vgls.common.strings)
 }

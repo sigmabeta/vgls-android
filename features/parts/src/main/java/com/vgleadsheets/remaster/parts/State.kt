@@ -1,12 +1,12 @@
 package com.vgleadsheets.remaster.parts
 
+import com.vgleadsheets.model.Part
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.MenuItemListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.Part
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(

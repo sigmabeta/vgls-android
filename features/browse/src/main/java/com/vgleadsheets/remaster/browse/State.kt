@@ -1,14 +1,14 @@
 package com.vgleadsheets.remaster.browse
 
+import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.MenuItemListModel
 import net.sigmabeta.sage.components.NoopListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
@@ -30,7 +30,7 @@ data class State(
             MenuItemListModel(
                 name = stringProvider.getString(StringId.BROWSE_LINK_FAVORITES),
                 caption = null,
-                icon = Icon.JAM_FILLED,
+                icon = Icon.FAVORITE_FILLED,
                 clickAction = Action.DestinationClicked(Destination.FAVORITES.noArgs()),
                 selected = false
             ),

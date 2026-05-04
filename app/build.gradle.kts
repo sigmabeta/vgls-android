@@ -122,8 +122,8 @@ dependencies {
     implementation(libs.sage.android.resources)
     implementation(projects.vgls.android.storage.common)
     implementation(projects.vgls.android.ui.components)
-    implementation(libs.sage.android.ui.themes)
-    implementation(libs.sage.android.ui.strings)
+    implementation(projects.vgls.android.ui.theme)
+    implementation(projects.vgls.android.strings)
 
     implementation(libs.sage.common.appinfo)
     implementation(projects.vgls.common.downloader)
@@ -131,11 +131,12 @@ dependencies {
     implementation(libs.sage.common.events)
     implementation(projects.vgls.common.network)
     implementation(projects.vgls.common.offline)
-    implementation(libs.sage.common.settings.environment)
+    implementation(projects.vgls.common.environment)
     implementation(projects.vgls.common.urlinfo)
     implementation(projects.vgls.common.versions)
     // End DI dependencies
 
+    implementation(projects.vgls.android.icons)
     implementation(projects.features.all)
 
     implementation(libs.androidx.hilt.work)
@@ -151,9 +152,10 @@ dependencies {
 
         implementation(libs.sage.android.firebase)
         implementation(libs.sage.android.analytics)
+        implementation(projects.vgls.android.analytics)
     } else {
         implementation(libs.sage.fake.perf)
-        implementation(libs.sage.fake.analytics)
+        implementation(projects.vgls.fake.analytics)
     }
 
     // Memory leak detection (Uncomment to enable)

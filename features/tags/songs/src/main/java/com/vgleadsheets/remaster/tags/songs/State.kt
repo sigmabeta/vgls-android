@@ -11,7 +11,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagValue
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(

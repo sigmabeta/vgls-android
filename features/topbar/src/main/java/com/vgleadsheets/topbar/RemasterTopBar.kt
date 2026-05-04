@@ -37,9 +37,9 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.TitleBarModel
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.id
-import net.sigmabeta.sage.ui.themes.VglsMaterial
+import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.id
+import com.vgleadsheets.ui.theme.AppTheme
 
 @Composable
 @Suppress("LongMethod")
@@ -152,7 +152,7 @@ fun RemasterTopBar(
 @Preview
 @Composable
 private fun PreviewLight() {
-    VglsMaterial {
+    AppTheme {
         PreviewContent()
     }
 }
@@ -160,7 +160,7 @@ private fun PreviewLight() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun PreviewDark() {
-    VglsMaterial {
+    AppTheme {
         PreviewContent()
     }
 }

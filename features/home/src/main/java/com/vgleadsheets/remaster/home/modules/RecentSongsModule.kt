@@ -1,27 +1,27 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.model.history.SongHistoryEntry
+import com.vgleadsheets.remaster.home.Action
+import com.vgleadsheets.remaster.home.HomeModule
+import com.vgleadsheets.remaster.home.HomeModuleState
+import com.vgleadsheets.remaster.home.Priority
+import com.vgleadsheets.repository.history.SongHistoryRepository
+import com.vgleadsheets.strings.StringId
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.take
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SheetPageCardListModel
 import net.sigmabeta.sage.components.SheetPageListModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.list.DelayManager
-import com.vgleadsheets.model.Song
-import com.vgleadsheets.model.history.SongHistoryEntry
 import net.sigmabeta.sage.pdf.PdfConfigById
-import com.vgleadsheets.remaster.home.Action
-import com.vgleadsheets.remaster.home.HomeModule
-import com.vgleadsheets.remaster.home.HomeModuleState
-import com.vgleadsheets.remaster.home.Priority
-import com.vgleadsheets.repository.history.SongHistoryRepository
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.take
 
 class RecentSongsModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
@@ -31,7 +31,7 @@ class RecentSongsModule @Inject constructor(
     priority = Priority.HIGH,
     delayManager,
 ) {
-    override fun loadingType() = LoadingType.SHEET
+    override fun loadingType() = LoadingType.PAGE
 
     override fun title() = stringProvider.getString(StringId.HOME_SECTION_RECENT_SONGS)
 

@@ -4,15 +4,15 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.jakewharton.threetenabp.AndroidThreeTen
-import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.model.updates.AppUpdate
 import com.vgleadsheets.remaster.updates.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
+import com.vgleadsheets.strings.StringResources
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.StringResources
 
 @DevicePreviews
 @Composable

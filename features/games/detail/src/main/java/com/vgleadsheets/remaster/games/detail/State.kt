@@ -3,6 +3,7 @@ package com.vgleadsheets.remaster.games.detail
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.strings.StringId
 import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
@@ -21,7 +22,6 @@ import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 @Suppress("MagicNumber")
@@ -158,13 +158,13 @@ data class State(
     ) {
         val (icon, label, action) = if (data) {
             Triple(
-                Icon.JAM_FILLED,
+                Icon.FAVORITE_FILLED,
                 StringId.CTA_FAVORITE_REMOVE,
                 Action.RemoveFavoriteClicked,
             )
         } else {
             Triple(
-                Icon.JAM_EMPTY,
+                Icon.FAVORITE_EMPTY,
                 StringId.CTA_FAVORITE_ADD,
                 Action.AddFavoriteClicked,
             )

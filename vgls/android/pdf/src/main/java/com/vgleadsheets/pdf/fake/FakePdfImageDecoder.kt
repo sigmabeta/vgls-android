@@ -7,7 +7,7 @@ import coil3.decode.DecodeResult
 import coil3.decode.Decoder
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
-import net.sigmabeta.sage.android.bitmaps.FakePdfImageGenerator
+import com.vgleadsheets.bitmaps.FakePdfImageGenerator
 import com.vgleadsheets.pdf.PdfMetadata
 
 class FakePdfImageDecoder(

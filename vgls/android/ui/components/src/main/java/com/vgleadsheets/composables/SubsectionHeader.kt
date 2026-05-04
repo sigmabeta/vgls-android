@@ -17,8 +17,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.components.SubsectionHeaderListModel
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -55,7 +55,7 @@ fun SubsectionHeader(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
@@ -68,7 +68,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.primaryContainer)

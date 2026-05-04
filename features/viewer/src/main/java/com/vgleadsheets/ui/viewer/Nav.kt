@@ -12,7 +12,7 @@ import androidx.navigation.navArgument
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.nav.ARG_TEMPLATE_ONE
 import net.sigmabeta.sage.nav.ARG_TEMPLATE_TWO
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.viewerScreenNavEntry(
     globalModifier: Modifier,

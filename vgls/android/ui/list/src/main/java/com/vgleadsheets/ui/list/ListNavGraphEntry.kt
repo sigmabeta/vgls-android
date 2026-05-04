@@ -12,6 +12,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.vgleadsheets.composables.Content
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.viewmodel.list.listViewModel
 import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_ERROR_SCREEN_DEVICE
 import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_WARNING_SCREEN_DEVICE
@@ -26,7 +27,6 @@ import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.nav.ARG_TEMPLATE_ONE
 import net.sigmabeta.sage.nav.ArgType
-import net.sigmabeta.sage.nav.Destination
 
 @Suppress("LongMethod")
 fun NavGraphBuilder.listScreenEntry(

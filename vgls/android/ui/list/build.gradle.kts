@@ -12,10 +12,10 @@ dependencies {
     api(libs.androidx.navigation.compose)
     api(libs.androidx.lifecycle.runtimeCompose)
 
-    api(libs.sage.common.nav)
+    api(projects.vgls.common.nav)
     implementation(libs.sage.android.perf)
     implementation(libs.sage.android.ui.list)
     implementation(projects.vgls.android.ui.components)
-    implementation(libs.sage.android.ui.strings)
+    implementation(projects.vgls.android.strings)
     implementation(projects.vgls.android.viewmodel)
 }

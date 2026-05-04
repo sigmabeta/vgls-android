@@ -16,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import com.vgleadsheets.ui.components.R
-import net.sigmabeta.sage.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.theme.AppTheme
 
 @Composable
 fun FullscreenBlack(
     content: @Composable BoxScope.() -> Unit
 ) {
-    VglsMaterial {
+    AppTheme {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -39,7 +39,7 @@ fun FullScreenOf(
     count: Int = 20,
     content: @Composable (ColumnScope.(PaddingValues) -> Unit),
 ) {
-    VglsMaterial(forceDark = darkTheme) {
+    AppTheme(forceDark = darkTheme) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

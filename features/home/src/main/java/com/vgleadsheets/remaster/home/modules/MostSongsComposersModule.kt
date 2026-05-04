@@ -1,18 +1,18 @@
 package com.vgleadsheets.remaster.home.modules
 
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SquareItemListModel
-import net.sigmabeta.sage.list.DelayManager
 import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.ComposerRepository
-import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.StringProvider
+import com.vgleadsheets.strings.StringId
 import kotlinx.coroutines.flow.map
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.ui.Icon
+import net.sigmabeta.sage.ui.StringProvider
 import javax.inject.Inject
 
 class MostSongsComposersModule @Inject constructor(

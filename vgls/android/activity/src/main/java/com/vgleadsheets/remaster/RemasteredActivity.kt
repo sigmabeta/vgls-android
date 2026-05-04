@@ -22,7 +22,7 @@ import net.sigmabeta.sage.android.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.scaffold.systemui.SystemUiState
 import com.vgleadsheets.scaffold.systemui.SystemUiViewModel
-import net.sigmabeta.sage.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -58,7 +58,7 @@ class RemasteredActivity : ComponentActivity() {
         setupSystemUiListener(windowInsetController)
 
         setContent {
-            VglsMaterial {
+            AppTheme {
                 CompositionLocalProvider(LocalPdfSubsampler provides pdfSubsampleSourceFactory) {
                     CompositionLocalProvider(LocalLogger provides hatchet) {
                         RemasterAppUi(

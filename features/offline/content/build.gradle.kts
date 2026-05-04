@@ -4,11 +4,13 @@ plugins {
 }
 
 dependencies {
+    api(projects.vgls.common.analytics)
     api(libs.sage.common.list)
     api(projects.vgls.common.model)
-    api(libs.sage.common.nav)
+    api(projects.vgls.common.nav)
     api(projects.vgls.common.offline)
     api(libs.sage.common.pdf)
     api(projects.vgls.common.repository)
     api(libs.sage.common.ui.components)
+    implementation(projects.vgls.common.strings)
 }

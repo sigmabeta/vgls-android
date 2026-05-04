@@ -3,6 +3,9 @@ package com.vgleadsheets.composables
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_ERROR_COMPONENT_DEVICE
+import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_WARNING_COMPONENT_DEVICE
+import net.sigmabeta.sage.android.perf.WithMeasurementComponent
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.components.CheckableListModel
 import net.sigmabeta.sage.components.CollapsibleDetailsListModel
@@ -36,9 +39,6 @@ import net.sigmabeta.sage.components.SquareItemListModel
 import net.sigmabeta.sage.components.SubsectionHeaderListModel
 import net.sigmabeta.sage.components.SubsectionListModel
 import net.sigmabeta.sage.components.WideItemListModel
-import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_ERROR_COMPONENT_DEVICE
-import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_WARNING_COMPONENT_DEVICE
-import net.sigmabeta.sage.android.perf.WithMeasurementComponent
 
 @Suppress("MaxLineLength")
 @Composable
@@ -114,7 +114,7 @@ fun ListModel.Content(
 
             is LoadingItemListModel -> {
                 when (loadingType) {
-                    LoadingType.SHEET, LoadingType.SQUARE, LoadingType.NOTIF, LoadingType.WIDE_ITEM, LoadingType.BIG_IMAGE -> LoadingItem(
+                    LoadingType.PAGE, LoadingType.SQUARE, LoadingType.NOTIF, LoadingType.WIDE_ITEM, LoadingType.BIG_IMAGE -> LoadingItem(
                         seed = dataId,
                         loadingType = loadingType,
                         modifier = mod,

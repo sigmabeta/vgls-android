@@ -27,7 +27,7 @@ import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.topbar.RemasterTopBar
 import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.SageEvent
-import net.sigmabeta.sage.ui.id
+import com.vgleadsheets.strings.id
 import net.sigmabeta.sage.ui.vector
 
 @OptIn(ExperimentalMaterial3Api::class)

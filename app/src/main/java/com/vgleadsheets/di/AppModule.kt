@@ -6,10 +6,12 @@ import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.appcomm.ActionDeserializer
 import com.vgleadsheets.dispatchers.DelayManagerImpl
+import com.vgleadsheets.environment.Environment
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.settings.part.SelectedPartManager
+import com.vgleadsheets.strings.StringResources
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.versions.AppVersionManager
 import dagger.Module
@@ -33,7 +35,6 @@ import net.sigmabeta.sage.settings.environment.EnvironmentManager
 import net.sigmabeta.sage.storage.common.Storage
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.StringResources
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -136,7 +137,9 @@ object AppModule {
     fun provideEnvironmentManager(
         storage: Storage
     ): EnvironmentManager = EnvironmentManager(
-            storage = storage
+            storage = storage,
+            environments = Environment.entries,
+            default = Environment.PROD,
         )
 
     @Provides

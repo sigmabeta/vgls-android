@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.vgls.common.analytics)
     implementation(projects.vgls.common.appcomm)
     implementation(libs.sage.common.list)
     implementation(projects.vgls.common.notif)
@@ -12,4 +13,6 @@ dependencies {
     implementation(projects.vgls.common.repository)
     implementation(libs.sage.common.time)
     implementation(libs.sage.common.ui.components)
+    implementation(projects.vgls.common.strings)
+    implementation(projects.vgls.common.nav)
 }

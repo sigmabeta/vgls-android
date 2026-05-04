@@ -14,5 +14,5 @@ dependencies {
     implementation(projects.vgls.common.notif)
     implementation(libs.sage.common.time)
     implementation(libs.sage.common.analytics)
-    implementation(libs.sage.common.ui.strings)
+    implementation(projects.vgls.common.strings)
 }

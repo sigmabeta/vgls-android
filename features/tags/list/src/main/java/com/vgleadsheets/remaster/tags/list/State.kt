@@ -6,7 +6,7 @@ import net.sigmabeta.sage.components.NameCaptionListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
 import com.vgleadsheets.model.tag.TagKey
-import net.sigmabeta.sage.ui.StringId
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(

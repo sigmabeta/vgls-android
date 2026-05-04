@@ -2,7 +2,7 @@ package com.vgleadsheets.scaffold.systemui
 
 import com.vgleadsheets.nav.SystemUiVisibility
 import net.sigmabeta.sage.appcomm.SageState
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 
 data class SystemUiState(
     val currentDestination: String = Destination.NONE.name,

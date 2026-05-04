@@ -39,7 +39,7 @@ import net.sigmabeta.sage.components.DropdownSettingListModel
 import net.sigmabeta.sage.components.LabelRatingStarListModel
 import net.sigmabeta.sage.components.LabelValueListModel
 import net.sigmabeta.sage.components.SingleTextListModel
-import net.sigmabeta.sage.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.theme.AppTheme
 
 @Composable
 fun LabeledThingy(
@@ -84,7 +84,7 @@ fun LabeledThingy(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -98,7 +98,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

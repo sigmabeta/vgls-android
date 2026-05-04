@@ -14,6 +14,7 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.remaster.home.State
 import com.vgleadsheets.remaster.home.modules.RngModule
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
+import com.vgleadsheets.strings.StringResources
 import kotlinx.collections.immutable.persistentListOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
@@ -27,7 +28,6 @@ import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.StringResources
 import java.util.Random
 
 @DevicePreviews
@@ -86,7 +86,7 @@ private fun homeScreenState(stringProvider: StringProvider): State {
 private fun homeScreenLoadingState(): State {
     val moduleStatesByPriority = mapOf(
         loadingModule(LoadingType.NOTIF, Priority.HIGHEST),
-        loadingModule(LoadingType.SHEET, Priority.HIGH),
+        loadingModule(LoadingType.PAGE, Priority.HIGH),
         loadingModule(LoadingType.SQUARE, Priority.HIGH),
     )
 

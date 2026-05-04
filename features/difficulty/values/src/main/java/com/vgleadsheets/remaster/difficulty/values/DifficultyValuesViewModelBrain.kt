@@ -1,24 +1,24 @@
 package com.vgleadsheets.remaster.difficulty.values
 
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.TagRepository
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.ui.StringProvider
 
 class DifficultyValuesViewModelBrain(
     private val tagRepository: TagRepository,
-    private val scheduler: VglsScheduler,
+    private val scheduler: SageScheduler,
     private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
@@ -28,7 +28,7 @@ class DifficultyValuesViewModelBrain(
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.LIST_DIFFICULTY_VALUES
+    override val screenIdentifier = VglsAnalyticsScreen.LIST_DIFFICULTY_VALUES
 
     override fun initialState() = State()
 

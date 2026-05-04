@@ -2,7 +2,7 @@ package com.vgleadsheets.topbar
 
 import net.sigmabeta.sage.appcomm.SageState
 import net.sigmabeta.sage.components.TitleBarModel
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 
 data class TopBarState(
     val model: TitleBarModel = TitleBarModel(),

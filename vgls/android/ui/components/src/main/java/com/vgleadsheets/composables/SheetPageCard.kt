@@ -20,7 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.components.R
+import com.vgleadsheets.ui.theme.AppTheme
 import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
@@ -29,9 +32,6 @@ import net.sigmabeta.sage.components.SheetPageListModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.id
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 @Suppress("MagicNumber")
@@ -87,7 +87,7 @@ fun SheetPageCard(
 @Preview
 @Composable
 private fun LightPdf() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
@@ -102,7 +102,7 @@ private fun LightPdf() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DarkPdf() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)

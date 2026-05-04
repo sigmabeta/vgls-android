@@ -1,4 +1,5 @@
 package com.vgleadsheets.ui.viewer
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.appcomm.VglsAction
@@ -34,7 +35,7 @@ import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.wakelocks.WakeLockManager
+import com.vgleadsheets.wakelocks.WakeLockManager
 
 class ViewerViewModel @AssistedInject constructor(
     private val stringProvider: StringProvider,
@@ -59,7 +60,7 @@ class ViewerViewModel @AssistedInject constructor(
     private var buttonVisibilityTimer: Job? = null
     private var historyTimer: Job? = null
 
-    override val screenIdentifier = AnalyticsScreen.SHEET_VIEWER
+    override val screenIdentifier = VglsAnalyticsScreen.SHEET_VIEWER
 
     init {
         viewModelScope.launch(dispatchers.main) {

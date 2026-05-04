@@ -22,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vgleadsheets.ui.components.R
-import net.sigmabeta.sage.ui.themes.VglsMaterial
-import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.AppThemeMenu
 
 @Composable
 fun LoadingThingy(
@@ -56,7 +56,7 @@ fun LoadingThingy(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -70,7 +70,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -84,7 +84,7 @@ private fun Dark() {
 @Preview
 @Composable
 private fun Menu() {
-    VglsMaterialMenu {
+    AppThemeMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

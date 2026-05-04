@@ -9,8 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import net.sigmabeta.sage.ui.themes.VglsMaterial
-import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.AppThemeMenu
 import net.sigmabeta.sage.ui.vector
 
 @Composable
@@ -24,9 +24,9 @@ fun Rating(
     ) {
         for (index in 1..4) {
             val icon = if (score >= index) {
-                net.sigmabeta.sage.ui.Icon.JAM_FILLED
+                net.sigmabeta.sage.ui.Icon.FAVORITE_FILLED
             } else {
-                net.sigmabeta.sage.ui.Icon.JAM_EMPTY
+                net.sigmabeta.sage.ui.Icon.FAVORITE_EMPTY
             }
 
             Icon(
@@ -41,7 +41,7 @@ fun Rating(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -55,7 +55,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -69,7 +69,7 @@ private fun Dark() {
 @Preview
 @Composable
 private fun Menu() {
-    VglsMaterialMenu {
+    AppThemeMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

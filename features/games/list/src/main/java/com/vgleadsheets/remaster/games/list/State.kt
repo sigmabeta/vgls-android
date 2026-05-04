@@ -1,14 +1,14 @@
 package com.vgleadsheets.remaster.games.list
 
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SquareItemListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.Game
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 @Suppress("MagicNumber")

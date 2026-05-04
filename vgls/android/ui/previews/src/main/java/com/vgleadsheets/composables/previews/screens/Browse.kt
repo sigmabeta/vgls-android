@@ -3,14 +3,14 @@ package com.vgleadsheets.composables.previews.screens
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
-import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.remaster.browse.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
+import com.vgleadsheets.strings.StringResources
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.StringResources
 
 @DevicePreviews
 @Composable

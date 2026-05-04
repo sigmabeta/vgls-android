@@ -37,7 +37,7 @@ import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
 import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.list.WidthClass
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("MaxLineLength")

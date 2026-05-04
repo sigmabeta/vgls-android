@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.sage.common.images)
 
     api(libs.sage.android.bitmaps)
+    api(projects.vgls.android.bitmaps)
 
     implementation(libs.sage.common.analytics)
     implementation(libs.sage.common.images)

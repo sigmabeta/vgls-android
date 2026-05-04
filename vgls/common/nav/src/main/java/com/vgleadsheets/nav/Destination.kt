@@ -1,0 +1,47 @@
+package com.vgleadsheets.nav
+
+import net.sigmabeta.sage.nav.ARG_TEMPLATE_ONE
+import net.sigmabeta.sage.nav.ARG_TEMPLATE_TWO
+import net.sigmabeta.sage.nav.ArgType
+import net.sigmabeta.sage.nav.RouteDescriptor
+
+enum class Destination(
+    override val destName: String,
+    override val argType: ArgType,
+    val isImplemented: Boolean = true,
+) : RouteDescriptor {
+    HOME("home", ArgType.NONE),
+    BROWSE("browse", ArgType.NONE),
+    SEARCH("search", ArgType.NONE),
+    MENU("menu", ArgType.NONE),
+    PART_PICKER("parts", ArgType.NONE),
+    GAME_DETAIL("games", ArgType.LONG),
+    GAMES_LIST("games", ArgType.NONE),
+    COMPOSER_DETAIL("composers", ArgType.LONG),
+    COMPOSERS_LIST("composers", ArgType.NONE),
+    SONG_VIEWER("songs/viewer", ArgType.TWO),
+    SONG_DETAIL("songs", ArgType.LONG),
+    SONGS_LIST("songs", ArgType.NONE),
+    DIFFICULTY_LIST("difficulties", ArgType.NONE),
+    DIFFICULTY_VALUES_LIST("difficulties", ArgType.LONG),
+    TAGS_LIST("tags", ArgType.NONE),
+    TAGS_VALUES_LIST("tags", ArgType.LONG),
+    TAGS_VALUES_SONG_LIST("tags/value", ArgType.LONG),
+    FAVORITES("favorites", ArgType.NONE),
+    LICENSES("licenses", ArgType.NONE),
+    UPDATES("updates", ArgType.NONE),
+    OFFLINE("offline", ArgType.NONE),
+    OFFLINE_UPDATES("offline/updates", ArgType.NONE),
+    NONE("none", ArgType.NONE)
+    ;
+
+    fun noArgs() = destName
+    fun forId(id: Long) = "$destName/$id"
+    fun forTwoArgs(id: Long, second: Long) = "$destName/$id/$second"
+    fun forString(arg: String) = "$destName/$arg"
+    fun template(): String = when (argType) {
+        ArgType.NONE -> destName
+        ArgType.TWO -> "$destName/{$ARG_TEMPLATE_ONE}/{$ARG_TEMPLATE_TWO}"
+        else -> "$destName/{$ARG_TEMPLATE_ONE}"
+    }
+}

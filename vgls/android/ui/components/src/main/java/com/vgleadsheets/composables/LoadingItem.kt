@@ -9,10 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.android.bitmaps.SheetConstants
-import net.sigmabeta.sage.components.HorizontalScrollerListModel
-import net.sigmabeta.sage.components.LoadingItemListModel
-import net.sigmabeta.sage.components.LoadingType
 import com.vgleadsheets.composables.previews.BigImageConstants
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.previews.NotifConstants
@@ -22,9 +18,13 @@ import com.vgleadsheets.composables.previews.WideItemConstants
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.model.generator.StringGenerator
+import kotlinx.collections.immutable.toImmutableList
+import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import net.sigmabeta.sage.components.HorizontalScrollerListModel
+import net.sigmabeta.sage.components.LoadingItemListModel
+import net.sigmabeta.sage.components.LoadingType
 import java.util.Random
 import kotlin.random.asKotlinRandom
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 @Suppress("MagicNumber")
@@ -38,7 +38,7 @@ fun LoadingItem(
     val randomDelay = randomizer.nextInt(200)
 
     val (width, ratio) = when (loadingType) {
-        LoadingType.SHEET -> SheetConstants.MIN_WIDTH.dp to SheetConstants.ASPECT_RATIO
+        LoadingType.PAGE -> SheetConstants.MIN_WIDTH.dp to SheetConstants.ASPECT_RATIO
         LoadingType.SQUARE -> SquareConstants.MIN_WIDTH to SquareConstants.ASPECT_RATIO
         LoadingType.NOTIF -> NotifConstants.MIN_WIDTH to NotifConstants.ASPECT_RATIO
         LoadingType.WIDE_ITEM -> WideItemConstants.MIN_WIDTH to WideItemConstants.ASPECT_RATIO
@@ -92,7 +92,7 @@ private fun ColumnScope.Sample(
     stringGen: StringGenerator,
 ) {
     val possibleTypes = listOf(
-        LoadingType.SHEET,
+        LoadingType.PAGE,
         LoadingType.SQUARE,
         LoadingType.NOTIF,
         LoadingType.WIDE_ITEM,
