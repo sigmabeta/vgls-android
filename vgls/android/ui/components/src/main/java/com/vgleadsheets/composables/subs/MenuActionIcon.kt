@@ -10,16 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.strings.StringId
-import com.vgleadsheets.ui.components.R
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
+import com.vgleadsheets.ui.components.R
+import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.vector
 
 @Composable
 fun MenuActionIcon(
     icon: Icon,
-    contentDescription: StringId,
+    contentDescription: VglsStringId,
     onClick: () -> Unit
 ) {
     Icon(

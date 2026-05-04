@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.games.detail
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
@@ -69,7 +69,7 @@ data class State(
                     HeroImageListModel(
                         sourceInfo = SourceInfo(photoUrl),
                         imagePlaceholder = Icon.ALBUM,
-                        contentDescription = stringProvider.getString(StringId.ACCY_CDESC_HERO_GAME),
+                        contentDescription = stringProvider.getString(VglsStringId.ACCY_CDESC_HERO_GAME),
                         clickAction = SageAction.Noop,
                     )
                 )
@@ -101,10 +101,10 @@ data class State(
         content = {
             listOf(
                 SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_GAME)
+                    stringProvider.getString(VglsStringId.SECTION_HEADER_COMPOSERS_FROM_GAME)
                 ),
                 HorizontalScrollerListModel(
-                    dataId = StringId.SECTION_HEADER_COMPOSERS_FROM_GAME.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
+                    dataId = VglsStringId.SECTION_HEADER_COMPOSERS_FROM_GAME.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
                     scrollingItems = data.map { composer ->
                         WideItemListModel(
                             dataId = composer.id + ID_PREFIX_COMPOSERS,
@@ -127,7 +127,7 @@ data class State(
         content = {
             listOf(
                 SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_GAME)
+                    stringProvider.getString(VglsStringId.SECTION_HEADER_SONGS_FROM_GAME)
                 )
             ) + data.map { song ->
                 val sourceInfo = PdfConfigById(
@@ -159,13 +159,13 @@ data class State(
         val (icon, label, action) = if (data) {
             Triple(
                 Icon.FAVORITE_FILLED,
-                StringId.CTA_FAVORITE_REMOVE,
+                VglsStringId.CTA_FAVORITE_REMOVE,
                 Action.RemoveFavoriteClicked,
             )
         } else {
             Triple(
                 Icon.FAVORITE_EMPTY,
-                StringId.CTA_FAVORITE_ADD,
+                VglsStringId.CTA_FAVORITE_ADD,
                 Action.AddFavoriteClicked,
             )
         }
@@ -190,13 +190,13 @@ data class State(
         val (icon, label, action) = if (data) {
             Triple(
                 Icon.OFFLINE_FILLED,
-                StringId.CTA_OFFLINE_REMOVE,
+                VglsStringId.CTA_OFFLINE_REMOVE,
                 Action.DisableOfflineClicked,
             )
         } else {
             Triple(
                 Icon.OFFLINE_OUTLINE,
-                StringId.CTA_OFFLINE_ADD,
+                VglsStringId.CTA_OFFLINE_ADD,
                 Action.EnableOfflineClicked,
             )
         }

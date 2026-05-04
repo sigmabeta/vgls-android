@@ -11,7 +11,8 @@ import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.settings.part.SelectedPartManager
-import com.vgleadsheets.strings.StringResources
+import com.vgleadsheets.strings.VglsStringId
+import com.vgleadsheets.strings.id
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.versions.AppVersionManager
 import dagger.Module
@@ -35,6 +36,7 @@ import net.sigmabeta.sage.settings.environment.EnvironmentManager
 import net.sigmabeta.sage.storage.common.Storage
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
+import net.sigmabeta.sage.ui.strings.AndroidStringProvider
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -43,7 +45,7 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideStringProvider(@ApplicationContext context: Context): StringProvider = StringResources(context.resources)
+    fun provideStringProvider(@ApplicationContext context: Context): StringProvider = AndroidStringProvider(context.resources) { (it as VglsStringId).id() }
 
     @Provides
     @Singleton

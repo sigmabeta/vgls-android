@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.kevinnzou.web.WebView
 import com.kevinnzou.web.rememberWebViewState
-import net.sigmabeta.sage.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
+import net.sigmabeta.sage.components.ErrorStateListModel
 
 @Composable
 fun LicenseScreen(
@@ -44,7 +44,7 @@ fun LicenseScreen(
             EmptyListIndicator(
                 model = ErrorStateListModel(
                     failedOperationName = "webpageLoad",
-                    errorString = resources.getString(StringId.ERROR_WEBVIEW_FAILED.id()),
+                    errorString = resources.getString(VglsStringId.ERROR_WEBVIEW_FAILED.id()),
                     error = RuntimeException(errorMessage),
                 ),
                 showDebug = false,

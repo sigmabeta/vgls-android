@@ -21,7 +21,7 @@ import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.scaffold.AppContent
 import com.vgleadsheets.scaffold.TopBarConfig
-import com.vgleadsheets.strings.StringResources
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarVisibility
 import com.vgleadsheets.ui.theme.AppTheme
@@ -40,6 +40,7 @@ import net.sigmabeta.sage.list.ListStateActual
 import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.logging.BasicHatchet
 import net.sigmabeta.sage.ui.StringProvider
+import net.sigmabeta.sage.ui.strings.AndroidStringProvider
 
 @Composable
 internal fun ListScreenPreview(
@@ -50,7 +51,7 @@ internal fun ListScreenPreview(
     navBarVisibility: NavBarVisibility = NavBarVisibility.VISIBLE,
 ) {
     val actionSink = ActionSink { }
-    val stringProvider = StringResources(LocalContext.current.resources)
+    val stringProvider = AndroidStringProvider(LocalContext.current.resources) { (it as VglsStringId).id() }
     val state = screenState.toActual(stringProvider)
 
     AppTheme(forceDark = darkTheme) {
@@ -91,7 +92,7 @@ internal fun ScreenPreview(
     syntheticWidthClass: WidthClass,
     content: @Composable (StringProvider) -> Unit,
 ) {
-    val stringProvider = StringResources(LocalContext.current.resources)
+    val stringProvider = AndroidStringProvider(LocalContext.current.resources) { (it as VglsStringId).id() }
 
     AppTheme(forceDark = darkTheme) {
         CompositionLocalProvider(

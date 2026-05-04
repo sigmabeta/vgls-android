@@ -1,19 +1,19 @@
 package com.vgleadsheets.remaster.tags.list
 
+import com.vgleadsheets.model.tag.TagKey
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.NameCaptionListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.tag.TagKey
-import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val tagKeys: LCE<List<TagKey>> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_TAGS)
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_TAGS)
     )
 
     @Suppress("MagicNumber")
@@ -51,7 +51,7 @@ data class State(
             }
 
             if (index != 0) {
-                builder.append(stringProvider.getString(StringId.TAG_CAPTION_SEPARATOR))
+                builder.append(stringProvider.getString(VglsStringId.TAG_CAPTION_SEPARATOR))
             }
 
             val stringToAppend = items[index].name
@@ -61,7 +61,7 @@ data class State(
 
         if (numberOfOthers != 0) {
             builder.append(
-                stringProvider.getStringOneInt(StringId.TAG_CAPTION_AND_OTHERS, numberOfOthers)
+                stringProvider.getStringOneInt(VglsStringId.TAG_CAPTION_AND_OTHERS, numberOfOthers)
             )
         }
 

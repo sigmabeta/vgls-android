@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.subs.Dropdown
 import com.vgleadsheets.composables.subs.LabeledThingy
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.theme.AppTheme
 import com.vgleadsheets.ui.theme.AppThemeMenu
@@ -41,7 +41,7 @@ fun LabelDropdownListItem(
             )
         },
         onClick = {},
-        onClickLabel = stringResource(StringId.ACCY_OCL_DROPDOWN.id()),
+        onClickLabel = stringResource(VglsStringId.ACCY_OCL_DROPDOWN.id()),
         modifier = modifier,
         padding = padding,
     )

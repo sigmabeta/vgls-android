@@ -1,10 +1,10 @@
 package com.vgleadsheets.strings
 
 import com.squareup.moshi.JsonClass
-import net.sigmabeta.sage.ui.StringId as SageStringId
+import net.sigmabeta.sage.ui.SageStringId
 
 @JsonClass(generateAdapter = false)
-enum class StringId : SageStringId {
+enum class VglsStringId : SageStringId {
     APP_NAME,
 
     NAV_LABEL_HOME,

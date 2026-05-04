@@ -6,7 +6,7 @@ import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -51,7 +51,7 @@ class AppVersionManager(
         if (savedVersion > currentVersion) {
             hatchet.e("Somehow savedVersion $savedVersion is higher than current version $currentVersion.")
             sendNotif(
-                title = StringId.NOTIF_TITLE_APP_UPDATE_ERROR,
+                title = VglsStringId.NOTIF_TITLE_APP_UPDATE_ERROR,
                 description = "App update information formatted incorrectly. The app will probably not work right.",
                 action = null,
                 actionLabel = "",
@@ -63,7 +63,7 @@ class AppVersionManager(
         if (savedVersion <= VERSION_NEVER_LAUNCHED) {
             hatchet.i("App being launched for first time.")
             sendNotif(
-                title = StringId.NOTIF_TITLE_APP_UPDATE_FIRST_TIME,
+                title = VglsStringId.NOTIF_TITLE_APP_UPDATE_FIRST_TIME,
                 description = "Here are some suggested songs to get you started.",
                 action = null,
                 actionLabel = "",
@@ -75,7 +75,7 @@ class AppVersionManager(
         if (savedVersion <= VERSION_BEFORE_REMASTER) {
             hatchet.i("Returning user, but from before the remaster.")
             sendNotif(
-                title = StringId.NOTIF_TITLE_APP_UPDATE_FIRST_SINCE_REMASTER,
+                title = VglsStringId.NOTIF_TITLE_APP_UPDATE_FIRST_SINCE_REMASTER,
                 description = "The app has been rewritten from the ground up to jam even harder.",
                 action = VglsAction.AppSeeWhatsNewClicked,
                 actionLabel = "See what's new",
@@ -86,7 +86,7 @@ class AppVersionManager(
 
         hatchet.i("Returning user, launching version $currentVersion for the first time.")
         sendNotif(
-            title = StringId.NOTIF_TITLE_APP_UPDATE_DEFAULT,
+            title = VglsStringId.NOTIF_TITLE_APP_UPDATE_DEFAULT,
             description = "Here's what's changed since the last time you used the app.",
             action = VglsAction.AppSeeWhatsNewClicked,
             actionLabel = "See what's new",
@@ -95,7 +95,7 @@ class AppVersionManager(
     }
 
     private fun sendNotif(
-        title: StringId,
+        title: VglsStringId,
         description: String,
         action: SageAction?,
         actionLabel: String,

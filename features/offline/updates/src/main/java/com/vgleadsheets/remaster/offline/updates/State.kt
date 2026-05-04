@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.offline.updates
 
 import com.vgleadsheets.model.updates.OfflineUpdateResult
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.persistentListOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.CollapsibleDetailsListModel
@@ -20,7 +20,7 @@ data class State(
     val formattedServerTimes: Map<Int, String> = emptyMap(),
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_OFFLINE_UPDATES),
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_OFFLINE_UPDATES),
         shouldShowBack = true,
     )
 
@@ -30,7 +30,7 @@ data class State(
             return listOf(
                 ErrorStateListModel(
                     failedOperationName = error.operationName,
-                    errorString = stringProvider.getString(StringId.OFFLINE_UPDATES_ERROR),
+                    errorString = stringProvider.getString(VglsStringId.OFFLINE_UPDATES_ERROR),
                     error = error.error,
                 )
             )
@@ -44,7 +44,7 @@ data class State(
                 return@withStandardErrorAndLoading listOf(
                     EmptyStateListModel(
                         icon = Icon.OFFLINE_OUTLINE,
-                        explanation = stringProvider.getString(StringId.OFFLINE_UPDATES_EMPTY),
+                        explanation = stringProvider.getString(VglsStringId.OFFLINE_UPDATES_EMPTY),
                         showCrossOut = false,
                     )
                 )
@@ -55,17 +55,17 @@ data class State(
                     dataId = result.id.toLong(),
                     title = formattedDateTimes[result.id].orEmpty(),
                     detailItems = persistentListOf(
-                        stringProvider.getStringOneArg(StringId.OFFLINE_UPDATE_FIELD_STATUS, result.status.name),
+                        stringProvider.getStringOneArg(VglsStringId.OFFLINE_UPDATE_FIELD_STATUS, result.status.name),
                         stringProvider.getStringOneArg(
-                            StringId.OFFLINE_UPDATE_FIELD_SERVER_TIME,
+                            VglsStringId.OFFLINE_UPDATE_FIELD_SERVER_TIME,
                             formattedServerTimes[result.id].orEmpty(),
                         ),
                         stringProvider.getStringOneInt(
-                            StringId.OFFLINE_UPDATE_FIELD_UPDATED_SONGS,
+                            VglsStringId.OFFLINE_UPDATE_FIELD_UPDATED_SONGS,
                             result.updatedSongs,
                         ),
                         stringProvider.getStringOneInt(
-                            StringId.OFFLINE_UPDATE_FIELD_SUCCESSFUL_OFFLINES,
+                            VglsStringId.OFFLINE_UPDATE_FIELD_SUCCESSFUL_OFFLINES,
                             result.successfulOfflines,
                         ),
                     ),

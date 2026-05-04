@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.PreviewActionSink
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.theme.AppTheme
@@ -57,7 +57,7 @@ fun SheetPageCard(
                     .wrapContentHeight()
                     .clickable(
                         onClick = { actionSink.sendAction(model.clickAction) },
-                        onClickLabel = stringResource(StringId.ACCY_OCL_SHEET_CARD.id())
+                        onClickLabel = stringResource(VglsStringId.ACCY_OCL_SHEET_CARD.id())
                     ),
             )
 

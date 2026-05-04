@@ -2,6 +2,7 @@ package com.vgleadsheets.ui.viewer
 
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -13,7 +14,6 @@ import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
-import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class ViewerState(
@@ -30,7 +30,7 @@ data class ViewerState(
             val gameName = song.data.gameName
             TitleBarModel(
                 title = song.data.name,
-                subtitle = stringProvider.getStringOneArg(StringId.SCREEN_SUBTITLE_SONG_DETAIL, gameName),
+                subtitle = stringProvider.getStringOneArg(VglsStringId.SCREEN_SUBTITLE_SONG_DETAIL, gameName),
             )
         } else {
             TitleBarModel()

@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.menu
 
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appinfo.AppInfo
@@ -36,18 +36,18 @@ data class State(
     val offlineDownloadStatus: LCE<Unit> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_SETTINGS),
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_SETTINGS),
         shouldShowBack = true
     )
 
     override fun toListItems(stringProvider: StringProvider): List<ListModel> = listOfNotNull(
         checkVglsForUpdates(stringProvider),
         keepScreenOn(stringProvider),
-        sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DATA)),
+        sectionHeader(stringProvider.getString(VglsStringId.SECTION_HEADER_SETTINGS_DATA)),
         clearUsageHistory(stringProvider),
         clearSheetDb(stringProvider),
         offlineUpdateHistory(stringProvider),
-        sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_ABOUT)),
+        sectionHeader(stringProvider.getString(VglsStringId.SECTION_HEADER_SETTINGS_ABOUT)),
         appWhatsNew(stringProvider),
         website(stringProvider),
         giantBomb(stringProvider),
@@ -57,7 +57,7 @@ data class State(
         appBuildBranch(stringProvider),
         appBuildDate(stringProvider),
         licenses(stringProvider),
-        ifShowDebugEnabled { sectionHeader(stringProvider.getString(StringId.SECTION_HEADER_SETTINGS_DEBUG)) },
+        ifShowDebugEnabled { sectionHeader(stringProvider.getString(VglsStringId.SECTION_HEADER_SETTINGS_DEBUG)) },
         shouldUseFakeApi(stringProvider),
         shouldDelay(stringProvider),
         shouldShowNavSnackbars(stringProvider),
@@ -86,7 +86,7 @@ data class State(
 
     private fun restartApp(stringProvider: StringProvider) = ifShowDebugEnabled {
         SingleTextListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_RESTART),
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_DEBUG_RESTART),
             clickAction = Action.RestartAppClicked
         )
     }
@@ -100,7 +100,7 @@ data class State(
             )
         } else {
             SingleTextListModel(
-                name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS),
+                name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS),
                 clickAction = Action.GenerateUserContentClicked
             )
         }
@@ -115,7 +115,7 @@ data class State(
             )
         } else {
             SingleTextListModel(
-                name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS_LEGACY),
+                name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_DEBUG_GENERATE_RECORDS_LEGACY),
                 clickAction = Action.GenerateUserContentLegacyClicked
             )
         }
@@ -130,17 +130,17 @@ data class State(
             )
         } else {
             SingleTextListModel(
-                name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_MIGRATE_RECORDS),
+                name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_DEBUG_MIGRATE_RECORDS),
                 clickAction = Action.MigrateUserContentLegacyClicked
             )
         }
     }
 
     private fun offlineUpdateHistory(stringProvider: StringProvider) = NameCaptionListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_OFFLINE_UPDATES),
-        caption = stringProvider.getString(StringId.SETTINGS_CAPTION_OFFLINE_UPDATES),
+        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_OFFLINE_UPDATES),
+        caption = stringProvider.getString(VglsStringId.SETTINGS_CAPTION_OFFLINE_UPDATES),
         clickAction = Action.OfflineUpdatesClicked,
-        dataId = StringId.SETTINGS_LABEL_OFFLINE_UPDATES.hashCode().toLong(),
+        dataId = VglsStringId.SETTINGS_LABEL_OFFLINE_UPDATES.hashCode().toLong(),
     )
 
     private fun sectionHeader(title: String) = SectionHeaderListModel(
@@ -155,10 +155,10 @@ data class State(
         )
 
         else -> NameCaptionListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_CLEAR_USAGE),
-            caption = stringProvider.getString(StringId.SETTINGS_CAPTION_CLEAR_USAGE),
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_CLEAR_USAGE),
+            caption = stringProvider.getString(VglsStringId.SETTINGS_CAPTION_CLEAR_USAGE),
             clickAction = Action.ClearUsageClicked,
-            dataId = StringId.SETTINGS_LABEL_CLEAR_USAGE.hashCode().toLong()
+            dataId = VglsStringId.SETTINGS_LABEL_CLEAR_USAGE.hashCode().toLong()
         )
     }
 
@@ -170,10 +170,10 @@ data class State(
         )
 
         else -> NameCaptionListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_CLEAR_SHEETS),
-            caption = stringProvider.getString(StringId.SETTINGS_CAPTION_CLEAR_SHEETS),
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_CLEAR_SHEETS),
+            caption = stringProvider.getString(VglsStringId.SETTINGS_CAPTION_CLEAR_SHEETS),
             clickAction = Action.ClearSheetsClicked,
-            dataId = StringId.SETTINGS_LABEL_CLEAR_SHEETS.hashCode().toLong()
+            dataId = VglsStringId.SETTINGS_LABEL_CLEAR_SHEETS.hashCode().toLong()
         )
     }
 
@@ -185,40 +185,40 @@ data class State(
         )
 
         else -> SingleTextListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_CHECK_FOR_UPDATES),
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_CHECK_FOR_UPDATES),
             clickAction = Action.CheckUpdatesClicked
         )
     }
 
     private fun keepScreenOn(stringProvider: StringProvider) = CheckableListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_KEEP_SCREEN_ON),
+        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_KEEP_SCREEN_ON),
         clickAction = Action.KeepScreenOnClicked,
-        settingId = StringId.SETTINGS_LABEL_KEEP_SCREEN_ON.name,
+        settingId = VglsStringId.SETTINGS_LABEL_KEEP_SCREEN_ON.name,
         checked = keepScreenOn,
     )
 
     private fun licenses(stringProvider: StringProvider) = SingleTextListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_LICENSES),
+        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_LICENSES),
         clickAction = Action.LicensesLinkClicked
     )
 
     private fun website(stringProvider: StringProvider) = SingleTextListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_WEBSITE),
+        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_WEBSITE),
         clickAction = Action.WebsiteLinkClicked
     )
 
     private fun giantBomb(stringProvider: StringProvider) = SingleTextListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_GIANT_BOMB),
+        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_GIANT_BOMB),
         clickAction = Action.GiantBombClicked
     )
 
     private fun privacy(stringProvider: StringProvider) = SingleTextListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_PRIVACY),
+        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_PRIVACY),
         clickAction = Action.PrivacyLinkClicked
     )
 
     private fun appVersionName(stringProvider: StringProvider) = LabelValueListModel(
-        label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_NAME),
+        label = stringProvider.getString(VglsStringId.SETTINGS_LABEL_APP_VERSION_NAME),
         value = appInfo?.versionName,
         clickAction = SageAction.Noop
     )
@@ -229,26 +229,26 @@ data class State(
         val value = versionCode?.let { appInfo?.versionCode.toString() }
 
         LabelValueListModel(
-            label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_VERSION_CODE),
+            label = stringProvider.getString(VglsStringId.SETTINGS_LABEL_APP_VERSION_CODE),
             value = value,
             clickAction = SageAction.Noop
         )
     }
 
     private fun appBuildDate(stringProvider: StringProvider) = LabelValueListModel(
-        label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BUILD_DATE),
+        label = stringProvider.getString(VglsStringId.SETTINGS_LABEL_APP_BUILD_DATE),
         value = formattedBuildDate,
         clickAction = Action.BuildDateClicked
     )
 
     private fun appWhatsNew(stringProvider: StringProvider) = SingleTextListModel(
-        name = stringProvider.getString(StringId.SETTINGS_LABEL_APP_WHATS_NEW),
+        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_APP_WHATS_NEW),
         clickAction = Action.WhatsNewClicked
     )
 
     private fun appBuildBranch(stringProvider: StringProvider) = ifShowDebugEnabled {
         LabelValueListModel(
-            label = stringProvider.getString(StringId.SETTINGS_LABEL_APP_BRANCH),
+            label = stringProvider.getString(VglsStringId.SETTINGS_LABEL_APP_BRANCH),
             value = appInfo?.buildBranch,
             clickAction = SageAction.Noop
         )
@@ -256,36 +256,36 @@ data class State(
 
     private fun shouldUseFakeApi(stringProvider: StringProvider) = ifShowDebugEnabled {
         CheckableListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_FAKE_API),
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_DEBUG_FAKE_API),
             clickAction = Action.FakeApiClicked,
-            settingId = StringId.SETTINGS_LABEL_DEBUG_FAKE_API.name,
+            settingId = VglsStringId.SETTINGS_LABEL_DEBUG_FAKE_API.name,
             checked = debugShouldUseFakeApi,
         )
     }
 
     private fun shouldDelay(stringProvider: StringProvider) = ifShowDebugEnabled {
         CheckableListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_DELAY),
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_DEBUG_DELAY),
             clickAction = Action.DebugDelayClicked,
-            settingId = StringId.SETTINGS_LABEL_DEBUG_DELAY.name,
+            settingId = VglsStringId.SETTINGS_LABEL_DEBUG_DELAY.name,
             checked = debugShouldDelay,
         )
     }
 
     private fun shouldShowNavSnackbars(stringProvider: StringProvider) = ifShowDebugEnabled {
         CheckableListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS),
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS),
             clickAction = Action.DebugShowNavSnackbarsClicked,
-            settingId = StringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS.name,
+            settingId = VglsStringId.SETTINGS_LABEL_DEBUG_NAV_SNACKBARS.name,
             checked = debugShouldShowNavSnackbars,
         )
     }
 
     private fun shouldShowRenderOverlay(stringProvider: StringProvider) = ifShowDebugEnabled {
         CheckableListModel(
-            name = stringProvider.getString(StringId.SETTINGS_LABEL_DEBUG_RENDER_OVERLAY),
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_DEBUG_RENDER_OVERLAY),
             clickAction = Action.DebugRenderOverlayClicked,
-            settingId = StringId.SETTINGS_LABEL_DEBUG_RENDER_OVERLAY.name,
+            settingId = VglsStringId.SETTINGS_LABEL_DEBUG_RENDER_OVERLAY.name,
             checked = debugShouldShowRenderOverlay,
         )
     }

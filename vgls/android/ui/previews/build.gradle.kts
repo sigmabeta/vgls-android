@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.sage.android.ui.icons)
     implementation(libs.sage.android.ui.list)
     implementation(projects.vgls.android.strings)
+    implementation(libs.sage.android.ui.strings)
     implementation(projects.vgls.android.ui.theme)
 }
 

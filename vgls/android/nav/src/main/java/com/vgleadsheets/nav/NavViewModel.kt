@@ -13,6 +13,7 @@ import androidx.navigation.get
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +36,6 @@ import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.DebugSettingsManager
-import com.vgleadsheets.strings.StringId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -144,8 +144,8 @@ class NavViewModel @Inject constructor(
 
     private fun refreshDb() {
         updateManager.refresh()
-        notifManager.removeNotif(id = StringId.ERROR_DB_UPDATE.hashCode().toLong())
-        notifManager.removeNotif(id = StringId.ERROR_API_UPDATE.hashCode().toLong())
+        notifManager.removeNotif(id = VglsStringId.ERROR_DB_UPDATE.hashCode().toLong())
+        notifManager.removeNotif(id = VglsStringId.ERROR_API_UPDATE.hashCode().toLong())
     }
 
     private fun launchWebsite(url: String) {

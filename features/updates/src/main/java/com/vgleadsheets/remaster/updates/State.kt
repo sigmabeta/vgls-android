@@ -1,20 +1,20 @@
 package com.vgleadsheets.remaster.updates
 
+import com.vgleadsheets.model.updates.AppUpdate
+import com.vgleadsheets.strings.VglsStringId
+import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.CollapsibleDetailsListModel
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.updates.AppUpdate
-import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.collections.immutable.toImmutableList
 
 data class State(
     val updates: LCE<List<AppUpdate>> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_UPDATES),
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_UPDATES),
         shouldShowBack = true
     )
 

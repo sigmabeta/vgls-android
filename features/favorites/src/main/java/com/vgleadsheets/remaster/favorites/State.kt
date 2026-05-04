@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.favorites
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.EmptyStateListModel
 import net.sigmabeta.sage.components.ImageNameCaptionListModel
@@ -29,7 +29,7 @@ data class State(
     override val columnType = ColumnType.Regular(160)
 
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_FAVORITES)
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_FAVORITES)
     )
 
     override fun toListItems(stringProvider: StringProvider): List<ListModel> {
@@ -43,7 +43,7 @@ data class State(
             return listOf(
                 EmptyStateListModel(
                     icon = Icon.FAVORITE_EMPTY,
-                    explanation = stringProvider.getString(StringId.CTA_FAVORITES),
+                    explanation = stringProvider.getString(VglsStringId.CTA_FAVORITES),
                     showCrossOut = false
                 )
             )
@@ -63,7 +63,7 @@ data class State(
         }
 
         listOf(
-            SectionHeaderListModel(stringProvider.getString(StringId.SECTION_HEADER_SEARCH_SONGS))
+            SectionHeaderListModel(stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_SONGS))
         ) + data.map { item ->
             ImageNameCaptionListModel(
                 dataId = item.id,
@@ -96,7 +96,7 @@ data class State(
 
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_GAMES)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_GAMES)
             )
         ) + data.map { game ->
             SquareItemListModel(
@@ -122,7 +122,7 @@ data class State(
 
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_COMPOSERS)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_COMPOSERS)
             )
         ) + data.map { composer ->
             SquareItemListModel(

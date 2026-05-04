@@ -1,6 +1,6 @@
 package com.vgleadsheets.remaster.home
 
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.persistentListOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.ListModel
@@ -13,7 +13,7 @@ data class State(
     val moduleStatesByPriority: Map<ModuleDetails, LCE<HomeModuleState>> = emptyMap()
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.APP_NAME),
+        title = stringProvider.getString(VglsStringId.APP_NAME),
         shouldShowBack = false,
     )
 
