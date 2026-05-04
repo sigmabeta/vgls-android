@@ -2,7 +2,7 @@ package com.vgleadsheets.wakelocks
 
 import android.app.Activity
 import android.view.WindowManager
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -81,12 +81,12 @@ class WakeLockManagerImpl(
         val actionDetails = SageEvent.ShowSnackbar.SnackbarActionDetails(
             actionSink = this@WakeLockManagerImpl,
             clickAction = SageAction.KeepScreenOnSnackCtaClicked,
-            clickActionLabel = stringProvider.getString(StringId.SNACKBAR_CTA_SCREEN_OFF)
+            clickActionLabel = stringProvider.getString(VglsStringId.SNACKBAR_CTA_SCREEN_OFF)
         )
 
         eventDispatcher.sendEvent(
             SageEvent.ShowSnackbar(
-                message = stringProvider.getString(StringId.SNACKBAR_SCREEN_OFF),
+                message = stringProvider.getString(VglsStringId.SNACKBAR_SCREEN_OFF),
                 withDismissAction = false,
                 actionDetails = actionDetails,
                 "WakeLockManagerImpl"

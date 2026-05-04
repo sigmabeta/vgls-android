@@ -7,7 +7,7 @@ import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
@@ -33,7 +33,7 @@ class RecentSongsModule @Inject constructor(
 ) {
     override fun loadingType() = LoadingType.PAGE
 
-    override fun title() = stringProvider.getString(StringId.HOME_SECTION_RECENT_SONGS)
+    override fun title() = stringProvider.getString(VglsStringId.HOME_SECTION_RECENT_SONGS)
 
     override fun state() = songHistoryRepository
         .getRecentSongs()

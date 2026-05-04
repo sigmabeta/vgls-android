@@ -22,7 +22,7 @@ import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.utils.nextPercentageFloat
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
@@ -40,7 +40,7 @@ fun LabelValueListItem(
     val value = model.value
     val action = model.clickAction
     val onClickLabel = if (action !is SageAction.Noop) {
-        stringResource(StringId.ACCY_OCL_VALUE.id())
+        stringResource(VglsStringId.ACCY_OCL_VALUE.id())
     } else {
         null
     }

@@ -9,7 +9,7 @@ import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -158,7 +158,7 @@ class UpdateManager(
     private fun emitDbUpdateErrors(ex: Throwable) {
         hatchet.e("DB update failed: ${ex.message}")
         ex.printStackTrace()
-        onUpdateFailed(describeFailure(StringId.ERROR_UPDATE_DB_PREFIX, ex, StringId.ERROR_UPDATE_DB_REASON_GENERIC))
+        onUpdateFailed(describeFailure(VglsStringId.ERROR_UPDATE_DB_PREFIX, ex, VglsStringId.ERROR_UPDATE_DB_REASON_GENERIC))
     }
 
     private fun emitApiUpdateErrors(ex: Throwable) {
@@ -166,37 +166,37 @@ class UpdateManager(
         ex.printStackTrace()
         onLastUpdateCheckFailed(
             describeFailure(
-                StringId.ERROR_UPDATE_API_PREFIX,
+                VglsStringId.ERROR_UPDATE_API_PREFIX,
                 ex,
-                StringId.ERROR_UPDATE_REASON_GENERIC
+                VglsStringId.ERROR_UPDATE_REASON_GENERIC
             )
         )
     }
 
-    private fun describeFailure(prefixId: StringId, ex: Throwable, genericFallbackId: StringId): String {
+    private fun describeFailure(prefixId: VglsStringId, ex: Throwable, genericFallbackId: VglsStringId): String {
         val networkStatus = (ex as? NetworkUnavailableException)?.networkStatus
         val reason = when (networkStatus) {
             NetworkStatus.OFFLINE ->
-                stringProvider.getString(StringId.ERROR_UPDATE_REASON_OFFLINE)
+                stringProvider.getString(VglsStringId.ERROR_UPDATE_REASON_OFFLINE)
 
             NetworkStatus.ONLINE_NO_INTERNET ->
-                stringProvider.getString(StringId.ERROR_UPDATE_REASON_NO_INTERNET)
+                stringProvider.getString(VglsStringId.ERROR_UPDATE_REASON_NO_INTERNET)
 
             NetworkStatus.ONLINE_API_UNREACHABLE ->
-                stringProvider.getString(StringId.ERROR_UPDATE_REASON_API_UNREACHABLE)
+                stringProvider.getString(VglsStringId.ERROR_UPDATE_REASON_API_UNREACHABLE)
 
             NetworkStatus.ONLINE, null ->
                 stringProvider.getString(genericFallbackId)
         }
         return stringProvider.getStringTwoArgs(
-            StringId.ERROR_UPDATE_DESCRIPTION_FORMAT,
+            VglsStringId.ERROR_UPDATE_DESCRIPTION_FORMAT,
             stringProvider.getString(prefixId),
             reason,
         )
     }
 
     private fun onUpdateSuccess() {
-        val title = StringId.NOTIF_TITLE_DB_UPDATE_SUCCESS
+        val title = VglsStringId.NOTIF_TITLE_DB_UPDATE_SUCCESS
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),
@@ -211,7 +211,7 @@ class UpdateManager(
     }
 
     private fun onLastUpdateCheckFailed(description: String) {
-        val title = StringId.ERROR_API_UPDATE
+        val title = VglsStringId.ERROR_API_UPDATE
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),
@@ -226,7 +226,7 @@ class UpdateManager(
     }
 
     private fun onUpdateFailed(description: String) {
-        val title = StringId.ERROR_DB_UPDATE
+        val title = VglsStringId.ERROR_DB_UPDATE
         notifManager.addNotif(
             Notif(
                 id = title.hashCode().toLong(),

@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.composers.list
 
 import com.vgleadsheets.model.Composer
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SquareItemListModel
@@ -18,7 +18,7 @@ data class State(
     override val columnType = ColumnType.Regular(160)
 
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_COMPOSERS)
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_COMPOSERS)
     )
 
     override fun toListItems(stringProvider: StringProvider) = composers.withStandardErrorAndLoading(

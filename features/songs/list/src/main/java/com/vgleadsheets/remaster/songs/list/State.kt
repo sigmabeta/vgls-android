@@ -1,5 +1,7 @@
 package com.vgleadsheets.remaster.songs.list
 
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.ImageNameCaptionListModel
 import net.sigmabeta.sage.components.LoadingType
@@ -7,17 +9,15 @@ import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.Song
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
     val songs: LCE<List<Song>> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_ALL)
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_ALL)
     )
 
     @Suppress("MagicNumber")

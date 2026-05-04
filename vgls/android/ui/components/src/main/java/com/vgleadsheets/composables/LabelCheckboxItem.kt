@@ -21,7 +21,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.subs.LabeledThingy
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
@@ -36,9 +36,9 @@ fun LabelCheckboxItem(
     padding: PaddingValues,
 ) {
     val accyStateDescription = when (model.checked) {
-        true -> stringResource(StringId.ACCY_ST_DESC_CHECKED.id())
-        false -> stringResource(StringId.ACCY_ST_DESC_UNCHECKED.id())
-        null -> stringResource(StringId.ACCY_ST_DESC_LOADING.id())
+        true -> stringResource(VglsStringId.ACCY_ST_DESC_CHECKED.id())
+        false -> stringResource(VglsStringId.ACCY_ST_DESC_UNCHECKED.id())
+        null -> stringResource(VglsStringId.ACCY_ST_DESC_LOADING.id())
     }
 
     LabeledThingy(
@@ -64,7 +64,7 @@ fun LabelCheckboxItem(
             }
         },
         onClick = { actionSink.sendAction(model.clickAction) },
-        onClickLabel = stringResource(StringId.ACCY_OCL_CHECKBOX.id()),
+        onClickLabel = stringResource(VglsStringId.ACCY_OCL_CHECKBOX.id()),
         accyStateDescription = accyStateDescription,
         modifier = modifier,
         padding = padding,

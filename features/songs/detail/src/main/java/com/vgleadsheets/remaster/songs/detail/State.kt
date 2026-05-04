@@ -7,6 +7,7 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -31,7 +32,6 @@ import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 @Suppress("MagicNumber")
@@ -52,7 +52,7 @@ data class State(
             val gameName = song.data.gameName
             TitleBarModel(
                 title = song.data.name,
-                subtitle = gameName.let { stringProvider.getStringOneArg(StringId.SCREEN_SUBTITLE_SONG_DETAIL, it) },
+                subtitle = gameName.let { stringProvider.getStringOneArg(VglsStringId.SCREEN_SUBTITLE_SONG_DETAIL, it) },
             )
         } else {
             TitleBarModel()
@@ -189,7 +189,7 @@ data class State(
     ) {
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_SONG)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_GAMES_FROM_SONG)
             ),
             HeroImageListModel(
                 sourceInfo = SourceInfo(data.photoUrl),
@@ -208,10 +208,10 @@ data class State(
     ) {
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_COMPOSERS_FROM_SONG)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_COMPOSERS_FROM_SONG)
             ),
             HorizontalScrollerListModel(
-                dataId = StringId.SECTION_HEADER_COMPOSERS_FROM_SONG.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
+                dataId = VglsStringId.SECTION_HEADER_COMPOSERS_FROM_SONG.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
                 scrollingItems = data.map { composer ->
                     WideItemListModel(
                         dataId = composer.id + ID_PREFIX_COMPOSERS,
@@ -242,7 +242,7 @@ data class State(
         if (difficultyValues.isNotEmpty()) {
             listOf(
                 SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_DIFFICULTY_FOR_SONG)
+                    stringProvider.getString(VglsStringId.SECTION_HEADER_DIFFICULTY_FOR_SONG)
                 )
             ) + difficultyValues.map { difficultyValue ->
                 LabelRatingStarListModel(
@@ -280,11 +280,11 @@ data class State(
         if (aliasValues.isNotEmpty() || detailValues.isNotEmpty()) {
             listOf(
                 SectionHeaderListModel(
-                    stringProvider.getString(StringId.SECTION_HEADER_ABOUT_SONG)
+                    stringProvider.getString(VglsStringId.SECTION_HEADER_ABOUT_SONG)
                 )
             ) + aliasValues.map { alias ->
                 LabelValueListModel(
-                    label = stringProvider.getString(StringId.LABEL_SONG_ALSO_KNOWN_AS),
+                    label = stringProvider.getString(VglsStringId.LABEL_SONG_ALSO_KNOWN_AS),
                     value = alias.name,
                     clickAction = SageAction.Noop,
                     dataId = (alias.id ?: 0L) + ID_PREFIX_AKA,
@@ -313,13 +313,13 @@ data class State(
         val (icon, label, action) = if (data) {
             Triple(
                 Icon.FAVORITE_FILLED,
-                StringId.CTA_FAVORITE_REMOVE,
+                VglsStringId.CTA_FAVORITE_REMOVE,
                 Action.RemoveFavoriteClicked,
             )
         } else {
             Triple(
                 Icon.FAVORITE_EMPTY,
-                StringId.CTA_FAVORITE_ADD,
+                VglsStringId.CTA_FAVORITE_ADD,
                 Action.AddFavoriteClicked,
             )
         }
@@ -344,13 +344,13 @@ data class State(
         val (icon, label, action) = if (data) {
             Triple(
                 Icon.OFFLINE_FILLED,
-                StringId.CTA_OFFLINE_REMOVE,
+                VglsStringId.CTA_OFFLINE_REMOVE,
                 Action.DisableOfflineClicked,
             )
         } else {
             Triple(
                 Icon.OFFLINE_OUTLINE,
-                StringId.CTA_OFFLINE_ADD,
+                VglsStringId.CTA_OFFLINE_ADD,
                 Action.EnableOfflineClicked,
             )
         }
@@ -377,9 +377,9 @@ data class State(
                 val isAltSelected = data
 
                 val label = if (isAltSelected) {
-                    StringId.CTA_ALT_UNSELECT
+                    VglsStringId.CTA_ALT_UNSELECT
                 } else {
-                    StringId.CTA_ALT_SELECT
+                    VglsStringId.CTA_ALT_SELECT
                 }
 
                 listOf(
@@ -398,7 +398,7 @@ data class State(
     private fun searchYoutubeItem(stringProvider: StringProvider): List<CtaListModel> = listOf(
             CtaListModel(
                 icon = Icon.SEARCH_YOUTUBE,
-                name = stringProvider.getString(StringId.CTA_SEARCH_YOUTUBE),
+                name = stringProvider.getString(VglsStringId.CTA_SEARCH_YOUTUBE),
                 clickAction = Action.SearchYoutubeClicked,
             )
         )

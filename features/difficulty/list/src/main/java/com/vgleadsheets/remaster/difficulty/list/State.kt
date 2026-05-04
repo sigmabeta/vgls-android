@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.difficulty.list
 
 import com.vgleadsheets.model.tag.TagKey
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SingleTextListModel
@@ -13,7 +13,7 @@ data class State(
     val difficultyTypes: LCE<List<TagKey>> = LCE.Uninitialized,
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_TAGS)
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_TAGS)
     )
 
     @Suppress("MagicNumber")

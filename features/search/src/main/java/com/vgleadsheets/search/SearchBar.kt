@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.subs.MenuActionIcon
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
@@ -71,7 +71,7 @@ fun SearchBar(
         ) {
             MenuActionIcon(
                 icon = Icon.BACK,
-                contentDescription = StringId.ACCY_CDESC_TOPBAR_BACK,
+                contentDescription = VglsStringId.ACCY_CDESC_TOPBAR_BACK,
                 onClick = { actionSink.sendAction(SageAction.AppBack) }
             )
 
@@ -103,7 +103,7 @@ fun SearchBar(
 
                 this@Row.AnimatedVisibility(visible = textEmpty) {
                     Text(
-                        text = stringResource(StringId.HINT_SEARCH.id()),
+                        text = stringResource(VglsStringId.HINT_SEARCH.id()),
                         style = MaterialTheme.typography.titleMedium.copy(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         ),
@@ -117,7 +117,7 @@ fun SearchBar(
             AnimatedVisibility(visible = !textEmpty) {
                 MenuActionIcon(
                     icon = Icon.CLEAR,
-                    contentDescription = StringId.ACCY_CDESC_SEARCH_CLEAR,
+                    contentDescription = VglsStringId.ACCY_CDESC_SEARCH_CLEAR,
                     onClick = { actionSink.sendAction(SageAction.SearchClearClicked) }
                 )
             }

@@ -5,7 +5,7 @@ import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.GameRepository
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.coroutines.flow.map
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
@@ -25,7 +25,7 @@ class MostSongsGamesModule @Inject constructor(
 ) {
     override fun loadingType() = LoadingType.SQUARE
 
-    override fun title() = stringProvider.getString(StringId.HOME_SECTION_MOST_SONGS_GAMES)
+    override fun title() = stringProvider.getString(VglsStringId.HOME_SECTION_MOST_SONGS_GAMES)
 
     @Suppress("MagicNumber")
     override fun state() = gameRepository

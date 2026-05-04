@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.vgleadsheets.composables.subs.LabeledThingy
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
@@ -20,7 +20,7 @@ fun LabelNoThingyItem(
 ) {
     val action = model.clickAction
     val onClickLabel = if (action !is SageAction.Noop) {
-        stringResource(StringId.ACCY_OCL_SINGLE_LINE.id(), model.name)
+        stringResource(VglsStringId.ACCY_OCL_SINGLE_LINE.id(), model.name)
     } else {
         null
     }

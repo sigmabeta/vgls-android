@@ -5,7 +5,7 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.search.SearchViewModel.Companion.MINIMUM_LENGTH_QUERY
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -56,7 +56,7 @@ data class SearchState(
                 listOf(
                     EmptyStateListModel(
                         icon = Icon.SEARCH,
-                        explanation = stringProvider.getString(StringId.CTA_SEARCH_OTHER_QUERY),
+                        explanation = stringProvider.getString(VglsStringId.CTA_SEARCH_OTHER_QUERY),
                         showCrossOut = false
                     )
                 )
@@ -66,7 +66,7 @@ data class SearchState(
         try {
             checkForDupes(tempList)
         } catch (ex: Exception) {
-            val errorMessage = stringProvider.getString(StringId.ERROR_BROKEN_SCREEN_DESC)
+            val errorMessage = stringProvider.getString(VglsStringId.ERROR_BROKEN_SCREEN_DESC)
 
             val items = persistentListOf(
                 ErrorStateListModel(
@@ -100,7 +100,7 @@ data class SearchState(
     private fun searchCta(stringProvider: StringProvider) = listOf(
         EmptyStateListModel(
             icon = Icon.SEARCH,
-            explanation = stringProvider.getString(StringId.CTA_SEARCH),
+            explanation = stringProvider.getString(VglsStringId.CTA_SEARCH),
             showCrossOut = false,
         )
     )
@@ -115,7 +115,7 @@ data class SearchState(
 
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_SONGS)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_SONGS)
             )
         ) + data.map { song ->
             ImageNameCaptionListModel(
@@ -146,7 +146,7 @@ data class SearchState(
 
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_GAMES)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_GAMES)
             )
         ) + data.map { game ->
             SquareItemListModel(
@@ -169,7 +169,7 @@ data class SearchState(
 
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SEARCH_COMPOSERS)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_COMPOSERS)
             )
         ) + data.map { composer ->
             SquareItemListModel(

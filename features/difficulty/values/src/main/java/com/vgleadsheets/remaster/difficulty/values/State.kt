@@ -2,7 +2,7 @@ package com.vgleadsheets.remaster.difficulty.values
 
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LabelRatingStarListModel
 import net.sigmabeta.sage.components.LoadingType
@@ -16,9 +16,9 @@ data class State(
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = if (difficultyType is LCE.Content) {
-            stringProvider.getStringOneArg(StringId.SCREEN_TITLE_BROWSE_BY_TAG, difficultyType.data.name)
+            stringProvider.getStringOneArg(VglsStringId.SCREEN_TITLE_BROWSE_BY_TAG, difficultyType.data.name)
         } else {
-            stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_TAGS)
+            stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_TAGS)
         }
     )
 
@@ -47,10 +47,10 @@ data class State(
 @Suppress("MagicNumber")
 private fun Int.getLabel(stringProvider: StringProvider): String {
     val stringId = when (this) {
-        1 -> StringId.DIFFICULTY_ONE
-        2 -> StringId.DIFFICULTY_TWO
-        3 -> StringId.DIFFICULTY_THREE
-        4 -> StringId.DIFFICULTY_FOUR
+        1 -> VglsStringId.DIFFICULTY_ONE
+        2 -> VglsStringId.DIFFICULTY_TWO
+        3 -> VglsStringId.DIFFICULTY_THREE
+        4 -> VglsStringId.DIFFICULTY_FOUR
         else -> throw IllegalArgumentException("Badly formatted difficulty value: $this")
     }
 

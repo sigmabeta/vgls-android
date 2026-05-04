@@ -4,7 +4,7 @@ import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.coroutines.flow.flowOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
@@ -23,7 +23,7 @@ class RngModule @Inject constructor(
 ) {
     override fun loadingType() = LoadingType.SQUARE
 
-    override fun title() = stringProvider.getString(StringId.HOME_SECTION_RNG)
+    override fun title() = stringProvider.getString(VglsStringId.HOME_SECTION_RNG)
 
     override fun state() = flowOf(content())
         .withLoadingState()
@@ -37,22 +37,22 @@ class RngModule @Inject constructor(
             title = title(),
             items = listOf(
                 SquareItemListModel(
-                    dataId = StringId.HOME_ACTION_RANDOM_SONG.hashCode().toLong(),
-                    name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_SONG),
+                    dataId = VglsStringId.HOME_ACTION_RANDOM_SONG.hashCode().toLong(),
+                    name = stringProvider.getString(VglsStringId.HOME_ACTION_RANDOM_SONG),
                     sourceInfo = null,
                     imagePlaceholder = Icon.DESCRIPTION,
                     clickAction = Action.RandomSongClicked
                 ),
                 SquareItemListModel(
-                    dataId = StringId.HOME_ACTION_RANDOM_GAME.hashCode().toLong(),
-                    name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_GAME),
+                    dataId = VglsStringId.HOME_ACTION_RANDOM_GAME.hashCode().toLong(),
+                    name = stringProvider.getString(VglsStringId.HOME_ACTION_RANDOM_GAME),
                     sourceInfo = null,
                     imagePlaceholder = Icon.ALBUM,
                     clickAction = Action.RandomGameClicked
                 ),
                 SquareItemListModel(
-                    dataId = StringId.HOME_ACTION_RANDOM_COMPOSER.hashCode().toLong(),
-                    name = stringProvider.getString(StringId.HOME_ACTION_RANDOM_COMPOSER),
+                    dataId = VglsStringId.HOME_ACTION_RANDOM_COMPOSER.hashCode().toLong(),
+                    name = stringProvider.getString(VglsStringId.HOME_ACTION_RANDOM_COMPOSER),
                     sourceInfo = null,
                     imagePlaceholder = Icon.PERSON,
                     clickAction = Action.RandomComposerClicked

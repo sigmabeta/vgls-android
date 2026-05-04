@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.games.list
 
 import com.vgleadsheets.model.Game
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SquareItemListModel
@@ -18,7 +18,7 @@ data class State(
     override val columnType = ColumnType.Regular(160)
 
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_GAMES)
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_GAMES)
     )
 
     override fun toListItems(stringProvider: StringProvider) = games.withStandardErrorAndLoading(

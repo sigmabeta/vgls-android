@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.composers.detail
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
@@ -70,7 +70,7 @@ data class State(
                 HeroImageListModel(
                     sourceInfo = SourceInfo(photoUrl),
                     imagePlaceholder = Icon.PERSON,
-                    contentDescription = stringProvider.getString(StringId.ACCY_CDESC_HERO_COMPOSER),
+                    contentDescription = stringProvider.getString(VglsStringId.ACCY_CDESC_HERO_COMPOSER),
                     clickAction = SageAction.Noop,
                 )
             )
@@ -97,10 +97,10 @@ data class State(
     ) {
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_GAMES_FROM_COMPOSER)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_GAMES_FROM_COMPOSER)
             ),
             HorizontalScrollerListModel(
-                dataId = StringId.SECTION_HEADER_GAMES_FROM_COMPOSER.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
+                dataId = VglsStringId.SECTION_HEADER_GAMES_FROM_COMPOSER.hashCode() + ID_PREFIX_SCROLLER_CONTENT,
                 scrollingItems = data.map { game ->
                     WideItemListModel(
                         dataId = game.id + ID_PREFIX_GAMES,
@@ -120,7 +120,7 @@ data class State(
     ) {
         listOf(
             SectionHeaderListModel(
-                stringProvider.getString(StringId.SECTION_HEADER_SONGS_FROM_COMPOSER)
+                stringProvider.getString(VglsStringId.SECTION_HEADER_SONGS_FROM_COMPOSER)
             )
         ) + data.map { song ->
             val sourceInfo = SourceInfo(
@@ -153,13 +153,13 @@ data class State(
         val (icon, label, action) = if (data) {
             Triple(
                 Icon.FAVORITE_FILLED,
-                StringId.CTA_FAVORITE_REMOVE,
+                VglsStringId.CTA_FAVORITE_REMOVE,
                 Action.RemoveFavoriteClicked,
             )
         } else {
             Triple(
                 Icon.FAVORITE_EMPTY,
-                StringId.CTA_FAVORITE_ADD,
+                VglsStringId.CTA_FAVORITE_ADD,
                 Action.AddFavoriteClicked,
             )
         }
@@ -184,13 +184,13 @@ data class State(
         val (icon, label, action) = if (data) {
             Triple(
                 Icon.OFFLINE_FILLED,
-                StringId.CTA_OFFLINE_REMOVE,
+                VglsStringId.CTA_OFFLINE_REMOVE,
                 Action.DisableOfflineClicked,
             )
         } else {
             Triple(
                 Icon.OFFLINE_OUTLINE,
-                StringId.CTA_OFFLINE_ADD,
+                VglsStringId.CTA_OFFLINE_ADD,
                 Action.EnableOfflineClicked,
             )
         }

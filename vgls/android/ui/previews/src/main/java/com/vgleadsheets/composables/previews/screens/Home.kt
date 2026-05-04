@@ -14,7 +14,7 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.remaster.home.State
 import com.vgleadsheets.remaster.home.modules.RngModule
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
-import com.vgleadsheets.strings.StringResources
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.persistentListOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
@@ -28,6 +28,7 @@ import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
+import net.sigmabeta.sage.ui.strings.AndroidStringProvider
 import java.util.Random
 
 @DevicePreviews
@@ -36,7 +37,7 @@ internal fun HomeScreen(
     darkTheme: Boolean = isSystemInDarkTheme(),
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
 ) {
-    val stringProvider = StringResources(LocalContext.current.resources)
+    val stringProvider = AndroidStringProvider(LocalContext.current.resources) { (it as VglsStringId).id() }
     val screenState = homeScreenState(stringProvider)
     ListScreenPreview(
         screenState = screenState,

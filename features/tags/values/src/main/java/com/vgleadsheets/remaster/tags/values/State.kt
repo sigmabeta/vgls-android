@@ -1,13 +1,13 @@
 package com.vgleadsheets.remaster.tags.values
 
+import com.vgleadsheets.model.tag.TagKey
+import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SingleTextListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.tag.TagKey
-import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(
@@ -16,9 +16,9 @@ data class State(
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
         title = if (tagKey is LCE.Content) {
-            stringProvider.getStringOneArg(StringId.SCREEN_TITLE_BROWSE_BY_TAG, tagKey.data.name)
+            stringProvider.getStringOneArg(VglsStringId.SCREEN_TITLE_BROWSE_BY_TAG, tagKey.data.name)
         } else {
-            stringProvider.getString(StringId.SCREEN_TITLE_BROWSE_TAGS)
+            stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_TAGS)
         }
     )
 

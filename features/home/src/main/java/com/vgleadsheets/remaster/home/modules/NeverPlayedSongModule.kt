@@ -7,7 +7,7 @@ import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
@@ -39,7 +39,7 @@ class NeverPlayedSongModule @Inject constructor(
 
     override fun loadingType() = LoadingType.PAGE
 
-    override fun title() = stringProvider.getString(StringId.HOME_SECTION_NO_PLAYS_SONGS)
+    override fun title() = stringProvider.getString(VglsStringId.HOME_SECTION_NO_PLAYS_SONGS)
 
     @Suppress("MagicNumber")
     override fun state(): Flow<LCE<HomeModuleState>> = randomRepository

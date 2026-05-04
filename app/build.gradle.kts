@@ -124,6 +124,7 @@ dependencies {
     implementation(projects.vgls.android.ui.components)
     implementation(projects.vgls.android.ui.theme)
     implementation(projects.vgls.android.strings)
+    implementation(libs.sage.android.ui.strings)
 
     implementation(libs.sage.common.appinfo)
     implementation(projects.vgls.common.downloader)

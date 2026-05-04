@@ -1,7 +1,7 @@
 package com.vgleadsheets.remaster.parts
 
 import com.vgleadsheets.model.Part
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.MenuItemListModel
 import net.sigmabeta.sage.components.TitleBarModel
@@ -13,7 +13,7 @@ data class State(
     val selectedPart: Part? = null
 ) : ListState() {
     override fun title(stringProvider: StringProvider) = TitleBarModel(
-        title = stringProvider.getString(StringId.SCREEN_TITLE_PART_SELECTOR),
+        title = stringProvider.getString(VglsStringId.SCREEN_TITLE_PART_SELECTOR),
         shouldShowBack = true
     )
 

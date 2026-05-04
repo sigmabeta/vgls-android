@@ -35,11 +35,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.appcomm.SageAction
-import net.sigmabeta.sage.components.TitleBarModel
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.theme.AppTheme
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.TitleBarModel
 
 @Composable
 @Suppress("LongMethod")
@@ -70,7 +70,7 @@ fun RemasterTopBar(
                         label = "Title Animation",
                     ) {
                         Text(
-                            text = it ?: resources.getString(StringId.APP_NAME.id()),
+                            text = it ?: resources.getString(VglsStringId.APP_NAME.id()),
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -101,13 +101,13 @@ fun RemasterTopBar(
                 val (vector, string, action) = if (state.model.shouldShowBack) {
                     Triple(
                         Icons.AutoMirrored.Default.ArrowBack,
-                        StringId.ACCY_CDESC_TOPBAR_BACK,
+                        VglsStringId.ACCY_CDESC_TOPBAR_BACK,
                         SageAction.AppBack
                     )
                 } else {
                     Triple(
                         Icons.Default.Menu,
-                        StringId.ACCY_CDESC_TOPBAR_MENU,
+                        VglsStringId.ACCY_CDESC_TOPBAR_MENU,
                         TopBarAction.Menu
                     )
                 }

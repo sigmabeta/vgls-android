@@ -9,10 +9,11 @@ import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.model.updates.AppUpdate
 import com.vgleadsheets.remaster.updates.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
-import com.vgleadsheets.strings.StringResources
+import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.ui.StringProvider
+import net.sigmabeta.sage.ui.strings.AndroidStringProvider
 
 @DevicePreviews
 @Composable
@@ -21,7 +22,7 @@ internal fun UpdateScreen(
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
 ) {
     AndroidThreeTen.init(LocalContext.current)
-    val stringProvider = StringResources(LocalContext.current.resources)
+    val stringProvider = AndroidStringProvider(LocalContext.current.resources) { (it as VglsStringId).id() }
     val screenState = updateScreenState(stringProvider)
     ListScreenPreview(
         screenState = screenState,

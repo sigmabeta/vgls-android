@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
-import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.theme.AppTheme
 import com.vgleadsheets.ui.theme.AppThemeMenu
@@ -39,7 +39,7 @@ fun LabelRatingListItem(
             )
         },
         onClick = { actionSink.sendAction(model.clickAction) },
-        onClickLabel = stringResource(StringId.ACCY_OCL_RATING.id()),
+        onClickLabel = stringResource(VglsStringId.ACCY_OCL_RATING.id()),
         modifier = modifier.semantics {
             stateDescription = "${model.value} out of 4"
         },
