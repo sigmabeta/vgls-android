@@ -1,5 +1,8 @@
 package com.vgleadsheets.remaster.offline.updates
 
+import com.vgleadsheets.model.updates.OfflineUpdateResult
+import com.vgleadsheets.strings.StringId
+import kotlinx.collections.immutable.persistentListOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.CollapsibleDetailsListModel
 import net.sigmabeta.sage.components.EmptyStateListModel
@@ -8,11 +11,8 @@ import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.updates.OfflineUpdateResult
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.collections.immutable.persistentListOf
 
 data class State(
     val results: LCE<List<OfflineUpdateResult>> = LCE.Uninitialized,

@@ -37,9 +37,9 @@ import com.vgleadsheets.images.LoadingIndicatorConfig
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.perf.BuildConfig
-import net.sigmabeta.sage.ui.id
-import net.sigmabeta.sage.ui.imageLoadErrorStringId
-import net.sigmabeta.sage.ui.themes.VglsMaterial
+import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.imageLoadErrorStringId
+import com.vgleadsheets.ui.theme.AppTheme
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.roundToInt
 
@@ -285,7 +285,7 @@ private fun BoxScope.ErrorState(
 @Preview
 @Composable
 private fun PortraitTitleSheet() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -299,7 +299,7 @@ private fun PortraitTitleSheet() {
 @Preview
 @Composable
 private fun PortraitOtherSheet() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -313,7 +313,7 @@ private fun PortraitOtherSheet() {
 @Preview
 @Composable
 private fun PortraitLoading() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -327,7 +327,7 @@ private fun PortraitLoading() {
 @Preview
 @Composable
 private fun PortraitError() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()

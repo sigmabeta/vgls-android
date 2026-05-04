@@ -1,4 +1,5 @@
 package com.vgleadsheets.remaster.songs.list
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.repository.SongRepository
@@ -10,14 +11,14 @@ import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 import net.sigmabeta.sage.ui.StringProvider
 
 class SongListViewModelBrain(
     private val songRepository: SongRepository,
-    private val scheduler: VglsScheduler,
+    private val scheduler: SageScheduler,
     private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
@@ -27,7 +28,7 @@ class SongListViewModelBrain(
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.LIST_SHEET
+    override val screenIdentifier = VglsAnalyticsScreen.LIST_SHEET
 
     override fun initialState() = State()
 

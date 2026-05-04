@@ -1,14 +1,14 @@
 package com.vgleadsheets.remaster.parts
 
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.settings.part.SelectedPartManager
 import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
 
@@ -16,7 +16,7 @@ class PartsListViewModelBrain(
     stringProvider: StringProvider,
     hatchet: Hatchet,
     private val analytics: Analytics,
-    private val scheduler: VglsScheduler,
+    private val scheduler: SageScheduler,
     private val selectedPartManager: SelectedPartManager,
 ) : ListViewModelBrain(
     stringProvider,
@@ -24,7 +24,7 @@ class PartsListViewModelBrain(
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.PART_PICKER
+    override val screenIdentifier = VglsAnalyticsScreen.PART_PICKER
 
     override fun initialState() = State()
 

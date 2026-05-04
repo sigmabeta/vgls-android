@@ -1,8 +1,8 @@
 package com.vgleadsheets.bottombar
 
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
 
 sealed class NavBarItem(
     val route: String,
@@ -11,7 +11,7 @@ sealed class NavBarItem(
 ) {
     data object Home : NavBarItem(Destination.HOME.noArgs(), Icon.HOME, StringId.NAV_LABEL_HOME)
     data object Browse : NavBarItem(Destination.BROWSE.noArgs(), Icon.BROWSE, StringId.NAV_LABEL_BROWSE)
-    data object Favorites : NavBarItem(Destination.FAVORITES.noArgs(), Icon.JAM_FILLED, StringId.NAV_LABEL_FAVORITE)
+    data object Favorites : NavBarItem(Destination.FAVORITES.noArgs(), Icon.FAVORITE_FILLED, StringId.NAV_LABEL_FAVORITE)
     data object Search : NavBarItem(Destination.SEARCH.noArgs(), Icon.SEARCH, StringId.NAV_LABEL_SEARCH)
 
     companion object {

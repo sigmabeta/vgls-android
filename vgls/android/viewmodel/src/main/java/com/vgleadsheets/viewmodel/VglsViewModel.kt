@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.analytics.AnalyticsScreenId
 import net.sigmabeta.sage.analytics.isInitAction
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.EventDispatcher
@@ -28,7 +28,7 @@ import net.sigmabeta.sage.appcomm.SageState
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
 
 abstract class VglsViewModel<StateType : SageState> :
@@ -42,7 +42,7 @@ abstract class VglsViewModel<StateType : SageState> :
     protected abstract val eventDispatcher: EventDispatcher
     protected abstract val showDebugProvider: ShowDebugProvider
     val scheduler by lazy {
-        object : VglsScheduler {
+        object : SageScheduler {
             override val dispatchers = this@VglsViewModel.dispatchers
             override val coroutineScope = viewModelScope
             override val delayManager = this@VglsViewModel.delayManager
@@ -62,7 +62,7 @@ abstract class VglsViewModel<StateType : SageState> :
         .onEach { eventDispatcher.sendEvent(it) }
         .launchIn(viewModelScope)
 
-    abstract val screenIdentifier: AnalyticsScreen?
+    abstract val screenIdentifier: AnalyticsScreenId?
 
     abstract fun initialState(): StateType
 
@@ -77,7 +77,7 @@ abstract class VglsViewModel<StateType : SageState> :
             if (action.isInitAction()) {
                 analytics.logScreenView(action, screenIdentifier!!)
             } else {
-                analytics.logVglsAction(action, screenIdentifier!!)
+                analytics.logAction(action, screenIdentifier!!)
             }
         }
 

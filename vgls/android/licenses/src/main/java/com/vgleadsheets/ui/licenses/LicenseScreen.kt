@@ -11,8 +11,8 @@ import com.kevinnzou.web.WebView
 import com.kevinnzou.web.rememberWebViewState
 import net.sigmabeta.sage.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.id
+import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.id
 
 @Composable
 fun LicenseScreen(

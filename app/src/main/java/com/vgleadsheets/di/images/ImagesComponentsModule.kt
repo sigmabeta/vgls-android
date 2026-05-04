@@ -1,6 +1,8 @@
 package com.vgleadsheets.di.images
 
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import com.vgleadsheets.bitmaps.FakePdfImageGenerator
+import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
 import com.vgleadsheets.downloader.FakeSheetDownloader
 import com.vgleadsheets.downloader.RealSheetDownloader
 import com.vgleadsheets.downloader.SheetDownloader
@@ -18,8 +20,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import net.sigmabeta.sage.android.bitmaps.FakePdfImageGenerator
-import net.sigmabeta.sage.android.bitmaps.LoadingIndicatorGenerator
 import net.sigmabeta.sage.logging.Hatchet
 import okhttp3.OkHttpClient
 import javax.inject.Named

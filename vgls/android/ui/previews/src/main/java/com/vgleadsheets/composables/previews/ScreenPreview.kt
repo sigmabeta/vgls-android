@@ -21,8 +21,10 @@ import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.scaffold.AppContent
 import com.vgleadsheets.scaffold.TopBarConfig
+import com.vgleadsheets.strings.StringResources
 import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarVisibility
+import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_ERROR_SCREEN_PREVIEW
 import net.sigmabeta.sage.android.perf.DURATION_THRESHOLD_WARNING_SCREEN_PREVIEW
 import net.sigmabeta.sage.android.perf.LocalLogger
@@ -38,8 +40,6 @@ import net.sigmabeta.sage.list.ListStateActual
 import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.logging.BasicHatchet
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.StringResources
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 internal fun ListScreenPreview(
@@ -53,7 +53,7 @@ internal fun ListScreenPreview(
     val stringProvider = StringResources(LocalContext.current.resources)
     val state = screenState.toActual(stringProvider)
 
-    VglsMaterial(forceDark = darkTheme) {
+    AppTheme(forceDark = darkTheme) {
         CompositionLocalProvider(
             LocalInspectionMode provides true,
             LocalLogger provides BasicHatchet(),
@@ -93,7 +93,7 @@ internal fun ScreenPreview(
 ) {
     val stringProvider = StringResources(LocalContext.current.resources)
 
-    VglsMaterial(forceDark = darkTheme) {
+    AppTheme(forceDark = darkTheme) {
         CompositionLocalProvider(
             LocalInspectionMode provides true,
             LocalLogger provides BasicHatchet(),

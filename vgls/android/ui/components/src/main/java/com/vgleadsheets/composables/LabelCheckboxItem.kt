@@ -21,12 +21,12 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.subs.LabeledThingy
+import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.id
+import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.CheckableListModel
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.id
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 fun LabelCheckboxItem(
@@ -74,7 +74,7 @@ fun LabelCheckboxItem(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Column(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -90,7 +90,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Column(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

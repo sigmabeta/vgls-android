@@ -13,7 +13,7 @@ import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
-import net.sigmabeta.sage.ui.StringId
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class ViewerState(

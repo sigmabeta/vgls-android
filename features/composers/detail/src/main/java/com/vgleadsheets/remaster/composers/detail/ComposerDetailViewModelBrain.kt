@@ -1,8 +1,11 @@
 package com.vgleadsheets.remaster.composers.detail
 
+import com.vgleadsheets.analytics.VglsAnalytics
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
@@ -13,15 +16,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.ui.StringProvider
 
 class ComposerDetailViewModelBrain(
@@ -30,8 +30,8 @@ class ComposerDetailViewModelBrain(
     private val gameRepository: GameRepository,
     private val favoriteRepository: FavoriteRepository,
     private val offlineRepository: OfflineRepository,
-    private val scheduler: VglsScheduler,
-    private val analytics: Analytics,
+    private val scheduler: SageScheduler,
+    private val analytics: VglsAnalytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
@@ -40,7 +40,7 @@ class ComposerDetailViewModelBrain(
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.DETAIL_COMPOSER
+    override val screenIdentifier = VglsAnalyticsScreen.DETAIL_COMPOSER
 
     override fun initialState() = State()
 

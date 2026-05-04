@@ -1,18 +1,18 @@
 package com.vgleadsheets.downloader
 
-import net.sigmabeta.sage.connectivity.NetworkStatusProvider
-import net.sigmabeta.sage.connectivity.VglsHttpException
-import net.sigmabeta.sage.connectivity.VglsNetworkUnavailableException
-import net.sigmabeta.sage.connectivity.allowsVglsRequests
 import com.vgleadsheets.downloader.FileUtils.fileReference
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.network.SheetDownloadApi
-import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import net.sigmabeta.sage.connectivity.HttpException
+import net.sigmabeta.sage.connectivity.NetworkStatusProvider
+import net.sigmabeta.sage.connectivity.NetworkUnavailableException
+import net.sigmabeta.sage.connectivity.allowsApiRequests
+import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.pdf.PdfConfigById
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -55,8 +55,8 @@ class RealSheetDownloader @Inject constructor(
             )
         }
         val status = networkStatusProvider.status.value
-        if (!status.allowsVglsRequests) {
-            throw VglsNetworkUnavailableException(
+        if (!status.allowsApiRequests) {
+            throw NetworkUnavailableException(
                 status,
                 "Cannot download PDF for $config: VGLS network unavailable ($status)"
             )
@@ -121,7 +121,7 @@ class RealSheetDownloader @Inject constructor(
         val response = sheetDownloadApi.downloadFile(suffixedFileName, partApiId)
 
         if (!response.isSuccessful) {
-            throw VglsHttpException(
+            throw HttpException(
                 response.code(),
                 "Response \"${response.code()} - ${response.message()}\" received for filename $suffixedFileName"
             )

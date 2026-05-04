@@ -1,7 +1,10 @@
 package com.vgleadsheets.remaster.home
 
+import com.vgleadsheets.analytics.VglsAnalytics
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.TagRepository
 import kotlinx.coroutines.flow.asFlow
@@ -12,23 +15,20 @@ import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
 import org.threeten.bp.LocalDate
 
 class HomeViewModelBrain(
     private val stringProvider: StringProvider,
-    private val analytics: Analytics,
+    private val analytics: VglsAnalytics,
     private val hatchet: Hatchet,
-    private val scheduler: VglsScheduler,
+    private val scheduler: SageScheduler,
     private val homeModuleProvider: HomeModuleProvider,
     private val tagRepository: TagRepository,
     private val randomRepository: RandomRepository,
@@ -39,7 +39,7 @@ class HomeViewModelBrain(
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.HOME
+    override val screenIdentifier = VglsAnalyticsScreen.HOME
 
     override fun initialState() = State()
 

@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.NotifConstants
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.components.R
+import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.NotifListModel
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 @Suppress("LongMethod")
@@ -127,7 +127,7 @@ fun NotifListItem(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -141,7 +141,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()

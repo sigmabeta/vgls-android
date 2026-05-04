@@ -9,7 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import net.sigmabeta.sage.appcomm.SageAction
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 
 fun NavGraphBuilder.licensesScreenNavEntry(
     globalModifier: Modifier,

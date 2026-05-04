@@ -1,4 +1,5 @@
 package com.vgleadsheets.remaster.updates
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 
 import com.vgleadsheets.model.updates.AppUpdate
 import net.sigmabeta.sage.analytics.Analytics
@@ -6,7 +7,7 @@ import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
 
@@ -14,14 +15,14 @@ class UpdatesViewModelBrain(
     stringProvider: StringProvider,
     hatchet: Hatchet,
     private val analytics: Analytics,
-    private val scheduler: VglsScheduler,
+    private val scheduler: SageScheduler,
 ) : ListViewModelBrain(
     stringProvider,
     analytics,
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.UPDATES
+    override val screenIdentifier = VglsAnalyticsScreen.UPDATES
 
     override fun initialState() = State()
 

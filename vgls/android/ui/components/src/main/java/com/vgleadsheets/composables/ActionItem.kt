@@ -26,8 +26,8 @@ import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.CtaListModel
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.themes.VglsMaterial
-import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.AppThemeMenu
 import net.sigmabeta.sage.ui.vector
 
 @Composable
@@ -77,7 +77,7 @@ fun ActionItem(
 @Preview
 @Composable
 private fun Selected() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -91,7 +91,7 @@ private fun Selected() {
 @Preview
 @Composable
 private fun NotMenu() {
-    VglsMaterialMenu {
+    AppThemeMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -106,7 +106,7 @@ private fun NotMenu() {
 private fun Sample() {
     ActionItem(
         CtaListModel(
-            Icon.JAM_EMPTY,
+            Icon.FAVORITE_EMPTY,
             "Find a path to the future",
             SageAction.Noop,
         ),

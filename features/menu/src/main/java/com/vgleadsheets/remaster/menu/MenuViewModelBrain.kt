@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.menu
 
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.history.SongHistoryRepository
@@ -16,9 +17,8 @@ import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.settings.DebugSettingsManager
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
@@ -36,7 +36,7 @@ class MenuViewModelBrain(
     private val analytics: Analytics,
     stringProvider: StringProvider,
     private val hatchet: Hatchet,
-    private val scheduler: VglsScheduler,
+    private val scheduler: SageScheduler,
     private val offlineWorkScheduler: OfflineWorkScheduler,
 ) : ListViewModelBrain(
     stringProvider,

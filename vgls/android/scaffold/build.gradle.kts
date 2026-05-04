@@ -17,7 +17,7 @@ dependencies {
     implementation(projects.vgls.android.ui.components)
     implementation(libs.sage.android.ui.icons)
     implementation(projects.vgls.android.ui.list)
-    implementation(libs.sage.android.ui.themes)
+    implementation(projects.vgls.android.ui.theme)
     implementation(projects.vgls.android.viewmodel)
 
     implementation(libs.sage.common.pdf)

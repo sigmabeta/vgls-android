@@ -1,4 +1,5 @@
 package com.vgleadsheets.remaster.tags.songs
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagValue
@@ -12,15 +13,15 @@ import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 import net.sigmabeta.sage.ui.StringProvider
 
 class TagValueSongsViewModelBrain(
     private val tagRepository: TagRepository,
     private val songRepository: SongRepository,
-    private val scheduler: VglsScheduler,
+    private val scheduler: SageScheduler,
     private val analytics: Analytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
@@ -30,7 +31,7 @@ class TagValueSongsViewModelBrain(
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.LIST_TAG_VALUE_SONG
+    override val screenIdentifier = VglsAnalyticsScreen.LIST_TAG_VALUE_SONG
 
     override fun initialState() = State()
 

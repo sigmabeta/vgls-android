@@ -120,7 +120,7 @@ private fun DetailItem(
             .padding(padding),
     ) {
         Icon(
-            imageVector = Icon.JAM_FILLED.vector(),
+            imageVector = Icon.FAVORITE_FILLED.vector(),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier

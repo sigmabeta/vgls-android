@@ -31,7 +31,7 @@ import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 @Suppress("MagicNumber")
@@ -83,7 +83,7 @@ data class State(
     private fun sheetPreviewSection() = song.sectionWithStandardErrorAndLoading(
         sectionName = SECTION_NAME_SONG,
         dontUnroll = true,
-        loadingType = LoadingType.SHEET,
+        loadingType = LoadingType.PAGE,
         loadingItemCount = 2,
         loadingWithHeader = false,
         loadingHorizScrollable = true,
@@ -129,7 +129,7 @@ data class State(
         )
     }
 
-    private fun sheetLoading() = loading(LOAD_OPERATION_SONG, LoadingType.SHEET, 1)
+    private fun sheetLoading() = loading(LOAD_OPERATION_SONG, LoadingType.PAGE, 1)
 
     private fun singlePage(
         song: Song,
@@ -312,13 +312,13 @@ data class State(
     ) {
         val (icon, label, action) = if (data) {
             Triple(
-                Icon.JAM_FILLED,
+                Icon.FAVORITE_FILLED,
                 StringId.CTA_FAVORITE_REMOVE,
                 Action.RemoveFavoriteClicked,
             )
         } else {
             Triple(
-                Icon.JAM_EMPTY,
+                Icon.FAVORITE_EMPTY,
                 StringId.CTA_FAVORITE_ADD,
                 Action.AddFavoriteClicked,
             )

@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import net.sigmabeta.sage.bitmaps.R
+import com.vgleadsheets.bitmaps.R
 import net.sigmabeta.sage.android.bitmaps.SheetConstants
 import com.vgleadsheets.images.LoadingIndicatorConfig
 

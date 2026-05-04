@@ -1,5 +1,9 @@
 package com.vgleadsheets.remaster.offline.content
 
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.Song
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.EmptyStateListModel
 import net.sigmabeta.sage.components.ImageNameCaptionListModel
@@ -12,12 +16,8 @@ import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.Composer
-import com.vgleadsheets.model.Game
-import com.vgleadsheets.model.Song
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 @Suppress("MagicNumber")

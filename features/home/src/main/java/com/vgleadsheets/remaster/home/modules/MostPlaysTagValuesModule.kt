@@ -1,9 +1,5 @@
 package com.vgleadsheets.remaster.home.modules
 
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SmallTextListModel
-import net.sigmabeta.sage.list.DelayManager
 import com.vgleadsheets.model.history.TagValuePlayCount
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.remaster.home.Action
@@ -11,9 +7,13 @@ import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.StringProvider
+import com.vgleadsheets.strings.StringId
 import kotlinx.coroutines.flow.map
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SmallTextListModel
+import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.ui.StringProvider
 import javax.inject.Inject
 
 class MostPlaysTagValuesModule @Inject constructor(
@@ -24,7 +24,7 @@ class MostPlaysTagValuesModule @Inject constructor(
     priority = Priority.HIGH,
     delayManager,
 ) {
-    override fun loadingType() = LoadingType.SHEET
+    override fun loadingType() = LoadingType.PAGE
 
     override fun title() = stringProvider.getString(StringId.HOME_SECTION_MOST_PLAYS_TAG_VALUES)
 

@@ -1,9 +1,5 @@
 package com.vgleadsheets.remaster.home.modules
 
-import net.sigmabeta.sage.appcomm.LCE
-import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SquareItemListModel
-import net.sigmabeta.sage.list.DelayManager
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.history.ComposerPlayCount
 import com.vgleadsheets.remaster.home.Action
@@ -11,11 +7,15 @@ import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
 import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.repository.history.SongHistoryRepository
+import com.vgleadsheets.strings.StringId
+import kotlinx.coroutines.flow.map
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.time.TimeUtils
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.coroutines.flow.map
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
 import javax.inject.Inject

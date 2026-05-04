@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.sigmabeta.sage.components.DropdownSettingListModel
 import com.vgleadsheets.composables.subs.Dropdown
 import com.vgleadsheets.composables.subs.LabeledThingy
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.id
-import net.sigmabeta.sage.ui.themes.VglsMaterial
-import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
+import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.id
+import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.AppThemeMenu
 import kotlinx.collections.immutable.toImmutableList
+import net.sigmabeta.sage.components.DropdownSettingListModel
 
 @Composable
 fun LabelDropdownListItem(
@@ -50,7 +50,7 @@ fun LabelDropdownListItem(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -64,7 +64,7 @@ private fun Light() {
 @Preview
 @Composable
 private fun LightExpanded() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -78,7 +78,7 @@ private fun LightExpanded() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -92,7 +92,7 @@ private fun Dark() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DarkExpanded() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -106,7 +106,7 @@ private fun DarkExpanded() {
 @Preview
 @Composable
 private fun Menu() {
-    VglsMaterialMenu {
+    AppThemeMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -120,7 +120,7 @@ private fun Menu() {
 @Preview
 @Composable
 private fun MenuExpanded() {
-    VglsMaterialMenu {
+    AppThemeMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

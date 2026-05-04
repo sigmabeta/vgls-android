@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(libs.sage.common.ui.icons)
+    implementation(projects.vgls.common.strings)
 }
 
 android {

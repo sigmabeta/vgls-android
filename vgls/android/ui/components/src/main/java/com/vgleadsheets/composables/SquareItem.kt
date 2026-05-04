@@ -28,12 +28,12 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.previews.SquareConstants
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedRoundRect
+import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.SquareItemListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 @Suppress("MagicNumber")
@@ -93,7 +93,7 @@ fun SquareItem(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -109,7 +109,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()

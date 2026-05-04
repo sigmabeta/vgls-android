@@ -9,7 +9,7 @@ dependencies {
     api(projects.vgls.common.notif)
     api(projects.vgls.common.repository)
     api(libs.sage.common.storage.common)
-    api(libs.sage.common.ui.strings)
+    api(projects.vgls.common.strings)
 
     implementation(projects.vgls.common.appcomm)
 }

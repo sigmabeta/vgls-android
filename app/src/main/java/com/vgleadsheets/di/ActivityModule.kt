@@ -2,6 +2,7 @@ package com.vgleadsheets.di
 
 import android.app.Activity
 import android.content.Context
+import com.vgleadsheets.analytics.VglsAnalytics
 import com.vgleadsheets.features.FeatureDirectory
 import com.vgleadsheets.offline.OfflineDownloader
 import com.vgleadsheets.offline.OfflineWorkScheduler
@@ -20,6 +21,8 @@ import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.urlinfo.UrlInfoProvider
+import com.vgleadsheets.wakelocks.WakeLockManager
+import com.vgleadsheets.wakelocks.WakeLockManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,8 +30,6 @@ import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.CoroutineScope
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.android.wakelocks.WakeLockManagerImpl
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.coroutines.SageDispatchers
@@ -39,7 +40,6 @@ import net.sigmabeta.sage.settings.DebugSettingsManager
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.wakelocks.WakeLockManager
 
 @Module
 @InstallIn(ActivityComponent::class)
@@ -68,7 +68,7 @@ class ActivityModule {
         userContentGenerator: UserContentGenerator,
         userContentMigrator: UserContentMigrator,
         threeTenTime: ThreeTenTime,
-        analytics: Analytics,
+        analytics: VglsAnalytics,
         dbUpdater: DbUpdater,
         songHistoryRepository: SongHistoryRepository,
         offlineDownloader: OfflineDownloader,
@@ -111,14 +111,14 @@ class ActivityModule {
     fun provideWakeLockManager(
         @ActivityContext context: Context,
         eventDispatcher: EventDispatcher,
-        stringProvider: StringProvider,
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
+        stringProvider: StringProvider,
     ): WakeLockManager = WakeLockManagerImpl(
         context as Activity,
         eventDispatcher,
-        stringProvider,
         coroutineScope,
         dispatchers,
+        stringProvider,
     )
 }

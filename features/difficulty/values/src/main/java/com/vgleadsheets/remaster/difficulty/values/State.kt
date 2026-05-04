@@ -1,13 +1,13 @@
 package com.vgleadsheets.remaster.difficulty.values
 
+import com.vgleadsheets.model.tag.TagKey
+import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LabelRatingStarListModel
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.tag.TagKey
-import com.vgleadsheets.model.tag.TagValue
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(

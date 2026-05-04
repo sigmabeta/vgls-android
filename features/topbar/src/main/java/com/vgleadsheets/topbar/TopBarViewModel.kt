@@ -17,7 +17,7 @@ import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 import javax.inject.Inject
 
 @HiltViewModel

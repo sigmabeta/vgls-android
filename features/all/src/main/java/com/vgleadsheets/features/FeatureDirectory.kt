@@ -1,5 +1,7 @@
 package com.vgleadsheets.features
 
+import com.vgleadsheets.analytics.VglsAnalytics
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.remaster.browse.BrowseViewModelBrain
 import com.vgleadsheets.remaster.composers.detail.ComposerDetailViewModelBrain
@@ -35,14 +37,13 @@ import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.CoroutineScope
-import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.list.BrainProvider
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.list.ListViewModelBrain
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
+import net.sigmabeta.sage.nav.RouteDescriptor
 import net.sigmabeta.sage.settings.DebugSettingsManager
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
@@ -62,7 +63,7 @@ class FeatureDirectory(
     private val delayManager: DelayManager,
     private val appInfo: AppInfo,
     private val urlInfoProvider: UrlInfoProvider,
-    private val analytics: Analytics,
+    private val analytics: VglsAnalytics,
     private val stringProvider: StringProvider,
     private val hatchet: Hatchet,
     private val threeTenTime: ThreeTenTime,
@@ -76,9 +77,11 @@ class FeatureDirectory(
 ) : BrainProvider {
     @Suppress("LongMethod")
     override fun provideBrain(
-        destination: Destination,
+        destination: RouteDescriptor,
         coroutineScope: CoroutineScope
     ): ListViewModelBrain {
+        @Suppress("UNCHECKED_CAST")
+        destination as Destination
         val scheduler = ViewModelScheduler(
             coroutineScope,
             dispatchers,

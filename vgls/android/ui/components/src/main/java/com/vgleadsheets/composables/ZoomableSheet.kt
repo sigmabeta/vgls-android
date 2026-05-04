@@ -21,6 +21,7 @@ import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
+import com.vgleadsheets.ui.theme.AppTheme
 import kotlinx.collections.immutable.toImmutableList
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
@@ -30,7 +31,6 @@ import me.saket.telephoto.zoomable.zoomable
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @Composable
 @Suppress("LongMethod", "ReturnCount")
@@ -132,7 +132,7 @@ private fun Content(
 @Preview
 @Composable
 private fun Portrait() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()

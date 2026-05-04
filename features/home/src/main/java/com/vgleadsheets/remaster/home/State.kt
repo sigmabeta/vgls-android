@@ -1,13 +1,13 @@
 package com.vgleadsheets.remaster.home
 
+import com.vgleadsheets.strings.StringId
+import kotlinx.collections.immutable.persistentListOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
-import kotlinx.collections.immutable.persistentListOf
 
 data class State(
     val moduleStatesByPriority: Map<ModuleDetails, LCE<HomeModuleState>> = emptyMap()

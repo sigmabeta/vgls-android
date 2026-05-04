@@ -16,13 +16,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.components.R
+import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ImageNameListModel
 import net.sigmabeta.sage.components.SectionListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 import java.util.Random
 
 @Composable
@@ -53,7 +53,7 @@ fun SectionListItem(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Sample()
     }
 }
@@ -61,7 +61,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Sample()
     }
 }

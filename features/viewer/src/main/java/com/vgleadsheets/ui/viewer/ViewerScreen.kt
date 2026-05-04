@@ -74,7 +74,7 @@ import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.themes.VglsMaterial
+import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.ui.vector
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
@@ -514,7 +514,7 @@ private const val ALPHA_BACKGROUND_BUTTON_INT = (ALPHA_BACKGROUND_BUTTON * 255).
 @Preview
 @Composable
 private fun SampleOnlyPage() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
@@ -529,7 +529,7 @@ private fun SampleOnlyPage() {
 @Preview
 @Composable
 private fun SampleFirstPage() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
@@ -544,7 +544,7 @@ private fun SampleFirstPage() {
 @Preview
 @Composable
 private fun SampleSecondPage() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
@@ -559,7 +559,7 @@ private fun SampleSecondPage() {
 @Preview
 @Composable
 private fun SampleLastPage() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
@@ -574,7 +574,7 @@ private fun SampleLastPage() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SampleDark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
@@ -592,7 +592,7 @@ private fun SampleDark() {
 )
 @Composable
 private fun SampleWide() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
@@ -610,7 +610,7 @@ private fun SampleWide() {
 )
 @Composable
 private fun SampleWeirdSize() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)

@@ -28,6 +28,8 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.CrossfadeImage
 import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.utils.ImageSize
+import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.AppThemeMenu
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ImageNameCaptionListModel
@@ -36,8 +38,6 @@ import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.perf.BuildConfig
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.themes.VglsMaterial
-import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
 import kotlin.math.roundToInt
 
 @Composable
@@ -172,7 +172,7 @@ private fun ImageNameCaptionListItem(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -186,7 +186,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -200,7 +200,7 @@ private fun Dark() {
 @Preview
 @Composable
 private fun Menu() {
-    VglsMaterialMenu {
+    AppThemeMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

@@ -1,12 +1,12 @@
 package com.vgleadsheets.remaster.difficulty.list
 
+import com.vgleadsheets.model.tag.TagKey
+import com.vgleadsheets.strings.StringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SingleTextListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
-import com.vgleadsheets.model.tag.TagKey
-import net.sigmabeta.sage.ui.StringId
 import net.sigmabeta.sage.ui.StringProvider
 
 data class State(

@@ -1,14 +1,14 @@
 package com.vgleadsheets.remaster.offline.updates
 
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import com.vgleadsheets.repository.OfflineRepository
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
@@ -19,14 +19,14 @@ class OfflineUpdatesViewModelBrain(
     stringProvider: StringProvider,
     hatchet: Hatchet,
     analytics: Analytics,
-    scheduler: VglsScheduler,
+    scheduler: SageScheduler,
 ) : ListViewModelBrain(
     stringProvider,
     analytics,
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.OFFLINE_UPDATES
+    override val screenIdentifier = VglsAnalyticsScreen.OFFLINE_UPDATES
 
     override fun initialState() = State()
 

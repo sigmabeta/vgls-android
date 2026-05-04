@@ -35,7 +35,7 @@ import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.DebugSettingsManager
-import net.sigmabeta.sage.ui.StringId
+import com.vgleadsheets.strings.StringId
 import javax.inject.Inject
 
 @HiltViewModel

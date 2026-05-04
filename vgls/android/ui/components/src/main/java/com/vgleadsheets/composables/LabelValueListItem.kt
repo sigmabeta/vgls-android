@@ -22,12 +22,12 @@ import com.vgleadsheets.composables.subs.ElevatedPill
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.utils.nextPercentageFloat
+import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.id
+import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.LabelValueListModel
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.id
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 import kotlin.random.Random
 
 @Composable
@@ -105,7 +105,7 @@ private fun LoadingTextValue(model: LabelValueListModel) {
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Column(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -120,7 +120,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Column(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

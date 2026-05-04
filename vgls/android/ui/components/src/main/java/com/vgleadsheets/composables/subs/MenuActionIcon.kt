@@ -11,9 +11,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.StringId
+import com.vgleadsheets.strings.StringId
 import com.vgleadsheets.ui.components.R
-import net.sigmabeta.sage.ui.id
+import com.vgleadsheets.strings.id
 import net.sigmabeta.sage.ui.vector
 
 @Composable

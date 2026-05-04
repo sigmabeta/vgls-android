@@ -5,6 +5,7 @@ import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.viewmodel.VglsViewModel
 import dagger.assisted.Assisted
@@ -35,7 +36,6 @@ import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.ui.StringProvider
 
 class SearchViewModel @AssistedInject constructor(

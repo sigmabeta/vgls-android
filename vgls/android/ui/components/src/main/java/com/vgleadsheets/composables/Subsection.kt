@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.PreviewActionSink
+import com.vgleadsheets.ui.theme.AppTheme
 import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
@@ -26,7 +27,6 @@ import net.sigmabeta.sage.components.SubsectionHeaderListModel
 import net.sigmabeta.sage.components.SubsectionListModel
 import net.sigmabeta.sage.components.WideItemListModel
 import net.sigmabeta.sage.ui.Icon
-import net.sigmabeta.sage.ui.themes.VglsMaterial
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -84,7 +84,7 @@ fun Subsection(
 @Preview
 @Composable
 private fun LightWide() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(
@@ -100,7 +100,7 @@ private fun LightWide() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DarkWide() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(
@@ -116,7 +116,7 @@ private fun DarkWide() {
 @Preview
 @Composable
 private fun LightSquare() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(
@@ -132,7 +132,7 @@ private fun LightSquare() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun DarkSquare() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(

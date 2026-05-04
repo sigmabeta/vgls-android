@@ -24,15 +24,15 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import net.sigmabeta.sage.analytics.Analytics
-import net.sigmabeta.sage.analytics.AnalyticsScreen
+import com.vgleadsheets.analytics.VglsAnalytics
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.VglsScheduler
+import net.sigmabeta.sage.list.SageScheduler
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
+import com.vgleadsheets.nav.Destination
 import net.sigmabeta.sage.ui.StringProvider
 
 class SongDetailViewModelBrain(
@@ -42,9 +42,9 @@ class SongDetailViewModelBrain(
     private val favoriteRepository: FavoriteRepository,
     private val offlineRepository: OfflineRepository,
     private val tagRepository: TagRepository,
-    private val scheduler: VglsScheduler,
+    private val scheduler: SageScheduler,
     private val urlInfoProvider: UrlInfoProvider,
-    private val analytics: Analytics,
+    private val analytics: VglsAnalytics,
     stringProvider: StringProvider,
     hatchet: Hatchet,
 ) : ListViewModelBrain(
@@ -53,7 +53,7 @@ class SongDetailViewModelBrain(
     hatchet,
     scheduler,
 ) {
-    override val screenIdentifier = AnalyticsScreen.DETAIL_SHEET
+    override val screenIdentifier = VglsAnalyticsScreen.DETAIL_SHEET
 
     override fun initialState() = State()
 

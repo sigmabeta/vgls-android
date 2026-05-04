@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.vgls.common.model)
     implementation(projects.vgls.common.notif)
     implementation(libs.sage.common.settings.general)
+    implementation(projects.vgls.common.strings)
 }
 
 android {

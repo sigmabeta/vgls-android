@@ -2,6 +2,7 @@ package com.vgleadsheets.viewmodel.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vgleadsheets.nav.Destination
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.flowOn
@@ -21,7 +22,6 @@ import net.sigmabeta.sage.list.BrainProvider
 import net.sigmabeta.sage.list.ListViewModelBrain
 import net.sigmabeta.sage.list.getErrors
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.nav.Destination
 import net.sigmabeta.sage.perf.PerfMeasurer
 
 class ListViewModel @AssistedInject constructor(

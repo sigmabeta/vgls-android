@@ -15,13 +15,13 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
+import com.vgleadsheets.strings.StringId
+import com.vgleadsheets.strings.id
+import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.AppThemeMenu
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.LabelRatingStarListModel
-import net.sigmabeta.sage.ui.StringId
-import net.sigmabeta.sage.ui.id
-import net.sigmabeta.sage.ui.themes.VglsMaterial
-import net.sigmabeta.sage.ui.themes.VglsMaterialMenu
 
 @Composable
 fun LabelRatingListItem(
@@ -50,7 +50,7 @@ fun LabelRatingListItem(
 @Preview
 @Composable
 private fun Light() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -64,7 +64,7 @@ private fun Light() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Dark() {
-    VglsMaterial {
+    AppTheme {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background
@@ -78,7 +78,7 @@ private fun Dark() {
 @Preview
 @Composable
 private fun Menu() {
-    VglsMaterialMenu {
+    AppThemeMenu {
         Box(
             modifier = Modifier.background(
                 color = MaterialTheme.colorScheme.background

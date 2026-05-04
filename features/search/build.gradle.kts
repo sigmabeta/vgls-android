@@ -10,13 +10,13 @@ dependencies {
     implementation(projects.vgls.android.pdf)
     implementation(libs.sage.android.ui.icons)
     implementation(projects.vgls.android.ui.list)
-    implementation(libs.sage.android.ui.strings)
+    implementation(projects.vgls.android.strings)
 
     implementation(libs.sage.common.appcomm)
     implementation(projects.vgls.common.urlinfo)
 
     // Only for previews
-    implementation(libs.sage.android.ui.themes)
+    implementation(projects.vgls.android.ui.theme)
 }
 
 android {

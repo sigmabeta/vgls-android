@@ -6,6 +6,7 @@ import com.vgleadsheets.notif.Notif
 import com.vgleadsheets.notif.NotifCategory
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
+import com.vgleadsheets.strings.StringId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -13,7 +14,6 @@ import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.storage.common.Storage
-import net.sigmabeta.sage.ui.StringId
 
 class AppVersionManager(
     private val storage: Storage,
