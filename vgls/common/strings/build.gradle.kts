@@ -29,12 +29,6 @@ kotlin {
                 api(libs.sage.common.ui.strings)
                 implementation(libs.jetbrains.compose.resources)
                 implementation(libs.kotlinx.serialization.core)
-            }
-        }
-        // ImageLoadErrorStringId maps network exceptions -> VglsStringId; it is genuinely JVM-bound
-        // (java.net/javax.net.ssl + sage connectivity), so it stays in the shared android+jvm set.
-        named("jvmSharedMain") {
-            dependencies {
                 api(libs.sage.common.connectivity)
             }
         }

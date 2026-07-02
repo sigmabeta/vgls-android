@@ -8,7 +8,7 @@ import androidx.core.graphics.createBitmap
 import com.vgleadsheets.bitmaps.SheetConstants.ASPECT_RATIO
 import com.vgleadsheets.bitmaps.nextColor
 import com.vgleadsheets.pdf.BitmapRenderer
-import java.io.File
+import okio.Path
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -21,7 +21,7 @@ class FakeBitmapRenderer : BitmapRenderer {
 
     @OptIn(ExperimentalStdlibApi::class)
     override suspend fun renderToBitmap(
-        pdfFile: File?,
+        pdfFile: Path?,
         pageNumber: Int,
         width: Int,
         height: Int,

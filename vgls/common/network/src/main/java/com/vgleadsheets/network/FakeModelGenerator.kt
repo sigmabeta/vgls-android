@@ -4,7 +4,7 @@ import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.network.model.ApiComposer
 import com.vgleadsheets.network.model.ApiSong
 import com.vgleadsheets.network.model.VglsApiGame
-import java.io.IOException
+import okio.IOException
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack

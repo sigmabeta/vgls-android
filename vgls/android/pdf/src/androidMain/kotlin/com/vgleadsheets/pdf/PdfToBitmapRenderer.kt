@@ -6,7 +6,8 @@ import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import com.vgleadsheets.bitmaps.BitmapUtils
 import net.sigmabeta.sage.logging.Hatchet
-import java.io.File
+import okio.FileSystem
+import okio.Path
 import kotlin.system.measureTimeMillis
 
 @Suppress("MagicNumber")
@@ -20,7 +21,7 @@ class PdfToBitmapRenderer(
 
     @Suppress("TooGenericExceptionCaught")
     override suspend fun renderToBitmap(
-        pdfFile: File?,
+        pdfFile: Path?,
         pageNumber: Int,
         width: Int,
         height: Int,
@@ -37,16 +38,16 @@ class PdfToBitmapRenderer(
         try {
             var resultBitmap: Bitmap
             val renderProcessTime = measureTimeMillis {
-                hatchet.d("Generating sheet bitmap for page $pageNumber of file ${pdfFile.absolutePath} ")
+                hatchet.d("Generating sheet bitmap for page $pageNumber of file ${pdfFile.toString()} ")
 
-                val localPdfRenderer = if (pdfPath == pdfFile.absolutePath) {
+                val localPdfRenderer = if (pdfPath == pdfFile.toString()) {
                     requireNotNull(pdfRenderer) { "PDF renderer should not be null, but somehow is?" }
                 } else {
                     closeRenderer()
 
-                    pdfPath = pdfFile.absolutePath
+                    pdfPath = pdfFile.toString()
                     val descriptor = ParcelFileDescriptor.open(
-                        pdfFile,
+                        pdfFile.toFile(),
                         ParcelFileDescriptor.MODE_READ_ONLY
                     )
 
@@ -84,9 +85,9 @@ class PdfToBitmapRenderer(
             return resultBitmap
         } catch (ex: Exception) {
             hatchet.e("Failed to read PDF: ${ex.message}")
-            if (pdfFile.exists()) {
-                pdfFile.delete()
-                hatchet.w("Deleted PDF file at ${pdfFile.path}")
+            if (FileSystem.SYSTEM.exists(pdfFile)) {
+                FileSystem.SYSTEM.delete(pdfFile)
+                hatchet.w("Deleted PDF file at $pdfFile")
             }
             throw ex
         }

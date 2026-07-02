@@ -12,11 +12,11 @@ import net.sigmabeta.sage.connectivity.NetworkStatusProvider
 import net.sigmabeta.sage.connectivity.NetworkUnavailableException
 import io.ktor.client.statement.readRawBytes
 import io.ktor.http.isSuccess
-import okio.Path.Companion.toOkioPath
+import okio.FileSystem
+import okio.Path
 import net.sigmabeta.sage.connectivity.allowsApiRequests
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.pdf.PdfConfigById
-import java.io.File
 import dev.zacsweers.metro.Inject
 
 class RealSheetDownloader @Inject constructor(
@@ -50,9 +50,9 @@ class RealSheetDownloader @Inject constructor(
             isAlternate
         )
 
-        if (targetFile.exists()) {
+        if (FileSystem.SYSTEM.exists(targetFile)) {
             return SheetFileResult(
-                targetFile.toOkioPath(),
+                targetFile,
                 SheetSourceType.DISK
             )
         }
@@ -67,7 +67,7 @@ class RealSheetDownloader @Inject constructor(
         downloadSheet(fileName, actualPartApiId, isAlternate, targetFile)
 
         return SheetFileResult(
-            targetFile.toOkioPath(),
+            targetFile,
             SheetSourceType.NETWORK
         )
     }
@@ -95,11 +95,13 @@ class RealSheetDownloader @Inject constructor(
         fileName,
         partApiId,
         isAlternate
-    ).exists()
+    ).let { FileSystem.SYSTEM.exists(it) }
 
     override suspend fun clearFilesForSong(fileName: String) {
-        File(storageDirectoryProvider.getStorageDirectory(), "pdfs/$fileName")
-            .deleteRecursively()
+        val songDir = storageDirectoryProvider.getStorageDirectory() / "pdfs" / fileName
+        if (FileSystem.SYSTEM.exists(songDir)) {
+            FileSystem.SYSTEM.deleteRecursively(songDir)
+        }
     }
 
     @Suppress("MagicNumber")
@@ -107,15 +109,9 @@ class RealSheetDownloader @Inject constructor(
         fileName: String,
         partApiId: String,
         isAlternate: Boolean,
-        targetFile: File,
+        targetFile: Path,
     ) {
-        val songDirectory = targetFile.parentFile
-        val gameDirectory = songDirectory.parentFile
-        val pdfsDirectory = gameDirectory.parentFile
-
-        pdfsDirectory.ensureDirectoryExists()
-        gameDirectory.ensureDirectoryExists()
-        songDirectory.ensureDirectoryExists()
+        targetFile.parent?.let { FileSystem.SYSTEM.createDirectories(it) }
 
         val suffixedFileName = "$fileName${isAlternate.altSuffix()}.pdf"
 
@@ -130,7 +126,7 @@ class RealSheetDownloader @Inject constructor(
         }
 
         val bytes = response.readRawBytes()
-        hatchet.d("Saving ${bytes.size / 1_024.0f} KiB to ${targetFile.absolutePath}...")
-        targetFile.writeBytes(bytes)
+        hatchet.d("Saving ${bytes.size / 1_024.0f} KiB to $targetFile...")
+        FileSystem.SYSTEM.write(targetFile) { write(bytes) }
     }
 }

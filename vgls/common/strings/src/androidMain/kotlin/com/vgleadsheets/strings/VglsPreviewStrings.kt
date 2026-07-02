@@ -12,7 +12,6 @@ import org.jetbrains.compose.resources.LocalResourceReader
 import org.jetbrains.compose.resources.MissingResourceException
 import org.jetbrains.compose.resources.ResourceReader
 import org.jetbrains.compose.resources.stringResource
-import java.io.InputStream
 
 /**
  * Compose-side [VglsStringProvider] for `@Preview` / Paparazzi (Android only). Reads each string
@@ -89,7 +88,7 @@ private object ClasspathResourceReader : ResourceReader {
     override fun getUri(path: String): String =
         loader().getResource(path)?.toURI()?.toString() ?: throw MissingResourceException(path)
 
-    private fun open(path: String): InputStream =
+    private fun open(path: String) =
         loader().getResourceAsStream(path) ?: throw MissingResourceException(path)
 
     private fun loader(): ClassLoader =

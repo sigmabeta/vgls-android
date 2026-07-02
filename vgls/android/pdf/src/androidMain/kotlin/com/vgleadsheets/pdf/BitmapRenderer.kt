@@ -1,12 +1,12 @@
 package com.vgleadsheets.pdf
 
 import android.graphics.Bitmap
-import java.io.File
+import okio.Path
 
 interface BitmapRenderer {
     @Suppress("TooGenericExceptionCaught")
     suspend fun renderToBitmap(
-        pdfFile: File?,
+        pdfFile: Path?,
         pageNumber: Int,
         width: Int = 160,
         height: Int = 160,

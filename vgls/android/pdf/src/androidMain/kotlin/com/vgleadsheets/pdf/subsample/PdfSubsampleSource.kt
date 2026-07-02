@@ -2,7 +2,6 @@ package com.vgleadsheets.pdf.subsample
 
 import androidx.compose.ui.graphics.ImageBitmap
 import com.vgleadsheets.downloader.SheetDownloader
-import java.io.File
 import me.saket.telephoto.subsamplingimage.SubSamplingImageSource
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.RenderOverlayProvider
@@ -18,8 +17,7 @@ class PdfSubsampleSource(
 ) : SubSamplingImageSource {
     override suspend fun decoder(): PdfRegionDecoder.Factory {
         val pdfFileResult = sheetDownloader.getSheet(data)
-        // The interface returns an okio.Path (commonMain); the platform PDF renderer needs a File.
-        val pdfFile = File(pdfFileResult.path.toString())
+        val pdfFile = pdfFileResult.path
 
         val maxWidth = requireNotNull(data.maxWidth) { "Max Width is required." }
         val maxHeight = requireNotNull(data.maxHeight) { "Max Height is required." }

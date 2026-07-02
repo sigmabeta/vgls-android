@@ -2,6 +2,7 @@ package com.vgleadsheets.di
 
 import android.content.Context
 import com.vgleadsheets.downloader.StorageDirectoryProvider
+import okio.Path.Companion.toOkioPath
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
@@ -16,6 +17,6 @@ object DownloaderModule {
     fun provideStorageDirProvider(
         context: Context
     ): StorageDirectoryProvider = object : StorageDirectoryProvider {
-        override fun getStorageDirectory() = context.filesDir
+        override fun getStorageDirectory() = context.filesDir.toOkioPath()
     }
 }

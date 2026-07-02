@@ -6,8 +6,7 @@ import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.flow.first
-import java.io.File
-import okio.Path.Companion.toOkioPath
+import okio.FileSystem
 import dev.zacsweers.metro.Inject
 
 class FakeSheetDownloader @Inject constructor(
@@ -36,7 +35,7 @@ class FakeSheetDownloader @Inject constructor(
         )
 
         return SheetFileResult(
-            targetFile.toOkioPath(),
+            targetFile,
             SheetSourceType.DISK
         )
     }
@@ -56,10 +55,12 @@ class FakeSheetDownloader @Inject constructor(
         fileName,
         partApiId,
         isAlternate
-    ).exists()
+    ).let { FileSystem.SYSTEM.exists(it) }
 
     override suspend fun clearFilesForSong(fileName: String) {
-        File(storageDirectoryProvider.getStorageDirectory(), "pdfs/$fileName")
-            .deleteRecursively()
+        val songDir = storageDirectoryProvider.getStorageDirectory() / "pdfs" / fileName
+        if (FileSystem.SYSTEM.exists(songDir)) {
+            FileSystem.SYSTEM.deleteRecursively(songDir)
+        }
     }
 }
