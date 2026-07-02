@@ -1,5 +1,7 @@
 package com.vgleadsheets.search
 
+import com.vgleadsheets.composables.Dimensions
+
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
@@ -25,7 +27,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.subs.MenuActionIcon
@@ -48,7 +49,7 @@ fun SearchBar(
 
     val commonModifier = modifier
         .fillMaxWidth()
-        .padding(horizontal = dimensionResource(com.vgleadsheets.ui.components.R.dimen.margin_side))
+        .padding(horizontal = Dimensions.marginSide)
 
     val actualModifier = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         commonModifier.shadow(

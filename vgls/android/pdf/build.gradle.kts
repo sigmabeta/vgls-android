@@ -15,6 +15,9 @@ kotlin {
         // decoders live in androidMain; desktop registers its own/stub Coil decoder.
         named("commonMain") {
             dependencies {
+                // telephoto is multiplatform; LocalPdfSubsampler/PdfSubsampleSourceFactory return its
+                // SubSamplingImageSource so the shared ZoomableSheet can build one.
+                api(libs.zoomable.image.coil3)
                 api(libs.sage.common.pdf)
                 implementation(libs.coil.kt.core)
                 implementation(libs.okio)
@@ -24,7 +27,6 @@ kotlin {
         }
         named("androidMain") {
             dependencies {
-                api(libs.zoomable.image.coil3)
                 implementation(libs.coil.kt.core)
                 implementation(libs.androidx.core.ktx)
                 implementation(projects.vgls.android.bitmaps)

@@ -1,0 +1,80 @@
+package com.vgleadsheets.composables.subs
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.vgleadsheets.composables.LabelCheckboxItem
+import com.vgleadsheets.composables.LabelDropdownListItem
+import com.vgleadsheets.composables.LabelNoThingyItem
+import com.vgleadsheets.composables.LabelRatingListItem
+import com.vgleadsheets.composables.LabelValueListItem
+import com.vgleadsheets.composables.previews.PreviewActionSink
+import kotlinx.collections.immutable.toImmutableList
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.CheckableListModel
+import net.sigmabeta.sage.components.DropdownSettingListModel
+import net.sigmabeta.sage.components.LabelRatingStarListModel
+import net.sigmabeta.sage.components.LabelValueListModel
+import net.sigmabeta.sage.components.SingleTextListModel
+import com.vgleadsheets.ui.theme.AppTheme
+
+@Composable
+fun LabeledThingy(
+    label: String,
+    thingy: @Composable RowScope.() -> Unit,
+    onClick: () -> Unit,
+    onClickLabel: String?,
+    accyStateDescription: String? = null,
+    modifier: Modifier,
+    padding: PaddingValues,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = onClick,
+                onClickLabel = onClickLabel,
+            )
+            .padding(padding)
+            .semantics {
+                accyStateDescription?.let { stateDescription = it }
+            },
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .weight(1.0f)
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        thingy()
+    }
+}

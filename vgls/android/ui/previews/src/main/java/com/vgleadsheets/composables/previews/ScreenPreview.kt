@@ -1,5 +1,7 @@
 package com.vgleadsheets.composables.previews
 
+import com.vgleadsheets.composables.Dimensions
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,7 +16,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.dimensionResource
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.composables.Content
@@ -142,7 +143,7 @@ private fun ListContent(
         "Calculated number of columns is zero for ${state.columnType} and $displayWidthClass."
     }
 
-    val sideMargin = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side)
+    val sideMargin = Dimensions.marginSide
     val itemContent: @Composable (ListModel, ActionSink, Boolean, Modifier, PaddingValues) -> Unit =
         { model, sink, debug, mod, pad -> model.Content(sink, debug, mod, pad) }
 

@@ -1,5 +1,7 @@
 package com.vgleadsheets.search
 
+import com.vgleadsheets.composables.Dimensions
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import net.sigmabeta.sage.appcomm.ActionSink
@@ -50,8 +51,8 @@ fun SearchScreen(
         val enoughToGetBelowSearchBar: Dp = 96.dp
         val topInsets = WindowInsets.statusBars
         val sidePadding = WindowInsets(
-            left = dimensionResource(com.vgleadsheets.ui.components.R.dimen.margin_side),
-            right = dimensionResource(com.vgleadsheets.ui.components.R.dimen.margin_side),
+            left = Dimensions.marginSide,
+            right = Dimensions.marginSide,
         )
 
         val contentPadding: PaddingValues = WindowInsets(top = enoughToGetBelowSearchBar)
