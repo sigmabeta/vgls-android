@@ -193,7 +193,7 @@ data class State(
             ),
             HeroImageListModel(
                 sourceInfo = SourceInfo(data.photoUrl),
-                imagePlaceholder = Icon.ALBUM,
+                imagePlaceholder = Icon.Album,
                 contentDescription = data.name,
                 clickAction = Action.GameClicked(data.id),
             )
@@ -217,7 +217,7 @@ data class State(
                         dataId = composer.id + ID_PREFIX_COMPOSERS,
                         name = composer.name,
                         sourceInfo = composer.photoUrl,
-                        imagePlaceholder = Icon.PERSON,
+                        imagePlaceholder = Icon.Person,
                         clickAction = Action.ComposerClicked(composer.id)
                     )
                 }.toImmutableList()
@@ -312,13 +312,13 @@ data class State(
     ) {
         val (icon, label, action) = if (data) {
             Triple(
-                Icon.FAVORITE_FILLED,
+                Icon.FavoriteFilled,
                 VglsStringId.CTA_FAVORITE_REMOVE,
                 Action.RemoveFavoriteClicked,
             )
         } else {
             Triple(
-                Icon.FAVORITE_EMPTY,
+                Icon.FavoriteEmpty,
                 VglsStringId.CTA_FAVORITE_ADD,
                 Action.AddFavoriteClicked,
             )
@@ -343,13 +343,13 @@ data class State(
     ) {
         val (icon, label, action) = if (data) {
             Triple(
-                Icon.OFFLINE_FILLED,
+                Icon.OfflineFilled,
                 VglsStringId.CTA_OFFLINE_REMOVE,
                 Action.DisableOfflineClicked,
             )
         } else {
             Triple(
-                Icon.OFFLINE_OUTLINE,
+                Icon.OfflineOutline,
                 VglsStringId.CTA_OFFLINE_ADD,
                 Action.EnableOfflineClicked,
             )
@@ -384,7 +384,7 @@ data class State(
 
                 listOf(
                     CtaListModel(
-                        icon = Icon.DESCRIPTION,
+                        icon = Icon.Description,
                         name = stringProvider.getString(label),
                         clickAction = Action.ToggleAltSelectedClicked,
                     )
@@ -397,7 +397,7 @@ data class State(
 
     private fun searchYoutubeItem(stringProvider: StringProvider): List<CtaListModel> = listOf(
             CtaListModel(
-                icon = Icon.SEARCH_YOUTUBE,
+                icon = Icon.SearchYoutube,
                 name = stringProvider.getString(VglsStringId.CTA_SEARCH_YOUTUBE),
                 clickAction = Action.SearchYoutubeClicked,
             )

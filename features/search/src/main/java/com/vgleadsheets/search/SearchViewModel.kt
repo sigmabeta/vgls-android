@@ -52,7 +52,7 @@ class SearchViewModel @AssistedInject constructor(
     val stringProvider: StringProvider,
     private val searchRepository: SearchRepository,
     override val showDebugProvider: ShowDebugProvider,
-    @Assisted("textUpdater") private val textUpdater: (String) -> Unit,
+    @Assisted private val textUpdater: (String) -> Unit,
 ) : VglsViewModel<SearchState>(),
     ActionSink,
     EventSink {
@@ -367,7 +367,7 @@ class SearchViewModel @AssistedInject constructor(
     @ContributesIntoMap(AppScope::class)
     fun interface Factory : ManualViewModelAssistedFactory {
         fun create(
-            @Assisted("textUpdater") textUpdater: (String) -> Unit,
+            @Assisted textUpdater: (String) -> Unit,
         ): SearchViewModel
     }
 

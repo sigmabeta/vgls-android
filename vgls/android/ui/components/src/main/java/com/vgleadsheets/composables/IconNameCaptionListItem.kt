@@ -147,7 +147,7 @@ private fun Sample() {
             1234L,
             "Moebius Battle",
             "ACE+",
-            Icon.DESCRIPTION,
+            Icon.Description,
             clickAction = SageAction.Noop,
         ),
         PreviewActionSink { },

@@ -19,7 +19,6 @@ import net.sigmabeta.sage.ui.perf.DURATION_THRESHOLD_WARNING_SCREEN_DEVICE
 import net.sigmabeta.sage.ui.perf.WithMeasurementScreen
 import net.sigmabeta.sage.ui.list.GridScreen
 import net.sigmabeta.sage.ui.list.ListScreen
-import net.sigmabeta.sage.ui.list.toNavType
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ListModel

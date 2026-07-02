@@ -43,7 +43,7 @@ data class State(
             if (data.isEmpty()) {
                 return@withStandardErrorAndLoading listOf(
                     EmptyStateListModel(
-                        icon = Icon.OFFLINE_OUTLINE,
+                        icon = Icon.OfflineOutline,
                         explanation = stringProvider.getString(VglsStringId.OFFLINE_UPDATES_EMPTY),
                         showCrossOut = false,
                     )

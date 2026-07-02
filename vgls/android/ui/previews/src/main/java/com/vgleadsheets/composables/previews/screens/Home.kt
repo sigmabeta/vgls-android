@@ -21,7 +21,7 @@ import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SheetPageCardListModel
 import net.sigmabeta.sage.components.SheetPageListModel
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.list.WidthClass
@@ -162,11 +162,11 @@ private fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, 
         shouldShow = true,
         title = "Great Games",
         items = games.map { game ->
-            SquareItemListModel(
+            GridImageListModel(
                 dataId = game.id,
                 name = game.name,
                 sourceInfo = game.photoUrl,
-                imagePlaceholder = Icon.ALBUM,
+                imagePlaceholder = Icon.Album,
                 clickAction = SageAction.Noop
             )
         },
@@ -190,11 +190,11 @@ private fun composerModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetai
         shouldShow = true,
         title = "Cool Composers",
         items = composers.map { composer ->
-            SquareItemListModel(
+            GridImageListModel(
                 dataId = composer.id,
                 name = composer.name,
                 sourceInfo = composer.photoUrl,
-                imagePlaceholder = Icon.PERSON,
+                imagePlaceholder = Icon.Person,
                 clickAction = SageAction.Noop
             )
         },

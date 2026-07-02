@@ -55,8 +55,8 @@ class ViewerViewModel @AssistedInject constructor(
     override val delayManager: DelayManager,
     override val eventDispatcher: EventDispatcher,
     override val showDebugProvider: ShowDebugProvider,
-    @Assisted("id") val idArg: Long,
-    @Assisted("page") val pageArg: Long,
+    @Assisted val idArg: Long,
+    @Assisted val pageArg: Long,
 ) : VglsViewModel<ViewerState>(),
     ActionSink,
     EventSink {
@@ -379,8 +379,8 @@ class ViewerViewModel @AssistedInject constructor(
     @ContributesIntoMap(AppScope::class)
     fun interface Factory : ManualViewModelAssistedFactory {
         fun create(
-            @Assisted("id") idArg: Long,
-            @Assisted("page") pageArg: Long,
+            @Assisted idArg: Long,
+            @Assisted pageArg: Long,
         ): ViewerViewModel
     }
 

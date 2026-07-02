@@ -70,7 +70,7 @@ fun SearchBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             MenuActionIcon(
-                icon = Icon.BACK,
+                icon = Icon.Back,
                 contentDescription = VglsStringId.ACCY_CDESC_TOPBAR_BACK,
                 onClick = { actionSink.sendAction(SageAction.AppBack) }
             )
@@ -116,7 +116,7 @@ fun SearchBar(
 
             AnimatedVisibility(visible = !textEmpty) {
                 MenuActionIcon(
-                    icon = Icon.CLEAR,
+                    icon = Icon.Clear,
                     contentDescription = VglsStringId.ACCY_CDESC_SEARCH_CLEAR,
                     onClick = { actionSink.sendAction(SageAction.SearchClearClicked) }
                 )

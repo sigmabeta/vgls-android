@@ -1,50 +1,77 @@
 package com.vgleadsheets.composables
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.composables.subs.Dropdown
+import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.ui.theme.AppTheme
 import com.vgleadsheets.ui.theme.AppThemeMenu
 import kotlinx.collections.immutable.toImmutableList
+import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.components.DropdownSettingListModel
+import net.sigmabeta.sage.ui.Icon as SageIcon
+import net.sigmabeta.sage.ui.vector
 
 @Composable
 fun LabelDropdownListItem(
     model: DropdownSettingListModel,
-    defaultExpansion: Boolean = false,
+    actionSink: ActionSink,
     modifier: Modifier,
     padding: PaddingValues,
 ) {
-    LabeledThingy(
-        label = model.name,
-        thingy = {
-            Dropdown(
-                defaultExpansion = defaultExpansion,
-                selectedPosition = model.selectedPosition,
-                settingsLabels = model.settingsLabels,
-                onNewOptionSelected = model.onNewOptionSelected
-            )
-        },
-        onClick = {},
-        onClickLabel = stringResource(VglsStringId.ACCY_OCL_DROPDOWN.id()),
-        modifier = modifier,
-        padding = padding,
+    // Down-caret at rest (0f), flipped to point up (180f) when expanded; animate the flip.
+    val caretRotation by animateFloatAsState(
+        targetValue = if (model.expanded) 180f else 0f,
+        label = "LabelDropdownListItem.caretRotation",
     )
+
+    Column(modifier = modifier) {
+        LabeledThingy(
+            label = model.name,
+            thingy = {
+                TextValue(value = model.options[model.selectedPosition].first)
+                Icon(
+                    imageVector = SageIcon.Caret.vector(),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.rotate(caretRotation),
+                )
+            },
+            onClick = { actionSink.sendAction(model.onExpandClicked) },
+            onClickLabel = stringResource(VglsStringId.ACCY_OCL_DROPDOWN.id()),
+            modifier = Modifier,
+            padding = padding,
+        )
+
+        AnimatedVisibility(visible = model.expanded) {
+            Column {
+                model.options.forEach { (_, option) ->
+                    option.Content(
+                        sink = actionSink,
+                        debug = false,
+                        mod = Modifier,
+                        pad = padding,
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Preview
@@ -134,22 +161,22 @@ private fun MenuExpanded() {
 @Suppress("MagicNumber")
 @Composable
 private fun Sample(expanded: Boolean) {
-    var selectedPosition by remember { mutableStateOf(3) }
     LabelDropdownListItem(
-        model = DropdownSettingListModel(
-            "",
-            "Who the bus is",
-            selectedPosition,
-            listOf(
+        model = DropdownSettingListModel.ofLabels(
+            settingId = "",
+            name = "Who the bus is",
+            selectedPosition = 3,
+            labels = listOf(
                 "Noah",
                 "Lanz",
                 "Taion",
                 "Eunie",
                 "Mio",
                 "Sena",
-            ).toImmutableList()
-        ) { selectedPosition = it },
-        defaultExpansion = expanded,
+            ).toImmutableList(),
+            expanded = expanded,
+        ),
+        actionSink = PreviewActionSink(),
         modifier = Modifier,
         padding = PaddingValues(horizontal = 8.dp)
     )

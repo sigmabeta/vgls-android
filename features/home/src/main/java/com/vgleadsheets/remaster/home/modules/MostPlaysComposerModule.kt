@@ -11,7 +11,7 @@ import com.vgleadsheets.strings.VglsStringId
 import kotlinx.coroutines.flow.map
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.time.TimeUtils
 import net.sigmabeta.sage.ui.Icon
@@ -48,11 +48,11 @@ class MostPlaysComposerModule @Inject constructor(
                     items = pairs
                         .map { it.second }
                         .map { composer ->
-                            SquareItemListModel(
+                            GridImageListModel(
                                 dataId = composer.id,
                                 name = composer.name,
                                 sourceInfo = composer.photoUrl,
-                                imagePlaceholder = Icon.ALBUM,
+                                imagePlaceholder = Icon.Album,
                                 clickAction = Action.MostPlaysComposerClicked(composer.id)
                             )
                         },

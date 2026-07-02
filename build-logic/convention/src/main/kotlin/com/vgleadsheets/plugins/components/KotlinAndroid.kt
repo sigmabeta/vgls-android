@@ -38,9 +38,9 @@ internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension,
 ) {
     commonExtension.apply {
-        compileSdk = 35
+        compileSdk = 36
 
-        defaultConfig.minSdk = 21
+        defaultConfig.minSdk = 26
 
         compileOptions.apply {
             // Up to Java 11 APIs are available through desugaring

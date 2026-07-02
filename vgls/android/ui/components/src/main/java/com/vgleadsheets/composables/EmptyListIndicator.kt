@@ -45,7 +45,7 @@ fun EmptyListIndicator(
 ) {
     EmptyListIndicator(
         explanation = model.errorString,
-        icon = Icon.WARNING,
+        icon = Icon.Warning,
         showCrossOut = false,
         error = model.error,
         showDebug = showDebug,
@@ -117,7 +117,7 @@ private fun EmptyListIndicator(
 
             if (showCrossOut) {
                 Icon(
-                    imageVector = Icon.CROSSOUT.vector(),
+                    imageVector = Icon.CrossOut.vector(),
                     tint = Color.Unspecified,
                     contentDescription = null,
                     modifier = Modifier
@@ -256,7 +256,7 @@ private fun DarkError() {
 private fun Sample() {
     EmptyListIndicator(
         EmptyStateListModel(
-            icon = Icon.ALBUM,
+            icon = Icon.Album,
             explanation = "It's all part of the protocol, innit?",
             debugText = null,
             showCrossOut = true

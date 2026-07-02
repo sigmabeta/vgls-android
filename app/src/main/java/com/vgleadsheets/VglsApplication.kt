@@ -52,9 +52,10 @@ class VglsApplication :
         WorkManagerOfflineWorkScheduler(this).schedulePeriodicDownload()
     }
 
-    override fun getWorkManagerConfiguration(): Configuration = Configuration.Builder()
-        .setWorkerFactory(VglsWorkerFactory(appGraph))
-        .build()
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(VglsWorkerFactory(appGraph))
+            .build()
 }
 
 /**

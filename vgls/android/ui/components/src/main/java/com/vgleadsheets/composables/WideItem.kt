@@ -122,7 +122,7 @@ private fun Sample() {
                 1234L,
                 "Konami Kukeiha Club",
                 "https://randomfox.ca/images/12.jpg",
-                Icon.PERSON,
+                Icon.Person,
                 null,
                 SageAction.Noop
             ),
@@ -136,7 +136,7 @@ private fun Sample() {
                 1234L,
                 "Masayoshi Soken",
                 "https://randomfox.ca/images/12.jpg",
-                Icon.PERSON,
+                Icon.Person,
                 null,
                 SageAction.Noop
             ),
