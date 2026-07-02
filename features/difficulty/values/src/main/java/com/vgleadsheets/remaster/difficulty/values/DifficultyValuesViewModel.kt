@@ -5,32 +5,46 @@ import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.viewmodel.list.VglsListViewModel
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.SageScheduler
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
 
-class DifficultyValuesViewModelBrain(
+@AssistedInject
+class DifficultyValuesViewModel(
+    @Assisted private val idArg: Long,
+    override val stringProvider: StringProvider,
+    override val analytics: Analytics,
+    override val hatchet: Hatchet,
+    override val dispatchers: SageDispatchers,
+    override val delayManager: DelayManager,
+    override val eventDispatcher: EventDispatcher,
+    override val showDebugProvider: ShowDebugProvider,
     private val tagRepository: TagRepository,
-    private val scheduler: SageScheduler,
-    private val analytics: Analytics,
-    stringProvider: StringProvider,
-    hatchet: Hatchet,
-) : ListViewModelBrain(
-    stringProvider,
-    analytics,
-    hatchet,
-    scheduler,
-) {
+) : VglsListViewModel<State>() {
     override val screenIdentifier = VglsAnalyticsScreen.LIST_DIFFICULTY_VALUES
 
     override fun initialState() = State()
+
+    init {
+        sendAction(SageAction.InitWithId(idArg))
+    }
 
     override fun handleAction(action: SageAction) {
         when (action) {
@@ -91,18 +105,21 @@ class DifficultyValuesViewModelBrain(
 
     private fun updateTagKey(tagKey: LCE<TagKey>) {
         updateState {
-            (it as State).copy(
-                difficultyType = tagKey
-            )
+            it.copy(difficultyType = tagKey)
         }
     }
 
     private fun updateDifficultyValues(difficultyValues: LCE<List<TagValue>>) {
         updateState {
-            (it as State).copy(
-                difficultyValues = difficultyValues
-            )
+            it.copy(difficultyValues = difficultyValues)
         }
+    }
+
+    @AssistedFactory
+    @ManualViewModelAssistedFactoryKey(Factory::class)
+    @ContributesIntoMap(AppScope::class)
+    fun interface Factory : ManualViewModelAssistedFactory {
+        fun create(@Assisted idArg: Long): DifficultyValuesViewModel
     }
 
     companion object {

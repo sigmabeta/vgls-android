@@ -13,4 +13,6 @@ dependencies {
     api(libs.sage.common.ui.components)
     api(projects.vgls.common.strings)
     api(libs.sage.common.time)
+    api(projects.vgls.common.viewmodel)
+    implementation(libs.metrox.viewmodel)
 }

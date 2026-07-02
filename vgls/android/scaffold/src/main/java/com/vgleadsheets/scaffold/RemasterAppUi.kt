@@ -31,7 +31,6 @@ import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.search.searchScreenNavEntry
 import com.vgleadsheets.topbar.TopBarViewModel
 import com.vgleadsheets.ui.licenses.licensesScreenNavEntry
-import com.vgleadsheets.ui.list.listScreenEntry
 import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import net.sigmabeta.sage.appcomm.EventSink
@@ -163,24 +162,9 @@ private fun NavHostAndSuch(
     ) {
         val globalModifier = Modifier.fillMaxSize()
 
-        Destination.entries.forEach { destination ->
-            if (!destination.isImplemented) {
-                return@forEach
-            }
-
-            // HOME migrated to a plain HomeViewModel (phase 4) — handled by homeScreenNavEntry below.
-            if (destination == Destination.HOME) {
-                return@forEach
-            }
-
-            listScreenEntry(
-                destination = destination,
-                displayWidthClass = displayWidthClass,
-                globalModifier = globalModifier,
-            )
-        }
-
-        homeScreenNavEntry(
+        // All list/grid screens are now plain VglsListViewModels resolved via metroViewModel /
+        // assistedMetroViewModel (phase 4) — the old generic listScreenEntry/BrainProvider path is gone.
+        plainViewModelNavEntries(
             displayWidthClass = displayWidthClass,
             globalModifier = globalModifier,
         )

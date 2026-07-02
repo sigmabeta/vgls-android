@@ -6,7 +6,7 @@ import com.vgleadsheets.model.Part
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
-import com.vgleadsheets.remaster.songs.detail.SongDetailViewModelBrain.Companion.LOAD_OPERATION_SONG
+import com.vgleadsheets.remaster.songs.detail.SongDetailViewModel.Companion.LOAD_OPERATION_SONG
 import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.urlinfo.UrlInfo
 import kotlinx.collections.immutable.persistentListOf
