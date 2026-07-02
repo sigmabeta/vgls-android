@@ -1,12 +1,13 @@
 package com.vgleadsheets.ui.list
 
+import com.vgleadsheets.composables.Dimensions
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.viewmodel.list.VglsListViewModel
@@ -55,7 +56,7 @@ fun ListScreenContent(
             "Calculated number of columns is zero for $columnType and $displayWidthClass."
         }
 
-        val sideMargin = dimensionResource(id = com.vgleadsheets.ui.components.R.dimen.margin_side)
+        val sideMargin = Dimensions.marginSide
         val itemContent: @Composable (ListModel, ActionSink, Boolean, Modifier, PaddingValues) -> Unit =
             { model, sink, debug, mod, pad -> model.Content(sink, debug, mod, pad) }
 
