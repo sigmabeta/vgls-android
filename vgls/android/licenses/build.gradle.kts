@@ -1,25 +1,33 @@
 plugins {
-    alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.di)
-    alias(libs.plugins.sage.compose.android)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.sage.compose.kmp)
+    alias(libs.plugins.metro)
 }
 
-android {
-    namespace = "com.vgleadsheets.licenses"
-}
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.ui.licenses"
+    }
 
-dependencies {
-    implementation(libs.metrox.viewmodel)
-    implementation(libs.metrox.viewmodel.compose)
-
-    api(libs.webview)
-    api(libs.androidx.navigation.compose)
-    api(libs.androidx.lifecycle.runtimeCompose)
-
-    implementation(projects.vgls.android.ui.components)
-    implementation(projects.vgls.common.strings)
-    implementation(projects.vgls.android.viewmodel)
-
-    api(libs.sage.common.appcomm)
-    api(projects.vgls.common.nav)
+    sourceSets {
+        named("commonMain") {
+            dependencies {
+                api(libs.androidx.lifecycle.runtimeCompose)
+                api(libs.sage.common.appcomm)
+                api(projects.vgls.common.nav)
+                implementation(projects.vgls.android.ui.components)
+                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.android.viewmodel)
+                implementation(libs.metrox.viewmodel)
+                implementation(libs.metrox.viewmodel.compose)
+                implementation(libs.sage.common.di)
+            }
+        }
+        named("androidMain") {
+            dependencies {
+                // The android WebView-backed LicenseScreen actual.
+                api(libs.webview)
+            }
+        }
+    }
 }
