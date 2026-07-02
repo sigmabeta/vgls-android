@@ -1,6 +1,5 @@
 package com.vgleadsheets.ui.theme.tokens
 
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 
 internal object VglsTypographyTokens {
@@ -126,8 +125,7 @@ internal object VglsTypographyTokens {
         )
 }
 
-private val DefaultPlatformTextStyle = PlatformTextStyle(
-    includeFontPadding = false
-)
+// Android applies PlatformTextStyle(includeFontPadding = false); JVM/desktop has no such knob.
+internal expect fun vglsDefaultTextStyle(): TextStyle
 
-internal val DefaultTextStyle = TextStyle.Default.copy(platformStyle = DefaultPlatformTextStyle)
+internal val DefaultTextStyle = vglsDefaultTextStyle()
