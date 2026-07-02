@@ -1,8 +1,8 @@
 package com.vgleadsheets.network.model
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ApiDigest(
     val composers: List<ApiComposer>,
     val games: List<VglsApiGame>

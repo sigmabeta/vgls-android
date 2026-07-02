@@ -1,28 +1,34 @@
 plugins {
-    alias(libs.plugins.sage.jvm)
-    alias(libs.plugins.sage.di)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.metro)
 }
 
-dependencies {
-    implementation(libs.kotlin.stdlib)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.network"
+    }
 
-    // Module deps
-    implementation(libs.sage.common.connectivity)
-    implementation(libs.sage.common.logging)
-    implementation(projects.vgls.common.model)
-    implementation(libs.kotlinx.coroutines.core)
-
-    // OkHttp libs
-    api(libs.okhttp)
-    api(libs.okhttp.logging)
-
-    // Retrofit libs
-    api(libs.retrofit.core)
-    implementation(libs.retrofit.moshi)
-
-    // Moshi code-gen
-    ksp(libs.moshi.codegen)
+    sourceSets {
+        // Ktor + kotlinx.serialization API client + @Serializable models — multiplatform.
+        named("commonMain") {
+            dependencies {
+                implementation(libs.sage.common.connectivity)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.kotlinx.serialization.json)
+            }
+        }
+        // The @Inject fake generators (java.util.Random / okio-bound) stay JVM for now.
+        named("jvmSharedMain") {
+            dependencies {
+                implementation(libs.sage.common.logging)
+                implementation(projects.vgls.common.model)
+                implementation(libs.sage.common.di)
+                implementation("io.ktor:ktor-client-mock:3.5.0")
+            }
+        }
+    }
 }
-
-// See previous versions of this file for "GiantBombApiKey"

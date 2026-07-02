@@ -1,9 +1,9 @@
 package com.vgleadsheets.network.model
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
 @Suppress("ConstructorParameterNaming")
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ApiTime(
     val last_updated: String
 )
