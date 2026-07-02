@@ -145,6 +145,17 @@ dependencies {
     implementation(projects.vgls.android.activity)
     implementation(projects.vgls.android.wakelocks)
     implementation(libs.metrox.viewmodel)
+
+    // Metro aggregates @ContributesIntoMap ViewModels only from modules on the app graph's COMPILE
+    // classpath. These VM-owning modules otherwise reach :app only via implementation-transitive deps
+    // (so their contribution hints are invisible), which left their VMs out of the metroViewModel map
+    // and crashed at runtime. Declare them directly, matching Chipbox's per-VM-module app deps.
+    implementation(projects.vgls.android.nav)
+    implementation(projects.vgls.android.scaffold)
+    implementation(projects.vgls.android.licenses)
+    implementation(projects.vgls.android.viewmodel)
+    implementation(projects.features.topbar)
+    implementation(projects.features.navbar)
     // WorkManager: VglsApplication provides a Configuration + VglsWorkerFactory (formerly via hilt-work).
     implementation(libs.androidx.work.manager)
 

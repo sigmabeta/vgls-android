@@ -143,6 +143,9 @@ object NetworkModule {
     @SingleIn(AppScope::class)
     fun provideMoshi(): Moshi = Moshi
         .Builder()
+        // GenericAction moved from Moshi to kotlinx.serialization in SAGE; bridge it for VGLS's
+        // Moshi-based Notif persistence (see GenericActionMoshiAdapter).
+        .add(com.vgleadsheets.notif.GenericActionMoshiAdapter)
         .build()
 
     @Provides
