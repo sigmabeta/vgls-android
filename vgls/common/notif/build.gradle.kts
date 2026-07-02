@@ -1,18 +1,23 @@
 plugins {
-    alias(libs.plugins.sage.jvm)
-    alias(libs.plugins.sage.di)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
-dependencies {
-    implementation(libs.moshi)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.notif"
+    }
 
-    implementation(libs.sage.common.appcomm)
-    implementation(libs.sage.common.coroutines)
-    implementation(libs.sage.common.logging)
-    implementation(projects.vgls.common.model)
-    implementation(projects.vgls.common.strings)
-    implementation(libs.sage.common.storage.common)
-
-    ksp(libs.moshi.codegen)
+    sourceSets {
+        named("commonMain") {
+            dependencies {
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.sage.common.appcomm)
+                implementation(libs.sage.common.coroutines)
+                implementation(libs.sage.common.logging)
+                implementation(projects.vgls.common.strings)
+                implementation(libs.sage.common.storage.common)
+            }
+        }
+    }
 }

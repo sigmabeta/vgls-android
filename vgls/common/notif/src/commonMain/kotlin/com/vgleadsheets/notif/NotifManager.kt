@@ -1,6 +1,5 @@
 package com.vgleadsheets.notif
 
-import com.squareup.moshi.JsonAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,17 +10,23 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.storage.common.Storage
 
 class NotifManager(
     private val storage: Storage,
-    private val notifStateJsonAdapter: JsonAdapter<NotifState>,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: SageDispatchers,
     private val hatchet: Hatchet,
 ) {
+    // The single multiplatform JSON codec for the persisted NotifState (replaces the injected Moshi
+    // adapter). ignoreUnknownKeys keeps old persisted state readable if the schema gains fields.
+    private val json = Json { ignoreUnknownKeys = true }
+
     private val internalNotifState = MutableStateFlow(NotifState())
     val notifState = internalNotifState.asStateFlow()
 
@@ -82,7 +87,7 @@ class NotifManager(
             .launchIn(coroutineScope)
     }
 
-    private fun NotifState.toJson() = notifStateJsonAdapter.toJson(this)
+    private fun NotifState.toJson() = json.encodeToString(this)
 
     @Suppress("PrintStackTrace", "TooGenericExceptionCaught", "ReturnCount")
     private fun String?.toNotifState(): NotifState? {
@@ -91,8 +96,7 @@ class NotifManager(
             return null
         }
         return try {
-            val fromJson = notifStateJsonAdapter.fromJson(this)
-            return fromJson
+            json.decodeFromString<NotifState>(this)
         } catch (ex: Exception) {
             hatchet.e("Error reading Notifs from storage: ${ex.message}")
             ex.printStackTrace()
@@ -102,9 +106,5 @@ class NotifManager(
 
     companion object {
         const val KEY_NOTIF_STATE = "NotifManager.NotifState"
-
-        private const val DEP_NAME_PREFIX = "Dep.Deserializer"
-
-        const val DEP_NAME_JSON_ADAPTER_NOTIF = "$DEP_NAME_PREFIX.Notif"
     }
 }

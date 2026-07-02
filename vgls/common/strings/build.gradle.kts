@@ -3,6 +3,8 @@ import org.jetbrains.compose.resources.ResourcesExtension
 plugins {
     alias(libs.plugins.sage.kmp)
     alias(libs.plugins.sage.compose.kmp)
+    // VglsStringId is @Serializable (persisted inside NotifState via kotlinx.serialization).
+    alias(libs.plugins.kotlin.serialization)
     // Compose Multiplatform plugin for the string-resource codegen (Res.allStringResources). This
     // is the SINGLE source of string values (src/commonMain/composeResources/values/strings.xml)
     // for every platform — replacing the old Android R.string + AndroidStringProvider path.
@@ -26,6 +28,7 @@ kotlin {
             dependencies {
                 api(libs.sage.common.ui.strings)
                 implementation(libs.jetbrains.compose.resources)
+                implementation(libs.kotlinx.serialization.core)
             }
         }
         // ImageLoadErrorStringId maps network exceptions -> VglsStringId; it is genuinely JVM-bound

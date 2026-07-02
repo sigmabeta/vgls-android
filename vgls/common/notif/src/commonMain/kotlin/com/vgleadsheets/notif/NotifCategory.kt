@@ -1,8 +1,8 @@
 package com.vgleadsheets.notif
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = false)
+@Serializable
 enum class NotifCategory {
     APP_UPDATE,
     VGLS_UPDATE,

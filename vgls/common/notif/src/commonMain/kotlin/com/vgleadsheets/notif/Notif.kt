@@ -1,10 +1,10 @@
 package com.vgleadsheets.notif
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.GenericAction
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class Notif(
     val id: Long,
     val title: VglsStringId,
