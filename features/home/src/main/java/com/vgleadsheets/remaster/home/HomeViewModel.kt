@@ -29,9 +29,9 @@ import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import net.sigmabeta.sage.ui.StringProvider
-import org.threeten.bp.LocalDate
+import kotlinx.datetime.LocalDate
 
 @ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
 @ViewModelKey
@@ -46,7 +46,7 @@ class HomeViewModel @Inject constructor(
     private val homeModuleProvider: HomeModuleProvider,
     private val tagRepository: TagRepository,
     private val randomRepository: RandomRepository,
-    private val threeTenTime: ThreeTenTime,
+    private val threeTenTime: TimeProvider,
 ) : VglsListViewModel<State>() {
     override val screenIdentifier = VglsAnalyticsScreen.HOME
 
@@ -87,7 +87,7 @@ class HomeViewModel @Inject constructor(
             .take(1)
             .map {
                 it.maxBy { tagValue ->
-                    threeTenTime.localDateFromString(tagValue.name) ?: LocalDate.MIN
+                    threeTenTime.localDateFromString(tagValue.name) ?: LocalDate(1, 1, 1)
                 }
             }
             .onEach { tagValue -> navigateTo(Destination.TAGS_VALUES_SONG_LIST.forId(tagValue.id)) }

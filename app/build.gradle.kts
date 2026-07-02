@@ -108,6 +108,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.sage.common.time)
+    implementation(libs.kotlinx.datetime)
     // DI dependencies
     implementation(projects.vgls.common.appcomm)
     implementation(libs.sage.android.connectivity)

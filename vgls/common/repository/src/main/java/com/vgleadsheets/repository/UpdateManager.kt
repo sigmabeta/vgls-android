@@ -27,9 +27,9 @@ import net.sigmabeta.sage.connectivity.NetworkStatus
 import net.sigmabeta.sage.connectivity.NetworkUnavailableException
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import net.sigmabeta.sage.ui.StringProvider
-import org.threeten.bp.Instant
+import kotlin.time.Instant
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -37,7 +37,7 @@ class UpdateManager(
     private val vglsApi: VglsApi,
     private val dbUpdater: DbUpdater,
     private val dbStatisticsDataSource: DbStatisticsDataSource,
-    private val threeTen: ThreeTenTime,
+    private val threeTen: TimeProvider,
     private val actionDeserializer: ActionDeserializer,
     private val hatchet: Hatchet,
     private val dispatchers: SageDispatchers,
@@ -81,7 +81,7 @@ class UpdateManager(
             return true
         }
 
-        val currentTime = threeTen.now().toInstant().toEpochMilli()
+        val currentTime = threeTen.now().toEpochMilliseconds()
         val lastCheckAgeMillis = currentTime - lastCheckTime.timeMs
         val lastCheckAge = lastCheckAgeMillis.toDuration(DurationUnit.MILLISECONDS)
 
@@ -112,12 +112,12 @@ class UpdateManager(
         val lastUpdateInstant = Instant.parse(lastUpdate.last_updated)
         val lastUpdateTime = Time(
             TimeType.LAST_VGLS_UPDATE.ordinal,
-            lastUpdateInstant.toEpochMilli()
+            lastUpdateInstant.toEpochMilliseconds()
         )
 
         val lastAppCheckTime = Time(
             TimeType.LAST_APP_CHECK.ordinal,
-            threeTen.now().toInstant().toEpochMilli()
+            threeTen.now().toEpochMilliseconds()
         )
 
         hatchet.d("VGLS was last updated at $lastUpdateInstant")

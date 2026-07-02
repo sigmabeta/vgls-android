@@ -16,8 +16,9 @@ import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.time.TimeUtils
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
-import org.threeten.bp.Duration
-import org.threeten.bp.Instant
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 import dev.zacsweers.metro.Inject
 
 class MostPlaysComposerModule @Inject constructor(
@@ -76,8 +77,8 @@ class MostPlaysComposerModule @Inject constructor(
     }
 
     private fun List<Pair<ComposerPlayCount, Composer>>.areOldEnough() = none {
-        val recordAge = TimeUtils.calculateAgeOf(Instant.ofEpochMilli(it.first.mostRecentPlay))
-        val minimumAge = Duration.ofDays(MINIMUM_AGE_DAYS)
+        val recordAge = TimeUtils.calculateAgeOf(Instant.fromEpochMilliseconds(it.first.mostRecentPlay))
+        val minimumAge = MINIMUM_AGE_DAYS.days
         recordAge < minimumAge
     }
 

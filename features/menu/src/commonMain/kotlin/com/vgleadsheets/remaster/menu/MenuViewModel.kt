@@ -30,7 +30,7 @@ import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.DebugSettingsManager
 import net.sigmabeta.sage.settings.GeneralSettingsManager
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import net.sigmabeta.sage.ui.StringProvider
 
 @ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
@@ -50,7 +50,7 @@ class MenuViewModel @Inject constructor(
     private val userContentGenerator: UserContentGenerator,
     private val userContentMigrator: UserContentMigrator,
     private val appInfo: AppInfo,
-    private val threeTenTime: ThreeTenTime,
+    private val threeTenTime: TimeProvider,
     private val offlineWorkScheduler: OfflineWorkScheduler,
 ) : VglsListViewModel<State>() {
     override val screenIdentifier = AnalyticsScreen.SETTINGS

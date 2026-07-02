@@ -49,7 +49,7 @@ import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.GeneralSettingsManager
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import net.sigmabeta.sage.ui.StringProvider
 
 @BindingContainer
@@ -123,7 +123,7 @@ object RepositoryModule {
     fun provideUpdateManager(
         vglsApi: VglsApi,
         dbUpdater: DbUpdater,
-        threeTenTime: ThreeTenTime,
+        threeTenTime: TimeProvider,
         dispatchers: SageDispatchers,
         actionDeserializer: ActionDeserializer,
         hatchet: Hatchet,
@@ -150,7 +150,7 @@ object RepositoryModule {
     fun provideDbUpdater(
         vglsApi: VglsApi,
         transactionDao: TransactionDao,
-        threeTenTime: ThreeTenTime,
+        threeTenTime: TimeProvider,
         dispatchers: SageDispatchers,
         hatchet: Hatchet,
         composerAliasDataSource: ComposerAliasDataSource,
@@ -239,7 +239,7 @@ object RepositoryModule {
         offlineGameDataSource: OfflineGameDataSource,
         offlineUpdateResultDataSource: OfflineUpdateResultDataSource,
         dbStatisticsDataSource: DbStatisticsDataSource,
-        threeTenTime: ThreeTenTime,
+        threeTenTime: TimeProvider,
     ): OfflineRepository = OfflineRepository(
         songDataSource,
         composerDataSource,

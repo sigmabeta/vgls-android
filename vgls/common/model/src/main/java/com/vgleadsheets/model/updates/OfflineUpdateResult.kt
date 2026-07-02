@@ -1,11 +1,11 @@
 package com.vgleadsheets.model.updates
 
-import org.threeten.bp.ZonedDateTime
+import kotlin.time.Instant
 
 data class OfflineUpdateResult(
     val id: Int,
-    val dateTime: ZonedDateTime,
-    val serverUpdateTime: ZonedDateTime,
+    val dateTime: Instant,
+    val serverUpdateTime: Instant,
     val updatedSongs: Int,
     val successfulOfflines: Int,
     val status: OfflineJobStatus,

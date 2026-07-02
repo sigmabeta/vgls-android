@@ -32,7 +32,7 @@ import net.sigmabeta.sage.settings.DebugSettingsManager
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.settings.environment.EnvironmentManager
 import net.sigmabeta.sage.storage.common.Storage
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.ui.StringProvider
 
@@ -86,9 +86,7 @@ object AppModule {
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideTime(context: Context): ThreeTenTime = ThreeTenImpl(
-        context,
-    )
+    fun provideTime(): TimeProvider = TimeProviderImpl()
 
     @Provides
     @SingleIn(AppScope::class)

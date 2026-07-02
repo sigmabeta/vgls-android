@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.features.topbar)
 
     implementation(projects.vgls.common.model)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.sage.common.ui.components)
 
     implementation(projects.vgls.android.bitmaps)

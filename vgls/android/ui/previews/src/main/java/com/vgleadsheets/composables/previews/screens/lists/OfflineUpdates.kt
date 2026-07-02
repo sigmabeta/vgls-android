@@ -1,9 +1,12 @@
 package com.vgleadsheets.composables.previews.screens.lists
 
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.jakewharton.threetenabp.AndroidThreeTen
 import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
@@ -12,8 +15,7 @@ import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.model.updates.OfflineUpdateResult
 import com.vgleadsheets.remaster.offline.updates.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
-import org.threeten.bp.ZoneOffset
-import org.threeten.bp.ZonedDateTime
+import kotlin.time.Instant
 
 @DevicePreviews
 @Composable
@@ -78,16 +80,16 @@ internal fun OfflineUpdatesListError(
 private fun offlineUpdatesContentState(): State {
     val result1 = OfflineUpdateResult(
         id = 1,
-        dateTime = ZonedDateTime.of(2026, 4, 23, 15, 45, 0, 0, ZoneOffset.UTC),
-        serverUpdateTime = ZonedDateTime.of(2026, 4, 23, 15, 40, 0, 0, ZoneOffset.UTC),
+        dateTime = LocalDateTime(2026, 4, 23, 15, 45, 0).toInstant(TimeZone.UTC),
+        serverUpdateTime = LocalDateTime(2026, 4, 23, 15, 40, 0).toInstant(TimeZone.UTC),
         updatedSongs = 42,
         successfulOfflines = 38,
         status = OfflineJobStatus.COMPLETED,
     )
     val result2 = OfflineUpdateResult(
         id = 2,
-        dateTime = ZonedDateTime.of(2026, 4, 22, 11, 30, 0, 0, ZoneOffset.UTC),
-        serverUpdateTime = ZonedDateTime.of(2026, 4, 22, 11, 25, 0, 0, ZoneOffset.UTC),
+        dateTime = LocalDateTime(2026, 4, 22, 11, 30, 0).toInstant(TimeZone.UTC),
+        serverUpdateTime = LocalDateTime(2026, 4, 22, 11, 25, 0).toInstant(TimeZone.UTC),
         updatedSongs = 17,
         successfulOfflines = 0,
         status = OfflineJobStatus.ABORTED,
