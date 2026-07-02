@@ -29,7 +29,7 @@ class PdfImageDecoder(
             return null
         }
 
-        val pdfFile = source.file().toFile()
+        val pdfFile = source.file()
 
         val drawable = PdfToBitmapRenderer(BluntHatchet())
             .renderToBitmap(

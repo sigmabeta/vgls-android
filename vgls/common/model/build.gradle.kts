@@ -12,6 +12,7 @@ kotlin {
         // so it can't be pure commonMain/JS yet; migrating specific files to commonMain is a later step.
         named("jvmSharedMain") {
             dependencies {
+                implementation(libs.okio)
                 // So we don"t have buggy time comparisons
             }
         }

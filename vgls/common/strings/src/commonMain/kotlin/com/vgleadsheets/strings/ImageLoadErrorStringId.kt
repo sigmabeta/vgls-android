@@ -3,10 +3,20 @@ package com.vgleadsheets.strings
 import net.sigmabeta.sage.connectivity.HttpException
 import net.sigmabeta.sage.connectivity.NetworkStatus
 import net.sigmabeta.sage.connectivity.NetworkUnavailableException
-import java.io.InterruptedIOException
-import java.net.SocketException
-import java.net.UnknownHostException
-import javax.net.ssl.SSLException
+
+// Socket/DNS/SSL-level failures identified by exception class name — multiplatform (no java.net /
+// javax.net imports), and covers both the android okhttp stack and the desktop ktor stack.
+private val SOCKET_LEVEL_EXCEPTION_NAMES = setOf(
+    "SocketException",
+    "SocketTimeoutException",
+    "InterruptedIOException",
+    "ConnectException",
+    "UnknownHostException",
+    "SSLException",
+    "SSLHandshakeException",
+    "ConnectTimeoutException",
+    "HttpRequestTimeoutException",
+)
 
 private const val HTTP_CODE_CLASS_DIVISOR = 100
 private const val HTTP_CLIENT_ERROR_CLASS = 4
@@ -33,11 +43,8 @@ private fun Int.toHttpStringId() = when (this / HTTP_CODE_CLASS_DIVISOR) {
     else -> VglsStringId.ERROR_IMAGE_SERVER_ERROR
 }
 
-private fun Throwable.isSocketLevelError(): Boolean {
-    val isNetworkInterruption = findCause { it is SocketException || it is InterruptedIOException } != null
-    val isDnsOrSslError = findCause { it is UnknownHostException || it is SSLException } != null
-    return isNetworkInterruption || isDnsOrSslError
-}
+private fun Throwable.isSocketLevelError(): Boolean =
+    findCause { it::class.simpleName in SOCKET_LEVEL_EXCEPTION_NAMES } != null
 
 private inline fun <reified T : Throwable> Throwable.findCause(): T? = findCause { it is T } as T?
 

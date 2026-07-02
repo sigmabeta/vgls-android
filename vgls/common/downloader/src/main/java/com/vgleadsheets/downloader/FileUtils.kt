@@ -1,17 +1,15 @@
 package com.vgleadsheets.downloader
 
-import java.io.File
+import okio.FileSystem
+import okio.Path
 
 object FileUtils {
     fun fileReference(
-        storageDirectory: File,
+        storageDirectory: Path,
         fileName: String,
         partApiId: String,
         isAlternate: Boolean,
-    ) = File(
-        storageDirectory,
-        "pdfs/$fileName/$partApiId${isAlternate.altSuffix()}.pdf"
-    )
+    ): Path = storageDirectory / "pdfs" / fileName / "$partApiId${isAlternate.altSuffix()}.pdf"
 }
 
 fun Boolean.altSuffix() = if (this) {
@@ -20,10 +18,7 @@ fun Boolean.altSuffix() = if (this) {
     ""
 }
 
-fun File.ensureDirectoryExists() {
-    if (exists()) {
-        return
-    }
-
-    mkdir()
+/** Create this directory (and any missing parents). */
+fun Path.ensureDirectoryExists() {
+    FileSystem.SYSTEM.createDirectories(this)
 }

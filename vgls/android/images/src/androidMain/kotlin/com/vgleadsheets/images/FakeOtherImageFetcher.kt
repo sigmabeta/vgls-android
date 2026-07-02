@@ -9,13 +9,13 @@ import coil3.fetch.Fetcher
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
 import okio.FileSystem
+import okio.Path.Companion.toPath
 import okio.Path.Companion.toOkioPath
-import java.io.File
 
 class FakeOtherImageFetcher(val data: Uri) : Fetcher {
     override suspend fun fetch(): FetchResult? = SourceFetchResult(
             source = ImageSource(
-                file = File(data.toString()).toOkioPath(),
+                file = data.toString().toPath(),
                 fileSystem = FileSystem.SYSTEM,
             ),
             dataSource = DataSource.MEMORY,

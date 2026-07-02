@@ -1,7 +1,7 @@
 package com.vgleadsheets.downloader
 
-import java.io.File
+import okio.Path
 
 interface StorageDirectoryProvider {
-    fun getStorageDirectory(): File
+    fun getStorageDirectory(): Path
 }

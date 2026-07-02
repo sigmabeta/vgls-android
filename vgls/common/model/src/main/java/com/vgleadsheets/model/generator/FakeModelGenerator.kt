@@ -5,7 +5,7 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.tag.TagKey
 import com.vgleadsheets.model.tag.TagValue
-import java.io.IOException
+import okio.IOException
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack

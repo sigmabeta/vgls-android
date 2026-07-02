@@ -18,12 +18,12 @@ import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.RenderOverlayProvider
 import net.sigmabeta.sage.logging.BluntHatchet
 import net.sigmabeta.sage.logging.Hatchet
-import java.io.File
+import okio.Path
 import kotlin.math.absoluteValue
 import kotlin.math.min
 
 class PdfRegionDecoder(
-    private val pdfFile: File,
+    private val pdfFile: Path,
     pageNumber: Int?,
     private val maxWidth: Int,
     private val maxHeight: Int,
@@ -31,7 +31,7 @@ class PdfRegionDecoder(
     private val hatchet: Hatchet,
     private val renderOverlayProvider: RenderOverlayProvider,
 ) : ImageRegionDecoder {
-    private var pdfEngine: PdfRenderer? = createPdfRenderer(pdfFile.absolutePath)
+    private var pdfEngine: PdfRenderer? = createPdfRenderer(pdfFile)
     private var renderer: AsyncRenderer? =
 //        FakeAsyncRenderer()
         if (pageNumber == null) {
@@ -63,7 +63,7 @@ class PdfRegionDecoder(
         }
 
     override fun close() {
-        hatchet.i("Closing PDF renderer for ${pdfFile.absolutePath}")
+        hatchet.i("Closing PDF renderer for ${pdfFile.toString()}")
         renderer = null
         pdfEngine?.close()
         pdfEngine = null
@@ -104,10 +104,9 @@ class PdfRegionDecoder(
         )
     }
 
-    private fun createPdfRenderer(pdfPath: String): PdfRenderer {
-        val pdfFile = File(pdfPath)
+    private fun createPdfRenderer(pdfFile: Path): PdfRenderer {
         val fileDescriptor = ParcelFileDescriptor.open(
-            pdfFile,
+            pdfFile.toFile(),
             ParcelFileDescriptor.MODE_READ_ONLY
         )
 
@@ -115,7 +114,7 @@ class PdfRegionDecoder(
     }
 
     class Factory(
-        private val pdfFile: File,
+        private val pdfFile: Path,
         private val pageNumber: Int?,
         private val maxWidth: Int,
         private val maxHeight: Int,

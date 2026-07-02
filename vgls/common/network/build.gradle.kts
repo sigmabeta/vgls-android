@@ -27,6 +27,7 @@ kotlin {
                 implementation(libs.sage.common.logging)
                 implementation(projects.vgls.common.model)
                 implementation(libs.sage.common.di)
+                implementation(libs.okio)
                 implementation("io.ktor:ktor-client-mock:3.5.0")
             }
         }
