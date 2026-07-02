@@ -1,8 +1,18 @@
 plugins {
-    alias(libs.plugins.sage.jvm)
+    alias(libs.plugins.sage.kmp)
 }
 
-dependencies {
-    api(libs.sage.common.coroutines)
-    api(projects.vgls.common.model)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.common.database"
+    }
+
+    sourceSets {
+        named("jvmSharedMain") {
+            dependencies {
+                api(libs.sage.common.coroutines)
+                api(projects.vgls.common.model)
+            }
+        }
+    }
 }

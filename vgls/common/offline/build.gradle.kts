@@ -1,10 +1,20 @@
 plugins {
-    alias(libs.plugins.sage.jvm)
+    alias(libs.plugins.sage.kmp)
 }
 
-dependencies {
-    implementation(projects.vgls.common.downloader)
-    implementation(libs.sage.common.logging)
-    implementation(projects.vgls.common.repository)
-    implementation(libs.sage.common.time)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.common.offline"
+    }
+
+    sourceSets {
+        named("jvmSharedMain") {
+            dependencies {
+                implementation(projects.vgls.common.downloader)
+                implementation(libs.sage.common.logging)
+                implementation(projects.vgls.common.repository)
+                implementation(libs.sage.common.time)
+            }
+        }
+    }
 }

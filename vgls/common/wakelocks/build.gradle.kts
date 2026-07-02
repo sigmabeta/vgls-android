@@ -1,3 +1,9 @@
 plugins {
-    alias(libs.plugins.sage.jvm)
+    alias(libs.plugins.sage.kmp)
+}
+
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.common.wakelocks"
+    }
 }

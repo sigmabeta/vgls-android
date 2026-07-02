@@ -1,17 +1,27 @@
 plugins {
-    alias(libs.plugins.sage.jvm)
-    alias(libs.plugins.sage.di)
+    alias(libs.plugins.sage.kmp)
+    // sage.di's convention plugin does add("implementation", ...) which doesn't exist on a KMP
+    // module, so apply the Metro compiler plugin directly and add sage.common.di to the source set
+    // (what sage.di does under the hood).
+    alias(libs.plugins.metro)
 }
 
-dependencies {
-    // Multiplatform ViewModel base (androidx.lifecycle:lifecycle-viewmodel publishes commonMain
-    // ViewModel + viewModelScope for both Android and JVM). api so feature VMs see the ViewModel type.
-    api(libs.androidx.lifecycle.viewmodel)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.common.viewmodel"
+    }
 
-    // ListState / ListStateActual / SageScheduler / DelayManager, plus (transitively, api) StringProvider,
-    // appcomm (SageAction/SageEvent/EventDispatcher), analytics, coroutines, logging.
-    api(libs.sage.common.list)
-    api(libs.sage.common.debug)
-    // TitleBarModel (ListState.title(...)) lives here; sage.common.list only `implementation`s it.
-    implementation(libs.sage.common.ui.components)
+    sourceSets {
+        named("jvmSharedMain") {
+            dependencies {
+                api(libs.androidx.lifecycle.viewmodel)
+
+                api(libs.sage.common.list)
+                api(libs.sage.common.debug)
+                implementation(libs.sage.common.ui.components)
+
+                implementation(libs.sage.common.di)
+            }
+        }
+    }
 }
