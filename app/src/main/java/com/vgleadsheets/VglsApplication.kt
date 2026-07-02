@@ -16,6 +16,7 @@ import com.vgleadsheets.remaster.ActivityGraph
 import dev.zacsweers.metro.createGraphFactory
 import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
 import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.ui.StringProvider
 
 /**
  * Owns the application-wide Metro [VglsAppGraph] (the replacement for Hilt's `@HiltAndroidApp`).
@@ -43,6 +44,7 @@ class VglsApplication :
     override val pdfSubsampleSourceFactory: PdfSubsampleSource.Factory
         get() = appGraph.pdfSubsampleSourceFactory
     override val metroViewModelFactory: MetroViewModelFactory get() = appGraph.metroViewModelFactory
+    override val stringProvider: StringProvider get() = appGraph.stringProvider
 
     override fun bindActivity(activity: Activity) = appGraph.wakeLockManager.bindActivity(activity)
     override fun unbindActivity() = appGraph.wakeLockManager.bindActivity(null)

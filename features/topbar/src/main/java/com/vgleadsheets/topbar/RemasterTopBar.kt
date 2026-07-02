@@ -29,14 +29,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.TitleBarModel
@@ -53,7 +52,6 @@ fun RemasterTopBar(
         visible = state.actualVisibility == TopBarVisibility.VISIBLE,
         label = "TopBarVisibility"
     ) {
-        val resources = LocalContext.current.resources
         CenterAlignedTopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.background,
@@ -70,7 +68,7 @@ fun RemasterTopBar(
                         label = "Title Animation",
                     ) {
                         Text(
-                            text = it ?: resources.getString(VglsStringId.APP_NAME.id()),
+                            text = it ?: VglsStringId.APP_NAME.text(),
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -118,7 +116,7 @@ fun RemasterTopBar(
                 ) {
                     Icon(
                         imageVector = vector,
-                        contentDescription = resources.getString(string.id()),
+                        contentDescription = string.text(),
                     )
                 }
             },

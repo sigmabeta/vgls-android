@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,7 +15,7 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.subs.Rating
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import com.vgleadsheets.ui.theme.AppTheme
 import com.vgleadsheets.ui.theme.AppThemeMenu
 import net.sigmabeta.sage.appcomm.ActionSink
@@ -39,7 +38,7 @@ fun LabelRatingListItem(
             )
         },
         onClick = { actionSink.sendAction(model.clickAction) },
-        onClickLabel = stringResource(VglsStringId.ACCY_OCL_RATING.id()),
+        onClickLabel = VglsStringId.ACCY_OCL_RATING.text(),
         modifier = modifier.semantics {
             stateDescription = "${model.value} out of 4"
         },

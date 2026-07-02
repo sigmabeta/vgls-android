@@ -1,9 +1,7 @@
 package com.vgleadsheets.strings
 
-import com.squareup.moshi.JsonClass
 import net.sigmabeta.sage.ui.SageStringId
 
-@JsonClass(generateAdapter = false)
 enum class VglsStringId : SageStringId {
     APP_NAME,
 

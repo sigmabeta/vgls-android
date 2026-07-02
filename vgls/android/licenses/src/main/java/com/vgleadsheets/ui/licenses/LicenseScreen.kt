@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.kevinnzou.web.WebView
 import com.kevinnzou.web.rememberWebViewState
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import net.sigmabeta.sage.components.ErrorStateListModel
 
 @Composable
@@ -24,8 +23,6 @@ fun LicenseScreen(
     ) {
         val url = state.licensePageUrl ?: return
         val webState = rememberWebViewState(url)
-
-        val resources = LocalContext.current.resources
 
         if (webState.errorsForCurrentRequest.isEmpty()) {
             WebView(
@@ -44,7 +41,7 @@ fun LicenseScreen(
             EmptyListIndicator(
                 model = ErrorStateListModel(
                     failedOperationName = "webpageLoad",
-                    errorString = resources.getString(VglsStringId.ERROR_WEBVIEW_FAILED.id()),
+                    errorString = VglsStringId.ERROR_WEBVIEW_FAILED.text(),
                     error = RuntimeException(errorMessage),
                 ),
                 showDebug = false,

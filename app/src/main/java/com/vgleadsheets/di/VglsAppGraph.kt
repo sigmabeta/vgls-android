@@ -12,6 +12,7 @@ import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metrox.viewmodel.ViewModelGraph
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.ui.StringProvider
 
 /**
  * Application-wide Metro dependency graph. Owns every `AppScope`-scoped binding — both for
@@ -29,6 +30,9 @@ interface VglsAppGraph : ViewModelGraph {
     val hatchet: Hatchet
     val activityDependencyInitializer: ActivityDependencyInitializer
     val pdfSubsampleSourceFactory: PdfSubsampleSource.Factory
+
+    // Provided as LocalVglsStringProvider at the Compose root (Android + Desktop mirror).
+    val stringProvider: StringProvider
 
     // Concrete impl so VglsApplication can bind/unbind the current Activity for window flags.
     val wakeLockManager: WakeLockManagerImpl

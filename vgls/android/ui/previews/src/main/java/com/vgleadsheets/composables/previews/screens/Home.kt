@@ -2,7 +2,6 @@ package com.vgleadsheets.composables.previews.screens
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.model.generator.FakeModelGenerator
@@ -14,7 +13,6 @@ import com.vgleadsheets.remaster.home.Priority
 import com.vgleadsheets.remaster.home.State
 import com.vgleadsheets.remaster.home.modules.RngModule
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
-import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.persistentListOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
@@ -28,7 +26,7 @@ import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.strings.AndroidStringProvider
+import com.vgleadsheets.strings.rememberVglsStringProvider
 import java.util.Random
 
 @DevicePreviews
@@ -37,7 +35,7 @@ internal fun HomeScreen(
     darkTheme: Boolean = isSystemInDarkTheme(),
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
 ) {
-    val stringProvider = AndroidStringProvider(LocalContext.current.resources) { (it as VglsStringId).id() }
+    val stringProvider = rememberVglsStringProvider()
     val screenState = homeScreenState(stringProvider)
     ListScreenPreview(
         screenState = screenState,

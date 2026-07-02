@@ -2,16 +2,14 @@ package com.vgleadsheets.composables.previews.screens
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.remaster.menu.State
 import com.vgleadsheets.scaffold.currentWindowWidthClassSynthetic
-import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.strings.AndroidStringProvider
+import com.vgleadsheets.strings.rememberVglsStringProvider
 
 @DevicePreviews
 @Composable
@@ -19,7 +17,7 @@ internal fun MenuScreen(
     darkTheme: Boolean = isSystemInDarkTheme(),
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
 ) {
-    val stringProvider = AndroidStringProvider(LocalContext.current.resources) { (it as VglsStringId).id() }
+    val stringProvider = rememberVglsStringProvider()
     val screenState = menuScreenState(stringProvider)
     ListScreenPreview(
         screenState = screenState,

@@ -26,12 +26,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.subs.MenuActionIcon
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
@@ -103,7 +102,7 @@ fun SearchBar(
 
                 this@Row.AnimatedVisibility(visible = textEmpty) {
                     Text(
-                        text = stringResource(VglsStringId.HINT_SEARCH.id()),
+                        text = VglsStringId.HINT_SEARCH.text(),
                         style = MaterialTheme.typography.titleMedium.copy(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         ),

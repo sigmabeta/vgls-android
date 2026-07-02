@@ -10,7 +10,6 @@ import com.vgleadsheets.downloader.SheetDownloader
 import net.sigmabeta.sage.pdf.PdfConfigById
 import com.vgleadsheets.downloader.SheetSourceType
 import okio.FileSystem
-import okio.Path.Companion.toOkioPath
 
 class PdfImageFetcher(
     private val sheetDownloader: SheetDownloader,
@@ -22,9 +21,7 @@ class PdfImageFetcher(
         val pageNumber = requireNotNull(data.pageNumber) { "PDFs must have a page number specified." }
 
         val pdfFileResult = sheetDownloader.getSheet(data)
-        val pdfFile = pdfFileResult.file
-
-        val pdfPath = pdfFile.toOkioPath()
+        val pdfPath = pdfFileResult.path
 
         return SourceFetchResult(
             source = ImageSource(

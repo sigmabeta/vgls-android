@@ -3,10 +3,9 @@ package com.vgleadsheets.composables
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.SingleTextListModel
@@ -20,7 +19,7 @@ fun LabelNoThingyItem(
 ) {
     val action = model.clickAction
     val onClickLabel = if (action !is SageAction.Noop) {
-        stringResource(VglsStringId.ACCY_OCL_SINGLE_LINE.id(), model.name)
+        VglsStringId.ACCY_OCL_SINGLE_LINE.text(model.name)
     } else {
         null
     }

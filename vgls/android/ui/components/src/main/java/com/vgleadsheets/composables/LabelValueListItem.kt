@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +22,7 @@ import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.composables.utils.nextPercentageFloat
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
@@ -40,7 +39,7 @@ fun LabelValueListItem(
     val value = model.value
     val action = model.clickAction
     val onClickLabel = if (action !is SageAction.Noop) {
-        stringResource(VglsStringId.ACCY_OCL_VALUE.id())
+        VglsStringId.ACCY_OCL_VALUE.text()
     } else {
         null
     }

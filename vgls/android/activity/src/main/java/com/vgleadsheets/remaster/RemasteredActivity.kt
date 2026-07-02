@@ -23,6 +23,7 @@ import net.sigmabeta.sage.ui.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.scaffold.systemui.SystemUiState
 import com.vgleadsheets.scaffold.systemui.SystemUiViewModel
+import com.vgleadsheets.strings.LocalVglsStringProvider
 import com.vgleadsheets.ui.theme.AppTheme
 import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.launchIn
@@ -36,6 +37,7 @@ class RemasteredActivity : ComponentActivity() {
     private val hatchet: Hatchet get() = activityGraph.hatchet
     private val pdfSubsampleSourceFactory: PdfSubsampleSource.Factory
         get() = activityGraph.pdfSubsampleSourceFactory
+    private val stringProvider get() = activityGraph.stringProvider
 
     private val navViewModel: NavViewModel by viewModels { activityGraph.metroViewModelFactory }
 
@@ -63,6 +65,7 @@ class RemasteredActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalPdfSubsampler provides pdfSubsampleSourceFactory,
                     LocalMetroViewModelFactory provides activityGraph.metroViewModelFactory,
+                    LocalVglsStringProvider provides stringProvider,
                 ) {
                     CompositionLocalProvider(LocalLogger provides hatchet) {
                         RemasterAppUi(

@@ -11,7 +11,7 @@ dependencies {
     implementation(projects.vgls.android.pdf)
     implementation(libs.sage.common.ui.iconsReal)
     implementation(projects.vgls.android.ui.list)
-    implementation(projects.vgls.android.strings)
+    implementation(projects.vgls.common.strings)
 
     implementation(libs.sage.common.appcomm)
     implementation(projects.vgls.common.urlinfo)

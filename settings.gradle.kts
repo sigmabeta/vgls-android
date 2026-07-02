@@ -72,7 +72,6 @@ include(
     ":vgls:android:activity",
     ":vgls:android:bitmaps",
     ":vgls:android:icons",
-    ":vgls:android:strings",
     ":vgls:android:ui:theme",
     ":vgls:android:analytics",
     ":vgls:fake:analytics",
