@@ -1,14 +1,24 @@
 plugins {
-    alias(libs.plugins.vgls.feature.compose.android)
-    alias(libs.plugins.sage.di)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.metro)
 }
 
-dependencies {
-    implementation(libs.metrox.viewmodel)
-    implementation(libs.sage.common.ui.iconsReal)
-    implementation(projects.vgls.common.strings)
-}
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.bottombar"
+    }
 
-android {
-    namespace = "com.vgleadsheets.bottombar"
+    sourceSets {
+        named("commonMain") {
+            dependencies {
+                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.nav)
+                implementation(projects.vgls.android.viewmodel)
+                implementation(libs.sage.common.ui.iconsApi)
+                implementation(libs.sage.common.logging)
+                implementation(libs.metrox.viewmodel)
+                implementation(libs.sage.common.di)
+            }
+        }
+    }
 }

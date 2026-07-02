@@ -5,4 +5,4 @@ package com.vgleadsheets.composables.subs
  * plain clipped surface. On Android this gates on API level (shadows on rounded surfaces misbehaved
  * before Q); on the JVM/desktop shadows are always fine.
  */
-internal expect fun platformSupportsElevationShadow(): Boolean
+expect fun platformSupportsElevationShadow(): Boolean
