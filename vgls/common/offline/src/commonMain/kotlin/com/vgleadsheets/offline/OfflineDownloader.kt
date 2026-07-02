@@ -7,13 +7,13 @@ import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.UpdateManager
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import kotlinx.coroutines.flow.first
 
 class OfflineDownloader(
     private val offlineRepo: OfflineRepository,
     private val sheetDownloader: SheetDownloader,
-    private val threeTenTime: ThreeTenTime,
+    private val threeTenTime: TimeProvider,
     private val hatchet: Hatchet,
     private val updateManager: UpdateManager,
 ) {
@@ -134,7 +134,7 @@ class OfflineDownloader(
         }
 
         if (anyDownloaded) {
-            val now = threeTenTime.now().toInstant().toEpochMilli()
+            val now = threeTenTime.now().toEpochMilliseconds()
             offlineRepo.setSongLastDownloaded(song.id, now)
         }
 

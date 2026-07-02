@@ -13,7 +13,6 @@ kotlin {
         named("jvmSharedMain") {
             dependencies {
                 // So we don"t have buggy time comparisons
-                implementation(libs.threeten)
             }
         }
     }

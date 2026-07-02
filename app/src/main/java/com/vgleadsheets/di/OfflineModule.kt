@@ -10,7 +10,7 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 
 @BindingContainer
 @ContributesTo(AppScope::class)
@@ -20,7 +20,7 @@ object OfflineModule {
     fun provideOfflineDownloader(
         offlineRepository: OfflineRepository,
         sheetDownloader: SheetDownloader,
-        threeTenTime: ThreeTenTime,
+        threeTenTime: TimeProvider,
         hatchet: Hatchet,
         updateManager: UpdateManager,
     ): OfflineDownloader = OfflineDownloader(

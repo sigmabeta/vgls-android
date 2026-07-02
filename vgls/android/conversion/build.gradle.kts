@@ -9,7 +9,6 @@ dependencies {
     implementation(projects.vgls.android.database)
 
     implementation(projects.vgls.common.network)
-    implementation(libs.threeten)
 }
 
 android {

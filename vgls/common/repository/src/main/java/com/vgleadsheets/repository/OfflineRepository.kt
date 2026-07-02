@@ -12,12 +12,10 @@ import com.vgleadsheets.database.source.OfflineUpdateResultDataSource
 import com.vgleadsheets.model.time.TimeType
 import com.vgleadsheets.model.updates.OfflineJobStatus
 import com.vgleadsheets.model.updates.OfflineUpdateResult
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneOffset
-import org.threeten.bp.ZonedDateTime
+import kotlin.time.Instant
 
 class OfflineRepository(
     private val songDataSource: SongDataSource,
@@ -28,7 +26,7 @@ class OfflineRepository(
     private val offlineGameDataSource: OfflineGameDataSource,
     private val offlineUpdateResultDataSource: OfflineUpdateResultDataSource,
     private val dbStatisticsDataSource: DbStatisticsDataSource,
-    private val threeTenTime: ThreeTenTime,
+    private val threeTenTime: TimeProvider,
 ) {
     suspend fun addOfflineSong(id: Long) {
         offlineSongDataSource.addOffline(id)
@@ -105,10 +103,7 @@ class OfflineRepository(
             .getTime(TimeType.LAST_VGLS_UPDATE.ordinal)
             .first()
             .timeMs
-        val serverUpdateTime = ZonedDateTime.ofInstant(
-            Instant.ofEpochMilli(serverUpdateTimeMs),
-            ZoneOffset.UTC,
-        )
+        val serverUpdateTime = Instant.fromEpochMilliseconds(serverUpdateTimeMs)
 
         offlineUpdateResultDataSource.insert(
             OfflineUpdateResult(

@@ -19,7 +19,7 @@ import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import net.sigmabeta.sage.ui.StringProvider
 
 @ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
@@ -33,7 +33,7 @@ class OfflineUpdatesViewModel @Inject constructor(
     override val eventDispatcher: EventDispatcher,
     override val showDebugProvider: ShowDebugProvider,
     private val offlineRepository: OfflineRepository,
-    private val threeTenTime: ThreeTenTime,
+    private val threeTenTime: TimeProvider,
 ) : VglsListViewModel<State>() {
     override val screenIdentifier = VglsAnalyticsScreen.OFFLINE_UPDATES
 

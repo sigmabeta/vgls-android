@@ -33,14 +33,14 @@ import kotlinx.coroutines.flow.take
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.logging.Hatchet
-import net.sigmabeta.sage.time.ThreeTenTime
-import org.threeten.bp.Instant
+import net.sigmabeta.sage.time.TimeProvider
+import kotlin.time.Instant
 import java.util.Locale
 
 class DbUpdater(
     private val vglsApi: VglsApi,
     private val transactionRunner: TransactionRunner,
-    private val threeTen: ThreeTenTime,
+    private val threeTen: TimeProvider,
     private val dispatchers: SageDispatchers,
     private val hatchet: Hatchet,
     private val composerAliasDataSource: ComposerAliasDataSource,
@@ -164,7 +164,7 @@ class DbUpdater(
 
         val lastDbUpdate = Time(
             TimeType.LAST_DB_UPDATE.ordinal,
-            threeTen.now().toInstant().toEpochMilli()
+            threeTen.now().toEpochMilliseconds()
         )
 
         val removedSongs = dbSongs.asIdSet { it.id } - songs.asIdSet { it.id }
@@ -280,7 +280,7 @@ class DbUpdater(
     ) {
         val dbSong = dbSongsMap[apiSong.id]
         val lastModifiedOnServer = apiSong.lastModified?.let {
-            runCatching { Instant.parse(it).toEpochMilli() }.getOrDefault(0L)
+            runCatching { Instant.parse(it).toEpochMilliseconds() }.getOrDefault(0L)
         } ?: 0L
         val song = apiSong.asModel(
             apiGame.game_id,

@@ -21,7 +21,7 @@ import net.sigmabeta.sage.components.SheetPageListModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.pdf.PdfConfigById
-import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.time.TimeProvider
 import net.sigmabeta.sage.ui.StringProvider
 import dev.zacsweers.metro.Inject
 
@@ -29,7 +29,7 @@ class NeverPlayedSongModule @Inject constructor(
     private val randomRepository: RandomRepository,
     private val songHistoryRepository: SongHistoryRepository,
     private val stringProvider: StringProvider,
-    private val threeTenTime: ThreeTenTime,
+    private val threeTenTime: TimeProvider,
     delayManager: DelayManager,
 ) : HomeModule(
     priority = Priority.LOW,
