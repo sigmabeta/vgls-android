@@ -11,38 +11,52 @@ import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
 import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.SongRepository
+import com.vgleadsheets.viewmodel.list.VglsListViewModel
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.SageScheduler
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
 
-class GameDetailViewModelBrain(
+@AssistedInject
+class GameDetailViewModel(
+    @Assisted private val idArg: Long,
+    override val stringProvider: StringProvider,
+    override val analytics: VglsAnalytics,
+    override val hatchet: Hatchet,
+    override val dispatchers: SageDispatchers,
+    override val delayManager: DelayManager,
+    override val eventDispatcher: EventDispatcher,
+    override val showDebugProvider: ShowDebugProvider,
     private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
     private val favoriteRepository: FavoriteRepository,
     private val offlineRepository: OfflineRepository,
-    private val scheduler: SageScheduler,
-    private val analytics: VglsAnalytics,
-    stringProvider: StringProvider,
-    hatchet: Hatchet,
-) : ListViewModelBrain(
-    stringProvider,
-    analytics,
-    hatchet,
-    scheduler,
-) {
+) : VglsListViewModel<State>() {
     override val screenIdentifier = VglsAnalyticsScreen.DETAIL_GAME
 
     override fun initialState() = State()
+
+    init {
+        sendAction(SageAction.InitWithId(idArg))
+    }
 
     override fun handleAction(action: SageAction) {
         when (action) {
@@ -84,7 +98,6 @@ class GameDetailViewModelBrain(
     private fun fetchComposers() {
         updateComposers(LCE.Loading(LOAD_OPERATION_COMPOSERS))
         internalUiState
-            .map { it as State }
             .map { state -> state.songs }
             .map { songs -> songLCEtoComposerLCE(songs) }
             .catch { updateComposers(LCE.Error(LOAD_OPERATION_COMPOSERS, it)) }
@@ -128,7 +141,7 @@ class GameDetailViewModelBrain(
     }
 
     private fun onAddFavoriteClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val game = state.game
         if (game !is LCE.Content) return
 
@@ -139,7 +152,7 @@ class GameDetailViewModelBrain(
     }
 
     private fun onRemoveFavoriteClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val game = state.game
         if (game !is LCE.Content) return
 
@@ -150,7 +163,7 @@ class GameDetailViewModelBrain(
     }
 
     private fun onEnableOfflineClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val game = state.game
         if (game !is LCE.Content) return
 
@@ -161,7 +174,7 @@ class GameDetailViewModelBrain(
     }
 
     private fun onDisableOfflineClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val game = state.game
         if (game !is LCE.Content) return
 
@@ -199,7 +212,7 @@ class GameDetailViewModelBrain(
         }
 
         updateState {
-            (it as State).copy(
+            it.copy(
                 game = game
             )
         }
@@ -207,7 +220,7 @@ class GameDetailViewModelBrain(
 
     private fun updateIsAvailableOffline(isAvailableOffline: LCE<Boolean>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 isAvailableOffline = isAvailableOffline
             )
         }
@@ -215,7 +228,7 @@ class GameDetailViewModelBrain(
 
     private fun updateSongs(songs: LCE<List<Song>>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 songs = songs
             )
         }
@@ -223,7 +236,7 @@ class GameDetailViewModelBrain(
 
     private fun updateComposers(composers: LCE<List<Composer>>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 composers = composers
             )
         }
@@ -231,10 +244,17 @@ class GameDetailViewModelBrain(
 
     private fun updateIsFavorite(isFavorite: LCE<Boolean>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 isFavorite = isFavorite
             )
         }
+    }
+
+    @AssistedFactory
+    @ManualViewModelAssistedFactoryKey(Factory::class)
+    @ContributesIntoMap(AppScope::class)
+    fun interface Factory : ManualViewModelAssistedFactory {
+        fun create(@Assisted idArg: Long): GameDetailViewModel
     }
 
     companion object {

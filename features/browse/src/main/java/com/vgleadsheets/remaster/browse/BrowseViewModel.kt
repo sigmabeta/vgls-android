@@ -1,33 +1,46 @@
 package com.vgleadsheets.remaster.browse
 
+import androidx.lifecycle.ViewModel
 import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.viewmodel.list.VglsListViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.onEach
 import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.SageScheduler
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
 
-class BrowseViewModelBrain(
+@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
+@ViewModelKey
+class BrowseViewModel @Inject constructor(
+    override val stringProvider: StringProvider,
+    override val analytics: Analytics,
+    override val hatchet: Hatchet,
+    override val dispatchers: SageDispatchers,
+    override val delayManager: DelayManager,
+    override val eventDispatcher: EventDispatcher,
+    override val showDebugProvider: ShowDebugProvider,
     private val tagRepository: TagRepository,
-    private val analytics: Analytics,
-    stringProvider: StringProvider,
-    hatchet: Hatchet,
-    scheduler: SageScheduler,
-) : ListViewModelBrain(
-    stringProvider,
-    analytics,
-    hatchet,
-    scheduler,
-) {
+) : VglsListViewModel<State>() {
     override val screenIdentifier = VglsAnalyticsScreen.BROWSE
 
     override fun initialState() = State()
+
+    init {
+        sendAction(SageAction.InitNoArgs)
+    }
 
     override fun handleAction(action: SageAction) {
         when (action) {
@@ -53,7 +66,7 @@ class BrowseViewModelBrain(
 
     private fun updatePublishDateId(id: LCE<Long?>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 publishDateId = id
             )
         }

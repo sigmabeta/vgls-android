@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.menu
 
+import androidx.lifecycle.ViewModel
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
@@ -7,24 +8,41 @@ import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
+import com.vgleadsheets.viewmodel.list.VglsListViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.analytics.AnalyticsScreen
+import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.appinfo.AppInfo
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.SageScheduler
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.DebugSettingsManager
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
 
-class MenuViewModelBrain(
+@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
+@ViewModelKey
+class MenuViewModel @Inject constructor(
+    override val stringProvider: StringProvider,
+    override val analytics: Analytics,
+    override val hatchet: Hatchet,
+    override val dispatchers: SageDispatchers,
+    override val delayManager: DelayManager,
+    override val eventDispatcher: EventDispatcher,
+    override val showDebugProvider: ShowDebugProvider,
     private val dbUpdater: DbUpdater,
     private val songHistoryRepository: SongHistoryRepository,
     private val generalSettingsManager: GeneralSettingsManager,
@@ -33,20 +51,15 @@ class MenuViewModelBrain(
     private val userContentMigrator: UserContentMigrator,
     private val appInfo: AppInfo,
     private val threeTenTime: ThreeTenTime,
-    private val analytics: Analytics,
-    stringProvider: StringProvider,
-    private val hatchet: Hatchet,
-    private val scheduler: SageScheduler,
     private val offlineWorkScheduler: OfflineWorkScheduler,
-) : ListViewModelBrain(
-    stringProvider,
-    analytics,
-    hatchet,
-    scheduler,
-) {
+) : VglsListViewModel<State>() {
     override val screenIdentifier = AnalyticsScreen.SETTINGS
 
     override fun initialState() = State()
+
+    init {
+        sendAction(SageAction.InitNoArgs)
+    }
 
     override fun handleAction(action: SageAction) {
         when (action) {
@@ -78,7 +91,7 @@ class MenuViewModelBrain(
 
     private fun onCheckUpdatesClicked() {
         offlineWorkScheduler.scheduleDownload()
-        updateState { (it as State).copy(refreshCheckStatus = LCE.Content(Unit)) }
+        updateState { it.copy(refreshCheckStatus = LCE.Content(Unit)) }
         emitEvent(
             SageEvent.ShowSnackbar(
                 "Update job enqueued!",
@@ -90,13 +103,13 @@ class MenuViewModelBrain(
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     private fun onClearUsageClicked() {
-        updateState { (it as State).copy(usageDbClearStatus = LCE.Loading("clearUsage")) }
+        updateState { it.copy(usageDbClearStatus = LCE.Loading("clearUsage")) }
 
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             try {
                 songHistoryRepository.clearUsage()
 
-                updateState { (it as State).copy(usageDbClearStatus = LCE.Content(Unit)) }
+                updateState { it.copy(usageDbClearStatus = LCE.Content(Unit)) }
                 emitEvent(
                     SageEvent.ShowSnackbar(
                         "Usage history clear successful!",
@@ -112,13 +125,13 @@ class MenuViewModelBrain(
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     private fun onClearSheetsClicked() {
-        updateState { (it as State).copy(sheetDbClearStatus = LCE.Loading("clearSheets")) }
+        updateState { it.copy(sheetDbClearStatus = LCE.Loading("clearSheets")) }
 
         scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
             try {
                 dbUpdater.clearSheets()
 
-                updateState { (it as State).copy(sheetDbClearStatus = LCE.Content(Unit)) }
+                updateState { it.copy(sheetDbClearStatus = LCE.Content(Unit)) }
                 emitEvent(
                     SageEvent.ShowSnackbar(
                         "Sheet database clear successful!",
@@ -133,7 +146,7 @@ class MenuViewModelBrain(
     }
 
     private fun onKeepScreenOnClicked() {
-        val oldValue = (internalUiState.value as State).keepScreenOn ?: return
+        val oldValue = internalUiState.value.keepScreenOn ?: return
         generalSettingsManager.setKeepScreenOn(!oldValue)
     }
 
@@ -163,9 +176,9 @@ class MenuViewModelBrain(
 
     @Suppress("MagicNumber")
     private fun onBuildDateClicked() {
-        val oldValue = (internalUiState.value as State).debugClickCount
+        val oldValue = internalUiState.value.debugClickCount
         val newValue = oldValue + 1
-        updateState { (it as State).copy(debugClickCount = newValue) }
+        updateState { it.copy(debugClickCount = newValue) }
         if (newValue < 5) {
             return
         }
@@ -174,32 +187,32 @@ class MenuViewModelBrain(
     }
 
     private fun toggleShouldShowDebug() {
-        val oldValue = (internalUiState.value as State).shouldShowDebug ?: return
+        val oldValue = internalUiState.value.shouldShowDebug ?: return
         val newValue = !oldValue
         debugSettingsManager.setShouldShowDebug(newValue)
     }
 
     private fun onFakeApiClicked() {
-        val oldValue = (internalUiState.value as State).debugShouldUseFakeApi ?: return
-        updateState { (it as State).copy(debugShouldUseFakeApi = null) }
+        val oldValue = internalUiState.value.debugShouldUseFakeApi ?: return
+        updateState { it.copy(debugShouldUseFakeApi = null) }
         debugSettingsManager.setShouldUseFakeApi(!oldValue)
     }
 
     private fun onDebugDelayClicked() {
-        val oldValue = (internalUiState.value as State).debugShouldDelay ?: return
-        updateState { (it as State).copy(debugShouldDelay = null) }
+        val oldValue = internalUiState.value.debugShouldDelay ?: return
+        updateState { it.copy(debugShouldDelay = null) }
         debugSettingsManager.setShouldDelay(!oldValue)
     }
 
     private fun onDebugShowNavSnackbarsClicked() {
-        val oldValue = (internalUiState.value as State).debugShouldShowNavSnackbars ?: return
-        updateState { (it as State).copy(debugShouldShowNavSnackbars = null) }
+        val oldValue = internalUiState.value.debugShouldShowNavSnackbars ?: return
+        updateState { it.copy(debugShouldShowNavSnackbars = null) }
         debugSettingsManager.setShouldShowSnackbars(!oldValue)
     }
 
     private fun onDebugRenderOverlayClicked() {
-        val oldValue = (internalUiState.value as State).debugShouldShowRenderOverlay ?: return
-        updateState { (it as State).copy(debugShouldShowRenderOverlay = null) }
+        val oldValue = internalUiState.value.debugShouldShowRenderOverlay ?: return
+        updateState { it.copy(debugShouldShowRenderOverlay = null) }
         debugSettingsManager.setShouldShowRenderOverlay(!oldValue)
     }
 
@@ -214,11 +227,11 @@ class MenuViewModelBrain(
     }
 
     private fun fetchAppInfo() {
-        updateState { (it as State).copy(appInfo = null) }
+        updateState { it.copy(appInfo = null) }
         flow { emit(Unit) }
             .onEach { _ ->
                 updateState {
-                    (it as State).copy(
+                    it.copy(
                         appInfo = appInfo,
                         formattedBuildDate = threeTenTime.longDateTextFromMillis(appInfo.buildTimeMs ?: 0)
                     )
@@ -228,67 +241,67 @@ class MenuViewModelBrain(
     }
 
     private fun fetchKeepScreenOn() {
-        updateState { (it as State).copy(keepScreenOn = null) }
+        updateState { it.copy(keepScreenOn = null) }
         generalSettingsManager
             .getKeepScreenOn()
             .onEach { value ->
-                updateState { (it as State).copy(keepScreenOn = value) }
+                updateState { it.copy(keepScreenOn = value) }
             }
             .runInBackground()
     }
 
     private fun fetchShouldShowDebug() {
-        updateState { (it as State).copy(shouldShowDebug = null) }
+        updateState { it.copy(shouldShowDebug = null) }
         debugSettingsManager
             .getShouldShowDebug()
             .onEach { value ->
-                updateState { (it as State).copy(shouldShowDebug = value) }
+                updateState { it.copy(shouldShowDebug = value) }
             }
             .runInBackground()
     }
 
     private fun fetchDebugShouldUseFakeApi() {
-        updateState { (it as State).copy(debugShouldUseFakeApi = null) }
+        updateState { it.copy(debugShouldUseFakeApi = null) }
         debugSettingsManager
             .getShouldUseFakeApi()
             .onEach { value ->
-                updateState { (it as State).copy(debugShouldUseFakeApi = value) }
+                updateState { it.copy(debugShouldUseFakeApi = value) }
             }
             .runInBackground()
     }
 
     private fun fetchDebugShouldDelay() {
-        updateState { (it as State).copy(debugShouldDelay = null) }
+        updateState { it.copy(debugShouldDelay = null) }
         debugSettingsManager
             .getShouldDelay()
             .onEach { value ->
-                updateState { (it as State).copy(debugShouldDelay = value) }
+                updateState { it.copy(debugShouldDelay = value) }
             }
             .runInBackground()
     }
 
     private fun fetchDebugShouldShowNavSnackbars() {
-        updateState { (it as State).copy(debugShouldShowNavSnackbars = null) }
+        updateState { it.copy(debugShouldShowNavSnackbars = null) }
         debugSettingsManager
             .getShouldShowSnackbars()
             .onEach { value ->
-                updateState { (it as State).copy(debugShouldShowNavSnackbars = value) }
+                updateState { it.copy(debugShouldShowNavSnackbars = value) }
             }
             .runInBackground()
     }
 
     private fun fetchDebugShouldShowRenderOverlay() {
-        updateState { (it as State).copy(debugShouldShowRenderOverlay = null) }
+        updateState { it.copy(debugShouldShowRenderOverlay = null) }
         debugSettingsManager
             .getShouldShowRenderOverlay()
             .onEach { value ->
-                updateState { (it as State).copy(debugShouldShowRenderOverlay = value) }
+                updateState { it.copy(debugShouldShowRenderOverlay = value) }
             }
             .runInBackground()
     }
 
     private fun onGenerateUserContentClicked() {
-        updateState { (it as State).copy(songRecordsGenerated = null) }
+        updateState { it.copy(songRecordsGenerated = null) }
         userContentGenerator
             .generateRandomUserData()
             .onEach { songsAdded ->
@@ -299,13 +312,13 @@ class MenuViewModelBrain(
                         source = "DebugMenu"
                     )
                 )
-                updateState { (it as State).copy(songRecordsGenerated = songsAdded) }
+                updateState { it.copy(songRecordsGenerated = songsAdded) }
             }
             .runInBackground()
     }
 
     private fun onGenerateUserContentLegacyClicked() {
-        updateState { (it as State).copy(songRecordsGeneratedLegacy = null) }
+        updateState { it.copy(songRecordsGeneratedLegacy = null) }
         userContentGenerator
             .generateRandomUserDataLegacy()
             .onEach { songsAdded ->
@@ -316,13 +329,13 @@ class MenuViewModelBrain(
                         source = "DebugMenu"
                     )
                 )
-                updateState { (it as State).copy(songRecordsGeneratedLegacy = songsAdded) }
+                updateState { it.copy(songRecordsGeneratedLegacy = songsAdded) }
             }
             .runInBackground()
     }
 
     private fun onMigrateUserContentLegacyClicked() {
-        updateState { (it as State).copy(songRecordsMigrated = null) }
+        updateState { it.copy(songRecordsMigrated = null) }
         userContentMigrator
             .migrateUserData()
             .onEach { songsAdded ->
@@ -333,7 +346,7 @@ class MenuViewModelBrain(
                         source = "DebugMenu"
                     )
                 )
-                updateState { (it as State).copy(songRecordsMigrated = songsAdded) }
+                updateState { it.copy(songRecordsMigrated = songsAdded) }
             }
             .runInBackground()
     }
@@ -351,9 +364,9 @@ class MenuViewModelBrain(
     }
 
     private fun onRunOfflineDownloadClicked() {
-        updateState { (it as State).copy(offlineDownloadStatus = LCE.Loading("offlineDownload")) }
+        updateState { it.copy(offlineDownloadStatus = LCE.Loading("offlineDownload")) }
         offlineWorkScheduler.scheduleDownload()
-        updateState { (it as State).copy(offlineDownloadStatus = LCE.Content(Unit)) }
+        updateState { it.copy(offlineDownloadStatus = LCE.Content(Unit)) }
         emitEvent(
             SageEvent.ShowSnackbar(
                 "Offline download job enqueued!",

@@ -1,11 +1,14 @@
 package com.vgleadsheets.remaster.songs.detail
 
+import com.vgleadsheets.analytics.VglsAnalytics
+import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.SongAlias
 import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.FavoriteRepository
 import com.vgleadsheets.repository.GameRepository
@@ -14,6 +17,13 @@ import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
 import com.vgleadsheets.urlinfo.UrlInfo
 import com.vgleadsheets.urlinfo.UrlInfoProvider
+import com.vgleadsheets.viewmodel.list.VglsListViewModel
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
@@ -24,38 +34,42 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import com.vgleadsheets.analytics.VglsAnalytics
-import com.vgleadsheets.analytics.VglsAnalyticsScreen
+import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.SageScheduler
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
-import com.vgleadsheets.nav.Destination
 import net.sigmabeta.sage.ui.StringProvider
 
-class SongDetailViewModelBrain(
+@AssistedInject
+class SongDetailViewModel(
+    @Assisted private val idArg: Long,
+    override val stringProvider: StringProvider,
+    override val analytics: VglsAnalytics,
+    override val hatchet: Hatchet,
+    override val dispatchers: SageDispatchers,
+    override val delayManager: DelayManager,
+    override val eventDispatcher: EventDispatcher,
+    override val showDebugProvider: ShowDebugProvider,
     private val songRepository: SongRepository,
     private val gameRepository: GameRepository,
     private val composerRepository: ComposerRepository,
     private val favoriteRepository: FavoriteRepository,
     private val offlineRepository: OfflineRepository,
     private val tagRepository: TagRepository,
-    private val scheduler: SageScheduler,
     private val urlInfoProvider: UrlInfoProvider,
-    private val analytics: VglsAnalytics,
-    stringProvider: StringProvider,
-    hatchet: Hatchet,
-) : ListViewModelBrain(
-    stringProvider,
-    analytics,
-    hatchet,
-    scheduler,
-) {
+) : VglsListViewModel<State>() {
     override val screenIdentifier = VglsAnalyticsScreen.DETAIL_SHEET
 
     override fun initialState() = State()
+
+    init {
+        sendAction(SageAction.InitWithId(idArg))
+    }
 
     override fun handleAction(action: SageAction) {
         when (action) {
@@ -134,7 +148,7 @@ class SongDetailViewModelBrain(
     private fun fetchGame() {
         updateGame(LCE.Loading(LOAD_OPERATION_GAME))
         internalUiState
-            .map { (it as State).song }
+            .map { it.song }
             .mapNotNull { it as? LCE.Content }
             .flatMapConcat { gameRepository.getGame(it.data.gameId) }
             .onEach { game -> updateGame(LCE.Content(game)) }
@@ -171,7 +185,6 @@ class SongDetailViewModelBrain(
 
     private fun setupAnalytics() {
         internalUiState
-            .map { it as State }
             .filter { it.song is LCE.Content && it.sheetUrlInfo is LCE.Content }
             .take(1)
             .onEach(::reportSongView)
@@ -196,7 +209,7 @@ class SongDetailViewModelBrain(
     }
 
     private fun onAddFavoriteClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val song = state.song
         if (song !is LCE.Content) return
 
@@ -207,7 +220,7 @@ class SongDetailViewModelBrain(
     }
 
     private fun onRemoveFavoriteClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val song = state.song
         if (song !is LCE.Content) return
 
@@ -218,7 +231,7 @@ class SongDetailViewModelBrain(
     }
 
     private fun onEnableOfflineClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val song = state.song
         if (song !is LCE.Content) return
 
@@ -229,7 +242,7 @@ class SongDetailViewModelBrain(
     }
 
     private fun onDisableOfflineClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val song = state.song
         if (song !is LCE.Content) return
 
@@ -240,7 +253,7 @@ class SongDetailViewModelBrain(
     }
 
     private fun onToggleAltSelectedClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val song = state.song
         if (song !is LCE.Content) return
 
@@ -250,7 +263,7 @@ class SongDetailViewModelBrain(
     }
 
     private fun onSearchYoutubeClicked() {
-        val state = internalUiState.value as State
+        val state = internalUiState.value
         val song = state.song
         if (song !is LCE.Content) return
         val query = "${song.data.gameName} - ${song.data.name} Music"
@@ -287,7 +300,7 @@ class SongDetailViewModelBrain(
 
     private fun updateSong(song: LCE<Song>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 song = song
             )
         }
@@ -295,7 +308,7 @@ class SongDetailViewModelBrain(
 
     private fun updateUrlInfo(urlInfo: LCE<UrlInfo>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 sheetUrlInfo = urlInfo
             )
         }
@@ -303,7 +316,7 @@ class SongDetailViewModelBrain(
 
     private fun updateGame(game: LCE<Game>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 game = game
             )
         }
@@ -311,7 +324,7 @@ class SongDetailViewModelBrain(
 
     private fun updateComposers(composers: LCE<List<Composer>>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 composers = composers
             )
         }
@@ -319,7 +332,7 @@ class SongDetailViewModelBrain(
 
     private fun updateAliases(alias: LCE<List<SongAlias>>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 songAliases = alias
             )
         }
@@ -327,7 +340,7 @@ class SongDetailViewModelBrain(
 
     private fun updateTagValues(tagValues: LCE<List<TagValue>>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 tagValues = tagValues
             )
         }
@@ -335,7 +348,7 @@ class SongDetailViewModelBrain(
 
     private fun updateIsAvailableOffline(isAvailableOffline: LCE<Boolean>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 isAvailableOffline = isAvailableOffline
             )
         }
@@ -343,7 +356,7 @@ class SongDetailViewModelBrain(
 
     private fun updateIsFavorite(isFavorite: LCE<Boolean>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 isFavorite = isFavorite
             )
         }
@@ -351,7 +364,7 @@ class SongDetailViewModelBrain(
 
     private fun updateIsAltSelected(isAltSelected: LCE<Boolean>) {
         updateState {
-            (it as State).copy(
+            it.copy(
                 isAltSelected = isAltSelected
             )
         }
@@ -361,6 +374,13 @@ class SongDetailViewModelBrain(
         data.partId
     } else {
         null
+    }
+
+    @AssistedFactory
+    @ManualViewModelAssistedFactoryKey(Factory::class)
+    @ContributesIntoMap(AppScope::class)
+    fun interface Factory : ManualViewModelAssistedFactory {
+        fun create(@Assisted idArg: Long): SongDetailViewModel
     }
 
     companion object {
