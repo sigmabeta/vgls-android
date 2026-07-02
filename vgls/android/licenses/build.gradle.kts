@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
     alias(libs.plugins.sage.compose.android)
 }
 
@@ -9,7 +9,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.metrox.viewmodel.compose)
 
     api(libs.webview)
     api(libs.androidx.navigation.compose)

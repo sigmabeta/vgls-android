@@ -21,96 +21,96 @@ import com.vgleadsheets.conversion.android.converter.SongPlayCountConverter
 import com.vgleadsheets.conversion.android.converter.TagKeyConverter
 import com.vgleadsheets.conversion.android.converter.TagValueConverter
 import com.vgleadsheets.conversion.android.converter.TagValuePlayCountConverter
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object ConverterModule {
     @Provides
-    @Singleton
-    fun composerAliasConverter() = ComposerAliasConverter()
+    @SingleIn(AppScope::class)
+    fun composerAliasConverter(): ComposerAliasConverter = ComposerAliasConverter()
 
     @Provides
-    @Singleton
-    fun composerComposerConverter() = ComposerConverter()
+    @SingleIn(AppScope::class)
+    fun composerComposerConverter(): ComposerConverter = ComposerConverter()
 
     @Provides
-    @Singleton
-    fun composerGameAliasConverter() = GameAliasConverter()
+    @SingleIn(AppScope::class)
+    fun composerGameAliasConverter(): GameAliasConverter = GameAliasConverter()
 
     @Provides
-    @Singleton
-    fun composerGameConverter() = GameConverter()
+    @SingleIn(AppScope::class)
+    fun composerGameConverter(): GameConverter = GameConverter()
 
     @Provides
-    @Singleton
-    fun composerSongConverter() = SongConverter()
+    @SingleIn(AppScope::class)
+    fun composerSongConverter(): SongConverter = SongConverter()
 
     @Provides
-    @Singleton
-    fun composerTagKeyConverter() = TagKeyConverter()
+    @SingleIn(AppScope::class)
+    fun composerTagKeyConverter(): TagKeyConverter = TagKeyConverter()
 
     @Provides
-    @Singleton
-    fun composerTagValueConverter() = TagValueConverter()
+    @SingleIn(AppScope::class)
+    fun composerTagValueConverter(): TagValueConverter = TagValueConverter()
 
     @Provides
-    @Singleton
-    fun composerSongAliasConverter() = SongAliasConverter()
+    @SingleIn(AppScope::class)
+    fun composerSongAliasConverter(): SongAliasConverter = SongAliasConverter()
 
     @Provides
-    @Singleton
-    fun songHistoryConverter() = SongHistoryConverter()
+    @SingleIn(AppScope::class)
+    fun songHistoryConverter(): SongHistoryConverter = SongHistoryConverter()
 
     @Provides
-    @Singleton
-    fun gamePlayCountConverter() = GamePlayCountConverter()
+    @SingleIn(AppScope::class)
+    fun gamePlayCountConverter(): GamePlayCountConverter = GamePlayCountConverter()
 
     @Provides
-    @Singleton
-    fun composerPlayCountConverter() = ComposerPlayCountConverter()
+    @SingleIn(AppScope::class)
+    fun composerPlayCountConverter(): ComposerPlayCountConverter = ComposerPlayCountConverter()
 
     @Provides
-    @Singleton
-    fun tagValuePlayCountConverter() = TagValuePlayCountConverter()
+    @SingleIn(AppScope::class)
+    fun tagValuePlayCountConverter(): TagValuePlayCountConverter = TagValuePlayCountConverter()
 
     @Provides
-    @Singleton
-    fun songPlayCountConverter() = SongPlayCountConverter()
+    @SingleIn(AppScope::class)
+    fun songPlayCountConverter(): SongPlayCountConverter = SongPlayCountConverter()
 
     @Provides
-    @Singleton
-    fun searchHistoryConverter() = SearchHistoryConverter()
+    @SingleIn(AppScope::class)
+    fun searchHistoryConverter(): SearchHistoryConverter = SearchHistoryConverter()
 
     @Provides
-    @Singleton
-    fun favoriteSongConverter() = FavoriteSongConverter()
+    @SingleIn(AppScope::class)
+    fun favoriteSongConverter(): FavoriteSongConverter = FavoriteSongConverter()
 
     @Provides
-    @Singleton
-    fun favoriteGameConverter() = FavoriteGameConverter()
+    @SingleIn(AppScope::class)
+    fun favoriteGameConverter(): FavoriteGameConverter = FavoriteGameConverter()
 
     @Provides
-    @Singleton
-    fun favoriteComposerConverter() = FavoriteComposerConverter()
+    @SingleIn(AppScope::class)
+    fun favoriteComposerConverter(): FavoriteComposerConverter = FavoriteComposerConverter()
 
     @Provides
-    @Singleton
-    fun offlineSongConverter() = OfflineSongConverter()
+    @SingleIn(AppScope::class)
+    fun offlineSongConverter(): OfflineSongConverter = OfflineSongConverter()
 
     @Provides
-    @Singleton
-    fun offlineComposerConverter() = OfflineComposerConverter()
+    @SingleIn(AppScope::class)
+    fun offlineComposerConverter(): OfflineComposerConverter = OfflineComposerConverter()
 
     @Provides
-    @Singleton
-    fun offlineGameConverter() = OfflineGameConverter()
+    @SingleIn(AppScope::class)
+    fun offlineGameConverter(): OfflineGameConverter = OfflineGameConverter()
 
     @Provides
-    @Singleton
-    fun offlineUpdateResultConverter() = OfflineUpdateResultConverter()
+    @SingleIn(AppScope::class)
+    fun offlineUpdateResultConverter(): OfflineUpdateResultConverter = OfflineUpdateResultConverter()
 }

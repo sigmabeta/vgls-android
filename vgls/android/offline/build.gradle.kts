@@ -1,10 +1,12 @@
 plugins {
     alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.di.worker.android)
 }
 
 dependencies {
     implementation(projects.vgls.common.offline)
+    // WorkManager runtime (OfflineDownloadWorker/WorkManagerOfflineWorkScheduler); the worker is a
+    // plain CoroutineWorker instantiated by VglsWorkerFactory now — no Hilt-work integration.
+    implementation(libs.androidx.work.manager)
 }
 
 android {

@@ -12,41 +12,42 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.viewModelScope
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.nav.SystemUiVisibility
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import com.vgleadsheets.pdf.subsample.PdfSubsampleSource
-import net.sigmabeta.sage.android.perf.LocalLogger
+import net.sigmabeta.sage.ui.perf.LocalLogger
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.scaffold.systemui.SystemUiState
 import com.vgleadsheets.scaffold.systemui.SystemUiViewModel
 import com.vgleadsheets.ui.theme.AppTheme
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 
-@AndroidEntryPoint
 class RemasteredActivity : ComponentActivity() {
-    @Inject
-    lateinit var hatchet: Hatchet
+    // The Application implements ActivityGraph; this replaces Hilt's @AndroidEntryPoint member injection.
+    private val activityGraph: ActivityGraph get() = application as ActivityGraph
 
-    @Inject
-    lateinit var activityDependencyInitializer: ActivityDependencyInitializer
+    private val hatchet: Hatchet get() = activityGraph.hatchet
+    private val pdfSubsampleSourceFactory: PdfSubsampleSource.Factory
+        get() = activityGraph.pdfSubsampleSourceFactory
 
-    @Inject
-    lateinit var pdfSubsampleSourceFactory: PdfSubsampleSource.Factory
+    private val navViewModel: NavViewModel by viewModels { activityGraph.metroViewModelFactory }
 
-    private val navViewModel: NavViewModel by viewModels()
-
-    private val systemUiViewModel: SystemUiViewModel by viewModels()
+    private val systemUiViewModel: SystemUiViewModel by viewModels { activityGraph.metroViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Bind this Activity so the (AppScope) wake-lock manager can toggle its window flags, and
+        // touch the dependency initializer to preserve its former eager (Hilt-injected) side effects.
+        activityGraph.bindActivity(this)
+        activityGraph.activityDependencyInitializer
 
         installSplashScreen()
         setupEdgeToEdge()
@@ -59,7 +60,10 @@ class RemasteredActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                CompositionLocalProvider(LocalPdfSubsampler provides pdfSubsampleSourceFactory) {
+                CompositionLocalProvider(
+                    LocalPdfSubsampler provides pdfSubsampleSourceFactory,
+                    LocalMetroViewModelFactory provides activityGraph.metroViewModelFactory,
+                ) {
                     CompositionLocalProvider(LocalLogger provides hatchet) {
                         RemasterAppUi(
                             modifier = Modifier
@@ -69,6 +73,11 @@ class RemasteredActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        activityGraph.unbindActivity()
+        super.onDestroy()
     }
 
     private fun restartApp() {

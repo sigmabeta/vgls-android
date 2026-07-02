@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.vgls.feature.compose.android)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
 }
 
 dependencies {
-    implementation(libs.sage.common.ui.icons)
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.sage.common.ui.iconsReal)
     implementation(projects.vgls.common.strings)
 }
 

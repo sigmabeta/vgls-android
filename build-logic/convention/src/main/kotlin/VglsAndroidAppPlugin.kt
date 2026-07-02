@@ -11,7 +11,6 @@ class VglsAndroidAppPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.application")
-                apply("dagger.hilt.android.plugin")
             }
 
             extensions.configure<ApplicationExtension> {

@@ -2,28 +2,27 @@ package com.vgleadsheets.di
 
 import android.content.Context
 import com.vgleadsheets.network.VglsApi
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import net.sigmabeta.sage.android.connectivity.AndroidNetworkStatusProvider
 import net.sigmabeta.sage.connectivity.NetworkStatusProvider
 import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
-import javax.inject.Named
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object ConnectivityModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideNetworkStatusProvider(
-        @ApplicationContext context: Context,
+        context: Context,
         hatchet: Hatchet,
         @Named("ProbeOkHttp") probeClient: OkHttpClient,
         @Named("VglsApiUrl") apiBaseUrl: String?,

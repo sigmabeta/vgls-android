@@ -1,12 +1,13 @@
 plugins {
     alias(libs.plugins.sage.android)
     alias(libs.plugins.sage.compose.android)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
 }
 
 dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.metrox.viewmodel)
 
     api(projects.vgls.android.viewmodel)
 

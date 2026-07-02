@@ -33,7 +33,7 @@ import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ImageNameListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.pdf.PdfConfigById
-import net.sigmabeta.sage.perf.BuildConfig
+import net.sigmabeta.sage.ui.perf.isPerfMeasurementEnabled
 import net.sigmabeta.sage.ui.Icon
 import kotlin.math.roundToInt
 
@@ -89,7 +89,7 @@ fun ImageNameListItem(
                         )
                     )
                 } to Modifier.background(
-                    if (BuildConfig.DEBUG) {
+                    if (isPerfMeasurementEnabled) {
                         Color(1f, 1f, 0.8f, 1f)
                     } else {
                         Color.White

@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.sage.android)
     alias(libs.plugins.sage.compose.android)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
 }
 
 dependencies {
@@ -17,6 +17,8 @@ dependencies {
     api(projects.vgls.common.urlinfo)
 
     implementation(libs.sage.common.ui.components)
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.metrox.viewmodel.compose)
 }
 
 android {

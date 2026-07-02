@@ -18,7 +18,6 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 class WakeLockManagerImpl(
-    private val activity: Activity,
     private val eventDispatcher: EventDispatcher,
     private val coroutineScope: CoroutineScope,
     private val dispatchers: SageDispatchers,
@@ -26,6 +25,17 @@ class WakeLockManagerImpl(
 ) : WakeLockManager,
     ActionSink {
     private var screenOnTimerJob: Job? = null
+
+    /**
+     * The current foreground Activity, set by `RemasteredActivity` via `ActivityGraph.bindActivity`.
+     * Was a constructor-injected `Activity` under Hilt's activity scope; now nullable + app-scoped
+     * because the Metro graph is single-scope (AppScope) with no activity component.
+     */
+    private var boundActivity: Activity? = null
+
+    fun bindActivity(activity: Activity?) {
+        boundActivity = activity
+    }
 
     override fun keepScreenOn() {
         startTimer()
@@ -56,14 +66,14 @@ class WakeLockManagerImpl(
 
     private fun endTimer() {
         coroutineScope.launch(dispatchers.main) {
-            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            boundActivity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             screenOnTimerJob?.cancel()
         }
     }
 
     private suspend fun timerImpl() {
         withContext(dispatchers.main) {
-            activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            boundActivity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
         delay(DURATION_SCREEN_ON)
 

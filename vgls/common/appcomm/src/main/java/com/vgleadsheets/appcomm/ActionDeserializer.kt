@@ -3,10 +3,11 @@ package com.vgleadsheets.appcomm
 import net.sigmabeta.sage.appcomm.GenericAction
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.logging.Hatchet
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
 
-@Singleton
+@SingleIn(AppScope::class)
 class ActionDeserializer @Inject constructor(
     private val hatchet: Hatchet,
 ) {

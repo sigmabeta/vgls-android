@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
-import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import com.vgleadsheets.bitmaps.SheetConstants
 import net.sigmabeta.sage.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.previews.PreviewSheet
@@ -36,7 +36,7 @@ import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
-import net.sigmabeta.sage.perf.BuildConfig
+import net.sigmabeta.sage.ui.perf.isPerfMeasurementEnabled
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.strings.imageLoadErrorStringId
 import com.vgleadsheets.ui.theme.AppTheme
@@ -180,7 +180,7 @@ private fun BoxScope.Content(
 @Suppress("MagicNumber")
 @Composable
 private fun Modifier.bgModifier(): Modifier {
-    val bgColor = if (BuildConfig.DEBUG) {
+    val bgColor = if (isPerfMeasurementEnabled) {
         Color(1f, 1f, 0.8f, 1f)
     } else {
         Color.White

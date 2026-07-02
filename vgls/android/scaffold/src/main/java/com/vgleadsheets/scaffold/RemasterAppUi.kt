@@ -19,7 +19,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -34,6 +33,7 @@ import com.vgleadsheets.topbar.TopBarViewModel
 import com.vgleadsheets.ui.licenses.licensesScreenNavEntry
 import com.vgleadsheets.ui.list.listScreenEntry
 import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.list.WidthClass
@@ -60,14 +60,14 @@ fun RemasterAppUi(
         }
     }
 
-    val navViewModel = hiltViewModel<NavViewModel>()
+    val navViewModel = metroViewModel<NavViewModel>()
 
     navViewModel.navController = navController
     navViewModel.snackbarScope = snackbarScope
     navViewModel.snackbarHostState = snackbarHostState
     navViewModel.topBarExpander = topBarExpander
 
-    val topBarViewModel: TopBarViewModel = hiltViewModel()
+    val topBarViewModel: TopBarViewModel = metroViewModel()
     val topBarVmState by topBarViewModel.uiState.collectAsState()
     val topBarConfig = TopBarConfig(
         state = topBarVmState,
@@ -75,7 +75,7 @@ fun RemasterAppUi(
         handleAction = remember { { action: SageAction -> topBarViewModel.sendAction(action) } },
     )
 
-    val navBarViewModel: NavBarViewModel = hiltViewModel()
+    val navBarViewModel: NavBarViewModel = metroViewModel()
     val bottomBarVmState by navBarViewModel.uiState.collectAsState()
 
     val adaptiveInfo = currentWindowAdaptiveInfo()

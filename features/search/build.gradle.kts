@@ -1,14 +1,15 @@
 plugins {
     alias(libs.plugins.vgls.feature.compose.android)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
 }
 
 dependencies {
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.metrox.viewmodel.compose)
 
     implementation(projects.vgls.android.pdf)
-    implementation(libs.sage.android.ui.icons)
+    implementation(libs.sage.common.ui.iconsReal)
     implementation(projects.vgls.android.ui.list)
     implementation(projects.vgls.android.strings)
 

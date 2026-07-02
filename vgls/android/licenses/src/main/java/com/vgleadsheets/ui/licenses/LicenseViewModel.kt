@@ -1,8 +1,12 @@
 package com.vgleadsheets.ui.licenses
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.analytics.AnalyticsScreen
@@ -11,12 +15,13 @@ import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
-import javax.inject.Inject
 
-@HiltViewModel
+@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
+@ViewModelKey
 class LicenseViewModel @Inject constructor(
     override val hatchet: Hatchet,
     override val dispatchers: SageDispatchers,

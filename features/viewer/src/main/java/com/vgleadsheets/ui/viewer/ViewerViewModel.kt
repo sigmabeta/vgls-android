@@ -7,8 +7,12 @@ import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
@@ -31,6 +35,7 @@ import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.GeneralSettingsManager
@@ -367,6 +372,16 @@ class ViewerViewModel @AssistedInject constructor(
         maybeRestartScreenOnTimer()
         showButtons()
         startHideButtonsTimer()
+    }
+
+    @AssistedFactory
+    @ManualViewModelAssistedFactoryKey(Factory::class)
+    @ContributesIntoMap(AppScope::class)
+    fun interface Factory : ManualViewModelAssistedFactory {
+        fun create(
+            @Assisted("id") idArg: Long,
+            @Assisted("page") pageArg: Long,
+        ): ViewerViewModel
     }
 
     companion object {

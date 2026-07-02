@@ -15,11 +15,11 @@ import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.id
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.versions.AppVersionManager
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
@@ -35,26 +35,25 @@ import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.settings.environment.EnvironmentManager
 import net.sigmabeta.sage.storage.common.Storage
 import net.sigmabeta.sage.time.ThreeTenTime
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.ui.StringProvider
 import net.sigmabeta.sage.ui.strings.AndroidStringProvider
-import javax.inject.Named
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object AppModule {
     @Provides
-    @Singleton
-    fun provideStringProvider(@ApplicationContext context: Context): StringProvider = AndroidStringProvider(context.resources) { (it as VglsStringId).id() }
+    @SingleIn(AppScope::class)
+    fun provideStringProvider(context: Context): StringProvider = AndroidStringProvider(context.resources) { (it as VglsStringId).id() }
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Named("CachePath") // Oh I love that app, it lets you send money to ppl
-    fun provideCachePath(@ApplicationContext context: Context): String = context.cacheDir.absolutePath
+    fun provideCachePath(context: Context): String = context.cacheDir.absolutePath
 
     @Provides
-    @Singleton
-    fun provideAppInfo() = AppInfo(
+    @SingleIn(AppScope::class)
+    fun provideAppInfo(): AppInfo = AppInfo(
         isDebug = BuildConfig.DEBUG,
         versionName = BuildConfig.VERSION_NAME,
         versionCode = BuildConfig.VERSION_CODE,
@@ -63,49 +62,49 @@ object AppModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideShowDebugProvider(
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
-    ) = ShowDebugProvider(
+    ): ShowDebugProvider = ShowDebugProvider(
         debugSettingsManager,
         coroutineScope,
         dispatchers,
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideRenderOverlayProvider(
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
-    ) = RenderOverlayProvider(
+    ): RenderOverlayProvider = RenderOverlayProvider(
         debugSettingsManager,
         coroutineScope,
         dispatchers,
     )
 
     @Provides
-    @Singleton
-    fun provideTime(@ApplicationContext context: Context): ThreeTenTime = ThreeTenImpl(
+    @SingleIn(AppScope::class)
+    fun provideTime(context: Context): ThreeTenTime = ThreeTenImpl(
         context,
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Named(NotifManager.DEP_NAME_JSON_ADAPTER_NOTIF)
     fun provideNotifJsonAdapter(moshi: Moshi): JsonAdapter<NotifState> = moshi.adapter(NotifState::class.java)
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideNotifManager(
         storage: Storage,
         @Named(NotifManager.DEP_NAME_JSON_ADAPTER_NOTIF) jsonAdapter: JsonAdapter<NotifState>,
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
         hatchet: Hatchet,
-    ) = NotifManager(
+    ): NotifManager = NotifManager(
         storage = storage,
         notifStateJsonAdapter = jsonAdapter,
         coroutineScope = coroutineScope,
@@ -114,7 +113,7 @@ object AppModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideAppVersionManager(
         storage: Storage,
         updateManager: UpdateManager,
@@ -123,7 +122,7 @@ object AppModule {
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
         hatchet: Hatchet,
-    ) = AppVersionManager(
+    ): AppVersionManager = AppVersionManager(
         storage = storage,
         updateManager = updateManager,
         notifManager = notifManager,
@@ -135,7 +134,7 @@ object AppModule {
 
     // TODO this should only happen in debug builds; in release builds it should be a no-op
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideEnvironmentManager(
         storage: Storage
     ): EnvironmentManager = EnvironmentManager(
@@ -145,7 +144,7 @@ object AppModule {
         )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideGeneralSettingsManager(
         storage: Storage
     ): GeneralSettingsManager = GeneralSettingsManager(
@@ -153,7 +152,7 @@ object AppModule {
         )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideDebugSettingsManager(
         storage: Storage
     ): DebugSettingsManager = DebugSettingsManager(
@@ -161,7 +160,7 @@ object AppModule {
         )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideSelectedPartManager(
         storage: Storage
     ): SelectedPartManager = SelectedPartManager(
@@ -169,14 +168,14 @@ object AppModule {
         )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideUrlInfoProvider(
         environmentManager: EnvironmentManager,
         partManager: SelectedPartManager,
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers
-    ) = UrlInfoProvider(
+    ): UrlInfoProvider = UrlInfoProvider(
         environmentManager,
         partManager,
         debugSettingsManager,
@@ -185,7 +184,7 @@ object AppModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideDispatcherConfigProvider(
         debugSettingsManager: DebugSettingsManager,
         coroutineScope: CoroutineScope,
@@ -197,7 +196,7 @@ object AppModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideEventDispatcher(
         analytics: Analytics
     ): EventDispatcher = EventDispatcherReal(
@@ -205,8 +204,8 @@ object AppModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Named("RunningTest")
     @Suppress("FunctionOnlyReturningConstant")
-    fun provideRunningTest() = false
+    fun provideRunningTest(): Boolean = false
 }

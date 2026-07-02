@@ -1,22 +1,22 @@
 package com.vgleadsheets.di
 
 import com.vgleadsheets.downloader.SheetDownloader
-import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.offline.OfflineDownloader
 import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.UpdateManager
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
+import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.time.ThreeTenTime
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object OfflineModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideOfflineDownloader(
         offlineRepository: OfflineRepository,
         sheetDownloader: SheetDownloader,

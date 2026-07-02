@@ -3,7 +3,7 @@ import com.android.build.api.dsl.ApplicationBuildType
 plugins {
     alias(libs.plugins.vgls.android.app)
     alias(libs.plugins.vgls.compose.android.app)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
 
     alias(libs.plugins.git.version)
     alias(libs.plugins.gradle.publisher)
@@ -140,7 +140,14 @@ dependencies {
     implementation(projects.vgls.android.icons)
     implementation(projects.features.all)
 
-    implementation(libs.androidx.hilt.work)
+    // Metro DI: the app owns VglsAppGraph (implements ActivityGraph from :vgls:android:activity),
+    // instantiates WakeLockManagerImpl, and needs the metrox ViewModelGraph/factory types.
+    implementation(projects.vgls.android.activity)
+    implementation(projects.vgls.android.wakelocks)
+    implementation(libs.metrox.viewmodel)
+    // WorkManager: VglsApplication provides a Configuration + VglsWorkerFactory (formerly via hilt-work).
+    implementation(libs.androidx.work.manager)
+
     implementation(libs.androidx.window.manager)
     implementation(libs.retrofit.moshi)
 
@@ -155,7 +162,7 @@ dependencies {
         implementation(libs.sage.android.analytics)
         implementation(projects.vgls.android.analytics)
     } else {
-        implementation(libs.sage.fake.perf)
+        implementation(libs.sage.common.perf)
         implementation(projects.vgls.fake.analytics)
     }
 
@@ -171,8 +178,8 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.compose.ui.testing)
-    androidTestImplementation(libs.hilt.testing)
-    kspAndroidTest(libs.hilt.compiler)
+    // TODO(metro): androidTest DI (FakeApiModule/FakeImageLoaderBuilderModule) still uses Hilt
+    //  @TestInstallIn — migrate to a Metro test graph before re-enabling connected tests.
 }
 
 appVersioning {

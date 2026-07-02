@@ -4,20 +4,19 @@ import android.content.Context
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import com.vgleadsheets.images.HatchetCoilLogger
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
+import net.sigmabeta.sage.di.AppScope
 
-@Module
-@InstallIn(SingletonComponent::class)
-class ImagesModule {
+@BindingContainer
+@ContributesTo(AppScope::class)
+object ImagesModule {
     @Provides
     @JvmSuppressWildcards
     fun provideImageLoader(
-        @ApplicationContext context: Context,
+        context: Context,
         coilLogger: HatchetCoilLogger,
         @Named("PdfImageLoaderBuilder") pdfBuilder: CoilBuilderFunction,
         @Named("OtherImageLoaderBuilder") otherBuilder: CoilBuilderFunction,

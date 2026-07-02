@@ -13,7 +13,7 @@ import net.sigmabeta.sage.components.SquareItemListModel
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class MostSongsComposersModule @Inject constructor(
     private val composerRepository: ComposerRepository,

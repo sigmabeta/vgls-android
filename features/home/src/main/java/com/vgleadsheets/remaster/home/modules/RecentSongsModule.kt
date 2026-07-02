@@ -19,7 +19,7 @@ import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.StringProvider
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 

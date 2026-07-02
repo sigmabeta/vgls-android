@@ -6,10 +6,11 @@ import com.vgleadsheets.analytics.VglsAnalytics
 import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.android.analytics.firebase.FirebaseAnalyticsImpl
 import net.sigmabeta.sage.coroutines.SageDispatchers
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
 
-@Singleton
+@SingleIn(AppScope::class)
 class VglsFirebaseAnalyticsImpl @Inject constructor(
     firebaseAnalytics: FirebaseAnalytics,
     dispatchers: SageDispatchers,
