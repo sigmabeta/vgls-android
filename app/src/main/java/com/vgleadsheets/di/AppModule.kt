@@ -1,14 +1,11 @@
 package com.vgleadsheets.di
 
 import android.content.Context
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.appcomm.ActionDeserializer
 import com.vgleadsheets.dispatchers.DelayManagerImpl
 import com.vgleadsheets.environment.Environment
 import com.vgleadsheets.notif.NotifManager
-import com.vgleadsheets.notif.NotifState
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.strings.VglsStringProvider
@@ -95,20 +92,13 @@ object AppModule {
 
     @Provides
     @SingleIn(AppScope::class)
-    @Named(NotifManager.DEP_NAME_JSON_ADAPTER_NOTIF)
-    fun provideNotifJsonAdapter(moshi: Moshi): JsonAdapter<NotifState> = moshi.adapter(NotifState::class.java)
-
-    @Provides
-    @SingleIn(AppScope::class)
     fun provideNotifManager(
         storage: Storage,
-        @Named(NotifManager.DEP_NAME_JSON_ADAPTER_NOTIF) jsonAdapter: JsonAdapter<NotifState>,
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
         hatchet: Hatchet,
     ): NotifManager = NotifManager(
         storage = storage,
-        notifStateJsonAdapter = jsonAdapter,
         coroutineScope = coroutineScope,
         dispatchers = dispatchers,
         hatchet = hatchet,

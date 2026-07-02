@@ -1,7 +1,9 @@
 package com.vgleadsheets.strings
 
+import kotlinx.serialization.Serializable
 import net.sigmabeta.sage.ui.SageStringId
 
+@Serializable
 enum class VglsStringId : SageStringId {
     APP_NAME,
 

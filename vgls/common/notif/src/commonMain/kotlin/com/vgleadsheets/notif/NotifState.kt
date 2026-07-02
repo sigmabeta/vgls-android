@@ -1,8 +1,8 @@
 package com.vgleadsheets.notif
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class NotifState(
     val notifs: Map<Long, Notif> = emptyMap()
 )
