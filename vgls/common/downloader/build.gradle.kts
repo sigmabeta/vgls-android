@@ -12,16 +12,21 @@ kotlin {
     }
 
     sourceSets {
-        named("jvmSharedMain") {
+        named("commonMain") {
             dependencies {
                 implementation(libs.sage.common.connectivity)
                 implementation(libs.sage.common.logging)
-                implementation(projects.vgls.common.network)
                 implementation(libs.sage.common.pdf)
                 implementation(projects.vgls.common.repository)
                 implementation(projects.vgls.common.urlinfo)
 
                 implementation(libs.sage.common.di)
+            }
+        }
+        // network is pure-JVM (sage.jvm); the downloader impls that use it stay here.
+        named("jvmSharedMain") {
+            dependencies {
+                implementation(projects.vgls.common.network)
             }
         }
     }
