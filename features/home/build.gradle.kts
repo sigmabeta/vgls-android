@@ -7,6 +7,8 @@ dependencies {
     api(projects.vgls.common.analytics)
     implementation(projects.vgls.common.appcomm)
     implementation(libs.sage.common.list)
+    api(projects.vgls.common.viewmodel)
+    implementation(libs.metrox.viewmodel)
     implementation(projects.vgls.common.notif)
     implementation(projects.vgls.common.offline)
     implementation(libs.sage.common.pdf)

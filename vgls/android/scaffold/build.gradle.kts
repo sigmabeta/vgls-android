@@ -26,6 +26,10 @@ dependencies {
     implementation(projects.features.navbar)
     implementation(projects.features.topbar)
 
+    // Plain-ViewModel (phase 4) list screens: the feature VM + the base type for the nav entries.
+    implementation(projects.features.home)
+    implementation(projects.vgls.common.viewmodel)
+
     implementation(projects.features.search)
     implementation(projects.features.viewer)
 }

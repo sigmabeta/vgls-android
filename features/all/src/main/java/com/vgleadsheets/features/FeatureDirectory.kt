@@ -12,7 +12,6 @@ import com.vgleadsheets.remaster.favorites.FavoritesViewModelBrain
 import com.vgleadsheets.remaster.games.detail.GameDetailViewModelBrain
 import com.vgleadsheets.remaster.games.list.GameListViewModelBrain
 import com.vgleadsheets.remaster.home.HomeModuleProvider
-import com.vgleadsheets.remaster.home.HomeViewModelBrain
 import com.vgleadsheets.remaster.menu.MenuViewModelBrain
 import com.vgleadsheets.remaster.offline.content.OfflineContentViewModelBrain
 import com.vgleadsheets.remaster.offline.updates.OfflineUpdatesViewModelBrain
@@ -94,17 +93,6 @@ class FeatureDirectory(
         )
 
         return when (destination) {
-            Destination.HOME -> HomeViewModelBrain(
-                stringProvider,
-                analytics,
-                hatchet,
-                scheduler,
-                homeModuleProvider,
-                tagRepository,
-                randomRepository,
-                threeTenTime,
-            )
-
             Destination.BROWSE -> BrowseViewModelBrain(
                 tagRepository,
                 analytics,
@@ -272,6 +260,9 @@ class FeatureDirectory(
                 scheduler,
             )
 
+            // HOME is now a plain HomeViewModel (VglsListViewModel), resolved via metroViewModel in
+            // the nav graph rather than through this BrainProvider — see phase 4 migration.
+            Destination.HOME,
             Destination.NONE,
             Destination.SEARCH,
             Destination.SONG_VIEWER,

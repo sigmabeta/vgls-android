@@ -1,12 +1,17 @@
 package com.vgleadsheets.remaster.home
 
-import com.vgleadsheets.analytics.VglsAnalytics
+import androidx.lifecycle.ViewModel
 import com.vgleadsheets.analytics.VglsAnalyticsScreen
 import com.vgleadsheets.appcomm.VglsAction
 import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.viewmodel.list.VglsListViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
@@ -15,33 +20,41 @@ import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import net.sigmabeta.sage.analytics.Analytics
+import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
-import net.sigmabeta.sage.list.ListViewModelBrain
-import net.sigmabeta.sage.list.SageScheduler
+import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
+import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
 import org.threeten.bp.LocalDate
 
-class HomeViewModelBrain(
-    private val stringProvider: StringProvider,
-    private val analytics: VglsAnalytics,
-    private val hatchet: Hatchet,
-    private val scheduler: SageScheduler,
+@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
+@ViewModelKey
+class HomeViewModel @Inject constructor(
+    override val stringProvider: StringProvider,
+    override val analytics: Analytics,
+    override val hatchet: Hatchet,
+    override val dispatchers: SageDispatchers,
+    override val delayManager: DelayManager,
+    override val eventDispatcher: EventDispatcher,
+    override val showDebugProvider: ShowDebugProvider,
     private val homeModuleProvider: HomeModuleProvider,
     private val tagRepository: TagRepository,
     private val randomRepository: RandomRepository,
     private val threeTenTime: ThreeTenTime,
-) : ListViewModelBrain(
-    stringProvider,
-    analytics,
-    hatchet,
-    scheduler,
-) {
+) : VglsListViewModel<State>() {
     override val screenIdentifier = VglsAnalyticsScreen.HOME
 
     override fun initialState() = State()
+
+    init {
+        sendAction(SageAction.InitNoArgs)
+    }
 
     override fun handleAction(action: SageAction) {
         when (action) {
@@ -197,7 +210,7 @@ class HomeViewModelBrain(
         combinedFlows
             .onEach { pairing ->
                 updateState { oldState ->
-                    val state = oldState as State
+                    val state = oldState
                     val newModuleStates = state
                         .moduleStatesByPriority
                         .toMutableMap()

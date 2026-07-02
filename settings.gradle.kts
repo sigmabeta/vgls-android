@@ -108,6 +108,7 @@ include(
     ":vgls:common:settings:part",
     ":vgls:common:urlinfo",
     ":vgls:common:versions",
+    ":vgls:common:viewmodel",
     ":vgls:common:wakelocks",
 
     ":features:all",
