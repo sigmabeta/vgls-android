@@ -1,7 +1,17 @@
 plugins {
-    alias(libs.plugins.sage.jvm)
+    alias(libs.plugins.sage.kmp)
 }
 
-dependencies {
-    api(libs.sage.common.settings.environment)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.environment"
+    }
+
+    sourceSets {
+        named("jvmSharedMain") {
+            dependencies {
+                api(libs.sage.common.settings.environment)
+            }
+        }
+    }
 }
