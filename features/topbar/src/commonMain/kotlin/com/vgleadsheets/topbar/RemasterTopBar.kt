@@ -1,0 +1,149 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
+package com.vgleadsheets.topbar
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.dp
+import com.vgleadsheets.strings.VglsStringId
+import com.vgleadsheets.strings.text
+import com.vgleadsheets.ui.theme.AppTheme
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.TitleBarModel
+
+@Composable
+@Suppress("LongMethod")
+fun RemasterTopBar(
+    state: TopBarState,
+    scrollBehavior: TopAppBarScrollBehavior,
+    handleAction: (SageAction) -> Unit,
+) {
+    AnimatedVisibility(
+        modifier = Modifier.fillMaxWidth(),
+        visible = state.actualVisibility == TopBarVisibility.VISIBLE,
+        label = "TopBarVisibility"
+    ) {
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            ),
+            scrollBehavior = scrollBehavior,
+            title = {
+                Column(
+                    modifier = Modifier.animateContentSize()
+                ) {
+                    Crossfade(
+                        targetState = state.model.title,
+                        label = "Title Animation",
+                    ) {
+                        Text(
+                            text = it ?: VglsStringId.APP_NAME.text(),
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+
+                    val subtitle = state.model.subtitle
+                    if (subtitle != null) {
+                        AnimatedVisibility(
+                            visible = subtitle.isNotEmpty(),
+                            label = "Subtitle Animation",
+                        ) {
+                            Text(
+                                text = subtitle,
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontSize = TextUnit(SIZE_TEXT_SMALL, TextUnitType.Sp)
+                                ),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
+                    }
+                }
+            },
+            navigationIcon = {
+                val (vector, string, action) = if (state.model.shouldShowBack) {
+                    Triple(
+                        Icons.AutoMirrored.Default.ArrowBack,
+                        VglsStringId.ACCY_CDESC_TOPBAR_BACK,
+                        SageAction.AppBack
+                    )
+                } else {
+                    Triple(
+                        Icons.Default.Menu,
+                        VglsStringId.ACCY_CDESC_TOPBAR_MENU,
+                        TopBarAction.Menu
+                    )
+                }
+
+                IconButton(
+                    modifier = Modifier,
+                    onClick = { handleAction(action) }
+                ) {
+                    Icon(
+                        imageVector = vector,
+                        contentDescription = string.text(),
+                    )
+                }
+            },
+            actions = {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                        .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
+                        .clip(CircleShape)
+                        .clickable { handleAction(TopBarAction.OpenPartPicker) }
+                ) {
+                    Crossfade(
+                        targetState = state.selectedPart,
+                        label = "Title Animation",
+                    ) {
+                        Text(
+                            text = it ?: "",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontSize = TextUnit(SIZE_TEXT_LARGE, TextUnitType.Sp)
+                            ),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                }
+            }
+        )
+    }
+}
+
+private const val SIZE_TEXT_SMALL = 12.0f
+private const val SIZE_TEXT_LARGE = 16.0f
