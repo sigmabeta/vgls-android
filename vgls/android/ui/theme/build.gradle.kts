@@ -1,16 +1,27 @@
 plugins {
-    alias(libs.plugins.sage.android)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.sage.compose.kmp)
 }
 
-android {
-    namespace = "com.vgleadsheets.ui.theme"
-}
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.ui.theme"
+        // AGP 9's KMP android library ships with resource/R processing OFF; enable it so the
+        // androidMain res/ (XML themes + the MuseJazz font -> R.font) generate an R class.
+        androidResources {
+            enable = true
+        }
+    }
 
-dependencies {
-    api(platform(libs.androidx.compose.bom))
-    api(libs.androidx.compose.material3)
-    api(libs.material)
-    api(libs.sage.android.ui.themes)
-    implementation(libs.androidx.compose.ui.tooling.preview)
+    sourceSets {
+        // Shared Compose theme (Colors/Typography/tokens + AppTheme wrapping Material3). material3
+        // comes transitively from sage.compose.kmp. The brand font + includeFontPadding are
+        // platform seams (expect/actual) in androidMain/jvmMain.
+        named("androidMain") {
+            dependencies {
+                api(libs.material)
+                implementation(libs.androidx.compose.ui.tooling.preview)
+            }
+        }
+    }
 }

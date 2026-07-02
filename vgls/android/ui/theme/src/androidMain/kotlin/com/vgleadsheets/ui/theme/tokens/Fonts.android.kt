@@ -4,8 +4,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import com.vgleadsheets.ui.theme.R
 
-internal object VglsFonts {
-    val MuseJazz = FontFamily(
-        Font(R.font.musejazz_text)
-    )
-}
+internal actual val museJazzFontFamily: FontFamily = FontFamily(
+    Font(R.font.musejazz_text),
+)
