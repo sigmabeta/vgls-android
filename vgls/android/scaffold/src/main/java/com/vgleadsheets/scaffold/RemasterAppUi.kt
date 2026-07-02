@@ -168,12 +168,22 @@ private fun NavHostAndSuch(
                 return@forEach
             }
 
+            // HOME migrated to a plain HomeViewModel (phase 4) — handled by homeScreenNavEntry below.
+            if (destination == Destination.HOME) {
+                return@forEach
+            }
+
             listScreenEntry(
                 destination = destination,
                 displayWidthClass = displayWidthClass,
                 globalModifier = globalModifier,
             )
         }
+
+        homeScreenNavEntry(
+            displayWidthClass = displayWidthClass,
+            globalModifier = globalModifier,
+        )
 
         searchScreenNavEntry(
             globalModifier = globalModifier,

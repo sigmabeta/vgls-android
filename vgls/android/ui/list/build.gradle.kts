@@ -18,4 +18,6 @@ dependencies {
     implementation(projects.vgls.android.ui.components)
     implementation(projects.vgls.android.strings)
     implementation(projects.vgls.android.viewmodel)
+    // VglsListViewModel base, rendered by ListScreenContent (phase 4 plain-VM list screens).
+    implementation(projects.vgls.common.viewmodel)
 }
