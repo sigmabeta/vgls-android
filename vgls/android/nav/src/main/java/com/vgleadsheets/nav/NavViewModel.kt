@@ -7,11 +7,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
-import androidx.navigation.compose.ComposeNavigator
-import androidx.navigation.get
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.strings.VglsStringId
@@ -62,10 +61,12 @@ class NavViewModel @Inject constructor(
 
     private val internalShowSnackbarState = MutableStateFlow(false)
 
-    private var backstackWatchJob: Job? = null
     private var settingsWatchJob: Job? = null
 
-    lateinit var navController: NavController
+    /** The Voyager root Navigator + the route→Screen mapper, both set by RemasterAppUi (replaces the
+     * old AndroidX NavController). Nullable because they're assigned after this VM is constructed. */
+    var navigator: Navigator? = null
+    var screenForRoute: ((String) -> Screen)? = null
     lateinit var snackbarScope: CoroutineScope
     lateinit var snackbarHostState: SnackbarHostState
     lateinit var topBarExpander: () -> Unit
@@ -117,22 +118,6 @@ class NavViewModel @Inject constructor(
                     }
                 }
                 .flowOn(dispatchers.disk)
-                .launchIn(viewModelScope)
-        }
-    }
-
-    private fun startWatchingBackstack() {
-        if (backstackWatchJob == null) {
-            hatchet.i("Backstack watcher not initialized. Starting now...")
-
-            backstackWatchJob = navController
-                .navigatorProvider[ComposeNavigator::class]
-                .backStack
-                .onEach {
-                    if (internalShowSnackbarState.value) {
-                        printBackstackStatus(it)
-                    }
-                }
                 .launchIn(viewModelScope)
         }
     }
@@ -199,10 +184,14 @@ class NavViewModel @Inject constructor(
         navigateInternal(destination, true)
     }
 
-    @Suppress("SwallowedException")
+    private fun currentRoute(): String? = (navigator?.lastItem as? RoutedScreen)?.route
+
+    @Suppress("SwallowedException", "ReturnCount")
     private fun navigateInternal(destination: String, topLevel: Boolean) {
+        val navigator = this.navigator ?: return
+        val screenFor = this.screenForRoute ?: return
         try {
-            if (navController.currentDestination?.route == destination) {
+            if (currentRoute() == destination) {
                 hatchet.w("Destination $destination matches current location; ignoring navigation request.")
                 return
             }
@@ -215,21 +204,25 @@ class NavViewModel @Inject constructor(
                 )
             }
 
-            startWatchingBackstack()
             setupSettingsCollection()
             topBarExpander()
 
             if (topLevel) {
-                navController.navigate(destination) {
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
+                // Reset to the home root then the tab target (matches the old popUpTo(start) +
+                // launchSingleTop: back stack becomes [Home] or [Home, target]).
+                val home = Destination.HOME.noArgs()
+                val screens = if (destination == home) {
+                    listOf(screenFor(home))
+                } else {
+                    listOf(screenFor(home), screenFor(destination))
                 }
+                navigator.replaceAll(screens)
             } else {
-                navController.navigate(destination)
+                navigator.push(screenFor(destination))
             }
 
             eventDispatcher.sendEvent(SageEvent.NavigateSuccessTo(destination))
-        } catch (ex: IllegalArgumentException) {
+        } catch (ex: IllegalStateException) {
             sendEvent(
                 SageEvent.ShowSnackbar(
                     message = "Unimplemented screen: $destination",
@@ -242,18 +235,18 @@ class NavViewModel @Inject constructor(
 
     private fun navigateBack() {
         topBarExpander()
-        startWatchingBackstack()
         setupSettingsCollection()
 
-        val oldRoute = navController.currentDestination?.route
-        val success = navController.popBackStack()
+        val navigator = this.navigator
+        val oldRoute = currentRoute()
+        val success = navigator?.pop() ?: false
 
         if (!success) {
             viewModelScope.launch { activityEventChannel.send(ActivityEvent.Finish) }
             return
         }
 
-        val newRoute = navController.currentDestination?.route
+        val newRoute = currentRoute()
         if (newRoute != null) {
             eventDispatcher.sendEvent(SageEvent.NavigateSuccessTo(newRoute))
         }
@@ -262,17 +255,6 @@ class NavViewModel @Inject constructor(
             val message = "Popping stack from $oldRoute to $newRoute"
             showSnackbar(
                 SageEvent.ShowSnackbar(message, false, source = "Navigation")
-            )
-        }
-    }
-
-    private fun printBackstackStatus(navBackStackEntries: List<NavBackStackEntry>) {
-        hatchet.d("Nav backstack updated.")
-        navBackStackEntries.forEach { entry ->
-            hatchet.v(
-                "Dest: ${entry.destination.route} " +
-                "State: ${entry.lifecycle.currentState} " +
-                "Args: ${entry.arguments}"
             )
         }
     }

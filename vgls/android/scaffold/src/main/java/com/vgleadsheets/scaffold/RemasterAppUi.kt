@@ -1,8 +1,5 @@
 package com.vgleadsheets.scaffold
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,26 +9,25 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowHeightSizeClass
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import com.vgleadsheets.bottombar.NavBarState
 import com.vgleadsheets.bottombar.NavBarViewModel
 import com.vgleadsheets.nav.NavViewModel
-import com.vgleadsheets.search.searchScreenNavEntry
+import com.vgleadsheets.nav.RoutedScreen
 import com.vgleadsheets.topbar.TopBarViewModel
-import com.vgleadsheets.ui.licenses.licensesScreenNavEntry
-import com.vgleadsheets.ui.viewer.viewerScreenNavEntry
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.SageAction
@@ -44,8 +40,6 @@ import com.vgleadsheets.nav.Destination
 fun RemasterAppUi(
     modifier: Modifier
 ) {
-    val navController = rememberNavController()
-
     val snackbarScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -61,10 +55,12 @@ fun RemasterAppUi(
 
     val navViewModel = metroViewModel<NavViewModel>()
 
-    navViewModel.navController = navController
     navViewModel.snackbarScope = snackbarScope
     navViewModel.snackbarHostState = snackbarHostState
     navViewModel.topBarExpander = topBarExpander
+
+    // Current route for nav-rail selection — updated from the Voyager navigator's top screen below.
+    var currentRoute by remember { mutableStateOf(Destination.HOME.noArgs()) }
 
     val topBarViewModel: TopBarViewModel = metroViewModel()
     val topBarVmState by topBarViewModel.uiState.collectAsState()
@@ -86,9 +82,6 @@ fun RemasterAppUi(
         modifier
     }
 
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
     AppContent(
         topBarConfig = topBarConfig,
         navBarState = bottomBarVmState,
@@ -97,7 +90,12 @@ fun RemasterAppUi(
         snackbarHostState = snackbarHostState,
         modifier = actualModifier,
         screen = { innerPadding, widthClass ->
-            NavHostAndSuch(navController, innerPadding, widthClass)
+            VoyagerNavHost(
+                innerPadding = innerPadding,
+                displayWidthClass = widthClass,
+                navViewModel = navViewModel,
+                onRouteChange = { currentRoute = it },
+            )
         },
     )
 }
@@ -133,52 +131,30 @@ fun AppContent(
 }
 
 @Composable
-private fun NavHostAndSuch(
-    navController: NavHostController,
+private fun VoyagerNavHost(
     innerPadding: PaddingValues,
     displayWidthClass: WidthClass,
+    navViewModel: NavViewModel,
+    onRouteChange: (String) -> Unit,
 ) {
-    val enterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = remember {
-        { enterTransition() }
-    }
-    val exitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = remember {
-        { exitTransition() }
-    }
-    val popEnterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = remember {
-        { popEnterTransition() }
-    }
-    val popExitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = remember {
-        { popExitTransition() }
-    }
+    // Voyager owns the back stack now (replacing the AndroidX NavHost). Screens read the width class
+    // off LocalDisplayWidthClass since Screen.Content() takes no params. Voyager's own back handling
+    // is disabled (onBackPressed = { false }) because each screen's BackHandler already routes
+    // DeviceBack -> SageEvent.NavigateBack -> NavViewModel -> navigator.pop().
+    CompositionLocalProvider(LocalDisplayWidthClass provides displayWidthClass) {
+        Navigator(HomeScreen, onBackPressed = { false }) { navigator ->
+            navViewModel.navigator = navigator
+            navViewModel.screenForRoute = ::screenForRoute
 
-    NavHost(
-        navController = navController,
-        modifier = Modifier.padding(innerPadding),
-        startDestination = Destination.HOME.template(),
-        enterTransition = enterTransition,
-        exitTransition = exitTransition,
-        popEnterTransition = popEnterTransition,
-        popExitTransition = popExitTransition,
-    ) {
-        val globalModifier = Modifier.fillMaxSize()
+            val topRoute = (navigator.lastItem as? RoutedScreen)?.route
+            LaunchedEffect(topRoute) {
+                if (topRoute != null) onRouteChange(topRoute)
+            }
 
-        // All list/grid screens are now plain VglsListViewModels resolved via metroViewModel /
-        // assistedMetroViewModel (phase 4) — the old generic listScreenEntry/BrainProvider path is gone.
-        plainViewModelNavEntries(
-            displayWidthClass = displayWidthClass,
-            globalModifier = globalModifier,
-        )
-
-        searchScreenNavEntry(
-            globalModifier = globalModifier,
-        )
-
-        viewerScreenNavEntry(
-            globalModifier = globalModifier,
-        )
-
-        licensesScreenNavEntry(
-            globalModifier = globalModifier,
-        )
+            SlideTransition(
+                navigator = navigator,
+                modifier = Modifier.padding(innerPadding).fillMaxSize(),
+            )
+        }
     }
 }
