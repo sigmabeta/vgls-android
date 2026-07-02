@@ -1,29 +1,30 @@
 plugins {
-    alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.compose.android)
-    alias(libs.plugins.sage.di)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.sage.compose.kmp)
+    alias(libs.plugins.metro)
 }
 
-dependencies {
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.metrox.viewmodel)
-    // Voyager: NavViewModel drives the Navigator + returns Screens (public API -> api).
-    api(libs.voyager.navigator)
-    implementation(projects.vgls.common.nav)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.nav"
+    }
 
-    api(projects.vgls.android.viewmodel)
-
-    implementation(libs.sage.android.coroutines)
-
-    api(projects.vgls.common.appcomm)
-    api(libs.sage.common.appinfo)
-
-    implementation(projects.vgls.common.model)
-    implementation(projects.vgls.common.notif)
-    implementation(libs.sage.common.settings.general)
-    implementation(projects.vgls.common.strings)
-}
-
-android {
-    namespace = "com.vgleadsheets.nav"
+    sourceSets {
+        named("commonMain") {
+            dependencies {
+                api(libs.voyager.navigator)
+                api(projects.vgls.android.viewmodel)
+                api(projects.vgls.common.appcomm)
+                api(libs.sage.common.appinfo)
+                api(projects.vgls.common.nav)
+                implementation(libs.metrox.viewmodel)
+                implementation(libs.sage.common.coroutines)
+                implementation(projects.vgls.common.model)
+                implementation(projects.vgls.common.notif)
+                implementation(libs.sage.common.settings.general)
+                implementation(projects.vgls.common.strings)
+                implementation(libs.sage.common.di)
+            }
+        }
+    }
 }

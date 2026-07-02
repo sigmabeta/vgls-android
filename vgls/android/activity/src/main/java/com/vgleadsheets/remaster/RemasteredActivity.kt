@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -111,7 +112,7 @@ class RemasteredActivity : ComponentActivity() {
     private fun handleNavEvent(event: ActivityEvent) {
         when (event) {
             ActivityEvent.Finish -> finish()
-            is ActivityEvent.LaunchIntent -> startActivity(event.intent)
+            is ActivityEvent.LaunchUrl -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
             ActivityEvent.Restart -> restartApp()
         }
     }
