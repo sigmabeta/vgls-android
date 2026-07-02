@@ -2,8 +2,6 @@ package com.vgleadsheets.composables.previews.screens.lists
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import com.jakewharton.threetenabp.AndroidThreeTen
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
 import com.vgleadsheets.model.updates.AppUpdate
@@ -20,7 +18,6 @@ internal fun UpdateScreen(
     darkTheme: Boolean = isSystemInDarkTheme(),
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
 ) {
-    AndroidThreeTen.init(LocalContext.current)
     val stringProvider = rememberVglsStringProvider()
     val screenState = updateScreenState(stringProvider)
     ListScreenPreview(

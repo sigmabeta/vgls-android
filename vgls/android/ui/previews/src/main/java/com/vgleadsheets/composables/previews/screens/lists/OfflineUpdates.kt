@@ -6,7 +6,6 @@ import kotlinx.datetime.toInstant
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import net.sigmabeta.sage.appcomm.LCE
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
@@ -23,7 +22,6 @@ internal fun OfflineUpdatesList(
     darkTheme: Boolean = isSystemInDarkTheme(),
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
 ) {
-    AndroidThreeTen.init(LocalContext.current)
     val screenState = offlineUpdatesContentState()
     ListScreenPreview(
         screenState = screenState,
