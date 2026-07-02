@@ -1,9 +1,13 @@
 package com.vgleadsheets.scaffold.systemui
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.nav.SystemUiVisibility
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
@@ -11,12 +15,13 @@ import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
-import javax.inject.Inject
 
-@HiltViewModel
-class SystemUiViewModel@Inject constructor(
+@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
+@ViewModelKey
+class SystemUiViewModel @Inject constructor(
     override val analytics: Analytics,
     override val dispatchers: SageDispatchers,
     override val delayManager: DelayManager,

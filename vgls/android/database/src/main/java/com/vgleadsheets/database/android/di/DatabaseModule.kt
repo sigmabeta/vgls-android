@@ -10,37 +10,60 @@ import com.vgleadsheets.database.android.Migrations
 import com.vgleadsheets.database.android.UserContentDatabase
 import com.vgleadsheets.database.android.UserContentMigrations
 import com.vgleadsheets.database.android.VglsDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import com.vgleadsheets.database.android.dao.AlternateSettingRoomDao
+import com.vgleadsheets.database.android.dao.ComposerAliasRoomDao
+import com.vgleadsheets.database.android.dao.ComposerPlayCountRoomDao
+import com.vgleadsheets.database.android.dao.ComposerRoomDao
+import com.vgleadsheets.database.android.dao.DbStatisticsRoomDao
+import com.vgleadsheets.database.android.dao.FavoriteComposerRoomDao
+import com.vgleadsheets.database.android.dao.FavoriteGameRoomDao
+import com.vgleadsheets.database.android.dao.FavoriteSongRoomDao
+import com.vgleadsheets.database.android.dao.GameAliasRoomDao
+import com.vgleadsheets.database.android.dao.GamePlayCountRoomDao
+import com.vgleadsheets.database.android.dao.GameRoomDao
+import com.vgleadsheets.database.android.dao.OfflineComposerRoomDao
+import com.vgleadsheets.database.android.dao.OfflineGameRoomDao
+import com.vgleadsheets.database.android.dao.OfflineSongRoomDao
+import com.vgleadsheets.database.android.dao.OfflineUpdateRoomDao
+import com.vgleadsheets.database.android.dao.SearchHistoryEntryRoomDao
+import com.vgleadsheets.database.android.dao.SongAliasRoomDao
+import com.vgleadsheets.database.android.dao.SongHistoryEntryRoomDao
+import com.vgleadsheets.database.android.dao.SongPlayCountRoomDao
+import com.vgleadsheets.database.android.dao.SongRoomDao
+import com.vgleadsheets.database.android.dao.TagKeyRoomDao
+import com.vgleadsheets.database.android.dao.TagValuePlayCountRoomDao
+import com.vgleadsheets.database.android.dao.TagValueRoomDao
+import com.vgleadsheets.database.android.dao.TransactionDao
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import io.requery.android.database.sqlite.RequerySQLiteOpenHelperFactory
-import javax.inject.Singleton
+import net.sigmabeta.sage.di.AppScope
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 @Suppress("TooManyFunctions")
 object DatabaseModule {
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     fun providesTransactionRunner(
         database: VglsDatabase
-    ) = database.transactionDao()
+    ): TransactionDao = database.transactionDao()
 
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
-    fun provideSqlOpenHelperFactory() = if (BuildConfig.DEBUG) {
+    fun provideSqlOpenHelperFactory(): SupportSQLiteOpenHelper.Factory = if (BuildConfig.DEBUG) {
         FrameworkSQLiteOpenHelperFactory()
     } else {
         RequerySQLiteOpenHelperFactory()
     }
 
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     @Suppress("SpreadOperator")
     fun provideVglsDatabase(
-        @ApplicationContext context: Context,
+        context: Context,
         sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
     ): VglsDatabase = Room
             .databaseBuilder(
@@ -60,10 +83,10 @@ object DatabaseModule {
             .fallbackToDestructiveMigrationFrom(dropAllTables = true, *DatabaseVersions.WITHOUT_MIGRATION)
             .build()
 
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     fun provideUserContentDatabase(
-        @ApplicationContext context: Context,
+        context: Context,
         sqlOpenHelperFactory: SupportSQLiteOpenHelper.Factory
     ): UserContentDatabase = Room
             .databaseBuilder(
@@ -80,140 +103,140 @@ object DatabaseModule {
             .build()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun composerAliasDao(
         database: VglsDatabase
-    ) = database.composerAliasDao()
+    ): ComposerAliasRoomDao = database.composerAliasDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun composerDao(
         database: VglsDatabase
-    ) = database.composerDao()
+    ): ComposerRoomDao = database.composerDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun dbStatisticsDao(
         database: VglsDatabase
-    ) = database.dbStatisticsDao()
+    ): DbStatisticsRoomDao = database.dbStatisticsDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun gameAliasDao(
         database: VglsDatabase
-    ) = database.gameAliasDao()
+    ): GameAliasRoomDao = database.gameAliasDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun gameDao(
         database: VglsDatabase
-    ) = database.gameDao()
+    ): GameRoomDao = database.gameDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun offlineUpdateDao(
         database: VglsDatabase
-    ) = database.offlineUpdateDao()
+    ): OfflineUpdateRoomDao = database.offlineUpdateDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun songDao(
         database: VglsDatabase
-    ) = database.songDao()
+    ): SongRoomDao = database.songDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun songAliasDao(
         database: VglsDatabase
-    ) = database.songAliasDao()
+    ): SongAliasRoomDao = database.songAliasDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun tagKeyDao(
         database: VglsDatabase
-    ) = database.tagKeyDao()
+    ): TagKeyRoomDao = database.tagKeyDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun tagValueDao(
         database: VglsDatabase
-    ) = database.tagValueDao()
+    ): TagValueRoomDao = database.tagValueDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun songHistoryEntryDao(
         database: UserContentDatabase
-    ) = database.songHistoryEntryDao()
+    ): SongHistoryEntryRoomDao = database.songHistoryEntryDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun gamePlayCountDao(
         database: UserContentDatabase
-    ) = database.gamePlayCountDao()
+    ): GamePlayCountRoomDao = database.gamePlayCountDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun composerPlayCountDao(
         database: UserContentDatabase
-    ) = database.composerPlayCountDao()
+    ): ComposerPlayCountRoomDao = database.composerPlayCountDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun tagValuePlayCountDao(
         database: UserContentDatabase
-    ) = database.tagValuePlayCountDao()
+    ): TagValuePlayCountRoomDao = database.tagValuePlayCountDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun songPlayCountDao(
         database: UserContentDatabase
-    ) = database.songPlayCountDao()
+    ): SongPlayCountRoomDao = database.songPlayCountDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun searchHistoryDao(
         database: UserContentDatabase
-    ) = database.searchHistoryDao()
+    ): SearchHistoryEntryRoomDao = database.searchHistoryDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun favoriteSongDao(
         database: UserContentDatabase
-    ) = database.favoriteSongDao()
+    ): FavoriteSongRoomDao = database.favoriteSongDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun favoriteGameDao(
         database: UserContentDatabase
-    ) = database.favoriteGameDao()
+    ): FavoriteGameRoomDao = database.favoriteGameDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun favoriteComposerDao(
         database: UserContentDatabase
-    ) = database.favoriteComposerDao()
+    ): FavoriteComposerRoomDao = database.favoriteComposerDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun offlineSongDao(
         database: UserContentDatabase
-    ) = database.offlineSongDao()
+    ): OfflineSongRoomDao = database.offlineSongDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun offlineComposerDao(
         database: UserContentDatabase
-    ) = database.offlineComposerDao()
+    ): OfflineComposerRoomDao = database.offlineComposerDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun offlineGameDao(
         database: UserContentDatabase
-    ) = database.offlineGameDao()
+    ): OfflineGameRoomDao = database.offlineGameDao()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun alternateSettingDao(
         database: UserContentDatabase
-    ) = database.alternateSettingDao()
+    ): AlternateSettingRoomDao = database.alternateSettingDao()
 }

@@ -14,7 +14,7 @@ import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SmallTextListModel
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.ui.StringProvider
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class MostPlaysTagValuesModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,

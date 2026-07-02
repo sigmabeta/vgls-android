@@ -1,63 +1,20 @@
 package com.vgleadsheets.viewmodel.list
 
-import android.app.Activity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vgleadsheets.nav.Destination
-import dagger.assisted.AssistedFactory
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
-@AssistedFactory
-internal interface Factory {
-    fun create(
-        destination: Destination,
-        idArg: Long,
-        stringArg: String?,
-    ): ListViewModel
-}
-
-@EntryPoint
-@InstallIn(ActivityComponent::class)
-internal interface Provider {
-    fun listViewModelFactory(): Factory
-}
-
-@Suppress("UNCHECKED_CAST")
-internal fun provideFactory(
-    assistedFactory: Factory,
-    destination: Destination,
-    idArg: Long,
-    stringArg: String?,
-): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = assistedFactory.create(
-            destination,
-            idArg,
-            stringArg,
-        ) as T
-}
-
+/**
+ * Obtains a [ListViewModel] for the given nav args via Metro's assisted-VM support. Replaces the
+ * former Hilt `@EntryPoint` + Dagger `@AssistedFactory` plumbing; the factory now lives inside
+ * [ListViewModel.Factory] and is resolved through the `LocalMetroViewModelFactory` the Activity
+ * installs in composition.
+ */
 @Composable
 fun listViewModel(
     destination: Destination,
     idArg: Long,
     stringArg: String?,
-): ListViewModel {
-    val activity = LocalContext.current as Activity
-    val entryPoint = EntryPointAccessors.fromActivity(activity, Provider::class.java)
-    val factory = entryPoint.listViewModelFactory()
-
-    return viewModel(
-        factory = provideFactory(
-            factory,
-            destination,
-            idArg,
-            stringArg,
-        )
-    )
+): ListViewModel = assistedMetroViewModel<ListViewModel, ListViewModel.Factory> {
+    create(destination, idArg, stringArg)
 }

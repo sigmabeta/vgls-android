@@ -90,17 +90,17 @@ import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
 import com.vgleadsheets.database.source.TagValuePlayCountDataSource
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object DataSourceModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun composerAliasDataSource(
         convert: ComposerAliasConverter,
         roomImpl: ComposerAliasRoomDao,
@@ -110,7 +110,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun composerDataSource(
         convert: ComposerConverter,
         roomImpl: ComposerRoomDao,
@@ -120,7 +120,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun dbstatsDataSource(
         roomImpl: DbStatisticsRoomDao,
     ): DbStatisticsDataSource = DbStatisticsAndroidDataSource(
@@ -128,7 +128,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun gameAliasDataSource(
         convert: GameAliasConverter,
         roomImpl: GameAliasRoomDao,
@@ -138,7 +138,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun gameDataSource(
         convert: GameConverter,
         roomImpl: GameRoomDao,
@@ -148,7 +148,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun songAliasDataSource(
         convert: SongAliasConverter,
         roomImpl: SongAliasRoomDao,
@@ -158,7 +158,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun songDataSource(
         convert: SongConverter,
         roomImpl: SongRoomDao,
@@ -168,7 +168,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun tagKeyDataSource(
         convert: TagKeyConverter,
         roomImpl: TagKeyRoomDao,
@@ -178,7 +178,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun tagValueDataSource(
         convert: TagValueConverter,
         roomImpl: TagValueRoomDao,
@@ -188,7 +188,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun songHistoryDataSource(
         convert: SongHistoryConverter,
         roomImpl: SongHistoryEntryRoomDao,
@@ -198,7 +198,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun gamePlayCountDataSource(
         convert: GamePlayCountConverter,
         roomImpl: GamePlayCountRoomDao,
@@ -208,7 +208,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun composerPlayCountDataSource(
         convert: ComposerPlayCountConverter,
         roomImpl: ComposerPlayCountRoomDao,
@@ -218,7 +218,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun tagValuePlayCountDataSource(
         convert: TagValuePlayCountConverter,
         roomImpl: TagValuePlayCountRoomDao,
@@ -228,7 +228,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun songPlayCountDataSource(
         convert: SongPlayCountConverter,
         roomImpl: SongPlayCountRoomDao,
@@ -238,7 +238,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun searchHistoryDataSource(
         convert: SearchHistoryConverter,
         roomImpl: SearchHistoryEntryRoomDao,
@@ -248,7 +248,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun favoriteSongDataSource(
         roomImpl: FavoriteSongRoomDao,
         converter: FavoriteSongConverter
@@ -258,7 +258,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun favoriteGameDataSource(
         roomImpl: FavoriteGameRoomDao,
         converter: FavoriteGameConverter,
@@ -268,7 +268,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun favoriteComposerDataSource(
         roomImpl: FavoriteComposerRoomDao,
         converter: FavoriteComposerConverter,
@@ -278,7 +278,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun offlineSongDataSource(
         roomImpl: OfflineSongRoomDao,
         converter: OfflineSongConverter
@@ -288,7 +288,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun offlineComposerDataSource(
         roomImpl: OfflineComposerRoomDao,
         converter: OfflineComposerConverter
@@ -298,7 +298,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun offlineGameDataSource(
         roomImpl: OfflineGameRoomDao,
         converter: OfflineGameConverter
@@ -308,7 +308,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun alternateSettingDataSource(
         roomImpl: AlternateSettingRoomDao,
     ): AlternateSettingDataSource = AlternateSettingAndroidDataSource(
@@ -316,7 +316,7 @@ object DataSourceModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun offlineUpdateResultDataSource(
         roomImpl: OfflineUpdateRoomDao,
         converter: OfflineUpdateResultConverter,

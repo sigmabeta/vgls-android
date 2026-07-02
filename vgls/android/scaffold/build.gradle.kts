@@ -1,21 +1,22 @@
 plugins {
     alias(libs.plugins.sage.compose.android)
     alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
 }
 
 dependencies {
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.metrox.viewmodel.compose)
 
     implementation(projects.vgls.android.images)
     implementation(projects.vgls.android.licenses)
     implementation(projects.vgls.android.nav)
-    implementation(libs.sage.android.perf)
+    implementation(libs.sage.common.ui.perfCompose)
     implementation(projects.vgls.android.ui.components)
-    implementation(libs.sage.android.ui.icons)
+    implementation(libs.sage.common.ui.iconsReal)
     implementation(projects.vgls.android.ui.list)
     implementation(projects.vgls.android.ui.theme)
     implementation(projects.vgls.android.viewmodel)

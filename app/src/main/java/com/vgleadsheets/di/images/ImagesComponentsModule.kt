@@ -16,57 +16,57 @@ import com.vgleadsheets.pdf.PdfImageKeyer
 import com.vgleadsheets.pdf.fake.FakePdfImageDecoder
 import com.vgleadsheets.pdf.fake.FakePdfImageKeyer
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
 import okhttp3.OkHttpClient
-import javax.inject.Named
 
-@Module
-@InstallIn(SingletonComponent::class)
-class ImagesComponentsModule {
+@BindingContainer
+@ContributesTo(AppScope::class)
+object ImagesComponentsModule {
     @Provides
-    fun provideLoadingIndicatorKeyer() = LoadingIndicatorKeyer()
+    fun provideLoadingIndicatorKeyer(): LoadingIndicatorKeyer = LoadingIndicatorKeyer()
 
     @Provides
     fun provideLoadingIndicatorFetcherFactory(
         generator: LoadingIndicatorGenerator
-    ) = LoadingIndicatorFetcher.Factory(
+    ): LoadingIndicatorFetcher.Factory = LoadingIndicatorFetcher.Factory(
         generator = generator,
     )
 
     @Provides
-    fun providePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = PdfImageKeyer(
+    fun providePdfImageKeyer(urlInfoProvider: UrlInfoProvider): PdfImageKeyer = PdfImageKeyer(
         urlInfoProvider = urlInfoProvider
     )
 
     @Provides
-    fun providePdfImageDecoderFactory(hatchet: Hatchet) = PdfImageDecoder.Factory(
+    fun providePdfImageDecoderFactory(hatchet: Hatchet): PdfImageDecoder.Factory = PdfImageDecoder.Factory(
         hatchet = hatchet,
     )
 
     @Provides
-    fun providePdfImageFetcherFactory(sheetDownloader: SheetDownloader) = PdfImageFetcher.Factory(
+    fun providePdfImageFetcherFactory(sheetDownloader: SheetDownloader): PdfImageFetcher.Factory = PdfImageFetcher.Factory(
         sheetDownloader = sheetDownloader
     )
 
     @Provides
-    fun provideFakeOtherImageFetcherFactory() = FakeOtherImageFetcher.Factory()
+    fun provideFakeOtherImageFetcherFactory(): FakeOtherImageFetcher.Factory = FakeOtherImageFetcher.Factory()
 
     @Provides
-    fun provideFakeOtherImageDecoderFactory() = FakeOtherImageDecoder.Factory()
+    fun provideFakeOtherImageDecoderFactory(): FakeOtherImageDecoder.Factory = FakeOtherImageDecoder.Factory()
 
     @Provides
-    fun provideFakePdfImageKeyer(urlInfoProvider: UrlInfoProvider) = FakePdfImageKeyer(
+    fun provideFakePdfImageKeyer(urlInfoProvider: UrlInfoProvider): FakePdfImageKeyer = FakePdfImageKeyer(
         urlInfoProvider = urlInfoProvider
     )
 
     @Provides
     fun provideFakePdfImageDecoderFactory(
         generator: FakePdfImageGenerator
-    ) = FakePdfImageDecoder.Factory(
+    ): FakePdfImageDecoder.Factory = FakePdfImageDecoder.Factory(
         generator = generator,
     )
 

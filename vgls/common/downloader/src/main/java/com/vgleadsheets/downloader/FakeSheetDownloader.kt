@@ -7,7 +7,7 @@ import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import kotlinx.coroutines.flow.first
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FakeSheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,

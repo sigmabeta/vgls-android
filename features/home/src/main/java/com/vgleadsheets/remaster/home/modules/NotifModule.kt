@@ -12,7 +12,7 @@ import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.NotifListModel
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.ui.StringProvider
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class NotifModule @Inject constructor(
     private val notifManager: NotifManager,

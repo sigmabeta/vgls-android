@@ -7,7 +7,7 @@ import coil3.fetch.Fetcher
 import coil3.fetch.ImageFetchResult
 import coil3.request.Options
 import com.vgleadsheets.bitmaps.LoadingIndicatorGenerator
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class LoadingIndicatorFetcher(
     private val generator: LoadingIndicatorGenerator,

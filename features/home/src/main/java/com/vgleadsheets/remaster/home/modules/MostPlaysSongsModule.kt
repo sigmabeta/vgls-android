@@ -21,7 +21,7 @@ import net.sigmabeta.sage.time.TimeUtils
 import net.sigmabeta.sage.ui.StringProvider
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class MostPlaysSongsModule @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,

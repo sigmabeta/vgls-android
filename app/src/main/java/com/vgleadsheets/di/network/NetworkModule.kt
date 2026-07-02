@@ -4,13 +4,15 @@ import com.squareup.moshi.Moshi
 import com.vgleadsheets.di.HatchetOkHttpLogger
 import com.vgleadsheets.network.OfflineFailFastInterceptor
 import com.vgleadsheets.urlinfo.UrlInfoProvider
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import net.sigmabeta.sage.appinfo.AppInfo
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -18,24 +20,22 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.Random
-import javax.inject.Named
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object NetworkModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Named("RngSeed")
-    fun provideSeed() = SEED_RANDOM_NUMBER_GENERATOR
+    fun provideSeed(): Long = SEED_RANDOM_NUMBER_GENERATOR
 
     @Provides
-    @Singleton
-    fun provideRandom(@Named("RngSeed") seed: Long) = Random(seed)
+    @SingleIn(AppScope::class)
+    fun provideRandom(@Named("RngSeed") seed: Long): Random = Random(seed)
 
     @Provides
     @Named("VglsUrl")
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideVglsUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
@@ -50,7 +50,7 @@ object NetworkModule {
 
     @Provides
     @Named("VglsApiUrl")
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideVglsApiUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
@@ -65,7 +65,7 @@ object NetworkModule {
 
     @Provides
     @Named("VglsImageUrl")
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideVglsImageUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
@@ -80,7 +80,7 @@ object NetworkModule {
 
     @Provides
     @Named("VglsPdfUrl")
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideVglsPdfUrl(
         urlInfoProvider: UrlInfoProvider,
     ): String? {
@@ -96,12 +96,12 @@ object NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Named("ProbeOkHttp")
     fun provideProbeOkClient(
         appInfo: AppInfo,
         @Named("HttpLoggingInterceptor") logger: Interceptor,
-    ) = if (appInfo.isDebug) {
+    ): OkHttpClient = if (appInfo.isDebug) {
         OkHttpClient.Builder()
             .addNetworkInterceptor(logger)
             .build()
@@ -110,7 +110,7 @@ object NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Named("VglsOkHttp")
     fun provideVglsOkClient(
         @Named("ProbeOkHttp") base: OkHttpClient,
@@ -120,7 +120,7 @@ object NetworkModule {
         .build()
 
     @Provides
-    fun provideHatchetLogger(hatchet: Hatchet) = HatchetOkHttpLogger(hatchet)
+    fun provideHatchetLogger(hatchet: Hatchet): HatchetOkHttpLogger = HatchetOkHttpLogger(hatchet)
 
     @Provides
     @Named("HttpLoggingInterceptor")
@@ -132,7 +132,7 @@ object NetworkModule {
 
     @Provides
     @Named("CacheInterceptor")
-    fun provideCacheInterceptor() = Interceptor { chain ->
+    fun provideCacheInterceptor(): Interceptor = Interceptor { chain ->
         val originalResponse = chain.proceed(chain.request())
         originalResponse.newBuilder()
             .header("Cache-Control", "max-age=$CACHE_MAX_AGE")
@@ -140,13 +140,13 @@ object NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideMoshi(): Moshi = Moshi
         .Builder()
         .build()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideConverterFactory(
         moshiInstance: Moshi
     ): Converter.Factory = MoshiConverterFactory.create(moshiInstance)

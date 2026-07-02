@@ -3,7 +3,7 @@ package com.vgleadsheets.pdf.fake
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.annotation.RequiresApi
-import net.sigmabeta.sage.android.bitmaps.BitmapUtils
+import com.vgleadsheets.bitmaps.BitmapUtils
 import com.vgleadsheets.pdf.AsyncRenderer
 import kotlin.system.measureTimeMillis
 

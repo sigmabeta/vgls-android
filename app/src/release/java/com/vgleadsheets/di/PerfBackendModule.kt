@@ -4,21 +4,21 @@ import com.google.firebase.perf.FirebasePerformance
 import net.sigmabeta.sage.perf.PerfBackend
 import net.sigmabeta.sage.perf.firebase.FirebasePerfBackend
 import net.sigmabeta.sage.analytics.Analytics
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object PerfBackendModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideFirebasePerfInstance(): FirebasePerformance = FirebasePerformance.getInstance()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun providePerfBackend(
         firebase: FirebasePerformance,
         analytics: Analytics

@@ -11,21 +11,21 @@ import com.vgleadsheets.remaster.home.modules.NeverPlayedSongModule
 import com.vgleadsheets.remaster.home.modules.NotifModule
 import com.vgleadsheets.remaster.home.modules.RecentSongsModule
 import com.vgleadsheets.remaster.home.modules.RngModule
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.scopes.ActivityScoped
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.di.AppScope
 
-@InstallIn(ActivityComponent::class)
-@Module
-class HomeModuleModule {
+@BindingContainer
+@ContributesTo(AppScope::class)
+object HomeModuleModule {
     @Provides
-    @ActivityScoped
+    @SingleIn(AppScope::class)
     fun provideHomeModuleProviderLol(
         notifModule: NotifModule,
         mostSongsGamesModule: MostSongsGamesModule,

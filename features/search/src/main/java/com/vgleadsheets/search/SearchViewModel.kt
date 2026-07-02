@@ -8,8 +8,12 @@ import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -34,6 +38,7 @@ import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
@@ -355,6 +360,15 @@ class SearchViewModel @AssistedInject constructor(
 
         val data = this.data
         return data.isNotEmpty()
+    }
+
+    @AssistedFactory
+    @ManualViewModelAssistedFactoryKey(Factory::class)
+    @ContributesIntoMap(AppScope::class)
+    fun interface Factory : ManualViewModelAssistedFactory {
+        fun create(
+            @Assisted("textUpdater") textUpdater: (String) -> Unit,
+        ): SearchViewModel
     }
 
     companion object {

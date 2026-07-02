@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.sage.android)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.sage.di)
 }
 
 android {
@@ -9,8 +9,6 @@ android {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
-    implementation(libs.sage.android.bitmaps)
+    implementation(libs.androidx.core.ktx)
     implementation(projects.vgls.android.ui.theme)
-    implementation(libs.hilt)
-    ksp(libs.hilt.compiler)
 }

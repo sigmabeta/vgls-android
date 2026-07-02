@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
     alias(libs.plugins.sage.compose.android)
 }
 
@@ -19,9 +19,11 @@ dependencies {
     implementation(projects.vgls.android.ui.components)
     implementation(projects.vgls.android.viewmodel)
     implementation(projects.vgls.common.appcomm)
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.metrox.viewmodel.compose)
 
-    implementation(libs.sage.android.bitmaps)
-    implementation(libs.sage.android.ui.icons)
+    implementation(projects.vgls.android.bitmaps)
+    implementation(libs.sage.common.ui.iconsReal)
     implementation(libs.sage.common.pdf)
     implementation(libs.androidx.activity.compose)
 

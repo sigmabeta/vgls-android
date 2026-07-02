@@ -2,20 +2,20 @@ package com.vgleadsheets.analytics
 
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.vgleadsheets.analytics.firebase.VglsFirebaseAnalyticsImpl
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.coroutines.SageDispatchers
-import javax.inject.Singleton
+import net.sigmabeta.sage.di.AppScope
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object VglsAnalyticsModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideVglsAnalyticsImpl(
         firebaseAnalytics: FirebaseAnalytics,
         dispatchers: SageDispatchers,
@@ -27,10 +27,10 @@ object VglsAnalyticsModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideAnalytics(impl: VglsFirebaseAnalyticsImpl): Analytics = impl
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideVglsAnalytics(impl: VglsFirebaseAnalyticsImpl): VglsAnalytics = impl
 }

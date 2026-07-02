@@ -2,7 +2,7 @@ package com.vgleadsheets.network
 
 import java.util.Locale
 import java.util.Random
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class StringGenerator @Inject constructor(private val random: Random) {
     fun generateName() = "${FIRST_NAMES[random.nextInt(FIRST_NAMES.size)]} " +

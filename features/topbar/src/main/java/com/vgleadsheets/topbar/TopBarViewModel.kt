@@ -1,9 +1,13 @@
 package com.vgleadsheets.topbar
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.viewmodel.VglsViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,12 +19,13 @@ import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.logging.Hatchet
 import com.vgleadsheets.nav.Destination
-import javax.inject.Inject
 
-@HiltViewModel
+@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
+@ViewModelKey
 class TopBarViewModel @Inject constructor(
     private val selectedPartManager: SelectedPartManager,
     override val analytics: Analytics,

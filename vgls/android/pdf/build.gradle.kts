@@ -7,7 +7,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     api(libs.zoomable.image.coil3)
 
-    implementation(libs.sage.android.bitmaps)
+    implementation(projects.vgls.android.bitmaps)
     implementation(projects.vgls.android.bitmaps)
 
     implementation(libs.sage.common.debug)

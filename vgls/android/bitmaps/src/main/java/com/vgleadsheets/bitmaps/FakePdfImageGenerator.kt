@@ -9,17 +9,17 @@ import android.graphics.Paint
 import android.graphics.Rect
 import androidx.core.content.res.ResourcesCompat
 import com.vgleadsheets.ui.theme.R as ThemeR
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
 import kotlin.math.roundToInt
 import kotlin.system.measureTimeMillis
 
-@Singleton
+@SingleIn(AppScope::class)
 class FakePdfImageGenerator @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val context: Context,
     private val hatchet: Hatchet,
     @Named("VglsUrl") private val vglsUrl: String?
 ) {

@@ -36,8 +36,11 @@ import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.urlinfo.UrlInfoProvider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.appinfo.AppInfo
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.list.BrainProvider
 import net.sigmabeta.sage.list.DelayManager
@@ -49,6 +52,8 @@ import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
 
+@Inject
+@ContributesBinding(AppScope::class)
 class FeatureDirectory(
     private val dbUpdater: DbUpdater,
     private val songHistoryRepository: SongHistoryRepository,

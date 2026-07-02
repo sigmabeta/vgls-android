@@ -40,57 +40,57 @@ import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object RepositoryModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideSongRepository(
         songDataSource: SongDataSource,
         songAliasDataSource: SongAliasDataSource,
         alternateSettingDataSource: AlternateSettingDataSource,
-    ) = SongRepository(
+    ): SongRepository = SongRepository(
         songDataSource,
         songAliasDataSource,
         alternateSettingDataSource,
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideGameRepository(
         gameDataSource: GameDataSource,
-    ) = GameRepository(
+    ): GameRepository = GameRepository(
         gameDataSource,
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideComposerRepository(
         composerDataSource: ComposerDataSource,
-    ) = ComposerRepository(
+    ): ComposerRepository = ComposerRepository(
         composerDataSource,
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideRandomRepository(
         songDataSource: SongDataSource,
         gameDataSource: GameDataSource,
         composerDataSource: ComposerDataSource,
         hatchet: Hatchet,
-    ) = RandomRepository(
+    ): RandomRepository = RandomRepository(
         songDataSource,
         composerDataSource,
         gameDataSource,
@@ -98,7 +98,7 @@ object RepositoryModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideSearchRepository(
         searchHistoryDataSource: SearchHistoryDataSource,
         songDataSource: SongDataSource,
@@ -107,7 +107,7 @@ object RepositoryModule {
         gameAliasDataSource: GameAliasDataSource,
         composerDataSource: ComposerDataSource,
         composerAliasDataSource: ComposerAliasDataSource,
-    ) = SearchRepository(
+    ): SearchRepository = SearchRepository(
         searchHistoryDataSource,
         songDataSource,
         songAliasDataSource,
@@ -118,7 +118,7 @@ object RepositoryModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Suppress("LongParameterList")
     fun provideUpdateManager(
         vglsApi: VglsApi,
@@ -131,7 +131,7 @@ object RepositoryModule {
         coroutineScope: CoroutineScope,
         notifManager: NotifManager,
         stringProvider: StringProvider,
-    ) = UpdateManager(
+    ): UpdateManager = UpdateManager(
         vglsApi,
         dbUpdater,
         dbStatisticsDataSource,
@@ -145,7 +145,7 @@ object RepositoryModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Suppress("LongParameterList")
     fun provideDbUpdater(
         vglsApi: VglsApi,
@@ -162,7 +162,7 @@ object RepositoryModule {
         tagKeyDataSource: TagKeyDataSource,
         tagValueDataSource: TagValueDataSource,
         songAliasDataSource: SongAliasDataSource
-    ) = DbUpdater(
+    ): DbUpdater = DbUpdater(
         vglsApi,
         transactionDao,
         threeTenTime,
@@ -180,7 +180,7 @@ object RepositoryModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Suppress("LongParameterList")
     fun provideSongHistoryRepository(
         dispatchers: SageDispatchers,
@@ -195,7 +195,7 @@ object RepositoryModule {
         coroutineScope: CoroutineScope,
         tagValuePlayCountDataSource: TagValuePlayCountDataSource,
         tagValueDataSource: TagValueDataSource,
-    ) = SongHistoryRepository(
+    ): SongHistoryRepository = SongHistoryRepository(
         songHistoryDataSource,
         gamePlayCountDataSource,
         composerPlayCountDataSource,
@@ -211,7 +211,7 @@ object RepositoryModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideFavoriteRepository(
         songDataSource: SongDataSource,
         gameDataSource: GameDataSource,
@@ -219,7 +219,7 @@ object RepositoryModule {
         favoriteSongDataSource: FavoriteSongDataSource,
         favoriteGameDataSource: FavoriteGameDataSource,
         favoriteComposerDataSource: FavoriteComposerDataSource,
-    ) = FavoriteRepository(
+    ): FavoriteRepository = FavoriteRepository(
         songDataSource,
         gameDataSource,
         composerDataSource,
@@ -229,7 +229,7 @@ object RepositoryModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideOfflineRepository(
         songDataSource: SongDataSource,
         composerDataSource: ComposerDataSource,
@@ -240,7 +240,7 @@ object RepositoryModule {
         offlineUpdateResultDataSource: OfflineUpdateResultDataSource,
         dbStatisticsDataSource: DbStatisticsDataSource,
         threeTenTime: ThreeTenTime,
-    ) = OfflineRepository(
+    ): OfflineRepository = OfflineRepository(
         songDataSource,
         composerDataSource,
         gameDataSource,
@@ -253,29 +253,29 @@ object RepositoryModule {
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideTagRepository(
         tagKeyDataSource: TagKeyDataSource,
         tagValueDataSource: TagValueDataSource,
-    ) = TagRepository(
+    ): TagRepository = TagRepository(
         tagKeyDataSource,
         tagValueDataSource,
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun providesUserContentGenerator(
         songHistoryRepository: SongHistoryRepository,
         songDataSource: SongDataSource,
         hatchet: Hatchet
-    ) = UserContentGenerator(
+    ): UserContentGenerator = UserContentGenerator(
         songHistoryRepository = songHistoryRepository,
         songDataSource = songDataSource,
         hatchet = hatchet,
     )
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun providesUserContentMigrator(
         songHistoryRepository: SongHistoryRepository,
         songDataSource: SongDataSource,
@@ -283,7 +283,7 @@ object RepositoryModule {
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
         hatchet: Hatchet
-    ) = UserContentMigrator(
+    ): UserContentMigrator = UserContentMigrator(
         songHistoryRepository = songHistoryRepository,
         songDataSource = songDataSource,
         settingsManager = settingsManager,

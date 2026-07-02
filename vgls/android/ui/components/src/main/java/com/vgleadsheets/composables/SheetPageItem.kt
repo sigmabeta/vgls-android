@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import net.sigmabeta.sage.appcomm.ActionSink
-import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import com.vgleadsheets.bitmaps.SheetConstants
 import net.sigmabeta.sage.components.SheetPageListModel
 import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import com.vgleadsheets.composables.subs.CrossfadeSheet

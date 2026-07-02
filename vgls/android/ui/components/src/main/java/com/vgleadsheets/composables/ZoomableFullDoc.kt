@@ -24,7 +24,7 @@ import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
 import me.saket.telephoto.zoomable.ZoomableState
 import me.saket.telephoto.zoomable.zoomable
-import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import com.vgleadsheets.bitmaps.SheetConstants
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import net.sigmabeta.sage.pdf.PdfConfigById

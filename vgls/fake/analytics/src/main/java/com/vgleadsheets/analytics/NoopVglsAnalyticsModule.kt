@@ -1,24 +1,24 @@
 package com.vgleadsheets.analytics
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import net.sigmabeta.sage.analytics.Analytics
-import javax.inject.Singleton
+import net.sigmabeta.sage.di.AppScope
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object NoopVglsAnalyticsModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideNoopVglsAnalytics(): NoopVglsAnalytics = NoopVglsAnalytics()
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideVglsAnalytics(impl: NoopVglsAnalytics): VglsAnalytics = impl
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideAnalytics(impl: NoopVglsAnalytics): Analytics = impl
 }

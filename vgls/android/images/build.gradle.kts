@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.di.android)
+    alias(libs.plugins.sage.di)
 }
 
 dependencies {
@@ -11,7 +11,7 @@ dependencies {
 
     implementation(libs.sage.common.images)
 
-    api(libs.sage.android.bitmaps)
+    api(projects.vgls.android.bitmaps)
     api(projects.vgls.android.bitmaps)
 
     implementation(libs.sage.common.analytics)

@@ -4,10 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import net.sigmabeta.sage.appcomm.SageAction
 import com.vgleadsheets.nav.Destination
 
@@ -17,7 +17,7 @@ fun NavGraphBuilder.licensesScreenNavEntry(
     composable(
         route = Destination.LICENSES.template(),
     ) {
-        val viewModel: LicenseViewModel = hiltViewModel()
+        val viewModel: LicenseViewModel = metroViewModel()
 
         DisposableEffect(Unit) {
             viewModel.sendAction(SageAction.Resume)

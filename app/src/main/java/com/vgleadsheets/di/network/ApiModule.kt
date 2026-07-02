@@ -5,21 +5,21 @@ import com.vgleadsheets.network.FakeSheetDownloadApi
 import com.vgleadsheets.network.FakeVglsApi
 import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.network.VglsApi
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
-import javax.inject.Named
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object ApiModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideVglsApi(
         @Named("VglsApiUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,
@@ -37,7 +37,7 @@ object ApiModule {
     }
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideSheetDownloadApi(
         @Named("VglsPdfUrl") baseUrl: String?,
         @Named("VglsOkHttp") client: OkHttpClient,

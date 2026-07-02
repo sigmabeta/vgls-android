@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.sage.android)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.sage.di)
 }
 
 android {
@@ -9,6 +9,4 @@ android {
 
 dependencies {
     api(projects.vgls.common.analytics)
-    implementation(libs.hilt)
-    ksp(libs.hilt.compiler)
 }

@@ -19,7 +19,7 @@ import com.vgleadsheets.composables.subs.ElevatedRoundRect
 import com.vgleadsheets.composables.subs.Flasher
 import com.vgleadsheets.model.generator.StringGenerator
 import kotlinx.collections.immutable.toImmutableList
-import net.sigmabeta.sage.android.bitmaps.SheetConstants
+import com.vgleadsheets.bitmaps.SheetConstants
 import net.sigmabeta.sage.components.HorizontalScrollerListModel
 import net.sigmabeta.sage.components.LoadingItemListModel
 import net.sigmabeta.sage.components.LoadingType

@@ -2,8 +2,8 @@ package com.vgleadsheets.pdf
 
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
-import net.sigmabeta.sage.android.bitmaps.BitmapSizeInfo
-import net.sigmabeta.sage.android.bitmaps.BitmapUtils
+import com.vgleadsheets.bitmaps.BitmapSizeInfo
+import com.vgleadsheets.bitmaps.BitmapUtils
 import net.sigmabeta.sage.debug.RenderOverlayProvider
 import net.sigmabeta.sage.logging.Hatchet
 import kotlin.system.measureTimeMillis

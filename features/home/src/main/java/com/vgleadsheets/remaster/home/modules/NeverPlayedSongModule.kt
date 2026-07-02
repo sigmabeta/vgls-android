@@ -23,7 +23,7 @@ import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.ui.StringProvider
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class NeverPlayedSongModule @Inject constructor(
     private val randomRepository: RandomRepository,

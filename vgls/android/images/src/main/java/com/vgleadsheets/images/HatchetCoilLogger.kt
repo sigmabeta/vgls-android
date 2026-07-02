@@ -4,7 +4,7 @@ import android.util.Log
 import coil3.util.Logger
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.logging.Hatchet
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class HatchetCoilLogger @Inject constructor(
     private val hatchet: Hatchet,

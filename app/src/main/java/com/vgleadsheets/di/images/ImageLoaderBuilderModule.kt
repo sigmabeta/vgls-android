@@ -1,13 +1,13 @@
 package com.vgleadsheets.di.images
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
+import net.sigmabeta.sage.di.AppScope
 
-@Module
-@InstallIn(SingletonComponent::class)
+@BindingContainer
+@ContributesTo(AppScope::class)
 object ImageLoaderBuiFlderModule {
     @Provides
     @Named("PdfImageLoaderBuilder")

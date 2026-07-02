@@ -10,12 +10,12 @@ dependencies {
 
     api(libs.sage.common.ui.components)
 
-    implementation(libs.sage.android.bitmaps)
+    implementation(projects.vgls.android.bitmaps)
     implementation(projects.vgls.android.bitmaps)
     implementation(projects.vgls.android.images)
     implementation(projects.vgls.android.pdf)
-    implementation(libs.sage.android.perf)
-    implementation(libs.sage.android.ui.icons)
+    implementation(libs.sage.common.ui.perfCompose)
+    implementation(libs.sage.common.ui.iconsReal)
     implementation(projects.vgls.android.ui.theme)
     implementation(projects.vgls.android.strings)
 

@@ -3,8 +3,12 @@ package com.vgleadsheets.viewmodel.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vgleadsheets.nav.Destination
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -18,6 +22,7 @@ import net.sigmabeta.sage.appcomm.SageEvent
 import net.sigmabeta.sage.components.ErrorStateListModel
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.BrainProvider
 import net.sigmabeta.sage.list.ListViewModelBrain
 import net.sigmabeta.sage.list.getErrors
@@ -107,5 +112,21 @@ class ListViewModel @AssistedInject constructor(
             errorString = errorModel.errorString,
             error = errorModel.error
         )
+    }
+
+    /**
+     * Metro assisted factory (replaces the Dagger `@AssistedFactory` + Hilt `@EntryPoint` that used
+     * to live in ViewModelInjection.kt). Contributed into the ViewModel multibinding map; obtained in
+     * composition via `assistedMetroViewModel<ListViewModel, Factory> { create(...) }`.
+     */
+    @AssistedFactory
+    @ManualViewModelAssistedFactoryKey(Factory::class)
+    @ContributesIntoMap(AppScope::class)
+    fun interface Factory : ManualViewModelAssistedFactory {
+        fun create(
+            @Assisted destination: Destination,
+            @Assisted idArg: Long,
+            @Assisted stringArg: String?,
+        ): ListViewModel
     }
 }

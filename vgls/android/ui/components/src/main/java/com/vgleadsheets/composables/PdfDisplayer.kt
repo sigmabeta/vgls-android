@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.pdf.PdfToBitmapRenderer
-import net.sigmabeta.sage.android.perf.LocalLogger
+import net.sigmabeta.sage.ui.perf.LocalLogger
 import kotlin.math.roundToInt
 import kotlin.random.Random
 

@@ -5,7 +5,7 @@ import net.sigmabeta.sage.connectivity.NetworkUnavailableException
 import net.sigmabeta.sage.connectivity.allowsApiRequests
 import okhttp3.Interceptor
 import okhttp3.Response
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class OfflineFailFastInterceptor @Inject constructor(
     private val networkStatusProvider: NetworkStatusProvider,

@@ -5,29 +5,28 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.vgleadsheets.storage.common.AndroidDataStore
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.coroutines.SageDispatchers
+import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.storage.common.Storage
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
+@BindingContainer
+@ContributesTo(AppScope::class)
 object StorageModule {
     private val Context.dataStore by preferencesDataStore(name = "debug")
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideDebugDataStore(
-        @ApplicationContext context: Context
+        context: Context
     ): DataStore<Preferences> = context.dataStore
 
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     fun provideStorage(
         dataStore: DataStore<Preferences>,

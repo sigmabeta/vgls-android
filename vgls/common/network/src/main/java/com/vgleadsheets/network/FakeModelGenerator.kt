@@ -8,8 +8,8 @@ import java.io.IOException
 import java.util.EmptyStackException
 import java.util.Random
 import java.util.Stack
-import javax.inject.Inject
-import javax.inject.Named
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
 class FakeModelGenerator @Inject constructor(

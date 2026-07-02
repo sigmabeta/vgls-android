@@ -2,20 +2,19 @@ package com.vgleadsheets.di
 
 import android.content.Context
 import com.vgleadsheets.downloader.StorageDirectoryProvider
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
+import net.sigmabeta.sage.di.AppScope
 
-@InstallIn(SingletonComponent::class)
-@Module
-class DownloaderModule {
+@BindingContainer
+@ContributesTo(AppScope::class)
+object DownloaderModule {
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideStorageDirProvider(
-        @ApplicationContext context: Context
+        context: Context
     ): StorageDirectoryProvider = object : StorageDirectoryProvider {
         override fun getStorageDirectory() = context.filesDir
     }

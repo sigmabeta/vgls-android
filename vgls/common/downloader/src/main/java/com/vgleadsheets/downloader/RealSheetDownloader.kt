@@ -15,7 +15,7 @@ import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.pdf.PdfConfigById
 import java.io.File
 import java.io.IOException
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class RealSheetDownloader @Inject constructor(
     private val storageDirectoryProvider: StorageDirectoryProvider,
