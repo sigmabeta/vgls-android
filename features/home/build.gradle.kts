@@ -1,20 +1,31 @@
 plugins {
-    alias(libs.plugins.sage.jvm)
-    alias(libs.plugins.sage.di)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.metro)
 }
 
-dependencies {
-    api(projects.vgls.common.analytics)
-    implementation(projects.vgls.common.appcomm)
-    implementation(libs.sage.common.list)
-    api(projects.vgls.common.viewmodel)
-    implementation(libs.metrox.viewmodel)
-    implementation(projects.vgls.common.notif)
-    implementation(projects.vgls.common.offline)
-    implementation(libs.sage.common.pdf)
-    implementation(projects.vgls.common.repository)
-    implementation(libs.sage.common.time)
-    implementation(libs.sage.common.ui.components)
-    implementation(projects.vgls.common.strings)
-    implementation(projects.vgls.common.nav)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.remaster.home"
+    }
+
+    sourceSets {
+        named("jvmSharedMain") {
+            dependencies {
+                api(projects.vgls.common.analytics)
+                implementation(projects.vgls.common.appcomm)
+                implementation(libs.sage.common.list)
+                api(projects.vgls.common.viewmodel)
+                implementation(libs.metrox.viewmodel)
+                implementation(projects.vgls.common.notif)
+                implementation(projects.vgls.common.offline)
+                implementation(libs.sage.common.pdf)
+                implementation(projects.vgls.common.repository)
+                implementation(libs.sage.common.time)
+                implementation(libs.sage.common.ui.components)
+                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.nav)
+                implementation(libs.sage.common.di)
+            }
+        }
+    }
 }
