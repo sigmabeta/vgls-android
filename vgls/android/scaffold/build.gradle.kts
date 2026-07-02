@@ -7,9 +7,11 @@ plugins {
 dependencies {
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.metrox.viewmodel)
     implementation(libs.metrox.viewmodel.compose)
+    // Voyager: the app's Navigator + all VglsScreen definitions live in this module now.
+    implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transitions)
 
     implementation(projects.vgls.android.images)
     implementation(projects.vgls.android.licenses)

@@ -5,9 +5,11 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.metrox.viewmodel)
+    // Voyager: NavViewModel drives the Navigator + returns Screens (public API -> api).
+    api(libs.voyager.navigator)
+    implementation(projects.vgls.common.nav)
 
     api(projects.vgls.android.viewmodel)
 
