@@ -2,7 +2,7 @@ package com.vgleadsheets.ui.list
 
 import com.vgleadsheets.composables.Dimensions
 
-import androidx.activity.compose.BackHandler
+import com.vgleadsheets.composables.DeviceBackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -45,7 +45,7 @@ fun ListScreenContent(
             onDispose { viewModel.sendAction(SageAction.Pause) }
         }
 
-        BackHandler(true) { viewModel.sendAction(SageAction.DeviceBack) }
+        DeviceBackHandler(true) { viewModel.sendAction(SageAction.DeviceBack) }
 
         val state by viewModel.uiStateActual.collectAsStateWithLifecycle()
         val showDebug by viewModel.showDebug.collectAsStateWithLifecycle()
