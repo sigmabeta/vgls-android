@@ -1,13 +1,13 @@
 package com.vgleadsheets.network.model
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
 @Suppress("ConstructorParameterNaming")
-@JsonClass(generateAdapter = true)
+@Serializable
 data class VglsApiGame(
-    val aliases: List<String>?,
+    val aliases: List<String>? = null,
     val game_id: Long,
     val game_name: String,
     val songs: List<ApiSong>,
-    val image_url: String?
+    val image_url: String? = null
 )

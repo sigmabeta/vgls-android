@@ -162,7 +162,15 @@ dependencies {
     implementation(libs.androidx.work.manager)
 
     implementation(libs.androidx.window.manager)
-    implementation(libs.retrofit.moshi)
+    // Ktor HTTP client (replaces retrofit/okhttp/moshi). Engine + logging have no catalog alias.
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.kotlinx.serialization.json)
+    implementation("io.ktor:ktor-client-okhttp:3.5.0")
+    implementation("io.ktor:ktor-client-logging:3.5.0")
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
 
     val shouldIncludeFirebase = checkShouldIncludeFirebase()
     logger.quiet("Including firebase: $shouldIncludeFirebase")

@@ -1,9 +1,9 @@
 package com.vgleadsheets.network.model
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ApiSong(
     val id: Long,
     val filename: String,
@@ -14,6 +14,6 @@ data class ApiSong(
     val lyricsPageCount: Int,
     val composers: List<ApiComposer>,
     val tags: Map<String, List<String>>,
-    val aliases: List<String>?,
-    @Json(name = "last_modified") val lastModified: String?,
+    val aliases: List<String>? = null,
+    @SerialName("last_modified") val lastModified: String? = null,
 )

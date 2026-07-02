@@ -24,10 +24,11 @@ kotlin {
                 implementation(libs.sage.common.di)
             }
         }
-        // network is pure-JVM (sage.jvm); the downloader impls that use it stay here.
+        // The RealSheetDownloader reads the ktor HttpResponse the network SheetDownloadApi returns.
         named("jvmSharedMain") {
             dependencies {
                 implementation(projects.vgls.common.network)
+                implementation(libs.ktor.client.core)
             }
         }
     }

@@ -10,12 +10,13 @@ import kotlinx.coroutines.flow.first
 import net.sigmabeta.sage.connectivity.HttpException
 import net.sigmabeta.sage.connectivity.NetworkStatusProvider
 import net.sigmabeta.sage.connectivity.NetworkUnavailableException
+import io.ktor.client.statement.readRawBytes
+import io.ktor.http.isSuccess
 import okio.Path.Companion.toOkioPath
 import net.sigmabeta.sage.connectivity.allowsApiRequests
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.pdf.PdfConfigById
 import java.io.File
-import java.io.IOException
 import dev.zacsweers.metro.Inject
 
 class RealSheetDownloader @Inject constructor(
@@ -121,16 +122,14 @@ class RealSheetDownloader @Inject constructor(
         hatchet.d("Sending GET request for $suffixedFileName...")
         val response = sheetDownloadApi.downloadFile(suffixedFileName, partApiId)
 
-        if (!response.isSuccessful) {
+        if (!response.status.isSuccess()) {
             throw HttpException(
-                response.code(),
-                "Response \"${response.code()} - ${response.message()}\" received for filename $suffixedFileName"
+                response.status.value,
+                "Response \"${response.status.value} - ${response.status.description}\" received for filename $suffixedFileName"
             )
         }
 
-        val body = response.body() ?: throw IOException("Somehow received empty response? Nani!?!?")
-
-        val bytes = body.bytes()
+        val bytes = response.readRawBytes()
         hatchet.d("Saving ${bytes.size / 1_024.0f} KiB to ${targetFile.absolutePath}...")
         targetFile.writeBytes(bytes)
     }
