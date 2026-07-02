@@ -8,10 +8,15 @@ kotlin {
     }
 
     sourceSets {
-        named("jvmSharedMain") {
+        named("commonMain") {
             dependencies {
                 api(projects.vgls.common.model)
                 implementation(libs.sage.common.coroutines)
+            }
+        }
+        // network is pure-JVM (sage.jvm); FromNetwork.kt (the network->model mappers) stays here.
+        named("jvmSharedMain") {
+            dependencies {
                 implementation(projects.vgls.common.network)
             }
         }

@@ -9,14 +9,13 @@ kotlin {
     }
 
     sourceSets {
-        named("jvmSharedMain") {
+        named("commonMain") {
             dependencies {
                 api(projects.vgls.common.analytics)
                 implementation(projects.vgls.common.appcomm)
                 implementation(libs.sage.common.list)
                 api(projects.vgls.common.viewmodel)
                 implementation(libs.metrox.viewmodel)
-                implementation(projects.vgls.common.notif)
                 implementation(projects.vgls.common.offline)
                 implementation(libs.sage.common.pdf)
                 implementation(projects.vgls.common.repository)
@@ -25,6 +24,12 @@ kotlin {
                 implementation(projects.vgls.common.strings)
                 implementation(projects.vgls.common.nav)
                 implementation(libs.sage.common.di)
+            }
+        }
+        // notif is pure-JVM (sage.jvm); HomeViewModel + the MostPlays*/Notif home modules stay here.
+        named("jvmSharedMain") {
+            dependencies {
+                implementation(projects.vgls.common.notif)
             }
         }
     }
