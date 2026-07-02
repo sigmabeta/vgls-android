@@ -40,6 +40,7 @@ kotlin {
         // the commonMain composables) also live here (android tooling @Preview).
         named("androidMain") {
             dependencies {
+                implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.compose.ui.tooling.preview)
             }
         }
