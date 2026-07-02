@@ -12,7 +12,7 @@ kotlin {
     }
 
     sourceSets {
-        named("jvmSharedMain") {
+        named("commonMain") {
             dependencies {
                 api(libs.androidx.lifecycle.viewmodel)
 

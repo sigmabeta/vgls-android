@@ -12,7 +12,7 @@ kotlin {
     }
 
     sourceSets {
-        named("jvmSharedMain") {
+        named("commonMain") {
             dependencies {
                 api(libs.sage.common.appcomm)
                 api(libs.sage.common.logging)

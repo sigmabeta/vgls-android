@@ -9,7 +9,7 @@ kotlin {
     }
 
     sourceSets {
-        named("jvmSharedMain") {
+        named("commonMain") {
             dependencies {
                 implementation(projects.vgls.common.appcomm)
                 api(libs.sage.common.appinfo)

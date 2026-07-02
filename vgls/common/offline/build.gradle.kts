@@ -8,7 +8,7 @@ kotlin {
     }
 
     sourceSets {
-        named("jvmSharedMain") {
+        named("commonMain") {
             dependencies {
                 implementation(projects.vgls.common.downloader)
                 implementation(libs.sage.common.logging)
