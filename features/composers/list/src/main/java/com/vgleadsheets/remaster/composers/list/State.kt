@@ -4,7 +4,7 @@ import com.vgleadsheets.model.Composer
 import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
@@ -26,11 +26,11 @@ data class State(
         loadingWithHeader = false,
     ) {
         data.map { composer ->
-            SquareItemListModel(
+            GridImageListModel(
                 dataId = composer.id,
                 name = composer.name,
                 sourceInfo = composer.photoUrl,
-                imagePlaceholder = Icon.PERSON,
+                imagePlaceholder = Icon.Person,
                 clickAction = Action.ComposerClicked(composer.id),
             )
         }

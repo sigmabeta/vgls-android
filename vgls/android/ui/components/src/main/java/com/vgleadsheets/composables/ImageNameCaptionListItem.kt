@@ -220,7 +220,7 @@ private fun Sample() {
             "Xenoblade Chronicles 3",
             "Yasunori Mitsuda, Mariam Abounnasr, Manami Kiyota, ACE+, Kenji Hiramatsu",
             SourceInfo("https://randomfox.ca/images/12.jpg"),
-            Icon.PERSON,
+            Icon.Person,
             null,
             SageAction.Noop,
         ),

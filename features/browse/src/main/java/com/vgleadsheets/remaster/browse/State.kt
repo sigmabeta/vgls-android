@@ -4,7 +4,7 @@ import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.ListModel
-import net.sigmabeta.sage.components.MenuItemListModel
+import net.sigmabeta.sage.components.IconNameListModel
 import net.sigmabeta.sage.components.NoopListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
@@ -20,54 +20,54 @@ data class State(
     )
 
     override fun toListItems(stringProvider: StringProvider): List<ListModel> = listOf(
-            MenuItemListModel(
+            IconNameListModel(
+                dataId = 0L,
                 name = stringProvider.getString(VglsStringId.BROWSE_LINK_SHEETS),
-                caption = null,
-                icon = Icon.DESCRIPTION,
+                icon = Icon.Description,
                 clickAction = Action.DestinationClicked(Destination.SONGS_LIST.noArgs()),
-                selected = false
+                active = false
             ),
-            MenuItemListModel(
+            IconNameListModel(
+                dataId = 1L,
                 name = stringProvider.getString(VglsStringId.BROWSE_LINK_FAVORITES),
-                caption = null,
-                icon = Icon.FAVORITE_FILLED,
+                icon = Icon.FavoriteFilled,
                 clickAction = Action.DestinationClicked(Destination.FAVORITES.noArgs()),
-                selected = false
+                active = false
             ),
-            MenuItemListModel(
+            IconNameListModel(
+                dataId = 2L,
                 name = stringProvider.getString(VglsStringId.BROWSE_LINK_OFFLINE),
-                caption = null,
-                icon = Icon.OFFLINE_OUTLINE,
+                icon = Icon.OfflineOutline,
                 clickAction = Action.DestinationClicked(Destination.OFFLINE.noArgs()),
-                selected = false
+                active = false
             ),
-            MenuItemListModel(
+            IconNameListModel(
+                dataId = 3L,
                 name = stringProvider.getString(VglsStringId.BROWSE_LINK_GAME),
-                caption = null,
-                icon = Icon.ALBUM,
+                icon = Icon.Album,
                 clickAction = Action.DestinationClicked(Destination.GAMES_LIST.noArgs()),
-                selected = false
+                active = false
             ),
-            MenuItemListModel(
+            IconNameListModel(
+                dataId = 4L,
                 name = stringProvider.getString(VglsStringId.BROWSE_LINK_COMPOSER),
-                caption = null,
-                icon = Icon.PERSON,
+                icon = Icon.Person,
                 clickAction = Action.DestinationClicked(Destination.COMPOSERS_LIST.noArgs()),
-                selected = false
+                active = false
             ),
-            MenuItemListModel(
+            IconNameListModel(
+                dataId = 5L,
                 name = stringProvider.getString(VglsStringId.BROWSE_LINK_DIFFICULTY),
-                caption = null,
-                icon = Icon.DIFFICULTY,
+                icon = Icon.Difficulty,
                 clickAction = Action.DestinationClicked(Destination.DIFFICULTY_LIST.noArgs()),
-                selected = false
+                active = false
             ),
-            MenuItemListModel(
+            IconNameListModel(
+                dataId = 6L,
                 name = stringProvider.getString(VglsStringId.BROWSE_LINK_TAG),
-                caption = null,
-                icon = Icon.TAG,
+                icon = Icon.Tag,
                 clickAction = Action.DestinationClicked(Destination.TAGS_LIST.noArgs()),
-                selected = false
+                active = false
             ),
             byPublishDateLink(stringProvider),
         )
@@ -78,12 +78,12 @@ data class State(
 
             if (id != null) {
                 val name = stringProvider.getString(VglsStringId.BROWSE_LINK_PUBLISH_DATE)
-                return MenuItemListModel(
+                return IconNameListModel(
+                    dataId = 7L,
                     name = name,
-                    caption = null,
-                    icon = Icon.CALENDAR,
+                    icon = Icon.Calendar,
                     clickAction = Action.DestinationClicked(Destination.TAGS_VALUES_LIST.forId(id)),
-                    selected = false
+                    active = false
                 )
             }
         }

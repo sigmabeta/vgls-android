@@ -4,7 +4,7 @@ import com.vgleadsheets.model.Game
 import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
@@ -30,11 +30,11 @@ data class State(
 
     private fun content(games: List<Game>) = games
         .map { game ->
-            SquareItemListModel(
+            GridImageListModel(
                 dataId = game.id,
                 name = game.name,
                 sourceInfo = game.photoUrl,
-                imagePlaceholder = Icon.ALBUM,
+                imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
             )
         }

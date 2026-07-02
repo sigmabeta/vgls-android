@@ -3,7 +3,7 @@ package com.vgleadsheets.remaster.parts
 import com.vgleadsheets.model.Part
 import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.components.ListModel
-import net.sigmabeta.sage.components.MenuItemListModel
+import net.sigmabeta.sage.components.IconNameListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.list.ListState
 import net.sigmabeta.sage.ui.Icon
@@ -21,12 +21,12 @@ data class State(
         .entries
         .map { PartSelectorOption.valueOf(it.name) }
         .map {
-            MenuItemListModel(
+            IconNameListModel(
+                dataId = it.name.hashCode().toLong(),
                 name = stringProvider.getString(it.longResId),
-                caption = null,
-                icon = Icon.DESCRIPTION,
+                icon = Icon.Description,
                 clickAction = Action.PartSelected(it),
-                selected = it.apiId == selectedPart?.apiId
+                active = it.apiId == selectedPart?.apiId
             )
         }
 }

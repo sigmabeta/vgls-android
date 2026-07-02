@@ -2,9 +2,8 @@ package com.vgleadsheets.scaffold
 
 import android.content.res.Configuration
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.Posture
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
-import androidx.compose.material3.adaptive.calculatePosture
-import androidx.compose.material3.adaptive.collectFoldingFeaturesAsState
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
@@ -53,7 +52,9 @@ fun WidthClass.toWidthDpSynthetic() = when (this) {
 @Composable
 fun WidthClass.toAdaptiveInfoSynthetic(): WindowAdaptiveInfo = WindowAdaptiveInfo(
         WindowSizeClass.compute(toWidthDpSynthetic().toFloat(), 0f),
-        calculatePosture(collectFoldingFeaturesAsState().value)
+        // Synthetic (preview) adaptive info: a flat Posture is fine; the real posture-from-folds
+        // helper (calculatePosture) went internal in the newer material3-adaptive.
+        Posture()
     )
 
 @Composable

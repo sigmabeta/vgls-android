@@ -188,7 +188,7 @@ private fun Sample() {
             1234L,
             "Carrying the Weight of Life",
             SourceInfo("https://randomfox.ca/images/12.jpg"),
-            Icon.DESCRIPTION,
+            Icon.Description,
             null,
             clickAction = SageAction.Noop,
         ),

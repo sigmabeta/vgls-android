@@ -48,7 +48,7 @@ data class State(
                         pdfSize = PdfSize.THUMBNAIL,
                     )
                 ),
-                imagePlaceholder = Icon.DESCRIPTION,
+                imagePlaceholder = Icon.Description,
                 clickAction = Action.SongClicked(song.id),
             )
         }

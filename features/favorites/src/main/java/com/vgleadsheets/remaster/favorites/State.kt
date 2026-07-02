@@ -10,7 +10,7 @@ import net.sigmabeta.sage.components.ImageNameCaptionListModel
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SectionHeaderListModel
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.images.SourceInfo
@@ -42,7 +42,7 @@ data class State(
         if (results.isEmpty()) {
             return listOf(
                 EmptyStateListModel(
-                    icon = Icon.FAVORITE_EMPTY,
+                    icon = Icon.FavoriteEmpty,
                     explanation = stringProvider.getString(VglsStringId.CTA_FAVORITES),
                     showCrossOut = false
                 )
@@ -77,7 +77,7 @@ data class State(
                         pdfSize = PdfSize.THUMBNAIL,
                     )
                 ),
-                imagePlaceholder = Icon.DESCRIPTION,
+                imagePlaceholder = Icon.Description,
                 clickAction = Action.SongClicked(item.id),
             )
         }
@@ -99,11 +99,11 @@ data class State(
                 stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_GAMES)
             )
         ) + data.map { game ->
-            SquareItemListModel(
+            GridImageListModel(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
                 sourceInfo = game.photoUrl,
-                imagePlaceholder = Icon.ALBUM,
+                imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
             )
         }
@@ -125,11 +125,11 @@ data class State(
                 stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_COMPOSERS)
             )
         ) + data.map { composer ->
-            SquareItemListModel(
+            GridImageListModel(
                 dataId = composer.id + ID_OFFSET_COMPOSER,
                 name = composer.name,
                 sourceInfo = composer.photoUrl,
-                imagePlaceholder = Icon.PERSON,
+                imagePlaceholder = Icon.Person,
                 clickAction = Action.ComposerClicked(composer.id),
             )
         }

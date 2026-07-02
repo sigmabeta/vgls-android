@@ -217,7 +217,7 @@ private fun ErrorImage(
         )
 
         Icon(
-            imageVector = Icon.CROSSOUT.vector(),
+            imageVector = Icon.CrossOut.vector(),
             tint = Color.Unspecified,
             contentDescription = null,
             modifier = Modifier.fillMaxSize()
@@ -272,7 +272,7 @@ private fun Sample() {
                 1234L,
                 "Carrying the Weight of Life",
                 SourceInfo(info = null),
-                Icon.DESCRIPTION,
+                Icon.Description,
                 null,
                 clickAction = SageAction.Noop,
             ),
@@ -290,7 +290,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo("etc"),
-                    imagePlaceholder = Icon.PERSON,
+                    imagePlaceholder = Icon.Person,
                     contentDescription = null,
                     simulateError = true,
                     forceGenBitmap = false,
@@ -306,7 +306,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo(null),
-                    imagePlaceholder = Icon.DESCRIPTION,
+                    imagePlaceholder = Icon.Description,
                     contentDescription = null,
                     modifier = Modifier,
                 )
@@ -320,7 +320,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo("doesn't matter"),
-                    imagePlaceholder = Icon.DESCRIPTION,
+                    imagePlaceholder = Icon.Description,
                     contentDescription = null,
                     modifier = Modifier,
                 )
@@ -333,7 +333,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo("etc"),
-                    imagePlaceholder = Icon.PERSON,
+                    imagePlaceholder = Icon.Person,
                     contentDescription = null,
                     simulateError = true,
                     forceGenBitmap = false,
@@ -346,7 +346,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo(null),
-                    imagePlaceholder = Icon.DESCRIPTION,
+                    imagePlaceholder = Icon.Description,
                     contentDescription = null,
                     modifier = Modifier,
                 )
@@ -357,7 +357,7 @@ private fun Sample() {
             ) {
                 CrossfadeImage(
                     sourceInfo = SourceInfo("doesn't matter"),
-                    imagePlaceholder = Icon.DESCRIPTION,
+                    imagePlaceholder = Icon.Description,
                     contentDescription = null,
                     modifier = Modifier,
                 )

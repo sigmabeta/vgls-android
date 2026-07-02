@@ -22,7 +22,7 @@ import com.vgleadsheets.ui.theme.AppTheme
 import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.components.SubsectionHeaderListModel
 import net.sigmabeta.sage.components.SubsectionListModel
 import net.sigmabeta.sage.components.WideItemListModel
@@ -62,7 +62,7 @@ fun Subsection(
                     padding = PaddingValues()
                 )
 
-                is SquareItemListModel -> SquareItem(
+                is GridImageListModel -> SquareItem(
                     model = it,
                     actionSink = actionSink,
                     modifier = Modifier,
@@ -159,7 +159,7 @@ private fun SampleWide() {
                     2345L,
                     "Manami Kiyota",
                     null,
-                    Icon.PERSON,
+                    Icon.Person,
                     actionableId = null,
                     clickAction = SageAction.Noop,
                 ),
@@ -167,7 +167,7 @@ private fun SampleWide() {
                     3456L,
                     "Yasunori Mitsuda",
                     null,
-                    Icon.PERSON,
+                    Icon.Person,
                     actionableId = null,
                     clickAction = SageAction.Noop,
                 ),
@@ -175,7 +175,7 @@ private fun SampleWide() {
                     4567L,
                     "ACE+",
                     null,
-                    Icon.PERSON,
+                    Icon.Person,
                     actionableId = null,
                     clickAction = SageAction.Noop,
                 ),
@@ -197,27 +197,27 @@ private fun SampleSquare() {
                 "Composers for this game on VGLS",
             ),
             listOf(
-                SquareItemListModel(
+                GridImageListModel(
                     2345L,
                     "Manami Kiyota",
                     null,
-                    Icon.PERSON,
+                    Icon.Person,
                     actionableId = null,
                     clickAction = SageAction.Noop,
                 ),
-                SquareItemListModel(
+                GridImageListModel(
                     3456L,
                     "Yasunori Mitsuda",
                     null,
-                    Icon.PERSON,
+                    Icon.Person,
                     actionableId = null,
                     clickAction = SageAction.Noop,
                 ),
-                SquareItemListModel(
+                GridImageListModel(
                     4567L,
                     "ACE+",
                     null,
-                    Icon.PERSON,
+                    Icon.Person,
                     actionableId = null,
                     clickAction = SageAction.Noop,
                 ),

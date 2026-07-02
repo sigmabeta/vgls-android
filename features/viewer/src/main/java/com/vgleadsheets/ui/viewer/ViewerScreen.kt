@@ -345,7 +345,7 @@ private fun BoxScope.LyricsWarning() {
             .padding(horizontal = 8.dp)
     ) {
         Icon(
-            imageVector = Icon.WARNING.vector(),
+            imageVector = Icon.Warning.vector(),
             tint = Color.White,
             contentDescription = null,
         )
@@ -370,8 +370,8 @@ private fun BoxScope.DirectionButton(
     onClick: () -> Unit,
 ) {
     val (buttonAlignment, imageVector) = when (action) {
-        Action.PrevButtonClicked -> Pair(Alignment.CenterStart, Icon.BACK)
-        Action.NextButtonClicked -> Pair(Alignment.CenterEnd, Icon.FORWARD)
+        Action.PrevButtonClicked -> Pair(Alignment.CenterStart, Icon.Back)
+        Action.NextButtonClicked -> Pair(Alignment.CenterEnd, Icon.Forward)
         else -> throw IllegalArgumentException("Needs to be a direction lol")
     }
 

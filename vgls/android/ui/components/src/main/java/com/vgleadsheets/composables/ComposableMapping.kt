@@ -23,7 +23,7 @@ import net.sigmabeta.sage.components.LabelValueListModel
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.LoadingItemListModel
 import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.MenuItemListModel
+import net.sigmabeta.sage.components.IconNameListModel
 import net.sigmabeta.sage.components.NameCaptionListModel
 import net.sigmabeta.sage.components.NotifListModel
 import net.sigmabeta.sage.components.SearchHistoryListModel
@@ -35,7 +35,7 @@ import net.sigmabeta.sage.components.SheetPageListModel
 import net.sigmabeta.sage.components.SinglePageListModel
 import net.sigmabeta.sage.components.SingleTextListModel
 import net.sigmabeta.sage.components.SmallTextListModel
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.components.SubsectionHeaderListModel
 import net.sigmabeta.sage.components.SubsectionListModel
 import net.sigmabeta.sage.components.WideItemListModel
@@ -60,7 +60,7 @@ fun ListModel.Content(
 
             is CtaListModel -> ActionItem(model = this, actionSink = sink, modifier = mod, padding = pad)
 
-            is DropdownSettingListModel -> LabelDropdownListItem(model = this, modifier = mod, padding = pad)
+            is DropdownSettingListModel -> LabelDropdownListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
 
             is EmptyStateListModel -> EmptyListIndicator(model = this, modifier = mod)
 
@@ -80,7 +80,7 @@ fun ListModel.Content(
 
             is LabelValueListModel -> LabelValueListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
 
-            is MenuItemListModel -> MenuItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+            is IconNameListModel -> MenuItem(model = this, actionSink = sink, modifier = mod, padding = pad)
 
             is NameCaptionListModel -> NameCaptionListItem(model = this, actionSink = sink, modifier = mod, padding = pad)
 
@@ -104,7 +104,7 @@ fun ListModel.Content(
 
             is SmallTextListModel -> SmallText(model = this, actionSink = sink, modifier = mod, padding = pad)
 
-            is SquareItemListModel -> SquareItem(model = this, actionSink = sink, modifier = mod, padding = pad)
+            is GridImageListModel -> SquareItem(model = this, actionSink = sink, modifier = mod, padding = pad)
 
             is SubsectionHeaderListModel -> SubsectionHeader(model = this, modifier = mod)
 

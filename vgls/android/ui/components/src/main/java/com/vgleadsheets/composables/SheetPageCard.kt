@@ -70,7 +70,7 @@ fun SheetPageCard(
                 ) {
                     EmptyListIndicator(
                         model = EmptyStateListModel(
-                            icon = Icon.WARNING,
+                            icon = Icon.Warning,
                             explanation = "No lyrics available for this sheet.",
                             showCrossOut = false,
                         ),

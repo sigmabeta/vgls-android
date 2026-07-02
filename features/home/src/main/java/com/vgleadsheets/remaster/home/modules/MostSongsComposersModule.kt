@@ -9,7 +9,7 @@ import com.vgleadsheets.strings.VglsStringId
 import kotlinx.coroutines.flow.map
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
@@ -38,11 +38,11 @@ class MostSongsComposersModule @Inject constructor(
                     shouldShow = composers.isNotEmpty(),
                     title = title(),
                     items = composers.map { composer ->
-                        SquareItemListModel(
+                        GridImageListModel(
                             dataId = composer.id,
                             name = composer.name,
                             sourceInfo = composer.photoUrl,
-                            imagePlaceholder = Icon.PERSON,
+                            imagePlaceholder = Icon.Person,
                             clickAction = Action.MostSongsComposerClicked(composer.id)
                         )
                     },

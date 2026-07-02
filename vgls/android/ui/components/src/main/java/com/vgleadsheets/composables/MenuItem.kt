@@ -26,13 +26,13 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
-import net.sigmabeta.sage.components.MenuItemListModel
+import net.sigmabeta.sage.components.IconNameListModel
 import net.sigmabeta.sage.ui.vector
 
 @Composable
 @Suppress("LongMethod")
 fun MenuItem(
-    model: MenuItemListModel,
+    model: IconNameListModel,
     actionSink: ActionSink,
     padding: PaddingValues,
     modifier: Modifier,
@@ -45,7 +45,7 @@ fun MenuItem(
             .clickable { actionSink.sendAction(model.clickAction) },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        val color = if (model.selected) {
+        val color = if (model.active) {
             MaterialTheme.colorScheme.primary
         } else {
             MaterialTheme.colorScheme.onBackground
@@ -71,7 +71,7 @@ fun MenuItem(
             color = color,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            fontWeight = if (model.selected) FontWeight.Bold else FontWeight.Normal,
+            fontWeight = if (model.active) FontWeight.Bold else FontWeight.Normal,
             modifier = Modifier
                 .weight(1.0f)
                 .padding(
@@ -141,11 +141,11 @@ private fun NotSelectedDark() {
 @Composable
 private fun Sample(selected: Boolean) {
     MenuItem(
-        MenuItemListModel(
+        IconNameListModel(
+            dataId = 0L,
             name = "Check for updates...",
-            caption = "Last updated Feb 3, 1963",
-            icon = net.sigmabeta.sage.ui.Icon.REFRESH,
-            selected = selected,
+            icon = net.sigmabeta.sage.ui.Icon.Refresh,
+            active = selected,
             clickAction = SageAction.Noop
         ),
         PreviewActionSink {},

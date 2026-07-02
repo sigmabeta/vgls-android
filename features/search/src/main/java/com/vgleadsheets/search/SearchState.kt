@@ -18,7 +18,7 @@ import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.NoopListModel
 import net.sigmabeta.sage.components.SearchHistoryListModel
 import net.sigmabeta.sage.components.SectionHeaderListModel
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.images.SourceInfo
@@ -55,7 +55,7 @@ data class SearchState(
             .ifEmpty {
                 listOf(
                     EmptyStateListModel(
-                        icon = Icon.SEARCH,
+                        icon = Icon.Search,
                         explanation = stringProvider.getString(VglsStringId.CTA_SEARCH_OTHER_QUERY),
                         showCrossOut = false
                     )
@@ -99,7 +99,7 @@ data class SearchState(
 
     private fun searchCta(stringProvider: StringProvider) = listOf(
         EmptyStateListModel(
-            icon = Icon.SEARCH,
+            icon = Icon.Search,
             explanation = stringProvider.getString(VglsStringId.CTA_SEARCH),
             showCrossOut = false,
         )
@@ -130,7 +130,7 @@ data class SearchState(
                         pdfSize = PdfSize.THUMBNAIL,
                     )
                 ),
-                imagePlaceholder = Icon.DESCRIPTION,
+                imagePlaceholder = Icon.Description,
                 clickAction = Action.SongClicked(song.id),
             )
         }
@@ -149,11 +149,11 @@ data class SearchState(
                 stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_GAMES)
             )
         ) + data.map { game ->
-            SquareItemListModel(
+            GridImageListModel(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
                 sourceInfo = game.photoUrl,
-                imagePlaceholder = Icon.ALBUM,
+                imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
             )
         }
@@ -172,11 +172,11 @@ data class SearchState(
                 stringProvider.getString(VglsStringId.SECTION_HEADER_SEARCH_COMPOSERS)
             )
         ) + data.map { composer ->
-            SquareItemListModel(
+            GridImageListModel(
                 dataId = composer.id + ID_OFFSET_COMPOSER,
                 name = composer.name,
                 sourceInfo = composer.photoUrl,
-                imagePlaceholder = Icon.PERSON,
+                imagePlaceholder = Icon.Person,
                 clickAction = Action.ComposerClicked(composer.id),
             )
         }

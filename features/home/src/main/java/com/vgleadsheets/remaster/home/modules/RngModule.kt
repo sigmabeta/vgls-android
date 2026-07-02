@@ -8,7 +8,7 @@ import com.vgleadsheets.strings.VglsStringId
 import kotlinx.coroutines.flow.flowOf
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
@@ -36,25 +36,25 @@ class RngModule @Inject constructor(
             shouldShow = true,
             title = title(),
             items = listOf(
-                SquareItemListModel(
+                GridImageListModel(
                     dataId = VglsStringId.HOME_ACTION_RANDOM_SONG.hashCode().toLong(),
                     name = stringProvider.getString(VglsStringId.HOME_ACTION_RANDOM_SONG),
                     sourceInfo = null,
-                    imagePlaceholder = Icon.DESCRIPTION,
+                    imagePlaceholder = Icon.Description,
                     clickAction = Action.RandomSongClicked
                 ),
-                SquareItemListModel(
+                GridImageListModel(
                     dataId = VglsStringId.HOME_ACTION_RANDOM_GAME.hashCode().toLong(),
                     name = stringProvider.getString(VglsStringId.HOME_ACTION_RANDOM_GAME),
                     sourceInfo = null,
-                    imagePlaceholder = Icon.ALBUM,
+                    imagePlaceholder = Icon.Album,
                     clickAction = Action.RandomGameClicked
                 ),
-                SquareItemListModel(
+                GridImageListModel(
                     dataId = VglsStringId.HOME_ACTION_RANDOM_COMPOSER.hashCode().toLong(),
                     name = stringProvider.getString(VglsStringId.HOME_ACTION_RANDOM_COMPOSER),
                     sourceInfo = null,
-                    imagePlaceholder = Icon.PERSON,
+                    imagePlaceholder = Icon.Person,
                     clickAction = Action.RandomComposerClicked
                 ),
             ),

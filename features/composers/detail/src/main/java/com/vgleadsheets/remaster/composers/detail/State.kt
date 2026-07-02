@@ -69,7 +69,7 @@ data class State(
             listOf(
                 HeroImageListModel(
                     sourceInfo = SourceInfo(photoUrl),
-                    imagePlaceholder = Icon.PERSON,
+                    imagePlaceholder = Icon.Person,
                     contentDescription = stringProvider.getString(VglsStringId.ACCY_CDESC_HERO_COMPOSER),
                     clickAction = SageAction.Noop,
                 )
@@ -106,7 +106,7 @@ data class State(
                         dataId = game.id + ID_PREFIX_GAMES,
                         name = game.name,
                         sourceInfo = game.photoUrl,
-                        imagePlaceholder = Icon.ALBUM,
+                        imagePlaceholder = Icon.Album,
                         clickAction = Action.GameClicked(game.id),
                     )
                 }.toImmutableList()
@@ -136,7 +136,7 @@ data class State(
                 dataId = song.id + ID_PREFIX_SONGS,
                 name = song.name,
                 sourceInfo = sourceInfo,
-                imagePlaceholder = Icon.DESCRIPTION,
+                imagePlaceholder = Icon.Description,
                 clickAction = Action.SongClicked(song.id)
             )
         }
@@ -152,13 +152,13 @@ data class State(
     ) {
         val (icon, label, action) = if (data) {
             Triple(
-                Icon.FAVORITE_FILLED,
+                Icon.FavoriteFilled,
                 VglsStringId.CTA_FAVORITE_REMOVE,
                 Action.RemoveFavoriteClicked,
             )
         } else {
             Triple(
-                Icon.FAVORITE_EMPTY,
+                Icon.FavoriteEmpty,
                 VglsStringId.CTA_FAVORITE_ADD,
                 Action.AddFavoriteClicked,
             )
@@ -183,13 +183,13 @@ data class State(
     ) {
         val (icon, label, action) = if (data) {
             Triple(
-                Icon.OFFLINE_FILLED,
+                Icon.OfflineFilled,
                 VglsStringId.CTA_OFFLINE_REMOVE,
                 Action.DisableOfflineClicked,
             )
         } else {
             Triple(
-                Icon.OFFLINE_OUTLINE,
+                Icon.OfflineOutline,
                 VglsStringId.CTA_OFFLINE_ADD,
                 Action.EnableOfflineClicked,
             )

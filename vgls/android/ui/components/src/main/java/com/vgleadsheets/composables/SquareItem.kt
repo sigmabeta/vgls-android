@@ -31,14 +31,14 @@ import com.vgleadsheets.composables.subs.ElevatedRoundRect
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
-import net.sigmabeta.sage.components.SquareItemListModel
+import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
 
 @Composable
 @Suppress("MagicNumber")
 fun SquareItem(
-    model: SquareItemListModel,
+    model: GridImageListModel,
     actionSink: ActionSink,
     modifier: Modifier,
     padding: PaddingValues,
@@ -130,11 +130,11 @@ private fun Sample() {
         modifier = Modifier.padding(8.dp)
     ) {
         SquareItem(
-            SquareItemListModel(
+            GridImageListModel(
                 1234L,
                 "Xenoblade Chronicles 3",
                 "https://randomfox.ca/images/12.jpg",
-                Icon.ALBUM,
+                Icon.Album,
                 null,
                 SageAction.Noop
             ),
@@ -144,11 +144,11 @@ private fun Sample() {
         )
 
         SquareItem(
-            SquareItemListModel(
+            GridImageListModel(
                 1234L,
                 "Xenoblade Chronicles 3: Future Redeemed Some More",
                 "https://randomfox.ca/images/1235.jpg",
-                Icon.ALBUM,
+                Icon.Album,
                 null,
                 SageAction.Noop
             ),
