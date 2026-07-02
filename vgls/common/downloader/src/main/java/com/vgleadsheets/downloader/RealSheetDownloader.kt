@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import net.sigmabeta.sage.connectivity.HttpException
 import net.sigmabeta.sage.connectivity.NetworkStatusProvider
 import net.sigmabeta.sage.connectivity.NetworkUnavailableException
+import okio.Path.Companion.toOkioPath
 import net.sigmabeta.sage.connectivity.allowsApiRequests
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.pdf.PdfConfigById
@@ -50,7 +51,7 @@ class RealSheetDownloader @Inject constructor(
 
         if (targetFile.exists()) {
             return SheetFileResult(
-                targetFile,
+                targetFile.toOkioPath(),
                 SheetSourceType.DISK
             )
         }
@@ -65,7 +66,7 @@ class RealSheetDownloader @Inject constructor(
         downloadSheet(fileName, actualPartApiId, isAlternate, targetFile)
 
         return SheetFileResult(
-            targetFile,
+            targetFile.toOkioPath(),
             SheetSourceType.NETWORK
         )
     }

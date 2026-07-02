@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.vgls.android.strings)
+    api(projects.vgls.common.strings)
 
     implementation(libs.metrox.viewmodel)
     // Material back/menu icons for the top app bar (Icons.AutoMirrored.Default.ArrowBack, Icons.Default.Menu).

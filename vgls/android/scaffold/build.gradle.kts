@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.vgls.android.ui.list)
     implementation(projects.vgls.android.ui.theme)
     implementation(projects.vgls.android.viewmodel)
+    implementation(projects.vgls.common.strings)
 
     implementation(libs.sage.common.pdf)
 

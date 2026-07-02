@@ -13,13 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.composables.subs.LabeledThingy
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import com.vgleadsheets.ui.theme.AppTheme
 import com.vgleadsheets.ui.theme.AppThemeMenu
 import kotlinx.collections.immutable.toImmutableList
@@ -54,7 +53,7 @@ fun LabelDropdownListItem(
                 )
             },
             onClick = { actionSink.sendAction(model.onExpandClicked) },
-            onClickLabel = stringResource(VglsStringId.ACCY_OCL_DROPDOWN.id()),
+            onClickLabel = VglsStringId.ACCY_OCL_DROPDOWN.text(),
             modifier = Modifier,
             padding = padding,
         )

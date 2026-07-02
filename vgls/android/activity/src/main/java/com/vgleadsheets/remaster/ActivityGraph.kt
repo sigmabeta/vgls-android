@@ -4,6 +4,7 @@ import android.app.Activity
 import com.vgleadsheets.pdf.subsample.PdfSubsampleSource
 import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
 import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.ui.StringProvider
 
 /**
  * Narrow accessor surface the [RemasteredActivity] reads off the `Application`. Because the Activity
@@ -16,6 +17,9 @@ interface ActivityGraph {
     val hatchet: Hatchet
     val activityDependencyInitializer: ActivityDependencyInitializer
     val pdfSubsampleSourceFactory: PdfSubsampleSource.Factory
+
+    /** Provided as `LocalVglsStringProvider` at the Compose root so composables resolve `text()`. */
+    val stringProvider: StringProvider
 
     /** Backs `metroViewModel()` / `assistedMetroViewModel()` in composition and `by viewModels { }`. */
     val metroViewModelFactory: MetroViewModelFactory

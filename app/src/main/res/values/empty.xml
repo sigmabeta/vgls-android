@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--    This file only exists so CI will have a /res folder to satisfy Crashlytics. -->
+    <!-- app_name is referenced by AndroidManifest's android:label; the in-app string source is now
+         the multiplatform composeResources in :vgls:common:strings. -->
+    <string name="app_name">VGLeadSheets</string>
 </resources>

@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.sage.common.ui.perfCompose)
     implementation(libs.sage.common.ui.iconsReal)
     implementation(projects.vgls.android.ui.theme)
-    implementation(projects.vgls.android.strings)
+    implementation(projects.vgls.common.strings)
 
     implementation(libs.kotlin.reflect)
 }

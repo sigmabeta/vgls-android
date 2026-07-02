@@ -16,6 +16,9 @@ dependencies {
     implementation(projects.vgls.android.scaffold)
     implementation(projects.vgls.android.ui.theme)
 
+    // LocalVglsStringProvider (provided at the Compose root) + StringProvider type.
+    implementation(projects.vgls.common.strings)
+
     implementation(projects.vgls.common.versions)
 
     // MetroViewModelFactory (ActivityGraph) + LocalMetroViewModelFactory (setContent).

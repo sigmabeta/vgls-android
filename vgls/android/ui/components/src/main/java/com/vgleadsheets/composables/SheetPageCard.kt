@@ -16,12 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import com.vgleadsheets.ui.components.R
 import com.vgleadsheets.ui.theme.AppTheme
 import kotlinx.collections.immutable.toImmutableList
@@ -57,7 +56,7 @@ fun SheetPageCard(
                     .wrapContentHeight()
                     .clickable(
                         onClick = { actionSink.sendAction(model.clickAction) },
-                        onClickLabel = stringResource(VglsStringId.ACCY_OCL_SHEET_CARD.id())
+                        onClickLabel = VglsStringId.ACCY_OCL_SHEET_CARD.text()
                     ),
             )
 

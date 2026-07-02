@@ -22,7 +22,7 @@ dependencies {
     implementation(projects.vgls.android.ui.components)
     implementation(libs.sage.common.ui.iconsReal)
     implementation(libs.sage.common.ui.listScreens)
-    implementation(projects.vgls.android.strings)
+    implementation(projects.vgls.common.strings)
     implementation(libs.sage.android.ui.strings)
     implementation(projects.vgls.android.ui.theme)
 }

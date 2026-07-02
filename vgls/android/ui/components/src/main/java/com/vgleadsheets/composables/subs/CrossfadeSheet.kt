@@ -22,7 +22,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
@@ -37,7 +36,7 @@ import com.vgleadsheets.images.LoadingIndicatorConfig
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.perf.isPerfMeasurementEnabled
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import com.vgleadsheets.strings.imageLoadErrorStringId
 import com.vgleadsheets.ui.theme.AppTheme
 import kotlinx.collections.immutable.toImmutableList
@@ -271,7 +270,7 @@ private fun BoxScope.ErrorState(
     EmptyListIndicator(
         model = ErrorStateListModel(
             failedOperationName = "Load PDF with ID ${pdfConfigById.songId}",
-            errorString = stringResource(error.imageLoadErrorStringId().id()),
+            errorString = error.imageLoadErrorStringId().text(),
             error = error
         ),
         onBlack = true,

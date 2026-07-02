@@ -11,8 +11,8 @@ import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.notif.NotifState
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.settings.part.SelectedPartManager
-import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.VglsStringProvider
+import com.vgleadsheets.strings.loadVglsStrings
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import com.vgleadsheets.versions.AppVersionManager
 import dev.zacsweers.metro.BindingContainer
@@ -21,6 +21,7 @@ import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appinfo.AppInfo
@@ -37,14 +38,15 @@ import net.sigmabeta.sage.storage.common.Storage
 import net.sigmabeta.sage.time.ThreeTenTime
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.strings.AndroidStringProvider
 
 @BindingContainer
 @ContributesTo(AppScope::class)
 object AppModule {
     @Provides
     @SingleIn(AppScope::class)
-    fun provideStringProvider(context: Context): StringProvider = AndroidStringProvider(context.resources) { (it as VglsStringId).id() }
+    // Preload the single multiplatform string source (composeResources) once at startup; the map-backed
+    // VglsStringProvider then serves the synchronous StringProvider calls used off the composition.
+    fun provideStringProvider(): StringProvider = runBlocking { VglsStringProvider(loadVglsStrings()) }
 
     @Provides
     @SingleIn(AppScope::class)

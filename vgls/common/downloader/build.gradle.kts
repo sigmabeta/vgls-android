@@ -14,6 +14,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
+                api(libs.okio)
                 implementation(libs.sage.common.connectivity)
                 implementation(libs.sage.common.logging)
                 implementation(libs.sage.common.pdf)

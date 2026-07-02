@@ -17,7 +17,7 @@ dependencies {
     api(libs.androidx.lifecycle.runtimeCompose)
 
     implementation(projects.vgls.android.ui.components)
-    implementation(projects.vgls.android.strings)
+    implementation(projects.vgls.common.strings)
     implementation(projects.vgls.android.viewmodel)
 
     api(libs.sage.common.appcomm)

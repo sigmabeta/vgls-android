@@ -8,10 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.strings.id
+import com.vgleadsheets.strings.text
 import com.vgleadsheets.ui.components.R
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.vector
@@ -24,7 +23,7 @@ fun MenuActionIcon(
 ) {
     Icon(
         imageVector = icon.vector(),
-        contentDescription = stringResource(contentDescription.id()),
+        contentDescription = contentDescription.text(),
         tint = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = Modifier
             .clickable(onClick = onClick)

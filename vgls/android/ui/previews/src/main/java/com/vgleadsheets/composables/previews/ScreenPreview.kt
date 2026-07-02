@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.dimensionResource
 import com.vgleadsheets.bottombar.NavBarState
@@ -21,7 +20,8 @@ import com.vgleadsheets.bottombar.NavBarVisibility
 import com.vgleadsheets.composables.Content
 import com.vgleadsheets.scaffold.AppContent
 import com.vgleadsheets.scaffold.TopBarConfig
-import com.vgleadsheets.strings.VglsStringId
+import com.vgleadsheets.strings.LocalVglsStringProvider
+import com.vgleadsheets.strings.rememberVglsStringProvider
 import com.vgleadsheets.topbar.TopBarState
 import com.vgleadsheets.topbar.TopBarVisibility
 import com.vgleadsheets.ui.theme.AppTheme
@@ -40,7 +40,6 @@ import net.sigmabeta.sage.list.ListStateActual
 import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.logging.BasicHatchet
 import net.sigmabeta.sage.ui.StringProvider
-import net.sigmabeta.sage.ui.strings.AndroidStringProvider
 
 @Composable
 internal fun ListScreenPreview(
@@ -51,13 +50,14 @@ internal fun ListScreenPreview(
     navBarVisibility: NavBarVisibility = NavBarVisibility.VISIBLE,
 ) {
     val actionSink = ActionSink { }
-    val stringProvider = AndroidStringProvider(LocalContext.current.resources) { (it as VglsStringId).id() }
+    val stringProvider = rememberVglsStringProvider()
     val state = screenState.toActual(stringProvider)
 
     AppTheme(forceDark = darkTheme) {
         CompositionLocalProvider(
             LocalInspectionMode provides true,
             LocalLogger provides BasicHatchet(),
+            LocalVglsStringProvider provides stringProvider,
         ) {
             AppChrome(
                 titleBarModel = state.title,
@@ -92,12 +92,13 @@ internal fun ScreenPreview(
     syntheticWidthClass: WidthClass,
     content: @Composable (StringProvider) -> Unit,
 ) {
-    val stringProvider = AndroidStringProvider(LocalContext.current.resources) { (it as VglsStringId).id() }
+    val stringProvider = rememberVglsStringProvider()
 
     AppTheme(forceDark = darkTheme) {
         CompositionLocalProvider(
             LocalInspectionMode provides true,
             LocalLogger provides BasicHatchet(),
+            LocalVglsStringProvider provides stringProvider,
         ) {
             AppChrome(
                 titleBarModel = TitleBarModel(),
