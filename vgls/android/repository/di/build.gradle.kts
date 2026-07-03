@@ -14,7 +14,7 @@ kotlin {
                 api(projects.vgls.common.repository.real)
                 api(projects.vgls.common.appcomm.api)
                 api(libs.sage.common.appcomm)
-                implementation(projects.vgls.android.database)
+                implementation(projects.vgls.android.database.real)
                 implementation(libs.sage.common.coroutines)
                 implementation(projects.vgls.common.conversion.api)
                 implementation(projects.vgls.common.network.api)
