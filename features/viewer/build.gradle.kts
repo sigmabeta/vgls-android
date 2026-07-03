@@ -33,7 +33,10 @@ kotlin {
         }
         named("androidMain") {
             dependencies {
-                // Previews only.
+                // The real (android-only) sheet renderer lives here: SheetPager + the ViewerScreen
+                // actual drive telephoto's ZoomSpec/ZoomableState (aar-only; no JVM variant). The
+                // JVM actual is a placeholder, so commonMain stays telephoto-free.
+                implementation(libs.zoomable.image.coil3)
                 implementation(projects.vgls.android.ui.theme)
                 implementation(libs.androidx.compose.ui.tooling.preview)
             }

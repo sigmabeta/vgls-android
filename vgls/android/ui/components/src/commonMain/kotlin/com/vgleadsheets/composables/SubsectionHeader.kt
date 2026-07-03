@@ -9,16 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.font.DeviceFontFamilyName
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.components.SubsectionHeaderListModel
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun SubsectionHeader(
     model: SubsectionHeaderListModel,
@@ -33,9 +27,7 @@ fun SubsectionHeader(
         Text(
             text = model.title.uppercase(),
             style = MaterialTheme.typography.bodyMedium.copy(
-                fontFamily = FontFamily(
-                    Font(DeviceFontFamilyName("sans-serif-condensed")),
-                )
+                fontFamily = condensedSansSerifFontFamily(),
             ),
             color = color,
             maxLines = 1,
