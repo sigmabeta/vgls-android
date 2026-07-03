@@ -121,7 +121,7 @@ include(
     ":vgls:common:wakelocks:api",
     ":vgls:common:wakelocks:fake",
 
-    ":features:all:real",
+    ":features:all:di",
     ":features:browse:real",
     ":features:composers:detail:real",
     ":features:composers:list:real",

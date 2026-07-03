@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.features.all.real)
+    implementation(projects.features.all.di)
     implementation(projects.features.navbar.real)
     implementation(projects.features.topbar.real)
 
