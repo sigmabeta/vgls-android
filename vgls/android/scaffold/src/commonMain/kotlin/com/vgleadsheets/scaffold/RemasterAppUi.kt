@@ -152,7 +152,13 @@ private fun VoyagerNavHost(
             SlideTransition(
                 navigator = navigator,
                 modifier = Modifier.padding(innerPadding).fillMaxSize(),
-            )
+            ) { screen ->
+                // Each screen gets its own ViewModelStore on JVM/desktop (Android passthrough) so
+                // metroViewModel<VM>() resolves a fresh VM per screen instead of sharing the Window's.
+                WithPerScreenViewModelStore(screen) {
+                    screen.Content()
+                }
+            }
         }
     }
 }
