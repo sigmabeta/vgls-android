@@ -1,5 +1,6 @@
 package com.vgleadsheets.jvm.di
 
+import coil3.ImageLoader
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metrox.viewmodel.ViewModelGraph
@@ -18,6 +19,11 @@ interface JvmVglsGraph : ViewModelGraph {
     // metroViewModelFactory is inherited from ViewModelGraph (as in the Android VglsAppGraph).
     val hatchet: Hatchet
     val stringProvider: StringProvider
+
+    // The desktop Coil ImageLoader (PDF sheet pipeline). DesktopMain registers it as the singleton
+    // loader so the shared UI's AsyncImage/rememberAsyncImagePainter resolve — the JVM analog of
+    // android's ImagesModule side-effecting SingletonImageLoader.setSafe.
+    val imageLoader: ImageLoader
 
     @DependencyGraph.Factory
     fun interface Factory {
