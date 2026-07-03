@@ -3,7 +3,7 @@
 # verify.sh — run the same verification tasks CI runs, summarize pass/fail, and collate every
 # task's artifacts (reports, Paparazzi diffs, the debug APK) into one folder.
 #
-# Mirrors the verification jobs in .circleci/config.yml. CI splits these across parallel jobs;
+# Mirrors the verification jobs in .github/workflows/ci.yml. CI splits these across parallel jobs;
 # locally they run sequentially and independently: a failing task does NOT stop the others, so one
 # run gives you the full picture. Differences from CI, on purpose:
 #   - The Gradle daemon is left on (faster local reruns; CI uses --no-daemon in throwaway containers).
@@ -14,13 +14,9 @@
 #   - CI's android-lint job (`:apps:android:lintRelease`) is omitted: lintRelease compiles the release
 #     variant, which references firebase and can't build locally without the google-services.json
 #     secret. CI still runs it; run it locally by hand once you have google-services.json in place.
-#   - CI-only jobs are omitted: setup (dependency download), build_release_apk / publish_app_bundle
-#     (need secrets + signing). `shared-build` (:apps:jvm:classes) is added — it's not in CI yet, but
-#     the desktop app is a first-class target now and this catches JVM-target breakage cheaply.
-#
-# NOTE: .circleci/config.yml still references pre-restructure module paths (:app,
-# :vgls:android:ui:previews). This script uses the current paths (:apps:android,
-# :vgls:android:ui:previews:real); the CI config should be updated to match.
+#   - The signed-release + Google Play publish path is not mirrored here (needs secrets + signing);
+#     it's a separate CI workflow, not yet ported from CircleCI. `shared-build` (:apps:jvm:classes)
+#     compiles the desktop/JVM target — cheap insurance against android-only leaks in commonMain.
 #
 # Usage:
 #   ./verify.sh                       # run everything
