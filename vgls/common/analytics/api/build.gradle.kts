@@ -4,7 +4,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.vgleadsheets.common.analytics"
+        namespace = "com.vgleadsheets.analytics.api"
     }
 
     sourceSets {

@@ -181,10 +181,10 @@ dependencies {
 
         implementation(libs.sage.android.firebase)
         implementation(libs.sage.android.analytics)
-        implementation(projects.vgls.android.analytics)
+        implementation(projects.vgls.android.analytics.di)
     } else {
         implementation(libs.sage.common.perf)
-        implementation(projects.vgls.fake.analytics)
+        implementation(projects.vgls.common.analytics.fake)
     }
 
     // Memory leak detection (Uncomment to enable)

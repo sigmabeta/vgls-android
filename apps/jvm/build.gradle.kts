@@ -46,7 +46,7 @@ dependencies {
     implementation(projects.vgls.android.images)
 
     // Fake (no-op) analytics.
-    implementation(projects.vgls.fake.analytics)
+    implementation(projects.vgls.common.analytics.fake)
 
     // --- Feature modules (enumerated so Metro aggregates their @ContributesIntoMap VMs) ---
     implementation(projects.features.browse)

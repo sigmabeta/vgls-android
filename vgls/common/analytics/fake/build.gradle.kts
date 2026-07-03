@@ -9,9 +9,13 @@ kotlin {
     }
 
     sourceSets {
+        named("commonMain") {
+            dependencies {
+                api(projects.vgls.common.analytics.api)
+            }
+        }
         named("jvmSharedMain") {
             dependencies {
-                api(projects.vgls.common.analytics)
                 implementation(libs.sage.common.di)
             }
         }
