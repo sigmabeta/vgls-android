@@ -18,7 +18,7 @@ class TagValueAndroidDataSource(
     roomImpl,
 ),
 TagValueDataSource {
-    override fun insertRelations(relations: List<SongTagValueRelation>) = roomImpl.insertJoins(
+    override suspend fun insertRelations(relations: List<SongTagValueRelation>) = roomImpl.insertJoins(
             relations.map {
                 SongTagValueJoin(
                     it.songId,
@@ -31,7 +31,7 @@ TagValueDataSource {
         .getForTagKey(tagKeyId)
         .mapListTo { convert.entityToModel(it) }
 
-    override fun getTagValuesForTagKeySync(tagKeyId: Long) = roomImpl
+    override suspend fun getTagValuesForTagKeySync(tagKeyId: Long) = roomImpl
         .getForTagKeySync(tagKeyId)
         .map { convert.entityToModel(it) }
 
@@ -39,7 +39,7 @@ TagValueDataSource {
         .getForSong(songId)
         .mapListTo { convert.entityToModel(it) }
 
-    override fun getTagValuesForSongSync(songId: Long) = roomImpl
+    override suspend fun getTagValuesForSongSync(songId: Long) = roomImpl
         .getForSongSync(songId)
         .map { convert.entityToModel(it) }
 }

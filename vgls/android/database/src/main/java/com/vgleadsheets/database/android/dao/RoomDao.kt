@@ -6,15 +6,15 @@ import kotlinx.coroutines.flow.Flow
 interface RoomDao<EntityType> {
     fun getOneById(id: Long): Flow<EntityType>
 
-    fun getOneByIdSync(id: Long): EntityType
+    suspend fun getOneByIdSync(id: Long): EntityType
 
     fun getAll(): Flow<List<EntityType>>
 
-    fun insert(entities: List<@JvmSuppressWildcards EntityType>)
+    suspend fun insert(entities: List<@JvmSuppressWildcards EntityType>)
 
-    fun remove(ids: List<DeletionId>)
+    suspend fun remove(ids: List<DeletionId>)
 
-    fun nukeTable()
+    suspend fun nukeTable()
 
     companion object {
         const val COLUMN_PRIMARY_KEY_ID = "id"

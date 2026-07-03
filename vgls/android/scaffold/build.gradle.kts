@@ -67,5 +67,13 @@ kotlin {
                 implementation(libs.androidx.compose.ui.tooling.preview)
             }
         }
+        named("jvmMain") {
+            dependencies {
+                // The JVM WithPerScreenViewModelStore actual hangs the per-screen ViewModelStore off a
+                // Voyager ScreenModel (rememberScreenModel). Android's actual is a passthrough, so only
+                // the desktop target needs voyager-screenmodel.
+                implementation(libs.voyager.screenmodel)
+            }
+        }
     }
 }

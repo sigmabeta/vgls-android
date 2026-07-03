@@ -7,7 +7,7 @@ import com.vgleadsheets.database.TransactionRunner
 @Dao
 interface TransactionDao : TransactionRunner {
     @Transaction
-    override fun inTransaction(action: () -> Unit) {
+    override suspend fun inTransaction(action: suspend () -> Unit) {
         action()
     }
 }

@@ -26,25 +26,25 @@ interface GameAliasRoomDao : RoomDao<GameAliasEntity> {
     fun getForGame(id: Long): Flow<List<GameAliasEntity>>
 
     @Query(QUERY_GAME)
-    fun getForGameSync(id: Long): List<GameAliasEntity>
+    suspend fun getForGameSync(id: Long): List<GameAliasEntity>
 
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<GameAliasEntity>
 
     @Query(QUERY_SINGLE)
-    override fun getOneByIdSync(id: Long): GameAliasEntity
+    override suspend fun getOneByIdSync(id: Long): GameAliasEntity
 
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<GameAliasEntity>>
 
     @Insert
-    override fun insert(entities: List<GameAliasEntity>)
+    override suspend fun insert(entities: List<GameAliasEntity>)
 
     @Delete(entity = GameAliasEntity::class)
-    override fun remove(ids: List<DeletionId>)
+    override suspend fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_DELETE)
-    override fun nukeTable()
+    override suspend fun nukeTable()
 
     companion object {
 

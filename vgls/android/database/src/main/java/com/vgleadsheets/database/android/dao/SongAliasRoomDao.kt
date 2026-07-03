@@ -25,25 +25,25 @@ interface SongAliasRoomDao : RoomDao<SongAliasEntity> {
     fun getForSong(id: Long): Flow<List<SongAliasEntity>>
 
     @Query(QUERY_SONG)
-    fun getForSongSync(id: Long): List<SongAliasEntity>
+    suspend fun getForSongSync(id: Long): List<SongAliasEntity>
 
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<SongAliasEntity>
 
     @Query(QUERY_SINGLE)
-    override fun getOneByIdSync(id: Long): SongAliasEntity
+    override suspend fun getOneByIdSync(id: Long): SongAliasEntity
 
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<SongAliasEntity>>
 
     @Insert
-    override fun insert(entities: List<SongAliasEntity>)
+    override suspend fun insert(entities: List<SongAliasEntity>)
 
     @Delete(entity = SongAliasEntity::class)
-    override fun remove(ids: List<DeletionId>)
+    override suspend fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_DELETE)
-    override fun nukeTable()
+    override suspend fun nukeTable()
 
     companion object {
 

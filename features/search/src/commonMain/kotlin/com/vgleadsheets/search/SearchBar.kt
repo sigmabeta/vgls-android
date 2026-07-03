@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.vgleadsheets.composables.subs.MenuActionIcon
 import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.strings.text
-import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.ui.Icon

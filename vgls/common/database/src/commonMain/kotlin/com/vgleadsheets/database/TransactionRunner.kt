@@ -1,5 +1,5 @@
 package com.vgleadsheets.database
 
 interface TransactionRunner {
-    fun inTransaction(action: () -> Unit)
+    suspend fun inTransaction(action: suspend () -> Unit)
 }

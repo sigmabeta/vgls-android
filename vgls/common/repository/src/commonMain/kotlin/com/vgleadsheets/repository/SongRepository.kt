@@ -17,7 +17,7 @@ class SongRepository(
     fun getSongsForGame(gameId: Long) = songDataSource
         .getSongsForGame(gameId)
 
-    fun getSongsForGameSync(gameId: Long) = songDataSource
+    suspend fun getSongsForGameSync(gameId: Long) = songDataSource
         .getSongsForGameSync(gameId)
 
     fun getSongsForComposer(composerId: Long) = songDataSource

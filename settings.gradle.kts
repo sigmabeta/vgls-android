@@ -68,9 +68,10 @@ rootProject.name = "VGLeadSheets"
 
 include(
     ":app",
-    // ":apps:jvm",  // WIP desktop target. Sheet-viewer android/jvm split DONE (telephoto out of
-    //               commonMain). Still blocked on the Room-KMP jvm DAO conversion (blocking DAO
-    //               methods must become suspend for the non-android target). Re-enable once green.
+    // ":apps:jvm",  // WIP desktop target. Sheet split + Room-KMP-jvm DAO suspend conversion DONE
+    //               (android green). Now assembling the JVM Metro graph — mirroring the android app's
+    //               platform DI (network/images-Coil/downloader/connectivity/home/offline/wakelock).
+    //               Re-enable once all JVM bindings are provided + the graph validates.
 
     ":vgls:android:activity",
     ":vgls:android:bitmaps",

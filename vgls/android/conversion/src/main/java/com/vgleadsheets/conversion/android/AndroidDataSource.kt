@@ -21,7 +21,7 @@ open class AndroidDataSource<
         .getOneById(id)
         .map { convert.entityToModel(it) }
 
-    override fun getOneByIdSync(id: Long) = roomImpl
+    override suspend fun getOneByIdSync(id: Long) = roomImpl
         .getOneByIdSync(id)
         .let { convert.entityToModel(it) }
 
@@ -29,17 +29,17 @@ open class AndroidDataSource<
         .getAll()
         .mapListTo { convert.entityToModel(it) }
 
-    override fun insert(models: List<ModelType>) = roomImpl
+    override suspend fun insert(models: List<ModelType>) = roomImpl
         .insert(
             models.map {
                 convert.modelToEntity(it)
             }
         )
 
-    override fun remove(ids: List<Long>) = roomImpl
+    override suspend fun remove(ids: List<Long>) = roomImpl
         .remove(
             ids.map { DeletionId(it) }
         )
 
-    override fun nukeTable() = roomImpl.nukeTable()
+    override suspend fun nukeTable() = roomImpl.nukeTable()
 }

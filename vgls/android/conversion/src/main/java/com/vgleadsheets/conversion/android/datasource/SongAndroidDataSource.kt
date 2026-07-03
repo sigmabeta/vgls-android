@@ -29,7 +29,7 @@ SongDataSource {
         .getForGame(gameId)
         .mapListTo { convert.entityToModel(it) }
 
-    override fun getSongsForGameSync(gameId: Long) = roomImpl
+    override suspend fun getSongsForGameSync(gameId: Long) = roomImpl
         .getForGameSync(gameId)
         .map { convert.entityToModel(it) }
 
@@ -37,7 +37,7 @@ SongDataSource {
         .getForComposer(composerId)
         .mapListTo { convert.entityToModel(it) }
 
-    override fun getSongsForComposerSync(composerId: Long) = roomImpl
+    override suspend fun getSongsForComposerSync(composerId: Long) = roomImpl
         .getForComposerSync(composerId)
         .map { convert.entityToModel(it) }
 
@@ -45,11 +45,11 @@ SongDataSource {
         .getForTagValue(tagValueId)
         .mapListTo { convert.entityToModel(it) }
 
-    override fun incrementPlayCount(songId: Long) = roomImpl.incrementPlayCount(songId)
+    override suspend fun incrementPlayCount(songId: Long) = roomImpl.incrementPlayCount(songId)
 
-    override fun toggleFavorite(songId: Long) = roomImpl.toggleFavorite(songId)
+    override suspend fun toggleFavorite(songId: Long) = roomImpl.toggleFavorite(songId)
 
-    override fun toggleOffline(songId: Long) = roomImpl.toggleOffline(songId)
+    override suspend fun toggleOffline(songId: Long) = roomImpl.toggleOffline(songId)
 
     override suspend fun setLastDownloaded(
         songId: Long,

@@ -26,25 +26,25 @@ interface ComposerAliasRoomDao : RoomDao<ComposerAliasEntity> {
     fun getForComposer(id: Long): Flow<List<ComposerAliasEntity>>
 
     @Query(QUERY_COMPOSER)
-    fun getForComposerSync(id: Long): List<ComposerAliasEntity>
+    suspend fun getForComposerSync(id: Long): List<ComposerAliasEntity>
 
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<ComposerAliasEntity>
 
     @Query(QUERY_SINGLE)
-    override fun getOneByIdSync(id: Long): ComposerAliasEntity
+    override suspend fun getOneByIdSync(id: Long): ComposerAliasEntity
 
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<ComposerAliasEntity>>
 
     @Insert
-    override fun insert(entities: List<ComposerAliasEntity>)
+    override suspend fun insert(entities: List<ComposerAliasEntity>)
 
     @Delete(entity = ComposerAliasEntity::class)
-    override fun remove(ids: List<DeletionId>)
+    override suspend fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_DELETE)
-    override fun nukeTable()
+    override suspend fun nukeTable()
 
     companion object {
 

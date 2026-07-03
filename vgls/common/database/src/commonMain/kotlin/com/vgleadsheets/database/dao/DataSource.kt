@@ -5,13 +5,13 @@ import kotlinx.coroutines.flow.Flow
 interface DataSource<ModelType> {
     fun getOneById(id: Long): Flow<ModelType>
 
-    fun getOneByIdSync(id: Long): ModelType
+    suspend fun getOneByIdSync(id: Long): ModelType
 
     fun getAll(): Flow<List<ModelType>>
 
-    fun remove(ids: List<Long>)
+    suspend fun remove(ids: List<Long>)
 
-    fun insert(models: List<ModelType>)
+    suspend fun insert(models: List<ModelType>)
 
-    fun nukeTable()
+    suspend fun nukeTable()
 }
