@@ -86,6 +86,7 @@ include(
     ":vgls:android:repository:di",
     ":vgls:android:scaffold:real",
     ":vgls:android:storage:common:real",
+    ":vgls:android:storage:common:di",
     ":vgls:android:ui:components:api",
     ":vgls:android:ui:list:api",
     ":vgls:android:ui:previews:real",

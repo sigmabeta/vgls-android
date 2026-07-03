@@ -122,7 +122,7 @@ dependencies {
     implementation(projects.vgls.android.pdf.real)
     implementation(projects.vgls.android.repository.di)
     implementation(libs.sage.android.resources)
-    implementation(projects.vgls.android.storage.common.real)
+    implementation(projects.vgls.android.storage.common.di)
     implementation(projects.vgls.android.ui.components.api)
     implementation(projects.vgls.android.ui.theme.api)
     implementation(projects.vgls.common.strings.api)
