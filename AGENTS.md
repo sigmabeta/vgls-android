@@ -63,8 +63,8 @@ Android (minSdk 26 / compileSdk 36) and desktop JVM (`:apps:jvm`).
 ./gradlew :apps:android:assembleDebug   # Android build
 ./gradlew :apps:jvm:run                 # desktop window (Compose Multiplatform)
 ./gradlew detekt                        # static analysis
-./ktlint-check.sh                       # lint (downloads the pinned ktlint; writes ktlint.html)
-./ktlint --format                       # auto-fix ktlint findings
+./gradlew ktlintCheck                   # lint (ktlint via the Gradle plugin; reports per module)
+./gradlew ktlintFormat                  # auto-fix ktlint findings
 ./gradlew :vgls:android:ui:previews:real:verifyPaparazziDebug   # screenshot tests
 ./verify.sh                             # the full CI-mirroring suite (see below)
 ```

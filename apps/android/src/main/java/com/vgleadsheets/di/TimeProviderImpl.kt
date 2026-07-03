@@ -24,7 +24,8 @@ class TimeProviderImpl : TimeProvider {
         return LONG_DATE.format(java.time.Instant.ofEpochMilli(ms))
     }
 
-    override fun longDateTimeText(instant: Instant): String = MEDIUM_DATE_TIME.format(java.time.Instant.ofEpochMilli(instant.toEpochMilliseconds()))
+    override fun longDateTimeText(instant: Instant): String =
+        MEDIUM_DATE_TIME.format(java.time.Instant.ofEpochMilli(instant.toEpochMilliseconds()))
 
     private companion object {
         private val LONG_DATE: DateTimeFormatter = DateTimeFormatter
