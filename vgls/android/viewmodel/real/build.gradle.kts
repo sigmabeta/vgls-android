@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.sage.kmp)
-    alias(libs.plugins.metro)
 }
 
 kotlin {
