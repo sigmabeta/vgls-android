@@ -25,7 +25,7 @@ kotlin {
         named("jvmSharedMain") {
             dependencies {
                 implementation(libs.sage.common.logging)
-                implementation(projects.vgls.common.model)
+                implementation(projects.vgls.common.model.api)
                 implementation(libs.sage.common.di)
                 implementation(libs.okio)
                 implementation(libs.ktor.client.mock)

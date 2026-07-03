@@ -111,7 +111,7 @@ dependencies {
     implementation(libs.sage.common.time)
     implementation(libs.kotlinx.datetime)
     // DI dependencies
-    implementation(projects.vgls.common.appcomm)
+    implementation(projects.vgls.common.appcomm.api)
     implementation(libs.sage.android.connectivity)
     implementation(libs.sage.android.coroutines)
     implementation(projects.vgls.android.conversion)
@@ -134,7 +134,7 @@ dependencies {
     implementation(libs.sage.common.events)
     implementation(projects.vgls.common.network)
     implementation(projects.vgls.common.offline)
-    implementation(projects.vgls.common.environment)
+    implementation(projects.vgls.common.environment.api)
     implementation(projects.vgls.common.urlinfo)
     implementation(projects.vgls.common.versions)
     // End DI dependencies

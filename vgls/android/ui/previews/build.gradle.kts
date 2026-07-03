@@ -11,7 +11,7 @@ dependencies {
     implementation(projects.features.navbar)
     implementation(projects.features.topbar)
 
-    implementation(projects.vgls.common.model)
+    implementation(projects.vgls.common.model.api)
     implementation(libs.kotlinx.datetime)
     implementation(libs.sage.common.ui.components)
 

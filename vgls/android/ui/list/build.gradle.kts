@@ -13,7 +13,7 @@ kotlin {
             dependencies {
                 // lifecycle-runtime-compose (collectAsStateWithLifecycle) is multiplatform.
                 api(libs.androidx.lifecycle.runtimeCompose)
-                api(projects.vgls.common.nav)
+                api(projects.vgls.common.nav.api)
                 implementation(libs.sage.common.ui.perfCompose)
                 implementation(libs.sage.common.ui.listScreens)
                 implementation(projects.vgls.android.ui.components)

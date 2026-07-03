@@ -12,7 +12,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 api(projects.vgls.common.analytics.api)
-                implementation(projects.vgls.common.appcomm)
+                implementation(projects.vgls.common.appcomm.api)
                 implementation(libs.sage.common.list)
                 api(projects.vgls.common.viewmodel)
                 implementation(libs.metrox.viewmodel)
@@ -22,7 +22,7 @@ kotlin {
                 implementation(libs.sage.common.time)
                 implementation(libs.sage.common.ui.components)
                 implementation(projects.vgls.common.strings)
-                implementation(projects.vgls.common.nav)
+                implementation(projects.vgls.common.nav.api)
                 implementation(libs.sage.common.di)
             }
         }

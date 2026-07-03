@@ -10,13 +10,13 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                api(projects.vgls.common.model)
+                api(projects.vgls.common.model.api)
                 api(libs.sage.common.settings.general)
 
-                implementation(projects.vgls.common.appcomm)
+                implementation(projects.vgls.common.appcomm.api)
                 implementation(libs.sage.common.connectivity)
-                implementation(projects.vgls.common.conversion)
-                implementation(projects.vgls.common.database)
+                implementation(projects.vgls.common.conversion.api)
+                implementation(projects.vgls.common.database.api)
                 implementation(libs.sage.common.logging)
                 implementation(libs.sage.common.time)
                 implementation(libs.sage.common.analytics)

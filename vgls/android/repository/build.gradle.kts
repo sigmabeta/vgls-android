@@ -12,11 +12,11 @@ kotlin {
         named("jvmSharedMain") {
             dependencies {
                 api(projects.vgls.common.repository)
-                api(projects.vgls.common.appcomm)
+                api(projects.vgls.common.appcomm.api)
                 api(libs.sage.common.appcomm)
                 implementation(projects.vgls.android.database)
                 implementation(libs.sage.common.coroutines)
-                implementation(projects.vgls.common.conversion)
+                implementation(projects.vgls.common.conversion.api)
                 implementation(projects.vgls.common.network)
                 implementation(projects.vgls.common.notif)
                 implementation(libs.sage.common.time)

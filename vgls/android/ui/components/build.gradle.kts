@@ -21,8 +21,8 @@ kotlin {
         named("commonMain") {
             dependencies {
                 api(libs.sage.common.ui.components)
-                implementation(projects.vgls.common.appcomm)
-                implementation(projects.vgls.common.model)
+                implementation(projects.vgls.common.appcomm.api)
+                implementation(projects.vgls.common.model.api)
                 implementation(projects.vgls.android.bitmaps)
                 implementation(projects.vgls.android.images)
                 implementation(projects.vgls.android.pdf)

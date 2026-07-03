@@ -18,7 +18,7 @@ kotlin {
                 api(libs.sage.common.storage.common)
                 api(projects.vgls.common.strings)
 
-                implementation(projects.vgls.common.appcomm)
+                implementation(projects.vgls.common.appcomm.api)
             }
         }
     }
