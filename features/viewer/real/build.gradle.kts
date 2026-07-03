@@ -41,5 +41,12 @@ kotlin {
                 implementation(libs.androidx.compose.ui.tooling.preview)
             }
         }
+        named("jvmMain") {
+            dependencies {
+                // The desktop (no-zoom) ViewerScreen actual renders each page with the shared
+                // CrossfadeSheet (Coil), so it needs LoadingIndicatorConfig from images.
+                implementation(projects.vgls.android.images.real)
+            }
+        }
     }
 }

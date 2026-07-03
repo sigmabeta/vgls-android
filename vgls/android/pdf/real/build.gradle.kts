@@ -37,5 +37,16 @@ kotlin {
                 implementation(projects.vgls.common.repository.real)
             }
         }
+        named("jvmMain") {
+            dependencies {
+                // Desktop has no android PdfRenderer; PDFBox (pure JVM) renders a page to a
+                // BufferedImage, which the Coil decoder converts to a skia Bitmap (skiko comes in
+                // transitively via coil-core's non-android image API). No telephoto here — the
+                // desktop viewer is non-zooming, so it just displays these Coil-decoded pages.
+                implementation(libs.coil.kt.core)
+                implementation(libs.pdfbox)
+                implementation(libs.sage.common.logging)
+            }
+        }
     }
 }

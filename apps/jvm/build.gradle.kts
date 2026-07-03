@@ -49,6 +49,9 @@ dependencies {
     implementation(projects.vgls.android.ui.list.api)
     implementation(projects.vgls.android.pdf.real)
     implementation(projects.vgls.android.images.real)
+    // Coil core: the desktop app builds its own ImageLoader (PDF keyer/fetcher + the PDFBox decoder)
+    // and registers it via SingletonImageLoader — the JVM analog of apps/android's ImagesModule.
+    implementation(libs.coil.kt.core)
 
     // Fake (no-op) analytics.
     implementation(projects.vgls.common.analytics.fake)

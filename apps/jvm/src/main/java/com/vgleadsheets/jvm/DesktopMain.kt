@@ -10,6 +10,7 @@ import androidx.compose.ui.window.application
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import coil3.SingletonImageLoader
 import com.vgleadsheets.jvm.di.JvmVglsGraph
 import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
@@ -28,9 +29,13 @@ import java.net.URI
  * Compose Multiplatform entry point for the desktop target. Calls the same [RemasterAppUi] the
  * Android `RemasteredActivity` does — the dividend of Phase 6 (the whole shell is commonMain). The
  * activity's Intent-based nav-event handling (URL open / finish) becomes AWT `Desktop.browse` /
- * `exitApplication` here; sheet rendering is not yet wired on the desktop (no android PdfRenderer).
+ * `exitApplication` here. Sheet rendering is wired via the graph's Coil [ImageLoader] (PDFBox-backed
+ * decoder), registered as the process singleton before the first composition.
  */
 fun runDesktop(graph: JvmVglsGraph) = application {
+    // Mirror android's ImagesModule: make the graph's PDF ImageLoader the singleton the shared UI's
+    // AsyncImage/rememberAsyncImagePainter pick up. Set before any sheet composes.
+    SingletonImageLoader.setSafe { graph.imageLoader }
     Window(
         onCloseRequest = ::exitApplication,
         // Source the OS window title from the single string source (app_name), same as Android's
