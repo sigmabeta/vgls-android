@@ -86,3 +86,18 @@ Android (minSdk 26 / compileSdk 36) and desktop JVM (`:apps:jvm`).
   once you've decided to re-record). Only re-record when the change is intentional and reviewed.
 - Don't boot an AVD to verify — stop after build + lint and hand device testing to the
   user. Don't `git commit` / `git push` unless explicitly asked.
+
+## Never push without (hard gate)
+
+`git push` is forbidden unless **all three** hold — no exceptions, no "it's a tiny change":
+
+1. **`./verify.sh` passes** (`OVERALL: PASS`) — the full CI-mirroring suite (ktlint, detekt,
+   Paparazzi, JVM shared build, android-lint, debug APK).
+2. **`./paparazzi-diff.sh` has been run and its summary presented to the user for approval** —
+   report the most-divergent snapshots (AE%) and whether each change is intended; **the human must
+   approve the screenshot changes** (and, if goldens need updating, explicitly OK the re-record —
+   never re-record goldens on your own).
+3. **The human has explicitly approved the push itself.**
+
+Present the verify.sh result and the paparazzi-diff.sh summary, then wait for the human's go-ahead.
+Committing is fine when asked; pushing is gated on the above.
