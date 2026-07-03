@@ -23,6 +23,5 @@ class FakeSheetDownloadApi : SheetDownloadApi {
         }
     }
 
-    override suspend fun downloadFile(fileName: String, partApiId: String): HttpResponse =
-        client.get("https://fake.local/$partApiId/$fileName")
+    override suspend fun downloadFile(fileName: String, partApiId: String): HttpResponse = client.get("https://fake.local/$partApiId/$fileName")
 }

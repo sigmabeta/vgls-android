@@ -11,6 +11,5 @@ import android.graphics.Typeface
 private const val MUSEJAZZ_ASSET_PATH =
     "composeResources/com.vgleadsheets.ui.fonts.real.generated.resources/font/musejazz_text.otf"
 
-fun museJazzTypeface(context: Context): Typeface =
-    runCatching { Typeface.createFromAsset(context.assets, MUSEJAZZ_ASSET_PATH) }
+fun museJazzTypeface(context: Context): Typeface = runCatching { Typeface.createFromAsset(context.assets, MUSEJAZZ_ASSET_PATH) }
         .getOrDefault(Typeface.DEFAULT)

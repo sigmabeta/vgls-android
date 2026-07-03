@@ -13,16 +13,14 @@ import kotlin.time.Instant
 class TimeProviderImpl : TimeProvider {
     override fun now(): Instant = Clock.System.now()
 
-    override fun localDateFromString(date: String): LocalDate? =
-        runCatching { LocalDate.parse(date) }.getOrNull()
+    override fun localDateFromString(date: String): LocalDate? = runCatching { LocalDate.parse(date) }.getOrNull()
 
     override fun longDateTextFromMillis(timestamp: Long): String? {
         val ms = if (timestamp == 0L) System.currentTimeMillis() else timestamp
         return LONG_DATE.format(java.time.Instant.ofEpochMilli(ms))
     }
 
-    override fun longDateTimeText(instant: Instant): String =
-        MEDIUM_DATE_TIME.format(java.time.Instant.ofEpochMilli(instant.toEpochMilliseconds()))
+    override fun longDateTimeText(instant: Instant): String = MEDIUM_DATE_TIME.format(java.time.Instant.ofEpochMilli(instant.toEpochMilliseconds()))
 
     private companion object {
         private val LONG_DATE: DateTimeFormatter = DateTimeFormatter

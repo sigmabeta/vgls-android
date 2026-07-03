@@ -1,7 +1,6 @@
 package com.vgleadsheets.nav
 
-internal fun getYoutubeSearchUrlForQuery(query: String): String =
-    "https://www.youtube.com/results?search_query=${query.encodeUrlQueryParam()}"
+internal fun getYoutubeSearchUrlForQuery(query: String): String = "https://www.youtube.com/results?search_query=${query.encodeUrlQueryParam()}"
 
 /**
  * Percent-encode a query-parameter value (RFC 3986): leave unreserved chars as-is, escape the rest

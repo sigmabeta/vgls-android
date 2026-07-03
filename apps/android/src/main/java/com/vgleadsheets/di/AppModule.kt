@@ -39,11 +39,11 @@ import net.sigmabeta.sage.ui.StringProvider
 @BindingContainer
 @ContributesTo(AppScope::class)
 object AppModule {
-    @Provides
-    @SingleIn(AppScope::class)
     // Preload the single multiplatform string source (composeResources) once at startup; the map-backed
     // VglsStringProvider then serves the synchronous StringProvider calls used off the composition.
-    fun provideStringProvider(): StringProvider = runBlocking { VglsStringProvider(loadVglsStrings()) }
+    @Provides
+    @SingleIn(AppScope::class)
+fun provideStringProvider(): StringProvider = runBlocking { VglsStringProvider(loadVglsStrings()) }
 
     @Provides
     @SingleIn(AppScope::class)

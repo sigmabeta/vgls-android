@@ -63,7 +63,7 @@ class PdfRegionDecoder(
         }
 
     override fun close() {
-        hatchet.i("Closing PDF renderer for ${pdfFile.toString()}")
+        hatchet.i("Closing PDF renderer for $pdfFile")
         renderer = null
         pdfEngine?.close()
         pdfEngine = null

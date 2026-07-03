@@ -130,9 +130,9 @@ Runtime.getRuntime().apply {
     println()
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////
 
 fun locateGradleHome(): File? {
     val envGradleHome = System.getenv("GRADLE_HOME")
@@ -146,12 +146,9 @@ fun locateGradleHome(): File? {
     }
 }
 
-fun locateMavenLocalRepository(): File? {
-    return File(userHome, ".m2").takeIf { it.exists() }
-}
+fun locateMavenLocalRepository(): File? = File(userHome, ".m2").takeIf { it.exists() }
 
-fun CommandLineArguments.isFlagSet(vararg flagAliases: String): Boolean =
-    flagAliases.map { this[it] as Boolean? }
+fun CommandLineArguments.isFlagSet(vararg flagAliases: String): Boolean = flagAliases.map { this[it] as Boolean? }
         .first { it != null }!!
 
 fun Runtime.execOnWetRun(command: String) = if (wetRun) exec(command) else null
@@ -189,8 +186,7 @@ fun Runtime.killAdb() {
     execOnWetRun("killall adb")
 }
 
-fun Runtime.isExecutableOnPath(executableName: String) =
-    System.getenv("PATH").split(File.pathSeparator)
+fun Runtime.isExecutableOnPath(executableName: String) = System.getenv("PATH").split(File.pathSeparator)
         .map(Paths::get)
         .any { pathEntry -> Files.exists(pathEntry.resolve(executableName)) }
 
@@ -248,12 +244,15 @@ fun clearIdePreferences(ide: Ide) {
     val preferencesDirectories = locatePreferencesFolderFor(ide)
 
     when {
-        backup -> preferencesDirectories
+        backup ->
+            preferencesDirectories
             .onEach {
                 println("     ℹ️  Clearing preferences for $ide ${extractVersion(it, ide)}...")
             }
             .backupAndDeleteByRenaming()
-        else -> preferencesDirectories
+
+        else ->
+            preferencesDirectories
             .onEach {
                 println("     ℹ️  Clearing preferences for $ide ${extractVersion(it, ide)}...")
             }
@@ -261,19 +260,20 @@ fun clearIdePreferences(ide: Ide) {
     }
 }
 
-fun locatePreferencesFolderFor(ide: Ide): Sequence<File> =
-    when {
+fun locatePreferencesFolderFor(ide: Ide): Sequence<File> = when {
         isOsWindows() || isOsLinux() -> {
             userHome.listContents(recursively = false) {
                 it.isDirectory && it.name.startsWith(".${ide.folderPrefix}")
             }
         }
+
         isOsMacOs() -> {
             File(userHome, "Library/Preferences")
                 .listContents(recursively = false) {
                     it.isDirectory && it.name.startsWith(ide.folderPrefix, ignoreCase = true)
                 }
         }
+
         else -> {
             println("     ⚠️  Unsupported OS, skipping.")
             emptySequence()
@@ -364,12 +364,15 @@ fun clearIdeCache(ide: Ide) {
     val cacheDirectories = locateCacheFolderFor(ide)
 
     when {
-        backup -> cacheDirectories
+        backup ->
+            cacheDirectories
             .onEach {
                 println("     ℹ️  Clearing cache for $ide ${extractVersion(it, ide)}...")
             }
             .backupAndDeleteByRenaming()
-        else -> cacheDirectories
+
+        else ->
+            cacheDirectories
             .onEach {
                 println("     ℹ️  Clearing cache for $ide ${extractVersion(it, ide)}...")
             }
@@ -377,19 +380,20 @@ fun clearIdeCache(ide: Ide) {
     }
 }
 
-fun locateCacheFolderFor(ide: Ide): Sequence<File> =
-    when {
+fun locateCacheFolderFor(ide: Ide): Sequence<File> = when {
         isOsWindows() || isOsLinux() -> {
             userHome.listContents(recursively = false) {
                 it.isDirectory && it.name.startsWith(".${ide.folderPrefix}")
             }
         }
+
         isOsMacOs() -> {
             File(userHome, "Library/Caches")
                 .listContents(recursively = false) {
                     it.isDirectory && it.name.startsWith(ide.folderPrefix, ignoreCase = true)
                 }
         }
+
         else -> {
             println("     ⚠️  Unsupported OS, skipping.")
             emptySequence()
@@ -421,21 +425,21 @@ fun File.removeSubfoldersMatching(matcher: (file: File) -> Boolean) {
     }
 }
 
-fun File.listContents(recursively: Boolean, matcher: (File) -> Boolean): Sequence<File> =
-    listFiles()!!
+fun File.listContents(recursively: Boolean, matcher: (File) -> Boolean): Sequence<File> = listFiles()!!
         .asSequence()
         .flatMap {
             when {
                 matcher(it) -> sequenceOf(it)
+
                 recursively && it.isDirectory -> {
                     it.listContents(recursively = true, matcher = matcher)
                 }
+
                 else -> sequenceOf()
             }
         }
 
-fun Sequence<File>.backupAndDeleteByRenaming() =
-    this.onEach { if (verbose) println("     Deleting: ${it.absolutePath}") }
+fun Sequence<File>.backupAndDeleteByRenaming() = this.onEach { if (verbose) println("     Deleting: ${it.absolutePath}") }
         .map { Pair(it, generateBackupNameFor(it)) }
         .onEach { (_, backup) -> if (verbose) println("       ⤷ Backing up to: ${backup.name}") }
         .forEach { (original, backup) -> if (wetRun) original.renameTo(backup) }
@@ -450,8 +454,7 @@ fun generateBackupNameFor(file: File): File {
     return backupFile
 }
 
-fun Sequence<File>.deleteRecursively() =
-    this.onEach { if (verbose) println("     Deleting: ${it.absolutePath}") }
+fun Sequence<File>.deleteRecursively() = this.onEach { if (verbose) println("     Deleting: ${it.absolutePath}") }
         .forEach { if (wetRun) it.deleteRecursively() }
 
 fun isOsWindows() = System.getProperty("os.name").startsWith("Windows", ignoreCase = true)

@@ -15,17 +15,13 @@ import org.jetbrains.compose.resources.getString
  * `AndroidStringProvider` path.
  */
 class VglsStringProvider(private val strings: Map<SageStringId, String>) : StringProvider {
-    override fun getString(string: SageStringId): String =
-        strings[string] ?: error("No string mapping for $string")
+    override fun getString(string: SageStringId): String = strings[string] ?: error("No string mapping for $string")
 
-    override fun getStringOneArg(string: SageStringId, arg: String): String =
-        formatVglsString(getString(string), listOf(arg))
+    override fun getStringOneArg(string: SageStringId, arg: String): String = formatVglsString(getString(string), listOf(arg))
 
-    override fun getStringOneInt(string: SageStringId, arg: Int): String =
-        formatVglsString(getString(string), listOf(arg.toString()))
+    override fun getStringOneInt(string: SageStringId, arg: Int): String = formatVglsString(getString(string), listOf(arg.toString()))
 
-    override fun getStringTwoArgs(string: SageStringId, first: String, second: String): String =
-        formatVglsString(getString(string), listOf(first, second))
+    override fun getStringTwoArgs(string: SageStringId, first: String, second: String): String = formatVglsString(getString(string), listOf(first, second))
 }
 
 /**

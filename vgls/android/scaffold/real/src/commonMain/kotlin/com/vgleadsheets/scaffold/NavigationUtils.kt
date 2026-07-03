@@ -22,8 +22,7 @@ fun widthClassFromDp(widthDp: Dp): WidthClass = when {
 }
 
 /** Compact windows get a bottom bar; wider windows get a nav rail. */
-fun navSuiteTypeFor(widthClass: WidthClass): NavigationSuiteType =
-    if (widthClass == WidthClass.COMPACT) {
+fun navSuiteTypeFor(widthClass: WidthClass): NavigationSuiteType = if (widthClass == WidthClass.COMPACT) {
         NavigationSuiteType.NavigationBar
     } else {
         NavigationSuiteType.NavigationRail

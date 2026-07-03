@@ -9,8 +9,7 @@ import net.sigmabeta.sage.connectivity.allowsApiRequests
  * Ktor client plugin that fails a request fast (before hitting the network) when VGLS connectivity
  * is unavailable — the multiplatform replacement for the old okhttp OfflineFailFastInterceptor.
  */
-fun offlineFailFastPlugin(networkStatusProvider: NetworkStatusProvider) =
-    createClientPlugin("OfflineFailFast") {
+fun offlineFailFastPlugin(networkStatusProvider: NetworkStatusProvider) = createClientPlugin("OfflineFailFast") {
         onRequest { request, _ ->
             val status = networkStatusProvider.status.value
             if (!status.allowsApiRequests) {

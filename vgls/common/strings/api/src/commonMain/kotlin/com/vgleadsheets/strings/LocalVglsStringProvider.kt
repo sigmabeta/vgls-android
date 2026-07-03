@@ -33,5 +33,4 @@ fun VglsStringId.textInt(arg: Int): String = LocalVglsStringProvider.current.get
 
 @Composable
 @ReadOnlyComposable
-fun VglsStringId.text(first: String, second: String): String =
-    LocalVglsStringProvider.current.getStringTwoArgs(this, first, second)
+fun VglsStringId.text(first: String, second: String): String = LocalVglsStringProvider.current.getStringTwoArgs(this, first, second)

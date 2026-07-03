@@ -7,5 +7,4 @@ private val DefaultPlatformTextStyle = PlatformTextStyle(
     includeFontPadding = false,
 )
 
-internal actual fun vglsDefaultTextStyle(): TextStyle =
-    TextStyle.Default.copy(platformStyle = DefaultPlatformTextStyle)
+internal actual fun vglsDefaultTextStyle(): TextStyle = TextStyle.Default.copy(platformStyle = DefaultPlatformTextStyle)

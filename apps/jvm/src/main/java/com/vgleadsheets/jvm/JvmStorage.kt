@@ -47,11 +47,9 @@ class JvmStorage(private val file: File) : Storage {
 
     override fun savedIntFlow(key: String): Flow<Int?> = intFlow(key).asStateFlow()
 
-    private fun stringFlow(key: String): MutableStateFlow<String?> =
-        stringFlows.getOrPut(key) { MutableStateFlow(null) }
+    private fun stringFlow(key: String): MutableStateFlow<String?> = stringFlows.getOrPut(key) { MutableStateFlow(null) }
 
-    private fun intFlow(key: String): MutableStateFlow<Int?> =
-        intFlows.getOrPut(key) { MutableStateFlow(null) }
+    private fun intFlow(key: String): MutableStateFlow<Int?> = intFlows.getOrPut(key) { MutableStateFlow(null) }
 
     private fun load() {
         if (!file.exists()) return
