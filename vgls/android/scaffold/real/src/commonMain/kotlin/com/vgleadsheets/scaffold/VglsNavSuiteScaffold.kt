@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -60,7 +61,9 @@ fun VglsNavSuiteScaffold(
             NavigationRail(
                 containerColor = colors.navigationRailContainerColor,
                 contentColor = colors.navigationRailContentColor,
-                modifier = modifier.safeDrawingPadding(),
+                // Rail sizes to its own (wrap) width + full height; it must NOT inherit the outer
+                // fillMaxSize modifier or it eats the whole Row and hides the content.
+                modifier = Modifier.safeDrawingPadding(),
             ) {
                 navItemProvider.itemList.forEach {
                     NavigationRailItem(
@@ -86,7 +89,8 @@ fun VglsNavSuiteScaffold(
             bottomBar = { RemasterBottomBar(state = navBarState, layoutType = layoutType, navItemProvider = navItemProvider) },
             snackbarHost = { SnackbarHost(snackbarHostState) },
             content = { innerPadding -> screen(innerPadding) },
-            modifier = modifier,
+            // Take the width left over next to the rail (or the whole Row when the rail is hidden).
+            modifier = Modifier.weight(1f).fillMaxHeight(),
         )
     }
 }
