@@ -79,6 +79,7 @@ include(
     ":vgls:android:conversion:real",
     ":vgls:android:conversion:di",
     ":vgls:android:database:real",
+    ":vgls:android:database:di",
     ":vgls:android:images:real",
     ":vgls:android:licenses:real",
     ":vgls:android:nav:real",

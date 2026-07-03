@@ -18,7 +18,7 @@ dependencies {
     implementation(projects.vgls.common.repository.real)
     implementation(projects.vgls.android.repository.di)
     implementation(projects.vgls.android.conversion.di)
-    implementation(projects.vgls.android.database.real)
+    implementation(projects.vgls.android.database.di)
     implementation(projects.vgls.common.database.api)
     implementation(projects.vgls.common.network.api)
     implementation(projects.vgls.common.network.real)

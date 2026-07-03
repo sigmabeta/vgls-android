@@ -115,7 +115,7 @@ dependencies {
     implementation(libs.sage.android.connectivity)
     implementation(libs.sage.android.coroutines)
     implementation(projects.vgls.android.conversion.di)
-    implementation(projects.vgls.android.database.real)
+    implementation(projects.vgls.android.database.di)
     implementation(projects.vgls.android.images.real)
     implementation(libs.sage.android.logging)
     implementation(projects.vgls.android.offline.real)
