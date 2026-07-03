@@ -14,7 +14,7 @@ kotlin {
             dependencies {
                 api(projects.vgls.common.analytics.api)
                 api(libs.androidx.lifecycle.runtimeCompose)
-                api(projects.vgls.common.wakelocks)
+                api(projects.vgls.common.wakelocks.api)
                 api(projects.vgls.common.nav)
                 implementation(projects.vgls.android.pdf)
                 implementation(projects.vgls.android.ui.components)

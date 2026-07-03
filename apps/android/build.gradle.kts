@@ -145,7 +145,7 @@ dependencies {
     // Metro DI: the app owns VglsAppGraph (implements ActivityGraph from :vgls:android:activity),
     // instantiates WakeLockManagerImpl, and needs the metrox ViewModelGraph/factory types.
     implementation(projects.vgls.android.activity)
-    implementation(projects.vgls.android.wakelocks)
+    implementation(projects.vgls.android.wakelocks.di)
     implementation(libs.metrox.viewmodel)
 
     // Metro aggregates @ContributesIntoMap ViewModels only from modules on the app graph's COMPILE

@@ -4,6 +4,6 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.vgleadsheets.common.wakelocks"
+        namespace = "com.vgleadsheets.wakelocks.api"
     }
 }
