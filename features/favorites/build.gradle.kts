@@ -11,7 +11,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                api(projects.vgls.common.analytics)
+                api(projects.vgls.common.analytics.api)
                 api(libs.sage.common.list)
                 api(projects.vgls.common.model)
                 api(projects.vgls.common.nav)

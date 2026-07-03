@@ -6,12 +6,10 @@ import com.vgleadsheets.analytics.VglsAnalytics
 import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.android.analytics.firebase.FirebaseAnalyticsImpl
 import net.sigmabeta.sage.coroutines.SageDispatchers
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.SingleIn
-import net.sigmabeta.sage.di.AppScope
 
-@SingleIn(AppScope::class)
-class VglsFirebaseAnalyticsImpl @Inject constructor(
+// Constructed explicitly by VglsAnalyticsModule (analytics:di); no @Inject needed here so real stays
+// a plain android module with no Metro dependency (Chipbox real/di split).
+class VglsFirebaseAnalyticsImpl(
     firebaseAnalytics: FirebaseAnalytics,
     dispatchers: SageDispatchers,
     coroutineScope: CoroutineScope,
