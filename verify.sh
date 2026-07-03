@@ -10,8 +10,10 @@
 #   - --max-workers is left at the machine default.
 #   - configuration-cache stays OFF (CI runs --no-configuration-cache; some tasks aren't CC-safe).
 #   - The `apk` task builds assembleDebug, not assembleRelease: the release build needs the signing
-#     keystore + the google-services.json secret CI injects. lintRelease still runs the release
-#     variant (firebase is gated off when google-services.json is absent, so it works locally).
+#     keystore + the google-services.json secret CI injects.
+#   - CI's android-lint job (`:apps:android:lintRelease`) is omitted: lintRelease compiles the release
+#     variant, which references firebase and can't build locally without the google-services.json
+#     secret. CI still runs it; run it locally by hand once you have google-services.json in place.
 #   - CI-only jobs are omitted: setup (dependency download), build_release_apk / publish_app_bundle
 #     (need secrets + signing). `shared-build` (:apps:jvm:classes) is added — it's not in CI yet, but
 #     the desktop app is a first-class target now and this catches JVM-target breakage cheaply.
@@ -45,11 +47,10 @@ ALL_TASKS=(
   "detekt|gradle|detekt --continue"
   "screenshot|gradle|:vgls:android:ui:previews:real:verifyPaparazziDebug --continue"
   "shared-build|gradle|:apps:jvm:classes"
-  "android-lint|gradle|:apps:android:lintRelease"
   "apk|gradle|:apps:android:assembleDebug"
 )
 # The heavy android builds, skippable with --skip-apps.
-APP_BUILD_TASKS="android-lint apk"
+APP_BUILD_TASKS="apk"
 
 # ---- arg parsing -----------------------------------------------------------
 filter=()
@@ -156,7 +157,7 @@ summary="$OUT/summary.txt"
   echo "Artifacts under $OUT/:"
   printf '  %-14s %s\n' "logs/" "full gradle output per task (start here for any FAIL)"
   desc() { [ -d "$OUT/$1" ] && printf '  %-14s %s\n' "$1/" "$2"; }
-  desc reports   "ktlint, detekt, android-lint HTML reports (per module)"
+  desc reports   "ktlint, detekt HTML reports (per module)"
   desc paparazzi "screenshot diff/failure images (per module)"
   desc apk       "debug APK (apps/android)"
 } >"$summary"
