@@ -1,12 +1,19 @@
 plugins {
-    alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.di)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.metro)
 }
 
-android {
-    namespace = "com.vgleadsheets.analytics.fake"
-}
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.analytics.fake"
+    }
 
-dependencies {
-    api(projects.vgls.common.analytics)
+    sourceSets {
+        named("jvmSharedMain") {
+            dependencies {
+                api(projects.vgls.common.analytics)
+                implementation(libs.sage.common.di)
+            }
+        }
+    }
 }

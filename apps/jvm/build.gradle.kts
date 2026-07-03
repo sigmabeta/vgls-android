@@ -1,0 +1,126 @@
+plugins {
+    alias(libs.plugins.sage.jvm)
+    alias(libs.plugins.metro)
+    // Kotlin Compose compiler (shared with the Android UI) + JetBrains Compose desktop plugin
+    // (provides compose.desktop.currentOs → the per-OS Skia native).
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.compose.multiplatform)
+}
+
+compose.desktop {
+    application {
+        mainClass = "com.vgleadsheets.jvm.MainKt"
+    }
+}
+
+dependencies {
+    // --- VGLS logic / data layer (all KMP now) ---
+    implementation(projects.vgls.common.repository)
+    implementation(projects.vgls.android.repository)
+    implementation(projects.vgls.android.conversion)
+    implementation(projects.vgls.android.database)
+    implementation(projects.vgls.common.database)
+    implementation(projects.vgls.common.network)
+    implementation(projects.vgls.common.downloader)
+    implementation(projects.vgls.common.offline)
+    implementation(projects.vgls.common.environment)
+    implementation(projects.vgls.common.urlinfo)
+    implementation(projects.vgls.common.versions)
+    implementation(projects.vgls.common.notif)
+    implementation(projects.vgls.common.model)
+    implementation(projects.vgls.common.appcomm)
+    implementation(projects.vgls.common.settings.part)
+    implementation(projects.vgls.common.wakelocks)
+
+    // --- VGLS UI (KMP) ---
+    implementation(projects.vgls.common.strings)
+    implementation(projects.vgls.android.scaffold)
+    implementation(projects.vgls.android.nav)
+    implementation(projects.vgls.android.licenses)
+    implementation(projects.vgls.android.viewmodel)
+    implementation(projects.vgls.common.viewmodel)
+    implementation(projects.vgls.android.ui.components)
+    implementation(projects.vgls.android.ui.theme)
+    implementation(projects.vgls.android.ui.list)
+    implementation(projects.vgls.android.pdf)
+    implementation(projects.vgls.android.images)
+
+    // Fake (no-op) analytics.
+    implementation(projects.vgls.fake.analytics)
+
+    // --- Feature modules (enumerated so Metro aggregates their @ContributesIntoMap VMs) ---
+    implementation(projects.features.browse)
+    implementation(projects.features.composers.detail)
+    implementation(projects.features.composers.list)
+    implementation(projects.features.difficulty.list)
+    implementation(projects.features.difficulty.values)
+    implementation(projects.features.favorites)
+    implementation(projects.features.games.detail)
+    implementation(projects.features.games.list)
+    implementation(projects.features.home)
+    implementation(projects.features.menu)
+    implementation(projects.features.offline.content)
+    implementation(projects.features.offline.updates)
+    implementation(projects.features.parts)
+    implementation(projects.features.search)
+    implementation(projects.features.songs.detail)
+    implementation(projects.features.songs.list)
+    implementation(projects.features.tags.list)
+    implementation(projects.features.tags.songs)
+    implementation(projects.features.tags.values)
+    implementation(projects.features.updates)
+    implementation(projects.features.viewer)
+    implementation(projects.features.topbar)
+    implementation(projects.features.navbar)
+
+    // --- SAGE common (KMP) ---
+    implementation(libs.sage.common.di)
+    implementation(libs.sage.common.appinfo)
+    implementation(libs.sage.common.time)
+    implementation(libs.sage.common.events)
+    implementation(libs.sage.common.debug)
+    implementation(libs.sage.common.logging)
+    implementation(libs.sage.common.analytics)
+    implementation(libs.sage.common.appcomm)
+    implementation(libs.sage.common.coroutines)
+    implementation(libs.sage.common.connectivity)
+    implementation(libs.sage.common.storage.common)
+    implementation(libs.sage.common.ui.strings)
+    implementation(libs.sage.common.ui.iconsApi)
+    implementation(libs.sage.common.ui.iconsReal)
+    implementation(libs.sage.common.ui.perfCompose)
+
+    // --- Metro ViewModel plumbing ---
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.metrox.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel)
+
+    // --- Voyager navigation ---
+    implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transitions)
+
+    // --- Ktor (VGLS API) + kotlinx ---
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.swing)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.okio)
+
+    // --- Room JVM driver ---
+    implementation(libs.room.runtime)
+    implementation(libs.sqlite.bundled)
+
+    // --- Compose Multiplatform desktop ---
+    implementation(libs.jetbrains.compose.runtime)
+    implementation(libs.jetbrains.compose.foundation)
+    implementation(libs.jetbrains.compose.material3)
+    implementation(libs.jetbrains.compose.ui)
+    implementation(compose.desktop.currentOs)
+}
