@@ -79,7 +79,10 @@ Android (minSdk 26 / compileSdk 36) and desktop JVM (`:apps:jvm`).
   `assembleDebug` does **not** build the JVM/desktop target, so an android-only leak in
   `commonMain` slips through. Use `:apps:jvm:classes` (or the module's
   `compileKotlinJvm` / `compileCommonMainKotlinMetadata`).
-- Paparazzi: `verifyPaparazziDebug` *checks* goldens; the record task overwrites them
-  (git-LFS). Only re-record when a visual change is intentional.
+- Paparazzi: `verifyPaparazziDebug` *checks* the goldens; `recordPaparazziDebug` overwrites
+  them (git-LFS). To review a visual change, use **`./paparazzi-diff.sh`** — it re-renders,
+  ranks the most-divergent snapshots by AE%, writes `golden | new | diff` montages under
+  `build/paparazzi-review/`, and reverts the goldens afterward (non-destructive; pass `--keep`
+  once you've decided to re-record). Only re-record when the change is intentional and reviewed.
 - Don't boot an AVD to verify — stop after build + lint and hand device testing to the
   user. Don't `git commit` / `git push` unless explicitly asked.
