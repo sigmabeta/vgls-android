@@ -32,7 +32,7 @@ import java.net.URI
 fun runDesktop(graph: JvmVglsGraph) = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "VG Lead Sheets",
+        title = "VGLeadSheets",
     ) {
         AppTheme {
             // The Compose Window has no ViewModelStoreOwner; provide one at the root so the shell's
