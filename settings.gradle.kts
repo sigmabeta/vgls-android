@@ -67,7 +67,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "VGLeadSheets"
 
 include(
-    ":app",
+    ":apps:android",
     ":apps:jvm",
 
     ":vgls:android:activity",
