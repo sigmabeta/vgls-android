@@ -1,3 +1,5 @@
+import org.gradle.caching.http.HttpBuildCache
+
 // Propagate sdk.dir to SAGE submodule so Android Studio can find the SDK when building.
 val sageLocalProps = file("sage/local.properties")
 if (!sageLocalProps.exists()) {
@@ -23,19 +25,52 @@ pluginManagement {
 }
 
 plugins {
-    id("com.gradle.develocity") version "3.17.3"
+    // Develocity Build Scans. The `sage` submodule pins its own (4.4.2) for standalone builds,
+    // but in this composite build the root build owns the scan and sage's plugin defers to it — so
+    // this must stay on the latest Gradle-9-compatible line (kept in sync with sage's version).
+    id("com.gradle.develocity") version "4.4.2"
 }
 
 develocity {
     buildScan {
-        termsOfUseUrl = "https://gradle.com/terms-of-service"
+        // Free public Build Scan service (scans.gradle.com) — accept its terms non-interactively.
+        termsOfUseUrl = "https://gradle.com/help/legal-terms-of-use"
         termsOfUseAgree = "yes"
+
+        // Auto-publish on CI only — CircleCI exports CI in the environment. Locally nothing is
+        // uploaded unless you pass `--scan`, which overrides this predicate and always publishes.
+        // Reading via providers keeps it configuration-cache safe.
+        val isCi = providers.environmentVariable("CI").isPresent
+        publishing.onlyIf { isCi }
+        // Tag the CI-published scans so they're filterable apart from any local `--scan` runs.
+        if (isCi) tag("CI")
     }
 }
 
 buildCache {
+    // Local cache: fast within-build / same-machine reuse. CircleCI persists this directory across
+    // jobs via save_cache/restore_cache, so keep it at the repo-relative `build-cache` path.
     local {
         directory = File(rootDir, "build-cache")
+    }
+    // Remote: the self-hosted gradle/build-cache-node behind Caddy (TLS) at sebacloud.org.
+    remote<HttpBuildCache> {
+        setUrl("https://gradle.sebacloud.org/cache/")
+
+        // Trust boundary — only CI pushes; everyone else reads anonymously. The node grants
+        // anonymous read, so local dev needs no credentials. CircleCI exports CI in the env;
+        // pushing additionally requires the write password, so a misconfigured CI can't half-push.
+        // All reads go through providers to stay configuration-cache safe.
+        val ciPassword = providers.environmentVariable("GRADLE_CACHE_PASSWORD")
+        isPush = providers.environmentVariable("CI").isPresent && ciPassword.isPresent
+        if (isPush) {
+            credentials {
+                // GRADLE_CACHE_USER is optional — the node's write user is "ci". It can arrive
+                // present-but-blank from an unset CI secret, so treat blank as unset.
+                username = providers.environmentVariable("GRADLE_CACHE_USER").orElse("ci").get().ifBlank { "ci" }
+                password = ciPassword.get()
+            }
+        }
     }
 }
 
