@@ -125,7 +125,7 @@ dependencies {
     implementation(projects.vgls.android.storage.common)
     implementation(projects.vgls.android.ui.components)
     implementation(projects.vgls.android.ui.theme)
-    implementation(projects.vgls.common.strings)
+    implementation(projects.vgls.common.strings.api)
     implementation(libs.sage.android.ui.strings)
 
     implementation(libs.sage.common.appinfo)

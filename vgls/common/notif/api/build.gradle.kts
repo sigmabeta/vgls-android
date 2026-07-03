@@ -13,7 +13,7 @@ kotlin {
             dependencies {
                 implementation(libs.kotlinx.serialization.json)
                 // Notif's serialized fields reference VglsStringId + the sage GenericAction.
-                api(projects.vgls.common.strings)
+                api(projects.vgls.common.strings.api)
                 api(libs.sage.common.appcomm)
             }
         }

@@ -13,12 +13,12 @@ kotlin {
             dependencies {
                 api(projects.vgls.common.analytics.api)
                 api(libs.sage.common.list)
-                api(projects.vgls.common.viewmodel)
+                api(projects.vgls.common.viewmodel.real)
                 implementation(libs.metrox.viewmodel)
                 api(projects.vgls.common.nav.api)
                 api(projects.vgls.common.repository.real)
                 api(libs.sage.common.ui.components)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
                 implementation(libs.sage.common.di)
             }
         }

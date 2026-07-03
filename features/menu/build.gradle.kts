@@ -21,8 +21,8 @@ kotlin {
                 api(libs.sage.common.settings.general)
                 api(libs.sage.common.time)
                 api(libs.sage.common.ui.components)
-                api(projects.vgls.common.strings)
-                api(projects.vgls.common.viewmodel)
+                api(projects.vgls.common.strings.api)
+                api(projects.vgls.common.viewmodel.real)
                 implementation(libs.metrox.viewmodel)
                 implementation(libs.sage.common.di)
             }

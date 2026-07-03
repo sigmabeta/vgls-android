@@ -14,7 +14,7 @@ kotlin {
                 api(projects.vgls.common.analytics.api)
                 api(libs.sage.common.images)
                 api(libs.sage.common.list)
-                api(projects.vgls.common.viewmodel)
+                api(projects.vgls.common.viewmodel.real)
                 implementation(libs.metrox.viewmodel)
                 api(projects.vgls.common.model.api)
                 api(projects.vgls.common.nav.api)
@@ -23,7 +23,7 @@ kotlin {
                 api(projects.vgls.common.urlinfo.real)
 
                 implementation(libs.sage.common.pdf)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
                 implementation(libs.sage.common.di)
             }
         }

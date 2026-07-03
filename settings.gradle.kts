@@ -98,7 +98,7 @@ include(
     ":vgls:common:analytics:fake",
     ":vgls:common:conversion:api",
     ":vgls:common:environment:api",
-    ":vgls:common:strings",
+    ":vgls:common:strings:api",
     ":vgls:common:database:api",
     ":vgls:common:nav:api",
     ":vgls:common:downloader:api",
@@ -117,7 +117,7 @@ include(
     ":vgls:common:urlinfo:api",
     ":vgls:common:urlinfo:real",
     ":vgls:common:versions:real",
-    ":vgls:common:viewmodel",
+    ":vgls:common:viewmodel:real",
     ":vgls:common:wakelocks:api",
     ":vgls:common:wakelocks:fake",
 

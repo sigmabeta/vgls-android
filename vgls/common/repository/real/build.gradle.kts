@@ -20,7 +20,7 @@ kotlin {
                 implementation(libs.sage.common.logging)
                 implementation(libs.sage.common.time)
                 implementation(libs.sage.common.analytics)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
             }
         }
         // network + notif are pure-JVM (sage.jvm) modules with no commonMain variant, so the files
