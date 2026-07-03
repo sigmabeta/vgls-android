@@ -15,6 +15,7 @@ import com.vgleadsheets.nav.ActivityEvent
 import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.strings.LocalVglsStringProvider
+import com.vgleadsheets.strings.VglsStringId
 import com.vgleadsheets.ui.theme.AppTheme
 import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import dev.zacsweers.metrox.viewmodel.metroViewModel
@@ -32,7 +33,9 @@ import java.net.URI
 fun runDesktop(graph: JvmVglsGraph) = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "VGLeadSheets",
+        // Source the OS window title from the single string source (app_name), same as Android's
+        // manifest android:label — not a hand-typed literal that can drift out of sync.
+        title = graph.stringProvider.getString(VglsStringId.APP_NAME),
     ) {
         AppTheme {
             // The Compose Window has no ViewModelStoreOwner; provide one at the root so the shell's
