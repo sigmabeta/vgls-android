@@ -5,7 +5,6 @@ import com.vgleadsheets.downloader.RealSheetDownloader
 import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.downloader.StorageDirectoryProvider
 import com.vgleadsheets.jvm.JvmOfflineWorkScheduler
-import com.vgleadsheets.jvm.JvmWakeLockManager
 import com.vgleadsheets.offline.OfflineDownloader
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.remaster.home.HomeModuleProvider
@@ -21,7 +20,6 @@ import com.vgleadsheets.remaster.home.modules.RecentSongsModule
 import com.vgleadsheets.remaster.home.modules.RngModule
 import com.vgleadsheets.repository.OfflineRepository
 import com.vgleadsheets.repository.UpdateManager
-import com.vgleadsheets.wakelocks.WakeLockManager
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Named
@@ -96,10 +94,6 @@ object JvmDataModule {
         backend: PerfBackend,
         dispatchers: SageDispatchers,
     ): PerfMeasurer = PerfMeasurerImpl(backend, dispatchers)
-
-    @Provides
-    @SingleIn(AppScope::class)
-    fun provideWakeLockManager(): WakeLockManager = JvmWakeLockManager()
 
     @Provides
     @SingleIn(AppScope::class)

@@ -30,7 +30,8 @@ dependencies {
     implementation(projects.vgls.common.model)
     implementation(projects.vgls.common.appcomm)
     implementation(projects.vgls.common.settings.part)
-    implementation(projects.vgls.common.wakelocks)
+    implementation(projects.vgls.common.wakelocks.api)
+    implementation(projects.vgls.common.wakelocks.fake)
 
     // --- VGLS UI (KMP) ---
     implementation(projects.vgls.common.strings)

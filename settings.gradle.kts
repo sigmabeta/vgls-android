@@ -90,7 +90,8 @@ include(
     ":vgls:android:ui:list",
     ":vgls:android:ui:previews",
     ":vgls:android:viewmodel",
-    ":vgls:android:wakelocks",
+    ":vgls:android:wakelocks:real",
+    ":vgls:android:wakelocks:di",
 
     ":vgls:common:appcomm",
     ":vgls:common:analytics:api",
@@ -110,7 +111,8 @@ include(
     ":vgls:common:urlinfo",
     ":vgls:common:versions",
     ":vgls:common:viewmodel",
-    ":vgls:common:wakelocks",
+    ":vgls:common:wakelocks:api",
+    ":vgls:common:wakelocks:fake",
 
     ":features:all",
     ":features:browse",

@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace = "com.vgleadsheets.wakelocks"
+    namespace = "com.vgleadsheets.wakelocks.real"
 }
 
 dependencies {
+    api(projects.vgls.common.wakelocks.api)
     implementation(libs.androidx.activity)
-    api(projects.vgls.common.wakelocks)
     implementation(projects.vgls.common.strings)
     implementation(libs.sage.common.appcomm)
     implementation(libs.sage.common.coroutines)
