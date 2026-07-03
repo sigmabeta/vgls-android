@@ -95,11 +95,12 @@ jobs:
           distribution: temurin
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v4
-      # Release-variant lint. Builds without secrets: signing falls back to the committed dev keystore
-      # (UPLOAD_KEYPASS unset) and Firebase stays off (checkShouldIncludeFirebase finds no
-      # google-services.json). The signed build + Play publish live in the release workflow (TODO).
-      - name: Android lint (release)
-        run: ./gradlew :apps:android:lintRelease --build-cache --no-configuration-cache --no-daemon --max-workers=4
+      # Debug-variant lint — secret-free. The RELEASE variant can't compile here: its src/release
+      # perf backend imports Firebase, but checkShouldIncludeFirebase() finds no google-services.json
+      # (a secret) so the firebase deps aren't on the classpath. lintRelease therefore belongs in the
+      # deferred release workflow (which injects that secret); lintDebug gives lint coverage now.
+      - name: Android lint (debug)
+        run: ./gradlew :apps:android:lintDebug --build-cache --no-configuration-cache --no-daemon --max-workers=4
       - uses: actions/upload-artifact@v4
         if: always()
         with:
