@@ -20,7 +20,7 @@ kotlin {
             dependencies {
                 api(projects.vgls.common.database.api)
                 api(libs.room.runtime)
-                implementation(projects.vgls.common.network)
+                implementation(projects.vgls.common.network.api)
                 implementation(libs.sage.common.di)
                 implementation(libs.sage.common.appinfo)
             }

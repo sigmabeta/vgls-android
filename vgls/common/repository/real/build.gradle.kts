@@ -27,7 +27,7 @@ kotlin {
         // using them (DbUpdater, UpdateManager, OfflineRepository, RandomRepository) stay here.
         named("jvmSharedMain") {
             dependencies {
-                implementation(projects.vgls.common.network)
+                implementation(projects.vgls.common.network.api)
                 implementation(projects.vgls.common.notif.real)
             }
         }
