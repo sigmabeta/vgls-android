@@ -19,7 +19,7 @@ dependencies {
     // LocalVglsStringProvider (provided at the Compose root) + StringProvider type.
     implementation(projects.vgls.common.strings)
 
-    implementation(projects.vgls.common.versions)
+    implementation(projects.vgls.common.versions.real)
 
     // MetroViewModelFactory (ActivityGraph) + LocalMetroViewModelFactory (setContent).
     implementation(libs.metrox.viewmodel)

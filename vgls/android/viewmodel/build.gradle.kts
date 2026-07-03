@@ -18,7 +18,7 @@ kotlin {
                 api(libs.sage.common.list)
                 api(projects.vgls.common.nav.api)
                 api(libs.sage.common.perf)
-                api(projects.vgls.common.repository)
+                api(projects.vgls.common.repository.real)
                 api(projects.vgls.common.urlinfo)
                 implementation(libs.sage.common.ui.components)
                 implementation(libs.sage.common.logging)

@@ -18,7 +18,7 @@ kotlin {
                 implementation(libs.metrox.viewmodel)
                 api(projects.vgls.common.model.api)
                 api(projects.vgls.common.nav.api)
-                api(projects.vgls.common.repository)
+                api(projects.vgls.common.repository.real)
                 api(libs.sage.common.ui.components)
                 api(projects.vgls.common.urlinfo)
                 implementation(projects.vgls.common.strings)

@@ -18,7 +18,7 @@ kotlin {
                 implementation(libs.sage.common.connectivity)
                 implementation(libs.sage.common.logging)
                 implementation(libs.sage.common.pdf)
-                implementation(projects.vgls.common.repository)
+                implementation(projects.vgls.common.repository.real)
                 implementation(projects.vgls.common.urlinfo)
 
                 implementation(libs.sage.common.di)

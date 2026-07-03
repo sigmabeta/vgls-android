@@ -15,7 +15,7 @@ compose.desktop {
 
 dependencies {
     // --- VGLS logic / data layer (all KMP now) ---
-    implementation(projects.vgls.common.repository)
+    implementation(projects.vgls.common.repository.real)
     implementation(projects.vgls.android.repository)
     implementation(projects.vgls.android.conversion)
     implementation(projects.vgls.android.database)
@@ -25,11 +25,11 @@ dependencies {
     implementation(projects.vgls.common.offline)
     implementation(projects.vgls.common.environment.api)
     implementation(projects.vgls.common.urlinfo)
-    implementation(projects.vgls.common.versions)
+    implementation(projects.vgls.common.versions.real)
     implementation(projects.vgls.common.notif)
     implementation(projects.vgls.common.model.api)
     implementation(projects.vgls.common.appcomm.api)
-    implementation(projects.vgls.common.settings.part)
+    implementation(projects.vgls.common.settings.part.real)
     implementation(projects.vgls.common.wakelocks.api)
     implementation(projects.vgls.common.wakelocks.fake)
 
