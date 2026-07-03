@@ -95,12 +95,11 @@ jobs:
           distribution: temurin
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v4
-      # Debug-variant lint — secret-free. The RELEASE variant can't compile here: its src/release
-      # perf backend imports Firebase, but checkShouldIncludeFirebase() finds no google-services.json
-      # (a secret) so the firebase deps aren't on the classpath. lintRelease therefore belongs in the
-      # deferred release workflow (which injects that secret); lintDebug gives lint coverage now.
-      - name: Android lint (debug)
-        run: ./gradlew :apps:android:lintDebug --build-cache --no-configuration-cache --no-daemon --max-workers=4
+      # Release-variant lint — lints the shippable config (minify/proguard, release manifest). Runs
+      # secret-free: with no google-services.json the release variant compiles against the Noop perf
+      # backend and pulls no Firebase (checkShouldIncludeFirebase() in apps/android/build.gradle.kts).
+      - name: Android lint (release)
+        run: ./gradlew :apps:android:lintRelease --build-cache --no-configuration-cache --no-daemon --max-workers=4
       - uses: actions/upload-artifact@v4
         if: always()
         with:
