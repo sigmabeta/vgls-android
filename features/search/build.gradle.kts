@@ -16,7 +16,7 @@ kotlin {
                 implementation(projects.vgls.common.strings)
                 implementation(projects.vgls.android.ui.components)
                 implementation(projects.vgls.android.ui.list)
-                implementation(projects.vgls.common.nav)
+                implementation(projects.vgls.common.nav.api)
                 implementation(projects.vgls.android.viewmodel)
                 implementation(projects.vgls.android.pdf)
                 implementation(projects.vgls.common.urlinfo)

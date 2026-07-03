@@ -10,7 +10,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                api(projects.vgls.common.model)
+                api(projects.vgls.common.model.api)
                 implementation(libs.sage.common.coroutines)
             }
         }

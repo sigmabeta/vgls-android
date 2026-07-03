@@ -18,7 +18,7 @@ kotlin {
     sourceSets {
         named("jvmSharedMain") {
             dependencies {
-                api(projects.vgls.common.database)
+                api(projects.vgls.common.database.api)
                 api(libs.room.runtime)
                 implementation(projects.vgls.common.network)
                 implementation(libs.sage.common.di)

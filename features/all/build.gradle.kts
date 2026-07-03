@@ -8,7 +8,7 @@ dependencies {
 
     api(libs.sage.common.list)
     api(projects.vgls.common.offline)
-    api(projects.vgls.common.nav)
+    api(projects.vgls.common.nav.api)
     api(projects.vgls.common.notif)
 
     // List features here.

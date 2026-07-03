@@ -14,7 +14,7 @@ kotlin {
             dependencies {
                 api(libs.androidx.lifecycle.runtimeCompose)
                 api(libs.sage.common.appcomm)
-                api(projects.vgls.common.nav)
+                api(projects.vgls.common.nav.api)
                 implementation(projects.vgls.android.ui.components)
                 implementation(projects.vgls.common.strings)
                 implementation(projects.vgls.android.viewmodel)

@@ -11,11 +11,11 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                implementation(projects.vgls.common.appcomm)
+                implementation(projects.vgls.common.appcomm.api)
                 api(libs.sage.common.appinfo)
                 api(libs.sage.common.list)
-                api(projects.vgls.common.model)
-                api(projects.vgls.common.nav)
+                api(projects.vgls.common.model.api)
+                api(projects.vgls.common.nav.api)
                 api(projects.vgls.common.repository)
                 api(projects.vgls.common.offline)
                 api(libs.sage.common.settings.general)

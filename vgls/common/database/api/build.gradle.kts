@@ -11,7 +11,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 api(libs.sage.common.coroutines)
-                api(projects.vgls.common.model)
+                api(projects.vgls.common.model.api)
             }
         }
     }
