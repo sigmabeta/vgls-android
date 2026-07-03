@@ -112,6 +112,7 @@ abstract class VglsListViewModel<StateType : ListState> :
                 emitEvent(SageEvent.NavigateBack(this.javaClass.simpleName))
                 return
             }
+
             is SageAction.Resume -> {
                 eventDispatcher.addEventSink(this)
                 emitEvent(SageEvent.ShowUiChrome)
@@ -127,7 +128,9 @@ abstract class VglsListViewModel<StateType : ListState> :
                     )
                 }
             }
+
             is SageAction.Pause -> eventDispatcher.removeEventSink(this)
+
             else -> Unit
         }
 

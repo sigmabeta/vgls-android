@@ -54,8 +54,7 @@ fun rememberVglsStringProvider(): StringProvider {
 private const val SENTINEL_RESOURCE_PATH =
     "composeResources/com.vgleadsheets.strings.generated.resources/values/strings.commonMain.cvr"
 
-private fun hasComposeStringsOnClasspath(): Boolean =
-    ClasspathResourceReader::class.java.classLoader
+private fun hasComposeStringsOnClasspath(): Boolean = ClasspathResourceReader::class.java.classLoader
         ?.getResource(SENTINEL_RESOURCE_PATH) != null
 
 /**
@@ -67,8 +66,7 @@ private fun hasComposeStringsOnClasspath(): Boolean =
 private object ClasspathResourceReader : ResourceReader {
     override suspend fun read(path: String): ByteArray = open(path).use { it.readBytes() }
 
-    override suspend fun readPart(path: String, offset: Long, size: Long): ByteArray =
-        open(path).use { input ->
+    override suspend fun readPart(path: String, offset: Long, size: Long): ByteArray = open(path).use { input ->
             var skipped = 0L
             while (skipped < offset) {
                 val count = input.skip(offset - skipped)
@@ -85,12 +83,9 @@ private object ClasspathResourceReader : ResourceReader {
             result
         }
 
-    override fun getUri(path: String): String =
-        loader().getResource(path)?.toURI()?.toString() ?: throw MissingResourceException(path)
+    override fun getUri(path: String): String = loader().getResource(path)?.toURI()?.toString() ?: throw MissingResourceException(path)
 
-    private fun open(path: String) =
-        loader().getResourceAsStream(path) ?: throw MissingResourceException(path)
+    private fun open(path: String) = loader().getResourceAsStream(path) ?: throw MissingResourceException(path)
 
-    private fun loader(): ClassLoader =
-        javaClass.classLoader ?: error("No classloader available for Compose resource reading")
+    private fun loader(): ClassLoader = javaClass.classLoader ?: error("No classloader available for Compose resource reading")
 }

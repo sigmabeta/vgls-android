@@ -13,7 +13,8 @@ class VglsFirebaseAnalyticsImpl(
     firebaseAnalytics: FirebaseAnalytics,
     dispatchers: SageDispatchers,
     coroutineScope: CoroutineScope,
-) : FirebaseAnalyticsImpl(firebaseAnalytics, dispatchers, coroutineScope), VglsAnalytics {
+) : FirebaseAnalyticsImpl(firebaseAnalytics, dispatchers, coroutineScope),
+    VglsAnalytics {
     override fun logGameView(gameName: String) {
         val details = Bundle()
         details.putString(PARAM_GAME_NAME, gameName)

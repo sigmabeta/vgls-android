@@ -19,6 +19,5 @@ import net.sigmabeta.sage.di.AppScope
 object ActivityScopedBindingsModule {
     @Provides
     @SingleIn(AppScope::class)
-    fun provideOfflineWorkScheduler(context: Context): OfflineWorkScheduler =
-        WorkManagerOfflineWorkScheduler(context)
+    fun provideOfflineWorkScheduler(context: Context): OfflineWorkScheduler = WorkManagerOfflineWorkScheduler(context)
 }

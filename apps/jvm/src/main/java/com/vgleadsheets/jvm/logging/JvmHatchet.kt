@@ -126,8 +126,7 @@ class JvmHatchet(private val debug: Boolean = true) : Hatchet {
 
     private data class TagPair(val raw: String, val formatted: String)
 
-    private fun resolveTag(element: StackTraceElement): TagPair =
-        cachedTag.getOrPut(element.className) {
+    private fun resolveTag(element: StackTraceElement): TagPair = cachedTag.getOrPut(element.className) {
             var raw = element.className.substringAfterLast('.')
             val m = ANONYMOUS_CLASS.matcher(raw)
             if (m.find()) {

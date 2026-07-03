@@ -72,6 +72,7 @@ private class VglsWorkerFactory(private val graph: VglsAppGraph) : WorkerFactory
     ): ListenableWorker? = when (workerClassName) {
         OfflineDownloadWorker::class.java.name ->
             OfflineDownloadWorker(appContext, workerParameters, graph.offlineDownloader)
+
         else -> null
     }
 }

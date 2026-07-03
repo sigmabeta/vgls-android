@@ -380,29 +380,51 @@ internal fun screenForRoute(route: String): VglsScreen {
     val seg = route.split("/")
     return when (route) {
         "home" -> HomeScreen
+
         "browse" -> BrowseScreen
+
         "games" -> GamesListScreen
+
         "composers" -> ComposersListScreen
+
         "songs" -> SongsListScreen
+
         "favorites" -> FavoritesScreen
+
         "difficulties" -> DifficultyListScreen
+
         "tags" -> TagsListScreen
+
         "parts" -> PartsScreen
+
         "menu" -> MenuScreen
+
         "updates" -> UpdatesScreen
+
         "offline" -> OfflineScreen
+
         "offline/updates" -> OfflineUpdatesScreen
+
         "search" -> SearchNavScreen
+
         "licenses" -> LicensesNavScreen
+
         else -> when {
             seg[0] == "games" && seg.size == 2 -> GameDetailScreen(seg[1].toLong())
+
             seg[0] == "composers" && seg.size == 2 -> ComposerDetailScreen(seg[1].toLong())
+
             seg[0] == "songs" && seg.size == 4 && seg[1] == "viewer" ->
                 ViewerNavScreen(seg[2].toLong(), seg[3].toLong())
+
             seg[0] == "songs" && seg.size == 2 -> SongDetailScreen(seg[1].toLong())
+
             seg[0] == "difficulties" && seg.size == 2 -> DifficultyValuesScreen(seg[1].toLong())
+
             seg[0] == "tags" && seg.size == 3 && seg[1] == "value" -> TagValueSongsScreen(seg[2].toLong())
+
             seg[0] == "tags" && seg.size == 2 -> TagValuesScreen(seg[1].toLong())
+
             else -> error("No Voyager screen for route: $route")
         }
     }

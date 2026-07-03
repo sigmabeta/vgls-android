@@ -58,8 +58,7 @@ object JvmPlatformModule {
     @Provides
     @SingleIn(AppScope::class)
     @Named("CachePath")
-    fun provideCachePath(@Named("workDir") workDir: File): String =
-        File(workDir, "pdfs").apply { mkdirs() }.absolutePath
+    fun provideCachePath(@Named("workDir") workDir: File): String = File(workDir, "pdfs").apply { mkdirs() }.absolutePath
 
     @Provides
     @SingleIn(AppScope::class)
@@ -76,13 +75,11 @@ object JvmPlatformModule {
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideCoroutineScope(dispatchers: SageDispatchers): CoroutineScope =
-        CoroutineScope(SupervisorJob() + dispatchers.computation)
+    fun provideCoroutineScope(dispatchers: SageDispatchers): CoroutineScope = CoroutineScope(SupervisorJob() + dispatchers.computation)
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideStorage(@Named("workDir") workDir: File): Storage =
-        JvmStorage(File(workDir, "settings.properties"))
+    fun provideStorage(@Named("workDir") workDir: File): Storage = JvmStorage(File(workDir, "settings.properties"))
 
     @Provides
     @SingleIn(AppScope::class)
@@ -156,7 +153,13 @@ object JvmAppModule {
         dispatchers: SageDispatchers,
         hatchet: Hatchet,
     ): AppVersionManager = AppVersionManager(
-        storage, updateManager, notifManager, actionDeserializer, coroutineScope, dispatchers, hatchet,
+        storage,
+        updateManager,
+        notifManager,
+        actionDeserializer,
+        coroutineScope,
+        dispatchers,
+        hatchet,
     )
 
     @Provides
@@ -169,18 +172,15 @@ object JvmAppModule {
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideGeneralSettingsManager(storage: Storage): GeneralSettingsManager =
-        GeneralSettingsManager(storage = storage)
+    fun provideGeneralSettingsManager(storage: Storage): GeneralSettingsManager = GeneralSettingsManager(storage = storage)
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideDebugSettingsManager(storage: Storage): DebugSettingsManager =
-        DebugSettingsManager(storage = storage)
+    fun provideDebugSettingsManager(storage: Storage): DebugSettingsManager = DebugSettingsManager(storage = storage)
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideSelectedPartManager(storage: Storage): SelectedPartManager =
-        SelectedPartManager(storage = storage)
+    fun provideSelectedPartManager(storage: Storage): SelectedPartManager = SelectedPartManager(storage = storage)
 
     @Provides
     @SingleIn(AppScope::class)
@@ -191,7 +191,11 @@ object JvmAppModule {
         coroutineScope: CoroutineScope,
         dispatchers: SageDispatchers,
     ): UrlInfoProvider = UrlInfoProvider(
-        environmentManager, partManager, debugSettingsManager, coroutineScope, dispatchers,
+        environmentManager,
+        partManager,
+        debugSettingsManager,
+        coroutineScope,
+        dispatchers,
     )
 
     @Provides
@@ -204,6 +208,5 @@ object JvmAppModule {
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideEventDispatcher(analytics: Analytics): EventDispatcher =
-        EventDispatcherReal(analytics = analytics)
+    fun provideEventDispatcher(analytics: Analytics): EventDispatcher = EventDispatcherReal(analytics = analytics)
 }

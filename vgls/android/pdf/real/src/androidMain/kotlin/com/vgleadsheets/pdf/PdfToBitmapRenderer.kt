@@ -38,7 +38,7 @@ class PdfToBitmapRenderer(
         try {
             var resultBitmap: Bitmap
             val renderProcessTime = measureTimeMillis {
-                hatchet.d("Generating sheet bitmap for page $pageNumber of file ${pdfFile.toString()} ")
+                hatchet.d("Generating sheet bitmap for page $pageNumber of file $pdfFile ")
 
                 val localPdfRenderer = if (pdfPath == pdfFile.toString()) {
                     requireNotNull(pdfRenderer) { "PDF renderer should not be null, but somehow is?" }

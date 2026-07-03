@@ -43,8 +43,7 @@ private fun Int.toHttpStringId() = when (this / HTTP_CODE_CLASS_DIVISOR) {
     else -> VglsStringId.ERROR_IMAGE_SERVER_ERROR
 }
 
-private fun Throwable.isSocketLevelError(): Boolean =
-    findCause { it::class.simpleName in SOCKET_LEVEL_EXCEPTION_NAMES } != null
+private fun Throwable.isSocketLevelError(): Boolean = findCause { it::class.simpleName in SOCKET_LEVEL_EXCEPTION_NAMES } != null
 
 private inline fun <reified T : Throwable> Throwable.findCause(): T? = findCause { it is T } as T?
 
