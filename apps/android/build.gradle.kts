@@ -144,7 +144,7 @@ dependencies {
     // End DI dependencies
 
     implementation(projects.vgls.android.icons.real)
-    implementation(projects.features.all.real)
+    implementation(projects.features.all.di)
 
     // Metro DI: the app owns VglsAppGraph (implements ActivityGraph from :vgls:android:activity),
     // instantiates WakeLockManagerImpl, and needs the metrox ViewModelGraph/factory types.
