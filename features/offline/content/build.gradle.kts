@@ -19,8 +19,8 @@ kotlin {
                 api(libs.sage.common.pdf)
                 api(projects.vgls.common.repository.real)
                 api(libs.sage.common.ui.components)
-                implementation(projects.vgls.common.strings)
-                api(projects.vgls.common.viewmodel)
+                implementation(projects.vgls.common.strings.api)
+                api(projects.vgls.common.viewmodel.real)
                 implementation(libs.metrox.viewmodel)
                 implementation(libs.sage.common.di)
             }

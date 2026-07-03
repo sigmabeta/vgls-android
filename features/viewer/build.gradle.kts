@@ -27,7 +27,7 @@ kotlin {
                 implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.metrox.viewmodel)
                 implementation(libs.metrox.viewmodel.compose)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
                 implementation(libs.sage.common.di)
             }
         }

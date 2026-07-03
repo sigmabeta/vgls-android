@@ -22,7 +22,7 @@ kotlin {
                 implementation(projects.vgls.common.model.api)
                 implementation(projects.vgls.common.notif.real)
                 implementation(libs.sage.common.settings.general)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
                 implementation(libs.sage.common.di)
             }
         }

@@ -30,14 +30,14 @@ kotlin {
                 implementation(projects.vgls.android.ui.list)
                 implementation(projects.vgls.android.ui.theme)
                 implementation(projects.vgls.android.viewmodel)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
 
                 implementation(libs.sage.common.pdf)
 
                 implementation(projects.features.navbar)
                 implementation(projects.features.topbar)
 
-                implementation(projects.vgls.common.viewmodel)
+                implementation(projects.vgls.common.viewmodel.real)
                 implementation(projects.features.home)
                 implementation(projects.features.browse)
                 implementation(projects.features.games.list)

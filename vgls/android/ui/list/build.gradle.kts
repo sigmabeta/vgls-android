@@ -17,9 +17,9 @@ kotlin {
                 implementation(libs.sage.common.ui.perfCompose)
                 implementation(libs.sage.common.ui.listScreens)
                 implementation(projects.vgls.android.ui.components)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
                 // VglsListViewModel base, rendered by ListScreenContent (phase 4 plain-VM list screens).
-                implementation(projects.vgls.common.viewmodel)
+                implementation(projects.vgls.common.viewmodel.real)
             }
         }
     }

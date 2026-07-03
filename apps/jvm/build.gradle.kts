@@ -38,12 +38,12 @@ dependencies {
     implementation(projects.vgls.common.wakelocks.fake)
 
     // --- VGLS UI (KMP) ---
-    implementation(projects.vgls.common.strings)
+    implementation(projects.vgls.common.strings.api)
     implementation(projects.vgls.android.scaffold)
     implementation(projects.vgls.android.nav)
     implementation(projects.vgls.android.licenses)
     implementation(projects.vgls.android.viewmodel)
-    implementation(projects.vgls.common.viewmodel)
+    implementation(projects.vgls.common.viewmodel.real)
     implementation(projects.vgls.android.ui.components)
     implementation(projects.vgls.android.ui.theme)
     implementation(projects.vgls.android.ui.list)

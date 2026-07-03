@@ -16,7 +16,7 @@ kotlin {
                 api(projects.vgls.common.notif.real)
                 api(projects.vgls.common.repository.real)
                 api(libs.sage.common.storage.common)
-                api(projects.vgls.common.strings)
+                api(projects.vgls.common.strings.api)
 
                 implementation(projects.vgls.common.appcomm.api)
             }

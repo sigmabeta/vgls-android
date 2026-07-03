@@ -12,7 +12,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                api(projects.vgls.common.strings)
+                api(projects.vgls.common.strings.api)
                 api(libs.sage.common.ui.components)
                 api(libs.sage.common.appcomm)
                 implementation(projects.vgls.android.ui.components)

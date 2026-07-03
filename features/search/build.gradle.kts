@@ -13,7 +13,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 api(libs.androidx.lifecycle.runtimeCompose)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
                 implementation(projects.vgls.android.ui.components)
                 implementation(projects.vgls.android.ui.list)
                 implementation(projects.vgls.common.nav.api)

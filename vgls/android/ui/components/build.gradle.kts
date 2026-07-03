@@ -29,7 +29,7 @@ kotlin {
                 implementation(libs.sage.common.ui.perfCompose)
                 implementation(libs.sage.common.ui.iconsReal)
                 implementation(projects.vgls.android.ui.theme)
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
                 implementation(libs.jetbrains.compose.resources)
             }
         }

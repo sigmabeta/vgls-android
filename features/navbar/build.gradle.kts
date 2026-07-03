@@ -11,7 +11,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                implementation(projects.vgls.common.strings)
+                implementation(projects.vgls.common.strings.api)
                 implementation(projects.vgls.common.nav.api)
                 implementation(projects.vgls.android.viewmodel)
                 implementation(libs.sage.common.ui.iconsApi)
