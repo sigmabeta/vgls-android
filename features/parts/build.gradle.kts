@@ -15,7 +15,7 @@ kotlin {
                 api(libs.sage.common.list)
                 api(projects.vgls.common.model.api)
                 api(projects.vgls.common.nav.api)
-                api(projects.vgls.common.settings.part)
+                api(projects.vgls.common.settings.part.real)
                 api(libs.sage.common.ui.components)
                 api(projects.vgls.common.strings)
                 api(projects.vgls.common.viewmodel)

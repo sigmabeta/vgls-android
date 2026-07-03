@@ -17,7 +17,7 @@ kotlin {
                 api(projects.vgls.common.nav.api)
                 api(projects.vgls.common.offline)
                 api(libs.sage.common.pdf)
-                api(projects.vgls.common.repository)
+                api(projects.vgls.common.repository.real)
                 api(libs.sage.common.ui.components)
                 implementation(projects.vgls.common.strings)
                 api(projects.vgls.common.viewmodel)

@@ -12,7 +12,7 @@ kotlin {
             dependencies {
                 implementation(projects.vgls.common.downloader)
                 implementation(libs.sage.common.logging)
-                implementation(projects.vgls.common.repository)
+                implementation(projects.vgls.common.repository.real)
                 implementation(libs.sage.common.time)
             }
         }

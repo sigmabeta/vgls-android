@@ -18,7 +18,7 @@ kotlin {
                 implementation(libs.metrox.viewmodel)
                 implementation(projects.vgls.common.offline)
                 implementation(libs.sage.common.pdf)
-                implementation(projects.vgls.common.repository)
+                implementation(projects.vgls.common.repository.real)
                 implementation(libs.sage.common.time)
                 implementation(libs.sage.common.ui.components)
                 implementation(projects.vgls.common.strings)

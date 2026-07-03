@@ -136,7 +136,7 @@ dependencies {
     implementation(projects.vgls.common.offline)
     implementation(projects.vgls.common.environment.api)
     implementation(projects.vgls.common.urlinfo)
-    implementation(projects.vgls.common.versions)
+    implementation(projects.vgls.common.versions.real)
     // End DI dependencies
 
     implementation(projects.vgls.android.icons)

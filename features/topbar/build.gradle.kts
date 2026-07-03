@@ -18,7 +18,7 @@ kotlin {
                 implementation(projects.vgls.android.ui.components)
                 implementation(projects.vgls.common.nav.api)
                 implementation(projects.vgls.android.viewmodel)
-                implementation(projects.vgls.common.settings.part)
+                implementation(projects.vgls.common.settings.part.real)
                 implementation(libs.sage.common.coroutines)
                 implementation(libs.sage.common.analytics)
                 implementation(libs.sage.common.debug)

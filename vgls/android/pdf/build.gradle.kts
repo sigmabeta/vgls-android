@@ -34,7 +34,7 @@ kotlin {
                 implementation(projects.vgls.android.bitmaps)
                 implementation(libs.sage.common.debug)
                 implementation(libs.sage.common.logging)
-                implementation(projects.vgls.common.repository)
+                implementation(projects.vgls.common.repository.real)
             }
         }
     }
