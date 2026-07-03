@@ -9,8 +9,7 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
-import androidx.core.content.res.ResourcesCompat
-import com.vgleadsheets.ui.theme.R as ThemeR
+import com.vgleadsheets.ui.fonts.museJazzTypeface
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.SingleIn
@@ -29,7 +28,7 @@ class LoadingIndicatorGenerator @Inject constructor(
         Paint().apply {
             isAntiAlias = true
             color = Color.BLACK
-            typeface = ResourcesCompat.getFont(context, ThemeR.font.musejazz_text)
+            typeface = museJazzTypeface(context)
         }
 
     private val clearPaint =
