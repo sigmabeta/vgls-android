@@ -7,9 +7,9 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.features.all)
-    implementation(projects.features.navbar)
-    implementation(projects.features.topbar)
+    implementation(projects.features.all.real)
+    implementation(projects.features.navbar.real)
+    implementation(projects.features.topbar.real)
 
     implementation(projects.vgls.common.model.api)
     implementation(libs.kotlinx.datetime)
