@@ -68,6 +68,9 @@ rootProject.name = "VGLeadSheets"
 
 include(
     ":app",
+    // ":apps:jvm",  // WIP desktop target — scaffolding complete; blocked on the sheet-viewer split
+    //               (telephoto zoomable-image-coil3 0.19.0 has no JVM variant). Re-enable after
+    //               ZoomableSheet/PdfSubsampleSource/viewer are android/jvm-split with JVM stubs.
 
     ":vgls:android:activity",
     ":vgls:android:bitmaps",

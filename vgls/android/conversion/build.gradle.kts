@@ -1,16 +1,21 @@
 plugins {
-    alias(libs.plugins.sage.android)
-    alias(libs.plugins.sage.di)
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.metro)
 }
 
-dependencies {
-    api(projects.vgls.common.conversion)
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.conversion"
+    }
 
-    implementation(projects.vgls.android.database)
-
-    implementation(projects.vgls.common.network)
-}
-
-android {
-    namespace = "com.vgleadsheets.conversion"
+    sourceSets {
+        named("jvmSharedMain") {
+            dependencies {
+                api(projects.vgls.common.conversion)
+                implementation(projects.vgls.android.database)
+                implementation(projects.vgls.common.network)
+                implementation(libs.sage.common.di)
+            }
+        }
+    }
 }
