@@ -18,7 +18,7 @@ kotlin {
                 api(libs.sage.common.pdf)
                 implementation(libs.coil.kt.core)
                 implementation(libs.okio)
-                implementation(projects.vgls.common.downloader)
+                implementation(projects.vgls.common.downloader.api)
                 implementation(projects.vgls.common.urlinfo.real)
             }
         }

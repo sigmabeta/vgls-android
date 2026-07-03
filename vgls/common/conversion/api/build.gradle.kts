@@ -17,7 +17,7 @@ kotlin {
         // network is pure-JVM (sage.jvm); FromNetwork.kt (the network->model mappers) stays here.
         named("jvmSharedMain") {
             dependencies {
-                implementation(projects.vgls.common.network)
+                implementation(projects.vgls.common.network.api)
             }
         }
     }

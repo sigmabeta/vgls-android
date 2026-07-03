@@ -13,7 +13,7 @@ kotlin {
             dependencies {
                 api(projects.vgls.common.conversion.api)
                 implementation(projects.vgls.android.database)
-                implementation(projects.vgls.common.network)
+                implementation(projects.vgls.common.network.api)
                 implementation(libs.sage.common.di)
             }
         }
