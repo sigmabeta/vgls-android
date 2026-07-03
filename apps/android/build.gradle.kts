@@ -105,6 +105,15 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
+    // Which perf backend the app wires is decided by whether Firebase is included, NOT by build type.
+    // Firebase needs google-services.json (the google-services plugin fails without it), so its presence
+    // is the gate — see checkShouldIncludeFirebase(). Add exactly one PerfBackendModule source dir to
+    // src/main so a release build with no google-services.json (local, or CI checks) compiles against the
+    // Noop backend and pulls no Firebase, instead of failing on unresolved Firebase references.
+    sourceSets.getByName("main").java.srcDir(
+        if (checkShouldIncludeFirebase()) "src/firebase/java" else "src/noFirebase/java"
+    )
 }
 
 dependencies {
@@ -249,7 +258,10 @@ appVersioning {
     }
 }
 
-fun checkShouldIncludeFirebase(): Boolean = File("app/google-services.json").exists()
+// google-services.json is a gitignored secret; when absent, Firebase is left out entirely (deps,
+// plugins, and the perf backend — see the src/main sourceSets wiring above). The path is resolved
+// against Gradle's working dir (the root project), so it points at the app module explicitly.
+fun checkShouldIncludeFirebase(): Boolean = File("apps/android/google-services.json").exists()
 
 fun ApplicationBuildType.addTimeToBuildConfig(butActuallyThough: Boolean) {
     val timeMs = if (butActuallyThough) {
