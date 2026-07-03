@@ -23,7 +23,7 @@ kotlin {
         named("androidMain") {
             dependencies {
                 implementation(libs.androidx.core.ktx)
-                implementation(projects.vgls.android.ui.theme)
+                implementation(projects.vgls.android.ui.theme.api)
                 implementation(libs.sage.common.logging)
                 implementation(libs.sage.common.di)
             }

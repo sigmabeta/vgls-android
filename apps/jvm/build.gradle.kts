@@ -44,9 +44,9 @@ dependencies {
     implementation(projects.vgls.android.licenses)
     implementation(projects.vgls.android.viewmodel)
     implementation(projects.vgls.common.viewmodel.real)
-    implementation(projects.vgls.android.ui.components)
-    implementation(projects.vgls.android.ui.theme)
-    implementation(projects.vgls.android.ui.list)
+    implementation(projects.vgls.android.ui.components.api)
+    implementation(projects.vgls.android.ui.theme.api)
+    implementation(projects.vgls.android.ui.list.api)
     implementation(projects.vgls.android.pdf)
     implementation(projects.vgls.android.images)
 

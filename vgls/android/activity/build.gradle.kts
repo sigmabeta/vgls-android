@@ -14,7 +14,7 @@ dependencies {
     implementation(libs.sage.common.ui.perfCompose)
     implementation(projects.vgls.android.pdf)
     implementation(projects.vgls.android.scaffold)
-    implementation(projects.vgls.android.ui.theme)
+    implementation(projects.vgls.android.ui.theme.api)
 
     // LocalVglsStringProvider (provided at the Compose root) + StringProvider type.
     implementation(projects.vgls.common.strings.api)
