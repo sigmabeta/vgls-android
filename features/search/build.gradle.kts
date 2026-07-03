@@ -14,8 +14,8 @@ kotlin {
             dependencies {
                 api(libs.androidx.lifecycle.runtimeCompose)
                 implementation(projects.vgls.common.strings.api)
-                implementation(projects.vgls.android.ui.components)
-                implementation(projects.vgls.android.ui.list)
+                implementation(projects.vgls.android.ui.components.api)
+                implementation(projects.vgls.android.ui.list.api)
                 implementation(projects.vgls.common.nav.api)
                 implementation(projects.vgls.android.viewmodel)
                 implementation(projects.vgls.android.pdf)
@@ -30,7 +30,7 @@ kotlin {
         named("androidMain") {
             dependencies {
                 // Previews only.
-                implementation(projects.vgls.android.ui.theme)
+                implementation(projects.vgls.android.ui.theme.api)
                 implementation(libs.androidx.compose.ui.tooling.preview)
             }
         }

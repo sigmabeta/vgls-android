@@ -28,7 +28,7 @@ kotlin {
                 implementation(projects.vgls.android.pdf)
                 implementation(libs.sage.common.ui.perfCompose)
                 implementation(libs.sage.common.ui.iconsReal)
-                implementation(projects.vgls.android.ui.theme)
+                implementation(projects.vgls.android.ui.theme.api)
                 implementation(projects.vgls.common.strings.api)
                 implementation(libs.jetbrains.compose.resources)
             }

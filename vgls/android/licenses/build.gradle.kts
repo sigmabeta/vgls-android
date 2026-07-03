@@ -15,7 +15,7 @@ kotlin {
                 api(libs.androidx.lifecycle.runtimeCompose)
                 api(libs.sage.common.appcomm)
                 api(projects.vgls.common.nav.api)
-                implementation(projects.vgls.android.ui.components)
+                implementation(projects.vgls.android.ui.components.api)
                 implementation(projects.vgls.common.strings.api)
                 implementation(projects.vgls.android.viewmodel)
                 implementation(libs.metrox.viewmodel)

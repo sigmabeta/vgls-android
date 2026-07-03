@@ -25,10 +25,10 @@ kotlin {
                 implementation(projects.vgls.android.licenses)
                 implementation(projects.vgls.android.nav)
                 implementation(libs.sage.common.ui.perfCompose)
-                implementation(projects.vgls.android.ui.components)
+                implementation(projects.vgls.android.ui.components.api)
                 implementation(libs.sage.common.ui.iconsReal)
-                implementation(projects.vgls.android.ui.list)
-                implementation(projects.vgls.android.ui.theme)
+                implementation(projects.vgls.android.ui.list.api)
+                implementation(projects.vgls.android.ui.theme.api)
                 implementation(projects.vgls.android.viewmodel)
                 implementation(projects.vgls.common.strings.api)
 

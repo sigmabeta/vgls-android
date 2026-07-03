@@ -17,7 +17,7 @@ kotlin {
                 api(projects.vgls.common.wakelocks.api)
                 api(projects.vgls.common.nav.api)
                 implementation(projects.vgls.android.pdf)
-                implementation(projects.vgls.android.ui.components)
+                implementation(projects.vgls.android.ui.components.api)
                 implementation(projects.vgls.android.viewmodel)
                 implementation(projects.vgls.android.bitmaps)
                 implementation(libs.sage.common.appcomm)
@@ -37,7 +37,7 @@ kotlin {
                 // actual drive telephoto's ZoomSpec/ZoomableState (aar-only; no JVM variant). The
                 // JVM actual is a placeholder, so commonMain stays telephoto-free.
                 implementation(libs.zoomable.image.coil3)
-                implementation(projects.vgls.android.ui.theme)
+                implementation(projects.vgls.android.ui.theme.api)
                 implementation(libs.androidx.compose.ui.tooling.preview)
             }
         }
