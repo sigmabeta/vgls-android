@@ -19,7 +19,7 @@ kotlin {
                 implementation(projects.vgls.common.nav.api)
                 implementation(projects.vgls.android.viewmodel)
                 implementation(projects.vgls.android.pdf)
-                implementation(projects.vgls.common.urlinfo)
+                implementation(projects.vgls.common.urlinfo.real)
                 implementation(libs.sage.common.appcomm)
                 implementation(libs.sage.common.ui.iconsApi)
                 implementation(libs.metrox.viewmodel)

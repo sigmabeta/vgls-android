@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.vgls.common.offline)
+    implementation(projects.vgls.common.offline.real)
     // WorkManager runtime (OfflineDownloadWorker/WorkManagerOfflineWorkScheduler); the worker is a
     // plain CoroutineWorker instantiated by VglsWorkerFactory now — no Hilt-work integration.
     implementation(libs.androidx.work.manager)

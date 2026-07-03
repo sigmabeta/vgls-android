@@ -7,9 +7,9 @@ dependencies {
     api(projects.vgls.android.activity)
 
     api(libs.sage.common.list)
-    api(projects.vgls.common.offline)
+    api(projects.vgls.common.offline.real)
     api(projects.vgls.common.nav.api)
-    api(projects.vgls.common.notif)
+    api(projects.vgls.common.notif.real)
 
     // List features here.
     api(projects.features.home)

@@ -19,7 +19,7 @@ kotlin {
                 implementation(libs.sage.common.logging)
                 implementation(libs.sage.common.pdf)
                 implementation(projects.vgls.common.repository.real)
-                implementation(projects.vgls.common.urlinfo)
+                implementation(projects.vgls.common.urlinfo.real)
 
                 implementation(libs.sage.common.di)
             }
