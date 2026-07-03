@@ -24,6 +24,7 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.core.ktx)
                 implementation(projects.vgls.android.ui.theme.api)
+                implementation(projects.vgls.android.ui.fonts.real)
                 implementation(libs.sage.common.logging)
                 implementation(libs.sage.common.di)
             }

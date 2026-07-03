@@ -40,3 +40,22 @@ compose.resources {
     generateResClass = ResourcesExtension.ResourceClassGeneration.Always
     packageOfResClass = "com.vgleadsheets.strings.generated.resources"
 }
+
+// Paparazzi composeResources export. CMP packages androidMain composeResources as Android assets
+// only — off the JVM unit-test classpath — so under Paparazzi VglsPreviewStrings' ClasspathResourceReader
+// can't find the string `.cvr` and renders resource keys instead of values. Expose the composeResources
+// as a classpath-shaped jar the screenshot module (:vgls:android:ui:previews:real) pulls as a test dep.
+val composeResourcesElements: Configuration by configurations.creating {
+    isCanBeResolved = false
+    isCanBeConsumed = true
+}
+val composeResourcesElementsJar = tasks.register<Jar>("composeResourcesElementsJar") {
+    archiveClassifier.set("compose-resources")
+    dependsOn("prepareComposeResourcesTaskForCommonMain")
+    from(layout.buildDirectory.dir("generated/compose/resourceGenerator/preparedResources/commonMain/composeResources")) {
+        into("composeResources/com.vgleadsheets.strings.generated.resources")
+    }
+}
+artifacts {
+    add(composeResourcesElements.name, composeResourcesElementsJar)
+}

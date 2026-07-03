@@ -26,6 +26,17 @@ dependencies {
     implementation(projects.vgls.common.strings.api)
     implementation(libs.sage.android.ui.strings)
     implementation(projects.vgls.android.ui.theme.api)
+
+    // CMP packages androidMain composeResources as Android assets only — off the JVM unit-test
+    // classpath — so under Paparazzi the ClasspathResourceReader can't find the string/font `.cvr`
+    // and text renders resource keys in the default face. Each resource module exposes its
+    // composeResources as a classpath-shaped jar (composeResourcesElements); pull them as test deps so
+    // the strings + MuseJazz font land on the Paparazzi classpath.
+    listOf(":vgls:common:strings:api", ":vgls:android:ui:fonts:real").forEach { modulePath ->
+        testImplementation(
+            project(mapOf("path" to modulePath, "configuration" to "composeResourcesElements")),
+        )
+    }
 }
 
 android {

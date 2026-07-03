@@ -91,6 +91,7 @@ include(
     ":vgls:android:storage:common:di",
     ":vgls:android:ui:components:api",
     ":vgls:android:ui:list:api",
+    ":vgls:android:ui:fonts:real",
     ":vgls:android:ui:previews:real",
     ":vgls:android:viewmodel:real",
     ":vgls:android:wakelocks:real",

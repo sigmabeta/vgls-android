@@ -3,6 +3,7 @@ package com.vgleadsheets.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import com.vgleadsheets.ui.fonts.museJazzFontFamily
 
 // Inlines the (Android-only) sage SageMaterial/SageMaterialMenu helpers so the theme can live in
 // commonMain — both were thin MaterialTheme wrappers.
@@ -14,7 +15,7 @@ fun AppTheme(
     val colors = if (!isSystemInDarkTheme() && !forceDark) VglsLight else VglsDark
 
     MaterialTheme(
-        typography = VglsTypography,
+        typography = vglsTypography(brand = museJazzFontFamily()),
         colorScheme = colors,
         content = content,
     )
@@ -25,7 +26,7 @@ fun AppThemeMenu(
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        typography = VglsTypography,
+        typography = vglsTypography(brand = museJazzFontFamily()),
         colorScheme = VglsMenu,
         content = content,
     )
