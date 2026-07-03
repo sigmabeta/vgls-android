@@ -101,3 +101,10 @@ Android (minSdk 26 / compileSdk 36) and desktop JVM (`:apps:jvm`).
 
 Present the verify.sh result and the paparazzi-diff.sh summary, then wait for the human's go-ahead.
 Committing is fine when asked; pushing is gated on the above.
+
+**Push the `sage` submodule too.** The main repo pins `sage` by commit hash. If you push a
+main-repo commit whose gitlink points at a `sage` commit that isn't on the `sage` remote, CI's
+submodule-init step fails (`upload-pack: not our ref …`) and the whole pipeline goes red. So
+whenever the main repo is pushed, ensure the pinned `sage` commit is already pushed to
+`git@github.com:sigmabeta/sage.git` first — `cd sage && git push origin beta`, then verify with
+`git branch -r --contains <pinned-hash>`.
