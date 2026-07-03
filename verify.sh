@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # verify.sh — run the same verification tasks CI runs, summarize pass/fail, and collate every
-# task's artifacts (reports, Paparazzi diffs, the debug APK) into one folder.
+# task's artifacts (reports, Paparazzi diffs, the debug + release APKs) into one folder.
 #
 # Mirrors the verification jobs in .github/workflows/ci.yml. CI splits these across parallel jobs;
 # locally they run sequentially and independently: a failing task does NOT stop the others, so one
@@ -9,19 +9,19 @@
 #   - The Gradle daemon is left on (faster local reruns; CI uses --no-daemon in throwaway containers).
 #   - --max-workers is left at the machine default.
 #   - configuration-cache stays OFF (CI runs --no-configuration-cache; some tasks aren't CC-safe).
-#   - The `apk` task builds assembleDebug, not assembleRelease: the release build needs the signing
-#     keystore + the google-services.json secret CI injects.
-#   - CI's android-lint job (`:apps:android:lintRelease`) is omitted: lintRelease compiles the release
-#     variant, which references firebase and can't build locally without the google-services.json
-#     secret. CI still runs it; run it locally by hand once you have google-services.json in place.
-#   - The signed-release + Google Play publish path is not mirrored here (needs secrets + signing);
-#     it's a separate CI workflow, not yet ported from CircleCI. `shared-build` (:apps:jvm:classes)
-#     compiles the desktop/JVM target — cheap insurance against android-only leaks in commonMain.
+#   - Both `apk` (assembleDebug) and `apk-release` (assembleRelease) run. Release builds locally now
+#     that Firebase is optional (no google-services.json -> Noop backend) and signing falls back to
+#     the committed dev keystore — so the release APK is dev-signed, not upload-signed.
+#   - CI's android-lint job (`:apps:android:lintRelease`) isn't a separate task here, but `apk-release`
+#     compiles the same release variant; run `./gradlew :apps:android:lintRelease` for the lint checks.
+#   - The Google Play publish path is not mirrored here (needs the Play + upload-signing secrets); it's
+#     a separate CI workflow, not yet ported from CircleCI. `shared-build` (:apps:jvm:classes) compiles
+#     the desktop/JVM target — cheap insurance against android-only leaks in commonMain.
 #
 # Usage:
 #   ./verify.sh                       # run everything
 #   ./verify.sh detekt screenshot     # run only the named task(s)
-#   ./verify.sh --skip-apps           # everything except the heavy android builds (lint + APK)
+#   ./verify.sh --skip-apps           # everything except the heavy android builds (debug + release APK)
 #   ./verify.sh --rerun               # force every task to re-run (Gradle --rerun-tasks)
 #   ./verify.sh --list                # list task names
 #   VERIFY_OUT=/tmp/v ./verify.sh     # override the output folder
@@ -44,9 +44,10 @@ ALL_TASKS=(
   "screenshot|gradle|:vgls:android:ui:previews:real:verifyPaparazziDebug --continue"
   "shared-build|gradle|:apps:jvm:classes"
   "apk|gradle|:apps:android:assembleDebug"
+  "apk-release|gradle|:apps:android:assembleRelease"
 )
 # The heavy android builds, skippable with --skip-apps.
-APP_BUILD_TASKS="apk"
+APP_BUILD_TASKS="apk apk-release"
 
 # ---- arg parsing -----------------------------------------------------------
 filter=()
@@ -135,6 +136,10 @@ fi
 if [[ "$ran" == *" apk "* ]] && [ -d apps/android/build/outputs/apk/debug ]; then
   mkdir -p "$OUT/apk"; cp -r apps/android/build/outputs/apk/debug/. "$OUT/apk/"
 fi
+# Release APK (dev-signed, no Firebase).
+if [[ "$ran" == *" apk-release "* ]] && [ -d apps/android/build/outputs/apk/release ]; then
+  mkdir -p "$OUT/apk-release"; cp -r apps/android/build/outputs/apk/release/. "$OUT/apk-release/"
+fi
 
 # ---- summary ---------------------------------------------------------------
 summary="$OUT/summary.txt"
@@ -155,7 +160,8 @@ summary="$OUT/summary.txt"
   desc() { [ -d "$OUT/$1" ] && printf '  %-14s %s\n' "$1/" "$2"; }
   desc reports   "ktlint, detekt HTML reports (per module)"
   desc paparazzi "screenshot diff/failure images (per module)"
-  desc apk       "debug APK (apps/android)"
+  desc apk         "debug APK (apps/android)"
+  desc apk-release "release APK (apps/android, dev-signed)"
 } >"$summary"
 
 echo
