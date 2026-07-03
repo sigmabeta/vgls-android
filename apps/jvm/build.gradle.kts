@@ -17,7 +17,7 @@ dependencies {
     // --- VGLS logic / data layer (all KMP now) ---
     implementation(projects.vgls.common.repository.real)
     implementation(projects.vgls.android.repository.di)
-    implementation(projects.vgls.android.conversion.real)
+    implementation(projects.vgls.android.conversion.di)
     implementation(projects.vgls.android.database.real)
     implementation(projects.vgls.common.database.api)
     implementation(projects.vgls.common.network.api)
