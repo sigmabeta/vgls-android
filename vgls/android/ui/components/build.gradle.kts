@@ -26,8 +26,6 @@ kotlin {
                 implementation(projects.vgls.android.bitmaps)
                 implementation(projects.vgls.android.images)
                 implementation(projects.vgls.android.pdf)
-                // telephoto (multiplatform) for the shared ZoomableSheet sub-sampling viewer.
-                implementation(libs.zoomable.image.coil3)
                 implementation(libs.sage.common.ui.perfCompose)
                 implementation(libs.sage.common.ui.iconsReal)
                 implementation(projects.vgls.android.ui.theme)
@@ -40,6 +38,9 @@ kotlin {
         // the commonMain composables) also live here (android tooling @Preview).
         named("androidMain") {
             dependencies {
+                // telephoto (aar-only, no JVM variant) backs the ZoomableSheet/ZoomableFullDoc
+                // sub-sampling PDF viewer — android-only, so it lives here, not in commonMain.
+                implementation(libs.zoomable.image.coil3)
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.compose.ui.tooling.preview)
             }
