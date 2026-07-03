@@ -19,7 +19,7 @@ kotlin {
                 api(projects.vgls.common.nav.api)
                 api(libs.sage.common.perf)
                 api(projects.vgls.common.repository.real)
-                api(projects.vgls.common.urlinfo)
+                api(projects.vgls.common.urlinfo.real)
                 implementation(libs.sage.common.ui.components)
                 implementation(libs.sage.common.logging)
                 implementation(libs.metrox.viewmodel)

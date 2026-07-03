@@ -20,7 +20,7 @@ kotlin {
                 implementation(libs.metrox.viewmodel)
                 implementation(libs.sage.common.coroutines)
                 implementation(projects.vgls.common.model.api)
-                implementation(projects.vgls.common.notif)
+                implementation(projects.vgls.common.notif.real)
                 implementation(libs.sage.common.settings.general)
                 implementation(projects.vgls.common.strings)
                 implementation(libs.sage.common.di)

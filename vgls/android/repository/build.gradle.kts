@@ -18,7 +18,7 @@ kotlin {
                 implementation(libs.sage.common.coroutines)
                 implementation(projects.vgls.common.conversion.api)
                 implementation(projects.vgls.common.network)
-                implementation(projects.vgls.common.notif)
+                implementation(projects.vgls.common.notif.real)
                 implementation(libs.sage.common.time)
                 implementation(libs.sage.common.ui.strings)
                 implementation(libs.sage.common.analytics)

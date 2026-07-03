@@ -19,7 +19,7 @@ kotlin {
                 implementation(libs.coil.kt.core)
                 implementation(libs.okio)
                 implementation(projects.vgls.common.downloader)
-                implementation(projects.vgls.common.urlinfo)
+                implementation(projects.vgls.common.urlinfo.real)
             }
         }
         named("androidMain") {

@@ -28,7 +28,7 @@ kotlin {
         named("jvmSharedMain") {
             dependencies {
                 implementation(projects.vgls.common.network)
-                implementation(projects.vgls.common.notif)
+                implementation(projects.vgls.common.notif.real)
             }
         }
     }
