@@ -25,7 +25,10 @@ env:
   GRADLE_CACHE_PASSWORD: ${{ secrets.GRADLE_CACHE_PASSWORD }}
 
 jobs:
-  lint:
+  # Fast static analysis runs first and gates every heavier job below (they declare
+  # `needs: static-analysis`), so a ktlint/detekt failure skips the expensive compile / screenshot /
+  # APK jobs instead of burning runner minutes on them.
+  static-analysis:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,10 +45,11 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lint-reports
+          name: static-analysis-reports
           path: '**/build/reports/**'
 
   shared-build:
+    needs: static-analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -63,6 +67,7 @@ jobs:
         run: ./gradlew :apps:jvm:classes --build-cache --no-configuration-cache --no-daemon --max-workers=4
 
   screenshot:
+    needs: static-analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -84,6 +89,7 @@ jobs:
           path: '**/build/paparazzi/**'
 
   android-lint:
+    needs: static-analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -107,6 +113,7 @@ jobs:
           path: 'apps/android/build/reports/**'
 
   android-apk:
+    needs: static-analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
