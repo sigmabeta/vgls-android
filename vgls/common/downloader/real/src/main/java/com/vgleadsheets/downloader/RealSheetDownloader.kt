@@ -119,9 +119,11 @@ class RealSheetDownloader @Inject constructor(
         val response = sheetDownloadApi.downloadFile(suffixedFileName, partApiId)
 
         if (!response.status.isSuccess()) {
+            val message = "Response \"${response.status.value} - ${response.status.description}\" " +
+                "received for filename $suffixedFileName"
             throw HttpException(
                 response.status.value,
-                "Response \"${response.status.value} - ${response.status.description}\" received for filename $suffixedFileName"
+                message,
             )
         }
 

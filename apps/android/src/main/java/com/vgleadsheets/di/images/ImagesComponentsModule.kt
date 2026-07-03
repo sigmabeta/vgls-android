@@ -48,7 +48,9 @@ object ImagesComponentsModule {
     )
 
     @Provides
-    fun providePdfImageFetcherFactory(sheetDownloader: SheetDownloader): PdfImageFetcher.Factory = PdfImageFetcher.Factory(
+    fun providePdfImageFetcherFactory(
+        sheetDownloader: SheetDownloader,
+    ): PdfImageFetcher.Factory = PdfImageFetcher.Factory(
         sheetDownloader = sheetDownloader
     )
 
