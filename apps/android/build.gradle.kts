@@ -111,7 +111,7 @@ dependencies {
     implementation(libs.sage.common.time)
     implementation(libs.kotlinx.datetime)
     // DI dependencies
-    implementation(projects.vgls.common.appcomm.api)
+    implementation(projects.vgls.common.appcomm.real)
     implementation(libs.sage.android.connectivity)
     implementation(libs.sage.android.coroutines)
     implementation(projects.vgls.android.conversion.real)
