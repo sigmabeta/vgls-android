@@ -58,7 +58,8 @@ object JvmPlatformModule {
     @Provides
     @SingleIn(AppScope::class)
     @Named("CachePath")
-    fun provideCachePath(@Named("workDir") workDir: File): String = File(workDir, "pdfs").apply { mkdirs() }.absolutePath
+    fun provideCachePath(@Named("workDir") workDir: File): String =
+        File(workDir, "pdfs").apply { mkdirs() }.absolutePath
 
     @Provides
     @SingleIn(AppScope::class)
@@ -75,7 +76,8 @@ object JvmPlatformModule {
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideCoroutineScope(dispatchers: SageDispatchers): CoroutineScope = CoroutineScope(SupervisorJob() + dispatchers.computation)
+    fun provideCoroutineScope(dispatchers: SageDispatchers): CoroutineScope =
+        CoroutineScope(SupervisorJob() + dispatchers.computation)
 
     @Provides
     @SingleIn(AppScope::class)
@@ -172,7 +174,8 @@ object JvmAppModule {
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideGeneralSettingsManager(storage: Storage): GeneralSettingsManager = GeneralSettingsManager(storage = storage)
+    fun provideGeneralSettingsManager(storage: Storage): GeneralSettingsManager =
+        GeneralSettingsManager(storage = storage)
 
     @Provides
     @SingleIn(AppScope::class)

@@ -12,5 +12,6 @@ class SheetDownloadApiImpl(
 ) : SheetDownloadApi {
     private val root = baseUrl.trimEnd('/')
 
-    override suspend fun downloadFile(fileName: String, partApiId: String): HttpResponse = client.get("$root/$partApiId/$fileName")
+    override suspend fun downloadFile(fileName: String, partApiId: String): HttpResponse =
+        client.get("$root/$partApiId/$fileName")
 }

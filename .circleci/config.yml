@@ -97,9 +97,9 @@ jobs:
             - build-cache-ktlint-v2-
       - run:
           name: Run Ktlint
-          command: ./ktlint-check.sh
+          command: ./gradlew ktlintCheck --no-configuration-cache --no-daemon --max-workers=2
       - store_artifacts:
-          path: ktlint.html
+          path: build/reports
           destination: ktlint-reports
       - save_cache:
           key: build-cache-ktlint-v2-{{ .Branch }}-{{ .Revision }}

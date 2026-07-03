@@ -41,7 +41,7 @@ GRADLE_FLAGS=(--build-cache --console=plain)
 # name | kind | command.  kind=gradle -> run "./gradlew <cmd> <flags>"; kind=shell -> run <cmd> as-is.
 # Order = cheapest feedback first, then the heavy android builds. Mirrors the CI jobs.
 ALL_TASKS=(
-  "ktlint|shell|bash ktlint-check.sh"
+  "ktlint|gradle|ktlintCheck --continue"
   "detekt|gradle|detekt --continue"
   "screenshot|gradle|:vgls:android:ui:previews:real:verifyPaparazziDebug --continue"
   "shared-build|gradle|:apps:jvm:classes"
@@ -127,10 +127,6 @@ find . "${prune[@]}" -o -path '*/build/reports' -type d -print -prune | while re
   mod=$(echo "$d" | sed 's|^\./||;s|/build/reports$||;s|/|-|g')
   mkdir -p "$OUT/reports/$mod" && cp -r "$d"/. "$OUT/reports/$mod"/
 done
-# ktlint report is a single html at the repo root.
-if [[ "$ran" == *" ktlint "* ]] && [ -f ktlint.html ]; then
-  mkdir -p "$OUT/reports/ktlint"; cp ktlint.html "$OUT/reports/ktlint"/
-fi
 # Paparazzi failure / diff images live under build/paparazzi, not build/reports.
 if [[ "$ran" == *" screenshot "* ]]; then
   find . "${prune[@]}" -o -path '*/build/paparazzi' -type d -print -prune | while read -r d; do
