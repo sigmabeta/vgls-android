@@ -23,19 +23,19 @@ interface TagKeyRoomDao : RoomDao<TagKeyEntity> {
     override fun getOneById(id: Long): Flow<TagKeyEntity>
 
     @Query(QUERY_SINGLE)
-    override fun getOneByIdSync(id: Long): TagKeyEntity
+    override suspend fun getOneByIdSync(id: Long): TagKeyEntity
 
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<TagKeyEntity>>
 
     @Insert
-    override fun insert(entities: List<TagKeyEntity>)
+    override suspend fun insert(entities: List<TagKeyEntity>)
 
     @Delete(entity = TagKeyEntity::class)
-    override fun remove(ids: List<DeletionId>)
+    override suspend fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_DELETE)
-    override fun nukeTable()
+    override suspend fun nukeTable()
 
     companion object {
 

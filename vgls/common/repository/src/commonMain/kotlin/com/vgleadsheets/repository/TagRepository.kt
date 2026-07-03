@@ -42,7 +42,7 @@ class TagRepository(
     fun getTagValuesForTagKey(tagKeyId: Long) = tagValueDataSource
         .getTagValuesForTagKey(tagKeyId)
 
-    fun getTagValuesForTagKeySync(tagKeyId: Long) = tagValueDataSource
+    suspend fun getTagValuesForTagKeySync(tagKeyId: Long) = tagValueDataSource
         .getTagValuesForTagKeySync(tagKeyId)
 
     fun getTagValuesForSong(songId: Long) = tagValueDataSource

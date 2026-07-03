@@ -13,10 +13,10 @@ class DbStatisticsAndroidDataSource(
         .getTime(tableId)
         .map { entity -> entity?.toTime() ?: Time(-1, 0L) }
 
-    override fun insert(dbStatistics: Time) = roomImpl
+    override suspend fun insert(dbStatistics: Time) = roomImpl
         .insert(
             TimeEntity(dbStatistics.id, dbStatistics.timeMs)
         )
 
-    override fun nukeTable() = roomImpl.nukeTable()
+    override suspend fun nukeTable() = roomImpl.nukeTable()
 }

@@ -33,7 +33,7 @@ interface GameRoomDao : RoomDao<GameEntity> {
     override fun getOneById(id: Long): Flow<GameEntity>
 
     @Query(QUERY_SINGLE)
-    override fun getOneByIdSync(id: Long): GameEntity
+    override suspend fun getOneByIdSync(id: Long): GameEntity
 
     @Query(QUERY_IDS)
     fun getByIdList(ids: Array<Long>): Flow<List<GameEntity>>
@@ -42,10 +42,10 @@ interface GameRoomDao : RoomDao<GameEntity> {
     override fun getAll(): Flow<List<GameEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override fun insert(entities: List<GameEntity>)
+    override suspend fun insert(entities: List<GameEntity>)
 
     @Delete(entity = GameEntity::class)
-    override fun remove(ids: List<DeletionId>)
+    override suspend fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_MOST_SONGS)
     fun getMostSongsGames(): Flow<List<GameEntity>>
@@ -54,19 +54,19 @@ interface GameRoomDao : RoomDao<GameEntity> {
     fun getFavorites(): Flow<List<GameEntity>>
 
     @Query(QUERY_INCREMENT)
-    fun incrementSheetsPlayed(id: Long)
+    suspend fun incrementSheetsPlayed(id: Long)
 
     @Query(QUERY_TOGGLE_FAVORITE)
-    fun toggleFavorite(id: Long)
+    suspend fun toggleFavorite(id: Long)
 
     @Query(QUERY_TOGGLE_OFFLINE)
-    fun toggleOffline(id: Long)
+    suspend fun toggleOffline(id: Long)
 
     @Query(QUERY_HIGHEST_ID)
     fun getHighestId(): Flow<GameEntity>
 
     @Query(QUERY_DELETE)
-    override fun nukeTable()
+    override suspend fun nukeTable()
 
     companion object {
         private const val TABLE = GameEntity.TABLE

@@ -18,7 +18,7 @@ interface OfflineUpdateRoomDao {
     fun getAll(): Flow<List<OfflineUpdateResultEntity>>
 
     @Query("DELETE FROM $TABLE")
-    fun nukeTable()
+    suspend fun nukeTable()
 
     companion object {
         private const val TABLE = OfflineUpdateResultEntity.TABLE

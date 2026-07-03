@@ -33,11 +33,11 @@ GameDataSource {
         .searchByName(name)
         .mapListTo { convert.entityToModel(it) }
 
-    override fun incrementSheetsPlayed(gameId: Long) = roomImpl.incrementSheetsPlayed(gameId)
+    override suspend fun incrementSheetsPlayed(gameId: Long) = roomImpl.incrementSheetsPlayed(gameId)
 
-    override fun toggleFavorite(gameId: Long) = roomImpl.toggleFavorite(gameId)
+    override suspend fun toggleFavorite(gameId: Long) = roomImpl.toggleFavorite(gameId)
 
-    override fun toggleOffline(gameId: Long) = roomImpl.toggleOffline(gameId)
+    override suspend fun toggleOffline(gameId: Long) = roomImpl.toggleOffline(gameId)
 
     override fun getHighestId() = roomImpl
         .getHighestId()

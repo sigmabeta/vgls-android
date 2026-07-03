@@ -10,19 +10,19 @@ interface SongDataSource : DataSource<Song> {
 
     fun getSongsForGame(gameId: Long): Flow<List<Song>>
 
-    fun getSongsForGameSync(gameId: Long): List<Song>
+    suspend fun getSongsForGameSync(gameId: Long): List<Song>
 
     fun getSongsForComposer(composerId: Long): Flow<List<Song>>
 
-    fun getSongsForComposerSync(composerId: Long): List<Song>
+    suspend fun getSongsForComposerSync(composerId: Long): List<Song>
 
     fun getSongsForTagValue(tagValueId: Long): Flow<List<Song>>
 
-    fun incrementPlayCount(songId: Long)
+    suspend fun incrementPlayCount(songId: Long)
 
-    fun toggleFavorite(songId: Long)
+    suspend fun toggleFavorite(songId: Long)
 
-    fun toggleOffline(songId: Long)
+    suspend fun toggleOffline(songId: Long)
 
     suspend fun setLastDownloaded(songId: Long, timestamp: Long)
 

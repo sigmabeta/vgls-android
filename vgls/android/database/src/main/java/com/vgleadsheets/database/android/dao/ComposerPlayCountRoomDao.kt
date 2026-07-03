@@ -19,7 +19,7 @@ interface ComposerPlayCountRoomDao {
     suspend fun incrementPlayCount(id: Long, mostRecentPlay: Long)
 
     @Query(QUERY_DELETE)
-    fun nukeTable()
+    suspend fun nukeTable()
 
     companion object {
         private const val DEFAULT_PLAY_COUNT = 1

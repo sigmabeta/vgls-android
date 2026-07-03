@@ -16,5 +16,5 @@ class OfflineUpdateResultAndroidDataSource(
         .getAll()
         .mapListTo { converter.entityToModel(it) }
 
-    override fun nukeTable() = roomImpl.nukeTable()
+    override suspend fun nukeTable() = roomImpl.nukeTable()
 }

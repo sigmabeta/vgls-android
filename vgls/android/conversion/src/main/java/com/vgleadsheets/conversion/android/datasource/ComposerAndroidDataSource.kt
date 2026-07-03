@@ -40,7 +40,7 @@ class ComposerAndroidDataSource(
         .searchByName(name)
         .mapListTo { convert.entityToModel(it) }
 
-    override fun insertRelations(relations: List<SongComposerRelation>) = roomImpl
+    override suspend fun insertRelations(relations: List<SongComposerRelation>) = roomImpl
         .insertJoins(
             relations.map {
                 SongComposerJoin(
@@ -58,11 +58,11 @@ class ComposerAndroidDataSource(
         .getForSongSync(songId)
         .map { convert.entityToModel(it) }
 
-    override fun incrementSheetsPlayed(composerId: Long) = roomImpl.incrementSheetsPlayed(composerId)
+    override suspend fun incrementSheetsPlayed(composerId: Long) = roomImpl.incrementSheetsPlayed(composerId)
 
-    override fun toggleFavorite(composerId: Long) = roomImpl.toggleFavorite(composerId)
+    override suspend fun toggleFavorite(composerId: Long) = roomImpl.toggleFavorite(composerId)
 
-    override fun toggleOffline(composerId: Long) = roomImpl.toggleOffline(composerId)
+    override suspend fun toggleOffline(composerId: Long) = roomImpl.toggleOffline(composerId)
 
     override fun getHighestId() = roomImpl
         .getHighestId()

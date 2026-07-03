@@ -26,34 +26,34 @@ interface TagValueRoomDao : RoomDao<TagValueEntity> {
     fun getForTagKey(id: Long): Flow<List<TagValueEntity>>
 
     @Query(QUERY_TAG_KEY)
-    fun getForTagKeySync(id: Long): List<TagValueEntity>
+    suspend fun getForTagKeySync(id: Long): List<TagValueEntity>
 
     @Query(QUERY_SONG)
     fun getForSong(id: Long): Flow<List<TagValueEntity>>
 
     @Query(QUERY_SONG)
-    fun getForSongSync(id: Long): List<TagValueEntity>
+    suspend fun getForSongSync(id: Long): List<TagValueEntity>
 
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<TagValueEntity>
 
     @Query(QUERY_SINGLE)
-    override fun getOneByIdSync(id: Long): TagValueEntity
+    override suspend fun getOneByIdSync(id: Long): TagValueEntity
 
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<TagValueEntity>>
 
     @Insert
-    override fun insert(entities: List<TagValueEntity>)
+    override suspend fun insert(entities: List<TagValueEntity>)
 
     @Delete(entity = TagValueEntity::class)
-    override fun remove(ids: List<DeletionId>)
+    override suspend fun remove(ids: List<DeletionId>)
 
     @Insert
-    fun insertJoins(joins: List<SongTagValueJoin>)
+    suspend fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_DELETE)
-    override fun nukeTable()
+    override suspend fun nukeTable()
 
     companion object {
 

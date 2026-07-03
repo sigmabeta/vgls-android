@@ -13,17 +13,17 @@ interface ComposerDataSource : DataSource<Composer> {
 
     fun searchByName(name: String): Flow<List<Composer>>
 
-    fun insertRelations(relations: List<SongComposerRelation>)
+    suspend fun insertRelations(relations: List<SongComposerRelation>)
 
     fun getComposersForSong(songId: Long): Flow<List<Composer>>
 
     suspend fun getComposersForSongSync(songId: Long): List<Composer>
 
-    fun incrementSheetsPlayed(composerId: Long)
+    suspend fun incrementSheetsPlayed(composerId: Long)
 
-    fun toggleFavorite(composerId: Long)
+    suspend fun toggleFavorite(composerId: Long)
 
-    fun toggleOffline(composerId: Long)
+    suspend fun toggleOffline(composerId: Long)
 
     fun getHighestId(): Flow<Long>
 }

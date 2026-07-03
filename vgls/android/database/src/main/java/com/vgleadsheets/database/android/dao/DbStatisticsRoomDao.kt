@@ -13,8 +13,8 @@ interface DbStatisticsRoomDao {
     fun getTime(tableId: Int): Flow<TimeEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(dbStatisticsEntity: TimeEntity)
+    suspend fun insert(dbStatisticsEntity: TimeEntity)
 
     @Query("DELETE FROM time")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AlternateSettingRoomDao {
     @Query(QUERY_TOGGLE_ALTERNATE)
-    fun toggleAlternate(id: Long)
+    suspend fun toggleAlternate(id: Long)
 
     @Query(QUERY_SINGLE)
     fun getAlternateSetting(id: Long): Flow<AlternateSettingEntity?>

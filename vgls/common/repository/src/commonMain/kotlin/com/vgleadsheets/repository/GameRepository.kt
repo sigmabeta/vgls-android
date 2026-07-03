@@ -14,7 +14,7 @@ class GameRepository(
     fun getGame(gameId: Long) = gameDataSource
         .getOneById(gameId)
 
-    fun getGameSync(gameId: Long) = gameDataSource
+    suspend fun getGameSync(gameId: Long) = gameDataSource
         .getOneByIdSync(gameId)
 
     fun getMostSongsGames() = gameDataSource

@@ -17,7 +17,7 @@ interface SongHistoryEntryRoomDao {
     fun getMostPlays(): Flow<List<SongHistoryEntryEntity>>
 
     @Query(QUERY_DELETE)
-    fun nukeTable()
+    suspend fun nukeTable()
 
     companion object {
         private const val TABLE = SongHistoryEntryEntity.TABLE

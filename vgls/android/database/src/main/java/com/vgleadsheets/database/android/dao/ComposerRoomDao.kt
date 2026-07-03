@@ -43,7 +43,7 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     override fun getOneById(id: Long): Flow<ComposerEntity>
 
     @Query(QUERY_SINGLE)
-    override fun getOneByIdSync(id: Long): ComposerEntity
+    override suspend fun getOneByIdSync(id: Long): ComposerEntity
 
     @Query(QUERY_IDS)
     fun getByIdList(ids: Array<Long>): Flow<List<ComposerEntity>>
@@ -52,10 +52,10 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     override fun getAll(): Flow<List<ComposerEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override fun insert(entities: List<ComposerEntity>)
+    override suspend fun insert(entities: List<ComposerEntity>)
 
     @Delete(entity = ComposerEntity::class)
-    override fun remove(ids: List<DeletionId>)
+    override suspend fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_MOST_SONGS)
     fun getMostSongsComposers(): Flow<List<ComposerEntity>>
@@ -64,22 +64,22 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     fun getFavorites(): Flow<List<ComposerEntity>>
 
     @Query(QUERY_INCREMENT)
-    fun incrementSheetsPlayed(id: Long)
+    suspend fun incrementSheetsPlayed(id: Long)
 
     @Query(QUERY_TOGGLE_FAVORITE)
-    fun toggleFavorite(id: Long)
+    suspend fun toggleFavorite(id: Long)
 
     @Query(QUERY_TOGGLE_OFFLINE)
-    fun toggleOffline(id: Long)
+    suspend fun toggleOffline(id: Long)
 
     @Insert
-    fun insertJoins(joins: List<SongComposerJoin>)
+    suspend fun insertJoins(joins: List<SongComposerJoin>)
 
     @Query(QUERY_HIGHEST_ID)
     fun getHighestId(): Flow<ComposerEntity>
 
     @Query(QUERY_DELETE)
-    override fun nukeTable()
+    override suspend fun nukeTable()
 
     companion object {
 

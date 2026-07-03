@@ -37,58 +37,58 @@ interface SongRoomDao : RoomDao<SongEntity> {
     fun getForGame(id: Long): Flow<List<SongEntity>>
 
     @Query(QUERY_FOR_GAME)
-    fun getForGameSync(id: Long): List<SongEntity>
+    suspend fun getForGameSync(id: Long): List<SongEntity>
 
     @Query(QUERY_FOR_COMPOSER)
     fun getForComposer(id: Long): Flow<List<SongEntity>>
 
     @Query(QUERY_FOR_COMPOSER)
-    fun getForComposerSync(id: Long): List<SongEntity>
+    suspend fun getForComposerSync(id: Long): List<SongEntity>
 
     @Query(QUERY_FOR_TAG_VALUE)
     fun getForTagValue(id: Long): Flow<List<SongEntity>>
 
     @Query(QUERY_FOR_TAG_VALUE)
-    fun getForTagValueSync(id: Long): List<SongEntity>
+    suspend fun getForTagValueSync(id: Long): List<SongEntity>
 
     @Query(QUERY_SINGLE)
     override fun getOneById(id: Long): Flow<SongEntity>
 
     @Query(QUERY_SINGLE)
-    override fun getOneByIdSync(id: Long): SongEntity
+    override suspend fun getOneByIdSync(id: Long): SongEntity
 
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<SongEntity>>
 
     @Insert
-    override fun insert(entities: List<SongEntity>)
+    override suspend fun insert(entities: List<SongEntity>)
 
     @Delete(entity = SongEntity::class)
-    override fun remove(ids: List<DeletionId>)
+    override suspend fun remove(ids: List<DeletionId>)
 
     @Query(QUERY_FAVORITES)
     fun getFavorites(): Flow<List<SongEntity>>
 
     @Query(QUERY_INCREMENT)
-    fun incrementPlayCount(id: Long)
+    suspend fun incrementPlayCount(id: Long)
 
     @Query(QUERY_TOGGLE_FAVORITE)
-    fun toggleFavorite(id: Long)
+    suspend fun toggleFavorite(id: Long)
 
     @Query(QUERY_TOGGLE_OFFLINE)
-    fun toggleOffline(id: Long)
+    suspend fun toggleOffline(id: Long)
 
     @Query(QUERY_SET_LAST_DOWNLOADED)
     suspend fun setLastDownloaded(id: Long, timestamp: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertJoins(joins: List<SongTagValueJoin>)
+    suspend fun insertJoins(joins: List<SongTagValueJoin>)
 
     @Query(QUERY_HIGHEST_ID)
     fun getHighestId(): Flow<SongEntity?>
 
     @Query(QUERY_DELETE)
-    override fun nukeTable()
+    override suspend fun nukeTable()
 
     companion object {
 

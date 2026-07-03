@@ -12,11 +12,11 @@ interface GameDataSource : DataSource<Game> {
 
     fun searchByName(name: String): Flow<List<Game>>
 
-    fun incrementSheetsPlayed(gameId: Long)
+    suspend fun incrementSheetsPlayed(gameId: Long)
 
-    fun toggleFavorite(gameId: Long)
+    suspend fun toggleFavorite(gameId: Long)
 
-    fun toggleOffline(gameId: Long)
+    suspend fun toggleOffline(gameId: Long)
 
     fun getHighestId(): Flow<Long>
 }
