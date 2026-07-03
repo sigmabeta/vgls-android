@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.vgls.android.activity)
+    api(projects.vgls.android.activity.real)
 
     api(libs.sage.common.list)
     api(projects.vgls.common.offline.real)

@@ -13,7 +13,7 @@ kotlin {
             dependencies {
                 implementation(projects.vgls.common.strings.api)
                 implementation(projects.vgls.common.nav.api)
-                implementation(projects.vgls.android.viewmodel)
+                implementation(projects.vgls.android.viewmodel.real)
                 implementation(libs.sage.common.ui.iconsApi)
                 implementation(libs.sage.common.logging)
                 implementation(libs.metrox.viewmodel)

@@ -116,11 +116,11 @@ dependencies {
     implementation(libs.sage.android.coroutines)
     implementation(projects.vgls.android.conversion)
     implementation(projects.vgls.android.database)
-    implementation(projects.vgls.android.images)
+    implementation(projects.vgls.android.images.real)
     implementation(libs.sage.android.logging)
-    implementation(projects.vgls.android.offline)
-    implementation(projects.vgls.android.pdf)
-    implementation(projects.vgls.android.repository)
+    implementation(projects.vgls.android.offline.real)
+    implementation(projects.vgls.android.pdf.real)
+    implementation(projects.vgls.android.repository.di)
     implementation(libs.sage.android.resources)
     implementation(projects.vgls.android.storage.common)
     implementation(projects.vgls.android.ui.components.api)
@@ -143,12 +143,12 @@ dependencies {
     implementation(projects.vgls.common.versions.real)
     // End DI dependencies
 
-    implementation(projects.vgls.android.icons)
+    implementation(projects.vgls.android.icons.real)
     implementation(projects.features.all)
 
     // Metro DI: the app owns VglsAppGraph (implements ActivityGraph from :vgls:android:activity),
     // instantiates WakeLockManagerImpl, and needs the metrox ViewModelGraph/factory types.
-    implementation(projects.vgls.android.activity)
+    implementation(projects.vgls.android.activity.real)
     implementation(projects.vgls.android.wakelocks.di)
     implementation(libs.metrox.viewmodel)
 
@@ -159,7 +159,7 @@ dependencies {
     implementation(projects.vgls.android.nav)
     implementation(projects.vgls.android.scaffold)
     implementation(projects.vgls.android.licenses)
-    implementation(projects.vgls.android.viewmodel)
+    implementation(projects.vgls.android.viewmodel.real)
     implementation(projects.features.topbar)
     implementation(projects.features.navbar)
     // WorkManager: VglsApplication provides a Configuration + VglsWorkerFactory (formerly via hilt-work).

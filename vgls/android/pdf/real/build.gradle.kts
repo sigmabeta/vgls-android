@@ -31,7 +31,7 @@ kotlin {
                 api(libs.zoomable.image.coil3)
                 implementation(libs.coil.kt.core)
                 implementation(libs.androidx.core.ktx)
-                implementation(projects.vgls.android.bitmaps)
+                implementation(projects.vgls.android.bitmaps.real)
                 implementation(libs.sage.common.debug)
                 implementation(libs.sage.common.logging)
                 implementation(projects.vgls.common.repository.real)

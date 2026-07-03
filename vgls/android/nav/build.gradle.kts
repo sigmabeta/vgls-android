@@ -13,7 +13,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 api(libs.voyager.navigator)
-                api(projects.vgls.android.viewmodel)
+                api(projects.vgls.android.viewmodel.real)
                 api(projects.vgls.common.appcomm.api)
                 api(libs.sage.common.appinfo)
                 api(projects.vgls.common.nav.api)

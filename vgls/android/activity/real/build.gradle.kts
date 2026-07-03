@@ -8,11 +8,11 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splash)
 
-    implementation(projects.vgls.android.icons)
-    implementation(projects.vgls.android.images)
+    implementation(projects.vgls.android.icons.real)
+    implementation(projects.vgls.android.images.real)
     implementation(projects.vgls.android.nav)
     implementation(libs.sage.common.ui.perfCompose)
-    implementation(projects.vgls.android.pdf)
+    implementation(projects.vgls.android.pdf.real)
     implementation(projects.vgls.android.scaffold)
     implementation(projects.vgls.android.ui.theme.api)
 

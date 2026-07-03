@@ -21,7 +21,7 @@ kotlin {
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.transitions)
 
-                implementation(projects.vgls.android.images)
+                implementation(projects.vgls.android.images.real)
                 implementation(projects.vgls.android.licenses)
                 implementation(projects.vgls.android.nav)
                 implementation(libs.sage.common.ui.perfCompose)
@@ -29,7 +29,7 @@ kotlin {
                 implementation(libs.sage.common.ui.iconsReal)
                 implementation(projects.vgls.android.ui.list.api)
                 implementation(projects.vgls.android.ui.theme.api)
-                implementation(projects.vgls.android.viewmodel)
+                implementation(projects.vgls.android.viewmodel.real)
                 implementation(projects.vgls.common.strings.api)
 
                 implementation(libs.sage.common.pdf)

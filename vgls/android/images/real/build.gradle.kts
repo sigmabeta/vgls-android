@@ -26,7 +26,7 @@ kotlin {
         named("androidMain") {
             dependencies {
                 api(libs.coil.kt.okhttp)
-                api(projects.vgls.android.bitmaps)
+                api(projects.vgls.android.bitmaps.real)
                 implementation(libs.androidx.core.ktx)
                 implementation(libs.sage.common.analytics)
                 implementation(libs.sage.common.logging)
