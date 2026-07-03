@@ -158,7 +158,13 @@ class UpdateManager(
     private fun emitDbUpdateErrors(ex: Throwable) {
         hatchet.e("DB update failed: ${ex.message}")
         ex.printStackTrace()
-        onUpdateFailed(describeFailure(VglsStringId.ERROR_UPDATE_DB_PREFIX, ex, VglsStringId.ERROR_UPDATE_DB_REASON_GENERIC))
+        onUpdateFailed(
+            describeFailure(
+                VglsStringId.ERROR_UPDATE_DB_PREFIX,
+                ex,
+                VglsStringId.ERROR_UPDATE_DB_REASON_GENERIC,
+            ),
+        )
     }
 
     private fun emitApiUpdateErrors(ex: Throwable) {

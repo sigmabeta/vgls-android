@@ -8,7 +8,7 @@ import net.sigmabeta.sage.di.AppScope
 
 @BindingContainer
 @ContributesTo(AppScope::class)
-object ImageLoaderBuiFlderModule {
+object ImageLoaderBuilderModule {
     @Provides
     @Named("PdfImageLoaderBuilder")
     fun providesComponentRegistryBuilderFunction(
