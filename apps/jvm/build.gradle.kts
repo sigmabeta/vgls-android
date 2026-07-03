@@ -16,7 +16,7 @@ compose.desktop {
 dependencies {
     // --- VGLS logic / data layer (all KMP now) ---
     implementation(projects.vgls.common.repository.real)
-    implementation(projects.vgls.android.repository)
+    implementation(projects.vgls.android.repository.di)
     implementation(projects.vgls.android.conversion)
     implementation(projects.vgls.android.database)
     implementation(projects.vgls.common.database.api)
@@ -42,13 +42,13 @@ dependencies {
     implementation(projects.vgls.android.scaffold)
     implementation(projects.vgls.android.nav)
     implementation(projects.vgls.android.licenses)
-    implementation(projects.vgls.android.viewmodel)
+    implementation(projects.vgls.android.viewmodel.real)
     implementation(projects.vgls.common.viewmodel.real)
     implementation(projects.vgls.android.ui.components.api)
     implementation(projects.vgls.android.ui.theme.api)
     implementation(projects.vgls.android.ui.list.api)
-    implementation(projects.vgls.android.pdf)
-    implementation(projects.vgls.android.images)
+    implementation(projects.vgls.android.pdf.real)
+    implementation(projects.vgls.android.images.real)
 
     // Fake (no-op) analytics.
     implementation(projects.vgls.common.analytics.fake)

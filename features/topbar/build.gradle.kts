@@ -17,7 +17,7 @@ kotlin {
                 api(libs.sage.common.appcomm)
                 implementation(projects.vgls.android.ui.components.api)
                 implementation(projects.vgls.common.nav.api)
-                implementation(projects.vgls.android.viewmodel)
+                implementation(projects.vgls.android.viewmodel.real)
                 implementation(projects.vgls.common.settings.part.real)
                 implementation(libs.sage.common.coroutines)
                 implementation(libs.sage.common.analytics)
