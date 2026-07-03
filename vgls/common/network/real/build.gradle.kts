@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.sage.kmp)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -18,7 +17,6 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.sage.common.di)
             }
         }
     }
