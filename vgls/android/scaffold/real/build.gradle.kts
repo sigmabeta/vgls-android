@@ -22,8 +22,8 @@ kotlin {
                 implementation(libs.voyager.transitions)
 
                 implementation(projects.vgls.android.images.real)
-                implementation(projects.vgls.android.licenses)
-                implementation(projects.vgls.android.nav)
+                implementation(projects.vgls.android.licenses.real)
+                implementation(projects.vgls.android.nav.real)
                 implementation(libs.sage.common.ui.perfCompose)
                 implementation(projects.vgls.android.ui.components.api)
                 implementation(libs.sage.common.ui.iconsReal)

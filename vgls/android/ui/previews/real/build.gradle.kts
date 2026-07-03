@@ -19,7 +19,7 @@ dependencies {
     implementation(projects.vgls.android.images.real)
     implementation(projects.vgls.android.pdf.real)
     implementation(libs.sage.common.ui.perfCompose)
-    implementation(projects.vgls.android.scaffold)
+    implementation(projects.vgls.android.scaffold.real)
     implementation(projects.vgls.android.ui.components.api)
     implementation(libs.sage.common.ui.iconsReal)
     implementation(libs.sage.common.ui.listScreens)

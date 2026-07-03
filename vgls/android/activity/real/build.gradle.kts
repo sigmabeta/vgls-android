@@ -10,10 +10,10 @@ dependencies {
 
     implementation(projects.vgls.android.icons.real)
     implementation(projects.vgls.android.images.real)
-    implementation(projects.vgls.android.nav)
+    implementation(projects.vgls.android.nav.real)
     implementation(libs.sage.common.ui.perfCompose)
     implementation(projects.vgls.android.pdf.real)
-    implementation(projects.vgls.android.scaffold)
+    implementation(projects.vgls.android.scaffold.real)
     implementation(projects.vgls.android.ui.theme.api)
 
     // LocalVglsStringProvider (provided at the Compose root) + StringProvider type.
