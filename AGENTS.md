@@ -1,9 +1,9 @@
-# AGENTS.md — VG Lead Sheets orientation
+# AGENTS.md — VGLeadSheets orientation
 
 Orientation for coding agents. Keep this file lean; update it when a load-bearing
 fact below stops being true.
 
-## What VG Lead Sheets is
+## What VGLeadSheets is
 
 The mobile + desktop companion to www.vgleadsheets.com: browse and view sheet
 music (PDF lead sheets) for video-game music, tailored for jam sessions. It fetches
