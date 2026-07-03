@@ -94,6 +94,7 @@ include(
     ":vgls:android:wakelocks:di",
 
     ":vgls:common:appcomm:api",
+    ":vgls:common:appcomm:real",
     ":vgls:common:analytics:api",
     ":vgls:common:analytics:fake",
     ":vgls:common:conversion:api",

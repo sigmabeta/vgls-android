@@ -32,7 +32,7 @@ dependencies {
     implementation(projects.vgls.common.versions.real)
     implementation(projects.vgls.common.notif.real)
     implementation(projects.vgls.common.model.api)
-    implementation(projects.vgls.common.appcomm.api)
+    implementation(projects.vgls.common.appcomm.real)
     implementation(projects.vgls.common.settings.part.real)
     implementation(projects.vgls.common.wakelocks.api)
     implementation(projects.vgls.common.wakelocks.fake)

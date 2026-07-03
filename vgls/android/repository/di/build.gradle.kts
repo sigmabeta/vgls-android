@@ -12,7 +12,7 @@ kotlin {
         named("jvmSharedMain") {
             dependencies {
                 api(projects.vgls.common.repository.real)
-                api(projects.vgls.common.appcomm.api)
+                api(projects.vgls.common.appcomm.real)
                 api(libs.sage.common.appcomm)
                 implementation(projects.vgls.android.database.real)
                 implementation(libs.sage.common.coroutines)
