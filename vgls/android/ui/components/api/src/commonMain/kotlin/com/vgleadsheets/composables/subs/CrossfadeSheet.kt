@@ -13,11 +13,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.LocalPlatformContext
 import androidx.compose.ui.platform.LocalDensity
@@ -26,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
+import kotlinx.coroutines.delay
 import com.vgleadsheets.bitmaps.SheetConstants
 import net.sigmabeta.sage.components.ErrorStateListModel
 import com.vgleadsheets.composables.EmptyListIndicator
@@ -40,6 +46,8 @@ import com.vgleadsheets.strings.imageLoadErrorStringId
 import com.vgleadsheets.ui.theme.AppTheme
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.roundToInt
+
+private const val RESIZE_DEBOUNCE_MS = 100L
 
 @Composable
 @Suppress("LongMethod", "ReturnCount")
@@ -93,10 +101,15 @@ private fun BoxScope.Content(
     modifier: Modifier,
     simulateError: Boolean
 ) {
-    val pdfConfigByIdWithSize = withSize(
+    val rawPdfConfigByIdWithSize = withSize(
         pdfConfigById,
         scope
     )
+
+    // A dynamic viewport (e.g. a resizing desktop window) emits a flurry of new sizes. Debounce them
+    // so we only render the size that survives a brief quiet period; the previous size keeps being
+    // requested until then, so the already-rendered sheet stays put.
+    val pdfConfigByIdWithSize = rememberDebounced(rawPdfConfigByIdWithSize, RESIZE_DEBOUNCE_MS)
 
     val loadingIndicatorConfigWithSize = withSize(
         loadingIndicatorConfig,
@@ -139,40 +152,97 @@ private fun BoxScope.Content(
 
     val painterState by painter.state.collectAsState()
 
+    // Once this sheet has rendered, hold onto that bitmap so a re-render at a new size doesn't flash the
+    // placeholder — keep showing the last good render until the new one arrives. Reset per sheet.
+    var lastSuccessPainter by remember(sheetId) { mutableStateOf<Painter?>(null) }
+    LaunchedEffect(painterState) {
+        val state = painterState
+        if (state is AsyncImagePainter.State.Success) {
+            lastSuccessPainter = state.painter
+        }
+    }
+
+    // A FILL sheet (the full-screen viewer) has a container that can resize independently of the last
+    // rendered bitmap, so every bitmap it shows — the current one AND any held-over one — is scaled to
+    // fill and track the container as it animates. Non-FILL sheets (thumbnails) are laid out from the
+    // bitmap's intrinsic size, so they draw 1:1.
+    val isFill = pdfConfigByIdWithSize.pdfSize == PdfSize.FILL
+    val sheetContentScale = if (isFill) ContentScale.Fit else ContentScale.None
+    val sheetImageModifier = if (isFill) Modifier.fillMaxSize() else Modifier
+
     Crossfade(
         targetState = painterState,
         modifier = bgModifier
             .align(Alignment.Center),
-    ) {
-        when (it) {
+    ) { state ->
+        when (state) {
             is AsyncImagePainter.State.Success -> {
                 Image(
-                    painter = painter,
+                    painter = state.painter,
                     contentDescription = contentDescription,
-                    contentScale = ContentScale.None,
+                    contentScale = sheetContentScale,
+                    modifier = sheetImageModifier,
                 )
             }
 
             is AsyncImagePainter.State.Error -> {
-                ErrorState(
-                    pdfConfigById = pdfConfigByIdWithSize,
-                    showDebug = showDebug,
-                    loadingIndicatorConfig = loadingIndicatorConfigWithSize,
-                    sheetId = sheetId,
-                    error = it.result.throwable,
-                    modifier = Modifier,
-                ) {
-                    painter.restart()
+                val previous = lastSuccessPainter
+                if (previous != null) {
+                    // Keep the last good render on screen until the new one arrives.
+                    Image(
+                        painter = previous,
+                        contentDescription = contentDescription,
+                        contentScale = sheetContentScale,
+                        modifier = sheetImageModifier,
+                    )
+                } else {
+                    ErrorState(
+                        pdfConfigById = pdfConfigByIdWithSize,
+                        showDebug = showDebug,
+                        loadingIndicatorConfig = loadingIndicatorConfigWithSize,
+                        sheetId = sheetId,
+                        error = state.result.throwable,
+                        modifier = Modifier,
+                    ) {
+                        painter.restart()
+                    }
                 }
             }
 
-            else -> PlaceholderSheet(
-                loadingIndicatorConfig = loadingIndicatorConfigWithSize,
-                seed = sheetId,
-                modifier = Modifier,
-            )
+            else -> {
+                val previous = lastSuccessPainter
+                if (previous != null) {
+                    // Keep the last good render on screen until the new one arrives.
+                    Image(
+                        painter = previous,
+                        contentDescription = contentDescription,
+                        contentScale = sheetContentScale,
+                        modifier = sheetImageModifier,
+                    )
+                } else {
+                    PlaceholderSheet(
+                        loadingIndicatorConfig = loadingIndicatorConfigWithSize,
+                        seed = sheetId,
+                        modifier = Modifier,
+                    )
+                }
+            }
         }
     }
+}
+
+/**
+ * Returns [value], but only after it has stayed unchanged for [delayMs]. The very first value is
+ * returned immediately; only subsequent rapid changes (a resizing viewport) are debounced.
+ */
+@Composable
+private fun rememberDebounced(value: PdfConfigById, delayMs: Long): PdfConfigById {
+    var debounced by remember { mutableStateOf(value) }
+    LaunchedEffect(value) {
+        delay(delayMs)
+        debounced = value
+    }
+    return debounced
 }
 
 @Suppress("MagicNumber")

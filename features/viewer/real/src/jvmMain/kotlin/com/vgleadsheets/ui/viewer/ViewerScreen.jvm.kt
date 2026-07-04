@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,22 +33,28 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.composables.EmptyListIndicator
 import com.vgleadsheets.composables.subs.CrossfadeSheet
 import com.vgleadsheets.images.LoadingIndicatorConfig
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.ZoomableSheetPageListModel
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.vector
 
 /**
- * Desktop sheet viewer. Unlike the android actual (telephoto pinch-zoom over an
- * [android.graphics.pdf.PdfRenderer] bitmap), this renders each page with the shared [CrossfadeSheet]
- * — whose Coil request is served by the JVM PDFBox decoder — inside a plain [HorizontalPager]. Zoom
- * is intentionally omitted for now; navigation is by on-screen arrows, mouse drag, or arrow keys.
+ * Desktop sheet viewer. The android actual uses telephoto's tiled [SubSamplingImage] over an
+ * [android.graphics.pdf.PdfRenderer] bitmap; that sub-sampling API is android-only, so the desktop
+ * viewer renders each page as one full-page [CrossfadeSheet] (Coil, served by the JVM PDFBox decoder).
+ *
+ * Like android, layout depends on the window aspect ratio: a wide window free-scrolls all pages in a
+ * [LazyRow]; a tall window shows one page at a time in a [HorizontalPager]. There is no zoom on
+ * desktop. Navigation is by on-screen arrows, mouse drag, or arrow keys.
  */
 @Composable
 actual fun ViewerScreen(
@@ -65,7 +74,7 @@ actual fun ViewerScreen(
         return
     }
 
-    val items = state.pages()
+    val pages = state.pages()
 
     Box(
         contentAlignment = Alignment.Center,
@@ -74,79 +83,165 @@ actual fun ViewerScreen(
             .background(Color.Black)
             .clickable { actionSink.sendAction(Action.ScreenClicked) },
     ) {
-        if (items.isEmpty()) {
+        if (pages.isEmpty()) {
             return@Box
         }
 
-        val pagerState = rememberPagerState(
-            initialPage = state.initialPage.coerceIn(0, items.size - 1),
-        ) { items.size }
-        val scope = rememberCoroutineScope()
+        val containerSize = LocalWindowInfo.current.containerSize
+        val shouldScrollFreely = containerSize.height > 0 &&
+            containerSize.width.toFloat() / containerSize.height > SheetConstants.ASPECT_RATIO
 
-        HorizontalPager(
-            state = pagerState,
+        if (shouldScrollFreely) {
+            FreeScrollContent(pages, state, showDebug, actionSink)
+        } else {
+            PagedContent(pages, state, showDebug, actionSink)
+        }
+    }
+}
+
+/** Wide window: every page laid out left-to-right in a horizontally-scrolling [LazyRow]. */
+@Composable
+private fun BoxScope.FreeScrollContent(
+    pages: ImmutableList<ZoomableSheetPageListModel>,
+    state: ViewerState,
+    showDebug: Boolean,
+    actionSink: ActionSink,
+) {
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = state.initialPage.coerceIn(0, pages.size - 1),
+    )
+    val scope = rememberCoroutineScope()
+
+    LazyRow(
+        state = listState,
+        modifier = Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        items(
+            items = pages,
+            key = { it.dataId },
+        ) { item ->
+            SheetPage(
+                item = item,
+                showDebug = showDebug,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(SheetConstants.ASPECT_RATIO),
+            )
+        }
+    }
+
+    val current = listState.firstVisibleItemIndex
+    val onPrevious: () -> Unit = {
+        actionSink.sendAction(Action.LeftArrowPressed)
+        scope.launch { listState.animateScrollToItem((current - 1).coerceAtLeast(0)) }
+    }
+    val onNext: () -> Unit = {
+        actionSink.sendAction(Action.RightArrowPressed)
+        scope.launch { listState.animateScrollToItem((current + 1).coerceAtMost(pages.size - 1)) }
+    }
+
+    NavControls(pages, state, current, onPrevious, onNext, actionSink)
+}
+
+/** Tall window: one page at a time, centered, in a [HorizontalPager]. */
+@Composable
+private fun BoxScope.PagedContent(
+    pages: ImmutableList<ZoomableSheetPageListModel>,
+    state: ViewerState,
+    showDebug: Boolean,
+    actionSink: ActionSink,
+) {
+    val pagerState = rememberPagerState(
+        initialPage = state.initialPage.coerceIn(0, pages.size - 1),
+    ) { pages.size }
+    val scope = rememberCoroutineScope()
+
+    HorizontalPager(
+        state = pagerState,
+        modifier = Modifier.fillMaxSize(),
+    ) { page ->
+        // Center a single sheet, sized to the page aspect ratio, so the black Box shows around it
+        // (the sheet's own white/beige background comes from CrossfadeSheet, not from filling the
+        // whole screen).
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize(),
-        ) { page ->
-            val item = items[page]
-            // Center a single sheet, sized to the page aspect ratio, so the black Box shows around it
-            // (the sheet's own white/beige background comes from CrossfadeSheet, not from filling the
-            // whole screen).
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                CrossfadeSheet(
-                    pdfConfigById = item.pdfConfigById,
-                    contentDescription = "${item.title} from ${item.gameName}, page ${item.pageNumber + 1}",
-                    loadingIndicatorConfig = LoadingIndicatorConfig(
-                        title = item.title,
-                        gameName = item.gameName,
-                        composers = item.composers,
-                        pageNumber = item.pageNumber,
-                        loaderSize = item.pdfConfigById.pdfSize,
-                    ),
-                    sheetId = item.pdfConfigById.songId,
-                    showDebug = showDebug,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(SheetConstants.ASPECT_RATIO),
-                )
-            }
-        }
-
-        val goToPage: (Int) -> Unit = { target ->
-            scope.launch { pagerState.animateScrollToPage(target.coerceIn(0, items.size - 1)) }
-        }
-        val onPrevious = {
-            actionSink.sendAction(Action.LeftArrowPressed)
-            goToPage(pagerState.currentPage - 1)
-        }
-        val onNext = {
-            actionSink.sendAction(Action.RightArrowPressed)
-            goToPage(pagerState.currentPage + 1)
-        }
-
-        if (items.size > 1 && state.buttonsVisible) {
-            DirectionButton(
-                alignment = Alignment.CenterStart,
-                icon = Icon.Back,
-                enabled = pagerState.currentPage > 0,
-                onClick = onPrevious,
-            )
-            DirectionButton(
-                alignment = Alignment.CenterEnd,
-                icon = Icon.Forward,
-                enabled = pagerState.currentPage < items.size - 1,
-                onClick = onNext,
+        ) {
+            SheetPage(
+                item = pages[page],
+                showDebug = showDebug,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(SheetConstants.ASPECT_RATIO),
             )
         }
+    }
 
-        ArrowKeyHandler(
-            onPrevious = onPrevious,
-            onNext = onNext,
-            onBack = { actionSink.sendAction(SageAction.DeviceBack) },
+    val current = pagerState.currentPage
+    val onPrevious: () -> Unit = {
+        actionSink.sendAction(Action.LeftArrowPressed)
+        scope.launch { pagerState.animateScrollToPage((current - 1).coerceAtLeast(0)) }
+    }
+    val onNext: () -> Unit = {
+        actionSink.sendAction(Action.RightArrowPressed)
+        scope.launch { pagerState.animateScrollToPage((current + 1).coerceAtMost(pages.size - 1)) }
+    }
+
+    NavControls(pages, state, current, onPrevious, onNext, actionSink)
+}
+
+@Composable
+private fun SheetPage(
+    item: ZoomableSheetPageListModel,
+    showDebug: Boolean,
+    modifier: Modifier,
+) {
+    CrossfadeSheet(
+        pdfConfigById = item.pdfConfigById,
+        contentDescription = "${item.title} from ${item.gameName}, page ${item.pageNumber + 1}",
+        loadingIndicatorConfig = LoadingIndicatorConfig(
+            title = item.title,
+            gameName = item.gameName,
+            composers = item.composers,
+            pageNumber = item.pageNumber,
+            loaderSize = item.pdfConfigById.pdfSize,
+        ),
+        sheetId = item.pdfConfigById.songId,
+        showDebug = showDebug,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun BoxScope.NavControls(
+    pages: ImmutableList<ZoomableSheetPageListModel>,
+    state: ViewerState,
+    currentIndex: Int,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    actionSink: ActionSink,
+) {
+    if (pages.size > 1 && state.buttonsVisible) {
+        DirectionButton(
+            alignment = Alignment.CenterStart,
+            icon = Icon.Back,
+            enabled = currentIndex > 0,
+            onClick = onPrevious,
+        )
+        DirectionButton(
+            alignment = Alignment.CenterEnd,
+            icon = Icon.Forward,
+            enabled = currentIndex < pages.size - 1,
+            onClick = onNext,
         )
     }
+
+    ArrowKeyHandler(
+        onPrevious = onPrevious,
+        onNext = onNext,
+        onBack = { actionSink.sendAction(SageAction.DeviceBack) },
+    )
 }
 
 @Composable
