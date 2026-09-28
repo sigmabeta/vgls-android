@@ -39,7 +39,7 @@ import net.sigmabeta.sage.ui.StringProvider
  * Plain-ViewModel base for VGLS list/grid screens. Replaces SAGE's `ListViewModelBrain` + the generic
  * `ListViewModel` shell + `BrainProvider`/`FeatureDirectory`: each screen is now its own
  * `@ContributesIntoMap` ViewModel extending this and resolved via `metroViewModel` /
- * `assistedMetroViewModel`. Mirrors Chipbox's `ChipboxListViewModel`, but keeps VGLS's `SageEvent` +
+ * `assistedMetroViewModel`. Keeps VGLS's `SageEvent` +
  * `EventDispatcher` wiring (AndroidX nav stays until the Voyager phase) and the analytics / scheduler /
  * `runInBackground` helpers the brains relied on, so brain bodies port over with only the class header,
  * constructor, and an `init` (send init action) changing.

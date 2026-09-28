@@ -10,8 +10,7 @@ import net.sigmabeta.sage.list.WidthClass
 
 // Material3 window width breakpoints, as plain Dp thresholds. This replaces the base
 // material3-adaptive `currentWindowAdaptiveInfo()` / `WindowSizeClass` (which have no multiplatform
-// twin in the catalog) with the cross-platform `LocalWindowInfo.containerSize` — the same
-// BoxWithConstraints/maxWidth approach Chipbox uses for its NavigationSuite layout type.
+// twin in the catalog) with the cross-platform `LocalWindowInfo.containerSize`.
 private val WIDTH_MEDIUM = 600.dp
 private val WIDTH_EXPANDED = 840.dp
 

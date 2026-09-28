@@ -5,8 +5,7 @@ name: CI
 # same tasks ./verify.sh runs locally. The signed-release + Google Play publish path is a separate
 # workflow (not yet ported); this file only runs the no-secrets verification checks.
 #
-# Adapted from Chipbox's .github/workflows/ci.yml, trimmed to VGLS's shape: no native emulator cores
-# (so no NDK/CMake install or -P skipNative), no js() target, no jpackage installers.
+# Scope: no native code (so no NDK/CMake install), no js() target, no jpackage installers.
 
 on:
   push:

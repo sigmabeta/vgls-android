@@ -8,7 +8,7 @@ import net.sigmabeta.sage.android.analytics.firebase.FirebaseAnalyticsImpl
 import net.sigmabeta.sage.coroutines.SageDispatchers
 
 // Constructed explicitly by VglsAnalyticsModule (analytics:di); no @Inject needed here so real stays
-// a plain android module with no Metro dependency (Chipbox real/di split).
+// a plain android module with no Metro dependency (real/di split).
 class VglsFirebaseAnalyticsImpl(
     firebaseAnalytics: FirebaseAnalytics,
     dispatchers: SageDispatchers,

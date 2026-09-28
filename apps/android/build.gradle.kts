@@ -164,7 +164,7 @@ dependencies {
     // Metro aggregates @ContributesIntoMap ViewModels only from modules on the app graph's COMPILE
     // classpath. These VM-owning modules otherwise reach :app only via implementation-transitive deps
     // (so their contribution hints are invisible), which left their VMs out of the metroViewModel map
-    // and crashed at runtime. Declare them directly, matching Chipbox's per-VM-module app deps.
+    // and crashed at runtime. Declare them directly, one per VM-owning module.
     implementation(projects.vgls.android.nav.real)
     implementation(projects.vgls.android.scaffold.real)
     implementation(projects.vgls.android.licenses.real)

@@ -75,7 +75,7 @@ class JvmStorage(private val file: File) : Storage {
 
         file.parentFile?.mkdirs()
         val tmp = File.createTempFile("settings", ".tmp", file.parentFile)
-        tmp.outputStream().buffered().use { props.store(it, "Chipbox desktop settings") }
+        tmp.outputStream().buffered().use { props.store(it, "VGLeadSheets desktop settings") }
         Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
     }
 

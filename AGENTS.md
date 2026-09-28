@@ -3,6 +3,9 @@
 Orientation for coding agents. Keep this file lean; update it when a load-bearing
 fact below stops being true.
 
+**Before doing any work, pull the latest `sage`:** `git -C sage pull --ff-only origin beta`. If it
+won't fast-forward (local sage changes or divergence), stop and ask rather than merging or resetting.
+
 ## What VGLeadSheets is
 
 The mobile + desktop companion to www.vgleadsheets.com: browse and view sheet

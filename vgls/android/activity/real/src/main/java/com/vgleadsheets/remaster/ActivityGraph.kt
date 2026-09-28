@@ -11,7 +11,7 @@ import net.sigmabeta.sage.ui.StringProvider
  * lives in this library module (not the `:app` module that owns the Metro `VglsAppGraph`), it can't
  * reference the graph directly — so `VglsApplication` implements this interface and the Activity does
  * `application as ActivityGraph`. This is the Metro replacement for Hilt's `@AndroidEntryPoint`
- * member injection (see Chipbox's ChipboxServiceGraph/ArtworkProviderGraph pattern).
+ * member injection.
  */
 interface ActivityGraph {
     val hatchet: Hatchet
