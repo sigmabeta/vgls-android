@@ -225,7 +225,8 @@ appVersioning {
 
         val major = tagSegments[0].toInt()
         val minor = tagSegments[1].toInt()
-        val patch = tagSegments[2].toInt()
+        // Drop any pre-release suffix ("0-alpha" -> 0); the version name still carries the full tag.
+        val patch = tagSegments[2].substringBefore('-').toInt()
 
         val commits = gitTag.commitsSinceLatestTag
 
