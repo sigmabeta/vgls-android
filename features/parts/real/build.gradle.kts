@@ -1,0 +1,27 @@
+plugins {
+    alias(libs.plugins.sage.kmp)
+    alias(libs.plugins.metro)
+}
+
+kotlin {
+    android {
+        namespace = "com.vgleadsheets.remaster.parts"
+    }
+
+    sourceSets {
+        named("commonMain") {
+            dependencies {
+                api(projects.vgls.common.analytics.api)
+                api(libs.sage.common.list)
+                api(projects.vgls.common.model.api)
+                api(projects.vgls.common.nav.api)
+                api(projects.vgls.common.settings.part.real)
+                api(libs.sage.common.ui.components)
+                api(projects.vgls.common.strings.api)
+                api(projects.vgls.common.viewmodel.real)
+                implementation(libs.metrox.viewmodel)
+                implementation(libs.sage.common.di)
+            }
+        }
+    }
+}

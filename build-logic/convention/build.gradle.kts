@@ -58,24 +58,6 @@ gradlePlugin {
             version = "1.0"
         }
 
-        register("diAndroidModule") {
-            id = "vgleadsheets.di.android"
-            implementationClass = "VglsDiAndroidModulePlugin"
-            version = "1.0"
-        }
-
-        register("diJvmModule") {
-            id = "vgleadsheets.di.jvm"
-            implementationClass = "VglsDiJvmModulePlugin"
-            version = "1.0"
-        }
-
-        register("diWorkerModule") {
-            id = "vgleadsheets.di.worker.android"
-            implementationClass = "VglsDiWorkerAndroidModulePlugin"
-            version = "1.0"
-        }
-
         register("featureAndroidModule") {
             id = "vgleadsheets.feature.android"
             implementationClass = "VglsFeatureAndroidModulePlugin"

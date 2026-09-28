@@ -1,0 +1,58 @@
+package com.vgleadsheets.remaster.difficulty.values
+
+import com.vgleadsheets.model.tag.TagKey
+import com.vgleadsheets.model.tag.TagValue
+import com.vgleadsheets.strings.VglsStringId
+import net.sigmabeta.sage.appcomm.LCE
+import net.sigmabeta.sage.components.LabelRatingStarListModel
+import net.sigmabeta.sage.components.LoadingType
+import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.list.ListState
+import net.sigmabeta.sage.ui.StringProvider
+
+data class State(
+    val difficultyType: LCE<TagKey> = LCE.Uninitialized,
+    val difficultyValues: LCE<List<TagValue>> = LCE.Uninitialized,
+) : ListState() {
+    override fun title(stringProvider: StringProvider) = TitleBarModel(
+        title = if (difficultyType is LCE.Content) {
+            stringProvider.getStringOneArg(VglsStringId.SCREEN_TITLE_BROWSE_BY_TAG, difficultyType.data.name)
+        } else {
+            stringProvider.getString(VglsStringId.SCREEN_TITLE_BROWSE_TAGS)
+        }
+    )
+
+    @Suppress("MagicNumber")
+    override fun toListItems(stringProvider: StringProvider) = difficultyValues.withStandardErrorAndLoading(
+        loadingType = LoadingType.SINGLE_TEXT,
+        loadingWithHeader = false,
+    ) {
+        data.map { difficultyValue ->
+            val name = difficultyValue.name
+            val valueAsInt = name.toIntOrNull() ?: throw IllegalArgumentException(
+                "Badly formatted difficulty value: $name"
+            )
+            val label = valueAsInt.getLabel(stringProvider)
+
+            LabelRatingStarListModel(
+                dataId = difficultyValue.id,
+                label = label,
+                value = valueAsInt,
+                clickAction = Action.DifficultyValueClicked(difficultyValue.id),
+            )
+        }
+    }
+}
+
+@Suppress("MagicNumber")
+private fun Int.getLabel(stringProvider: StringProvider): String {
+    val stringId = when (this) {
+        1 -> VglsStringId.DIFFICULTY_ONE
+        2 -> VglsStringId.DIFFICULTY_TWO
+        3 -> VglsStringId.DIFFICULTY_THREE
+        4 -> VglsStringId.DIFFICULTY_FOUR
+        else -> throw IllegalArgumentException("Badly formatted difficulty value: $this")
+    }
+
+    return stringProvider.getString(stringId)
+}

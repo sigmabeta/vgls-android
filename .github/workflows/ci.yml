@@ -1,0 +1,134 @@
+name: CI
+
+# Push / PR checks for every branch — the GitHub Actions replacement for the former CircleCI
+# build_analyze_deploy workflow (.circleci/config.yml, removed in this migration). These are the
+# same tasks ./verify.sh runs locally. The signed-release + Google Play publish path is a separate
+# workflow (not yet ported); this file only runs the no-secrets verification checks.
+#
+# Scope: no native code (so no NDK/CMake install), no js() target, no jpackage installers.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Remote Gradle build cache (gradle.sebacloud.org, configured in settings.gradle.kts): anonymous
+  # read always; push needs CI (Actions sets it) + these secrets. Absent (e.g. fork PRs, or before
+  # the secrets are added) → read-only, build still works.
+  GRADLE_CACHE_USER: ${{ secrets.GRADLE_CACHE_USER }}
+  GRADLE_CACHE_PASSWORD: ${{ secrets.GRADLE_CACHE_PASSWORD }}
+
+jobs:
+  # Fast static analysis runs first and gates every heavier job below (they declare
+  # `needs: static-analysis`), so a ktlint/detekt failure skips the expensive compile / screenshot /
+  # APK jobs instead of burning runner minutes on them.
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: ktlint + detekt
+        run: ./gradlew ktlintCheck detekt --continue --build-cache --no-configuration-cache --no-daemon --max-workers=2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: static-analysis-reports
+          path: '**/build/reports/**'
+
+  shared-build:
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      # Compiles the desktop/JVM target. assembleDebug does NOT build it, so an android-only leak in
+      # commonMain would otherwise slip through — this catches it cheaply.
+      - name: Compile shared JVM code
+        run: ./gradlew :apps:jvm:classes --build-cache --no-configuration-cache --no-daemon --max-workers=4
+
+  screenshot:
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          lfs: true # Paparazzi golden snapshots are the only LFS-tracked files
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify Paparazzi snapshots
+        run: ./gradlew :vgls:android:ui:previews:real:verifyPaparazziDebug --continue --build-cache --no-configuration-cache --no-daemon --max-workers=2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paparazzi-diffs
+          path: '**/build/paparazzi/**'
+
+  android-lint:
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      # Release-variant lint — lints the shippable config (minify/proguard, release manifest). Runs
+      # secret-free: with no google-services.json the release variant compiles against the Noop perf
+      # backend and pulls no Firebase (checkShouldIncludeFirebase() in apps/android/build.gradle.kts).
+      - name: Android lint (release)
+        run: ./gradlew :apps:android:lintRelease --build-cache --no-configuration-cache --no-daemon --max-workers=4
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-lint-report
+          path: 'apps/android/build/reports/**'
+
+  android-apk:
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0 # full history + tags for git-version's version code / name
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      # Debug build only — no signing/google-services secrets needed. The signed release APK/bundle is
+      # built and published to Google Play by the (not-yet-ported) release workflow.
+      - name: Assemble debug APK
+        run: ./gradlew :apps:android:assembleDebug --build-cache --no-configuration-cache --no-daemon --max-workers=4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: apps/android/build/outputs/apk/debug/*.apk

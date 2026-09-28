@@ -1,0 +1,29 @@
+package com.vgleadsheets.database.dao
+
+import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.relation.SongComposerRelation
+import kotlinx.coroutines.flow.Flow
+
+interface ComposerDataSource : DataSource<Composer> {
+    fun getFavorites(): Flow<List<Composer>>
+
+    fun getMostSongsComposers(): Flow<List<Composer>>
+
+    fun getByIdList(ids: List<Long>): Flow<List<Composer>>
+
+    fun searchByName(name: String): Flow<List<Composer>>
+
+    suspend fun insertRelations(relations: List<SongComposerRelation>)
+
+    fun getComposersForSong(songId: Long): Flow<List<Composer>>
+
+    suspend fun getComposersForSongSync(songId: Long): List<Composer>
+
+    suspend fun incrementSheetsPlayed(composerId: Long)
+
+    suspend fun toggleFavorite(composerId: Long)
+
+    suspend fun toggleOffline(composerId: Long)
+
+    fun getHighestId(): Flow<Long>
+}

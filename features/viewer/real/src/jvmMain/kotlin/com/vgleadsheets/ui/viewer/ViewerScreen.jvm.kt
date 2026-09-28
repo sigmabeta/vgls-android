@@ -1,0 +1,321 @@
+package com.vgleadsheets.ui.viewer
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.unit.dp
+import com.vgleadsheets.bitmaps.SheetConstants
+import com.vgleadsheets.composables.EmptyListIndicator
+import com.vgleadsheets.composables.subs.CrossfadeSheet
+import com.vgleadsheets.images.LoadingIndicatorConfig
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.launch
+import net.sigmabeta.sage.appcomm.ActionSink
+import net.sigmabeta.sage.appcomm.SageAction
+import net.sigmabeta.sage.components.ZoomableSheetPageListModel
+import net.sigmabeta.sage.ui.Icon
+import net.sigmabeta.sage.ui.vector
+
+/**
+ * Desktop sheet viewer. The android actual uses telephoto's tiled [SubSamplingImage] over an
+ * [android.graphics.pdf.PdfRenderer] bitmap; that sub-sampling API is android-only, so the desktop
+ * viewer renders each page as one full-page [CrossfadeSheet] (Coil, served by the JVM PDFBox decoder).
+ *
+ * Like android, layout depends on the window aspect ratio: a wide window free-scrolls all pages in a
+ * [LazyRow]; a tall window shows one page at a time in a [HorizontalPager]. There is no zoom on
+ * desktop. Navigation is by on-screen arrows, mouse drag, or arrow keys.
+ */
+@Composable
+actual fun ViewerScreen(
+    state: ViewerState,
+    actionSink: ActionSink,
+    showDebug: Boolean,
+    modifier: Modifier,
+) {
+    val error = state.error()
+    if (error.isNotEmpty()) {
+        EmptyListIndicator(
+            model = error.first(),
+            modifier = modifier,
+            showDebug = showDebug,
+            onBlack = true,
+        )
+        return
+    }
+
+    val pages = state.pages()
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .clickable { actionSink.sendAction(Action.ScreenClicked) },
+    ) {
+        if (pages.isEmpty()) {
+            return@Box
+        }
+
+        val containerSize = LocalWindowInfo.current.containerSize
+        val shouldScrollFreely = containerSize.height > 0 &&
+            containerSize.width.toFloat() / containerSize.height > SheetConstants.ASPECT_RATIO
+
+        if (shouldScrollFreely) {
+            FreeScrollContent(pages, state, showDebug, actionSink)
+        } else {
+            PagedContent(pages, state, showDebug, actionSink)
+        }
+    }
+}
+
+/** Wide window: every page laid out left-to-right in a horizontally-scrolling [LazyRow]. */
+@Composable
+private fun BoxScope.FreeScrollContent(
+    pages: ImmutableList<ZoomableSheetPageListModel>,
+    state: ViewerState,
+    showDebug: Boolean,
+    actionSink: ActionSink,
+) {
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = state.initialPage.coerceIn(0, pages.size - 1),
+    )
+    val scope = rememberCoroutineScope()
+
+    LazyRow(
+        state = listState,
+        modifier = Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        items(
+            items = pages,
+            key = { it.dataId },
+        ) { item ->
+            SheetPage(
+                item = item,
+                showDebug = showDebug,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(SheetConstants.ASPECT_RATIO),
+            )
+        }
+    }
+
+    val current = listState.firstVisibleItemIndex
+    val onPrevious: () -> Unit = {
+        actionSink.sendAction(Action.LeftArrowPressed)
+        scope.launch { listState.animateScrollToItem((current - 1).coerceAtLeast(0)) }
+    }
+    val onNext: () -> Unit = {
+        actionSink.sendAction(Action.RightArrowPressed)
+        scope.launch { listState.animateScrollToItem((current + 1).coerceAtMost(pages.size - 1)) }
+    }
+
+    NavControls(pages, state, current, onPrevious, onNext, actionSink)
+}
+
+/** Tall window: one page at a time, centered, in a [HorizontalPager]. */
+@Composable
+private fun BoxScope.PagedContent(
+    pages: ImmutableList<ZoomableSheetPageListModel>,
+    state: ViewerState,
+    showDebug: Boolean,
+    actionSink: ActionSink,
+) {
+    val pagerState = rememberPagerState(
+        initialPage = state.initialPage.coerceIn(0, pages.size - 1),
+    ) { pages.size }
+    val scope = rememberCoroutineScope()
+
+    HorizontalPager(
+        state = pagerState,
+        modifier = Modifier.fillMaxSize(),
+    ) { page ->
+        // Center a single sheet, sized to the page aspect ratio, so the black Box shows around it
+        // (the sheet's own white/beige background comes from CrossfadeSheet, not from filling the
+        // whole screen).
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            SheetPage(
+                item = pages[page],
+                showDebug = showDebug,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .aspectRatio(SheetConstants.ASPECT_RATIO),
+            )
+        }
+    }
+
+    val current = pagerState.currentPage
+    val onPrevious: () -> Unit = {
+        actionSink.sendAction(Action.LeftArrowPressed)
+        scope.launch { pagerState.animateScrollToPage((current - 1).coerceAtLeast(0)) }
+    }
+    val onNext: () -> Unit = {
+        actionSink.sendAction(Action.RightArrowPressed)
+        scope.launch { pagerState.animateScrollToPage((current + 1).coerceAtMost(pages.size - 1)) }
+    }
+
+    NavControls(pages, state, current, onPrevious, onNext, actionSink)
+}
+
+@Composable
+private fun SheetPage(
+    item: ZoomableSheetPageListModel,
+    showDebug: Boolean,
+    modifier: Modifier,
+) {
+    CrossfadeSheet(
+        pdfConfigById = item.pdfConfigById,
+        contentDescription = "${item.title} from ${item.gameName}, page ${item.pageNumber + 1}",
+        loadingIndicatorConfig = LoadingIndicatorConfig(
+            title = item.title,
+            gameName = item.gameName,
+            composers = item.composers,
+            pageNumber = item.pageNumber,
+            loaderSize = item.pdfConfigById.pdfSize,
+        ),
+        sheetId = item.pdfConfigById.songId,
+        showDebug = showDebug,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun BoxScope.NavControls(
+    pages: ImmutableList<ZoomableSheetPageListModel>,
+    state: ViewerState,
+    currentIndex: Int,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    actionSink: ActionSink,
+) {
+    if (pages.size > 1 && state.buttonsVisible) {
+        DirectionButton(
+            alignment = Alignment.CenterStart,
+            icon = Icon.Back,
+            enabled = currentIndex > 0,
+            onClick = onPrevious,
+        )
+        DirectionButton(
+            alignment = Alignment.CenterEnd,
+            icon = Icon.Forward,
+            enabled = currentIndex < pages.size - 1,
+            onClick = onNext,
+        )
+    }
+
+    ArrowKeyHandler(
+        onPrevious = onPrevious,
+        onNext = onNext,
+        onBack = { actionSink.sendAction(SageAction.DeviceBack) },
+    )
+}
+
+@Composable
+private fun ArrowKeyHandler(
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    onBack: () -> Unit,
+) {
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) { focusRequester.requestFocus() }
+
+    Box(
+        modifier = Modifier
+            .focusRequester(focusRequester)
+            .focusable()
+            .onKeyEvent { keyEvent ->
+                if (keyEvent.type != KeyEventType.KeyDown) return@onKeyEvent false
+                when (keyEvent.key) {
+                    Key.DirectionLeft -> {
+                        onPrevious()
+                        true
+                    }
+
+                    Key.DirectionRight -> {
+                        onNext()
+                        true
+                    }
+
+                    Key.Back, Key.Escape -> {
+                        onBack()
+                        true
+                    }
+
+                    else -> false
+                }
+            },
+    )
+}
+
+@Suppress("MagicNumber")
+@Composable
+private fun BoxScope.DirectionButton(
+    alignment: Alignment,
+    icon: Icon,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
+    val alpha = if (enabled) 1.0f else 0.2f
+    val tint = if (enabled) Color.White else Color.Gray
+
+    Box(
+        modifier = Modifier
+            .alpha(alpha)
+            .padding(8.dp)
+            .fillMaxWidth(WIDTH_PERCENT_BUTTON)
+            .fillMaxHeight(HEIGHT_PERCENT_BUTTON)
+            .align(alignment)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0, 0, 0, ALPHA_BACKGROUND_BUTTON_INT))
+            .clickable(enabled = enabled, onClick = onClick),
+    ) {
+        Icon(
+            imageVector = icon.vector(),
+            contentDescription = null,
+            tint = tint,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxWidth(WIDTH_PERCENT_ICON)
+                .aspectRatio(1.0f),
+        )
+    }
+}
+
+private const val WIDTH_PERCENT_ICON = 0.5f
+private const val WIDTH_PERCENT_BUTTON = 0.3f
+private const val HEIGHT_PERCENT_BUTTON = 0.5f
+private const val ALPHA_BACKGROUND_BUTTON_INT = 64
