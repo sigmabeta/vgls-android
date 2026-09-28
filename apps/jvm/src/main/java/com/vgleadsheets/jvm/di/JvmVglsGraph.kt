@@ -1,6 +1,7 @@
 package com.vgleadsheets.jvm.di
 
 import coil3.ImageLoader
+import com.vgleadsheets.jvm.JvmWindowFocus
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metrox.viewmodel.ViewModelGraph
@@ -24,6 +25,9 @@ interface JvmVglsGraph : ViewModelGraph {
     // loader so the shared UI's AsyncImage/rememberAsyncImagePainter resolve — the JVM analog of
     // android's ImagesModule side-effecting SingletonImageLoader.setSafe.
     val imageLoader: ImageLoader
+
+    // Fed by DesktopMain from the window's focus; gates JvmNetworkStatusProvider's polling.
+    val windowFocus: JvmWindowFocus
 
     @DependencyGraph.Factory
     fun interface Factory {

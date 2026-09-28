@@ -3,7 +3,6 @@ package com.vgleadsheets.jvm.di
 import com.vgleadsheets.appcomm.ActionDeserializer
 import com.vgleadsheets.dispatchers.DelayManagerImpl
 import com.vgleadsheets.environment.Environment
-import com.vgleadsheets.jvm.JvmNetworkStatusProvider
 import com.vgleadsheets.jvm.JvmStorage
 import com.vgleadsheets.jvm.TimeProviderImpl
 import com.vgleadsheets.jvm.logging.JvmHatchet
@@ -26,7 +25,6 @@ import kotlinx.coroutines.runBlocking
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appinfo.AppInfo
-import net.sigmabeta.sage.connectivity.NetworkStatusProvider
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.RenderOverlayProvider
 import net.sigmabeta.sage.debug.ShowDebugProvider
@@ -82,10 +80,6 @@ object JvmPlatformModule {
     @Provides
     @SingleIn(AppScope::class)
     fun provideStorage(@Named("workDir") workDir: File): Storage = JvmStorage(File(workDir, "settings.properties"))
-
-    @Provides
-    @SingleIn(AppScope::class)
-    fun provideNetworkStatusProvider(): NetworkStatusProvider = JvmNetworkStatusProvider()
 
     @Provides
     @SingleIn(AppScope::class)

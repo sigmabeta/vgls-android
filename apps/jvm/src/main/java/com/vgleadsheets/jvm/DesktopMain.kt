@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.lifecycle.ViewModelStore
@@ -42,6 +43,9 @@ fun runDesktop(graph: JvmVglsGraph) = application {
         // manifest android:label — not a hand-typed literal that can drift out of sync.
         title = graph.stringProvider.getString(VglsStringId.APP_NAME),
     ) {
+        val windowFocused = LocalWindowInfo.current.isWindowFocused
+        LaunchedEffect(windowFocused) { graph.windowFocus.setFocused(windowFocused) }
+
         AppTheme {
             // The Compose Window has no ViewModelStoreOwner; provide one at the root so the shell's
             // chrome VMs (NavViewModel/TopBar/NavBar via metroViewModel) resolve. Per-screen stores
