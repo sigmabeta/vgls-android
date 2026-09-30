@@ -192,7 +192,7 @@ data class State(
                 stringProvider.getString(VglsStringId.SECTION_HEADER_GAMES_FROM_SONG)
             ),
             HeroImageListModel(
-                sourceInfo = SourceInfo(data.photoUrl),
+                sourceInfo = SourceInfo(data.imageUrl),
                 imagePlaceholder = Icon.Album,
                 contentDescription = data.name,
                 clickAction = Action.GameClicked(data.id),

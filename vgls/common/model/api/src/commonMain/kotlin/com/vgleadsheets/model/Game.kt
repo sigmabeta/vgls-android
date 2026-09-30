@@ -15,4 +15,8 @@ data class Game(
      * catalog; null if the game has no IGDB match or its match has no cover.
      */
     val igdbImageId: String? = null,
-)
+) {
+    /** The image to show for the game: VGLS's own [photoUrl] if it has one, else its IGDB cover. */
+    val imageUrl: String?
+        get() = photoUrl ?: igdbImageId?.let(IgdbImages::coverUrl)
+}

@@ -33,7 +33,7 @@ data class State(
             GridImageListModel(
                 dataId = game.id,
                 name = game.name,
-                sourceInfo = game.photoUrl,
+                sourceInfo = game.imageUrl,
                 imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
             )

@@ -105,7 +105,7 @@ data class State(
                     WideItemListModel(
                         dataId = game.id + ID_PREFIX_GAMES,
                         name = game.name,
-                        sourceInfo = game.photoUrl,
+                        sourceInfo = game.imageUrl,
                         imagePlaceholder = Icon.Album,
                         clickAction = Action.GameClicked(game.id),
                     )

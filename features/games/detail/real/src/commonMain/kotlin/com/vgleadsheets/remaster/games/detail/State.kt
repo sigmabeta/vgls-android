@@ -63,7 +63,7 @@ data class State(
         loadingItemCount = 1,
         loadingWithHeader = false,
         content = {
-            val photoUrl = data.photoUrl
+            val photoUrl = data.imageUrl
             if (photoUrl != null) {
                 listOf(
                     HeroImageListModel(

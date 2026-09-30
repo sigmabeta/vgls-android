@@ -163,7 +163,7 @@ private fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, 
             GridImageListModel(
                 dataId = game.id,
                 name = game.name,
-                sourceInfo = game.photoUrl,
+                sourceInfo = game.imageUrl,
                 imagePlaceholder = Icon.Album,
                 clickAction = SageAction.Noop
             )

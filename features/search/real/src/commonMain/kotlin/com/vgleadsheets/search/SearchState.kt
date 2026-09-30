@@ -152,7 +152,7 @@ data class SearchState(
             GridImageListModel(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
-                sourceInfo = game.photoUrl,
+                sourceInfo = game.imageUrl,
                 imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
             )
