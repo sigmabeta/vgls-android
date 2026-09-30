@@ -62,6 +62,12 @@ interface GameRoomDao : RoomDao<GameEntity> {
     @Query(QUERY_TOGGLE_OFFLINE)
     suspend fun toggleOffline(id: Long)
 
+    @Query(QUERY_CLEAR_IGDB_IMAGE_IDS)
+    suspend fun clearIgdbImageIds()
+
+    @Query(QUERY_SET_IGDB_IMAGE_ID)
+    suspend fun setIgdbImageId(id: Long, igdbImageId: String)
+
     @Query(QUERY_HIGHEST_ID)
     fun getHighestId(): Flow<GameEntity>
 
@@ -94,6 +100,8 @@ interface GameRoomDao : RoomDao<GameEntity> {
 
         private const val QUERY_TOGGLE_FAVORITE = "$QUERY_UPDATE $TOGGLE_FAVORITE $WHERE_SINGLE"
         private const val QUERY_TOGGLE_OFFLINE = "$QUERY_UPDATE $TOGGLE_OFFLINE $WHERE_SINGLE"
+        private const val QUERY_CLEAR_IGDB_IMAGE_IDS = "$QUERY_UPDATE $SET igdbImageId = NULL"
+        private const val QUERY_SET_IGDB_IMAGE_ID = "$QUERY_UPDATE $SET igdbImageId = :igdbImageId $WHERE_SINGLE"
         private const val QUERY_HIGHEST_ID = "$GET $TABLE $OPTION_BY_ID $OPTION_NUM_RECORDS_BY_ID"
     }
 }

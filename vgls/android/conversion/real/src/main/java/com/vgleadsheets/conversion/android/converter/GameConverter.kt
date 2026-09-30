@@ -13,7 +13,8 @@ class GameConverter : Converter<Game, GameEntity> {
         songCount,
         sheetsPlayed,
         isFavorite,
-        isAvailableOffline
+        isAvailableOffline,
+        igdbImageId,
     )
 
     override fun GameEntity.toModel() = Game(
@@ -26,5 +27,6 @@ class GameConverter : Converter<Game, GameEntity> {
         sheetsPlayed,
         isFavorite,
         isAvailableOffline,
+        igdbImageId,
     )
 }

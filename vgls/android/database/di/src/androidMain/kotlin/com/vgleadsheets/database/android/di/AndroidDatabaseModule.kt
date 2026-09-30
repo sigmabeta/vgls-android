@@ -53,6 +53,7 @@ object AndroidDatabaseModule {
             Migrations.AddSongCounts,
             Migrations.AddOfflineUpdateResults,
             Migrations.AddSongModifiedTimes,
+            Migrations.AddIgdbImageIds,
         )
         .fallbackToDestructiveMigrationFrom(dropAllTables = true, *DatabaseVersions.WITHOUT_MIGRATION)
         .build()

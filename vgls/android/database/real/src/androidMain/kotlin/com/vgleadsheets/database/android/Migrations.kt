@@ -81,6 +81,15 @@ object Migrations {
         }
     }
 
+    object AddIgdbImageIds : Migration(
+        DatabaseVersions.ADDED_SONG_MODIFIED_TIMES,
+        DatabaseVersions.ADDED_IGDB_IMAGE_IDS,
+    ) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL(DatabaseVersions.ADD_IGDB_IMAGE_ID_SQL)
+        }
+    }
+
     const val DELETE_JAMS = "${RoomDao.DROP} jam"
     const val DELETE_SETLIST = "${RoomDao.DROP} setlist_entry"
     const val DELETE_SONG_HISTORY = "${RoomDao.DROP} song_history_entry"

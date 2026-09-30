@@ -98,6 +98,9 @@ class DbUpdater(
                 dbGame?.isAvailableOffline ?: false,
                 hasVocalSongs,
                 apiGame.songs.size,
+            ).copy(
+                // Not from the VGLS API (it comes from vgm-metadata), so carry it across refreshes.
+                igdbImageId = dbGame?.igdbImageId,
             )
         }
 

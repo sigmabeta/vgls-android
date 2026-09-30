@@ -14,6 +14,7 @@ data class GameEntity(
     val sheetsPlayed: Int,
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,
+    val igdbImageId: String? = null,
 ) {
     companion object {
         const val TABLE = "game"

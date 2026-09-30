@@ -10,4 +10,9 @@ data class Game(
     val sheetsPlayed: Int,
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,
+    /**
+     * The IGDB image id of the game's cover art (e.g. `co3plw`), from the vgm-metadata server's VGLS
+     * catalog; null if the game has no IGDB match or its match has no cover.
+     */
+    val igdbImageId: String? = null,
 )
