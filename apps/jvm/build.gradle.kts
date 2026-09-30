@@ -52,6 +52,8 @@ dependencies {
     // Coil core: the desktop app builds its own ImageLoader (PDF keyer/fetcher + the PDFBox decoder)
     // and registers it via SingletonImageLoader — the JVM analog of apps/android's ImagesModule.
     implementation(libs.coil.kt.core)
+    // Network images (IGDB cover art) through the shared ktor HttpClient.
+    implementation(libs.coil.kt.ktor3)
 
     // Fake (no-op) analytics.
     implementation(projects.vgls.common.analytics.fake)
