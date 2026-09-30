@@ -1,3 +1,4 @@
+import java.util.Properties
 import com.android.build.api.dsl.ApplicationBuildType
 
 plugins {
@@ -36,6 +37,10 @@ android {
         versionName = "debug"
 
         testInstrumentationRunner = "com.vgleadsheets.VglsTestRunner"
+
+        // The vgm-metadata server for IGDB cover art; null turns the pull off. See vgmMetadataUrl().
+        val metadataUrl = vgmMetadataUrl()
+        buildConfigField("String", "VGM_METADATA_URL", if (metadataUrl == null) "null" else "\"$metadataUrl\"")
     }
 
     signingConfigs {
@@ -263,6 +268,22 @@ appVersioning {
 // plugins, and the perf backend — see the src/main sourceSets wiring above). The path is resolved
 // against Gradle's working dir (the root project), so it points at the app module explicitly.
 fun checkShouldIncludeFirebase(): Boolean = File("apps/android/google-services.json").exists()
+
+/**
+ * The vgm-metadata server root, from `vgm.metadata.url` in local.properties, a `-Pvgm.metadata.url`
+ * Gradle property, or the VGM_METADATA_URL env var (in that order); null if none is set.
+ */
+fun vgmMetadataUrl(): String? {
+    val localProperties = Properties().apply {
+        rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use(::load)
+    }
+    return (
+        localProperties.getProperty("vgm.metadata.url") ?: findProperty("vgm.metadata.url") as String?
+        ?: System.getenv("VGM_METADATA_URL")
+    )
+        ?.trim()
+        ?.takeIf { it.isNotEmpty() }
+}
 
 fun ApplicationBuildType.addTimeToBuildConfig(butActuallyThough: Boolean) {
     val timeMs = if (butActuallyThough) {

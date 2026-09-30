@@ -71,6 +71,12 @@ object JvmNetworkModule {
     }
 
     @Provides
+    @Named("VgmMetadataUrl")
+    fun provideVgmMetadataUrl(): String? = (System.getProperty("vgm.metadata.url") ?: System.getenv("VGM_METADATA_URL"))
+        ?.trim()
+        ?.takeIf { it.isNotEmpty() }
+
+    @Provides
     @Named("VglsPdfUrl")
     @SingleIn(AppScope::class)
     fun provideVglsPdfUrl(urlInfoProvider: UrlInfoProvider): String? = runBlocking {

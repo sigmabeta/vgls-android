@@ -1,5 +1,6 @@
 package com.vgleadsheets.di.network
 
+import com.vgleadsheets.network.DisabledVgmMetadataApi
 import com.vgleadsheets.network.FakeModelGenerator
 import com.vgleadsheets.network.FakeSheetDownloadApi
 import com.vgleadsheets.network.FakeVglsApi
@@ -7,6 +8,8 @@ import com.vgleadsheets.network.SheetDownloadApi
 import com.vgleadsheets.network.SheetDownloadApiImpl
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.VglsApiImpl
+import com.vgleadsheets.network.VgmMetadataApi
+import com.vgleadsheets.network.VgmMetadataApiImpl
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Named
@@ -28,6 +31,17 @@ object ApiModule {
         VglsApiImpl(client, baseUrl)
     } else {
         FakeVglsApi(fakeModelGenerator)
+    }
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideVgmMetadataApi(
+        @Named("VgmMetadataUrl") baseUrl: String?,
+        client: HttpClient,
+    ): VgmMetadataApi = if (baseUrl != null) {
+        VgmMetadataApiImpl(client, baseUrl)
+    } else {
+        DisabledVgmMetadataApi
     }
 
     @Provides

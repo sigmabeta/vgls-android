@@ -1,5 +1,6 @@
 package com.vgleadsheets.di.network
 
+import com.vgleadsheets.BuildConfig
 import com.vgleadsheets.network.offlineFailFastPlugin
 import com.vgleadsheets.urlinfo.UrlInfoProvider
 import dev.zacsweers.metro.BindingContainer
@@ -59,6 +60,10 @@ object NetworkModule {
     fun provideVglsImageUrl(urlInfoProvider: UrlInfoProvider): String? = runBlocking {
         urlInfoProvider.urlInfoFlow.first { it.loaded }.imageBaseUrl
     }
+
+    @Provides
+    @Named("VgmMetadataUrl")
+    fun provideVgmMetadataUrl(): String? = BuildConfig.VGM_METADATA_URL
 
     @Provides
     @Named("VglsPdfUrl")
