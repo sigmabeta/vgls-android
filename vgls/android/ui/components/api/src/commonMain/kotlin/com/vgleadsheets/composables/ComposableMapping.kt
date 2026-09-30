@@ -114,7 +114,7 @@ fun ListModel.Content(
 
             is LoadingItemListModel -> {
                 when (loadingType) {
-                    LoadingType.PAGE, LoadingType.SQUARE, LoadingType.NOTIF, LoadingType.WIDE_ITEM, LoadingType.BIG_IMAGE -> LoadingItem(
+                    LoadingType.PAGE, LoadingType.SQUARE, LoadingType.COVER, LoadingType.NOTIF, LoadingType.WIDE_ITEM, LoadingType.BIG_IMAGE -> LoadingItem(
                         seed = dataId,
                         loadingType = loadingType,
                         modifier = mod,

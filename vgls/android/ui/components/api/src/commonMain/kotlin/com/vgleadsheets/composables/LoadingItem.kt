@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.vgleadsheets.composables.previews.BigImageConstants
+import com.vgleadsheets.model.IgdbImages
 import com.vgleadsheets.composables.previews.FullScreenOf
 import com.vgleadsheets.composables.previews.NotifConstants
 import com.vgleadsheets.composables.previews.PreviewActionSink
@@ -36,12 +36,19 @@ fun LoadingItem(
     val randomizer = Random(seed)
     val randomDelay = randomizer.nextInt(200)
 
+    if (loadingType == LoadingType.BIG_IMAGE) {
+        BigImageFrame(modifier = modifier, padding = padding) { frameModifier ->
+            ElevatedRoundRect(modifier = frameModifier) { Flasher(startDelay = randomDelay) }
+        }
+        return
+    }
+
     val (width, ratio) = when (loadingType) {
         LoadingType.PAGE -> SheetConstants.MIN_WIDTH.dp to SheetConstants.ASPECT_RATIO
         LoadingType.SQUARE -> SquareConstants.MIN_WIDTH to SquareConstants.ASPECT_RATIO
+        LoadingType.COVER -> SquareConstants.MIN_WIDTH to IgdbImages.COVER_ASPECT_RATIO
         LoadingType.NOTIF -> NotifConstants.MIN_WIDTH to NotifConstants.ASPECT_RATIO
         LoadingType.WIDE_ITEM -> WideItemConstants.MIN_WIDTH to WideItemConstants.ASPECT_RATIO
-        LoadingType.BIG_IMAGE -> BigImageConstants.MIN_WIDTH to BigImageConstants.ASPECT_RATIO
         else -> return
     }
 

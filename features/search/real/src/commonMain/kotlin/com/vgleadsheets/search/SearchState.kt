@@ -2,6 +2,7 @@ package com.vgleadsheets.search
 
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.IgdbImages
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.history.SearchHistoryEntry
 import com.vgleadsheets.search.SearchViewModel.Companion.MINIMUM_LENGTH_QUERY
@@ -137,7 +138,7 @@ data class SearchState(
     }
 
     private fun gameItems(stringProvider: StringProvider) = gameResults.withStandardErrorAndLoading(
-        loadingType = LoadingType.SQUARE,
+        loadingType = LoadingType.COVER,
         loadingItemCount = 2,
     ) {
         if (data.isEmpty()) {
@@ -153,6 +154,7 @@ data class SearchState(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
                 sourceInfo = game.imageUrl,
+                aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                 imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
             )
