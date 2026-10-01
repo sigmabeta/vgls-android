@@ -47,6 +47,14 @@ object DatabaseVersions {
      */
     const val ADDED_SONG_MODIFIED_TIMES = 17
 
+    /**
+     *  - Added "igdbImageId" to games.
+     */
+    const val ADDED_IGDB_IMAGE_IDS = 18
+
+    /** The column added in [ADDED_IGDB_IMAGE_IDS], shared by the android and desktop migrations. */
+    const val ADD_IGDB_IMAGE_ID_SQL = "ALTER TABLE game ADD COLUMN igdbImageId TEXT"
+
     // Doesn't need to be changed.
     val WITHOUT_MIGRATION = (1 until ADDED_PLAY_COUNTS).toList().toIntArray()
 }

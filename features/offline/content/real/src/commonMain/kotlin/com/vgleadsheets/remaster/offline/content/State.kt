@@ -2,6 +2,7 @@ package com.vgleadsheets.remaster.offline.content
 
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.IgdbImages
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
@@ -88,7 +89,7 @@ data class State(
         games: LCE<List<Game>>,
         stringProvider: StringProvider
     ) = games.withStandardErrorAndLoading(
-        loadingType = LoadingType.SQUARE,
+        loadingType = LoadingType.COVER,
         loadingItemCount = 2
     ) {
         if (data.isEmpty()) {
@@ -103,7 +104,8 @@ data class State(
             GridImageListModel(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
-                sourceInfo = game.photoUrl,
+                sourceInfo = game.imageUrl,
+                aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                 imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
             )

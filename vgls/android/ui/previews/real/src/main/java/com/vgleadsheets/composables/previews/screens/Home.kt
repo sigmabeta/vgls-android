@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import com.vgleadsheets.composables.previews.DevicePreviews
 import com.vgleadsheets.composables.previews.ListScreenPreview
+import com.vgleadsheets.model.IgdbImages
 import com.vgleadsheets.model.generator.FakeModelGenerator
 import com.vgleadsheets.model.generator.StringGenerator
 import com.vgleadsheets.remaster.home.HomeModule
@@ -163,7 +164,8 @@ private fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, 
             GridImageListModel(
                 dataId = game.id,
                 name = game.name,
-                sourceInfo = game.photoUrl,
+                sourceInfo = game.imageUrl,
+                aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                 imagePlaceholder = Icon.Album,
                 clickAction = SageAction.Noop
             )

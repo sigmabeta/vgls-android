@@ -19,4 +19,10 @@ interface GameDataSource : DataSource<Game> {
     suspend fun toggleOffline(gameId: Long)
 
     fun getHighestId(): Flow<Long>
+
+    /**
+     * Replaces every game's IGDB cover image id with [imageIdByGameId]: games in it get that id,
+     * games not in it lose theirs. Callers run it inside a transaction.
+     */
+    suspend fun replaceIgdbImageIds(imageIdByGameId: Map<Long, String>)
 }

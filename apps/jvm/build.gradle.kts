@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.sage.jvm)
     alias(libs.plugins.metro)
@@ -10,7 +11,26 @@ plugins {
 compose.desktop {
     application {
         mainClass = "com.vgleadsheets.jvm.MainKt"
+        // The vgm-metadata server for IGDB cover art, read by JvmNetworkModule; unset turns it off.
+        vgmMetadataUrl()?.let { jvmArgs += "-Dvgm.metadata.url=$it" }
     }
+}
+
+/**
+ * The vgm-metadata server root, from `vgm.metadata.url` in local.properties, a `-Pvgm.metadata.url`
+ * Gradle property, or the VGM_METADATA_URL env var (in that order); null if none is set. At run
+ * time the app also reads the VGM_METADATA_URL env var itself.
+ */
+fun vgmMetadataUrl(): String? {
+    val localProperties = Properties().apply {
+        rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use(::load)
+    }
+    return (
+        localProperties.getProperty("vgm.metadata.url") ?: findProperty("vgm.metadata.url") as String?
+        ?: System.getenv("VGM_METADATA_URL")
+    )
+        ?.trim()
+        ?.takeIf { it.isNotEmpty() }
 }
 
 dependencies {
@@ -52,6 +72,8 @@ dependencies {
     // Coil core: the desktop app builds its own ImageLoader (PDF keyer/fetcher + the PDFBox decoder)
     // and registers it via SingletonImageLoader — the JVM analog of apps/android's ImagesModule.
     implementation(libs.coil.kt.core)
+    // Network images (IGDB cover art) through the shared ktor HttpClient.
+    implementation(libs.coil.kt.ktor3)
 
     // Fake (no-op) analytics.
     implementation(projects.vgls.common.analytics.fake)

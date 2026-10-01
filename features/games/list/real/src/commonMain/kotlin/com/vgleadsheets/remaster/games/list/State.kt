@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.games.list
 
 import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.IgdbImages
 import com.vgleadsheets.strings.VglsStringId
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
@@ -22,7 +23,7 @@ data class State(
     )
 
     override fun toListItems(stringProvider: StringProvider) = games.withStandardErrorAndLoading(
-        loadingType = LoadingType.SQUARE,
+        loadingType = LoadingType.COVER,
         loadingWithHeader = false,
     ) {
         content(data)
@@ -33,7 +34,8 @@ data class State(
             GridImageListModel(
                 dataId = game.id,
                 name = game.name,
-                sourceInfo = game.photoUrl,
+                sourceInfo = game.imageUrl,
+                aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                 imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
             )

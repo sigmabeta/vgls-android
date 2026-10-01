@@ -45,7 +45,7 @@ fun SquareItem(
         modifier = modifier
             .padding(paddingValues = padding)
             .defaultMinSize(minWidth = SquareConstants.MIN_WIDTH)
-            .aspectRatio(SquareConstants.ASPECT_RATIO)
+            .aspectRatio(model.aspectRatio)
             .clickable { actionSink.sendAction(model.clickAction) }
     ) {
         Box {

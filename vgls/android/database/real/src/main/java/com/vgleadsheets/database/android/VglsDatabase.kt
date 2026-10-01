@@ -41,7 +41,7 @@ import com.vgleadsheets.database.android.join.SongTagValueJoin
         TagValueEntity::class,
         ComposerAliasEntity::class
     ],
-    version = DatabaseVersions.ADDED_SONG_MODIFIED_TIMES,
+    version = DatabaseVersions.ADDED_IGDB_IMAGE_IDS,
 )
 abstract class VglsDatabase : RoomDatabase() {
     abstract fun composerAliasDao(): ComposerAliasRoomDao

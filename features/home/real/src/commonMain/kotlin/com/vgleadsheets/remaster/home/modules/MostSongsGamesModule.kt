@@ -1,5 +1,6 @@
 package com.vgleadsheets.remaster.home.modules
 
+import com.vgleadsheets.model.IgdbImages
 import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
 import com.vgleadsheets.remaster.home.HomeModuleState
@@ -23,7 +24,7 @@ class MostSongsGamesModule @Inject constructor(
     priority = Priority.LOW,
     delayManager,
 ) {
-    override fun loadingType() = LoadingType.SQUARE
+    override fun loadingType() = LoadingType.COVER
 
     override fun title() = stringProvider.getString(VglsStringId.HOME_SECTION_MOST_SONGS_GAMES)
 
@@ -41,7 +42,8 @@ class MostSongsGamesModule @Inject constructor(
                         GridImageListModel(
                             dataId = game.id,
                             name = game.name,
-                            sourceInfo = game.photoUrl,
+                            sourceInfo = game.imageUrl,
+                            aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                             imagePlaceholder = Icon.Album,
                             clickAction = Action.MostSongsGameClicked(game.id)
                         )

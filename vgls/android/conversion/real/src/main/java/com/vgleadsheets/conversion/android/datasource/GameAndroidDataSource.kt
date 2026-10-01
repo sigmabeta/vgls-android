@@ -42,4 +42,9 @@ GameDataSource {
     override fun getHighestId() = roomImpl
         .getHighestId()
         .map { it.id }
+
+    override suspend fun replaceIgdbImageIds(imageIdByGameId: Map<Long, String>) {
+        roomImpl.clearIgdbImageIds()
+        imageIdByGameId.forEach { (gameId, imageId) -> roomImpl.setIgdbImageId(gameId, imageId) }
+    }
 }

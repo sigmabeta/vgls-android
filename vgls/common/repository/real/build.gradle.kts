@@ -21,13 +21,14 @@ kotlin {
                 implementation(libs.sage.common.time)
                 implementation(libs.sage.common.analytics)
                 implementation(projects.vgls.common.strings.api)
+                implementation(projects.vgls.common.network.api)
+                implementation(libs.sage.common.storage.common)
             }
         }
-        // network + notif are pure-JVM (sage.jvm) modules with no commonMain variant, so the files
-        // using them (DbUpdater, UpdateManager, OfflineRepository, RandomRepository) stay here.
+        // notif is a pure-JVM module with no commonMain variant, so the files using it stay here
+        // (DbUpdater, UpdateManager, OfflineRepository, RandomRepository also use java.* APIs).
         named("jvmSharedMain") {
             dependencies {
-                implementation(projects.vgls.common.network.api)
                 implementation(projects.vgls.common.notif.real)
             }
         }

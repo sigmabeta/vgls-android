@@ -44,6 +44,7 @@ class UpdateManager(
     private val coroutineScope: CoroutineScope,
     private val notifManager: NotifManager,
     private val stringProvider: StringProvider,
+    private val igdbCoverUpdater: IgdbCoverUpdater,
 ) {
     init {
         setupApiUpdateTimeCheckFlow()
@@ -65,10 +66,12 @@ class UpdateManager(
             .map { checkLastUpdateTimeIsOldEnough(it) }
             .filter { it }
             .onEach { refreshLastApiUpdateTime() }
+            .onEach { launchIgdbCoverRefresh(force = false) }
             .flatMapLatest { dbUpdateTimeCheckFlow() }
             .filter { it }
             .flatMapLatest { refreshInternal() }
             .filter { it }
+            .onEach { launchIgdbCoverRefresh(force = true) }
             .onEach { onUpdateSuccess() }
             .onCompletion { hatchet.e("Cancelled update flow because of ${it?.message}") }
             .flowOn(dispatchers.disk)
@@ -94,8 +97,21 @@ class UpdateManager(
     suspend fun refreshAndAwait(): Boolean {
         if (!refreshLastApiUpdateTime()) return false
         val needsUpdate = dbUpdateTimeCheckFlow().first()
-        if (!needsUpdate) return true
-        return refreshInternal().first()
+        if (!needsUpdate) {
+            igdbCoverUpdater.refresh(force = false)
+            return true
+        }
+        val updated = refreshInternal().first()
+        if (updated) igdbCoverUpdater.refresh(force = true)
+        return updated
+    }
+
+    /**
+     * Pulls the IGDB mapping in the background. [force] after the game table was rewritten, since
+     * rows the VGLS update added have no cover even if the mapping itself is unchanged.
+     */
+    private fun launchIgdbCoverRefresh(force: Boolean) {
+        coroutineScope.launch(dispatchers.network) { igdbCoverUpdater.refresh(force) }
     }
 
     @Suppress("TooGenericExceptionCaught")

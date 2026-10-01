@@ -26,6 +26,7 @@ import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
 import com.vgleadsheets.database.source.TagValuePlayCountDataSource
 import com.vgleadsheets.network.VglsApi
+import com.vgleadsheets.network.VgmMetadataApi
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
@@ -36,6 +37,7 @@ import com.vgleadsheets.repository.RandomRepository
 import com.vgleadsheets.repository.SearchRepository
 import com.vgleadsheets.repository.SongRepository
 import com.vgleadsheets.repository.TagRepository
+import com.vgleadsheets.repository.IgdbCoverUpdater
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
@@ -48,6 +50,7 @@ import kotlinx.coroutines.CoroutineScope
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.logging.Hatchet
+import net.sigmabeta.sage.storage.common.Storage
 import net.sigmabeta.sage.settings.GeneralSettingsManager
 import net.sigmabeta.sage.time.TimeProvider
 import net.sigmabeta.sage.ui.StringProvider
@@ -131,6 +134,7 @@ object RepositoryModule {
         coroutineScope: CoroutineScope,
         notifManager: NotifManager,
         stringProvider: StringProvider,
+        igdbCoverUpdater: IgdbCoverUpdater,
     ): UpdateManager = UpdateManager(
         vglsApi,
         dbUpdater,
@@ -142,7 +146,18 @@ object RepositoryModule {
         coroutineScope,
         notifManager,
         stringProvider,
+        igdbCoverUpdater,
     )
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideIgdbCoverUpdater(
+        vgmMetadataApi: VgmMetadataApi,
+        transactionDao: TransactionDao,
+        gameDataSource: GameDataSource,
+        storage: Storage,
+        hatchet: Hatchet,
+    ): IgdbCoverUpdater = IgdbCoverUpdater(vgmMetadataApi, gameDataSource, transactionDao, storage, hatchet)
 
     @Provides
     @SingleIn(AppScope::class)

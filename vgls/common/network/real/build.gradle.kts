@@ -9,6 +9,12 @@ kotlin {
     }
 
     sourceSets {
+        named("commonMain") {
+            dependencies {
+                api(projects.vgls.common.network.api)
+                implementation(libs.ktor.client.core)
+            }
+        }
         named("jvmSharedMain") {
             dependencies {
                 api(projects.vgls.common.network.api)

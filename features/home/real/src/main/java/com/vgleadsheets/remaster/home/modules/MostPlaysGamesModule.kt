@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.home.modules
 
 import com.vgleadsheets.model.Game
+import com.vgleadsheets.model.IgdbImages
 import com.vgleadsheets.model.history.GamePlayCount
 import com.vgleadsheets.remaster.home.Action
 import com.vgleadsheets.remaster.home.HomeModule
@@ -29,7 +30,7 @@ class MostPlaysGamesModule @Inject constructor(
     priority = Priority.MID,
     delayManager,
 ) {
-    override fun loadingType() = LoadingType.SQUARE
+    override fun loadingType() = LoadingType.COVER
 
     override fun title() = stringProvider.getString(VglsStringId.HOME_SECTION_MOST_PLAYS_GAMES)
 
@@ -52,7 +53,8 @@ class MostPlaysGamesModule @Inject constructor(
                             GridImageListModel(
                                 dataId = game.id,
                                 name = game.name,
-                                sourceInfo = game.photoUrl,
+                                sourceInfo = game.imageUrl,
+                                aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                                 imagePlaceholder = Icon.Album,
                                 clickAction = Action.MostPlaysGameClicked(game.id)
                             )
