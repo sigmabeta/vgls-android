@@ -237,7 +237,7 @@ appVersioning {
 
         val platType = 1 // replace with when statement if we ever support more than just mobile
 
-        val branch = when (System.getenv("CIRCLE_BRANCH")) {
+        val branch = when (CiEnv.branch()) {
             "release" -> 9
             "beta" -> 8
             else -> 7
@@ -270,6 +270,19 @@ appVersioning {
 fun checkShouldIncludeFirebase(): Boolean = File("apps/android/google-services.json").exists()
 
 /**
+ * The branch a CI build is for: `VGLS_BRANCH` (set by the GitHub release workflow, where
+ * GITHUB_REF_NAME names the default branch rather than the one being built), else
+ * GITHUB_REF_NAME, else the legacy CircleCI variable. Null for local builds.
+ *
+ * An object, not a top-level function: the version-code lambda calls it, and a script-level
+ * function would make that lambda capture the whole build script, which Gradle can't serialize.
+ */
+object CiEnv {
+    fun branch(): String? = listOf("VGLS_BRANCH", "GITHUB_REF_NAME", "CIRCLE_BRANCH")
+        .firstNotNullOfOrNull { name -> System.getenv(name)?.takeIf { it.isNotBlank() } }
+}
+
+/**
  * The vgm-metadata server root, from `vgm.metadata.url` in local.properties, a `-Pvgm.metadata.url`
  * Gradle property, or the VGM_METADATA_URL env var (in that order); null if none is set.
  */
@@ -297,7 +310,7 @@ fun ApplicationBuildType.addTimeToBuildConfig(butActuallyThough: Boolean) {
 
 fun ApplicationBuildType.addBranchNameToBuildConfig(butActuallyThough: Boolean) {
     val unknown = "Unknown"
-    val branchEnvVariable = System.getenv("CIRCLE_BRANCH")
+    val branchEnvVariable = CiEnv.branch()
 
     val branchName = when {
         !butActuallyThough -> unknown

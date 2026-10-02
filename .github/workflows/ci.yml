@@ -22,6 +22,10 @@ env:
   # the secrets are added) → read-only, build still works.
   GRADLE_CACHE_USER: ${{ secrets.GRADLE_CACHE_USER }}
   GRADLE_CACHE_PASSWORD: ${{ secrets.GRADLE_CACHE_PASSWORD }}
+  # vgm-metadata server for IGDB cover art (apps/*/build.gradle.kts → vgmMetadataUrl()). Public and
+  # read-only from the app's side, so not a secret. The admin token must never be passed to a
+  # build: it would ship inside the APK. The future release workflow needs this line too.
+  VGM_METADATA_URL: https://metadata.sebacloud.org/
 
 jobs:
   # Fast static analysis runs first and gates every heavier job below (they declare
