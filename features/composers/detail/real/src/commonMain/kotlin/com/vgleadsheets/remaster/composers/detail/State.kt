@@ -64,11 +64,11 @@ data class State(
         loadingItemCount = 1,
         loadingWithHeader = false,
     ) {
-        val photoUrl = data.photoUrl
-        if (photoUrl != null) {
+        val imageUrls = data.imageUrls
+        if (imageUrls.isNotEmpty()) {
             listOf(
                 HeroImageListModel(
-                    sourceInfo = SourceInfo(photoUrl),
+                    sourceInfo = SourceInfo.ofUrls(imageUrls),
                     imagePlaceholder = Icon.Person,
                     contentDescription = stringProvider.getString(VglsStringId.ACCY_CDESC_HERO_COMPOSER),
                     clickAction = SageAction.Noop,
@@ -105,7 +105,7 @@ data class State(
                     WideItemListModel(
                         dataId = game.id + ID_PREFIX_GAMES,
                         name = game.name,
-                        sourceInfo = game.imageUrl,
+                        sourceInfo = SourceInfo(game.imageUrl),
                         imagePlaceholder = Icon.Album,
                         clickAction = Action.GameClicked(game.id),
                     )

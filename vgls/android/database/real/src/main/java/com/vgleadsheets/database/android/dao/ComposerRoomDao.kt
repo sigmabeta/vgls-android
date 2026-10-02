@@ -24,6 +24,8 @@ import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SEARCH
 import com.vgleadsheets.database.android.dao.RoomDao.Companion.WHERE_SINGLE
 import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.enitity.DeletionId
+import com.vgleadsheets.database.android.enitity.GameEntity
+import com.vgleadsheets.database.android.enitity.SongEntity
 import com.vgleadsheets.database.android.join.SongComposerJoin
 import kotlinx.coroutines.flow.Flow
 
@@ -75,6 +77,12 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     @Insert
     suspend fun insertJoins(joins: List<SongComposerJoin>)
 
+    @Query(QUERY_GAME_COVERS)
+    fun getGameCovers(): Flow<List<ComposerGameCover>>
+
+    @Query(QUERY_GAME_COVERS)
+    suspend fun getGameCoversSync(): List<ComposerGameCover>
+
     @Query(QUERY_HIGHEST_ID)
     fun getHighestId(): Flow<ComposerEntity>
 
@@ -87,6 +95,8 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
 
         private const val TABLE = ComposerEntity.TABLE
         private const val TABLE_SONG = SongComposerJoin.TABLE
+        private const val TABLE_SONGS = SongEntity.TABLE
+        private const val TABLE_GAMES = GameEntity.TABLE
 
         private const val COLUMN_FOREIGN_KEY_SONG = SongComposerJoin.COLUMN_FOREIGN_KEY_ONE
         private const val COLUMN_FOREIGN_KEY_SONG_JOIN = SongComposerJoin.COLUMN_FOREIGN_KEY_TWO
@@ -107,6 +117,20 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
         // Bespoke Queries
 
         private const val QUERY_FOR_SONG = "$GET $TABLE $WHERE_SONG $OPTION_ALPHABETICAL_ORDER"
+
+        // Every (composer, game with art) pair, each composer's games ordered by how many of the
+        // composer's songs they hold.
+        private const val QUERY_GAME_COVERS =
+            "SELECT $TABLE_SONG.$COLUMN_FOREIGN_KEY_SONG_JOIN AS composerId," +
+                " $TABLE_GAMES.photoUrl AS photoUrl, $TABLE_GAMES.igdbImageId AS igdbImageId" +
+                " FROM $TABLE_SONG" +
+                " $INNER_JOIN $TABLE_SONGS" +
+                " $ON $TABLE_SONGS.$COLUMN_PRIMARY_KEY_ID = $TABLE_SONG.$COLUMN_FOREIGN_KEY_SONG" +
+                " $INNER_JOIN $TABLE_GAMES" +
+                " $ON $TABLE_GAMES.$COLUMN_PRIMARY_KEY_ID = $TABLE_SONGS.${GameEntity.COLUMN_FOREIGN_KEY}" +
+                " $WHERE $TABLE_GAMES.photoUrl IS NOT NULL OR $TABLE_GAMES.igdbImageId IS NOT NULL" +
+                " GROUP BY $TABLE_SONG.$COLUMN_FOREIGN_KEY_SONG_JOIN, $TABLE_GAMES.$COLUMN_PRIMARY_KEY_ID" +
+                " ORDER BY $TABLE_SONG.$COLUMN_FOREIGN_KEY_SONG_JOIN, COUNT(*) DESC, $TABLE_GAMES.name"
 
         // Default Queries
 

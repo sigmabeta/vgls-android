@@ -22,6 +22,7 @@ import net.sigmabeta.sage.components.SheetPageCardListModel
 import net.sigmabeta.sage.components.SheetPageListModel
 import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.images.PdfSize
+import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.list.WidthClass
 import net.sigmabeta.sage.pdf.PdfConfigById
@@ -165,7 +166,7 @@ private fun gameModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetails, 
             GridImageListModel(
                 dataId = game.id,
                 name = game.name,
-                sourceInfo = game.imageUrl,
+                sourceInfo = SourceInfo(game.imageUrl),
                 aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                 imagePlaceholder = Icon.Album,
                 clickAction = SageAction.Noop
@@ -194,7 +195,7 @@ private fun composerModule(modelGenerator: FakeModelGenerator): Pair<ModuleDetai
             GridImageListModel(
                 dataId = composer.id,
                 name = composer.name,
-                sourceInfo = composer.photoUrl,
+                sourceInfo = SourceInfo.ofUrls(composer.imageUrls),
                 imagePlaceholder = Icon.Person,
                 clickAction = SageAction.Noop
             )

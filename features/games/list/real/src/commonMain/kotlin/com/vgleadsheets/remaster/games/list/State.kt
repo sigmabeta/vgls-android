@@ -7,6 +7,7 @@ import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
 import net.sigmabeta.sage.ui.Icon
@@ -34,7 +35,7 @@ data class State(
             GridImageListModel(
                 dataId = game.id,
                 name = game.name,
-                sourceInfo = game.imageUrl,
+                sourceInfo = SourceInfo(game.imageUrl),
                 aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                 imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),

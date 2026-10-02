@@ -26,6 +26,7 @@ kotlin {
                 implementation(projects.vgls.android.bitmaps.real)
                 implementation(projects.vgls.android.images.real)
                 implementation(projects.vgls.android.pdf.real)
+                implementation(libs.sage.common.ui.composables)
                 implementation(libs.sage.common.ui.perfCompose)
                 implementation(libs.sage.common.ui.iconsReal)
                 implementation(projects.vgls.android.ui.theme.api)
