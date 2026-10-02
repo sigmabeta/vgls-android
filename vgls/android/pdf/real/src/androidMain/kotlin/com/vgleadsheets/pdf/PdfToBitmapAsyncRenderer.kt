@@ -77,9 +77,11 @@ class PdfToBitmapAsyncRenderer(
     }
 
     private fun getBitmapSizeInfo(maxWidth: Int, maxHeight: Int): BitmapSizeInfo {
-        val (docWidth, docHeight) = pdfRenderer
-            .openPage(pageNumber)
-            .use { it.width to it.height }
+        val (docWidth, docHeight) = synchronized(pdfRenderer) {
+            pdfRenderer
+                .openPage(pageNumber)
+                .use { it.width to it.height }
+        }
 
         return BitmapUtils.computeBitmapSize(
             hatchet,
