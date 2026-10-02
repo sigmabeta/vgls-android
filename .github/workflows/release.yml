@@ -1,0 +1,106 @@
+name: Release
+
+# Signed release build + Google Play publish — the GitHub Actions port of the former CircleCI
+# build_release_apk + publish_app_bundle jobs. Runs only after the CI workflow (ci.yml) passes on
+# `beta` or `release`, like CircleCI's `requires:` gating, and can be started by hand.
+#
+# Repository secrets it needs:
+#   UPLOAD_KEY, UPLOAD_KEYPASS      unlock the committed apps/android/vgls-upload.jks (required: the
+#                                   job fails rather than publish a development-signed build)
+#   ANDROID_PUBLISHER_CREDENTIALS   Play service-account JSON, read by the Triplet play plugin
+#   GOOGLE_SERVICES_JSON            optional; turns Firebase on (checkShouldIncludeFirebase())
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [beta, release]
+  workflow_dispatch:
+
+# Never cancel a publish halfway; queue the next one instead.
+concurrency:
+  group: release-${{ github.event.workflow_run.head_branch || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  # vgm-metadata server for IGDB cover art — public, read-only from the app. Never pass the server's
+  # admin token to a build: it would ship inside the APK.
+  VGM_METADATA_URL: https://metadata.sebacloud.org/
+  # The branch being released. Under workflow_run, GITHUB_REF_NAME is the default branch, not the
+  # one CI ran on, so apps/android/build.gradle.kts reads this first (CiEnv.branch()) for the version
+  # code's branch digit.
+  VGLS_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+
+jobs:
+  publish:
+    # On a workflow_run trigger, only proceed when CI succeeded.
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Choose the Google Play track
+        run: |
+          case "$VGLS_BRANCH" in
+            release) track=production ;;
+            beta)    track=beta ;;
+            *) echo "::error::Releases publish from beta or release, not '$VGLS_BRANCH'"; exit 1 ;;
+          esac
+          echo "Publishing $VGLS_BRANCH to the Google Play '$track' track."
+          echo "TRACK=$track" >> "$GITHUB_ENV"
+
+      - name: Check signing secrets
+        env:
+          UPLOAD_KEY: ${{ secrets.UPLOAD_KEY }}
+          UPLOAD_KEYPASS: ${{ secrets.UPLOAD_KEYPASS }}
+        run: |
+          if [ -z "$UPLOAD_KEY" ] || [ -z "$UPLOAD_KEYPASS" ]; then
+            echo "::error::UPLOAD_KEY/UPLOAD_KEYPASS are not set; refusing to build a development-signed release."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          # The commit CI verified, not the branch tip at the time this run starts.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          submodules: recursive
+          fetch-depth: 0 # full history + tags for git-version's version code / name
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Write google-services.json (if the secret is set)
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          if [ -n "$GOOGLE_SERVICES_JSON" ]; then
+            printf '%s' "$GOOGLE_SERVICES_JSON" > apps/android/google-services.json
+            echo "Firebase on."
+          else
+            echo "No GOOGLE_SERVICES_JSON secret; building without Firebase."
+          fi
+
+      # No --build-cache here: the version code depends on VGLS_BRANCH, which Gradle doesn't track as
+      # a task input, so a cached version-info output from another branch could mis-number the
+      # upload. Release builds are rare; build them from scratch.
+      - name: Build release APK and bundle
+        env:
+          UPLOAD_KEY: ${{ secrets.UPLOAD_KEY }}
+          UPLOAD_KEYPASS: ${{ secrets.UPLOAD_KEYPASS }}
+        run: ./gradlew :apps:android:assembleRelease :apps:android:bundleRelease --no-configuration-cache --no-daemon --max-workers=4
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ env.VGLS_BRANCH }}
+          path: |
+            apps/android/build/outputs/apk/release/*.apk
+            apps/android/build/outputs/bundle/release/*.aab
+
+      - name: Publish bundle to Google Play
+        env:
+          UPLOAD_KEY: ${{ secrets.UPLOAD_KEY }}
+          UPLOAD_KEYPASS: ${{ secrets.UPLOAD_KEYPASS }}
+          ANDROID_PUBLISHER_CREDENTIALS: ${{ secrets.ANDROID_PUBLISHER_CREDENTIALS }}
+        run: ./gradlew :apps:android:publishReleaseBundle --no-configuration-cache --no-daemon --max-workers=4
