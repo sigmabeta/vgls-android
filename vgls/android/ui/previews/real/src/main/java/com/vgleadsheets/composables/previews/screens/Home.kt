@@ -87,6 +87,7 @@ private fun homeScreenLoadingState(): State {
     val moduleStatesByPriority = mapOf(
         loadingModule(LoadingType.NOTIF, Priority.HIGHEST),
         loadingModule(LoadingType.PAGE, Priority.HIGH),
+        loadingModule(LoadingType.COVER, Priority.HIGH),
         loadingModule(LoadingType.SQUARE, Priority.HIGH),
     )
 
