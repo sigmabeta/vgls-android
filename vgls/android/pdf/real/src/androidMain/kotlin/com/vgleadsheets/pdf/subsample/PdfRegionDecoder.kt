@@ -31,12 +31,17 @@ class PdfRegionDecoder(
     private val hatchet: Hatchet,
     private val renderOverlayProvider: RenderOverlayProvider,
 ) : ImageRegionDecoder {
-    private var pdfEngine: PdfRenderer? = createPdfRenderer(pdfFile)
+    private val pdfEngine: PdfRenderer = createPdfRenderer(pdfFile)
+
+    @Volatile
+    private var closed = false
+
+    @Volatile
     private var renderer: AsyncRenderer? =
 //        FakeAsyncRenderer()
         if (pageNumber == null) {
             PdfToBitmapFullDocAsyncRenderer(
-                requireNotNull(pdfEngine),
+                pdfEngine,
                 BluntHatchet(),
                 maxWidth,
                 maxHeight,
@@ -44,7 +49,7 @@ class PdfRegionDecoder(
             )
         } else {
             PdfToBitmapAsyncRenderer(
-                requireNotNull(pdfEngine),
+                pdfEngine,
                 BluntHatchet(),
                 pageNumber,
                 maxWidth,
@@ -65,18 +70,22 @@ class PdfRegionDecoder(
     override fun close() {
         hatchet.i("Closing PDF renderer for $pdfFile")
         renderer = null
-        pdfEngine?.close()
-        pdfEngine = null
+        // Telephoto can close us while a decodeRegion() is mid-render on another thread. The renderers
+        // lock on the engine around every page access, so closing under the same lock means a render
+        // either finishes first or sees a fully-closed engine (IllegalStateException, handled below)
+        // rather than a half-torn-down one (native NPE in PdfProcessor), and close() never lands
+        // while a page is open ("Current page not closed").
+        synchronized(pdfEngine) {
+            closed = true
+            pdfEngine.close()
+        }
     }
 
     override suspend fun decodeRegion(region: IntRect, sampleSize: Int): ImageRegionDecoder.DecodeResult {
         val renderer: AsyncRenderer? = renderer
 
         if (renderer == null) {
-            return ImageRegionDecoder.DecodeResult(
-                painter = ColorPainter(Color.White),
-                hasUltraHdrContent = false
-            )
+            return blankResult()
         }
 
         val viewportSize = IntSize(maxWidth, maxHeight)
@@ -88,14 +97,20 @@ class PdfRegionDecoder(
 
         val zoom = maxSampleSize.size.toFloat() / sampleSize
 
-        val regionBitmap = withContext(sageDispatchers.computation) {
-            renderer.renderToBitmap(
-                width = region.width / sampleSize,
-                height = region.height / sampleSize,
-                zoom = zoom,
-                dXPixels = region.left / sampleSize,
-                dYPixels = region.top / sampleSize,
-            )
+        val regionBitmap = try {
+            withContext(sageDispatchers.computation) {
+                renderer.renderToBitmap(
+                    width = region.width / sampleSize,
+                    height = region.height / sampleSize,
+                    zoom = zoom,
+                    dXPixels = region.left / sampleSize,
+                    dYPixels = region.top / sampleSize,
+                )
+            }
+        } catch (ex: IllegalStateException) {
+            if (!closed) throw ex
+            hatchet.w("PDF renderer for $pdfFile closed mid-decode; returning blank tile.")
+            return blankResult()
         }
 
         return ImageRegionDecoder.DecodeResult(
@@ -103,6 +118,11 @@ class PdfRegionDecoder(
             hasUltraHdrContent = false
         )
     }
+
+    private fun blankResult() = ImageRegionDecoder.DecodeResult(
+        painter = ColorPainter(Color.White),
+        hasUltraHdrContent = false
+    )
 
     private fun createPdfRenderer(pdfFile: Path): PdfRenderer {
         val fileDescriptor = ParcelFileDescriptor.open(
