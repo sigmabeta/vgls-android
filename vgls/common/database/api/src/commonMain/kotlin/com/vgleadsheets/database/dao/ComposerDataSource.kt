@@ -1,6 +1,7 @@
 package com.vgleadsheets.database.dao
 
 import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.ComposerPhoto
 import com.vgleadsheets.model.relation.SongComposerRelation
 import kotlinx.coroutines.flow.Flow
 
@@ -26,4 +27,17 @@ interface ComposerDataSource : DataSource<Composer> {
     suspend fun toggleOffline(composerId: Long)
 
     fun getHighestId(): Flow<Long>
+
+    /**
+     * Replaces every composer's vgm-metadata photo with [photoByComposerId]: composers in it get
+     * that photo and credit, composers not in it lose theirs. Callers run it inside a transaction.
+     */
+    suspend fun replaceMetadataPhotos(photoByComposerId: Map<Long, ComposerPhoto>)
+
+    /**
+     * Whether any composer currently has a vgm-metadata photo. False after the table was cleared (or
+     * before the first photo pull), which the updater treats as "the stored mapping is out of sync
+     * with the database, fetch again" rather than trusting the ETag.
+     */
+    suspend fun hasMetadataPhoto(): Boolean
 }

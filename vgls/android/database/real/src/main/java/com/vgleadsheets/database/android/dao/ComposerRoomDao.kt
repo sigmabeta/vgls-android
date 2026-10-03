@@ -83,6 +83,22 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
     @Query(QUERY_GAME_COVERS)
     suspend fun getGameCoversSync(): List<ComposerGameCover>
 
+    @Query(QUERY_CLEAR_METADATA_PHOTOS)
+    suspend fun clearMetadataPhotos()
+
+    @Query(QUERY_SET_METADATA_PHOTO)
+    suspend fun setMetadataPhoto(
+        id: Long,
+        url: String,
+        author: String?,
+        license: String?,
+        licenseUrl: String?,
+        sourceUrl: String?,
+    )
+
+    @Query(QUERY_COUNT_METADATA_PHOTOS)
+    suspend fun countMetadataPhotos(): Int
+
     @Query(QUERY_HIGHEST_ID)
     fun getHighestId(): Flow<ComposerEntity>
 
@@ -142,6 +158,15 @@ interface ComposerRoomDao : RoomDao<ComposerEntity> {
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         private const val QUERY_DELETE = "$DELETE $TABLE"
         private const val QUERY_UPDATE = "$UPDATE $TABLE"
+        private const val QUERY_CLEAR_METADATA_PHOTOS =
+            "$QUERY_UPDATE $SET metadataPhotoUrl = NULL, metadataPhotoAuthor = NULL, " +
+                "metadataPhotoLicense = NULL, metadataPhotoLicenseUrl = NULL, metadataPhotoSourceUrl = NULL"
+        private const val QUERY_SET_METADATA_PHOTO =
+            "$QUERY_UPDATE $SET metadataPhotoUrl = :url, metadataPhotoAuthor = :author, " +
+                "metadataPhotoLicense = :license, metadataPhotoLicenseUrl = :licenseUrl, " +
+                "metadataPhotoSourceUrl = :sourceUrl $WHERE_SINGLE"
+        private const val QUERY_COUNT_METADATA_PHOTOS =
+            "SELECT COUNT(*) FROM $TABLE WHERE metadataPhotoUrl IS NOT NULL"
         private const val QUERY_FAVORITES =
             "$GET $TABLE $WHERE_FAVORITE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         private const val QUERY_MOST_SONGS = "$GET $TABLE $OPTION_SONG_COUNT_ORDER $OPTION_NUM_RECORDS_MOST"

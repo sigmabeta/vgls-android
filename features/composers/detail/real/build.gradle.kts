@@ -12,6 +12,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 api(projects.vgls.common.analytics.api)
+                api(projects.vgls.common.appcomm.api)
                 api(libs.sage.common.images)
                 api(libs.sage.common.list)
                 api(projects.vgls.common.model.api)

@@ -31,7 +31,7 @@ object JvmDatabaseModule {
     fun provideVglsDatabase(@Named("workDir") workDir: File): VglsDatabase = Room
         .databaseBuilder<VglsDatabase>(name = File(workDir, "vgls-database").absolutePath)
         .setDriver(BundledSQLiteDriver())
-        .addMigrations(AddIgdbImageIds)
+        .addMigrations(AddIgdbImageIds, AddComposerPhotos)
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
 
@@ -41,6 +41,15 @@ object JvmDatabaseModule {
     ) {
         override fun migrate(connection: SQLiteConnection) {
             connection.execSQL(DatabaseVersions.ADD_IGDB_IMAGE_ID_SQL)
+        }
+    }
+
+    private object AddComposerPhotos : Migration(
+        DatabaseVersions.ADDED_IGDB_IMAGE_IDS,
+        DatabaseVersions.ADDED_COMPOSER_PHOTOS,
+    ) {
+        override fun migrate(connection: SQLiteConnection) {
+            DatabaseVersions.ADD_COMPOSER_PHOTO_SQL.forEach(connection::execSQL)
         }
     }
 

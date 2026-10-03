@@ -11,5 +11,8 @@ open class VglsEvent : SageEvent() {
     data object WebsiteLinkClicked : VglsEvent()
     data object PrivacyLinkClicked : VglsEvent()
 
+    /** Open [url] in the platform's browser, e.g. a photo's source page for attribution. */
+    data class OpenUrl(val url: String) : VglsEvent()
+
     data object RestartApp : VglsEvent()
 }

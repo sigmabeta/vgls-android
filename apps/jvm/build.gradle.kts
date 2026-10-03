@@ -22,12 +22,18 @@ compose.desktop {
  * time the app also reads the VGM_METADATA_URL env var itself.
  */
 fun vgmMetadataUrl(): String? {
-    val localProperties = Properties().apply {
-        rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use(::load)
+    // Read local.properties through a tracked provider: a plain inputStream() read isn't a
+    // configuration-cache input, so editing the file wouldn't invalidate a cached configuration
+    // and the URL would silently stay unset until something else changed the build.
+    val localPropertiesText = providers.fileContents(
+        rootProject.layout.projectDirectory.file("local.properties"),
+    ).asText.orNull
+    val fromLocalProperties = localPropertiesText?.let { text ->
+        Properties().apply { load(text.reader()) }.getProperty("vgm.metadata.url")
     }
     return (
-        localProperties.getProperty("vgm.metadata.url") ?: findProperty("vgm.metadata.url") as String?
-        ?: System.getenv("VGM_METADATA_URL")
+        fromLocalProperties ?: findProperty("vgm.metadata.url") as String?
+            ?: System.getenv("VGM_METADATA_URL")
     )
         ?.trim()
         ?.takeIf { it.isNotEmpty() }

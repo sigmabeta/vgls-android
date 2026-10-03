@@ -8,6 +8,7 @@ import com.vgleadsheets.database.android.enitity.ComposerEntity
 import com.vgleadsheets.database.android.join.SongComposerJoin
 import com.vgleadsheets.database.dao.ComposerDataSource
 import com.vgleadsheets.model.Composer
+import com.vgleadsheets.model.ComposerPhoto
 import com.vgleadsheets.model.IgdbImages
 import com.vgleadsheets.model.relation.SongComposerRelation
 import kotlinx.coroutines.flow.Flow
@@ -86,6 +87,22 @@ class ComposerAndroidDataSource(
     override fun getHighestId() = roomImpl
         .getHighestId()
         .map { it.id }
+
+    override suspend fun replaceMetadataPhotos(photoByComposerId: Map<Long, ComposerPhoto>) {
+        roomImpl.clearMetadataPhotos()
+        photoByComposerId.forEach { (composerId, photo) ->
+            roomImpl.setMetadataPhoto(
+                id = composerId,
+                url = photo.url,
+                author = photo.author,
+                license = photo.license,
+                licenseUrl = photo.licenseUrl,
+                sourceUrl = photo.sourceUrl,
+            )
+        }
+    }
+
+    override suspend fun hasMetadataPhoto(): Boolean = roomImpl.countMetadataPhotos() > 0
 
     private fun Flow<List<ComposerEntity>>.toModelsWithGameImages() = combine(
         this,

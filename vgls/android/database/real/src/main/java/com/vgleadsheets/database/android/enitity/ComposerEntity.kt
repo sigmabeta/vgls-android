@@ -16,6 +16,11 @@ data class ComposerEntity(
     val sheetsPlayed: Int,
     val isFavorite: Boolean,
     val isAvailableOffline: Boolean,
+    val metadataPhotoUrl: String? = null,
+    val metadataPhotoAuthor: String? = null,
+    val metadataPhotoLicense: String? = null,
+    val metadataPhotoLicenseUrl: String? = null,
+    val metadataPhotoSourceUrl: String? = null,
 ) {
     companion object {
         const val TABLE = "composer"

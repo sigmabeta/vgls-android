@@ -28,6 +28,7 @@ import com.vgleadsheets.database.source.TagValuePlayCountDataSource
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.VgmMetadataApi
 import com.vgleadsheets.notif.NotifManager
+import com.vgleadsheets.repository.ComposerPhotoUpdater
 import com.vgleadsheets.repository.ComposerRepository
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.FavoriteRepository
@@ -135,6 +136,7 @@ object RepositoryModule {
         notifManager: NotifManager,
         stringProvider: StringProvider,
         igdbCoverUpdater: IgdbCoverUpdater,
+        composerPhotoUpdater: ComposerPhotoUpdater,
     ): UpdateManager = UpdateManager(
         vglsApi,
         dbUpdater,
@@ -147,6 +149,7 @@ object RepositoryModule {
         notifManager,
         stringProvider,
         igdbCoverUpdater,
+        composerPhotoUpdater,
     )
 
     @Provides
@@ -158,6 +161,17 @@ object RepositoryModule {
         storage: Storage,
         hatchet: Hatchet,
     ): IgdbCoverUpdater = IgdbCoverUpdater(vgmMetadataApi, gameDataSource, transactionDao, storage, hatchet)
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideComposerPhotoUpdater(
+        vgmMetadataApi: VgmMetadataApi,
+        transactionDao: TransactionDao,
+        composerDataSource: ComposerDataSource,
+        storage: Storage,
+        hatchet: Hatchet,
+    ): ComposerPhotoUpdater =
+        ComposerPhotoUpdater(vgmMetadataApi, composerDataSource, transactionDao, storage, hatchet)
 
     @Provides
     @SingleIn(AppScope::class)

@@ -13,7 +13,12 @@ class ComposerConverter : Converter<Composer, ComposerEntity> {
         photoUrl,
         sheetsPlayed,
         isFavorite,
-        isAvailableOffline
+        isAvailableOffline,
+        metadataPhotoUrl,
+        metadataPhotoAuthor,
+        metadataPhotoLicense,
+        metadataPhotoLicenseUrl,
+        metadataPhotoSourceUrl,
     )
 
     override fun ComposerEntity.toModel() = Composer(
@@ -26,5 +31,10 @@ class ComposerConverter : Converter<Composer, ComposerEntity> {
         sheetsPlayed,
         isFavorite,
         isAvailableOffline,
+        metadataPhotoUrl = metadataPhotoUrl,
+        metadataPhotoAuthor = metadataPhotoAuthor,
+        metadataPhotoLicense = metadataPhotoLicense,
+        metadataPhotoLicenseUrl = metadataPhotoLicenseUrl,
+        metadataPhotoSourceUrl = metadataPhotoSourceUrl,
     )
 }

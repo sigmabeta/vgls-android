@@ -100,6 +100,7 @@ class NavViewModel @Inject constructor(
                 is VglsEvent.SearchYoutubeClicked -> launchWebsite(getYoutubeSearchUrlForQuery(event.query))
                 is VglsEvent.PrivacyLinkClicked -> launchWebsite(URL_PRIVACY)
                 is VglsEvent.WebsiteLinkClicked -> launchWebsite(URL_VGLS_WEBSITE)
+                is VglsEvent.OpenUrl -> launchWebsite(event.url)
                 is VglsEvent.RestartApp -> restartApp()
             }
         }
