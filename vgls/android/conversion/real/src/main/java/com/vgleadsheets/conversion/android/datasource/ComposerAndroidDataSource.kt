@@ -88,6 +88,13 @@ class ComposerAndroidDataSource(
         .getHighestId()
         .map { it.id }
 
+    override suspend fun getPage(limit: Int, offset: Int): List<Composer> {
+        val gameImageUrls = gameImageUrlsByComposerSync()
+        return roomImpl
+            .getPage(limit, offset)
+            .map { it.toModel(gameImageUrls) }
+    }
+
     override suspend fun replaceMetadataPhotos(photoByComposerId: Map<Long, ComposerPhoto>) {
         roomImpl.clearMetadataPhotos()
         photoByComposerId.forEach { (composerId, photo) ->

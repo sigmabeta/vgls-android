@@ -60,6 +60,9 @@ interface SongRoomDao : RoomDao<SongEntity> {
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<SongEntity>>
 
+    @Query(QUERY_PAGE)
+    suspend fun getPage(limit: Int, offset: Int): List<SongEntity>
+
     @Insert
     override suspend fun insert(entities: List<SongEntity>)
 
@@ -129,6 +132,10 @@ interface SongRoomDao : RoomDao<SongEntity> {
 
         const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
+
+        // A stable window: name-ordered, with id breaking ties so a page boundary can't shuffle rows.
+        private const val QUERY_PAGE =
+            "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE, id LIMIT :limit OFFSET :offset"
         const val QUERY_SEARCH =
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
         const val QUERY_DELETE = "$DELETE $TABLE"

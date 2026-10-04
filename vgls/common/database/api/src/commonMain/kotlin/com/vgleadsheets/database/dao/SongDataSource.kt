@@ -27,4 +27,7 @@ interface SongDataSource : DataSource<Song> {
     suspend fun setLastDownloaded(songId: Long, timestamp: Long)
 
     fun getHighestId(): Flow<Long>
+
+    /** A page of songs in the same name order as [getAll], for the browse list's windowed loading. */
+    suspend fun getPage(limit: Int, offset: Int): List<Song>
 }

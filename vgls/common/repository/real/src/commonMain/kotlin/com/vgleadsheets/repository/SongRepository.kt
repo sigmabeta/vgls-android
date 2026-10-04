@@ -12,6 +12,9 @@ class SongRepository(
     fun getAllSongs() = songDataSource
         .getAll()
 
+    suspend fun getSongsPage(limit: Int, offset: Int) = songDataSource
+        .getPage(limit, offset)
+
     fun getFavoriteSongs() = songDataSource.getFavorites()
 
     fun getSongsForGame(gameId: Long) = songDataSource

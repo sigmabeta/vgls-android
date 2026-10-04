@@ -43,6 +43,10 @@ GameDataSource {
         .getHighestId()
         .map { it.id }
 
+    override suspend fun getPage(limit: Int, offset: Int): List<Game> = roomImpl
+        .getPage(limit, offset)
+        .map { convert.entityToModel(it) }
+
     override suspend fun replaceIgdbImageIds(imageIdByGameId: Map<Long, String>) {
         roomImpl.clearIgdbImageIds()
         imageIdByGameId.forEach { (gameId, imageId) -> roomImpl.setIgdbImageId(gameId, imageId) }

@@ -59,4 +59,8 @@ SongDataSource {
     override fun getHighestId() = roomImpl
         .getHighestId()
         .map { it?.id ?: 0 }
+
+    override suspend fun getPage(limit: Int, offset: Int): List<Song> = roomImpl
+        .getPage(limit, offset)
+        .map { convert.entityToModel(it) }
 }

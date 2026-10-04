@@ -20,6 +20,9 @@ interface GameDataSource : DataSource<Game> {
 
     fun getHighestId(): Flow<Long>
 
+    /** A page of games in the same name order as [getAll], for the browse list's windowed loading. */
+    suspend fun getPage(limit: Int, offset: Int): List<Game>
+
     /**
      * Replaces every game's IGDB cover image id with [imageIdByGameId]: games in it get that id,
      * games not in it lose theirs. Callers run it inside a transaction.

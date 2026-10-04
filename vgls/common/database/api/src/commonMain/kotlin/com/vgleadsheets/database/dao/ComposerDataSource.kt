@@ -28,6 +28,9 @@ interface ComposerDataSource : DataSource<Composer> {
 
     fun getHighestId(): Flow<Long>
 
+    /** A page of composers in the same name order as [getAll], for the browse list's windowed loading. */
+    suspend fun getPage(limit: Int, offset: Int): List<Composer>
+
     /**
      * Replaces every composer's vgm-metadata photo with [photoByComposerId]: composers in it get
      * that photo and credit, composers not in it lose theirs. Callers run it inside a transaction.
