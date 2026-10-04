@@ -51,4 +51,6 @@ GameDataSource {
         roomImpl.clearIgdbImageIds()
         imageIdByGameId.forEach { (gameId, imageId) -> roomImpl.setIgdbImageId(gameId, imageId) }
     }
+
+    override suspend fun hasIgdbImage(): Boolean = roomImpl.countIgdbImages() > 0
 }

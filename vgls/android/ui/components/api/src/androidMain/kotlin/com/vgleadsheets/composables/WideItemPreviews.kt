@@ -68,7 +68,7 @@ private fun Sample() {
             WideItemListModel(
                 1234L,
                 "Konami Kukeiha Club",
-                "https://randomfox.ca/images/12.jpg",
+                SourceInfo("https://randomfox.ca/images/12.jpg"),
                 Icon.Person,
                 null,
                 SageAction.Noop
@@ -82,7 +82,7 @@ private fun Sample() {
             WideItemListModel(
                 1234L,
                 "Masayoshi Soken",
-                "https://randomfox.ca/images/12.jpg",
+                SourceInfo("https://randomfox.ca/images/12.jpg"),
                 Icon.Person,
                 null,
                 SageAction.Noop

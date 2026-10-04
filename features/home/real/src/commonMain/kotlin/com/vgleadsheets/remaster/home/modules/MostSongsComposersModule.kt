@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.map
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.GridImageListModel
+import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.list.DelayManager
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.StringProvider
@@ -41,7 +42,7 @@ class MostSongsComposersModule @Inject constructor(
                         GridImageListModel(
                             dataId = composer.id,
                             name = composer.name,
-                            sourceInfo = composer.photoUrl,
+                            sourceInfo = SourceInfo.ofUrls(composer.imageUrls),
                             imagePlaceholder = Icon.Person,
                             clickAction = Action.MostSongsComposerClicked(composer.id)
                         )

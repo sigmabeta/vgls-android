@@ -243,17 +243,30 @@ class FakeModelGenerator constructor(
         possibleComposers = composers.distinctBy { it.id }
     }
 
-    private fun generateComposer() = Composer(
-        id = random.nextLong(),
-        songs = null,
-        songCount = random.nextInt(10),
-        hasVocalSongs = random.nextBoolean(),
-        name = stringGenerator.generateName(),
-        photoUrl = stringGenerator.generateName(),
-        isFavorite = false,
-        isAvailableOffline = false,
-        sheetsPlayed = 0,
-    )
+    private fun generateComposer(): Composer {
+        val id = random.nextLong()
+        val songCount = random.nextInt(10)
+        val hasVocalSongs = random.nextBoolean()
+        val name = stringGenerator.generateName()
+
+        // Real composers have no photo, so fake ones show 1-4 game covers instead. Derived from one
+        // generated string (rather than more random draws) so the rest of the seeded data is unchanged.
+        val imageSeed = stringGenerator.generateName()
+        val gameImageCount = imageSeed.hashCode().mod(MAX_COMPOSER_GAME_IMAGES) + 1
+
+        return Composer(
+            id = id,
+            songs = null,
+            songCount = songCount,
+            hasVocalSongs = hasVocalSongs,
+            name = name,
+            photoUrl = null,
+            isFavorite = false,
+            isAvailableOffline = false,
+            sheetsPlayed = 0,
+            gameImageUrls = List(gameImageCount) { "$imageSeed$it" },
+        )
+    }
 
     private fun getTags(): Map<String, List<String>> {
         if (possibleTags == null) {
@@ -311,6 +324,7 @@ class FakeModelGenerator constructor(
         const val MAX_WORDS_PER_LOREM = 50
         const val MAX_WORDS_PER_TITLE = 5
         const val MAX_PAGE_COUNT = 2
+        private const val MAX_COMPOSER_GAME_IMAGES = 4
 
         val PARTS_NO_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto")
         val PARTS_WITH_VOCALS = setOf("C", "Bb", "Eb", "F", "Bass", "Alto", "Vocals")

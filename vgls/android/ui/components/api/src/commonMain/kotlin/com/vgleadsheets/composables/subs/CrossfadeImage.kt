@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.LocalPlatformContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
@@ -33,9 +35,11 @@ import com.vgleadsheets.composables.previews.PreviewActionSink
 import com.vgleadsheets.images.BitmapGenerator
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ImageNameListModel
+import net.sigmabeta.sage.images.ImageCollage
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
+import net.sigmabeta.sage.ui.composables.CollageLayout
 import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.ui.vector
 
@@ -48,8 +52,21 @@ fun CrossfadeImage(
     forceGenBitmap: Boolean = LocalInspectionMode.current,
     simulateError: Boolean = false,
 ) {
-    if (sourceInfo.info == null) {
+    val info = sourceInfo.info
+    if (info == null) {
         PlaceHolderImage(imagePlaceholder, modifier)
+        return
+    }
+
+    if (info is ImageCollage) {
+        CollageImage(
+            info,
+            imagePlaceholder,
+            contentDescription,
+            modifier,
+            forceGenBitmap,
+            simulateError,
+        )
         return
     }
 
@@ -65,6 +82,34 @@ fun CrossfadeImage(
         simulateError,
         modifier,
     )
+}
+
+@Composable
+private fun CollageImage(
+    collage: ImageCollage,
+    imagePlaceholder: Icon,
+    contentDescription: String?,
+    modifier: Modifier,
+    forceGenBitmap: Boolean,
+    simulateError: Boolean,
+) {
+    CollageLayout(
+        tileCount = collage.sources.size,
+        modifier = modifier.semantics {
+            if (contentDescription != null) {
+                this.contentDescription = contentDescription
+            }
+        },
+    ) { index, tileModifier ->
+        CrossfadeImage(
+            sourceInfo = SourceInfo(collage.sources[index]),
+            imagePlaceholder = imagePlaceholder,
+            contentDescription = null,
+            modifier = tileModifier,
+            forceGenBitmap = forceGenBitmap,
+            simulateError = simulateError,
+        )
+    }
 }
 
 @Composable

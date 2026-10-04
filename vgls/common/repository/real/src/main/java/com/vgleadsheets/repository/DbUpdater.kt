@@ -112,6 +112,13 @@ class DbUpdater(
                 dbComposer?.isAvailableOffline ?: false,
                 false,
                 0,
+            ).copy(
+                // Not from the VGLS API (it comes from vgm-metadata), so carry it across refreshes.
+                metadataPhotoUrl = dbComposer?.metadataPhotoUrl,
+                metadataPhotoAuthor = dbComposer?.metadataPhotoAuthor,
+                metadataPhotoLicense = dbComposer?.metadataPhotoLicense,
+                metadataPhotoLicenseUrl = dbComposer?.metadataPhotoLicenseUrl,
+                metadataPhotoSourceUrl = dbComposer?.metadataPhotoSourceUrl,
             )
         }.toMutableMap()
 

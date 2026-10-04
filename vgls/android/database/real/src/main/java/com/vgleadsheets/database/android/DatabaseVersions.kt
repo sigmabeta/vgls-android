@@ -55,6 +55,20 @@ object DatabaseVersions {
     /** The column added in [ADDED_IGDB_IMAGE_IDS], shared by the android and desktop migrations. */
     const val ADD_IGDB_IMAGE_ID_SQL = "ALTER TABLE game ADD COLUMN igdbImageId TEXT"
 
+    /**
+     *  - Added vgm-metadata "metadataPhoto*" photo and credit columns to composers.
+     */
+    const val ADDED_COMPOSER_PHOTOS = 19
+
+    /** The columns added in [ADDED_COMPOSER_PHOTOS], shared by the android and desktop migrations. */
+    val ADD_COMPOSER_PHOTO_SQL = listOf(
+        "ALTER TABLE composer ADD COLUMN metadataPhotoUrl TEXT",
+        "ALTER TABLE composer ADD COLUMN metadataPhotoAuthor TEXT",
+        "ALTER TABLE composer ADD COLUMN metadataPhotoLicense TEXT",
+        "ALTER TABLE composer ADD COLUMN metadataPhotoLicenseUrl TEXT",
+        "ALTER TABLE composer ADD COLUMN metadataPhotoSourceUrl TEXT",
+    )
+
     // Doesn't need to be changed.
     val WITHOUT_MIGRATION = (1 until ADDED_PLAY_COUNTS).toList().toIntArray()
 }

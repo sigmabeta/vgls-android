@@ -157,6 +157,7 @@
     <string name="accy_st_desc_unchecked">Disabled</string>
     <string name="accy_cdesc_hero_game">Box art image</string>
     <string name="accy_cdesc_hero_composer">Photo of composer</string>
+    <string name="composer_photo_credit">Photo: %1$s</string>
     <string name="accy_cdesc_topbar_back">Go back</string>
     <string name="accy_cdesc_topbar_menu">Open Settings Menu</string>
     <string name="accy_cdesc_search_back">Go back</string>

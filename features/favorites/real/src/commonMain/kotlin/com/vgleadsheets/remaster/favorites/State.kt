@@ -103,7 +103,7 @@ data class State(
             GridImageListModel(
                 dataId = game.id + ID_OFFSET_GAME,
                 name = game.name,
-                sourceInfo = game.imageUrl,
+                sourceInfo = SourceInfo(game.imageUrl),
                 aspectRatio = IgdbImages.COVER_ASPECT_RATIO,
                 imagePlaceholder = Icon.Album,
                 clickAction = Action.GameClicked(game.id),
@@ -130,7 +130,7 @@ data class State(
             GridImageListModel(
                 dataId = composer.id + ID_OFFSET_COMPOSER,
                 name = composer.name,
-                sourceInfo = composer.photoUrl,
+                sourceInfo = SourceInfo.ofUrls(composer.imageUrls),
                 imagePlaceholder = Icon.Person,
                 clickAction = Action.ComposerClicked(composer.id),
             )

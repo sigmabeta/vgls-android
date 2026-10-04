@@ -78,7 +78,7 @@ private fun Sample() {
             GridImageListModel(
                 1234L,
                 "Xenoblade Chronicles 3",
-                "https://randomfox.ca/images/12.jpg",
+                SourceInfo("https://randomfox.ca/images/12.jpg"),
                 Icon.Album,
                 null,
                 SageAction.Noop
@@ -92,7 +92,7 @@ private fun Sample() {
             GridImageListModel(
                 1234L,
                 "Xenoblade Chronicles 3: Future Redeemed Some More",
-                "https://randomfox.ca/images/1235.jpg",
+                SourceInfo("https://randomfox.ca/images/1235.jpg"),
                 Icon.Album,
                 null,
                 SageAction.Noop
