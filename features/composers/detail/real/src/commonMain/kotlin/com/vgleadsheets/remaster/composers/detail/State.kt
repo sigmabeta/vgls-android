@@ -11,10 +11,11 @@ import net.sigmabeta.sage.components.CtaListModel
 import net.sigmabeta.sage.components.HeroImageListModel
 import net.sigmabeta.sage.components.HorizontalScrollerListModel
 import net.sigmabeta.sage.components.ImageNameListModel
+import net.sigmabeta.sage.components.LabelValueListModel
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SectionHeaderListModel
-import net.sigmabeta.sage.components.SingleTextListModel
+import net.sigmabeta.sage.components.SectionListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.components.WideItemListModel
 import net.sigmabeta.sage.images.PdfSize
@@ -50,12 +51,14 @@ data class State(
         val ctaModels = ctaSection(stringProvider)
         val gameModels = gameSection(stringProvider)
         val songModels = songSection(stringProvider)
+        val aboutModel = aboutSection(stringProvider)
 
         return listOf(
             composerModel,
             ctaModels,
             gameModels,
-            songModels
+            songModels,
+            aboutModel
         )
     }
 
@@ -77,19 +80,55 @@ data class State(
                     )
                 )
             }
-            data.photoCredit(stringProvider)?.let(::add)
         }
     }
 
-    /** The photo's attribution line, linking to its source page when it has one; null if no credit. */
-    private fun Composer.photoCredit(stringProvider: StringProvider): SingleTextListModel? {
-        if (metadataPhotoUrl == null) return null
-        val credit = listOfNotNull(metadataPhotoAuthor, metadataPhotoLicense).joinToString(" · ")
-        if (credit.isEmpty()) return null
-        return SingleTextListModel(
-            name = stringProvider.getStringOneArg(VglsStringId.COMPOSER_PHOTO_CREDIT, credit),
-            clickAction = metadataPhotoSourceUrl?.let { Action.PhotoCreditClicked(it) } ?: SageAction.Noop,
+    private fun aboutSection(stringProvider: StringProvider): SectionListModel {
+        // Attribution is a detail of an already-loaded composer, so don't show a loading skeleton
+        // for it (unlike the hero/CTA/games/songs sections).
+        val loadedComposer: LCE<Composer> = if (composer is LCE.Content) composer else LCE.Uninitialized
+
+        return loadedComposer.sectionWithStandardErrorAndLoading(
+            sectionName = SECTION_NAME_ABOUT,
+        ) {
+            data.aboutItems(stringProvider)
+        }
+    }
+
+    /** The photo attribution rows, headed by an "About" header; empty when there's no credit. */
+    private fun Composer.aboutItems(stringProvider: StringProvider): List<ListModel> {
+        if (metadataPhotoUrl == null) return emptyList()
+
+        val rows = listOfNotNull(
+            metadataPhotoAuthor?.let { author ->
+                LabelValueListModel(
+                    label = stringProvider.getString(VglsStringId.LABEL_COMPOSER_PHOTO),
+                    value = author,
+                    clickAction = metadataPhotoSourceUrl
+                        ?.let { Action.PhotoCreditClicked(it) }
+                        ?: SageAction.Noop,
+                    dataId = ID_ABOUT_PHOTO,
+                )
+            },
+            metadataPhotoLicense?.let { license ->
+                LabelValueListModel(
+                    label = stringProvider.getString(VglsStringId.LABEL_COMPOSER_PHOTO_LICENSE),
+                    value = license,
+                    clickAction = metadataPhotoLicenseUrl
+                        ?.let { Action.PhotoLicenseClicked(it) }
+                        ?: SageAction.Noop,
+                    dataId = ID_ABOUT_PHOTO_LICENSE,
+                )
+            },
         )
+
+        if (rows.isEmpty()) return emptyList()
+
+        return listOf(
+            SectionHeaderListModel(
+                stringProvider.getString(VglsStringId.SECTION_HEADER_ABOUT_COMPOSER)
+            )
+        ) + rows
     }
 
     private fun State.ctaSection(stringProvider: StringProvider) = composer.sectionWithStandardErrorAndLoading(
@@ -222,9 +261,13 @@ data class State(
         private const val SECTION_NAME_GAMES = "section.game"
         private const val SECTION_NAME_CTA = "section.cta"
         private const val SECTION_NAME_SONGS = "section.song"
+        private const val SECTION_NAME_ABOUT = "section.about"
 
         private const val ID_PREFIX_GAMES = 1_000_000L
         private const val ID_PREFIX_SONGS = 1_000_000_000L
         private const val ID_PREFIX_SCROLLER_CONTENT = 1_000_000_000_000L
+
+        private const val ID_ABOUT_PHOTO = 1_000_000_000_000_000L
+        private const val ID_ABOUT_PHOTO_LICENSE = 2_000_000_000_000_000L
     }
 }

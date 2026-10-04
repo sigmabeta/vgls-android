@@ -6,6 +6,7 @@ sealed class Action : SageAction() {
     data class GameClicked(val id: Long) : Action()
     data class SongClicked(val id: Long) : Action()
     data class PhotoCreditClicked(val url: String) : Action()
+    data class PhotoLicenseClicked(val url: String) : Action()
     data object AddFavoriteClicked : Action()
     data object RemoveFavoriteClicked : Action()
     data object EnableOfflineClicked : Action()

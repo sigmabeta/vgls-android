@@ -29,6 +29,21 @@ internal fun ComposerDetail(
 
 @DevicePreviews
 @Composable
+internal fun ComposerDetailWithPhoto(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
+) {
+    val screenState = composerScreenState(withPhoto = true)
+
+    ListScreenPreview(
+        screenState = screenState,
+        syntheticWidthClass = syntheticWidthClass,
+        darkTheme = darkTheme
+    )
+}
+
+@DevicePreviews
+@Composable
 internal fun ComposerDetailLoading(
     darkTheme: Boolean = isSystemInDarkTheme(),
     syntheticWidthClass: WidthClass = currentWindowWidthClassSynthetic(),
@@ -43,7 +58,7 @@ internal fun ComposerDetailLoading(
 }
 
 @Suppress("MagicNumber")
-private fun composerScreenState(): State {
+private fun composerScreenState(withPhoto: Boolean = false): State {
     val seed = 1234L
     val random = Random(seed)
     val modelGenerator = FakeModelGenerator(
@@ -52,7 +67,19 @@ private fun composerScreenState(): State {
         StringGenerator(random)
     )
 
-    val composer = modelGenerator.randomComposer()
+    val composer = modelGenerator.randomComposer().let { base ->
+        if (withPhoto) {
+            base.copy(
+                metadataPhotoUrl = "https://example.com/composer.jpg",
+                metadataPhotoAuthor = "Jane Doe",
+                metadataPhotoLicense = "CC BY-SA 4.0",
+                metadataPhotoLicenseUrl = "https://creativecommons.org/licenses/by-sa/4.0/",
+                metadataPhotoSourceUrl = "https://commons.wikimedia.org/wiki/File:Example.jpg",
+            )
+        } else {
+            base
+        }
+    }
     val games = modelGenerator.randomGames()
     val songs = modelGenerator.randomSongs()
 
