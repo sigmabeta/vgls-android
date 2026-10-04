@@ -30,7 +30,6 @@ import com.vgleadsheets.ui.theme.AppTheme
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.GridImageListModel
-import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.ui.Icon
 
 @Composable
@@ -50,7 +49,7 @@ fun SquareItem(
     ) {
         Box {
             CrossfadeImage(
-                sourceInfo = SourceInfo(model.sourceInfo),
+                sourceInfo = model.sourceInfo,
                 imagePlaceholder = model.imagePlaceholder,
                 contentDescription = model.name,
                 modifier = Modifier

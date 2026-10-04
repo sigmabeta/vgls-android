@@ -25,4 +25,11 @@ interface GameDataSource : DataSource<Game> {
      * games not in it lose theirs. Callers run it inside a transaction.
      */
     suspend fun replaceIgdbImageIds(imageIdByGameId: Map<Long, String>)
+
+    /**
+     * Whether any game currently has a cover. False after the table was cleared (or before the
+     * first cover pull), which the updater treats as "the stored mapping is out of sync with the
+     * database, fetch again" rather than trusting the ETag.
+     */
+    suspend fun hasIgdbImage(): Boolean
 }

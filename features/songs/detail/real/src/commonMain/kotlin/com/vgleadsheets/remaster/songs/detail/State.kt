@@ -216,7 +216,7 @@ data class State(
                     WideItemListModel(
                         dataId = composer.id + ID_PREFIX_COMPOSERS,
                         name = composer.name,
-                        sourceInfo = composer.photoUrl,
+                        sourceInfo = SourceInfo.ofUrls(composer.imageUrls),
                         imagePlaceholder = Icon.Person,
                         clickAction = Action.ComposerClicked(composer.id)
                     )

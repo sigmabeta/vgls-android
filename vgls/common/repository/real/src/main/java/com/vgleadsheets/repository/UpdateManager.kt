@@ -45,9 +45,15 @@ class UpdateManager(
     private val notifManager: NotifManager,
     private val stringProvider: StringProvider,
     private val igdbCoverUpdater: IgdbCoverUpdater,
+    private val composerPhotoUpdater: ComposerPhotoUpdater,
 ) {
     init {
         setupApiUpdateTimeCheckFlow()
+        // Pull cover art and composer photos once at startup, independent of the 4-hour VGLS check:
+        // those are what the ETag can wrongly skip after the art tables were cleared, and the VGLS
+        // gate would otherwise leave the app with no art for hours. The updaters fetch only when
+        // they have nothing, so this is a cheap 304 in the normal case.
+        launchCoverAndPhotoRefresh(force = false)
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -66,12 +72,12 @@ class UpdateManager(
             .map { checkLastUpdateTimeIsOldEnough(it) }
             .filter { it }
             .onEach { refreshLastApiUpdateTime() }
-            .onEach { launchIgdbCoverRefresh(force = false) }
+            .onEach { launchCoverAndPhotoRefresh(force = false) }
             .flatMapLatest { dbUpdateTimeCheckFlow() }
             .filter { it }
             .flatMapLatest { refreshInternal() }
             .filter { it }
-            .onEach { launchIgdbCoverRefresh(force = true) }
+            .onEach { launchCoverAndPhotoRefresh(force = true) }
             .onEach { onUpdateSuccess() }
             .onCompletion { hatchet.e("Cancelled update flow because of ${it?.message}") }
             .flowOn(dispatchers.disk)
@@ -99,19 +105,26 @@ class UpdateManager(
         val needsUpdate = dbUpdateTimeCheckFlow().first()
         if (!needsUpdate) {
             igdbCoverUpdater.refresh(force = false)
+            composerPhotoUpdater.refresh(force = false)
             return true
         }
         val updated = refreshInternal().first()
-        if (updated) igdbCoverUpdater.refresh(force = true)
+        if (updated) {
+            igdbCoverUpdater.refresh(force = true)
+            composerPhotoUpdater.refresh(force = true)
+        }
         return updated
     }
 
     /**
-     * Pulls the IGDB mapping in the background. [force] after the game table was rewritten, since
-     * rows the VGLS update added have no cover even if the mapping itself is unchanged.
+     * Pulls the IGDB covers and composer photos in the background. [force] after a table was
+     * rewritten, since rows the VGLS update added have no art even if the mappings are unchanged.
      */
-    private fun launchIgdbCoverRefresh(force: Boolean) {
-        coroutineScope.launch(dispatchers.network) { igdbCoverUpdater.refresh(force) }
+    private fun launchCoverAndPhotoRefresh(force: Boolean) {
+        coroutineScope.launch(dispatchers.network) {
+            igdbCoverUpdater.refresh(force)
+            composerPhotoUpdater.refresh(force)
+        }
     }
 
     @Suppress("TooGenericExceptionCaught")

@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.vgls.common.model.api)
     implementation(libs.kotlinx.datetime)
     implementation(libs.sage.common.ui.components)
+    implementation(libs.coil.kt.compose)
 
     implementation(projects.vgls.android.bitmaps.real)
     implementation(projects.vgls.android.images.real)

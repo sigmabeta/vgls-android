@@ -6,6 +6,7 @@ import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.GridImageListModel
 import net.sigmabeta.sage.components.TitleBarModel
+import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.list.ColumnType
 import net.sigmabeta.sage.list.ListState
 import net.sigmabeta.sage.ui.Icon
@@ -29,7 +30,7 @@ data class State(
             GridImageListModel(
                 dataId = composer.id,
                 name = composer.name,
-                sourceInfo = composer.photoUrl,
+                sourceInfo = SourceInfo.ofUrls(composer.imageUrls),
                 imagePlaceholder = Icon.Person,
                 clickAction = Action.ComposerClicked(composer.id),
             )

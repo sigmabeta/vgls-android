@@ -34,7 +34,11 @@ class IgdbCoverUpdater(
     @Suppress("TooGenericExceptionCaught")
     suspend fun refresh(force: Boolean = false) = mutex.withLock {
         try {
-            val etag = if (force) null else storage.savedStringFlow(KEY_ETAG).first()?.ifEmpty { null }
+            // Trust the ETag only while we actually have covers: if the table was cleared (or the
+            // first pull never landed) nothing has a cover, so re-fetch even when the mapping is
+            // unchanged — otherwise a reset would strand the app with no art until the next change.
+            val mustFetch = force || !gameDataSource.hasIgdbImage()
+            val etag = if (mustFetch) null else storage.savedStringFlow(KEY_ETAG).first()?.ifEmpty { null }
             when (val result = api.getVglsCatalog(etag)) {
                 CatalogResult.NotModified -> hatchet.v("IGDB mapping unchanged.")
 

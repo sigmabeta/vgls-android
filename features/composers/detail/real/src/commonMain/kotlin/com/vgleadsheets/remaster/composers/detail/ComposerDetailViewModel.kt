@@ -2,6 +2,7 @@ package com.vgleadsheets.remaster.composers.detail
 
 import com.vgleadsheets.analytics.VglsAnalytics
 import com.vgleadsheets.analytics.VglsAnalyticsScreen
+import com.vgleadsheets.appcomm.VglsEvent
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Game
 import com.vgleadsheets.model.Song
@@ -63,6 +64,7 @@ class ComposerDetailViewModel(
             is SageAction.InitWithId -> startLoading(action.id)
             is Action.SongClicked -> onSongClicked(action.id)
             is Action.GameClicked -> onGameClicked(action.id)
+            is Action.PhotoCreditClicked -> onPhotoCreditClicked(action.url)
             is Action.AddFavoriteClicked -> onAddFavoriteClicked()
             is Action.RemoveFavoriteClicked -> onRemoveFavoriteClicked()
             is Action.EnableOfflineClicked -> onEnableOfflineClicked()
@@ -202,6 +204,10 @@ class ComposerDetailViewModel(
                 Destination.COMPOSER_DETAIL.name
             )
         )
+    }
+
+    private fun onPhotoCreditClicked(url: String) {
+        emitEvent(VglsEvent.OpenUrl(url))
     }
 
     private fun updateComposer(composer: LCE<Composer>) {

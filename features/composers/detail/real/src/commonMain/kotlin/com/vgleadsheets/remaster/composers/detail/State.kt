@@ -14,6 +14,7 @@ import net.sigmabeta.sage.components.ImageNameListModel
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.LoadingType
 import net.sigmabeta.sage.components.SectionHeaderListModel
+import net.sigmabeta.sage.components.SingleTextListModel
 import net.sigmabeta.sage.components.TitleBarModel
 import net.sigmabeta.sage.components.WideItemListModel
 import net.sigmabeta.sage.images.PdfSize
@@ -64,19 +65,31 @@ data class State(
         loadingItemCount = 1,
         loadingWithHeader = false,
     ) {
-        val photoUrl = data.photoUrl
-        if (photoUrl != null) {
-            listOf(
-                HeroImageListModel(
-                    sourceInfo = SourceInfo(photoUrl),
-                    imagePlaceholder = Icon.Person,
-                    contentDescription = stringProvider.getString(VglsStringId.ACCY_CDESC_HERO_COMPOSER),
-                    clickAction = SageAction.Noop,
+        val imageUrls = data.imageUrls
+        buildList {
+            if (imageUrls.isNotEmpty()) {
+                add(
+                    HeroImageListModel(
+                        sourceInfo = SourceInfo.ofUrls(imageUrls),
+                        imagePlaceholder = Icon.Person,
+                        contentDescription = stringProvider.getString(VglsStringId.ACCY_CDESC_HERO_COMPOSER),
+                        clickAction = SageAction.Noop,
+                    )
                 )
-            )
-        } else {
-            emptyList()
+            }
+            data.photoCredit(stringProvider)?.let(::add)
         }
+    }
+
+    /** The photo's attribution line, linking to its source page when it has one; null if no credit. */
+    private fun Composer.photoCredit(stringProvider: StringProvider): SingleTextListModel? {
+        if (metadataPhotoUrl == null) return null
+        val credit = listOfNotNull(metadataPhotoAuthor, metadataPhotoLicense).joinToString(" · ")
+        if (credit.isEmpty()) return null
+        return SingleTextListModel(
+            name = stringProvider.getStringOneArg(VglsStringId.COMPOSER_PHOTO_CREDIT, credit),
+            clickAction = metadataPhotoSourceUrl?.let { Action.PhotoCreditClicked(it) } ?: SageAction.Noop,
+        )
     }
 
     private fun State.ctaSection(stringProvider: StringProvider) = composer.sectionWithStandardErrorAndLoading(
@@ -105,7 +118,7 @@ data class State(
                     WideItemListModel(
                         dataId = game.id + ID_PREFIX_GAMES,
                         name = game.name,
-                        sourceInfo = game.imageUrl,
+                        sourceInfo = SourceInfo(game.imageUrl),
                         imagePlaceholder = Icon.Album,
                         clickAction = Action.GameClicked(game.id),
                     )

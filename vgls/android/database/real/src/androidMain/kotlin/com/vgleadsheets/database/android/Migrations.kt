@@ -90,6 +90,15 @@ object Migrations {
         }
     }
 
+    object AddComposerPhotos : Migration(
+        DatabaseVersions.ADDED_IGDB_IMAGE_IDS,
+        DatabaseVersions.ADDED_COMPOSER_PHOTOS,
+    ) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            DatabaseVersions.ADD_COMPOSER_PHOTO_SQL.forEach(database::execSQL)
+        }
+    }
+
     const val DELETE_JAMS = "${RoomDao.DROP} jam"
     const val DELETE_SETLIST = "${RoomDao.DROP} setlist_entry"
     const val DELETE_SONG_HISTORY = "${RoomDao.DROP} song_history_entry"
