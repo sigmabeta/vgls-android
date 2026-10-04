@@ -10,8 +10,9 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onEach
+import kotlin.math.max
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import net.sigmabeta.sage.analytics.Analytics
 import net.sigmabeta.sage.appcomm.EventDispatcher
 import net.sigmabeta.sage.appcomm.LCE
@@ -21,9 +22,15 @@ import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.debug.ShowDebugProvider
 import net.sigmabeta.sage.di.AppScope
 import net.sigmabeta.sage.list.DelayManager
+import net.sigmabeta.sage.list.PaginationType
 import net.sigmabeta.sage.logging.Hatchet
 import net.sigmabeta.sage.ui.StringProvider
 
+/**
+ * The browse games grid. Loads a name-ordered window one page at a time (SAGE's
+ * [SageAction.LoadMoreRequested]/[SageAction.LoadPreviousRequested]) instead of the whole catalog, so
+ * only the pages the user has scrolled to are in memory.
+ */
 @ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
 @ViewModelKey
 class GameListViewModel @Inject constructor(
@@ -40,39 +47,97 @@ class GameListViewModel @Inject constructor(
 
     override fun initialState() = State()
 
+    // One page request at a time; the active check coalesces the burst of scroll signals the grid
+    // emits while a page is in flight.
+    private var pageJob: Job? = null
+
+    private val pageSize: Int
+        get() = (internalUiState.value.paginationType as? PaginationType.Paginating)?.pageSize
+            ?: PaginationType.DEFAULT_PAGE_SIZE
+
     init {
         sendAction(SageAction.InitNoArgs)
     }
 
     override fun handleAction(action: SageAction) {
         when (action) {
-            is SageAction.InitNoArgs -> startLoading()
+            is SageAction.InitNoArgs -> loadInitial()
             is Action.GameClicked -> onGameClicked(action.id)
+            SageAction.LoadMoreRequested -> loadNextPage()
+            SageAction.LoadPreviousRequested -> loadPreviousPage()
         }
     }
 
-    private fun startLoading() {
-        showLoading()
-        collectGames()
+    /** (Re)open the window at [startOffset], discarding anything previously loaded. */
+    private fun loadInitial(startOffset: Int = 0) {
+        pageJob?.cancel()
+        updateState {
+            it.copy(
+                games = LCE.Loading(LOAD_OPERATION_NAME),
+                windowStart = startOffset,
+                hasMoreBefore = startOffset > 0,
+                hasMoreAfter = true,
+                loadingPrevious = false,
+                loadingMore = false,
+            )
+        }
+        pageJob = scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            val page = gameRepository.getGamesPage(limit = pageSize, offset = startOffset)
+            updateState { reduceInitial(it, page) }
+        }
     }
 
-    private fun collectGames() {
-        gameRepository.getAllGames()
-            .onEach(::onGamesLoaded)
-            .catch { error -> showError(LOAD_OPERATION_NAME, error) }
-            .runInBackground()
+    private fun loadNextPage() {
+        if (pageJob?.isActive == true) return
+        val current = internalUiState.value
+        val loaded = (current.games as? LCE.Content)?.data ?: return
+        if (!current.hasMoreAfter) return
+        val offset = current.windowStart + loaded.size
+        updateState { it.copy(loadingMore = true) }
+        pageJob = scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            val page = gameRepository.getGamesPage(limit = pageSize, offset = offset)
+            updateState { reduceAppend(it, page) }
+        }
     }
 
-    private fun onGamesLoaded(games: List<Game>) {
-        updateGames(LCE.Content(games))
+    private fun loadPreviousPage() {
+        if (pageJob?.isActive == true) return
+        val current = internalUiState.value
+        if (current.games !is LCE.Content || !current.hasMoreBefore) return
+        val newStart = max(0, current.windowStart - pageSize)
+        val count = current.windowStart - newStart
+        if (count <= 0) return
+        updateState { it.copy(loadingPrevious = true) }
+        pageJob = scheduler.coroutineScope.launch(scheduler.dispatchers.disk) {
+            val page = gameRepository.getGamesPage(limit = count, offset = newStart)
+            updateState { reducePrepend(it, page, newStart) }
+        }
     }
 
-    private fun showLoading() {
-        updateGames(LCE.Loading(LOAD_OPERATION_NAME))
+    private fun reduceInitial(state: State, page: List<Game>) = state.copy(
+        games = LCE.Content(page),
+        loadingPrevious = false,
+        loadingMore = false,
+        hasMoreAfter = page.size >= pageSize,
+    )
+
+    private fun reduceAppend(state: State, page: List<Game>): State {
+        val current = (state.games as? LCE.Content)?.data.orEmpty()
+        return state.copy(
+            games = LCE.Content(current + page),
+            loadingMore = false,
+            hasMoreAfter = page.size >= pageSize,
+        )
     }
 
-    private fun showError(loadOperationName: String, error: Throwable) {
-        updateGames(LCE.Error(loadOperationName, error))
+    private fun reducePrepend(state: State, page: List<Game>, newStart: Int): State {
+        val current = (state.games as? LCE.Content)?.data.orEmpty()
+        return state.copy(
+            games = LCE.Content(page + current),
+            windowStart = newStart,
+            loadingPrevious = false,
+            hasMoreBefore = newStart > 0,
+        )
     }
 
     private fun onGameClicked(id: Long) {
@@ -82,14 +147,6 @@ class GameListViewModel @Inject constructor(
                 Destination.GAMES_LIST.name
             )
         )
-    }
-
-    private fun updateGames(games: LCE<List<Game>>) {
-        updateState {
-            it.copy(
-                games = games
-            )
-        }
     }
 
     companion object {

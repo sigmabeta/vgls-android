@@ -26,4 +26,7 @@ interface ComposerDataSource : DataSource<Composer> {
     suspend fun toggleOffline(composerId: Long)
 
     fun getHighestId(): Flow<Long>
+
+    /** A page of composers in the same name order as [getAll], for the browse list's windowed loading. */
+    suspend fun getPage(limit: Int, offset: Int): List<Composer>
 }

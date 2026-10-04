@@ -67,4 +67,8 @@ class ComposerAndroidDataSource(
     override fun getHighestId() = roomImpl
         .getHighestId()
         .map { it.id }
+
+    override suspend fun getPage(limit: Int, offset: Int): List<Composer> = roomImpl
+        .getPage(limit, offset)
+        .map { convert.entityToModel(it) }
 }

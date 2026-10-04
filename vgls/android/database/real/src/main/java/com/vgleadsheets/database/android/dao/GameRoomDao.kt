@@ -41,6 +41,9 @@ interface GameRoomDao : RoomDao<GameEntity> {
     @Query(QUERY_ALL)
     override fun getAll(): Flow<List<GameEntity>>
 
+    @Query(QUERY_PAGE)
+    suspend fun getPage(limit: Int, offset: Int): List<GameEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun insert(entities: List<GameEntity>)
 
@@ -87,6 +90,10 @@ interface GameRoomDao : RoomDao<GameEntity> {
 
         private const val QUERY_SINGLE = "$GET $TABLE $WHERE_SINGLE"
         private const val QUERY_ALL = "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"
+
+        // A stable window: name-ordered, with id breaking ties so a page boundary can't shuffle rows.
+        private const val QUERY_PAGE =
+            "$GET $TABLE $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE, id LIMIT :limit OFFSET :offset"
         private const val QUERY_IDS = "$GET $TABLE $WHERE_IDS"
         private const val QUERY_SEARCH =
             "$GET $TABLE $WHERE_SEARCH $OPTION_ALPHABETICAL_ORDER $OPTION_CASE_INSENSITIVE"

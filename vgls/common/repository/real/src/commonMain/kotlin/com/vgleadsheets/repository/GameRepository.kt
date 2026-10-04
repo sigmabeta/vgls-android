@@ -8,6 +8,9 @@ class GameRepository(
     fun getAllGames() = gameDataSource
         .getAll()
 
+    suspend fun getGamesPage(limit: Int, offset: Int) = gameDataSource
+        .getPage(limit, offset)
+
     fun getFavoriteGames() = gameDataSource
         .getFavorites()
 
