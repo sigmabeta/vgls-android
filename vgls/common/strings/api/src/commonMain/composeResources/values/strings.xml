@@ -31,6 +31,7 @@
     <string name="section_header_games_from_composer">Games on VGLS</string>
     <string name="section_header_difficulty_for_song">Difficulty</string>
     <string name="section_header_about_song">Details</string>
+    <string name="section_header_about_composer">About</string>
     <string name="section_header_settings_data">App Data</string>
     <string name="section_header_settings_about">About VGLS</string>
     <string name="section_header_settings_debug">Debug</string>
@@ -46,6 +47,8 @@
     <string name="cta_favorites">Add a game, song, or composer to your favorites to find them here quickly.</string>
     <string name="cta_offline">Games, songs, and composers that you\'ve asked to keep available offline. Once you\'ve marked some, they\'ll be here.</string>
     <string name="label_song_also_known_as">Also Known As</string>
+    <string name="label_composer_photo">Photo</string>
+    <string name="label_composer_photo_license">License</string>
     <string name="home_section_recent_songs">Jump Back In</string>
     <string name="home_section_most_songs_games">Popular Games</string>
     <string name="home_section_most_songs_composers">Prolific Composers</string>
@@ -157,7 +160,6 @@
     <string name="accy_st_desc_unchecked">Disabled</string>
     <string name="accy_cdesc_hero_game">Box art image</string>
     <string name="accy_cdesc_hero_composer">Photo of composer</string>
-    <string name="composer_photo_credit">Photo: %1$s</string>
     <string name="accy_cdesc_topbar_back">Go back</string>
     <string name="accy_cdesc_topbar_menu">Open Settings Menu</string>
     <string name="accy_cdesc_search_back">Go back</string>

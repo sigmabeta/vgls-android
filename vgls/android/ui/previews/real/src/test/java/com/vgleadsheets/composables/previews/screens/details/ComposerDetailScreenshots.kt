@@ -29,6 +29,14 @@ class ComposerDetailScreenshots(
     }
 
     @Test
+    fun composerDetailScreenWithPhoto() {
+        paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
+        paparazzi.snapshot {
+            ComposerDetailWithPhoto(syntheticWidthClass = deviceConfig.toWidthClass())
+        }
+    }
+
+    @Test
     fun composerDetailScreenLoading() {
         paparazzi.unsafeUpdateConfig(deviceConfig = deviceConfig)
         paparazzi.snapshot {

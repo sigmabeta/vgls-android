@@ -64,7 +64,8 @@ class ComposerDetailViewModel(
             is SageAction.InitWithId -> startLoading(action.id)
             is Action.SongClicked -> onSongClicked(action.id)
             is Action.GameClicked -> onGameClicked(action.id)
-            is Action.PhotoCreditClicked -> onPhotoCreditClicked(action.url)
+            is Action.PhotoCreditClicked -> openUrl(action.url)
+            is Action.PhotoLicenseClicked -> openUrl(action.url)
             is Action.AddFavoriteClicked -> onAddFavoriteClicked()
             is Action.RemoveFavoriteClicked -> onRemoveFavoriteClicked()
             is Action.EnableOfflineClicked -> onEnableOfflineClicked()
@@ -206,7 +207,7 @@ class ComposerDetailViewModel(
         )
     }
 
-    private fun onPhotoCreditClicked(url: String) {
+    private fun openUrl(url: String) {
         emitEvent(VglsEvent.OpenUrl(url))
     }
 
