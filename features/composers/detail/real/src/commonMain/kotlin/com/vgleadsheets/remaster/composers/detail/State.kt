@@ -68,18 +68,18 @@ data class State(
         loadingItemCount = 1,
         loadingWithHeader = false,
     ) {
-        val imageUrls = data.imageUrls
-        buildList {
-            if (imageUrls.isNotEmpty()) {
-                add(
-                    HeroImageListModel(
-                        sourceInfo = SourceInfo.ofUrls(imageUrls),
-                        imagePlaceholder = Icon.Person,
-                        contentDescription = stringProvider.getString(VglsStringId.ACCY_CDESC_HERO_COMPOSER),
-                        clickAction = SageAction.Noop,
-                    )
+        val photoUrl = data.metadataPhotoUrl ?: data.photoUrl
+        if (photoUrl != null) {
+            listOf(
+                HeroImageListModel(
+                    sourceInfo = SourceInfo(photoUrl),
+                    imagePlaceholder = Icon.Person,
+                    contentDescription = stringProvider.getString(VglsStringId.ACCY_CDESC_HERO_COMPOSER),
+                    clickAction = SageAction.Noop,
                 )
-            }
+            )
+        } else {
+            emptyList()
         }
     }
 
