@@ -25,7 +25,6 @@ import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.scaffold.systemui.SystemUiState
 import com.vgleadsheets.scaffold.systemui.SystemUiViewModel
 import com.vgleadsheets.strings.LocalVglsStringProvider
-import com.vgleadsheets.ui.theme.AppTheme
 import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -62,18 +61,18 @@ class RemasteredActivity : ComponentActivity() {
         setupSystemUiListener(windowInsetController)
 
         setContent {
-            AppTheme {
-                CompositionLocalProvider(
-                    LocalPdfSubsampler provides pdfSubsampleSourceFactory,
-                    LocalMetroViewModelFactory provides activityGraph.metroViewModelFactory,
-                    LocalVglsStringProvider provides stringProvider,
-                ) {
-                    CompositionLocalProvider(LocalLogger provides hatchet) {
-                        RemasterAppUi(
-                            modifier = Modifier
-                        )
-                        // PdfTestScreen(modifier = Modifier)
-                    }
+            // AppTheme is applied inside RemasterAppUi so the persisted theme choice (read from the
+            // shell's AppUiViewModel) picks the color scheme.
+            CompositionLocalProvider(
+                LocalPdfSubsampler provides pdfSubsampleSourceFactory,
+                LocalMetroViewModelFactory provides activityGraph.metroViewModelFactory,
+                LocalVglsStringProvider provides stringProvider,
+            ) {
+                CompositionLocalProvider(LocalLogger provides hatchet) {
+                    RemasterAppUi(
+                        modifier = Modifier
+                    )
+                    // PdfTestScreen(modifier = Modifier)
                 }
             }
         }

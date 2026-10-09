@@ -1,6 +1,7 @@
 package com.vgleadsheets.remaster.menu
 
 import com.vgleadsheets.model.SheetColorMode
+import com.vgleadsheets.model.ThemeMode
 import com.vgleadsheets.strings.VglsStringId
 import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
@@ -25,6 +26,7 @@ data class State(
     val sheetDbClearStatus: LCE<Unit> = LCE.Uninitialized,
     val usageDbClearStatus: LCE<Unit> = LCE.Uninitialized,
     val keepScreenOn: Boolean? = null,
+    val themeMode: ThemeMode = ThemeMode.DEFAULT,
     val sheetColorMode: SheetColorMode = SheetColorMode.LIGHT,
     // settingId of the single currently-expanded dropdown, or null if all are collapsed.
     val expandedDropdownId: String? = null,
@@ -50,6 +52,7 @@ data class State(
         checkVglsForUpdates(stringProvider),
         sectionHeader(stringProvider.getString(VglsStringId.SECTION_HEADER_SETTINGS_DISPLAY)),
         keepScreenOn(stringProvider),
+        themeDropdown(stringProvider),
         sheetColorsDropdown(stringProvider),
         sectionHeader(stringProvider.getString(VglsStringId.SECTION_HEADER_SETTINGS_DATA)),
         clearUsageHistory(stringProvider),
@@ -204,6 +207,29 @@ data class State(
         settingId = VglsStringId.SETTINGS_LABEL_KEEP_SCREEN_ON.name,
         checked = keepScreenOn,
     )
+
+    // Light / Dark / System. Option order mirrors `ThemeMode.entries`, so the picked index maps
+    // straight back to a mode. Selection is routed through the action sink and persisted.
+    private fun themeDropdown(stringProvider: StringProvider): ListModel {
+        val settingId = VglsStringId.SETTINGS_LABEL_THEME.name
+        return DropdownSettingListModel.ofLabels(
+            settingId = settingId,
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_THEME),
+            selectedPosition = themeMode.ordinal,
+            labels = ThemeMode.entries
+                .map { stringProvider.getString(it.labelId()) }
+                .toImmutableList(),
+            expanded = expandedDropdownId == settingId,
+            onExpandClicked = Action.DropdownExpandClicked(settingId),
+            onNewOptionSelected = { index -> Action.ThemeModeSelected(ThemeMode.entries[index]) },
+        )
+    }
+
+    private fun ThemeMode.labelId(): VglsStringId = when (this) {
+        ThemeMode.LIGHT -> VglsStringId.SETTINGS_THEME_LIGHT
+        ThemeMode.DARK -> VglsStringId.SETTINGS_THEME_DARK
+        ThemeMode.SYSTEM -> VglsStringId.SETTINGS_THEME_SYSTEM
+    }
 
     // Light / Dark / Gentle. Option order mirrors `SheetColorMode.entries`, so the picked index
     // maps straight back to a mode. Selection is routed through the action sink and persisted.

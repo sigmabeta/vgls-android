@@ -54,7 +54,7 @@ internal fun ListScreenPreview(
     val stringProvider = rememberVglsStringProvider()
     val state = screenState.toActual(stringProvider)
 
-    AppTheme(forceDark = darkTheme) {
+    AppTheme(darkTheme = darkTheme) {
         CompositionLocalProvider(
             LocalInspectionMode provides true,
             LocalLogger provides BasicHatchet(),
@@ -95,7 +95,7 @@ internal fun ScreenPreview(
 ) {
     val stringProvider = rememberVglsStringProvider()
 
-    AppTheme(forceDark = darkTheme) {
+    AppTheme(darkTheme = darkTheme) {
         CompositionLocalProvider(
             LocalInspectionMode provides true,
             LocalLogger provides BasicHatchet(),

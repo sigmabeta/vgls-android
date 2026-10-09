@@ -33,7 +33,7 @@ import net.sigmabeta.sage.ui.Icon
 internal fun CollageImages(darkTheme: Boolean = false) {
     val previewHandler = AsyncImagePreviewHandler { awaitCancellation() }
 
-    AppTheme(forceDark = darkTheme) {
+    AppTheme(darkTheme = darkTheme) {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),

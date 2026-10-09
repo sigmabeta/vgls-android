@@ -7,12 +7,15 @@ import com.vgleadsheets.ui.fonts.museJazzFontFamily
 
 // Inlines the (Android-only) sage SageMaterial/SageMaterialMenu helpers so the theme can live in
 // commonMain — both were thin MaterialTheme wrappers.
+//
+// [darkTheme] is tri-state to mirror the persisted `ThemeMode`: true pins dark, false pins light,
+// and null follows the system setting.
 @Composable
 fun AppTheme(
-    forceDark: Boolean = false,
+    darkTheme: Boolean? = null,
     content: @Composable () -> Unit,
 ) {
-    val colors = if (!isSystemInDarkTheme() && !forceDark) VglsLight else VglsDark
+    val colors = if (darkTheme ?: isSystemInDarkTheme()) VglsDark else VglsLight
 
     MaterialTheme(
         typography = vglsTypography(brand = museJazzFontFamily()),

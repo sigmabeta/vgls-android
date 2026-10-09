@@ -9,6 +9,7 @@ import com.vgleadsheets.jvm.logging.JvmHatchet
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
 import com.vgleadsheets.settings.display.SheetColorManager
+import com.vgleadsheets.settings.display.ThemeManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.strings.VglsStringProvider
 import com.vgleadsheets.strings.loadVglsStrings
@@ -183,6 +184,10 @@ object JvmAppModule {
     @Provides
     @SingleIn(AppScope::class)
     fun provideSheetColorManager(storage: Storage): SheetColorManager = SheetColorManager(storage = storage)
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideThemeManager(storage: Storage): ThemeManager = ThemeManager(storage = storage)
 
     @Provides
     @SingleIn(AppScope::class)

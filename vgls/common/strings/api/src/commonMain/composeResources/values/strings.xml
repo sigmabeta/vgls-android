@@ -91,6 +91,10 @@
     <string name="settings_label_clear_usage">Clear usage history</string>
     <string name="settings_label_clear_sheets">Clear sheet database</string>
     <string name="settings_label_keep_screen_on">Sheets keep screen on</string>
+    <string name="settings_label_theme">App theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_system">Match system</string>
     <string name="settings_label_sheet_colors">Sheet colors</string>
     <string name="settings_sheet_color_light">Light</string>
     <string name="settings_sheet_color_dark">Dark</string>

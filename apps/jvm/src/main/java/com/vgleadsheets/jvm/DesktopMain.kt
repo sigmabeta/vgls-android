@@ -18,7 +18,6 @@ import com.vgleadsheets.nav.NavViewModel
 import com.vgleadsheets.scaffold.RemasterAppUi
 import com.vgleadsheets.strings.LocalVglsStringProvider
 import com.vgleadsheets.strings.VglsStringId
-import com.vgleadsheets.ui.theme.AppTheme
 import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -46,33 +45,34 @@ fun runDesktop(graph: JvmVglsGraph) = application {
         val windowFocused = LocalWindowInfo.current.isWindowFocused
         LaunchedEffect(windowFocused) { graph.windowFocus.setFocused(windowFocused) }
 
-        AppTheme {
-            // The Compose Window has no ViewModelStoreOwner; provide one at the root so the shell's
-            // chrome VMs (NavViewModel/TopBar/NavBar via metroViewModel) resolve. Per-screen stores
-            // are handled inside RemasterAppUi (WithPerScreenViewModelStore).
-            val rootStoreOwner = remember {
-                object : ViewModelStoreOwner {
-                    override val viewModelStore = ViewModelStore()
-                }
+        // AppTheme is applied inside RemasterAppUi so the persisted theme choice (read from the
+        // shell's AppUiViewModel) picks the color scheme.
+        //
+        // The Compose Window has no ViewModelStoreOwner; provide one at the root so the shell's
+        // chrome VMs (NavViewModel/TopBar/NavBar via metroViewModel) resolve. Per-screen stores
+        // are handled inside RemasterAppUi (WithPerScreenViewModelStore).
+        val rootStoreOwner = remember {
+            object : ViewModelStoreOwner {
+                override val viewModelStore = ViewModelStore()
             }
-            CompositionLocalProvider(
-                LocalMetroViewModelFactory provides graph.metroViewModelFactory,
-                LocalVglsStringProvider provides graph.stringProvider,
-                LocalViewModelStoreOwner provides rootStoreOwner,
-            ) {
-                CompositionLocalProvider(LocalLogger provides graph.hatchet) {
-                    val navViewModel = metroViewModel<NavViewModel>()
-                    LaunchedEffect(navViewModel) {
-                        navViewModel.activityEvents.consumeAsFlow().collect { event ->
-                            when (event) {
-                                ActivityEvent.Finish -> exitApplication()
-                                is ActivityEvent.LaunchUrl -> openUrl(event.url)
-                                ActivityEvent.Restart -> Unit
-                            }
+        }
+        CompositionLocalProvider(
+            LocalMetroViewModelFactory provides graph.metroViewModelFactory,
+            LocalVglsStringProvider provides graph.stringProvider,
+            LocalViewModelStoreOwner provides rootStoreOwner,
+        ) {
+            CompositionLocalProvider(LocalLogger provides graph.hatchet) {
+                val navViewModel = metroViewModel<NavViewModel>()
+                LaunchedEffect(navViewModel) {
+                    navViewModel.activityEvents.consumeAsFlow().collect { event ->
+                        when (event) {
+                            ActivityEvent.Finish -> exitApplication()
+                            is ActivityEvent.LaunchUrl -> openUrl(event.url)
+                            ActivityEvent.Restart -> Unit
                         }
                     }
-                    RemasterAppUi(modifier = Modifier.fillMaxSize())
                 }
+                RemasterAppUi(modifier = Modifier.fillMaxSize())
             }
         }
     }
