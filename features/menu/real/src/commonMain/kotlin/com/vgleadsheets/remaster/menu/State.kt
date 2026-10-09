@@ -1,10 +1,13 @@
 package com.vgleadsheets.remaster.menu
 
+import com.vgleadsheets.model.SheetColorMode
 import com.vgleadsheets.strings.VglsStringId
+import kotlinx.collections.immutable.toImmutableList
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.appinfo.AppInfo
 import net.sigmabeta.sage.components.CheckableListModel
+import net.sigmabeta.sage.components.DropdownSettingListModel
 import net.sigmabeta.sage.components.LabelValueListModel
 import net.sigmabeta.sage.components.ListModel
 import net.sigmabeta.sage.components.LoadingItemListModel
@@ -22,6 +25,9 @@ data class State(
     val sheetDbClearStatus: LCE<Unit> = LCE.Uninitialized,
     val usageDbClearStatus: LCE<Unit> = LCE.Uninitialized,
     val keepScreenOn: Boolean? = null,
+    val sheetColorMode: SheetColorMode = SheetColorMode.LIGHT,
+    // settingId of the single currently-expanded dropdown, or null if all are collapsed.
+    val expandedDropdownId: String? = null,
     val appInfo: AppInfo? = null,
     val formattedBuildDate: String? = null,
     val debugClickCount: Int = 0,
@@ -42,7 +48,9 @@ data class State(
 
     override fun toListItems(stringProvider: StringProvider): List<ListModel> = listOfNotNull(
         checkVglsForUpdates(stringProvider),
+        sectionHeader(stringProvider.getString(VglsStringId.SECTION_HEADER_SETTINGS_DISPLAY)),
         keepScreenOn(stringProvider),
+        sheetColorsDropdown(stringProvider),
         sectionHeader(stringProvider.getString(VglsStringId.SECTION_HEADER_SETTINGS_DATA)),
         clearUsageHistory(stringProvider),
         clearSheetDb(stringProvider),
@@ -196,6 +204,29 @@ data class State(
         settingId = VglsStringId.SETTINGS_LABEL_KEEP_SCREEN_ON.name,
         checked = keepScreenOn,
     )
+
+    // Light / Dark / Gentle. Option order mirrors `SheetColorMode.entries`, so the picked index
+    // maps straight back to a mode. Selection is routed through the action sink and persisted.
+    private fun sheetColorsDropdown(stringProvider: StringProvider): ListModel {
+        val settingId = VglsStringId.SETTINGS_LABEL_SHEET_COLORS.name
+        return DropdownSettingListModel.ofLabels(
+            settingId = settingId,
+            name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_SHEET_COLORS),
+            selectedPosition = sheetColorMode.ordinal,
+            labels = SheetColorMode.entries
+                .map { stringProvider.getString(it.labelId()) }
+                .toImmutableList(),
+            expanded = expandedDropdownId == settingId,
+            onExpandClicked = Action.DropdownExpandClicked(settingId),
+            onNewOptionSelected = { index -> Action.SheetColorModeSelected(SheetColorMode.entries[index]) },
+        )
+    }
+
+    private fun SheetColorMode.labelId(): VglsStringId = when (this) {
+        SheetColorMode.LIGHT -> VglsStringId.SETTINGS_SHEET_COLOR_LIGHT
+        SheetColorMode.DARK -> VglsStringId.SETTINGS_SHEET_COLOR_DARK
+        SheetColorMode.GENTLE -> VglsStringId.SETTINGS_SHEET_COLOR_GENTLE
+    }
 
     private fun licenses(stringProvider: StringProvider) = SingleTextListModel(
         name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_LICENSES),

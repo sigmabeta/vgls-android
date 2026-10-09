@@ -33,6 +33,7 @@ import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.ui.theme.LocalSheetColorMode
 
 private val HEIGHT_COMPACT = 480.dp
 
@@ -56,6 +57,8 @@ fun RemasterAppUi(
     }
 
     val navViewModel = metroViewModel<NavViewModel>()
+
+    val sheetColorMode by metroViewModel<SheetColorViewModel>().sheetColorMode.collectAsState()
 
     navViewModel.snackbarScope = snackbarScope
     navViewModel.snackbarHostState = snackbarHostState
@@ -84,22 +87,24 @@ fun RemasterAppUi(
         modifier
     }
 
-    AppContent(
-        topBarConfig = topBarConfig,
-        navBarState = bottomBarVmState,
-        navEventSink = navViewModel,
-        currentRoute = currentRoute,
-        snackbarHostState = snackbarHostState,
-        modifier = actualModifier,
-        screen = { innerPadding, widthClass ->
-            VoyagerNavHost(
-                innerPadding = innerPadding,
-                displayWidthClass = widthClass,
-                navViewModel = navViewModel,
-                onRouteChange = { currentRoute = it },
-            )
-        },
-    )
+    CompositionLocalProvider(LocalSheetColorMode provides sheetColorMode) {
+        AppContent(
+            topBarConfig = topBarConfig,
+            navBarState = bottomBarVmState,
+            navEventSink = navViewModel,
+            currentRoute = currentRoute,
+            snackbarHostState = snackbarHostState,
+            modifier = actualModifier,
+            screen = { innerPadding, widthClass ->
+                VoyagerNavHost(
+                    innerPadding = innerPadding,
+                    displayWidthClass = widthClass,
+                    navViewModel = navViewModel,
+                    onRouteChange = { currentRoute = it },
+                )
+            },
+        )
+    }
 }
 
 @Composable

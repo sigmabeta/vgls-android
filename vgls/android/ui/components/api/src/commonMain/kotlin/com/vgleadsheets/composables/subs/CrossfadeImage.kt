@@ -41,6 +41,8 @@ import net.sigmabeta.sage.pdf.PdfConfigById
 import net.sigmabeta.sage.ui.Icon
 import net.sigmabeta.sage.ui.composables.CollageLayout
 import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.LocalSheetColorMode
+import com.vgleadsheets.ui.theme.contentColorFilter
 import net.sigmabeta.sage.ui.vector
 
 @Composable
@@ -208,6 +210,7 @@ fun RealPdfImage(
                     contentDescription = contentDescription,
                     contentScale = ContentScale.None,
                     modifier = Modifier.align(Alignment.Center),
+                    colorFilter = LocalSheetColorMode.current.contentColorFilter,
                 )
 
                 is AsyncImagePainter.State.Error -> ErrorImage(

@@ -35,7 +35,6 @@ import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
-import net.sigmabeta.sage.ui.perf.isPerfMeasurementEnabled
 import com.vgleadsheets.strings.text
 import com.vgleadsheets.strings.imageLoadErrorStringId
 import com.vgleadsheets.ui.theme.AppTheme

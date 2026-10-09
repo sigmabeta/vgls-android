@@ -21,6 +21,8 @@ import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.pdf.ZOOM_MAX_PDF
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
 import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.LocalSheetColorMode
+import com.vgleadsheets.ui.theme.contentColorFilter
 import kotlinx.collections.immutable.toImmutableList
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
@@ -124,6 +126,7 @@ private fun Content(
     SubSamplingImage(
         state = imageState,
         contentDescription = contentDescription,
-        modifier = zoomableModifier
+        modifier = zoomableModifier,
+        colorFilter = LocalSheetColorMode.current.contentColorFilter,
     )
 }

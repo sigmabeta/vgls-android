@@ -2,12 +2,14 @@ package com.vgleadsheets.remaster.menu
 
 import androidx.lifecycle.ViewModel
 import com.vgleadsheets.appcomm.VglsEvent
+import com.vgleadsheets.model.SheetColorMode
 import com.vgleadsheets.nav.Destination
 import com.vgleadsheets.offline.OfflineWorkScheduler
 import com.vgleadsheets.repository.DbUpdater
 import com.vgleadsheets.repository.history.SongHistoryRepository
 import com.vgleadsheets.repository.history.UserContentGenerator
 import com.vgleadsheets.repository.history.UserContentMigrator
+import com.vgleadsheets.settings.display.SheetColorManager
 import com.vgleadsheets.viewmodel.list.VglsListViewModel
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -47,6 +49,7 @@ class MenuViewModel @Inject constructor(
     private val songHistoryRepository: SongHistoryRepository,
     private val generalSettingsManager: GeneralSettingsManager,
     private val debugSettingsManager: DebugSettingsManager,
+    private val sheetColorManager: SheetColorManager,
     private val userContentGenerator: UserContentGenerator,
     private val userContentMigrator: UserContentMigrator,
     private val appInfo: AppInfo,
@@ -66,6 +69,8 @@ class MenuViewModel @Inject constructor(
             is SageAction.InitNoArgs -> fetchSettings()
             is SageAction.Resume -> return
             is SageAction.Noop -> return
+            is Action.DropdownExpandClicked -> onDropdownExpandClicked(action.settingId)
+            is Action.SheetColorModeSelected -> onSheetColorModeSelected(action.mode)
             is Action.CheckUpdatesClicked -> onCheckUpdatesClicked()
             is Action.ClearUsageClicked -> onClearUsageClicked()
             is Action.ClearSheetsClicked -> onClearSheetsClicked()
@@ -150,6 +155,19 @@ class MenuViewModel @Inject constructor(
         generalSettingsManager.setKeepScreenOn(!oldValue)
     }
 
+    private fun onDropdownExpandClicked(settingId: String) {
+        // At most one dropdown open at a time: re-tapping the open one closes it; tapping any other
+        // replaces it as the single expanded dropdown.
+        val current = internalUiState.value.expandedDropdownId
+        val next = if (current == settingId) null else settingId
+        updateState { it.copy(expandedDropdownId = next) }
+    }
+
+    private fun onSheetColorModeSelected(mode: SheetColorMode) {
+        sheetColorManager.setSheetColorMode(mode)
+        updateState { it.copy(expandedDropdownId = null) }
+    }
+
     private fun onLicensesLinkClicked() {
         navigateTo(Destination.LICENSES.noArgs())
     }
@@ -218,6 +236,7 @@ class MenuViewModel @Inject constructor(
 
     private fun fetchSettings() {
         fetchKeepScreenOn()
+        fetchSheetColorMode()
         fetchAppInfo()
         fetchShouldShowDebug()
         fetchDebugShouldUseFakeApi()
@@ -246,6 +265,15 @@ class MenuViewModel @Inject constructor(
             .getKeepScreenOn()
             .onEach { value ->
                 updateState { it.copy(keepScreenOn = value) }
+            }
+            .runInBackground()
+    }
+
+    private fun fetchSheetColorMode() {
+        sheetColorManager
+            .sheetColorModeFlow()
+            .onEach { mode ->
+                updateState { it.copy(sheetColorMode = mode) }
             }
             .runInBackground()
     }

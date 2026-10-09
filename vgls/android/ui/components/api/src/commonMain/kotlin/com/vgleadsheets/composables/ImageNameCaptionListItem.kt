@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,13 +27,14 @@ import com.vgleadsheets.composables.subs.ElevatedCircle
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.ui.theme.AppTheme
 import com.vgleadsheets.ui.theme.AppThemeMenu
+import com.vgleadsheets.ui.theme.LocalSheetColorMode
+import com.vgleadsheets.ui.theme.paperColor
 import net.sigmabeta.sage.appcomm.ActionSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.components.ImageNameCaptionListModel
 import net.sigmabeta.sage.components.SearchResultListModel
 import net.sigmabeta.sage.images.SourceInfo
 import net.sigmabeta.sage.pdf.PdfConfigById
-import net.sigmabeta.sage.ui.perf.isPerfMeasurementEnabled
 import net.sigmabeta.sage.ui.Icon
 import kotlin.math.roundToInt
 
@@ -110,13 +110,7 @@ private fun ImageNameCaptionListItem(
                             maxHeight = ImageSize.THUMBNAIL.size.toPx().roundToInt(),
                         )
                     )
-                } to Modifier.background(
-                    if (isPerfMeasurementEnabled) {
-                        Color(1f, 1f, 0.8f, 1f)
-                    } else {
-                        Color.White
-                    }
-                )
+                } to Modifier.background(LocalSheetColorMode.current.paperColor)
             } else {
                 sourceInfo to Modifier
             }

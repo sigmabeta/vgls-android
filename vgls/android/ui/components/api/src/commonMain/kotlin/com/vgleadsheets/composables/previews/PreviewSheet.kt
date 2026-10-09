@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.unit.dp
@@ -23,6 +22,10 @@ import com.vgleadsheets.ui.components.generated.resources.Res
 import com.vgleadsheets.ui.components.generated.resources.img_leadsheet_single_system_blank
 import com.vgleadsheets.bitmaps.SheetConstants
 import com.vgleadsheets.images.LoadingIndicatorConfig
+import com.vgleadsheets.ui.theme.LocalSheetColorMode
+import com.vgleadsheets.ui.theme.contentColor
+import com.vgleadsheets.ui.theme.contentColorFilter
+import com.vgleadsheets.ui.theme.paperColor
 
 @Composable
 fun PreviewSheet(
@@ -37,7 +40,7 @@ fun PreviewSheet(
         modifier = modifier
             .height(height)
             .aspectRatio(SheetConstants.ASPECT_RATIO)
-            .background(Color.White)
+            .background(LocalSheetColorMode.current.paperColor)
     ) {
         if (loadingIndicatorConfig.pageNumber == 0) {
             PreviewSheetTitle(loadingIndicatorConfig)
@@ -54,7 +57,7 @@ private fun BoxScope.PreviewSheetTitle(
 ) {
     Text(
         text = loadingIndicatorConfig.title,
-        color = Color.Black,
+        color = LocalSheetColorMode.current.contentColor,
         style = MaterialTheme.typography.titleLarge,
         modifier = Modifier
             .align(Alignment.TopCenter)
@@ -65,7 +68,7 @@ private fun BoxScope.PreviewSheetTitle(
     if (gameName.isNotEmpty()) {
         Text(
             text = "from $gameName",
-            color = Color.Black,
+            color = LocalSheetColorMode.current.contentColor,
             style = MaterialTheme.typography.titleLarge.copy(fontSize = 10.sp),
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -75,7 +78,7 @@ private fun BoxScope.PreviewSheetTitle(
 
     Text(
         text = "https://www.vgleadsheets.com/",
-        color = Color.Black,
+        color = LocalSheetColorMode.current.contentColor,
         style = MaterialTheme.typography.titleLarge.copy(fontSize = 8.sp),
         modifier = Modifier
             .align(Alignment.BottomCenter)
@@ -90,7 +93,8 @@ private fun BoxScope.PreviewSheetTitle(
         repeat(10) {
             Image(
                 painter = painterResource(Res.drawable.img_leadsheet_single_system_blank),
-                contentDescription = null
+                contentDescription = null,
+                colorFilter = LocalSheetColorMode.current.contentColorFilter,
             )
 
             Spacer(modifier = Modifier.height(14.dp))
@@ -103,7 +107,7 @@ private fun BoxScope.PreviewSheetTitle(
 private fun BoxScope.PreviewSheetOther() {
     Text(
         text = "https://www.vgleadsheets.com/",
-        color = Color.Black,
+        color = LocalSheetColorMode.current.contentColor,
         style = MaterialTheme.typography.titleLarge.copy(fontSize = 8.sp),
         modifier = Modifier
             .align(Alignment.BottomCenter)
@@ -118,7 +122,8 @@ private fun BoxScope.PreviewSheetOther() {
         repeat(11) {
             Image(
                 painter = painterResource(Res.drawable.img_leadsheet_single_system_blank),
-                contentDescription = null
+                contentDescription = null,
+                colorFilter = LocalSheetColorMode.current.contentColorFilter,
             )
 
             Spacer(modifier = Modifier.height(14.dp))

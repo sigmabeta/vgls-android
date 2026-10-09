@@ -21,6 +21,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 implementation(projects.vgls.android.ui.fonts.real)
+                api(projects.vgls.common.model.api)
             }
         }
         named("androidMain") {
