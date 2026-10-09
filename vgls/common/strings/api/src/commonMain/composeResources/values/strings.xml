@@ -33,6 +33,7 @@
     <string name="section_header_about_song">Details</string>
     <string name="section_header_about_composer">About</string>
     <string name="section_header_settings_data">App Data</string>
+    <string name="section_header_settings_display">Display</string>
     <string name="section_header_settings_about">About VGLS</string>
     <string name="section_header_settings_debug">Debug</string>
     <string name="cta_favorite_add">Add to Favorites</string>
@@ -90,6 +91,14 @@
     <string name="settings_label_clear_usage">Clear usage history</string>
     <string name="settings_label_clear_sheets">Clear sheet database</string>
     <string name="settings_label_keep_screen_on">Sheets keep screen on</string>
+    <string name="settings_label_theme">App theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_system">Match system</string>
+    <string name="settings_label_sheet_colors">Sheet colors</string>
+    <string name="settings_sheet_color_light">Light</string>
+    <string name="settings_sheet_color_dark">Dark</string>
+    <string name="settings_sheet_color_gentle">Gentle</string>
     <string name="settings_label_licenses">Open-source Licenses</string>
     <string name="settings_label_website">VGLeadSheets.com</string>
     <string name="settings_label_giant_bomb">Giant Bomb Wiki</string>

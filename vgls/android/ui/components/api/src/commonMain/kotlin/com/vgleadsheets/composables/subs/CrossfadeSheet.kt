@@ -40,10 +40,12 @@ import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import net.sigmabeta.sage.images.PdfSize
 import net.sigmabeta.sage.pdf.PdfConfigById
-import net.sigmabeta.sage.ui.perf.isPerfMeasurementEnabled
 import com.vgleadsheets.strings.text
 import com.vgleadsheets.strings.imageLoadErrorStringId
 import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.LocalSheetColorMode
+import com.vgleadsheets.ui.theme.contentColorFilter
+import com.vgleadsheets.ui.theme.paperColor
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.roundToInt
 
@@ -117,6 +119,7 @@ private fun BoxScope.Content(
     )
 
     val bgModifier = modifier.bgModifier()
+    val contentColorFilter = LocalSheetColorMode.current.contentColorFilter
 
     if (simulateError) {
         Box(
@@ -182,6 +185,7 @@ private fun BoxScope.Content(
                     contentDescription = contentDescription,
                     contentScale = sheetContentScale,
                     modifier = sheetImageModifier,
+                    colorFilter = contentColorFilter,
                 )
             }
 
@@ -194,6 +198,7 @@ private fun BoxScope.Content(
                         contentDescription = contentDescription,
                         contentScale = sheetContentScale,
                         modifier = sheetImageModifier,
+                        colorFilter = contentColorFilter,
                     )
                 } else {
                     ErrorState(
@@ -218,6 +223,7 @@ private fun BoxScope.Content(
                         contentDescription = contentDescription,
                         contentScale = sheetContentScale,
                         modifier = sheetImageModifier,
+                        colorFilter = contentColorFilter,
                     )
                 } else {
                     PlaceholderSheet(
@@ -245,17 +251,8 @@ private fun rememberDebounced(value: PdfConfigById, delayMs: Long): PdfConfigByI
     return debounced
 }
 
-@Suppress("MagicNumber")
 @Composable
-private fun Modifier.bgModifier(): Modifier {
-    val bgColor = if (isPerfMeasurementEnabled) {
-        Color(1f, 1f, 0.8f, 1f)
-    } else {
-        Color.White
-    }
-
-    return background(bgColor)
-}
+private fun Modifier.bgModifier(): Modifier = background(LocalSheetColorMode.current.paperColor)
 
 @Composable
 private fun BoxScope.withSize(

@@ -153,6 +153,7 @@ dependencies {
     implementation(projects.vgls.common.network.fake)
     implementation(projects.vgls.common.offline.real)
     implementation(projects.vgls.common.environment.api)
+    implementation(projects.vgls.common.settings.display.real)
     implementation(projects.vgls.common.urlinfo.real)
     implementation(projects.vgls.common.versions.real)
     // End DI dependencies

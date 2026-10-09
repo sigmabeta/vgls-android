@@ -33,6 +33,9 @@ import net.sigmabeta.sage.appcomm.EventSink
 import net.sigmabeta.sage.appcomm.SageAction
 import net.sigmabeta.sage.list.WidthClass
 import com.vgleadsheets.nav.Destination
+import com.vgleadsheets.model.ThemeMode
+import com.vgleadsheets.ui.theme.AppTheme
+import com.vgleadsheets.ui.theme.LocalSheetColorMode
 
 private val HEIGHT_COMPACT = 480.dp
 
@@ -56,6 +59,11 @@ fun RemasterAppUi(
     }
 
     val navViewModel = metroViewModel<NavViewModel>()
+
+    // Materialized before the theme so the persisted theme choice picks the color scheme.
+    val appUiViewModel: AppUiViewModel = metroViewModel()
+    val themeMode by appUiViewModel.themeMode.collectAsState()
+    val sheetColorMode by appUiViewModel.sheetColorMode.collectAsState()
 
     navViewModel.snackbarScope = snackbarScope
     navViewModel.snackbarHostState = snackbarHostState
@@ -84,22 +92,32 @@ fun RemasterAppUi(
         modifier
     }
 
-    AppContent(
-        topBarConfig = topBarConfig,
-        navBarState = bottomBarVmState,
-        navEventSink = navViewModel,
-        currentRoute = currentRoute,
-        snackbarHostState = snackbarHostState,
-        modifier = actualModifier,
-        screen = { innerPadding, widthClass ->
-            VoyagerNavHost(
-                innerPadding = innerPadding,
-                displayWidthClass = widthClass,
-                navViewModel = navViewModel,
-                onRouteChange = { currentRoute = it },
-            )
+    AppTheme(
+        darkTheme = when (themeMode) {
+            ThemeMode.LIGHT -> false
+            ThemeMode.DARK -> true
+            ThemeMode.SYSTEM -> null
         },
-    )
+    ) {
+        CompositionLocalProvider(LocalSheetColorMode provides sheetColorMode) {
+            AppContent(
+                topBarConfig = topBarConfig,
+                navBarState = bottomBarVmState,
+                navEventSink = navViewModel,
+                currentRoute = currentRoute,
+                snackbarHostState = snackbarHostState,
+                modifier = actualModifier,
+                screen = { innerPadding, widthClass ->
+                    VoyagerNavHost(
+                        innerPadding = innerPadding,
+                        displayWidthClass = widthClass,
+                        navViewModel = navViewModel,
+                        onRouteChange = { currentRoute = it },
+                    )
+                },
+            )
+        }
+    }
 }
 
 @Composable

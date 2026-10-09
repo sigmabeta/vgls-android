@@ -20,6 +20,8 @@ import com.vgleadsheets.composables.previews.PreviewSheet
 import com.vgleadsheets.composables.utils.ImageSize
 import com.vgleadsheets.images.LoadingIndicatorConfig
 import com.vgleadsheets.pdf.subsample.LocalPdfSubsampler
+import com.vgleadsheets.ui.theme.LocalSheetColorMode
+import com.vgleadsheets.ui.theme.contentColorFilter
 import me.saket.telephoto.subsamplingimage.SubSamplingImage
 import me.saket.telephoto.subsamplingimage.rememberSubSamplingImageState
 import me.saket.telephoto.zoomable.ZoomableState
@@ -155,6 +157,7 @@ private fun Content(
     SubSamplingImage(
         state = imageState,
         contentDescription = contentDescription,
-        modifier = zoomableModifier
+        modifier = zoomableModifier,
+        colorFilter = LocalSheetColorMode.current.contentColorFilter,
     )
 }

@@ -153,6 +153,7 @@ include(
     ":vgls:common:offline:api",
     ":vgls:common:offline:real",
     ":vgls:common:repository:real",
+    ":vgls:common:settings:display:real",
     ":vgls:common:settings:part:real",
     ":vgls:common:urlinfo:api",
     ":vgls:common:urlinfo:real",

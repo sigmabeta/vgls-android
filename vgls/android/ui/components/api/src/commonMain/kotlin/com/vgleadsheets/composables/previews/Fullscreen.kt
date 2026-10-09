@@ -39,7 +39,7 @@ fun FullScreenOf(
     count: Int = 20,
     content: @Composable (ColumnScope.(PaddingValues) -> Unit),
 ) {
-    AppTheme(forceDark = darkTheme) {
+    AppTheme(darkTheme = darkTheme) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

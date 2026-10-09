@@ -4,7 +4,7 @@
 # diverged most from the committed baseline, ranked by AE% (the fraction of pixels
 # that differ — the same notion Paparazzi's `maxPercentDifference` thresholds on).
 #
-# For the top-N divergent screenshots it writes a 3-up montage (golden | new | diff)
+# For the top-N divergent screenshots it writes a 3-up montage (golden | diff | new)
 # under build/paparazzi-review/ and prints its path so you can eyeball the change.
 # Non-destructive: the regenerated goldens are reverted to the committed baseline
 # afterward (pass --keep to keep them, e.g. when you've decided to re-record).
@@ -79,8 +79,14 @@ ae_pct() {
   if [ "$total" -eq 0 ] || [ "$nw" != "$ow" ] || [ "$nh" != "$oh" ]; then
     echo "100.0000 ${total:-0} ${total:-0}"; return            # size mismatch ⇒ treat as fully divergent
   fi
+  # Count of pixels that differ in any channel. `compare -metric AE` is NOT usable here: on some
+  # ImageMagick builds it reports an absolute-error sum (often in scientific notation), not a pixel
+  # count, so parsing it yields nonsense. Instead take the per-channel difference, collapse to the
+  # max channel difference per pixel, and count the non-zero ones (the white fraction of the binary
+  # mask times area).
   local ae
-  ae="$( { compare -metric AE "$old" "$new" null: 2>&1 || true; } | grep -oE '[0-9]+' | tail -1)"
+  ae="$(magick "$old" "$new" -compose difference -composite -separate -evaluate-sequence max \
+    -threshold 0 -format '%[fx:mean*w*h]' info: 2>/dev/null | awk 'NF { printf "%d", $1 + 0.5 }')"
   ae="${ae:-0}"
   awk -v a="$ae" -v t="$total" 'BEGIN{ printf "%.4f %d %d", (t ? 100*a/t : 0), a, t }'
 }
@@ -100,12 +106,17 @@ echo "Top $TOP most-divergent screenshots (AE % = pixels differing / total):"
 i=0
 while IFS=$'\t' read -r pct path detail; do
   i=$((i+1))
-  # build a golden|new|diff montage for review
+  # build a golden|diff|new montage for review
   git show "HEAD:$path" 2>/dev/null | git lfs smudge 2>/dev/null > "$tmp/old.png" || true
   cp "$path" "$tmp/new.png"
   compare "$tmp/old.png" "$tmp/new.png" "$tmp/diff.png" 2>/dev/null || true
-  out="$review/$(printf '%02d_%s' "$i" "$(basename "$path")")"
-  magick montage "$tmp/old.png" "$tmp/new.png" "$tmp/diff.png" \
+  base="$(basename "$path")"
+  # Drop the snapshot's Kotlin-package prefix (and the `screens` container) so review filenames read
+  # cleanly: ...previews.screens_Foo -> Foo, ...previews.screens.lists_Bar -> lists_Bar.
+  base="${base#com.vgleadsheets.composables.previews.screens}"
+  base="${base#_}"; base="${base#.}"
+  out="$review/$(printf '%02d_%s' "$i" "$base")"
+  magick montage "$tmp/old.png" "$tmp/diff.png" "$tmp/new.png" \
     -tile 3x1 -geometry +6+6 -background '#202020' "$out" 2>/dev/null || true
   printf '  %6.2f%%  (%s)\n           golden: %s\n           review: %s\n' "$pct" "$detail" "$path" "$out"
 done < <(sort -t$'\t' -k1 -gr "$scores" | head -"$TOP")

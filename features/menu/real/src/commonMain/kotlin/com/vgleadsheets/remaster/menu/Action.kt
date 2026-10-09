@@ -1,8 +1,13 @@
 package com.vgleadsheets.remaster.menu
 
+import com.vgleadsheets.model.SheetColorMode
+import com.vgleadsheets.model.ThemeMode
 import net.sigmabeta.sage.appcomm.SageAction
 
 sealed class Action : SageAction() {
+    data class DropdownExpandClicked(val settingId: String) : Action()
+    data class ThemeModeSelected(val mode: ThemeMode) : Action()
+    data class SheetColorModeSelected(val mode: SheetColorMode) : Action()
     data object CheckUpdatesClicked : Action()
     data object ClearUsageClicked : Action()
     data object ClearSheetsClicked : Action()

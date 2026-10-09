@@ -30,7 +30,9 @@ kotlin {
                 implementation(projects.vgls.android.ui.list.api)
                 implementation(projects.vgls.android.ui.theme.api)
                 implementation(projects.vgls.android.viewmodel.real)
+                implementation(projects.vgls.common.settings.display.real)
                 implementation(projects.vgls.common.strings.api)
+                implementation(libs.androidx.lifecycle.viewmodel)
 
                 implementation(libs.sage.common.pdf)
 

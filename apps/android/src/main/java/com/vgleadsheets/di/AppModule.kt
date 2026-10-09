@@ -7,6 +7,8 @@ import com.vgleadsheets.dispatchers.DelayManagerImpl
 import com.vgleadsheets.environment.Environment
 import com.vgleadsheets.notif.NotifManager
 import com.vgleadsheets.repository.UpdateManager
+import com.vgleadsheets.settings.display.SheetColorManager
+import com.vgleadsheets.settings.display.ThemeManager
 import com.vgleadsheets.settings.part.SelectedPartManager
 import com.vgleadsheets.strings.VglsStringProvider
 import com.vgleadsheets.strings.loadVglsStrings
@@ -154,6 +156,22 @@ fun provideStringProvider(): StringProvider = runBlocking { VglsStringProvider(l
     fun provideSelectedPartManager(
         storage: Storage
     ): SelectedPartManager = SelectedPartManager(
+            storage = storage
+        )
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideSheetColorManager(
+        storage: Storage
+    ): SheetColorManager = SheetColorManager(
+            storage = storage
+        )
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideThemeManager(
+        storage: Storage
+    ): ThemeManager = ThemeManager(
             storage = storage
         )
 

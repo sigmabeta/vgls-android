@@ -18,6 +18,7 @@ kotlin {
                 api(projects.vgls.common.nav.api)
                 api(projects.vgls.common.repository.real)
                 api(projects.vgls.common.offline.real)
+                api(projects.vgls.common.settings.display.real)
                 api(libs.sage.common.settings.general)
                 api(libs.sage.common.time)
                 api(libs.sage.common.ui.components)
