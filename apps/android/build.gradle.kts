@@ -225,7 +225,7 @@ dependencies {
 appVersioning {
     releaseBuildOnly.set(true)
 
-    overrideVersionCode { gitTag, _, _ ->
+    overrideVersionCode { gitTag, providers, _ ->
         println("Generating version code. Git tag: ${gitTag.rawTagName}")
         val tagSegments = gitTag.rawTagName.split('.')
 
@@ -234,7 +234,33 @@ appVersioning {
         // Drop any pre-release suffix ("0-alpha" -> 0); the version name still carries the full tag.
         val patch = tagSegments[2].substringBefore('-').toInt()
 
-        val commits = gitTag.commitsSinceLatestTag
+        // Count commits since the FIRST tag naming this major.minor.patch, not since the latest tag.
+        // A pre-release tag (2.2.0-beta01 created after 2.2.0-alpha) resets commitsSinceLatestTag,
+        // which made the version code go BACKWARDS (…alpha+33 -> …beta01+2) and Play rejected the
+        // upload with 403 "does not allow any existing users to upgrade". Counting from the start of
+        // the version line keeps the code monotonic across pre-release tags; a patch bump (+10_000)
+        // still outweighs the entire commit component (at most 99 * 100 = 9_900).
+        val linePrefix = "$major.$minor.$patch"
+        val lineStartTag = providers.exec {
+            commandLine(
+                "git",
+                "tag",
+                "--merged",
+                "HEAD",
+                "--sort=creatordate",
+                "--list",
+                linePrefix,
+                "$linePrefix-*"
+            )
+        }.standardOutput.asText.get().lines().firstOrNull { it.isNotBlank() }
+
+        val commits = if (lineStartTag == null) {
+            gitTag.commitsSinceLatestTag
+        } else {
+            providers.exec {
+                commandLine("git", "rev-list", "--count", "$lineStartTag..HEAD")
+            }.standardOutput.asText.get().trim().toInt()
+        }
 
         val platType = 1 // replace with when statement if we ever support more than just mobile
 
