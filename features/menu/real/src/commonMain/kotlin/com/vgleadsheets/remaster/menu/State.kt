@@ -61,7 +61,7 @@ data class State(
         sectionHeader(stringProvider.getString(VglsStringId.SECTION_HEADER_SETTINGS_ABOUT)),
         appWhatsNew(stringProvider),
         website(stringProvider),
-        giantBomb(stringProvider),
+        igdb(stringProvider),
         privacy(stringProvider),
         appVersionName(stringProvider),
         appVersionCode(stringProvider),
@@ -264,9 +264,9 @@ data class State(
         clickAction = Action.WebsiteLinkClicked
     )
 
-    private fun giantBomb(stringProvider: StringProvider) = SingleTextListModel(
-        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_GIANT_BOMB),
-        clickAction = Action.GiantBombClicked
+    private fun igdb(stringProvider: StringProvider) = SingleTextListModel(
+        name = stringProvider.getString(VglsStringId.SETTINGS_LABEL_IGDB),
+        clickAction = Action.IgdbClicked
     )
 
     private fun privacy(stringProvider: StringProvider) = SingleTextListModel(

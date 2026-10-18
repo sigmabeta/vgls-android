@@ -7,7 +7,7 @@ open class VglsEvent : SageEvent() {
 
     data class SearchYoutubeClicked(val query: String) : VglsEvent()
 
-    data object GiantBombLinkClicked : VglsEvent()
+    data object IgdbLinkClicked : VglsEvent()
     data object WebsiteLinkClicked : VglsEvent()
     data object PrivacyLinkClicked : VglsEvent()
 

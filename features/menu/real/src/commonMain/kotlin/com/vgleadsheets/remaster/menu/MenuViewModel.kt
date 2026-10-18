@@ -80,7 +80,7 @@ class MenuViewModel @Inject constructor(
             is Action.ClearSheetsClicked -> onClearSheetsClicked()
             is Action.KeepScreenOnClicked -> onKeepScreenOnClicked()
             is Action.WebsiteLinkClicked -> onWebsiteLinkClicked()
-            is Action.GiantBombClicked -> onGiantBombClicked()
+            is Action.IgdbClicked -> onIgdbClicked()
             is Action.PrivacyLinkClicked -> onPrivacyLinkClicked()
             is Action.WhatsNewClicked -> onWhatsNewClicked()
             is Action.BuildDateClicked -> onBuildDateClicked()
@@ -189,8 +189,8 @@ class MenuViewModel @Inject constructor(
         emitEvent(VglsEvent.PrivacyLinkClicked)
     }
 
-    private fun onGiantBombClicked() {
-        emitEvent(VglsEvent.GiantBombLinkClicked)
+    private fun onIgdbClicked() {
+        emitEvent(VglsEvent.IgdbLinkClicked)
     }
 
     private fun onWhatsNewClicked() {
