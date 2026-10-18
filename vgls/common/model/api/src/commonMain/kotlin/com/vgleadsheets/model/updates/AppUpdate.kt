@@ -69,5 +69,17 @@ data class AppUpdate(
                 "Added more descriptive error messages when in bad network conditions.",
             )
         )
+
+        val VERSION_2_2_0 = AppUpdate(
+            versionCode = 22000,
+            versionName = "2.2.0",
+            releaseDate = "October 17, 2026",
+            changes = listOf(
+                "The app now pulls images for games from IGDB, and composers from Wikidata.",
+                "Dark and light mode are now selectable in settings, independently of your device's setting.",
+                "Sheets can now be rendered in one of three visual themes.",
+                "List screens now load a small chunk of content immediately, and load the rest as you scroll."
+            )
+        )
     }
 }
