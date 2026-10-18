@@ -14,7 +14,7 @@ sealed class Action : SageAction() {
     data object KeepScreenOnClicked : Action()
     data object LicensesLinkClicked : Action()
     data object WebsiteLinkClicked : Action()
-    data object GiantBombClicked : Action()
+    data object IgdbClicked : Action()
     data object PrivacyLinkClicked : Action()
     data object WhatsNewClicked : Action()
     data object BuildDateClicked : Action()

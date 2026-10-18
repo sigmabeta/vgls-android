@@ -101,7 +101,7 @@
     <string name="settings_sheet_color_gentle">Gentle</string>
     <string name="settings_label_licenses">Open-source Licenses</string>
     <string name="settings_label_website">VGLeadSheets.com</string>
-    <string name="settings_label_giant_bomb">Giant Bomb Wiki</string>
+    <string name="settings_label_igdb">IGDB</string>
     <string name="settings_label_privacy">Privacy Policy</string>
     <string name="settings_label_app_whats_new">What\'s new in the app</string>
     <string name="settings_label_app_branch">Source Branch</string>

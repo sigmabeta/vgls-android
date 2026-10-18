@@ -96,7 +96,7 @@ class NavViewModel @Inject constructor(
                 is SageEvent.ShowUiChrome -> showSystemUi()
                 is SageEvent.ClearNotif -> clearNotif(event.id)
                 is VglsEvent.RefreshDb -> refreshDb()
-                is VglsEvent.GiantBombLinkClicked -> launchWebsite(URL_GB_WEBSITE)
+                is VglsEvent.IgdbLinkClicked -> launchWebsite(URL_IGDB_WEBSITE)
                 is VglsEvent.SearchYoutubeClicked -> launchWebsite(getYoutubeSearchUrlForQuery(event.query))
                 is VglsEvent.PrivacyLinkClicked -> launchWebsite(URL_PRIVACY)
                 is VglsEvent.WebsiteLinkClicked -> launchWebsite(URL_VGLS_WEBSITE)
@@ -281,7 +281,7 @@ class NavViewModel @Inject constructor(
 
     companion object {
         private const val URL_VGLS_WEBSITE = "https://www.vgleadsheets.com/"
-        private const val URL_GB_WEBSITE = "https://www.giantbomb.com/"
+        private const val URL_IGDB_WEBSITE = "https://www.igdb.com/"
         private const val URL_PRIVACY = "https://github.com/sigmabeta/vgls-android/blob/beta/PRIVACY.md/"
     }
 }
