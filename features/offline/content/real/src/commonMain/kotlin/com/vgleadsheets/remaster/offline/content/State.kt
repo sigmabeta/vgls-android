@@ -77,6 +77,7 @@ data class State(
                         isAltSelected = false,
                         pageNumber = 0,
                         pdfSize = PdfSize.THUMBNAIL,
+                        cacheVersion = item.lastModifiedOnServer,
                     )
                 ),
                 imagePlaceholder = Icon.Description,

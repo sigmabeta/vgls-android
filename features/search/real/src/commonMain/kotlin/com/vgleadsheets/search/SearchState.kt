@@ -129,6 +129,7 @@ data class SearchState(
                         pageNumber = 0,
                         isAltSelected = false,
                         pdfSize = PdfSize.THUMBNAIL,
+                        cacheVersion = song.lastModifiedOnServer,
                     )
                 ),
                 imagePlaceholder = Icon.Description,

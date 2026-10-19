@@ -18,6 +18,6 @@ private fun PdfConfigById.keyCommonSection(
     partApiId: String,
     width: Int?,
     height: Int?
-): String = "$songId-$partApiId-alt=$isAltSelected-$pageNumber-$width-$height"
+): String = "$songId-$partApiId-alt=$isAltSelected-$pageNumber-$width-$height-v=$cacheVersion"
 
 const val ZOOM_MAX_PDF = 4
