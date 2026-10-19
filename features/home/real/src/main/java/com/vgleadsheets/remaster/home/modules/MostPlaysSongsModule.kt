@@ -61,6 +61,7 @@ class MostPlaysSongsModule @Inject constructor(
                                         pageNumber = 0,
                                         isAltSelected = false,
                                         pdfSize = PdfSize.MEDIUM,
+                                        cacheVersion = song.lastModifiedOnServer,
                                     ),
                                     gameName = song.gameName,
                                     clickAction = Action.MostPlaysSongClicked(song.id),

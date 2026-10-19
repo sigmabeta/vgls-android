@@ -25,6 +25,7 @@ import com.vgleadsheets.database.source.SearchHistoryDataSource
 import com.vgleadsheets.database.source.SongHistoryDataSource
 import com.vgleadsheets.database.source.SongPlayCountDataSource
 import com.vgleadsheets.database.source.TagValuePlayCountDataSource
+import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.network.VglsApi
 import com.vgleadsheets.network.VgmMetadataApi
 import com.vgleadsheets.notif.NotifManager
@@ -190,7 +191,8 @@ object RepositoryModule {
         songDataSource: SongDataSource,
         tagKeyDataSource: TagKeyDataSource,
         tagValueDataSource: TagValueDataSource,
-        songAliasDataSource: SongAliasDataSource
+        songAliasDataSource: SongAliasDataSource,
+        sheetDownloader: SheetDownloader,
     ): DbUpdater = DbUpdater(
         vglsApi,
         transactionDao,
@@ -206,6 +208,7 @@ object RepositoryModule {
         tagKeyDataSource,
         tagValueDataSource,
         dbStatisticsDataSource,
+        sheetDownloader,
     )
 
     @Provides

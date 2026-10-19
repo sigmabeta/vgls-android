@@ -164,6 +164,7 @@ data class State(
                 pageNumber = pageNumber,
                 isAltSelected = altSelectionValue,
                 pdfSize = pdfSize,
+                cacheVersion = song.lastModifiedOnServer,
             ),
         )
     )
