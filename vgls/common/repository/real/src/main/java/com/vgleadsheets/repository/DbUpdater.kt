@@ -11,6 +11,7 @@ import com.vgleadsheets.database.dao.SongAliasDataSource
 import com.vgleadsheets.database.dao.SongDataSource
 import com.vgleadsheets.database.dao.TagKeyDataSource
 import com.vgleadsheets.database.dao.TagValueDataSource
+import com.vgleadsheets.downloader.SheetDownloader
 import com.vgleadsheets.model.Composer
 import com.vgleadsheets.model.Song
 import com.vgleadsheets.model.alias.ComposerAlias
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.withContext
 import net.sigmabeta.sage.appcomm.LCE
 import net.sigmabeta.sage.coroutines.SageDispatchers
 import net.sigmabeta.sage.logging.Hatchet
@@ -52,6 +54,7 @@ class DbUpdater(
     private val tagKeyDataSource: TagKeyDataSource,
     private val tagValueDataSource: TagValueDataSource,
     private val dbStatisticsDataSource: DbStatisticsDataSource,
+    private val sheetDownloader: SheetDownloader,
 ) {
     suspend fun clearSheets() {
         gameDataSource.nukeTable()
@@ -182,6 +185,15 @@ class DbUpdater(
         val removedComposers =
             dbComposerMap.values.asIdSet { it.id } - composerMap.values.asIdSet { it.id }
 
+        // A cached PDF may no longer match the song once any of its server-backed fields change
+        // (page counts, filename, game, etc.), so drop it and let the next view re-download it.
+        // Compare the full models: local-only fields (play count, favorite/offline flags) are
+        // carried over from the DB copy above, so any difference is a server-backed field.
+        val changedSongFilenames = songs
+            .filter { song -> dbSongMap[song.id]?.takeIf { dbSong -> dbSong != song } != null }
+            .flatMap { song -> listOfNotNull(song.filename, dbSongMap[song.id]?.filename) }
+            .toSet()
+
         transactionRunner.inTransaction {
             songDataSource.remove(removedSongs.toList())
             gameDataSource.remove(removedGames.toList())
@@ -211,7 +223,24 @@ class DbUpdater(
 
             dbStatisticsDataSource.insert(lastDbUpdate)
         }
+
+        clearCachedPdfs(changedSongFilenames)
         true
+    }
+
+    private suspend fun clearCachedPdfs(filenames: Set<String>) = withContext(dispatchers.disk) {
+        if (filenames.isNotEmpty()) {
+            hatchet.i("Clearing cached PDFs for ${filenames.size} updated song(s).")
+        }
+        filenames
+            .forEach { filename ->
+                // A failed delete must not fail the whole DB update: the cached file is stale
+                // but still usable.
+                runCatching { sheetDownloader.clearFilesForSong(filename) }
+                    .onFailure {
+                        hatchet.e("Failed to clear cached PDFs for $filename: ${it.message}")
+                    }
+            }
     }
 
     private fun getAllGames() = gameDataSource

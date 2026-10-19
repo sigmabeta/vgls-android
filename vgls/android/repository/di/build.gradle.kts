@@ -17,6 +17,7 @@ kotlin {
                 implementation(projects.vgls.android.database.real)
                 implementation(libs.sage.common.coroutines)
                 implementation(projects.vgls.common.conversion.api)
+                implementation(projects.vgls.common.downloader.api)
                 implementation(projects.vgls.common.network.api)
                 implementation(libs.sage.common.storage.common)
                 implementation(projects.vgls.common.notif.real)
