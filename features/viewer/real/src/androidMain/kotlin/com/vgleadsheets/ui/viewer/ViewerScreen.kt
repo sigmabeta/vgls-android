@@ -30,10 +30,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -104,8 +105,9 @@ actual fun ViewerScreen(
             .clickable { actionSink.sendAction(Action.ScreenClicked) }
     ) {
         val windowSize = getWindowSize()
-        val shouldScrollFreely by remember {
-            derivedStateOf { windowSize.width.toFloat() / windowSize.height > SheetConstants.ASPECT_RATIO }
+        val shouldScrollFreely = remember(windowSize) {
+            windowSize.height > 0 &&
+                windowSize.width.toFloat() / windowSize.height > SheetConstants.ASPECT_RATIO
         }
 
         val items = state.pages()
@@ -133,8 +135,12 @@ actual fun ViewerScreen(
             return@Box
         }
 
+        var currentPage by rememberSaveable {
+            mutableIntStateOf(state.initialPage.coerceIn(0, items.size - 1))
+        }
+
         val pagerState = rememberPagerState(
-            initialPage = state.initialPage
+            initialPage = currentPage
         ) { items.size }
 
         val zoomableState = rememberZoomableState(zoomSpec)
@@ -142,18 +148,19 @@ actual fun ViewerScreen(
         val defaultPageWidth = calculateDefaultPageWidth()
         val scale = zoomableState.contentTransformation.scaleMetadata.userZoom
 
-        val firstVisiblePage = zoomableState.calculateFirstVisiblePage()
+        val firstPartialVisiblePage = zoomableState.calculateFirstPartialVisiblePage(items.size)
+        val firstFullVisiblePage = zoomableState.calculateFirstFullVisiblePage(items.size)
 
         if (shouldScrollFreely) {
-            LaunchedEffect(firstVisiblePage) {
-                pagerState.scrollToPage(firstVisiblePage)
-            }
-
-            if (scale != 0f) {
-                LaunchedEffect(state.initialPage) {
-                    zoomableState.snapToPage(state.initialPage, defaultPageWidth)
-                }
-            }
+            FreeScrollSyncHandler(
+                windowSize = windowSize,
+                scale = scale,
+                firstFullVisiblePage = firstFullVisiblePage,
+                defaultPageWidth = defaultPageWidth,
+                currentPage = currentPage,
+                onCurrentPageChanged = { currentPage = it },
+                zoomableState = zoomableState,
+            )
 
             ZoomableFullDocItem(
                 model = items.first(),
@@ -163,9 +170,11 @@ actual fun ViewerScreen(
                 zoomableState = zoomableState,
             )
         } else {
-            LaunchedEffect(pagerState.currentPage) {
-                zoomableState.snapToPage(pagerState.currentPage, defaultPageWidth)
-            }
+            PagedSyncHandler(
+                pagerState = pagerState,
+                currentPage = currentPage,
+                onCurrentPageChanged = { currentPage = it },
+            )
 
             SheetPager(
                 items = items,
@@ -176,8 +185,8 @@ actual fun ViewerScreen(
             )
         }
 
-        val previousPage = prevPage(shouldScrollFreely, firstVisiblePage, pagerState.currentPage)
-        val nextPage = nextPage(shouldScrollFreely, firstVisiblePage, pagerState.currentPage, items.size)
+        val previousPage = prevPage(shouldScrollFreely, firstFullVisiblePage, pagerState.currentPage)
+        val nextPage = nextPage(shouldScrollFreely, firstPartialVisiblePage, pagerState.currentPage, items.size)
         var scrollTargetPage by remember { mutableStateOf<Int?>(null) }
 
         val onPreviousClick = {
@@ -195,7 +204,8 @@ actual fun ViewerScreen(
             shouldScrollFreely = shouldScrollFreely,
             zoomableState = zoomableState,
             defaultPageWidth = defaultPageWidth,
-            pagerState = pagerState
+            pagerState = pagerState,
+            onScrollHandled = { scrollTargetPage = null },
         )
 
         PageControls(
@@ -222,19 +232,87 @@ actual fun ViewerScreen(
 }
 
 @Composable
+private fun FreeScrollSyncHandler(
+    windowSize: IntSize,
+    scale: Float,
+    firstFullVisiblePage: Int,
+    defaultPageWidth: Float,
+    currentPage: Int,
+    onCurrentPageChanged: (Int) -> Unit,
+    zoomableState: ZoomableState,
+) {
+    var restoredTargetPage by remember(windowSize) { mutableStateOf<Int?>(null) }
+    var hasReachedRestoredPage by remember(windowSize) { mutableStateOf(false) }
+
+    LaunchedEffect(windowSize, scale != 0f) {
+        if (scale != 0f) {
+            val targetPage = currentPage
+            restoredTargetPage = targetPage
+            hasReachedRestoredPage = targetPage == 0
+            zoomableState.snapToPage(targetPage, defaultPageWidth)
+        } else {
+            restoredTargetPage = null
+            hasReachedRestoredPage = false
+        }
+    }
+
+    if (scale != 0f && restoredTargetPage != null) {
+        if (!hasReachedRestoredPage && firstFullVisiblePage == restoredTargetPage) {
+            hasReachedRestoredPage = true
+        }
+        if (hasReachedRestoredPage) {
+            LaunchedEffect(firstFullVisiblePage) {
+                if (currentPage != firstFullVisiblePage) {
+                    onCurrentPageChanged(firstFullVisiblePage)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PagedSyncHandler(
+    pagerState: PagerState,
+    currentPage: Int,
+    onCurrentPageChanged: (Int) -> Unit,
+) {
+    var isInitialPageSynced by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        if (pagerState.currentPage != currentPage) {
+            pagerState.scrollToPage(currentPage)
+        }
+        isInitialPageSynced = true
+    }
+
+    if (isInitialPageSynced) {
+        LaunchedEffect(pagerState.currentPage) {
+            if (currentPage != pagerState.currentPage) {
+                onCurrentPageChanged(pagerState.currentPage)
+            }
+        }
+    }
+}
+
+@Composable
 private fun ScrollHandler(
     scrollTargetPage: Int?,
     shouldScrollFreely: Boolean,
     zoomableState: ZoomableState,
     defaultPageWidth: Float,
-    pagerState: PagerState
+    pagerState: PagerState,
+    onScrollHandled: () -> Unit,
 ) {
     LaunchedEffect(scrollTargetPage) {
         if (scrollTargetPage != null) {
-            if (shouldScrollFreely) {
-                zoomableState.scrollToPage(scrollTargetPage, defaultPageWidth)
-            } else {
-                pagerState.animateScrollToPage(scrollTargetPage)
+            try {
+                if (shouldScrollFreely) {
+                    zoomableState.scrollToPage(scrollTargetPage, defaultPageWidth)
+                } else {
+                    pagerState.animateScrollToPage(scrollTargetPage)
+                }
+            } finally {
+                onScrollHandled()
             }
         }
     }
@@ -298,15 +376,15 @@ private fun BoxScope.PageControls(
     val pagerPage = pagerState.currentPage
 
     val prevEnabled = if (shouldScrollFreely) {
-        val firstFullVisiblePage = ceil(scrollPosition / pageWidth).toInt()
+        val firstFullVisiblePage = ceil((scrollPosition - PAGE_SCROLL_TOLERANCE_PX).coerceAtLeast(0f) / pageWidth).toInt()
         firstFullVisiblePage > 0
     } else {
         pagerPage > 0
     }
 
     val nextEnabled = if (shouldScrollFreely) {
-        val rightMostPixel = scrollPosition + getWindowSize().width
-        val lastFullVisiblePage = floor(rightMostPixel / pageWidth.toInt()).toInt()
+        val rightMostPixel = scrollPosition + getWindowSize().width + PAGE_SCROLL_TOLERANCE_PX
+        val lastFullVisiblePage = floor(rightMostPixel / pageWidth).toInt()
 
         lastFullVisiblePage <= items.size - 1
     } else {
@@ -468,15 +546,33 @@ private suspend fun ZoomableState.toPage(page: Int, defaultPageWidth: Float, ani
 }
 
 @Composable
-private fun ZoomableState.calculateFirstVisiblePage(): Int {
+private fun ZoomableState.calculateFirstPartialVisiblePage(pageCount: Int): Int {
     val defaultPageWidth = calculateDefaultPageWidth()
 
     val offsetX = contentTransformation.offset.x.absoluteValue
     val scale = contentTransformation.scaleMetadata.userZoom
 
     val currentPageWidth = defaultPageWidth * scale
+    if (currentPageWidth <= 0f) return 0
 
-    return (offsetX / currentPageWidth).toInt()
+    return floor((offsetX + PAGE_SCROLL_TOLERANCE_PX) / currentPageWidth)
+        .toInt()
+        .coerceIn(0, (pageCount - 1).coerceAtLeast(0))
+}
+
+@Composable
+private fun ZoomableState.calculateFirstFullVisiblePage(pageCount: Int): Int {
+    val defaultPageWidth = calculateDefaultPageWidth()
+
+    val offsetX = contentTransformation.offset.x.absoluteValue
+    val scale = contentTransformation.scaleMetadata.userZoom
+
+    val currentPageWidth = defaultPageWidth * scale
+    if (currentPageWidth <= 0f) return 0
+
+    return ceil((offsetX - PAGE_SCROLL_TOLERANCE_PX).coerceAtLeast(0f) / currentPageWidth)
+        .toInt()
+        .coerceIn(0, (pageCount - 1).coerceAtLeast(0))
 }
 
 @Composable
@@ -497,6 +593,8 @@ private fun getWindowSize(): IntSize {
     val windowInfo = LocalWindowInfo.current
     return windowInfo.containerSize
 }
+
+private const val PAGE_SCROLL_TOLERANCE_PX = 4.0f
 
 private const val WIDTH_PERCENT_ICON = 0.5f
 

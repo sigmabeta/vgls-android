@@ -95,7 +95,7 @@ private fun Content(
     zoomableState.contentScale = ContentScale.Fit
 
     val imageSourceFactory = LocalPdfSubsampler.current
-    val imageSource = remember { imageSourceFactory.create(data = pdfConfigByIdWithSize) }
+    val imageSource = remember(pdfConfigByIdWithSize) { imageSourceFactory.create(data = pdfConfigByIdWithSize) }
 
     val imageState = rememberSubSamplingImageState(
         zoomableState = zoomableState,

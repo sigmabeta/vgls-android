@@ -314,7 +314,7 @@ object BitmapUtils {
             return ScalingType.FILL_HEIGHT_ADJUST_WIDTH
         }
 
-        if (maxHeight > maxWidth) {
+        if (targetHeight < maxHeight) {
             return ScalingType.FILL_WIDTH_ADJUST_HEIGHT
         }
 
@@ -349,8 +349,12 @@ fun computePageToMaxScalingFactor(
     maxHeight: Int,
     pdfWidth: Int,
     pdfHeight: Int
-): Float = if (maxWidth < maxHeight) {
-        maxWidth / pdfWidth.toFloat()
+): Float {
+    val widthScale = maxWidth / pdfWidth.toFloat()
+    val heightScale = maxHeight / pdfHeight.toFloat()
+    return if ((pdfWidth * heightScale).roundToInt() <= maxWidth) {
+        heightScale
     } else {
-        maxHeight / pdfHeight.toFloat()
+        widthScale
     }
+}

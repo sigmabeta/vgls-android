@@ -103,20 +103,19 @@ class PdfToBitmapFullDocAsyncRenderer(
     ): Bitmap {
         val pageCount = pdfRenderer.pageCount
         val (pageWidth, pageHeight) = getPageDimensions()
-        val totalDocWidth = pageWidth * pageCount
 
         val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
             hatchet,
             pageCount,
-            width,
-            height,
-            totalDocWidth,
+            maxWidth,
+            maxHeight,
+            pageWidth,
             pageHeight,
             zoom
         )
 
         val leftMostCoord = dXPixels
-        val rightMostCoord = dXPixels + bitmapSizeInfo.pageWidth
+        val rightMostCoord = dXPixels + width
 
         val scaledPageWidth = pageWidth * bitmapSizeInfo.zoomedScalingFactor
 
@@ -124,8 +123,8 @@ class PdfToBitmapFullDocAsyncRenderer(
         val lastPageToDisplay = min(pageCount - 1, (rightMostCoord / scaledPageWidth).toInt())
 
         val newBitmap = BitmapUtils.createBitmapWithBackground(
-            width = bitmapSizeInfo.pageWidth,
-            height = bitmapSizeInfo.pageHeight,
+            width = width,
+            height = height,
         )
 
         for (pageNumber in firstPageToDisplay..lastPageToDisplay) {
