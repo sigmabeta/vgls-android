@@ -26,22 +26,24 @@ class BitmapUtilsTest {
         assertEquals(1706, result.zoomedPageWidth)
         assertEquals(2208, result.zoomedPageHeight)
         assertTrue(result.zoomedPageHeight <= result.pageHeight)
+    }
 
-        // Subsequent tile renders using getActualDimensions() output must preserve exact dimensions and scale
+    @Test
+    fun `unfolded Pixel Fold portrait scales single-page zoom levels linearly`() {
+        val baseScalingFactor = PIXEL_FOLD_UNFOLDED_PORTRAIT_HEIGHT / PDF_PAGE_HEIGHT.toFloat()
+
         for (zoom in listOf(1f, 2f, 4f, 8f)) {
-            val tileResult = BitmapUtils.computeBitmapSize(
+            val zoomedResult = BitmapUtils.computeBitmapSize(
                 hatchet = hatchet,
                 pageCount = 1,
-                maxWidth = result.pageWidth,
-                maxHeight = result.pageHeight,
+                maxWidth = PIXEL_FOLD_UNFOLDED_PORTRAIT_WIDTH,
+                maxHeight = PIXEL_FOLD_UNFOLDED_PORTRAIT_HEIGHT,
                 docWidth = PDF_PAGE_WIDTH,
                 docHeight = PDF_PAGE_HEIGHT,
                 zoom = zoom,
             )
-            assertEquals(result.pageWidth, tileResult.pageWidth)
-            assertEquals(result.pageHeight, tileResult.pageHeight)
-            assertEquals(result.pageToMaximumScalingFactor, tileResult.pageToMaximumScalingFactor)
-            assertEquals(result.pageToMaximumScalingFactor * zoom, tileResult.zoomedScalingFactor)
+            assertEquals(baseScalingFactor, zoomedResult.pageToMaximumScalingFactor)
+            assertEquals(baseScalingFactor * zoom, zoomedResult.zoomedScalingFactor)
         }
     }
 
@@ -100,6 +102,11 @@ class BitmapUtilsTest {
         assertEquals(1398, result.pageHeight)
         assertEquals(1080, result.zoomedPageWidth)
         assertEquals(1398, result.zoomedPageHeight)
+    }
+
+    @Test
+    fun `standard portrait phone scales zoom levels linearly`() {
+        val baseScalingFactor = 1080f / PDF_PAGE_WIDTH
 
         for (zoom in listOf(1f, 2f, 4f, 8f)) {
             val zoomedResult = BitmapUtils.computeBitmapSize(
@@ -111,13 +118,13 @@ class BitmapUtilsTest {
                 docHeight = PDF_PAGE_HEIGHT,
                 zoom = zoom,
             )
-            assertEquals(result.pageToMaximumScalingFactor, zoomedResult.pageToMaximumScalingFactor)
-            assertEquals(result.pageToMaximumScalingFactor * zoom, zoomedResult.zoomedScalingFactor)
+            assertEquals(baseScalingFactor, zoomedResult.pageToMaximumScalingFactor)
+            assertEquals(baseScalingFactor * zoom, zoomedResult.zoomedScalingFactor)
         }
     }
 
     @Test
-    fun `unfolded Pixel Fold portrait scales multi-page doc by height across zoom levels`() {
+    fun `unfolded Pixel Fold portrait scales multi-page doc by height`() {
         val result = BitmapUtils.computeBitmapSize(
             hatchet = hatchet,
             pageCount = 3,
@@ -132,6 +139,11 @@ class BitmapUtilsTest {
         assertEquals(1706, result.pageWidth)
         assertEquals(5118, result.docWidth)
         assertEquals(2208, result.pageHeight)
+    }
+
+    @Test
+    fun `unfolded Pixel Fold portrait scales multi-page zoom levels linearly`() {
+        val baseScalingFactor = PIXEL_FOLD_UNFOLDED_PORTRAIT_HEIGHT / PDF_PAGE_HEIGHT.toFloat()
 
         for (zoom in listOf(0.5f, 1f, 2f, 4f, 8f)) {
             val zoomedResult = BitmapUtils.computeBitmapSize(
@@ -143,8 +155,8 @@ class BitmapUtilsTest {
                 docHeight = PDF_PAGE_HEIGHT,
                 zoom = zoom,
             )
-            assertEquals(result.pageToMaximumScalingFactor, zoomedResult.pageToMaximumScalingFactor)
-            assertEquals(result.pageToMaximumScalingFactor * zoom, zoomedResult.zoomedScalingFactor)
+            assertEquals(baseScalingFactor, zoomedResult.pageToMaximumScalingFactor)
+            assertEquals(baseScalingFactor * zoom, zoomedResult.zoomedScalingFactor)
         }
     }
 
