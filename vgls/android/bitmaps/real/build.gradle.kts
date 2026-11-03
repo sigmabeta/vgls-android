@@ -29,5 +29,10 @@ kotlin {
                 implementation(libs.sage.common.di)
             }
         }
+        named("androidHostTest") {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }

@@ -112,16 +112,16 @@ class PdfToBitmapAsyncRenderer(
                         val bitmapSizeInfo = BitmapUtils.computeBitmapSize(
                             hatchet,
                             pageCount = 1,
-                            width,
-                            height,
+                            maxWidth,
+                            maxHeight,
                             currentPage.width,
                             currentPage.height,
                             zoom
                         )
 
                         newBitmap = BitmapUtils.createBitmapWithBackground(
-                            width = bitmapSizeInfo.pageWidth,
-                            height = bitmapSizeInfo.pageHeight,
+                            width = width,
+                            height = height,
                         )
 
                         val transformMatrix = defaultTransformMatrix(bitmapSizeInfo.zoomedScalingFactor)

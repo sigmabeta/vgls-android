@@ -19,8 +19,6 @@ import net.sigmabeta.sage.debug.RenderOverlayProvider
 import net.sigmabeta.sage.logging.BluntHatchet
 import net.sigmabeta.sage.logging.Hatchet
 import okio.Path
-import kotlin.math.absoluteValue
-import kotlin.math.min
 
 class PdfRegionDecoder(
     private val pdfFile: Path,
@@ -88,14 +86,7 @@ class PdfRegionDecoder(
             return blankResult()
         }
 
-        val viewportSize = IntSize(maxWidth, maxHeight)
-        val unscaledImageSize = imageSize
-        val maxSampleSize = ImageSampleSize.calculateFor(
-            viewportSize = viewportSize,
-            scaledImageSize = unscaledImageSize
-        )
-
-        val zoom = maxSampleSize.size.toFloat() / sampleSize
+        val zoom = ZOOM_MAX_PDF.toFloat() / sampleSize
 
         val regionBitmap = try {
             withContext(sageDispatchers.computation) {
@@ -151,43 +142,5 @@ class PdfRegionDecoder(
                 hatchet,
                 renderOverlayProvider,
             )
-    }
-}
-
-@JvmInline
-private value class ImageSampleSize(val size: Int) {
-    companion object {
-        fun calculateFor(
-            viewportSize: IntSize,
-            scaledImageSize: IntSize
-        ): ImageSampleSize {
-            val viewportMinDimension = min(viewportSize.width.absoluteValue, viewportSize.height.absoluteValue)
-            check(viewportMinDimension > 0f) { "Can't calculate a sample size for $viewportSize" }
-
-            val zoom = minOf(
-                viewportSize.width / scaledImageSize.width.toFloat(),
-                viewportSize.height / scaledImageSize.height.toFloat()
-            )
-            return calculateFor(zoom)
-        }
-
-        fun calculateFor(zoom: Float): ImageSampleSize {
-            if (zoom == 0f) {
-                return ImageSampleSize(1)
-            }
-
-            var sampleSize = 1
-            while (sampleSize * 2 <= (1 / zoom)) {
-                // BitmapRegionDecoder requires values based on powers of 2.
-                sampleSize *= 2
-            }
-            return ImageSampleSize(sampleSize)
-        }
-    }
-
-    init {
-        check(size == 1 || size.rem(2) == 0) {
-            "Incorrect size = $size. BitmapRegionDecoder requires values based on powers of 2."
-        }
     }
 }
